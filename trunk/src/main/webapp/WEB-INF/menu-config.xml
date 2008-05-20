@@ -15,5 +15,12 @@
             <Item name="Clickstream" title="menu.clickstream" page="/admin/clickstreams.jsp"/>
         </Menu>
         <Menu name="Logout" title="user.logout" page="/logout.jsp" roles="ROLE_ADMIN,ROLE_USER"/>
+
+        <!--Datasource-START-->
+        <Menu name="DatasourceMenu" title="datasourceList.title" page="/datasources.html"/>
+        <!--Datasource-END-->
+        <!--ResourceMetadata-START-->
+        <Menu name="ResourceMetadataMenu" title="resourceMetadataList.title" page="/resourceMetadatas.html"/>
+        <!--ResourceMetadata-END-->
     </Menus>
 </MenuConfig>

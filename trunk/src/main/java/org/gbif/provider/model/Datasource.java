@@ -22,17 +22,26 @@ import org.gbif.provider.model.hibernate.Timestampable;
  */
 @Entity
 public class Datasource implements Timestampable{
-	private String id;
+	private Long id;
+	private String serviceName;
 	private Date modified;
 	private ResourceMetadata metadata;
 	private String sourceJdbcConnection;
 	
-	@Id @Column(length=16)
-	public String getId() {
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Column(length=16)
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 			
 	public Date getModified() {

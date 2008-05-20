@@ -5,6 +5,28 @@
 
     <!-- Add new DAOs here -->
 
+    <!--DatasourceManager-START-->
+    <bean id="datasourceManager" class="org.appfuse.service.impl.GenericManagerImpl">
+        <constructor-arg>
+            <bean class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+                <constructor-arg value="org.gbif.provider.model.Datasource"/>
+                <property name="sessionFactory" ref="sessionFactory"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+    <!--DatasourceManager-END-->
+
+    <!--ResourceMetadataManager-START-->
+    <bean id="resourceMetadataManager" class="org.appfuse.service.impl.GenericManagerImpl">
+        <constructor-arg>
+            <bean class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+                <constructor-arg value="org.gbif.provider.model.ResourceMetadata"/>
+                <property name="sessionFactory" ref="sessionFactory"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+    <!--ResourceMetadataManager-END-->
+
     <!-- Add new Managers here -->
 
     <!-- Add new Actions here -->

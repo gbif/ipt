@@ -8,5 +8,12 @@
     <menu:displayMenu name="UserMenu"/>
     <menu:displayMenu name="AdminMenu"/>
     <menu:displayMenu name="Logout"/>
+    
+    <!--Datasource-START-->
+    <menu:displayMenu name="DatasourceMenu"/>
+    <!--Datasource-END-->
+    <!--ResourceMetadata-START-->
+    <menu:displayMenu name="ResourceMetadataMenu"/>
+    <!--ResourceMetadata-END-->
 </ul>
 </menu:useMenuDisplayer>

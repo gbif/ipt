@@ -9,7 +9,7 @@
 
     <!-- runs all targets -->
     <target name="run-all-tests" 
-        depends="Login,Logout,PasswordHint,Signup,StaticPages,UserTests,FlushCache,FileUpload"
+        depends="Login,Logout,PasswordHint,Signup,StaticPages,UserTests,FlushCache,FileUpload,ResourceMetadataTests,DatasourceTests,DatasourceTests"
         description="Call and executes all test cases (targets)"/>
     
     <!-- runs user-related tests -->
@@ -222,4 +222,183 @@
             </steps>
         </webtest>
     </target>
+    
+    <!--Datasource-START-->
+    <!-- runs datasource-related tests -->
+    <target name="DatasourceTests" depends="SearchDatasources,EditDatasource,SaveDatasource,AddDatasource,DeleteDatasource"
+            description="Call and executes all datasource test cases (targets)">
+        <echo>Successfully ran all Datasource UI tests!</echo>
+    </target>
+
+    <!-- Verify the datasources list screen displays without errors -->
+    <target name="SearchDatasources" description="Tests search for and displaying all datasources">
+        <webtest name="searchDatasources">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View Datasource link" url="/datasources.html"/>
+                <verifytitle description="we should see the datasourceList title"
+                             text=".*${datasourceList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the edit datasource screen displays without errors -->
+    <target name="EditDatasource" description="Tests editing an existing Datasource's information">
+        <webtest name="editDatasource">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Datasource link" url="/editDatasource.html?id=-1"/>
+                <verifytitle description="we should see the datasourceDetail title"
+                             text=".*${datasourceDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a datasource and then save -->
+    <target name="SaveDatasource" description="Tests editing and saving a datasource">
+        <webtest name="saveDatasource">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Datasource link" url="/editDatasource.html?id=-1"/>
+                <verifytitle description="we should see the datasourceDetail title"
+                             text=".*${datasourceDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+
+                <clickbutton label="${button.save}" description="Click Save"/>
+                <verifytitle description="Page re-appears if save successful"
+                             text=".*${datasourceDetail.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${datasource.updated}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new Datasource -->
+    <target name="AddDatasource" description="Adds a new Datasource">
+        <webtest name="addDatasource">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editDatasource.html"/>
+                <verifytitle description="we should see the datasourceDetail title"
+                             text=".*${datasourceDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+                <verifytitle description="Datasource List appears if save successful"
+                             text=".*${datasourceList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${datasource.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing datasource -->
+    <target name="DeleteDatasource" description="Deletes existing Datasource">
+        <webtest name="deleteDatasource">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit Datasource link" url="/editDatasource.html?id=-1"/>
+                <prepareDialogResponse description="Confirm delete" dialogType="confirm" response="true"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifyNoDialogResponses/>
+                <verifytitle description="display Datasource List" text=".*${datasourceList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${datasource.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+    <!--Datasource-END-->
+    <!--ResourceMetadata-START-->
+    <!-- runs resourceMetadata-related tests -->
+    <target name="ResourceMetadataTests" depends="SearchResourceMetadatas,EditResourceMetadata,SaveResourceMetadata,AddResourceMetadata,DeleteResourceMetadata"
+            description="Call and executes all resourceMetadata test cases (targets)">
+        <echo>Successfully ran all ResourceMetadata UI tests!</echo>
+    </target>
+
+    <!-- Verify the resourceMetadatas list screen displays without errors -->
+    <target name="SearchResourceMetadatas" description="Tests search for and displaying all resourceMetadatas">
+        <webtest name="searchResourceMetadatas">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click View ResourceMetadata link" url="/resourceMetadatas.html"/>
+                <verifytitle description="we should see the resourceMetadataList title"
+                             text=".*${resourceMetadataList.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Verify the edit resourceMetadata screen displays without errors -->
+    <target name="EditResourceMetadata" description="Tests editing an existing ResourceMetadata's information">
+        <webtest name="editResourceMetadata">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit ResourceMetadata link" url="/editResourceMetadata.html?id=-1"/>
+                <verifytitle description="we should see the resourceMetadataDetail title"
+                             text=".*${resourceMetadataDetail.title}.*" regex="true"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Edit a resourceMetadata and then save -->
+    <target name="SaveResourceMetadata" description="Tests editing and saving a resourceMetadata">
+        <webtest name="saveResourceMetadata">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit ResourceMetadata link" url="/editResourceMetadata.html?id=-1"/>
+                <verifytitle description="we should see the resourceMetadataDetail title"
+                             text=".*${resourceMetadataDetail.title}.*" regex="true"/>
+
+                <!-- update some of the required fields -->
+
+                <clickbutton label="${button.save}" description="Click Save"/>
+                <verifytitle description="Page re-appears if save successful"
+                             text=".*${resourceMetadataDetail.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${resourceMetadata.updated}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Add a new ResourceMetadata -->
+    <target name="AddResourceMetadata" description="Adds a new ResourceMetadata">
+        <webtest name="addResourceMetadata">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Add Button" url="/editResourceMetadata.html"/>
+                <verifytitle description="we should see the resourceMetadataDetail title"
+                             text=".*${resourceMetadataDetail.title}.*" regex="true"/>
+
+                <!-- enter required fields -->
+
+                <clickbutton label="${button.save}" description="Click button 'Save'"/>
+                <verifytitle description="ResourceMetadata List appears if save successful"
+                             text=".*${resourceMetadataList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${resourceMetadata.added}"/>
+            </steps>
+        </webtest>
+    </target>
+
+    <!-- Delete existing resourceMetadata -->
+    <target name="DeleteResourceMetadata" description="Deletes existing ResourceMetadata">
+        <webtest name="deleteResourceMetadata">
+            &config;
+            <steps>
+                &login;
+                <invoke description="click Edit ResourceMetadata link" url="/editResourceMetadata.html?id=-1"/>
+                <prepareDialogResponse description="Confirm delete" dialogType="confirm" response="true"/>
+                <clickbutton label="${button.delete}" description="Click button 'Delete'"/>
+                <verifyNoDialogResponses/>
+                <verifytitle description="display ResourceMetadata List" text=".*${resourceMetadataList.title}.*" regex="true"/>
+                <verifytext description="verify success message" text="${resourceMetadata.deleted}"/>
+            </steps>
+        </webtest>
+    </target>
+    <!--ResourceMetadata-END-->
 </project>
