@@ -108,6 +108,44 @@
             <result name="success">/</result>
         </action>
 
+        
+
+        <!--DatasourceAction-START-->
+        <action name="datasources" class="org.gbif.provider.webapp.action.DatasourceAction" method="list">
+            <result>/WEB-INF/pages/datasourceList.jsp</result>
+        </action>
+
+        <action name="editDatasource" class="org.gbif.provider.webapp.action.DatasourceAction" method="edit">
+            <result>/WEB-INF/pages/datasourceForm.jsp</result>
+            <result name="error">/WEB-INF/pages/datasourceList.jsp</result>
+        </action>
+
+        <action name="saveDatasource" class="org.gbif.provider.webapp.action.DatasourceAction" method="save">
+            <result name="input">/WEB-INF/pages/datasourceForm.jsp</result>
+            <result name="cancel" type="redirect-action">datasources</result>
+            <result name="delete" type="redirect-action">datasources</result>
+            <result name="success" type="redirect-action">datasources</result>
+        </action>
+        <!--DatasourceAction-END-->
+
+        <!--ResourceMetadataAction-START-->
+        <action name="resourceMetadatas" class="org.gbif.provider.webapp.action.ResourceMetadataAction" method="list">
+            <result>/WEB-INF/pages/resourceMetadataList.jsp</result>
+        </action>
+
+        <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.ResourceMetadataAction" method="edit">
+            <result>/WEB-INF/pages/resourceMetadataForm.jsp</result>
+            <result name="error">/WEB-INF/pages/resourceMetadataList.jsp</result>
+        </action>
+
+        <action name="saveResourceMetadata" class="org.gbif.provider.webapp.action.ResourceMetadataAction" method="save">
+            <result name="input">/WEB-INF/pages/resourceMetadataForm.jsp</result>
+            <result name="cancel" type="redirect-action">resourceMetadatas</result>
+            <result name="delete" type="redirect-action">resourceMetadatas</result>
+            <result name="success" type="redirect-action">resourceMetadatas</result>
+        </action>
+        <!--ResourceMetadataAction-END-->
+
         <!-- Add additional actions here -->
     </package>
 

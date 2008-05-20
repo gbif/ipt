@@ -22,30 +22,35 @@ public class AuditInterceptor extends EmptyInterceptor {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
-	public boolean onSave(Object obj, Serializable id, Object[] newValues, String[] propertyNames, Type[] types) {
-		log.debug("Setting date last modified via onSave interceptor");
-		if (obj instanceof User){
-			log.debug("HI");
-			((User) obj).setEmail("Markus@bigstar.com");
-		}
-		if (obj instanceof Timestampable) {            
-			Date now = new Date(0);
-			((ResolvableBase) obj).setModified(now);
+	public boolean onSave(Object obj, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+		if (obj instanceof Timestampable) {
+			setLastModified(state, propertyNames);
         }
         return false;
 	}
 
-    @Override
+
+	@Override
 	public boolean onFlushDirty(Object obj, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-		log.debug("Setting date last modified via ononFlushDirty interceptor");
 		if (obj instanceof Timestampable) {            
-			Date now = new Date(0);
-			((ResolvableBase) obj).setModified(now);
+			setLastModified(currentState, propertyNames);
         }
         return false;
 	}
 
-	/**
+
+    private void setLastModified(Object[] state, String[] propertyNames) {
+		int i = 0;
+		for (String prop : propertyNames){
+			if (prop.equals("modified")){
+				state[i]=new Date();
+				break;
+			}
+			i+=1;
+		}		
+	}
+    
+    /**
      * Gets the current user's id from the Acegi/Spring SecurityContext
      * 
      * @return current user's userId
