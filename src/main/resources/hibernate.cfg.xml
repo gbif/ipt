@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="org.appfuse.model.User"/>
+        <mapping class="org.appfuse.model.Role"/>
+        <mapping class="org.gbif.provider.model.DarwinCore"/>
+        <mapping class="org.gbif.provider.model.DarwinCoreLocation"/>
+        <mapping class="org.gbif.provider.model.DarwinCoreTaxonomy"/>
+        <mapping class="org.gbif.provider.model.Datasource"/>
+        <mapping class="org.gbif.provider.model.ResourceMetadata"/>
+        <mapping class="org.gbif.provider.model.ResolvableBase"/>
+        <mapping class="org.gbif.provider.model.Taxon"/>
+    </session-factory>
+</hibernate-configuration>
