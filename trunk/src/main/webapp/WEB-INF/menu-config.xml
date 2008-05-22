@@ -4,8 +4,14 @@
         <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
     </Displayers>
     <Menus>
-        <Menu name="MainMenu" title="mainMenu.title" page="/mainMenu.html" roles="ROLE_ADMIN,ROLE_USER"/>
-        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER"/>
+        <Menu name="OccurrenceMenu" title="menu.occurrence" page="/datasources.html"/>                
+        <Menu name="ChecklistMenu" title="menu.checklist" page="/datasources.html"/>        
+        <Menu name="ResourceMenu" title="menu.resource" page="/datasources.html"/>
+        
+        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER">
+            <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>
+            <Item name="Logout" title="user.logout" page="/logout.jsp"/>            
+        </Menu>
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/users.html">
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
             <Item name="ActiveUsers" title="mainMenu.activeUsers" page="/admin/activeUsers.html"/>
@@ -14,13 +20,5 @@
             <Item name="FlushCache" title="menu.flushCache" page="/admin/flushCache.html"/>
             <Item name="Clickstream" title="menu.clickstream" page="/admin/clickstreams.jsp"/>
         </Menu>
-        <Menu name="Logout" title="user.logout" page="/logout.jsp" roles="ROLE_ADMIN,ROLE_USER"/>
-
-        <!--Datasource-START-->
-        <Menu name="DatasourceMenu" title="datasourceList.title" page="/datasources.html"/>
-        <!--Datasource-END-->
-        <!--ResourceMetadata-START-->
-        <Menu name="ResourceMetadataMenu" title="resourceMetadataList.title" page="/resourceMetadatas.html"/>
-        <!--ResourceMetadata-END-->
     </Menus>
 </MenuConfig>
