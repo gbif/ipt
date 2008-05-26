@@ -3,17 +3,30 @@
 <head>
     <title><fmt:message key="datasourceDetail.title"/></title>
     <meta name="heading" content="<fmt:message key='datasourceDetail.heading'/>"/>
+	<s:head theme="ajax" debug="true"/>
 </head>
 
 <s:form id="datasourceForm" action="saveDatasource" method="post" validate="true">
     <li style="display: none">
         <s:hidden key="datasource.id"/>
     </li>
-    <!-- todo: change this to read the identifier field from the other pojo -->
-    <s:select name="datasource.metadata.id" list="metadataList" listKey="id" listValue="id"></s:select>
-    <s:textfield key="datasource.modified" required="false" maxlength="255" cssClass="text" size="11" title="date"/>
+
+    <!-- The DatasoureMetadata forms -->
+	<li>
+        <label class="desc"><fmt:message key="resourceMetadata"/></label>
+        <div class="group">
+            <div>
+                <s:textfield key="datasource.metadata.title" theme="xhtml" required="true" cssClass="text medium" labelposition="bottom"/>
+            </div>
+            <div>
+                <s:textarea key="datasource.metadata.description" theme="xhtml" cssClass="text large" labelposition="bottom"/>
+            </div>
+        </div>
+    </li>
+
+    <s:textfield key="datasource.sourceJdbcConnection" required="false" maxlength="120" cssClass="text large"/>
     <s:textfield key="datasource.serviceName" required="false" maxlength="16" cssClass="text medium"/>
-    <s:textfield key="datasource.sourceJdbcConnection" required="false" maxlength="255" cssClass="text medium"/>
+    <s:textfield key="datasource.modified" cssClass="text medium" disabled="true"/>
 
     <li class="buttonBar bottom">
         <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>
@@ -25,10 +38,6 @@
     </li>
 </s:form>
 
-<script type="text/javascript" src="<c:url value='/scripts/calendar/calendar.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/scripts/calendar/calendar-setup.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/scripts/calendar/lang/calendar-en.js'/>"></script>
 <script type="text/javascript">
     Form.focusFirstElement($("datasourceForm"));
-    Calendar.setup({inputField: "datasourceForm_datasource_modified", ifFormat: "%m/%d/%Y", button: "datasource.modifiedDatePicker"});
 </script>

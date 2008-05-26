@@ -23,13 +23,13 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:http://gbifprovidersuite.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://gbifprovidersuite.googlecode.com/svn/trunk/</developerConnection>
+        <connection>scm:svn:http://gbifprovidersuite.googlecode.com/svn/</connection>
+        <developerConnection>scm:svn:https://gbifprovidersuite.googlecode.com/svn/</developerConnection>
         <url>http://code.google.com/p/gbifprovidersuite/source/browse</url>
     </scm>
 
     <issueManagement>
-        <system>Google</system>
+        <system>Google Code</system>
         <url>http://code.google.com/p/gbifprovidersuite/issues/list</url>
     </issueManagement>
 
@@ -350,6 +350,17 @@
             <id>appfuse</id>
             <url>http://static.appfuse.org/repository</url>
         </repository>
+        <!-- for the JSON struts2 plugin -->
+        <repository>
+            <id>Maven Plugin Repository</id>
+            <url>http://struts2plugin-maven-repo.googlecode.com/svn/trunk/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -433,6 +444,12 @@
             <artifactId>subethasmtp-wiser</artifactId>
             <version>${wiser.version}</version>
             <scope>test</scope>
+        </dependency>
+        <!-- non appfuse archetype ones -->
+        <dependency>
+            <groupId>com.googlecode</groupId>
+            <artifactId>jsonplugin</artifactId>
+            <version>0.26</version>
         </dependency>
     </dependencies>
 

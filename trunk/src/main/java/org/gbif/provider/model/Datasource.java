@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.gbif.provider.model.hibernate.Timestampable;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
 
 
 /**

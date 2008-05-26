@@ -3,21 +3,32 @@ package org.gbif.provider.webapp.action;
 import com.opensymphony.xwork2.Preparable;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.Datasource;
+import org.gbif.provider.model.ResourceMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.appfuse.webapp.action.BaseAction;
 
 import java.util.List;
 
 public class DatasourceAction extends BaseAction implements Preparable {
     private GenericManager<Datasource, Long> datasourceManager;
+    private GenericManager<ResourceMetadata, Long> resourceMetadataManager;
     private List datasources;
     private Datasource datasource;
+    private String serviceName;
     private Long  id;
 
+    // Struts2 actions get Spring injection via bean name if the property is named the same
     public void setDatasourceManager(GenericManager<Datasource, Long> datasourceManager) {
         this.datasourceManager = datasourceManager;
     }
+    public void setResourceMetadataManager(
+			GenericManager<ResourceMetadata, Long> resourceMetadataManager) {
+		this.resourceMetadataManager = resourceMetadataManager;
+	}
 
-    public List getDatasources() {
+    
+    
+	public List getDatasources() {
         return datasources;
     }
 
@@ -79,6 +90,7 @@ public class DatasourceAction extends BaseAction implements Preparable {
 
         boolean isNew = (datasource.getId() == null);
 
+        resourceMetadataManager.save(datasource.getMetadata());
         datasourceManager.save(datasource);
 
         String key = (isNew) ? "datasource.added" : "datasource.updated";
@@ -90,4 +102,20 @@ public class DatasourceAction extends BaseAction implements Preparable {
             return SUCCESS;
         }
     }
+    
+    public String suggestServiceName(){
+        if (id != null) {
+            datasource = datasourceManager.get(id);
+        } else {
+            return null;
+        }
+        return SUCCESS;    	
+    }
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+    
 }
