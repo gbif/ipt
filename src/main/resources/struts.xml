@@ -174,7 +174,7 @@
         <action name="JSONExample" class="org.gbif.provider.webapp.action.JSONExample">
             <result type="json"/>
         </action>        
-        <action name="suggestServiceName" class="org.gbif.provider.webapp.action.DatasourceAction" method="suggestServiceName">
+        <action name="suggestServiceName" class="org.gbif.provider.webapp.action.DatasourceAction">
             <result type="json"/>
         </action>
     </package>    
