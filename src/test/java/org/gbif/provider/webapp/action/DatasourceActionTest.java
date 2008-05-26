@@ -16,12 +16,13 @@ public class DatasourceActionTest extends BaseActionTestCase {
         action = new DatasourceAction();
         GenericManager datasourceManager = (GenericManager) applicationContext.getBean("datasourceManager");
         action.setDatasourceManager(datasourceManager);
+        GenericManager resourceMetadataManager = (GenericManager) applicationContext.getBean("resourceMetadataManager");
+        action.setResourceMetadataManager(resourceMetadataManager);
     
         // add a test datasource to the database
         Datasource datasource = new Datasource();
 
         // enter all required fields
-
         datasourceManager.save(datasource);
     }
 
