@@ -29,6 +29,7 @@ public class OccurrenceResource extends Resource{
 	private String serviceName;
 	private String sourceJdbcConnection;
 	private Date lastImport;
+	private Integer recordCount;
 	
 	@Column(length=16)
 	public String getServiceName() {
@@ -50,6 +51,13 @@ public class OccurrenceResource extends Resource{
 	}
 	public void setLastImport(Date lastImport) {
 		this.lastImport = lastImport;
+	}
+	
+	public Integer getRecordCount() {
+		return recordCount;
+	}
+	public void setRecordCount(Integer recordCount) {
+		this.recordCount = recordCount;
 	}
 
 }
