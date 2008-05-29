@@ -108,41 +108,64 @@
             <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
             <result name="cancel" type="redirect-action">mainMenu</result>
         </action>
-
-        <action name="datasources" class="org.gbif.provider.webapp.action.DatasourceAction" method="list">
-            <result>/WEB-INF/pages/datasourceList.jsp</result>
-        </action>
         
-        <action name="editDatasource" class="org.gbif.provider.webapp.action.DatasourceAction" method="edit">
-            <result>/WEB-INF/pages/datasourceForm.jsp</result>
-            <result name="error">/WEB-INF/pages/datasourceList.jsp</result>
+        <!-- custom non-appfuse actions -->
+        <action name="home" class="org.gbif.provider.webapp.action.HomeAction">
+            <result>/WEB-INF/pages/home.jsp</result>
         </action>
-        
-        <action name="saveDatasource" class="org.gbif.provider.webapp.action.DatasourceAction" method="save">
-            <result name="input">/WEB-INF/pages/datasourceForm.jsp</result>
-            <result name="cancel" type="redirect-action">datasources</result>
-            <result name="delete" type="redirect-action">datasources</result>
-            <result name="success" type="redirect-action">datasources</result>
-        </action>
-        
-        <action name="resourceMetadatas" class="org.gbif.provider.webapp.action.ResourceMetadataAction" method="list">
-            <result>/WEB-INF/pages/resourceMetadataList.jsp</result>
-        </action>
-
-        <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.ResourceMetadataAction" method="edit">
-            <result>/WEB-INF/pages/resourceMetadataForm.jsp</result>
-            <result name="error">/WEB-INF/pages/resourceMetadataList.jsp</result>
-        </action>
-        
-        <action name="saveResourceMetadata" class="org.gbif.provider.webapp.action.ResourceMetadataAction" method="save">
-            <result name="input">/WEB-INF/pages/resourceMetadataForm.jsp</result>
-            <result name="cancel" type="redirect-action">resourceMetadatas</result>
-            <result name="delete" type="redirect-action">resourceMetadatas</result>
-            <result name="success" type="redirect-action">resourceMetadatas</result>
-        </action>
-        <!-- Add additional actions here -->
     </package>
 
+
+
+    <!-- Actions showing data to the public, anonymous users -->
+    <package name="portal" namespace="/" extends="default">
+        <action name="occResource">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
+        <!-- TEST actions -->
+        <action name="test_*" class="org.gbif.provider.webapp.action.PlaymateAction" method="{1}">
+            <param name="name">Pamela Portal</param>
+            <result>/WEB-INF/pages/test.jsp</result>
+        </action>
+    </package>
+    
+    
+    
+    <!-- Actions to manage resources, occurrences and checklists -->
+    <!-- Might be split into 3 packages at some point -->
+    <package name="manage" namespace="/manage" extends="default">
+        
+        <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
+            <result>/WEB-INF/pages/occResourceList.jsp</result>
+        </action>
+        
+        <action name="editOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
+            <result>/WEB-INF/pages/occResourceForm.jsp</result>
+            <result name="error">/WEB-INF/pages/occResourceList.jsp</result>
+        </action>
+        
+        <action name="saveOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
+            <result name="input">/WEB-INF/pages/occResourceForm.jsp</result>
+            <result name="cancel" type="redirect-action">occResources</result>
+            <result name="delete" type="redirect-action">occResources</result>
+            <result name="success" type="redirect-action">occResources</result>
+        </action>
+        
+        <!-- TEST actions -->
+        <action name="test" class="org.gbif.provider.webapp.action.PlaymateAction">
+            <param name="name">Melissa Managa</param>
+            <result>/WEB-INF/pages/test.jsp</result>
+        </action>
+        <action name="test2" class="org.gbif.provider.webapp.action.PlaymateAction">
+            <result>/WEB-INF/pages/test.jsp</result>
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="static-params">
+                <param name="name">Melanie Managa</param>
+            </interceptor-ref>            
+        </action>        
+    </package>
+    
     
         <!-- Actions in this package will be prefixed with /admin/ -->
     <package name="admin" extends="default" namespace="/admin">
@@ -174,8 +197,12 @@
         <action name="JSONExample" class="org.gbif.provider.webapp.action.JSONExample">
             <result type="json"/>
         </action>        
-        <action name="suggestServiceName" class="org.gbif.provider.webapp.action.DatasourceAction">
-            <result type="json"/>
+        <action name="suggestServiceName" class="org.gbif.provider.webapp.action.OccResourceAction" method="suggestServiceName">
+            <result type="json">
+                <param name="root">
+                    serviceName
+                </param>
+            </result>
         </action>
     </package>    
 </struts>

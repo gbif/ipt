@@ -20,14 +20,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class DarwinCore extends ResolvableBase {
-	private ResourceMetadata datasource;
-	// generated, normalised properties only
-	private Taxon taxon;
-	private Float longitude;
-	private Float latitude;
-	//
-	// not managed dwc stuff
-	//
+	private OccurrenceResource resource;
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
 	private Date dateLastModified;
@@ -45,37 +38,14 @@ public class DarwinCore extends ResolvableBase {
 	private String imageURL;
 	private String relatedInformation;	
 	
-	
-	@ManyToOne
-	public ResourceMetadata getDatasource() {
-		return datasource;
-	}
-	public void setDatasource(ResourceMetadata datasource) {
-		this.datasource = datasource;
-	}
 
 	@ManyToOne
-	public Taxon getTaxon() {
-		return taxon;
+	public OccurrenceResource getResource() {
+		return resource;
 	}
-	public void setTaxon(Taxon taxon) {
-		this.taxon = taxon;
+	public void setResource(OccurrenceResource resource) {
+		this.resource = resource;
 	}
-
-	public Float getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(Float longitude) {
-		this.longitude = longitude;
-	}
-	
-	public Float getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(Float latitude) {
-		this.latitude = latitude;
-	}
-	
 	
 	
 	public String getGlobalUniqueIdentifier() {

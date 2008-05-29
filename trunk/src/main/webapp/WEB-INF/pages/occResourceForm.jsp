@@ -24,6 +24,16 @@
         </div>
     </li>
 
+<!-- URL link to struts action-->
+<s:url id="ajaxServiceName" action="DatasourceAction" method="suggestServiceName" />
+ 
+<!-- Div where content will be displayed -->
+<pre>
+<s:div theme="ajax" id="weather" href="ajaxServiceName">
+    loading content...
+</s:div>
+</pre>
+
     <s:textfield key="datasource.sourceJdbcConnection" required="false" maxlength="120" cssClass="text large"/>
     <s:textfield key="datasource.serviceName" required="false" maxlength="16" cssClass="text medium"/>
     <s:textfield key="datasource.modified" cssClass="text medium" disabled="true"/>
