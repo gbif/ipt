@@ -11,7 +11,7 @@
         onclick="location.href='<c:url value="/editOccResource.html"/>'"
         value="<fmt:message key="button.add"/>"/>
 
-    <input type="button" class="button" onclick="location.href='<c:url value="/mainMenu.html"/>'"
+    <input type="button" class="button" onclick="location.href='<c:url value="/home.html"/>'"
         value="<fmt:message key="button.done"/>"/>
 </c:set>
 
