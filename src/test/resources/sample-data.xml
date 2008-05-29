@@ -21,20 +21,20 @@
         <column>account_locked</column>
         <column>credentials_expired</column>
         <row>
-            <value description="id">-1</value>
-            <value description="username">user</value>
+            <value description="id">1</value>
+            <value description="username">manager</value>
             <value description="password">12dea96fec20593566ab75692c9949596833adc9</value>
-            <value description="first_name">Tomcat</value>
-            <value description="last_name">User</value>
+            <value description="first_name">Markus</value>
+            <value description="last_name">Manager</value>
             <value description="address"></value>
-            <value description="city">Denver</value>
-            <value description="country">US</value>
-            <value description="email">matt_raible@yahoo.com</value>
+            <value description="city">Copenhagen</value>
+            <value description="country">DK</value>
+            <value description="email">mdoering@gbif.org</value>
             <value description="phone_number"></value>
-            <value description="postal_code">80210</value>
-            <value description="province">CO</value>
-            <value description="website">http://tomcat.apache.org</value>
-            <value description="password_hint"><![CDATA[A male kitty.]]></value>
+            <value description="postal_code">1000</value>
+            <value description="province"></value>
+            <value description="website">http://www.gbif.org</value>
+            <value description="password_hint"><![CDATA["user"]]></value>
             <value description="version">1</value>
             <value description="account_enabled">1</value>
             <value description="account_expired">0</value>
@@ -42,7 +42,7 @@
             <value description="credentials_expired">0</value>
         </row>
         <row>
-            <value description="id">-2</value>
+            <value description="id">2</value>
             <value description="username">admin</value>
             <value description="password">d033e22ae348aeb5660fc2140aec35850c4da997</value>
             <value description="first_name">Matt</value>
@@ -55,7 +55,7 @@
             <value description="postal_code">80210</value>
             <value description="province">CO</value>
             <value description="website">http://raibledesigns.com</value>
-            <value description="password_hint"><![CDATA[Not a female kitty.]]></value>
+            <value description="password_hint"><![CDATA[The same as your username.]]></value>
             <value description="version">1</value>
             <value description="account_enabled">1</value>
             <value description="account_expired">0</value>
@@ -68,93 +68,31 @@
         <column>name</column>
         <column>description</column>
         <row>
-            <value description="id">-1</value>
+            <value description="id">1</value>
             <value description="name">ROLE_ADMIN</value>
-            <value description="description"><![CDATA[Administrator role (can edit Users)]]></value>
+            <value description="description"><![CDATA[Administrator role (can edit Users and Datasources)]]></value>
         </row>
         <row>
-            <value description="id">-2</value>
+            <value description="id">2</value>
             <value description="name">ROLE_USER</value>
             <value description="description"><![CDATA[Default role for all Users]]></value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">ROLE_MANAGER</value>
+            <value description="description"><![CDATA[Manager role (can edit Datasources)]]></value>
         </row>
     </table>
     <table name="user_role">
         <column>user_id</column>
         <column>role_id</column>
         <row>
-            <value description="user_id">-1</value>
-            <value description="role_id">-2</value>
+            <value description="user_id">1</value>
+            <value description="role_id">3</value>
         </row>
         <row>
-            <value description="user_id">-2</value>
-            <value description="role_id">-1</value>
+            <value description="user_id">2</value>
+            <value description="role_id">1</value>
         </row>
     </table>
-    
-    <!--Datasource-START-->
-    <table name="Datasource">
-        <column>id</column>
-        <column>metadata_id</column>    
-        <column>modified</column>
-        <column>serviceName</column>
-        <column>sourceJdbcConnection</column>
-    <row>
-        <value description="id">-1</value>
-        <value description="metadata_id">-1</value>
-        <value description="modified">2008-05-20</value>
-        <value description="serviceName">UnSnMuVvDbJwPnCx</value>
-        <value description="sourceJdbcConnection">RmBlUnZtWsGjVkBrQmXaMtLrVzOyTqHlFdIgZlZyElCiBsNtUhVgIdCjWjOdKqHmCbRuMiGtCuXxSfMnUzKaVgQwOxCsOeEhHtAzIfMoZqTrTfNeJjGhYjOrMzBzZlIpGwFtMlPpCmPcViBnVdLaYnQkIqLfSxZcIoIdZvMmOtFvBzSuFwWgJvYiVxNxVdPcHqQiCbEbJbWxTqXgDvIqQeBnClLhJzOrAjNnAgEgQaNiPoUnPoRzQvLtViYyUsJ</value>
-    </row>
-    <row>
-        <value description="id">-2</value>
-        <value description="metadata_id">-2</value>
-        <value description="modified">2008-05-20</value>
-        <value description="serviceName">WrJvKnDxRmEaZzZn</value>
-        <value description="sourceJdbcConnection">XfWeFtNgGhBgUdYuBwMlKiWrYoDdSrBkXnEgLwWfCdAiJcDkYhOcTaSsQhDtPtQrGtZlMaRxHrYoFvAjFkSkEyQmGhQrNpRkVpRlLaZbXkTdPjRkCnNzPvFgOtHmEiMpGpLqOiYlNoPkOxKeScXjFxSyEoDlYnUpHfOrLgCtYgJvYsGpUeRkQgQiFcCdJyItWvZoMoArCqXoCbMwRiBsPiIbQwPvQsLfEkAqKvDqCiFiIpPgRoTnQtXnHuQmNrE</value>
-    </row>
-    <row>
-        <value description="id">-3</value>
-        <value description="metadata_id">-3</value>
-        <value description="modified">2008-05-20</value>
-        <value description="serviceName">FyUkDfSmGyEfDdRf</value>
-        <value description="sourceJdbcConnection">LkPtQaLkPoJuWlFlJdBlTkZkIzGiTeDqDqMdAfWeRgNuVsTmIvEsShYuDvZwAvLiShJhWiPpAlDfYhGrQgVnTqGyXsSwTaUuGoKeVuGzJbLlJkImBgWiSpPsJuKgNyTqVmFcVoJtTfAuAwBoRvGoDxGqVvNcCmTaCvHjOfWtObWyVgRkTcEnFfDqIgKhUoMgXvUvQoNbWxSvLmXbNiRuVsWqCbObFySnKnStZnUvBoQgAvDxLhVoGdJtJqOnKaE</value>
-    </row>
-    </table>
-    <!--Datasource-END-->
-    <!--ResourceMetadata-START-->
-    <table name="ResourceMetadata">
-        <column>id</column>
-        <column>modified</column>
-        <column>uri</column>
-        <column>uuid</column>
-        <column>description</column>
-        <column>title</column>
-    <row>
-        <value description="id">-1</value>
-        <value description="modified">2008-05-20</value>
-        <value description="uri">IoJuYpZfNlZtIoEeFtDuLeJwCoRcGqArBrSbIaNsXiXjYmXxEbYdIbBlHiMdPlSbZeBpCmSbVlYrSbUpMdGmCoLvDfGpJjKuPhAfQoUjCeVnFnOoNsVqAhCoMxBxWjOgHxSfZnMfSkBvTcRuHwBpEiQtTzToAwTqTaKqXbXtUkGmLuUgGuOdWgVgRvYtCoLgLvJkHjObXrIcYoQfQyEsAeUaVpVnPrWaOvVfVgTvHgJePlVyUgFyYaNcDwUzWdU</value>
-        <value description="uuid">HyHnBuTjDpGiOaCbRcUaSmGqMlBnWmQgXtBi</value>
-        <value description="description">OeQoQvRmBsTrRrPnEzPmHwLkGcEuPsIvCgRdXjHqIyCgXwQmQbHiLuCxQlKmHdYvPxQsAnAyZdPqMmGmPgHwGoPmEvBzGaWkDrVmNcHqCaBbQvQmNxZaKeHoHlMvWiUqJzWdKkYkVnNsZeSqFsYyIlNwGlTyBqDmKgRwRhGtFrBjYoEhCvEhRdLbKuQrWxEwXsPxRoBoLtGiJtXzFaIuWpRjLrEpFsSaKgZcHtGeEuSqMjIhSjHvKnTsScFdXmK</value>
-        <value description="title">CxMuUvXuMhDtPcNmFqPfStVdAfOjXbBbBsGuZkWkIrNqLyIxJwRlUeHgUoHgRpRpToAoRtObHkGrEoBbGgMxYfSyVeLuIaXqIvAaQvPiKeMvAaHxPfVtMwWzIyTzJoCcUiGiEeMhPzDnOdIoBiQhZsOfDvFrIhAgWxSoIbLkWwRrTbYrMhPvTmXiLcHxSyNuEtJeFgYwDgIzQsMkVgThFrRoIlDeZnWjLoSmSxLbAgNmTyVgVfPrStKeAmDfZkV</value>
-    </row>
-    <row>
-        <value description="id">-2</value>
-        <value description="modified">2008-05-20</value>
-        <value description="uri">FiFbEkMeIeHqHiOeVrPiAmFcIdTwVlTmGbPuOoKkZnCxRiVkTbNiKaEuJfKaBwWyBuReOtKqPdSoIbDjFgRvGnZwYlUtQnDoLrWbJfPqLyChYqXyJvAcCqMyXxUfSxEcFrNcBaKyJcOaAgWoHcKoJnZxApRmOfUmXlYcQcEgQhUrUbHuYlMhLeUdFhBmAdZqFgHqEmNwIjZnRyWpOhAuBuDdVaIjQdJkInAxLgLcVlFnQvPfCqIbVrAeKjXeNnO</value>
-        <value description="uuid">EnJmZmEfMnWbCcEvXiXzTfClLmSiKgFcFkLr</value>
-        <value description="description">YqYySuVrAaOxMnUsRoUyIrPaIxNlQtCkVwPcElWqNaTrLfQrQlGjUeWsCpDkNeSoFaDjMaYqYcTnYiSzIjQvKkHwNcPkEwGuMvIuNpKzDiMmQiGfSjSxErGpRtUsUhGgEqZfOxRmSwHqZfBqImEgXpDnCrVaHqWtRuHsOlTsYhAaOqDeHtBfShZdBcZhKeDaYcLqZeEfMgCgCvVaAbSxUcVkBcHqYwSkVjOsOaDkTzCxZdWkUvOkOlThUnVyMlU</value>
-        <value description="title">QfTtIqDbHcPlWyDaHwHoHuXpBdAuBhOzWxQrCiZbQzIiBeCrWrSpKeSpKiSjWfEwChFzAkYdKfZuHiLaWmYkSeIpAuOfHdIpToHiFaZbKySmPePbHsLjRbIhHuNzLpCpLcHnOzTxFgGbLgZhMpIzTaMrMkOdKoSwEcGvFfWxHrYhQuNfEsOgAzHyUdDbXqZhOiPsOfHcHlNfBzYsZeUoIdKpCcVjIhFcMnQqCcDpXdSrBlYsGtCmIaSoPeJmFkW</value>
-    </row>
-    <row>
-        <value description="id">-3</value>
-        <value description="modified">2008-05-20</value>
-        <value description="uri">YxKqHcTuBqVkXqYxHvLbKgAiWwVpLpKxXzQcXcGbKyCvNhKnVnEcPkMcMdPaCwZgUiLdXsLqNrMfWzAbOfWgJgZdDuNoFaRmYtZgYvYzTuFnEcUoHyPtXrZrYfAeHpKqUwKiUzEhZaFkOeHnGpFjNmHkRrYiGqIpIkVuXwXrPiCrUiMmPgXqFbMpSvYgOfYlDlZgBkWuFcWrQjFmRpNnMnWxZaYrOmJeGyKyEpOoAvJdCtHaUrKfEtIfLdYqZgZ</value>
-        <value description="uuid">RvTvZmDpByChHlIqUhUgGaCrTjQeTyGhTkLt</value>
-        <value description="description">NxXyAqPnBuTwMsUrXxXgLjWlQuBzVfZjBvWrAfQhOqNwXiLgSsToRhNnMqDhOqXtJsDvQjUeAcEwDuFuLlMlZrMbAvEqOkPbMnKoAzRuUsSpJgFuBiVhJdSrRvPjZjZhRyQpMrGaNiEwJkLfElBpPfRiCgLyQaEeGdTwYtDqWjTbZgEnQkArVnWqOeGeVdVfCmVlOiHtCiVlAnRwInMuLxJzDuQaIoCbQwOpUxVxHhLyFwIqIvKlKbFjTgNdNgT</value>
-        <value description="title">GdAsItViFpDaEqBoEgVvTiHiWpPfIuXkAfEdYpJcUrNgNiKoVuEyLjPiBvFkNkFeHmVuAkXxLpMgTwQwCtScSyBbYkMhQfAnJmDdMaFtQwAcQuRjIwPnQyCuZjIjJcGhFdCvCmFfPqEjYpZlFjByOePlJfPcDeIcPxGkClXsYiDdRmEpZoApZuVcRmIbQsVwZvPqAxQcCkUhPfMxPqAnRlPsOtBcHxHsDgSsBhFvNiIrUbZhEsTySdCiYvDcDdI</value>
-    </row>
-    </table>
-    <!--ResourceMetadata-END-->
 </dataset>
-
-

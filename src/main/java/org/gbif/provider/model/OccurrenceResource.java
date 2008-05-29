@@ -20,25 +20,16 @@ import org.hibernate.annotations.Fetch;
 
 
 /**
+ * A specific resource representing the datasource for uploading darwincore records
  * @author markus
  *
  */
 @Entity
-public class Datasource implements Timestampable{
-	private Long id;
+public class OccurrenceResource extends Resource{
 	private String serviceName;
-	private Date modified;
-	private ResourceMetadata metadata;
 	private String sourceJdbcConnection;
+	private Date lastImport;
 	
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	@Column(length=16)
 	public String getServiceName() {
 		return serviceName;
@@ -46,27 +37,19 @@ public class Datasource implements Timestampable{
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
-			
-	public Date getModified() {
-		return modified;
-	}
-	public void setModified(Date modified) {
-		this.modified = modified;
-	}
-	
-	@ManyToOne
-	public ResourceMetadata getMetadata() {
-		return metadata;
-	}
-	public void setMetadata(ResourceMetadata metadata) {
-		this.metadata = metadata;
-	}
 	
 	public String getSourceJdbcConnection() {
 		return sourceJdbcConnection;
 	}
 	public void setSourceJdbcConnection(String sourceJdbcConnection) {
 		this.sourceJdbcConnection = sourceJdbcConnection;
+	}
+	
+	public Date getLastImport() {
+		return lastImport;
+	}
+	public void setLastImport(Date lastImport) {
+		this.lastImport = lastImport;
 	}
 
 }

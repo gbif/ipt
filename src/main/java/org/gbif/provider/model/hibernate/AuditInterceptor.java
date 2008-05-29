@@ -7,7 +7,7 @@ import org.appfuse.model.User;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.ResourceMetadata;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResolvableBase;
 import org.appfuse.model.User;
 import org.hibernate.EmptyInterceptor;

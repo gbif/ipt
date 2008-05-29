@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.appfuse.model.BaseObject;
 import org.gbif.provider.model.hibernate.Timestampable;
+import org.gbif.provider.service.Resolvable;
 import org.hibernate.annotations.Type;
 
 /**
@@ -26,12 +27,11 @@ import org.hibernate.annotations.Type;
  *
  */
 @MappedSuperclass
-public abstract class ResolvableBase extends BaseObject implements Comparable, Timestampable{
+public abstract class ResolvableBase extends BaseObject implements Comparable, Resolvable{
 	private Long id;
+	private String uuid;
 	private String uri;
 	private Date modified;
-	// maybe not needed
-	private String uuid;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -40,6 +40,15 @@ public abstract class ResolvableBase extends BaseObject implements Comparable, T
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	//@Type(type="uuid")
+	@Column(length=36)
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	
 	public String getUri() {
@@ -56,14 +65,7 @@ public abstract class ResolvableBase extends BaseObject implements Comparable, T
 		this.modified = modified;
 	}
 	
-	//@Type(type="uuid")
-	@Column(length=36)
-	public String getUuid() {
-		return uuid;
-	}
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+
 	
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)

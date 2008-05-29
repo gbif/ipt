@@ -8,9 +8,8 @@
         <mapping class="org.gbif.provider.model.DarwinCore"/>
         <mapping class="org.gbif.provider.model.DarwinCoreLocation"/>
         <mapping class="org.gbif.provider.model.DarwinCoreTaxonomy"/>
-        <mapping class="org.gbif.provider.model.Datasource"/>
-        <mapping class="org.gbif.provider.model.ResourceMetadata"/>
+        <mapping class="org.gbif.provider.model.OccurrenceResource"/>
         <mapping class="org.gbif.provider.model.ResolvableBase"/>
-        <mapping class="org.gbif.provider.model.Taxon"/>
+        <mapping class="org.gbif.provider.model.Resource"/>
     </session-factory>
 </hibernate-configuration>
