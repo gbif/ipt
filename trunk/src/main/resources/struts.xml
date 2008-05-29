@@ -147,7 +147,7 @@
     <!-- Might be split into 3 packages at some point -->
     <package name="manage" namespace="/manage" extends="default">
         <global-results>
-            <result name="error" type="redirect-action">manage/occResources</result>
+            <result name="error" type="redirect-action">occResources</result>
         </global-results>
         
         <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
@@ -160,13 +160,14 @@
         
         <action name="saveOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
             <result name="input">/WEB-INF/pages/occResourceForm.jsp</result>
-            <result name="cancel" type="redirect-action">manage/occResources</result>
-            <result name="delete" type="redirect-action">manage/occResources</result>
-            <result name="success" type="redirect-action">manage/occResources</result>
+            <result name="cancel" type="redirect-action">occResources</result>
+            <result name="delete" type="redirect-action">occResources</result>
+            <result name="success" type="redirect-action">occResources</result>
         </action>
 
         <action name="occResourceOverview" class="org.gbif.provider.webapp.action.OccResourceAction" method="overview">
             <result>/WEB-INF/pages/occResourceOverview.jsp</result>
+            <result name="explore" type="redirect-action">/occResource</result>
         </action>
               
     </package>

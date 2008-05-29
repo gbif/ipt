@@ -12,10 +12,9 @@
 	<s:property value="occResourceCount"/> occurrence resources uploaded.
 	<a href="<s:url action="occResources" namespace="manage"/>">Manage occurrence resources</a>. 
 </p>
-<display:table name="occResources" class="table" requestURI="" id="occResourceList" export="true" pagesize="25">
-    <display:column property="id" sortable="true" href="occResource.html" media="html" paramId="id" paramProperty="id" titleKey="occResource.id"/>
-    <display:column property="title" sortable="true" titleKey="occResource.title"/>
-    <display:column sortProperty="modified" sortable="true" titleKey="occResource.modified">
+<display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
+    <display:column property="title" sortable="true" titleKey="resource.title" href="occResource.html" media="html" paramId="id" paramProperty="id"/>
+    <display:column property="modified" sortable="true" titleKey="resource.modified">
          <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
     </display:column>
     <display:column property="recordCount" sortable="true" titleKey="occResource.recordCount"/>

@@ -99,6 +99,18 @@ public class OccResourceAction extends BaseAction implements Preparable {
     public String overview(){
     	return edit();
     }
+    public String upload(){
+        return SUCCESS;
+    }
+    public String map(){
+        return SUCCESS;
+    }
+    public String validateRecords(){
+        return SUCCESS;
+    }
+    public String explore(){
+        return "explore";
+    }
     
     public String suggestServiceName(){
         serviceName = occResource.getTitle();

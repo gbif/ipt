@@ -1,53 +1,38 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="datasourceDetail.title"/></title>
-    <meta name="heading" content="<fmt:message key='datasourceDetail.heading'/>"/>
+    <title><fmt:message key="occResourceOverview.title"/></title>
+    <meta name="heading" content="<fmt:message key='occResourceOverview.heading'/>"/>
 	<s:head theme="ajax" debug="true"/>
 </head>
 
-<s:form id="datasourceForm" action="saveDatasource" method="post" validate="true">
-    <li style="display: none">
-        <s:hidden key="datasource.id"/>
-    </li>
+<p><strong><fmt:message key='resource.title'/></strong>: <s:property value="occResource.title"/></p>
+<p><strong><fmt:message key='resource.description'/></strong>: <s:property value="occResource.description"/></p>
+<p><strong><fmt:message key='occResource.serviceName'/></strong>: <s:property value="occResource.serviceName"/></p>
+<p><strong><fmt:message key='occResource.sourceJdbcConnection'/></strong>: <s:property value="occResource.sourceJdbcConnection"/></p>
+<p><strong><fmt:message key='occResource.recordCount'/></strong>: <s:property value="occResource.recordCount"/></p>
+<p><strong><fmt:message key='occResource.lastImport'/></strong>: <s:property value="occResource.lastImport"/></p>
+<p><strong><fmt:message key='occResourceOverview.validation'/></strong>: Some validation summary</p>
+<p><strong><fmt:message key='occResourceOverview.mapping'/></strong>: Some mapping summary</p>
+<p><strong><fmt:message key='occResourceOverview.manager'/></strong>: <s:property value="occResource.creator.getFullName()"/></p>
+<p>
+	Resource last modified by <s:property value="occResource.modifier.getFullName()"/>: <s:property value="occResource.modified"/>
+</p>
 
-    <!-- The DatasoureMetadata forms -->
-	<li>
-        <label class="desc"><fmt:message key="resourceMetadata"/></label>
-        <div class="group">
-            <div>
-                <s:textfield key="datasource.metadata.title" theme="xhtml" required="true" cssClass="text medium" labelposition="bottom"/>
-            </div>
-            <div>
-                <s:textarea key="datasource.metadata.description" theme="xhtml" cssClass="text large" labelposition="bottom"/>
-            </div>
-        </div>
-    </li>
-
-<!-- URL link to struts action-->
-<s:url id="ajaxServiceName" action="DatasourceAction" method="suggestServiceName" />
- 
-<!-- Div where content will be displayed -->
-<pre>
-<s:div theme="ajax" id="weather" href="ajaxServiceName">
-    loading content...
-</s:div>
-</pre>
-
-    <s:textfield key="datasource.sourceJdbcConnection" required="false" maxlength="120" cssClass="text large"/>
-    <s:textfield key="datasource.serviceName" required="false" maxlength="16" cssClass="text medium"/>
-    <s:textfield key="datasource.modified" cssClass="text medium" disabled="true"/>
-
+<s:form id="occResourceForm" action="saveOccResource" method="post" validate="true">
+    <s:hidden key="occResource.id"/>
     <li class="buttonBar bottom">
-        <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>
-        <c:if test="${not empty datasource.id}">
-            <s:submit cssClass="button" method="delete" key="button.delete"
-                onclick="return confirmDelete('Datasource')" theme="simple"/>
+        <c:if test="${not empty occResource.id}">
+			<s:submit cssClass="button" method="edit" key="button.edit" theme="simple"/>
+			<s:submit cssClass="button" method="map" key="button.map" theme="simple"/>
+			<s:submit cssClass="button" method="validateRecords" key="button.validate" theme="simple"/>
+			<s:submit cssClass="button" method="upload" key="button.upload" theme="simple"/>
+            <s:submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('OccResource')" theme="simple"/>
+			<s:submit cssClass="button" method="explore" key="button.explore" theme="simple"/>
         </c:if>
-        <s:submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
     </li>
 </s:form>
 
 <script type="text/javascript">
-    Form.focusFirstElement($("datasourceForm"));
+    Form.focusFirstElement($("occResourceForm"));
 </script>
