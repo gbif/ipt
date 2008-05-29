@@ -19,8 +19,8 @@ import com.opensymphony.xwork2.Preparable;
 public class HomeAction extends BaseAction implements Preparable {
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     private List<OccurrenceResource> occResources;
-    private Integer resourceCount;
     private Integer checklistCount;
+    private Integer resourceCount;
 
     // Struts2 actions get Spring injection via bean name if the property is named the same
     public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
@@ -32,17 +32,20 @@ public class HomeAction extends BaseAction implements Preparable {
 		return occResources;
 	}
 
-	public Integer getResourceCount() {
-		return resourceCount;
+	public Integer getOccResourceCount() {
+		return occResources.size();
 	}
-
 	public Integer getChecklistCount() {
 		return checklistCount;
 	}
-	
+	public Integer getResourceCount() {
+		return resourceCount;
+	}
+		
 	
 	
 	public void prepare() throws Exception {
+        occResources = occResourceManager.getAll();
 		resourceCount=97;
 		checklistCount=3;
 	}

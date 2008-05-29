@@ -70,7 +70,6 @@ public class OccResourceAction extends BaseAction implements Preparable {
         } else {
             occResource = new OccurrenceResource();
         }
-
         return SUCCESS;
     }
 
@@ -95,6 +94,10 @@ public class OccResourceAction extends BaseAction implements Preparable {
         } else {
             return SUCCESS;
         }
+    }
+    
+    public String overview(){
+    	return edit();
     }
     
     public String suggestServiceName(){

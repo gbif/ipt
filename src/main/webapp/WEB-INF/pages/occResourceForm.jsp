@@ -12,31 +12,17 @@
     </li>
 
     <!-- The DatasoureMetadata forms -->
-	<li>
-        <label class="desc"><fmt:message key="resourceMetadata"/></label>
-        <div class="group">
-            <div>
-                <s:textfield key="occResource.metadata.title" theme="xhtml" required="true" cssClass="text medium" labelposition="bottom"/>
-            </div>
-            <div>
-                <s:textarea key="occResource.metadata.description" theme="xhtml" cssClass="text large" labelposition="bottom"/>
-            </div>
-        </div>
-    </li>
+    <s:textfield key="occResource.title" required="true" cssClass="text medium"/>
+    <s:textarea key="occResource.description" cssClass="text large"/>
 
-<!-- URL link to struts action-->
-<s:url id="ajaxServiceName" action="OccResourceAction" method="suggestServiceName" />
- 
-<!-- Div where content will be displayed -->
-<pre>
-<s:div theme="ajax" id="weather" href="ajaxServiceName">
-    loading content...
-</s:div>
-</pre>
+    <div class="group">
+	    <s:textfield key="occResource.sourceJdbcConnection" required="true" maxlength="120" cssClass="text large"/>
+	    <s:textfield key="occResource.serviceName" maxlength="16" cssClass="text medium"/>
+    </div>
 
-    <s:textfield key="occResource.sourceJdbcConnection" required="false" maxlength="120" cssClass="text large"/>
-    <s:textfield key="occResource.serviceName" required="false" maxlength="16" cssClass="text medium"/>
-    <s:textfield key="occResource.modified" cssClass="text medium" disabled="true"/>
+    <p>
+    	Resource last modified by <s:property value="occResource.modifier.getFullName()"/>: <s:property value="occResource.modified"/>
+    </p>
 
     <li class="buttonBar bottom">
         <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>

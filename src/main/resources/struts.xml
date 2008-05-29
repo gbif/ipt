@@ -56,17 +56,13 @@
         </interceptors>
 
         <global-results>
-            <result name="mainMenu" type="redirect-action">mainMenu</result>
+            <result name="mainMenu" type="redirect-action">home</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
         </global-results>
 
         <global-exception-mappings>
             <exception-mapping exception="org.springframework.dao.DataAccessException" result="dataAccessFailure"/>
         </global-exception-mappings>
-
-        <action name="mainMenu">
-            <result name="success">/WEB-INF/pages/mainMenu.jsp</result>
-        </action>
 
         <action name="signup" class="signupAction">
             <result name="cancel" type="redirect">/</result>
@@ -76,7 +72,7 @@
 
         <action name="saveSignup" class="signupAction" method="save">
             <result name="input">/WEB-INF/pages/signup.jsp</result>
-            <result name="success" type="redirect-action">/mainMenu</result>
+            <result name="success" type="redirect-action">/home</result>
         </action>
 
         <action name="editUser" class="userAction" method="edit">
@@ -87,7 +83,7 @@
 
         <action name="editProfile" class="userAction" method="edit">
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
-            <result name="error">/WEB-INF/pages/mainMenu.jsp</result>
+            <result name="error">/WEB-INF/pages/home.jsp</result>
         </action>
 
         <action name="saveUser" class="userAction" method="save">
@@ -106,7 +102,7 @@
             <interceptor-ref name="fileUploadStack"/>
             <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
             <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
-            <result name="cancel" type="redirect-action">mainMenu</result>
+            <result name="cancel" type="redirect-action">home</result>
         </action>
         
         <!-- custom non-appfuse actions -->
@@ -119,7 +115,22 @@
 
     <!-- Actions showing data to the public, anonymous users -->
     <package name="portal" namespace="/" extends="default">
+        
+        <!-- occurrence actions -->
+        <action name="occResources">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
         <action name="occResource">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
+        <!-- checklist actions -->
+        <action name="taxResources">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
+        <!-- generic resource actions -->        
+        <action name="resources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
         
@@ -135,6 +146,9 @@
     <!-- Actions to manage resources, occurrences and checklists -->
     <!-- Might be split into 3 packages at some point -->
     <package name="manage" namespace="/manage" extends="default">
+        <global-results>
+            <result name="error" type="redirect-action">manage/occResources</result>
+        </global-results>
         
         <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
             <result>/WEB-INF/pages/occResourceList.jsp</result>
@@ -142,28 +156,19 @@
         
         <action name="editOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/occResourceForm.jsp</result>
-            <result name="error">/WEB-INF/pages/occResourceList.jsp</result>
         </action>
         
         <action name="saveOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
             <result name="input">/WEB-INF/pages/occResourceForm.jsp</result>
-            <result name="cancel" type="redirect-action">occResources</result>
-            <result name="delete" type="redirect-action">occResources</result>
-            <result name="success" type="redirect-action">occResources</result>
+            <result name="cancel" type="redirect-action">manage/occResources</result>
+            <result name="delete" type="redirect-action">manage/occResources</result>
+            <result name="success" type="redirect-action">manage/occResources</result>
         </action>
-        
-        <!-- TEST actions -->
-        <action name="test" class="org.gbif.provider.webapp.action.PlaymateAction">
-            <param name="name">Melissa Managa</param>
-            <result>/WEB-INF/pages/test.jsp</result>
+
+        <action name="occResourceOverview" class="org.gbif.provider.webapp.action.OccResourceAction" method="overview">
+            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
         </action>
-        <action name="test2" class="org.gbif.provider.webapp.action.PlaymateAction">
-            <result>/WEB-INF/pages/test.jsp</result>
-            <interceptor-ref name="defaultStack"/>
-            <interceptor-ref name="static-params">
-                <param name="name">Melanie Managa</param>
-            </interceptor-ref>            
-        </action>        
+              
     </package>
     
     
