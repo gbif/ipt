@@ -6,9 +6,14 @@
     <meta name="menu" content="MainMenu"/>
 </head>
 
+
 <h3>Occurrence Resources</h3>
+<p>
+	<s:property value="occResourceCount"/> occurrence resources uploaded.
+	<a href="<s:url action="occResources" namespace="manage"/>">Manage occurrence resources</a>. 
+</p>
 <display:table name="occResources" class="table" requestURI="" id="occResourceList" export="true" pagesize="25">
-    <display:column property="id" sortable="true" href="editOccResource.html" media="html" paramId="id" paramProperty="id" titleKey="occResource.id"/>
+    <display:column property="id" sortable="true" href="occResource.html" media="html" paramId="id" paramProperty="id" titleKey="occResource.id"/>
     <display:column property="title" sortable="true" titleKey="occResource.title"/>
     <display:column sortProperty="modified" sortable="true" titleKey="occResource.modified">
          <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
@@ -19,10 +24,16 @@
     <display:setProperty name="paging.banner.items_name"><fmt:message key="occResourceList.occResources"/></display:setProperty>
 </display:table>
 
+
 <h3>Checklist Resources</h3>
-<p><s:property value="checklistCount"/> checklists uploaded. <s: a/> </p>
+<p>
+	<s:property value="checklistCount"/> checklists uploaded.
+</p>
+
 
 <h3>Generic Resource Descriptions</h3>
-<p><s:property value="resourceCount"/> resources listed. <s: a/> </p>
+<p>
+	<s:property value="resourceCount"/> resources listed.
+</p>
 
 <p></p>
