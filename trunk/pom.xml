@@ -143,6 +143,7 @@
                             <implementation>annotationconfiguration</implementation>
                             <!-- Use 'jpaconfiguration' if you're using JPA. -->
                             <!--<implementation>jpaconfiguration</implementation>-->
+                            <outputDirectory>target</outputDirectory>
                         </component>
                     </components>
                     <componentProperties>
@@ -150,6 +151,7 @@
                         <jdk5>true</jdk5>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
                         <skip>${maven.test.skip}</skip>
+                        <outputfilename>schema.sql</outputfilename>
                     </componentProperties>
                 </configuration>
                 <executions>

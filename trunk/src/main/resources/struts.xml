@@ -154,6 +154,10 @@
             <result>/WEB-INF/pages/occResourceList.jsp</result>
         </action>
         
+        <action name="occResource" class="org.gbif.provider.webapp.action.OccResourceAction">
+            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
+        </action>
+
         <action name="editOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/occResourceForm.jsp</result>
         </action>
@@ -162,12 +166,7 @@
             <result name="input">/WEB-INF/pages/occResourceForm.jsp</result>
             <result name="cancel" type="redirect-action">occResources</result>
             <result name="delete" type="redirect-action">occResources</result>
-            <result name="success" type="redirect-action">occResources</result>
-        </action>
-
-        <action name="occResourceOverview" class="org.gbif.provider.webapp.action.OccResourceAction" method="overview">
-            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
-            <result name="explore" type="redirect-action">/occResource</result>
+            <result name="success" type="redirect-action">occResource</result>
         </action>
               
     </package>
