@@ -22,10 +22,24 @@ public class OccResourceAction extends BaseAction implements Preparable {
     }
 
     
-    
 	public List getOccResources() {
         return occResources;
     }
+    public void setId(Long  id) {
+        this. id =  id;
+    }
+    public OccurrenceResource getOccResource() {
+        return occResource;
+    }
+    public void setOccResource(OccurrenceResource occResource) {
+        this.occResource = occResource;
+    }
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
 
     /**
      * Grab the entity from the database before populating with request parameters
@@ -40,27 +54,16 @@ public class OccResourceAction extends BaseAction implements Preparable {
         }
     }
 
+
+    //    
+    // below here are proper Action methods
+    //
+    public String execute(){
+    	return edit();
+    }
+
     public String list() {
         occResources = occResourceManager.getAll();
-        return SUCCESS;
-    }
-
-    public void setId(Long  id) {
-        this. id =  id;
-    }
-
-    public OccurrenceResource getOccResource() {
-        return occResource;
-    }
-
-    public void setOccResource(OccurrenceResource occResource) {
-        this.occResource = occResource;
-    }
-
-    public String delete() {
-        occResourceManager.remove(occResource.getId());
-        saveMessage(getText("occResource.deleted"));
-
         return SUCCESS;
     }
 
@@ -96,31 +99,16 @@ public class OccResourceAction extends BaseAction implements Preparable {
         }
     }
     
-    public String overview(){
-    	return edit();
-    }
-    public String upload(){
+    public String delete() {
+        occResourceManager.remove(occResource.getId());
+        saveMessage(getText("occResource.deleted"));
+
         return SUCCESS;
-    }
-    public String map(){
-        return SUCCESS;
-    }
-    public String validateRecords(){
-        return SUCCESS;
-    }
-    public String explore(){
-        return "explore";
     }
     
     public String suggestServiceName(){
         serviceName = occResource.getTitle();
         return SUCCESS;
     }
-	public String getServiceName() {
-		return serviceName;
-	}
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
     
 }

@@ -18,11 +18,11 @@
 <c:out value="${buttons}" escapeXml="false" />
 
 <display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
-    <display:column property="id" sortable="true" href="occResourceOverview.html" media="html"
+    <display:column property="id" sortable="true" href="occResource.html" media="html"
         paramId="id" paramProperty="id" titleKey="resource.id"/>
     <display:column property="title" sortable="true" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
-    <display:column sortProperty="modified" sortable="true" titleKey="resource.modified">
+    <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">
          <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
     </display:column>
     <display:column property="recordCount" sortable="true" titleKey="occResource.recordCount"/>
