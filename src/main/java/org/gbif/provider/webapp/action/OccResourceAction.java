@@ -87,17 +87,18 @@ public class OccResourceAction extends BaseAction implements Preparable {
         if (cancel != null) {
             return "cancel";
         }
-
         if (delete != null) {
             return delete();
         }
 
         boolean isNew = (occResource.getId() == null);
-        OccurrenceResource res = occResourceManager.save(occResource);
+        occResource = occResourceManager.save(occResource);
+        id = occResource.getId();
+        
         String key = (isNew) ? "occResource.added" : "occResource.updated";
         saveMessage(getText(key));
         
-        return execute();
+        return SUCCESS;
     }
     
     public String delete() {

@@ -163,8 +163,16 @@
         </action>
         
         <action name="saveOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
-            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
-            <result name="cancel" type="redirect-action">occResources</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">occResource</param>
+                <param name="parse">true</param>
+                <param name="id">${occResource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">occResource</param>
+                <param name="parse">true</param>
+                <param name="id">${occResource.id}</param>
+            </result>
             <result name="delete" type="redirect-action">occResources</result>
         </action>
               
