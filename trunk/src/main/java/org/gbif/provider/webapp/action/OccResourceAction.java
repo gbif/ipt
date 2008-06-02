@@ -59,7 +59,14 @@ public class OccResourceAction extends BaseAction implements Preparable {
     // below here are proper Action methods
     //
     public String execute(){
-    	return edit();
+    	if (occResource == null){
+            if (id != null) {
+                occResource = occResourceManager.get(id);
+            }else{
+            	return ERROR;
+            }
+    	}
+    	return SUCCESS;
     }
 
     public String list() {
@@ -86,17 +93,11 @@ public class OccResourceAction extends BaseAction implements Preparable {
         }
 
         boolean isNew = (occResource.getId() == null);
-
-        occResourceManager.save(occResource);
-
+        OccurrenceResource res = occResourceManager.save(occResource);
         String key = (isNew) ? "occResource.added" : "occResource.updated";
         saveMessage(getText(key));
-
-        if (!isNew) {
-            return INPUT;
-        } else {
-            return SUCCESS;
-        }
+        
+        return execute();
     }
     
     public String delete() {

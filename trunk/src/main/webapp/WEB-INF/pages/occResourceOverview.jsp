@@ -5,6 +5,12 @@
     <meta name="heading" content="<s:property value="occResource.title"/>"/>
 </head>
 
+<s:url id="editUrl" action="editOccResource"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="mappingUrl" action="occResourceMapping"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="uploadUrl" action="occUpload" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="validateUrl" action="occValidation" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="exploreUrl" action="occResource" namespace="portal"><s:param name="id" value="occResource.id"/></s:url>
+
 <p><strong><fmt:message key='resource.description'/></strong>: <s:property value="occResource.description"/></p>
 <p><strong><fmt:message key='occResource.serviceName'/></strong>: <s:property value="occResource.serviceName"/></p>
 <p><strong><fmt:message key='occResource.sourceJdbcConnection'/></strong>: <s:property value="occResource.sourceJdbcConnection"/></p>
@@ -18,11 +24,11 @@
 </p>
 
 <div class="actionlinks">
-	<a href="<s:url action="editOccResource"><s:param name="id" value="occResource.id"/></s:url>">edit resource</a>
-	| <a href="<s:url action="occResourceMapping"><s:param name="id" value="occResource.id"/></s:url>">map datasource</a>
-	| <a href="<s:url action="occUpload" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>">upload data</a>
-	| <a href="<s:url action="occValidation" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>">validate data</a>
-	| <a href="<s:url action="occResource" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>">explore data</a>
+	<s:a href="%{editUrl}">edit resource</s:a>
+	| <s:a href="%{mappingUrl}">map datasource</s:a>
+	| <s:a href="%{uploadUrl}">upload data</s:a>
+	| <s:a href="%{validateUrl}">validate data</s:a>
+	| <s:a href="%{exploreUrl}">explore data</s:a>
 </div>
 
 <script type="text/javascript">
