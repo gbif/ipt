@@ -5,8 +5,8 @@ import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.appfuse.webapp.action.BaseAction;
 
+import java.util.Date;
 import java.util.List;
 
 public class OccResourceAction extends BaseAction implements Preparable {
@@ -45,6 +45,7 @@ public class OccResourceAction extends BaseAction implements Preparable {
      * Grab the entity from the database before populating with request parameters
      */
     public void prepare() {
+    	
         if (getRequest().getMethod().equalsIgnoreCase("post")) {
             // prevent failures on new
             String occResourceId = getRequest().getParameter("occResource.id");
