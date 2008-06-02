@@ -13,7 +13,7 @@
 
 <p><strong><fmt:message key='resource.description'/></strong>: <s:property value="occResource.description"/></p>
 <p><strong><fmt:message key='occResource.serviceName'/></strong>: <s:property value="occResource.serviceName"/></p>
-<p><strong><fmt:message key='occResource.sourceJdbcConnection'/></strong>: <s:property value="occResource.sourceJdbcConnection"/></p>
+<p><strong><fmt:message key='occResource.isValidConnection'/></strong>: <s:property value="occResource.isValidConnection()"/></p>
 <p><strong><fmt:message key='occResource.recordCount'/></strong>: <s:property value="occResource.recordCount"/></p>
 <p><strong><fmt:message key='occResource.lastImport'/></strong>: <s:property value="occResource.lastImport"/></p>
 <p><strong><fmt:message key='occResourceOverview.validation'/></strong>: Some validation summary</p>

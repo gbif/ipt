@@ -6,11 +6,13 @@ package org.gbif.provider.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.appfuse.model.User;
@@ -35,6 +37,7 @@ public class Resource extends ResolvableBase implements Timestampable{
 	private User modifier;
 
 	
+	@Column(length=128)
 	public String getTitle() {
 		return title;
 	}
@@ -42,6 +45,7 @@ public class Resource extends ResolvableBase implements Timestampable{
 		this.title = title;
 	}
 	
+	@Lob
 	public String getDescription() {
 		return description;
 	}

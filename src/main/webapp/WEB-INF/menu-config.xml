@@ -4,10 +4,16 @@
         <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
     </Displayers>
     <Menus>
-        <Menu name="OccurrenceMenu" title="menu.occurrence" page="/occResources.html"/>                
-        <Menu name="ChecklistMenu" title="menu.checklist" page="/taxResources.html"/>        
-        <Menu name="ResourceMenu" title="menu.resource" page="/resources.html"/>
-        
+        <Menu name="ExplorerMenu" title="menu.explorer" page="/resources.html">            
+            <Item name="OccResources" title="menu.explorer.occurrence" page="/occResources.html"/>
+            <Item name="TaxResources" title="menu.explorer.checklist" page="/taxResources.html"/>
+            <Item name="resources" title="menu.explorer.resource" page="/resources.html"/>
+        </Menu>
+        <Menu name="ManagerMenu" title="menu.manager" page="/resources.html">
+            <Item name="OccResources" title="menu.explorer.occurrence" page="/manage/occ/occResources.html"/>
+            <Item name="TaxResources" title="menu.explorer.checklist" page="/taxResources.html"/>
+            <Item name="resources" title="menu.explorer.resource" page="/resources.html"/>
+        </Menu> 
         <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER">
             <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>
             <Item name="Logout" title="user.logout" page="/logout.jsp"/>            
@@ -15,10 +21,7 @@
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/users.html">
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
-            <Item name="ReloadContext" title="menu.admin.reload" page="/admin/reload.html"/>
-            <Item name="FileUpload" title="menu.selectFile" page="/uploadFile.html"/>
-            <Item name="FlushCache" title="menu.flushCache" page="/admin/flushCache.html"/>
-            <Item name="Clickstream" title="menu.clickstream" page="/admin/clickstreams.jsp"/>
+            <Item name="DatasourceRegistry" title="menu.admin.datasourceRegistry" page="/admin/datasourceRegistry.html"/>
         </Menu>
     </Menus>
 </MenuConfig>
