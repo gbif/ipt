@@ -11,10 +11,10 @@
         <s:hidden key="occResource.id"/>
     </li>
 
-    <s:textfield key="occResource.title"  label="resource.title" required="true" cssClass="text medium"/>
+    <s:textfield key="occResource.title" required="true" cssClass="text medium"/>
     <s:textfield key="occResource.serviceName" maxlength="16" cssClass="text medium"/>
     <s:textfield key="occResource.sourceJdbcConnection" required="true" maxlength="120" cssClass="text large"/>
-    <s:textarea key="occResource.description"  label="resource.description" cssClass="text large"/>
+    <s:textarea key="occResource.description" cssClass="text large"/>
 
     <c:if test="${not empty occResource.id}">
 	    <p>
