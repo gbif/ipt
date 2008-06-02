@@ -13,7 +13,9 @@
 
     <s:textfield key="occResource.title" required="true" cssClass="text medium"/>
     <s:textfield key="occResource.serviceName" maxlength="16" cssClass="text medium"/>
-    <s:textfield key="occResource.sourceJdbcConnection" required="true" maxlength="120" cssClass="text large"/>
+    <s:textfield key="occResource.jdbcUrl" required="true" maxlength="120" cssClass="text large"/>
+    <s:textfield key="occResource.jdbcUser" required="true" maxlength="120" cssClass="text large"/>
+    <s:textfield key="occResource.jdbcPassword" required="true" maxlength="120" cssClass="text large"/>
     <s:textarea key="occResource.description" cssClass="text large"/>
 
     <c:if test="${not empty occResource.id}">

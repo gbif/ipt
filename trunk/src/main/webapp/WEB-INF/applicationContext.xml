@@ -3,6 +3,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
        default-lazy-init="true">
 
+    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry">
+    </bean>
+
     <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>

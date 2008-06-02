@@ -2,6 +2,7 @@ package org.gbif.provider.webapp.action;
 
 import com.opensymphony.xwork2.Preparable;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class OccResourceAction extends BaseAction implements Preparable {
     private GenericManager<OccurrenceResource, Long> occResourceManager;
+    private DatasourceRegistry datasourceRegistry;
     private List occResources;
     private OccurrenceResource occResource;
     private String serviceName;
@@ -20,8 +22,11 @@ public class OccResourceAction extends BaseAction implements Preparable {
     public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
         this.occResourceManager = occResourceManager;
     }
+	public void setDatasourceRegistry(DatasourceRegistry datasourceRegistry) {
+		this.datasourceRegistry = datasourceRegistry;
+	}
 
-    
+
 	public List getOccResources() {
         return occResources;
     }
@@ -95,6 +100,7 @@ public class OccResourceAction extends BaseAction implements Preparable {
         boolean isNew = (occResource.getId() == null);
         occResource = occResourceManager.save(occResource);
         id = occResource.getId();
+        datasourceRegistry.registerDataSource(occResource);
         
         String key = (isNew) ? "occResource.added" : "occResource.updated";
         saveMessage(getText(key));
