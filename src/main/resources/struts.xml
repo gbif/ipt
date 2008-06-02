@@ -143,9 +143,12 @@
     
     
     
-    <!-- Actions to manage resources, occurrences and checklists -->
-    <!-- Might be split into 3 packages at some point -->
+    <!-- Base package for all managing packages  -->
     <package name="manage" namespace="/manage" extends="default">
+    </package>
+    
+    <!-- Actions managing occurrence resources -->
+    <package name="manageOcc" namespace="/manage/occ" extends="manage">
         <global-results>
             <result name="error" type="redirect-action">occResources</result>
         </global-results>
@@ -174,11 +177,19 @@
                 <param name="id">${occResource.id}</param>
             </result>
             <result name="delete" type="redirect-action">occResources</result>
-        </action>
-              
+        </action>              
     </package>
     
+
+    <!-- Actions managing checklist resources -->
+    <package name="manageTax" namespace="/manage/tax" extends="manage">
+    </package>
     
+    <!-- Actions managing generic resources  -->
+    <package name="manageRes" namespace="/manage/res" extends="manage">
+    </package>
+    
+
         <!-- Actions in this package will be prefixed with /admin/ -->
     <package name="admin" extends="default" namespace="/admin">
         <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">

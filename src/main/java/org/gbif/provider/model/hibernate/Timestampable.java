@@ -2,6 +2,8 @@ package org.gbif.provider.model.hibernate;
 
 import java.util.Date;
 
+import org.appfuse.model.User;
+
 /**
  * Persistent classes that want to track their datetime last modified should implement this interface 
  * so the AuditInterceptor can set these automatically. 
@@ -10,5 +12,8 @@ import java.util.Date;
  *
  */
 public interface Timestampable {
+	public void setCreated(Date when);
+	public void setCreator(User modifier);	
 	public void setModified(Date when);
+	public void setModifier(User modifier);	
 }

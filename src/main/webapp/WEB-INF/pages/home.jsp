@@ -10,7 +10,7 @@
 <h3>Occurrence Resources</h3>
 <p>
 	<s:property value="occResourceCount"/> occurrence resources uploaded.
-	<a href="<s:url action="occResources" namespace="manage"/>">Manage occurrence resources</a>. 
+	<a href="<s:url action="occResources" namespace="/manage/occ"/>">Manage occurrence resources</a>. 
 </p>
 
 <c:if test="${not empty occResources}">

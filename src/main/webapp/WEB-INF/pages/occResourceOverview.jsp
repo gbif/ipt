@@ -7,9 +7,9 @@
 
 <s:url id="editUrl" action="editOccResource"><s:param name="id" value="occResource.id"/></s:url>
 <s:url id="mappingUrl" action="occResourceMapping"><s:param name="id" value="occResource.id"/></s:url>
-<s:url id="uploadUrl" action="occUpload" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>
-<s:url id="validateUrl" action="occValidation" namespace="manage"><s:param name="id" value="occResource.id"/></s:url>
-<s:url id="exploreUrl" action="occResource" namespace="portal"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="uploadUrl" action="occUpload"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="validateUrl" action="occValidation"><s:param name="id" value="occResource.id"/></s:url>
+<s:url id="exploreUrl" action="occResource" namespace="/"><s:param name="id" value="occResource.id"/></s:url>
 
 <p><strong><fmt:message key='resource.description'/></strong>: <s:property value="occResource.description"/></p>
 <p><strong><fmt:message key='occResource.serviceName'/></strong>: <s:property value="occResource.serviceName"/></p>

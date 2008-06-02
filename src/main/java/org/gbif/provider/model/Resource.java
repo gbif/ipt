@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
@@ -49,6 +50,7 @@ public class Resource extends ResolvableBase implements Timestampable{
 	}
 	
 	
+	@ManyToOne
 	public User getCreator() {
 		return creator;
 	}
@@ -63,6 +65,7 @@ public class Resource extends ResolvableBase implements Timestampable{
 		this.created = created;
 	}
 	
+	@ManyToOne
 	public User getModifier() {
 		return modifier;
 	}
