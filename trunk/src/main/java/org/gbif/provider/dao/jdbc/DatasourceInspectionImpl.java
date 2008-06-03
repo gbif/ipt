@@ -10,6 +10,7 @@ import org.gbif.provider.dao.DatasourceInspection;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.stereotype.Repository;
 
 public class DatasourceInspectionImpl extends SimpleJdbcDaoSupport implements DatasourceInspection {
 

@@ -8,6 +8,6 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-public class ChecklistResource extends ExternalDatasourceResourceBase {
+public class ChecklistResource extends DatasourceBasedResource {
 
 }

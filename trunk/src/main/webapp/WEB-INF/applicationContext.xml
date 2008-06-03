@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
-       default-lazy-init="true">
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+    default-lazy-init="true">
 
-    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry">
-    </bean>
-
+    <context:annotation-config/>
+    <context:component-scan base-package="org.gbif.provider" /> 
+    
     <!-- for testing the abstract routing datasource -->
+    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
     <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
@@ -29,8 +33,9 @@
     </bean>
     
     
-    <bean id="externalDatasourceResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
-        <constructor-arg value="org.gbif.provider.model.ExternalDatasourceResourceBase"/>
+    <!-- DAOs  -->
+    <bean id="datasourceBasedResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
@@ -41,12 +46,10 @@
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     
-    <!-- Add new DAOs here -->
 
-
+    <!--  Managers  -->
     <bean id="occResourceManager" class="org.appfuse.service.impl.GenericManagerImpl">        
         <constructor-arg ref="occResourceDao"/>
     </bean>    
-    <!-- Add new Managers here -->
 
 </beans>

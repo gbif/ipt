@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
-import org.gbif.provider.model.ExternalDatasourceResourceBase;
+import org.gbif.provider.model.DatasourceBasedResource;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -17,18 +17,18 @@ import com.opensymphony.xwork2.Preparable;
  *
  */
 public class HomeAction extends BaseAction implements Preparable {
-    private GenericManager<ExternalDatasourceResourceBase, Long> occResourceManager;
-    private List<ExternalDatasourceResourceBase> occResources;
+    private GenericManager<DatasourceBasedResource, Long> occResourceManager;
+    private List<DatasourceBasedResource> occResources;
     private Integer checklistCount;
     private Integer resourceCount;
 
     // Struts2 actions get Spring injection via bean name if the property is named the same
-    public void setOccResourceManager(GenericManager<ExternalDatasourceResourceBase, Long> occResourceManager) {
+    public void setOccResourceManager(GenericManager<DatasourceBasedResource, Long> occResourceManager) {
         this.occResourceManager = occResourceManager;
     }
     
     
-	public List<ExternalDatasourceResourceBase> getOccResources() {
+	public List<DatasourceBasedResource> getOccResources() {
 		return occResources;
 	}
 

@@ -32,7 +32,7 @@ import java.sql.SQLException;
  *
  */
 @MappedSuperclass
-public abstract class ExternalDatasourceResourceBase extends Resource {
+public abstract class DatasourceBasedResource extends Resource {
 	private String serviceName;
 	private String jdbcDriverClass = "jdbc:mysql://localhost/providertoolkit";
 	private String jdbcUrl;
