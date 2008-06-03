@@ -6,10 +6,37 @@
     <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry">
     </bean>
 
+    <!-- for testing the abstract routing datasource -->
+    <bean id="occurrenceResourceRoutingDatasource" class="org.gbif.provider.datasource.OccurrenceResourceRoutingDatasource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="pontaurus" value-ref="pontaurusDataSource"/>
+                <entry key="biocase" value-ref="biocaseDataSource"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="parentDataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource" abstract="true">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="username" value="root"/>
+    </bean>
+    
+    <bean id="pontaurusDataSource" parent="parentDataSource">
+        <property name="url" value="jdbc:mysql://localhost/pontaurus"/>
+    </bean>
+    <bean id="biocaseDataSource" parent="parentDataSource">
+        <property name="url" value="jdbc:mysql://localhost/biocase_training"/>
+    </bean>
+    
+    
     <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="datasourceInspection" class="org.gbif.provider.dao.jdbc.DatasourceInspectionImpl">
+        <property name="dataSource" ref="occurrenceResourceRoutingDatasource"/>
+    </bean>
+    
     <!-- Add new DAOs here -->
 
 
