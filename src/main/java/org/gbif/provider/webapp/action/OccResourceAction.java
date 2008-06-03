@@ -101,7 +101,7 @@ public class OccResourceAction extends BaseAction implements Preparable {
         boolean isNew = (occResource.getId() == null);
         occResource = occResourceManager.save(occResource);
         id = occResource.getId();
-        datasourceRegistry.registerDataSource(occResource);
+        datasourceRegistry.registerDatasource(occResource);
         
         String key = (isNew) ? "occResource.added" : "occResource.updated";
         saveMessage(getText(key));
