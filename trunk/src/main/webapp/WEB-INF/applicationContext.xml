@@ -9,16 +9,20 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.gbif.provider" /> 
     
-    <!-- for testing the abstract routing datasource -->
-    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
-    <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
-        <property name="targetDataSources">
-            <map key-type="java.lang.String">
-                <entry key="pontaurus" value-ref="pontaurusDataSource"/>
-                <entry key="biocase" value-ref="biocaseDataSource"/>
+    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" >
+        <property name="datasources">
+            <map key-type="java.lang.Long">
+                <entry key="1" value-ref="pontaurusDataSource"/>
+                <entry key="2" value-ref="biocaseDataSource"/>
             </map>
         </property>
     </bean>
+    
+    <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
+        <property name="targetDataSources" ref="datasourceRegistry"/>
+    </bean>
+
+    <!-- for testing the abstract routing datasource -->
     <bean id="parentDataSource"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource" abstract="true">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -34,10 +38,6 @@
     
     
     <!-- DAOs  -->
-    <bean id="datasourceBasedResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
-        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
     <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -48,8 +48,8 @@
     
 
     <!--  Managers  -->
-    <bean id="occResourceManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+    <bean id="occResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
         <constructor-arg ref="occResourceDao"/>
     </bean>    
-
+    
 </beans>

@@ -6,13 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gbif.provider.dao.DatasourceInspection;
+import org.gbif.provider.dao.DatasourceInspectionDao;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
-public class DatasourceInspectionImpl extends SimpleJdbcDaoSupport implements DatasourceInspection {
+public class DatasourceInspectionImpl extends SimpleJdbcDaoSupport implements DatasourceInspectionDao {
 
 	public List getAllTables() throws SQLException {
 		List<String> tableNames = new ArrayList<String>();

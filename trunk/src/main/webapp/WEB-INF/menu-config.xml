@@ -21,7 +21,7 @@
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/users.html">
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
-            <Item name="DatasourceRegistry" title="menu.admin.datasourceRegistry" page="/admin/datasourceRegistry.html"/>
+            <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/datasourceRegistry.html"/>
         </Menu>
     </Menus>
 </MenuConfig>
