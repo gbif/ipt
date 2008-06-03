@@ -6,11 +6,11 @@ import javax.sql.DataSource;
 
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.ExternalDatasourceResourceBase;
 
 public class DatasourceRegistryAction extends BaseAction {
     private DatasourceRegistry datasourceRegistry;
-    private List<OccurrenceResource> datasources;
+    private List<ExternalDatasourceResourceBase> datasources;
 
 	public void setDatasourceRegistry(DatasourceRegistry datasourceRegistry) {
 		this.datasourceRegistry = datasourceRegistry;

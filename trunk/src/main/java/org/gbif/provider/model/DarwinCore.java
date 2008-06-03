@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class DarwinCore extends ResolvableBase {
-	private OccurrenceResource resource;
+	private OccurrenceResource occurrenceResource;
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
 	private Date dateLastModified;
@@ -40,11 +40,11 @@ public class DarwinCore extends ResolvableBase {
 	
 
 	@ManyToOne
-	public OccurrenceResource getResource() {
-		return resource;
+	public OccurrenceResource getOccurrenceResource() {
+		return occurrenceResource;
 	}
-	public void setResource(OccurrenceResource resource) {
-		this.resource = resource;
+	public void setOccurrenceResource(OccurrenceResource occurrenceResource) {
+		this.occurrenceResource = occurrenceResource;
 	}
 	
 	
