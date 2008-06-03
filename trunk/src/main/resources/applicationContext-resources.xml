@@ -27,4 +27,6 @@
         <property name="poolPreparedStatements" value="true"/>
         <property name="defaultAutoCommit" value="true"/>
     </bean>
+    
+    
 </beans>

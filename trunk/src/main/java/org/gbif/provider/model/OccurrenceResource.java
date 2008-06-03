@@ -31,7 +31,7 @@ import java.sql.SQLException;
  *
  */
 @Entity
-public class OccurrenceResource extends Resource{
+public class OccurrenceResource extends Resource {
 	private String serviceName;
 	private String jdbcDriverClass = "jdbc:mysql://localhost/providertoolkit";
 	private String jdbcUrl;
