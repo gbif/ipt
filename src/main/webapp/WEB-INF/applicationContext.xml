@@ -7,7 +7,7 @@
     </bean>
 
     <!-- for testing the abstract routing datasource -->
-    <bean id="occurrenceResourceRoutingDatasource" class="org.gbif.provider.datasource.OccurrenceResourceRoutingDatasource">
+    <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry key="pontaurus" value-ref="pontaurusDataSource"/>
@@ -29,12 +29,16 @@
     </bean>
     
     
+    <bean id="externalDatasourceResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="org.gbif.provider.model.ExternalDatasourceResourceBase"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="datasourceInspection" class="org.gbif.provider.dao.jdbc.DatasourceInspectionImpl">
-        <property name="dataSource" ref="occurrenceResourceRoutingDatasource"/>
+        <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     
     <!-- Add new DAOs here -->

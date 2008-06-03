@@ -7,24 +7,24 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.ExternalDatasourceResourceBase;
 import org.gbif.provider.model.Resource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 public class DatasourceRegistry {
-	private Map<Long, OccurrenceResource> datasources = new HashMap<Long, OccurrenceResource>();
+	private Map<Long, ExternalDatasourceResourceBase> datasources = new HashMap<Long, ExternalDatasourceResourceBase>();
 	
-	public DataSource registerDataSource(OccurrenceResource resource){
+	public DataSource registerDataSource(ExternalDatasourceResourceBase resource){
 		datasources.put(resource.getId(), resource);
 		return resource.getDatasource();
 	}
 	
-	public OccurrenceResource getDataSource(OccurrenceResource resource){
+	public ExternalDatasourceResourceBase getDataSource(ExternalDatasourceResourceBase resource){
 		return datasources.get(resource.getId());
 	}
 	
-	public List<OccurrenceResource> getAll(){
-		return new ArrayList<OccurrenceResource>(datasources.values());
+	public List<ExternalDatasourceResourceBase> getAll(){
+		return new ArrayList<ExternalDatasourceResourceBase>(datasources.values());
 	}
 	
 }
