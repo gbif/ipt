@@ -3,7 +3,7 @@ package org.gbif.provider.webapp.action;
 import com.opensymphony.xwork2.Preparable;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.ExternalDatasourceResourceBase;
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;

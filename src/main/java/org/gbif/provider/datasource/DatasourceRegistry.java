@@ -7,24 +7,24 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.gbif.provider.model.ExternalDatasourceResourceBase;
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Resource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 public class DatasourceRegistry {
-	private Map<Long, ExternalDatasourceResourceBase> datasources = new HashMap<Long, ExternalDatasourceResourceBase>();
+	private Map<Long, DatasourceBasedResource> datasources = new HashMap<Long, DatasourceBasedResource>();
 	
-	public DataSource registerDataSource(ExternalDatasourceResourceBase resource){
+	public DataSource registerDataSource(DatasourceBasedResource resource){
 		datasources.put(resource.getId(), resource);
 		return resource.getDatasource();
 	}
 	
-	public ExternalDatasourceResourceBase getDataSource(ExternalDatasourceResourceBase resource){
+	public DatasourceBasedResource getDataSource(DatasourceBasedResource resource){
 		return datasources.get(resource.getId());
 	}
 	
-	public List<ExternalDatasourceResourceBase> getAll(){
-		return new ArrayList<ExternalDatasourceResourceBase>(datasources.values());
+	public List<DatasourceBasedResource> getAll(){
+		return new ArrayList<DatasourceBasedResource>(datasources.values());
 	}
 	
 }

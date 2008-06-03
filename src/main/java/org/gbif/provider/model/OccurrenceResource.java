@@ -8,6 +8,6 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-public class OccurrenceResource extends ExternalDatasourceResourceBase {
+public class OccurrenceResource extends DatasourceBasedResource {
 
 }
