@@ -153,6 +153,10 @@
             <result name="error" type="redirect-action">occResources</result>
         </global-results>
         
+        <action name="occ_*" class="org.gbif.provider.webapp.action.OccResourceAction" method="{1}">
+            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
+        </action>
+        
         <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
             <result>/WEB-INF/pages/occResourceList.jsp</result>
         </action>
@@ -178,6 +182,11 @@
             </result>
             <result name="delete" type="redirect-action">occResources</result>
         </action>              
+
+        <action name="occResourceMapping" class="org.gbif.provider.webapp.action.OccResourceAction" method="dbmeta">
+            <result>/WEB-INF/pages/databaseMetadata.jsp</result>
+        </action>
+        
     </package>
     
 
@@ -204,7 +213,7 @@
             <result name="success">/WEB-INF/pages/admin/flushCache.jsp</result>
         </action>
 
-        <action name="datasourceRegistry" class="org.gbif.provider.webapp.action.DatasourceRegistryAction" method="list">
+        <action name="activeDatasources" class="org.gbif.provider.webapp.action.DatasourceRegistryAction" method="list">
             <interceptor-ref name="adminCheck"/>
             <result name="success">/WEB-INF/pages/datasourceList.jsp</result>
         </action>
@@ -217,12 +226,5 @@
         <action name="JSONExample" class="org.gbif.provider.webapp.action.JSONExample">
             <result type="json"/>
         </action>        
-        <action name="suggestServiceName" class="org.gbif.provider.webapp.action.OccResourceAction" method="suggestServiceName">
-            <result type="json">
-                <param name="root">
-                    serviceName
-                </param>
-            </result>
-        </action>
     </package>    
 </struts>

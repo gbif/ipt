@@ -38,12 +38,14 @@ public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResourc
 
 	@Override
 	public T save(T resource) {
+		// call the real thing first to get a resourceId assigned
+		T persistentResource = super.save(resource);
 		// update registry if this datasource exists already
-		if (registry.containsKey(resource.getId())){
-			registry.registerDatasource(resource);
+		if (registry.containsKey(persistentResource.getId())){
+			//registry.registerDatasource(persistentResource, true);
 		}
-		// call the real thing
-		return super.save(resource);
+		registry.registerDatasource(persistentResource, true);
+		return persistentResource;
 	}
 
 }
