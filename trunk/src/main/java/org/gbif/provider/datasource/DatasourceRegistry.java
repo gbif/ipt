@@ -23,11 +23,10 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
  * @author markus
  * @See ExternalResourceRoutingDatasource
  */
-public class DatasourceRegistry implements Map{
+public class DatasourceRegistry{
 	private Map<Long, DataSource> datasources = new HashMap<Long, DataSource>();
 	@Autowired
     private GenericManager<OccurrenceResource, Long> occResourceManager;
-	
     
 	public Map<Long, DataSource> getDatasources() {
 		return datasources;
@@ -37,10 +36,13 @@ public class DatasourceRegistry implements Map{
 	}
 
 
-	public DataSource registerDatasource(DatasourceBasedResource resource){
-		DataSource dsa = resource.getDatasource();
-		datasources.put(resource.getId(), dsa);
-		return dsa;
+	public void registerDatasource(DatasourceBasedResource resource, boolean overwrite){
+		if (datasources.containsKey(resource.getId()) && !overwrite ){
+			// do nothing
+		}else{
+			DataSource dsa = resource.getDatasource();
+			datasources.put(resource.getId(), dsa);
+		}
 	}
 	
 	public DataSource getDataSource(Long id){
@@ -60,45 +62,8 @@ public class DatasourceRegistry implements Map{
 		return activeResources;
 	}
 	
-	
-	
-	public void clear() {
-		// TODO Auto-generated method stub		
+	public boolean containsKey(Long id) {
+		return datasources.containsKey(id);
 	}
-	public boolean containsKey(Object key) {
-		return datasources.containsKey(key);
-	}
-	public boolean containsValue(Object value) {
-		return datasources.containsValue(value);
-	}
-	public Set entrySet() {
-		return datasources.entrySet();
-	}
-	public Object get(Object key) {
-		return datasources.get(key);
-	}
-	public boolean isEmpty() {
-		return datasources.isEmpty();
-	}
-	public Set keySet() {
-		return datasources.keySet();
-	}
-	public Object put(Object key, Object value) {
-		return null;
-	}
-	public void putAll(Map t) {
-		// TODO Auto-generated method stub
-	}
-	public Object remove(Object key) {
-		return null;
-	}
-	public int size() {
-		// TODO Auto-generated method stub
-		return datasources.size();
-	}
-	public Collection values() {
-		// TODO Auto-generated method stub
-		return datasources.values();
-	}
-	
+		
 }

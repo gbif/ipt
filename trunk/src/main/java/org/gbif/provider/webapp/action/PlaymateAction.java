@@ -7,11 +7,15 @@ import org.appfuse.webapp.action.BaseAction;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class PlaymateAction extends BaseAction implements Preparable {
+public class PlaymateAction extends BaseAction implements Preparable, SessionAware {
     private String name;
+    private Map session;
     private Integer counter;
     private Long  id;
-    
+
+	public void setSession(Map session) {
+		this.session=session;		
+	}
 	public String getName() {
 		return name;
 	}
@@ -32,9 +36,14 @@ public class PlaymateAction extends BaseAction implements Preparable {
 	}
 
 	public String count(){
-		counter = (Integer) getSession().getAttribute("counter");
+		if (session.containsKey("counter")){
+			counter = (Integer) session.get("counter");
+		}else{
+			counter = 0;
+		}
 		counter +=1;
-		getSession().setAttribute("coutner", counter);
+		session.put("counter", counter);
 		return SUCCESS;
 	}
+
 }
