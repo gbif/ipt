@@ -19,7 +19,7 @@
 
 <display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
     <display:column property="id" sortable="true" href="occResource.html" media="html"
-        paramId="id" paramProperty="id" titleKey="resource.id"/>
+        paramId="resource_id" paramProperty="id" titleKey="resource.id"/>
     <display:column property="title" sortable="true" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
     <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">

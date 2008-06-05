@@ -1,25 +1,19 @@
 package org.gbif.provider.webapp.action;
 
-import com.opensymphony.xwork2.Preparable;
-
-import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.service.GenericManager;
-import org.gbif.provider.dao.DatasourceInspectionDao;
-import org.gbif.provider.datasource.DatasourceContextHolder;
-import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.DatasourceInspectionManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
-
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class OccResourceAction extends BaseAction implements Preparable {
+import org.apache.struts2.interceptor.SessionAware;
+import org.appfuse.service.GenericManager;
+import org.gbif.provider.datasource.DatasourceInterceptor;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.service.DatasourceInspectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Preparable;
+
+public class OccResourceAction extends BaseAction implements Preparable, SessionAware {
     @Autowired
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     @Autowired
@@ -27,7 +21,14 @@ public class OccResourceAction extends BaseAction implements Preparable {
     private List occResources;
     private OccurrenceResource occResource;
     private List tables;
-    private Long  id;
+    private Map session;
+    private Long resource_id;
+    private Long id;
+
+	
+	public void setSession(Map arg0) {
+		session = arg0;
+	}
 
 	
 	public List getOccResources() {
@@ -38,6 +39,9 @@ public class OccResourceAction extends BaseAction implements Preparable {
 		return tables;
 	}
     
+	public void setResource_id(Long resource_id) {
+		this.resource_id = resource_id;
+	}
 	public void setId(Long  id) {
         this. id =  id;
     }
@@ -58,19 +62,18 @@ public class OccResourceAction extends BaseAction implements Preparable {
         }
     }
 
-	private void selectCurrentDatasource(OccurrenceResource resource){
-		//DatasourceContextHolder.setResourceId(resource.getId());
+	private void updateCurrentId(){
+		// resource_id has higher priority cause its used for the resource interceptor
+    	if (resource_id != null){
+    		id=resource_id;
+    	}
 	}
 
-
-    //    
-    // below here are proper Action methods
-    //
     public String execute(){
+    	updateCurrentId();
         if (id != null) {
         	// update current resource in session
         	occResource = occResourceManager.get(id);
-        	selectCurrentDatasource(occResource);
         }else{
         	return ERROR;
         }
@@ -83,10 +86,10 @@ public class OccResourceAction extends BaseAction implements Preparable {
     }
 
     public String edit() {
+    	updateCurrentId();
         if (id != null) {
         	// update current resource in session
         	occResource = occResourceManager.get(id);
-        	selectCurrentDatasource(occResource);
         }else{
         	occResource = new OccurrenceResource();
         }
@@ -94,10 +97,10 @@ public class OccResourceAction extends BaseAction implements Preparable {
     }
 
     public String dbmeta() {
+    	updateCurrentId();
         if (id != null) {
         	// update current resource in session
         	occResource = occResourceManager.get(id);
-        	selectCurrentDatasource(occResource);
         }else{
         	return ERROR;
         }
@@ -122,11 +125,13 @@ public class OccResourceAction extends BaseAction implements Preparable {
         occResource = occResourceManager.save(occResource);
         String key = (isNew) ? "occResource.added" : "occResource.updated";
         saveMessage(getText(key));
+        // set new current resource in session
+    	session.put(DatasourceInterceptor.SESSION_ATTRIBUTE, occResource.getId());
         return SUCCESS;
     }
     
     public String delete() {
-        log.debug("Removing datasource from active datasources for resource "+occResource.getId());
+    	updateCurrentId();
         occResourceManager.remove(occResource.getId());
         saveMessage(getText("occResource.deleted"));
         return SUCCESS;
