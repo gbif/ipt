@@ -134,7 +134,7 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     	updateCurrentId();
         occResourceManager.remove(occResource.getId());
         saveMessage(getText("occResource.deleted"));
-        return SUCCESS;
+        return "delete";
     }
 
     

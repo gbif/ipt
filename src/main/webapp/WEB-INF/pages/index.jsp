@@ -6,15 +6,12 @@
     <meta name="menu" content="MainMenu"/>
 </head>
 
+<s:url id="manageOccResources" action="occResources" namespace="/manage/occ"/>
 
 <h3>Occurrence Resources</h3>
-<p>
-	<s:property value="occResourceCount"/> occurrence resources uploaded.
-	<a href="<s:url action="occResources" namespace="/manage/occ"/>">Manage occurrence resources</a>. 
-</p>
 
 <c:if test="${not empty occResources}">
-	<display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
+	<display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="2">
 	    <display:column property="title" sortable="true" titleKey="resource.title" href="occResource.html" media="html" paramId="id" paramProperty="id"/>
 	    <display:column property="modified" sortable="true" titleKey="resource.modified">
 	         <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
