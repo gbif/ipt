@@ -16,9 +16,13 @@
 
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default">
+        
         <interceptors>
             <!-- Interceptor to handle allowing only admins to certain actions -->
             <interceptor name="adminOnly" class="adminInterceptor"/>
+            <interceptor name="managerOnly" class="managerInterceptor"/>
+            <!-- Interceptor to select the external routing datasource -->
+            <interceptor name="datasourceSelector" class="datasourceInterceptor"/>
             <!-- Copied from struts-default.xml and changed validation exclude methods -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
@@ -53,16 +57,24 @@
                 <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="adminOnly"/>
             </interceptor-stack>
+            <interceptor-stack name="managerStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="datasourceSelector"/>
+                <interceptor-ref name="managerOnly"/>
+            </interceptor-stack>
         </interceptors>
 
+        <default-action-ref name="index" />
+
         <global-results>
-            <result name="mainMenu" type="redirect-action">home</result>
+            <result name="home" type="redirect-action">/index</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
         </global-results>
 
         <global-exception-mappings>
             <exception-mapping exception="org.springframework.dao.DataAccessException" result="dataAccessFailure"/>
         </global-exception-mappings>
+
 
         <action name="signup" class="signupAction">
             <result name="cancel" type="redirect">/</result>
@@ -72,7 +84,7 @@
 
         <action name="saveSignup" class="signupAction" method="save">
             <result name="input">/WEB-INF/pages/signup.jsp</result>
-            <result name="success" type="redirect-action">/home</result>
+            <result name="success" type="redirect-action">/index</result>
         </action>
 
         <action name="editUser" class="userAction" method="edit">
@@ -83,7 +95,7 @@
 
         <action name="editProfile" class="userAction" method="edit">
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
-            <result name="error">/WEB-INF/pages/home.jsp</result>
+            <result name="error">/WEB-INF/pages/index.jsp</result>
         </action>
 
         <action name="saveUser" class="userAction" method="save">
@@ -102,13 +114,14 @@
             <interceptor-ref name="fileUploadStack"/>
             <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
             <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
-            <result name="cancel" type="redirect-action">home</result>
+            <result name="cancel" type="redirect-action">index</result>
         </action>
         
-        <!-- custom non-appfuse actions -->
-        <action name="home" class="org.gbif.provider.webapp.action.HomeAction">
-            <result>/WEB-INF/pages/home.jsp</result>
+        <!-- Application Home -->
+        <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
+            <result>/WEB-INF/pages/index.jsp</result>
         </action>
+
     </package>
 
 
@@ -145,6 +158,7 @@
     
     <!-- Base package for all managing packages  -->
     <package name="manage" namespace="/manage" extends="default">
+        <default-interceptor-ref name="managerStack" />
     </package>
     
     <!-- Actions managing occurrence resources -->

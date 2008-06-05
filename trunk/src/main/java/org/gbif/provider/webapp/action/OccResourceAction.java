@@ -10,6 +10,7 @@ import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.DatasourceInspectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
 
@@ -18,23 +19,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class OccResourceAction extends BaseAction implements Preparable, SessionAware {
+public class OccResourceAction extends BaseAction implements Preparable {
+    @Autowired
     private GenericManager<OccurrenceResource, Long> occResourceManager;
-    private DatasourceInspectionDao datasourceInspection;
-    private Map session;
+    @Autowired
+    private DatasourceInspectionManager datasourceInspectionManager;
     private List occResources;
     private OccurrenceResource occResource;
     private List tables;
     private Long  id;
 
-    // Struts2 actions get Spring injection via bean name if the property is named the same
-    public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
-        this.occResourceManager = occResourceManager;
-    }
-    
-	public void setDatasourceInspection(DatasourceInspectionDao datasourceInspection) {
-		this.datasourceInspection = datasourceInspection;
-	}
 	
 	public List getOccResources() {
         return occResources;
@@ -53,11 +47,6 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     public void setOccResource(OccurrenceResource occResource) {
         this.occResource = occResource;
     }
-	
-	// Interceptor interfaces
-	public void setSession(Map session) {
-		this.session=session;		
-	}
 
 	public void prepare() {
         if (getRequest().getMethod().equalsIgnoreCase("post")) {
@@ -70,7 +59,7 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
 
 	private void selectCurrentDatasource(OccurrenceResource resource){
-		DatasourceContextHolder.setResourceId(resource.getId());
+		//DatasourceContextHolder.setResourceId(resource.getId());
 	}
 
 
@@ -114,7 +103,7 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
         }
 
         try {
-			tables = datasourceInspection.getAllTables();
+			tables = datasourceInspectionManager.getAllTables();
 		} catch (SQLException e) {
 			return ERROR;
 		}

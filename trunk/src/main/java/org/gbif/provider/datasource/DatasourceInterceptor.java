@@ -19,25 +19,28 @@ public class DatasourceInterceptor extends AbstractInterceptor{
 	public String intercept(ActionInvocation invocation) throws Exception {
 		//get requested resource
 		Object requested_id = invocation.getInvocationContext().getParameters().get(PARAMETER_NAME);
-		if (requested_id != null && requested_id.getClass().isArray()
-				&& ((Object[]) requested_id).length == 1) {
+		if (requested_id != null && requested_id.getClass().isArray() && ((Object[]) requested_id).length == 1) {
 			requested_id = ((Object[]) requested_id)[0];
 		}
 		//save it in session
+		Long resourceId = null;
 		if (requested_id != null) {
-			Long resourceId = (Long) requested_id; 
-			if (log.isDebugEnabled()){
-				log.debug("store resourceId=" + resourceId);
-			}
+			// cast to integer
+			resourceId = Long.valueOf(requested_id.toString());
 			if (resourceId != null){
 				invocation.getInvocationContext().getSession().put(SESSION_ATTRIBUTE, resourceId);
+				log.debug("Set new session resourceId=" + resourceId);
+			}else{
+				log.warn("Requested resource_id is no integer: "+requested_id);				
 			}
 		}
 		//set locale in datasource context
-		Long resourceId = (Long) invocation.getInvocationContext().getSession().get(SESSION_ATTRIBUTE);
-		DatasourceContextHolder.setResourceId(resourceId);
-		if (log.isDebugEnabled()){
-			log.debug("apply resourceId=" + resourceId);
+		resourceId = (Long) invocation.getInvocationContext().getSession().get(SESSION_ATTRIBUTE);
+		if (resourceId != null){
+			DatasourceContextHolder.setResourceId(resourceId);
+			log.debug("Set datasource context to resourceId=" + resourceId);
+		}else{
+			log.debug("resourceId=null");
 		}
 
 		// continue with the rest of the interceptor stack not setting the result name here

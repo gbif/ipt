@@ -12,17 +12,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
-public class DatasourceInspectionImpl extends SimpleJdbcDaoSupport implements DatasourceInspectionDao {
-
-	public List getAllTables() throws SQLException {
-		List<String> tableNames = new ArrayList<String>();
-		DatabaseMetaData dbmd = this.getConnection().getMetaData();
-	    ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
-    	while (rs.next()) {
-    		tableNames.add((String) rs.getObject(3)); 
-    	}
-	    return tableNames;
-	}
+public class DatasourceInspectionDaoImpl extends SimpleJdbcDaoSupport implements DatasourceInspectionDao {
 	
 	public DatabaseMetaData getDatabaseMetaData() throws SQLException {
 		return this.getConnection().getMetaData();

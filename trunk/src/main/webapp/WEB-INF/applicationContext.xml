@@ -9,6 +9,16 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.gbif.provider" /> 
     
+    <!-- security interceptors -->
+    <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_MANAGER"/>
+    </bean>
+    
+
+    <!-- external datasource routing/registry -->
+    <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor">
+    </bean>
+    
     <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" >
     </bean>
     
@@ -17,20 +27,6 @@
             <map key-type="java.lang.Long" />            
         </property>
     </bean>
-
-    <!-- for testing the abstract routing datasource -->
-    <bean id="parentDataSource"
-        class="org.springframework.jdbc.datasource.DriverManagerDataSource" abstract="true">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="username" value="root"/>
-    </bean>
-    
-    <bean id="pontaurusDataSource" parent="parentDataSource">
-        <property name="url" value="jdbc:mysql://localhost/pontaurus"/>
-    </bean>
-    <bean id="biocaseDataSource" parent="parentDataSource">
-        <property name="url" value="jdbc:mysql://localhost/biocase_training"/>
-    </bean>
     
     
     <!-- DAOs  -->
@@ -38,7 +34,7 @@
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="datasourceInspection" class="org.gbif.provider.dao.jdbc.DatasourceInspectionImpl">
+    <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     
@@ -47,5 +43,7 @@
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
         <constructor-arg ref="occResourceDao"/>
     </bean>    
+    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
+        
     
 </beans>
