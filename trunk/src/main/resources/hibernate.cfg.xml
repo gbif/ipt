@@ -13,5 +13,7 @@
         <mapping class="org.gbif.provider.model.OccurrenceResource"/>
         <mapping class="org.gbif.provider.model.ResolvableBase"/>
         <mapping class="org.gbif.provider.model.Resource"/>
+        <mapping class="org.gbif.provider.model.StarExtension"/>
+        <mapping class="org.gbif.provider.model.ViewMapping"/>
     </session-factory>
 </hibernate-configuration>
