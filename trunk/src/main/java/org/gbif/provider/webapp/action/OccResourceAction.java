@@ -8,44 +8,57 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.ViewMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseAction implements Preparable, SessionAware {
-    @Autowired
     private GenericManager<OccurrenceResource, Long> occResourceManager;
-    @Autowired
-    private DatasourceInspectionManager datasourceInspectionManager;
+    private ViewMappingManager viewMappingManager;
     private List occResources;
+    private List mappings;
     private OccurrenceResource occResource;
-    private List tables;
     private Map session;
     private Long resource_id;
     private Long id;
 
 	
+	public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
+		this.occResourceManager = occResourceManager;
+	}
+
+	public void setViewMappingManager(ViewMappingManager viewMappingManager) {
+		this.viewMappingManager = viewMappingManager;
+	}
+
 	public void setSession(Map arg0) {
 		session = arg0;
 	}
-
 	
 	public List getOccResources() {
         return occResources;
     }
-	
-    public List getTables() {
-		return tables;
+
+	public List getMappings() {
+		return mappings;
 	}
-    
+
 	public void setResource_id(Long resource_id) {
 		this.resource_id = resource_id;
 	}
 	public void setId(Long  id) {
         this. id =  id;
     }
-    public OccurrenceResource getOccResource() {
+	private void setId2ResourceId(){
+		// resource_id has higher priority cause its used for the resource interceptor
+    	if (resource_id != null){
+    		id=resource_id;
+    	}
+	}
+	public OccurrenceResource getOccResource() {
         return occResource;
     }
     public void setOccResource(OccurrenceResource occResource) {
@@ -62,18 +75,11 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
         }
     }
 
-	private void updateCurrentId(){
-		// resource_id has higher priority cause its used for the resource interceptor
-    	if (resource_id != null){
-    		id=resource_id;
-    	}
-	}
-
     public String execute(){
-    	updateCurrentId();
+    	setId2ResourceId();
         if (id != null) {
-        	// update current resource in session
         	occResource = occResourceManager.get(id);
+        	mappings = viewMappingManager.findByResource(id);
         }else{
         	return ERROR;
         }
@@ -86,30 +92,12 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
 
     public String edit() {
-    	updateCurrentId();
+    	setId2ResourceId();
         if (id != null) {
-        	// update current resource in session
         	occResource = occResourceManager.get(id);
         }else{
         	occResource = new OccurrenceResource();
         }
-        return SUCCESS;
-    }
-
-    public String dbmeta() {
-    	updateCurrentId();
-        if (id != null) {
-        	// update current resource in session
-        	occResource = occResourceManager.get(id);
-        }else{
-        	return ERROR;
-        }
-
-        try {
-			tables = datasourceInspectionManager.getAllTables();
-		} catch (SQLException e) {
-			return ERROR;
-		}
         return SUCCESS;
     }
     
@@ -131,7 +119,7 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
     
     public String delete() {
-    	updateCurrentId();
+    	setId2ResourceId();
         occResourceManager.remove(occResource.getId());
         saveMessage(getText("occResource.deleted"));
         return "delete";

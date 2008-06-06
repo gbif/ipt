@@ -195,10 +195,10 @@
                 <param name="id">${occResource.id}</param>
             </result>
             <result name="delete" type="redirect-action">occResources</result>
-        </action>              
+        </action>
 
-        <action name="occResourceMapping" class="org.gbif.provider.webapp.action.OccResourceAction" method="dbmeta">
-            <result>/WEB-INF/pages/databaseMetadata.jsp</result>
+        <action name="occResourceMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="dbmeta">
+            <result>/WEB-INF/pages/occResourceMapping.jsp</result>
         </action>
         
     </package>

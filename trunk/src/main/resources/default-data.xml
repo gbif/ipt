@@ -50,7 +50,7 @@
             <value description="address"></value>
             <value description="city">Denver</value>
             <value description="country">US</value>
-            <value description="email">matt@raibledesigns.com</value>
+            <value description="email"></value>
             <value description="phone_number"></value>
             <value description="postal_code">80210</value>
             <value description="province">CO</value>
@@ -93,6 +93,27 @@
         <row>
             <value description="user_id">2</value>
             <value description="role_id">1</value>
+        </row>
+    </table>
+    <table name="DwcExtension">
+        <column>id</column>
+        <column>name</column>
+        <column>namespace</column>
+        <column>properties</column>
+        <column>documentation</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">Geospatial</value>
+            <value description="namespace">http://www.geospatial.com</value>
+            <value description="properties"></value>
+            <value description="documentation"></value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">Identification</value>
+            <value description="namespace">http://www.identification.com</value>
+            <value description="properties"></value>
+            <value description="documentation"></value>
         </row>
     </table>
 </dataset>

@@ -18,13 +18,17 @@ import com.opensymphony.xwork2.Preparable;
  *
  */
 public class IndexAction extends BaseAction implements Preparable {
-    @Autowired
     private GenericManager<DatasourceBasedResource, Long> occResourceManager;
     private List<DatasourceBasedResource> occResources;
     private Integer checklistCount;
     private Integer resourceCount;
 
     
+	public void setOccResourceManager(
+			GenericManager<DatasourceBasedResource, Long> occResourceManager) {
+		this.occResourceManager = occResourceManager;
+	}
+
 	public List<DatasourceBasedResource> getOccResources() {
 		return occResources;
 	}

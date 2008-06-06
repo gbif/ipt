@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 public class ViewMapping {
 	private Long id;	
 	private OccurrenceResource resource;
-	private StarExtension view;
+	private DwcExtension extension;
 	private String viewSql;
 	private ArrayList<String> properties = new ArrayList<String>();
 	
@@ -27,7 +27,7 @@ public class ViewMapping {
 		this.id = id;
 	}
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	public OccurrenceResource getResource() {
 		return resource;
 	}
@@ -40,11 +40,11 @@ public class ViewMapping {
 	 * @return
 	 */
 	@ManyToOne
-	public StarExtension getView() {
-		return view;
+	public DwcExtension getExtension() {
+		return extension;
 	}
-	public void setView(StarExtension view) {
-		this.view = view;
+	public void setExtension(DwcExtension extension) {
+		this.extension = extension;
 	}
 	
 	public String getViewSql() {

@@ -150,7 +150,7 @@
                         <drop>true</drop>
                         <jdk5>true</jdk5>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
-                        <skip>${maven.test.skip}</skip>
+                        <skip>${initdb.skip}</skip>
                         <outputfilename>schema.sql</outputfilename>
                     </componentProperties>
                 </configuration>
@@ -183,7 +183,7 @@
                     <src>src/test/resources/sample-data.xml</src>
                     <type>${dbunit.operation.type}</type>
                     <schema>${dbunit.schema}</schema>
-                    <skip>${maven.test.skip}</skip>
+                    <skip>${initdb.skip}</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -592,6 +592,7 @@
         <profile>
             <id>prod</id>
             <properties>
+                <initdb.skip>true</initdb.skip>
                 <maven.test.skip>true</maven.test.skip>
                 <hibernate.dialect>org.hibernate.dialect.MySQLMyISAMDialect</hibernate.dialect>
                 <jdbc.groupId>mysql</jdbc.groupId>
@@ -746,6 +747,7 @@
         <cargo.wait>false</cargo.wait>
                 
         <!-- Database settings -->
+        <initdb.skip>false</initdb.skip>
         <dbunit.dataTypeFactoryName>org.dbunit.dataset.datatype.DefaultDataTypeFactory</dbunit.dataTypeFactoryName>
         <dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
         <hibernate.dialect>org.hibernate.dialect.MySQLMyISAMDialect</hibernate.dialect>

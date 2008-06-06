@@ -25,7 +25,6 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
  */
 public class DatasourceRegistry{
 	private Map<Long, DataSource> datasources = new HashMap<Long, DataSource>();
-	@Autowired
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     
 	public Map<Long, DataSource> getDatasources() {
@@ -64,6 +63,10 @@ public class DatasourceRegistry{
 	
 	public boolean containsKey(Long id) {
 		return datasources.containsKey(id);
+	}
+	public void setOccResourceManager(
+			GenericManager<OccurrenceResource, Long> occResourceManager) {
+		this.occResourceManager = occResourceManager;
 	}
 		
 }

@@ -6,7 +6,6 @@
 </head>
 
 <s:url id="editUrl" action="editOccResource"><s:param name="id" value="occResource.id"/></s:url>
-<s:url id="mappingUrl" action="occResourceMapping"><s:param name="id" value="occResource.id"/></s:url>
 <s:url id="uploadUrl" action="occUpload"><s:param name="id" value="occResource.id"/></s:url>
 <s:url id="validateUrl" action="occValidation"><s:param name="id" value="occResource.id"/></s:url>
 <s:url id="exploreUrl" action="occResource" namespace="/"><s:param name="id" value="occResource.id"/></s:url>
@@ -19,13 +18,26 @@
 <p><strong><fmt:message key='occResourceOverview.validation'/></strong>: Some validation summary</p>
 <p><strong><fmt:message key='occResourceOverview.mapping'/></strong>: Some mapping summary</p>
 <p><strong><fmt:message key='occResourceOverview.manager'/></strong>: <s:property value="occResource.creator.getFullName()"/></p>
+<ul>
+<s:iterator value="occResource.mappings" status="mappingStatus">
+	<s:url id="mappingUrl" action="viewMapping"><s:param name="id" value="id"/></s:url>
+	<li>
+		<s:property value="#mappingStatus.count"/>
+		<s:a href="mappingUrl"> <s:property value="extension.name"/> </s:a>
+		<s:property value="properties.size()"/>
+	</li>
+</s:iterator>
+	<s:url id="newMappingUrl" action="viewMapping"><s:param name="id" value="id"/></s:url>
+	<li>
+		<s:a href="newMappingUrl"> <s:property value="extension.name"/> </s:a>	
+	</li>
+</ul>
 <p>
 	Resource last modified by <s:property value="occResource.modifier.getFullName()"/>: <s:property value="occResource.modified"/>
 </p>
 
 <div class="actionlinks">
 	<s:a href="%{editUrl}">edit resource</s:a>
-	| <s:a href="%{mappingUrl}">map datasource</s:a>
 	| <s:a href="%{uploadUrl}">upload data</s:a>
 	| <s:a href="%{validateUrl}">validate data</s:a>
 	| <s:a href="%{exploreUrl}">explore data</s:a>

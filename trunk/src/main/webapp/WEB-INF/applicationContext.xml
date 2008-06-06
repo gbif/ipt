@@ -34,8 +34,11 @@
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
-        <constructor-arg value="org.gbif.provider.model.ViewMapping"/>
+    <bean id="viewMappingDao" class="org.gbif.provider.dao.hibernate.ViewMappingHibernateDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="starExtensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="org.gbif.provider.model.StarExtension"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
@@ -48,10 +51,14 @@
         <constructor-arg ref="occResourceDao"/>
     </bean>
 
-    <bean id="viewMappingManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerImpl">        
         <constructor-arg ref="viewMappingDao"/>
     </bean>    
     
+    <bean id="starExtensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+        <constructor-arg ref="starExtensionDao"/>
+    </bean>    
+
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
         
     
