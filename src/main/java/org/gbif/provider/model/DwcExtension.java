@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
-public class StarExtension {
+public class DwcExtension {
 	private Long id;	
 	private String name;
 	private String namespace;
