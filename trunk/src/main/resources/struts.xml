@@ -23,10 +23,11 @@
             <interceptor name="managerOnly" class="managerInterceptor"/>
             <!-- Interceptor to select the external routing datasource -->
             <interceptor name="datasourceSelector" class="datasourceInterceptor"/>
-            <!-- Copied from struts-default.xml and changed validation exclude methods -->
+            <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="alias"/>
+                <interceptor-ref name="params"/>
                 <interceptor-ref name="servlet-config"/>
                 <interceptor-ref name="prepare"/>
                 <interceptor-ref name="i18n"/>
@@ -167,10 +168,6 @@
             <result name="error" type="redirect-action">occResources</result>
         </global-results>
         
-        <action name="occ_*" class="org.gbif.provider.webapp.action.OccResourceAction" method="{1}">
-            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
-        </action>
-        
         <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
             <result>/WEB-INF/pages/occResourceList.jsp</result>
         </action>
@@ -197,8 +194,17 @@
             <result name="delete" type="redirect-action">occResources</result>
         </action>
 
-        <action name="occResourceMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="dbmeta">
-            <result>/WEB-INF/pages/occResourceMapping.jsp</result>
+        <action name="editMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="edit">
+            <result>/WEB-INF/pages/viewMappingForm.jsp</result>
+        </action>
+        
+        <action name="saveMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="save">
+            <result>/WEB-INF/pages/viewMappingForm.jsp</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">occResource</param>
+                <param name="parse">true</param>
+                <param name="id">${resource_id}</param>
+            </result>
         </action>
         
     </package>
