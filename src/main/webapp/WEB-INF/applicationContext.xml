@@ -37,8 +37,8 @@
     <bean id="viewMappingDao" class="org.gbif.provider.dao.hibernate.ViewMappingHibernateDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="starExtensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
-        <constructor-arg value="org.gbif.provider.model.StarExtension"/>
+    <bean id="dwcExtensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="org.gbif.provider.model.DwcExtension"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
@@ -55,8 +55,8 @@
         <constructor-arg ref="viewMappingDao"/>
     </bean>    
     
-    <bean id="starExtensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
-        <constructor-arg ref="starExtensionDao"/>
+    <bean id="dwcExtensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+        <constructor-arg ref="dwcExtensionDao"/>
     </bean>    
 
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        

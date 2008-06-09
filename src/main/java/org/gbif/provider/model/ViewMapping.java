@@ -1,15 +1,20 @@
 package org.gbif.provider.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class ViewMapping {
@@ -17,7 +22,7 @@ public class ViewMapping {
 	private OccurrenceResource resource;
 	private DwcExtension extension;
 	private String viewSql;
-	private ArrayList<String> properties = new ArrayList<String>();
+	private Set<ExtensionProperty> properties = new HashSet<ExtensionProperty>();
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -54,11 +59,11 @@ public class ViewMapping {
 		this.viewSql = sql;
 	}
 	
-	@Lob
-	public ArrayList<String> getProperties() {
+	@OneToMany
+	public Set<ExtensionProperty> getProperties() {
 		return properties;
 	}
-	public void setProperties(ArrayList<String> properties) {
+	public void setProperties(Set<ExtensionProperty> properties) {
 		this.properties = properties;
 	}
 	

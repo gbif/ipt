@@ -99,20 +99,17 @@
         <column>id</column>
         <column>name</column>
         <column>namespace</column>
-        <column>properties</column>
         <column>documentation</column>
         <row>
             <value description="id">1</value>
             <value description="name">Geospatial</value>
             <value description="namespace">http://www.geospatial.com</value>
-            <value description="properties"></value>
             <value description="documentation"></value>
         </row>
         <row>
             <value description="id">2</value>
             <value description="name">Identification</value>
             <value description="namespace">http://www.identification.com</value>
-            <value description="properties"></value>
             <value description="documentation"></value>
         </row>
     </table>

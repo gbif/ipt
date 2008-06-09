@@ -1,12 +1,14 @@
 package org.gbif.provider.webapp.action;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
+import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
@@ -17,9 +19,10 @@ import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseAction implements Preparable, SessionAware {
     private GenericManager<OccurrenceResource, Long> occResourceManager;
+    private GenericManager<DwcExtension, Long> dwcExtensionManager;
     private ViewMappingManager viewMappingManager;
     private List occResources;
-    private List mappings;
+    private List<DwcExtension> extensions;
     private OccurrenceResource occResource;
     private Map session;
     private Long resource_id;
@@ -28,6 +31,11 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
 	
 	public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
 		this.occResourceManager = occResourceManager;
+	}
+
+	public void setDwcExtensionManager(
+			GenericManager<DwcExtension, Long> dwcExtensionManager) {
+		this.dwcExtensionManager = dwcExtensionManager;
 	}
 
 	public void setViewMappingManager(ViewMappingManager viewMappingManager) {
@@ -42,8 +50,8 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
         return occResources;
     }
 
-	public List getMappings() {
-		return mappings;
+	public List getExtensions() {
+		return extensions;
 	}
 
 	public void setResource_id(Long resource_id) {
@@ -79,7 +87,11 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     	setId2ResourceId();
         if (id != null) {
         	occResource = occResourceManager.get(id);
-        	mappings = viewMappingManager.findByResource(id);
+        	extensions = dwcExtensionManager.getAll();
+        	// filter already mapped extensions
+        	for (ViewMapping map : occResource.getMappings()){
+    			extensions.remove(map.getExtension());
+        	}
         }else{
         	return ERROR;
         }
