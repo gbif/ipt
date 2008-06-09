@@ -38,11 +38,13 @@
 	<tr>			
 		<td><fmt:message key='occResourceOverview.mapping'/></td>
 		<td>
+        <c:if test="${not empty extensions}">
 			<s:form id="addMapping" action="editMapping" namespace="/manage/occ" method="post" validate="true">
 		        <s:hidden name="resource_id" value="%{occResource.id}"/>
 				<s:select id="extension_id" name="extension_id" list="extensions" listKey="id" listValue="name"/>
 		        <s:submit cssClass="button" key="button.add" theme="simple"/>
 			</s:form>
+		</c:if>
 		</td>
 	</tr>
 	<s:iterator value="occResource.mappings" status="mappingStatus">
