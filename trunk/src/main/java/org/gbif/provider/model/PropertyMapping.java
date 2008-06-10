@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A mapping between a single extension property (concept) and a resource represented via the viewMapping.
@@ -14,7 +18,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @Entity
-public class PropertyMapping {
+public class PropertyMapping implements Comparable {
 	private Long id;	
 	private ViewMapping viewMapping;
 	private ExtensionProperty property;
@@ -59,6 +63,49 @@ public class PropertyMapping {
 	public void setColumn(Integer column) {
 		this.column = column;
 	}
+	
+	
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		PropertyMapping myClass = (PropertyMapping) object;
+		return new CompareToBuilder().append(this.value, myClass.value).append(
+				this.column, myClass.column).append(this.property,
+				myClass.property).append(this.viewMapping, myClass.viewMapping)
+				.append(this.id, myClass.id).toComparison();
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof PropertyMapping)) {
+			return false;
+		}
+		PropertyMapping rhs = (PropertyMapping) object;
+		return new EqualsBuilder().append(this.value, rhs.value).append(
+				this.column, rhs.column).append(this.property, rhs.property)
+				.append(this.viewMapping, rhs.viewMapping).append(this.id,
+						rhs.id).isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-749701147, 1634949129).append(this.value)
+				.append(this.column).append(this.property).append(
+						this.viewMapping).append(this.id).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("property", this.property)
+				.append("id", this.id).append("value", this.value).append(
+						"viewMapping", this.viewMapping).append("column",
+						this.column).toString();
+	}
+	
 	
 	
 }

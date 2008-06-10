@@ -188,6 +188,9 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	public void setCollector(String collector) {
 		this.collector = collector;
 	}
+	
+	
+	
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
@@ -204,6 +207,7 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 				.append(this.maximumElevationInMeters,
 						myClass.maximumElevationInMeters)
 				.append(this.latestDateCollected, myClass.latestDateCollected)
+				.append(this.id, myClass.id)
 				.append(this.stateProvince, myClass.stateProvince)
 				.append(this.county, myClass.county)
 				.append(this.continent, myClass.continent)
@@ -212,8 +216,8 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 				.append(this.maximumDepthInMeters, myClass.maximumDepthInMeters)
 				.append(this.minimumDepthInMeters, myClass.minimumDepthInMeters)
 				.append(this.earliestDateCollected,
-						myClass.earliestDateCollected).append(this.id,
-						myClass.id).append(this.higherGeography,
+						myClass.earliestDateCollected).append(this.dwc,
+						myClass.dwc).append(this.higherGeography,
 						myClass.higherGeography).append(this.collector,
 						myClass.collector).append(this.collectingMethod,
 						myClass.collectingMethod).append(this.dayOfYear,
@@ -227,23 +231,22 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 			return false;
 		}
 		DarwinCoreLocation rhs = (DarwinCoreLocation) object;
-		return new EqualsBuilder().append(
-				this.waterBody, rhs.waterBody).append(
-				this.validDistributionFlag, rhs.validDistributionFlag).append(
-				this.locality, rhs.locality).append(this.island, rhs.island)
-				.append(this.minimumElevationInMeters,
+		return new EqualsBuilder().append(this.waterBody, rhs.waterBody)
+				.append(this.validDistributionFlag, rhs.validDistributionFlag)
+				.append(this.locality, rhs.locality).append(this.island,
+						rhs.island).append(this.minimumElevationInMeters,
 						rhs.minimumElevationInMeters).append(
 						this.maximumElevationInMeters,
 						rhs.maximumElevationInMeters).append(
 						this.latestDateCollected, rhs.latestDateCollected)
-				.append(this.stateProvince,
+				.append(this.id, rhs.id).append(this.stateProvince,
 						rhs.stateProvince).append(this.county, rhs.county)
 				.append(this.continent, rhs.continent).append(this.country,
 						rhs.country).append(this.islandGroup, rhs.islandGroup)
 				.append(this.maximumDepthInMeters, rhs.maximumDepthInMeters)
 				.append(this.minimumDepthInMeters, rhs.minimumDepthInMeters)
 				.append(this.earliestDateCollected, rhs.earliestDateCollected)
-				.append(this.id, rhs.id).append(this.higherGeography,
+				.append(this.dwc, rhs.dwc).append(this.higherGeography,
 						rhs.higherGeography).append(this.collector,
 						rhs.collector).append(this.collectingMethod,
 						rhs.collectingMethod).append(this.dayOfYear,
@@ -253,15 +256,16 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(2290355, 213631307).append(this.waterBody).append(
-				this.validDistributionFlag).append(this.locality).append(
-				this.island).append(this.minimumElevationInMeters).append(
-				this.maximumElevationInMeters).append(this.latestDateCollected)
-				.append(this.stateProvince).append(this.county)
-				.append(this.continent).append(this.country).append(
+		return new HashCodeBuilder(541065945, 425241663).append(this.waterBody)
+				.append(this.validDistributionFlag).append(this.locality)
+				.append(this.island).append(this.minimumElevationInMeters)
+				.append(this.maximumElevationInMeters).append(
+						this.latestDateCollected).append(this.id).append(
+						this.stateProvince).append(this.county).append(
+						this.continent).append(this.country).append(
 						this.islandGroup).append(this.maximumDepthInMeters)
 				.append(this.minimumDepthInMeters).append(
-						this.earliestDateCollected).append(this.id).append(
+						this.earliestDateCollected).append(this.dwc).append(
 						this.higherGeography).append(this.collector).append(
 						this.collectingMethod).append(this.dayOfYear)
 				.toHashCode();
@@ -270,8 +274,9 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("dwc", this.id).append(
-				"minimumDepthInMeters", this.minimumDepthInMeters).append("collector", this.collector).append(
+		return new ToStringBuilder(this).append("dwc", this.dwc).append(
+				"minimumDepthInMeters", this.minimumDepthInMeters).append("id",
+				this.id).append("collector", this.collector).append(
 				"validDistributionFlag", this.validDistributionFlag).append(
 				"country", this.country).append("earliestDateCollected",
 				this.earliestDateCollected).append("continent", this.continent)
@@ -291,5 +296,6 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 						"higherGeography", this.higherGeography).toString();
 	}
 
+	
 	
 }

@@ -16,6 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A mapping between a resource and an extension (incl darwincore itself).
@@ -25,7 +29,7 @@ import javax.persistence.Transient;
  *
  */
 @Entity
-public class ViewMapping {
+public class ViewMapping implements Comparable {
 	private Long id;	
 	private OccurrenceResource resource;
 	private DwcExtension extension;
@@ -69,6 +73,51 @@ public class ViewMapping {
 	}
 	public void setPropertyMappings(Set<PropertyMapping> propertyMappings) {
 		this.propertyMappings = propertyMappings;
+	}
+	
+	
+	
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		ViewMapping myClass = (ViewMapping) object;
+		return new CompareToBuilder().append(this.extension, myClass.extension)
+				.append(this.viewSql, myClass.viewSql).append(
+						this.propertyMappings, myClass.propertyMappings)
+				.append(this.resource, myClass.resource).append(this.id,
+						myClass.id).toComparison();
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof ViewMapping)) {
+			return false;
+		}
+		ViewMapping rhs = (ViewMapping) object;
+		return new EqualsBuilder().append(this.extension, rhs.extension)
+				.append(this.viewSql, rhs.viewSql).append(
+						this.propertyMappings, rhs.propertyMappings).append(
+						this.resource, rhs.resource).append(this.id, rhs.id)
+				.isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(651663619, 212381131).append(this.extension)
+				.append(this.viewSql).append(this.propertyMappings).append(
+						this.resource).append(this.id).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("propertyMappings",
+				this.propertyMappings).append("viewSql", this.viewSql).append(
+				"resource", this.resource).append("id", this.id).append(
+				"extension", this.extension).toString();
 	}
 	
 	
