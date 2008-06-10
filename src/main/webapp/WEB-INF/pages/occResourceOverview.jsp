@@ -12,31 +12,31 @@
 
 <table>
 	<tr>
-		<td><fmt:message key='resource.description'/></td>
+		<th><fmt:message key='resource.description'/></th>
 		<td><s:property value="occResource.description"/></td>
 	</tr>
 	<tr>
-		<td><fmt:message key='occResource.serviceName'/></td>
+		<th><fmt:message key='occResource.serviceName'/></th>
 		<td><s:property value="occResource.serviceName"/></td>
 	</tr>
 	<tr>
-		<td><fmt:message key='occResource.isValidConnection'/></td>
+		<th><fmt:message key='occResource.isValidConnection'/></th>
 		<td><s:property value="occResource.isValidConnection()"/></td>
 	</tr>
 	<tr>
-		<td><fmt:message key='occResource.recordCount'/></td>
+		<th><fmt:message key='occResource.recordCount'/></th>
 		<td><s:property value="occResource.recordCount"/></td>
 	</tr>
 	<tr>
-		<td><fmt:message key='occResource.lastImport'/></td>
+		<th><fmt:message key='occResource.lastImport'/></th>
 		<td><s:property value="occResource.lastImport"/></td>
 	</tr>
 	<tr>
-		<td><fmt:message key='occResourceOverview.validation'/></td>
+		<th><fmt:message key='occResourceOverview.validation'/></th>
 		<td>Some validation summary...</td>
 	</tr>
 	<tr>			
-		<td><fmt:message key='occResourceOverview.mapping'/></td>
+		<th><fmt:message key='occResourceOverview.mapping'/></th>
 		<td>
         <c:if test="${not empty extensions}">
 			<s:form id="addMapping" action="editMapping" namespace="/manage/occ" method="post" validate="true">
@@ -59,11 +59,11 @@
 		</tr>
 	</s:iterator>
 	<tr>
-		<td><fmt:message key='occResourceOverview.manager'/></td>
+		<th><fmt:message key='occResourceOverview.manager'/></th>
 		<td><s:property value="occResource.creator.getFullName()"/></td>
 	</tr>
 	<tr>
-		<td><fmt:message key='occResourceOverview.lastModified'/></td>
+		<th><fmt:message key='occResourceOverview.lastModified'/></th>
 		<td><s:property value="occResource.modified"/>, <s:property value="occResource.modifier.getFullName()"/></td>
 	</tr>
 </table>

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,13 +17,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+/**
+ * A mapping between a resource and an extension (incl darwincore itself).
+ * The ViewMapping defines the sql statement used to upload data for a certain extension,
+ * therefore for every extension there exists a separate sql statement which should be uploaded one after the other.
+ * @author markus
+ *
+ */
 @Entity
 public class ViewMapping {
 	private Long id;	
 	private OccurrenceResource resource;
 	private DwcExtension extension;
 	private String viewSql;
-	private Set<ExtensionProperty> properties = new HashSet<ExtensionProperty>();
+	private Set<PropertyMapping> propertyMappings = new HashSet<PropertyMapping>();
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -40,10 +48,6 @@ public class ViewMapping {
 		this.resource = resource;
 	}
 	
-	/**
-	 * view is null for the darwin core mapping
-	 * @return
-	 */
 	@ManyToOne
 	public DwcExtension getExtension() {
 		return extension;
@@ -59,12 +63,12 @@ public class ViewMapping {
 		this.viewSql = sql;
 	}
 	
-	@OneToMany
-	public Set<ExtensionProperty> getProperties() {
-		return properties;
+	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	public Set<PropertyMapping> getPropertyMappings() {
+		return propertyMappings;
 	}
-	public void setProperties(Set<ExtensionProperty> properties) {
-		this.properties = properties;
+	public void setPropertyMappings(Set<PropertyMapping> propertyMappings) {
+		this.propertyMappings = propertyMappings;
 	}
 	
 	

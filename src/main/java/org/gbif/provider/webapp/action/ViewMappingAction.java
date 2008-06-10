@@ -9,7 +9,6 @@ import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.service.ViewMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -18,7 +17,7 @@ public class ViewMappingAction extends BaseAction implements Preparable{
     private DatasourceInspectionManager datasourceInspectionManager;
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     private GenericManager<DwcExtension, Long> dwcExtensionManager;
-    private ViewMappingManager viewMappingManager;
+    private GenericManager<ViewMapping, Long> viewMappingManager;
     private ViewMapping mapping;
     private List tables;
 	private Long mapping_id;
@@ -40,11 +39,11 @@ public class ViewMappingAction extends BaseAction implements Preparable{
 		this.dwcExtensionManager = dwcExtensionManager;
 	}
 
-	public void setViewMappingManager(ViewMappingManager viewMappingManager) {
+	public void setViewMappingManager(
+			GenericManager<ViewMapping, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 
-	
 	public ViewMapping getMapping() {
 		return mapping;
 	}

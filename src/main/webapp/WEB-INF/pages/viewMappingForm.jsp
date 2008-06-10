@@ -14,22 +14,27 @@
     </li>
     
     <s:textfield key="mapping.viewSql" required="true" cssClass="text large"/>
+
     <s:a href="">preview data</s:a>
-    <div>
+    <div id="preview">
     	DATA in small, pagable, collapsable table...
     </div>
-	<ul>
-	<s:iterator value="mapping.properties" status="propertyStatus">
-	<li>
-		<s:property value="propertyStatus.count"/>
-		<s:a href="%{link}"><s:property value="name" /></s:a>
-		<c:if test="mapping.properties">
-		</c:if>
-	</li>
+    
+    <div id="mappingTable">
+    <table>
+	<s:iterator value="mapping.extension.properties" status="propertyStatus">
+      <tr>
+        <th>
+			<s:property value="propertyStatus.count"/>
+			<s:a href="%{link}"><s:property value="name" /></s:a>
+        </th>
+        <td>
+			<s:select id="property_%{id}" name="property_%{id}" list="mapping.extension.properties" listKey="id" listValue="name"/>
+        </td>
+      </tr>
 	</s:iterator>
-	</ul>
-	
-	<s:select id="hulla" name="all_properties" list="mapping.extension.properties" listKey="id" listValue="name"/>
+    </table>
+	</div>	
 		    	
     <li class="buttonBar bottom">
         <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>

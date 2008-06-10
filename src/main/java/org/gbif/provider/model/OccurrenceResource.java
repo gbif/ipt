@@ -23,18 +23,7 @@ import org.hibernate.annotations.Cascade;
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
 	private Set<ViewMapping> mappings = new HashSet<ViewMapping>();
-	
-	@Transient
-	public ViewMapping getDwcMapping() {
-		for (ViewMapping m : mappings){
-			if (m.getExtension() == null){
-				return m; 
-			}
-		}
-		return null;
-	}
-	
-	//fetch=FetchType.EAGER
+		
 	@OneToMany(mappedBy="resource", cascade=CascadeType.ALL)
 	public Set<ViewMapping> getMappings() {
 		return mappings;

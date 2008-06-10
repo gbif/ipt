@@ -12,8 +12,9 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class ExtensionProperty {
-	private Long id;	
+	private Long id;
 	private DwcExtension extension;
+	private String uri;
 	private String name;
 	private String link;
 	
@@ -31,6 +32,13 @@ public class ExtensionProperty {
 	}
 	public void setExtension(DwcExtension extension) {
 		this.extension = extension;
+	}
+	
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 	
 	public String getName() {
