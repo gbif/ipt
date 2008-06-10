@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class DwcExtension {
 	private Long id;	
 	private String name;
 	private String namespace;
-	private String documentation;
+	private String link;
 	private Set<ExtensionProperty> properties = new HashSet<ExtensionProperty>();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -48,15 +49,14 @@ public class DwcExtension {
 		this.namespace = namespace;
 	}
 	
-	@Lob
-	public String getDocumentation() {
-		return documentation;
+	public String getLink() {
+		return link;
 	}
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
+	public void setLink(String link) {
+		this.link = link;
 	}
 	
-	@OneToMany(mappedBy="extension", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="extension", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	public Set<ExtensionProperty> getProperties() {
 		return properties;
 	}

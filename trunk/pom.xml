@@ -599,9 +599,9 @@
                 <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
                 <jdbc.version>5.0.5</jdbc.version>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:mysql://localhost/bioserver?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
-                <jdbc.username>root</jdbc.username>
-                <jdbc.password></jdbc.password>
+                <jdbc.url><![CDATA[jdbc:mysql://localhost/bioserver?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
+                <jdbc.username>providertool</jdbc.username>
+                <jdbc.password>providertool</jdbc.password>
             </properties>
             <build>
                 <plugins>
@@ -756,7 +756,7 @@
         <jdbc.version>5.0.5</jdbc.version>
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
         <jdbc.url><![CDATA[jdbc:mysql://localhost/providertoolkit?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
-        <jdbc.username>root</jdbc.username>
-        <jdbc.password></jdbc.password>
+        <jdbc.username>providertool</jdbc.username>
+        <jdbc.password>providertool</jdbc.password>
     </properties>
 </project>

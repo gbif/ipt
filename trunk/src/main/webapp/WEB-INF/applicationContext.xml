@@ -34,7 +34,8 @@
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="viewMappingDao" class="org.gbif.provider.dao.hibernate.ViewMappingHibernateDao">
+    <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="org.gbif.provider.model.ViewMapping"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="dwcExtensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
@@ -51,7 +52,7 @@
         <constructor-arg ref="occResourceDao"/>
     </bean>
 
-    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerImpl">        
+    <bean id="viewMappingManager" class="org.appfuse.service.impl.GenericManagerImpl">        
         <constructor-arg ref="viewMappingDao"/>
     </bean>    
     

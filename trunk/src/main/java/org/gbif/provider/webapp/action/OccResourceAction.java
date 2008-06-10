@@ -12,7 +12,6 @@ import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.service.ViewMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -20,7 +19,7 @@ import com.opensymphony.xwork2.Preparable;
 public class OccResourceAction extends BaseAction implements Preparable, SessionAware {
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     private GenericManager<DwcExtension, Long> dwcExtensionManager;
-    private ViewMappingManager viewMappingManager;
+    private GenericManager<ViewMapping, Long> viewMappingManager;
     private List occResources;
     private List<DwcExtension> extensions;
     private OccurrenceResource occResource;
@@ -38,7 +37,8 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
 		this.dwcExtensionManager = dwcExtensionManager;
 	}
 
-	public void setViewMappingManager(ViewMappingManager viewMappingManager) {
+	public void setViewMappingManager(
+			GenericManager<ViewMapping, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 
