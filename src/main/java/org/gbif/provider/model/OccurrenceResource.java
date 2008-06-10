@@ -14,6 +14,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A specific resource representing the external datasource for uploading darwincore records
@@ -35,5 +39,53 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		mapping.setResource(this);
 		this.mappings.add(mapping);
 	}
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		OccurrenceResource myClass = (OccurrenceResource) object;
+		return new CompareToBuilder().append(this.mappings, myClass.mappings)
+				.toComparison();
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof OccurrenceResource)) {
+			return false;
+		}
+		OccurrenceResource rhs = (OccurrenceResource) object;
+		return new EqualsBuilder().append(this.mappings, rhs.mappings)
+				.isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-1029818303, -989622385).append(
+				this.mappings).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("jdbcUser", this.getJdbcUser())
+				.append("created", this.getCreated()).append("modified",
+						this.getModified()).append("id", this.getId()).append(
+						"jdbcUrl", this.getJdbcUrl()).append("validConnection",
+						this.isValidConnection()).append("modifier",
+						this.getModifier()).append("uri", this.getUri())
+				.append("jdbcDriverClass", this.getJdbcDriverClass()).append(
+						"recordCount", this.getRecordCount()).append(
+						"description", this.getDescription()).append("creator",
+						this.getCreator()).append("title", this.getTitle())
+				.append("serviceName", this.getServiceName()).append(
+						"mappings", this.mappings).append("datasource",
+						this.getDatasource()).append("lastImport",
+						this.getLastImport()).append("uuid", this.getUuid())
+				.append("jdbcPassword", this.getJdbcPassword()).toString();
+	}
+	
+	
 	
 }

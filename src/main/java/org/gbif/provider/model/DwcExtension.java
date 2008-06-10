@@ -18,9 +18,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 @Entity
-public class DwcExtension {
+public class DwcExtension implements Comparable {
 	private Long id;	
 	private String name;
 	private String namespace;
@@ -63,6 +67,51 @@ public class DwcExtension {
 	public void setProperties(Set<ExtensionProperty> properties) {
 		this.properties = properties;
 	}
+	
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof DwcExtension)) {
+			return false;
+		}
+		DwcExtension rhs = (DwcExtension) object;
+		return new EqualsBuilder().append(this.namespace, rhs.namespace)
+				.append(this.link, rhs.link).append(this.properties,
+						rhs.properties).append(this.name, rhs.name).append(
+						this.id, rhs.id).isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(1767311583, -1664356007).append(
+				this.namespace).append(this.link).append(this.properties)
+				.append(this.name).append(this.id).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("name", this.name).append(
+				"properties", this.properties).append("id", this.id).append(
+				"namespace", this.namespace).append("link", this.link)
+				.toString();
+	}
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		DwcExtension myClass = (DwcExtension) object;
+		return new CompareToBuilder().append(this.namespace, myClass.namespace)
+				.append(this.link, myClass.link).append(this.properties,
+						myClass.properties).append(this.name, myClass.name)
+				.append(this.id, myClass.id).toComparison();
+	}
+	
+	
+
 	
 	
 }

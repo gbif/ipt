@@ -57,15 +57,10 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
 	public void setResource_id(Long resource_id) {
 		this.resource_id = resource_id;
 	}
-	public void setId(Long  id) {
+	public void setId(Long id) {
         this. id =  id;
     }
-	private void setId2ResourceId(){
-		// resource_id has higher priority cause its used for the resource interceptor
-    	if (resource_id != null){
-    		id=resource_id;
-    	}
-	}
+
 	public OccurrenceResource getOccResource() {
         return occResource;
     }
@@ -74,27 +69,23 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
 
 	public void prepare() {
-        if (getRequest().getMethod().equalsIgnoreCase("post")) {
-            // prevent failures on new
-            String occResourceId = getRequest().getParameter("occResource.id");
-            if (occResourceId != null && !occResourceId.equals("")) {
-                occResource = occResourceManager.get(new Long(occResourceId));
-            }
+		// resource_id has higher priority cause its used for the resource interceptor
+    	if (resource_id != null){
+    		id=resource_id;
+    	}
+        if (id != null) {
+        	occResource = occResourceManager.get(id);
+        }else{
+        	occResource = new OccurrenceResource();
         }
     }
 
     public String execute(){
-    	setId2ResourceId();
-        if (id != null) {
-        	occResource = occResourceManager.get(id);
-        	extensions = dwcExtensionManager.getAll();
-        	// filter already mapped extensions
-        	for (ViewMapping map : occResource.getMappings()){
-    			extensions.remove(map.getExtension());
-        	}
-        }else{
-        	return ERROR;
-        }
+    	extensions = dwcExtensionManager.getAll();
+    	// filter already mapped extensions
+    	for (ViewMapping map : occResource.getMappings()){
+			extensions.remove(map.getExtension());
+    	}
     	return SUCCESS;
     }
 
@@ -104,12 +95,6 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
 
     public String edit() {
-    	setId2ResourceId();
-        if (id != null) {
-        	occResource = occResourceManager.get(id);
-        }else{
-        	occResource = new OccurrenceResource();
-        }
         return SUCCESS;
     }
     
@@ -131,7 +116,6 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
     
     public String delete() {
-    	setId2ResourceId();
         occResourceManager.remove(occResource.getId());
         saveMessage(getText("occResource.deleted"));
         return "delete";

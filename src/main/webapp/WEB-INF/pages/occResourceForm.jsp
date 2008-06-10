@@ -8,7 +8,7 @@
 
 <s:form id="occResourceForm" action="saveOccResource" method="post" validate="true">
     <li style="display: none">
-        <s:hidden key="occResource.id"/>
+        <s:hidden name="resource_id" value="%{occResource.id}"/>
     </li>
 
     <s:textfield key="occResource.title" required="true" cssClass="text medium"/>

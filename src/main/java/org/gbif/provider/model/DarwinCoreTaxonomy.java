@@ -157,6 +157,33 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 	public void setIdentificationQualifer(String identificationQualifer) {
 		this.identificationQualifer = identificationQualifer;
 	}
+	
+	
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof DarwinCoreTaxonomy)) {
+			return false;
+		}
+		DarwinCoreTaxonomy rhs = (DarwinCoreTaxonomy) object;
+		return new EqualsBuilder()
+				.append(this.higherTaxon, rhs.higherTaxon)
+				.append(this.identificationQualifer, rhs.identificationQualifer)
+				.append(this.family, rhs.family).append(this.specificEpithet,
+						rhs.specificEpithet).append(this.order, rhs.order)
+				.append(this.id, rhs.id).append(this.genus, rhs.genus).append(
+						this.scientificName, rhs.scientificName).append(
+						this.kingdom, rhs.kingdom).append(this.phylum,
+						rhs.phylum).append(this.authorYearOfScientificName,
+						rhs.authorYearOfScientificName).append(
+						this.infraspecificEpithet, rhs.infraspecificEpithet)
+				.append(this.infraspecificRank, rhs.infraspecificRank).append(
+						this.classs, rhs.classs).append(this.dwc, rhs.dwc)
+				.append(this.nomenclaturalCode, rhs.nomenclaturalCode)
+				.isEquals();
+	}
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
@@ -183,38 +210,14 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 						myClass.nomenclaturalCode).toComparison();
 	}
 	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof DarwinCoreTaxonomy)) {
-			return false;
-		}
-		DarwinCoreTaxonomy rhs = (DarwinCoreTaxonomy) object;
-		return new EqualsBuilder().append(
-				this.higherTaxon, rhs.higherTaxon).append(
-				this.identificationQualifer, rhs.identificationQualifer)
-				.append(this.family, rhs.family).append(this.specificEpithet,
-						rhs.specificEpithet).append(this.order, rhs.order)
-				.append(this.id, rhs.id).append(this.genus, rhs.genus).append(
-						this.scientificName, rhs.scientificName).append(
-						this.kingdom, rhs.kingdom).append(this.phylum,
-						rhs.phylum).append(this.authorYearOfScientificName,
-						rhs.authorYearOfScientificName).append(
-						this.infraspecificEpithet, rhs.infraspecificEpithet)
-				.append(this.infraspecificRank, rhs.infraspecificRank).append(
-						this.classs, rhs.classs).append(this.dwc, rhs.dwc)
-				.append(this.nomenclaturalCode, rhs.nomenclaturalCode)
-				.isEquals();
-	}
-	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(1497690227, -1731552407).append(this.higherTaxon).append(
-				this.identificationQualifer).append(this.family).append(
-				this.specificEpithet).append(this.order).append(this.id)
-				.append(this.genus).append(this.scientificName).append(
-						this.kingdom).append(this.phylum).append(
+		return new HashCodeBuilder(-1729505797, -1175574695).append(
+				this.higherTaxon).append(this.identificationQualifer).append(
+				this.family).append(this.specificEpithet).append(this.order)
+				.append(this.id).append(this.genus).append(this.scientificName)
+				.append(this.kingdom).append(this.phylum).append(
 						this.authorYearOfScientificName).append(
 						this.infraspecificEpithet).append(
 						this.infraspecificRank).append(this.classs).append(
@@ -230,14 +233,15 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 				this.kingdom).append("phylum", this.phylum).append(
 				"higherTaxon", this.higherTaxon).append("genus", this.genus)
 				.append("order", this.order).append("family", this.family)
+				.append("infraspecificEpithet", this.infraspecificEpithet)
 				.append("infraspecificRank", this.infraspecificRank).append(
-						"infraspecificEpithet", this.infraspecificEpithet)
-				.append("specificEpithet", this.specificEpithet).append(
+						"specificEpithet", this.specificEpithet).append(
 						"nomenclaturalCode", this.nomenclaturalCode).append(
 						"authorYearOfScientificName",
 						this.authorYearOfScientificName).append(
 						"scientificName", this.scientificName).toString();
 	}
+
 	
 	
 }
