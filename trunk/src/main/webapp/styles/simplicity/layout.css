@@ -59,12 +59,6 @@
                 margin-left: 0;
 				display: inline;
 			}
-            div#main td {
-				padding-left: 20px;
-			}
-            div#main th, td {
-				padding-bottom: 5px;
-			}
         /* END MAIN */
         
         /* SUB */
