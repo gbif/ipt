@@ -67,7 +67,8 @@ public class ViewMapping implements Comparable {
 		this.viewSql = sql;
 	}
 	
-	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	// fetch=FetchType.EAGER
+	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
 	public Set<PropertyMapping> getPropertyMappings() {
 		return propertyMappings;
 	}
@@ -83,8 +84,7 @@ public class ViewMapping implements Comparable {
 	public int compareTo(Object object) {
 		ViewMapping myClass = (ViewMapping) object;
 		return new CompareToBuilder().append(this.extension, myClass.extension)
-				.append(this.viewSql, myClass.viewSql).append(
-						this.propertyMappings, myClass.propertyMappings)
+				.append(this.viewSql, myClass.viewSql)
 				.append(this.resource, myClass.resource).append(this.id,
 						myClass.id).toComparison();
 	}
@@ -98,7 +98,6 @@ public class ViewMapping implements Comparable {
 		ViewMapping rhs = (ViewMapping) object;
 		return new EqualsBuilder().append(this.extension, rhs.extension)
 				.append(this.viewSql, rhs.viewSql).append(
-						this.propertyMappings, rhs.propertyMappings).append(
 						this.resource, rhs.resource).append(this.id, rhs.id)
 				.isEquals();
 	}
@@ -107,15 +106,14 @@ public class ViewMapping implements Comparable {
 	 */
 	public int hashCode() {
 		return new HashCodeBuilder(651663619, 212381131).append(this.extension)
-				.append(this.viewSql).append(this.propertyMappings).append(
+				.append(this.viewSql).append(
 						this.resource).append(this.id).toHashCode();
 	}
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("propertyMappings",
-				this.propertyMappings).append("viewSql", this.viewSql).append(
+		return new ToStringBuilder(this).append("viewSql", this.viewSql).append(
 				"resource", this.resource).append("id", this.id).append(
 				"extension", this.extension).toString();
 	}

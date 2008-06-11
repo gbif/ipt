@@ -39,13 +39,14 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		mapping.setResource(this);
 		this.mappings.add(mapping);
 	}
+	
+	
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	public int compareTo(Object object) {
 		OccurrenceResource myClass = (OccurrenceResource) object;
-		return new CompareToBuilder().append(this.mappings, myClass.mappings)
-				.toComparison();
+		return new CompareToBuilder().toComparison();
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -55,32 +56,31 @@ public class OccurrenceResource extends DatasourceBasedResource {
 			return false;
 		}
 		OccurrenceResource rhs = (OccurrenceResource) object;
-		return new EqualsBuilder().append(this.mappings, rhs.mappings)
-				.isEquals();
+		return new EqualsBuilder().appendSuper(super.equals(object)).isEquals();
 	}
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(-1029818303, -989622385).append(
-				this.mappings).toHashCode();
+		return new HashCodeBuilder(830738695, -777913529).appendSuper(
+				super.hashCode()).toHashCode();
 	}
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("jdbcUser", this.getJdbcUser())
-				.append("created", this.getCreated()).append("modified",
-						this.getModified()).append("id", this.getId()).append(
-						"jdbcUrl", this.getJdbcUrl()).append("validConnection",
+		return new ToStringBuilder(this).appendSuper(super.toString()).append(
+				"jdbcUser", this.getJdbcUser()).append("created",
+				this.getCreated()).append("modified", this.getModified())
+				.append("id", this.getId())
+				.append("jdbcUrl", this.getJdbcUrl()).append("validConnection",
 						this.isValidConnection()).append("modifier",
 						this.getModifier()).append("uri", this.getUri())
 				.append("jdbcDriverClass", this.getJdbcDriverClass()).append(
 						"recordCount", this.getRecordCount()).append(
 						"description", this.getDescription()).append("creator",
 						this.getCreator()).append("title", this.getTitle())
-				.append("serviceName", this.getServiceName()).append(
-						"mappings", this.mappings).append("datasource",
+				.append("serviceName", this.getServiceName()).append("datasource",
 						this.getDatasource()).append("lastImport",
 						this.getLastImport()).append("uuid", this.getUuid())
 				.append("jdbcPassword", this.getJdbcPassword()).toString();

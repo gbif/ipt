@@ -16,8 +16,18 @@
     <s:textfield key="mapping.viewSql" required="true" cssClass="text large"/>
 
     <s:a href="">preview data</s:a>
+
     <div id="preview">
-    	DATA in small, pagable, collapsable table...
+<table dojoType="dijit.Grid" data="store" style="height: 100px; width: 300px;">
+	<thead>
+		<tr>
+			<th attribute="preview_col_id" dataType="String">ID</th>
+			<s:iterator value="columns" status="columnStatus">
+				<th field="preview_col_%{#columnStatus.count}" dataType="String">col<s:property value="#columnStatus.count"/></th>
+			</s:iterator>
+		</tr>
+	</thead>
+</table>
     </div>
     
     <div id="mappingTable">
@@ -25,7 +35,7 @@
 	<s:iterator value="mapping.extension.properties" status="propertyStatus">
       <tr>
         <th>
-			<s:property value="propertyStatus.count"/>
+			<s:property value="#propertyStatus.count"/>
 			<s:a href="%{link}"><s:property value="name" /></s:a>
         </th>
         <td>

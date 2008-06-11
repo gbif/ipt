@@ -23,4 +23,8 @@ public class DatasourceInspectionManagerImpl implements DatasourceInspectionMana
     	}
 	    return tableNames;
 	}
+	
+	public ResultSet executeViewSql(String viewSql) throws SQLException{
+		return dao.executeSql(viewSql);
+	}
 }
