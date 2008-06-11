@@ -1,0 +1,8 @@
+/* PROVIDERTOOL customising simplicity */
+
+table.lefthead td {
+	padding-left: 20px;
+}
+table.lefthead th, td {
+	padding-bottom: 5px;
+}
