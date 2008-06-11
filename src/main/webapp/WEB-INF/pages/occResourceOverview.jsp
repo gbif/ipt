@@ -52,7 +52,7 @@
 			<s:param name="mapping_id" value="id"/>
 		</s:url>
 		<tr>
-			<td class="subrow"><s:property value="extension.name"/></td>
+			<td class="subrow">&nbsp;&nbsp;<s:property value="extension.name"/></td>
 			<td>
 				<s:a href="%{mappingUrl}"><s:property value="properties.size"/> mapped concepts</s:a>
 			</td>

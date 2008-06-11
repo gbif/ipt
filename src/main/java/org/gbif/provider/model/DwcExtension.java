@@ -60,7 +60,8 @@ public class DwcExtension implements Comparable {
 		this.link = link;
 	}
 	
-	@OneToMany(mappedBy="extension", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	//, fetch=FetchType.EAGER
+	@OneToMany(mappedBy="extension", cascade=CascadeType.ALL)
 	public Set<ExtensionProperty> getProperties() {
 		return properties;
 	}
@@ -78,8 +79,7 @@ public class DwcExtension implements Comparable {
 		}
 		DwcExtension rhs = (DwcExtension) object;
 		return new EqualsBuilder().append(this.namespace, rhs.namespace)
-				.append(this.link, rhs.link).append(this.properties,
-						rhs.properties).append(this.name, rhs.name).append(
+				.append(this.link, rhs.link).append(this.name, rhs.name).append(
 						this.id, rhs.id).isEquals();
 	}
 	/**
@@ -87,15 +87,13 @@ public class DwcExtension implements Comparable {
 	 */
 	public int hashCode() {
 		return new HashCodeBuilder(1767311583, -1664356007).append(
-				this.namespace).append(this.link).append(this.properties)
-				.append(this.name).append(this.id).toHashCode();
+				this.namespace).append(this.link).append(this.name).append(this.id).toHashCode();
 	}
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("name", this.name).append(
-				"properties", this.properties).append("id", this.id).append(
+		return new ToStringBuilder(this).append("name", this.name).append("id", this.id).append(
 				"namespace", this.namespace).append("link", this.link)
 				.toString();
 	}
@@ -105,13 +103,9 @@ public class DwcExtension implements Comparable {
 	public int compareTo(Object object) {
 		DwcExtension myClass = (DwcExtension) object;
 		return new CompareToBuilder().append(this.namespace, myClass.namespace)
-				.append(this.link, myClass.link).append(this.properties,
-						myClass.properties).append(this.name, myClass.name)
+				.append(this.link, myClass.link).append(this.name, myClass.name)
 				.append(this.id, myClass.id).toComparison();
 	}
-	
-	
-
 	
 	
 }

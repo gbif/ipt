@@ -1,3 +1,5 @@
+/* @override http://localhost:8080/styles/simplicity/layout.css */
+
 /* A CSS Framework by Mike Stenhouse of Content with Style */
 
 /* SITE SPECIFIC LAYOUT */
@@ -52,10 +54,17 @@
             div#main {
                 padding-left: 15px;
             }
-                div#main form ul li {
-                    list-style-type: none;
-                    margin-left: 0;
-                }
+            div#main form ul li {
+                list-style-type: none;
+                margin-left: 0;
+				display: inline;
+			}
+            div#main td {
+				padding-left: 20px;
+			}
+            div#main th, td {
+				padding-bottom: 5px;
+			}
         /* END MAIN */
         
         /* SUB */

@@ -1,6 +1,7 @@
 package org.gbif.provider.dao.jdbc;
 
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,5 +17,10 @@ public class DatasourceInspectionDaoImpl extends SimpleJdbcDaoSupport implements
 	
 	public DatabaseMetaData getDatabaseMetaData() throws SQLException {
 		return this.getConnection().getMetaData();
+	}
+	public ResultSet executeSql(String sql) throws SQLException {
+		PreparedStatement ps = this.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		ResultSet rs = ps.executeQuery();
+		return rs;
 	}
 }

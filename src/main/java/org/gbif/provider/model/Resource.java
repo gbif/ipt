@@ -18,6 +18,10 @@ import javax.persistence.ManyToOne;
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.service.Resolvable;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A generic resource describing any digitial, online and non digital available biological resources
@@ -75,6 +79,53 @@ public class Resource extends ResolvableBase implements Timestampable{
 	}
 	public void setModifier(User modifier) {
 		this.modifier = modifier;
+	}
+	
+	
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		Resource myClass = (Resource) object;
+		return new CompareToBuilder().append(this.created, myClass.created)
+				.append(this.creator, myClass.creator).append(this.title,
+						myClass.title).append(this.modifier, myClass.modifier)
+				.append(this.description, myClass.description).toComparison();
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof Resource)) {
+			return false;
+		}
+		Resource rhs = (Resource) object;
+		return new EqualsBuilder().appendSuper(super.equals(object)).append(
+				this.created, rhs.created).append(this.creator, rhs.creator)
+				.append(this.title, rhs.title).append(this.modifier,
+						rhs.modifier).append(this.description, rhs.description)
+				.isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-1602376339, -1881026299).appendSuper(
+				super.hashCode()).append(this.created).append(this.creator)
+				.append(this.title).append(this.modifier).append(
+						this.description).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).appendSuper(super.toString()).append(
+				"created", this.created).append("modified", this.getModified())
+				.append("creator", this.creator).append("description",
+						this.description).append("id", this.getId()).append(
+						"title", this.title).append("modifier", this.modifier)
+				.append("uuid", this.getUuid()).append("uri", this.getUri())
+				.toString();
 	}
 
 

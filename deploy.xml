@@ -14,7 +14,27 @@
                 <include name="**/*.*"/> 
             </fileset>  
           </copy>
-		  <copy todir="${webserver.home}WEB-INF/pages">
+        <copy todir="${webserver.home}decorators">
+            <fileset dir="src/main/webapp/decorators">
+                <include name="**/*.*"/> 
+            </fileset>  
+        </copy>
+        <copy todir="${webserver.home}styles">
+            <fileset dir="src/main/webapp/styles">
+                <include name="**/*.*"/> 
+            </fileset>  
+        </copy>
+        <copy todir="${webserver.home}images">
+            <fileset dir="src/main/webapp/images">
+                <include name="**/*.*"/> 
+            </fileset>  
+        </copy>
+        <copy todir="${webserver.home}scripts">
+            <fileset dir="src/main/webapp/scripts">
+                <include name="**/*.*"/> 
+            </fileset>  
+        </copy>
+        <copy todir="${webserver.home}WEB-INF/pages">
           <fileset dir="src/main/webapp/WEB-INF/pages">
               <include name="**/*.*"/> 
           </fileset>  

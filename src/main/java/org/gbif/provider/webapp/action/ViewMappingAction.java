@@ -1,6 +1,7 @@
 package org.gbif.provider.webapp.action;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.service.GenericManager;
@@ -20,6 +21,7 @@ public class ViewMappingAction extends BaseAction implements Preparable{
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private ViewMapping mapping;
     private List tables;
+    private List columns;
 	private Long mapping_id;
 	private Long resource_id;
 	private Long extension_id;
@@ -87,6 +89,10 @@ public class ViewMappingAction extends BaseAction implements Preparable{
             	mapping.setExtension(dwcExtensionManager.get(extension_id));
             }
         }
+        columns=new ArrayList();
+        for (int i = 2; i < 7; i++) {
+        	columns.add(i);
+        }
     }
 	
 	public String edit(){
@@ -123,5 +129,8 @@ public class ViewMappingAction extends BaseAction implements Preparable{
         return SUCCESS;
     }
 
- 
+    public String testSql(){
+    	//datasourceInspectionManager.executeViewSql(mapping.getViewSql());
+    	return null;
+    }
 }
