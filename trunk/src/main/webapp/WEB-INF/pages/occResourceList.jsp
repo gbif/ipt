@@ -8,7 +8,7 @@
 
 <c:set var="buttons">
     <input type="button" style="margin-right: 5px" class="button"
-        onclick="location.href='<c:url value="editOccResource.html"/>'"
+        onclick="location.href='<s:url action="editOccResource"><s:param name="new" value="1"/></s:url>'"
         value="<fmt:message key="button.add"/>"/>
 
     <input type="button" class="button" onclick="location.href='<c:url value="/home.html"/>'"
@@ -18,9 +18,8 @@
 <c:out value="${buttons}" escapeXml="false" />
 
 <display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
-    <display:column property="id" sortable="true" href="occResource.html" media="html"
-        paramId="resource_id" paramProperty="id" titleKey="resource.id"/>
-    <display:column property="title" sortable="true" titleKey="resource.title"/>
+    <display:column property="title" sortable="true" href="occResource.html" media="html"
+        paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
     <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">
          <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>

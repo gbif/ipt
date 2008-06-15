@@ -40,11 +40,8 @@ public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResourc
 	public T save(T resource) {
 		// call the real thing first to get a resourceId assigned
 		T persistentResource = super.save(resource);
-		// update registry if this datasource exists already
-		if (registry.containsKey(persistentResource.getId())){
-			//registry.registerDatasource(persistentResource, true);
-		}
-		registry.registerDatasource(persistentResource, true);
+		//datasource might have been updated, so re-register
+		registry.registerDatasource(resource);
 		return persistentResource;
 	}
 

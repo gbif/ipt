@@ -26,21 +26,23 @@ public class DatasourceInterceptor extends AbstractInterceptor{
 		Long resourceId = null;
 		if (requested_id != null) {
 			// cast to integer
-			resourceId = Long.valueOf(requested_id.toString());
-			if (resourceId != null){
-				invocation.getInvocationContext().getSession().put(SESSION_ATTRIBUTE, resourceId);
-				log.debug("Set new session resourceId=" + resourceId);
-			}else{
+			try {
+				resourceId = Long.valueOf(requested_id.toString());
+				if (resourceId != null){
+					invocation.getInvocationContext().getSession().put(SESSION_ATTRIBUTE, resourceId);
+					log.info("Changed resourceId in session to " + resourceId);
+				}
+			} catch (NumberFormatException e) {
 				log.warn("Requested resource_id is no integer: "+requested_id);				
 			}
 		}
-		//set locale in datasource context
+		//set id in datasource context
 		resourceId = (Long) invocation.getInvocationContext().getSession().get(SESSION_ATTRIBUTE);
 		if (resourceId != null){
 			DatasourceContextHolder.setResourceId(resourceId);
 			log.debug("Set datasource context to resourceId=" + resourceId);
 		}else{
-			log.debug("resourceId=null");
+			log.debug("No datasource context. resourceId=null");
 		}
 
 		// continue with the rest of the interceptor stack not setting the result name here

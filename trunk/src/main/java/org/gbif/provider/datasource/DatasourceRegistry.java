@@ -35,17 +35,17 @@ public class DatasourceRegistry{
 	}
 
 
-	public void registerDatasource(DatasourceBasedResource resource, boolean overwrite){
-		if (datasources.containsKey(resource.getId()) && !overwrite ){
-			// do nothing
-		}else{
-			DataSource dsa = resource.getDatasource();
-			datasources.put(resource.getId(), dsa);
-		}
+	public void registerDatasource(DatasourceBasedResource resource){
+		DataSource dsa = resource.getDatasource();
+		datasources.put(resource.getId(), dsa);
 	}
 	
 	public DataSource getDataSource(Long id){
-		return datasources.get(id);
+		if (!datasources.containsKey(id)){
+			DatasourceBasedResource resource = occResourceManager.get(id);
+			registerDatasource(resource);
+		}
+		return datasources.get(id);			
 	}
 
 	public void removeDatasource(Long id){

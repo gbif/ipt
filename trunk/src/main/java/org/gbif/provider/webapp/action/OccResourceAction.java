@@ -16,22 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseAction implements Preparable, SessionAware {
-    private GenericManager<OccurrenceResource, Long> occResourceManager;
+public class OccResourceAction extends BaseResourceAction implements Preparable{
     private GenericManager<DwcExtension, Long> dwcExtensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private List occResources;
     private List<DwcExtension> extensions;
     private OccurrenceResource occResource;
-    private Map session;
-    private Long resource_id;
     private Long id;
 
 	
-	public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-
 	public void setDwcExtensionManager(
 			GenericManager<DwcExtension, Long> dwcExtensionManager) {
 		this.dwcExtensionManager = dwcExtensionManager;
@@ -40,10 +33,6 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
 	public void setViewMappingManager(
 			GenericManager<ViewMapping, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
-	}
-
-	public void setSession(Map arg0) {
-		session = arg0;
 	}
 	
 	public List getOccResources() {
@@ -54,9 +43,6 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
 		return extensions;
 	}
 
-	public void setResource_id(Long resource_id) {
-		this.resource_id = resource_id;
-	}
 	public void setId(Long id) {
         this. id =  id;
     }
@@ -69,18 +55,14 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     }
 
 	public void prepare() {
-		// resource_id has higher priority cause its used for the resource interceptor
-    	if (resource_id != null){
-    		id=resource_id;
-    	}
-        if (id != null) {
-        	occResource = occResourceManager.get(id);
+    	if (getResourceId() != null && !isNew()){
+        	occResource = occResourceManager.get(getResourceId());
         }else{
         	occResource = new OccurrenceResource();
         }
     }
 
-    public String execute(){
+	public String execute(){
     	extensions = dwcExtensionManager.getAll();
     	// filter already mapped extensions
     	for (ViewMapping map : occResource.getMappings()){
@@ -118,6 +100,8 @@ public class OccResourceAction extends BaseAction implements Preparable, Session
     public String delete() {
         occResourceManager.remove(occResource.getId());
         saveMessage(getText("occResource.deleted"));
+        // remove resource from session
+    	session.put(DatasourceInterceptor.SESSION_ATTRIBUTE, null);
         return "delete";
     }
 

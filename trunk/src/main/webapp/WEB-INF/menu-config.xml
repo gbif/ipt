@@ -5,14 +5,15 @@
     </Displayers>
     <Menus>
         <Menu name="ExplorerMenu" title="menu.explorer" page="/resources.html">            
-            <Item name="OccResources" title="menu.explorer.occurrence" page="/occResources.html"/>
-            <Item name="TaxResources" title="menu.explorer.checklist" page="/taxResources.html"/>
-            <Item name="resources" title="menu.explorer.resource" page="/resources.html"/>
+            <Item name="OccResources" title="menu.explorer.occurrences" page="/occResources.html"/>
+            <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
+            <Item name="resources" title="menu.explorer.resources" page="/resources.html"/>
         </Menu>
         <Menu name="ManagerMenu" title="menu.manager" page="/resources.html" roles="ROLE_ADMIN,ROLE_MANAGER">
-            <Item name="OccResources" title="menu.explorer.occurrence" page="/manage/occ/occResources.html"/>
-            <Item name="TaxResources" title="menu.explorer.checklist" page="/taxResources.html"/>
-            <Item name="resources" title="menu.explorer.resource" page="/resources.html"/>
+            <Item name="OccResources" title="menu.explorer.occurrences" page="/manage/occ/occResources.html"/>
+            <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
+            <Item name="resources" title="menu.explorer.resources" page="/resources.html"/>
+            <Item name="extensions" title="menu.explorer.extensions" page="/manage/occ/extensions.html"/>
         </Menu> 
         <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER,ROLE_MANAGER">
             <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>

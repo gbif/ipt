@@ -22,13 +22,14 @@
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
             <!-- Interceptor to select the external routing datasource -->
-            <interceptor name="datasourceSelector" class="datasourceInterceptor"/>
+            <interceptor name="datasource-selector" class="datasourceInterceptor"/>
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="alias"/>
                 <interceptor-ref name="params"/>
                 <interceptor-ref name="servlet-config"/>
+                <interceptor-ref name="datasource-selector"/>
                 <interceptor-ref name="prepare"/>
                 <interceptor-ref name="i18n"/>
                 <interceptor-ref name="chain"/>
@@ -60,7 +61,6 @@
             </interceptor-stack>
             <interceptor-stack name="managerStack">
                 <interceptor-ref name="defaultStack"/>
-                <interceptor-ref name="datasourceSelector"/>
                 <interceptor-ref name="managerOnly"/>
             </interceptor-stack>
         </interceptors>
@@ -164,9 +164,12 @@
     
     <!-- Actions managing occurrence resources -->
     <package name="manageOcc" namespace="/manage/occ" extends="manage">
+        <default-action-ref name="occResources" />
+
         <global-results>
             <result name="error" type="redirect-action">occResources</result>
         </global-results>
+        
         
         <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
             <result>/WEB-INF/pages/occResourceList.jsp</result>
@@ -183,13 +186,17 @@
         <action name="saveOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
             <result name="success" type="redirect-action">
                 <param name="actionName">occResource</param>
-                <param name="parse">true</param>
-                <param name="id">${occResource.id}</param>
+                <!-- 
+                    <param name="parse">true</param>
+                    <param name="resource_id">${resource_id}</param>
+                -->
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">occResource</param>
-                <param name="parse">true</param>
-                <param name="id">${occResource.id}</param>
+                <!-- 
+                    <param name="parse">true</param>
+                    <param name="resource_id">${resource_id}</param>
+                -->
             </result>
             <result name="delete" type="redirect-action">occResources</result>
         </action>
@@ -202,12 +209,22 @@
             <result>/WEB-INF/pages/viewMappingForm.jsp</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">occResource</param>
+                <!-- 
                 <param name="parse">true</param>
                 <param name="id">${resource_id}</param>
+                -->
             </result>
         </action>
         
-    </package>
+        <action name="extension" class="org.gbif.provider.webapp.action.DwcExtensionAction">
+            <result>/WEB-INF/pages/dwcExtensionDetail.jsp</result>
+        </action>
+
+        <action name="extensions" class="org.gbif.provider.webapp.action.DwcExtensionAction" method="list">
+            <result>/WEB-INF/pages/dwcExtensionList.jsp</result>
+        </action>
+        
+</package>
     
 
     <!-- Actions managing checklist resources -->

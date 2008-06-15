@@ -20,6 +20,7 @@
     </bean>
     
     <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" >
+        <property name="occResourceManager" ref="occResourceManager"/>
     </bean>
     
     <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">

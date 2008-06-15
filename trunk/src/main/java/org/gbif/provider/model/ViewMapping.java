@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.IndexColumn;
 
 /**
  * A mapping between a resource and an extension (incl darwincore itself).
@@ -29,12 +30,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-public class ViewMapping implements Comparable {
+public class ViewMapping implements Comparable<ViewMapping> {
 	private Long id;	
 	private OccurrenceResource resource;
 	private DwcExtension extension;
 	private String viewSql;
-	private Set<PropertyMapping> propertyMappings = new HashSet<PropertyMapping>();
+	private List<PropertyMapping> propertyMappings = new ArrayList<PropertyMapping>();
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -69,24 +70,26 @@ public class ViewMapping implements Comparable {
 	
 	// fetch=FetchType.EAGER
 	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
-	public Set<PropertyMapping> getPropertyMappings() {
+	@IndexColumn(name = "mapping_order")
+	public List<PropertyMapping> getPropertyMappings() {
 		return propertyMappings;
 	}
-	public void setPropertyMappings(Set<PropertyMapping> propertyMappings) {
+	public void setPropertyMappings(List<PropertyMapping> propertyMappings) {
 		this.propertyMappings = propertyMappings;
 	}
 	
-	
+	public void addPropertyMapping(PropertyMapping propertyMapping) {
+		propertyMapping.setViewMapping(this);
+		propertyMappings.add(propertyMapping);
+	}
 	
 	/**
+	 * Natural sort order is resource, then extension
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(Object object) {
-		ViewMapping myClass = (ViewMapping) object;
-		return new CompareToBuilder().append(this.extension, myClass.extension)
-				.append(this.viewSql, myClass.viewSql)
-				.append(this.resource, myClass.resource).append(this.id,
-						myClass.id).toComparison();
+	public int compareTo(ViewMapping view) {
+		int resCmp = resource.compareTo(view.resource); 
+		return (resCmp != 0 ? resCmp : extension.compareTo(view.extension));
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)
