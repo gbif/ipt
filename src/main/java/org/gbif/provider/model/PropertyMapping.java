@@ -18,7 +18,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-public class PropertyMapping implements Comparable {
+public class PropertyMapping implements Comparable<PropertyMapping> {
 	private Long id;	
 	private ViewMapping viewMapping;
 	private ExtensionProperty property;
@@ -66,15 +66,14 @@ public class PropertyMapping implements Comparable {
 	
 	
 	/**
+	 * Natural sort order is by viewMapping, then extension property
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(Object object) {
-		PropertyMapping myClass = (PropertyMapping) object;
-		return new CompareToBuilder().append(this.value, myClass.value).append(
-				this.column, myClass.column).append(this.property,
-				myClass.property).append(this.viewMapping, myClass.viewMapping)
-				.append(this.id, myClass.id).toComparison();
+	public int compareTo(PropertyMapping propMap) {
+		int viewCmp = viewMapping.compareTo(propMap.viewMapping); 
+		return (viewCmp != 0 ? viewCmp : property.compareTo(propMap.property));
 	}
+	
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */

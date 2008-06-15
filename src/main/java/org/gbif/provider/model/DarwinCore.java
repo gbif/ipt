@@ -135,28 +135,6 @@ public class DarwinCore extends ResolvableBase {
 	
 	
 	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Object object) {
-		DarwinCore myClass = (DarwinCore) object;
-		return new CompareToBuilder().append(this.basisOfRecord,
-				myClass.basisOfRecord).append(this.imageURL, myClass.imageURL)
-				.append(this.institutionCode, myClass.institutionCode).append(
-						this.dateLastModified, myClass.dateLastModified)
-				.append(this.remarks, myClass.remarks).append(
-						this.relatedInformation, myClass.relatedInformation)
-				.append(this.informationWithheld, myClass.informationWithheld)
-				.append(this.occurrenceResource, myClass.occurrenceResource)
-				.append(this.lifeStage, myClass.lifeStage).append(this.sex,
-						myClass.sex)
-				.append(this.attributes, myClass.attributes).append(
-						this.globalUniqueIdentifier,
-						myClass.globalUniqueIdentifier).append(
-						this.collectionCode, myClass.collectionCode).append(
-						this.catalogNumber, myClass.catalogNumber)
-				.toComparison();
-	}
-	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
 	public boolean equals(Object object) {

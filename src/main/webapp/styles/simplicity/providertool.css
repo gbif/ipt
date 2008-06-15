@@ -1,3 +1,4 @@
+
 /* PROVIDERTOOL customising simplicity */
 
 table.lefthead td {
@@ -5,4 +6,16 @@ table.lefthead td {
 }
 table.lefthead th, td {
 	padding-bottom: 5px;
+}
+
+.subentry {
+	display: block;
+	color: #8f0000;
+}
+
+.subform {
+	margin-left: 50px;
+}
+div#preview td {
+	padding: 5px;
 }

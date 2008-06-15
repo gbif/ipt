@@ -1,6 +1,7 @@
 package org.gbif.provider.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,14 +14,18 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.IndexColumn;
 
 @Entity
-public class ExtensionProperty implements Comparable {
+public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	private Long id;
 	private DwcExtension extension;
 	private String uri;
 	private String name;
 	private String link;
+	private List<String> terms = new ArrayList<String>();
+	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -58,16 +63,25 @@ public class ExtensionProperty implements Comparable {
 	public void setLink(String link) {
 		this.link = link;
 	}
+	
+	@CollectionOfElements
+	@IndexColumn(name = "term_order")
+	public List<String> getTerms() {
+		return terms;
+	}
+	public void setTerms(List<String> terms) {
+		this.terms = terms;
+	}
+	public boolean hasTerms(){
+		return !terms.isEmpty();
+	}
 	/**
+	 * Simply compare by ID so we can store any comparison order when designing new extensions
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(Object object) {
-		ExtensionProperty myClass = (ExtensionProperty) object;
-		return new CompareToBuilder().append(this.extension, myClass.extension)
-				.append(this.uri, myClass.uri).append(this.link, myClass.link)
-				.append(this.name, myClass.name).append(this.id, myClass.id)
-				.toComparison();
-	}
+	public int compareTo(ExtensionProperty prop) {
+	    return this.id.compareTo(prop.id); 
+    }
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */

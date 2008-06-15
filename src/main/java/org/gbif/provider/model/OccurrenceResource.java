@@ -40,14 +40,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		this.mappings.add(mapping);
 	}
 	
-	
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Object object) {
-		OccurrenceResource myClass = (OccurrenceResource) object;
-		return new CompareToBuilder().toComparison();
-	}
+
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */

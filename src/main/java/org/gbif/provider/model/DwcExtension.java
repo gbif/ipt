@@ -22,14 +22,15 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.hibernate.annotations.IndexColumn;
 
 @Entity
-public class DwcExtension implements Comparable {
+public class DwcExtension implements Comparable<DwcExtension> {
 	private Long id;	
 	private String name;
 	private String namespace;
 	private String link;
-	private Set<ExtensionProperty> properties = new HashSet<ExtensionProperty>();
+	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -62,13 +63,19 @@ public class DwcExtension implements Comparable {
 	
 	//, fetch=FetchType.EAGER
 	@OneToMany(mappedBy="extension", cascade=CascadeType.ALL)
-	public Set<ExtensionProperty> getProperties() {
+	@IndexColumn(name = "property_order")
+	public List<ExtensionProperty> getProperties() {
 		return properties;
 	}
-	public void setProperties(Set<ExtensionProperty> properties) {
+	public void setProperties(List<ExtensionProperty> properties) {
 		this.properties = properties;
-	}
+	}	
 	
+	public void addProperty(ExtensionProperty property) {
+		property.setExtension(this);
+		properties.add(property);
+	}
+
 	
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -100,11 +107,9 @@ public class DwcExtension implements Comparable {
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(Object object) {
-		DwcExtension myClass = (DwcExtension) object;
-		return new CompareToBuilder().append(this.namespace, myClass.namespace)
-				.append(this.link, myClass.link).append(this.name, myClass.name)
-				.append(this.id, myClass.id).toComparison();
+	public int compareTo(DwcExtension object) {
+		return new CompareToBuilder().append(this.namespace, object.namespace)
+				.append(this.id, object.id).toComparison();
 	}
 	
 	

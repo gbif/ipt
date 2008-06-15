@@ -1,706 +1,880 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <table name="app_user">
-        <column>id</column>
-        <column>username</column>
-        <column>password</column>
-        <column>first_name</column>
-        <column>last_name</column>
-        <column>address</column>
-        <column>city</column>
-        <column>country</column>
-        <column>email</column>
-        <column>phone_number</column>
-        <column>postal_code</column>
-        <column>province</column>
-        <column>website</column>
-        <column>password_hint</column>
-        <column>version</column>
-        <column>account_enabled</column>
-        <column>account_expired</column>
-        <column>account_locked</column>
-        <column>credentials_expired</column>
-        <row>
-            <value description="id">1</value>
-            <value description="username">manager</value>
-            <value description="password">12dea96fec20593566ab75692c9949596833adc9</value>
-            <value description="first_name">Markus</value>
-            <value description="last_name">Manager</value>
-            <value description="address"></value>
-            <value description="city">Copenhagen</value>
-            <value description="country">DK</value>
-            <value description="email">mdoering@gbif.org</value>
-            <value description="phone_number"></value>
-            <value description="postal_code">1000</value>
-            <value description="province"></value>
-            <value description="website">http://www.gbif.org</value>
-            <value description="password_hint"><![CDATA["user"]]></value>
-            <value description="version">1</value>
-            <value description="account_enabled">1</value>
-            <value description="account_expired">0</value>
-            <value description="account_locked">0</value>
-            <value description="credentials_expired">0</value>
-        </row>
-        <row>
-            <value description="id">2</value>
-            <value description="username">admin</value>
-            <value description="password">d033e22ae348aeb5660fc2140aec35850c4da997</value>
-            <value description="first_name">Matt</value>
-            <value description="last_name">Raible</value>
-            <value description="address"></value>
-            <value description="city">Denver</value>
-            <value description="country">US</value>
-            <value description="email"></value>
-            <value description="phone_number"></value>
-            <value description="postal_code">80210</value>
-            <value description="province">CO</value>
-            <value description="website">http://raibledesigns.com</value>
-            <value description="password_hint"><![CDATA[The same as your username.]]></value>
-            <value description="version">1</value>
-            <value description="account_enabled">1</value>
-            <value description="account_expired">0</value>
-            <value description="account_locked">0</value>
-            <value description="credentials_expired">0</value>
-        </row>
-    </table>
-    <table name="role">
-        <column>id</column>
-        <column>name</column>
-        <column>description</column>
-        <row>
-            <value description="id">1</value>
-            <value description="name">ROLE_ADMIN</value>
-            <value description="description"><![CDATA[Administrator role (can edit Users and Datasources)]]></value>
-        </row>
-        <row>
-            <value description="id">2</value>
-            <value description="name">ROLE_USER</value>
-            <value description="description"><![CDATA[Default role for all Users]]></value>
-        </row>
-        <row>
-            <value description="id">3</value>
-            <value description="name">ROLE_MANAGER</value>
-            <value description="description"><![CDATA[Manager role (can edit Datasources)]]></value>
-        </row>
-    </table>
-    <table name="user_role">
-        <column>user_id</column>
-        <column>role_id</column>
-        <row>
-            <value description="user_id">1</value>
-            <value description="role_id">3</value>
-        </row>
-        <row>
-            <value description="user_id">2</value>
-            <value description="role_id">1</value>
-        </row>
-    </table>
-    <table name="DwcExtension">
-        <column>id</column>
-        <column>name</column>
-        <column>namespace</column>
-        <column>link</column>
-        <row>
-            <value description="id">1</value>
-            <value description="name">Darwin Core</value>
-            <value description="namespace">http://rs.tdwg.org/dwc/dwcore/</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard</value>
-        </row>
-        <row>
-            <value description="id">2</value>
-            <value description="name">DwC Curatorial</value>
-            <value description="namespace">http://rs.tdwg.org/dwc/curatorial/</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CuratorialExtension</value>
-        </row>
-        <row>
-            <value description="id">3</value>
-            <value description="name">DwC Geospatial</value>
-            <value description="namespace">http://rs.tdwg.org/dwc/geospatial/</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension</value>
-        </row>
-        <row>
-            <value description="id">4</value>
-            <value description="name">DwC Paleontology</value>
-            <value description="namespace">http://rs.tdwg.org/dwc/paleontology/</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/PaleontologyElement</value>
-        </row>
-    </table>
-    <table name="ExtensionProperty">
-        <column>id</column>
-        <column>extension_id</column>
-        <column>uri</column>
-        <column>name</column>
-        <column>link</column>
-<row>
-    <value description="id">1</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/GlobalUniqueIdentifier</value>
-    <value description="name">GlobalUniqueIdentifier</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GlobalUniqueIdentifier</value>
-</row>
-
-<row>
-    <value description="id">2</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/DateLastModified</value>
-    <value description="name">DateLastModified</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DateLastModified</value>
-</row>
-
-<row>
-    <value description="id">3</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/BasisOfRecord</value>
-    <value description="name">BasisOfRecord</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/BasisOfRecord</value>
-</row>
-
-<row>
-    <value description="id">4</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/InstitutionCode</value>
-    <value description="name">InstitutionCode</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InstitutionCode</value>
-</row>
-
-<row>
-    <value description="id">5</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/CollectionCode</value>
-    <value description="name">CollectionCode</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectionCode</value>
-</row>
-
-<row>
-    <value description="id">6</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/CatalogNumber</value>
-    <value description="name">CatalogNumber</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumber</value>
-</row>
-
-<row>
-    <value description="id">7</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/InformationWithheld</value>
-    <value description="name">InformationWithheld</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InformationWithheld</value>
-</row>
-
-<row>
-    <value description="id">8</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Remarks</value>
-    <value description="name">Remarks</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Remarks</value>
-</row>
-
-<row>
-    <value description="id">9</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/ScientificName</value>
-    <value description="name">ScientificName</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ScientificName</value>
-</row>
-
-<row>
-    <value description="id">10</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/HigherTaxon</value>
-    <value description="name">HigherTaxon</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/HigherTaxon</value>
-</row>
-
-<row>
-    <value description="id">11</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Kingdom</value>
-    <value description="name">Kingdom</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Kingdom</value>
-</row>
-
-<row>
-    <value description="id">12</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Phylum</value>
-    <value description="name">Phylum</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Phylum</value>
-</row>
-
-<row>
-    <value description="id">13</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Class</value>
-    <value description="name">Class</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Class</value>
-</row>
-
-<row>
-    <value description="id">14</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Order</value>
-    <value description="name">Order</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Order</value>
-</row>
-
-<row>
-    <value description="id">15</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Family</value>
-    <value description="name">Family</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Family</value>
-</row>
-
-<row>
-    <value description="id">16</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Genus</value>
-    <value description="name">Genus</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Genus</value>
-</row>
-
-<row>
-    <value description="id">17</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/SpecificEpithet</value>
-    <value description="name">SpecificEpithet</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/SpecificEpithet</value>
-</row>
-
-<row>
-    <value description="id">18</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/InfraspecificRank</value>
-    <value description="name">InfraspecificRank</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InfraspecificRank</value>
-</row>
-
-<row>
-    <value description="id">19</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/InfraspecificEpithet</value>
-    <value description="name">InfraspecificEpithet</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InfraspecificEpithet</value>
-</row>
-
-<row>
-    <value description="id">20</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/AuthorYearOfScientificName</value>
-    <value description="name">AuthorYearOfScientificName</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/AuthorYearOfScientificName</value>
-</row>
-
-<row>
-    <value description="id">21</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/NomenclaturalCode</value>
-    <value description="name">NomenclaturalCode</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/NomenclaturalCode</value>
-</row>
-
-<row>
-    <value description="id">22</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/IdentificationQualifier</value>
-    <value description="name">IdentificationQualifier</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IdentificationQualifier</value>
-</row>
-
-<row>
-    <value description="id">23</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/HigherGeography</value>
-    <value description="name">HigherGeography</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/HigherGeography</value>
-</row>
-
-<row>
-    <value description="id">24</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Continent</value>
-    <value description="name">Continent</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Continent</value>
-</row>
-
-<row>
-    <value description="id">25</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/WaterBody</value>
-    <value description="name">WaterBody</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/WaterBody</value>
-</row>
-
-<row>
-    <value description="id">26</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/IslandGroup</value>
-    <value description="name">IslandGroup</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IslandGroup</value>
-</row>
-
-<row>
-    <value description="id">27</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Island</value>
-    <value description="name">Island</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Island</value>
-</row>
-
-<row>
-    <value description="id">28</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Country</value>
-    <value description="name">Country</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Country</value>
-</row>
-
-<row>
-    <value description="id">29</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/StateProvince</value>
-    <value description="name">StateProvince</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/StateProvince</value>
-</row>
-
-<row>
-    <value description="id">30</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/County</value>
-    <value description="name">County</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/County</value>
-</row>
-
-<row>
-    <value description="id">31</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Locality</value>
-    <value description="name">Locality</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Locality</value>
-</row>
-
-<row>
-    <value description="id">32</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/MinimumElevationInMeters</value>
-    <value description="name">MinimumElevationInMeters</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MinimumElevationInMeters</value>
-</row>
-
-<row>
-    <value description="id">33</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/MaximumElevationInMeters</value>
-    <value description="name">MaximumElevationInMeters</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MaximumElevationInMeters</value>
-</row>
-
-<row>
-    <value description="id">34</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/MinimumDepthInMeters</value>
-    <value description="name">MinimumDepthInMeters</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MinimumDepthInMeters</value>
-</row>
-
-<row>
-    <value description="id">35</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/MaximumDepthInMeters</value>
-    <value description="name">MaximumDepthInMeters</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MaximumDepthInMeters</value>
-</row>
-
-<row>
-    <value description="id">36</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/CollectingMethod</value>
-    <value description="name">CollectingMethod</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectingMethod</value>
-</row>
-
-<row>
-    <value description="id">37</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/ValidDistributionFlag</value>
-    <value description="name">ValidDistributionFlag</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ValidDistributionFlag</value>
-</row>
-
-<row>
-    <value description="id">38</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/EarliestDateCollected</value>
-    <value description="name">EarliestDateCollected</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/EarliestDateCollected</value>
-</row>
-
-<row>
-    <value description="id">39</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/LatestDateCollected</value>
-    <value description="name">LatestDateCollected</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/LatestDateCollected</value>
-</row>
-
-<row>
-    <value description="id">40</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Collector</value>
-    <value description="name">Collector</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Collector</value>
-</row>
-
-<row>
-    <value description="id">41</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Sex</value>
-    <value description="name">Sex</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Sex</value>
-</row>
-
-<row>
-    <value description="id">42</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/LifeStage</value>
-    <value description="name">LifeStage</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/LifeStage</value>
-</row>
-
-<row>
-    <value description="id">43</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/Attributes</value>
-    <value description="name">Attributes</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Attributes</value>
-</row>
-
-<row>
-    <value description="id">44</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/ImageURL</value>
-    <value description="name">ImageURL</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ImageURL</value>
-</row>
-
-<row>
-    <value description="id">45</value>
-    <value description="extension_id">1</value>
-    <value description="uri">http://rs.tdwg.org/dwc/dwcore/RelatedInformation</value>
-    <value description="name">RelatedInformation</value>
-    <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/RelatedInformation</value>
-</row>
-<!-- geospatial extension -->
-        <row>
-            <value description="id">100</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/DecimalLatitude</value>
-            <value description="name">DecimalLatitude</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DecimalLatitude</value>
-        </row>
-        <row>
-            <value description="id">101</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/DecimalLongitude</value>
-            <value description="name">DecimalLongitude</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DecimalLongitude</value>
-        </row>
-        <row>
-            <value description="id">102</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/GeodeticDatum</value>
-            <value description="name">GeodeticDatum</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeodeticDatum</value>
-        </row>
-        <row>
-            <value description="id">103</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/CoordinateUncertaintyInMeters</value>
-            <value description="name">CoordinateUncertaintyInMeters</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CoordinateUncertaintyInMeters</value>
-        </row>
-        <row>
-            <value description="id">104</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/FootprintWKT</value>
-            <value description="name">FootprintWKT</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FootprintWKT</value>
-        </row>
-        <row>
-            <value description="id">105</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/FootprintSpatialFit</value>
-            <value description="name">FootprintSpatialFit</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FootprintSpatialFit</value>
-        </row>
-        <row>
-            <value description="id">106</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/VerbatimCoordinates</value>
-            <value description="name">VerbatimCoordinates</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCoordinates</value>
-        </row>
-        <row>
-            <value description="id">107</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/VerbatimLatitude</value>
-            <value description="name">VerbatimLatitude</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimLatitude</value>
-        </row>
-        <row>
-            <value description="id">108</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/VerbatimLongitude</value>
-            <value description="name">VerbatimLongitude</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimLongitude</value>
-        </row>
-        <row>
-            <value description="id">109</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/VerbatimCoordinateSystem</value>
-            <value description="name">VerbatimCoordinateSystem</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCoordinateSystem</value>
-        </row>
-        <row>
-            <value description="id">110</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/GeoreferenceProtocol</value>
-            <value description="name">GeoreferenceProtocol</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceProtocol</value>
-        </row>
-        <row>
-            <value description="id">111</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/GeoreferenceSources</value>
-            <value description="name">GeoreferenceSources</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceSources</value>
-        </row>
-        <row>
-            <value description="id">112</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/GeoreferenceVerificationStatus</value>
-            <value description="name">GeoreferenceVerificationStatus</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceVerificationStatus</value>
-        </row>
-        <row>
-            <value description="id">113</value>
-            <value description="extension_id">3</value>
-            <value description="uri">http://rs.tdwg.org/dwc/geospatial/GeoreferenceRemarks</value>
-            <value description="name">GeoreferenceRemarks</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceRemarks</value>
-        </row>
-        <!-- curatorial extension -->
-        <row>
-            <value description="id">200</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/CatalogNumberNumeric</value>
-            <value description="name">CatalogNumberNumeric</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumberNumeric</value>
-        </row>
-        <row>
-            <value description="id">201</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/IdentifiedBy</value>
-            <value description="name">IdentifiedBy</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IdentifiedBy</value>
-        </row>
-        <row>
-            <value description="id">202</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/DateIdentified</value>
-            <value description="name">DateIdentified</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DateIdentified</value>
-        </row>
-        <row>
-            <value description="id">203</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/CollectorNumber</value>
-            <value description="name">CollectorNumber</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectorNumber</value>
-        </row>
-        <row>
-            <value description="id">204</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/FieldNumber</value>
-            <value description="name">FieldNumber</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FieldNumber</value>
-        </row>
-        <row>
-            <value description="id">205</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/FieldNotes</value>
-            <value description="name">FieldNotes</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FieldNotes</value>
-        </row>
-        <row>
-            <value description="id">206</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/VerbatimCollectingDate</value>
-            <value description="name">VerbatimCollectingDate</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCollectingDate</value>
-        </row>
-        <row>
-            <value description="id">207</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/VerbatimElevation</value>
-            <value description="name">VerbatimElevation</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimElevation</value>
-        </row>
-        <row>
-            <value description="id">208</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/VerbatimDepth</value>
-            <value description="name">VerbatimDepth</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimDepth</value>
-        </row>
-        <row>
-            <value description="id">209</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/Preparations</value>
-            <value description="name">Preparations</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Preparations</value>
-        </row>
-        <row>
-            <value description="id">210</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/TypeStatus</value>
-            <value description="name">TypeStatus</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/TypeStatus</value>
-        </row>
-        <row>
-            <value description="id">211</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/GenBankNumber</value>
-            <value description="name">GenBankNumber</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GenBankNumber</value>
-        </row>
-        <row>
-            <value description="id">212</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/OtherCatalogNumbers</value>
-            <value description="name">OtherCatalogNumbers</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/OtherCatalogNumbers</value>
-        </row>
-        <row>
-            <value description="id">213</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/RelatedCatalogedItems</value>
-            <value description="name">RelatedCatalogedItems</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/RelatedCatalogedItems</value>
-        </row>
-        <row>
-            <value description="id">214</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/Disposition</value>
-            <value description="name">Disposition</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Disposition</value>
-        </row>
-        <row>
-            <value description="id">215</value>
-            <value description="extension_id">2</value>
-            <value description="uri">http://rs.tdwg.org/dwc/curatorial/IndividualCount</value>
-            <value description="name">IndividualCount</value>
-            <value description="link">http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IndividualCount</value>
-        </row>        
-    </table>
+  <table name="DarwinCore">
+    <column>id</column>
+    <column>modified</column>
+    <column>uri</column>
+    <column>uuid</column>
+    <column>attributes</column>
+    <column>basisOfRecord</column>
+    <column>catalogNumber</column>
+    <column>collectionCode</column>
+    <column>dateLastModified</column>
+    <column>globalUniqueIdentifier</column>
+    <column>imageURL</column>
+    <column>informationWithheld</column>
+    <column>institutionCode</column>
+    <column>lifeStage</column>
+    <column>relatedInformation</column>
+    <column>remarks</column>
+    <column>sex</column>
+    <column>occurrenceResource_id</column>
+  </table>
+  <table name="DarwinCoreLocation">
+    <column>id</column>
+    <column>collectingMethod</column>
+    <column>collector</column>
+    <column>continent</column>
+    <column>country</column>
+    <column>county</column>
+    <column>dayOfYear</column>
+    <column>earliestDateCollected</column>
+    <column>higherGeography</column>
+    <column>island</column>
+    <column>islandGroup</column>
+    <column>latestDateCollected</column>
+    <column>locality</column>
+    <column>maximumDepthInMeters</column>
+    <column>maximumElevationInMeters</column>
+    <column>minimumDepthInMeters</column>
+    <column>minimumElevationInMeters</column>
+    <column>stateProvince</column>
+    <column>validDistributionFlag</column>
+    <column>waterBody</column>
+    <column>dwc_id</column>
+  </table>
+  <table name="DarwinCoreTaxonomy">
+    <column>id</column>
+    <column>authorYearOfScientificName</column>
+    <column>classs</column>
+    <column>family</column>
+    <column>genus</column>
+    <column>higherTaxon</column>
+    <column>identificationQualifer</column>
+    <column>infraspecificEpithet</column>
+    <column>infraspecificRank</column>
+    <column>kingdom</column>
+    <column>nomenclaturalCode</column>
+    <column>orderrr</column>
+    <column>phylum</column>
+    <column>scientificName</column>
+    <column>specificEpithet</column>
+    <column>dwc_id</column>
+  </table>
+  <table name="DwcExtension">
+    <column>id</column>
+    <column>link</column>
+    <column>name</column>
+    <column>namespace</column>
+    <row>
+      <value>1</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard</value>
+      <value><![CDATA[Darwin Core]]></value>
+      <value>http://rs.tdwg.org/dwc/dwcore/</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CuratorialExtension</value>
+      <value><![CDATA[DwC Curatorial]]></value>
+      <value>http://rs.tdwg.org/dwc/curatorial/</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension</value>
+      <value><![CDATA[DwC Geospatial]]></value>
+      <value>http://rs.tdwg.org/dwc/geospatial/</value>
+    </row>
+    <row>
+      <value>4</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/PaleontologyElement</value>
+      <value><![CDATA[DwC Paleontology]]></value>
+      <value>http://rs.tdwg.org/dwc/paleontology/</value>
+    </row>
+  </table>
+  <table name="ExtensionProperty">
+    <column>id</column>
+    <column>link</column>
+    <column>name</column>
+    <column>uri</column>
+    <column>extension_id</column>
+    <column>property_order</column>
+    <row>
+      <value>1</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GlobalUniqueIdentifier</value>
+      <value>GlobalUniqueIdentifier</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/GlobalUniqueIdentifier</value>
+      <value>1</value>
+      <value>0</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DateLastModified</value>
+      <value>DateLastModified</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/DateLastModified</value>
+      <value>1</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/BasisOfRecord</value>
+      <value>BasisOfRecord</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/BasisOfRecord</value>
+      <value>1</value>
+      <value>2</value>
+    </row>
+    <row>
+      <value>4</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InstitutionCode</value>
+      <value>InstitutionCode</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/InstitutionCode</value>
+      <value>1</value>
+      <value>3</value>
+    </row>
+    <row>
+      <value>5</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectionCode</value>
+      <value>CollectionCode</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/CollectionCode</value>
+      <value>1</value>
+      <value>4</value>
+    </row>
+    <row>
+      <value>6</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumber</value>
+      <value>CatalogNumber</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/CatalogNumber</value>
+      <value>1</value>
+      <value>5</value>
+    </row>
+    <row>
+      <value>7</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InformationWithheld</value>
+      <value>InformationWithheld</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/InformationWithheld</value>
+      <value>1</value>
+      <value>6</value>
+    </row>
+    <row>
+      <value>8</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Remarks</value>
+      <value>Remarks</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Remarks</value>
+      <value>1</value>
+      <value>7</value>
+    </row>
+    <row>
+      <value>9</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ScientificName</value>
+      <value>ScientificName</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/ScientificName</value>
+      <value>1</value>
+      <value>8</value>
+    </row>
+    <row>
+      <value>10</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/HigherTaxon</value>
+      <value>HigherTaxon</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/HigherTaxon</value>
+      <value>1</value>
+      <value>9</value>
+    </row>
+    <row>
+      <value>11</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Kingdom</value>
+      <value>Kingdom</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Kingdom</value>
+      <value>1</value>
+      <value>10</value>
+    </row>
+    <row>
+      <value>12</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Phylum</value>
+      <value>Phylum</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Phylum</value>
+      <value>1</value>
+      <value>11</value>
+    </row>
+    <row>
+      <value>13</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Class</value>
+      <value>Class</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Class</value>
+      <value>1</value>
+      <value>12</value>
+    </row>
+    <row>
+      <value>14</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Order</value>
+      <value>Order</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Order</value>
+      <value>1</value>
+      <value>13</value>
+    </row>
+    <row>
+      <value>15</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Family</value>
+      <value>Family</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Family</value>
+      <value>1</value>
+      <value>14</value>
+    </row>
+    <row>
+      <value>16</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Genus</value>
+      <value>Genus</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Genus</value>
+      <value>1</value>
+      <value>15</value>
+    </row>
+    <row>
+      <value>17</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/SpecificEpithet</value>
+      <value>SpecificEpithet</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/SpecificEpithet</value>
+      <value>1</value>
+      <value>16</value>
+    </row>
+    <row>
+      <value>18</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InfraspecificRank</value>
+      <value>InfraspecificRank</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/InfraspecificRank</value>
+      <value>1</value>
+      <value>17</value>
+    </row>
+    <row>
+      <value>19</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InfraspecificEpithet</value>
+      <value>InfraspecificEpithet</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/InfraspecificEpithet</value>
+      <value>1</value>
+      <value>18</value>
+    </row>
+    <row>
+      <value>20</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/AuthorYearOfScientificName</value>
+      <value>AuthorYearOfScientificName</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/AuthorYearOfScientificName</value>
+      <value>1</value>
+      <value>19</value>
+    </row>
+    <row>
+      <value>21</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/NomenclaturalCode</value>
+      <value>NomenclaturalCode</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/NomenclaturalCode</value>
+      <value>1</value>
+      <value>20</value>
+    </row>
+    <row>
+      <value>22</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IdentificationQualifier</value>
+      <value>IdentificationQualifier</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/IdentificationQualifier</value>
+      <value>1</value>
+      <value>21</value>
+    </row>
+    <row>
+      <value>23</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/HigherGeography</value>
+      <value>HigherGeography</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/HigherGeography</value>
+      <value>1</value>
+      <value>22</value>
+    </row>
+    <row>
+      <value>24</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Continent</value>
+      <value>Continent</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Continent</value>
+      <value>1</value>
+      <value>23</value>
+    </row>
+    <row>
+      <value>25</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/WaterBody</value>
+      <value>WaterBody</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/WaterBody</value>
+      <value>1</value>
+      <value>24</value>
+    </row>
+    <row>
+      <value>26</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IslandGroup</value>
+      <value>IslandGroup</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/IslandGroup</value>
+      <value>1</value>
+      <value>25</value>
+    </row>
+    <row>
+      <value>27</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Island</value>
+      <value>Island</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Island</value>
+      <value>1</value>
+      <value>26</value>
+    </row>
+    <row>
+      <value>28</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Country</value>
+      <value>Country</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Country</value>
+      <value>1</value>
+      <value>27</value>
+    </row>
+    <row>
+      <value>29</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/StateProvince</value>
+      <value>StateProvince</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/StateProvince</value>
+      <value>1</value>
+      <value>28</value>
+    </row>
+    <row>
+      <value>30</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/County</value>
+      <value>County</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/County</value>
+      <value>1</value>
+      <value>29</value>
+    </row>
+    <row>
+      <value>31</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Locality</value>
+      <value>Locality</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Locality</value>
+      <value>1</value>
+      <value>30</value>
+    </row>
+    <row>
+      <value>32</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MinimumElevationInMeters</value>
+      <value>MinimumElevationInMeters</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/MinimumElevationInMeters</value>
+      <value>1</value>
+      <value>31</value>
+    </row>
+    <row>
+      <value>33</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MaximumElevationInMeters</value>
+      <value>MaximumElevationInMeters</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/MaximumElevationInMeters</value>
+      <value>1</value>
+      <value>32</value>
+    </row>
+    <row>
+      <value>34</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MinimumDepthInMeters</value>
+      <value>MinimumDepthInMeters</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/MinimumDepthInMeters</value>
+      <value>1</value>
+      <value>33</value>
+    </row>
+    <row>
+      <value>35</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MaximumDepthInMeters</value>
+      <value>MaximumDepthInMeters</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/MaximumDepthInMeters</value>
+      <value>1</value>
+      <value>34</value>
+    </row>
+    <row>
+      <value>36</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectingMethod</value>
+      <value>CollectingMethod</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/CollectingMethod</value>
+      <value>1</value>
+      <value>35</value>
+    </row>
+    <row>
+      <value>37</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ValidDistributionFlag</value>
+      <value>ValidDistributionFlag</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/ValidDistributionFlag</value>
+      <value>1</value>
+      <value>36</value>
+    </row>
+    <row>
+      <value>38</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/EarliestDateCollected</value>
+      <value>EarliestDateCollected</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/EarliestDateCollected</value>
+      <value>1</value>
+      <value>37</value>
+    </row>
+    <row>
+      <value>39</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/LatestDateCollected</value>
+      <value>LatestDateCollected</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/LatestDateCollected</value>
+      <value>1</value>
+      <value>38</value>
+    </row>
+    <row>
+      <value>40</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Collector</value>
+      <value>Collector</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Collector</value>
+      <value>1</value>
+      <value>39</value>
+    </row>
+    <row>
+      <value>41</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Sex</value>
+      <value>Sex</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Sex</value>
+      <value>1</value>
+      <value>40</value>
+    </row>
+    <row>
+      <value>42</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/LifeStage</value>
+      <value>LifeStage</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/LifeStage</value>
+      <value>1</value>
+      <value>41</value>
+    </row>
+    <row>
+      <value>43</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Attributes</value>
+      <value>Attributes</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/Attributes</value>
+      <value>1</value>
+      <value>42</value>
+    </row>
+    <row>
+      <value>44</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ImageURL</value>
+      <value>ImageURL</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/ImageURL</value>
+      <value>1</value>
+      <value>43</value>
+    </row>
+    <row>
+      <value>45</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/RelatedInformation</value>
+      <value>RelatedInformation</value>
+      <value>http://rs.tdwg.org/dwc/dwcore/RelatedInformation</value>
+      <value>1</value>
+      <value>44</value>
+    </row>
+    <row>
+      <value>100</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DecimalLatitude</value>
+      <value>DecimalLatitude</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/DecimalLatitude</value>
+      <value>3</value>
+      <value>0</value>
+    </row>
+    <row>
+      <value>101</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DecimalLongitude</value>
+      <value>DecimalLongitude</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/DecimalLongitude</value>
+      <value>3</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>102</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeodeticDatum</value>
+      <value>GeodeticDatum</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/GeodeticDatum</value>
+      <value>3</value>
+      <value>2</value>
+    </row>
+    <row>
+      <value>103</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CoordinateUncertaintyInMeters</value>
+      <value>CoordinateUncertaintyInMeters</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/CoordinateUncertaintyInMeters</value>
+      <value>3</value>
+      <value>3</value>
+    </row>
+    <row>
+      <value>104</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FootprintWKT</value>
+      <value>FootprintWKT</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/FootprintWKT</value>
+      <value>3</value>
+      <value>4</value>
+    </row>
+    <row>
+      <value>105</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FootprintSpatialFit</value>
+      <value>FootprintSpatialFit</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/FootprintSpatialFit</value>
+      <value>3</value>
+      <value>5</value>
+    </row>
+    <row>
+      <value>106</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCoordinates</value>
+      <value>VerbatimCoordinates</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/VerbatimCoordinates</value>
+      <value>3</value>
+      <value>6</value>
+    </row>
+    <row>
+      <value>107</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimLatitude</value>
+      <value>VerbatimLatitude</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/VerbatimLatitude</value>
+      <value>3</value>
+      <value>7</value>
+    </row>
+    <row>
+      <value>108</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimLongitude</value>
+      <value>VerbatimLongitude</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/VerbatimLongitude</value>
+      <value>3</value>
+      <value>8</value>
+    </row>
+    <row>
+      <value>109</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCoordinateSystem</value>
+      <value>VerbatimCoordinateSystem</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/VerbatimCoordinateSystem</value>
+      <value>3</value>
+      <value>9</value>
+    </row>
+    <row>
+      <value>110</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceProtocol</value>
+      <value>GeoreferenceProtocol</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceProtocol</value>
+      <value>3</value>
+      <value>10</value>
+    </row>
+    <row>
+      <value>111</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceSources</value>
+      <value>GeoreferenceSources</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceSources</value>
+      <value>3</value>
+      <value>11</value>
+    </row>
+    <row>
+      <value>112</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceVerificationStatus</value>
+      <value>GeoreferenceVerificationStatus</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceVerificationStatus</value>
+      <value>3</value>
+      <value>12</value>
+    </row>
+    <row>
+      <value>113</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceRemarks</value>
+      <value>GeoreferenceRemarks</value>
+      <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceRemarks</value>
+      <value>3</value>
+      <value>13</value>
+    </row>
+    <row>
+      <value>200</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumberNumeric</value>
+      <value>CatalogNumberNumeric</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/CatalogNumberNumeric</value>
+      <value>2</value>
+      <value>0</value>
+    </row>
+    <row>
+      <value>201</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IdentifiedBy</value>
+      <value>IdentifiedBy</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/IdentifiedBy</value>
+      <value>2</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>202</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DateIdentified</value>
+      <value>DateIdentified</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/DateIdentified</value>
+      <value>2</value>
+      <value>2</value>
+    </row>
+    <row>
+      <value>203</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectorNumber</value>
+      <value>CollectorNumber</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/CollectorNumber</value>
+      <value>2</value>
+      <value>3</value>
+    </row>
+    <row>
+      <value>204</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FieldNumber</value>
+      <value>FieldNumber</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/FieldNumber</value>
+      <value>2</value>
+      <value>4</value>
+    </row>
+    <row>
+      <value>205</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FieldNotes</value>
+      <value>FieldNotes</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/FieldNotes</value>
+      <value>2</value>
+      <value>5</value>
+    </row>
+    <row>
+      <value>206</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCollectingDate</value>
+      <value>VerbatimCollectingDate</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/VerbatimCollectingDate</value>
+      <value>2</value>
+      <value>6</value>
+    </row>
+    <row>
+      <value>207</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimElevation</value>
+      <value>VerbatimElevation</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/VerbatimElevation</value>
+      <value>2</value>
+      <value>7</value>
+    </row>
+    <row>
+      <value>208</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimDepth</value>
+      <value>VerbatimDepth</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/VerbatimDepth</value>
+      <value>2</value>
+      <value>8</value>
+    </row>
+    <row>
+      <value>209</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Preparations</value>
+      <value>Preparations</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/Preparations</value>
+      <value>2</value>
+      <value>9</value>
+    </row>
+    <row>
+      <value>210</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/TypeStatus</value>
+      <value>TypeStatus</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/TypeStatus</value>
+      <value>2</value>
+      <value>10</value>
+    </row>
+    <row>
+      <value>211</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GenBankNumber</value>
+      <value>GenBankNumber</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/GenBankNumber</value>
+      <value>2</value>
+      <value>11</value>
+    </row>
+    <row>
+      <value>212</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/OtherCatalogNumbers</value>
+      <value>OtherCatalogNumbers</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/OtherCatalogNumbers</value>
+      <value>2</value>
+      <value>12</value>
+    </row>
+    <row>
+      <value>213</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/RelatedCatalogedItems</value>
+      <value>RelatedCatalogedItems</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/RelatedCatalogedItems</value>
+      <value>2</value>
+      <value>13</value>
+    </row>
+    <row>
+      <value>214</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Disposition</value>
+      <value>Disposition</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/Disposition</value>
+      <value>2</value>
+      <value>14</value>
+    </row>
+    <row>
+      <value>215</value>
+      <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IndividualCount</value>
+      <value>IndividualCount</value>
+      <value>http://rs.tdwg.org/dwc/curatorial/IndividualCount</value>
+      <value>2</value>
+      <value>15</value>
+    </row>
+  </table>
+  <table name="ExtensionProperty_terms">
+    <column>ExtensionProperty_id</column>
+    <column>element</column>
+    <column>term_order</column>
+    <row>
+      <value>3</value>
+      <value>Specimen</value>
+      <value>0</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>Observation</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>Fossil</value>
+      <value>2</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>Mineral</value>
+      <value>3</value>
+    </row>
+  </table>
+  <table name="PropertyMapping">
+    <column>id</column>
+    <column>column_index</column>
+    <column>value</column>
+    <column>property_id</column>
+    <column>viewMapping_id</column>
+    <column>mapping_order</column>
+  </table>
+  <table name="Resource">
+    <column>DTYPE</column>
+    <column>id</column>
+    <column>modified</column>
+    <column>uri</column>
+    <column>uuid</column>
+    <column>created</column>
+    <column>description</column>
+    <column>title</column>
+    <column>jdbcDriverClass</column>
+    <column>jdbcPassword</column>
+    <column>jdbcUrl</column>
+    <column>jdbcUser</column>
+    <column>lastImport</column>
+    <column>recordCount</column>
+    <column>serviceName</column>
+    <column>modifier_id</column>
+    <column>creator_id</column>
+  </table>
+  <table name="ViewMapping">
+    <column>id</column>
+    <column>viewSql</column>
+    <column>resource_id</column>
+    <column>extension_id</column>
+  </table>
+  <table name="app_user">
+    <column>id</column>
+    <column>account_expired</column>
+    <column>account_locked</column>
+    <column>address</column>
+    <column>city</column>
+    <column>country</column>
+    <column>postal_code</column>
+    <column>province</column>
+    <column>credentials_expired</column>
+    <column>email</column>
+    <column>account_enabled</column>
+    <column>first_name</column>
+    <column>last_name</column>
+    <column>password</column>
+    <column>password_hint</column>
+    <column>phone_number</column>
+    <column>username</column>
+    <column>version</column>
+    <column>website</column>
+    <row>
+      <value>1</value>
+      <value>true</value>
+      <value>true</value>
+      <value/>
+      <value>Grannisson</value>
+      <value>US</value>
+      <value>5678</value>
+      <value>UT</value>
+      <value>true</value>
+      <value>larissa@grange.com</value>
+      <value>true</value>
+      <value>Larissa</value>
+      <value><![CDATA[La Grange]]></value>
+      <value description="password">12dea96fec20593566ab75692c9949596833adc9</value>
+      <value description="password_hint"><![CDATA["user"]]></value>
+      <value/>
+      <value>admin</value>
+      <value>0</value>
+      <value>http://www.lagrange.com</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value>true</value>
+      <value>true</value>
+      <value/>
+      <value>Aarlborg</value>
+      <value>DK</value>
+      <value>1234</value>
+      <value>Aal</value>
+      <value>true</value>
+      <value>bernd@schneider.org</value>
+      <value>true</value>
+      <value>Bernd</value>
+      <value>Schneider</value>
+      <value description="password">12dea96fec20593566ab75692c9949596833adc9</value>
+      <value description="password_hint"><![CDATA["user"]]></value>
+      <value/>
+      <value>manager</value>
+      <value>0</value>
+      <value>http://www.gbif.org</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>true</value>
+      <value>true</value>
+      <value/>
+      <value>Quenchingen</value>
+      <value>DE</value>
+      <value>9999</value>
+      <value>nuthing</value>
+      <value>true</value>
+      <value>hendrik@mailinator.com</value>
+      <value>true</value>
+      <value>Hendrik</value>
+      <value>Osterfeld</value>
+      <value description="password">12dea96fec20593566ab75692c9949596833adc9</value>
+      <value description="password_hint"><![CDATA["user"]]></value>
+      <value/>
+      <value>user</value>
+      <value>0</value>
+      <value>http://www.osterfeld.com</value>
+    </row>
+  </table>
+  <table name="role">
+    <column>id</column>
+    <column>description</column>
+    <column>name</column>
+    <row>
+      <value>1</value>
+      <value><![CDATA[Administrator role (can edit Users and Datasources)]]></value>
+      <value>ROLE_ADMIN</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value><![CDATA[Default role for all Users]]></value>
+      <value>ROLE_USER</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value><![CDATA[Manager role (can edit Datasources)]]></value>
+      <value>ROLE_MANAGER</value>
+    </row>
+  </table>
+  <table name="user_role">
+    <column>user_id</column>
+    <column>role_id</column>
+    <row>
+      <value>1</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value>3</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value>2</value>
+    </row>
+  </table>
 </dataset>

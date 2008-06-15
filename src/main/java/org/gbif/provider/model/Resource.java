@@ -83,16 +83,6 @@ public class Resource extends ResolvableBase implements Timestampable{
 	
 	
 	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Object object) {
-		Resource myClass = (Resource) object;
-		return new CompareToBuilder().append(this.created, myClass.created)
-				.append(this.creator, myClass.creator).append(this.title,
-						myClass.title).append(this.modifier, myClass.modifier)
-				.append(this.description, myClass.description).toComparison();
-	}
-	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
 	public boolean equals(Object object) {

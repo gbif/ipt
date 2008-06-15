@@ -9,7 +9,7 @@ import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DatasourceRegistryAction extends BaseAction {
+public class DatasourceRegistryAction extends BaseResourceAction {
     private DatasourceRegistry datasourceRegistry;
     private List<DatasourceBasedResource> datasources;
 

@@ -1,39 +1,46 @@
 package org.gbif.provider.webapp.action;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.hibernate.type.SortedMapType;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mysql.jdbc.DatabaseMetaData;
 import com.opensymphony.xwork2.Preparable;
 
-public class ViewMappingAction extends BaseAction implements Preparable{
+public class ViewMappingAction extends BaseResourceAction implements Preparable{
+	private static Long FIXED_TERMS_IDX = 1000L;
     private DatasourceInspectionManager datasourceInspectionManager;
-    private GenericManager<OccurrenceResource, Long> occResourceManager;
     private GenericManager<DwcExtension, Long> dwcExtensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private ViewMapping mapping;
-    private List tables;
-    private List columns;
+    private List<PropertyMapping> mappings;
+    private ArrayList<String> viewColumnHeaders;
+    private List preview;
+    private Map<ExtensionProperty, Map>mapOptions;
 	private Long mapping_id;
-	private Long resource_id;
 	private Long extension_id;
 		
 	public void setDatasourceInspectionManager(
 			DatasourceInspectionManager datasourceInspectionManager) {
 		this.datasourceInspectionManager = datasourceInspectionManager;
-	}
-
-	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
 	}
 
 	public void setDwcExtensionManager(
@@ -49,25 +56,25 @@ public class ViewMappingAction extends BaseAction implements Preparable{
 	public ViewMapping getMapping() {
 		return mapping;
 	}
-
-	public List getTables() {
-		return tables;
-	}
 	
+	public void setMapping(ViewMapping mapping) {
+		this.mapping = mapping;
+	}
+
+	public List<PropertyMapping> getMappings() {
+		return mappings;
+	}
+
+	public void setMappings(List<PropertyMapping> mappings) {
+		this.mappings = mappings;
+	}
+
 	public Long getMapping_id() {
 		return mapping_id;
 	}
 
 	public void setMapping_id(Long mapping_id) {
 		this.mapping_id = mapping_id;
-	}
-
-	public Long getResource_id() {
-		return resource_id;
-	}
-
-	public void setResource_id(Long resource_id) {
-		this.resource_id = resource_id;
 	}
 
 	public Long getExtension_id() {
@@ -77,23 +84,92 @@ public class ViewMappingAction extends BaseAction implements Preparable{
 	public void setExtension_id(Long extension_id) {
 		this.extension_id = extension_id;
 	}
+	
+	public List<String> getViewColumnHeaders() {
+		return viewColumnHeaders;
+	}
 
+	public List getPreview() {
+		return preview;
+	}
+
+	public Map<ExtensionProperty, Map> getMapOptions() {
+		return mapOptions;
+	}
+
+	
+	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
         if (mapping_id != null) {
         	mapping = viewMappingManager.get(mapping_id);
-        	resource_id = mapping.getResource().getId();
         }else{
-            if (resource_id != null && extension_id != null) {
+            if (extension_id != null) {
             	mapping = new ViewMapping();
-            	mapping.setResource(occResourceManager.get(resource_id));
+            	mapping.setResource(occResourceManager.get(getResourceId()));
             	mapping.setExtension(dwcExtensionManager.get(extension_id));
+        		// initializse empty propertyMappings
+            	for (ExtensionProperty prop : mapping.getExtension().getProperties()){
+            		PropertyMapping propMap = new PropertyMapping();
+            		propMap.setProperty(prop);
+            		mapping.addPropertyMapping(propMap);
+            	}
             }
         }
-        columns=new ArrayList();
-        for (int i = 2; i < 7; i++) {
-        	columns.add(i);
+        
+        // prepare list of property mappings to create form with
+        mappings = mapping.getPropertyMappings();
+        //mappings = new ArrayList<PropertyMapping>(mapping.getPropertyMappings());
+        //Collections.sort(mappings);
+        
+        // get resultset preview and number of available comuns for mapping
+        if (mapping.getViewSql() !=null){
+            ResultSet rs = datasourceInspectionManager.executeViewSql(mapping.getViewSql());
+            ResultSetMetaData meta = rs.getMetaData();
+            int columnNum = meta.getColumnCount();
+            viewColumnHeaders = new ArrayList<String>();
+            for (int i=1; i<=columnNum; i++){
+            	viewColumnHeaders.add(meta.getColumnName(i));
+            }
+            // get first 5 rows into list of list for previewing data
+            preview = new ArrayList();
+            int row=0;
+            while (row < 5 && rs.next()){
+            	row += 1;
+            	List rowList=new ArrayList(columnNum);
+                for (int i=1; i<=columnNum; i++){
+                	rowList.add(rs.getObject(i));
+                }
+                preview.add(rowList);
+            }
         }
-    }
+
+        // create mapping options
+        mapOptions = new HashMap<ExtensionProperty, Map>();
+        DwcExtension extension = mapping.getExtension();
+        for (ExtensionProperty prop : extension.getProperties()){
+        	SortedMap<Long, String> options = new TreeMap();
+            // add column mapping options
+        	Long i = 1L;
+        	if (viewColumnHeaders != null){
+        		for (String head : viewColumnHeaders){
+                	options.put(i, "Column "+i+ " ["+head+"]");
+        			i++;
+        		}
+        	}
+        	//get real controlled vocabulary for properties from db
+        	i=FIXED_TERMS_IDX;
+        	if (prop.hasTerms()){
+            	options.put(i, "--- Fixed values ---");
+            	for (String term : prop.getTerms()){
+            		i++;
+                	options.put(i, term);
+            	}
+        	}
+        	
+        	mapOptions.put(prop, options);
+        }
+	}
+	
 	
 	public String edit(){
         return SUCCESS;
@@ -105,6 +181,12 @@ public class ViewMappingAction extends BaseAction implements Preparable{
         }
         if (delete != null) {
             return delete();
+        }
+        // update property mapping values
+        for (PropertyMapping pm : mapping.getPropertyMappings()){
+        	if (pm !=null && pm.getColumn()!=null && pm.getColumn() == 1000L){
+        		pm.setColumn(null);
+        	}
         }
         boolean isNew = (mapping.getId() == null);
         mapping = viewMappingManager.save(mapping);
@@ -120,14 +202,6 @@ public class ViewMappingAction extends BaseAction implements Preparable{
         return "cancel";
     }
 
-    public String dbmeta() {
-        try {
-			tables = datasourceInspectionManager.getAllTables();
-		} catch (SQLException e) {
-			return ERROR;
-		}
-        return SUCCESS;
-    }
 
     public String testSql(){
     	//datasourceInspectionManager.executeViewSql(mapping.getViewSql());

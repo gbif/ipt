@@ -27,7 +27,7 @@ import org.hibernate.annotations.Type;
  *
  */
 @MappedSuperclass
-public abstract class ResolvableBase extends BaseObject implements Comparable, Resolvable{
+public abstract class ResolvableBase extends BaseObject implements Comparable<ResolvableBase>, Resolvable{
 	private Long id;
 	private String uuid;
 	private String uri;
@@ -70,12 +70,10 @@ public abstract class ResolvableBase extends BaseObject implements Comparable, R
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(Object object) {
-		ResolvableBase myClass = (ResolvableBase) object;
-		return new CompareToBuilder().append(this.uri, myClass.uri).append(
-				this.uuid, myClass.uuid).append(this.id, myClass.id)
-				.toComparison();
+	public int compareTo(ResolvableBase object) {
+		return this.id.compareTo(object.id); 
 	}
+	
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
