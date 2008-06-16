@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -68,9 +69,9 @@ public class ViewMapping implements Comparable<ViewMapping> {
 		this.viewSql = sql;
 	}
 	
-	// fetch=FetchType.EAGER
-	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
-	@IndexColumn(name = "mapping_order")
+	@OneToMany(cascade=CascadeType.ALL)
+	@IndexColumn(name = "mapping_order",base=0, nullable=false)
+	@JoinColumn(name="viewMapping_id", nullable=false) 
 	public List<PropertyMapping> getPropertyMappings() {
 		return propertyMappings;
 	}

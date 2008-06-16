@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -34,6 +35,7 @@ public class PropertyMapping implements Comparable<PropertyMapping> {
 	}
 	
 	@ManyToOne(optional=false)
+	@JoinColumn(name="viewMapping_id", insertable=false, updatable=false, nullable=false)
 	public ViewMapping getViewMapping() {
 		return viewMapping;
 	}

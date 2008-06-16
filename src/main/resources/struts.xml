@@ -148,11 +148,6 @@
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
         
-        <!-- TEST actions -->
-        <action name="test_*" class="org.gbif.provider.webapp.action.PlaymateAction" method="{1}">
-            <param name="name">Pamela Portal</param>
-            <result>/WEB-INF/pages/test.jsp</result>
-        </action>
     </package>
     
     

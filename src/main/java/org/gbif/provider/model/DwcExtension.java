@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -61,9 +62,9 @@ public class DwcExtension implements Comparable<DwcExtension> {
 		this.link = link;
 	}
 	
-	//, fetch=FetchType.EAGER
-	@OneToMany(mappedBy="extension", cascade=CascadeType.ALL)
-	@IndexColumn(name = "property_order")
+	@OneToMany(cascade=CascadeType.ALL)
+	@IndexColumn(name = "property_order",base=0, nullable=false)
+	@JoinColumn(name="extension_id", nullable=false) 
 	public List<ExtensionProperty> getProperties() {
 		return properties;
 	}
