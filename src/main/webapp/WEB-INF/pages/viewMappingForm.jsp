@@ -14,7 +14,7 @@
         <s:hidden name="extension_id" value="%{extension_id}"/>
     </li>
     
-    <s:textfield key="viewMapping.viewSql" value="mapping.viewSql" required="true" cssClass="text large"/>
+    <s:textfield key="viewMapping.viewSql" value="%{mapping.viewSql}" required="true" cssClass="text large"/>
 		    	
     <li class="buttonBar bottom">
         <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>
