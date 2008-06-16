@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -36,6 +38,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	}
 	
 	@ManyToOne(optional=false)
+	@JoinColumn(name="extension_id", insertable=false, updatable=false, nullable=false)
 	public DwcExtension getExtension() {
 		return extension;
 	}
@@ -65,7 +68,8 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	}
 	
 	@CollectionOfElements
-	@IndexColumn(name = "term_order")
+	@IndexColumn(name = "term_order", base=0, nullable=false)
+	@JoinColumn(name="ExtensionProperty_id", nullable=false) 
 	public List<String> getTerms() {
 		return terms;
 	}
