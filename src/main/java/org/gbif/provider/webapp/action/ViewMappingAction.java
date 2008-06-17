@@ -1,3 +1,19 @@
+/***************************************************************************
+* Copyright (C) 2008 Global Biodiversity Information Facility Secretariat.
+* All Rights Reserved.
+*
+* The contents of this file are subject to the Mozilla Public
+* License Version 1.1 (the "License"); you may not use this file
+* except in compliance with the License. You may obtain a copy of
+* the License at http://www.mozilla.org/MPL/
+*
+* Software distributed under the License is distributed on an "AS
+* IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+* implied. See the License for the specific language governing
+* rights and limitations under the License.
+
+***************************************************************************/
+
 package org.gbif.provider.webapp.action;
 
 import java.sql.ResultSet;
@@ -118,29 +134,35 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
         
         // prepare list of property mappings to create form with
         mappings = mapping.getPropertyMappings();
-        //mappings = new ArrayList<PropertyMapping>(mapping.getPropertyMappings());
-        //Collections.sort(mappings);
         
         // get resultset preview and number of available comuns for mapping
+        viewColumnHeaders = new ArrayList<String>();
         if (mapping.getViewSql() !=null){
-            ResultSet rs = datasourceInspectionManager.executeViewSql(mapping.getViewSql());
-            ResultSetMetaData meta = rs.getMetaData();
-            int columnNum = meta.getColumnCount();
-            viewColumnHeaders = new ArrayList<String>();
-            for (int i=1; i<=columnNum; i++){
-            	viewColumnHeaders.add(meta.getColumnName(i));
-            }
-            // get first 5 rows into list of list for previewing data
-            preview = new ArrayList();
-            int row=0;
-            while (row < 5 && rs.next()){
-            	row += 1;
-            	List rowList=new ArrayList(columnNum);
-                for (int i=1; i<=columnNum; i++){
-                	rowList.add(rs.getObject(i));
-                }
-                preview.add(rowList);
-            }
+			try {
+	    		ResultSet rs = datasourceInspectionManager.executeViewSql(mapping.getViewSql());
+	            ResultSetMetaData meta = rs.getMetaData();
+	            int columnNum = meta.getColumnCount();
+	            for (int i=1; i<=columnNum; i++){
+	            	viewColumnHeaders.add(meta.getTableName(i)+"."+meta.getColumnName(i));
+	            }
+	            // get first 5 rows into list of list for previewing data
+	            preview = new ArrayList();
+	            int row=0;
+	            while (row < 5 && rs.next()){
+	            	row += 1;
+	            	List rowList=new ArrayList(columnNum);
+	                for (int i=1; i<=columnNum; i++){
+	                	rowList.add(rs.getObject(i));
+	                }
+	                preview.add(rowList);
+	            }
+	        } catch (SQLException e) {
+	            String msg = getText("viewMapping.sqlError");
+	            saveMessage(msg);
+	            log.warn(msg);
+			}
+
+
         }
 
         // create mapping options
