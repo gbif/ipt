@@ -14,7 +14,7 @@
         <s:hidden name="extension_id" value="%{extension_id}"/>
     </li>
     
-    <s:textfield key="viewMapping.viewSql" value="%{mapping.viewSql}" required="true" cssClass="text large"/>
+    <s:textarea key="mapping.viewSql" value="%{mapping.viewSql}" required="true" cssClass="text large"/>
 		    	
     <li class="buttonBar bottom">
         <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>
@@ -26,21 +26,25 @@
     </li>
 </s:form>
 
-<s:a href="">preview data</s:a>
 <div id="preview">
-	<table class="flexme">
+	<table class="table">
+		<thead>
+			<tr>
+				<s:iterator value="viewColumnHeaders" id="header" status="headStat">
+				<th><s:property value="header"/></th>
+				</s:iterator>
+			</tr>
+		</thead>
+		<tbody>
 		<s:iterator value="preview" status="rowStat">
 			<tr>
 				<s:iterator value="preview[#rowStat.count]" status="colStat">
-					<td><s:property value="preview[#rowStat.count][#colStat.count]"/></td>
+					<td><s:property value="preview[#rowStat.count][#colStat.count-1]"/></td>
 				</s:iterator>
 			</tr>
 		</s:iterator>
+		</tbody>
 	</table>
-	
-	<script type="text/javascript">
-	$('.flexme').flexigrid();
-	</script>
 </div>
 
 
@@ -64,7 +68,8 @@
         <br/> 
     </s:iterator> 
  
-    <s:submit value="Update"/> 
+ 	<br/>
+    <s:submit value="button.save" theme="simple"/> 
  
 </s:form> 
 
