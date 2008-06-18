@@ -17,26 +17,21 @@
 package org.gbif.provider.model;
 
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
+import javax.persistence.CascadeType;
 
-import org.gbif.provider.model.hibernate.Timestampable;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 
 /**
@@ -44,7 +39,7 @@ import java.sql.SQLException;
  * @author markus
  *
  */
-@MappedSuperclass
+@Entity
 public abstract class DatasourceBasedResource extends Resource {
 	private String serviceName;
 	private String jdbcDriverClass = "jdbc:mysql://localhost/providertoolkit";
@@ -53,6 +48,7 @@ public abstract class DatasourceBasedResource extends Resource {
 	private String jdbcPassword;
 	private Date lastImport;
 	private Integer recordCount;
+	private Map<Long, ViewMapping> mappings = new HashMap<Long, ViewMapping>();
 	// transient properties
 	private DataSource datasource;
 
@@ -112,8 +108,21 @@ public abstract class DatasourceBasedResource extends Resource {
 		this.recordCount = recordCount;
 	}
 
+	@OneToMany(mappedBy="resource", cascade=CascadeType.ALL)
+	@MapKey(columns = @Column(name = "extension_id"))
+	public Map<Long, ViewMapping> getMappings() {
+		return mappings;
+	}
+	public void setMappings(Map<Long, ViewMapping> mappings) {
+		this.mappings = mappings;
+	}
+	public void addMapping(ViewMapping mapping) {
+		mapping.setResource(this);
+		this.mappings.put(mapping.getExtension().getId(), mapping);
+	}
 	
-	
+	@Transient
+	abstract public ViewMapping getCoreMapping();
 	
 	@Transient
 	public DataSource getDatasource() {
@@ -131,6 +140,16 @@ public abstract class DatasourceBasedResource extends Resource {
 			datasource = null;
 		}
 	}
+	
+	@Transient
+	public boolean hasMetadata(){
+		boolean result = false;
+		if (getTitle() != null && getTitle().trim().length() > 0){
+			result = true;
+		}
+		return result;
+	}
+
 	@Transient
 	public boolean isValidConnection(){
 		boolean isValidConnection = false;
@@ -141,5 +160,24 @@ public abstract class DatasourceBasedResource extends Resource {
 			isValidConnection = false;
 		}
 		return isValidConnection ;
-	}	
+	}
+	
+	@Transient
+	public boolean hasData(){
+		if (recordCount > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	@Transient
+	public boolean hasMapping() {
+		boolean result = false;
+		if (mappings.size() > 0){
+			result = true;
+		}
+		return result;
+	}
+
+	
 }

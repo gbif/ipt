@@ -28,4 +28,7 @@ public class Constants {
      */
     public static final String MANAGER_ROLE = "ROLE_MANAGER";
 
+    public static final Long DARWIN_CORE_EXTENSION_ID = 1L;
+
+    public static final Long CHECKLIST_EXTENSION_ID = 1L;
 }

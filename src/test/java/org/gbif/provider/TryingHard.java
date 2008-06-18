@@ -1,5 +1,7 @@
 package org.gbif.provider;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,4 +40,15 @@ public class TryingHard {
 			System.out.println("no");
 		}
 	}
+
+	@Test
+	public void testEqual(){
+		Long i = new Long(1);
+		Long i2 = new Long(1);
+		Long i3 = new Long(2);
+		assertFalse(i==i2);
+		assertTrue(i.equals(i2));
+		assertFalse(i==i3);
+	}
+	
 }
