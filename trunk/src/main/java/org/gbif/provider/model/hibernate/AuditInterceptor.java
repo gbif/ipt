@@ -106,7 +106,7 @@ public class AuditInterceptor extends EmptyInterceptor {
         // as null
         if (secureContext != null) {
             Authentication auth = (Authentication) ((SecurityContext) SecurityContextHolder.getContext()).getAuthentication();
-            if (auth.getPrincipal() instanceof UserDetails) {
+            if (auth != null && auth.getPrincipal() instanceof UserDetails) {
                 User user = (User) auth.getPrincipal();
         		return user;
             }

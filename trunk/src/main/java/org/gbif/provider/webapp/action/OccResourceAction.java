@@ -24,10 +24,12 @@ import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.webapp.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -57,7 +59,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 		return extensions;
 	}
 
-	public OccurrenceResource getOccResource() {
+	public DatasourceBasedResource getOccResource() {
         return occResource;
     }
     public void setOccResource(OccurrenceResource occResource) {
@@ -74,8 +76,10 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 
 	public String execute(){
     	extensions = dwcExtensionManager.getAll();
+    	DwcExtension dwcExtension = dwcExtensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+		extensions.remove(dwcExtension);
     	// filter already mapped extensions
-    	for (ViewMapping map : occResource.getMappings()){
+    	for (ViewMapping map: occResource.getMappings().values()){
 			extensions.remove(map.getExtension());
     	}
     	return SUCCESS;

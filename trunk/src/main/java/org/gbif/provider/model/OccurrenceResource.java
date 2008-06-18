@@ -16,20 +16,18 @@
 
 package org.gbif.provider.model;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.gbif.provider.webapp.Constants;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.MapKeyManyToMany;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -42,20 +40,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
-	private Set<ViewMapping> mappings = new HashSet<ViewMapping>();
-		
-	@OneToMany(mappedBy="resource", cascade=CascadeType.ALL)
-	public Set<ViewMapping> getMappings() {
-		return mappings;
+
+	@Transient
+	public ViewMapping getCoreMapping() {
+		return this.getMappings().get(Constants.DARWIN_CORE_EXTENSION_ID);
 	}
-	public void setMappings(Set<ViewMapping> mappings) {
-		this.mappings = mappings;
-	}
-	public void addMapping(ViewMapping mapping) {
-		mapping.setResource(this);
-		this.mappings.add(mapping);
-	}
-	
 
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -64,7 +53,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		if (!(object instanceof OccurrenceResource)) {
 			return false;
 		}
-		OccurrenceResource rhs = (OccurrenceResource) object;
+		DatasourceBasedResource rhs = (DatasourceBasedResource) object;
 		return new EqualsBuilder().appendSuper(super.equals(object)).isEquals();
 	}
 	/**
@@ -93,8 +82,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 						this.getDatasource()).append("lastImport",
 						this.getLastImport()).append("uuid", this.getUuid())
 				.append("jdbcPassword", this.getJdbcPassword()).toString();
-	}
-	
-	
+	}		
 	
 }

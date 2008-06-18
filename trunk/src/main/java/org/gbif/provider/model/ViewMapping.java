@@ -49,7 +49,7 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 public class ViewMapping implements Comparable<ViewMapping> {
 	private Long id;	
-	private OccurrenceResource resource;
+	private DatasourceBasedResource resource;
 	private DwcExtension extension;
 	private String viewSql;
 	private List<PropertyMapping> propertyMappings = new ArrayList<PropertyMapping>();
@@ -62,11 +62,12 @@ public class ViewMapping implements Comparable<ViewMapping> {
 		this.id = id;
 	}
 	
-	@ManyToOne(optional=false)
-	public OccurrenceResource getResource() {
+	@ManyToOne
+	@JoinColumn(name="resource_id", nullable=false) 
+	public DatasourceBasedResource getResource() {
 		return resource;
 	}
-	public void setResource(OccurrenceResource resource) {
+	public void setResource(DatasourceBasedResource resource) {
 		this.resource = resource;
 	}
 	

@@ -37,7 +37,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class DarwinCore extends ResolvableBase {
-	private OccurrenceResource occurrenceResource;
+	private DatasourceBasedResource occurrenceResource;
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
 	private Date dateLastModified;
@@ -57,10 +57,10 @@ public class DarwinCore extends ResolvableBase {
 	
 
 	@ManyToOne
-	public OccurrenceResource getOccurrenceResource() {
+	public DatasourceBasedResource getOccurrenceResource() {
 		return occurrenceResource;
 	}
-	public void setOccurrenceResource(OccurrenceResource occurrenceResource) {
+	public void setOccurrenceResource(DatasourceBasedResource occurrenceResource) {
 		this.occurrenceResource = occurrenceResource;
 	}
 	

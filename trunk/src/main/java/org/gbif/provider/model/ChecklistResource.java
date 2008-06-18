@@ -17,6 +17,9 @@
 package org.gbif.provider.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
+
+import org.gbif.provider.webapp.Constants;
 
 /**
  * External datasource driven resource representing a taxonomic checklist
@@ -25,5 +28,10 @@ import javax.persistence.Entity;
  */
 @Entity
 public class ChecklistResource extends DatasourceBasedResource {
+
+	@Transient
+	public ViewMapping getCoreMapping() {
+		return this.getMappings().get(Constants.CHECKLIST_EXTENSION_ID);
+	}
 
 }
