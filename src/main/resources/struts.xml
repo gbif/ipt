@@ -159,64 +159,75 @@
     
     <!-- Actions managing occurrence resources -->
     <package name="manageOcc" namespace="/manage/occ" extends="manage">
-        <default-action-ref name="occResources" />
+        <default-action-ref name="resources" />
 
         <global-results>
-            <result name="error" type="redirect-action">occResources</result>
+            <result name="error" type="redirect-action">resources</result>
         </global-results>
         
         
-        <action name="occResources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
-            <result>/WEB-INF/pages/occResourceList.jsp</result>
+        <action name="resources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
+            <result>/WEB-INF/pages/manage/occ/occResourceList.jsp</result>
         </action>
         
-        <action name="occResource" class="org.gbif.provider.webapp.action.OccResourceAction">
-            <result>/WEB-INF/pages/occResourceOverview.jsp</result>
+        <action name="resource" class="org.gbif.provider.webapp.action.OccResourceAction">
+            <result>/WEB-INF/pages/manage/occ/occResourceOverview.jsp</result>
         </action>
 
-        <action name="editOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
-            <result>/WEB-INF/pages/occResourceForm.jsp</result>
+        <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
+            <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
+        </action>
+        <action name="editResourceConnection" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
+            <result>/WEB-INF/pages/manage/occ/resourceConnectionForm.jsp</result>
         </action>
         
-        <action name="saveOccResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
+        <action name="saveResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
             <result name="success" type="redirect-action">
-                <param name="actionName">occResource</param>
+                <param name="actionName">resource</param>
                 <!-- 
                     <param name="parse">true</param>
                     <param name="resource_id">${resource_id}</param>
                 -->
             </result>
             <result name="cancel" type="redirect-action">
-                <param name="actionName">occResource</param>
+                <param name="actionName">resource</param>
                 <!-- 
                     <param name="parse">true</param>
                     <param name="resource_id">${resource_id}</param>
                 -->
             </result>
-            <result name="delete" type="redirect-action">occResources</result>
+            <result name="delete" type="redirect-action">resources</result>
         </action>
 
         <action name="editMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="edit">
-            <result>/WEB-INF/pages/viewMappingForm.jsp</result>
+            <result>/WEB-INF/pages/manage/occ/viewMappingForm.jsp</result>
         </action>
         
         <action name="saveMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="save">
-            <result>/WEB-INF/pages/viewMappingForm.jsp</result>
+            <result>/WEB-INF/pages/manage/occ/viewMappingForm.jsp</result>
             <result name="cancel" type="redirect-action">
-                <param name="actionName">occResource</param>
+                <param name="actionName">resource</param>
                 <!-- 
                 <param name="parse">true</param>
                 <param name="id">${resource_id}</param>
                 -->
             </result>
         </action>
+
+        <action name="validate">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        <action name="upload">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
         
+
         <action name="extension" class="org.gbif.provider.webapp.action.DwcExtensionAction">
-            <result>/WEB-INF/pages/dwcExtensionDetail.jsp</result>
+            <result>/WEB-INF/pages/admin/dwcExtensionDetail.jsp</result>
         </action>
 
         <action name="extensions" class="org.gbif.provider.webapp.action.DwcExtensionAction" method="list">
-            <result>/WEB-INF/pages/dwcExtensionList.jsp</result>
+            <result>/WEB-INF/pages/admin/dwcExtensionList.jsp</result>
         </action>
         
 </package>
@@ -247,7 +258,7 @@
 
         <action name="activeDatasources" class="org.gbif.provider.webapp.action.DatasourceRegistryAction" method="list">
             <interceptor-ref name="adminCheck"/>
-            <result name="success">/WEB-INF/pages/datasourceList.jsp</result>
+            <result name="success">/WEB-INF/pages/admin/datasourceList.jsp</result>
         </action>
     </package>
     

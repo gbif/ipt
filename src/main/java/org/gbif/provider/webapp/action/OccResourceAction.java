@@ -38,10 +38,8 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     private List occResources;
     private List<DwcExtension> extensions;
     private OccurrenceResource occResource;
-    private Long id;
 
-	
-	public void setDwcExtensionManager(
+    public void setDwcExtensionManager(
 			GenericManager<DwcExtension, Long> dwcExtensionManager) {
 		this.dwcExtensionManager = dwcExtensionManager;
 	}
@@ -58,10 +56,6 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 	public List getExtensions() {
 		return extensions;
 	}
-
-	public void setId(Long id) {
-        this. id =  id;
-    }
 
 	public OccurrenceResource getOccResource() {
         return occResource;

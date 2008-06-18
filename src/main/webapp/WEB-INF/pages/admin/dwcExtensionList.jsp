@@ -2,7 +2,7 @@
 
 <head>
     <title><fmt:message key="occResourceList.title"/></title>
-    <meta name="heading" content="<fmt:message key='occResourceList.heading'/>"/>
+    <meta name="heading" content="<fmt:message key='extensionList.heading'/>"/>
     <meta name="menu" content="OccResourceMenu"/>
 </head>
 
