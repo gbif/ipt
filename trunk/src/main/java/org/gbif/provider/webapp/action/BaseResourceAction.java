@@ -31,27 +31,33 @@ import org.gbif.provider.model.Resource;
 
 public class BaseResourceAction extends org.appfuse.webapp.action.BaseAction implements SessionAware{
 	// new cant be used. Just call the getter new so the parameter becomes new. Neu is german for new ;)
-	private Boolean neu;
     protected GenericManager<OccurrenceResource, Long> occResourceManager;
     protected Map session;
+	private Boolean neu;
+	
+	public void setNeu(Boolean neu) {
+		this.neu = neu;
+	}
     
 	public void setOccResourceManager(
 			GenericManager<OccurrenceResource, Long> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
 	
-	public Long getResourceId() {
-	    return (Long) session.get(DatasourceInterceptor.SESSION_ATTRIBUTE);			
-	}
-	
+    /**
+     * is the acton intended to create a new entity? New cant be used as a java property, 
+     * so the german translation "neu" is used as the underlying property
+     * @return
+     */
     public boolean isNew() {
     	if (neu != null && neu){
     		return true;
     	}
 		return false;
 	}
-    public void setNew(Boolean neu) {
-		neu = neu;
+    
+    public Long getResourceId() {
+	    return (Long) session.get(DatasourceInterceptor.SESSION_ATTRIBUTE);			
 	}
 	
 	public User getCurrentUser(){

@@ -125,7 +125,11 @@ public abstract class DatasourceBasedResource extends Resource {
 	public void udpateDatasource() {
 		String driverClassName = "org.postgresql.Driver";
 		driverClassName="com.mysql.jdbc.Driver";
-		datasource = new SingleConnectionDataSource(driverClassName, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);			
+		if (this.getJdbcUrl() != null){
+			datasource = new SingleConnectionDataSource(driverClassName, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);			
+		}else{
+			datasource = null;
+		}
 	}
 	@Transient
 	public boolean isValidConnection(){

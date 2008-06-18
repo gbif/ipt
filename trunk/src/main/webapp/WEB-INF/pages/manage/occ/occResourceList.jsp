@@ -8,7 +8,7 @@
 
 <c:set var="buttons">
     <input type="button" style="margin-right: 5px" class="button"
-        onclick="location.href='<s:url action="editOccResource"><s:param name="new" value="1"/></s:url>'"
+        onclick="location.href='<s:url action="editResourceMetadata"><s:param name="neu" value="true"/></s:url>'"
         value="<fmt:message key="button.add"/>"/>
 
     <input type="button" class="button" onclick="location.href='<c:url value="/home.html"/>'"
@@ -18,7 +18,7 @@
 <c:out value="${buttons}" escapeXml="false" />
 
 <display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
-    <display:column property="title" sortable="true" href="occResource.html" media="html"
+    <display:column property="title" sortable="true" href="resource.html" media="html"
         paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
     <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">
@@ -26,8 +26,8 @@
     </display:column>
     <display:column property="recordCount" sortable="true" titleKey="occResource.recordCount"/>
 
-    <display:setProperty name="paging.banner.item_name"><fmt:message key="occResourceList.occResource"/></display:setProperty>
-    <display:setProperty name="paging.banner.items_name"><fmt:message key="occResourceList.occResources"/></display:setProperty>
+    <display:setProperty name="paging.banner.item_name"><fmt:message key="occResourceList.resource"/></display:setProperty>
+    <display:setProperty name="paging.banner.items_name"><fmt:message key="occResourceList.resources"/></display:setProperty>
 </display:table>
 
 <c:out value="${buttons}" escapeXml="false" />
