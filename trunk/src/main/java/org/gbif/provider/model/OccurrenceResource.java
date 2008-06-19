@@ -16,7 +16,10 @@
 
 package org.gbif.provider.model;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -45,6 +48,14 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	public ViewMapping getCoreMapping() {
 		return this.getMappings().get(Constants.DARWIN_CORE_EXTENSION_ID);
 	}
+
+	@Transient
+	public Collection<ViewMapping> getExtensionMappings() {
+		Map<Long, ViewMapping> extMappings = new HashMap<Long, ViewMapping>();
+		extMappings.putAll(this.getMappings());
+		extMappings.remove(Constants.DARWIN_CORE_EXTENSION_ID);
+		return extMappings.values();
+	}		
 
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -82,6 +93,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 						this.getDatasource()).append("lastImport",
 						this.getLastImport()).append("uuid", this.getUuid())
 				.append("jdbcPassword", this.getJdbcPassword()).toString();
-	}		
+	}
 	
 }

@@ -67,17 +67,30 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     }
 
 	public void prepare() {
+		//TODO: maybe put this logic int a resource factory and resource service???
     	if (getResourceId() != null && !isNew()){
         	occResource = occResourceManager.get(getResourceId());
         }else{
         	occResource = new OccurrenceResource();
         }
+    	// check that core mapping exists
+    	if (occResource.getCoreMapping() == null){
+    		ViewMapping coreVM = new ViewMapping();
+    		DwcExtension coreExt = dwcExtensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+    		coreVM.setExtension(coreExt);
+    		occResource.addMapping(coreVM);
+    	}
     }
 
 	public String execute(){
     	extensions = dwcExtensionManager.getAll();
-    	DwcExtension dwcExtension = dwcExtensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-		extensions.remove(dwcExtension);
+    	for (DwcExtension ext : extensions){
+    		if (ext.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)){
+    			// only show extensions sensu strictu. remove core "extension"
+    			extensions.remove(ext);
+    			break;
+    		}
+    	}
     	// filter already mapped extensions
     	for (ViewMapping map: occResource.getMappings().values()){
 			extensions.remove(map.getExtension());

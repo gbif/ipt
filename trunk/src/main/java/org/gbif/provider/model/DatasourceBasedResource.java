@@ -19,9 +19,11 @@ package org.gbif.provider.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -125,6 +127,9 @@ public abstract class DatasourceBasedResource extends Resource {
 	abstract public ViewMapping getCoreMapping();
 	
 	@Transient
+	abstract public Collection<ViewMapping> getExtensionMappings();
+
+	@Transient
 	public DataSource getDatasource() {
 		if (datasource == null){
 			this.udpateDatasource();
@@ -154,8 +159,11 @@ public abstract class DatasourceBasedResource extends Resource {
 	public boolean isValidConnection(){
 		boolean isValidConnection = false;
 		try {
-			Connection con = getDatasource().getConnection();
-			isValidConnection = true;
+			DataSource dsa = getDatasource();
+			if (dsa!=null){
+				Connection con = dsa.getConnection();
+				isValidConnection = true;
+			}
 		} catch (SQLException e) {
 			isValidConnection = false;
 		}

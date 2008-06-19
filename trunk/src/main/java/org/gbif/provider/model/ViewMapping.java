@@ -17,11 +17,14 @@
 package org.gbif.provider.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,11 +36,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.MapKey;
 
 /**
  * A mapping between a resource and an extension (incl darwincore itself).
@@ -52,7 +58,7 @@ public class ViewMapping implements Comparable<ViewMapping> {
 	private DatasourceBasedResource resource;
 	private DwcExtension extension;
 	private String viewSql;
-	private List<PropertyMapping> propertyMappings = new ArrayList<PropertyMapping>();
+	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -86,20 +92,32 @@ public class ViewMapping implements Comparable<ViewMapping> {
 		this.viewSql = sql;
 	}
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@IndexColumn(name = "mapping_order",base=0, nullable=false)
-	@JoinColumn(name="viewMapping_id", nullable=false) 
-	public List<PropertyMapping> getPropertyMappings() {
+	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
+	@MapKey(columns = @Column(name = "property_id"))
+	public Map<Long, PropertyMapping> getPropertyMappings() {
 		return propertyMappings;
 	}
-	public void setPropertyMappings(List<PropertyMapping> propertyMappings) {
+	public void setPropertyMappings(Map<Long, PropertyMapping> propertyMappings) {
 		this.propertyMappings = propertyMappings;
 	}
 	
 	public void addPropertyMapping(PropertyMapping propertyMapping) {
 		propertyMapping.setViewMapping(this);
-		propertyMappings.add(propertyMapping);
+		propertyMappings.put(propertyMapping.getProperty().getId(), propertyMapping);
 	}
+	
+	@Transient
+	public boolean hasMappedProperty(ExtensionProperty property) {
+		if (propertyMappings.containsKey(property.getId())){
+			return true;
+		}
+		return false;
+	}	
+
+	@Transient
+	public PropertyMapping getMappedProperty(ExtensionProperty property) {
+		return propertyMappings.get(property.getId());
+	}	
 	
 	/**
 	 * Natural sort order is resource, then extension

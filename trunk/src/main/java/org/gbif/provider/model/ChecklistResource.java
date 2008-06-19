@@ -16,6 +16,10 @@
 
 package org.gbif.provider.model;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
@@ -33,5 +37,12 @@ public class ChecklistResource extends DatasourceBasedResource {
 	public ViewMapping getCoreMapping() {
 		return this.getMappings().get(Constants.CHECKLIST_EXTENSION_ID);
 	}
-
+	
+	@Transient
+	public Collection<ViewMapping> getExtensionMappings() {
+		Map<Long, ViewMapping> extMappings = new HashMap<Long, ViewMapping>();
+		extMappings.putAll(this.getMappings());
+		extMappings.remove(Constants.CHECKLIST_EXTENSION_ID);
+		return extMappings.values();
+	}		
 }
