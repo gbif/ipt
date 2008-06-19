@@ -53,7 +53,7 @@ public class PropertyMapping implements Comparable<PropertyMapping> {
 	}
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="viewMapping_id", insertable=false, updatable=false, nullable=false)
+	//@JoinColumn(name="viewMapping_id", insertable=false, updatable=false, nullable=false)
 	public ViewMapping getViewMapping() {
 		return viewMapping;
 	}
@@ -90,7 +90,7 @@ public class PropertyMapping implements Comparable<PropertyMapping> {
 	 */
 	@Transient
 	public boolean isEmpty(){
-		if (column == null && value == null){
+		if (column == null && (value == null || value.trim().length() < 1)){
 			return true;
 		}
 		return false;
