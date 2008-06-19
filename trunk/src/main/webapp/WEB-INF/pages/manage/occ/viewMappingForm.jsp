@@ -57,8 +57,9 @@
     <s:iterator value="mappings" status="stat"> 
 		<s:select label="%{property.name}" name="mappings[%{#stat.index}].column" required="false"
 			value="%{mappings[#stat.index].column}"
-			headerKey="" headerValue="Select a column or value ..." emptyOption="true" 
+			headerKey="" emptyOption="true" 
 			list="mapOptions[property]" />
+			<!-- headerValue="Select a column or value ..." -->
         <s:textfield  
             name="mappings[%{#stat.index}].value"  
             value="%{mappings[#stat.index].value}"/>  
