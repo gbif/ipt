@@ -35,23 +35,24 @@
   <fieldset>
     <legend>Mapping</legend>
     <s:if test="%{occResource.isValidConnection()}">
-  	  <s:label key="DarwinCore"/>
-		<s:url id="mappingUrl" action="editMapping">
-			<s:param name="mapping_id" value="occResource.getCoreMapping().id"/>
-		</s:url>
-		<ul class="subform">
-			<li>
-				<s:property value="occResource.getCoreMapping().extension.name"/>
-				<s:a href="%{mappingUrl}"><s:property value="propertyMappings.size"/> concepts</s:a>
-			</li>
-		</ul>
+    
+  	  <s:label key="occResourceOverview.coreMapping" />
+  	  <s:push value="occResource.getCoreMapping()">
+		<li>
+			<s:property value="extension.name"/>
+			<s:url id="mappingUrl" action="editMapping">
+				<s:param name="mapping_id" value="id"/>
+			</s:url>
+			<s:a href="%{mappingUrl}"><s:property value="propertyMappings.size"/> concepts</s:a>
+		</li>
+  	  </s:push>
   	  
-  	  <s:label key="occResourceOverview.mapping"/>
+  	  <s:label key="occResourceOverview.extensionMappings"/>
       <c:if test="${not empty extensions}">
 		<s:select id="extension_id" name="extension_id" list="extensions" listKey="id" listValue="name"/>
         <s:submit action="editMapping" method="" cssClass="button" key="button.add" theme="simple"/>
   	  </c:if>
- 	  <s:iterator value="occResource.mappings" status="mappingStatus">
+ 	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
 		<s:url id="mappingUrl" action="editMapping">
 			<s:param name="mapping_id" value="id"/>
 		</s:url>

@@ -123,18 +123,24 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
             	mapping = new ViewMapping();
             	mapping.setResource(occResourceManager.get(getResourceId()));
             	mapping.setExtension(dwcExtensionManager.get(extension_id));
-        		// initializse empty propertyMappings
-            	for (ExtensionProperty prop : mapping.getExtension().getProperties()){
-            		PropertyMapping propMap = new PropertyMapping();
-            		propMap.setProperty(prop);
-            		mapping.addPropertyMapping(propMap);
-            	}
             }
         }
-        
+
         // prepare list of property mappings to create form with
-        mappings = mapping.getPropertyMappings();
-        
+        mappings = new ArrayList<PropertyMapping>();
+    	for (ExtensionProperty prop : mapping.getExtension().getProperties()){
+    		// is this property mapped already?
+    		if (mapping.hasMappedProperty(prop)){
+    			// add existing mapping
+            	mappings.add(mapping.getMappedProperty(prop));
+    		}else{
+    			// create new empty one. Remember to link them to the ViewMapping before they get saved
+        		PropertyMapping propMap = new PropertyMapping();
+        		propMap.setProperty(prop);
+            	mappings.add(propMap);
+    		}
+    	}
+                
         // get resultset preview and number of available comuns for mapping
         viewColumnHeaders = new ArrayList<String>();
         if (mapping.getViewSql() !=null){
@@ -205,11 +211,16 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
             return delete();
         }
         // update property mapping values
-        for (PropertyMapping pm : mapping.getPropertyMappings()){
+        for (PropertyMapping pm : mappings){
         	if (pm !=null && pm.getColumn()!=null && pm.getColumn() == 1000L){
         		pm.setColumn(null);
         	}
+        	// save only non-empty property mappings
+        	if (!pm.isEmpty()){
+        		mapping.addPropertyMapping(pm);
+        	}
         }
+        // cascade-save view mapping
         boolean isNew = (mapping.getId() == null);
         mapping = viewMappingManager.save(mapping);
         String key = (isNew) ? "viewMapping.added" : "viewMapping.updated";

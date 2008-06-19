@@ -23,6 +23,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -82,6 +84,17 @@ public class PropertyMapping implements Comparable<PropertyMapping> {
 		this.column = column;
 	}
 	
+	/**
+	 * Indicate wether this mapping has some true mapping content
+	 * @return
+	 */
+	@Transient
+	public boolean isEmpty(){
+		if (column == null && value == null){
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Natural sort order is by viewMapping, then extension property
