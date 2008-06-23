@@ -61,7 +61,7 @@ public class PropertyMapping implements Comparable<PropertyMapping> {
 		this.viewMapping = viewMapping;
 	}
 	
-	@ManyToOne(optional=false)
+	@ManyToOne
 	public ExtensionProperty getProperty() {
 		return property;
 	}

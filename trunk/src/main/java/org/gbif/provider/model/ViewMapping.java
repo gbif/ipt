@@ -35,6 +35,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -54,10 +55,11 @@ import org.hibernate.annotations.MapKey;
  */
 @Entity
 public class ViewMapping implements Comparable<ViewMapping> {
-	private Long id;	
+	private Long id;
 	private DatasourceBasedResource resource;
 	private DwcExtension extension;
 	private String viewSql;
+	private Integer coreIdColumnIndex;
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -91,6 +93,18 @@ public class ViewMapping implements Comparable<ViewMapping> {
 	public void setViewSql(String sql) {
 		this.viewSql = sql;
 	}
+	
+	/**
+	 * Index of resultset column for the local or global identifier for a core-record. 
+	 * Acts as the primary key for the core mapping or the foreign key for extension mappings
+	 * @return
+	 */
+	public Integer getCoreIdColumnIndex() {
+		return coreIdColumnIndex;
+	}
+	public void setCoreIdColumnIndex(Integer coreIdColumnIndex) {
+		this.coreIdColumnIndex = coreIdColumnIndex;
+	}	
 	
 	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
 	@MapKey(columns = @Column(name = "property_id"))

@@ -95,6 +95,7 @@
     <column>id</column>
     <column>link</column>
     <column>name</column>
+    <column>required</column>
     <column>uri</column>
     <column>extension_id</column>
     <column>property_order</column>
@@ -102,6 +103,7 @@
       <value>1</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GlobalUniqueIdentifier</value>
       <value>GlobalUniqueIdentifier</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/GlobalUniqueIdentifier</value>
       <value>1</value>
       <value>0</value>
@@ -110,6 +112,7 @@
       <value>2</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DateLastModified</value>
       <value>DateLastModified</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/DateLastModified</value>
       <value>1</value>
       <value>1</value>
@@ -118,6 +121,7 @@
       <value>3</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/BasisOfRecord</value>
       <value>BasisOfRecord</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/BasisOfRecord</value>
       <value>1</value>
       <value>2</value>
@@ -126,6 +130,7 @@
       <value>4</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InstitutionCode</value>
       <value>InstitutionCode</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/InstitutionCode</value>
       <value>1</value>
       <value>3</value>
@@ -134,6 +139,7 @@
       <value>5</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectionCode</value>
       <value>CollectionCode</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/CollectionCode</value>
       <value>1</value>
       <value>4</value>
@@ -142,6 +148,7 @@
       <value>6</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumber</value>
       <value>CatalogNumber</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/CatalogNumber</value>
       <value>1</value>
       <value>5</value>
@@ -150,6 +157,7 @@
       <value>7</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InformationWithheld</value>
       <value>InformationWithheld</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/InformationWithheld</value>
       <value>1</value>
       <value>6</value>
@@ -158,6 +166,7 @@
       <value>8</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Remarks</value>
       <value>Remarks</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Remarks</value>
       <value>1</value>
       <value>7</value>
@@ -166,6 +175,7 @@
       <value>9</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ScientificName</value>
       <value>ScientificName</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/ScientificName</value>
       <value>1</value>
       <value>8</value>
@@ -174,6 +184,7 @@
       <value>10</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/HigherTaxon</value>
       <value>HigherTaxon</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/HigherTaxon</value>
       <value>1</value>
       <value>9</value>
@@ -182,6 +193,7 @@
       <value>11</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Kingdom</value>
       <value>Kingdom</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Kingdom</value>
       <value>1</value>
       <value>10</value>
@@ -190,6 +202,7 @@
       <value>12</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Phylum</value>
       <value>Phylum</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Phylum</value>
       <value>1</value>
       <value>11</value>
@@ -198,6 +211,7 @@
       <value>13</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Class</value>
       <value>Class</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Class</value>
       <value>1</value>
       <value>12</value>
@@ -206,6 +220,7 @@
       <value>14</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Order</value>
       <value>Order</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Order</value>
       <value>1</value>
       <value>13</value>
@@ -214,6 +229,7 @@
       <value>15</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Family</value>
       <value>Family</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Family</value>
       <value>1</value>
       <value>14</value>
@@ -222,6 +238,7 @@
       <value>16</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Genus</value>
       <value>Genus</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Genus</value>
       <value>1</value>
       <value>15</value>
@@ -230,6 +247,7 @@
       <value>17</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/SpecificEpithet</value>
       <value>SpecificEpithet</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/SpecificEpithet</value>
       <value>1</value>
       <value>16</value>
@@ -238,6 +256,7 @@
       <value>18</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InfraspecificRank</value>
       <value>InfraspecificRank</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/InfraspecificRank</value>
       <value>1</value>
       <value>17</value>
@@ -246,6 +265,7 @@
       <value>19</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InfraspecificEpithet</value>
       <value>InfraspecificEpithet</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/InfraspecificEpithet</value>
       <value>1</value>
       <value>18</value>
@@ -254,6 +274,7 @@
       <value>20</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/AuthorYearOfScientificName</value>
       <value>AuthorYearOfScientificName</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/AuthorYearOfScientificName</value>
       <value>1</value>
       <value>19</value>
@@ -262,6 +283,7 @@
       <value>21</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/NomenclaturalCode</value>
       <value>NomenclaturalCode</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/NomenclaturalCode</value>
       <value>1</value>
       <value>20</value>
@@ -270,6 +292,7 @@
       <value>22</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IdentificationQualifier</value>
       <value>IdentificationQualifier</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/IdentificationQualifier</value>
       <value>1</value>
       <value>21</value>
@@ -278,6 +301,7 @@
       <value>23</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/HigherGeography</value>
       <value>HigherGeography</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/HigherGeography</value>
       <value>1</value>
       <value>22</value>
@@ -286,6 +310,7 @@
       <value>24</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Continent</value>
       <value>Continent</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Continent</value>
       <value>1</value>
       <value>23</value>
@@ -294,6 +319,7 @@
       <value>25</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/WaterBody</value>
       <value>WaterBody</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/WaterBody</value>
       <value>1</value>
       <value>24</value>
@@ -302,6 +328,7 @@
       <value>26</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IslandGroup</value>
       <value>IslandGroup</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/IslandGroup</value>
       <value>1</value>
       <value>25</value>
@@ -310,6 +337,7 @@
       <value>27</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Island</value>
       <value>Island</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Island</value>
       <value>1</value>
       <value>26</value>
@@ -318,6 +346,7 @@
       <value>28</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Country</value>
       <value>Country</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Country</value>
       <value>1</value>
       <value>27</value>
@@ -326,6 +355,7 @@
       <value>29</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/StateProvince</value>
       <value>StateProvince</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/StateProvince</value>
       <value>1</value>
       <value>28</value>
@@ -334,6 +364,7 @@
       <value>30</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/County</value>
       <value>County</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/County</value>
       <value>1</value>
       <value>29</value>
@@ -342,6 +373,7 @@
       <value>31</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Locality</value>
       <value>Locality</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Locality</value>
       <value>1</value>
       <value>30</value>
@@ -350,6 +382,7 @@
       <value>32</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MinimumElevationInMeters</value>
       <value>MinimumElevationInMeters</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/MinimumElevationInMeters</value>
       <value>1</value>
       <value>31</value>
@@ -358,6 +391,7 @@
       <value>33</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MaximumElevationInMeters</value>
       <value>MaximumElevationInMeters</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/MaximumElevationInMeters</value>
       <value>1</value>
       <value>32</value>
@@ -366,6 +400,7 @@
       <value>34</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MinimumDepthInMeters</value>
       <value>MinimumDepthInMeters</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/MinimumDepthInMeters</value>
       <value>1</value>
       <value>33</value>
@@ -374,6 +409,7 @@
       <value>35</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/MaximumDepthInMeters</value>
       <value>MaximumDepthInMeters</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/MaximumDepthInMeters</value>
       <value>1</value>
       <value>34</value>
@@ -382,6 +418,7 @@
       <value>36</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectingMethod</value>
       <value>CollectingMethod</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/CollectingMethod</value>
       <value>1</value>
       <value>35</value>
@@ -390,6 +427,7 @@
       <value>37</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ValidDistributionFlag</value>
       <value>ValidDistributionFlag</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/ValidDistributionFlag</value>
       <value>1</value>
       <value>36</value>
@@ -398,6 +436,7 @@
       <value>38</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/EarliestDateCollected</value>
       <value>EarliestDateCollected</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/EarliestDateCollected</value>
       <value>1</value>
       <value>37</value>
@@ -406,6 +445,7 @@
       <value>39</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/LatestDateCollected</value>
       <value>LatestDateCollected</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/LatestDateCollected</value>
       <value>1</value>
       <value>38</value>
@@ -414,6 +454,7 @@
       <value>40</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Collector</value>
       <value>Collector</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Collector</value>
       <value>1</value>
       <value>39</value>
@@ -422,6 +463,7 @@
       <value>41</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Sex</value>
       <value>Sex</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Sex</value>
       <value>1</value>
       <value>40</value>
@@ -430,6 +472,7 @@
       <value>42</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/LifeStage</value>
       <value>LifeStage</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/LifeStage</value>
       <value>1</value>
       <value>41</value>
@@ -438,6 +481,7 @@
       <value>43</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Attributes</value>
       <value>Attributes</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/Attributes</value>
       <value>1</value>
       <value>42</value>
@@ -446,6 +490,7 @@
       <value>44</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/ImageURL</value>
       <value>ImageURL</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/ImageURL</value>
       <value>1</value>
       <value>43</value>
@@ -454,6 +499,7 @@
       <value>45</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/RelatedInformation</value>
       <value>RelatedInformation</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/dwcore/RelatedInformation</value>
       <value>1</value>
       <value>44</value>
@@ -462,6 +508,7 @@
       <value>100</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DecimalLatitude</value>
       <value>DecimalLatitude</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/DecimalLatitude</value>
       <value>3</value>
       <value>0</value>
@@ -470,6 +517,7 @@
       <value>101</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DecimalLongitude</value>
       <value>DecimalLongitude</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/DecimalLongitude</value>
       <value>3</value>
       <value>1</value>
@@ -478,6 +526,7 @@
       <value>102</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeodeticDatum</value>
       <value>GeodeticDatum</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/GeodeticDatum</value>
       <value>3</value>
       <value>2</value>
@@ -486,6 +535,7 @@
       <value>103</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CoordinateUncertaintyInMeters</value>
       <value>CoordinateUncertaintyInMeters</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/CoordinateUncertaintyInMeters</value>
       <value>3</value>
       <value>3</value>
@@ -494,6 +544,7 @@
       <value>104</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FootprintWKT</value>
       <value>FootprintWKT</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/FootprintWKT</value>
       <value>3</value>
       <value>4</value>
@@ -502,6 +553,7 @@
       <value>105</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FootprintSpatialFit</value>
       <value>FootprintSpatialFit</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/FootprintSpatialFit</value>
       <value>3</value>
       <value>5</value>
@@ -510,6 +562,7 @@
       <value>106</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCoordinates</value>
       <value>VerbatimCoordinates</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/VerbatimCoordinates</value>
       <value>3</value>
       <value>6</value>
@@ -518,6 +571,7 @@
       <value>107</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimLatitude</value>
       <value>VerbatimLatitude</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/VerbatimLatitude</value>
       <value>3</value>
       <value>7</value>
@@ -526,6 +580,7 @@
       <value>108</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimLongitude</value>
       <value>VerbatimLongitude</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/VerbatimLongitude</value>
       <value>3</value>
       <value>8</value>
@@ -534,6 +589,7 @@
       <value>109</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCoordinateSystem</value>
       <value>VerbatimCoordinateSystem</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/VerbatimCoordinateSystem</value>
       <value>3</value>
       <value>9</value>
@@ -542,6 +598,7 @@
       <value>110</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceProtocol</value>
       <value>GeoreferenceProtocol</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceProtocol</value>
       <value>3</value>
       <value>10</value>
@@ -550,6 +607,7 @@
       <value>111</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceSources</value>
       <value>GeoreferenceSources</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceSources</value>
       <value>3</value>
       <value>11</value>
@@ -558,6 +616,7 @@
       <value>112</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceVerificationStatus</value>
       <value>GeoreferenceVerificationStatus</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceVerificationStatus</value>
       <value>3</value>
       <value>12</value>
@@ -566,6 +625,7 @@
       <value>113</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeoreferenceRemarks</value>
       <value>GeoreferenceRemarks</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/geospatial/GeoreferenceRemarks</value>
       <value>3</value>
       <value>13</value>
@@ -574,6 +634,7 @@
       <value>200</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumberNumeric</value>
       <value>CatalogNumberNumeric</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/CatalogNumberNumeric</value>
       <value>2</value>
       <value>0</value>
@@ -582,6 +643,7 @@
       <value>201</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IdentifiedBy</value>
       <value>IdentifiedBy</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/IdentifiedBy</value>
       <value>2</value>
       <value>1</value>
@@ -590,6 +652,7 @@
       <value>202</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DateIdentified</value>
       <value>DateIdentified</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/DateIdentified</value>
       <value>2</value>
       <value>2</value>
@@ -598,6 +661,7 @@
       <value>203</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectorNumber</value>
       <value>CollectorNumber</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/CollectorNumber</value>
       <value>2</value>
       <value>3</value>
@@ -606,6 +670,7 @@
       <value>204</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FieldNumber</value>
       <value>FieldNumber</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/FieldNumber</value>
       <value>2</value>
       <value>4</value>
@@ -614,6 +679,7 @@
       <value>205</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/FieldNotes</value>
       <value>FieldNotes</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/FieldNotes</value>
       <value>2</value>
       <value>5</value>
@@ -622,6 +688,7 @@
       <value>206</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimCollectingDate</value>
       <value>VerbatimCollectingDate</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/VerbatimCollectingDate</value>
       <value>2</value>
       <value>6</value>
@@ -630,6 +697,7 @@
       <value>207</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimElevation</value>
       <value>VerbatimElevation</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/VerbatimElevation</value>
       <value>2</value>
       <value>7</value>
@@ -638,6 +706,7 @@
       <value>208</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/VerbatimDepth</value>
       <value>VerbatimDepth</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/VerbatimDepth</value>
       <value>2</value>
       <value>8</value>
@@ -646,6 +715,7 @@
       <value>209</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Preparations</value>
       <value>Preparations</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/Preparations</value>
       <value>2</value>
       <value>9</value>
@@ -654,6 +724,7 @@
       <value>210</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/TypeStatus</value>
       <value>TypeStatus</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/TypeStatus</value>
       <value>2</value>
       <value>10</value>
@@ -662,6 +733,7 @@
       <value>211</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GenBankNumber</value>
       <value>GenBankNumber</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/GenBankNumber</value>
       <value>2</value>
       <value>11</value>
@@ -670,6 +742,7 @@
       <value>212</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/OtherCatalogNumbers</value>
       <value>OtherCatalogNumbers</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/OtherCatalogNumbers</value>
       <value>2</value>
       <value>12</value>
@@ -678,6 +751,7 @@
       <value>213</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/RelatedCatalogedItems</value>
       <value>RelatedCatalogedItems</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/RelatedCatalogedItems</value>
       <value>2</value>
       <value>13</value>
@@ -686,6 +760,7 @@
       <value>214</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/Disposition</value>
       <value>Disposition</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/Disposition</value>
       <value>2</value>
       <value>14</value>
@@ -694,9 +769,19 @@
       <value>215</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/IndividualCount</value>
       <value>IndividualCount</value>
+      <value>0</value>
       <value>http://rs.tdwg.org/dwc/curatorial/IndividualCount</value>
       <value>2</value>
       <value>15</value>
+    </row>
+    <row>
+      <value>400</value>
+      <null/>
+      <value>Formation</value>
+      <value>0</value>
+      <value>http://rs.tdwg.org/dwc/paleontology/Formation</value>
+      <value>4</value>
+      <value>0</value>
     </row>
   </table>
   <table name="ExtensionProperty_terms">
@@ -748,14 +833,104 @@
     <column>lastImport</column>
     <column>recordCount</column>
     <column>serviceName</column>
-    <column>modifier_id</column>
     <column>creator_id</column>
+    <column>modifier_id</column>
+    <row>
+      <value>OccurrenceResource</value>
+      <value>1</value>
+      <value><![CDATA[2008-06-23 17:11:44.0]]></value>
+      <null/>
+      <null/>
+      <value><![CDATA[2008-06-23 17:10:51.0]]></value>
+      <value>Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar</value>
+      <value><![CDATA[Pontaurus DB]]></value>
+      <value>jdbc:mysql://localhost/providertoolkit</value>
+      <value>providertool</value>
+      <value>jdbc:mysql://localhost/pontaurus</value>
+      <value>providertool</value>
+      <value><![CDATA[2008-07-02 00:00:00.0]]></value>
+      <value>18439</value>
+      <value>pontaurus</value>
+      <value>4</value>
+      <value>4</value>
+    </row>
+  </table>
+  <table name="UploadEvent">
+    <column>id</column>
+    <column>executionDate</column>
+    <column>recordsAdded</column>
+    <column>recordsChanged</column>
+    <column>recordsDeleted</column>
+    <column>recordsUploaded</column>
+    <column>resource_id</column>
+    <row>
+      <value>1</value>
+      <value><![CDATA[2008-01-01 00:00:00.0]]></value>
+      <value>12789</value>
+      <value>0</value>
+      <value>0</value>
+      <value>12789</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>2</value>
+      <value><![CDATA[2008-02-12 00:00:00.0]]></value>
+      <value>312</value>
+      <value>612</value>
+      <value>5</value>
+      <value>13096</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>3</value>
+      <value><![CDATA[2008-03-07 00:00:00.0]]></value>
+      <value>210</value>
+      <value>207</value>
+      <value>1</value>
+      <value>13305</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>4</value>
+      <value><![CDATA[2008-04-28 00:00:00.0]]></value>
+      <value>1415</value>
+      <value>2010</value>
+      <value>12</value>
+      <value>14708</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>5</value>
+      <value><![CDATA[2008-05-21 00:00:00.0]]></value>
+      <value>917</value>
+      <value>80</value>
+      <value>36</value>
+      <value>15589</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>6</value>
+      <value><![CDATA[2008-07-02 00:00:00.0]]></value>
+      <value>2891</value>
+      <value>778</value>
+      <value>41</value>
+      <value>18439</value>
+      <value>1</value>
+    </row>
   </table>
   <table name="ViewMapping">
     <column>id</column>
     <column>viewSql</column>
+    <column>coreIdColumnIndex</column>
     <column>resource_id</column>
     <column>extension_id</column>
+    <row>
+      <value>1</value>
+      <value><![CDATA[select * from observation]]></value>
+      <value>1</value>
+      <value>1</value>
+      <value>1</value>
+    </row>
   </table>
   <table name="app_user">
     <column>id</column>
@@ -840,6 +1015,27 @@
       <value>0</value>
       <value>http://www.osterfeld.com</value>
     </row>
+    <row>
+      <value>4</value>
+      <value>false</value>
+      <value>false</value>
+      <value>jf89e89</value>
+      <value>Krakow</value>
+      <value>AL</value>
+      <value>12345</value>
+      <value>kula</value>
+      <value>false</value>
+      <value>mdoering@gbif.org</value>
+      <value>true</value>
+      <value>Maria</value>
+      <value>Magdalena</value>
+      <value>e21fc56c1a272b630e0d1439079d0598cf8b8329</value>
+      <value>maria</value>
+      <value/>
+      <value>maria</value>
+      <value>0</value>
+      <value>http://www.gbif.org</value>
+    </row>    
   </table>
   <table name="role">
     <column>id</column>
@@ -876,5 +1072,9 @@
       <value>3</value>
       <value>2</value>
     </row>
+    <row>
+      <value>4</value>
+      <value>3</value>
+    </row>    
   </table>
 </dataset>

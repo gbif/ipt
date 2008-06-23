@@ -42,6 +42,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	private String uri;
 	private String name;
 	private String link;
+	private boolean required;
 	private List<String> terms = new ArrayList<String>();
 	
 	
@@ -81,6 +82,13 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	}
 	public void setLink(String link) {
 		this.link = link;
+	}
+	
+	public boolean isRequired() {
+		return required;
+	}
+	public void setRequired(boolean required) {
+		this.required = required;
 	}
 	
 	@CollectionOfElements

@@ -22,7 +22,7 @@
         paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
     <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">
-         <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
+         <fmt:formatDate value="${occResourceList.lastImport}" pattern="${datePattern}"/>
     </display:column>
     <display:column property="recordCount" sortable="true" titleKey="occResource.recordCount"/>
 
