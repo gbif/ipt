@@ -43,6 +43,10 @@
         <constructor-arg value="org.gbif.provider.model.DwcExtension"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    <bean id="uploadEventDao" class="org.gbif.provider.dao.hibernate.UploadEventDaoImpl">
+        <constructor-arg value="org.gbif.provider.model.UploadEvent"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
@@ -60,8 +64,18 @@
     <bean id="dwcExtensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
         <constructor-arg ref="dwcExtensionDao"/>
     </bean>    
-
+    
+    <bean id="uploadEventManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+        <constructor-arg ref="uploadEventDao"/>
+        <property name="occResourceManager" ref="occResourceManager"/>
+    </bean>    
+    
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
         
+    <bean id="rdbmsUploader" class="org.gbif.provider.upload.RdbmsUploader" >
+        <property name="occResourceManager" ref="occResourceManager"/>
+        <property name="uploadEventManager" ref="uploadEventManager"/>
+        <property name="datasourceInspectionManager" ref="datasourceInspectionManager"/>
+    </bean>        
     
 </beans>

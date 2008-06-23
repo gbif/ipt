@@ -36,8 +36,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-public class DarwinCore extends ResolvableBase {
-	private DatasourceBasedResource occurrenceResource;
+public class DarwinCore extends CoreRecord{
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
 	private Date dateLastModified;
@@ -54,16 +53,7 @@ public class DarwinCore extends ResolvableBase {
 	// references elements
 	private String imageURL;
 	private String relatedInformation;	
-	
 
-	@ManyToOne
-	public DatasourceBasedResource getOccurrenceResource() {
-		return occurrenceResource;
-	}
-	public void setOccurrenceResource(DatasourceBasedResource occurrenceResource) {
-		this.occurrenceResource = occurrenceResource;
-	}
-	
 	
 	public String getGlobalUniqueIdentifier() {
 		return globalUniqueIdentifier;
@@ -155,15 +145,13 @@ public class DarwinCore extends ResolvableBase {
 			return false;
 		}
 		DarwinCore rhs = (DarwinCore) object;
-		return new EqualsBuilder()
-				.append(this.basisOfRecord, rhs.basisOfRecord).append(
-						this.imageURL, rhs.imageURL).append(
-						this.institutionCode, rhs.institutionCode).append(
-						this.dateLastModified, rhs.dateLastModified).append(
+		return new EqualsBuilder().appendSuper(super.equals(object)).append(
+				this.basisOfRecord, rhs.basisOfRecord).append(this.imageURL,
+				rhs.imageURL).append(this.institutionCode, rhs.institutionCode)
+				.append(this.dateLastModified, rhs.dateLastModified).append(
 						this.remarks, rhs.remarks).append(
-						this.relatedInformation, rhs.relatedInformation)
-				.append(this.informationWithheld, rhs.informationWithheld)
-				.append(this.occurrenceResource, rhs.occurrenceResource)
+						this.informationWithheld, rhs.informationWithheld)
+				.append(this.relatedInformation, rhs.relatedInformation)
 				.append(this.lifeStage, rhs.lifeStage)
 				.append(this.sex, rhs.sex).append(this.attributes,
 						rhs.attributes).append(this.globalUniqueIdentifier,
@@ -172,39 +160,40 @@ public class DarwinCore extends ResolvableBase {
 						rhs.catalogNumber).isEquals();
 	}
 	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).appendSuper(super.toString()).append(
+				"relatedInformation", this.relatedInformation).append(
+				"modified", this.getModified()).append("id", this.getId())
+				.append("dateLastModified", this.dateLastModified).append(
+						"imageURL", this.imageURL).append("occurrenceResource",
+						this.getOccurrenceResource()).append("coreID",
+						this.getCoreID()).append("basisOfRecord",
+						this.basisOfRecord).append("remarks", this.remarks)
+				.append("informationWithheld", this.informationWithheld)
+				.append("attributes", this.attributes).append("deleted",
+						this.isDeleted()).append("uri", this.getUri()).append(
+						"globalUniqueIdentifier", this.globalUniqueIdentifier)
+				.append("institutionCode", this.institutionCode).append(
+						"lifeStage", this.lifeStage).append("collectionCode",
+						this.collectionCode).append("catalogNumber",
+						this.catalogNumber).append("uuid", this.getUuid())
+				.append("sex", this.sex).toString();
+	}
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(139652297, -21774617).append(
-				this.basisOfRecord).append(this.imageURL).append(
-				this.institutionCode).append(this.dateLastModified).append(
-				this.remarks).append(this.relatedInformation).append(
-				this.informationWithheld).append(this.occurrenceResource)
+		return new HashCodeBuilder(1212583629, 756929139).appendSuper(
+				super.hashCode()).append(this.basisOfRecord).append(
+				this.imageURL).append(this.institutionCode).append(
+				this.dateLastModified).append(this.remarks).append(
+				this.informationWithheld).append(this.relatedInformation)
 				.append(this.lifeStage).append(this.sex)
 				.append(this.attributes).append(this.globalUniqueIdentifier)
 				.append(this.collectionCode).append(this.catalogNumber)
 				.toHashCode();
-	}
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return new ToStringBuilder(this).append("relatedInformation",
-				this.relatedInformation).append("modified", this.getModified())
-				.append("id", this.getId()).append("dateLastModified",
-						this.dateLastModified)
-				.append("imageURL", this.imageURL).append("occurrenceResource",
-						this.occurrenceResource).append("basisOfRecord",
-						this.basisOfRecord).append("remarks", this.remarks)
-				.append("informationWithheld", this.informationWithheld)
-				.append("attributes", this.attributes).append("uri",
-						this.getUri()).append("globalUniqueIdentifier",
-						this.globalUniqueIdentifier).append("institutionCode",
-						this.institutionCode).append("lifeStage",
-						this.lifeStage).append("collectionCode",
-						this.collectionCode).append("catalogNumber",
-						this.catalogNumber).append("uuid", this.getUuid())
-				.append("sex", this.sex).toString();
 	}
 	
 	

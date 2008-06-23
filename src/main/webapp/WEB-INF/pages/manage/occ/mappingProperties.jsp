@@ -3,28 +3,9 @@
 <head>
     <title><fmt:message key="occResourceOverview.title"/></title>
     <meta name="heading" content="<s:property value="mapping.resource.title"/>"/>
-    <script type="text/javascript" src="<c:url value='/scripts/jquery.js'/>"></script>
-    <script type="text/javascript" src="<c:url value='/scripts/flexigrid.js'/>"></script>
 </head>
 
 <h2><s:property value="mapping.extension.name"/> Extension</h2>
-<s:form id="viewMappingForm" action="saveMapping" method="post" validate="true">
-    <li style="display: none">
-        <s:hidden name="mapping_id" value="%{mapping.id}"/>
-        <s:hidden name="extension_id" value="%{extension_id}"/>
-    </li>
-    
-    <s:textarea key="mapping.viewSql" value="%{mapping.viewSql}" required="true" cssClass="text large"/>
-		    	
-    <li class="buttonBar bottom">
-        <s:submit cssClass="button" method="save" key="button.save" theme="simple"/>
-        <c:if test="${not empty mapping.id}">
-            <s:submit cssClass="button" method="delete" key="button.delete"
-                onclick="return confirmDelete('ViewMapping')" theme="simple"/>
-        </c:if>
-        <s:submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
-    </li>
-</s:form>
 
 <div id="preview">
 	<table class="table">
@@ -47,19 +28,31 @@
 	</table>
 </div>
 
-
-<s:form action="saveMapping" method="post" > 
-     <li style="display: none">
-        <s:hidden name="mapping_id" value="%{mapping.id}"/>
-        <s:hidden name="extension_id" value="%{extension_id}"/>
+<c:set var="buttons">
+    <li class="buttonBar bottom">
+        <s:submit cssClass="button" key="button.save" theme="simple"/>
+        <s:submit cssClass="button" method="cancel" key="button.done" theme="simple"/>
     </li>
+</c:set>
+
+<s:form action="saveMappingProperties" method="post" validate="true">
+    <li style="display: none">
+        <s:hidden name="mapping_id" value="%{mapping.id}"/>
+    </li>
+
+	<c:out value="${buttons}" escapeXml="false" /> 
+ 
+ 	<s:select key="mapping.coreIdColumnIndex" required="true"
+		headerKey="Select identifier for core record" emptyOption="true" 
+		list="columnOptions" />
  
     <s:iterator value="mappings" status="stat"> 
-		<s:select label="%{property.name}" name="mappings[%{#stat.index}].column" required="false"
+		<s:select label="%{property.name}" name="mappings[%{#stat.index}].column" required="%{property.required}"
 			value="%{mappings[#stat.index].column}"
 			headerKey="" emptyOption="true" 
 			list="mapOptions[property]" />
 			<!-- headerValue="Select a column or value ..." -->
+
         <s:textfield  
             name="mappings[%{#stat.index}].value"  
             value="%{mappings[#stat.index].value}"/>  
@@ -70,7 +63,8 @@
     </s:iterator> 
  
  	<br/>
-    <s:submit value="button.save" theme="simple"/> 
+
+	<c:out value="${buttons}" escapeXml="false" />		    	
  
 </s:form> 
 

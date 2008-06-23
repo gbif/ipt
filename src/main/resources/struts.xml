@@ -199,29 +199,43 @@
             <result name="delete" type="redirect-action">resources</result>
         </action>
 
-        <action name="editMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="edit">
-            <result>/WEB-INF/pages/manage/occ/viewMappingForm.jsp</result>
+        <action name="editMappingSource" class="org.gbif.provider.webapp.action.ViewMappingAction" method="editSource">
+            <result>/WEB-INF/pages/manage/occ/mappingSource.jsp</result>
         </action>
-        
-        <action name="saveMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="save">
-            <result>/WEB-INF/pages/manage/occ/viewMappingForm.jsp</result>
+        <action name="saveMappingSource" class="org.gbif.provider.webapp.action.ViewMappingAction" method="saveSource">
+            <result>/WEB-INF/pages/manage/occ/mappingSource.jsp</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
-                <!-- 
-                <param name="parse">true</param>
-                <param name="id">${resource_id}</param>
-                -->
             </result>
         </action>
+
+        <action name="editMappingProperties" class="org.gbif.provider.webapp.action.ViewMappingAction" method="editProperties">
+            <result>/WEB-INF/pages/manage/occ/mappingProperties.jsp</result>
+        </action>
+        <action name="saveMappingProperties" class="org.gbif.provider.webapp.action.ViewMappingAction" method="saveProperties">
+            <result>/WEB-INF/pages/manage/occ/mappingProperties.jsp</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+            </result>
+        </action>
+
+        <action name="upload" class="org.gbif.provider.webapp.action.UploadAction">
+            <result>/WEB-INF/pages/manage/occ/uploadSettings.jsp</result>
+        </action>
+        <action name="addUploadJob" class="org.gbif.provider.webapp.action.UploadAction" method="addUploadJob">
+            <result>/WEB-INF/pages/manage/occ/uploadSettings.jsp</result>
+        </action>
+
+        <action name="uploadHistory" class="org.gbif.provider.webapp.action.UploadAction" method="history">
+            <result>/WEB-INF/pages/manage/occ/uploadHistory.jsp</result>
+        </action>
+        
 
         <action name="validate">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-        <action name="upload">
-            <result>/WEB-INF/pages/missing.jsp</result>
-        </action>
-        
 
+        
         <action name="extension" class="org.gbif.provider.webapp.action.DwcExtensionAction">
             <result>/WEB-INF/pages/admin/dwcExtensionDetail.jsp</result>
         </action>

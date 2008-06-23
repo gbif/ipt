@@ -42,7 +42,7 @@ import com.mysql.jdbc.DatabaseMetaData;
 import com.opensymphony.xwork2.Preparable;
 
 public class ViewMappingAction extends BaseResourceAction implements Preparable{
-	private static Long FIXED_TERMS_IDX = 1000L;
+	private static Integer FIXED_TERMS_IDX = 1000;
     private DatasourceInspectionManager datasourceInspectionManager;
     private GenericManager<DwcExtension, Long> dwcExtensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
@@ -50,7 +50,8 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
     private List<PropertyMapping> mappings;
     private ArrayList<String> viewColumnHeaders;
     private List preview;
-    private Map<ExtensionProperty, Map>mapOptions;
+    private Map<ExtensionProperty, Map> mapOptions;
+    private SortedMap<Integer, String> columnOptions;
 	private Long mapping_id;
 	private Long extension_id;
 		
@@ -112,8 +113,11 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
 	public Map<ExtensionProperty, Map> getMapOptions() {
 		return mapOptions;
 	}
-
 	
+	public SortedMap<Integer, String> getColumnOptions() {
+		return columnOptions;
+	}
+
 	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
         if (mapping_id != null) {
@@ -125,14 +129,16 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
             	mapping.setExtension(dwcExtensionManager.get(extension_id));
             }
         }
-
+        
         // prepare list of property mappings to create form with
         mappings = new ArrayList<PropertyMapping>();
+        int filledMappings = 0;
     	for (ExtensionProperty prop : mapping.getExtension().getProperties()){
     		// is this property mapped already?
     		if (mapping.hasMappedProperty(prop)){
     			// add existing mapping
             	mappings.add(mapping.getMappedProperty(prop));
+            	filledMappings++;
     		}else{
     			// create new empty one. Remember to link them to the ViewMapping before they get saved
         		PropertyMapping propMap = new PropertyMapping();
@@ -140,7 +146,12 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
             	mappings.add(propMap);
     		}
     	}
-                
+		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
+
+	}
+
+	private void prepareSourceDataPreview(){
+		log.debug("prepareSourceDataPreview");
         // get resultset preview and number of available comuns for mapping
         viewColumnHeaders = new ArrayList<String>();
         if (mapping.getViewSql() !=null){
@@ -163,57 +174,89 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
 	                preview.add(rowList);
 	            }
 	        } catch (SQLException e) {
-	            String msg = getText("viewMapping.sqlError");
+	            String msg = getText("mapping.sqlError");
 	            saveMessage(msg);
 	            log.warn(msg);
 			}
-
-
         }
+	}
 
-        // create mapping options
-        mapOptions = new HashMap<ExtensionProperty, Map>();
+	private void prepareMappingsOptions() {
+		prepareSourceDataPreview();
+		log.debug("prepareMappingsOptions for columns "+viewColumnHeaders.toString());
+    	// create sorted mapping options for each extension property
+		mapOptions = new HashMap<ExtensionProperty, Map>();
         DwcExtension extension = mapping.getExtension();
-        for (ExtensionProperty prop : extension.getProperties()){
-        	SortedMap<Long, String> options = new TreeMap();
-            // add column mapping options
-        	Long i = 1L;
-        	if (viewColumnHeaders != null){
-        		for (String head : viewColumnHeaders){
-                	options.put(i, "Column "+i+ " ["+head+"]");
-        			i++;
-        		}
-        	}
+        // generate basic column mapping options
+        columnOptions = new TreeMap<Integer, String>();
+    	Integer i = 1;
+    	if (viewColumnHeaders != null){
+    		for (String head : viewColumnHeaders){
+    			columnOptions.put(i, "Column "+i+ " ["+head+"]");
+    			i++;
+    		}
+    	}
+        for (ExtensionProperty prop : extension.getProperties()){        	
         	//get real controlled vocabulary for properties from db
         	i=FIXED_TERMS_IDX;
+        	SortedMap<Integer, String> options;
         	if (prop.hasTerms()){
+        		// create new option map with controlled vocabulary
+            	options = new TreeMap<Integer, String>(columnOptions);
             	options.put(i, "--- Fixed values ---");
             	for (String term : prop.getTerms()){
             		i++;
                 	options.put(i, term);
             	}
+        	}else{
+        		// reuse the basic mapping options
+            	options = columnOptions;
         	}
-        	
         	mapOptions.put(prop, options);
-        }
+        }		
 	}
 	
-	
-	public String edit(){
+	public String editSource(){
+        prepareSourceDataPreview();
         return SUCCESS;
 	}
-        
-    public String save() throws Exception {
+
+    public String saveSource() throws Exception {
         if (cancel != null) {
             return "cancel";
         }
         if (delete != null) {
             return delete();
         }
+        prepareSourceDataPreview();
+        // cascade-save view mapping
+        boolean isNew = (mapping.getId() == null);
+        mapping = viewMappingManager.save(mapping);
+        String key = (isNew) ? "mapping.added" : "mapping.updated";
+        saveMessage(getText(key));
+        return SUCCESS;
+    }
+
+	public String editProperties(){
+		prepareMappingsOptions();
+		return SUCCESS;
+	}
+	
+	public String saveProperties() throws Exception {
+        if (cancel != null) {
+            return "cancel";
+        }
+		prepareMappingsOptions();
         // update property mapping values
         for (PropertyMapping pm : mappings){
-        	if (pm !=null && pm.getColumn()!=null && pm.getColumn() == 1000L){
-        		pm.setColumn(null);
+        	if (pm !=null && pm.getColumn()!=null && pm.getColumn() >= 1000){
+        		Integer key = pm.getColumn();
+        		if (key == 1000){
+            		pm.setColumn(null);
+        		}else{
+        			Map<Integer, String> options = mapOptions.get(pm.getProperty()); 
+            		pm.setValue(options.get(key));
+        		}
         	}
         	// save only non-empty property mappings
         	if (!pm.isEmpty()){
@@ -235,9 +278,4 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
         return "cancel";
     }
 
-
-    public String testSql(){
-    	//datasourceInspectionManager.executeViewSql(mapping.getViewSql());
-    	return null;
-    }
 }

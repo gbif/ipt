@@ -31,7 +31,7 @@
   </fieldset>
 </s:form>
 
-<s:form action="editMapping">
+<s:form action="editMappingSource">
   <fieldset>
     <legend>Mapping</legend>
     <s:if test="%{occResource.isValidConnection()}">
@@ -40,7 +40,7 @@
   	  <s:push value="occResource.getCoreMapping()">
 		<li>
 			<s:property value="extension.name"/>
-			<s:url id="mappingUrl" action="editMapping">
+			<s:url id="mappingUrl" action="editMappingSource">
 				<s:param name="mapping_id" value="id"/>
 			</s:url>
 			<s:a href="%{mappingUrl}"><s:property value="propertyMappings.size"/> concepts</s:a>
@@ -50,10 +50,10 @@
   	  <s:label key="occResourceOverview.extensionMappings"/>
       <c:if test="${not empty extensions}">
 		<s:select id="extension_id" name="extension_id" list="extensions" listKey="id" listValue="name"/>
-        <s:submit action="editMapping" method="" cssClass="button" key="button.add" theme="simple"/>
+        <s:submit action="editMappingSource" method="" cssClass="button" key="button.add" theme="simple"/>
   	  </c:if>
  	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
-		<s:url id="mappingUrl" action="editMapping">
+		<s:url id="mappingUrl" action="editMappingSource">
 			<s:param name="mapping_id" value="id"/>
 		</s:url>
 		<ul class="subform">
@@ -76,6 +76,12 @@
     <s:if test="%{occResource.hasMapping()}">
 		<s:label key="occResource.recordCount"/>
 		<s:label key="occResource.lastImport"/>
+		<s:url id="uploadHistoryUrl" action="uploadHistory">
+			<s:param name="resource_id" value="id"/>
+		</s:url>
+		<s:a href="%{uploadHistoryUrl}">
+			<img src="http://chart.apis.google.com/chart?cht=lxy&chs=200x125&chd=t:0,30,60,70,90,95,100|20,30,40,50,60,70,80|10,30,40,45,52|100,90,40,20,10|-1|5,33,50,55,7&chco=3072F3,ff0000,00aaaa&chls=2,4,1&chm=s,FF0000,0,-1,5|s,0000ff,1,-1,5|s,00aa00,2,-1,5" />
+		</s:a>
 	    <s:submit cssClass="button" key="button.upload"/>
     </s:if>
     <s:else>

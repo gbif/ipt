@@ -6,6 +6,7 @@
         <mapping class="org.appfuse.model.User"/>
         <mapping class="org.appfuse.model.Role"/>
         <mapping class="org.gbif.provider.model.ChecklistResource"/>
+        <mapping class="org.gbif.provider.model.CoreRecord"/>
         <mapping class="org.gbif.provider.model.DarwinCore"/>
         <mapping class="org.gbif.provider.model.DarwinCoreLocation"/>
         <mapping class="org.gbif.provider.model.DarwinCoreTaxonomy"/>
@@ -16,6 +17,7 @@
         <mapping class="org.gbif.provider.model.PropertyMapping"/>
         <mapping class="org.gbif.provider.model.ResolvableBase"/>
         <mapping class="org.gbif.provider.model.Resource"/>
+        <mapping class="org.gbif.provider.model.UploadEvent"/>
         <mapping class="org.gbif.provider.model.ViewMapping"/>
     </session-factory>
 </hibernate-configuration>
