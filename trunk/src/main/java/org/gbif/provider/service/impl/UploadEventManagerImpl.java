@@ -84,7 +84,7 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long
 		chartBuilder.addDataset(addedDS, "Added");
 		chartBuilder.addDataset(changedDS, "Changed");
 		chartBuilder.addDataset(deletedDS, "Deleted");
-		return chartBuilder.generateChartDataString(300,200);
+		return chartBuilder.generateChartDataString(450,200);
 	}
 
 }
