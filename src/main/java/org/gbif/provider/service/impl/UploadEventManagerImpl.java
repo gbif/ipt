@@ -80,10 +80,10 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long
 			changedDS.put(e.getExecutionDate(), e.getRecordsChanged());
 			deletedDS.put(e.getExecutionDate(), e.getRecordsDeleted());
 		}
-		chartBuilder.addDataset(uploadedDS, "uploaded");
-		chartBuilder.addDataset(addedDS, "added");
-		chartBuilder.addDataset(changedDS, "changed");
-		chartBuilder.addDataset(deletedDS, "deleted");
+		chartBuilder.addDataset(uploadedDS, "Uploaded");
+		chartBuilder.addDataset(addedDS, "Added");
+		chartBuilder.addDataset(changedDS, "Changed");
+		chartBuilder.addDataset(deletedDS, "Deleted");
 		return chartBuilder.generateChartDataString(300,200);
 	}
 
