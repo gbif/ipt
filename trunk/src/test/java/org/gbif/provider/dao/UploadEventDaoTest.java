@@ -19,7 +19,9 @@ public class UploadEventDaoTest extends BaseDaoTestCase{
 	public void testGetUploadEventsByResource(){
 		try {
 			List<UploadEvent> events = uploadEventDao.getUploadEventsByResource(1l);
-			logger.debug(events);
+			for (UploadEvent ev : events){
+				logger.debug(ev);
+			}
 		}catch(ObjectRetrievalFailureException e){
 			logger.debug(e.getMessage());
 		}

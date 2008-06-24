@@ -74,14 +74,20 @@
   <fieldset>
     <legend>Data Upload</legend>
     <s:if test="%{occResource.hasMapping()}">
-		<s:label key="occResource.recordCount"/>
-		<s:label key="occResource.lastImport"/>
-		<s:url id="uploadHistoryUrl" action="uploadHistory">
-			<s:param name="resource_id" value="id"/>
-		</s:url>
-		<s:a href="%{uploadHistoryUrl}">
-			<img src="http://chart.apis.google.com/chart?cht=lxy&chs=200x125&chd=t:0,30,60,70,90,95,100|20,30,40,50,60,70,80|10,30,40,45,52|100,90,40,20,10|-1|5,33,50,55,7&chco=3072F3,ff0000,00aaaa&chls=2,4,1&chm=s,FF0000,0,-1,5|s,0000ff,1,-1,5|s,00aa00,2,-1,5" />
-		</s:a>
+    	<div class="left">
+			<s:label key="occResource.recordCount"/>
+			<s:label key="occResource.lastImport"/>
+			<s:url id="uploadHistoryUrl" action="uploadHistory">
+				<s:param name="resource_id" value="id"/>
+			</s:url>
+	    </div>
+		<div class="right">
+			<s:a href="%{uploadHistoryUrl}">
+				<img src="<s:property value="gChartData"/>" />
+			</s:a>
+		</div>
+		<div class="break">
+		</div>
 	    <s:submit cssClass="button" key="button.upload"/>
     </s:if>
     <s:else>

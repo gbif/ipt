@@ -12,17 +12,18 @@ import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 
 public class RdbmsUploader implements Launchable{
 	protected static final Log log = LogFactory.getLog(RdbmsUploader.class);
 
-    private GenericManager<OccurrenceResource, Long> occResourceManager;
+    private DatasourceBasedResourceManager<OccurrenceResource> occResourceManager;
     private GenericManager<UploadEvent, Long> uploadEventManager;
     private DatasourceInspectionManager datasourceInspectionManager;
 
 	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
+			DatasourceBasedResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
 

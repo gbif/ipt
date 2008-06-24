@@ -19,3 +19,7 @@ table.lefthead th, td {
 div#preview td {
 	padding: 5px;
 }
+div.break {
+	clear: both;
+	padding-top: 25px;
+}

@@ -351,7 +351,11 @@
         <repository>
             <id>appfuse</id>
             <url>http://static.appfuse.org/repository</url>
-        </repository>
+        </repository>        
+        <repository>
+            <id>gbif</id>
+            <url>http://tools.gbif.org/maven/repository/</url>
+        </repository>        
         <!-- for the JSON struts2 plugin -->
         <repository>
             <id>Maven Plugin Repository</id>
