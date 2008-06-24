@@ -20,6 +20,8 @@ public class GChartBuilder {
 	public String generateChartDataString(int width, int height){
 		 // comma separated values, | separated datasets. First dataset for x values, second for y
 		 String data = "";
+		 // dataset properties
+		 String datasetTitles = "";
 		 String datasetColors = "";
 		 int colorIndex = 0;
 		 // min & max values for both axis
@@ -27,7 +29,10 @@ public class GChartBuilder {
 		 Long maxYValue = null;
 		 Date minXValue = null;
 		 Date maxXValue = null;
-		 for (SortedMap<Date, Long> dataset : datasets.values()){
+		 for (String title : datasets.keySet()){
+			 SortedMap<Date, Long> dataset = datasets.get(title);
+			 // add dataset title
+			 datasetTitles += title+"|";
 			 // define color for this dataset line
 			 datasetColors += COLORS.get(colorIndex)+",";
 			 colorIndex++;
@@ -53,20 +58,12 @@ public class GChartBuilder {
 				 // build y-axis dataset
 				 yData += val+",";
 			 }
-			 if (data.endsWith(",")){
-				 data = data.substring(0, data.length()-1);
-			 }
-			 if (yData.endsWith(",")){
-				 yData = yData.substring(0, yData.length()-1);
-			 }
+			 // remove trailing , or |
+			 data=trimString(data);
+			 yData=trimString(yData);
+
+			 // append y-axis dataset
 			 data +="|"+yData+"|";
-		 }
-		 // remove trailing , or |
-		 if (data.endsWith("|")){
-			 data = data.substring(0, data.length()-1);
-		 }
-		 if (datasetColors.endsWith(",")){
-			 datasetColors = datasetColors.substring(0, datasetColors.length()-1);
 		 }
 		 
 		 // calc y axis label
@@ -91,9 +88,18 @@ public class GChartBuilder {
 		 for (SortedMap<Date, Long> dataset : datasets.values()){
 			 minMax += minMaxPerDataset;
 		 }
-		 if (minMax.endsWith(",")){
-			 minMax = minMax.substring(0, minMax.length()-1);
+		 
+		 // remove trailing , or |
+		 data=trimString(data);
+		 datasetTitles=trimString(datasetTitles);
+		 datasetColors=trimString(datasetColors);
+		 minMax=trimString(minMax);
+		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,y,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chdl="+datasetTitles+"&chd=t:"+data;
+	}
+	private String trimString(String x){
+		 if (x.endsWith(",") || x.endsWith("|")){
+			 x = x.substring(0, x.length()-1);
 		 }
-		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,y,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chd=t:"+data;
+		 return x;
 	}
 }
