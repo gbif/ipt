@@ -27,8 +27,10 @@ import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.webapp.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,9 +39,11 @@ import com.opensymphony.xwork2.Preparable;
 public class OccResourceAction extends BaseResourceAction implements Preparable{
     private GenericManager<DwcExtension, Long> dwcExtensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
+    private UploadEventManager uploadEventManager;
     private List occResources;
     private List<DwcExtension> extensions;
     private OccurrenceResource occResource;
+    private String gChartData;
 
     public void setDwcExtensionManager(
 			GenericManager<DwcExtension, Long> dwcExtensionManager) {
@@ -51,12 +55,20 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 		this.viewMappingManager = viewMappingManager;
 	}
 	
+	public void setUploadEventManager(UploadEventManager uploadEventManager) {
+		this.uploadEventManager = uploadEventManager;
+	}
+
 	public List getOccResources() {
         return occResources;
     }
 
 	public List getExtensions() {
 		return extensions;
+	}
+
+	public String getGChartData() {
+		return gChartData;
 	}
 
 	public DatasourceBasedResource getOccResource() {
@@ -83,6 +95,9 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     }
 
 	public String execute(){
+		// create GoogleChart string
+		gChartData = uploadEventManager.getGoogleChartData(getResourceId());
+		// get all availabel extensions for new mappings
     	extensions = dwcExtensionManager.getAll();
     	for (DwcExtension ext : extensions){
     		if (ext.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)){

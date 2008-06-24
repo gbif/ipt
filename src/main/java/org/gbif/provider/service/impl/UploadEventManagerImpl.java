@@ -16,6 +16,12 @@
 
 package org.gbif.provider.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +37,7 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -62,7 +69,22 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long
 
 	public String getGoogleChartData(Long resourceId) {
 		List<UploadEvent> events = this.getUploadEventsByResource(resourceId);
-		return null;
+		GChartBuilder chartBuilder = new GChartBuilder();
+		Map<Date, Long> uploadedDS = new HashMap<Date, Long>();
+		Map<Date, Long> addedDS = new HashMap<Date, Long>();
+		Map<Date, Long> changedDS = new HashMap<Date, Long>();
+		Map<Date, Long> deletedDS = new HashMap<Date, Long>();
+		for (UploadEvent e : events){
+			uploadedDS.put(e.getExecutionDate(), e.getRecordsUploaded());
+			addedDS.put(e.getExecutionDate(), e.getRecordsAdded());
+			changedDS.put(e.getExecutionDate(), e.getRecordsChanged());
+			deletedDS.put(e.getExecutionDate(), e.getRecordsDeleted());
+		}
+		chartBuilder.addDataset(uploadedDS, "uploaded");
+		chartBuilder.addDataset(addedDS, "added");
+		chartBuilder.addDataset(changedDS, "changed");
+		chartBuilder.addDataset(deletedDS, "deleted");
+		return chartBuilder.generateChartDataString(300,200);
 	}
 
 }

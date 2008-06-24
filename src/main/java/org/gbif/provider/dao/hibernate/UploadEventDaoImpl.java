@@ -23,7 +23,7 @@ public class UploadEventDaoImpl extends GenericDaoHibernate<UploadEvent, Long> i
 
 		List<UploadEvent> events =  (List) template.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) {
-				Query query = session.createQuery("FROM UploadEvent event JOIN event.resource res WHERE res.id = :resourceId");
+				Query query = session.createQuery("select event FROM UploadEvent event JOIN event.resource res WHERE res.id = :resourceId");
 				//Query query = session.createQuery("from UploadEvent as event where UploadEvent.resource.id = :resourceId");
 				query.setParameter("resourceId", resourceId);
 				query.setCacheable(true);

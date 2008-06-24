@@ -65,7 +65,7 @@
         <constructor-arg ref="dwcExtensionDao"/>
     </bean>    
     
-    <bean id="uploadEventManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerImpl">        
         <constructor-arg ref="uploadEventDao"/>
         <property name="occResourceManager" ref="occResourceManager"/>
     </bean>    
