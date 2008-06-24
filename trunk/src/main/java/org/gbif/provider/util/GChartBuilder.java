@@ -94,7 +94,7 @@ public class GChartBuilder {
 		 datasetTitles=trimString(datasetTitles);
 		 datasetColors=trimString(datasetColors);
 		 minMax=trimString(minMax);
-		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,y,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chdl="+datasetTitles+"&chd=t:"+data;
+		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,y,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chdlp=l&chdl="+datasetTitles+"&chd=t:"+data;
 	}
 	private String trimString(String x){
 		 if (x.endsWith(",") || x.endsWith("|")){
