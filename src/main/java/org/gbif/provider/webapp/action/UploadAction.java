@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.TreeMap;
 
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
+import org.gbif.provider.job.Launchable;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -36,8 +38,7 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.upload.Launchable;
-import org.gbif.provider.upload.RdbmsUploader;
+import org.gbif.provider.upload.RdbmsImportSource;
 import org.gbif.provider.webapp.Constants;
 import org.hibernate.type.SortedMapType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,7 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 		Map<String, Object> seed = new HashMap<String, Object>();
 		seed.put("resourceId", resource.getId());
 		uploader.launch(seed);
+        saveMessage(getText("upload.addedJob", Arrays.asList(resource.getRecordCount())));
 		return SUCCESS;
 	}
 	

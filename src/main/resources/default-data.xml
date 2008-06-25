@@ -66,29 +66,34 @@
     <column>link</column>
     <column>name</column>
     <column>namespace</column>
+    <column>tablename</column>
     <row>
       <value>1</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard</value>
       <value><![CDATA[Darwin Core]]></value>
       <value>http://rs.tdwg.org/dwc/dwcore/</value>
+      <value>core/</value>
     </row>
     <row>
       <value>2</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CuratorialExtension</value>
       <value><![CDATA[DwC Curatorial]]></value>
       <value>http://rs.tdwg.org/dwc/curatorial/</value>
+      <value>curatorial</value>
     </row>
     <row>
       <value>3</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension</value>
       <value><![CDATA[DwC Geospatial]]></value>
       <value>http://rs.tdwg.org/dwc/geospatial/</value>
+      <value>geospatial</value>
     </row>
     <row>
       <value>4</value>
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/PaleontologyElement</value>
       <value><![CDATA[DwC Paleontology]]></value>
       <value>http://rs.tdwg.org/dwc/paleontology/</value>
+      <value>paleontology</value>
     </row>
   </table>
   <table name="ExtensionProperty">

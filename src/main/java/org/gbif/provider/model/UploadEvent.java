@@ -10,7 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Event keeping track of upload statistics to the cache for a certain resource
+ * Event keeping track of upload statistics to the cache for a certain resource.
+ * uploaded records is the total of all uploaded records and thus the new record count for the resource.
+ * The following should be true: 
+ * recordsUploaded = previousRecordCount + recordsAdded - recordsDeleted
  * @author markus
  *
  */
@@ -19,10 +22,10 @@ public class UploadEvent {
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Date executionDate;
-	private Long recordsUploaded;
-	private Long recordsDeleted;
-	private Long recordsChanged;
-	private Long recordsAdded;
+	private int recordsUploaded;
+	private int recordsDeleted;
+	private int recordsChanged;
+	private int recordsAdded;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -49,31 +52,31 @@ public class UploadEvent {
 		this.executionDate = executionDate;
 	}
 	
-	public Long getRecordsUploaded() {
+	public int getRecordsUploaded() {
 		return recordsUploaded;
 	}
-	public void setRecordsUploaded(Long recordsUploaded) {
+	public void setRecordsUploaded(int recordsUploaded) {
 		this.recordsUploaded = recordsUploaded;
 	}
 	
-	public Long getRecordsDeleted() {
+	public int getRecordsDeleted() {
 		return recordsDeleted;
 	}
-	public void setRecordsDeleted(Long recordsDeleted) {
+	public void setRecordsDeleted(int recordsDeleted) {
 		this.recordsDeleted = recordsDeleted;
 	}
 	
-	public Long getRecordsChanged() {
+	public int getRecordsChanged() {
 		return recordsChanged;
 	}
-	public void setRecordsChanged(Long recordsChanged) {
+	public void setRecordsChanged(int recordsChanged) {
 		this.recordsChanged = recordsChanged;
 	}
 	
-	public Long getRecordsAdded() {
+	public int getRecordsAdded() {
 		return recordsAdded;
 	}
-	public void setRecordsAdded(Long recordsAdded) {
+	public void setRecordsAdded(int recordsAdded) {
 		this.recordsAdded = recordsAdded;
 	}
 	

@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.job;
 
 import java.util.Map;
 

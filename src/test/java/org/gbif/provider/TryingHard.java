@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -27,6 +29,8 @@ public class TryingHard {
 		Arrays.fill(a, i++);
 		System.out.println(a);
 		//Collections.list(a);
+		String[] names = {"peter","marta","caroline"};
+		System.out.println(names);
 	}
 
 	@Test
@@ -49,6 +53,14 @@ public class TryingHard {
 		assertFalse(i==i2);
 		assertTrue(i.equals(i2));
 		assertFalse(i==i3);
+	}
+	
+	@Test
+	public void testPrimitives(){
+		int i;
+		Map<String, Integer> m = new HashMap<String, Integer>();
+		m.put("one", Integer.valueOf(1));
+		m.put("two", Integer.valueOf(2));
 	}
 	
 }
