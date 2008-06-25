@@ -48,6 +48,7 @@ public class DwcExtension implements Comparable<DwcExtension> {
 	private String namespace;
 	private String link;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
+	private String tablename;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -92,7 +93,14 @@ public class DwcExtension implements Comparable<DwcExtension> {
 		property.setExtension(this);
 		properties.add(property);
 	}
-
+	
+	public String getTablename() {
+		return tablename;
+	}
+	public void setTablename(String tablename) {
+		this.tablename = tablename;
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#equals(Object)

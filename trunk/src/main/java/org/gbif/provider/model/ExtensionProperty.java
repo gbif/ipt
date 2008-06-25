@@ -41,9 +41,11 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	private DwcExtension extension;
 	private String uri;
 	private String name;
+	private String columnName;	
 	private String link;
 	private boolean required;
 	private List<String> terms = new ArrayList<String>();
+	private int columnLength;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -75,6 +77,30 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * The database column name to be generated/used for this extension property
+	 * Should be 32 characters max and only use lowercase alphabetical characters and underscore
+	 * @return
+	 */
+	@Column(length=32)
+	public String getColumnName() {
+		return columnName;
+	}
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
+	}
+	
+	/**
+	 * The length of the database column to be generated when the extension property is installed
+	 * @return
+	 */
+	public int getColumnLength() {
+		return columnLength;
+	}
+	public void setColumnLength(int columnLength) {
+		this.columnLength = columnLength;
 	}
 	
 	public String getLink() {

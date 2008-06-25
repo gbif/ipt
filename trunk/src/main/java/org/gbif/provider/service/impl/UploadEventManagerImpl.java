@@ -40,6 +40,9 @@ import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.opensymphony.xwork2.TextProvider;
+import com.opensymphony.xwork2.TextProviderFactory;
+
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
  * Overriden methods keep the datasource targetsource map of the active datasource registry in sync with the db.
@@ -50,6 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long> implements UploadEventManager {
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     private UploadEventDao dao;
+    private final transient TextProvider textProvider = TextProviderFactory.getInstance();
     
 	public void setOccResourceManager(
 			GenericManager<OccurrenceResource, Long> occResourceManager) {
@@ -71,19 +75,19 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long
 		List<UploadEvent> events = this.getUploadEventsByResource(resourceId);
 		GChartBuilder chartBuilder = new GChartBuilder();
 		Map<Date, Long> uploadedDS = new HashMap<Date, Long>();
-		Map<Date, Long> addedDS = new HashMap<Date, Long>();
 		Map<Date, Long> changedDS = new HashMap<Date, Long>();
+		Map<Date, Long> addedDS = new HashMap<Date, Long>();
 		Map<Date, Long> deletedDS = new HashMap<Date, Long>();
 		for (UploadEvent e : events){
-			uploadedDS.put(e.getExecutionDate(), e.getRecordsUploaded());
-			addedDS.put(e.getExecutionDate(), e.getRecordsAdded());
-			changedDS.put(e.getExecutionDate(), e.getRecordsChanged());
-			deletedDS.put(e.getExecutionDate(), e.getRecordsDeleted());
+			uploadedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsUploaded()));
+			changedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsChanged()));
+			addedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsAdded()));
+			deletedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsDeleted()));
 		}
-		chartBuilder.addDataset(uploadedDS, "Uploaded");
-		chartBuilder.addDataset(addedDS, "Added");
-		chartBuilder.addDataset(changedDS, "Changed");
-		chartBuilder.addDataset(deletedDS, "Deleted");
+		chartBuilder.addDataset(uploadedDS, textProvider.getText("uploadEvent.Uploaded"));
+		chartBuilder.addDataset(changedDS, textProvider.getText("uploadEvent.Changed"));
+		chartBuilder.addDataset(addedDS, textProvider.getText("uploadEvent.Added"));
+		chartBuilder.addDataset(deletedDS, textProvider.getText("uploadEvent.Deleted"));
 		return chartBuilder.generateChartDataString(450,200);
 	}
 

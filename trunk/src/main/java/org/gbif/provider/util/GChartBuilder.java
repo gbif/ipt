@@ -1,5 +1,6 @@
 package org.gbif.provider.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -10,13 +11,23 @@ import java.util.TreeMap;
 import java.text.SimpleDateFormat;
 
 public class GChartBuilder {
-	private final List<String> COLORS = Arrays.asList("CA3D05","224499","76A4FB","80C65A","ff9900","ff0000");
+	// dark blue, light blue, green, red, dark yellow, dark grey
+	private final List<String> COLORS = Arrays.asList("224499","76A4FB","80C65A","CA3D05",   "ffc624","333333");
 	private final int DATE_PRECISION = 1000000;
-	private Map<String, SortedMap<Date, Long>> datasets = new HashMap<String, SortedMap<Date,Long>>();
+	private List<Dataset<Date, Long>> datasets = new ArrayList<Dataset<Date, Long>>();
+	
+	private class Dataset<K, V>{
+		public String title;
+		public SortedMap<K, V> data; 
+	}
 	
 	public void addDataset(Map<Date, Long> dataset, String title){
-		datasets.put(title, new TreeMap<Date, Long>(dataset));
+		Dataset<Date, Long> d = new Dataset<Date, Long>();
+		d.title=title;
+		d.data=new TreeMap<Date, Long>(dataset);
+		datasets.add(d);
 	}
+	
 	public String generateChartDataString(int width, int height){
 		 // comma separated values, | separated datasets. First dataset for x values, second for y
 		 String data = "";
@@ -29,10 +40,9 @@ public class GChartBuilder {
 		 Long maxYValue = null;
 		 Date minXValue = null;
 		 Date maxXValue = null;
-		 for (String title : datasets.keySet()){
-			 SortedMap<Date, Long> dataset = datasets.get(title);
+		 for (Dataset<Date, Long> d : datasets){
 			 // add dataset title
-			 datasetTitles += title+"|";
+			 datasetTitles += d.title+" |";
 			 // define color for this dataset line
 			 datasetColors += COLORS.get(colorIndex)+",";
 			 colorIndex++;
@@ -41,8 +51,8 @@ public class GChartBuilder {
 				 colorIndex=0;
 			 }
 			 String yData = "";
-			 for (Date date : dataset.keySet()){
-				 Long val = dataset.get(date);
+			 for (Date date : d.data.keySet()){
+				 Long val = d.data.get(date);
 				 // update min/max counters
 				 if (maxYValue== null || maxYValue < val){
 					 maxYValue=val;
@@ -85,7 +95,7 @@ public class GChartBuilder {
 		 // min, max scale for both axis
 		 String minMax = "";
 		 String minMaxPerDataset = minXValue.getTime()/DATE_PRECISION+","+maxXValue.getTime()/DATE_PRECISION+","+minYValue+","+maxYValue+",";
-		 for (SortedMap<Date, Long> dataset : datasets.values()){
+		 for (Dataset d : datasets){
 			 minMax += minMaxPerDataset;
 		 }
 		 
@@ -94,7 +104,7 @@ public class GChartBuilder {
 		 datasetTitles=trimString(datasetTitles);
 		 datasetColors=trimString(datasetColors);
 		 minMax=trimString(minMax);
-		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,y,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chdlp=l&chdl="+datasetTitles+"&chd=t:"+data;
+		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,r,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chdlp=l&chdl="+datasetTitles+"&chd=t:"+data;
 	}
 	private String trimString(String x){
 		 if (x.endsWith(",") || x.endsWith("|")){

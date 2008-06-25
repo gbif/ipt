@@ -49,7 +49,7 @@ public abstract class DatasourceBasedResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private Date lastImport;
-	private Integer recordCount;
+	private int recordCount;
 	private Map<Long, ViewMapping> mappings = new HashMap<Long, ViewMapping>();
 	// transient properties
 	private DataSource datasource;
@@ -103,10 +103,10 @@ public abstract class DatasourceBasedResource extends Resource {
 		this.lastImport = lastImport;
 	}
 	
-	public Integer getRecordCount() {
+	public int getRecordCount() {
 		return recordCount;
 	}
-	public void setRecordCount(Integer recordCount) {
+	public void setRecordCount(int recordCount) {
 		this.recordCount = recordCount;
 	}
 
