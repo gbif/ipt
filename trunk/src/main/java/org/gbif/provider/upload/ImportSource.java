@@ -1,5 +1,7 @@
 package org.gbif.provider.upload;
 
-public interface ImportSource extends Iterable<SourceRow>{
+import java.util.Iterator;
+
+public interface ImportSource extends Iterable<SourceRow>, Iterator<SourceRow>{
 	
 }

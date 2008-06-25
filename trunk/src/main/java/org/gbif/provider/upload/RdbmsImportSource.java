@@ -25,7 +25,7 @@ import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadManager;
 
-public class RdbmsImportSource implements ImportSource, Iterator<SourceRow>{
+public class RdbmsImportSource implements ImportSource{
 	protected static final Log log = LogFactory.getLog(RdbmsImportSource.class);
 	// TODO: make it final
 	private Collection<PropertyMapping> properties;
