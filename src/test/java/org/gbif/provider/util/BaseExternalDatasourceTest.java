@@ -8,9 +8,8 @@ import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.junit.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class BaseExternalDatasourceTest extends BaseDaoTestCase {
+public abstract class BaseExternalDatasourceTest extends BaseDaoTestCase {
 	static Long RESOURCE_ID = 1L;
 
 	public DatasourceInspectionDao datasourceInspectionDao;
@@ -47,5 +46,6 @@ public class BaseExternalDatasourceTest extends BaseDaoTestCase {
 		resource = occResourceManager.get(RESOURCE_ID);
 		datasourceRegistry.registerDatasource(resource);
 	}
+	
 
 }
