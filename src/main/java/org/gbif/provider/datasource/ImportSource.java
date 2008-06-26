@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.datasource;
 
 import java.util.Iterator;
 

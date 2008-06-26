@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.datasource.impl;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -15,6 +15,8 @@ import java.util.Random;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.datasource.SourceRow;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;

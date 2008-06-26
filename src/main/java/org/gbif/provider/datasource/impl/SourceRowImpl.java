@@ -1,8 +1,9 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.datasource.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gbif.provider.datasource.SourceRow;
 import org.gbif.provider.model.ExtensionProperty;
 
 public class SourceRowImpl implements SourceRow{

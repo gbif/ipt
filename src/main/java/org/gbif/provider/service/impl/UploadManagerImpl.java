@@ -5,13 +5,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.datasource.SourceRow;
 import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.UploadManager;
-import org.gbif.provider.upload.ImportSource;
-import org.gbif.provider.upload.SourceRow;
 
 public class UploadManagerImpl implements UploadManager{
 	protected static final Log log = LogFactory.getLog(UploadManagerImpl.class);
