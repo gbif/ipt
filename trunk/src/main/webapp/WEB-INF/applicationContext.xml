@@ -72,10 +72,7 @@
     
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
         
-    <bean id="rdbmsUploader" class="org.gbif.provider.upload.RdbmsUploader" >
-        <property name="occResourceManager" ref="occResourceManager"/>
-        <property name="uploadEventManager" ref="uploadEventManager"/>
-        <property name="datasourceInspectionManager" ref="datasourceInspectionManager"/>
-    </bean>        
+    <bean id="uploadManager" class="org.gbif.provider.service.impl.UploadManagerImpl">        
+    </bean>    
     
 </beans>

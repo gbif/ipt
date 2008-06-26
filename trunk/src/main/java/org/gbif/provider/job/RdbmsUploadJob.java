@@ -13,6 +13,7 @@ import java.util.Random;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.OccurrenceResource;
@@ -22,7 +23,6 @@ import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadManager;
-import org.gbif.provider.upload.RdbmsImportSource;
 
 public class RdbmsUploadJob implements Launchable{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);

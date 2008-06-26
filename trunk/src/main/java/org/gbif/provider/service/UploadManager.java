@@ -1,10 +1,10 @@
 package org.gbif.provider.service;
 
+import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.datasource.SourceRow;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.upload.SourceRow;
-import org.gbif.provider.upload.ImportSource;
 import java.util.Map;
 import java.util.List;
 

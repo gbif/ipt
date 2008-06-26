@@ -30,6 +30,7 @@ import java.util.TreeMap;
 
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
+import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.job.Launchable;
 import org.gbif.provider.model.DwcExtension;
 import org.gbif.provider.model.ExtensionProperty;
@@ -38,7 +39,6 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.upload.RdbmsImportSource;
 import org.gbif.provider.webapp.Constants;
 import org.hibernate.type.SortedMapType;
 import org.springframework.beans.factory.annotation.Autowired;

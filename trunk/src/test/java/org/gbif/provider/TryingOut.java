@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-public class TryingHard {
+public class TryingOut {
 	@Test
 	public void testBool(){
 		Boolean b = true;
