@@ -28,7 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
-import org.gbif.provider.webapp.Constants;
+import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.MapKeyManyToMany;
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -44,55 +44,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
 
-	@Transient
-	public ViewMapping getCoreMapping() {
-		return this.getMappings().get(Constants.DARWIN_CORE_EXTENSION_ID);
-	}
-
-	@Transient
-	public Collection<ViewMapping> getExtensionMappings() {
-		Map<Long, ViewMapping> extMappings = new HashMap<Long, ViewMapping>();
-		extMappings.putAll(this.getMappings());
-		extMappings.remove(Constants.DARWIN_CORE_EXTENSION_ID);
-		return extMappings.values();
-	}		
-
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof OccurrenceResource)) {
-			return false;
-		}
-		DatasourceBasedResource rhs = (DatasourceBasedResource) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).isEquals();
-	}
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return new HashCodeBuilder(830738695, -777913529).appendSuper(
-				super.hashCode()).toHashCode();
-	}
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"jdbcUser", this.getJdbcUser()).append("created",
-				this.getCreated()).append("modified", this.getModified())
-				.append("id", this.getId())
-				.append("jdbcUrl", this.getJdbcUrl()).append("validConnection",
-						this.isValidConnection()).append("modifier",
-						this.getModifier()).append("uri", this.getUri())
-				.append("jdbcDriverClass", this.getJdbcDriverClass()).append(
-						"recordCount", this.getRecordCount()).append(
-						"description", this.getDescription()).append("creator",
-						this.getCreator()).append("title", this.getTitle())
-				.append("serviceName", this.getServiceName()).append("datasource",
-						this.getDatasource()).append("lastImport",
-						this.getLastImport()).append("uuid", this.getUuid())
-				.append("jdbcPassword", this.getJdbcPassword()).toString();
+		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}
 	
 }

@@ -29,7 +29,7 @@ import java.util.TreeMap;
 
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
-import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
@@ -44,7 +44,7 @@ import com.opensymphony.xwork2.Preparable;
 public class ViewMappingAction extends BaseResourceAction implements Preparable{
 	private static Integer FIXED_TERMS_IDX = 1000;
     private DatasourceInspectionManager datasourceInspectionManager;
-    private GenericManager<DwcExtension, Long> dwcExtensionManager;
+    private GenericManager<Extension, Long> dwcExtensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private ViewMapping mapping;
     private List<PropertyMapping> mappings;
@@ -61,7 +61,7 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
 	}
 
 	public void setDwcExtensionManager(
-			GenericManager<DwcExtension, Long> dwcExtensionManager) {
+			GenericManager<Extension, Long> dwcExtensionManager) {
 		this.dwcExtensionManager = dwcExtensionManager;
 	}
 
@@ -186,7 +186,7 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
 		log.debug("prepareMappingsOptions for columns "+viewColumnHeaders.toString());
     	// create sorted mapping options for each extension property
 		mapOptions = new HashMap<ExtensionProperty, Map>();
-        DwcExtension extension = mapping.getExtension();
+        Extension extension = mapping.getExtension();
         // generate basic column mapping options
         columnOptions = new TreeMap<Integer, String>();
     	Integer i = 1;

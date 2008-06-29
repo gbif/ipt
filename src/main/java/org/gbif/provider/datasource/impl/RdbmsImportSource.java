@@ -1,32 +1,39 @@
+/***************************************************************************
+* Copyright (C) 2008 Global Biodiversity Information Facility Secretariat.
+* All Rights Reserved.
+*
+* The contents of this file are subject to the Mozilla Public
+* License Version 1.1 (the "License"); you may not use this file
+* except in compliance with the License. You may obtain a copy of
+* the License at http://www.mozilla.org/MPL/
+*
+* Software distributed under the License is distributed on an "AS
+* IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+* implied. See the License for the specific language governing
+* rights and limitations under the License.
+
+***************************************************************************/
+
 package org.gbif.provider.datasource.impl;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.ImportSource;
-import org.gbif.provider.datasource.SourceRow;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.DwcExtension;
-import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
-import org.gbif.provider.service.DatasourceBasedResourceManager;
-import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.service.UploadManager;
 
+/**
+ * Import source for relational databases that maps a sql resultset into CoreRecords and allows to iterate over them.
+ * @author markus
+ *
+ */
 public class RdbmsImportSource implements ImportSource{
 	protected static final Log log = LogFactory.getLog(RdbmsImportSource.class);
 	// TODO: make it final
@@ -34,9 +41,11 @@ public class RdbmsImportSource implements ImportSource{
 	private ResultSet rs;
 	private boolean hasNext;
 	private Integer coreIdColumnIndex;
+	private Integer guidColumnIndex;
+	private Integer linkColumnIndex;
 	
 
-    public static RdbmsImportSource getInstance(ResultSet rs, ViewMapping view){
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view){
     	RdbmsImportSource source = new RdbmsImportSource();
     	source.rs = rs;
     	source.properties = view.getPropertyMappings().values();
@@ -49,9 +58,21 @@ public class RdbmsImportSource implements ImportSource{
 		}
     	return source;
     }
+    
+    public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view){
+    	ViewMapping extView = (ViewMapping) view;
+    	RdbmsImportSource source = RdbmsImportSource.newInstance(rs, extView);
+    	source.guidColumnIndex = view.getGuidColumnIndex();
+    	source.linkColumnIndex = view.getLinkColumnIndex();
+    	return source;
+    }
+    
+	private RdbmsImportSource() {
+		// non instantiable class. use above static factory
+	}
 
-	
-	public Iterator<SourceRow> iterator() {
+
+	public Iterator<CoreRecord> iterator() {
 		return this;
 	}
 
@@ -59,17 +80,26 @@ public class RdbmsImportSource implements ImportSource{
 		return hasNext;
 	}
 
-	public SourceRow next() {
-		SourceRow row = null;
+	public CoreRecord next() {
+		CoreRecord row = null;
 		if (hasNext){
 			try {
-				row = new SourceRowImpl();
-				row.setLocalId(rs.getString(coreIdColumnIndex));
+				row = new CoreRecord();
+				//TODO: the mapping that takes place here should probably be done with a separate mapping class
+				if (coreIdColumnIndex != null){
+					row.setLocalId(rs.getString(coreIdColumnIndex));	
+				}
+				if (guidColumnIndex != null){
+					row.setGuid(rs.getString(guidColumnIndex));					
+				}
+				if (linkColumnIndex != null){
+					row.setLink(rs.getString(linkColumnIndex));
+				}
 		    	for (PropertyMapping pm : properties){
 		    		if (pm.getColumn() != null){
-						row.addPropertyValue(pm.getProperty(), rs.getString(pm.getColumn()));
+						row.setPropertyValue(pm.getProperty(), rs.getString(pm.getColumn()));
 		    		}else if (pm.getValue() != null){
-						row.addPropertyValue(pm.getProperty(), pm.getValue());
+						row.setPropertyValue(pm.getProperty(), pm.getValue());
 		    		}
 		    	}
 			} catch (SQLException e) {

@@ -2,6 +2,9 @@ package org.gbif.provider.datasource;
 
 import java.util.Iterator;
 
-public interface ImportSource extends Iterable<SourceRow>, Iterator<SourceRow>{
+import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.ExtensionRecord;
+
+public interface ImportSource extends Iterator<CoreRecord>, Iterable<CoreRecord>{
 	
 }

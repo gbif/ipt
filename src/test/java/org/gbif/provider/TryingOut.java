@@ -62,5 +62,15 @@ public class TryingOut {
 		m.put("one", Integer.valueOf(1));
 		m.put("two", Integer.valueOf(2));
 	}
-	
+
+	@Test
+	public void testMod(){
+		int[] xx = {11789, 20000, 367, 0};
+		int m = 1000;
+		
+		for (int x : xx){
+			System.out.println(x%m);
+		}
+	}
+
 }

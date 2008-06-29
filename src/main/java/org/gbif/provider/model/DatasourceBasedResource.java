@@ -28,12 +28,17 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 import javax.persistence.CascadeType;
 
+import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 
 /**
@@ -50,6 +55,8 @@ public abstract class DatasourceBasedResource extends Resource {
 	private String jdbcPassword;
 	private Date lastImport;
 	private int recordCount;
+	private CoreViewMapping coreMapping;
+	//TODO: rename into extensionMappings. But JSPs need to be refactored too!
 	private Map<Long, ViewMapping> mappings = new HashMap<Long, ViewMapping>();
 	// transient properties
 	private DataSource datasource;
@@ -123,12 +130,20 @@ public abstract class DatasourceBasedResource extends Resource {
 		this.mappings.put(mapping.getExtension().getId(), mapping);
 	}
 	
-	@Transient
-	abstract public ViewMapping getCoreMapping();
-	
-	@Transient
-	abstract public Collection<ViewMapping> getExtensionMappings();
+	@OneToOne(mappedBy="resource", cascade=CascadeType.ALL)
+	public CoreViewMapping getCoreMapping() {
+		return coreMapping;
+	}
+	public void setCoreMapping(CoreViewMapping coreMapping) {
+		this.coreMapping = coreMapping;
+	}
 
+
+	@Transient
+	public Collection<ViewMapping> getExtensionMappings() {
+		return getMappings().values();
+	}	
+	
 	@Transient
 	public DataSource getDatasource() {
 		if (datasource == null){
@@ -186,6 +201,51 @@ public abstract class DatasourceBasedResource extends Resource {
 		}
 		return result;
 	}
-
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof DatasourceBasedResource)) {
+			return false;
+		}
+		DatasourceBasedResource rhs = (DatasourceBasedResource) object;
+		return new EqualsBuilder().append(this.coreMapping, rhs.coreMapping)
+				.append(this.datasource, rhs.datasource).append(
+						this.recordCount, rhs.recordCount).append(
+						this.serviceName, rhs.serviceName).append(this.jdbcUrl,
+						rhs.jdbcUrl)
+				.append(this.jdbcPassword, rhs.jdbcPassword).append(
+						this.jdbcUser, rhs.jdbcUser).append(this.mappings,
+						rhs.mappings).append(this.lastImport, rhs.lastImport)
+				.append(this.jdbcDriverClass, rhs.jdbcDriverClass).isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-1271385051, 751389009).appendSuper(
+				super.hashCode()).append(this.coreMapping).append(
+				this.datasource).append(this.recordCount).append(
+				this.serviceName).append(this.jdbcUrl)
+				.append(this.jdbcPassword).append(this.jdbcUser).append(
+						this.mappings).append(this.lastImport).append(
+						this.jdbcDriverClass).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).
+				append("id", this.getId()).
+				append("title", this.getTitle()).
+				append("recordCount",this.getRecordCount()).
+				append("link", this.getLink()).
+				append("jdbcUrl",this.getJdbcDriverClass()).
+				append("coreMapping",this.getCoreMapping().getExtension().getName()).
+				append("coreMappings",this.getCoreMapping().getPropertyMappings().size()).
+				append("extensionMappings",this.getExtensionMappings().size()).
+				append("guid", this.getGuid())
+				.toString();
+	}	
 	
 }

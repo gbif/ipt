@@ -14,7 +14,7 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp;
+package org.gbif.provider.util;
 
 
 /**
@@ -31,4 +31,6 @@ public class Constants {
     public static final Long DARWIN_CORE_EXTENSION_ID = 1L;
 
     public static final Long CHECKLIST_EXTENSION_ID = 1L;
+
+    public static final Long TEST_RESOURCE_ID = 1L;
 }

@@ -8,7 +8,6 @@ import org.appfuse.model.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ResolvableBase;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 import org.springframework.security.Authentication;

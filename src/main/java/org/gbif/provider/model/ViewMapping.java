@@ -57,7 +57,7 @@ import org.hibernate.annotations.MapKey;
 public class ViewMapping implements Comparable<ViewMapping> {
 	private Long id;
 	private DatasourceBasedResource resource;
-	private DwcExtension extension;
+	private Extension extension;
 	private String viewSql;
 	private Integer coreIdColumnIndex;
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
@@ -80,10 +80,10 @@ public class ViewMapping implements Comparable<ViewMapping> {
 	}
 	
 	@ManyToOne
-	public DwcExtension getExtension() {
+	public Extension getExtension() {
 		return extension;
 	}
-	public void setExtension(DwcExtension extension) {
+	public void setExtension(Extension extension) {
 		this.extension = extension;
 	}
 	
@@ -155,20 +155,25 @@ public class ViewMapping implements Comparable<ViewMapping> {
 				.isEquals();
 	}
 	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return new HashCodeBuilder(651663619, 212381131).append(this.extension)
-				.append(this.viewSql).append(
-						this.resource).append(this.id).toHashCode();
-	}
-	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("viewSql", this.viewSql).append(
-				"resource", this.resource).append("id", this.id).append(
-				"extension", this.extension).toString();
+		return new ToStringBuilder(this).
+			append("id", this.id).
+			append("resource", this.resource.getTitle()).
+			append("extension", this.extension.getName()).
+			append("viewSql", this.viewSql).
+			append("propertyMappings", this.propertyMappings.size()).
+			toString();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-2126600205, 1312463483).appendSuper(
+				super.hashCode()).append(this.extension).append(this.viewSql)
+				.append(this.coreIdColumnIndex).append(this.propertyMappings)
+				.append(this.resource).append(this.id).toHashCode();
 	}
 	
 	

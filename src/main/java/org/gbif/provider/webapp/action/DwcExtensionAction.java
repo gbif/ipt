@@ -20,14 +20,14 @@ import java.util.List;
 
 import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
-import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.Extension;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class DwcExtensionAction extends BaseAction implements Preparable{
-    private GenericManager<DwcExtension, Long> dwcExtensionManager;
-    private List<DwcExtension> extensions;
-    private DwcExtension extension;
+    private GenericManager<Extension, Long> dwcExtensionManager;
+    private List<Extension> extensions;
+    private Extension extension;
     private Long id;
 
 	public Long getId() {
@@ -38,16 +38,16 @@ public class DwcExtensionAction extends BaseAction implements Preparable{
 		this.id = id;
 	}
 
-	public List<DwcExtension> getExtensions() {
+	public List<Extension> getExtensions() {
 		return extensions;
 	}
 
-	public DwcExtension getExtension() {
+	public Extension getExtension() {
 		return extension;
 	}
 
 	public void setDwcExtensionManager(
-			GenericManager<DwcExtension, Long> dwcExtensionManager) {
+			GenericManager<Extension, Long> dwcExtensionManager) {
 		this.dwcExtensionManager = dwcExtensionManager;
 	}
 

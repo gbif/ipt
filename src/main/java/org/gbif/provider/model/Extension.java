@@ -42,7 +42,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.hibernate.annotations.IndexColumn;
 
 @Entity
-public class DwcExtension implements Comparable<DwcExtension> {
+public class Extension implements Comparable<Extension> {
 	private Long id;	
 	private String name;
 	private String namespace;
@@ -106,10 +106,10 @@ public class DwcExtension implements Comparable<DwcExtension> {
 	 * @see java.lang.Object#equals(Object)
 	 */
 	public boolean equals(Object object) {
-		if (!(object instanceof DwcExtension)) {
+		if (!(object instanceof Extension)) {
 			return false;
 		}
-		DwcExtension rhs = (DwcExtension) object;
+		Extension rhs = (Extension) object;
 		return new EqualsBuilder().append(this.namespace, rhs.namespace)
 				.append(this.link, rhs.link).append(this.name, rhs.name).append(
 						this.id, rhs.id).isEquals();
@@ -132,7 +132,7 @@ public class DwcExtension implements Comparable<DwcExtension> {
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(DwcExtension object) {
+	public int compareTo(Extension object) {
 		return new CompareToBuilder().append(this.namespace, object.namespace)
 				.append(this.id, object.id).toComparison();
 	}

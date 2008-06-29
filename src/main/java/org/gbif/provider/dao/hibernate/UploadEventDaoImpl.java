@@ -13,8 +13,8 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class UploadEventDaoImpl extends GenericDaoHibernate<UploadEvent, Long> implements UploadEventDao {
-	public UploadEventDaoImpl(Class<UploadEvent> persistentClass) {
-		super(persistentClass);
+	public UploadEventDaoImpl() {
+		super(UploadEvent.class);
 	}
 
 	@SuppressWarnings("unchecked")

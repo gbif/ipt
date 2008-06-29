@@ -38,9 +38,9 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	private Long id;
-	private DwcExtension extension;
-	private String uri;
+	private Extension extension;
 	private String name;
+	private String qualName;
 	private String columnName;
 	private String link;
 	private boolean required;
@@ -59,20 +59,20 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "extension_id", insertable = false, updatable = false, nullable = false)
-	public DwcExtension getExtension() {
+	public Extension getExtension() {
 		return extension;
 	}
 
-	public void setExtension(DwcExtension extension) {
+	public void setExtension(Extension extension) {
 		this.extension = extension;
 	}
 
-	public String getUri() {
-		return uri;
+	public String getQualName() {
+		return qualName;
 	}
 
-	public void setUri(String uri) {
-		this.uri = uri;
+	public void setQualName(String qualName) {
+		this.qualName = qualName;
 	}
 
 	public String getName() {
@@ -163,26 +163,36 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 		}
 		ExtensionProperty rhs = (ExtensionProperty) object;
 		return new EqualsBuilder().append(this.extension, rhs.extension)
-				.append(this.uri, rhs.uri).append(this.link, rhs.link).append(
-						this.name, rhs.name).append(this.id, rhs.id).isEquals();
+				.append(this.columnLength, rhs.columnLength).append(
+						this.qualName, rhs.qualName).append(this.terms,
+						rhs.terms).append(this.required, rhs.required).append(
+						this.columnName, rhs.columnName).append(this.link,
+						rhs.link).append(this.name, rhs.name).append(this.id,
+						rhs.id).isEquals();
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(1405305075, 321865033)
-				.append(this.extension).append(this.uri).append(this.link)
-				.append(this.name).append(this.id).toHashCode();
+		return new HashCodeBuilder(2016996015, 51714075).appendSuper(
+				super.hashCode()).append(this.extension).append(
+				this.columnLength).append(this.qualName).append(this.terms)
+				.append(this.required).append(this.columnName)
+				.append(this.link).append(this.name).append(this.id)
+				.toHashCode();
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("name", this.name).append("id",
-				this.id).append("extension", this.extension).append("link",
-				this.link).append("uri", this.uri).toString();
+		return new ToStringBuilder(this).
+				appendSuper(super.toString()).
+				append("qualName", this.qualName).
+				append("terms", this.terms.size()).
+				append("required",this.required).
+				toString();
 	}
 
 }

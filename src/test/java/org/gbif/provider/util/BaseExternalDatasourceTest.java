@@ -7,10 +7,8 @@ import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
-import org.junit.Before;
 
 public abstract class BaseExternalDatasourceTest extends BaseDaoTestCase {
-	static Long RESOURCE_ID = 1L;
 
 	public DatasourceInspectionDao datasourceInspectionDao;
 	private DatasourceRegistry datasourceRegistry;
@@ -42,8 +40,8 @@ public abstract class BaseExternalDatasourceTest extends BaseDaoTestCase {
 	 * @throws Exception
 	 */
 	public void setUpExternalDatasource() {
-		DatasourceContextHolder.setResourceId(RESOURCE_ID);
-		resource = occResourceManager.get(RESOURCE_ID);
+		DatasourceContextHolder.setResourceId(Constants.TEST_RESOURCE_ID);
+		resource = occResourceManager.get(Constants.TEST_RESOURCE_ID);
 		datasourceRegistry.registerDatasource(resource);
 	}
 	

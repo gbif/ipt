@@ -25,28 +25,28 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.webapp.Constants;
+import org.gbif.provider.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseResourceAction implements Preparable{
-    private GenericManager<DwcExtension, Long> dwcExtensionManager;
+    private GenericManager<Extension, Long> dwcExtensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private UploadEventManager uploadEventManager;
     private List occResources;
-    private List<DwcExtension> extensions;
+    private List<Extension> extensions;
     private OccurrenceResource occResource;
     private String gChartData;
 
     public void setDwcExtensionManager(
-			GenericManager<DwcExtension, Long> dwcExtensionManager) {
+			GenericManager<Extension, Long> dwcExtensionManager) {
 		this.dwcExtensionManager = dwcExtensionManager;
 	}
 
@@ -88,7 +88,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     	// check that core mapping exists
     	if (occResource.getCoreMapping() == null){
     		ViewMapping coreVM = new ViewMapping();
-    		DwcExtension coreExt = dwcExtensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+    		Extension coreExt = dwcExtensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
     		coreVM.setExtension(coreExt);
     		occResource.addMapping(coreVM);
     	}
@@ -99,7 +99,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 		gChartData = uploadEventManager.getGoogleChartData(getResourceId());
 		// get all availabel extensions for new mappings
     	extensions = dwcExtensionManager.getAll();
-    	for (DwcExtension ext : extensions){
+    	for (Extension ext : extensions){
     		if (ext.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)){
     			// only show extensions sensu strictu. remove core "extension"
     			extensions.remove(ext);
