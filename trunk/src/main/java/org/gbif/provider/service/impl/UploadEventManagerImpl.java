@@ -51,14 +51,8 @@ import com.opensymphony.xwork2.TextProviderFactory;
  * @param <T>
  */
 public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long> implements UploadEventManager {
-    private GenericManager<OccurrenceResource, Long> occResourceManager;
     private UploadEventDao dao;
     private final transient TextProvider textProvider = TextProviderFactory.getInstance();
-    
-	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
 
 	public UploadEventManagerImpl(UploadEventDao dao) {
 		super(dao);

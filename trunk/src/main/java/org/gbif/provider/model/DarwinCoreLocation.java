@@ -63,8 +63,8 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	// Collecting Event Elements	
 	private String collectingMethod;
 	private Boolean validDistributionFlag;
-	private Date earliestDateCollected;
-	private Date latestDateCollected;
+	private String earliestDateCollected;
+	private String latestDateCollected;
 	private Integer dayOfYear;
 	private String collector;	
 	
@@ -177,16 +177,16 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	public void setValidDistributionFlag(Boolean validDistributionFlag) {
 		this.validDistributionFlag = validDistributionFlag;
 	}
-	public Date getEarliestDateCollected() {
+	public String getEarliestDateCollected() {
 		return earliestDateCollected;
 	}
-	public void setEarliestDateCollected(Date earliestDateCollected) {
+	public void setEarliestDateCollected(String earliestDateCollected) {
 		this.earliestDateCollected = earliestDateCollected;
 	}
-	public Date getLatestDateCollected() {
+	public String getLatestDateCollected() {
 		return latestDateCollected;
 	}
-	public void setLatestDateCollected(Date latestDateCollected) {
+	public void setLatestDateCollected(String latestDateCollected) {
 		this.latestDateCollected = latestDateCollected;
 	}
 	public Integer getDayOfYear() {

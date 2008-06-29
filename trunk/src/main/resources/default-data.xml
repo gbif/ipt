@@ -3,8 +3,8 @@
   <table name="DarwinCore">
     <column>id</column>
     <column>modified</column>
-    <column>uri</column>
-    <column>uuid</column>
+    <column>link</column>
+    <column>guid</column>
     <column>attributes</column>
     <column>basisOfRecord</column>
     <column>catalogNumber</column>
@@ -61,7 +61,7 @@
     <column>specificEpithet</column>
     <column>dwc_id</column>
   </table>
-  <table name="DwcExtension">
+  <table name="Extension">
     <column>id</column>
     <column>link</column>
     <column>name</column>
@@ -101,7 +101,7 @@
     <column>link</column>
     <column>name</column>
     <column>required</column>
-    <column>uri</column>
+    <column>qualName</column>
     <column>extension_id</column>
     <column>property_order</column>
     <column>columnName</column>
@@ -995,8 +995,8 @@
     <column>DTYPE</column>
     <column>id</column>
     <column>modified</column>
-    <column>uri</column>
-    <column>uuid</column>
+    <column>link</column>
+    <column>guid</column>
     <column>created</column>
     <column>description</column>
     <column>title</column>
@@ -1093,17 +1093,23 @@
     </row>
   </table>
   <table name="ViewMapping">
+    <column>DTYPE</column>
     <column>id</column>
     <column>viewSql</column>
-    <column>coreIdColumnIndex</column>
     <column>resource_id</column>
     <column>extension_id</column>
+    <column>coreIdColumnIndex</column>
+    <column>guidColumnIndex</column>
+    <column>linkColumnIndex</column>
     <row>
+      <value>CoreViewMapping</value>
       <value>1</value>
-      <value><![CDATA[select * from observation join taxon on taxon_fk=taxon_id]]></value>
+      <value><![CDATA[select * from specimen join taxon on taxon_fk=taxon_id limit 100]]></value>
       <value>1</value>
       <value>1</value>
       <value>1</value>
+      <null/>
+      <null/>
     </row>
   </table>
   <table name="app_user">

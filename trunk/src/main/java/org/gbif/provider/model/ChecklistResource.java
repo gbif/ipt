@@ -23,7 +23,8 @@ import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import org.gbif.provider.webapp.Constants;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.util.Constants;
 
 /**
  * External datasource driven resource representing a taxonomic checklist
@@ -33,16 +34,8 @@ import org.gbif.provider.webapp.Constants;
 @Entity
 public class ChecklistResource extends DatasourceBasedResource {
 
-	@Transient
-	public ViewMapping getCoreMapping() {
-		return this.getMappings().get(Constants.CHECKLIST_EXTENSION_ID);
+	public String toString() {
+		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}
-	
-	@Transient
-	public Collection<ViewMapping> getExtensionMappings() {
-		Map<Long, ViewMapping> extMappings = new HashMap<Long, ViewMapping>();
-		extMappings.putAll(this.getMappings());
-		extMappings.remove(Constants.CHECKLIST_EXTENSION_ID);
-		return extMappings.values();
-	}		
+
 }

@@ -15,14 +15,14 @@ import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.service.UploadManager;
+import org.gbif.provider.service.OccurrenceUploadManager;
 
 public class RdbmsUploadJob implements Launchable{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
@@ -30,7 +30,7 @@ public class RdbmsUploadJob implements Launchable{
     private DatasourceBasedResourceManager<OccurrenceResource> occResourceManager;
     private GenericManager<UploadEvent, Long> uploadEventManager;
     private DatasourceInspectionManager datasourceInspectionManager;
-    private UploadManager uploadManager;
+    private OccurrenceUploadManager occurrenceUploadManager;
 
 	public void setOccResourceManager(
 			DatasourceBasedResourceManager<OccurrenceResource> occResourceManager) {
@@ -47,6 +47,13 @@ public class RdbmsUploadJob implements Launchable{
 		this.datasourceInspectionManager = datasourceInspectionManager;
 	}
 
+	public void setOccurrenceUploadManager(
+			OccurrenceUploadManager occurrenceUploadManager) {
+		this.occurrenceUploadManager = occurrenceUploadManager;
+	}
+
+	
+	
 	public void launch(Map<String, Object> seed) throws Exception {
 		Long resourceId = Long.valueOf(seed.get("resourceId").toString()); 
 		log.info("Starting Upload job for resource "+resourceId);
@@ -54,11 +61,11 @@ public class RdbmsUploadJob implements Launchable{
 		// create rdbms source
 		ViewMapping coreViewMapping = resource.getCoreMapping();
 		ResultSet rs = datasourceInspectionManager.executeViewSql(coreViewMapping.getViewSql());	        
-		RdbmsImportSource source = RdbmsImportSource.getInstance(rs, coreViewMapping);
+		RdbmsImportSource source = RdbmsImportSource.newInstance(rs, coreViewMapping);
         UploadEvent coreEvent = new UploadEvent();
         coreEvent.setResource(resource);
 		// upload records
-		Map<String, Long> idMap = uploadManager.uploadCore(source, resource, coreViewMapping.getExtension(), coreEvent);
+		Map<String, Long> idMap = occurrenceUploadManager.uploadCore(source, resource, coreEvent);
 		// save upload event
         Date now = new Date();
         coreEvent.setExecutionDate(now);
@@ -70,8 +77,8 @@ public class RdbmsUploadJob implements Launchable{
 		// upload further extensions one by one
 		for (ViewMapping view : resource.getExtensionMappings()){
 			rs = datasourceInspectionManager.executeViewSql(view.getViewSql());	        
-			source = RdbmsImportSource.getInstance(rs, view);
-			uploadManager.uploadExtension(source, idMap, resource, view.getExtension());
+			source = RdbmsImportSource.newInstance(rs, view);
+			occurrenceUploadManager.uploadExtension(source, idMap, resource, view.getExtension());
 		}
 	}
 

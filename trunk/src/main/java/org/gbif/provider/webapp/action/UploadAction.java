@@ -32,14 +32,14 @@ import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.job.Launchable;
-import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.webapp.Constants;
+import org.gbif.provider.util.Constants;
 import org.hibernate.type.SortedMapType;
 import org.springframework.beans.factory.annotation.Autowired;
 

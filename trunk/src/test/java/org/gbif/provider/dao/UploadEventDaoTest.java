@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.util.Constants;
 import org.junit.Test;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
@@ -18,7 +19,7 @@ public class UploadEventDaoTest extends BaseDaoTestCase{
 	@Test
 	public void testGetUploadEventsByResource(){
 		try {
-			List<UploadEvent> events = uploadEventDao.getUploadEventsByResource(1l);
+			List<UploadEvent> events = uploadEventDao.getUploadEventsByResource(Constants.TEST_RESOURCE_ID);
 			for (UploadEvent ev : events){
 				logger.debug(ev);
 			}

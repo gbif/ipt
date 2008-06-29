@@ -1,14 +1,14 @@
 package org.gbif.provider.service;
 
 import org.gbif.provider.datasource.ImportSource;
-import org.gbif.provider.datasource.SourceRow;
-import org.gbif.provider.model.DwcExtension;
+import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import java.util.Map;
 import java.util.List;
 
-public interface UploadManager {
+public interface OccurrenceUploadManager {
 	
 	/**
 	 * Upload data for the core and return a mapping from localIDs to coreIDs.
@@ -19,7 +19,7 @@ public interface UploadManager {
 	 * @param event the empty upload event going to be filled with upload statistics
 	 * @return
 	 */
-	public Map<String, Long> uploadCore(ImportSource source, Resource resource, DwcExtension extension, UploadEvent event);
+	public Map<String, Long> uploadCore(ImportSource source, DatasourceBasedResource resource, UploadEvent event);
 	
 	/**
 	 * Upload data for an extension and relate it to the core via the supplied idMap
@@ -28,5 +28,5 @@ public interface UploadManager {
 	 * @param resource the resource the data will be attached to
 	 * @param extension description of the extension properties
 	 */
-	public void uploadExtension(ImportSource source, Map<String, Long> idMap, Resource resource, DwcExtension extension);
+	public void uploadExtension(ImportSource source, Map<String, Long> idMap, DatasourceBasedResource resource, Extension extension);
 }

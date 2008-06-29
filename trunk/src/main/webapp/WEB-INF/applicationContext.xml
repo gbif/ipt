@@ -39,12 +39,14 @@
         <constructor-arg value="org.gbif.provider.model.ViewMapping"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="dwcExtensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
-        <constructor-arg value="org.gbif.provider.model.DwcExtension"/>
+    <bean id="extensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+        <constructor-arg value="org.gbif.provider.model.Extension"/>
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="uploadEventDao" class="org.gbif.provider.dao.hibernate.UploadEventDaoImpl">
-        <constructor-arg value="org.gbif.provider.model.UploadEvent"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="darwinCoreDao" class="org.gbif.provider.dao.hibernate.DarwinCoreDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
@@ -61,18 +63,21 @@
         <constructor-arg ref="viewMappingDao"/>
     </bean>    
     
-    <bean id="dwcExtensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
-        <constructor-arg ref="dwcExtensionDao"/>
+    <bean id="extensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+        <constructor-arg ref="extensionDao"/>
     </bean>    
     
     <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerImpl">        
         <constructor-arg ref="uploadEventDao"/>
-        <property name="occResourceManager" ref="occResourceManager"/>
     </bean>    
     
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
         
-    <bean id="uploadManager" class="org.gbif.provider.service.impl.UploadManagerImpl">        
+    <bean id="occurrenceUploadManager" class="org.gbif.provider.service.impl.OccurrenceUploadManagerImpl">
+        <property name="darwinCoreDao" ref="darwinCoreDao"/>
+        <!-- 
+        <property name="extensionRecordDao" ref="extensionRecordDao"/>
+        -->
     </bean>    
     
 </beans>
