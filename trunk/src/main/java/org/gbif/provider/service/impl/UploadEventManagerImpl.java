@@ -52,7 +52,7 @@ import com.opensymphony.xwork2.TextProviderFactory;
  */
 public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long> implements UploadEventManager {
     private UploadEventDao dao;
-    private final transient TextProvider textProvider = TextProviderFactory.getInstance();
+    //private final transient TextProvider textProvider = TextProviderFactory.getInstance();
 
 	public UploadEventManagerImpl(UploadEventDao dao) {
 		super(dao);
@@ -78,10 +78,11 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long
 			addedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsAdded()));
 			deletedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsDeleted()));
 		}
-		chartBuilder.addDataset(uploadedDS, textProvider.getText("uploadEvent.Uploaded"));
-		chartBuilder.addDataset(changedDS, textProvider.getText("uploadEvent.Changed"));
-		chartBuilder.addDataset(addedDS, textProvider.getText("uploadEvent.Added"));
-		chartBuilder.addDataset(deletedDS, textProvider.getText("uploadEvent.Deleted"));
+		chartBuilder.addDataset(uploadedDS, "Uploaded");
+		chartBuilder.addDataset(changedDS, "Changed");
+		chartBuilder.addDataset(addedDS, "Added");
+		chartBuilder.addDataset(deletedDS, "Deleted");
+		
 		return chartBuilder.generateChartDataString(450,200);
 	}
 

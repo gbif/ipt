@@ -201,6 +201,29 @@ public abstract class DatasourceBasedResource extends Resource {
 		}
 		return result;
 	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("jdbcUser", this.jdbcUser)
+				.append("created", this.getCreated()).append("modified",
+						this.getModified()).append("id", this.getId()).append(
+						"link", this.getLink()).append("jdbcUrl", this.jdbcUrl)
+				.append("validConnection", this.isValidConnection()).append(
+						"modifier", this.getModifier()).append(
+						"jdbcDriverClass", this.jdbcDriverClass).append(
+						"recordCount", this.recordCount).append("coreMapping",
+						this.coreMapping).append("creator", this.getCreator())
+				.append("description", this.getDescription()).append("title",
+						this.getTitle())
+				.append("serviceName", this.serviceName).append("mappings",
+						this.mappings).append("datasource", this.datasource)
+				.append("lastImport", this.lastImport).append(
+						"extensionMappings", this.getExtensionMappings())
+				.append("jdbcPassword", this.jdbcPassword).append("guid",
+						this.getGuid()).toString();
+	}
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
@@ -209,10 +232,10 @@ public abstract class DatasourceBasedResource extends Resource {
 			return false;
 		}
 		DatasourceBasedResource rhs = (DatasourceBasedResource) object;
-		return new EqualsBuilder().append(this.coreMapping, rhs.coreMapping)
-				.append(this.datasource, rhs.datasource).append(
-						this.recordCount, rhs.recordCount).append(
-						this.serviceName, rhs.serviceName).append(this.jdbcUrl,
+		return new EqualsBuilder().appendSuper(super.equals(object)).append(
+				this.coreMapping, rhs.coreMapping).append(this.datasource,
+				rhs.datasource).append(this.recordCount, rhs.recordCount)
+				.append(this.serviceName, rhs.serviceName).append(this.jdbcUrl,
 						rhs.jdbcUrl)
 				.append(this.jdbcPassword, rhs.jdbcPassword).append(
 						this.jdbcUser, rhs.jdbcUser).append(this.mappings,
@@ -223,29 +246,13 @@ public abstract class DatasourceBasedResource extends Resource {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(-1271385051, 751389009).appendSuper(
+		return new HashCodeBuilder(1580843717, -121737315).appendSuper(
 				super.hashCode()).append(this.coreMapping).append(
 				this.datasource).append(this.recordCount).append(
 				this.serviceName).append(this.jdbcUrl)
 				.append(this.jdbcPassword).append(this.jdbcUser).append(
 						this.mappings).append(this.lastImport).append(
 						this.jdbcDriverClass).toHashCode();
-	}
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return new ToStringBuilder(this).
-				append("id", this.getId()).
-				append("title", this.getTitle()).
-				append("recordCount",this.getRecordCount()).
-				append("link", this.getLink()).
-				append("jdbcUrl",this.getJdbcDriverClass()).
-				append("coreMapping",this.getCoreMapping().getExtension().getName()).
-				append("coreMappings",this.getCoreMapping().getPropertyMappings().size()).
-				append("extensionMappings",this.getExtensionMappings().size()).
-				append("guid", this.getGuid())
-				.toString();
 	}	
 	
 }

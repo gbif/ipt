@@ -134,7 +134,11 @@ public class Resource extends BaseObject implements Comparable<Resource>, Resolv
 	
 	
 	public int compareTo(Resource object) {
-		return this.id.compareTo(object.id); 
+		if (this.title != null){
+			return this.title.compareToIgnoreCase(object.getTitle());
+		}else{
+			return "".compareToIgnoreCase(object.getTitle());
+		}
 	}
 
 	/**

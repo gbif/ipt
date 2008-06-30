@@ -9,6 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.appfuse.model.BaseObject;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Event keeping track of upload statistics to the cache for a certain resource.
  * uploaded records is the total of all uploaded records and thus the new record count for the resource.
@@ -18,7 +23,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @Entity
-public class UploadEvent {
+public class UploadEvent extends BaseObject{
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Date executionDate;
@@ -79,6 +84,49 @@ public class UploadEvent {
 	public void setRecordsAdded(int recordsAdded) {
 		this.recordsAdded = recordsAdded;
 	}
+	
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof UploadEvent)) {
+			return false;
+		}
+		UploadEvent rhs = (UploadEvent) object;
+		return new EqualsBuilder().append(this.recordsDeleted,
+				rhs.recordsDeleted).append(this.recordsChanged,
+				rhs.recordsChanged).append(this.recordsUploaded,
+				rhs.recordsUploaded)
+				.append(this.recordsAdded, rhs.recordsAdded).append(
+						this.executionDate, rhs.executionDate).append(
+						this.resource, rhs.resource).append(this.id, rhs.id)
+				.isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-1475384193, 1013469649).append(
+				this.recordsDeleted).append(this.recordsChanged).append(
+				this.recordsUploaded).append(this.recordsAdded).append(
+				this.executionDate).append(this.resource).append(this.id)
+				.toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("recordsUploaded",
+				this.recordsUploaded).append("resource", this.resource).append(
+				"id", this.id).append("recordsChanged", this.recordsChanged)
+				.append("executionDate", this.executionDate).append(
+						"recordsAdded", this.recordsAdded).append(
+						"recordsDeleted", this.recordsDeleted).toString();
+	}
+	
+	
+	
 	
 	
 }

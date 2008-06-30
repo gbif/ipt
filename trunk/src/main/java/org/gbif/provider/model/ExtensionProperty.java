@@ -32,11 +32,12 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
 @Entity
-public class ExtensionProperty implements Comparable<ExtensionProperty> {
+public class ExtensionProperty extends BaseObject implements Comparable<ExtensionProperty> {
 	private Long id;
 	private Extension extension;
 	private String name;
@@ -175,8 +176,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(2016996015, 51714075).appendSuper(
-				super.hashCode()).append(this.extension).append(
+		return new HashCodeBuilder(2016996015, 51714075).append(this.extension).append(
 				this.columnLength).append(this.qualName).append(this.terms)
 				.append(this.required).append(this.columnName)
 				.append(this.link).append(this.name).append(this.id)
@@ -188,10 +188,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 	 */
 	public String toString() {
 		return new ToStringBuilder(this).
-				appendSuper(super.toString()).
 				append("qualName", this.qualName).
-				append("terms", this.terms.size()).
-				append("required",this.required).
 				toString();
 	}
 

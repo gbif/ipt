@@ -40,7 +40,6 @@ import com.opensymphony.xwork2.TextProviderFactory;
 
 public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 	protected static final Log log = LogFactory.getLog(OccurrenceUploadManagerImpl.class);
-    private final transient TextProvider textProvider = TextProviderFactory.getInstance();
 	private ExtensionRecordDao extensionRecordDao;
 	private DarwinCoreDao darwinCoreDao;
 
@@ -137,7 +136,8 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 			Long coreId = idMap.get(rec.getLocalId());
 			if (coreId == null){
 				String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};
-				log.warn(textProvider.getText("uploadManager.unknownLocalId", paras));
+				//FIXME: use i18n job logging ???
+				log.warn("uploadManager.unknownLocalId" +paras.toString());
 			}else{
 				// TODO: check if record has changed
 				ExtensionRecord extRec = ExtensionRecord.newInstance(rec);

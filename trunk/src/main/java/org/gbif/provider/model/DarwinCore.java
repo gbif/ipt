@@ -559,7 +559,6 @@ public class DarwinCore extends CoreRecord{
 			.append("id", this.getId())
 			.append("basisOfRecord", this.basisOfRecord)
 			.append("scientificName",this.getScientificName())
-			.append("resourceID", this.getResource().getId())
 			.append("localID", this.getLocalId())
 			.append("deleted", this.isDeleted())
 			.append("globalUniqueIdentifier", this.globalUniqueIdentifier)

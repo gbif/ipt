@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseResourceAction implements Preparable{
-    private GenericManager<Extension, Long> dwcExtensionManager;
+    private GenericManager<Extension, Long> extensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private UploadEventManager uploadEventManager;
     private List occResources;
@@ -45,9 +45,9 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     private OccurrenceResource occResource;
     private String gChartData;
 
-    public void setDwcExtensionManager(
-			GenericManager<Extension, Long> dwcExtensionManager) {
-		this.dwcExtensionManager = dwcExtensionManager;
+    public void setExtensionManager(
+			GenericManager<Extension, Long> extensionManager) {
+		this.extensionManager = extensionManager;
 	}
 
 	public void setViewMappingManager(
@@ -88,7 +88,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     	// check that core mapping exists
     	if (occResource.getCoreMapping() == null){
     		ViewMapping coreVM = new ViewMapping();
-    		Extension coreExt = dwcExtensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+    		Extension coreExt = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
     		coreVM.setExtension(coreExt);
     		occResource.addMapping(coreVM);
     	}
@@ -98,7 +98,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 		// create GoogleChart string
 		gChartData = uploadEventManager.getGoogleChartData(getResourceId());
 		// get all availabel extensions for new mappings
-    	extensions = dwcExtensionManager.getAll();
+    	extensions = extensionManager.getAll();
     	for (Extension ext : extensions){
     		if (ext.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)){
     			// only show extensions sensu strictu. remove core "extension"
