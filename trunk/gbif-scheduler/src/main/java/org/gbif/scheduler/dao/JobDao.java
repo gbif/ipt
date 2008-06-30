@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibiodiversity.harvest.dao;
+package org.gbif.scheduler.dao;
 
 import java.util.List;
 
