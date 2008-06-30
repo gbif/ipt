@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.gbif.scheduler.util;
+package org.gbif.scheduler.webapp.context.support;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -13,9 +13,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Resource bundle that is built upon a Map and allows itself to grow.
- * Therefore, one can read in property files from varies places and collate them
- * into one bundle for example
  * @author timrobertson
  */
 public class AppendablePropertyResourceBundle extends ResourceBundle {
@@ -31,6 +28,7 @@ public class AppendablePropertyResourceBundle extends ResourceBundle {
 	
 
 	public void append(ResourceBundle resourceBundle) {
+		log.info("Appending resource bundle");
 		Enumeration<String> keys = resourceBundle.getKeys();
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement();
