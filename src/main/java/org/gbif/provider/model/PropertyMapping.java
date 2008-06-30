@@ -123,9 +123,12 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(-749701147, 1634949129).append(this.value)
-				.append(this.column).append(this.property).append(
-						this.viewMapping).append(this.id).toHashCode();
+        int result = 17;
+        result = (id != null ? id.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (column != null ? column.hashCode() : 0);
+        result = 31 * result + (property != null ? property.hashCode() : 0);
+        return result;
 	}
 	/**
 	 * @see java.lang.Object#toString()

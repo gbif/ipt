@@ -39,6 +39,8 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.appfuse.model.Address;
+import org.appfuse.model.User;
 
 
 /**
@@ -227,32 +229,40 @@ public abstract class DatasourceBasedResource extends Resource {
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof DatasourceBasedResource)) {
+	public boolean equals(Object o) {
+		if (o == this){
+			return true;
+		}
+		if (!(o instanceof DatasourceBasedResource)) {
 			return false;
 		}
-		DatasourceBasedResource rhs = (DatasourceBasedResource) object;
-		return new EqualsBuilder().appendSuper(super.equals(object)).append(
-				this.coreMapping, rhs.coreMapping).append(this.datasource,
-				rhs.datasource).append(this.recordCount, rhs.recordCount)
-				.append(this.serviceName, rhs.serviceName).append(this.jdbcUrl,
-						rhs.jdbcUrl)
-				.append(this.jdbcPassword, rhs.jdbcPassword).append(
-						this.jdbcUser, rhs.jdbcUser).append(this.mappings,
-						rhs.mappings).append(this.lastImport, rhs.lastImport)
-				.append(this.jdbcDriverClass, rhs.jdbcDriverClass).isEquals();
+        final DatasourceBasedResource resource = (DatasourceBasedResource) o;
+        
+        return this.hashCode() == resource.hashCode();
 	}
+	
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(1580843717, -121737315).appendSuper(
-				super.hashCode()).append(this.coreMapping).append(
-				this.datasource).append(this.recordCount).append(
-				this.serviceName).append(this.jdbcUrl)
-				.append(this.jdbcPassword).append(this.jdbcUser).append(
-						this.mappings).append(this.lastImport).append(
-						this.jdbcDriverClass).toHashCode();
-	}	
-	
+	        int result = 17;
+	        result = (guid != null ? guid.hashCode() : 0);
+	        result = 31 * result + (link != null ? link.hashCode() : 0);
+	        result = 31 * result + (title != null ? title.hashCode() : 0);
+	        result = 31 * result + (description != null ? description.hashCode() : 0);
+	        result = 31 * result + (creator != null ? creator.hashCode() : 0);
+	        result = 31 * result + (created != null ? created.hashCode() : 0);
+	        result = 31 * result + (modifier != null ? modifier.hashCode() : 0);
+	        result = 31 * result + (modified != null ? modified.hashCode() : 0);
+	        result = 31 * result + (serviceName != null ? serviceName.hashCode() : 0);
+	        result = 31 * result + (jdbcDriverClass != null ? jdbcDriverClass.hashCode() : 0);
+	        result = 31 * result + (jdbcUrl != null ? jdbcUrl.hashCode() : 0);
+	        result = 31 * result + (jdbcUser != null ? jdbcUser.hashCode() : 0);
+	        result = 31 * result + (jdbcPassword != null ? jdbcPassword.hashCode() : 0);
+	        result = 31 * result + (lastImport != null ? lastImport.hashCode() : 0);
+	        result = 31 * result + recordCount;
+	        result = 31 * result + (coreMapping != null ? coreMapping.hashCode() : 0);
+	        result = 31 * result + (mappings != null ? mappings.hashCode() : 0);
+	        return result;
+	    }
 }

@@ -110,7 +110,7 @@ public class UploadEvent extends BaseObject{
 		return new HashCodeBuilder(-1475384193, 1013469649).append(
 				this.recordsDeleted).append(this.recordsChanged).append(
 				this.recordsUploaded).append(this.recordsAdded).append(
-				this.executionDate).append(this.resource).append(this.id)
+				this.executionDate).append(this.resource)
 				.toHashCode();
 	}
 	/**

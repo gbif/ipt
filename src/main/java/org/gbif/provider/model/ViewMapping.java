@@ -43,6 +43,8 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.appfuse.model.Address;
+import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.MapKey;
 
@@ -54,7 +56,7 @@ import org.hibernate.annotations.MapKey;
  *
  */
 @Entity
-public class ViewMapping implements Comparable<ViewMapping> {
+public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Extension extension;
@@ -150,9 +152,15 @@ public class ViewMapping implements Comparable<ViewMapping> {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(-2126600205, 1312463483).append(this.extension).append(this.viewSql)
-				.append(this.coreIdColumnIndex).append(this.propertyMappings)
-				.append(this.resource).append(this.id).toHashCode();
+        int result = 17;
+        result = (id != null ? id.hashCode() : 0);
+        result = 31 * result + (extension != null ? extension.hashCode() : 0);
+        result = 31 * result + (resource != null ? (resource.getId() != null ? resource.getId().hashCode() : 0) : 0);
+        //result = 31 * result + (resource != null ? resource.hashCode() : 0);
+        result = 31 * result + (propertyMappings != null ? propertyMappings.hashCode() : 0);
+        result = 31 * result + (viewSql != null ? viewSql.hashCode() : 0);
+        result = 31 * result + (coreIdColumnIndex != null ? coreIdColumnIndex.hashCode() : 0);
+        return result;
 	}
 	/**
 	 * @see java.lang.Object#toString()
@@ -168,17 +176,17 @@ public class ViewMapping implements Comparable<ViewMapping> {
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof ViewMapping)) {
-			return false;
-		}
-		ViewMapping rhs = (ViewMapping) object;
-		return new EqualsBuilder().append(this.extension, rhs.extension)
-				.append(this.viewSql, rhs.viewSql).append(
-						this.coreIdColumnIndex, rhs.coreIdColumnIndex).append(
-						this.propertyMappings, rhs.propertyMappings).append(
-						this.resource, rhs.resource).append(this.id, rhs.id)
-				.isEquals();
+	public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ViewMapping)) {
+            return false;
+        }
+
+        final ViewMapping vm = (ViewMapping) o;
+
+        return this.hashCode() == vm.hashCode();
 	}
 
 	

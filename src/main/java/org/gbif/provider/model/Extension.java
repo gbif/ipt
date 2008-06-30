@@ -119,8 +119,15 @@ public class Extension extends BaseObject implements Comparable<Extension> {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(1767311583, -1664356007).append(
-				this.namespace).append(this.link).append(this.name).append(this.id).toHashCode();
+        int result = 17;
+        result = (id != null ? id.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        result = 31 * result + (tablename != null ? tablename.hashCode() : 0);
+        //result = 31 * result + (properties != null ? properties.hashCode() : 0);
+        return result;
 	}
 	/**
 	 * @see java.lang.Object#toString()
