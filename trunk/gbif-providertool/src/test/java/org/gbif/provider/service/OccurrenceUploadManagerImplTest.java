@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.gbif.provider.datasource.RdbmsImportSourceTest;
 import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class OccurrenceUploadManagerImplTest extends RdbmsImportSourceTest{
 	@Test
 	public void testUploadCore() {
 		setUpSource();
-		DatasourceBasedResource resource = getTestResource();
+		OccurrenceResource resource = (OccurrenceResource) getTestResource();
 		UploadEvent event = new UploadEvent();
 		Map idMap = occurrenceUploadManager.uploadCore(source, resource, event);
 	}

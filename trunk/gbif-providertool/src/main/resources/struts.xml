@@ -184,17 +184,9 @@
         <action name="saveResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
-                <!-- 
-                    <param name="parse">true</param>
-                    <param name="resource_id">${resource_id}</param>
-                -->
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
-                <!-- 
-                    <param name="parse">true</param>
-                    <param name="resource_id">${resource_id}</param>
-                -->
             </result>
             <result name="delete" type="redirect-action">resources</result>
         </action>

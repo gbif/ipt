@@ -41,7 +41,7 @@ public abstract class BaseExternalDatasourceTest extends BaseDaoTestCase {
 	 */
 	public void setUpExternalDatasource() {
 		DatasourceContextHolder.setResourceId(Constants.TEST_RESOURCE_ID);
-		resource = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		resource = (DatasourceBasedResource) occResourceManager.get(Constants.TEST_RESOURCE_ID);
 		datasourceRegistry.registerDatasource(resource);
 	}
 	

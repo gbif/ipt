@@ -79,7 +79,6 @@ public class DarwinCore extends CoreRecord{
 		dwc.setLink(coreRec.getLink());
 		dwc.setLocalId(coreRec.getLocalId());
 		dwc.setModified(coreRec.getModified());
-		dwc.setResource(coreRec.getResource());		
 		dwc.setDeleted(false);
 		for (ExtensionProperty prop : coreRec.getProperties().keySet()){
 			// set all dwc properties apart from:

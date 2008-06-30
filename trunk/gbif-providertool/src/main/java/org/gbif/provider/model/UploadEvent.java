@@ -118,7 +118,9 @@ public class UploadEvent extends BaseObject{
 	 */
 	public String toString() {
 		return new ToStringBuilder(this).append("recordsUploaded",
-				this.recordsUploaded).append("resource", this.resource).append(
+				this.recordsUploaded)
+				.append("resource", this.resource)
+				.append(
 				"id", this.id).append("recordsChanged", this.recordsChanged)
 				.append("executionDate", this.executionDate).append(
 						"recordsAdded", this.recordsAdded).append(
