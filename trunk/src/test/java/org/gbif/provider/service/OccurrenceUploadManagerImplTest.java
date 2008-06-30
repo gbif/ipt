@@ -19,7 +19,7 @@ public class OccurrenceUploadManagerImplTest extends RdbmsImportSourceTest{
 	}
 
 
-	//@Test
+	@Test
 	public void testUploadCore() {
 		setUpSource();
 		DatasourceBasedResource resource = getTestResource();

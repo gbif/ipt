@@ -82,8 +82,23 @@ public class RdbmsUploadJob implements Launchable{
 		}
 	}
 
-
-	private UploadEvent getFakeUpload(DatasourceBasedResource resource){
+	public void fakeUpload(Long resourceId){
+		// add a week from last import
+		OccurrenceResource resource = occResourceManager.get(resourceId);
+        Date now = new Date(resource.getLastImport().getTime() + 604800000l);
+		log.info("Fake upload for resource "+resourceId + " at date "+now);
+        UploadEvent coreEvent = getFakeUploadEvent(resource);
+        coreEvent.setResource(resource);
+        coreEvent.setExecutionDate(now);
+		// save upload event
+		uploadEventManager.save(coreEvent);
+		// update resource properties
+		resource.setLastImport(now);
+		resource.setRecordCount(coreEvent.getRecordsUploaded());
+		occResourceManager.save(resource);
+	}
+	
+	private static UploadEvent getFakeUploadEvent(DatasourceBasedResource resource){
 		Random rnd = new Random();
         int numExistingRecords = resource.getRecordCount();
 		int numAdded = rnd.nextInt(10000);

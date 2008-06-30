@@ -32,6 +32,7 @@ import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.job.Launchable;
+import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -52,11 +53,10 @@ public class UploadAction extends BaseResourceAction implements Preparable{
     private OccurrenceResource resource;
 	private List<Launchable> scheduledJobs;
 	private List<UploadEvent> uploadEvents;
-	private Launchable uploader;
+	private RdbmsUploadJob rdbmsUploadJob;
 	
-	
-	public void setRdbmsUploader(Launchable rdbmsUploader) {
-		this.uploader = rdbmsUploader;
+	public void setRdbmsUploadJob(RdbmsUploadJob rdbmsUploadJob) {
+		this.rdbmsUploadJob = rdbmsUploadJob;
 	}
 
 	public void setDatasourceInspectionManager(
@@ -95,7 +95,8 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 		// until the job scheduler is integrated run the upload job directly!
 		Map<String, Object> seed = new HashMap<String, Object>();
 		seed.put("resourceId", resource.getId());
-		uploader.launch(seed);
+		
+		rdbmsUploadJob.fakeUpload(resource.getId());
         saveMessage(getText("upload.addedJob", Arrays.asList(resource.getRecordCount())));
 		return SUCCESS;
 	}
