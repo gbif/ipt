@@ -138,8 +138,32 @@ public class ViewMapping implements Comparable<ViewMapping> {
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	public int compareTo(ViewMapping view) {
-		int resCmp = resource.compareTo(view.resource); 
-		return (resCmp != 0 ? resCmp : extension.compareTo(view.extension));
+		if (resource != null){
+			int resCmp = resource.compareTo(view.resource);
+			int extComp = (extension == null ? extComp = -1 : extension.compareTo(view.extension)); 
+			return (resCmp != 0 ? resCmp : extComp);			
+		}else{
+			return -1;
+		}
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-2126600205, 1312463483).append(this.extension).append(this.viewSql)
+				.append(this.coreIdColumnIndex).append(this.propertyMappings)
+				.append(this.resource).append(this.id).toHashCode();
+	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this)
+		.append("id", this.id)
+		.append("viewSql", this.viewSql)
+		.append("coreIdColumnIndex", this.coreIdColumnIndex)
+		.append("extension", this.extension)
+		.toString();
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -151,30 +175,11 @@ public class ViewMapping implements Comparable<ViewMapping> {
 		ViewMapping rhs = (ViewMapping) object;
 		return new EqualsBuilder().append(this.extension, rhs.extension)
 				.append(this.viewSql, rhs.viewSql).append(
+						this.coreIdColumnIndex, rhs.coreIdColumnIndex).append(
+						this.propertyMappings, rhs.propertyMappings).append(
 						this.resource, rhs.resource).append(this.id, rhs.id)
 				.isEquals();
 	}
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return new ToStringBuilder(this).
-			append("id", this.id).
-			append("resource", this.resource.getTitle()).
-			append("extension", this.extension.getName()).
-			append("viewSql", this.viewSql).
-			append("propertyMappings", this.propertyMappings.size()).
-			toString();
-	}
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return new HashCodeBuilder(-2126600205, 1312463483).appendSuper(
-				super.hashCode()).append(this.extension).append(this.viewSql)
-				.append(this.coreIdColumnIndex).append(this.propertyMappings)
-				.append(this.resource).append(this.id).toHashCode();
-	}
-	
+
 	
 }

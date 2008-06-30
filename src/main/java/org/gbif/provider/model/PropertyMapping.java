@@ -29,6 +29,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.appfuse.model.BaseObject;
 
 /**
  * A mapping between a single extension property (concept) and a resource represented via the viewMapping.
@@ -37,7 +38,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-public class PropertyMapping implements Comparable<PropertyMapping> {
+public class PropertyMapping extends BaseObject implements Comparable<PropertyMapping> {
 	private Long id;	
 	private ViewMapping viewMapping;
 	private ExtensionProperty property;
@@ -131,10 +132,13 @@ public class PropertyMapping implements Comparable<PropertyMapping> {
 	 */
 	public String toString() {
 		return new ToStringBuilder(this).append("property", this.property)
-				.append("id", this.id).append("value", this.value).append(
-						"viewMapping", this.viewMapping).append("column",
-						this.column).toString();
+				.append("empty", this.isEmpty()).append("id", this.id).append(
+						"value", this.value).append("viewMapping",
+						this.viewMapping).append("column", this.column)
+				.toString();
 	}
+
+
 	
 	
 	
