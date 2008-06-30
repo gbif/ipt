@@ -46,6 +46,9 @@ public class RdbmsImportSource implements ImportSource{
 	
 
     public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view){
+    	if (rs == null || view == null){
+    		throw new IllegalArgumentException();
+    	}
     	RdbmsImportSource source = new RdbmsImportSource();
     	source.rs = rs;
     	source.properties = view.getPropertyMappings().values();

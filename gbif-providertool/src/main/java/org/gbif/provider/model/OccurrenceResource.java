@@ -43,6 +43,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
+	
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}

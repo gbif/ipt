@@ -31,6 +31,7 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionRecord;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.OccurrenceUploadManager;
@@ -52,7 +53,7 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 	}
 
 	
-	public Map<String, Long> uploadCore(ImportSource source, DatasourceBasedResource resource, UploadEvent event) {
+	public Map<String, Long> uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event) {
 		log.info("Uploading occurrence core for resource "+resource.getTitle());
 		Map<String, Long> idMap = new HashMap<String, Long>();
 		// use a single date for now (e.g. to set dateLastModified)
@@ -74,6 +75,9 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 			DarwinCore oldRecord = darwinCoreDao.findByLocalId(rec.getLocalId(), resource.getId());
 			// get darwincore record based on this core record
 			DarwinCore dwc = DarwinCore.newInstance(rec);
+			
+			// attach to the occurrence resource
+			dwc.setResource(resource);
 			
 			// assign managed properties
 			updateManagedProperties(dwc, oldRecord);
@@ -135,7 +139,7 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 		}
 	}
 
-	public void uploadExtension(ImportSource source, Map<String, Long> idMap, DatasourceBasedResource resource, Extension extension) {
+	public void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) {
 		for (CoreRecord rec : source){
 			Long coreId = idMap.get(rec.getLocalId());
 			if (coreId == null){

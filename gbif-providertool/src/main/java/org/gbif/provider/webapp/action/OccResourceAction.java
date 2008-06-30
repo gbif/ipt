@@ -44,8 +44,8 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     private List<Extension> extensions;
     private OccurrenceResource occResource;
     private String gChartData;
-
-    public void setExtensionManager(
+    
+	public void setExtensionManager(
 			GenericManager<Extension, Long> extensionManager) {
 		this.extensionManager = extensionManager;
 	}
@@ -85,12 +85,12 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
         	occResource = new OccurrenceResource();
         }
     	// check that core mapping exists
-    	if (occResource.getCoreMapping() == null){
-    		ViewMapping coreVM = new ViewMapping();
-    		Extension coreExt = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-    		coreVM.setExtension(coreExt);
-    		occResource.addMapping(coreVM);
-    	}
+//    	if (occResource.getCoreMapping() == null){
+//    		ViewMapping coreVM = new ViewMapping();
+//    		Extension coreExt = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+//    		coreVM.setExtension(coreExt);
+//    		occResource.addMapping(coreVM);
+//    	}
     }
 
 	public String execute(){

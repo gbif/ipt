@@ -23,24 +23,19 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
-import javax.persistence.CascadeType;
 
-import org.gbif.provider.util.Constants;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.appfuse.model.Address;
-import org.appfuse.model.User;
 
 
 /**
@@ -49,7 +44,7 @@ import org.appfuse.model.User;
  *
  */
 @Entity
-public class DatasourceBasedResource extends Resource {
+public abstract class DatasourceBasedResource extends Resource {
 	private String serviceName;
 	private String jdbcDriverClass = "jdbc:mysql://localhost/providertoolkit";
 	private String jdbcUrl;
@@ -207,7 +202,7 @@ public class DatasourceBasedResource extends Resource {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
+	public String toString2() {
 		return new ToStringBuilder(this).append("jdbcUser", this.jdbcUser)
 				.append("created", this.getCreated()).append("modified",
 						this.getModified()).append("id", this.getId()).append(
@@ -229,7 +224,7 @@ public class DatasourceBasedResource extends Resource {
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
-	public boolean equals(Object o) {
+	public boolean equals2(Object o) {
 		if (o == this){
 			return true;
 		}
@@ -244,7 +239,7 @@ public class DatasourceBasedResource extends Resource {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
-	public int hashCode() {
+	public int hashCode2() {
 	        int result = 17;
 	        result = (guid != null ? guid.hashCode() : 0);
 	        result = 31 * result + (link != null ? link.hashCode() : 0);

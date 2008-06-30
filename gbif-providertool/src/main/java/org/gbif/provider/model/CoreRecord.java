@@ -45,11 +45,11 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Re
 	private String localId;
 	private String guid;
 	private String link;
-	private DatasourceBasedResource resource;
 	private boolean isDeleted;
 	private Date modified;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 	private Extension extension;
+	private OccurrenceResource resource;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -88,14 +88,6 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Re
 	}
 	public void setModified(Date modified) {
 		this.modified = modified;
-	}
-	
-	@ManyToOne
-	public DatasourceBasedResource getResource() {
-		return resource;
-	}
-	public void setResource(DatasourceBasedResource resource) {
-		this.resource = resource;
 	}
 		
 	public boolean isDeleted() {
@@ -142,6 +134,14 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Re
 		return extension;
 	}
 	
+	@ManyToOne
+	public OccurrenceResource getResource() {
+		return resource;
+	}
+	public void setResource(OccurrenceResource resource) {
+		this.resource = resource;
+	}
+	
 	
 	
 	public int compareTo(CoreRecord object) {
@@ -154,7 +154,7 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Re
 	 */
 	public String toString() {
 		return new ToStringBuilder(this).append("modified", this.modified)
-				.append("resource", this.resource).append("id", this.id)
+				.append("id", this.id)
 				.append("link", this.link).append("coreID", this.localId)
 				.append("deleted", this.isDeleted()).append("guid", this.guid)
 				.toString();
@@ -164,7 +164,7 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Re
 	 */
 	public int hashCode() {
 		return new HashCodeBuilder(164509673, -1797513509).append(this.modified).append(this.localId)
-				.append(this.guid).append(this.link).append(this.resource)
+				.append(this.guid).append(this.link)
 				.append(this.isDeleted).append(this.id).toHashCode();
 	}
 	/**
@@ -177,7 +177,7 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Re
 		CoreRecord rhs = (CoreRecord) object;
 		return new EqualsBuilder().append(this.modified, rhs.modified).append(
 				this.localId, rhs.localId).append(this.guid, rhs.guid).append(
-				this.link, rhs.link).append(this.resource, rhs.resource)
+				this.link, rhs.link)
 				.append(this.isDeleted, rhs.isDeleted).append(this.id, rhs.id)
 				.isEquals();
 	}	

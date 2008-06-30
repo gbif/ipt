@@ -44,7 +44,7 @@ import com.opensymphony.xwork2.Preparable;
 public class ViewMappingAction extends BaseResourceAction implements Preparable{
 	private static Integer FIXED_TERMS_IDX = 1000;
     private DatasourceInspectionManager datasourceInspectionManager;
-    private GenericManager<Extension, Long> dwcExtensionManager;
+    private GenericManager<Extension, Long> extensionManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private ViewMapping mapping;
     private List<PropertyMapping> mappings;
@@ -60,9 +60,8 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
 		this.datasourceInspectionManager = datasourceInspectionManager;
 	}
 
-	public void setDwcExtensionManager(
-			GenericManager<Extension, Long> dwcExtensionManager) {
-		this.dwcExtensionManager = dwcExtensionManager;
+	public void setExtensionManager(GenericManager<Extension, Long> extensionManager) {
+		this.extensionManager = extensionManager;
 	}
 
 	public void setViewMappingManager(
@@ -126,7 +125,7 @@ public class ViewMappingAction extends BaseResourceAction implements Preparable{
             if (extension_id != null) {
             	mapping = new ViewMapping();
             	mapping.setResource(occResourceManager.get(getResourceId()));
-            	mapping.setExtension(dwcExtensionManager.get(extension_id));
+            	mapping.setExtension(extensionManager.get(extension_id));
             }
         }
         
