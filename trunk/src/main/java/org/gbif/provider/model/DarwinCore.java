@@ -594,6 +594,7 @@ public class DarwinCore extends CoreRecord{
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
+		//FIXME: implement custom hashcode function which uses all getters!
 		return new HashCodeBuilder(-1669241179, -555797071).append(
 				this.basisOfRecord).append(this.imageURL).append(
 				this.institutionCode).append(this.loc).append(this.remarks)

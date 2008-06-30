@@ -156,31 +156,30 @@ public class ExtensionProperty extends BaseObject implements Comparable<Extensio
 	}
 
 	/**
+	 * Just compare the unique qualified names to see if extension properties are equal
 	 * @see java.lang.Object#equals(Object)
 	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof ExtensionProperty)) {
+	public boolean equals(Object o) {
+		if (!(o instanceof ExtensionProperty)) {
 			return false;
 		}
-		ExtensionProperty rhs = (ExtensionProperty) object;
-		return new EqualsBuilder().append(this.extension, rhs.extension)
-				.append(this.columnLength, rhs.columnLength).append(
-						this.qualName, rhs.qualName).append(this.terms,
-						rhs.terms).append(this.required, rhs.required).append(
-						this.columnName, rhs.columnName).append(this.link,
-						rhs.link).append(this.name, rhs.name).append(this.id,
-						rhs.id).isEquals();
+		ExtensionProperty prop = (ExtensionProperty) o;
+		return (this.qualName == null ? prop.qualName == null : qualName.equals(prop.qualName));
 	}
 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(2016996015, 51714075).append(this.extension).append(
-				this.columnLength).append(this.qualName).append(this.terms)
-				.append(this.required).append(this.columnName)
-				.append(this.link).append(this.name).append(this.id)
-				.toHashCode();
+        int result = 17;
+        result = (id != null ? id.hashCode() : 0);
+        result = 31 * result + (qualName != null ? qualName.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + columnLength;
+        result = 31 * result + (columnName != null ? columnName.hashCode() : 0);
+        result = 31 * result + (required ? 1 : 0);
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        return result;
 	}
 
 	/**

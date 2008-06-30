@@ -47,16 +47,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class Resource extends BaseObject implements Comparable<Resource>, Resolvable, Timestampable{
 	private Long id;
-	private String guid;
-	private String link;
+	protected String guid;
+	protected String link;
 	// resource metadata
-	private String title;
-	private String description;
+	protected String title;
+	protected String description;
 	// resource meta-metadata
-	private User creator;
-	private Date created;
-	private User modifier;
-	private Date modified;
+	protected User creator;
+	protected Date created;
+	protected User modifier;
+	protected Date modified;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -164,7 +164,7 @@ public class Resource extends BaseObject implements Comparable<Resource>, Resolv
 				this.modified).append(this.created).append(this.creator)
 				.append(this.title).append(this.modifier).append(
 						this.description).append(this.guid).append(this.link)
-				.append(this.id).toHashCode();
+				.toHashCode();
 	}
 	/**
 	 * @see java.lang.Object#toString()
