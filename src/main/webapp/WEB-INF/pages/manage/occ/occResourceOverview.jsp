@@ -110,10 +110,7 @@
 </s:form>
 
 <s:label key="occResourceOverview.manager" value="%{occResource.creator.getFullName()}"/>
-<c:set var="tach">
-	<s:property value="occResource.modified"/> by <s:property value="occResource.modifier.getFullName()"/>
-</c:set>
-<s:label key="occResourceOverview.lastModified" value="${tach}"/>
+<s:label key="occResourceOverview.lastModified" value="%{occResource.modified} by %{occResource.modifier.getFullName()}"/>
 
 <c:if test="${not empty occResource.id}">
   <s:form action="saveResource">

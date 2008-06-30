@@ -79,7 +79,6 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     }
 
 	public void prepare() {
-		//TODO: maybe put this logic int a resource factory and resource service???
     	if (getResourceId() != null && !isNew()){
         	occResource = occResourceManager.get(getResourceId());
         }else{

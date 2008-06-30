@@ -35,4 +35,5 @@
 	<s:property value="resourceCount"/> resources listed.
 </p>
 
-<p></p>
+<p>
+</p>

@@ -49,7 +49,7 @@ import org.appfuse.model.User;
  *
  */
 @Entity
-public abstract class DatasourceBasedResource extends Resource {
+public class DatasourceBasedResource extends Resource {
 	private String serviceName;
 	private String jdbcDriverClass = "jdbc:mysql://localhost/providertoolkit";
 	private String jdbcUrl;

@@ -44,6 +44,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class DarwinCore extends CoreRecord{
 	private DarwinCoreTaxonomy tax;
 	private DarwinCoreLocation loc;
+	// calculated fields
+	private float latitudeAsFloat;
+	private float longitudeAsFloat;
+	
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
 	private String basisOfRecord;

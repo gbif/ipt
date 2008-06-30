@@ -75,9 +75,12 @@
         
     <bean id="occurrenceUploadManager" class="org.gbif.provider.service.impl.OccurrenceUploadManagerImpl">
         <property name="darwinCoreDao" ref="darwinCoreDao"/>
-        <!-- 
-        <property name="extensionRecordDao" ref="extensionRecordDao"/>
-        -->
-    </bean>    
-    
+    </bean>
+
+    <bean id="rdbmsUploadJob" class="org.gbif.provider.job.RdbmsUploadJob">
+        <property name="occResourceManager" ref="occResourceManager"/>
+        <property name="uploadEventManager" ref="uploadEventManager"/>
+        <property name="datasourceInspectionManager" ref="datasourceInspectionManager"/>
+        <property name="occurrenceUploadManager" ref="occurrenceUploadManager"/>
+    </bean> 
 </beans>

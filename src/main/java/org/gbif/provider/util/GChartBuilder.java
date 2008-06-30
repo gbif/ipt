@@ -54,7 +54,7 @@ public class GChartBuilder {
 			 for (Date date : d.data.keySet()){
 				 Long val = d.data.get(date);
 				 // update min/max counters
-				 if (maxYValue== null || maxYValue < val){
+				 if (maxYValue == null || maxYValue < val){
 					 maxYValue=val;
 				 }
 				 if (minXValue == null || minXValue.after(date)){
@@ -74,6 +74,11 @@ public class GChartBuilder {
 
 			 // append y-axis dataset
 			 data +="|"+yData+"|";
+		 }
+		 
+		 // check if any data was submitted at all!
+		 if (maxYValue == null || minXValue == null || maxXValue == null){
+			 return null;
 		 }
 		 
 		 // calc y axis label

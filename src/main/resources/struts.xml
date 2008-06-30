@@ -275,13 +275,5 @@
             <result name="success">/WEB-INF/pages/admin/datasourceList.jsp</result>
         </action>
     </package>
-    
-    
-    
-    <!-- JSON plugin actions -->
-    <package name="example" extends="json-default">
-        <action name="JSONExample" class="org.gbif.provider.webapp.action.JSONExample">
-            <result type="json"/>
-        </action>        
-    </package>    
+       
 </struts>

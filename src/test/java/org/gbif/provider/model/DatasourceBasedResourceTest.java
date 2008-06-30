@@ -28,6 +28,14 @@ public class DatasourceBasedResourceTest {
 		r.setGuid(guid);
 		r.setJdbcUser("root");
 		r.setDescription("bla bla bla");
+		// add viewmapping
+		Extension ext = new Extension();
+		ext.setId(1L);
+		ext.setName("Bernde");
+		ViewMapping vm = new ViewMapping();
+		vm.setId(23L);
+		vm.setExtension(ext);
+		r.addMapping(vm);
 		return r;
 	}
 	
