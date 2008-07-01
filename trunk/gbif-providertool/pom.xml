@@ -455,7 +455,14 @@
         <dependency>
             <groupId>com.googlecode</groupId>
             <artifactId>jsonplugin</artifactId>
-            <version>0.26</version>
+            <version>0.30</version>
+            <!-- uses struts2-core 2.06 instead of newer 2.0.11.1 one -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.struts</groupId>
+                    <artifactId>struts2-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -509,11 +516,7 @@
                             <wait>${cargo.wait}</wait>
                             <container>
                                 <containerId>${cargo.container}</containerId>
-                                <!--home>${cargo.container.home}</home-->
-                                <zipUrlInstaller>
-                                    <url>${cargo.container.url}</url>
-                                    <installDir>${installDir}</installDir>
-                                </zipUrlInstaller>
+                                <home>${cargo.container.home}</home>
                             </container>
                             <configuration>
                                 <home>${project.build.directory}/${cargo.container}/container</home>
@@ -605,7 +608,13 @@
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
                 <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
                 <jdbc.username>providertool</jdbc.username>
-                <jdbc.password>providertool</jdbc.password>
+                <jdbc.password>w32wfun</jdbc.password>
+                <!-- tomcat -->
+                <cargo.container>tomcat5x</cargo.container>
+                <cargo.container.home>/var/lib/tomcat5</cargo.container.home>
+                <cargo.host>DB1.gbif.org</cargo.host>
+                <cargo.port>8080</cargo.port>
+                <cargo.wait>false</cargo.wait>
             </properties>
             <build>
                 <plugins>
@@ -620,21 +629,8 @@
                 </plugins>
             </build>
         </profile>
-
+        
         <!-- ================= Database Profiles ================= -->
-        <profile>
-            <id>derby</id>
-            <properties>
-                <hibernate.dialect>org.hibernate.dialect.DerbyDialect</hibernate.dialect>
-                <jdbc.groupId>org.apache.derby</jdbc.groupId>
-                <jdbc.artifactId>derbyclient</jdbc.artifactId>
-                <jdbc.version>10.2.2.0</jdbc.version>
-                <jdbc.driverClassName>org.apache.derby.jdbc.ClientDriver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:derby://localhost/providertool_test;create=true]]></jdbc.url>
-                <jdbc.username>any</jdbc.username>
-                <jdbc.password>value</jdbc.password>
-            </properties>
-        </profile>
         <profile>
             <id>h2</id>
             <properties>
@@ -650,35 +646,6 @@
             </properties>
         </profile>
         <profile>
-            <id>hsqldb</id>
-            <properties>
-                <dbunit.dataTypeFactoryName>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</dbunit.dataTypeFactoryName>
-                <hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
-                <jdbc.groupId>hsqldb</jdbc.groupId>
-                <jdbc.artifactId>hsqldb</jdbc.artifactId>
-                <jdbc.version>1.8.0.7</jdbc.version>
-                <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:hsqldb:${java.io.tmpdir}/providertool_test;shutdown=true]]></jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password></jdbc.password>
-            </properties>
-        </profile>
-        <profile>
-            <id>oracle</id>
-            <properties>
-                <dbunit.dataTypeFactoryName>org.dbunit.ext.oracle.OracleDataTypeFactory</dbunit.dataTypeFactoryName>
-                <dbunit.schema>SYSTEM</dbunit.schema> <!-- Make sure to capitalize the schema name -->
-                <hibernate.dialect>org.hibernate.dialect.Oracle9Dialect</hibernate.dialect>
-                <jdbc.groupId>com.oracle</jdbc.groupId>
-                <jdbc.artifactId>ojdbc14</jdbc.artifactId>
-                <jdbc.version>10.2.0.2.0</jdbc.version>
-                <jdbc.driverClassName>oracle.jdbc.OracleDriver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:oracle:thin:@localhost:1521:XE]]></jdbc.url>
-                <jdbc.username>system</jdbc.username>
-                <jdbc.password>system</jdbc.password>
-            </properties>
-        </profile>
-        <profile>
             <id>postgresql</id>
             <properties>
                 <hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
@@ -691,33 +658,7 @@
                 <jdbc.password>postgres</jdbc.password>
             </properties>
         </profile>
-        <profile>
-            <!-- You need to enable TCP/IP Connections for SQL Server 2005 after installing. -->
-            <!-- http://www.mattwoodward.com/blog/index.cfm?commentID=211 -->
-            <id>sqlserver</id>
-            <properties>
-                <dbunit.dataTypeFactoryName>org.dbunit.ext.mssql.MsSqlDataTypeFactory</dbunit.dataTypeFactoryName>
-                <dbunit.operation.type>MSSQL_CLEAN_INSERT</dbunit.operation.type>
-                <hibernate.dialect>org.hibernate.dialect.SQLServerDialect</hibernate.dialect>
-                <jdbc.groupId>net.sourceforge.jtds</jdbc.groupId>
-                <jdbc.artifactId>jtds</jdbc.artifactId>
-                <jdbc.version>1.2</jdbc.version>
-                <jdbc.driverClassName>net.sourceforge.jtds.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:jtds:sqlserver://localhost:3683/providertool_test]]></jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password>appfuse</jdbc.password>
-            </properties>
-        </profile>
 
-        <!-- ================= Container Profiles ================= -->
-        <profile>
-            <id>jboss</id>
-            <properties>
-                <cargo.container>jboss4x</cargo.container>
-                <cargo.container.home>${env.JBOSS_HOME}</cargo.container.home>
-                <cargo.container.url>http://easynews.dl.sourceforge.net/sourceforge/jboss/jboss-4.0.5.GA.zip</cargo.container.url>
-            </properties>
-        </profile>
     </profiles>
 
     <properties>
@@ -761,6 +702,6 @@
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
         <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool_test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
         <jdbc.username>providertool</jdbc.username>
-        <jdbc.password>providertool</jdbc.password>
+        <jdbc.password>w32wfun</jdbc.password>
     </properties>
 </project>
