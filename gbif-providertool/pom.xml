@@ -609,12 +609,6 @@
                 <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
                 <jdbc.username>providertool</jdbc.username>
                 <jdbc.password>w32wfun</jdbc.password>
-                <!-- tomcat -->
-                <cargo.container>tomcat5x</cargo.container>
-                <cargo.container.home>/var/lib/tomcat5</cargo.container.home>
-                <cargo.host>DB1.gbif.org</cargo.host>
-                <cargo.port>8080</cargo.port>
-                <cargo.wait>false</cargo.wait>
             </properties>
             <build>
                 <plugins>
@@ -690,7 +684,7 @@
         <cargo.host>localhost</cargo.host>
         <cargo.port>8081</cargo.port>
         <cargo.wait>false</cargo.wait>
-                
+        
         <!-- Database settings -->
         <initdb.skip>false</initdb.skip>
         <dbunit.dataTypeFactoryName>org.dbunit.dataset.datatype.DefaultDataTypeFactory</dbunit.dataTypeFactoryName>
