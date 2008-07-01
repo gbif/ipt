@@ -24,7 +24,6 @@ import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
@@ -71,7 +70,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
 		return gChartData;
 	}
 
-	public DatasourceBasedResource getOccResource() {
+	public OccurrenceResource getOccResource() {
         return occResource;
     }
     public void setOccResource(OccurrenceResource occResource) {
