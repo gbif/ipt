@@ -1,4 +1,4 @@
-package org.gbif.scheduler;
+package org.gbif.scheduler.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

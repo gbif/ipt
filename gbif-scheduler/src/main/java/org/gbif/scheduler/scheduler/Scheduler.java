@@ -9,8 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 
-import com.ibiodiversity.harvest.dao.JobDao;
-import com.ibiodiversity.harvest.model.Job;
+import org.gbif.scheduler.dao.JobDao;
+import org.gbif.scheduler.model.Job;
 
 /**
  * @author timrobertson

@@ -13,8 +13,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-import com.ibiodiversity.harvest.dao.JobDao;
-import com.ibiodiversity.harvest.model.Job;
+import org.gbif.scheduler.dao.JobDao;
+import org.gbif.scheduler.model.Job;
 
 /**
  * @author timrobertson
@@ -85,7 +85,7 @@ public class JobDaoHibernate extends GenericDaoHibernate<Job, Long> implements J
 	}
 	
 	/**
-	 * @see com.ibiodiversity.harvest.dao.JobDao#clearStartedJobs(java.lang.String)
+	 * @see org.gbif.scheduler.dao.JobDao#clearStartedJobs(java.lang.String)
 	 */
 	public void clearStartedJobs(String instanceId) {
 		log.info("Clearing Jobs for instanceId: " + instanceId);
@@ -93,7 +93,7 @@ public class JobDaoHibernate extends GenericDaoHibernate<Job, Long> implements J
 	}
 
 	/**
-	 * @see com.ibiodiversity.harvest.dao.JobDao#findByGroup(java.lang.String)
+	 * @see org.gbif.scheduler.dao.JobDao#findByGroup(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Job> findByGroup(String runningGroup) {
@@ -101,7 +101,7 @@ public class JobDaoHibernate extends GenericDaoHibernate<Job, Long> implements J
 	}
 
 	/**
-	 * @see com.ibiodiversity.harvest.dao.JobDao#findByRunning()
+	 * @see org.gbif.scheduler.dao.JobDao#findByRunning()
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Job> findByRunning() {

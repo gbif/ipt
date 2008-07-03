@@ -8,7 +8,7 @@
 	<!-- Because fmt does not nicely allow for multiple files coming from many jars, 
 		 we use Spring for the i18n of the plugin harvesters (only) -->
 	<!--bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"-->
-	<bean id="messageSource" class="com.ibiodiversity.harvest.webapp.context.support.MultiResourceBundleMessageSource">
+	<bean id="messageSource" class="org.gbif.scheduler.webapp.context.support.MultiResourceBundleMessageSource">
 		<property name="basenames" value="ApplicationResources"/>
 		<property name="useCodeAsDefaultMessage" value="true"/>
 	</bean>	
@@ -17,37 +17,37 @@
 	<bean id="abstractDao" abstract="true">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="jobDao" class="com.ibiodiversity.harvest.dao.hibernate.JobDaoHibernate" parent="abstractDao"/>
-	<bean id="logEventDao" class="com.ibiodiversity.harvest.dao.hibernate.LogEventDaoHibernate" parent="abstractDao"/>
+	<bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractDao"/>
+	<bean id="logEventDao" class="org.gbif.scheduler.dao.hibernate.LogEventDaoHibernate" parent="abstractDao"/>
 	<bean id="bioDatasourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
-		<constructor-arg value="com.ibiodiversity.harvest.model.BioDatasource"/>
+		<constructor-arg value="org.gbif.scheduler.model.BioDatasource"/>
 	</bean>
 		
 	<!-- Managers -->
-	<bean id="bioDatasourceManager" class="com.ibiodiversity.harvest.service.impl.BioDatasourceManagerImpl">
+	<bean id="bioDatasourceManager" class="org.gbif.scheduler.service.impl.BioDatasourceManagerImpl">
         <constructor-arg ref="bioDatasourceDao"/>
 		<property name="jobDao" ref="jobDao"/>
     </bean>
-	<bean id="jobManager" class="com.ibiodiversity.harvest.service.impl.JobManagerImpl">
+	<bean id="jobManager" class="org.gbif.scheduler.service.impl.JobManagerImpl">
         <constructor-arg ref="jobDao"/>
     </bean>
-    <bean id="logEventManager" class="com.ibiodiversity.harvest.service.impl.LogEventManagerImpl">
+    <bean id="logEventManager" class="org.gbif.scheduler.service.impl.LogEventManagerImpl">
         <constructor-arg ref="logEventDao"/>
     </bean>
 	
 	<!-- The launcher that issues the jobs to the plugins -->
-	<bean id="biodatasourceOperationLauncher" class="com.ibiodiversity.harvest.scheduler.BiodatasourceOperationLauncher">
+	<bean id="biodatasourceOperationLauncher" class="org.gbif.scheduler.scheduler.BiodatasourceOperationLauncher">
 		<property name="logEventDao" ref="logEventDao"/>
 		<property name="bioDatasourceDao" ref="bioDatasourceDao"/>
 	</bean>
 	
 	<!-- Configure the i18n Log4J appender -->
-	<bean id="i18nDatabaseAppender" class="com.ibiodiversity.harvest.log.I18nDatabaseAppender">
+	<bean id="i18nDatabaseAppender" class="org.gbif.scheduler.log.I18nDatabaseAppender">
 		<property name="logEventDao" ref="logEventDao"/>
 	</bean>
 	
 	<!-- The resource bundle that handles i18n files from many jars -->
-	<bean id="mergedResourceBundleFactory" class="com.ibiodiversity.harvest.util.MergedResourceBundleFactory">
+	<bean id="mergedResourceBundleFactory" class="org.gbif.scheduler.util.MergedResourceBundleFactory">
 		<constructor-arg>
 			<list>
 				<!-- ApplicationResources.properties, ApplicationResources_en_GB.properties etc -->
@@ -57,14 +57,14 @@
 	</bean>
 	
 	<!-- Interceptor that will allow for pushing merged resource bundle on to the stack -->
-	<!--bean id="mrb2stack" class="com.ibiodiversity.harvest.webapp.interceptor.MRB2StackInterceptor"/-->
+	<!--bean id="mrb2stack" class="org.gbif.scheduler.webapp.interceptor.MRB2StackInterceptor"/-->
 	
 	<!-- These are the factories that are loaded as plugins
 		 TODO - how do we load these a little better? -->
 	<util:list id="harvesterFactories">
-		<bean class="com.ibiodiversity.harvest.biocase.BiocaseHarvesterFactory"/>
-		<bean class="com.ibiodiversity.harvest.tapir.TapirHarvesterFactory"/>
-		<bean class="com.ibiodiversity.harvest.tapirlite.TapirLiteHarvesterFactory"/>
-		<bean class="com.ibiodiversity.harvest.mock.MockHarvesterFactory"/>
+		<bean class="org.gbif.scheduler.biocase.BiocaseHarvesterFactory"/>
+		<bean class="org.gbif.scheduler.tapir.TapirHarvesterFactory"/>
+		<bean class="org.gbif.scheduler.tapirlite.TapirLiteHarvesterFactory"/>
+		<bean class="org.gbif.scheduler.mock.MockHarvesterFactory"/>
 	</util:list>
 </beans>

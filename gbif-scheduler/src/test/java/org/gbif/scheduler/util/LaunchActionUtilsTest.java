@@ -1,4 +1,4 @@
-package org.gbif.scheduler;
+package org.gbif.scheduler.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
-import com.ibiodiversity.harvest.model.LaunchAction;
+import org.gbif.scheduler.model.LaunchAction;
 
 public class LaunchActionUtilsTest {
 	Log log = LogFactory.getLog(this.getClass());

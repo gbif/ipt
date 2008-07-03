@@ -91,33 +91,6 @@
         </row>
     </table>
     
-    <!--BioDatasource-START-->
-    <table name="BioDatasource">
-        <column>id</column>
-        <column>name</column>
-        <column>harvesterFactory</column>    
-        <column>parametersAsJSON</column>
-    <row>
-        <value description="id">-1</value>
-        <value description="name">Datasource 1</value>
-        <value description="harvesterFactory">com.ibiodiversity.harvest.tapir.TapirHarvesterFactory</value>
-        <value description="parametersAsJSON"></value>
-    </row>
-    <row>
-        <value description="id">-2</value>
-        <value description="name">Datasource 2</value>
-        <value description="harvesterFactory">com.ibiodiversity.harvest.tapir.TapirHarvesterFactory</value>
-        <value description="parametersAsJSON"></value>
-    </row>
-    <row>
-        <value description="id">-3</value>
-        <value description="name">Datasource 3</value>
-        <value description="harvesterFactory">com.ibiodiversity.harvest.tapir.TapirHarvesterFactory</value>
-        <value description="parametersAsJSON"></value>
-    </row>
-    </table>
-    <!--BioDatasource-END-->
-    <!--Job-START-->
     <table name="Job">
         <column>id</column>
         <column>name</column>
@@ -170,55 +143,5 @@
         <value description="instanceId">localhost</value>
     </row>
     </table>
-    <!--Job-END-->
-    <!--LogEvent-START-->
-    <!--table name="LogEvent">
-        <column>id</column>
-        <column>message</column>
-        <column>timestamp</column>
-        <column>groupId</column>
-        <column>level</column>
-        <column>instanceId</column>
-        <column>bioDatasource_id</column>
-        <column>user_id</column>
-        <column>infoAsJSON</column>
-        <column>messageParamsAsJSON</column>
-    <row>
-        <value description="id">-1</value>
-        <value description="message">MvTlNwTcQbPgJeRnPtGbOlFlBaOxWdRfSzXtHbXaMkCtDpCnEzUlCtFkPoCyDwYrPeJjAvAiFaPiHgXzUrNdPvEgOgViUvXyFcTlNlIqJsUdSiKeBgBbNaOqJjQhSpTtKfIaBqRxVlVvVeBgAdBvFcWaJjYmWaGtNjMwPjEpUfEpOtQcSlPwFwLkFjSeMfTxWlYrJkVrDpNlCqNtUyTuUxEbAgKrYeUlVnQoLpOiRbCpJzGuVbNwTdVsCwQwIlO</value>
-        <value description="timestamp">2008-05-17</value>
-        <value description="groupId">1057603881480735744</value>
-        <value description="level">2075824965</value>
-        <value description="instanceId">CnRrElIeEeInEfFmLrWsYeUvNqEzHaOkQwDeEeIeKyYqFwIcPjChAuZuPeOoRyUqJtHlKwWhShYxRyHmUlSqIuFbUrYaEiKkIpZkNzBvViQuYzFaCnGoEaPyAtXeGfKvRjKdDnVhQsSnMdLbDvMgViYtDqKiTkUyEnAeUoPpQoMcLhBiHsNaCfAbOfZzRwGkZrMbHdSgVjWaReSsAfXnGvVyFfDhGyUiVdMyGvPvZgBwVfOpVsLwItHrXiYiAdH</value>
-        <value description="bioDatasource">McAcOzNxTsQfNoBnWrGuPnTvOpFwQpAmUmGvOkKyHhTkHmRzQsRqAxCwDhDyJdKxBuHvXsBmVmXxRsViBdHxWgPsMaFbGqTtUzOhOkFpIoPtShJfIkTlCkMoWxSsCzVuKjPdMtDyCsEhQjFpArZsAqCwQtWtJmSdUgDwXgAhSoJjLyJlQiQyPkHcIwPoEtWnVsQzRlTaNeOoCrDkNbRiBeFfAvRkMqQnNmYaDcYjUbWlVcSxTxCqVtQbZwGaGkU</value>
-        <value description="user">MyPiSyJcKuNuQlYcJqTdBkPeRqGiOlLrAwLnLkNbPmHvQkWxSbZmEyRzRlDtQsUeQlBhVxQxPcJsAoDyGpIyIsImHpKiTpHfQzTfWpVtYiClAuYlQfDgDaJoJiZfVyWmGiQlTiIeQhOyIcTfAxQbKeRaUdHoFoYgCeDaTcInHmFuXuYiUbVmZaXzYnWiQdFqTwRkNePrYxOgIhOtHjDjFjGwOsRqQlSySfUzHcQeEtOnKmQrQuTmOyVpXaVxIpA</value>
-        <value description="infoAsJSON">LlRlFuNzIbBrFpEmHjBcFeJaUcXpRbWvEzZoRzNvRuSqGkBhBnYfGeQhJpAsLoNqEiRtQjWuWkShShMdUxKaXuRwPeOoSlYtZoYjUkZyNoQqEjByHpKgBcChAwZjOtDrDvBwYeUhLbLgIaUbEsGxGqLqXkTrEtHjHxTgQfZcFzNuPyGqUoJzYpIeVtQcReTiErQzGwJzXqTaEmKwToWiDbHmNaWfMlDiGeOxUqUuYjFsJxWtEjQxEoKoAkAwLnT</value>
-        <value description="messageParamsAsJSON">TePlPbVxZoYuDcJnTuYvAyXnHaSpQpLhGvWyVmNnFaUiOoUiFtFgDaHnAkUmMfUqGoCbNxTbDqWsGkDfNbViVhLzSgLzYoVeDkSbPdYeNlQlLwWoXbDyUyIaZuNtBsDbMzIpJwNyMtCkSjSmChNzIiXgQwDlCxPxNfLkDzZtDkNxPgSvUlVuCkFkIoNyDnLvYsUqWzZcKpWtNsJeQuHzWjPoMzNuChPiWyNcEpRbBwBaTiFyIoKnViIjMjZqApI</value>
-    </row>
-    <row>
-        <value description="id">-2</value>
-        <value description="message">ZcDcIwWqNzGwOwFlFyXiAyMjWgMxIkCcXsEyXgHpAyYpChBbEqViKnMnXuHbVcStUsNwKzGqRfXvNhBbLpPmMjYpWdTxUeTtZbAcBfUsMsTcJtEwFyDyItGbGrVoAdFxWbFjFqMhPjGmLyRdUjYzHvTwBmBhLnNfPrPjNjTfKpOuBwUrKpEnVlZjYbZxFmIzZkMjUjCbXeDjCbYvFlTeCwGuUhEtBvUcRfPdWvEhSkQaNxVvQsEwDcOsUpEuZiU</value>
-        <value description="timestamp">2008-05-17</value>
-        <value description="groupId">8013254747572107264</value>
-        <value description="level">872144100</value>
-        <value description="instanceId">ZtZvFhGsFbJhXzQuTzLdGoVfLyTaAsQxStIkWbVnZmAdDqVjBfCcDaBaZmYnDiBqOmHsWmUvCpRzJnZrDhZmIfXjZrAiVwLzSkMdZxFcIsTjWlBuQxNkFzXiCjBoSjIrPiGpAvBrWbRfBmCgTqLxIpLeHuUmCmJlOcEwJfFvAgNwVaMsVzKmHgYqMbKnUgOxMzMkTvPjCaLfRoTaHsTyMmYnNgEtBgIsVyDdEaRhIcYkNbNpToQnFfXnLgRnYbN</value>
-        <value description="bioDatasource">DwMyVnSzUiSuJhPzTiQbAjQvIvHdDpUyIiJwJsMgJqTqZjVxSkYqNvPkZnMvIdAqSzYuNtClLjTuHnIaKlHgGkGhLqSgHnZiSsLjVsHhCpTaWbPhBdBdMeVpMpSuNxZvNvVdVzNwUkNwUzTxIsYaVtQwSvNmPxWcKnObOvJpWpEcNwGcLtZvCzNaBgXgKqBfYpUxDdWkXmTiBkUlAvVjSwMoEhLyIjTwZoWmRoHeKwIeSwUjMwKiDuGjKbMkByD</value>
-        <value description="user">WbTyMrTzJvOcGoBrVmLoPwUsHwXoSlEdDcCxCeWuBtVbTpGvLsHhUgIwItWyWmSiSjNoOsKfXlCoEaWoNzLuZeFsWyXqOwVzEpHaBaHjYkIlGqPgUmCiUdSaGyZiImTpGgAlXkZvWnAcCqWaYhGrPoAeQvKvViCjQkJyZdFuFeAfTqFnVdCmBkUvAqPsKsRfHoPrGcSsMuEfYyJsKmCiByHgMaFdBnJwMtWjUqGrOkOkWyFkPwZnJvJiUbAxJxL</value>
-        <value description="infoAsJSON">IuAeXwZvTiXqHpZhRtGgOiJxMhHpXxByJrAbKkNkXtXyVlGdNsYsOcEoBvFxTxOoOrZjDoNnNxNwIqEkAeQkFoYoZbRgLxNlHxVcEpBlFnYtMkUwQyQsOgKzMeWoVaIlInQxZfFkPoKcLaNsMzJvStWcGmLrNeMtIpEjIsOeTfKjJlHfLcFfXcNcRpRfYsUmSiYxLvStJdGoFxNoWmPsTpNyMrGlWgPsWkHsNnMpQtRlRyYyAwCnXyVoQdAkQuP</value>
-        <value description="messageParamsAsJSON">PpMtChEwTfYxUlNeAoPdOrHoFhFbNrXoBpFuVaYoKjDvZpPsIhLtGhArHcEdDtPnHnHrCqMrUlJjVoUeHeWmFaGrCaQfNgWeYzVrJeVrCnPmSuHyEpMuQvDtZwZgDxYkCbYjTlLnVmRtSfGtQzYqKdYzZnKlZlOiBuTjKzUbHcAzKtYuFiTbXvQaGhQlIbRhUhGgKeUxLoXjNuTwCmQkVqQvBmOzQgBeArYrPrXdAeYjBnBzKgYnJpYsYcQtVbQ</value>
-    </row>
-    <row>
-        <value description="id">-3</value>
-        <value description="message">GoPiVcCdSmGpRtWjBkZnHoYgUfCsMrGrYpSsAnBoTaLgKhEuZfGnLxCoKlOzFnDkUoVnPyCwFzAkMpVxTnAvNhXaYoLmCeFvDaUkEwIhZcRaPnHnAvSkHbItZxHoYdMyMxCcYkYuYqOgWiKaXtYdCnCiPsGrOdQwNeJeNwHkKeIgGhQsZoCuWmZfUqQiZqTpGeIcMnZyWbRqCkDsLcMfXbSoNwEsDyEtEaWuZmFvYuZqOoMsRxNzIbXdOeFvPjO</value>
-        <value description="timestamp">2008-05-17</value>
-        <value description="groupId">6373815649916267520</value>
-        <value description="level">543347282</value>
-        <value description="instanceId">NnZvEpJlBkXxUaHzNgWoCsTyJnQsQhXlUcKeRaZzJxJmYhLqDfCdItSnWqZaOcLbAoPrOvZoWxPiIwDbHhLrMqOpTpWtCuZbIcLgTdKlHsYwBeJiHcWeShDhWrAsKoQpBqUxCtFnLtNvAyJzEnArGzUpFlVlJfQcGjFbOuRqMqXoTnAbPiMtUdCdPdEjJuNdKtHqEeYhWqKiDpScRjWxPvKsQfYpBnIbJoUcWsCnKjPgLiAbWtHpNfYtXfKtRtL</value>
-        <value description="bioDatasource">KqHlBzBeHlTtEsNhPnIhVjIdFfUgWkNbXvXtSnMoPoHbThAsNlNpYqFdMmCiYgZsOkObUcCtOdJoEsOjQsInTgElZlHgMsLeBpXaVwGfYqFsSpSyPvPlOvGeHaLuHhImHsIcNsGkTsMaThCdKzLlBbFcMnOsPpNgLnRnIyEjHvVcZaXyOuFlSeJjSoYwLjFhVdFlKvEgEcDpVdOoDzIjFbAcYrTkEfKpNtQeVtWeAfHvIxXbNqPoIfZpBtVmJwJ</value>
-        <value description="user">DwDmXwNzQvScKyVcZaMtStFiMeHvXxQuJjXwMuQeNgUqEvKmMwOfSvJmEfDmIjCkXtKhRrJmBkRlIgWzEmYdZkMoXtJdKmBxEoOwJpLlQuZlYlChCzXpWiEuMyMuMeSbOlCnIbPzWjZwQnEcXzKeLyBlRzSxJmCaUjFwYoWeCfYiJoWmGlLqNrOuUrXxIzWaOnBzNpLpYyCkUgJsSdDdVjRlIaFsMkDcEuXnKvSoJwPiPoNdNyQhQjFyDqJpHkQ</value>
-        <value description="infoAsJSON">IvGfFvKkYqCxYfQyRxTqTiZzLpUdEjSkDxIgIqRfZvZeTtEuYmKxZlOsVcZvWpMfXoQtVmAmPlUfRdQnGbXcIcFrBzZjIiWpXkLwGcGhPiPiKqHwNmZyFeIyPkQmMbWdEvIlGcPoQvRvQjYiLzVoRhWuJtIwHdKuGgDnDqVtUdQmEkGnDnCbBsKhQyLdKwSrLpXzYqTnCaKdJwDhRoDiHrZeJmHqPwXzXiJoKdStTrYcUlOlGxMhTsLzWiDnOlU</value>
-        <value description="messageParamsAsJSON">EoIoDiZsUsUoBhXnJfFqCeOzMlClIzPaIsLtCjMiXyEhZbFdLuCdWcAyHnVmLaAlBjVmDxUjHgEqOgOjXrCpJeIsSzMeHsIpGkByHaCfRvRmOoXjWaMmIeQfYpEeEwSrKiZqZcIeZaHfVfNuTsOoQqPhJyHaZfQoZzFhRiAcOdRgCeFwUwCgZqMoHiExRoZeCxPyOrHjCpEuOpBxUlBoTuOkSfTkFoKbPjFfLyKxMnWmBnFxIkNsAnFhOsQmWlS</value>
-    </row>
-    </table-->
-    <!--LogEvent-END-->
+
 </dataset>

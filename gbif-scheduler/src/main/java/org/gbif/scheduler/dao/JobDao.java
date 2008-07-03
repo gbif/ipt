@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
-import com.ibiodiversity.harvest.model.Job;
+import org.gbif.scheduler.model.Job;
 
 /**
  * @author timrobertson

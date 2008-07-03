@@ -4,11 +4,12 @@ import com.opensymphony.xwork2.Preparable;
 import org.appfuse.service.GenericManager;
 
 import com.googlecode.jsonplugin.annotations.SMDMethod;
-import com.ibiodiversity.harvest.model.Job;
-import com.ibiodiversity.harvest.model.LogEvent;
-import com.ibiodiversity.harvest.service.JobManager;
-import com.ibiodiversity.harvest.webapp.action.model.LogEventDTO;
-import com.ibiodiversity.harvest.webapp.action.model.LogEventDTOFactory;
+
+import org.gbif.logging.model.LogEvent;
+import org.gbif.logging.webapp.action.model.LogEventDTO;
+import org.gbif.logging.webapp.action.model.LogEventDTOFactory;
+import org.gbif.scheduler.model.Job;
+import org.gbif.scheduler.service.JobManager;
 
 import java.io.IOException;
 import java.util.LinkedList;

@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.appfuse.service.impl.GenericManagerImpl;
 
-import com.ibiodiversity.harvest.dao.JobDao;
-import com.ibiodiversity.harvest.model.Job;
-import com.ibiodiversity.harvest.service.JobManager;
+import org.gbif.scheduler.dao.JobDao;
+import org.gbif.scheduler.model.Job;
+import org.gbif.scheduler.service.JobManager;
 
 /**
  * @author timrobertson

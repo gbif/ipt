@@ -17,8 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.ibiodiversity.harvest.dao.JobDao;
-import com.ibiodiversity.harvest.scheduler.Scheduler;
+import org.gbif.scheduler.dao.JobDao;
+import org.gbif.scheduler.scheduler.Scheduler;
 
 /**
  * @author timrobertson

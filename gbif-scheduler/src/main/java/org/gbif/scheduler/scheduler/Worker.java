@@ -11,8 +11,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.ibiodiversity.harvest.JSONUtils;
-import com.ibiodiversity.harvest.model.Job;
+import org.gbif.scheduler.JSONUtils;
+import org.gbif.scheduler.model.Job;
 
 /**
  * The object that comes from the pool, that will execute the contents of the trigger
