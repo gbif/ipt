@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.appfuse.service.GenericManager;
 
-import com.ibiodiversity.harvest.model.Job;
+import org.gbif.scheduler.model.Job;
 
 /**
  * @author timrobertson

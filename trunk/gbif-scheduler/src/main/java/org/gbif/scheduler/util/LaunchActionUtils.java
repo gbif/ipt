@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.ibiodiversity.harvest.model.LaunchAction;
+import org.gbif.scheduler.model.LaunchAction;
 
 /**
  * Utilities to simplify working with a launch action

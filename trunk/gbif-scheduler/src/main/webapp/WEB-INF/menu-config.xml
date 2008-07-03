@@ -16,11 +16,6 @@
         </Menu>
         <Menu name="Logout" title="user.logout" page="/logout.jsp" roles="ROLE_ADMIN,ROLE_USER"/>
         
-        <Menu name="BioDatasourceMenu" title="bioDatasourceList.menu" page="/bioDatasources.html"/>
-        
 		<Menu name="JobMenu" title="jobList.title" page="/jobs.html"/>
-        <!--LogEvent-START-->
-        <Menu name="LogEventMenu" title="logEventList.title" page="/logEvents.html"/>
-        <!--LogEvent-END-->
     </Menus>
 </MenuConfig>

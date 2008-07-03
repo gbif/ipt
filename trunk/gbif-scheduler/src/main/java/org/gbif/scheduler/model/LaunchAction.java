@@ -27,13 +27,13 @@ import org.appfuse.model.BaseObject;
  * Can be run as something that creates a new instance, or else gets an instance and
  * runs it
  * 
- * fullClassName: com.ibiodiversity.harvest.Hello
+ * fullClassName: org.gbif.scheduler.Hello
  * methodname: hello
  * methodParams: world,null,yes
  * 
  * results in:
  * 
- * new com.ibiodiversity.harvest.Hello()
+ * new org.gbif.scheduler.Hello()
  *   .hello(
  *   	getWorld(),
  *   	null,

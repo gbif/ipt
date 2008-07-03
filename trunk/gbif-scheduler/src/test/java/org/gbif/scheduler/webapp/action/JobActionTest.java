@@ -4,8 +4,8 @@ import org.apache.struts2.ServletActionContext;
 import org.appfuse.webapp.action.BaseActionTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import com.ibiodiversity.harvest.model.Job;
-import com.ibiodiversity.harvest.service.JobManager;
+import org.gbif.scheduler.model.Job;
+import org.gbif.scheduler.service.JobManager;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class JobActionTest extends BaseActionTestCase {

@@ -10,8 +10,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.pool.PoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
 
-import com.ibiodiversity.harvest.dao.JobDao;
-import com.ibiodiversity.harvest.model.Job;
+import org.gbif.scheduler.dao.JobDao;
+import org.gbif.scheduler.model.Job;
 
 /**
  * A pool that will return a Worker, and on borrowing an object, will set the 
