@@ -73,4 +73,14 @@ public class TryingOut {
 		}
 	}
 
+	@Test
+	public void testClassHashcode(){
+		Long i = new Long(1);
+		Long i2 = new Long(54);
+		Map<String, Integer> m = new HashMap<String, Integer>();
+		System.out.println(i.getClass().hashCode());
+		System.out.println(i2.getClass().hashCode());
+		System.out.println(m.getClass().hashCode());
+		System.out.println(m.getClass().hashCode());
+	}
 }

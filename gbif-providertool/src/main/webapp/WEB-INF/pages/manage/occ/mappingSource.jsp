@@ -15,14 +15,14 @@
     <br/>
     
     <s:submit cssClass="button" key="button.save" theme="simple"/>
-    <c:if test="${not empty mapping.viewSql}">
+    <s:if test="%{mapping.id}">
         <s:submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
-    </c:if>
+    </s:if>
     <s:submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
 		    	
 </s:form>
 
-<s:if test="${not empty viewColumnHeaders}">
+<s:if test="%{not viewColumnHeaders.isEmpty}">
 	<table class="table">
 		<thead>
 			<tr>
