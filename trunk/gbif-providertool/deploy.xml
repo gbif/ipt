@@ -4,7 +4,7 @@
     <!-- Load the project specific configurations -->
     <property file="${basedir}/project.properties"/>
 
-	<property name="webserver.home" value="/Users/markus/workspace/providertoolkit/target/work/webapp/"/>
+	<property name="webserver.home" value="/Users/markus/workspace/providertool/target/work/webapp/"/>
 
 	<!-- Deploy reloadable sources - images, css. jsp etc-->
     <target name="deploy.ui">
