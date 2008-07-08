@@ -483,6 +483,11 @@
             <artifactId>commons-logging</artifactId>
             <version>${commons-logging.version}</version>
         </dependency>        
+        <dependency>
+            <groupId>org.gbif</groupId>
+            <artifactId>struts2utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>        
         <!-- dont bundle into runtime -->
         <dependency>
             <groupId>log4j</groupId>
@@ -705,7 +710,7 @@
     
         <!-- Framework dependency versions -->
         <json-lib.version>2.1</json-lib.version>
-        <jsonplugin.version>0.26</jsonplugin.version>
+        <jsonplugin.version>0.30</jsonplugin.version>
         <velocity.version>1.4</velocity.version>
         <commons-beanutils.version>1.7.0</commons-beanutils.version>
         <commons-digester.version>1.8</commons-digester.version>
