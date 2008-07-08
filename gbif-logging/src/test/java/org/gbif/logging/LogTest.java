@@ -1,21 +1,23 @@
 package org.gbif.logging;
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-/**
- * A test class to check how the MDC works with statically defined loggers
- * @author timrobertson
- */
 public class LogTest {
-	public static void main(String[] args) {
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 		Thread t1 = new Thread(new T1());
 		Thread t2 = new Thread(new T2());
 		t1.start();
 		t2.start();
 	}
-	
+
 	static class T1 implements Runnable {
 		static Log log = LogFactory.getLog(T1.class);
 		public void run() {
@@ -33,5 +35,10 @@ public class LogTest {
 				log.warn(i);
 			}
 		}
+	}
+	
+	@Test
+	public void testMain(){
+		// nothing to do, its all about the static setup method
 	}
 }
