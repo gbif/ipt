@@ -83,12 +83,19 @@
       <version>${servlet.version}</version>
       <scope>provided</scope>
     </dependency>    
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>${json-lib.version}</version>
+      <classifier>jdk15</classifier>
+    </dependency>
   </dependencies>
   
   <properties>
     <struts.version>2.0.11.1</struts.version>    
     <displaytag.version>1.1.1</displaytag.version>
     <jsp.version>2.0</jsp.version>
+    <json-lib.version>2.1</json-lib.version>
     <servlet.version>2.4</servlet.version>
   </properties>
 </project>
