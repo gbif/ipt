@@ -89,6 +89,12 @@
       <version>${json-lib.version}</version>
       <classifier>jdk15</classifier>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <properties>
@@ -97,5 +103,6 @@
     <jsp.version>2.0</jsp.version>
     <json-lib.version>2.1</json-lib.version>
     <servlet.version>2.4</servlet.version>
+    <junit.version>4.4</junit.version>
   </properties>
 </project>
