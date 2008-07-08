@@ -2,12 +2,10 @@ package org.gbif.scheduler.webapp.action;
 
 import com.opensymphony.xwork2.Preparable;
 import org.appfuse.service.GenericManager;
+import org.appfuse.webapp.action.BaseAction;
 
 import com.googlecode.jsonplugin.annotations.SMDMethod;
 
-import org.gbif.logging.model.LogEvent;
-import org.gbif.logging.webapp.action.model.LogEventDTO;
-import org.gbif.logging.webapp.action.model.LogEventDTOFactory;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.service.JobManager;
 
@@ -15,7 +13,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JobAction extends MRBBaseAction implements Preparable {
+public class JobAction extends BaseAction implements Preparable {
     private JobManager jobManager;
     private List jobs;
     private Job job;

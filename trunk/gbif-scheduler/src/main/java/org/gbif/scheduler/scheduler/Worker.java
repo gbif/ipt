@@ -11,7 +11,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import org.gbif.scheduler.JSONUtils;
+import org.gbif.scheduler.util.JSONUtils;
 import org.gbif.scheduler.model.Job;
 
 /**

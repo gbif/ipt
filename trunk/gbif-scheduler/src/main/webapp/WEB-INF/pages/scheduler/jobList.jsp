@@ -15,6 +15,8 @@
         value="<fmt:message key="button.done"/>"/>
 </c:set>
 
+<s:text name="job.description"/>
+
 <c:out value="${buttons}" escapeXml="false" />
 
 <display:table name="jobs" class="table" requestURI="" id="jobList" export="true" pagesize="25">
