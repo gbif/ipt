@@ -75,4 +75,15 @@
         </action>
     </package>
 
+    <!-- These are the JSON definitions -->
+    <package name="loggingRPC" namespace="/nodecorate" extends="json-default">
+        <action name="LogEventList" class="org.gbif.logging.webapp.action.LogEventAction" method="execute">
+            <interceptor-ref name="json">
+                <param name="enableSMD">true</param>
+            </interceptor-ref>
+            <result type="json">
+                <param name="enableSMD">true</param>
+            </result>
+        </action>
+    </package>	
 </struts>

@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="logEventList.title"/></title>
-    <meta name="heading" content="<fmt:message key='logEventList.heading'/>"/>
+    <title><s:text name="logEventList.title"/></title>
+    <meta name="heading" content="<s:text name='logEventList.heading'/>"/>
     <meta name="menu" content="LogEventMenu"/>
 </head>
 
