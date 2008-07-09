@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="logEventDetail.title"/></title>
-    <meta name="heading" content="<fmt:message key='logEventDetail.heading'/>"/>
+    <title><s:text name="logEventDetail.title"/></title>
+    <meta name="heading" content="<s:text name='logEventDetail.heading'/>"/>
 </head>
 
 <s:form id="logEventForm" action="saveLogEvent" method="post" validate="true">
