@@ -1,18 +1,18 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="jobList.title"/></title>
-    <meta name="heading" content="<fmt:message key='jobList.heading'/>"/>
+    <title><s:text name="jobList.title"/></title>
+    <meta name="heading" content="<s:text name='jobList.heading'/>"/>
     <meta name="menu" content="JobMenu"/>
 </head>
 
 <c:set var="buttons">
     <input type="button" style="margin-right: 5px" class="button"
         onclick="location.href='<c:url value="/editJob.html"/>'"
-        value="<fmt:message key="button.add"/>"/>
+        value="<s:text name="button.add"/>"/>
 
     <input type="button" class="button" onclick="location.href='<c:url value="/mainMenu.html"/>'"
-        value="<fmt:message key="button.done"/>"/>
+        value="<s:text name="button.done"/>"/>
 </c:set>
 
 <c:out value="${buttons}" escapeXml="false" />
@@ -38,12 +38,12 @@
     </display:column>
     <display:column property="instanceId" sortable="true" titleKey="job.instanceId"/>
 
-    <display:setProperty name="paging.banner.item_name"><fmt:message key="jobList.job"/></display:setProperty>
-    <display:setProperty name="paging.banner.items_name"><fmt:message key="jobList.jobs"/></display:setProperty>
+    <display:setProperty name="paging.banner.item_name"><s:text name="jobList.job"/></display:setProperty>
+    <display:setProperty name="paging.banner.items_name"><s:text name="jobList.jobs"/></display:setProperty>
 
-    <display:setProperty name="export.excel.filename"><fmt:message key="jobList.title"/>.xls</display:setProperty>
-    <display:setProperty name="export.csv.filename"><fmt:message key="jobList.title"/>.csv</display:setProperty>
-    <display:setProperty name="export.pdf.filename"><fmt:message key="jobList.title"/>.pdf</display:setProperty>
+    <display:setProperty name="export.excel.filename"><s:text name="jobList.title"/>.xls</display:setProperty>
+    <display:setProperty name="export.csv.filename"><s:text name="jobList.title"/>.csv</display:setProperty>
+    <display:setProperty name="export.pdf.filename"><s:text name="jobList.title"/>.pdf</display:setProperty>
 </display:table>
 
 <c:out value="${buttons}" escapeXml="false" />
