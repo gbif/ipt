@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import org.gbif.scheduler.dao.JobDao;
 import org.gbif.scheduler.model.Job;
@@ -16,7 +18,7 @@ import org.gbif.scheduler.model.Job;
  * @author timrobertson
  *
  */
-public class Scheduler {
+public class Scheduler implements ApplicationContextAware{
 	// watch interval for state changes
 	private long watchIntervalMsec=10000;
 	private String instanceId="unknown";
@@ -29,6 +31,12 @@ public class Scheduler {
 	
 	private boolean isRunning = true;
 	
+	public Scheduler(String instanceId, JobDao jobDao) {
+		super();
+		this.instanceId = instanceId;
+		this.jobDao = jobDao;
+	}
+
 	public Scheduler(String instanceId,
 			ApplicationContext applicationContext,
 			JobDao jobDao) {
@@ -37,7 +45,11 @@ public class Scheduler {
 		this.jobDao = jobDao;
 		this.applicationContext=applicationContext;
 	}
-
+	
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}	
+	
 	// starts the scheduler, ready to work
 	public void start() {
 		pool = new WorkerPool(jobDao, instanceId);
@@ -113,5 +125,6 @@ public class Scheduler {
 				}
 			}
 		}
-	}	
+	}
+
 }
