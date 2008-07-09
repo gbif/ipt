@@ -24,6 +24,8 @@
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
             <Item name="extensions" title="menu.explorer.extensions" page="/manage/occ/extensions.html"/>
+            <Item name="jobs" title="menu.admin.jobs" page="/admin/jobs.html"/>
+            <Item name="logEvents" title="menu.admin.logEvents" page="/admin/logEvents.html"/>
         </Menu>
     </Menus>
 </MenuConfig>

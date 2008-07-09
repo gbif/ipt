@@ -23,9 +23,12 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.DarwinCoreDao;
 import org.gbif.provider.dao.ExtensionRecordDao;
 import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DatasourceBasedResource;
@@ -41,6 +44,8 @@ import com.opensymphony.xwork2.TextProviderFactory;
 
 public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 	protected static final Log log = LogFactory.getLog(OccurrenceUploadManagerImpl.class);
+	private static I18nLog logdb = I18nLogFactory.getLog(RdbmsUploadJob.class);
+
 	private ExtensionRecordDao extensionRecordDao;
 	private DarwinCoreDao darwinCoreDao;
 
@@ -103,7 +108,9 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 			if (recordsUploaded % 1000 == 0){
 				log.info(recordsUploaded+" uploaded for resource "+resource.getId());
 			}
-			
+			if (recordsUploaded % 100 == 0){
+				logdb.info(recordsUploaded+" uploaded for resource "+resource.getId());
+			}
 			// insert/update record
 			dwc = darwinCoreDao.save(dwc);
 			// the new darwin core id used for all other extensions

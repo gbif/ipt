@@ -13,6 +13,8 @@ import java.util.Random;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
@@ -23,9 +25,12 @@ import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.OccurrenceUploadManager;
+import org.gbif.scheduler.scheduler.Launchable;
 
 public class RdbmsUploadJob implements Launchable{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
+	private static I18nLog logdb = I18nLogFactory.getLog(RdbmsUploadJob.class);
+
 
     private DatasourceBasedResourceManager<OccurrenceResource> occResourceManager;
     private GenericManager<UploadEvent, Long> uploadEventManager;
@@ -82,7 +87,7 @@ public class RdbmsUploadJob implements Launchable{
 		}
 	}
 
-	public void fakeUpload(Long resourceId){
+	private void fakeUpload(Long resourceId){
 		// add a week from last import
 		OccurrenceResource resource = occResourceManager.get(resourceId);
         Date now = new Date(resource.getLastImport().getTime() + 604800000l);

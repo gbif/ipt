@@ -228,12 +228,12 @@
         </action>
 
         
-        <action name="extension" class="org.gbif.provider.webapp.action.DwcExtensionAction">
-            <result>/WEB-INF/pages/admin/dwcExtensionDetail.jsp</result>
+        <action name="extension" class="org.gbif.provider.webapp.action.ExtensionAction">
+            <result>/WEB-INF/pages/admin/extensionDetail.jsp</result>
         </action>
 
-        <action name="extensions" class="org.gbif.provider.webapp.action.DwcExtensionAction" method="list">
-            <result>/WEB-INF/pages/admin/dwcExtensionList.jsp</result>
+        <action name="extensions" class="org.gbif.provider.webapp.action.ExtensionAction" method="list">
+            <result>/WEB-INF/pages/admin/extensionList.jsp</result>
         </action>
         
 </package>
@@ -266,6 +266,46 @@
             <interceptor-ref name="adminCheck"/>
             <result name="success">/WEB-INF/pages/admin/datasourceList.jsp</result>
         </action>
+        
+        <!--JobAction-START-->
+        <action name="jobs" class="org.gbif.scheduler.webapp.action.JobAction" method="list">
+            <result>/WEB-INF/pages/scheduler/jobList.jsp</result>
+        </action>
+        
+        <action name="editJob" class="org.gbif.scheduler.webapp.action.JobAction" method="edit">
+            <result>/WEB-INF/pages/scheduler/jobForm.jsp</result>
+            <result name="error">/WEB-INF/pages/scheduler/jobList.jsp</result>
+        </action>
+        
+        <action name="saveJob" class="org.gbif.scheduler.webapp.action.JobAction" method="save">
+            <result name="input">/WEB-INF/pages/scheduler/jobForm.jsp</result>
+            <result name="cancel" type="redirect">jobs.html</result>
+            <result name="delete" type="redirect">jobs.html</result>
+            <result name="success" type="redirect">jobs.html</result>
+        </action>
+        <!--JobAction-END-->
+        
+        <!-- LogEvents -->
+        <action name="logEvents" class="org.gbif.logging.webapp.action.LogEventAction" method="list">
+            <result>/WEB-INF/pages/logging/logEventList.jsp</result>
+        </action>
+        
+        <action name="editLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="edit">
+            <result>/WEB-INF/pages/logEventForm.jsp</result>
+            <result name="error">/WEB-INF/pages/logging/logEventList.jsp</result>
+        </action>
+        
+        <action name="saveLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="save">
+            <result name="input">/WEB-INF/pages/logging/logEventForm.jsp</result>
+            <result name="cancel" type="redirect">logEvents.html</result>
+            <result name="delete" type="redirect">logEvents.html</result>
+            <result name="success" type="redirect">logEvents.html</result>
+        </action>
+        <!-- LogEvents END -->
     </package>
-       
+
+
+    <include file="struts-logging.xml"/>
+    <include file="struts-scheduler.xml"/>
+    
 </struts>

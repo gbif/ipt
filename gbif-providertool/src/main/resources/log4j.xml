@@ -10,6 +10,8 @@
         </layout>
     </appender>
 
+    <appender name="I18NDATABASE" class="org.gbif.logging.log.I18nDatabaseAppender"/>
+    
     <logger name="com.opensymphony.xwork2.util.OgnlValueStack">
         <level value="ERROR"/>
     </logger>
@@ -62,10 +64,17 @@
         <level value="INFO"/>
     </logger>
     
+    <!-- GBIF things -->
     <logger name="org.gbif.provider">
         <level value="DEBUG"/>
     </logger>
-
+    
+    <!-- keep job logs only in db -->
+    <logger name="org.gbif.provider.job" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="I18NDATABASE" />
+    </logger>
+    
     <root>
         <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>

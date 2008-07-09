@@ -10,7 +10,7 @@
 	<s:label key="extension.namespace"/>
 	<li class="wwgrp">
 	    <div class="wwlbl">
-			<label class="desc"><fmt:message key='extension.link'/></label>
+			<label class="desc"><s:text name='extension.link'/></label>
         </div> 
 		<div class="wwctrl">
 			<label><a href="<s:property value="extension.link"/>"><s:property value="extension.link"/></a></label>
@@ -25,7 +25,7 @@
 	  </div>
 	    <c:if test="${not empty terms}">
 			<div class="terms subform">
-				<fmt:message key='extension.property.terms'/>:
+				<s:text name='extension.property.terms'/>:
 				<s:iterator value="terms" status="termstat">
 					<s:label name="terms[#termstat.index]"/>
 				</s:iterator>

@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="home.title"/></title>
-    <meta name="heading" content="<fmt:message key='home.heading'/>"/>
+    <title><s:text name="home.title"/></title>
+    <meta name="heading" content="<s:text name='home.heading'/>"/>
     <meta name="menu" content="MainMenu"/>
 </head>
 
@@ -18,8 +18,8 @@
 	    </display:column>
 	    <display:column property="recordCount" sortable="true" titleKey="occResource.recordCount"/>
 	
-	    <display:setProperty name="paging.banner.item_name"><fmt:message key="occResourceList.resource"/></display:setProperty>
-	    <display:setProperty name="paging.banner.items_name"><fmt:message key="occResourceList.resources"/></display:setProperty>
+	    <display:setProperty name="paging.banner.item_name"><s:text name="occResourceList.resource"/></display:setProperty>
+	    <display:setProperty name="paging.banner.items_name"><s:text name="occResourceList.resources"/></display:setProperty>
 	</display:table>
 </c:if>
 
