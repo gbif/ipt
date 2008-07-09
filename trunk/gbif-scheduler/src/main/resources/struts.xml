@@ -79,7 +79,7 @@
     
     
     <!-- These are the JSON definitions -->
-    <package name="RPC" namespace="/nodecorate" extends="json-default">
+    <package name="schedulerRPC" namespace="/nodecorate" extends="json-default">
         <action name="JobList" class="org.gbif.scheduler.webapp.action.JobAction" method="execute">
             <interceptor-ref name="json">
                 <param name="enableSMD">true</param>

@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="jobDetail.title"/></title>
-    <meta name="heading" content="<fmt:message key='jobDetail.heading'/>"/>
+    <title><s:text name="jobDetail.title"/></title>
+    <meta name="heading" content="<s:text name='jobDetail.heading'/>"/>
 </head>
 
 <s:form id="jobForm" action="saveJob" method="post" validate="true">

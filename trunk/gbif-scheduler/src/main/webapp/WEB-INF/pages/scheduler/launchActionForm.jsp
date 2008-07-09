@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="launchActionDetail.title"/></title>
-    <meta name="heading" content="<fmt:message key='launchActionDetail.heading'/>"/>
+    <title><s:text name="launchActionDetail.title"/></title>
+    <meta name="heading" content="<s:text name='launchActionDetail.heading'/>"/>
 </head>
 
 <s:form id="launchActionForm" action="saveLaunchAction" method="post" validate="true">
