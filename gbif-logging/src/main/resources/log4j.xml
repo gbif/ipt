@@ -10,6 +10,9 @@
         </layout>
     </appender>
 
+    <appender name="I18NDATABASE" class="org.gbif.logging.log.I18nDatabaseAppender"/>
+
+
     <logger name="com.opensymphony.xwork2.util.OgnlValueStack">
         <level value="ERROR"/>
     </logger>
@@ -66,9 +69,10 @@
         <level value="DEBUG"/>
     </logger>
 
-    <root>
-        <level value="WARN"/>
-        <appender-ref ref="CONSOLE"/>
-    </root>
 
+    <root>
+        <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="I18NDATABASE"/>
+    </root>
 </log4j:configuration>
