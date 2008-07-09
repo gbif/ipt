@@ -67,12 +67,12 @@
     
     <logger name="org.gbif">
         <level value="DEBUG"/>
+        <appender-ref ref="I18NDATABASE"/>
     </logger>
 
 
     <root>
-        <level value="DEBUG"/>
+        <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="I18NDATABASE"/>
     </root>
 </log4j:configuration>
