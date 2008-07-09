@@ -1,14 +1,14 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="occResourceList.title"/></title>
-    <meta name="heading" content="<fmt:message key='upload.heading'/>"/>
+    <title><s:text name="occResourceList.title"/></title>
+    <meta name="heading" content="<s:text name='upload.heading'/>"/>
     <meta name="menu" content="OccResourceMenu"/>
 </head>
 
 <c:set var="buttons">
     <input type="button" class="button" onclick="location.href='<c:url value="resource.html"/>'"
-        value="<fmt:message key="button.done"/>"/>
+        value="<s:text name="button.done"/>"/>
 </c:set>
 
 <c:out value="${buttons}" escapeXml="false" />
@@ -24,8 +24,8 @@
     <display:column value="Logs" sortable="false" href="logs.html" media="html"
         paramId="id" paramProperty="id" titleKey="uploadEvent.logs"/>
 
-    <display:setProperty name="paging.banner.item_name"><fmt:message key="upload.event"/></display:setProperty>
-    <display:setProperty name="paging.banner.items_name"><fmt:message key="upload.events"/></display:setProperty>
+    <display:setProperty name="paging.banner.item_name"><s:text name="upload.event"/></display:setProperty>
+    <display:setProperty name="paging.banner.items_name"><s:text name="upload.events"/></display:setProperty>
 </display:table>
 
 <c:out value="${buttons}" escapeXml="false" />

@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="occResourceOverview.title"/></title>
+    <title><s:text name="occResourceOverview.title"/></title>
     <meta name="heading" content="<s:property value="occResource.title"/>"/>
 	<s:head theme="xhtml" debug="true"/>
 </head>

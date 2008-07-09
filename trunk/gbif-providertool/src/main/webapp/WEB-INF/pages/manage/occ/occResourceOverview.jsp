@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="occResourceOverview.title"/></title>
+    <title><s:text name="occResourceOverview.title"/></title>
     <meta name="heading" content="<s:property value="occResource.title"/>"/>
 </head>
 
@@ -80,6 +80,14 @@
 			<s:url id="uploadHistoryUrl" action="uploadHistory">
 				<s:param name="resource_id" value="id"/>
 			</s:url>
+			<s:label key="occResourceOverview.nextJob" value="%{nextJob.description}"/>
+			<s:label key="occResourceOverview.runningJobs" value="">
+				<ul>
+				<s:iterator value="runningJobs" status="jobStat">
+					<li> JOB: <s:property value="description"/> </li>
+				</s:iterator>
+				</ul>
+			</s:label>
 	    </div>
 		<div class="right">
 			<s:a href="%{uploadHistoryUrl}">

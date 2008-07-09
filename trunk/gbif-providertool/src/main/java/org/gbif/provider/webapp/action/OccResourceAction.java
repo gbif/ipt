@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
+import org.gbif.provider.job.JobUtils;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
@@ -31,6 +32,8 @@ import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.scheduler.model.Job;
+import org.gbif.scheduler.service.JobManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -43,7 +46,14 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     private List<Extension> extensions;
     private OccurrenceResource occResource;
     private String gChartData;
-    
+    private JobManager jobManager;
+	private List<Job> runningJobs;
+	private Job nextJob;
+	
+	public void setJobManager(JobManager jobManager) {
+		this.jobManager = jobManager;
+	}
+	
 	public void setExtensionManager(
 			GenericManager<Extension, Long> extensionManager) {
 		this.extensionManager = extensionManager;
@@ -107,6 +117,19 @@ public class OccResourceAction extends BaseResourceAction implements Preparable{
     	// filter already mapped extensions
     	for (ViewMapping map: occResource.getMappings().values()){
 			extensions.remove(map.getExtension());
+    	}
+    	// investigate upload jobs
+    	runningJobs = new ArrayList<Job>();
+    	List<Job> jobs = jobManager.getJobsInGroup(JobUtils.getJobGroup(occResource));
+    	for (Job j : jobs){
+    		if (j.getStarted() != null){
+    			// job is running
+    			runningJobs.add(j);
+    		}else{
+    			if (nextJob == null || j.getNextFireTime().after(nextJob.getNextFireTime()) ){
+    				nextJob = j;
+    			}
+    		}
     	}
     	return SUCCESS;
     }

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <%@ include file="/common/meta.jsp" %>
-        <title><decorator:title/> | <fmt:message key="webapp.name"/></title>
+        <title><decorator:title/> | <s:text name="webapp.name"/></title>
 
         <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/theme.css'/>" />
         <link rel="stylesheet" type="text/css" media="print" href="<c:url value='/styles/${appConfig["csstheme"]}/print.css'/>" />

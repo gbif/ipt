@@ -31,7 +31,7 @@ import java.util.TreeMap;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
-import org.gbif.provider.job.Launchable;
+import org.gbif.provider.job.JobUtils;
 import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
@@ -41,6 +41,10 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.scheduler.model.Job;
+import org.gbif.scheduler.scheduler.Launchable;
+import org.gbif.scheduler.service.JobManager;
+import org.gbif.util.JSONUtils;
 import org.hibernate.type.SortedMapType;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,14 +53,15 @@ import com.opensymphony.xwork2.Preparable;
 
 public class UploadAction extends BaseResourceAction implements Preparable{
     private DatasourceInspectionManager datasourceInspectionManager;
-    private GenericManager<UploadEvent, Long> uploadEventManager;
+    private JobManager jobManager;
     private OccurrenceResource resource;
-	private List<Launchable> scheduledJobs;
+	private List<Job> scheduledJobs;
+
+	private GenericManager<UploadEvent, Long> uploadEventManager;
 	private List<UploadEvent> uploadEvents;
-	private RdbmsUploadJob rdbmsUploadJob;
 	
-	public void setRdbmsUploadJob(RdbmsUploadJob rdbmsUploadJob) {
-		this.rdbmsUploadJob = rdbmsUploadJob;
+	public void setJobManager(JobManager jobManager) {
+		this.jobManager = jobManager;
 	}
 
 	public void setDatasourceInspectionManager(
@@ -81,9 +86,7 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 	
 	public void prepare() {
     	resource = occResourceManager.get(getResourceId());
-		scheduledJobs = new ArrayList<Launchable>();
-    	//TODO: validate resource?
-    	
+		scheduledJobs = jobManager.getJobsInGroup(JobUtils.getJobGroup(resource));
 	}
 
 
@@ -92,12 +95,11 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 	}
 	
 	public String addUploadJob() throws Exception{
-		// until the job scheduler is integrated run the upload job directly!
-		Map<String, Object> seed = new HashMap<String, Object>();
-		seed.put("resourceId", resource.getId());
+		// create & store upload job based on resource alone
+		Job job = JobUtils.getUploadJob(resource);
+		jobManager.save(job);
 		
-		rdbmsUploadJob.fakeUpload(resource.getId());
-        saveMessage(getText("upload.addedJob", Arrays.asList(resource.getRecordCount())));
+        saveMessage(getText("upload.addedJob"));
 		return SUCCESS;
 	}
 	

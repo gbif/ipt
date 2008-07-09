@@ -24,7 +24,7 @@ import org.gbif.provider.model.Extension;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class DwcExtensionAction extends BaseAction implements Preparable{
+public class ExtensionAction extends BaseAction implements Preparable{
     private GenericManager<Extension, Long> dwcExtensionManager;
     private List<Extension> extensions;
     private Extension extension;

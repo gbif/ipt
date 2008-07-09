@@ -31,29 +31,35 @@
     
     
     <!-- DAOs  -->
-    <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+    <bean id="abstractDao" abstract="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+
+    <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.ViewMapping"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="extensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
+
+    <bean id="extensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.Extension"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="uploadEventDao" class="org.gbif.provider.dao.hibernate.UploadEventDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="darwinCoreDao" class="org.gbif.provider.dao.hibernate.DarwinCoreDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+
+    <bean id="uploadEventDao" class="org.gbif.provider.dao.hibernate.UploadEventDaoImpl" parent="abstractDao"/>
+    
+    <bean id="darwinCoreDao" class="org.gbif.provider.dao.hibernate.DarwinCoreDaoImpl" parent="abstractDao"/>
+
+    <bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractDao"/>
+    
+    <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractDao"/>
+    
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     
-
+    
     <!--  Managers  -->
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
         <constructor-arg ref="occResourceDao"/>
@@ -71,16 +77,37 @@
         <constructor-arg ref="uploadEventDao"/>
     </bean>    
     
-    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
-        
     <bean id="occurrenceUploadManager" class="org.gbif.provider.service.impl.OccurrenceUploadManagerImpl">
         <property name="darwinCoreDao" ref="darwinCoreDao"/>
     </bean>
 
+    <bean id="jobManager" class="org.gbif.scheduler.service.impl.JobManagerImpl">        
+        <constructor-arg ref="jobDao"/>
+    </bean>
+
+    <bean id="logEventManager" class="org.gbif.logging.service.impl.LogEventManagerImpl">
+        <constructor-arg ref="logEventDao"/>
+    </bean>
+
+    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
+
+    
+    <!-- Configure the i18n Log4J appender -->
+    <bean id="i18nDatabaseAppender" class="org.gbif.logging.log.I18nDatabaseAppender">
+        <property name="logEventDao" ref="logEventDao"/>
+    </bean>
+    
+    <!-- SCHEDULER / JOBS -->
     <bean id="rdbmsUploadJob" class="org.gbif.provider.job.RdbmsUploadJob">
         <property name="occResourceManager" ref="occResourceManager"/>
         <property name="uploadEventManager" ref="uploadEventManager"/>
         <property name="datasourceInspectionManager" ref="datasourceInspectionManager"/>
         <property name="occurrenceUploadManager" ref="occurrenceUploadManager"/>
     </bean> 
+    
+    <bean id="scheduler" class="org.gbif.scheduler.scheduler.Scheduler">
+        <!-- Scheduler(String instanceId,JobDao jobDao) -->
+        <constructor-arg value="providertool"/>
+        <constructor-arg ref="jobDao"/>
+    </bean>
 </beans>
