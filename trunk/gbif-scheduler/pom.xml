@@ -452,6 +452,13 @@
             <groupId>com.googlecode</groupId>
             <artifactId>jsonplugin</artifactId>
             <version>${jsonplugin.version}</version>
+            <!-- uses struts2-core 2.06 instead of newer 2.0.11.1 one -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.struts</groupId>
+                    <artifactId>struts2-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>velocity</groupId>
