@@ -96,8 +96,8 @@ public class JobDaoHibernate extends GenericDaoHibernate<Job, Long> implements J
 	 * @see org.gbif.scheduler.dao.JobDao#findByGroup(java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Job> findByGroup(String runningGroup) {
-		return (List<Job>) getHibernateTemplate().find("from Job where runningGroup = ?", runningGroup);
+	public List<Job> findByGroup(String jobGroup) {
+		return (List<Job>) getHibernateTemplate().find("from Job where jobGroup = ?", jobGroup);
 	}
 
 	/**
