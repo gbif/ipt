@@ -32,6 +32,12 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.job.RdbmsUploadJob;
+
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
+
 
 /**
  * The core class for taxon occurrence records with normalised properties used by the webapp.
@@ -42,11 +48,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class DarwinCore extends CoreRecord{
+	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
+	
 	private DarwinCoreTaxonomy tax;
 	private DarwinCoreLocation loc;
 	// calculated fields
 	private float latitudeAsFloat;
 	private float longitudeAsFloat;
+	private Taxon taxon;
 	
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
@@ -73,137 +82,136 @@ public class DarwinCore extends CoreRecord{
 		dwc.loc.setDwc(dwc);
 		return dwc;
 	}
-	public static DarwinCore newInstance(CoreRecord coreRec){
+	public static DarwinCore newInstance(ImportRecord iRec){
 		DarwinCore dwc = DarwinCore.newInstance();
-		dwc.setGuid(coreRec.getGuid());
-		dwc.setLink(coreRec.getLink());
-		dwc.setLocalId(coreRec.getLocalId());
-		dwc.setModified(coreRec.getModified());
+		dwc.setGuid(iRec.getGuid());
+		dwc.setLink(iRec.getLink());
+		dwc.setLocalId(iRec.getLocalId());
+		dwc.setModified(iRec.getModified());
 		dwc.setDeleted(false);
-		for (ExtensionProperty prop : coreRec.getProperties().keySet()){
+		for (ExtensionProperty prop : iRec.getProperties().keySet()){
 			// set all dwc properties apart from:
 			// DateLastModified: managed by CoreRecord and this software
-			if(prop.getName().equals("GlobalUniqueIdentifier")){
-				dwc.setGlobalUniqueIdentifier(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("BasisOfRecord")){
-				dwc.setBasisOfRecord(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("InstitutionCode")){
-				dwc.setInstitutionCode(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("CollectionCode")){
-				dwc.setCollectionCode(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("CatalogNumber")){
-				dwc.setCatalogNumber(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("InformationWithheld")){
-				dwc.setInformationWithheld(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Remarks")){
-				dwc.setRemarks(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Sex")){
-				dwc.setSex(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("LifeStage")){
-				dwc.setLifeStage(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Attributes")){
-				dwc.setAttributes(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("ImageURL")){
-				dwc.setImageURL(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("RelatedInformation")){
-				dwc.setRelatedInformation(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("HigherGeography")){
-				dwc.setHigherGeography(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Continent")){
-				dwc.setContinent(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("WaterBody")){
-				dwc.setWaterBody(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("IslandGroup")){
-				dwc.setIslandGroup(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Island")){
-				dwc.setIsland(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Country")){
-				dwc.setCountry(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("StateProvince")){
-				dwc.setStateProvince(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("County")){
-				dwc.setCounty(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Locality")){
-				dwc.setLocality(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("MinimumElevationInMeters")){
+			String val = iRec.getPropertyValue(prop);
+			String propName = prop.getName();
+			if(propName.equals("GlobalUniqueIdentifier")){
+				dwc.setGlobalUniqueIdentifier(val);
+			}else if(propName.equals("BasisOfRecord")){
+				dwc.setBasisOfRecord(val);
+			}else if(propName.equals("InstitutionCode")){
+				dwc.setInstitutionCode(val);
+			}else if(propName.equals("CollectionCode")){
+				dwc.setCollectionCode(val);
+			}else if(propName.equals("CatalogNumber")){
+				dwc.setCatalogNumber(val);
+			}else if(propName.equals("InformationWithheld")){
+				dwc.setInformationWithheld(val);
+			}else if(propName.equals("Remarks")){
+				dwc.setRemarks(val);
+			}else if(propName.equals("Sex")){
+				dwc.setSex(val);
+			}else if(propName.equals("LifeStage")){
+				dwc.setLifeStage(val);
+			}else if(propName.equals("Attributes")){
+				dwc.setAttributes(val);
+			}else if(propName.equals("ImageURL")){
+				dwc.setImageURL(val);
+			}else if(propName.equals("RelatedInformation")){
+				dwc.setRelatedInformation(val);
+			}else if(propName.equals("HigherGeography")){
+				dwc.setHigherGeography(val);
+			}else if(propName.equals("Continent")){
+				dwc.setContinent(val);
+			}else if(propName.equals("WaterBody")){
+				dwc.setWaterBody(val);
+			}else if(propName.equals("IslandGroup")){
+				dwc.setIslandGroup(val);
+			}else if(propName.equals("Island")){
+				dwc.setIsland(val);
+			}else if(propName.equals("Country")){
+				dwc.setCountry(val);
+			}else if(propName.equals("StateProvince")){
+				dwc.setStateProvince(val);
+			}else if(propName.equals("County")){
+				dwc.setCounty(val);
+			}else if(propName.equals("Locality")){
+				dwc.setLocality(val);
+			}else if(propName.equals("MinimumElevationInMeters")){
+				dwc.setMinimumElevationInMeters(val);
+				// try to convert into proper type
 				try {
-					Integer val = Integer.valueOf(coreRec.getPropertyValue(prop));
-					dwc.setMinimumElevationInMeters(val);
+					Integer typedVal = Integer.valueOf(val);
+					dwc.setMinimumElevationInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					log.warn("Couldnt transform property MinimumElevationInMeters into Integer value");
+					logdb.warn("Couldnt transform property MinimumElevationInMeters into Integer value");
 				}
-			}else if(prop.getName().equals("MaximumElevationInMeters")){
+			}else if(propName.equals("MaximumElevationInMeters")){
+				dwc.setMaximumElevationInMeters(val);
+				// try to convert into proper type
 				try {
-					Integer val = Integer.valueOf(coreRec.getPropertyValue(prop));
-					dwc.setMaximumElevationInMeters(val);
+					Integer typedVal = Integer.valueOf(val);
+					dwc.setMaximumElevationInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					log.warn("Couldnt transform property MaximumElevationInMeters into Integer value");
+					logdb.warn("Couldnt transform property MaximumElevationInMeters into Integer value");
 				}
-			}else if(prop.getName().equals("MinimumDepthInMeters")){
+			}else if(propName.equals("MinimumDepthInMeters")){
+				dwc.setMinimumDepthInMeters(val);
+				// try to convert into proper type
 				try {
-					Integer val = Integer.valueOf(coreRec.getPropertyValue(prop));
-					dwc.setMinimumDepthInMeters(val);
+					Integer typedVal = Integer.valueOf(val);
+					dwc.setMinimumDepthInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					log.warn("Couldnt transform property MinimumDepthInMeters into Integer value");
+					logdb.warn("Couldnt transform property MinimumDepthInMeters into Integer value");
 				}
-			}else if(prop.getName().equals("MaximumDepthInMeters")){
+			}else if(propName.equals("MaximumDepthInMeters")){
+				dwc.setMaximumDepthInMeters(val);
+				// try to convert into proper type
 				try {
-					Integer val = Integer.valueOf(coreRec.getPropertyValue(prop));
-					dwc.setMaximumDepthInMeters(val);
+					Integer typedVal = Integer.valueOf(val);
+					dwc.setMaximumDepthInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					log.warn("Couldnt transform property MaximumDepthInMeters into Integer value");
+					logdb.warn("Couldnt transform property MaximumDepthInMeters into Integer value");
 				}
-			}else if(prop.getName().equals("CollectingMethod")){
-				dwc.setCollectingMethod(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("ValidDistributionFlag")){
-				try {
-					// allow true/TRUE  but also 1
-					Boolean val = Boolean.valueOf(coreRec.getPropertyValue(prop)) || coreRec.getPropertyValue(prop).equals("1");
-					dwc.setValidDistributionFlag(val);
-				} catch (NumberFormatException e) {
-					log.warn("Couldnt transform property ValidDistributionFlag into Boolean value");
-				}
-			}else if(prop.getName().equals("EarliestDateCollected")){
-				dwc.setEarliestDateCollected(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("LatestDateCollected")){
-				dwc.setLatestDateCollected(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("DayOfYear")){
-				try {
-					Integer val = Integer.valueOf(coreRec.getPropertyValue(prop));
-					dwc.setDayOfYear(val);
-				} catch (NumberFormatException e) {
-					log.warn("Couldnt transform property DayOfYear into Integer value");
-				}
-			}else if(prop.getName().equals("Collector")){
-				dwc.setCollector(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("ScientificName")){
-				dwc.setScientificName(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("HigherTaxon")){
-				dwc.setHigherTaxon(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Kingdom")){
-				dwc.setKingdom(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Phylum")){
-				dwc.setPhylum(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Classs")){
-				dwc.setClasss(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Order")){
-				dwc.setOrder(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Family")){
-				dwc.setFamily(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("Genus")){
-				dwc.setGenus(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("SpecificEpithet")){
-				dwc.setSpecificEpithet(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("InfraspecificRank")){
-				dwc.setInfraspecificRank(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("InfraspecificEpithet")){
-				dwc.setInfraspecificEpithet(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("AuthorYearOfScientificName")){
-				dwc.setAuthorYearOfScientificName(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("NomenclaturalCode")){
-				dwc.setNomenclaturalCode(coreRec.getPropertyValue(prop));
-			}else if(prop.getName().equals("IdentificationQualifer")){
-				dwc.setIdentificationQualifer(coreRec.getPropertyValue(prop));
+			}else if(propName.equals("CollectingMethod")){
+				dwc.setCollectingMethod(val);
+			}else if(propName.equals("ValidDistributionFlag")){
+				dwc.setValidDistributionFlag(val);
+			}else if(propName.equals("EarliestDateCollected")){
+				dwc.setEarliestDateCollected(val);
+			}else if(propName.equals("LatestDateCollected")){
+				dwc.setLatestDateCollected(val);
+			}else if(propName.equals("DayOfYear")){
+				dwc.setDayOfYear(val);
+			}else if(propName.equals("Collector")){
+				dwc.setCollector(val);
+			}else if(propName.equals("ScientificName")){
+				dwc.setScientificName(val);
+			}else if(propName.equals("HigherTaxon")){
+				dwc.setHigherTaxon(val);
+			}else if(propName.equals("Kingdom")){
+				dwc.setKingdom(val);
+			}else if(propName.equals("Phylum")){
+				dwc.setPhylum(val);
+			}else if(propName.equals("Classs")){
+				dwc.setClasss(val);
+			}else if(propName.equals("Order")){
+				dwc.setOrder(val);
+			}else if(propName.equals("Family")){
+				dwc.setFamily(val);
+			}else if(propName.equals("Genus")){
+				dwc.setGenus(val);
+			}else if(propName.equals("SpecificEpithet")){
+				dwc.setSpecificEpithet(val);
+			}else if(propName.equals("InfraspecificRank")){
+				dwc.setInfraspecificRank(val);
+			}else if(propName.equals("InfraspecificEpithet")){
+				dwc.setInfraspecificEpithet(val);
+			}else if(propName.equals("AuthorYearOfScientificName")){
+				dwc.setAuthorYearOfScientificName(val);
+			}else if(propName.equals("NomenclaturalCode")){
+				dwc.setNomenclaturalCode(val);
+			}else if(propName.equals("IdentificationQualifer")){
+				dwc.setIdentificationQualifer(val);
 			}
 
 		}
@@ -228,6 +236,28 @@ public class DarwinCore extends CoreRecord{
 		this.loc = loc;
 	}
 	
+	
+	@ManyToOne(optional = true)
+	public Taxon getTaxon() {
+		return taxon;
+	}
+	public void setTaxon(Taxon taxon) {
+		this.taxon = taxon;
+	}
+
+	public float getLatitudeAsFloat() {
+		return latitudeAsFloat;
+	}
+	public void setLatitudeAsFloat(float latitudeAsFloat) {
+		this.latitudeAsFloat = latitudeAsFloat;
+	}
+	public float getLongitudeAsFloat() {
+		return longitudeAsFloat;
+	}
+	public void setLongitudeAsFloat(float longitudeAsFloat) {
+		this.longitudeAsFloat = longitudeAsFloat;
+	}
+
 	
 	public String getGlobalUniqueIdentifier() {
 		return globalUniqueIdentifier;
@@ -380,31 +410,59 @@ public class DarwinCore extends CoreRecord{
 		loc.setLocality(locality);
 	}
 	@Transient
-	public Integer getMinimumElevationInMeters() {
+	public Integer getMinimumElevationInMetersAsInteger() {
+		return loc.getMinimumElevationInMetersAsInteger();
+	}
+	public void setMinimumElevationInMetersAsInteger(Integer minimumElevationInMeters) {
+		loc.setMinimumElevationInMetersAsInteger(minimumElevationInMeters);
+	}
+	@Transient
+	public Integer getMaximumElevationInMetersAsInteger() {
+		return loc.getMaximumElevationInMetersAsInteger();
+	}
+	public void setMaximumElevationInMetersAsInteger(Integer maximumElevationInMeters) {
+		loc.setMaximumElevationInMetersAsInteger(maximumElevationInMeters);
+	}
+	@Transient
+	public Integer getMinimumDepthInMetersAsInteger() {
+		return loc.getMinimumDepthInMetersAsInteger();
+	}
+	public void setMinimumDepthInMetersAsInteger(Integer minimumDepthInMeters) {
+		loc.setMinimumDepthInMetersAsInteger(minimumDepthInMeters);
+	}
+	@Transient
+	public Integer getMaximumDepthInMetersAsInteger() {
+		return loc.getMaximumDepthInMetersAsInteger();
+	}
+	public void setMaximumDepthInMetersAsInteger(Integer maximumDepthInMeters) {
+		loc.setMaximumDepthInMetersAsInteger(maximumDepthInMeters);
+	}
+	@Transient
+	public String getMinimumElevationInMeters() {
 		return loc.getMinimumElevationInMeters();
 	}
-	public void setMinimumElevationInMeters(Integer minimumElevationInMeters) {
+	public void setMinimumElevationInMeters(String minimumElevationInMeters) {
 		loc.setMinimumElevationInMeters(minimumElevationInMeters);
 	}
 	@Transient
-	public Integer getMaximumElevationInMeters() {
+	public String getMaximumElevationInMeters() {
 		return loc.getMaximumElevationInMeters();
 	}
-	public void setMaximumElevationInMeters(Integer maximumElevationInMeters) {
+	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
 		loc.setMaximumElevationInMeters(maximumElevationInMeters);
 	}
 	@Transient
-	public Integer getMinimumDepthInMeters() {
+	public String getMinimumDepthInMeters() {
 		return loc.getMinimumDepthInMeters();
 	}
-	public void setMinimumDepthInMeters(Integer minimumDepthInMeters) {
+	public void setMinimumDepthInMeters(String minimumDepthInMeters) {
 		loc.setMinimumDepthInMeters(minimumDepthInMeters);
 	}
 	@Transient
-	public Integer getMaximumDepthInMeters() {
+	public String getMaximumDepthInMeters() {
 		return loc.getMaximumDepthInMeters();
 	}
-	public void setMaximumDepthInMeters(Integer maximumDepthInMeters) {
+	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
 		loc.setMaximumDepthInMeters(maximumDepthInMeters);
 	}
 	@Transient
@@ -415,10 +473,10 @@ public class DarwinCore extends CoreRecord{
 		loc.setCollectingMethod(collectingMethod);
 	}
 	@Transient
-	public Boolean getValidDistributionFlag() {
+	public String getValidDistributionFlag() {
 		return loc.getValidDistributionFlag();
 	}
-	public void setValidDistributionFlag(Boolean validDistributionFlag) {
+	public void setValidDistributionFlag(String validDistributionFlag) {
 		loc.setValidDistributionFlag(validDistributionFlag);
 	}
 	@Transient
@@ -436,10 +494,10 @@ public class DarwinCore extends CoreRecord{
 		loc.setLatestDateCollected(latestDateCollected);
 	}
 	@Transient
-	public Integer getDayOfYear() {
+	public String getDayOfYear() {
 		return loc.getDayOfYear();
 	}
-	public void setDayOfYear(Integer dayOfYear) {
+	public void setDayOfYear(String dayOfYear) {
 		loc.setDayOfYear(dayOfYear);
 	}
 	@Transient

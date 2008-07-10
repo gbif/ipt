@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -46,6 +47,12 @@ import org.hibernate.annotations.Parameter;
 public class DarwinCoreLocation extends BaseObject implements Comparable {
 	private Long id;
 	private DarwinCore dwc;
+	// derived typed properties
+	private Integer minimumElevationInMetersAsInteger;
+	private Integer maximumElevationInMetersAsInteger;
+	private Integer minimumDepthInMetersAsInteger;
+	private Integer maximumDepthInMetersAsInteger;
+
 	// Locality Elements
 	private String higherGeography;
 	private String continent;
@@ -56,16 +63,16 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	private String stateProvince;
 	private String county;
 	private String locality;
-	private Integer minimumElevationInMeters;
-	private Integer maximumElevationInMeters;
-	private Integer minimumDepthInMeters;
-	private Integer maximumDepthInMeters;
+	private String minimumElevationInMeters;
+	private String maximumElevationInMeters;
+	private String minimumDepthInMeters;
+	private String maximumDepthInMeters;
 	// Collecting Event Elements	
 	private String collectingMethod;
-	private Boolean validDistributionFlag;
+	private String validDistributionFlag;
 	private String earliestDateCollected;
 	private String latestDateCollected;
-	private Integer dayOfYear;
+	private String dayOfYear;
 	private String collector;	
 	
 	@Id @GeneratedValue(generator="dwcid")
@@ -87,114 +94,165 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 		this.dwc = dwc;
 	}
 	
+	
 	public String getHigherGeography() {
 		return higherGeography;
 	}
 	public void setHigherGeography(String higherGeography) {
 		this.higherGeography = higherGeography;
 	}
+	@Column(length = 128)
 	public String getContinent() {
 		return continent;
 	}
 	public void setContinent(String continent) {
 		this.continent = continent;
 	}
+	@Column(length = 255)
 	public String getWaterBody() {
 		return waterBody;
 	}
 	public void setWaterBody(String waterBody) {
 		this.waterBody = waterBody;
 	}
+	@Column(length = 255)
 	public String getIslandGroup() {
 		return islandGroup;
 	}
 	public void setIslandGroup(String islandGroup) {
 		this.islandGroup = islandGroup;
 	}
+	@Column(length = 255)
 	public String getIsland() {
 		return island;
 	}
 	public void setIsland(String island) {
 		this.island = island;
 	}
+	@Column(length = 128)
 	public String getCountry() {
 		return country;
 	}
 	public void setCountry(String country) {
 		this.country = country;
 	}
+	@Column(length = 128)
 	public String getStateProvince() {
 		return stateProvince;
 	}
 	public void setStateProvince(String stateProvince) {
 		this.stateProvince = stateProvince;
 	}
+	@Column(length = 255)
 	public String getCounty() {
 		return county;
 	}
 	public void setCounty(String county) {
 		this.county = county;
 	}
+	@Lob
 	public String getLocality() {
 		return locality;
 	}
 	public void setLocality(String locality) {
 		this.locality = locality;
 	}
-	public Integer getMinimumElevationInMeters() {
+
+	public Integer getMinimumElevationInMetersAsInteger() {
+		return minimumElevationInMetersAsInteger;
+	}
+	public void setMinimumElevationInMetersAsInteger(
+			Integer minimumElevationInMetersAsInteger) {
+		this.minimumElevationInMetersAsInteger = minimumElevationInMetersAsInteger;
+	}
+	public Integer getMaximumElevationInMetersAsInteger() {
+		return maximumElevationInMetersAsInteger;
+	}
+	public void setMaximumElevationInMetersAsInteger(
+			Integer maximumElevationInMetersAsInteger) {
+		this.maximumElevationInMetersAsInteger = maximumElevationInMetersAsInteger;
+	}
+	public Integer getMinimumDepthInMetersAsInteger() {
+		return minimumDepthInMetersAsInteger;
+	}
+	public void setMinimumDepthInMetersAsInteger(
+			Integer minimumDepthInMetersAsInteger) {
+		this.minimumDepthInMetersAsInteger = minimumDepthInMetersAsInteger;
+	}
+	public Integer getMaximumDepthInMetersAsInteger() {
+		return maximumDepthInMetersAsInteger;
+	}
+	public void setMaximumDepthInMetersAsInteger(
+			Integer maximumDepthInMetersAsInteger) {
+		this.maximumDepthInMetersAsInteger = maximumDepthInMetersAsInteger;
+	}
+	@Column(length = 32)
+	public String getMinimumElevationInMeters() {
 		return minimumElevationInMeters;
 	}
-	public void setMinimumElevationInMeters(Integer minimumElevationInMeters) {
+	public void setMinimumElevationInMeters(String minimumElevationInMeters) {
 		this.minimumElevationInMeters = minimumElevationInMeters;
 	}
-	public Integer getMaximumElevationInMeters() {
+	@Column(length = 32)
+	public String getMaximumElevationInMeters() {
 		return maximumElevationInMeters;
 	}
-	public void setMaximumElevationInMeters(Integer maximumElevationInMeters) {
+	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
 		this.maximumElevationInMeters = maximumElevationInMeters;
 	}
-	public Integer getMinimumDepthInMeters() {
+	@Column(length = 32)
+	public String getMinimumDepthInMeters() {
 		return minimumDepthInMeters;
 	}
-	public void setMinimumDepthInMeters(Integer minimumDepthInMeters) {
+	public void setMinimumDepthInMeters(String minimumDepthInMeters) {
 		this.minimumDepthInMeters = minimumDepthInMeters;
 	}
-	public Integer getMaximumDepthInMeters() {
+	@Column(length = 32)
+	public String getMaximumDepthInMeters() {
 		return maximumDepthInMeters;
 	}
-	public void setMaximumDepthInMeters(Integer maximumDepthInMeters) {
+	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
 		this.maximumDepthInMeters = maximumDepthInMeters;
 	}
+	@Column(length = 255)
 	public String getCollectingMethod() {
 		return collectingMethod;
 	}
 	public void setCollectingMethod(String collectingMethod) {
 		this.collectingMethod = collectingMethod;
 	}
-	public Boolean getValidDistributionFlag() {
+	@Column(length = 16)
+	public String getValidDistributionFlag() {
 		return validDistributionFlag;
 	}
-	public void setValidDistributionFlag(Boolean validDistributionFlag) {
+	public void setValidDistributionFlag(String validDistributionFlag) {
 		this.validDistributionFlag = validDistributionFlag;
 	}
+	
+	@Column(length = 64)
 	public String getEarliestDateCollected() {
 		return earliestDateCollected;
 	}
 	public void setEarliestDateCollected(String earliestDateCollected) {
 		this.earliestDateCollected = earliestDateCollected;
 	}
+	@Column(length = 64)
 	public String getLatestDateCollected() {
 		return latestDateCollected;
 	}
 	public void setLatestDateCollected(String latestDateCollected) {
 		this.latestDateCollected = latestDateCollected;
 	}
-	public Integer getDayOfYear() {
+	
+	@Column(length = 16)
+	public String getDayOfYear() {
 		return dayOfYear;
 	}
-	public void setDayOfYear(Integer dayOfYear) {
+	public void setDayOfYear(String dayOfYear) {
 		this.dayOfYear = dayOfYear;
 	}
+	
+	@Column(length = 128)
 	public String getCollector() {
 		return collector;
 	}

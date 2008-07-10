@@ -5,6 +5,6 @@ import java.util.Iterator;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.ExtensionRecord;
 
-public interface ImportSource extends Iterator<CoreRecord>, Iterable<CoreRecord>{
+public interface ImportSource extends Iterator<ImportRecord>, Iterable<ImportRecord>{
 	
 }
