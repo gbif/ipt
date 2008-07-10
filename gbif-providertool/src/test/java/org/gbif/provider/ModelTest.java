@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
@@ -49,39 +50,49 @@ public class ModelTest extends BaseDaoTestCase{
 	}
 
 	@Test
-	public void testDwcExtensionMap(){
+	public void testExtensionMap(){
 		OccurrenceResource occRes = new OccurrenceResource();
+
+		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+		CoreViewMapping coreMapping = new CoreViewMapping();
+		coreMapping.setExtension(core);
+		occRes.setCoreMapping(coreMapping);
 
 		Extension ext1 = new Extension();
 		ext1.setName("test extension 1");
 		ext1 = extensionManager.save(ext1);
 		ViewMapping map1 = new ViewMapping();
 		map1.setExtension(ext1);
-		occRes.addMapping(map1);
+		occRes.addExtensionMapping(map1);
 
 		Extension ext2 = new Extension();
 		ext2.setName("test extension 2");
 		ext2 = extensionManager.save(ext2);
 		ViewMapping map2 = new ViewMapping();
 		map2.setExtension(ext2);
-		occRes.addMapping(map2);
+		occRes.addExtensionMapping(map2);
 		
-		occResourceManager.save(occRes);
+		Long occId = occResourceManager.save(occRes).getId();
 		this.flush();
 		
-		List<OccurrenceResource> resources = occResourceManager.getAll();
-		for (DatasourceBasedResource res : resources){
-			Map<Long, ViewMapping> mapHM = res.getMappings(); 
-			Set<Long> keys = mapHM.keySet();
-			Collection<ViewMapping> mappings = mapHM.values();
-			assertFalse(mapHM.isEmpty());
-			assertFalse(keys.isEmpty());
-			assertFalse(mappings.isEmpty());
-			for (Long i : mapHM.keySet()){
-				Extension e = mapHM.get(i).getExtension();
-				Long i2 = e.getId();
-				assertTrue(i.equals(i2));
-			}
+		// check retrieved data. what about the hibernate cache?
+		DatasourceBasedResource res = occResourceManager.get(occId);		
+		Map<Long, ViewMapping> allMappingHM = res.getAllMappings(); 
+		Set<Long> keys = allMappingHM.keySet();
+		Collection<ViewMapping> allMappings = allMappingHM.values();
+
+		assertTrue(res.getAllMappings().size()==3);
+		assertTrue(res.getExtensionMappings().size()==2);
+		assertTrue(res.getCoreMapping().getExtension().getId().equals(Constants.DARWIN_CORE_EXTENSION_ID));
+		// the core mapping should not be in the extension mappings map
+		assertFalse(res.getExtensionMappings().containsValue(res.getCoreMapping()));
+		// but in all mappings it should:
+		assertTrue(res.getAllMappings().containsValue(res.getCoreMapping()));
+
+		for (Long i : allMappingHM.keySet()){
+			Extension e = allMappingHM.get(i).getExtension();
+			Long i2 = e.getId();
+			assertTrue(i.equals(i2));
 		}
 	}
 

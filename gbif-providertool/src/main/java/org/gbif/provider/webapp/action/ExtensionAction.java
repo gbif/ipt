@@ -25,7 +25,7 @@ import org.gbif.provider.model.Extension;
 import com.opensymphony.xwork2.Preparable;
 
 public class ExtensionAction extends BaseAction implements Preparable{
-    private GenericManager<Extension, Long> dwcExtensionManager;
+    private GenericManager<Extension, Long> extensionManager;
     private List<Extension> extensions;
     private Extension extension;
     private Long id;
@@ -46,9 +46,8 @@ public class ExtensionAction extends BaseAction implements Preparable{
 		return extension;
 	}
 
-	public void setDwcExtensionManager(
-			GenericManager<Extension, Long> dwcExtensionManager) {
-		this.dwcExtensionManager = dwcExtensionManager;
+	public void setExtensionManager(GenericManager<Extension, Long> extensionManager) {
+		this.extensionManager = extensionManager;
 	}
 
 	public void prepare() throws Exception {
@@ -56,13 +55,13 @@ public class ExtensionAction extends BaseAction implements Preparable{
 	}
 	
 	public String execute(){
-		extension = dwcExtensionManager.get(id);
+		extension = extensionManager.get(id);
 		extension.getProperties();
 		return SUCCESS;
 	}
 
 	public String list(){
-		extensions = dwcExtensionManager.getAll();
+		extensions = extensionManager.getAll();
 		return SUCCESS;
 	}
 

@@ -73,14 +73,14 @@
 <s:form action="upload">
   <fieldset>
     <legend>Data Upload</legend>
-    <s:if test="%{occResource.hasMapping()}">
+    <s:if test="%{occResource.hasMinimalMapping()}">
     	<div class="left">
 			<s:label key="occResource.recordCount"/>
 			<s:label key="occResource.lastImport"/>
 			<s:url id="uploadHistoryUrl" action="uploadHistory">
 				<s:param name="resource_id" value="id"/>
 			</s:url>
-			<s:label key="occResourceOverview.nextJob" value="%{nextJob.description}"/>
+			<s:label key="occResourceOverview.nextJob" value="%{nextJob.nextFireTime}"/>
 			<s:label key="occResourceOverview.runningJobs" value="">
 				<ul>
 				<s:iterator value="runningJobs" status="jobStat">

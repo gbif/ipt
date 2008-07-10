@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -53,8 +54,8 @@ public class DatasourceBasedResource extends Resource {
 	private Date lastImport;
 	private int recordCount;
 	private CoreViewMapping coreMapping;
-	//TODO: rename into extensionMappings. But JSPs need to be refactored too!
-	private Map<Long, ViewMapping> mappings = new HashMap<Long, ViewMapping>();
+	// extension mappings, not including the core mapping
+	private Map<Long, ViewMapping> extensionMappings = new HashMap<Long, ViewMapping>();
 	// transient properties
 	private DataSource datasource;
 
@@ -114,32 +115,34 @@ public class DatasourceBasedResource extends Resource {
 		this.recordCount = recordCount;
 	}
 
-	@OneToMany(mappedBy="resource", cascade=CascadeType.ALL)
-	@MapKey(columns = @Column(name = "extension_id"))
-	public Map<Long, ViewMapping> getMappings() {
-		return mappings;
-	}
-	public void setMappings(Map<Long, ViewMapping> mappings) {
-		this.mappings = mappings;
-	}
-	public void addMapping(ViewMapping mapping) {
-		mapping.setResource(this);
-		this.mappings.put(mapping.getExtension().getId(), mapping);
+	@Transient
+	public Map<Long, ViewMapping> getAllMappings() {
+		Map<Long, ViewMapping> all = new HashMap<Long, ViewMapping>(extensionMappings);
+		all.put(getCoreMapping().getExtension().getId(), getCoreMapping());
+		return all;
 	}
 	
-	@OneToOne(mappedBy="resource", cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL)
 	public CoreViewMapping getCoreMapping() {
 		return coreMapping;
 	}
 	public void setCoreMapping(CoreViewMapping coreMapping) {
+		//coreMapping.setResource(this);
 		this.coreMapping = coreMapping;
 	}
-
-
-	@Transient
-	public Collection<ViewMapping> getExtensionMappings() {
-		return getMappings().values();
-	}	
+	
+	@OneToMany(mappedBy="resource", cascade=CascadeType.ALL)
+	@MapKey(columns = @Column(name = "extension_id"))
+	public Map<Long, ViewMapping> getExtensionMappings() {
+		return extensionMappings;
+	}
+	public void setExtensionMappings(Map<Long, ViewMapping> extensionMappings) {
+		this.extensionMappings = extensionMappings;
+	}
+	public void addExtensionMapping(ViewMapping mapping) {
+		mapping.setResource(this);
+		this.extensionMappings.put(mapping.getExtension().getId(), mapping);
+	}
 	
 	@Transient
 	public DataSource getDatasource() {
@@ -190,37 +193,19 @@ public class DatasourceBasedResource extends Resource {
 		return false;
 	}
 	
+	/**
+	 * Checks to see whether a resource has the minimal mappings to proceed with an upload
+	 * @return
+	 */
 	@Transient
-	public boolean hasMapping() {
+	public boolean hasMinimalMapping() {
 		boolean result = false;
-		if (mappings.size() > 0){
+		if (coreMapping.getPropertyMappings().size() > 0){
 			result = true;
 		}
 		return result;
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString2() {
-		return new ToStringBuilder(this).append("jdbcUser", this.jdbcUser)
-				.append("created", this.getCreated()).append("modified",
-						this.getModified()).append("id", this.getId()).append(
-						"link", this.getLink()).append("jdbcUrl", this.jdbcUrl)
-				.append("validConnection", this.isValidConnection()).append(
-						"modifier", this.getModifier()).append(
-						"jdbcDriverClass", this.jdbcDriverClass).append(
-						"recordCount", this.recordCount).append("coreMapping",
-						this.coreMapping).append("creator", this.getCreator())
-				.append("description", this.getDescription()).append("title",
-						this.getTitle())
-				.append("serviceName", this.serviceName).append("mappings",
-						this.mappings).append("datasource", this.datasource)
-				.append("lastImport", this.lastImport).append(
-						"extensionMappings", this.getExtensionMappings())
-				.append("jdbcPassword", this.jdbcPassword).append("guid",
-						this.getGuid()).toString();
-	}
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
@@ -236,28 +221,5 @@ public class DatasourceBasedResource extends Resource {
         return this.hashCode() == resource.hashCode();
 	}
 	
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode2() {
-	        int result = 17;
-	        result = (guid != null ? guid.hashCode() : 0);
-	        result = 31 * result + (link != null ? link.hashCode() : 0);
-	        result = 31 * result + (title != null ? title.hashCode() : 0);
-	        result = 31 * result + (description != null ? description.hashCode() : 0);
-	        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-	        result = 31 * result + (created != null ? created.hashCode() : 0);
-	        result = 31 * result + (modifier != null ? modifier.hashCode() : 0);
-	        result = 31 * result + (modified != null ? modified.hashCode() : 0);
-	        result = 31 * result + (serviceName != null ? serviceName.hashCode() : 0);
-	        result = 31 * result + (jdbcDriverClass != null ? jdbcDriverClass.hashCode() : 0);
-	        result = 31 * result + (jdbcUrl != null ? jdbcUrl.hashCode() : 0);
-	        result = 31 * result + (jdbcUser != null ? jdbcUser.hashCode() : 0);
-	        result = 31 * result + (jdbcPassword != null ? jdbcPassword.hashCode() : 0);
-	        result = 31 * result + (lastImport != null ? lastImport.hashCode() : 0);
-	        result = 31 * result + recordCount;
-	        result = 31 * result + (coreMapping != null ? coreMapping.hashCode() : 0);
-	        result = 31 * result + (mappings != null ? mappings.hashCode() : 0);
-	        return result;
-	    }
+
 }

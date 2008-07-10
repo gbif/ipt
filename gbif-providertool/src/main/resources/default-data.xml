@@ -1008,6 +1008,7 @@
     <column>recordCount</column>
     <column>serviceName</column>
     <column>creator_id</column>
+    <column>coreMapping_id</column>
     <column>modifier_id</column>
     <row>
       <value>OccurrenceResource</value>
@@ -1026,6 +1027,7 @@
       <value>18439</value>
       <value>pontaurus</value>
       <value>4</value>
+      <value>1</value>
       <value>4</value>
     </row>
   </table>
@@ -1105,7 +1107,7 @@
       <value>CoreViewMapping</value>
       <value>1</value>
       <value><![CDATA[select * from specimen join taxon on taxon_fk=taxon_id limit 100]]></value>
-      <value>1</value>
+      <null/>
       <value>1</value>
       <value>1</value>
       <null/>

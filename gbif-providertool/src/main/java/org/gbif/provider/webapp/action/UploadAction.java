@@ -81,7 +81,10 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 	public OccurrenceResource getResource() {
 		return resource;
 	}
-
+	
+	public List<Job> getScheduledJobs() {
+		return scheduledJobs;
+	}
 
 	
 	public void prepare() {
@@ -96,8 +99,10 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 	
 	public String addUploadJob() throws Exception{
 		// create & store upload job based on resource alone
-		Job job = JobUtils.getUploadJob(resource);
+		Job job = RdbmsUploadJob.newUploadJob(resource);
 		jobManager.save(job);
+		// add to scheduledJobs that was created previously in prepare() phase already
+		scheduledJobs.add(job);
 		
         saveMessage(getText("upload.addedJob"));
 		return SUCCESS;
@@ -108,5 +113,6 @@ public class UploadAction extends BaseResourceAction implements Preparable{
 		uploadEvents=uploadEventManager.getAll();
 		return SUCCESS;
 	}
+
 
 }
