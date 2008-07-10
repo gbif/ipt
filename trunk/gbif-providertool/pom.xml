@@ -236,7 +236,7 @@
                 <version>2.0.2</version>
                 <configuration>
                     <dependentWarExcludes>
-                        **/jdbc.properties,**/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,WEB-INF/classes/META-INF/**
+                        WEB-INF/lib/*, **/jdbc.properties,**/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**
                     </dependentWarExcludes>
                 </configuration>
             </plugin>
@@ -474,21 +474,22 @@
         </dependency>
         <dependency>
             <groupId>org.gbif</groupId>
+            <artifactId>scheduler</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>warpath</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.gbif</groupId>
             <artifactId>logging</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>war</type>
         </dependency>
         <dependency>
             <groupId>org.gbif</groupId>
-            <artifactId>scheduler</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.gbif</groupId>
             <artifactId>logging</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <type>pom</type>
+            <type>warpath</type>
         </dependency>
         
     </dependencies>

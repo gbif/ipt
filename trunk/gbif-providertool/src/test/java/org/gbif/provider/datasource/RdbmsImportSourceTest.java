@@ -41,7 +41,7 @@ public class RdbmsImportSourceTest extends BaseExternalDatasourceTest{
 	public void testRdbmsSourceIterator(){
 		setUpSource();
 		int i = 0;
-		for (CoreRecord row : source){
+		for (ImportRecord row : source){
 			if (i>20){
 				break;
 			}

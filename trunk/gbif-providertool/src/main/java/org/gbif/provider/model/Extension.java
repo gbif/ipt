@@ -42,6 +42,11 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.IndexColumn;
 
+/**
+ * An extension with a list of ExtensionProperties defined to extend some CoreRecord entity
+ * @author markus
+ *
+ */
 @Entity
 public class Extension extends BaseObject implements Comparable<Extension> {
 	private Long id;	

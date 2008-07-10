@@ -13,20 +13,29 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.appfuse.model.BaseObject;
+import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.service.Resolvable;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@MappedSuperclass
+
+
+/**
+ * A record with property values inside the properties map for any extension as opposed to a CoreRecord.
+ * The ExtensionRecord is not managed by Hibernate (therefore it is no Entity) 
+ * as the number and name of properties as well as the extension it is attached to varies
+ * @author markus
+ *
+ */
 public class ExtensionRecord extends BaseObject {
 	private Long coreId;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 
-	public static ExtensionRecord newInstance(CoreRecord coreRec){
+	public static ExtensionRecord newInstance(ImportRecord iRec){
 		ExtensionRecord extRec = new ExtensionRecord();
-		extRec.setCoreId(coreRec.getId());
-		extRec.setProperties(coreRec.getProperties());
+		extRec.setCoreId(iRec.getId());
+		extRec.setProperties(iRec.getProperties());
 		return extRec;
 	}
 	

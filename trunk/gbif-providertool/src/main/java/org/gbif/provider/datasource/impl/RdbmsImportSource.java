@@ -23,6 +23,7 @@ import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
@@ -75,7 +76,7 @@ public class RdbmsImportSource implements ImportSource{
 	}
 
 
-	public Iterator<CoreRecord> iterator() {
+	public Iterator<ImportRecord> iterator() {
 		return this;
 	}
 
@@ -83,11 +84,11 @@ public class RdbmsImportSource implements ImportSource{
 		return hasNext;
 	}
 
-	public CoreRecord next() {
-		CoreRecord row = null;
+	public ImportRecord next() {
+		ImportRecord row = null;
 		if (hasNext){
 			try {
-				row = new CoreRecord();
+				row = new ImportRecord();
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
 				if (coreIdColumnIndex != null){
 					row.setLocalId(rs.getString(coreIdColumnIndex));	

@@ -69,8 +69,7 @@
         <level value="DEBUG"/>
     </logger>
     
-    <!-- keep job logs only in db -->
-    <logger name="org.gbif.provider.job" additivity="false">
+    <logger name="org.gbif.provider">
         <level value="DEBUG" />
         <appender-ref ref="I18NDATABASE" />
     </logger>

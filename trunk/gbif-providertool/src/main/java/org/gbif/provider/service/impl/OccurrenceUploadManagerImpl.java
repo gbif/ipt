@@ -27,6 +27,7 @@ import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.DarwinCoreDao;
 import org.gbif.provider.dao.ExtensionRecordDao;
+import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.CoreRecord;
@@ -71,7 +72,7 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 		int recordsChanged = 0;
 		int recordsAdded = 0;
 		// go through source records one by one
-		for (CoreRecord rec : source){
+		for (ImportRecord rec : source){
 			if (recordsUploaded>1200){
 				//FIXME: allow only small uploads while testing
 				break;
@@ -147,7 +148,7 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 	}
 
 	public void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) {
-		for (CoreRecord rec : source){
+		for (ImportRecord rec : source){
 			Long coreId = idMap.get(rec.getLocalId());
 			if (coreId == null){
 				String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};

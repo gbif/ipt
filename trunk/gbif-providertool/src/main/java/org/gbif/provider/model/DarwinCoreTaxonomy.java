@@ -84,30 +84,35 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 	}
 	
 	
+	@Column(length = 255)
 	public String getScientificName() {
 		return scientificName;
 	}
 	public void setScientificName(String scientificName) {
 		this.scientificName = scientificName;
 	}
+	@Column(length = 255)
 	public String getHigherTaxon() {
 		return higherTaxon;
 	}
 	public void setHigherTaxon(String higherTaxon) {
 		this.higherTaxon = higherTaxon;
 	}
+	@Column(length = 128)
 	public String getKingdom() {
 		return kingdom;
 	}
 	public void setKingdom(String kingdom) {
 		this.kingdom = kingdom;
 	}
+	@Column(length = 128)
 	public String getPhylum() {
 		return phylum;
 	}
 	public void setPhylum(String phylum) {
 		this.phylum = phylum;
 	}
+	@Column(length = 128)
 	public String getClasss() {
 		return classs;
 	}
@@ -115,55 +120,63 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 		this.classs = classs;
 	}
 	
-	@Column(name="orderrr")
+	@Column(length=128, name="orderrr")
 	public String getOrder() {
 		return order;
 	}
 	public void setOrder(String order) {
 		this.order = order;
 	}
+	@Column(length = 128)
 	public String getFamily() {
 		return family;
 	}
 	public void setFamily(String family) {
 		this.family = family;
 	}
+	@Column(length = 128)
 	public String getGenus() {
 		return genus;
 	}
 	public void setGenus(String genus) {
 		this.genus = genus;
 	}
+	@Column(length = 128)
 	public String getSpecificEpithet() {
 		return specificEpithet;
 	}
 	public void setSpecificEpithet(String specificEpithet) {
 		this.specificEpithet = specificEpithet;
 	}
+	@Column(length = 128)
 	public String getInfraspecificRank() {
 		return infraspecificRank;
 	}
 	public void setInfraspecificRank(String infraspecificRank) {
 		this.infraspecificRank = infraspecificRank;
 	}
+	@Column(length = 128)
 	public String getInfraspecificEpithet() {
 		return infraspecificEpithet;
 	}
 	public void setInfraspecificEpithet(String infraspecificEpithet) {
 		this.infraspecificEpithet = infraspecificEpithet;
 	}
+	@Column(length = 255)
 	public String getAuthorYearOfScientificName() {
 		return authorYearOfScientificName;
 	}
 	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
 		this.authorYearOfScientificName = authorYearOfScientificName;
 	}
+	@Column(length = 64)
 	public String getNomenclaturalCode() {
 		return nomenclaturalCode;
 	}
 	public void setNomenclaturalCode(String nomenclaturalCode) {
 		this.nomenclaturalCode = nomenclaturalCode;
 	}
+	@Column(length = 64)
 	public String getIdentificationQualifer() {
 		return identificationQualifer;
 	}
