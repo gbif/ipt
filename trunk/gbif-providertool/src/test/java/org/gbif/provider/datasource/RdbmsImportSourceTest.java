@@ -24,7 +24,7 @@ public class RdbmsImportSourceTest extends BaseExternalDatasourceTest{
 	protected void setUpSource() {
 		// @Before triggered in superclasses doesnt work for me. Should really, but dont know why. So I use direct calls instead
 		setUpExternalDatasource();
-		String sql = "select * from observation join taxon on taxon_fk=taxon_id";
+		String sql = "select * from observation join taxon on taxon_fk=taxon_id limit 210";
 		try {
 			ResultSet rs = this.datasourceInspectionDao.executeSql(sql);
 	        // get resource

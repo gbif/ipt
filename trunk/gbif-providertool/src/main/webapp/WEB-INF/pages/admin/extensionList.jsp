@@ -8,7 +8,7 @@
 
 <display:table name="extensions" uid="ext" class="table" requestURI="" export="true" pagesize="25">
     <display:column property="name" sortable="true" titleKey="extension.name" 
-    	href="link" media="html" />
+    	href="${ext.link}" media="html" />
     <display:column property="namespace" sortable="true" titleKey="extension.namespace"/>
     <display:column sortable="true" titleKey="extension.propertyCount"
     	href="extension.html" media="html" paramId="id" paramProperty="id">

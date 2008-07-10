@@ -35,7 +35,7 @@ public class DatasourceBasedResourceTest {
 		ViewMapping vm = new ViewMapping();
 		vm.setId(23L);
 		vm.setExtension(ext);
-		r.addMapping(vm);
+		r.addExtensionMapping(vm);
 		return r;
 	}
 	

@@ -15,9 +15,11 @@
 
 <div id="jobs">
 	<display:table name="scheduledJobs" class="table" export="false" pagesize="25">
-	    <display:column sortProperty="executionDate" sortable="true" titleKey="uploadEvent.executionDate">
+	    <display:column sortProperty="nextFireTime" sortable="true" titleKey="upload.nextFireTime">
 	         <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
 	    </display:column>
+	    <display:column property="description" sortable="true" titleKey="upload.description"/>
+	    <display:column property="started" sortable="true" titleKey="upload.started"/>
 	
 	    <display:setProperty name="paging.banner.item_name"><s:text name="upload.job"/></display:setProperty>
 	    <display:setProperty name="paging.banner.items_name"><s:text name="upload.jobs"/></display:setProperty>

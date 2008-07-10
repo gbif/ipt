@@ -73,7 +73,7 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name="resource_id", nullable=false) 
+	@JoinColumn(name="resource_id", nullable=true) 
 	public DatasourceBasedResource getResource() {
 		return resource;
 	}

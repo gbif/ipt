@@ -38,7 +38,7 @@
     </logger>
   
     <logger name="org.hibernate.SQL">
-        <level value="WARN"/>
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="org.springframework">

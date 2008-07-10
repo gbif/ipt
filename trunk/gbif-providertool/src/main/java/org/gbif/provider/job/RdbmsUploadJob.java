@@ -20,12 +20,15 @@ import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceBasedResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.OccurrenceUploadManager;
+import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Launchable;
+import org.gbif.util.JSONUtils;
 
 public class RdbmsUploadJob implements Launchable{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
@@ -37,6 +40,20 @@ public class RdbmsUploadJob implements Launchable{
     private DatasourceInspectionManager datasourceInspectionManager;
     private OccurrenceUploadManager occurrenceUploadManager;
 
+	public static Job newUploadJob(Resource resource){
+		// create job data
+		Map<String, Object> seed = new HashMap<String, Object>();
+		seed.put("resourceId", resource.getId());
+		// create upload job
+		Job job = new Job();
+		job.setJobClassName(RdbmsUploadJob.class.getCanonicalName());
+		job.setDataAsJSON(JSONUtils.jsonFromMap(seed));
+		job.setJobGroup(JobUtils.getJobGroup(resource));
+		job.setName("RDBMS data upload");
+		job.setDescription("Data upload from RDBMS to resource "+resource.getTitle());
+		return job;				
+	}
+    
 	public void setOccResourceManager(
 			DatasourceBasedResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
@@ -80,7 +97,7 @@ public class RdbmsUploadJob implements Launchable{
 		resource.setRecordCount(coreEvent.getRecordsUploaded());
 		occResourceManager.save(resource);
 		// upload further extensions one by one
-		for (ViewMapping view : resource.getExtensionMappings()){
+		for (ViewMapping view : resource.getExtensionMappings().values()){
 			rs = datasourceInspectionManager.executeViewSql(view.getViewSql());	        
 			source = RdbmsImportSource.newInstance(rs, view);
 			occurrenceUploadManager.uploadExtension(source, idMap, resource, view.getExtension());
