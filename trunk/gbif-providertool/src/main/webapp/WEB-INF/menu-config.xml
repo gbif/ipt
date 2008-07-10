@@ -13,7 +13,6 @@
             <Item name="OccResources" title="menu.explorer.occurrences" page="/manage/occ/resources.html"/>
             <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
             <Item name="resources" title="menu.explorer.resources" page="/resources.html"/>
-            <Item name="extensions" title="menu.explorer.extensions" page="/manage/occ/extensions.html"/>
         </Menu> 
         <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER,ROLE_MANAGER">
             <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>
@@ -23,9 +22,9 @@
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
-            <Item name="extensions" title="menu.explorer.extensions" page="/manage/occ/extensions.html"/>
-            <Item name="jobs" title="menu.admin.jobs" page="/admin/jobs.html"/>
-            <Item name="logEvents" title="menu.admin.logEvents" page="/admin/logEvents.html"/>
+            <Item name="Jobs" title="menu.admin.jobs" page="/scheduler/jobs.html"/>
+            <Item name="LogEvents" title="menu.admin.logEvents" page="/logging/logEvents.html"/>
+            <Item name="Extensions" title="menu.explorer.extensions" page="/admin/extensions.html"/>
         </Menu>
     </Menus>
 </MenuConfig>

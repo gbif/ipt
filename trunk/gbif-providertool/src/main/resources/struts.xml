@@ -226,15 +226,6 @@
         <action name="validate">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-
-        
-        <action name="extension" class="org.gbif.provider.webapp.action.ExtensionAction">
-            <result>/WEB-INF/pages/admin/extensionDetail.jsp</result>
-        </action>
-
-        <action name="extensions" class="org.gbif.provider.webapp.action.ExtensionAction" method="list">
-            <result>/WEB-INF/pages/admin/extensionList.jsp</result>
-        </action>
         
 </package>
     
@@ -283,8 +274,8 @@
             <result name="delete" type="redirect">jobs.html</result>
             <result name="success" type="redirect">jobs.html</result>
         </action>
-        <!--JobAction-END-->
-        
+
+
         <!-- LogEvents -->
         <action name="logEvents" class="org.gbif.logging.webapp.action.LogEventAction" method="list">
             <result>/WEB-INF/pages/logging/logEventList.jsp</result>
@@ -301,7 +292,17 @@
             <result name="delete" type="redirect">logEvents.html</result>
             <result name="success" type="redirect">logEvents.html</result>
         </action>
-        <!-- LogEvents END -->
+        
+
+        <!-- EXTENSIONS -->
+        <action name="extension" class="org.gbif.provider.webapp.action.ExtensionAction">
+            <result>/WEB-INF/pages/admin/extensionDetail.jsp</result>
+        </action>
+        
+        <action name="extensions" class="org.gbif.provider.webapp.action.ExtensionAction" method="list">
+            <result>/WEB-INF/pages/admin/extensionList.jsp</result>
+        </action>
+        
     </package>
 
 
