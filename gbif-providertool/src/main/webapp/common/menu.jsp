@@ -6,7 +6,7 @@
     <c:if test="${empty pageContext.request.remoteUser}"><li><a href="<c:url value="/login.jsp"/>" class="current"><s:text name="login.title"/></a></li></c:if>
     <menu:displayMenu name="ExplorerMenu"/>
     <menu:displayMenu name="ManagerMenu"/>
-    <menu:displayMenu name="UserMenu"/>
     <menu:displayMenu name="AdminMenu"/>
+    <menu:displayMenu name="UserMenu"/>
 </ul>
 </menu:useMenuDisplayer>
