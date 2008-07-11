@@ -371,6 +371,13 @@
             <artifactId>appfuse-${web.framework}</artifactId>
             <version>${appfuse.version}</version>
             <type>war</type>
+            <exclusions>
+                <!-- remove SLF4j as it converts all logs into strings -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>	
         </dependency>
         <dependency>
             <groupId>org.appfuse</groupId>
@@ -385,12 +392,28 @@
                     <groupId>org.appfuse</groupId>
                     <artifactId>appfuse-hibernate</artifactId>
                 </exclusion>
+                <!-- remove SLF4j as it converts all logs into strings -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl104-over-slf4j</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.appfuse</groupId>
             <artifactId>appfuse-${dao.framework}</artifactId>
             <version>${appfuse.version}</version>
+            <exclusions>
+                <!-- remove SLF4j as it converts all logs into strings -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>	
         </dependency>
         <dependency>
             <groupId>${jdbc.groupId}</groupId>
