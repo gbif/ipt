@@ -24,27 +24,28 @@ import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.User;
-import org.appfuse.service.GenericManager;
+import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 
-public class BaseResourceAction extends org.appfuse.webapp.action.BaseAction implements SessionAware{
+public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction implements SessionAware{
 	// new cant be used. Just call the getter new so the parameter becomes new. Neu is german for new ;)
-    protected GenericManager<OccurrenceResource, Long> occResourceManager;
+    protected ResourceManager<OccurrenceResource> occResourceManager;
     protected Map session;
 	private Boolean neu;
 	
 	public void setNeu(Boolean neu) {
 		this.neu = neu;
 	}
-    
-	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
+	
+    public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
-	
-    /**
+
+
+
+	/**
      * is the acton intended to create a new entity? New cant be used as a java property, 
      * so the german translation "neu" is used as the underlying property
      * @return

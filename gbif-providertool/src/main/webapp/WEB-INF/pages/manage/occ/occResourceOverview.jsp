@@ -75,7 +75,7 @@
     <legend>Data Upload</legend>
     <s:if test="%{occResource.hasMinimalMapping()}">
     	<div class="left">
-			<s:label key="occResource.recordCount"/>
+			<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
 			<s:label key="occResource.lastImport"/>
 			<s:url id="uploadHistoryUrl" action="uploadHistory">
 				<s:param name="resource_id" value="id"/>

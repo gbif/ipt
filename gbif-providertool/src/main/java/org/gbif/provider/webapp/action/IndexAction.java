@@ -23,7 +23,11 @@ import java.util.Set;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -34,37 +38,49 @@ import com.opensymphony.xwork2.Preparable;
  *
  */
 public class IndexAction extends BaseAction implements Preparable {
-    private GenericManager<DatasourceBasedResource, Long> occResourceManager;
-    private List<DatasourceBasedResource> occResources;
-    private Integer checklistCount;
-    private Integer resourceCount;
+    private ResourceManager<OccurrenceResource> occResourceManager;
+    private ResourceManager<ChecklistResource> checklistResourceManager;
+    private ResourceManager<Resource> resourceManager;
+    private List<OccurrenceResource> occResources;
+    private List<ChecklistResource> checklistResources;
+    private List<Resource> resources;
 
-    
-	public void setOccResourceManager(
-			GenericManager<DatasourceBasedResource, Long> occResourceManager) {
+	public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
-
-	public List<DatasourceBasedResource> getOccResources() {
+	public void setChecklistResourceManager(ResourceManager<ChecklistResource> checklistResourceManager) {
+		this.checklistResourceManager = checklistResourceManager;
+	}
+	public void setResourceManager(ResourceManager<Resource> resourceManager) {
+		this.resourceManager = resourceManager;
+	}
+	
+	public List<ChecklistResource> getChecklistResources() {
+		return checklistResources;
+	}
+	public List<Resource> getResources() {
+		return resources;
+	}
+	public List<OccurrenceResource> getOccResources() {
 		return occResources;
 	}
-
+	
 	public Integer getOccResourceCount() {
 		return occResources.size();
 	}
 	public Integer getChecklistCount() {
-		return checklistCount;
+		return checklistResources.size();
 	}
 	public Integer getResourceCount() {
-		return resourceCount;
+		return resources.size();
 	}
 		
 	
 	
 	public void prepare() throws Exception {
-        occResources = occResourceManager.getAll();
-		resourceCount=97;
-		checklistCount=3;
+		occResources = occResourceManager.getAllDistinct();
+		checklistResources = checklistResourceManager.getAllDistinct();
+		resources = resourceManager.getAllDistinct();
 	}
 
 	public String execute(){

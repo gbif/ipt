@@ -29,7 +29,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.appfuse.model.BaseObject;
-import org.gbif.provider.service.Resolvable;
 import org.gbif.provider.service.impl.OccurrenceUploadManagerImpl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -38,7 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 @MappedSuperclass
-public class CoreRecord extends BaseObject implements Comparable<CoreRecord>, Resolvable {
+public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 	protected static final Log log = LogFactory.getLog(CoreRecord.class);
 
 	private Long id;

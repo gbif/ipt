@@ -51,7 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mysql.jdbc.DatabaseMetaData;
 import com.opensymphony.xwork2.Preparable;
 
-public class UploadAction extends BaseResourceAction implements Preparable{
+public class UploadAction extends BaseOccurrenceResourceAction implements Preparable{
     private DatasourceInspectionManager datasourceInspectionManager;
     private JobManager jobManager;
     private OccurrenceResource resource;

@@ -23,7 +23,7 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
-import org.gbif.provider.service.DatasourceBasedResourceManager;
+import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.OccurrenceUploadManager;
 import org.gbif.scheduler.model.Job;
@@ -35,7 +35,7 @@ public class RdbmsUploadJob implements Launchable{
 	private static I18nLog logdb = I18nLogFactory.getLog(RdbmsUploadJob.class);
 
 
-    private DatasourceBasedResourceManager<OccurrenceResource> occResourceManager;
+    private ResourceManager<OccurrenceResource> occResourceManager;
     private GenericManager<UploadEvent, Long> uploadEventManager;
     private DatasourceInspectionManager datasourceInspectionManager;
     private OccurrenceUploadManager occurrenceUploadManager;
@@ -55,7 +55,7 @@ public class RdbmsUploadJob implements Launchable{
 	}
     
 	public void setOccResourceManager(
-			DatasourceBasedResourceManager<OccurrenceResource> occResourceManager) {
+			ResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
 

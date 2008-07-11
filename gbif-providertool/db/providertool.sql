@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.0.51a-log
+-- Server version	5.0.51b
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,6 +20,25 @@
 
 CREATE DATABASE IF NOT EXISTS providertool;
 USE providertool;
+
+--
+-- Temporary table structure for view `providertool`.`view_ogc_dwc`
+--
+DROP TABLE IF EXISTS `providertool`.`view_ogc_dwc`;
+DROP VIEW IF EXISTS `providertool`.`view_ogc_dwc`;
+CREATE TABLE `providertool`.`view_ogc_dwc` (
+  `resourceId` bigint(20),
+  `kingdom` varchar(128),
+  `phylum` varchar(128),
+  `classs` varchar(128),
+  `orderrr` varchar(128),
+  `family` varchar(128),
+  `genus` varchar(128),
+  `scientificName` varchar(255),
+  `basisOfRecord` varchar(255),
+  `latitude` float,
+  `longitude` float
+);
 
 --
 -- Definition of table `providertool`.`DarwinCore`
@@ -41,14 +60,18 @@ CREATE TABLE  `providertool`.`DarwinCore` (
   `imageURL` varchar(255) default NULL,
   `informationWithheld` varchar(255) default NULL,
   `institutionCode` varchar(255) default NULL,
+  `latitudeAsFloat` float NOT NULL,
   `lifeStage` varchar(255) default NULL,
+  `longitudeAsFloat` float NOT NULL,
   `relatedInformation` varchar(255) default NULL,
   `remarks` varchar(255) default NULL,
   `sex` varchar(255) default NULL,
+  `taxon_id` bigint(20) default NULL,
   `resource_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`),
-  KEY `FKA416B886D00577D2` (`resource_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1202 DEFAULT CHARSET=latin1;
+  KEY `FKA416B886F4A32044` (`taxon_id`),
+  KEY `FKA416B8866A2EF961` (`resource_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`DarwinCore`
@@ -68,23 +91,27 @@ DROP TABLE IF EXISTS `providertool`.`DarwinCoreLocation`;
 CREATE TABLE  `providertool`.`DarwinCoreLocation` (
   `id` bigint(20) NOT NULL,
   `collectingMethod` varchar(255) default NULL,
-  `collector` varchar(255) default NULL,
-  `continent` varchar(255) default NULL,
-  `country` varchar(255) default NULL,
+  `collector` varchar(128) default NULL,
+  `continent` varchar(128) default NULL,
+  `country` varchar(128) default NULL,
   `county` varchar(255) default NULL,
-  `dayOfYear` int(11) default NULL,
-  `earliestDateCollected` varchar(255) default NULL,
+  `dayOfYear` varchar(16) default NULL,
+  `earliestDateCollected` varchar(64) default NULL,
   `higherGeography` varchar(255) default NULL,
   `island` varchar(255) default NULL,
   `islandGroup` varchar(255) default NULL,
-  `latestDateCollected` varchar(255) default NULL,
-  `locality` varchar(255) default NULL,
-  `maximumDepthInMeters` int(11) default NULL,
-  `maximumElevationInMeters` int(11) default NULL,
-  `minimumDepthInMeters` int(11) default NULL,
-  `minimumElevationInMeters` int(11) default NULL,
-  `stateProvince` varchar(255) default NULL,
-  `validDistributionFlag` bit(1) default NULL,
+  `latestDateCollected` varchar(64) default NULL,
+  `locality` text,
+  `maximumDepthInMeters` varchar(32) default NULL,
+  `maximumDepthInMetersAsInteger` int(11) default NULL,
+  `maximumElevationInMeters` varchar(32) default NULL,
+  `maximumElevationInMetersAsInteger` int(11) default NULL,
+  `minimumDepthInMeters` varchar(32) default NULL,
+  `minimumDepthInMetersAsInteger` int(11) default NULL,
+  `minimumElevationInMeters` varchar(32) default NULL,
+  `minimumElevationInMetersAsInteger` int(11) default NULL,
+  `stateProvince` varchar(128) default NULL,
+  `validDistributionFlag` varchar(16) default NULL,
   `waterBody` varchar(255) default NULL,
   `dwc_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`),
@@ -109,19 +136,19 @@ DROP TABLE IF EXISTS `providertool`.`DarwinCoreTaxonomy`;
 CREATE TABLE  `providertool`.`DarwinCoreTaxonomy` (
   `id` bigint(20) NOT NULL,
   `authorYearOfScientificName` varchar(255) default NULL,
-  `classs` varchar(255) default NULL,
-  `family` varchar(255) default NULL,
-  `genus` varchar(255) default NULL,
+  `classs` varchar(128) default NULL,
+  `family` varchar(128) default NULL,
+  `genus` varchar(128) default NULL,
   `higherTaxon` varchar(255) default NULL,
-  `identificationQualifer` varchar(255) default NULL,
-  `infraspecificEpithet` varchar(255) default NULL,
-  `infraspecificRank` varchar(255) default NULL,
-  `kingdom` varchar(255) default NULL,
-  `nomenclaturalCode` varchar(255) default NULL,
-  `orderrr` varchar(255) default NULL,
-  `phylum` varchar(255) default NULL,
+  `identificationQualifer` varchar(64) default NULL,
+  `infraspecificEpithet` varchar(128) default NULL,
+  `infraspecificRank` varchar(128) default NULL,
+  `kingdom` varchar(128) default NULL,
+  `nomenclaturalCode` varchar(64) default NULL,
+  `orderrr` varchar(128) default NULL,
+  `phylum` varchar(128) default NULL,
   `scientificName` varchar(255) default NULL,
-  `specificEpithet` varchar(255) default NULL,
+  `specificEpithet` varchar(128) default NULL,
   `dwc_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`),
   KEY `FKEDE569F7D6EF6D66` (`dwc_id`)
@@ -149,7 +176,7 @@ CREATE TABLE  `providertool`.`Extension` (
   `namespace` varchar(255) default NULL,
   `tablename` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`Extension`
@@ -157,7 +184,7 @@ CREATE TABLE  `providertool`.`Extension` (
 
 /*!40000 ALTER TABLE `Extension` DISABLE KEYS */;
 LOCK TABLES `Extension` WRITE;
-INSERT INTO `providertool`.`Extension` VALUES  (1,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard','Darwin Core','http://rs.tdwg.org/dwc/dwcore/','dwc'),
+INSERT INTO `providertool`.`Extension` VALUES  (1,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard','Darwin Core','http://rs.tdwg.org/dwc/dwcore/','core/'),
  (2,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CuratorialExtension','DwC Curatorial','http://rs.tdwg.org/dwc/curatorial/','curatorial'),
  (3,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension','DwC Geospatial','http://rs.tdwg.org/dwc/geospatial/','geospatial'),
  (4,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/PaleontologyElement','DwC Paleontology','http://rs.tdwg.org/dwc/paleontology/','paleontology');
@@ -182,7 +209,7 @@ CREATE TABLE  `providertool`.`ExtensionProperty` (
   `property_order` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `FKBAE4EF14E6B2BB24` (`extension_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=402 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=401 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`ExtensionProperty`
@@ -289,12 +316,83 @@ CREATE TABLE  `providertool`.`ExtensionProperty_terms` (
 
 /*!40000 ALTER TABLE `ExtensionProperty_terms` DISABLE KEYS */;
 LOCK TABLES `ExtensionProperty_terms` WRITE;
-INSERT INTO `providertool`.`ExtensionProperty_terms` VALUES  (3,'Specimen',0),
- (3,'Observation',1),
- (3,'Fossil',2),
- (3,'Mineral',3);
+INSERT INTO `providertool`.`ExtensionProperty_terms` VALUES  (3,'PreservedSpecimen',0),
+ (3,'FossilSpecimen',1),
+ (3,'LivingSpecimen',2),
+ (3,'HumanObservation',3),
+ (21,'ICBN',0),
+ (21,'ICZN',1),
+ (21,'BC',2),
+ (3,'MachineObservation',4),
+ (3,'StillImage',5),
+ (3,'MovingImage',6),
+ (3,'SoundRecording',7),
+ (3,'OtherSpecimen',8),
+ (21,'ICNCP',3),
+ (21,'BioCode',4);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `ExtensionProperty_terms` ENABLE KEYS */;
+
+
+--
+-- Definition of table `providertool`.`Job`
+--
+
+DROP TABLE IF EXISTS `providertool`.`Job`;
+CREATE TABLE  `providertool`.`Job` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `created` datetime default NULL,
+  `dataAsJSON` text,
+  `description` varchar(255) default NULL,
+  `instanceId` varchar(255) default NULL,
+  `jobClassName` varchar(255) default NULL,
+  `jobGroup` varchar(255) default NULL,
+  `name` varchar(255) default NULL,
+  `nextFireTime` datetime default NULL,
+  `runningGroup` varchar(255) default NULL,
+  `started` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `providertool`.`Job`
+--
+
+/*!40000 ALTER TABLE `Job` DISABLE KEYS */;
+LOCK TABLES `Job` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `Job` ENABLE KEYS */;
+
+
+--
+-- Definition of table `providertool`.`LogEvent`
+--
+
+DROP TABLE IF EXISTS `providertool`.`LogEvent`;
+CREATE TABLE  `providertool`.`LogEvent` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `groupId` bigint(20) default NULL,
+  `infoAsJSON` text,
+  `instanceId` varchar(255) default NULL,
+  `level` int(11) NOT NULL,
+  `message` varchar(255) default NULL,
+  `messageParamsAsJSON` text,
+  `sourceId` int(11) NOT NULL,
+  `sourceType` int(11) NOT NULL,
+  `timestamp` datetime default NULL,
+  `user_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `FK7A73ADD6F503D155` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `providertool`.`LogEvent`
+--
+
+/*!40000 ALTER TABLE `LogEvent` DISABLE KEYS */;
+LOCK TABLES `LogEvent` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `LogEvent` ENABLE KEYS */;
 
 
 --
@@ -306,12 +404,12 @@ CREATE TABLE  `providertool`.`PropertyMapping` (
   `id` bigint(20) NOT NULL auto_increment,
   `column_index` int(11) default NULL,
   `value` varchar(255) default NULL,
-  `viewMapping_id` bigint(20) NOT NULL,
   `property_id` bigint(20) default NULL,
+  `viewMapping_id` bigint(20) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `FKD66141195010B2C3` (`property_id`),
   KEY `FKD6614119F39BEC44` (`viewMapping_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`PropertyMapping`
@@ -319,11 +417,23 @@ CREATE TABLE  `providertool`.`PropertyMapping` (
 
 /*!40000 ALTER TABLE `PropertyMapping` DISABLE KEYS */;
 LOCK TABLES `PropertyMapping` WRITE;
-INSERT INTO `providertool`.`PropertyMapping` VALUES  (1,8,'',1,9),
- (2,2,'',1,6),
- (3,NULL,'specimen',1,3),
- (4,19,'',7,100),
- (5,18,'',7,101);
+INSERT INTO `providertool`.`PropertyMapping` VALUES  (1,8,NULL,9,1),
+ (2,2,NULL,6,1),
+ (3,25,'',15,2),
+ (4,2,'',4,2),
+ (5,15,'',40,2),
+ (6,21,'',11,2),
+ (7,19,'',16,2),
+ (8,10,'',31,2),
+ (9,1002,'Observation',3,2),
+ (10,22,'',12,2),
+ (11,16,'',32,2),
+ (12,23,'',13,2),
+ (13,18,'',9,2),
+ (14,9,'',28,2),
+ (15,4,'',6,2),
+ (16,24,'',14,2),
+ (17,3,'',5,2);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `PropertyMapping` ENABLE KEYS */;
 
@@ -349,11 +459,13 @@ CREATE TABLE  `providertool`.`Resource` (
   `lastImport` datetime default NULL,
   `recordCount` int(11) default NULL,
   `serviceName` varchar(32) default NULL,
-  `creator_id` bigint(20) default NULL,
+  `coreMapping_id` bigint(20) default NULL,
   `modifier_id` bigint(20) default NULL,
+  `creator_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`),
   KEY `FKEF86282EA1C4CEC9` (`modifier_id`),
-  KEY `FKEF86282E4FFFD554` (`creator_id`)
+  KEY `FKEF86282E4FFFD554` (`creator_id`),
+  KEY `FKEF86282E3BB38A9F` (`coreMapping_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
@@ -362,9 +474,36 @@ CREATE TABLE  `providertool`.`Resource` (
 
 /*!40000 ALTER TABLE `Resource` DISABLE KEYS */;
 LOCK TABLES `Resource` WRITE;
-INSERT INTO `providertool`.`Resource` VALUES  ('OccurrenceResource',1,'2008-06-23 17:10:51','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar',NULL,NULL,'2008-06-23 17:11:44','Pontaurus DB','jdbc:mysql://localhost/providertoolkit','providertool','jdbc:mysql://localhost/pontaurus','providertool','2008-07-02 00:00:00',18439,'pontaurus',4,4);
+INSERT INTO `providertool`.`Resource` VALUES  ('OccurrenceResource',1,'2008-06-23 17:10:51','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar',NULL,NULL,'2008-06-23 17:11:44','Pontaurus DB','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool','2008-07-02 00:00:00',18439,'pontaurus',1,4,4),
+ ('OccurrenceResource',2,'2008-06-25 17:10:51','The Great Backyard Bird Count is an annual four-day event that engages bird watchers of all ages in counting birds to create a real-time snapshot of where the birds are across the continent. Anyone can participate, from beginning bird watchers to experts. It takes as little as 15 minutes. It?s free, fun, and easy?and it helps the birds.\n\n        Participants count birds anywhere for as little or as long as they wish during the four-day period. They tally the highest number of birds of each species seen together at any one time. To report their counts, they fill out an online checklist at the Great Backyard Bird Count web site.\n        \n        As the count progresses, anyone with Internet access can explore what is being reported from their own towns or anywhere in the United States and Canada. They can also see how this year\'s numbers compare with those from previous years. Participants may also send in photographs of the birds they see. A selection of images is posted in the online photo gallery.\n        \n        In 2007, participants reported a record-breaking 11 million birds of 616 species. They submitted more than 80,000 checklists, an all-time record for the ten years of the count.',NULL,NULL,'2008-06-25 17:11:44','Cornell Ornithology','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/cornellornithology','providertool','2008-07-02 00:00:00',0,'cornith',2,4,4);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Resource` ENABLE KEYS */;
+
+
+--
+-- Definition of table `providertool`.`Taxon`
+--
+
+DROP TABLE IF EXISTS `providertool`.`Taxon`;
+CREATE TABLE  `providertool`.`Taxon` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `authorship` varchar(255) default NULL,
+  `fullname` varchar(255) default NULL,
+  `name` varchar(255) default NULL,
+  `rank` varchar(255) default NULL,
+  `parent_id` bigint(20) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `FK4CD9EAA7FAFDA64` (`parent_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `providertool`.`Taxon`
+--
+
+/*!40000 ALTER TABLE `Taxon` DISABLE KEYS */;
+LOCK TABLES `Taxon` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `Taxon` ENABLE KEYS */;
 
 
 --
@@ -412,12 +551,12 @@ CREATE TABLE  `providertool`.`ViewMapping` (
   `viewSql` varchar(255) default NULL,
   `guidColumnIndex` int(11) default NULL,
   `linkColumnIndex` int(11) default NULL,
-  `resource_id` bigint(20) NOT NULL,
   `extension_id` bigint(20) default NULL,
+  `resource_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`),
   KEY `FK94C3CA49E6B2BB24` (`extension_id`),
   KEY `FK94C3CA49D00577D2` (`resource_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`ViewMapping`
@@ -425,9 +564,8 @@ CREATE TABLE  `providertool`.`ViewMapping` (
 
 /*!40000 ALTER TABLE `ViewMapping` DISABLE KEYS */;
 LOCK TABLES `ViewMapping` WRITE;
-INSERT INTO `providertool`.`ViewMapping` VALUES  ('CoreViewMapping',1,1,'select * from specimen join taxon on taxon_fk=taxon_id limit 3',NULL,NULL,1,1),
- ('ViewMapping',6,NULL,'select * from locality',NULL,NULL,1,3),
- ('ViewMapping',7,NULL,'select * from locality join mountain on mountain_fk=mountain_id',NULL,NULL,1,3);
+INSERT INTO `providertool`.`ViewMapping` VALUES  ('CoreViewMapping',1,1,'select * from specimen join taxon on taxon_fk=taxon_id limit 100',NULL,NULL,1,NULL),
+ ('CoreViewMapping',2,1,'select * from specimen_small join taxon on taxon_fk=taxon_id',NULL,NULL,1,NULL);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `ViewMapping` ENABLE KEYS */;
 
@@ -523,10 +661,19 @@ LOCK TABLES `user_role` WRITE;
 INSERT INTO `providertool`.`user_role` VALUES  (1,1),
  (2,3),
  (3,2),
+ (4,1),
  (4,3);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
+
+--
+-- Definition of view `providertool`.`view_ogc_dwc`
+--
+
+DROP TABLE IF EXISTS `providertool`.`view_ogc_dwc`;
+DROP VIEW IF EXISTS `providertool`.`view_ogc_dwc`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `providertool`.`view_ogc_dwc` AS select `dwc`.`resource_id` AS `resourceId`,`t`.`kingdom` AS `kingdom`,`t`.`phylum` AS `phylum`,`t`.`classs` AS `classs`,`t`.`orderrr` AS `orderrr`,`t`.`family` AS `family`,`t`.`genus` AS `genus`,`t`.`scientificName` AS `scientificName`,`dwc`.`basisOfRecord` AS `basisOfRecord`,`dwc`.`latitudeAsFloat` AS `latitude`,`dwc`.`longitudeAsFloat` AS `longitude` from (`providertool`.`darwincore` `dwc` join `providertool`.`darwincoretaxonomy` `t` on((`t`.`id` = `dwc`.`id`)));
 
 
 

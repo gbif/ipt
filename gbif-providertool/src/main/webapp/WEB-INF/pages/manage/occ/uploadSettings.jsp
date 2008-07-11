@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="occResourceList.title"/></title>
     <meta name="heading" content="<s:text name='upload.heading'/>"/>
-    <meta name="menu" content="OccResourceMenu"/>
+    <meta name="menu" content="MainMenu"/>
 </head>
 
 <s:form action="addUploadJob" method="post" validate="true">
@@ -15,9 +15,7 @@
 
 <div id="jobs">
 	<display:table name="scheduledJobs" class="table" export="false" pagesize="25">
-	    <display:column sortProperty="nextFireTime" sortable="true" titleKey="upload.nextFireTime">
-	         <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
-	    </display:column>
+	    <display:column property="nextFireTime" sortProperty="nextFireTime" sortable="true" titleKey="upload.nextFireTime"/>
 	    <display:column property="description" sortable="true" titleKey="upload.description"/>
 	    <display:column property="started" sortable="true" titleKey="upload.started"/>
 	

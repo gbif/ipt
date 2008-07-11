@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="occResourceList.title"/></title>
     <meta name="heading" content="<s:text name='extensionList.heading'/>"/>
-    <meta name="menu" content="OccResourceMenu"/>
+    <meta name="menu" content="MainMenu"/>
 </head>
 
 <display:table name="extensions" uid="ext" class="table" requestURI="" export="true" pagesize="25">
