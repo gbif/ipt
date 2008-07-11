@@ -9,11 +9,11 @@
 
     <!-- runs all targets -->
     <target name="run-all-tests" 
-        depends="Login,Logout,PasswordHint,Signup,StaticPages,UserTests,FlushCache,FileUpload"
+        depends="Login,Logout,Signup,StaticPages,UserTests"
         description="Call and executes all test cases (targets)"/>
     
     <!-- runs user-related tests -->
-    <target name="UserTests" depends="EditUser,SearchUser,SaveUser,AddUser,ActiveUsers"
+    <target name="UserTests" depends="EditUser,SearchUser,SaveUser,AddUser"
         description="Call and executes all user test cases (targets)">
         <echo>Successfully ran all User UI tests!</echo>
     </target>
@@ -35,24 +35,11 @@
             <steps>
                 &login;
                 <invoke description="get Logout Page" url="/logout.jsp"/>
-                <verifytitle description="we should see the login title" text=".*${login.title}.*" regex="true"/>
+                <verifytitle description="we should see the home title" text=".*${home.title}.*" regex="true"/>
             </steps>
         </webtest>
     </target>
 
-    <!-- Retrieve Password Hint -->
-    <target name="PasswordHint" description="Gets the user's password hint">
-        <webtest name="passwordHint">
-            &config;
-            <steps>
-                <invoke description="get Login Page" url="/"/>
-                <verifytitle description="we should see the login title" text=".*${login.title}.*" regex="true"/>
-                <invoke description="click password hint link" url="/passwordHint.html?username=admin"/>
-                <verifytitle description="show login title again" text=".*${login.title}.*" regex="true"/>
-            </steps>
-        </webtest>
-    </target>
-    
     <target name="StaticPages" description="Ensures that StaticFilter is working">
         <webtest name="staticPages">
             &config;
@@ -103,7 +90,7 @@
                 <setinputfield description="set address" name="user.address.address" value="2255 Lane Avenue"/>
                 <setinputfield description="set zipcode" name="user.address.postalCode" value="59826"/>
                 <clickbutton label="${button.save}" description="Click Save"/>
-                <verifytitle description="display Main Menu if save OK" text=".*${mainMenu.title}.*" regex="true"/>
+                <verifytitle description="display Main Menu if save OK" text=".*${home.title}.*" regex="true"/>
             </steps>
         </webtest>
     </target>
@@ -174,53 +161,10 @@
                 <enableJavaScript enable="false"/> <!-- HtmlUnit doesn't understand table.rows.length -->
                 <clickbutton name="button.register"  description="Click button 'Signup'"/>
                 
-                <verifytitle description="view main menu" text=".*${mainMenu.title}.*" regex="true"/>
+                <verifytitle description="view main menu" text=".*${home.title}.*" regex="true"/>
                 <verifytext description="verify success message" text="${user.registered}"/>
             </steps>
         </webtest>
     </target>
 
-    <!-- View Active Users -->
-    <target name="ActiveUsers" description="View Active Users List">
-        <webtest name="activeUsers">
-            &config;
-            <steps>
-                &login;
-                <invoke description="get activeUsers URL" url="/admin/activeUsers.html"/>
-                <verifytitle description="we should see the activeUsers title" 
-                    text=".*${activeUsers.title}.*" regex="true"/>
-            </steps>
-        </webtest>
-    </target>
-    
-    <!-- Flush OSCache -->
-    <target name="FlushCache" description="opens JSP to Flush Page Cache">
-        <webtest name="flushCache">
-            &config;
-            <steps>
-                &login;
-                <invoke description="get flushCache URL" url="/admin/flushCache.html"/>
-                <verifytitle description="we should see the flush cache title"
-                    text=".*${flushCache.title}.*" regex="true"/>
-            </steps>
-        </webtest>
-    </target>
-    
-    <!-- File Upload -->
-    <target name="FileUpload" description="Tests uploading a file">
-        <webtest name="fileUpload">
-            &config;
-            <steps>
-                &login;
-                <invoke description="click Upload a File link" url="/uploadFile.html"/>
-                <verifytitle description="we should see file upload form" text=".*${upload.title}.*" regex="true"/>
-                <setinputfield description="set name" name="name" value="Canoo Test File"/>
-                <setFileField description="set file" name="file" fileName="pom.xml"/>
-                <clickbutton label="${button.upload}" description="Click Upload"/>
-                <verifytitle description="show file data if upload OK" text=".*${display.title}.*" regex="true"/>
-                <verifytext description="verify original filename displayed on page" text="pom.xml"/>
-            </steps>
-        </webtest>
-    </target>
-    
 </project>

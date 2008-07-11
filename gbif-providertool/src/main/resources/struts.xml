@@ -68,7 +68,8 @@
         <default-action-ref name="index" />
 
         <global-results>
-            <result name="home" type="redirect-action">/index</result>
+            <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
+            <result name="mainMenu" type="redirect-action">/index</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
         </global-results>
 
