@@ -35,10 +35,16 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="occResourceDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
+    <bean id="occResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
     </bean>
-
+    <bean id="checklistResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
+        <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
+    </bean>
+    <bean id="resourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
+        <constructor-arg value="org.gbif.provider.model.Resource"/>
+    </bean>
+    
     <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.ViewMapping"/>
     </bean>
@@ -64,12 +70,18 @@
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
         <constructor-arg ref="occResourceDao"/>
     </bean>
+    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
+        <constructor-arg ref="checklistResourceDao"/>
+    </bean>
+    <bean id="resourceManager" class="org.gbif.provider.service.impl.ResourceManagerImpl">        
+        <constructor-arg ref="resourceDao"/>
+    </bean>
 
-    <bean id="viewMappingManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerImpl">        
         <constructor-arg ref="viewMappingDao"/>
     </bean>    
     
-    <bean id="extensionManager" class="org.appfuse.service.impl.GenericManagerImpl">        
+    <bean id="extensionManager" class="org.gbif.provider.service.impl.GenericManagerImpl">        
         <constructor-arg ref="extensionDao"/>
     </bean>    
     

@@ -25,7 +25,10 @@ import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
@@ -40,6 +43,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
  * @See ExternalResourceRoutingDatasource
  */
 public class DatasourceRegistry{
+	protected static final Log log = LogFactory.getLog(DatasourceRegistry.class);
 	private Map<Long, DataSource> datasources = new HashMap<Long, DataSource>();
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     
@@ -53,7 +57,11 @@ public class DatasourceRegistry{
 
 	public void registerDatasource(DatasourceBasedResource resource){
 		DataSource dsa = resource.getDatasource();
-		datasources.put(resource.getId(), dsa);
+		if (dsa == null){
+			log.warn("Trying to register a resource without any datasource");
+		}else{
+			datasources.put(resource.getId(), dsa);
+		}
 	}
 	
 	public DataSource getDataSource(Long id){

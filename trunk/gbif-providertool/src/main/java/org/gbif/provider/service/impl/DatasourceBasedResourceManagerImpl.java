@@ -16,15 +16,17 @@
 
 package org.gbif.provider.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.appfuse.dao.GenericDao;
 import org.appfuse.service.GenericManager;
-import org.appfuse.service.impl.GenericManagerImpl;
+import org.gbif.provider.dao.ResourceDao;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.service.DatasourceBasedResourceManager;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -34,12 +36,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @param <T>
  */
-public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResource> extends GenericManagerImpl<T, Long> implements DatasourceBasedResourceManager<T> {
+public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResource> extends ResourceManagerImpl<T> implements ResourceManager<T> {
 	@Autowired
 	private DatasourceRegistry registry;
 
-	public DatasourceBasedResourceManagerImpl(GenericDao<T, Long> datasourceBasedResourceDao) {
-		super(datasourceBasedResourceDao);
+	public DatasourceBasedResourceManagerImpl(ResourceDao<T> resourceDao) {
+		super(resourceDao);
 	}
 	
 	@Override

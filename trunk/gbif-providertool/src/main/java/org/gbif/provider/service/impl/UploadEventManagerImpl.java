@@ -35,7 +35,7 @@ import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.service.DatasourceBasedResourceManager;
+import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

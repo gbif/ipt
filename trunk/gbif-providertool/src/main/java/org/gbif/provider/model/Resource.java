@@ -31,7 +31,6 @@ import javax.persistence.ManyToOne;
 import org.appfuse.model.BaseObject;
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
-import org.gbif.provider.service.Resolvable;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -45,7 +44,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-public class Resource extends BaseObject implements Comparable<Resource>, Resolvable, Timestampable{
+public class Resource extends BaseObject implements Comparable<Resource>, Timestampable{
 	private Long id;
 	protected String guid;
 	protected String link;

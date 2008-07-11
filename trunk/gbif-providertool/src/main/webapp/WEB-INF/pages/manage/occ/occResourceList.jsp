@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="occResourceList.title"/></title>
     <meta name="heading" content="<s:text name='occResourceList.heading'/>"/>
-    <meta name="menu" content="OccResourceMenu"/>
+    <meta name="menu" content="MainMenu"/>
 </head>
 
 <c:set var="buttons">
@@ -24,10 +24,10 @@
     <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">
          <fmt:formatDate value="${occResourceList.lastImport}" pattern="${datePattern}"/>
     </display:column>
-    <display:column property="recordCount" sortable="true" titleKey="occResource.recordCount"/>
+    <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
 
-    <display:setProperty name="paging.banner.item_name"><s:text name="occResourceList.resource"/></display:setProperty>
-    <display:setProperty name="paging.banner.items_name"><s:text name="occResourceList.resources"/></display:setProperty>
+    <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>
+    <display:setProperty name="paging.banner.items_name"><s:text name="resourceList.resources"/></display:setProperty>
 </display:table>
 
 <c:out value="${buttons}" escapeXml="false" />

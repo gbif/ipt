@@ -16,10 +16,17 @@
 
 package org.gbif.provider.service;
 
-import org.appfuse.service.GenericManager;
-import org.gbif.provider.model.DatasourceBasedResource;
+import java.util.List;
 
-public interface DatasourceBasedResourceManager<T extends DatasourceBasedResource> 
-		extends GenericManager<T, Long> {
-	
+import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.Resource;
+
+public interface ResourceManager<T extends Resource> extends GenericManager<T> {
+	/**
+	 * Return all resources created by that user
+	 * @param userId
+	 * @return
+	 */
+	public List<T> getResourcesByUser(Long userId);
+
 }

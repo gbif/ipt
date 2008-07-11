@@ -14,32 +14,38 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
-import javax.sql.DataSource;
-
+import org.appfuse.dao.GenericDao;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.dao.ResourceDao;
 import org.gbif.provider.datasource.DatasourceRegistry;
+import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
 import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DatasourceRegistryAction extends BaseOccurrenceResourceAction {
-    private DatasourceRegistry datasourceRegistry;
-    private List<DatasourceBasedResource> datasources;
+/**
+ * Generic manager for all datasource based resources that need to be registered with the routing datasource.
+ * Overriden methods keep the datasource targetsource map of the active datasource registry in sync with the db.
+ * @author markus
+ *
+ * @param <T>
+ */
+public class ResourceManagerImpl<T extends Resource> extends GenericManagerImpl<T> implements ResourceManager<T> {
+	protected ResourceDao<T> resourceDao;
 
-	public void setDatasourceRegistry(DatasourceRegistry datasourceRegistry) {
-		this.datasourceRegistry = datasourceRegistry;
+	public ResourceManagerImpl(ResourceDao<T> resourceDao) {
+		super(resourceDao);
+		resourceDao=resourceDao;
 	}
 
-	public List getDatasources() {
-        return datasources;
-    }	
-	
-	public String list() {
-        datasources = datasourceRegistry.getAll();
-        return SUCCESS;
-    }
+	public List<T> getResourcesByUser(Long userId) {
+		return resourceDao.getResourcesByUser(userId);
+	}
 
 }

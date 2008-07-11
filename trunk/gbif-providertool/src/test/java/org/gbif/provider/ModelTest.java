@@ -77,9 +77,7 @@ public class ModelTest extends BaseDaoTestCase{
 		
 		// check retrieved data. what about the hibernate cache?
 		DatasourceBasedResource res = occResourceManager.get(occId);		
-		Map<Long, ViewMapping> allMappingHM = res.getAllMappings(); 
-		Set<Long> keys = allMappingHM.keySet();
-		Collection<ViewMapping> allMappings = allMappingHM.values();
+		Collection<ViewMapping> allMappings = res.getAllMappings();
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);
@@ -87,10 +85,10 @@ public class ModelTest extends BaseDaoTestCase{
 		// the core mapping should not be in the extension mappings map
 		assertFalse(res.getExtensionMappings().containsValue(res.getCoreMapping()));
 		// but in all mappings it should:
-		assertTrue(res.getAllMappings().containsValue(res.getCoreMapping()));
+		assertTrue(res.getAllMappings().contains(res.getCoreMapping()));
 
-		for (Long i : allMappingHM.keySet()){
-			Extension e = allMappingHM.get(i).getExtension();
+		for (Long i : res.getExtensionMappings().keySet()){
+			Extension e = res.getExtensionMappings().get(i).getExtension();
 			Long i2 = e.getId();
 			assertTrue(i.equals(i2));
 		}

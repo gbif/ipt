@@ -18,14 +18,14 @@ package org.gbif.provider.webapp.action;
 
 import java.util.List;
 
-import org.appfuse.service.GenericManager;
+import org.gbif.provider.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
 import org.gbif.provider.model.Extension;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class ExtensionAction extends BaseAction implements Preparable{
-    private GenericManager<Extension, Long> extensionManager;
+    private GenericManager<Extension> extensionManager;
     private List<Extension> extensions;
     private Extension extension;
     private Long id;
@@ -46,7 +46,7 @@ public class ExtensionAction extends BaseAction implements Preparable{
 		return extension;
 	}
 
-	public void setExtensionManager(GenericManager<Extension, Long> extensionManager) {
+	public void setExtensionManager(GenericManager<Extension> extensionManager) {
 		this.extensionManager = extensionManager;
 	}
 

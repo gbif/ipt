@@ -19,22 +19,20 @@ package org.gbif.provider.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -47,8 +45,8 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 @Entity
 public class DatasourceBasedResource extends Resource {
 	private String serviceName;
-	private String jdbcDriverClass = "jdbc:mysql://localhost/providertoolkit";
-	private String jdbcUrl;
+	private String jdbcDriverClass = "com.mysql.jdbc.Driver";
+	private String jdbcUrl = "jdbc:mysql://localhost/YOUR_DATABASE";
 	private String jdbcUser;
 	private String jdbcPassword;
 	private Date lastImport;
@@ -116,9 +114,11 @@ public class DatasourceBasedResource extends Resource {
 	}
 
 	@Transient
-	public Map<Long, ViewMapping> getAllMappings() {
-		Map<Long, ViewMapping> all = new HashMap<Long, ViewMapping>(extensionMappings);
-		all.put(getCoreMapping().getExtension().getId(), getCoreMapping());
+	public Set<ViewMapping> getAllMappings() {
+		Set<ViewMapping> all = new HashSet<ViewMapping>(extensionMappings.values());
+		if (getCoreMapping() != null){
+			all.add(getCoreMapping());
+		}
 		return all;
 	}
 	
@@ -152,10 +152,8 @@ public class DatasourceBasedResource extends Resource {
 		return datasource;
 	}
 	public void udpateDatasource() {
-		String driverClassName = "org.postgresql.Driver";
-		driverClassName="com.mysql.jdbc.Driver";
-		if (this.getJdbcUrl() != null){
-			datasource = new SingleConnectionDataSource(driverClassName, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);			
+		if (this.getJdbcUrl() != null && jdbcDriverClass != null){
+			datasource = new SingleConnectionDataSource(this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);			
 		}else{
 			datasource = null;
 		}

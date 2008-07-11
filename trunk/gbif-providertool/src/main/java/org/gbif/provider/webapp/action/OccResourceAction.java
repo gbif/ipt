@@ -20,9 +20,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.service.GenericManager;
+import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.job.JobUtils;
 import org.gbif.provider.model.Extension;
@@ -38,9 +39,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseResourceAction implements Preparable {
-	private GenericManager<Extension, Long> extensionManager;
-	private GenericManager<ViewMapping, Long> viewMappingManager;
+public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
+	private GenericManager<Extension> extensionManager;
+	private GenericManager<ViewMapping> viewMappingManager;
 	private UploadEventManager uploadEventManager;
 	private List occResources;
 	private List<Extension> extensions;
@@ -55,12 +56,12 @@ public class OccResourceAction extends BaseResourceAction implements Preparable 
 	}
 
 	public void setExtensionManager(
-			GenericManager<Extension, Long> extensionManager) {
+			GenericManager<Extension> extensionManager) {
 		this.extensionManager = extensionManager;
 	}
 
 	public void setViewMappingManager(
-			GenericManager<ViewMapping, Long> viewMappingManager) {
+			GenericManager<ViewMapping> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 
@@ -125,7 +126,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable 
 			}
 		}
 		// filter already mapped extensions
-		for (ViewMapping map : occResource.getAllMappings().values()) {
+		for (ViewMapping map : occResource.getAllMappings()) {
 			extensions.remove(map.getExtension());
 		}
 		// investigate upload jobs
@@ -147,7 +148,7 @@ public class OccResourceAction extends BaseResourceAction implements Preparable 
 	}
 
 	public String list() {
-		occResources = occResourceManager.getAll();
+		occResources = occResourceManager.getAllDistinct();
 		return SUCCESS;
 	}
 

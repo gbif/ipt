@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="occResourceList.title"/></title>
     <meta name="heading" content="<s:text name='upload.heading'/>"/>
-    <meta name="menu" content="OccResourceMenu"/>
+    <meta name="menu" content="MainMenu"/>
 </head>
 
 <c:set var="buttons">
