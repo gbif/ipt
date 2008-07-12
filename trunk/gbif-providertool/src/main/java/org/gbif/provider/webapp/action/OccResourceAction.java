@@ -148,7 +148,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public String list() {
-		occResources = occResourceManager.getAllDistinct();
+		occResources = occResourceManager.getResourcesByUser(getCurrentUser().getId());
 		return SUCCESS;
 	}
 

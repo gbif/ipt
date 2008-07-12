@@ -58,7 +58,7 @@
     <bean id="darwinCoreDao" class="org.gbif.provider.dao.hibernate.DarwinCoreDaoImpl" parent="abstractDao"/>
 
     <bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractDao"/>
-    
+
     <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractDao"/>
     
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">

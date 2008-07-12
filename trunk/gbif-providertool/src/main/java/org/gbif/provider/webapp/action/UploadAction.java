@@ -29,6 +29,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.appfuse.service.GenericManager;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.job.JobUtils;
@@ -52,7 +54,9 @@ import com.mysql.jdbc.DatabaseMetaData;
 import com.opensymphony.xwork2.Preparable;
 
 public class UploadAction extends BaseOccurrenceResourceAction implements Preparable{
-    private DatasourceInspectionManager datasourceInspectionManager;
+	private static I18nLog logdb = I18nLogFactory.getLog(UploadAction.class);
+
+	private DatasourceInspectionManager datasourceInspectionManager;
     private JobManager jobManager;
     private OccurrenceResource resource;
 	private List<Job> scheduledJobs;
@@ -105,6 +109,9 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		scheduledJobs.add(job);
 		
         saveMessage(getText("upload.addedJob"));
+        //logdb.debug("gimme.debug");
+        //logdb.info("gimme.info");
+        //logdb.warn("gimme.warn","warn arg");
 		return SUCCESS;
 	}
 	
