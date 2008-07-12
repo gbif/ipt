@@ -19,6 +19,11 @@
 	<!-- Configure the i18n Log4J appender -->
 	<bean id="i18nDatabaseAppender" class="org.gbif.logging.log.I18nDatabaseAppender">
 		<property name="logEventDao" ref="logEventDao"/>
+		<property name="dao" ref="logEventDao"/>
+	</bean>
+
+	<bean id="elvis" class="org.gbif.logging.log.Elvis">
+		<property name="logEventDao" ref="logEventDao"/>
 	</bean>
 
 </beans>
