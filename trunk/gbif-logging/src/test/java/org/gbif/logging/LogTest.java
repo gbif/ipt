@@ -22,7 +22,7 @@ public class LogTest {
 		static Log log = LogFactory.getLog(T1.class);
 		public void run() {
 			MDC.put("TYPE", "EVEN");
-			for (int i=0; i<1000; i+=2) {
+			for (int i=0; i<100; i+=2) {
 				log.warn(i);
 			}
 		}
@@ -31,7 +31,7 @@ public class LogTest {
 		static Log log = LogFactory.getLog(T2.class);
 		public void run() {
 			MDC.put("TYPE", "ODD");
-			for (int i=1; i<1000; i+=2) {
+			for (int i=1; i<100; i+=2) {
 				log.warn(i);
 			}
 		}
