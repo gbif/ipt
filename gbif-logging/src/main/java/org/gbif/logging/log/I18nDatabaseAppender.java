@@ -23,10 +23,7 @@ import org.gbif.logging.model.LogEvent;
  * @author timrobertson
  */
 public class I18nDatabaseAppender extends AppenderSkeleton {
-	/**
-	 * Statically set once using the setLogEventDao method
-	 */
-	protected static LogEventDao logEventDao;
+	protected static LogEventDao logEventDao;	
 	
 	public static final String MDC_SOURCE_TYPE = "mdc.source_type";
 	public static final String MDC_SOURCE_ID = "mdc.source_id";
@@ -34,6 +31,7 @@ public class I18nDatabaseAppender extends AppenderSkeleton {
 	public static final String MDC_GROUP_ID = "mdc.group_id";
 	public static final String MDC_USER = "mdc.user";
 	
+
 	@Override
 	protected void append(LoggingEvent event) {
 		if (event.getMessage() instanceof I18nMessage && logEventDao != null) {
@@ -132,19 +130,13 @@ public class I18nDatabaseAppender extends AppenderSkeleton {
 	}
 
 	/**
-	 * @param logEventDao Will only be accepted once - subsequent calls do nothing
+	 * @param logEventDao
 	 */
 	public void setLogEventDao(LogEventDao logEventDao) {
-		System.out.println("I18nDatabaseAppender configuring with new logEventDao");
-		if (logEventDao == null) {
-			this.logEventDao = logEventDao;
-		}
+		if (I18nDatabaseAppender.logEventDao == null) {
+			System.out.println("I18nDatabaseAppender configuring with new logEventDao");
+			I18nDatabaseAppender.logEventDao = logEventDao;
+		}		
 	}
 
-	/**
-	 * @return the logEventDao
-	 */
-	public LogEventDao getLogEventDao() {
-		return logEventDao;
-	}
 }
