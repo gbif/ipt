@@ -36,10 +36,11 @@ public class I18nDatabaseAppender extends AppenderSkeleton {
 	protected void append(LoggingEvent event) {
 		if (event.getMessage() instanceof I18nMessage && logEventDao != null) {
 			I18nMessage i18nMessage = (I18nMessage) event.getMessage();
-			int level = I18nDatabaseAppender.getLevel(event.getLevel());
+
+			int level = I18nDatabaseAppender.getLevel(event.getLevel());			
+			int sourceType = -1;
+			int sourceId = -1;
 			
-			Integer sourceType = null;
-			Integer sourceId = null;
 			String instanceId = null;
 			Long groupId = null;
 			User user = null;
