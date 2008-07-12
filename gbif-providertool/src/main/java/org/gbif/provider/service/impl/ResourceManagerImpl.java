@@ -21,6 +21,8 @@ import java.util.Map;
 
 import org.appfuse.dao.GenericDao;
 import org.appfuse.service.GenericManager;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.ResourceDao;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
@@ -37,14 +39,16 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <T>
  */
 public class ResourceManagerImpl<T extends Resource> extends GenericManagerImpl<T> implements ResourceManager<T> {
+	private static I18nLog logdb = I18nLogFactory.getLog(UploadEventManagerImpl.class);
 	protected ResourceDao<T> resourceDao;
 
 	public ResourceManagerImpl(ResourceDao<T> resourceDao) {
 		super(resourceDao);
-		resourceDao=resourceDao;
+		this.resourceDao=resourceDao;
 	}
 
 	public List<T> getResourcesByUser(Long userId) {
+        logdb.warn("gimme.warn","warn arg");
 		return resourceDao.getResourcesByUser(userId);
 	}
 

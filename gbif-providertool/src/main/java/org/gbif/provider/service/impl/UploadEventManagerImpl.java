@@ -28,6 +28,8 @@ import java.util.Map;
 import org.appfuse.dao.GenericDao;
 import org.appfuse.service.GenericManager;
 import org.appfuse.service.impl.GenericManagerImpl;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.UploadEventDao;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
@@ -38,6 +40,7 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.GChartBuilder;
+import org.gbif.provider.webapp.action.UploadAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.TextProvider;
@@ -51,7 +54,7 @@ import com.opensymphony.xwork2.TextProviderFactory;
  * @param <T>
  */
 public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long> implements UploadEventManager {
-    private UploadEventDao dao;
+	private UploadEventDao dao;
     //private final transient TextProvider textProvider = TextProviderFactory.getInstance();
 
 	public UploadEventManagerImpl(UploadEventDao dao) {
@@ -84,6 +87,11 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long
 		chartBuilder.addDataset(deletedDS, "Deleted");
 		
 		return chartBuilder.generateChartDataString(450,200);
+	}
+
+	@Override
+	public UploadEvent save(UploadEvent object) {
+		return super.save(object);
 	}
 
 }
