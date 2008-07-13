@@ -33,4 +33,5 @@ public class Constants {
     public static final Long CHECKLIST_EXTENSION_ID = 1L;
 
     public static final Long TEST_RESOURCE_ID = 1L;
+    public static final Long TEST_USER_ID = 1L;
 }
