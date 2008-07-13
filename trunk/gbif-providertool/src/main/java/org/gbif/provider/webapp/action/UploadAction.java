@@ -109,9 +109,6 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		scheduledJobs.add(job);
 		
         saveMessage(getText("upload.addedJob"));
-        //logdb.debug("gimme.debug");
-        //logdb.info("gimme.info");
-        //logdb.warn("gimme.warn","warn arg");
 		return SUCCESS;
 	}
 	

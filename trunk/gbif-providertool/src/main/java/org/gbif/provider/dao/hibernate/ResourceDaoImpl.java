@@ -44,7 +44,7 @@ public class ResourceDaoImpl<T extends Resource> extends GenericDaoHibernate<T, 
 		HibernateTemplate template = getHibernateTemplate();
 		List<T> resources =  (List) template.execute(new HibernateCallback() {
 			public Object doInHibernate(final Session session) {
-				String hql = "select res FROM "+resourceClass.getSimpleName()+" res WHERE res.created.id = :userId";
+				String hql = "select res FROM "+resourceClass.getSimpleName()+" res WHERE res.creator.id = :userId";
 				final Query query = session.createQuery(hql);
 				query.setParameter("userId", userId);
 				query.setCacheable(true);
