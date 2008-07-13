@@ -48,7 +48,6 @@ public class ResourceManagerImpl<T extends Resource> extends GenericManagerImpl<
 	}
 
 	public List<T> getResourcesByUser(Long userId) {
-        logdb.warn("gimme.warn","warn arg");
 		return resourceDao.getResourcesByUser(userId);
 	}
 
