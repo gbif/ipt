@@ -466,7 +466,7 @@
         <!-- GBIF -->
         <dependency>
             <groupId>org.gbif</groupId>
-            <artifactId>struts2utils</artifactId>
+            <artifactId>gbif-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
