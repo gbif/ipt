@@ -216,7 +216,10 @@
     <listener>
         <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
     </listener>
-
+    <listener>
+        <listener-class>org.gbif.scheduler.webapp.listener.SchedulerStartupListener</listener-class>
+    </listener>
+    
     <servlet>
         <servlet-name>dwr-invoker</servlet-name>
         <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
