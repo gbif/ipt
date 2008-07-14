@@ -52,7 +52,7 @@ public class JSONUtils {
 				JSONObject nested = JSONObject.fromObject(o);
 				
 				if (nested.entrySet().size() == 0) { 
-					if ("{}".equals(nested.toString())) { // it is an empty nested collection - make it a map 
+					if (o instanceof JSONObject && "{}".equals(nested.toString())) { // it is an empty nested collection - make it a map 
 						map.put(keyAsObject.toString(), new HashMap<String, Object>());
 					} else {
 						// then it is not a nested object, but it is a non string type (e.g. Long)

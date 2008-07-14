@@ -21,6 +21,8 @@ public class JSONUtilsTest {
 	public void testAll() {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("Long", 23L);
+		map.put("Integer", new Integer(23));
 		map.put("k1", "v1");
 		map.put("k2:1", "v2{Tim}");
 		Map<String, Object> map2 = new HashMap<String, Object>();
@@ -35,9 +37,14 @@ public class JSONUtilsTest {
 		
 		Map<String, Object> deserialized = JSONUtils.mapFromJSON(asJSON);
 		logger.info("deserialized map: " + deserialized);
+		assertTrue(deserialized.containsKey("Long"));
+		assertTrue(deserialized.containsKey("Integer"));
 		assertTrue(deserialized.containsKey("k1"));
 		assertTrue(deserialized.containsKey("k2:1"));
 		assertTrue(deserialized.containsKey("k3"));
+		assertEquals("23", deserialized.get("Long"));
+		assertEquals("23", deserialized.get("Integer"));
+		assertEquals(deserialized.get("Long"), deserialized.get("Integer"));
 		assertEquals("v1", deserialized.get("k1"));
 		assertEquals("v2{Tim}", deserialized.get("k2:1"));
 		assertTrue(deserialized.get("k3") instanceof Map);
