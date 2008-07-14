@@ -15,7 +15,7 @@ import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.TextProvider;
 import com.opensymphony.xwork2.TextProviderFactory;
 
-public class LogEventAction extends BaseAction implements Preparable {
+public class LogEventAction extends MRBBaseAction implements Preparable {
     private LogEventManager logEventManager;
     private LogEventDTOFactory logEventDTOFactory;
     private List logEvents;
