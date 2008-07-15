@@ -116,11 +116,11 @@
     
     <!-- SCHEDULER JOBS -->
     <bean id="rdbmsUploadJob" class="org.gbif.provider.job.RdbmsUploadJob">
-        <property name="occResourceManager" ref="occResourceManager"/>
-        <property name="uploadEventManager" ref="uploadEventManager"/>
-        <property name="datasourceInspectionManager" ref="datasourceInspectionManager"/>
-        <property name="occurrenceUploadManager" ref="occurrenceUploadManager"/>
-    </bean>
+        <constructor-arg ref="occResourceManager"/>
+        <constructor-arg ref="uploadEventManager"/>
+        <constructor-arg ref="datasourceInspectionManager"/>
+        <constructor-arg ref="occurrenceUploadManager"/>
+    </bean> 
     
     <!-- the default transactional advice for Jobs -->
     <tx:advice id="txJobAdvice" transaction-manager="transactionManager">

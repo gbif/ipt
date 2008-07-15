@@ -48,17 +48,17 @@ public class RdbmsUploadJob implements Launchable{
     private OccurrenceUploadManager occurrenceUploadManager;
 
     
-//	private RdbmsUploadJob(
-//			ResourceManager<OccurrenceResource> occResourceManager,
-//			GenericManager<UploadEvent, Long> uploadEventManager,
-//			DatasourceInspectionManager datasourceInspectionManager,
-//			OccurrenceUploadManager occurrenceUploadManager) {
-//		super();
-//		this.occResourceManager = occResourceManager;
-//		this.uploadEventManager = uploadEventManager;
-//		this.datasourceInspectionManager = datasourceInspectionManager;
-//		this.occurrenceUploadManager = occurrenceUploadManager;
-//	}
+	private RdbmsUploadJob(
+			ResourceManager<OccurrenceResource> occResourceManager,
+			GenericManager<UploadEvent, Long> uploadEventManager,
+			DatasourceInspectionManager datasourceInspectionManager,
+			OccurrenceUploadManager occurrenceUploadManager) {
+		super();
+		this.occResourceManager = occResourceManager;
+		this.uploadEventManager = uploadEventManager;
+		this.datasourceInspectionManager = datasourceInspectionManager;
+		this.occurrenceUploadManager = occurrenceUploadManager;
+	}
 
 	public static Job newUploadJob(Resource resource, User user){
 		// create job data
@@ -76,25 +76,25 @@ public class RdbmsUploadJob implements Launchable{
 	}
 	
 	
-	public void setOccResourceManager(
-			ResourceManager<OccurrenceResource> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-
-	public void setUploadEventManager(
-			GenericManager<UploadEvent, Long> uploadEventManager) {
-		this.uploadEventManager = uploadEventManager;
-	}
-
-	public void setDatasourceInspectionManager(
-			DatasourceInspectionManager datasourceInspectionManager) {
-		this.datasourceInspectionManager = datasourceInspectionManager;
-	}
-
-	public void setOccurrenceUploadManager(
-			OccurrenceUploadManager occurrenceUploadManager) {
-		this.occurrenceUploadManager = occurrenceUploadManager;
-	}
+//	public void setOccResourceManager(
+//			ResourceManager<OccurrenceResource> occResourceManager) {
+//		this.occResourceManager = occResourceManager;
+//	}
+//
+//	public void setUploadEventManager(
+//			GenericManager<UploadEvent, Long> uploadEventManager) {
+//		this.uploadEventManager = uploadEventManager;
+//	}
+//
+//	public void setDatasourceInspectionManager(
+//			DatasourceInspectionManager datasourceInspectionManager) {
+//		this.datasourceInspectionManager = datasourceInspectionManager;
+//	}
+//
+//	public void setOccurrenceUploadManager(
+//			OccurrenceUploadManager occurrenceUploadManager) {
+//		this.occurrenceUploadManager = occurrenceUploadManager;
+//	}
 
 	public void launch(Map<String, Object> seed) throws Exception {
 		try {
