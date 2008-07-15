@@ -47,7 +47,9 @@ public class Worker implements ApplicationContextAware {
 					// we can launch in 3 ways
 					// 1 an activity that does not know about the spring application
 					// 2,3 an activity that is in the spring application (autowired by type, or name)
-					String[] beanNames = applicationContext.getBeanNamesForType(Class.forName(launchableClassname));
+					String[] beanNames;
+					beanNames = applicationContext.getBeanNamesForType(Class.forName(launchableClassname));
+					System.out.println(beanNames );
 					Object target = null;
 					if (beanNames.length==0) {
 						logger.info("No beans are wired for the required class[" + launchableClassname + "], creating a new one");

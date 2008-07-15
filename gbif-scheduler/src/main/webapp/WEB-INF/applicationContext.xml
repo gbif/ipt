@@ -16,4 +16,14 @@
         <constructor-arg ref="jobDao"/>
     </bean>
 
+
+	<!-- Testing only -->
+	<bean id="workerPool" class="org.gbif.scheduler.scheduler.WorkerPool">
+		<constructor-arg ref="jobDao"/>
+		<constructor-arg value="TestInstance1"/>
+	</bean>
+	<bean id="mockInstance" class="org.gbif.scheduler.MockInstance"/>
+	<bean id="mockJob" class="org.gbif.scheduler.MockJob">
+		<constructor-arg ref="mockInstance"/>
+	</bean>
 </beans>
