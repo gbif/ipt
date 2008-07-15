@@ -2,9 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
-    default-lazy-init="true">
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+                        default-lazy-init="true">
 
     <context:annotation-config/>
     <context:component-scan base-package="org.gbif.provider" /> 
@@ -109,17 +113,27 @@
         <property name="logEventDao" ref="logEventDao"/>
     </bean>
     
-    <!-- SCHEDULER / JOBS -->
+    
+    <!-- SCHEDULER JOBS -->
     <bean id="rdbmsUploadJob" class="org.gbif.provider.job.RdbmsUploadJob">
         <property name="occResourceManager" ref="occResourceManager"/>
         <property name="uploadEventManager" ref="uploadEventManager"/>
         <property name="datasourceInspectionManager" ref="datasourceInspectionManager"/>
         <property name="occurrenceUploadManager" ref="occurrenceUploadManager"/>
-    </bean> 
-    
-    <bean id="scheduler" class="org.gbif.scheduler.scheduler.Scheduler">
-        <!-- Scheduler(String instanceId,JobDao jobDao) -->
-        <constructor-arg value="providertool"/>
-        <constructor-arg ref="jobDao"/>
     </bean>
+    
+    <!-- the default transactional advice for Jobs -->
+    <tx:advice id="txJobAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="launch" read-only="false" rollback-for="JobException"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- ensure that the above transactional advice runs for any execution
+        of an operation defined by the Launchable  interface -->
+    <aop:config>
+        <aop:pointcut id="launchableOperation" expression="execution(* org.gbif.scheduler.scheduler.Launchable.*(..))"/>
+        <aop:advisor advice-ref="txJobAdvice" pointcut-ref="launchableOperation"/>
+    </aop:config>
+    
 </beans>

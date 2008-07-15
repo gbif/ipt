@@ -717,7 +717,7 @@
         
         <!-- Framework dependency versions -->
         <appfuse.version>2.0.2</appfuse.version>
-        <spring.version>2.5.4</spring.version>
+        <spring.version>2.5.2</spring.version>
 
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>

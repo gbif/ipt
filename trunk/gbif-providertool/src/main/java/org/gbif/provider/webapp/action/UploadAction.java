@@ -103,7 +103,7 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	
 	public String addUploadJob() throws Exception{
 		// create & store upload job based on resource alone
-		Job job = RdbmsUploadJob.newUploadJob(resource);
+		Job job = RdbmsUploadJob.newUploadJob(resource, getCurrentUser());
 		jobManager.save(job);
 		// add to scheduledJobs that was created previously in prepare() phase already
 		scheduledJobs.add(job);
