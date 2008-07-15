@@ -56,16 +56,18 @@ public class DatasourceRegistry{
 
 
 	public void registerDatasource(DatasourceBasedResource resource){
-		DataSource dsa = resource.getDatasource();
-		if (dsa == null){
-			log.warn("Trying to register a resource without any datasource");
-		}else{
-			datasources.put(resource.getId(), dsa);
+		if (resource != null){
+			DataSource dsa = resource.getDatasource();
+			if (dsa == null){
+				log.warn("Trying to register a resource without any datasource");
+			}else{
+				datasources.put(resource.getId(), dsa);
+			}
 		}
 	}
 	
 	public DataSource getDataSource(Long id){
-		if (!datasources.containsKey(id)){
+		if (id != null && !datasources.containsKey(id)){
 			DatasourceBasedResource resource = occResourceManager.get(id);
 			registerDatasource(resource);
 		}
