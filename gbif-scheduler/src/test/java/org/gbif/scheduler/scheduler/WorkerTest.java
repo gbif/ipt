@@ -15,13 +15,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 public class WorkerTest extends BaseActionTestCase {
-	// implements ApplicationContextAware
-	//private ApplicationContext applicationContext;
-	private WorkerPool workerPool;
-	
-//	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//		this.applicationContext = applicationContext;
-//	}
+	private WorkerPool workerPool;	
 	
 	public void setWorkerPool(WorkerPool workerPool) {
 		this.workerPool = workerPool;
