@@ -67,6 +67,7 @@
     
     <logger name="org.gbif">
         <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="I18NDATABASE"/>
     </logger>
 
