@@ -25,12 +25,10 @@ public interface LogEventDao extends GenericDao<LogEvent, Long> {
 	 * @return The list of events or empty list
 	 */
 	public List<LogEvent> findByIdGreaterThan(long id, int Minlevel);
-	
-	/**
-	 * @param datasourceId to use
-	 * @param id The minimum id (exclusive) to search on
-	 * @param minLevel The min level inclusive to include
-	 * @return The list of events or empty list
-	 */
-	public List<LogEvent> findByIdGreaterThan(long datasourceId, long id, int Minlevel);
+
+	public List<LogEvent> findByGroupAndIdGreaterThan(int groupId, long id, int minLevel);
+
+	public List<LogEvent> findBySourceAndIdGreaterThan(int sourceId, int sourceType, long id, int minLevel);
+
+	public List<LogEvent> findByUserAndIdGreaterThan(long userId, long id, int minLevel);
 }

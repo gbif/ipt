@@ -42,7 +42,7 @@ public class I18nDatabaseAppender extends AppenderSkeleton {
 			int sourceId = -1;
 			
 			String instanceId = null;
-			Long groupId = null;
+			int groupId = -1;
 			User user = null;
 
 			// we are really typesafe... no exceptions here please!
@@ -55,8 +55,8 @@ public class I18nDatabaseAppender extends AppenderSkeleton {
 			if (event.getMDC(MDC_INSTANCE_ID) instanceof String) {
 				instanceId = (String) event.getMDC(MDC_INSTANCE_ID);
 			}
-			if (event.getMDC(MDC_GROUP_ID) instanceof Long) {
-				groupId = (Long) event.getMDC(MDC_GROUP_ID);
+			if (event.getMDC(MDC_GROUP_ID) instanceof Integer) {
+				groupId = (Integer) event.getMDC(MDC_GROUP_ID);
 			}
 			if (event.getMDC(MDC_USER) instanceof User) {
 				user = (User) event.getMDC(MDC_USER);

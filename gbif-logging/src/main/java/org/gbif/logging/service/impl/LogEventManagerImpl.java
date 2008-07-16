@@ -30,8 +30,21 @@ public class LogEventManagerImpl extends GenericManagerImpl<LogEvent, Long> impl
 	public List<LogEvent> findByIdGreaterThan(long id, int minLevel) {
 		return logEventDao.findByIdGreaterThan(id, minLevel);
 	}
-	
-	public List<LogEvent> findByIdGreaterThan(long datasourceId, long id, int minLevel) {
-		return logEventDao.findByIdGreaterThan(datasourceId, id, minLevel);
+
+	public List<LogEvent> findByGroupAndIdGreaterThan(int groupId, long id,
+			int minLevel) {
+		return logEventDao.findByGroupAndIdGreaterThan(groupId, id, minLevel);
+	}
+
+	public List<LogEvent> findBySourceAndIdGreaterThan(int sourceId,
+			int sourceType, long id, int minLevel) {
+		return logEventDao.findBySourceAndIdGreaterThan(sourceId, sourceType, id, minLevel);
+
+	}
+
+	public List<LogEvent> findByUserAndIdGreaterThan(long userId, long id,
+			int minLevel) {
+		return logEventDao.findByUserAndIdGreaterThan(userId, id, minLevel);
+
 	}
 }

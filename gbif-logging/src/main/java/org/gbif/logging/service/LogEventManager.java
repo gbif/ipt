@@ -26,11 +26,30 @@ public interface LogEventManager extends GenericManager<LogEvent, Long> {
 	 */
 	public List<LogEvent> findByIdGreaterThan(long id, int minLevel);
 	
+	
 	/**
-	 * @param datasourceId to use
+	 * @param id of the source entity (eg job/process) that issued the event
+	 * @param the type of source entity that issued the id, usually linked to the class of a job/process
 	 * @param id Minimum id exclusive
 	 * @param minLevel minimum logging level (1, trace, 2 debug, 3 info, 4 warn, 5 error, 6 fatal)
 	 * @return Events with an ID greater than that given or empty list
 	 */
-	public List<LogEvent> findByIdGreaterThan(long datasourceId, long id, int minLevel);
+	public List<LogEvent> findBySourceAndIdGreaterThan(int sourceId, int sourceType, long id, int minLevel);
+
+
+	/**
+	 * @param userId
+	 * @param id
+	 * @param minLevel
+	 * @return
+	 */
+	public List<LogEvent> findByUserAndIdGreaterThan(long userId, long id, int minLevel);
+
+	/**
+	 * @param groupId
+	 * @param id
+	 * @param minLevel
+	 * @return
+	 */
+	public List<LogEvent> findByGroupAndIdGreaterThan(int groupId, long id, int minLevel);
 }
