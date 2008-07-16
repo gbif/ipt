@@ -37,11 +37,17 @@ public class WorkerTest extends BaseActionTestCase {
 
 		Worker worker = workerPool.borrowObject(job);
 		worker.setApplicationContext(applicationContext);
+		// reset MockJob.result
+		MockJob.result="not run yet";
+		assertFalse(MockJob.goodResult.equals(MockJob.result));
 		try {
 			worker.execute(workerPool, classToRun, dataAsJSON);
 		} catch (ObjectRetrievalFailureException e) {
 			// supposed to throw that as we dont use a job from the jobDao but created a new one
 		}
+		// assert that job really run after waiting for 5 seconds to give the job a fair chance to run as it is a different thread
+		Thread.sleep(5000);
+		assertEquals(MockJob.goodResult, MockJob.result);
 	}
 
 

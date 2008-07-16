@@ -49,7 +49,7 @@ public class Worker implements ApplicationContextAware {
 					// 2,3 an activity that is in the spring application (autowired by type, or name)
 					String[] beanNames;
 					beanNames = applicationContext.getBeanNamesForType(Class.forName(launchableClassname));
-					System.out.println(beanNames );
+					logger.debug("Job beans found for the required class[" + launchableClassname + "] : "+beanNames.toString());
 					Object target = null;
 					if (beanNames.length==0) {
 						logger.info("No beans are wired for the required class[" + launchableClassname + "], creating a new one");
@@ -99,7 +99,7 @@ public class Worker implements ApplicationContextAware {
 					
 				} catch (ClassNotFoundException e1) {
 					logger.error("Worker is not able to launch class [" + launchableClassname + "] as it is not on the classpath");
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 				
 				
