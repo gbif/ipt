@@ -43,7 +43,7 @@ public class LogEventDaoHibernate extends GenericDaoHibernate<LogEvent, Long> im
 	}
 
 	public List<LogEvent> findByUserAndIdGreaterThan(long userId, long id, int level) {
-		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=? and userId=?", new Object[]{id, level, userId});
+		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=? and user.id=?", new Object[]{id, level, userId});
 
 	}
 }
