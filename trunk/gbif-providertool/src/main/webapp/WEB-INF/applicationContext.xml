@@ -135,5 +135,12 @@
         <aop:pointcut id="launchableOperation" expression="execution(* org.gbif.scheduler.scheduler.Launchable.*(..))"/>
         <aop:advisor advice-ref="txJobAdvice" pointcut-ref="launchableOperation"/>
     </aop:config>
+
+
+    <!-- Testing only -->
+    <bean id="workerPool" class="org.gbif.scheduler.scheduler.WorkerPool">
+        <constructor-arg ref="jobDao"/>
+        <constructor-arg value="TestInstance1"/>
+    </bean>
     
 </beans>

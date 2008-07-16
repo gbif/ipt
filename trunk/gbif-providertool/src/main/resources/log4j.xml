@@ -65,8 +65,9 @@
     </logger>
     
     <!-- GBIF things -->
-    <logger name="org.gbif.provider">
+    <logger name="org.gbif" additivity="false">
         <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
     
     <logger name="org.gbif.provider">
