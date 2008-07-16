@@ -121,8 +121,11 @@
         <constructor-arg ref="datasourceInspectionManager"/>
         <constructor-arg ref="occurrenceUploadManager"/>
     </bean> 
-    
-    <!-- the default transactional advice for Jobs -->
+    <bean id="rdbmsUploadJobLauncher" class="org.gbif.provider.job.RdbmsUploadJobLauncher">
+        <constructor-arg ref="rdbmsUploadJob"/>
+    </bean>     
+
+    <!-- the default transactional advice for Jobs implementing the TransactionJob interface-->
     <tx:advice id="txJobAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="launch" read-only="false" rollback-for="JobException"/>
@@ -132,19 +135,12 @@
     <!-- ensure that the above transactional advice runs for any execution
         of an operation defined by the Launchable  interface -->
     <aop:config>
-        <aop:pointcut id="launchableOperation" expression="execution(* org.gbif.scheduler.scheduler.Launchable.*(..))"/>
-        <aop:advisor advice-ref="txJobAdvice" pointcut-ref="launchableOperation"/>
+        <aop:pointcut id="transactionJob" expression="execution(* org.gbif.provider.job.TransactionJob.*(..))"/>
+        <aop:advisor advice-ref="txJobAdvice" pointcut-ref="transactionJob"/>
     </aop:config>
 
 
     <!-- Testing only -->
-    <bean id="workerPool" class="org.gbif.scheduler.scheduler.WorkerPool">
-        <constructor-arg ref="jobDao"/>
-        <constructor-arg value="TestInstance1"/>
-    </bean>
-    <bean id="mockInstance" class="org.gbif.scheduler.MockInstance"/>
-    <bean id="mockJob" class="org.gbif.scheduler.MockJob">
-        <constructor-arg ref="mockInstance"/>
-    </bean>
+    <!--import resource="applicationContext-test.xml"/-->  
     
 </beans>

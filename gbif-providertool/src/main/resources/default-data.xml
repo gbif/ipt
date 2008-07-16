@@ -1260,6 +1260,8 @@
     <column>recordsDeleted</column>
     <column>recordsUploaded</column>
     <column>resource_id</column>
+    <column>jobSourceType</column>
+    <column>jobSourceId</column>
     <row>
       <value>1</value>
       <value><![CDATA[2008-01-01 00:00:00.0]]></value>
@@ -1267,6 +1269,8 @@
       <value>0</value>
       <value>0</value>
       <value>12789</value>
+      <value>1</value>
+      <value>1</value>
       <value>1</value>
     </row>
     <row>
@@ -1277,6 +1281,8 @@
       <value>5</value>
       <value>13096</value>
       <value>1</value>
+      <value>1</value>
+      <value>2</value>
     </row>
     <row>
       <value>3</value>
@@ -1286,6 +1292,8 @@
       <value>1</value>
       <value>13305</value>
       <value>1</value>
+      <value>1</value>
+      <value>3</value>
     </row>
     <row>
       <value>4</value>
@@ -1295,6 +1303,8 @@
       <value>12</value>
       <value>14708</value>
       <value>1</value>
+      <value>1</value>
+      <value>4</value>
     </row>
     <row>
       <value>5</value>
@@ -1304,6 +1314,8 @@
       <value>36</value>
       <value>15589</value>
       <value>1</value>
+      <value>1</value>
+      <value>5</value>
     </row>
     <row>
       <value>6</value>
@@ -1313,6 +1325,8 @@
       <value>41</value>
       <value>18439</value>
       <value>1</value>
+      <value>1</value>
+      <value>6</value>
     </row>
   </table>
   <table name="ViewMapping">

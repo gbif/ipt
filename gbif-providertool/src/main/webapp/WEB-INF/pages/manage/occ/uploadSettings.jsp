@@ -8,24 +8,25 @@
 
 <s:form action="addUploadJob" method="post" validate="true">
     <s:hidden key="resource_id"/>        
-    <s:submit cssClass="button" key="button.upload" theme="simple"/>
-    <input type="button" class="button" onclick="location.href='<c:url value="resource.html"/>'"
-        value="<s:text name="button.done"/>"/>
+    <s:textfield label="upload.repeatInDays" name="repeatInDays" value="0" cssClass="text small"/>
+    <s:submit cssClass="button" key="button.add" theme="simple"/>
 </s:form>
 
 <div id="jobs">
 	<display:table name="scheduledJobs" class="table" export="false" pagesize="25">
 	    <display:column property="nextFireTime" sortProperty="nextFireTime" sortable="true" titleKey="upload.nextFireTime"/>
 	    <display:column property="description" sortable="true" titleKey="upload.description"/>
-	    <display:column property="started" sortable="true" titleKey="upload.started"/>
+	    <display:column property="repeatInDays" sortable="true" titleKey="upload.repeatInDays"/>
 	
 	    <display:setProperty name="paging.banner.item_name"><s:text name="upload.job"/></display:setProperty>
 	    <display:setProperty name="paging.banner.items_name"><s:text name="upload.jobs"/></display:setProperty>
 	</display:table>
 </div>
 
-
-<c:out value="${buttons}" escapeXml="false" />
+<s:form action="resource" namespace="/manage/occ" method="post">
+    <s:hidden key="resource_id"/>        
+    <s:submit cssClass="button" key="button.done"/>
+</s:form>
 
 <script type="text/javascript">
     highlightTableRows("scheduledJobs");

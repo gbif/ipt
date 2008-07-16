@@ -34,7 +34,7 @@ import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Launchable;
 import org.gbif.util.JSONUtils;
 
-public class RdbmsUploadJob implements Launchable{
+public class RdbmsUploadJob implements TransactionJob{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
 	private static final String RESOURCE_ID = "resourceId";
 	private static final String USER_ID = "userId";
@@ -67,7 +67,7 @@ public class RdbmsUploadJob implements Launchable{
 		seed.put(USER_ID, user.getId());
 		// create upload job
 		Job job = new Job();
-		job.setJobClassName(RdbmsUploadJob.class.getCanonicalName());
+		job.setJobClassName(RdbmsUploadJobLauncher.class.getName());
 		job.setDataAsJSON(JSONUtils.jsonFromMap(seed));
 		job.setJobGroup(JobUtils.getJobGroup(resource));
 		job.setRunningGroup(JobUtils.getJobGroup(resource));
@@ -76,26 +76,6 @@ public class RdbmsUploadJob implements Launchable{
 		return job;				
 	}
 	
-	
-//	public void setOccResourceManager(
-//			ResourceManager<OccurrenceResource> occResourceManager) {
-//		this.occResourceManager = occResourceManager;
-//	}
-//
-//	public void setUploadEventManager(
-//			GenericManager<UploadEvent, Long> uploadEventManager) {
-//		this.uploadEventManager = uploadEventManager;
-//	}
-//
-//	public void setDatasourceInspectionManager(
-//			DatasourceInspectionManager datasourceInspectionManager) {
-//		this.datasourceInspectionManager = datasourceInspectionManager;
-//	}
-//
-//	public void setOccurrenceUploadManager(
-//			OccurrenceUploadManager occurrenceUploadManager) {
-//		this.occurrenceUploadManager = occurrenceUploadManager;
-//	}
 
 	public void launch(Map<String, Object> seed) throws Exception {
 		try {

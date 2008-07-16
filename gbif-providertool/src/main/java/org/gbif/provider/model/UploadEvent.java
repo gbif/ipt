@@ -31,6 +31,9 @@ public class UploadEvent extends BaseObject{
 	private int recordsDeleted;
 	private int recordsChanged;
 	private int recordsAdded;
+	// job metadata. needed for linking to eventLogs
+	private int jobSourceId;
+	private int jobSourceType;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -85,6 +88,20 @@ public class UploadEvent extends BaseObject{
 		this.recordsAdded = recordsAdded;
 	}
 	
+	
+	public int getJobSourceId() {
+		return jobSourceId;
+	}
+	public void setJobSourceId(int jobSourceId) {
+		this.jobSourceId = jobSourceId;
+	}
+	
+	public int getJobSourceType() {
+		return jobSourceType;
+	}
+	public void setJobSourceType(int jobSourceType) {
+		this.jobSourceType = jobSourceType;
+	}
 	
 	/**
 	 * @see java.lang.Object#equals(Object)
