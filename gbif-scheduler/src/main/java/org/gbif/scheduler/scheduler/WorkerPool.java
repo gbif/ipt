@@ -3,6 +3,7 @@
  */
 package org.gbif.scheduler.scheduler;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -19,7 +20,7 @@ import org.gbif.scheduler.model.Job;
  * @author timrobertson
  */
 public class WorkerPool extends GenericObjectPool {
-	protected Log logger = LogFactory.getLog(this.getClass());
+	protected static Log logger = LogFactory.getLog(WorkerPool.class);
 	protected JobDao jobDao;
 	protected String instanceId;
 	// TODO, a UI driven watcher
@@ -65,6 +66,10 @@ public class WorkerPool extends GenericObjectPool {
 		if (obj instanceof Worker) {
 			Worker worker = (Worker) obj;
 			Job job = worker.getJob();
+			// for repeatable jobs schedule the next run
+			Job newJob = getNextRepeatingJob(job);
+			logger.info("Job is repeating every "+job.getRepeatInDays()+" days. Schedule next job at "+newJob.getNextFireTime());
+			jobDao.save(newJob);
 			logger.info("Returning worker, so removing Job");
 			// a failure here means corrupted and pretty fatal so just pass to application
 			jobDao.remove(job.getId());
@@ -74,6 +79,27 @@ public class WorkerPool extends GenericObjectPool {
 		}
 	}
 	
+	protected static Job getNextRepeatingJob(Job job){
+		Job nextJob = null;
+		if (job.getRepeatInDays()>0){
+			nextJob = new Job();
+			nextJob.setCreated(new Date());
+			nextJob.setDataAsJSON(job.getDataAsJSON());
+			nextJob.setDescription(job.getDescription());
+			nextJob.setInstanceId(job.getInstanceId());
+			nextJob.setJobClassName(job.getJobClassName());
+			nextJob.setJobGroup(job.getJobGroup());
+			nextJob.setName(job.getName());
+			nextJob.setRepeatInDays(job.getRepeatInDays());
+			nextJob.setRunningGroup(job.getRunningGroup());
+			// calculate next fire time based on last schedule + weeks to be repeated in
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(job.getNextFireTime());
+			cal.add(Calendar.DATE, job.getRepeatInDays());			
+			nextJob.setNextFireTime(cal.getTime());
+		}
+		return nextJob; 
+	}
 	
 	/**
 	 * Creates the worker objects for the pool

@@ -59,7 +59,8 @@ public class Job extends BaseObject implements Comparable {
 	private Date created = new Date();
 	private Date nextFireTime = new Date();
 	private Date started;
-	private String instanceId;	
+	private String instanceId;
+	private int repeatInDays = 0;
 	
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -130,6 +131,14 @@ public class Job extends BaseObject implements Comparable {
 	public void setInstanceId(String instanceId) {
 		this.instanceId = instanceId;
 	}
+
+	public int getRepeatInDays() {
+		return repeatInDays;
+	}
+	public void setRepeatInDays(int repeatInDays) {
+		this.repeatInDays = repeatInDays;
+	}
+	
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
