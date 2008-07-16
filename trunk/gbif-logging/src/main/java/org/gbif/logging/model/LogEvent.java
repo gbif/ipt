@@ -39,7 +39,7 @@ public class LogEvent extends BaseObject implements Comparable {
 	private int sourceType;
 	private int sourceId;
 	private String instanceId;
-	private Long groupId;
+	private int groupId;
 	private int level;
 	private User user;
 	private String message;
@@ -60,7 +60,7 @@ public class LogEvent extends BaseObject implements Comparable {
 	}
 	
 	public LogEvent(int sourceType, int sourceId, String instanceId,
-			Long groupId, int level, User user, String message) {
+			int groupId, int level, User user, String message) {
 		this.sourceId=sourceId;
 		this.sourceType=sourceType;
 		this.instanceId = instanceId;
@@ -71,7 +71,7 @@ public class LogEvent extends BaseObject implements Comparable {
 	}
 	
 	public LogEvent(int sourceType, int sourceId, String instanceId,
-			Long groupId, int level, User user, String message,
+			int groupId, int level, User user, String message,
 			String[] messageParams) {
 		this.sourceId=sourceId;
 		this.sourceType=sourceType;
@@ -84,7 +84,7 @@ public class LogEvent extends BaseObject implements Comparable {
 	}
 
 	public LogEvent(int sourceType, int sourceId, String instanceId,
-			Long groupId, int level, User user, String message,
+			int groupId, int level, User user, String message,
 			String[] messageParams, String infoAsJSON) {
 		this.sourceId=sourceId;
 		this.sourceType=sourceType;
@@ -106,6 +106,11 @@ public class LogEvent extends BaseObject implements Comparable {
 	}
 	
 
+	/**
+	 * The kind(class) of job/process that generated the logEvent.
+	 * Should be used in combination with @sourceId
+	 * @return
+	 */
 	public int getSourceType() {
 		return sourceType;
 	}
@@ -113,6 +118,11 @@ public class LogEvent extends BaseObject implements Comparable {
 		this.sourceType = sourceType;
 	}
 
+	/**
+	 * The exact id of the job/process that generated this logEvent.
+	 * Should be used in combination with @sourceType
+	 * @return
+	 */
 	public int getSourceId() {
 		return sourceId;
 	}
@@ -120,16 +130,26 @@ public class LogEvent extends BaseObject implements Comparable {
 		this.sourceId = sourceId;
 	}
 
+	/**
+	 * Instance ID of the thread/scheduler/VM/container
+	 * Not used yet, but provides a way to keep logEvents from multiple threads in a single DB
+	 * @return
+	 */
 	public String getInstanceId() {
 		return instanceId;
 	}
 	public void setInstanceId(String instanceId) {
 		this.instanceId = instanceId;
 	}
-	public Long getGroupId() {
+	
+	/**
+	 * A logical grouping of events, for example by resource/datasource
+	 * @return
+	 */
+	public int getGroupId() {
 		return groupId;
 	}
-	public void setGroupId(Long groupId) {
+	public void setGroupId(int groupId) {
 		this.groupId = groupId;
 	}
 	public int getLevel() {
@@ -138,6 +158,10 @@ public class LogEvent extends BaseObject implements Comparable {
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	/**
+	 * The user who eventually generated this logEvent by kicking off some process or running an action directly
+	 * @return
+	 */
 	@ManyToOne
 	public User getUser() {
 		return user;

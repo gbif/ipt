@@ -57,8 +57,8 @@ public class LogEventAction extends MRBBaseAction implements Preparable {
     }     
 
     @SMDMethod
-    public List<LogEventDTO> getLatestForDatasource(long datasourceId, long minId, int minLevel) throws IOException {
-    	List<LogEvent> events = logEventManager.findByIdGreaterThan(datasourceId, minId, minLevel);
+    public List<LogEventDTO> getLatestForSource(int sourceId, int sourceType, long minId, int minLevel) throws IOException {
+    	List<LogEvent> events = logEventManager.findBySourceAndIdGreaterThan(sourceId, sourceType, minId, minLevel);
     	List<LogEventDTO> eventDTOs = new LinkedList<LogEventDTO>();
     	for (LogEvent event : events) {
     		eventDTOs.add(LogEventDTOFactory.buildFrom(event));
@@ -66,6 +66,26 @@ public class LogEventAction extends MRBBaseAction implements Preparable {
     	return eventDTOs;
     }     
 
+    @SMDMethod
+    public List<LogEventDTO> getLatestForGroup(int groupId, long minId, int minLevel) throws IOException {
+    	List<LogEvent> events = logEventManager.findByGroupAndIdGreaterThan(groupId, minId, minLevel);
+    	List<LogEventDTO> eventDTOs = new LinkedList<LogEventDTO>();
+    	for (LogEvent event : events) {
+    		eventDTOs.add(LogEventDTOFactory.buildFrom(event));
+    	}
+    	return eventDTOs;
+    }   
+    
+    @SMDMethod
+    public List<LogEventDTO> getLatestForUser(long userId, long minId, int minLevel) throws IOException {
+    	List<LogEvent> events = logEventManager.findByUserAndIdGreaterThan(userId, minId, minLevel);
+    	List<LogEventDTO> eventDTOs = new LinkedList<LogEventDTO>();
+    	for (LogEvent event : events) {
+    		eventDTOs.add(LogEventDTOFactory.buildFrom(event));
+    	}
+    	return eventDTOs;
+    }   
+    
     public void setId(Long  id) {
         this. id =  id;
     }

@@ -33,12 +33,18 @@ public class LogEventDaoHibernate extends GenericDaoHibernate<LogEvent, Long> im
 	public List<LogEvent> findByIdGreaterThan(long id, int level) {
 		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=?", new Object[]{id, level});
 	}
-	
-	/**
-	 * @see org.gbif.logging.dao.LogEventDao#findByIdGreaterThan(long, long, int)
-	 */
-	@SuppressWarnings("unchecked")
-	public List<LogEvent> findByIdGreaterThan(long datasourceId, long id, int level) {
-		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where bioDatasource.id=? and id>? and level>=?", new Object[]{datasourceId, id, level});
+
+	public List<LogEvent> findBySourceAndIdGreaterThan(int sourceId, int sourceType, long id, int level) {
+		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=? and sourceId=? and sourceType=?", new Object[]{id, level, sourceId, sourceType});
+
+	}
+
+	public List<LogEvent> findByGroupAndIdGreaterThan(int groupId, long id, int level) {
+		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=? and groupId=?", new Object[]{id, level, groupId});
+	}
+
+	public List<LogEvent> findByUserAndIdGreaterThan(long userId, long id, int level) {
+		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=? and userId=?", new Object[]{id, level, userId});
+
 	}
 }
