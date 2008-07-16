@@ -4,7 +4,7 @@
     <title><s:text name="logEventList.title"/></title>
     <meta name="heading" content="<s:text name='logEventList.heading'/>"/>
     <meta name="menu" content="LogEventMenu"/>
-	<s:head theme="ajax" debug="true"/>
+	<s:head theme="ajax" debug="false"/>
 </head>
 
 
