@@ -70,6 +70,7 @@ public class RdbmsUploadJob implements Launchable{
 		job.setJobClassName(RdbmsUploadJob.class.getCanonicalName());
 		job.setDataAsJSON(JSONUtils.jsonFromMap(seed));
 		job.setJobGroup(JobUtils.getJobGroup(resource));
+		job.setRunningGroup(JobUtils.getJobGroup(resource));
 		job.setName("RDBMS data upload");
 		job.setDescription("Data upload from RDBMS to resource "+resource.getTitle());
 		return job;				

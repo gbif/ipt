@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.webapp.action.BaseActionTestCase;
+import org.gbif.scheduler.MockJob;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Worker;
 import org.gbif.scheduler.scheduler.WorkerPool;
@@ -38,32 +39,51 @@ public class WorkerTest extends BaseDaoTestCase {
 	/**
 	 * Supposed to throw ObjectRetrievalFailureException as we dont use a job from the jobDao but created a new one 
 	 * and the pool doesnt find it in the db
-	 * @throws ObjectRetrievalFailureException
+	 * @throws Exception 
 	 */
 	@Test
-	public void testRunWorker() throws ObjectRetrievalFailureException {
+	public void testMockJob() throws Exception {
+		// test rdbmsUploadJob
 		Job job = new Job();
-		job.setDescription("test job");
+		job.setDescription("test mock job");
+		job.setId(1L);
+		job.setDataAsJSON("{}");
+		job.setJobClassName(MockJob.class.getName());
+		job.setJobGroup("testGroup");
+		job.setNextFireTime(new Date());
+		// reset MockJob.result
+		MockJob.result="not run yet";
+		assertFalse(MockJob.goodResult.equals(MockJob.result));
+		runJob(job);
+		// assert that job really run after waiting for 5 seconds to give the job a fair chance to run as it is a different thread
+		Thread.sleep(5000);
+		assertEquals(MockJob.goodResult, MockJob.result);
+	}
+	
+	@Test
+	public void testRdbmsUploadJob() throws Exception {
+		// test rdbmsUploadJob
+		Job job = new Job();
+		job.setDescription("test rdbms upload job");
 		job.setId(1L);
 		job.setDataAsJSON("{}");
 		job.setJobClassName(RdbmsUploadJob.class.getName());
 		job.setJobGroup("testGroup");
 		job.setNextFireTime(new Date());
-		
+		runJob(job);
+	}
+
+	private void runJob(Job job) throws Exception{
 		String classToRun = job.getJobClassName();
 		String dataAsJSON = job.getDataAsJSON();
 
-		Worker worker;
+		Worker worker = workerPool.borrowObject(job);
+		worker.setApplicationContext(applicationContext);
 		try {
-			worker = workerPool.borrowObject(job);
-			worker.setApplicationContext(applicationContext);
 			worker.execute(workerPool, classToRun, dataAsJSON);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ObjectRetrievalFailureException e) {
+			// supposed to throw that as we dont use a job from the jobDao but created a new one
 		}
 	}
-
-
 
 }
