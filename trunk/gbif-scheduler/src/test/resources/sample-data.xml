@@ -103,7 +103,8 @@
         <column>nextFireTime</column>
         <column>started</column>
         <column>instanceId</column>
-    <row>
+        <column>repeatInDays</column>
+        <row>
         <value description="id">-1</value>
         <value description="name">Harvest</value>
         <value description="description">Harvest</value>
@@ -115,6 +116,7 @@
         <value description="nextFireTime">2008-04-15</value>
         <value description="started">2008-04-15</value>
         <value description="instanceId">localhost</value>
+        <value>0</value>
     </row>
     <row>
         <value description="id">-2</value>
@@ -128,6 +130,7 @@
         <value description="nextFireTime">2008-04-15</value>
         <value description="started">2008-04-15</value>
         <value description="instanceId">localhost</value>
+        <value>0</value>
     </row>
     <row>
         <value description="id">-3</value>
@@ -141,6 +144,7 @@
         <value description="nextFireTime">2008-04-15</value>
         <value description="started">2008-04-15</value>
         <value description="instanceId">localhost</value>
+        <value>0</value>
     </row>
     </table>
 
