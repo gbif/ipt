@@ -43,6 +43,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
+	public static final Long EXTENSION_ID = 1l;
+	
+	public static OccurrenceResource newInstance(Extension core){
+		OccurrenceResource resource =  new OccurrenceResource();
+		// ensure that core mapping exists
+		CoreViewMapping coreVM = new CoreViewMapping();
+		coreVM.setExtension(core);
+		resource.setCoreMapping(coreVM);
+		return resource;
+	}
 	
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();

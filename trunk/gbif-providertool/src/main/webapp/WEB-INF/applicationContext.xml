@@ -71,6 +71,9 @@
     
     
     <!--  Managers  -->
+    <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
+        <constructor-arg ref="extensionDao"/>
+    </bean>
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
         <constructor-arg ref="occResourceDao"/>
     </bean>
@@ -121,26 +124,22 @@
         <constructor-arg ref="datasourceInspectionManager"/>
         <constructor-arg ref="occurrenceUploadManager"/>
     </bean> 
-    <bean id="rdbmsUploadJobLauncher" class="org.gbif.provider.job.RdbmsUploadJobLauncher">
+    <!--bean id="rdbmsUploadJobLauncher" class="org.gbif.provider.job.RdbmsUploadJobLauncher">
         <constructor-arg ref="rdbmsUploadJob"/>
-    </bean>     
+    </bean-->     
 
     <!-- the default transactional advice for Jobs implementing the TransactionJob interface-->
-    <tx:advice id="txJobAdvice" transaction-manager="transactionManager">
+    <!--tx:advice id="txJobAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="launch" read-only="false" rollback-for="JobException"/>
         </tx:attributes>
-    </tx:advice>
+    </tx:advice-->
     
     <!-- ensure that the above transactional advice runs for any execution
         of an operation defined by the Launchable  interface -->
-    <aop:config>
+    <!--aop:config>
         <aop:pointcut id="transactionJob" expression="execution(* org.gbif.provider.job.TransactionJob.*(..))"/>
         <aop:advisor advice-ref="txJobAdvice" pointcut-ref="transactionJob"/>
-    </aop:config>
-
-
-    <!-- Testing only -->
-    <!--import resource="applicationContext-test.xml"/-->  
+        </aop:config-->
     
 </beans>

@@ -23,8 +23,11 @@ import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.job.RdbmsUploadJob;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.PropertyMapping;
@@ -36,17 +39,18 @@ import org.gbif.provider.model.ViewMapping;
  *
  */
 public class RdbmsImportSource implements ImportSource{
-	protected static final Log log = LogFactory.getLog(RdbmsImportSource.class);
-	// TODO: make it final
+	private static I18nLog log = I18nLogFactory.getLog(RdbmsUploadJob.class);
+
 	private Collection<PropertyMapping> properties;
 	private ResultSet rs;
 	private boolean hasNext;
 	private Integer coreIdColumnIndex;
 	private Integer guidColumnIndex;
 	private Integer linkColumnIndex;
+	private Integer maxRecords;
 	
 
-    public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view){
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view, Integer maxRecords){
     	if (rs == null || view == null){
     		throw new IllegalArgumentException();
     	}
@@ -54,6 +58,7 @@ public class RdbmsImportSource implements ImportSource{
     	source.rs = rs;
     	source.properties = view.getPropertyMappings().values();
     	source.coreIdColumnIndex = view.getCoreIdColumnIndex();
+    	source.maxRecords = maxRecords;
     	try {
     		source.hasNext = rs.next();
 		} catch (SQLException e) {
@@ -62,13 +67,19 @@ public class RdbmsImportSource implements ImportSource{
 		}
     	return source;
     }
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view){
+    	return newInstance(rs, view, null);
+    }
     
-    public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view){
+    public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view, Integer maxRecords){
     	ViewMapping extView = (ViewMapping) view;
-    	RdbmsImportSource source = RdbmsImportSource.newInstance(rs, extView);
+    	RdbmsImportSource source = RdbmsImportSource.newInstance(rs, extView, maxRecords);
     	source.guidColumnIndex = view.getGuidColumnIndex();
     	source.linkColumnIndex = view.getLinkColumnIndex();
     	return source;
+    }
+    public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view){
+    	return newInstance(rs, view, null);
     }
     
 	private RdbmsImportSource() {
@@ -100,7 +111,7 @@ public class RdbmsImportSource implements ImportSource{
 					row.setLink(rs.getString(linkColumnIndex));
 				}
 		    	for (PropertyMapping pm : properties){
-		    		if (pm.getColumn() != null){
+		    		if (pm.getColumn() != null && pm.getColumn() < 1000){
 						row.setPropertyValue(pm.getProperty(), rs.getString(pm.getColumn()));
 		    		}else if (pm.getValue() != null){
 						row.setPropertyValue(pm.getProperty(), pm.getValue());
@@ -113,6 +124,14 @@ public class RdbmsImportSource implements ImportSource{
 			try {
 				// forward rs cursor
 				hasNext = rs.next();
+				// dont iterate any further if the max number of records to be iterated has been reached
+				if (maxRecords != null){
+					maxRecords--;					
+					if (maxRecords < 0){
+						hasNext=false;
+						log.info("MaxRecords reached. Stop iterating through ImportSource");
+					}
+				}
 			} catch (SQLException e2) {
 				log.error("Exception while iterating RDBMS source", e2);
 				hasNext = false;

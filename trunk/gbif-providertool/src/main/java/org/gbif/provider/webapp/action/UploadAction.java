@@ -60,7 +60,8 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
     private JobManager jobManager;
     private OccurrenceResource resource;
 	private List<Job> scheduledJobs;
-	private int repeatInDays = 0;
+	private int repeatInDays;
+	private Integer limit;
 
 	private GenericManager<UploadEvent, Long> uploadEventManager;
 	private List<UploadEvent> uploadEvents;
@@ -81,6 +82,10 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 
 	public void setRepeatInDays(int repeatInDays) {
 		this.repeatInDays = repeatInDays;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
 	}
 
 	public List<UploadEvent> getUploadEvents() {
@@ -108,8 +113,7 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	
 	public String addUploadJob() throws Exception{
 		// create & store upload job based on resource alone
-		Job job = RdbmsUploadJob.newUploadJob(resource, getCurrentUser());
-		job.setRepeatInDays(repeatInDays);
+		Job job = RdbmsUploadJob.newUploadJob(resource, getCurrentUser(), repeatInDays, limit);
 		jobManager.save(job);
 		// add to scheduledJobs that was created previously in prepare() phase already
 		scheduledJobs.add(job);

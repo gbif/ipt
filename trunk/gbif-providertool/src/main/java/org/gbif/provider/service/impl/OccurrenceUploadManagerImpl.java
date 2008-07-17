@@ -73,10 +73,6 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 		int recordsAdded = 0;
 		// go through source records one by one
 		for (ImportRecord rec : source){
-			if (recordsUploaded>1200){
-				//FIXME: allow only small uploads while testing
-				break;
-			}
 			// get previous record or null if it didnt exist yet based on localID and resource
 			DarwinCore oldRecord = darwinCoreDao.findByLocalId(rec.getLocalId(), resource.getId());
 			// get darwincore record based on this core record

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.service.GenericManager;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
@@ -15,13 +16,19 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 import org.junit.Test;
 
 public class ModelTest extends BaseDaoTestCase{
     private GenericManager<Extension, Long> extensionManager;
     private GenericManager<OccurrenceResource, Long> occResourceManager;
+    private ResourceFactory resourceFactory;
 	
+
+	public void setResourceFactory(ResourceFactory resourceFactory) {
+		this.resourceFactory = resourceFactory;
+	}
 
 	public void setOccResourceManager(
 			GenericManager<OccurrenceResource, Long> occResourceManager) {
@@ -42,7 +49,7 @@ public class ModelTest extends BaseDaoTestCase{
 		extension = extensionManager.save(extension);
 		this.flush();
 		// check dwc, checklist and inserted extensions
-		for (Long extId : Arrays.asList(Constants.CHECKLIST_EXTENSION_ID, Constants.DARWIN_CORE_EXTENSION_ID, extension.getId())){
+		for (Long extId : Arrays.asList(ChecklistResource.EXTENSION_ID, OccurrenceResource.EXTENSION_ID, extension.getId())){
 			Extension ext = extensionManager.get(extId);
 			List<ExtensionProperty> props = ext.getProperties(); 
 			assertFalse(props.isEmpty());
@@ -51,12 +58,7 @@ public class ModelTest extends BaseDaoTestCase{
 
 	@Test
 	public void testExtensionMap(){
-		OccurrenceResource occRes = new OccurrenceResource();
-
-		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-		CoreViewMapping coreMapping = new CoreViewMapping();
-		coreMapping.setExtension(core);
-		occRes.setCoreMapping(coreMapping);
+		OccurrenceResource occRes = resourceFactory.newOccurrenceResourceInstance();
 
 		Extension ext1 = new Extension();
 		ext1.setName("test extension 1");
@@ -81,7 +83,7 @@ public class ModelTest extends BaseDaoTestCase{
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);
-		assertTrue(res.getCoreMapping().getExtension().getId().equals(Constants.DARWIN_CORE_EXTENSION_ID));
+		assertTrue(res.getCoreMapping().getExtension().getId().equals(OccurrenceResource.EXTENSION_ID));
 		// the core mapping should not be in the extension mappings map
 		assertFalse(res.getExtensionMappings().containsValue(res.getCoreMapping()));
 		// but in all mappings it should:

@@ -31,6 +31,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.scheduler.model.Job;
@@ -40,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
+	private ResourceFactory resourceFactory;
 	private GenericManager<Extension> extensionManager;
 	private GenericManager<ViewMapping> viewMappingManager;
 	private UploadEventManager uploadEventManager;
@@ -101,16 +103,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		if (getResourceId() != null && !isNew()) {
 			occResource = occResourceManager.get(getResourceId());
 		} else {
-			occResource = new OccurrenceResource();
+			occResource = resourceFactory.newOccurrenceResourceInstance();
 		}
-		// check that core mapping exists
-		// if (occResource.getCoreMapping() == null){
-		// ViewMapping coreVM = new ViewMapping();
-		// Extension coreExt =
-		// extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-		// coreVM.setExtension(coreExt);
-		// occResource.addMapping(coreVM);
-		// }
 	}
 
 	public String execute() {
@@ -119,7 +113,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		// get all availabel extensions for new mappings
 		extensions = extensionManager.getAll();
 		for (Extension ext : extensions) {
-			if (ext.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)) {
+			if (ext.getId().equals(OccurrenceResource.EXTENSION_ID)) {
 				// only show extensions sensu strictu. remove core "extension"
 				extensions.remove(ext);
 				break;

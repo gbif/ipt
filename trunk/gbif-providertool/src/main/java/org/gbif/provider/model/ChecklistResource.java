@@ -33,6 +33,17 @@ import org.gbif.provider.util.Constants;
  */
 @Entity
 public class ChecklistResource extends DatasourceBasedResource {
+	//FIXME: create new extension for taxa. right now uses the dwc one so that tests dont fail...
+	public static final Long EXTENSION_ID = 1L;
+	
+	public static ChecklistResource newInstance(Extension core){
+		ChecklistResource resource =  new ChecklistResource();
+		// ensure that core mapping exists
+		CoreViewMapping coreVM = new CoreViewMapping();
+		coreVM.setExtension(core);
+		resource.setCoreMapping(coreVM);
+		return resource;
+	}
 
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
