@@ -53,6 +53,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private List<Job> runningJobs;
 	private Job nextJob;
 
+	public void setResourceFactory(ResourceFactory resourceFactory) {
+		this.resourceFactory = resourceFactory;
+	}
+
 	public void setJobManager(JobManager jobManager) {
 		this.jobManager = jobManager;
 	}
