@@ -1,0 +1,7 @@
+ * Appfuse2 (Java) modular struts 2 
+ * embedded H2 database (maybe optionally also external mysql/postgres database) 
+ * solr / lucene for full text search 
+ * geoserver for WFS and maps 
+ * statistic charts via google chart API 
+ * use pingback instead of trackback which is easier to spam: alternatives, pingback vs trackback 
+ 
