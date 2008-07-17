@@ -23,3 +23,16 @@ div.break {
 	clear: both;
 	padding-top: 25px;
 }
+
+div#header .left {
+        float: left;
+}
+
+div#header .right {
+        padding: 0 39px;
+        float: right;
+}    
+#logo {
+	top: 15px;
+	position: relative;
+}            
