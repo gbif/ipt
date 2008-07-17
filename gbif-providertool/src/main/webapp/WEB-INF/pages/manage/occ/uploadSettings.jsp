@@ -8,7 +8,8 @@
 
 <s:form action="addUploadJob" method="post" validate="true">
     <s:hidden key="resource_id"/>        
-    <s:textfield label="upload.repeatInDays" name="repeatInDays" value="0" cssClass="text small"/>
+    <s:textfield key="upload.repeatInDays" name="repeatInDays" value="0" cssClass="text small"/>
+    <s:textfield key="upload.limit" name="limit" cssClass="text small"/>
     <s:submit cssClass="button" key="button.add" theme="simple"/>
 </s:form>
 

@@ -58,6 +58,7 @@ public class DatasourceBasedResource extends Resource {
 	private DataSource datasource;
 
 	
+	
 	@Column(length=32)
 	public String getServiceName() {
 		return serviceName;

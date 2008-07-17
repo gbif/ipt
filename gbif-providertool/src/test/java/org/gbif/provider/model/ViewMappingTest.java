@@ -12,7 +12,7 @@ public class ViewMappingTest {
 
 	@Before
 	public void setUp() throws Exception {
-		DatasourceBasedResource r = new OccurrenceResource();
+		DatasourceBasedResource r = OccurrenceResource.newInstance(null);
 		r.setTitle("Berlin Moss");
 		vm1 = new ViewMapping();
 		vm1.setCoreIdColumnIndex(3);

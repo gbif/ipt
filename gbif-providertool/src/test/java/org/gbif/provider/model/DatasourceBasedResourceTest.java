@@ -22,7 +22,7 @@ public class DatasourceBasedResourceTest {
 		r3.setTitle("A different title");
 	}
 	private DatasourceBasedResource getNewResource(){
-		DatasourceBasedResource r = new OccurrenceResource();
+		DatasourceBasedResource r = OccurrenceResource.newInstance(null);
 		r.setTitle("Berlin Moss");
 		r.setCreated(now);
 		r.setGuid(guid);

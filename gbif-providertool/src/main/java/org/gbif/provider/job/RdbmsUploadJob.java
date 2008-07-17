@@ -33,11 +33,13 @@ import org.gbif.provider.service.OccurrenceUploadManager;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Launchable;
 import org.gbif.util.JSONUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 public class RdbmsUploadJob implements TransactionJob{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
 	private static final String RESOURCE_ID = "resourceId";
 	private static final String USER_ID = "userId";
+	private static final String MAX_RECORDS = "maxRecords";
 	
 	private static I18nLog logdb = I18nLogFactory.getLog(RdbmsUploadJob.class);
 
@@ -48,7 +50,11 @@ public class RdbmsUploadJob implements TransactionJob{
     private OccurrenceUploadManager occurrenceUploadManager;
 
     
-	private RdbmsUploadJob(
+	public RdbmsUploadJob(){
+		super();
+	}
+	
+	public RdbmsUploadJob(
 			ResourceManager<OccurrenceResource> occResourceManager,
 			GenericManager<UploadEvent, Long> uploadEventManager,
 			DatasourceInspectionManager datasourceInspectionManager,
@@ -60,15 +66,35 @@ public class RdbmsUploadJob implements TransactionJob{
 		this.occurrenceUploadManager = occurrenceUploadManager;
 	}
 
-	public static Job newUploadJob(Resource resource, User user){
+	public void setOccResourceManager(
+			ResourceManager<OccurrenceResource> occResourceManager) {
+		this.occResourceManager = occResourceManager;
+	}
+	public void setUploadEventManager(
+			GenericManager<UploadEvent, Long> uploadEventManager) {
+		this.uploadEventManager = uploadEventManager;
+	}
+	public void setDatasourceInspectionManager(
+			DatasourceInspectionManager datasourceInspectionManager) {
+		this.datasourceInspectionManager = datasourceInspectionManager;
+	}
+	public void setOccurrenceUploadManager(
+			OccurrenceUploadManager occurrenceUploadManager) {
+		this.occurrenceUploadManager = occurrenceUploadManager;
+	}
+
+	
+	public static Job newUploadJob(Resource resource, User user, int repeatInDays, Integer maxRecords){
 		// create job data
 		Map<String, Object> seed = new HashMap<String, Object>();
 		seed.put(RESOURCE_ID, resource.getId());
 		seed.put(USER_ID, user.getId());
+		seed.put(MAX_RECORDS, maxRecords);
 		// create upload job
 		Job job = new Job();
-		job.setJobClassName(RdbmsUploadJobLauncher.class.getName());
+		job.setJobClassName(RdbmsUploadJob.class.getName());
 		job.setDataAsJSON(JSONUtils.jsonFromMap(seed));
+		job.setRepeatInDays(repeatInDays);
 		job.setJobGroup(JobUtils.getJobGroup(resource));
 		job.setRunningGroup(JobUtils.getJobGroup(resource));
 		job.setName("RDBMS data upload");
@@ -96,10 +122,22 @@ public class RdbmsUploadJob implements TransactionJob{
 				ViewMapping coreViewMapping = resource.getCoreMapping();
 				ResultSet rs = datasourceInspectionManager.executeViewSql(coreViewMapping.getViewSql());	        
 				RdbmsImportSource source = RdbmsImportSource.newInstance(rs, coreViewMapping);
+				// track upload in upload event metadata (mainly statistics)
 				UploadEvent coreEvent = new UploadEvent();
 				coreEvent.setResource(resource);
-				// upload records
-				Map<String, Long> idMap = occurrenceUploadManager.uploadCore(source, resource, coreEvent);
+				// try to upload records
+				try {
+					Map<String, Long> idMap = occurrenceUploadManager.uploadCore(source, resource, coreEvent);
+					// upload further extensions one by one
+					for (ViewMapping view : resource.getExtensionMappings().values()){
+						rs = datasourceInspectionManager.executeViewSql(view.getViewSql());	        
+						source = RdbmsImportSource.newInstance(rs, view);
+						occurrenceUploadManager.uploadExtension(source, idMap, resource, view.getExtension());
+					}
+				} catch (Exception e) {
+					logdb.error("Error uploading data", e);
+					e.printStackTrace();
+				}
 				// save upload event
 				Date now = new Date();
 				coreEvent.setExecutionDate(now);
@@ -108,15 +146,10 @@ public class RdbmsUploadJob implements TransactionJob{
 				resource.setLastImport(now);
 				resource.setRecordCount(coreEvent.getRecordsUploaded());
 				occResourceManager.save(resource);
-				// upload further extensions one by one
-				for (ViewMapping view : resource.getExtensionMappings().values()){
-					rs = datasourceInspectionManager.executeViewSql(view.getViewSql());	        
-					source = RdbmsImportSource.newInstance(rs, view);
-					occurrenceUploadManager.uploadExtension(source, idMap, resource, view.getExtension());
-				}
 			} catch (NumberFormatException e) {
-				logdb.error("ResourceID in seed is no Integer {0}", seed.toString(), e);
-			} 
+				String[] params = {RESOURCE_ID, USER_ID, seed.toString()};
+				logdb.error("{0} or {1} in seed is no Integer {2}", params, e);
+			}
 
 		} catch (Exception e) {
 			logdb.error("Error occurred while running "+this.getClass().getSimpleName(), e);

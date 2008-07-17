@@ -24,9 +24,15 @@ import org.appfuse.service.GenericManager;
 import org.gbif.provider.dao.ResourceDao;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
+import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.ViewMapping;
 import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -39,11 +45,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResource> extends ResourceManagerImpl<T> implements ResourceManager<T> {
 	@Autowired
 	private DatasourceRegistry registry;
-
+	
 	public DatasourceBasedResourceManagerImpl(ResourceDao<T> resourceDao) {
 		super(resourceDao);
 	}
 	
+
 	@Override
 	public void remove(Long id) {
 		// update registry
@@ -61,6 +68,14 @@ public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResourc
 		//datasource might have been updated, so re-register
 		registry.registerDatasource(resource);
 		return persistentResource;
+	}
+	
+	@Override
+	public T get(Long id) {
+		T obj = super.get(id);
+		// init some OnetoMany properties
+		obj.getAllMappings();
+		return obj;
 	}
 
 }

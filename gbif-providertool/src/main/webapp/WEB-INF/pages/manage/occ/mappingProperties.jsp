@@ -57,7 +57,7 @@
             name="mappings[%{#stat.index}].value"  
             value="%{mappings[#stat.index].value}"/>  
 		<c:if test="${not empty property.link}">
-	 		<s:a href="%{property.link}">help</s:a>
+	 		<a href="${property.link}" target="_blank">help</a>
 		</c:if>
         <br/> 
     </s:iterator> 

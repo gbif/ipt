@@ -27,11 +27,6 @@ public class Constants {
      * The name of the Administrator role, as specified in web.xml
      */
     public static final String MANAGER_ROLE = "ROLE_MANAGER";
-
-    public static final Long DARWIN_CORE_EXTENSION_ID = 1L;
-
-    public static final Long CHECKLIST_EXTENSION_ID = 1L;
-
     public static final Long TEST_RESOURCE_ID = 1L;
     public static final Long TEST_USER_ID = 4L;
 }

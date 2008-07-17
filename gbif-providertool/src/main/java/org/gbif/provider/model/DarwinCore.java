@@ -143,7 +143,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMinimumElevationInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					logdb.warn("Couldnt transform property MinimumElevationInMeters into Integer value");
+					logdb.warn("Couldnt transform value '{0}' for property MinimumElevationInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("MaximumElevationInMeters")){
 				dwc.setMaximumElevationInMeters(val);
@@ -152,7 +152,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMaximumElevationInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					logdb.warn("Couldnt transform property MaximumElevationInMeters into Integer value");
+					logdb.warn("Couldnt transform value '{0}' for property MaximumElevationInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
 				dwc.setMinimumDepthInMeters(val);
@@ -161,7 +161,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMinimumDepthInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					logdb.warn("Couldnt transform property MinimumDepthInMeters into Integer value");
+					logdb.warn("Couldnt transform value '{0}' for property MinimumDepthInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("MaximumDepthInMeters")){
 				dwc.setMaximumDepthInMeters(val);
@@ -170,7 +170,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMaximumDepthInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
-					logdb.warn("Couldnt transform property MaximumDepthInMeters into Integer value");
+					logdb.warn("Couldnt transform value '{0}' for property MaximumDepthInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("CollectingMethod")){
 				dwc.setCollectingMethod(val);

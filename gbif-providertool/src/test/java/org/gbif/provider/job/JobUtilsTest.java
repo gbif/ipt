@@ -11,7 +11,7 @@ public class JobUtilsTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		r = new OccurrenceResource();
+		r = OccurrenceResource.newInstance(null);
 		r.setId(121L);
 	}
 
