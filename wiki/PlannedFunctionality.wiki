@@ -21,7 +21,7 @@
     * other users can manage their datasets only 
  * allow easy setup of google analytics for statistics 
 
-===TaxonOccurrences===
+===Taxon Occurrences===
  * Datamodel 
     * DwC and extension tables. "Star" schema, also see Local Index File proposal 
        * extensions can be added from central update site only 
@@ -57,7 +57,7 @@
     * OAI-PMH 
        * based on date_changed for incremental harvesting and index files as seeds 
 
-===ResourceMetadata===
+===Resource Metadata===
  * store metadata info for 
     * each TaxonOccurrence and checklist datasource 
     * any other resource. If online available list  
@@ -84,7 +84,7 @@
     * initially no file upload supported 
     * automatic creation/update of metadata record from occurrence or checklist data items (spatial+taxonomic coverage) 
  
-===Taxonomic checklists===
+===Taxonomic Checklists===
  * Datamodel 
     * simplified TCS with taxonomic hierarchy, synonyms, nomenclatural notes 
     * keeps URL to full taxon if provided outside of this tool 
