@@ -68,8 +68,10 @@ public class WorkerPool extends GenericObjectPool {
 			Job job = worker.getJob();
 			// for repeatable jobs schedule the next run
 			Job newJob = getNextRepeatingJob(job);
-			logger.info("Job is repeating every "+job.getRepeatInDays()+" days. Schedule next job at "+newJob.getNextFireTime());
-			jobDao.save(newJob);
+			if (newJob != null){
+				logger.info("Job is repeating every "+job.getRepeatInDays()+" days. Schedule next job at "+newJob.getNextFireTime());
+				jobDao.save(newJob);
+			}
 			logger.info("Returning worker, so removing Job");
 			// a failure here means corrupted and pretty fatal so just pass to application
 			jobDao.remove(job.getId());
