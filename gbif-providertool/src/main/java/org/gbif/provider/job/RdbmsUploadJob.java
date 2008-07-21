@@ -35,7 +35,7 @@ import org.gbif.scheduler.scheduler.Launchable;
 import org.gbif.util.JSONUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-public class RdbmsUploadJob implements TransactionJob{
+public class RdbmsUploadJob extends UploadBaseJob {
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
 	private static final String RESOURCE_ID = "resourceId";
 	private static final String USER_ID = "userId";
@@ -156,34 +156,8 @@ public class RdbmsUploadJob implements TransactionJob{
 		}
 	}
 
-	private void fakeUpload(Long resourceId){
-		// add a week from last import
-		OccurrenceResource resource = occResourceManager.get(resourceId);
-        Date now = new Date(resource.getLastImport().getTime() + 604800000l);
-		log.info("Fake upload for resource "+resourceId + " at date "+now);
-        UploadEvent coreEvent = getFakeUploadEvent(resource);
-        coreEvent.setResource(resource);
-        coreEvent.setExecutionDate(now);
-		// save upload event
-		uploadEventManager.save(coreEvent);
-		// update resource properties
-		resource.setLastImport(now);
-		resource.setRecordCount(coreEvent.getRecordsUploaded());
-		occResourceManager.save(resource);
-	}
-	
-	private static UploadEvent getFakeUploadEvent(DatasourceBasedResource resource){
-		Random rnd = new Random();
-        int numExistingRecords = resource.getRecordCount();
-		int numAdded = rnd.nextInt(10000);
-		int numDeleted = rnd.nextInt(numExistingRecords/100);
-		int numChanged = rnd.nextInt((numExistingRecords-numDeleted-numAdded)/10);
-		int numUploaded = numExistingRecords+numAdded-numDeleted;
-        UploadEvent event = new UploadEvent();
-        event.setRecordsAdded(numAdded);
-        event.setRecordsDeleted(numDeleted);
-        event.setRecordsChanged(numChanged);
-        event.setRecordsUploaded(numUploaded);
-		return event;
+
+	public String status() {
+		return "still running";
 	}
 }

@@ -65,8 +65,14 @@
 
     <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractDao"/>
     
+
+    <!-- JDBC DAOs -->
     <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
+    </bean>
+
+    <bean id="extensionRecordDao" class="org.gbif.provider.dao.jdbc.ExtensionRecordDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
     
     
@@ -124,6 +130,15 @@
         <constructor-arg ref="datasourceInspectionManager"/>
         <constructor-arg ref="occurrenceUploadManager"/>
     </bean> 
+    <bean id="uploadJobby" class="org.gbif.provider.job.UploadJobby">
+        <constructor-arg ref="occResourceManager"/>
+        <constructor-arg ref="uploadEventManager"/>
+        <constructor-arg ref="datasourceInspectionManager"/>
+        <constructor-arg ref="extensionRecordDao"/>
+        <constructor-arg ref="darwinCoreDao"/>
+    </bean> 
+    
+    
     <!--bean id="rdbmsUploadJobLauncher" class="org.gbif.provider.job.RdbmsUploadJobLauncher">
         <constructor-arg ref="rdbmsUploadJob"/>
     </bean-->     

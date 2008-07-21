@@ -21,7 +21,7 @@ public class OccurrenceUploadManagerImplTest extends RdbmsImportSourceTest{
 
 
 	@Test
-	public void testUploadCore() {
+	public void testUploadCore() throws InterruptedException {
 		setUpSource();
 		OccurrenceResource resource = (OccurrenceResource) getTestResource();
 		UploadEvent event = new UploadEvent();

@@ -11,7 +11,7 @@
 
 <s:form action="editResourceMetadata">
   <fieldset>
-    <legend>Metadata</legend>
+    <legend><s:text name="occResourceOverview.metadata"/></legend>
 	<s:label key="occResource.serviceName"/>
 	<s:label key="occResource.description"/>
     <s:submit cssClass="button" key="button.edit"/>
@@ -20,7 +20,7 @@
 
 <s:form action="editResourceConnection">
   <fieldset>
-    <legend>Datasource</legend>
+    <legend><s:text name="occResourceOverview.datasource"/></legend>
     <s:if test="%{occResource.hasMetadata()}">
 		<s:label key="occResource.isValidConnection" value="%{occResource.isValidConnection()}"/>
 	    <s:submit cssClass="button" key="button.edit"/>
@@ -33,7 +33,7 @@
 
 <s:form action="editMappingSource">
   <fieldset>
-    <legend>Mapping</legend>
+    <legend><s:text name="occResourceOverview.mapping"/></legend>
     <s:if test="%{occResource.isValidConnection()}">
     
   	  <s:label key="occResourceOverview.coreMapping" />
@@ -72,22 +72,26 @@
 
 <s:form action="upload">
   <fieldset>
-    <legend>Data Upload</legend>
+    <legend><s:text name="occResourceOverview.cache"/></legend>
     <s:if test="%{occResource.hasMinimalMapping()}">
     	<div class="left">
-			<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
+    		<s:if test="%{occResourceOverview.runningJobs}">
+				<s:label key="resource.recordCount" value="currently uploading..."/>
+    		</s:if>
+    		<s:else>
+				<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
+    		</s:else>
 			<s:label key="occResource.lastImport"/>
 			<s:url id="uploadHistoryUrl" action="uploadHistory">
 				<s:param name="resource_id" value="id"/>
 			</s:url>
 			<s:label key="occResourceOverview.nextJob" value="%{nextJob.nextFireTime}"/>
-			<s:label key="occResourceOverview.runningJobs" value="">
-				<ul>
+			<s:label key="occResourceOverview.runningJobs" value=""/>
 				<s:iterator value="runningJobs" status="jobStat">
-					<li> JOB: <s:property value="description"/> </li>
+					<li> <s:property value="description"/>
+						 
+					</li>
 				</s:iterator>
-				</ul>
-			</s:label>
 	    </div>
 		<div class="right">
 			<s:a href="%{uploadHistoryUrl}">
@@ -106,9 +110,12 @@
 
 <s:form action="validate">
   <fieldset>
-    <legend>Validation</legend>
+    <legend><s:text name="occResourceOverview.validation"/></legend>
     <s:if test="%{occResource.hasData()}">
-		<s:label key="occResourceOverview.validation" value="Some validation summary..."/>
+		<s:label key="Problematic records"/>
+		<li>
+ 			<a href="/logging/logEvents.html?groupId=<s:property value="occResource.id"/>"><s:property value="occResource.recordCount"/></a>
+ 		</li>		
 	    <s:submit cssClass="button" key="button.validate"/>
     </s:if>
     <s:else>

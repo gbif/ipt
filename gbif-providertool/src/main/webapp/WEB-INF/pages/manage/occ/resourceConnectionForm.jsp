@@ -11,6 +11,8 @@
         <s:hidden name="resource_id" value="%{occResource.id}"/>
     </li>
 
+ 	<s:select key="occResource.jdbcDriverClass" required="true" headerKey="Select database system" emptyOption="false" 
+		list="jdbcDriverClasses" />
     <s:textfield key="occResource.jdbcUrl" required="true" maxlength="120" cssClass="text large"/>
     <s:textfield key="occResource.jdbcUser" required="true" maxlength="120" cssClass="text large"/>
     <s:textfield key="occResource.jdbcPassword" required="true" maxlength="120" cssClass="text large"/>

@@ -33,7 +33,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.gbif.logging.log.I18nLog;
+import org.gbif.logging.log.I18nLogFactory;
 import org.hibernate.annotations.MapKey;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 
@@ -44,6 +49,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
  */
 @Entity
 public class DatasourceBasedResource extends Resource {
+	private static Log log = LogFactory.getLog(DatasourceBasedResource.class);
 	private String serviceName;
 	private String jdbcDriverClass = "com.mysql.jdbc.Driver";
 	private String jdbcUrl = "jdbc:mysql://localhost/YOUR_DATABASE";
@@ -153,8 +159,13 @@ public class DatasourceBasedResource extends Resource {
 		return datasource;
 	}
 	public void udpateDatasource() {
-		if (this.getJdbcUrl() != null && jdbcDriverClass != null){
-			datasource = new SingleConnectionDataSource(this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);			
+		if (this.getJdbcUrl() != null && jdbcDriverClass != null){			
+			try {
+				datasource = new SingleConnectionDataSource(this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);
+			} catch (Exception e) {
+				datasource = null;
+				log.debug(String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s, Password=%s", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword()), e);
+			}			
 		}else{
 			datasource = null;
 		}

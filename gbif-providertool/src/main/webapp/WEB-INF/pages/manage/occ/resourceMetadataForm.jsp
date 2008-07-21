@@ -13,7 +13,7 @@
     </li>
 
     <s:textfield key="occResource.title" required="true" cssClass="text medium"/>
-    <s:textfield key="occResource.serviceName" maxlength="16" cssClass="text medium"/>
+    <!--s:textfield key="occResource.serviceName" maxlength="16" cssClass="text medium"/-->
     <s:textarea key="occResource.description" cssClass="text large"/>
 
     <li class="buttonBar bottom">

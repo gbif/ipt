@@ -18,6 +18,7 @@ package org.gbif.provider.webapp.action;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +53,23 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private JobManager jobManager;
 	private List<Job> runningJobs;
 	private Job nextJob;
+	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
+	        {  
+	            {  
+	                put("com.mysql.jdbc.Driver", "MySQL");
+	                put("org.postgresql.Driver", "Postrges");
+	                put("org.h2.Driver", "H2");
+	                put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
+	                put("oracle.jdbc.OracleDriver", "Oracle");  
+	                put("org.hsqldb.jdbcDriver", "HSQL");  
+	                put("org.apache.derby.jdbc.ClientDriver", "Derby");  
+	            }  
+	        };  
+	  
+
+	public Map<String, String> getJdbcDriverClasses() {
+		return jdbcDriverClasses;
+	}
 
 	public void setResourceFactory(ResourceFactory resourceFactory) {
 		this.resourceFactory = resourceFactory;
