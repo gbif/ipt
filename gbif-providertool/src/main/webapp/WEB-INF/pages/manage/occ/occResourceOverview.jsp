@@ -9,7 +9,8 @@
 	<br/><br/><br/><br/>
 </c:set>
 
-<s:form action="editResourceMetadata">
+<s:form action="editResourceMetadata" method="get">
+  <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.metadata"/></legend>
 	<s:label key="occResource.serviceName"/>
@@ -18,7 +19,8 @@
   </fieldset>
 </s:form>
 
-<s:form action="editResourceConnection">
+<s:form action="editResourceConnection" method="get">
+  <s:hidden name="resource_id" value="%{occResource.id}"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.datasource"/></legend>
     <s:if test="%{occResource.hasMetadata()}">
@@ -31,7 +33,8 @@
   </fieldset>
 </s:form>
 
-<s:form action="editMappingSource">
+<s:form action="editMappingSource" method="get">
+  <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.mapping"/></legend>
     <s:if test="%{occResource.isValidConnection()}">
@@ -70,30 +73,28 @@
 	</fieldset>
 </s:form>
 
-<s:form action="upload">
+<s:form action="upload" method="get">
+  <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.cache"/></legend>
     <s:if test="%{occResource.hasMinimalMapping()}">
     	<div class="left">
-    		<s:if test="%{occResourceOverview.runningJobs}">
-				<s:label key="resource.recordCount" value="currently uploading..."/>
+    		<s:if test="%{currentJob}">
+				<s:label key="resource.recordCount" value="%{currentJob.status()}"/>
     		</s:if>
     		<s:else>
 				<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
     		</s:else>
 			<s:label key="occResource.lastImport"/>
-			<s:url id="uploadHistoryUrl" action="uploadHistory">
-				<s:param name="resource_id" value="id"/>
-			</s:url>
-			<s:label key="occResourceOverview.nextJob" value="%{nextJob.nextFireTime}"/>
-			<s:label key="occResourceOverview.runningJobs" value=""/>
-				<s:iterator value="runningJobs" status="jobStat">
-					<li> <s:property value="description"/>
-						 
-					</li>
-				</s:iterator>
+			<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
+    		<s:if test="%{currentJob}">
+				<s:label key="occResourceOverview.currentJob" value="%{currentJob.description}"/>
+    		</s:if>
 	    </div>
 		<div class="right">
+			<s:url id="uploadHistoryUrl" action="uploadHistory">
+				<s:param name="resource_id" value="resource_id"/>
+			</s:url>
 			<s:a href="%{uploadHistoryUrl}">
 				<img src="<s:property value="gChartData"/>" />
 			</s:a>
@@ -108,7 +109,8 @@
   </fieldset>
 </s:form>
 
-<s:form action="validate">
+<s:form action="validate" method="get">
+  <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.validation"/></legend>
     <s:if test="%{occResource.hasData()}">
@@ -128,8 +130,8 @@
 <s:label key="occResourceOverview.lastModified" value="%{occResource.modified} by %{occResource.modifier.getFullName()}"/>
 
 <c:if test="${not empty occResource.id}">
-  <s:form action="saveResource">
-    <s:hidden name="resource_id" value="%{occResource.id}"/>
+  <s:form action="saveResource" method="get">
+    <s:hidden key="resource_id"/>
     <s:submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('saveResource')" theme="simple"/>
   </s:form>
 </c:if>

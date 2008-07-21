@@ -29,38 +29,23 @@ import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 
-public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction implements SessionAware{
+public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction {
 	// new cant be used. Just call the getter new so the parameter becomes new. Neu is german for new ;)
     protected ResourceManager<OccurrenceResource> occResourceManager;
-    protected Map session;
-	private Boolean neu;
-	
-	public void setNeu(Boolean neu) {
-		this.neu = neu;
-	}
+	protected Long resource_id;
 	
     public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
-
-
-
-	/**
-     * is the acton intended to create a new entity? New cant be used as a java property, 
-     * so the german translation "neu" is used as the underlying property
-     * @return
-     */
-    public boolean isNew() {
-    	if (neu != null && neu){
-    		return true;
-    	}
-		return false;
-	}
     
-    public Long getResourceId() {
-	    return (Long) session.get(DatasourceInterceptor.SESSION_ATTRIBUTE);			
+	public void setResource_id(Long resource_id) {
+		this.resource_id = resource_id;
 	}
-	
+
+	public Long getResource_id() {
+		return resource_id;
+	}
+
 	public User getCurrentUser(){
 		SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
 	    // secure context will be null when running unit tests so leave userId as null
@@ -74,7 +59,4 @@ public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.Base
 		return null;
 	}
 
-	public void setSession(Map arg0) {
-		session = arg0;
-	}
 }

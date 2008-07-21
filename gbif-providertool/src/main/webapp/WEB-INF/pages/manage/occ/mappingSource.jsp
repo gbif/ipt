@@ -8,6 +8,7 @@
 <h2><s:property value="mapping.extension.name"/> Extension</h2>
 
 <s:form action="saveMappingSource" method="post" validate="true">
+    <s:hidden key="resource_id"/>
     <s:hidden key="mapping_id"/>
     <s:hidden key="extension_id"/>
     
@@ -43,7 +44,8 @@
 	</table>
 
 	<s:form action="editMappingProperties" method="post">
-        <s:hidden name="mapping_id" value="%{mapping.id}"/>
+	    <s:hidden key="resource_id"/>
+        <s:hidden key="mapping_id"/>
         <s:submit cssClass="button" key="button.map" theme="simple"/>
 	</s:form>
 </s:if>

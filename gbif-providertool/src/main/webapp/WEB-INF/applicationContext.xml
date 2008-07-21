@@ -128,12 +128,6 @@
         <constructor-arg ref="occResourceManager"/>
         <constructor-arg ref="uploadEventManager"/>
         <constructor-arg ref="datasourceInspectionManager"/>
-        <constructor-arg ref="occurrenceUploadManager"/>
-    </bean> 
-    <bean id="uploadJobby" class="org.gbif.provider.job.UploadJobby">
-        <constructor-arg ref="occResourceManager"/>
-        <constructor-arg ref="uploadEventManager"/>
-        <constructor-arg ref="datasourceInspectionManager"/>
         <constructor-arg ref="extensionRecordDao"/>
         <constructor-arg ref="darwinCoreDao"/>
     </bean> 

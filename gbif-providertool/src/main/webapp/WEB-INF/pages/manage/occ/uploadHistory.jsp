@@ -7,8 +7,10 @@
 </head>
 
 <c:set var="buttons">
-    <input type="button" class="button" onclick="location.href='<c:url value="resource.html"/>'"
-        value="<s:text name="button.done"/>"/>
+	<s:form action="resource" method="get">
+	  <s:hidden key="resource_id"/>
+	  <s:submit cssClass="button" key="button.done" theme="simple"/>
+	</s:form>
 </c:set>
 
 <c:out value="${buttons}" escapeXml="false" />
