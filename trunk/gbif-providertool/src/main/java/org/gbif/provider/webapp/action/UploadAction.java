@@ -35,6 +35,7 @@ import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.job.JobUtils;
 import org.gbif.provider.job.RdbmsUploadJob;
+import org.gbif.provider.job.UploadJobby;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -113,7 +114,8 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	
 	public String addUploadJob() throws Exception{
 		// create & store upload job based on resource alone
-		Job job = RdbmsUploadJob.newUploadJob(resource, getCurrentUser(), repeatInDays, limit);
+		//Job job = RdbmsUploadJob.newUploadJob(resource, getCurrentUser(), repeatInDays, limit);
+		Job job = UploadJobby.newUploadJob(resource, getCurrentUser(), repeatInDays, limit);
 		jobManager.save(job);
 		// add to scheduledJobs that was created previously in prepare() phase already
 		scheduledJobs.add(job);

@@ -59,7 +59,7 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 	}
 
 	
-	public Map<String, Long> uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event) {
+	public Map<String, Long> uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event) throws InterruptedException {
 		log.info("Uploading occurrence core for resource "+resource.getTitle());
 		Map<String, Long> idMap = new HashMap<String, Long>();
 		// use a single date for now (e.g. to set dateLastModified)
@@ -73,6 +73,10 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 		int recordsAdded = 0;
 		// go through source records one by one
 		for (ImportRecord rec : source){
+			// check if thread should shutdown...
+			if (Thread.interrupted()) {
+			    throw new InterruptedException();
+			}			
 			// get previous record or null if it didnt exist yet based on localID and resource
 			DarwinCore oldRecord = darwinCoreDao.findByLocalId(rec.getLocalId(), resource.getId());
 			// get darwincore record based on this core record
@@ -87,7 +91,7 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 			// check if new record version is different from old one
 			if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
 				// same record. reset isDeleted flag = false
-				darwinCoreDao.updateIsDeleted(oldRecord.getId(), false);
+				darwinCoreDao.updateIsDeleted(oldRecord.getId(), resource.getId(), false);
 			}else if (oldRecord!=null){
 				// modified record
 				dwc.setModified(now);
@@ -143,8 +147,12 @@ public class OccurrenceUploadManagerImpl implements OccurrenceUploadManager{
 		}
 	}
 
-	public void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) {
+	public void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) throws InterruptedException {
 		for (ImportRecord rec : source){
+			// check if thread should shutdown...
+			if (Thread.interrupted()) {
+			    throw new InterruptedException();
+			}
 			Long coreId = idMap.get(rec.getLocalId());
 			if (coreId == null){
 				String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};

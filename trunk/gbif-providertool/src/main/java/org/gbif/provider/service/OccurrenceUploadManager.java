@@ -19,8 +19,9 @@ public interface OccurrenceUploadManager {
 	 * @param extension the description of the core properties
 	 * @param event the empty upload event going to be filled with upload statistics
 	 * @return
+	 * @throws InterruptedException @See http://java.sun.com/docs/books/tutorial/essential/concurrency/interrupt.html
 	 */
-	public Map<String, Long> uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event);
+	public Map<String, Long> uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event) throws InterruptedException;
 	
 	/**
 	 * Upload data for an extension and relate it to the core via the supplied idMap
@@ -28,6 +29,7 @@ public interface OccurrenceUploadManager {
 	 * @param idMap a mapping from local IDs to coreIDs
 	 * @param resource the resource the data will be attached to
 	 * @param extension description of the extension properties
+	 * @throws InterruptedException @See http://java.sun.com/docs/books/tutorial/essential/concurrency/interrupt.html 
 	 */
-	public void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension);
+	public void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) throws InterruptedException;
 }

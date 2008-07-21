@@ -58,10 +58,10 @@ public class DarwinCoreDaoImpl extends GenericDaoHibernate<DarwinCore, Long> imp
 		}
 	}
 
-	public void updateIsDeleted(Long id, boolean isDeleted) {
+	public void updateIsDeleted(Long id, Long resourceId, boolean isDeleted) {
 		//FIXME: not sure if it is a good idea to mix JDBC and Hibernate...
 		Connection con = this.getSession().connection();		
-		String sql = "UPDATE DarwinCore SET deleted="+isDeleted+" WHERE id = "+id;
+		String sql = String.format("UPDATE DarwinCore SET deleted=%s WHERE resource_id = %i and id = %i", isDeleted, resourceId, id);
 		try {
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.executeUpdate(sql);
@@ -69,6 +69,21 @@ public class DarwinCoreDaoImpl extends GenericDaoHibernate<DarwinCore, Long> imp
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public DarwinCore get(final Long Id, final Long resourceId) {
+		HibernateTemplate template = getHibernateTemplate();
+
+		DarwinCore dwc =  (DarwinCore) template.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) {
+				Query query = session.createQuery("select dwc FROM DarwinCore dwc WHERE dwc.resource.id = :resourceId AND dwc.id = :Id");
+				query.setParameter("resourceId", resourceId);
+				query.setParameter("Id", Id);
+				query.setCacheable(true);
+				return query.uniqueResult();
+			}
+		});
+		return dwc;
 	}
 	
 }

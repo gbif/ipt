@@ -18,6 +18,7 @@
 	    <display:column property="nextFireTime" sortProperty="nextFireTime" sortable="true" titleKey="upload.nextFireTime"/>
 	    <display:column property="description" sortable="true" titleKey="upload.description"/>
 	    <display:column property="repeatInDays" sortable="true" titleKey="upload.repeatInDays"/>
+	    <display:column property="dataAsJSON" sortable="false" titleKey="job.dataAsJSON"/>
 	
 	    <display:setProperty name="paging.banner.item_name"><s:text name="upload.job"/></display:setProperty>
 	    <display:setProperty name="paging.banner.items_name"><s:text name="upload.jobs"/></display:setProperty>
