@@ -27,6 +27,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.job.JobUtils;
+import org.gbif.provider.job.UploadBaseJob;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
@@ -46,13 +47,14 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private GenericManager<Extension> extensionManager;
 	private GenericManager<ViewMapping> viewMappingManager;
 	private UploadEventManager uploadEventManager;
-	private List occResources;
+	private JobManager jobManager;
+	
 	private List<Extension> extensions;
+	private List occResources;
 	private OccurrenceResource occResource;
 	private String gChartData;
-	private JobManager jobManager;
-	private List<Job> runningJobs;
-	private Job nextJob;
+	private Job currentJob;
+	private Job nextUpload;
 	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
 	        {  
 	            {  
@@ -101,12 +103,12 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return extensions;
 	}
 
-	public List<Job> getRunningJobs() {
-		return runningJobs;
+	public Job getCurrentJob() {
+		return currentJob;
 	}
 
-	public Job getNextJob() {
-		return nextJob;
+	public Job getNextUpload() {
+		return nextUpload;
 	}
 
 	public String getGChartData() {
@@ -122,8 +124,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public void prepare() {
-		if (getResourceId() != null && !isNew()) {
-			occResource = occResourceManager.get(getResourceId());
+		if (resource_id != null) {
+			occResource = occResourceManager.get(resource_id);
 		} else {
 			occResource = resourceFactory.newOccurrenceResourceInstance();
 		}
@@ -131,7 +133,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public String execute() {
 		// create GoogleChart string
-		gChartData = uploadEventManager.getGoogleChartData(getResourceId());
+		gChartData = uploadEventManager.getGoogleChartData(resource_id);
 		// get all availabel extensions for new mappings
 		extensions = extensionManager.getAll();
 		for (Extension ext : extensions) {
@@ -146,17 +148,21 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 			extensions.remove(map.getExtension());
 		}
 		// investigate upload jobs
-		runningJobs = new ArrayList<Job>();
-		List<Job> jobs = jobManager.getJobsInGroup(JobUtils
-				.getJobGroup(occResource));
+		List<Job> jobs = jobManager.getJobsInGroup(JobUtils.getJobGroup(occResource));
 		for (Job j : jobs) {
 			if (j.getStarted() != null) {
 				// job is running
-				runningJobs.add(j);
+				if (currentJob != null){					
+					log.warn("Multiple jobs running in parallel for resource "+resource_id);
+				}
+				currentJob = j;
 			} else {
-				if (nextJob == null
-						|| j.getNextFireTime().after(nextJob.getNextFireTime())) {
-					nextJob = j;
+				try {
+					Class jobClass = Class.forName(j.getJobClassName());
+					if (jobClass.isAssignableFrom(UploadBaseJob.class) && (nextUpload == null || j.getNextFireTime().after(nextUpload.getNextFireTime()))) {
+						nextUpload = j;
+					}
+				} catch (ClassNotFoundException e) {
 				}
 			}
 		}
@@ -184,16 +190,12 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		occResource = occResourceManager.save(occResource);
 		String key = (isNew) ? "occResource.added" : "occResource.updated";
 		saveMessage(getText(key));
-		// set new current resource in session
-		session.put(DatasourceInterceptor.SESSION_ATTRIBUTE, occResource.getId());
 		return SUCCESS;
 	}
 
 	public String delete() {
 		occResourceManager.remove(occResource.getId());
 		saveMessage(getText("occResource.deleted"));
-		// remove resource from session
-		session.put(DatasourceInterceptor.SESSION_ATTRIBUTE, null);
 		return "delete";
 	}
 

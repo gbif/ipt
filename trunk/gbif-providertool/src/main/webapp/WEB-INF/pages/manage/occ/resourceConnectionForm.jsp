@@ -6,7 +6,7 @@
 	<s:head theme="xhtml" debug="true"/>
 </head>
 
-<s:form id="occResourceForm" action="saveResource" method="post" validate="true">
+<s:form id="occResourceForm" action="saveResource" method="get" validate="true">
     <li style="display: none">
         <s:hidden name="resource_id" value="%{occResource.id}"/>
     </li>

@@ -9,7 +9,6 @@
 <s:form id="occResourceForm" action="saveResource" method="post" validate="true">
     <li style="display: none">
         <s:hidden name="resource_id" value="%{occResource.id}"/>
-        <s:hidden name="neu" value="%{isNew()}"/>
     </li>
 
     <s:textfield key="occResource.title" required="true" cssClass="text medium"/>

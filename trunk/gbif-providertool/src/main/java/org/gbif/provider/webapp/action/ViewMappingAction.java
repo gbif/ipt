@@ -124,7 +124,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         }else{
             if (extension_id != null) {
             	mapping = new ViewMapping();
-            	mapping.setResource(occResourceManager.get(getResourceId()));
+            	mapping.setResource(occResourceManager.get(resource_id));
             	mapping.setExtension(extensionManager.get(extension_id));
             }
         }

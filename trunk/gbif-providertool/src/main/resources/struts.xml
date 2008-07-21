@@ -185,9 +185,11 @@
         <action name="saveResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
+                <param name="resource_id">${occResource.id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
             <result name="delete" type="redirect-action">resources</result>
         </action>
@@ -199,6 +201,7 @@
             <result>/WEB-INF/pages/manage/occ/mappingSource.jsp</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
         </action>
 
@@ -209,6 +212,7 @@
             <result>/WEB-INF/pages/manage/occ/mappingProperties.jsp</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
         </action>
 
