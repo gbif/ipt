@@ -25,7 +25,7 @@
 	</display:table>
 </div>
 
-<s:form action="resource" namespace="/manage/occ" method="post">
+<s:form action="resource" namespace="/manage/occ" method="get">
     <s:hidden key="resource_id"/>        
     <s:submit cssClass="button" key="button.done"/>
 </s:form>

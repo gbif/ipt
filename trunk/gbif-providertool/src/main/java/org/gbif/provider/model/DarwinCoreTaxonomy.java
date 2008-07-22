@@ -43,7 +43,7 @@ import org.hibernate.annotations.Parameter;
  *
  */
 @Entity
-public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
+public class DarwinCoreTaxonomy  {
 	private Long id;
 	private DarwinCore dwc;
 	// Taxonomic Elements
@@ -64,8 +64,8 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 	private String identificationQualifer;
 	
 	
-	@Id @GeneratedValue(generator="dwcid")
-	@GenericGenerator(name="dwcid", strategy = "foreign", 
+	@Id @GeneratedValue(generator="dwcidtax")
+	@GenericGenerator(name="dwcidtax", strategy = "foreign", 
 			parameters={@Parameter (name="property", value = "dwc")}
 	)
 	public Long getId() {
@@ -183,91 +183,6 @@ public class DarwinCoreTaxonomy extends BaseObject implements Comparable {
 	public void setIdentificationQualifer(String identificationQualifer) {
 		this.identificationQualifer = identificationQualifer;
 	}
-	
-	
-	
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Object object) {
-		DarwinCoreTaxonomy myClass = (DarwinCoreTaxonomy) object;
-		return new CompareToBuilder()
-				.append(this.higherTaxon, myClass.higherTaxon)
-				.append(this.identificationQualifer,
-						myClass.identificationQualifer)
-				.append(this.family, myClass.family)
-				.append(this.specificEpithet, myClass.specificEpithet)
-				.append(this.order, myClass.order)
-				.append(this.id, myClass.id)
-				.append(this.genus, myClass.genus)
-				.append(this.scientificName, myClass.scientificName)
-				.append(this.kingdom, myClass.kingdom)
-				.append(this.phylum, myClass.phylum)
-				.append(this.authorYearOfScientificName,
-						myClass.authorYearOfScientificName)
-				.append(this.infraspecificEpithet, myClass.infraspecificEpithet)
-				.append(this.infraspecificRank, myClass.infraspecificRank)
-				.append(this.classs, myClass.classs).append(this.dwc,
-						myClass.dwc).append(this.nomenclaturalCode,
-						myClass.nomenclaturalCode).toComparison();
-	}
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof DarwinCoreTaxonomy)) {
-			return false;
-		}
-		DarwinCoreTaxonomy rhs = (DarwinCoreTaxonomy) object;
-		return new EqualsBuilder().append(
-				this.higherTaxon, rhs.higherTaxon).append(
-				this.identificationQualifer, rhs.identificationQualifer)
-				.append(this.family, rhs.family).append(this.specificEpithet,
-						rhs.specificEpithet).append(this.order, rhs.order)
-				.append(this.id, rhs.id).append(this.genus, rhs.genus).append(
-						this.scientificName, rhs.scientificName).append(
-						this.kingdom, rhs.kingdom).append(this.phylum,
-						rhs.phylum).append(this.authorYearOfScientificName,
-						rhs.authorYearOfScientificName).append(
-						this.infraspecificEpithet, rhs.infraspecificEpithet)
-				.append(this.infraspecificRank, rhs.infraspecificRank).append(
-						this.classs, rhs.classs).append(this.dwc, rhs.dwc)
-				.append(this.nomenclaturalCode, rhs.nomenclaturalCode)
-				.isEquals();
-	}
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return new HashCodeBuilder(1252756799, 1510816591).append(this.higherTaxon).append(
-				this.identificationQualifer).append(this.family).append(
-				this.specificEpithet).append(this.order).append(this.id)
-				.append(this.genus).append(this.scientificName).append(
-						this.kingdom).append(this.phylum).append(
-						this.authorYearOfScientificName).append(
-						this.infraspecificEpithet).append(
-						this.infraspecificRank).append(this.classs).append(
-						this.dwc).append(this.nomenclaturalCode).toHashCode();
-	}
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return new ToStringBuilder(this).append("identificationQualifer",
-				this.identificationQualifer).append("dwc", this.dwc).append(
-				"classs", this.classs).append("id", this.id).append("kingdom",
-				this.kingdom).append("phylum", this.phylum).append(
-				"higherTaxon", this.higherTaxon).append("genus", this.genus)
-				.append("order", this.order).append("family", this.family)
-				.append("infraspecificEpithet", this.infraspecificEpithet)
-				.append("infraspecificRank", this.infraspecificRank).append(
-						"specificEpithet", this.specificEpithet).append(
-						"nomenclaturalCode", this.nomenclaturalCode).append(
-						"authorYearOfScientificName",
-						this.authorYearOfScientificName).append(
-						"scientificName", this.scientificName).toString();
-	}
-
 	
 	
 }

@@ -174,7 +174,10 @@
         <action name="resource" class="org.gbif.provider.webapp.action.OccResourceAction">
             <result>/WEB-INF/pages/manage/occ/occResourceOverview.jsp</result>
         </action>
-
+        <action name="uploadStatus" class="org.gbif.provider.webapp.action.JobStatusAction" method="uploadStatus">
+            <result>/WEB-INF/pages/ajax/count.jsp</result>
+        </action>
+        
         <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
         </action>

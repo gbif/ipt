@@ -1342,7 +1342,7 @@
       <value>CoreViewMapping</value>
       <value>1</value>
       <value>1</value>
-      <value><![CDATA[select * from specimen join taxon on taxon_fk=taxon_id limit 100]]></value>
+      <value><![CDATA[select * from specimen join taxon on taxon_fk=taxon_id]]></value>
       <null/>
       <null/>
       <value>1</value>

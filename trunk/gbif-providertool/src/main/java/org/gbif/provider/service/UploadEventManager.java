@@ -3,7 +3,7 @@ package org.gbif.provider.service;
 import java.util.List;
 import org.gbif.provider.model.UploadEvent;
 
-public interface UploadEventManager {
+public interface UploadEventManager extends GenericManager<UploadEvent>{
 	/**
 	 * Return a string that represents the upload event statistics for a given resource 
 	 * so that it can be used with the Google Charts API

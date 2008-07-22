@@ -1,4 +1,4 @@
-package org.gbif.provider;
+package org.gbif.provider.model;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,7 +20,7 @@ import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 import org.junit.Test;
 
-public class ModelTest extends BaseDaoTestCase{
+public class ExtensionTest extends BaseDaoTestCase{
     private GenericManager<Extension, Long> extensionManager;
     private GenericManager<OccurrenceResource, Long> occResourceManager;
     private ResourceFactory resourceFactory;
