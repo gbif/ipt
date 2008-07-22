@@ -44,7 +44,7 @@ import org.hibernate.annotations.Parameter;
  *
  */
 @Entity
-public class DarwinCoreLocation extends BaseObject implements Comparable {
+public class DarwinCoreLocation {
 	private Long id;
 	private DarwinCore dwc;
 	// derived typed properties
@@ -75,8 +75,8 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	private String dayOfYear;
 	private String collector;	
 	
-	@Id @GeneratedValue(generator="dwcid")
-	@GenericGenerator(name="dwcid", strategy = "foreign", 
+	@Id @GeneratedValue(generator="dwcidloc")
+	@GenericGenerator(name="dwcidloc", strategy = "foreign", 
 			parameters={@Parameter (name="property", value = "dwc")}
 	)
 	public Long getId() {
@@ -259,136 +259,6 @@ public class DarwinCoreLocation extends BaseObject implements Comparable {
 	public void setCollector(String collector) {
 		this.collector = collector;
 	}
-	
-	
-	
-	/**
-	 * @see java.lang.Comparable#compareTo(Object)
-	 */
-	public int compareTo(Object object) {
-		DarwinCoreLocation myClass = (DarwinCoreLocation) object;
-		return new CompareToBuilder()
-				.append(this.waterBody, myClass.waterBody)
-				.append(this.validDistributionFlag,
-						myClass.validDistributionFlag)
-				.append(this.locality, myClass.locality)
-				.append(this.island, myClass.island)
-				.append(this.minimumElevationInMeters,
-						myClass.minimumElevationInMeters)
-				.append(this.maximumElevationInMeters,
-						myClass.maximumElevationInMeters)
-				.append(this.latestDateCollected, myClass.latestDateCollected)
-				.append(this.id, myClass.id)
-				.append(this.stateProvince, myClass.stateProvince)
-				.append(this.county, myClass.county)
-				.append(this.continent, myClass.continent)
-				.append(this.country, myClass.country)
-				.append(this.islandGroup, myClass.islandGroup)
-				.append(this.maximumDepthInMeters, myClass.maximumDepthInMeters)
-				.append(this.minimumDepthInMeters, myClass.minimumDepthInMeters)
-				.append(this.earliestDateCollected,
-						myClass.earliestDateCollected).append(this.dwc,
-						myClass.dwc).append(this.higherGeography,
-						myClass.higherGeography).append(this.collector,
-						myClass.collector).append(this.collectingMethod,
-						myClass.collectingMethod).append(this.dayOfYear,
-						myClass.dayOfYear).toComparison();
-	}
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return new ToStringBuilder(this).append("minimumDepthInMeters",
-				this.minimumDepthInMeters).append(
-				"minimumElevationInMetersAsInteger",
-				this.minimumElevationInMetersAsInteger).append("id", this.id)
-				.append("validDistributionFlag", this.validDistributionFlag)
-				.append("earliestDateCollected", this.earliestDateCollected)
-				.append("continent", this.continent).append("waterBody",
-						this.waterBody).append("maximumDepthInMetersAsInteger",
-						this.maximumDepthInMetersAsInteger).append("island",
-						this.island).append("latestDateCollected",
-						this.latestDateCollected).append("dayOfYear",
-						this.dayOfYear).append("maximumDepthInMeters",
-						this.maximumDepthInMeters).append("collectingMethod",
-						this.collectingMethod).append(
-						"maximumElevationInMeters",
-						this.maximumElevationInMeters).append(
-						"higherGeography", this.higherGeography).append("dwc",
-						this.dwc).append("collector", this.collector).append(
-						"country", this.country).append(
-						"maximumElevationInMetersAsInteger",
-						this.maximumElevationInMetersAsInteger).append(
-						"minimumDepthInMetersAsInteger",
-						this.minimumDepthInMetersAsInteger).append("locality",
-						this.locality).append("stateProvince",
-						this.stateProvince).append("county", this.county)
-				.append("minimumElevationInMeters",
-						this.minimumElevationInMeters).append("islandGroup",
-						this.islandGroup).toString();
-	}
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return new HashCodeBuilder(-434938489, 1528636423).append(this.waterBody).append(
-				this.minimumElevationInMeters).append(
-				this.maximumElevationInMeters).append(this.id).append(
-				this.latestDateCollected).append(this.continent).append(
-				this.minimumElevationInMetersAsInteger)
-				.append(this.islandGroup).append(this.dwc).append(
-						this.earliestDateCollected)
-				.append(this.higherGeography).append(this.collectingMethod)
-				.append(this.dayOfYear).append(this.validDistributionFlag)
-				.append(this.locality).append(this.island).append(
-						this.minimumDepthInMetersAsInteger).append(
-						this.maximumDepthInMetersAsInteger).append(
-						this.stateProvince).append(this.county).append(
-						this.country).append(
-						this.maximumElevationInMetersAsInteger).append(
-						this.minimumDepthInMeters).append(
-						this.maximumDepthInMeters).append(this.collector)
-				.toHashCode();
-	}
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object object) {
-		if (!(object instanceof DarwinCoreLocation)) {
-			return false;
-		}
-		DarwinCoreLocation rhs = (DarwinCoreLocation) object;
-		return new EqualsBuilder().append(
-				this.waterBody, rhs.waterBody).append(
-				this.minimumElevationInMeters, rhs.minimumElevationInMeters)
-				.append(this.maximumElevationInMeters,
-						rhs.maximumElevationInMeters).append(this.id, rhs.id)
-				.append(this.latestDateCollected, rhs.latestDateCollected)
-				.append(this.continent, rhs.continent).append(
-						this.minimumElevationInMetersAsInteger,
-						rhs.minimumElevationInMetersAsInteger).append(
-						this.islandGroup, rhs.islandGroup).append(this.dwc,
-						rhs.dwc).append(this.earliestDateCollected,
-						rhs.earliestDateCollected).append(this.higherGeography,
-						rhs.higherGeography).append(this.collectingMethod,
-						rhs.collectingMethod).append(this.dayOfYear,
-						rhs.dayOfYear).append(this.validDistributionFlag,
-						rhs.validDistributionFlag).append(this.locality,
-						rhs.locality).append(this.island, rhs.island).append(
-						this.minimumDepthInMetersAsInteger,
-						rhs.minimumDepthInMetersAsInteger).append(
-						this.maximumDepthInMetersAsInteger,
-						rhs.maximumDepthInMetersAsInteger).append(
-						this.stateProvince, rhs.stateProvince).append(
-						this.county, rhs.county).append(this.country,
-						rhs.country).append(
-						this.maximumElevationInMetersAsInteger,
-						rhs.maximumElevationInMetersAsInteger).append(
-						this.minimumDepthInMeters, rhs.minimumDepthInMeters)
-				.append(this.maximumDepthInMeters, rhs.maximumDepthInMeters)
-				.append(this.collector, rhs.collector).isEquals();
-	}
-
 	
 	
 }

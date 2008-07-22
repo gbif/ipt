@@ -633,38 +633,77 @@ public class DarwinCore extends CoreRecord{
 	 * @see java.lang.Object#equals(Object)
 	 */
 	public boolean equals(Object object) {
+		if (object == this) {
+			return true;
+		}
 		if (!(object instanceof DarwinCore)) {
 			return false;
 		}
-		DarwinCore rhs = (DarwinCore) object;
-		return new EqualsBuilder()
-				.append(this.basisOfRecord, rhs.basisOfRecord).append(
-						this.imageURL, rhs.imageURL).append(
-						this.institutionCode, rhs.institutionCode).append(
-						this.loc, rhs.loc).append(this.remarks, rhs.remarks)
-				.append(this.relatedInformation, rhs.relatedInformation)
-				.append(this.informationWithheld, rhs.informationWithheld)
-				.append(this.lifeStage, rhs.lifeStage)
-				.append(this.sex, rhs.sex).append(this.attributes,
-						rhs.attributes).append(this.globalUniqueIdentifier,
-						rhs.globalUniqueIdentifier).append(this.collectionCode,
-						rhs.collectionCode).append(this.tax, rhs.tax).append(
-						this.catalogNumber, rhs.catalogNumber).isEquals();
+		DarwinCore dwc = (DarwinCore) object;
+        return this.hashCode() == dwc.hashCode();		
 	}
+	
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		//FIXME: implement custom hashcode function which uses all getters!
-		return new HashCodeBuilder(-1669241179, -555797071).append(
-				this.basisOfRecord).append(this.imageURL).append(
-				this.institutionCode).append(this.loc).append(this.remarks)
-				.append(this.relatedInformation).append(
-						this.informationWithheld).append(this.lifeStage)
-				.append(this.sex).append(this.attributes).append(
-						this.globalUniqueIdentifier)
-				.append(this.collectionCode).append(this.tax).append(
-						this.catalogNumber).toHashCode();
+        int result = 17;
+        // core record
+        result = (getGuid() != null ? getGuid().hashCode() : 0);
+        result = 31 * result + (getLink() != null ? getLink().hashCode() : 0);
+        result = 31 * result + (getLocalId() != null ? getLocalId().hashCode() : 0);
+        // this dwc class
+        result = 31 * result + (globalUniqueIdentifier != null ? globalUniqueIdentifier.hashCode() : 0);
+        result = 31 * result + (basisOfRecord != null ? basisOfRecord.hashCode() : 0);
+        result = 31 * result + (institutionCode != null ? institutionCode.hashCode() : 0);
+        result = 31 * result + (collectionCode != null ? collectionCode.hashCode() : 0);
+        result = 31 * result + (catalogNumber != null ? catalogNumber.hashCode() : 0);
+        result = 31 * result + (informationWithheld != null ? informationWithheld.hashCode() : 0);
+        result = 31 * result + (remarks != null ? remarks.hashCode() : 0);
+        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (lifeStage != null ? lifeStage.hashCode() : 0);
+        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+        result = 31 * result + (imageURL != null ? imageURL.hashCode() : 0);
+        result = 31 * result + (relatedInformation != null ? relatedInformation.hashCode() : 0);
+        // dwc location
+        result = 31 * result + (getHigherGeography() != null ? getHigherGeography().hashCode() : 0);
+        result = 31 * result + (getContinent() != null ? getContinent().hashCode() : 0);
+        result = 31 * result + (getWaterBody() != null ? getWaterBody().hashCode() : 0);
+        result = 31 * result + (getIslandGroup() != null ? getIslandGroup().hashCode() : 0);
+        result = 31 * result + (getIsland() != null ? getIsland().hashCode() : 0);
+        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
+        result = 31 * result + (getStateProvince() != null ? getStateProvince().hashCode() : 0);
+        result = 31 * result + (getCounty() != null ? getCounty().hashCode() : 0);
+        result = 31 * result + (getLocality() != null ? getLocality().hashCode() : 0);
+        result = 31 * result + (getMinimumElevationInMeters() != null ? getMinimumElevationInMeters().hashCode() : 0);
+        result = 31 * result + (getMaximumElevationInMeters() != null ? getMaximumElevationInMeters().hashCode() : 0);
+        result = 31 * result + (getMinimumDepthInMeters() != null ? getMinimumDepthInMeters().hashCode() : 0);
+        result = 31 * result + (getMaximumDepthInMeters() != null ? getMaximumDepthInMeters().hashCode() : 0);
+        result = 31 * result + (getCollectingMethod() != null ? getCollectingMethod().hashCode() : 0);
+        result = 31 * result + (getValidDistributionFlag() != null ? getValidDistributionFlag().hashCode() : 0);
+        result = 31 * result + (getEarliestDateCollected() != null ? getEarliestDateCollected().hashCode() : 0);
+        result = 31 * result + (getLatestDateCollected() != null ? getLatestDateCollected().hashCode() : 0);
+        result = 31 * result + (getDayOfYear() != null ? getDayOfYear().hashCode() : 0);
+        result = 31 * result + (getCollector() != null ? getCollector().hashCode() : 0);
+        // dwc taxonomy
+        result = 31 * result + (getScientificName() != null ? getScientificName().hashCode() : 0);
+        result = 31 * result + (getHigherTaxon() != null ? getHigherTaxon().hashCode() : 0);
+        result = 31 * result + (getKingdom() != null ? getKingdom().hashCode() : 0);
+        result = 31 * result + (getPhylum() != null ? getPhylum().hashCode() : 0);
+        result = 31 * result + (getClasss() != null ? getClasss().hashCode() : 0);
+        result = 31 * result + (getOrder() != null ? getOrder().hashCode() : 0);
+        result = 31 * result + (getFamily() != null ? getFamily().hashCode() : 0);
+        result = 31 * result + (getGenus() != null ? getGenus().hashCode() : 0);
+        result = 31 * result + (getSpecificEpithet() != null ? getSpecificEpithet().hashCode() : 0);
+        result = 31 * result + (getInfraspecificRank() != null ? getInfraspecificRank().hashCode() : 0);
+        result = 31 * result + (getSpecificEpithet() != null ? getSpecificEpithet().hashCode() : 0);
+        result = 31 * result + (getInfraspecificRank() != null ? getInfraspecificRank().hashCode() : 0);
+        result = 31 * result + (getInfraspecificEpithet() != null ? getInfraspecificEpithet().hashCode() : 0);
+        result = 31 * result + (getAuthorYearOfScientificName() != null ? getAuthorYearOfScientificName().hashCode() : 0);
+        result = 31 * result + (getNomenclaturalCode() != null ? getNomenclaturalCode().hashCode() : 0);
+        result = 31 * result + (getIdentificationQualifer() != null ? getIdentificationQualifer().hashCode() : 0);
+        
+        return result;
 	}
 	
 	

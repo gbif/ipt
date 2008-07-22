@@ -3,6 +3,7 @@
 <head>
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="heading" content="<s:property value="occResource.title"/>"/>
+	<s:head theme="ajax" debug="true"/>
 </head>
 
 <c:set var="placeholder">
@@ -80,7 +81,13 @@
     <s:if test="%{occResource.hasMinimalMapping()}">
     	<div class="left">
     		<s:if test="%{currentJob}">
-				<s:label key="resource.recordCount" value="%{currentJob.status()}"/>
+				<s:url id="recordCountUrl" action="uploadStatus">
+					<s:param name="resource_id" value="resource_id" />
+					<s:param name="ajax" value="true"/>
+				</s:url>
+	    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="5000" >
+		    		<s:property value="occResource.recordCount"/>
+	    		</s:div>
     		</s:if>
     		<s:else>
 				<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>

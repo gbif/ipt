@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.appfuse.dao.GenericDao;
-import org.appfuse.service.GenericManager;
-import org.appfuse.service.impl.GenericManagerImpl;
+import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.impl.GenericManagerImpl;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.UploadEventDao;
@@ -53,7 +53,7 @@ import com.opensymphony.xwork2.TextProviderFactory;
  *
  * @param <T>
  */
-public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent, Long> implements UploadEventManager {
+public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent> implements UploadEventManager {
 	private UploadEventDao dao;
     //private final transient TextProvider textProvider = TextProviderFactory.getInstance();
 

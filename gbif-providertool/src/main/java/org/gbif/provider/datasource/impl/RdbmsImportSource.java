@@ -56,6 +56,7 @@ public class RdbmsImportSource implements ImportSource{
     	}
     	RdbmsImportSource source = new RdbmsImportSource();
     	source.rs = rs;
+    	//FIXME: clone mappings
     	source.properties = view.getPropertyMappings().values();
     	source.coreIdColumnIndex = view.getCoreIdColumnIndex();
     	source.maxRecords = maxRecords;

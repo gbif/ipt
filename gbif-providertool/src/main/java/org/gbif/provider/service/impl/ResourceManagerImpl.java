@@ -39,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <T>
  */
 public class ResourceManagerImpl<T extends Resource> extends GenericManagerImpl<T> implements ResourceManager<T> {
-	private static I18nLog logdb = I18nLogFactory.getLog(UploadEventManagerImpl.class);
+	private static I18nLog logdb = I18nLogFactory.getLog(ResourceManagerImpl.class);
 	protected ResourceDao<T> resourceDao;
 
 	public ResourceManagerImpl(ResourceDao<T> resourceDao) {

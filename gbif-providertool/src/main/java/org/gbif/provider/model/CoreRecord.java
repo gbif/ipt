@@ -29,7 +29,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.appfuse.model.BaseObject;
-import org.gbif.provider.service.impl.OccurrenceUploadManagerImpl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;

@@ -199,4 +199,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return "delete";
 	}
 
+	public String count() {
+		return SUCCESS;
+	}
 }

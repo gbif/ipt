@@ -102,10 +102,10 @@
         <constructor-arg ref="uploadEventDao"/>
     </bean>    
     
-    <bean id="occurrenceUploadManager" class="org.gbif.provider.service.impl.OccurrenceUploadManagerImpl">
-        <property name="darwinCoreDao" ref="darwinCoreDao"/>
-    </bean>
-
+    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.GenericManagerImpl">        
+        <constructor-arg ref="darwinCoreDao"/>
+    </bean>    
+    
     <bean id="jobManager" class="org.gbif.scheduler.service.impl.JobManagerImpl">        
         <constructor-arg ref="jobDao"/>
     </bean>
@@ -129,7 +129,7 @@
         <constructor-arg ref="uploadEventManager"/>
         <constructor-arg ref="datasourceInspectionManager"/>
         <constructor-arg ref="extensionRecordDao"/>
-        <constructor-arg ref="darwinCoreDao"/>
+        <constructor-arg ref="darwinCoreManager"/>
     </bean> 
     
     

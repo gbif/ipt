@@ -7,7 +7,8 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.service.GenericManager;
+import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.UploadEventManager;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.DarwinCoreDao;
@@ -25,23 +26,24 @@ public abstract class UploadBaseJob implements Launchable{
 	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
 	protected static I18nLog logdb = I18nLogFactory.getLog(RdbmsUploadJob.class);
 
-	protected static final String RESOURCE_ID = "resourceId";
-	protected static final String USER_ID = "userId";
-	protected static final String MAX_RECORDS = "maxRecords";
+	public static final String RESOURCE_ID = "resourceId";
+	public static final String USER_ID = "userId";
+	public static final String MAX_RECORDS = "maxRecords";
 	
-	protected GenericManager<UploadEvent, Long> uploadEventManager;
-	protected DarwinCoreDao darwinCoreDao;
+	protected UploadEventManager uploadEventManager;
+	protected GenericManager<DarwinCore> darwinCoreManager;
 	protected ExtensionRecordDao extensionRecordDao;
+	protected Map<Long, Object> status = new HashMap<Long, Object>();
 
 	public String status(Long resourceId){
-		return String.format("Uploading resource %i", resourceId);
+		return (status.get(resourceId) == null ? null : status.get(resourceId).toString());
 	}
 
-	protected UploadBaseJob(GenericManager<UploadEvent, Long> uploadEventManager,
-			DarwinCoreDao darwinCoreDao, ExtensionRecordDao extensionRecordDao) {
+	protected UploadBaseJob(UploadEventManager uploadEventManager,
+			GenericManager<DarwinCore> darwinCoreManager, ExtensionRecordDao extensionRecordDao) {
 		super();
 		this.uploadEventManager = uploadEventManager;
-		this.darwinCoreDao = darwinCoreDao;
+		this.darwinCoreManager = darwinCoreManager;
 		this.extensionRecordDao = extensionRecordDao;
 	}
 
@@ -52,12 +54,14 @@ public abstract class UploadBaseJob implements Launchable{
 				// use a single date for now (e.g. to set dateLastModified)
 				Date now = new Date();
 				// flag all previously existing records as deleted before updating/inserting new ones
-				darwinCoreDao.flagAsDeleted(resource.getId());
+				//darwinCoreManager.flagAsDeleted(resource.getId());
 				// keep track of the following statistics for UploadEvent
-				int recordsUploaded = 0;
+				Integer recordsUploaded = 0;
 				int recordsDeleted = 0;
 				int recordsChanged = 0;
 				int recordsAdded = 0;
+				// keep track of upload status outside of this method so that we can create services for it
+				status.put(resource.getId(), recordsUploaded);
 				// go through source records one by one
 				for (ImportRecord rec : source){
 					// check if thread should shutdown...
@@ -65,7 +69,7 @@ public abstract class UploadBaseJob implements Launchable{
 					    throw new InterruptedException();
 					}			
 					// get previous record or null if it didnt exist yet based on localID and resource
-					DarwinCore oldRecord = darwinCoreDao.findByLocalId(rec.getLocalId(), resource.getId());
+					DarwinCore oldRecord = null;//darwinCoreManager.findByLocalId(rec.getLocalId(), resource.getId());
 					// get darwincore record based on this core record
 					DarwinCore dwc = DarwinCore.newInstance(rec);
 					
@@ -78,13 +82,13 @@ public abstract class UploadBaseJob implements Launchable{
 					// check if new record version is different from old one
 					if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
 						// same record. reset isDeleted flag = false
-						darwinCoreDao.updateIsDeleted(oldRecord.getId(), resource.getId(), false);
+						dwc.setDeleted(false);
 					}else if (oldRecord!=null){
 						// modified record
 						dwc.setModified(now);
 						// remove old + insert new record
 						// TODO: could be improved by updating existing record!
-						darwinCoreDao.remove(oldRecord.getId());
+						darwinCoreManager.remove(oldRecord.getId());
 						recordsChanged++;
 					}else{
 						// new record that didnt exist before
@@ -100,7 +104,7 @@ public abstract class UploadBaseJob implements Launchable{
 						logdb.info(recordsUploaded+" uploaded for resource "+resource.getId());
 					}
 					// insert/update record
-					dwc = darwinCoreDao.save(dwc);
+					dwc = darwinCoreManager.save(dwc);
 					// the new darwin core id used for all other extensions
 					Long coreId = dwc.getId();
 					idMap.put(rec.getLocalId(), coreId);
@@ -113,7 +117,8 @@ public abstract class UploadBaseJob implements Launchable{
 				event.setRecordsDeleted(recordsDeleted);
 				event.setRecordsUploaded(recordsUploaded);		
 				resource.setRecordCount(recordsUploaded);
-				
+				// reset status
+				status.put(resource.getId(), String.format(recordsUploaded.toString() + " done."));
 				return idMap;
 			}
 
