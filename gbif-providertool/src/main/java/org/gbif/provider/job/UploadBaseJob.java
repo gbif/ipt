@@ -118,7 +118,7 @@ public abstract class UploadBaseJob implements Launchable{
 				event.setRecordsUploaded(recordsUploaded);		
 				resource.setRecordCount(recordsUploaded);
 				// reset status
-				status.put(resource.getId(), String.format("%i done.", recordsUploaded));
+				status.put(resource.getId(), String.format("%s done.", recordsUploaded));
 				return idMap;
 			}
 

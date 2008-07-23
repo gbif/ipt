@@ -133,7 +133,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public String execute() {
 		// create GoogleChart string
-		gChartData = uploadEventManager.getGoogleChartData(resource_id, 450, 200);
+		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
 		// get all availabel extensions for new mappings
 		extensions = extensionManager.getAll();
 		for (Extension ext : extensions) {
