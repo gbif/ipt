@@ -68,13 +68,23 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent> impl
 		return events;
 	}
 
-	public String getGoogleChartData(Long resourceId) {
+	public String getGoogleChartData(Long resourceId, int width, int height) {
 		List<UploadEvent> events = this.getUploadEventsByResource(resourceId);
 		GChartBuilder chartBuilder = new GChartBuilder();
 		Map<Date, Long> uploadedDS = new HashMap<Date, Long>();
 		Map<Date, Long> changedDS = new HashMap<Date, Long>();
 		Map<Date, Long> addedDS = new HashMap<Date, Long>();
 		Map<Date, Long> deletedDS = new HashMap<Date, Long>();
+		// if no events exist do an empty default one to get some image at all
+		if (events.isEmpty()){
+			UploadEvent e = new UploadEvent();
+			e.setRecordsAdded(0);
+			e.setRecordsChanged(0);
+			e.setRecordsDeleted(0);
+			e.setRecordsUploaded(0);
+			e.setExecutionDate(new Date());
+			events.add(e);
+		}
 		for (UploadEvent e : events){
 			uploadedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsUploaded()));
 			changedDS.put(e.getExecutionDate(), Long.valueOf(e.getRecordsChanged()));
@@ -86,7 +96,7 @@ public class UploadEventManagerImpl extends GenericManagerImpl<UploadEvent> impl
 		chartBuilder.addDataset(addedDS, "Added");
 		chartBuilder.addDataset(deletedDS, "Deleted");
 		
-		return chartBuilder.generateChartDataString(450,200);
+		return chartBuilder.generateChartDataString(width, height);
 	}
 
 	@Override

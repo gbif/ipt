@@ -33,10 +33,10 @@ public abstract class UploadBaseJob implements Launchable{
 	protected UploadEventManager uploadEventManager;
 	protected GenericManager<DarwinCore> darwinCoreManager;
 	protected ExtensionRecordDao extensionRecordDao;
-	protected Map<Long, Object> status = new HashMap<Long, Object>();
+	protected Map<Long, String> status = new HashMap<Long, String>();
 
 	public String status(Long resourceId){
-		return (status.get(resourceId) == null ? null : status.get(resourceId).toString());
+		return status.get(resourceId);
 	}
 
 	protected UploadBaseJob(UploadEventManager uploadEventManager,
@@ -56,12 +56,10 @@ public abstract class UploadBaseJob implements Launchable{
 				// flag all previously existing records as deleted before updating/inserting new ones
 				//darwinCoreManager.flagAsDeleted(resource.getId());
 				// keep track of the following statistics for UploadEvent
-				Integer recordsUploaded = 0;
+				int recordsUploaded = 0;
 				int recordsDeleted = 0;
 				int recordsChanged = 0;
 				int recordsAdded = 0;
-				// keep track of upload status outside of this method so that we can create services for it
-				status.put(resource.getId(), recordsUploaded);
 				// go through source records one by one
 				for (ImportRecord rec : source){
 					// check if thread should shutdown...
@@ -97,6 +95,8 @@ public abstract class UploadBaseJob implements Launchable{
 					}
 					// count all inserted records
 					recordsUploaded++;
+					// keep track of upload status outside of this method so that we can create services for it
+					status.put(resource.getId(), String.valueOf(recordsUploaded));
 					if (recordsUploaded % 1000 == 0){
 						log.info(recordsUploaded+" uploaded for resource "+resource.getId());
 					}
@@ -118,7 +118,7 @@ public abstract class UploadBaseJob implements Launchable{
 				event.setRecordsUploaded(recordsUploaded);		
 				resource.setRecordCount(recordsUploaded);
 				// reset status
-				status.put(resource.getId(), String.format(recordsUploaded.toString() + " done."));
+				status.put(resource.getId(), String.format("%i done.", recordsUploaded));
 				return idMap;
 			}
 

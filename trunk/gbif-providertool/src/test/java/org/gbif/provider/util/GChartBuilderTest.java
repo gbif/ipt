@@ -40,6 +40,8 @@ public class GChartBuilderTest {
 	@Test
 	public void testGenerateChartDataString() {
 		System.out.println(chartBuilder.generateChartDataString(300,200));
+		chartBuilder.clear();
+		System.out.println(chartBuilder.generateChartDataString(300,200));
 	}
 
 }

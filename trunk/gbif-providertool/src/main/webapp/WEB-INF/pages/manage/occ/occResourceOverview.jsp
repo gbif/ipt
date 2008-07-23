@@ -103,7 +103,7 @@
 				<s:param name="resource_id" value="resource_id"/>
 			</s:url>
 			<s:a href="%{uploadHistoryUrl}">
-				<img src="<s:property value="gChartData"/>" />
+				<img src="<s:property value="gChartData"/>" width="450" height="200"/>
 			</s:a>
 		</div>
 		<div class="break">
