@@ -85,9 +85,14 @@
 					<s:param name="resource_id" value="resource_id" />
 					<s:param name="ajax" value="true"/>
 				</s:url>
-	    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="5000" >
-		    		<s:property value="occResource.recordCount"/>
-	    		</s:div>
+				<li id="wwgrp_upload_resource_recordCount" class="wwgrp">
+					<div id="wwlbl_upload_resource_recordCount" class="wwlbl">
+						<label for="upload_resource_recordCount" class="desc"><s:text name="resource.recordCount"/></label>
+					</div> 
+		    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="3000">
+			    		<s:property value="occResource.recordCount"/>
+		    		</s:div>
+				</li>				
     		</s:if>
     		<s:else>
 				<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
@@ -103,7 +108,7 @@
 				<s:param name="resource_id" value="resource_id"/>
 			</s:url>
 			<s:a href="%{uploadHistoryUrl}">
-				<img src="<s:property value="gChartData"/>" width="450" height="200"/>
+				<img src="<s:property value="gChartData"/>" width="400" height="200"/>
 			</s:a>
 		</div>
 		<div class="break">
