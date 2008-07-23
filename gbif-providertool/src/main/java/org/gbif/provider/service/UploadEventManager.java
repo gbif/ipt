@@ -11,7 +11,7 @@ public interface UploadEventManager extends GenericManager<UploadEvent>{
 	 * @param resourceId
 	 * @return
 	 */
-	public String getGoogleChartData(Long resourceId);
+	public String getGoogleChartData(Long resourceId, int width, int height);
 	
 	/**
 	 * Get all upload events for a given resource

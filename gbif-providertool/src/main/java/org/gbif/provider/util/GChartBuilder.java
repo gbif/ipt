@@ -85,9 +85,12 @@ public class GChartBuilder {
 		 // round max up for nicer values 
 		 Long step = 20L * (int) Math.ceil(maxYValue/100.0);
 		 maxYValue=step*5L;
-		 String yAxis="";
-		 for (int i=0; i<6; i++){
-			 yAxis+="|"+step*i;
+		 String yAxis="|";
+		 // for min/max=0 it doesnt make sense to have many xaxis labels
+		 if (step != 0){
+			 for (int i=1; i<6; i++){
+				 yAxis+="|"+step*i;
+			 }
 		 }
 		 
 		 // calc x axis labels
@@ -109,12 +112,19 @@ public class GChartBuilder {
 		 datasetTitles=trimString(datasetTitles);
 		 datasetColors=trimString(datasetColors);
 		 minMax=trimString(minMax);
-		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,r,x&chxl=0:"+xAxis1+"|1:"+yAxis+"|2:"+xAxis2+"&chds="+minMax+"&chco="+datasetColors+"&chdlp=l&chdl="+datasetTitles+"&chd=t:"+data;
+		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,r&chxl=0:"+xAxis1+"|1:"+yAxis+"&chds="+minMax+"&chco="+datasetColors+"&chdlp=l&chdl="+datasetTitles+"&chd=t:"+data;
 	}
 	private String trimString(String x){
 		 if (x.endsWith(",") || x.endsWith("|")){
 			 x = x.substring(0, x.length()-1);
 		 }
 		 return x;
+	}
+	
+	/**
+	 * Removes all datasets from the chartbuilder
+	 */
+	public void clear(){
+		datasets.clear();
 	}
 }
