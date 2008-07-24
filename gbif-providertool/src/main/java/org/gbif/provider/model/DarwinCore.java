@@ -222,7 +222,7 @@ public class DarwinCore extends CoreRecord{
 	
 	@Transient
 	public Map<String, String> getDataMap(){
-		Map<String, String> m = new HashMap<String, String>();
+		Map<String, String> m = super.getDataMap();
 		m.put("GlobalUniqueIdentifier", getGlobalUniqueIdentifier());
 		m.put("BasisOfRecord", getBasisOfRecord());
 		m.put("InstitutionCode", getInstitutionCode());

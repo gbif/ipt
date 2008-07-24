@@ -37,6 +37,9 @@ import org.apache.commons.logging.LogFactory;
 
 @MappedSuperclass
 public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
+	public static final String ID_COLUMN_NAME = "#id";
+	public static final String MODIFIED_COLUMN_NAME = "#id";
+	
 	protected static final Log log = LogFactory.getLog(CoreRecord.class);
 
 	private Long id;
@@ -110,6 +113,13 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 	}
 
 	
+	public Map<String, String> getDataMap(){
+		Map<String, String> m = new HashMap<String, String>();
+		m.put(ID_COLUMN_NAME, this.getGuid());
+		m.put(MODIFIED_COLUMN_NAME , this.getModified().toString());
+		return m;
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

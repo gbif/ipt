@@ -203,6 +203,9 @@ public abstract class UploadBaseJob implements Launchable{
 		file.createNewFile();
 
 		List<String> header = new ArrayList<String>();
+		// add core record id first as first column
+		header.add("#id");
+		// add only existing mapped concepts
 		ViewMapping mapping = resource.getExtensionMapping(extension);
 		if (mapping == null){
 			throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",resource.getTitle(), extension.getName()));
