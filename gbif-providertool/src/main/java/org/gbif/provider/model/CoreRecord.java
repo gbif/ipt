@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 @MappedSuperclass
 public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 	public static final String ID_COLUMN_NAME = "#id";
-	public static final String MODIFIED_COLUMN_NAME = "#id";
+	public static final String MODIFIED_COLUMN_NAME = "#modified";
 	
 	protected static final Log log = LogFactory.getLog(CoreRecord.class);
 
