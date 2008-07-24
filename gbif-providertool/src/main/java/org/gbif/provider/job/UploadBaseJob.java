@@ -23,6 +23,7 @@ import org.gbif.provider.dao.DarwinCoreDao;
 import org.gbif.provider.dao.ExtensionRecordDao;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DatasourceBasedResource;
@@ -204,7 +205,8 @@ public abstract class UploadBaseJob implements Launchable{
 
 		List<String> header = new ArrayList<String>();
 		// add core record id first as first column
-		header.add("#id");
+		header.add(CoreRecord.ID_COLUMN_NAME);
+		header.add(CoreRecord.MODIFIED_COLUMN_NAME);
 		// add only existing mapped concepts
 		ViewMapping mapping = resource.getExtensionMapping(extension);
 		if (mapping == null){
