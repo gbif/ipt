@@ -52,7 +52,7 @@ public class TabFileWriter {
 	}
 	
 	private String escape(Object obj){
-		String result = null;
+		String result = "";
 		if (obj != null){
 			result = obj.toString().replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r");
 		}
