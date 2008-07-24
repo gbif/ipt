@@ -14,11 +14,21 @@
   <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.metadata"/></legend>
-	<s:label key="occResource.serviceName"/>
 	<s:label key="occResource.description"/>
     <s:submit cssClass="button" key="button.edit"/>
   </fieldset>
 </s:form>
+
+<s:form>
+<fieldset>
+	<legend><s:text name="occResourceOverview.services"/></legend>
+	<!--s:label key="occResource.serviceName"/-->
+	<s:label key="occResource.tapir" value="http://localhost:8080/tapir"/>
+	<s:label key="occResource.wfs" value="http://localhost:8080/wfs"/>
+	<s:label key="occResource.tabfile" value="http://localhost:8080/data"/>
+</fieldset>
+</s:form>
+
 
 <s:form action="editResourceConnection" method="get">
   <s:hidden name="resource_id" value="%{occResource.id}"/>

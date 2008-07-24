@@ -18,7 +18,9 @@ package org.gbif.provider.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -218,7 +220,56 @@ public class DarwinCore extends CoreRecord{
 		return dwc;
 	}
 	
-	
+	@Transient
+	public Map<String, String> getDataMap(){
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("GlobalUniqueIdentifier", getGlobalUniqueIdentifier());
+		m.put("BasisOfRecord", getBasisOfRecord());
+		m.put("InstitutionCode", getInstitutionCode());
+		m.put("CollectionCode", getCollectionCode());
+		m.put("CatalogNumber", getCatalogNumber());
+		m.put("InformationWithheld", getInformationWithheld());
+		m.put("Remarks", getRemarks());
+		m.put("Sex", getSex());
+		m.put("LifeStage", getLifeStage());
+		m.put("Attributes", getAttributes());
+		m.put("ImageURL", getImageURL());
+		m.put("RelatedInformation", getRelatedInformation());
+		m.put("HigherGeography", getHigherGeography());
+		m.put("Continent", getContinent());
+		m.put("WaterBody", getWaterBody());
+		m.put("IslandGroup", getIslandGroup());
+		m.put("Island", getIsland());
+		m.put("Country", getCountry());
+		m.put("StateProvince", getStateProvince());
+		m.put("County", getCounty());
+		m.put("Locality", getLocality());
+		m.put("MinimumElevationInMeters", getMinimumElevationInMeters());
+		m.put("MaximumElevationInMeters", getMaximumElevationInMeters());
+		m.put("MinimumDepthInMeters", getMinimumDepthInMeters());
+		m.put("MaximumDepthInMeters", getMaximumDepthInMeters());
+		m.put("CollectingMethod", getCollectingMethod());
+		m.put("ValidDistributionFlag", getValidDistributionFlag());
+		m.put("EarliestDateCollected", getEarliestDateCollected());
+		m.put("LatestDateCollected", getLatestDateCollected());
+		m.put("DayOfYear", getDayOfYear());
+		m.put("Collector", getCollector());
+		m.put("ScientificName", getScientificName());
+		m.put("HigherTaxon", getHigherTaxon());
+		m.put("Kingdom", getKingdom());
+		m.put("Phylum", getPhylum());
+		m.put("Classs", getClasss());
+		m.put("Order", getOrder());
+		m.put("Family", getFamily());
+		m.put("Genus", getGenus());
+		m.put("SpecificEpithet", getSpecificEpithet());
+		m.put("InfraspecificRank", getInfraspecificRank());
+		m.put("InfraspecificEpithet", getInfraspecificEpithet());
+		m.put("AuthorYearOfScientificName", getAuthorYearOfScientificName());
+		m.put("NomenclaturalCode", getNomenclaturalCode());
+		m.put("IdentificationQualifer", getIdentificationQualifer());
+		return m;
+	}
 	
 	@OneToOne(mappedBy="dwc", cascade=CascadeType.ALL)
 	public DarwinCoreTaxonomy getTax() {

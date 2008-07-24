@@ -80,7 +80,7 @@
       <value>http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard</value>
       <value><![CDATA[Darwin Core]]></value>
       <value>http://rs.tdwg.org/dwc/dwcore/</value>
-      <value>core/</value>
+      <value>dwcore</value>
     </row>
     <row>
       <value>2</value>
@@ -1060,16 +1060,23 @@
     <column>viewMapping_id</column>
     <row>
       <value>1</value>
-      <value>8</value>
+      <value>14</value>
       <null/>
       <value>9</value>
       <value>1</value>
     </row>
     <row>
       <value>2</value>
-      <value>2</value>
+      <value>1</value>
       <null/>
       <value>6</value>
+      <value>1</value>
+    </row>
+    <row>
+      <value>18</value>
+      <value>1001</value>
+      <value>PreservedSpecimen</value>
+      <value>3</value>
       <value>1</value>
     </row>
     <row>

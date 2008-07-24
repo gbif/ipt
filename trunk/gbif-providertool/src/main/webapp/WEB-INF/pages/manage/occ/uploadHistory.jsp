@@ -23,8 +23,6 @@
     <display:column property="recordsDeleted" sortable="true" titleKey="uploadEvent.recordsDeleted" />
     <display:column property="recordsChanged" sortable="true" titleKey="uploadEvent.recordsChanged" />
     <display:column property="recordsAdded" sortable="true" titleKey="uploadEvent.recordsAdded" />
-    <display:column value="Logs" sortable="false" href="/logging/logEvents.html?sourceType=1" media="html"
-        paramId="sourceId" paramProperty="jobSourceId" titleKey="uploadEvent.logs"/>
 
     <display:setProperty name="paging.banner.item_name"><s:text name="upload.event"/></display:setProperty>
     <display:setProperty name="paging.banner.items_name"><s:text name="upload.events"/></display:setProperty>

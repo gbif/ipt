@@ -150,6 +150,18 @@ public class DatasourceBasedResource extends Resource {
 		mapping.setResource(this);
 		this.extensionMappings.put(mapping.getExtension().getId(), mapping);
 	}
+
+	@Transient
+	public ViewMapping getExtensionMapping(Extension extension) {
+		ViewMapping result = null;
+		for (ViewMapping vm : this.getAllMappings()){
+			if(vm.getExtension().equals(extension)){
+				result = vm;
+				break;
+			}
+		}
+		return result;
+	}
 	
 	@Transient
 	public DataSource getDatasource() {
