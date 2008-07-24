@@ -135,6 +135,14 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 		return propertyMappings.get(property.getId());
 	}	
 	
+	@Transient
+	public List<ExtensionProperty> getMappedProperties() {
+		List<ExtensionProperty> props = new ArrayList<ExtensionProperty>();
+		for (PropertyMapping pm : propertyMappings.values()){
+			props.add(pm.getProperty());
+		}
+		return props;
+	}		
 	/**
 	 * Natural sort order is resource, then extension
 	 * @see java.lang.Comparable#compareTo(Object)

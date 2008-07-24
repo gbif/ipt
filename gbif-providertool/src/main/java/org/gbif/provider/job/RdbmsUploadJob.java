@@ -25,6 +25,7 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -42,7 +43,7 @@ public class RdbmsUploadJob extends UploadBaseJob{
 			UploadEventManager uploadEventManager,
 			DatasourceInspectionManager datasourceInspectionManager,
 			ExtensionRecordDao extensionRecordDao,
-			GenericManager<DarwinCore> darwinCoreManager
+			CoreRecordManager<DarwinCore> darwinCoreManager
 			) {
 		super(uploadEventManager, darwinCoreManager, extensionRecordDao);
 		this.occResourceManager = occResourceManager;

@@ -102,7 +102,7 @@
         <constructor-arg ref="uploadEventDao"/>
     </bean>    
     
-    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.GenericManagerImpl">        
+    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.CoreRecordManagerImpl">        
         <constructor-arg ref="darwinCoreDao"/>
     </bean>    
     

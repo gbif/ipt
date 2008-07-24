@@ -35,7 +35,7 @@
     </li>
 </c:set>
 
-<s:form action="saveMappingProperties" method="get" validate="true">
+<s:form action="saveMappingProperties" method="post" validate="true">
     <li style="display: none">
         <s:hidden key="mapping_id"/>
 	    <s:hidden key="resource_id"/>

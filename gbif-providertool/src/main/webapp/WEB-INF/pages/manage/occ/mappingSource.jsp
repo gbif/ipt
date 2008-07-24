@@ -43,7 +43,7 @@
 		</tbody>
 	</table>
 
-	<s:form action="editMappingProperties" method="post">
+	<s:form action="editMappingProperties" method="get">
 	    <s:hidden key="resource_id"/>
         <s:hidden key="mapping_id"/>
         <s:submit cssClass="button" key="button.map" theme="simple"/>
