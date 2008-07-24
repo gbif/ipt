@@ -113,6 +113,7 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 	}
 
 	
+	@Transient
 	public Map<String, String> getDataMap(){
 		Map<String, String> m = new HashMap<String, String>();
 		m.put(ID_COLUMN_NAME, this.getGuid());
