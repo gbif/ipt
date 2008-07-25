@@ -31,7 +31,7 @@ public class RdbmsUploadJobTest extends RdbmsImportSourceTest{
 		OccurrenceResource resource = (OccurrenceResource) getTestResource();
 		UploadEvent event = new UploadEvent();
 		Map seed = OccDbUploadJob.getSeed(resource.getId(), 4L, 25);
-		occDbUploadJob.launch(seed, Constants.TEST_BASE_DIR);
+		occDbUploadJob.launch(seed);
 	}
 
 	@Test

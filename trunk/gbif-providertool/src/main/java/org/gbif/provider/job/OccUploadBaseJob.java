@@ -70,8 +70,9 @@ public abstract class OccUploadBaseJob implements Launchable{
 		return status.get(resourceId);
 	}
 
-	public void launch(Map<String, Object> seed, String baseDir) {
-		PathUtil.setWebappDir(baseDir);
+	public void launch(Map<String, Object> seed) {
+		String webappDir = (String) seed.get(Launchable.WEBAPP_DIR);
+		PathUtil.setWebappDir(webappDir);
 		try {
 			log.info("Starting "+this.getClass().getSimpleName() +" with seed "+seed);
 			MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, JobUtils.getSourceTypeId(this.getClass()));
@@ -95,8 +96,8 @@ public abstract class OccUploadBaseJob implements Launchable{
 				}
 			}
 			MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, JobUtils.getJobGroup(resourceId));
-			MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, resourceId);
-					
+			MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, (String) seed.get(Launchable.JOB_ID));
+
 			
 			// get resource
 			OccurrenceResource resource = occResourceManager.get(resourceId);
@@ -106,8 +107,15 @@ public abstract class OccUploadBaseJob implements Launchable{
 			coreEvent.setResource(resource);
 			
 			
-			// clear data dump directory
+			// clear old data/events
+			File dataDir = PathUtil.getDataDir(resource);
+			FileUtils.deleteDirectory(dataDir);
+			log.info("Removed old occurrence data dir "+dataDir.getAbsolutePath());
+			// clear old log events too?
+			log.info("Old log events are kept");
+			
 			List<File> dumpFiles = new ArrayList<File>();
+			
 			// try to upload records
 			try {
 				Map<String, Long> idMap = new HashMap<String, Long>();

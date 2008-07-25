@@ -23,6 +23,9 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
@@ -36,6 +39,7 @@ import org.gbif.provider.model.ViewMapping;
  * Constant values used throughout the application.
  */
 public class PathUtil {
+	protected static final Log log = LogFactory.getLog(PathUtil.class);
     public static String WEBAPP_DIR;
     private static File WEBAPP_DIR_FILE;
     
@@ -47,12 +51,16 @@ public class PathUtil {
      * @param webappDir
      */
     public static void setWebappDir(String webappDir) {
-    	if (WEBAPP_DIR == null){
+    	if (WEBAPP_DIR == null && webappDir != null){
+    		log.info("set webapp directory to "+webappDir);
     		WEBAPP_DIR = webappDir;
     		WEBAPP_DIR_FILE = new File(webappDir);
     	}
 	}
 
+	public static File getDataDir(DatasourceBasedResource resource) throws IOException{
+		return getDataDir(resource, false);
+	}
 	public static File getDataDir(DatasourceBasedResource resource, boolean createFile) throws IOException{
     	File dir = new File(WEBAPP_DIR_FILE, String.format("data/%s", resource.getServiceName()));
 		if (createFile){
