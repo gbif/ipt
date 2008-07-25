@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
 import org.gbif.provider.model.ChecklistResource;
@@ -37,13 +40,14 @@ import com.opensymphony.xwork2.Preparable;
  * @author markus
  *
  */
-public class IndexAction extends BaseAction implements Preparable {
+public class IndexAction extends BaseAction implements Preparable, ServletContextAware {
     private ResourceManager<OccurrenceResource> occResourceManager;
     private ResourceManager<ChecklistResource> checklistResourceManager;
     private ResourceManager<Resource> resourceManager;
     private List<OccurrenceResource> occResources;
     private List<ChecklistResource> checklistResources;
     private List<Resource> resources;
+	private ServletContext context;
 
 	public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
@@ -84,7 +88,13 @@ public class IndexAction extends BaseAction implements Preparable {
 	}
 
 	public String execute(){
+		log.debug(context.getAttributeNames());
+		log.debug(context.getServerInfo());
 		return SUCCESS;
+	}
+
+	public void setServletContext(ServletContext context) {
+		this.context=context;
 	}
 
 	

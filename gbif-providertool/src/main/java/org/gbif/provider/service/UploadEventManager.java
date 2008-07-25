@@ -19,4 +19,5 @@ public interface UploadEventManager extends GenericManager<UploadEvent>{
 	 * @return
 	 */
 	public List<UploadEvent> getUploadEventsByResource(Long resourceId);
+	
 }

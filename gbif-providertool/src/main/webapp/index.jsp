@@ -1,3 +1,4 @@
 <%@ include file="/common/taglibs.jsp"%>
 
-<c:redirect url="/index.html"/>
+<s:url id="home" action="index"/>
+<c:redirect url="${home}" />

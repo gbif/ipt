@@ -9,6 +9,7 @@ import java.util.Date;
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.webapp.action.BaseActionTestCase;
 import org.gbif.scheduler.MockJob;
+import org.gbif.scheduler.mock.WorkerPoolFactory;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Worker;
 import org.gbif.scheduler.scheduler.WorkerPool;
@@ -20,10 +21,17 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 public class WorkerTest extends BaseDaoTestCase {
-	private WorkerPool workerPool;
-	
-	public void setWorkerPool(WorkerPool workerPool) {
-		this.workerPool = workerPool;
+	protected WorkerPoolFactory workerPoolFactory;
+	public WorkerPool workerPool;
+
+	public void setWorkerPoolFactory(WorkerPoolFactory workerPoolFactory) {
+		this.workerPoolFactory = workerPoolFactory;
+	}
+
+    @Override
+    protected void onSetUpBeforeTransaction() throws Exception {
+		super.onSetUpBeforeTransaction();
+		workerPool = workerPoolFactory.newWorkerPool("TestInstance1");
 	}
 
 	
@@ -51,10 +59,19 @@ public class WorkerTest extends BaseDaoTestCase {
 		job.setJobClassName(MockJob.class.getName());
 		job.setJobGroup("testGroup");
 		job.setNextFireTime(new Date());
+		
+		Worker worker = workerPool.borrowObject(job);
+		String classToRun = job.getJobClassName();
+		String dataAsJSON = job.getDataAsJSON();
+
 		// reset MockJob.result
 		MockJob.result="not run yet";
 		assertFalse(MockJob.goodResult.equals(MockJob.result));
-		runJob(job);
+		try {
+			worker.execute(workerPool, classToRun, dataAsJSON);
+		} catch (ObjectRetrievalFailureException e) {
+			// supposed to throw that as we dont use a job from the jobDao but created a new one
+		}
 		// assert that job really run after waiting for 5 seconds to give the job a fair chance to run as it is a different thread
 		Thread.sleep(5000);
 		assertEquals(MockJob.goodResult, MockJob.result);
@@ -78,7 +95,6 @@ public class WorkerTest extends BaseDaoTestCase {
 		String dataAsJSON = job.getDataAsJSON();
 
 		Worker worker = workerPool.borrowObject(job);
-		worker.setApplicationContext(applicationContext);
 		try {
 			worker.execute(workerPool, classToRun, dataAsJSON);
 		} catch (ObjectRetrievalFailureException e) {
