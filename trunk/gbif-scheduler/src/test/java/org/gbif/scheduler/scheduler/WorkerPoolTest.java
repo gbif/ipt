@@ -5,19 +5,12 @@ import static org.junit.Assert.*;
 import java.util.Date;
 
 import org.appfuse.webapp.action.BaseActionTestCase;
-import org.gbif.scheduler.MockJob;
+import org.gbif.scheduler.mock.MockJob;
 import org.gbif.scheduler.model.Job;
-import org.junit.Before;
 import org.junit.Test;
 
-public class WorkerPoolTest extends BaseActionTestCase{
-	private WorkerPool workerPool;	
+public class WorkerPoolTest extends WorkerPoolBaseTest{
 	
-	public void setWorkerPool(WorkerPool workerPool) {
-		this.workerPool = workerPool;
-	}
-
-
 	@Test
 	public void testScheduleNextRepeatingJob() {
 		Job job = new Job();
@@ -35,5 +28,6 @@ public class WorkerPoolTest extends BaseActionTestCase{
 		newJob = workerPool.getNextRepeatingJob(job);
 		assertNotSame(job, newJob);
 	}
+
 
 }

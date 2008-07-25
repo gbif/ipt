@@ -10,5 +10,8 @@ import java.util.Map;
  * @author timrobertson
  */
 public interface Launchable {
-	public void launch(Map<String, Object> seed, String baseDir) throws Exception;
+	public static final String WEBAPP_DIR = "webappDir";
+	public static final String JOB_ID = "jobId";
+	
+	public void launch(Map<String, Object> seed) throws Exception;
 }

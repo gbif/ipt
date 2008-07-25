@@ -1,4 +1,4 @@
-package org.gbif.scheduler;
+package org.gbif.scheduler.mock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

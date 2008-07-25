@@ -1,4 +1,4 @@
-package org.gbif.scheduler;
+package org.gbif.scheduler.mock;
 
 import java.util.Map;
 
@@ -14,8 +14,8 @@ public class MockJob implements Launchable{
 		this.mockInstance = mockInstance;
 	}
 
-	public void launch(Map<String, Object> seed, String baseDir) throws Exception {
-		System.out.println("MockJob launched successfully with DI MockInstance "+mockInstance.toString() + ", baseDir "+baseDir+" and seed "+seed.toString());		
+	public void launch(Map<String, Object> seed) throws Exception {
+		System.out.println("MockJob launched successfully with DI MockInstance "+mockInstance.toString() + " and seed "+seed.toString());		
 		MockJob.result = goodResult;
 	}
 

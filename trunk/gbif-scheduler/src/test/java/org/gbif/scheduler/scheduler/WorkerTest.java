@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Date;
 
 import org.appfuse.webapp.action.BaseActionTestCase;
-import org.gbif.scheduler.MockJob;
+import org.gbif.scheduler.mock.MockJob;
 import org.gbif.scheduler.model.Job;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
-public class WorkerTest extends BaseActionTestCase {
-	private WorkerPool workerPool;	
-	
-	public void setWorkerPool(WorkerPool workerPool) {
-		this.workerPool = workerPool;
-	}
+public class WorkerTest extends WorkerPoolBaseTest {
 
-	
+
 	@Test
 	public void testRunWorker() throws Exception {
 		Job job = new Job();
@@ -32,11 +27,10 @@ public class WorkerTest extends BaseActionTestCase {
 		job.setJobGroup("testGroup");
 		job.setNextFireTime(new Date());
 		
+		Worker worker = workerPool.borrowObject(job);
 		String classToRun = job.getJobClassName();
 		String dataAsJSON = job.getDataAsJSON();
 
-		Worker worker = workerPool.borrowObject(job);
-		worker.setApplicationContext(applicationContext);
 		// reset MockJob.result
 		MockJob.result="not run yet";
 		assertFalse(MockJob.goodResult.equals(MockJob.result));

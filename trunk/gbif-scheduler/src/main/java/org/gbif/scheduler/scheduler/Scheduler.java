@@ -4,6 +4,7 @@
 package org.gbif.scheduler.scheduler;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -16,6 +17,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import org.gbif.scheduler.dao.JobDao;
 import org.gbif.scheduler.model.Job;
+import org.gbif.util.JSONUtils;
 
 /**
  * @author timrobertson
@@ -46,8 +48,7 @@ public class Scheduler{
 	
 	// starts the scheduler, ready to work
 	public void start() {
-		String baseDir = servletContext.getRealPath("/");
-		pool = new WorkerPool(jobDao, instanceId, baseDir);
+		pool = new WorkerPool(jobDao, instanceId, applicationContext, servletContext);
 		
 		// start the watcher that will issue the jobs
 		Thread workerLauncher = new Thread(new WorkerLauncher());
@@ -79,16 +80,12 @@ public class Scheduler{
 						}
 						
 						for (Job job : jobs) {
-							
-							String classToRun = job.getJobClassName();
-							String dataAsJSON = job.getDataAsJSON();
-							
-							
 							// so we have a job, lets try and see if the pool can give us a worker
 							Worker worker = null;
 							try {
 								worker = (Worker) pool.borrowObject(job);
-								worker.setApplicationContext(applicationContext);
+								String classToRun = job.getJobClassName();
+								String dataAsJSON = job.getDataAsJSON();
 								try {
 		
 									// this will return to the pool when it is ready to do so...
