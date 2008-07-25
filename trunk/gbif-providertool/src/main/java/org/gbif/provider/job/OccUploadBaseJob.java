@@ -162,6 +162,7 @@ public abstract class OccUploadBaseJob implements Launchable{
 					// create new tab file
 					TabFileWriter writer = prepareTabFile(resource, resource.getCoreMapping());
 					out = writer.getFile();
+					
 					// flag all previously existing records as deleted before updating/inserting new ones
 					darwinCoreManager.flagAsDeleted(resource.getId());
 
@@ -170,73 +171,74 @@ public abstract class OccUploadBaseJob implements Launchable{
 					int recordsDeleted = 0;
 					int recordsChanged = 0;
 					int recordsAdded = 0;
-					// go through source records one by one
-					for (ImportRecord rec : source){
-						// check if thread should shutdown...
-						if (Thread.interrupted()) {
-						    throw new InterruptedException();
-						}			
-						// get previous record or null if it didnt exist yet based on localID and resource
-						DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), resource.getId());
-						// get darwincore record based on this core record
-						DarwinCore dwc = DarwinCore.newInstance(rec);
-						
-						// attach to the occurrence resource
-						dwc.setResource(resource);
-						
-						// assign managed properties
-						updateManagedProperties(dwc, oldRecord);
-						
-						// check if new record version is different from old one
-						if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
-							// same record. reset isDeleted flag = false
-							dwc.setDeleted(false);
-						}else if (oldRecord!=null){
-							// modified record
-							dwc.setModified(now);
-							// remove old + insert new record
-							// TODO: could be improved by updating existing record!
-							darwinCoreManager.remove(oldRecord.getId());
-							recordsChanged++;
-						}else{
-							// new record that didnt exist before
-							dwc.setModified(now);
-							recordsAdded++;
-						}
-						// count all inserted records
-						recordsUploaded++;
-						// keep track of upload status outside of this method so that we can create services for it
-						status.put(resource.getId(), String.valueOf(recordsUploaded));
-						if (recordsUploaded % 1000 == 0){
-							log.info(recordsUploaded+" uploaded for resource "+resource.getId());
-						}
-						if (recordsUploaded % 100 == 0){
-							logdb.info(recordsUploaded+" uploaded for resource "+resource.getId());
-						}
-						// insert/update record
-						dwc = darwinCoreManager.save(dwc);
-						// write record to tab file
-						writer.write(dwc.getDataMap());
-						// the new darwin core id used for all other extensions
-						Long coreId = dwc.getId();
-						idMap.put(rec.getLocalId(), coreId);
-					}
 					
-					// update resource and upload event statistics
-					recordsDeleted = resource.getRecordCount()+recordsAdded-recordsUploaded;
-					event.setRecordsAdded(recordsAdded);
-					event.setRecordsChanged(recordsChanged);
-					event.setRecordsDeleted(recordsDeleted);
-					event.setRecordsUploaded(recordsUploaded);		
-					resource.setRecordCount(recordsUploaded);
-					// reset status
-					status.put(resource.getId(), String.format("%s done.", recordsUploaded));
+					try{
+						
+						// go through source records one by one
+						for (ImportRecord rec : source){
+							// check if thread should shutdown...
+							if (Thread.interrupted()) {
+							    throw new InterruptedException();
+							}			
+							// get previous record or null if it didnt exist yet based on localID and resource
+							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), resource.getId());
+							// get darwincore record based on this core record
+							DarwinCore dwc = DarwinCore.newInstance(rec);
+							
+							// attach to the occurrence resource
+							dwc.setResource(resource);
+							
+							// assign managed properties
+							updateManagedProperties(dwc, oldRecord);
+							
+							// check if new record version is different from old one
+							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
+								// same record. reset isDeleted flag = false
+								dwc.setDeleted(false);
+							}else if (oldRecord!=null){
+								// modified record
+								dwc.setModified(now);
+								// remove old + insert new record
+								// TODO: could be improved by updating existing record!
+								darwinCoreManager.remove(oldRecord.getId());
+								recordsChanged++;
+							}else{
+								// new record that didnt exist before
+								dwc.setModified(now);
+								recordsAdded++;
+							}
+							// count all inserted records
+							recordsUploaded++;
+							// keep track of upload status outside of this method so that we can create services for it
+							status.put(resource.getId(), String.valueOf(recordsUploaded));
+							if (recordsUploaded % 1000 == 0){
+								log.info(recordsUploaded+" uploaded for resource "+resource.getId());
+							}
+							// insert/update record
+							dwc = darwinCoreManager.save(dwc);
+							// write record to tab file
+							writer.write(dwc.getDataMap());
+							// the new darwin core id used for all other extensions
+							Long coreId = dwc.getId();
+							idMap.put(rec.getLocalId(), coreId);
+						}
+					} finally {
+						// flush and close writer/file
+						writer.close();
+						// update resource and upload event statistics
+						recordsDeleted = resource.getRecordCount()+recordsAdded-recordsUploaded;
+						event.setRecordsAdded(recordsAdded);
+						event.setRecordsChanged(recordsChanged);
+						event.setRecordsDeleted(recordsDeleted);
+						event.setRecordsUploaded(recordsUploaded);		
+						resource.setRecordCount(recordsUploaded);
+						// reset status
+						status.put(resource.getId(), String.format("%s done.", recordsUploaded));
+					}
+
 				} catch (IOException e) {
-					logdb.error("Couldnt write tab file. Upload aborted", e);
-					e.printStackTrace();
-//				} catch (ImportSourceException e){
-//					logdb.error("Couldnt write tab file. Upload aborted", e);
-//					e.printStackTrace();
+					log.error("Couldnt open tab file. Upload aborted", e);
+					throw new InterruptedException();
 				}
 				
 				return out;
@@ -259,32 +261,38 @@ public abstract class OccUploadBaseJob implements Launchable{
 		}
 	}
 
-	protected File uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) throws InterruptedException {
+	protected File uploadExtension(ImportSource source, Map<String, Long> idMap, DatasourceBasedResource resource, Extension extension) throws InterruptedException {
 		File out = null;
 		try {
 			// create new tab file
 			TabFileWriter writer = prepareTabFile(resource, extension);
-			out = writer.getFile();
-			for (ImportRecord rec : source){
-				// check if thread should shutdown...
-				if (Thread.interrupted()) {
-				    throw new InterruptedException();
+
+			try{
+				out = writer.getFile();
+				for (ImportRecord rec : source){
+					// check if thread should shutdown...
+					if (Thread.interrupted()) {
+					    throw new InterruptedException();
+					}
+					Long coreId = idMap.get(rec.getLocalId());
+					if (coreId == null){
+						String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};
+						//FIXME: use i18n job logging ???
+						log.warn("uploadManager.unknownLocalId" +paras.toString());
+					}else{
+						// TODO: check if record has changed
+						ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
+						extensionRecordDao.insertExtensionRecord(extRec);
+					}
 				}
-				Long coreId = idMap.get(rec.getLocalId());
-				if (coreId == null){
-					String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};
-					//FIXME: use i18n job logging ???
-					log.warn("uploadManager.unknownLocalId" +paras.toString());
-				}else{
-					// TODO: check if record has changed
-					ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
-					extensionRecordDao.insertExtensionRecord(extRec);
-				}
+			} finally {
+				writer.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Couldnt open tab file. Upload aborted", e);
+			throw new InterruptedException();
 		}
+		
 		return out;
 	}
 	
