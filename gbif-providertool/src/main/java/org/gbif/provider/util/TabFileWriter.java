@@ -64,4 +64,9 @@ public class TabFileWriter {
 	public File getFile(){
 		return file;
 	}
+	
+	public void close() throws IOException{
+		writer.flush();
+		writer.close();
+	}
 }
