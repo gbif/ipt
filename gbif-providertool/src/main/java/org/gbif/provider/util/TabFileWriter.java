@@ -16,9 +16,11 @@ import org.gbif.provider.model.DarwinCore;
 public class TabFileWriter {
 	private BufferedWriter writer;
 	private final List<String> header;
+	private final File file;
 	
 	public TabFileWriter(File file, List<String> header) throws IOException{
 		this.header=header;
+		this.file = file;
 		writer = new BufferedWriter(new FileWriter(file));
 		// write headers to tabfile
 		Map<String,String> headerMap = new HashMap<String, String>();
@@ -57,5 +59,9 @@ public class TabFileWriter {
 			result = obj.toString().replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r");
 		}
 		return result;
+	}
+	
+	public File getFile(){
+		return file;
 	}
 }

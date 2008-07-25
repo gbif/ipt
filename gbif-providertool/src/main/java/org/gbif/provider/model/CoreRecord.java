@@ -117,7 +117,11 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 	public Map<String, String> getDataMap(){
 		Map<String, String> m = new HashMap<String, String>();
 		m.put(ID_COLUMN_NAME, this.getGuid());
-		m.put(MODIFIED_COLUMN_NAME , this.getModified().toString());
+		String modified = null;
+		if (this.getModified() == null){
+			modified = this.getModified().toString();
+		}
+		m.put(MODIFIED_COLUMN_NAME , modified);
 		return m;
 	}
 

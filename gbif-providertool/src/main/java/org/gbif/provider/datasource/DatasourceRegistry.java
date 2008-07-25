@@ -28,7 +28,7 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
-import org.gbif.provider.job.RdbmsUploadJob;
+import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;

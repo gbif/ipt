@@ -35,7 +35,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.datasource.ImportRecord;
-import org.gbif.provider.job.RdbmsUploadJob;
+import org.gbif.provider.job.OccDbUploadJob;
 
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;

@@ -22,10 +22,9 @@
 <s:form>
 <fieldset>
 	<legend><s:text name="occResourceOverview.services"/></legend>
-	<!--s:label key="occResource.serviceName"/-->
-	<s:label key="occResource.tapir" value="http://localhost:8080/tapir"/>
-	<s:label key="occResource.wfs" value="http://localhost:8080/wfs"/>
-	<s:label key="occResource.tabfile" value="http://localhost:8080/data"/>
+	<s:label key="occResourceOverview.tapir" value="http://localhost:8080/tapir/%{occResource.serviceName}"/>
+	<s:label key="occResourceOverview.wfs" value="http://localhost:8080/wfs/%{occResource.serviceName}"/>
+	<s:label key="occResourceOverview.tabfile" value="http://localhost:8080/data/%{occResource.serviceName}/data.zip"/>
 </fieldset>
 </s:form>
 

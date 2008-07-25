@@ -27,7 +27,7 @@ import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
-import org.gbif.provider.job.RdbmsUploadJob;
+import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.PropertyMapping;
@@ -39,7 +39,7 @@ import org.gbif.provider.model.ViewMapping;
  *
  */
 public class RdbmsImportSource implements ImportSource{
-	private static I18nLog log = I18nLogFactory.getLog(RdbmsUploadJob.class);
+	private static I18nLog log = I18nLogFactory.getLog(OccDbUploadJob.class);
 
 	private Collection<PropertyMapping> properties;
 	private ResultSet rs;
