@@ -25,11 +25,12 @@ public class Worker {
 	private static Log logger = LogFactory.getLog(Worker.class);
 	private Job job;
 	private ApplicationContext applicationContext;
-	private String baseDir;
+	private ServletContext servletContext;
 	
-	public Worker(String baseDir) {
+	public Worker(ApplicationContext applicationContext, ServletContext servletContext) {
 		super();
-		this.baseDir = baseDir;
+		this.applicationContext=applicationContext;
+		this.servletContext=servletContext;
 	}
 
 	public void execute(WorkerPool pool, String launchableClassname, String dataAsJSON) {
@@ -51,13 +52,12 @@ public class Worker {
 		public void run() {
 			try {
 				Map<String, Object> seed = JSONUtils.mapFromJSON(dataAsJSON); 
-				
 				try {
 					// we can launch in 3 ways
 					// 1 an activity that does not know about the spring application
 					// 2,3 an activity that is in the spring application (autowired by type, or name)
 					String[] beanNames;
-					beanNames = applicationContext.getBeanNamesForType(Class.forName(launchableClassname));
+					beanNames = worker.applicationContext.getBeanNamesForType(Class.forName(launchableClassname));
 					logger.debug("Job beans found for the required class[" + launchableClassname + "] : "+beanNames.toString());
 					Object target = null;
 					if (beanNames.length==0) {
@@ -76,7 +76,7 @@ public class Worker {
 						
 					} else if (beanNames.length==1) { // autowiring by type basically...
 						logger.info("There is only 1 bean wired in the context for type [" + launchableClassname + "], so using this one");
-						target = applicationContext.getBean(beanNames[0]);
+						target = worker.applicationContext.getBean(beanNames[0]);
 						
 					} else {
 						// use a disambiguation bean id
@@ -85,7 +85,7 @@ public class Worker {
 						if (beanId == null) {
 							logger.error("No APP:LAUNCHER:BEAN:ID found in the seed data.  Autowiring by type is ambiguous, stopping.");	
 						} else {
-							target = applicationContext.getBean(beanId);
+							target = worker.applicationContext.getBean(beanId);
 						}
 					}
 					
@@ -93,7 +93,7 @@ public class Worker {
 						logger.error("Target object is null for: " + launchableClassname);
 					} else if (target instanceof Launchable) {
 						try {
-							((Launchable)target).launch(seed, baseDir);
+							((Launchable)target).launch(seed);
 						} catch (Exception e) {
 							logger.error("Error executing: " + launchableClassname, e);
 						}
@@ -120,6 +120,7 @@ public class Worker {
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -136,12 +137,21 @@ public class Worker {
 	 */
 	void setJob(Job job) {
 		this.job = job;
+		addJobEnvironment();
 	}
-
-	
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
+	/**
+	 * Add environment parameters to job seed
+	 * @param job
+	 */
+	private void addJobEnvironment() {
+		Map<String, Object> seed = JSONUtils.mapFromJSON(job.getDataAsJSON());
+		seed.put(Launchable.JOB_ID, job.getId().toString());
+		String webappDir = "/tmp";
+		if (this.servletContext != null){
+			webappDir = this.servletContext.getRealPath("/");
+		}
+		seed.put(Launchable.WEBAPP_DIR, webappDir);
+		job.setDataAsJSON(JSONUtils.jsonFromMap(seed));
 	}
 
 }

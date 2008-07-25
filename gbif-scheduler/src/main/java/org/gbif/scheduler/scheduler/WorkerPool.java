@@ -5,6 +5,9 @@ package org.gbif.scheduler.scheduler;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +16,8 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 
 import org.gbif.scheduler.dao.JobDao;
 import org.gbif.scheduler.model.Job;
+import org.gbif.util.JSONUtils;
+import org.springframework.context.ApplicationContext;
 
 /**
  * A pool that will return a Worker, and on borrowing an object, will set the 
@@ -26,11 +31,11 @@ public class WorkerPool extends GenericObjectPool {
 	// TODO, a UI driven watcher
 	public static final int poolSize = 10;
 	
-	public WorkerPool(JobDao jobDao, String instanceId, String baseDir) {
+	public WorkerPool(JobDao jobDao, String instanceId, ApplicationContext applicationContext, ServletContext servletContext) {
 		super();
 		this.jobDao = jobDao;
 		this.instanceId = instanceId;
-		this.setFactory(new WorkerFactory(baseDir));
+		this.setFactory(new WorkerFactory(applicationContext, servletContext));
 		setWhenExhaustedAction(GenericObjectPool.WHEN_EXHAUSTED_FAIL);
 		setMaxActive(poolSize);
 	}
@@ -40,7 +45,7 @@ public class WorkerPool extends GenericObjectPool {
 	 */
 	@Override
 	public synchronized Object borrowObject() throws Exception {
-		throw new Exception("Invalid invocation - use borrowObject(jobDao, instanceId)");
+		throw new Exception("Invalid invocation - use borrowObject(Job job)");
 	}
 
 	/**
@@ -107,12 +112,17 @@ public class WorkerPool extends GenericObjectPool {
 	 * @author timrobertson
 	 */
 	class WorkerFactory implements PoolableObjectFactory {
-		private String baseDir;
-		public WorkerFactory(final String baseDir) {
-			this.baseDir=baseDir;
+		private ApplicationContext applicationContext;
+		private ServletContext servletContext;
+
+		private WorkerFactory(ApplicationContext applicationContext, ServletContext servletContext) {
+			super();
+			this.applicationContext = applicationContext;
+			this.servletContext = servletContext;
 		}
+
 		public Object makeObject() throws Exception {
-			return new Worker(baseDir);
+			return new Worker(applicationContext, servletContext);
 		}
 		
 		// required methods
