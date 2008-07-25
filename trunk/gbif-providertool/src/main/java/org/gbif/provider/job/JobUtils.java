@@ -22,7 +22,7 @@ public class JobUtils {
 
 	
 	public static int getSourceTypeId(Class jobClass){
-		if (jobClass.equals(RdbmsUploadJob.class)){
+		if (jobClass.equals(OccDbUploadJob.class)){
 			return 1;
 		}else{
 			return -1;

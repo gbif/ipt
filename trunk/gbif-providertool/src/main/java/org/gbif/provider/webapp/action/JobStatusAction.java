@@ -1,21 +1,22 @@
 package org.gbif.provider.webapp.action;
 
-import org.gbif.provider.job.RdbmsUploadJob;
+import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.scheduler.service.JobManager;
 
 public class JobStatusAction extends BaseOccurrenceResourceAction {
 	private JobManager jobManager;
-	private RdbmsUploadJob rdbmsUploadJob;
+	private OccDbUploadJob occDbUploadJob;
 	private String status;
 	
 	public void setJobManager(JobManager jobManager) {
 		this.jobManager = jobManager;
 	}
-
-	public void setRdbmsUploadJob(RdbmsUploadJob rdbmsUploadJob) {
-		this.rdbmsUploadJob = rdbmsUploadJob;
-	}
 	
+	public void setOccDbUploadJob(OccDbUploadJob occDbUploadJob) {
+		this.occDbUploadJob = occDbUploadJob;
+	}
+
+
 	public String getStatus() {
 		return status;
 	}
@@ -26,7 +27,7 @@ public class JobStatusAction extends BaseOccurrenceResourceAction {
 	
 	public String uploadStatus(){
 		if (resource_id != null){
-			status = rdbmsUploadJob.status(resource_id);
+			status = occDbUploadJob.status(resource_id);
 		}
 		return SUCCESS;
 	}

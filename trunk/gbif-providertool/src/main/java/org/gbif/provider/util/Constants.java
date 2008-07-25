@@ -29,4 +29,5 @@ public class Constants {
     public static final String MANAGER_ROLE = "ROLE_MANAGER";
     public static final Long TEST_RESOURCE_ID = 1L;
     public static final Long TEST_USER_ID = 4L;
+    public static final String TEST_BASE_DIR = "/tmp";
 }

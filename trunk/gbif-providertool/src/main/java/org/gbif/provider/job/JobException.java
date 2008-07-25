@@ -6,5 +6,15 @@ package org.gbif.provider.job;
  *
  */
 public class JobException extends Exception {
+	public JobException() {
+		super();
+	}
 
+	public JobException(String message) {
+		super(message);
+	}
+	
+	public JobException(Exception e) {
+		super(e);
+	}
 }

@@ -29,10 +29,10 @@ public class WorkerTest extends BaseDaoTestCase {
 	
 	@Test
 	public void testGetBeanNamesByType() throws ClassNotFoundException {
-		String jobClassName = RdbmsUploadJob.class.getName();
+		String jobClassName = OccDbUploadJob.class.getName();
 		String[] beanNames = applicationContext.getBeanNamesForType(Class.forName(jobClassName));
 		String[] expectedBeanNames = new String[1];
-		expectedBeanNames[0] = "rdbmsUploadJob";
+		expectedBeanNames[0] = "occDbUploadJob";
 		assertArrayEquals(expectedBeanNames, beanNames);
 	}
 	
@@ -43,7 +43,7 @@ public class WorkerTest extends BaseDaoTestCase {
 	 */
 	@Test
 	public void testMockJob() throws Exception {
-		// test rdbmsUploadJob
+		// test occDbUploadJob
 		Job job = new Job();
 		job.setDescription("test mock job");
 		job.setId(1L);
@@ -61,13 +61,13 @@ public class WorkerTest extends BaseDaoTestCase {
 	}
 	
 	@Test
-	public void testRdbmsUploadJob() throws Exception {
-		// test rdbmsUploadJob
+	public void testOccDbUploadJob() throws Exception {
+		// test occDbUploadJob
 		Job job = new Job();
 		job.setDescription("test rdbms upload job");
 		job.setId(1L);
 		job.setDataAsJSON("{}");
-		job.setJobClassName(RdbmsUploadJob.class.getName());
+		job.setJobClassName(OccDbUploadJob.class.getName());
 		job.setJobGroup("testGroup");
 		job.setNextFireTime(new Date());
 		runJob(job);

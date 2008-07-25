@@ -13,16 +13,23 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.MDC;
 import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.util.PathUtil;
 import org.gbif.provider.util.TabFileWriter;
+import org.gbif.provider.util.ZipUtil;
+import org.gbif.logging.log.I18nDatabaseAppender;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.dao.DarwinCoreDao;
 import org.gbif.provider.dao.ExtensionRecordDao;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.datasource.ImportSourceException;
+import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.DarwinCore;
@@ -35,9 +42,9 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMapping;
 import org.gbif.scheduler.scheduler.Launchable;
 
-public abstract class UploadBaseJob implements Launchable{
-	protected static final Log log = LogFactory.getLog(RdbmsUploadJob.class);
-	protected static I18nLog logdb = I18nLogFactory.getLog(RdbmsUploadJob.class);
+public abstract class OccUploadBaseJob implements Launchable{
+	protected static final Log log = LogFactory.getLog(OccDbUploadJob.class);
+	protected static I18nLog logdb = I18nLogFactory.getLog(OccDbUploadJob.class);
 
 	public static final String RESOURCE_ID = "resourceId";
 	public static final String USER_ID = "userId";
@@ -46,29 +53,115 @@ public abstract class UploadBaseJob implements Launchable{
 	protected UploadEventManager uploadEventManager;
 	protected CoreRecordManager<DarwinCore> darwinCoreManager;
 	protected ExtensionRecordDao extensionRecordDao;
+	protected ResourceManager<OccurrenceResource> occResourceManager;
 	protected Map<Long, String> status = new HashMap<Long, String>();
 
-	public String status(Long resourceId){
-		return status.get(resourceId);
-	}
-
-	protected UploadBaseJob(UploadEventManager uploadEventManager, CoreRecordManager<DarwinCore> darwinCoreManager, ExtensionRecordDao extensionRecordDao) {
+	protected OccUploadBaseJob(UploadEventManager uploadEventManager, CoreRecordManager<DarwinCore> darwinCoreManager, 
+			ExtensionRecordDao extensionRecordDao, ResourceManager<OccurrenceResource> occResourceManager) {
 		super();
 		this.uploadEventManager = uploadEventManager;
 		this.darwinCoreManager = darwinCoreManager;
 		this.extensionRecordDao = extensionRecordDao;
+		this.occResourceManager = occResourceManager;
+	}
+	
+	
+	public String status(Long resourceId){
+		return status.get(resourceId);
 	}
 
-	protected Map<String, Long> uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event) throws InterruptedException {
-				log.info("Uploading occurrence core for resource "+resource.getTitle());
+	public void launch(Map<String, Object> seed, String baseDir) {
+		PathUtil.setWebappDir(baseDir);
+		try {
+			log.info("Starting "+this.getClass().getSimpleName() +" with seed "+seed);
+			MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, JobUtils.getSourceTypeId(this.getClass()));
+			//TODO: set this in the scheduler constructor???
+			//MDC.put(I18nDatabaseAppender.MDC_INSTANCE_ID, null);
+			Long resourceId = Long.valueOf(seed.get(RESOURCE_ID).toString());
+			try{
+				Long userId = Long.valueOf(seed.get(USER_ID).toString());
+				MDC.put(I18nDatabaseAppender.MDC_USER, userId);
+			} catch (NumberFormatException e) {
+				String[] params = {RESOURCE_ID, USER_ID, seed.toString()};
+				logdb.error("{0} or {1} in seed is no Integer {2}", params, e);
+			}
+			Integer maxRecords = null;
+			if (seed.get(MAX_RECORDS) != null){
+				try{
+					maxRecords = Integer.valueOf(seed.get(MAX_RECORDS).toString());
+				} catch (NumberFormatException e) {
+					String[] params = {MAX_RECORDS, seed.toString()};
+					logdb.warn("{0} in seed is no Integer {1}", params, e);
+				}
+			}
+			MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, JobUtils.getJobGroup(resourceId));
+			MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, resourceId);
+					
+			
+			// get resource
+			OccurrenceResource resource = occResourceManager.get(resourceId);
+
+			// track upload in upload event metadata (mainly statistics)
+			UploadEvent coreEvent = new UploadEvent();
+			coreEvent.setResource(resource);
+			
+			
+			// clear data dump directory
+			List<File> dumpFiles = new ArrayList<File>();
+			// try to upload records
+			try {
 				Map<String, Long> idMap = new HashMap<String, Long>();
+				// prepare import source. Source is implementation specific
+				ImportSource source = this.getCoreImportSource(seed, resource, maxRecords);
+				// run import of core into db & dump file
+				dumpFiles.add(uploadCore(source, resource, coreEvent, idMap));
+				// upload further extensions one by one
+				for (ViewMapping vm : resource.getExtensionMappings().values()){
+					Extension ext = vm.getExtension();
+					//  prepare import source
+					source = this.getImportSource(seed, resource, ext, maxRecords);
+					// run import into db & dump file
+					dumpFiles.add(uploadExtension(source, idMap, resource, ext));
+				}
+			} catch (Exception e) {
+				logdb.error("Error uploading data", e);
+				e.printStackTrace();
+			}
+			
+			// save upload event
+			Date now = new Date();
+			coreEvent.setExecutionDate(now);
+			uploadEventManager.save(coreEvent);
+			// update resource properties
+			resource.setLastImport(now);
+			resource.setRecordCount(coreEvent.getRecordsUploaded());
+			occResourceManager.save(resource);
+			
+			// zip all files into single archive
+			File archive = PathUtil.getDumpArchive(resource, true);
+			ZipUtil.zipFiles(dumpFiles, archive);			
+			
+		} catch (NumberFormatException e) {
+			String[] params = {RESOURCE_ID, seed.toString()};
+			logdb.error("{0} in seed is no Integer {1}", params, e);
+		} catch (Exception e) {
+			logdb.error("Error occurred while running "+this.getClass().getSimpleName(), e);
+		}		
+	}
+	
+	abstract protected ImportSource getCoreImportSource(Map<String, Object> seed, OccurrenceResource resource, Integer maxRecords) throws ImportSourceException;
+
+	abstract protected ImportSource getImportSource(Map<String, Object> seed, OccurrenceResource resource, Extension extension, Integer maxRecords) throws ImportSourceException;
+
+	protected File uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event, Map<String, Long> idMap) throws InterruptedException {
+				log.info("Uploading occurrence core for resource "+resource.getTitle());
 				// use a single date for now (e.g. to set dateLastModified)
 				Date now = new Date();
-				
+				File out = null;
 				try {
 					// create new tab file
 					TabFileWriter writer = prepareTabFile(resource, resource.getCoreMapping());
-					
+					out = writer.getFile();
 					// flag all previously existing records as deleted before updating/inserting new ones
 					darwinCoreManager.flagAsDeleted(resource.getId());
 
@@ -141,8 +234,12 @@ public abstract class UploadBaseJob implements Launchable{
 				} catch (IOException e) {
 					logdb.error("Couldnt write tab file. Upload aborted", e);
 					e.printStackTrace();
+//				} catch (ImportSourceException e){
+//					logdb.error("Couldnt write tab file. Upload aborted", e);
+//					e.printStackTrace();
 				}
-				return idMap;
+				
+				return out;
 			}
 
 	private void updateManagedProperties(DarwinCore dwc, DarwinCore oldRecord) {
@@ -162,9 +259,12 @@ public abstract class UploadBaseJob implements Launchable{
 		}
 	}
 
-	protected void uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) throws InterruptedException {
+	protected File uploadExtension(ImportSource source, Map<String, Long> idMap, OccurrenceResource resource, Extension extension) throws InterruptedException {
+		File out = null;
 		try {
+			// create new tab file
 			TabFileWriter writer = prepareTabFile(resource, extension);
+			out = writer.getFile();
 			for (ImportRecord rec : source){
 				// check if thread should shutdown...
 				if (Thread.interrupted()) {
@@ -185,23 +285,19 @@ public abstract class UploadBaseJob implements Launchable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return out;
 	}
 	
-	protected TabFileWriter prepareTabFile(DatasourceBasedResource resource, CoreViewMapping coreViewMapping) throws IOException{
+	protected static TabFileWriter prepareTabFile(DatasourceBasedResource resource, CoreViewMapping coreViewMapping) throws IOException{
 		List<String> additionalHeader = new ArrayList<String>();
 		return prepareTabFile(resource, coreViewMapping.getExtension(), additionalHeader);
 	}
-	protected TabFileWriter prepareTabFile(DatasourceBasedResource resource, Extension extension) throws IOException{
+	protected static TabFileWriter prepareTabFile(DatasourceBasedResource resource, Extension extension) throws IOException{
 		return prepareTabFile(resource, extension, null);
 	}
-	protected TabFileWriter prepareTabFile(DatasourceBasedResource resource, Extension extension, List<String> additionalHeader) throws IOException{
-		String dirname = String.format("/Users/markus/Desktop/data/%s", resource.getServiceName());
-		String filename = String.format("%s/%s.txt", dirname, extension.getTablename());
-		// create directories and file
-		File dir = new File(dirname);
-		FileUtils.forceMkdir(dir);
-		File file = new File(filename);
-		file.createNewFile();
+	protected static TabFileWriter prepareTabFile(DatasourceBasedResource resource, Extension extension, List<String> additionalHeader) throws IOException{
+		// create new file, overwriting existing one
+		File file = PathUtil.getDumpFile(resource, extension, true);
 
 		List<String> header = new ArrayList<String>();
 		// add core record id first as first column

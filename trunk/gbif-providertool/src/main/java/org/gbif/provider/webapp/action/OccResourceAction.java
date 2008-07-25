@@ -27,7 +27,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.job.JobUtils;
-import org.gbif.provider.job.UploadBaseJob;
+import org.gbif.provider.job.OccUploadBaseJob;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
@@ -159,7 +159,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 			} else {
 				try {
 					Class jobClass = Class.forName(j.getJobClassName());
-					if (jobClass.isAssignableFrom(UploadBaseJob.class) && (nextUpload == null || j.getNextFireTime().after(nextUpload.getNextFireTime()))) {
+					if (jobClass.isAssignableFrom(OccUploadBaseJob.class) && (nextUpload == null || j.getNextFireTime().after(nextUpload.getNextFireTime()))) {
 						nextUpload = j;
 					}
 				} catch (ClassNotFoundException e) {
