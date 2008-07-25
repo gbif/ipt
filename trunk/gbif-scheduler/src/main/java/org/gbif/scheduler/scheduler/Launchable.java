@@ -10,5 +10,5 @@ import java.util.Map;
  * @author timrobertson
  */
 public interface Launchable {
-	public void launch(Map<String, Object> seed) throws Exception;
+	public void launch(Map<String, Object> seed, String baseDir) throws Exception;
 }

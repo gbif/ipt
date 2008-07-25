@@ -5,11 +5,14 @@ package org.gbif.scheduler.scheduler;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ServletContextAware;
 
 import org.gbif.scheduler.dao.JobDao;
 import org.gbif.scheduler.model.Job;
@@ -18,41 +21,33 @@ import org.gbif.scheduler.model.Job;
  * @author timrobertson
  *
  */
-public class Scheduler implements ApplicationContextAware{
+public class Scheduler{
 	// watch interval for state changes
 	private long watchIntervalMsec=10000;
 	private String instanceId="unknown";
 	private static Log logger = LogFactory.getLog(Scheduler.class);
 	private JobDao jobDao;
 	private ApplicationContext applicationContext;
+	private ServletContext servletContext;
 	
 	// the pool of actual worker
 	WorkerPool pool;
 	
 	private boolean isRunning = true;
-	
-	public Scheduler(String instanceId, JobDao jobDao) {
-		super();
-		this.instanceId = instanceId;
-		this.jobDao = jobDao;
-	}
 
-	public Scheduler(String instanceId,
-			ApplicationContext applicationContext,
-			JobDao jobDao) {
+	public Scheduler(String instanceId, ApplicationContext applicationContext, ServletContext servletContext, JobDao jobDao) {
 		super();
 		this.instanceId = instanceId;
 		this.jobDao = jobDao;
 		this.applicationContext=applicationContext;
+		this.servletContext=servletContext;
 	}
 	
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}	
 	
 	// starts the scheduler, ready to work
 	public void start() {
-		pool = new WorkerPool(jobDao, instanceId);
+		String baseDir = servletContext.getRealPath("/");
+		pool = new WorkerPool(jobDao, instanceId, baseDir);
 		
 		// start the watcher that will issue the jobs
 		Thread workerLauncher = new Thread(new WorkerLauncher());
