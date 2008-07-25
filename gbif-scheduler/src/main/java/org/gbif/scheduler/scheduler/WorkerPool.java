@@ -26,12 +26,11 @@ public class WorkerPool extends GenericObjectPool {
 	// TODO, a UI driven watcher
 	public static final int poolSize = 10;
 	
-	public WorkerPool(JobDao jobDao,
-			String instanceId) {
+	public WorkerPool(JobDao jobDao, String instanceId, String baseDir) {
 		super();
 		this.jobDao = jobDao;
 		this.instanceId = instanceId;
-		this.setFactory(new WorkerFactory());
+		this.setFactory(new WorkerFactory(baseDir));
 		setWhenExhaustedAction(GenericObjectPool.WHEN_EXHAUSTED_FAIL);
 		setMaxActive(poolSize);
 	}
@@ -108,9 +107,14 @@ public class WorkerPool extends GenericObjectPool {
 	 * @author timrobertson
 	 */
 	class WorkerFactory implements PoolableObjectFactory {
-		public Object makeObject() throws Exception {
-			return new Worker();
+		private String baseDir;
+		public WorkerFactory(final String baseDir) {
+			this.baseDir=baseDir;
 		}
+		public Object makeObject() throws Exception {
+			return new Worker(baseDir);
+		}
+		
 		// required methods
 		public void destroyObject(Object arg0) throws Exception {
 		}

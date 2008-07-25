@@ -46,7 +46,7 @@ public class SchedulerStartupListener extends ContextLoaderListener implements
         ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
         try {
         	JobDao jobDao = (JobDao) ctx.getBean("jobDao");
-        	Scheduler scheduler = new Scheduler(InetAddress.getLocalHost().getHostName(), ctx, jobDao);
+        	Scheduler scheduler = new Scheduler(InetAddress.getLocalHost().getHostName(), ctx, event.getServletContext(), jobDao);
         	scheduler.start();
         	
             

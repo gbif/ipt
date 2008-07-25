@@ -5,11 +5,14 @@ package org.gbif.scheduler.scheduler;
 
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ServletContextAware;
 
 import org.gbif.scheduler.model.Job;
 import org.gbif.util.JSONUtils;
@@ -18,11 +21,17 @@ import org.gbif.util.JSONUtils;
  * The object that comes from the pool, that will execute the contents of the trigger
  * @author timrobertson
  */
-public class Worker implements ApplicationContextAware {
+public class Worker {
 	private static Log logger = LogFactory.getLog(Worker.class);
 	private Job job;
 	private ApplicationContext applicationContext;
+	private String baseDir;
 	
+	public Worker(String baseDir) {
+		super();
+		this.baseDir = baseDir;
+	}
+
 	public void execute(WorkerPool pool, String launchableClassname, String dataAsJSON) {
 		Thread t = new Thread(new Runner(this, pool, launchableClassname, dataAsJSON));
 		t.start();
@@ -84,7 +93,7 @@ public class Worker implements ApplicationContextAware {
 						logger.error("Target object is null for: " + launchableClassname);
 					} else if (target instanceof Launchable) {
 						try {
-							((Launchable)target).launch(seed);
+							((Launchable)target).launch(seed, baseDir);
 						} catch (Exception e) {
 							logger.error("Error executing: " + launchableClassname, e);
 						}
@@ -134,4 +143,5 @@ public class Worker implements ApplicationContextAware {
 			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
+
 }

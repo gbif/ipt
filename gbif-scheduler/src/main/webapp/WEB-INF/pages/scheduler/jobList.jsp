@@ -6,14 +6,13 @@
     <meta name="menu" content="JobMenu"/>
 </head>
 
-<c:set var="buttons">
-    <input type="button" style="margin-right: 5px" class="button"
-        onclick="location.href='<c:url value="/editJob.html"/>'"
-        value="<s:text name="button.add"/>"/>
 
-    <input type="button" class="button" onclick="location.href='<c:url value="/mainMenu.html"/>'"
-        value="<s:text name="button.done"/>"/>
-</c:set>
+<c:set var="buttons">
+  <s:form>
+	<s:submit action="editJob" key="button.add" theme="simple" cssClass="button"/>
+	<s:submit action="mainMenu" key="button.done" theme="simple" cssClass="button"/>
+  </s:form>
+ </c:set>
 
 <c:out value="${buttons}" escapeXml="false" />
 
