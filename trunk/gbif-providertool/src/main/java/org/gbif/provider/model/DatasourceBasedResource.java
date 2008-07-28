@@ -17,6 +17,8 @@
 package org.gbif.provider.model;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
@@ -37,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
+import org.gbif.provider.util.ConfigUtil;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
@@ -56,6 +59,7 @@ public class DatasourceBasedResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private Date lastImport;
+	private Integer lastImportSourceId;
 	private int recordCount;
 	private CoreViewMapping coreMapping;
 	// extension mappings, not including the core mapping
@@ -111,6 +115,13 @@ public class DatasourceBasedResource extends Resource {
 	}
 	public void setLastImport(Date lastImport) {
 		this.lastImport = lastImport;
+	}
+	
+	public Integer getLastImportSourceId() {
+		return lastImportSourceId;
+	}
+	public void setLastImportSourceId(Integer lastImportSourceId) {
+		this.lastImportSourceId = lastImportSourceId;
 	}
 	
 	public int getRecordCount() {
@@ -227,21 +238,17 @@ public class DatasourceBasedResource extends Resource {
 		}
 		return result;
 	}
-
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals2(Object o) {
-		if (o == this){
-			return true;
-		}
-		if (!(o instanceof DatasourceBasedResource)) {
-			return false;
-		}
-        final DatasourceBasedResource resource = (DatasourceBasedResource) o;
-        
-        return this.hashCode() == resource.hashCode();
+	
+	
+	@Transient
+	public File getDataDir(){
+    	File dir = new File(ConfigUtil.getWebappDir(), String.format("data/%s", getServiceName()));
+		return dir;
 	}
 	
+	@Transient
+	public String getResourceBaseUrl(){
+    	return String.format("%s/data/%s", ConfigUtil.getAppBaseUrl(), getServiceName());
+	}
 
 }

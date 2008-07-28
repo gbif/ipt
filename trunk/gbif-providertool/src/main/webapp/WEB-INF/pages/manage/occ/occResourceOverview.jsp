@@ -22,9 +22,9 @@
 <s:form>
 <fieldset>
 	<legend><s:text name="occResourceOverview.services"/></legend>
-	<s:label key="occResourceOverview.tapir" value="http://localhost:8080/tapir/%{occResource.serviceName}"/>
-	<s:label key="occResourceOverview.wfs" value="http://localhost:8080/wfs/%{occResource.serviceName}"/>
-	<s:label key="occResourceOverview.tabfile" value="http://localhost:8080/data/%{occResource.serviceName}/data.zip"/>
+	<s:label key="occResourceOverview.tabfile" value="%{occResource.getDumpArchiveUrl()}"/>
+	<s:label key="occResourceOverview.tapir" value="%{occResource.getTapirEndpoint()}"/>
+	<s:label key="occResourceOverview.wfs" value="%{occResource.getWfsEndpoint()}"/>
 </fieldset>
 </s:form>
 
@@ -106,7 +106,16 @@
     		<s:else>
 				<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
     		</s:else>
-			<s:label key="occResource.lastImport"/>
+    		
+    		<s:if test="%{occResource.lastImport}">
+				<s:label key="occResource.lastImport"/>
+				<s:url id="logsUrl" action="logEvents" namespace="/admin">
+					<s:param name="sourceId" value="occResource.lastImportSourceId" />
+					<s:param name="sourceType" value="1" />
+				</s:url>
+				<s:a href="%{logsUrl}">log entries</s:a>
+			</s:if>
+			
 			<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
 
     		<s:if test="%{currentJob}">
@@ -137,9 +146,6 @@
     <legend><s:text name="occResourceOverview.validation"/></legend>
     <s:if test="%{occResource.hasData()}">
 		<s:label key="Problematic records"/>
-		<li>
- 			<a href="/logging/logEvents.html?groupId=<s:property value="occResource.id"/>"><s:property value="occResource.recordCount"/></a>
- 		</li>		
 	    <s:submit cssClass="button" key="button.validate"/>
     </s:if>
     <s:else>

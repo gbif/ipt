@@ -34,7 +34,7 @@ import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.PathUtil;
+import org.gbif.provider.util.ConfigUtil;
 import org.gbif.provider.util.ZipUtil;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Launchable;
@@ -42,6 +42,7 @@ import org.gbif.util.JSONUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 public class OccDbUploadJob extends OccUploadBaseJob{
+	public static final int SOURCE_TYPE_ID = 1;
     private DatasourceInspectionManager datasourceInspectionManager;
     
 	public OccDbUploadJob(
@@ -79,6 +80,10 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 		return job;				
 	}
 	
+
+	public int getSourceType() {
+		return SOURCE_TYPE_ID;
+	}
 
 	public ImportSource getCoreImportSource(Map<String, Object> seed, OccurrenceResource resource, Integer maxRecords) throws ImportSourceException {
 			Long resourceId = resource.getId();
@@ -118,4 +123,5 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 
 		return source;
 }
+
 }

@@ -16,6 +16,8 @@
 
 package org.gbif.provider.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +30,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.gbif.provider.util.ConfigUtil;
 import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.MapKeyManyToMany;
@@ -53,7 +56,47 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		resource.setCoreMapping(coreVM);
 		return resource;
 	}
+
+	@Override
+	@Transient
+	public File getDataDir(){
+		return new File(super.getDataDir(), "occ");
+	}
+
+	@Transient
+    public File getDumpArchiveFile(){
+		File file = new File(getDataDir(), "data.zip");
+		return file;    	
+    }
+
+	@Transient
+    public String getDumpArchiveUrl(){
+		return String.format("%s/occ/data.zip", getResourceBaseUrl());
+    }
+
+	@Transient
+    public File getDumpFile(Extension extension) throws IOException{    	
+		File file = new File(getDataDir(), String.format("%s.txt", extension.getTablename()));
+		return file;
+	}    
+
+	@Transient
+	public String getTapirEndpoint(){
+		return String.format("%s/tapir", getResourceBaseUrl());
+	}
 	
+	@Transient
+	public String getWfsEndpoint(){
+		return String.format("%s/wfs", getResourceBaseUrl());
+	}
+	
+	@Transient
+	public String getRecordResolverEndpoint(){
+		return String.format("%s/detail", getResourceBaseUrl());
+	}
+    
+
+    
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}

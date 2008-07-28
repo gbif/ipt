@@ -13,6 +13,12 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.gbif.provider" /> 
     
+    <!-- application properties -->    
+    <bean id="configUtil" class="org.gbif.provider.util.ConfigUtil">
+        <property name="appBaseUrl" value="${app.baseUrl}" />
+    </bean>
+
+
     <!-- security interceptors -->
     <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
         <property name="authorizedRoles" value="ROLE_MANAGER"/>

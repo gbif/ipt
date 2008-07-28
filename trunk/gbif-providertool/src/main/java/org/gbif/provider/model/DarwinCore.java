@@ -145,6 +145,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMinimumElevationInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
+					dwc.setProblematic(true);
 					logdb.warn("Couldnt transform value '{0}' for property MinimumElevationInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("MaximumElevationInMeters")){
@@ -154,6 +155,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMaximumElevationInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
+					dwc.setProblematic(true);
 					logdb.warn("Couldnt transform value '{0}' for property MaximumElevationInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
@@ -163,6 +165,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMinimumDepthInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
+					dwc.setProblematic(true);
 					logdb.warn("Couldnt transform value '{0}' for property MinimumDepthInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("MaximumDepthInMeters")){
@@ -172,6 +175,7 @@ public class DarwinCore extends CoreRecord{
 					Integer typedVal = Integer.valueOf(val);
 					dwc.setMaximumDepthInMetersAsInteger(typedVal);
 				} catch (NumberFormatException e) {
+					dwc.setProblematic(true);
 					logdb.warn("Couldnt transform value '{0}' for property MaximumDepthInMeters into Integer value", val, e);
 				}
 			}else if(propName.equals("CollectingMethod")){
