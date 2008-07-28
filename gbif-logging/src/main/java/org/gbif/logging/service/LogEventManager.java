@@ -52,4 +52,10 @@ public interface LogEventManager extends GenericManager<LogEvent, Long> {
 	 * @return
 	 */
 	public List<LogEvent> findByGroupAndIdGreaterThan(int groupId, long id, int minLevel);
+	
+
+	public void removeByGroup(int groupId);
+
+	public void removeBySource(int sourceId, int sourceType);
+	
 }
