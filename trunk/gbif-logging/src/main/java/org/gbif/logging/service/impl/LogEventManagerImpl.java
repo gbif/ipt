@@ -47,4 +47,14 @@ public class LogEventManagerImpl extends GenericManagerImpl<LogEvent, Long> impl
 		return logEventDao.findByUserAndIdGreaterThan(userId, id, minLevel);
 
 	}
+	
+
+	public void removeByGroup(int groupId) {
+		logEventDao.removeByGroup(groupId);
+	}
+
+	public void removeBySource(int sourceId, int sourceType) {
+		logEventDao.removeBySource(sourceId, sourceType);
+	} 
+
 }

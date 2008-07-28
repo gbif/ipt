@@ -46,4 +46,12 @@ public class LogEventDaoHibernate extends GenericDaoHibernate<LogEvent, Long> im
 		return (List<LogEvent>) getHibernateTemplate().find("from LogEvent where id>? and level>=? and user.id=?", new Object[]{id, level, userId});
 
 	}
+
+	public void removeByGroup(int groupId) {
+		getHibernateTemplate().deleteAll(findByGroupAndIdGreaterThan(groupId, 0, 0));		
+	}
+
+	public void removeBySource(int sourceId, int sourceType) {
+		getHibernateTemplate().deleteAll(findBySourceAndIdGreaterThan(sourceId, sourceType, 0, 0));		
+	}
 }

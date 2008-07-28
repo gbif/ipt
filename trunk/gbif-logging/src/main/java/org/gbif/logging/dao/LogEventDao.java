@@ -31,4 +31,8 @@ public interface LogEventDao extends GenericDao<LogEvent, Long> {
 	public List<LogEvent> findBySourceAndIdGreaterThan(int sourceId, int sourceType, long id, int minLevel);
 
 	public List<LogEvent> findByUserAndIdGreaterThan(long userId, long id, int minLevel);
+
+	public void removeByGroup(int groupId);
+
+	public void removeBySource(int sourceId, int sourceType);
 }
