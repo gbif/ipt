@@ -15,6 +15,9 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.PathUtil;
 import org.gbif.scheduler.model.Job;
+import org.gbif.scheduler.scheduler.Launchable;
+import org.gbif.scheduler.scheduler.Worker;
+import org.gbif.util.JSONUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,11 +29,13 @@ public class RdbmsUploadJobTest extends RdbmsImportSourceTest{
 	}
 
 	@Test
-	public void testUploadCore() throws InterruptedException {
+	public void testUploadCore() {
 		setUpSource();
 		OccurrenceResource resource = (OccurrenceResource) getTestResource();
 		UploadEvent event = new UploadEvent();
-		Map seed = OccDbUploadJob.getSeed(resource.getId(), 4L, 25);
+		Map<String, Object> seed = OccDbUploadJob.getSeed(resource.getId(), 4L, 25);
+		seed.put(Launchable.JOB_ID, "1");
+		seed.put(Launchable.WEBAPP_DIR, "/tmp");
 		occDbUploadJob.launch(seed);
 	}
 
