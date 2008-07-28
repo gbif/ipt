@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -38,13 +39,12 @@ import org.gbif.provider.model.ViewMapping;
 /**
  * Constant values used throughout the application.
  */
-public class PathUtil {
-	protected static final Log log = LogFactory.getLog(PathUtil.class);
-    public static String WEBAPP_DIR;
+public class ConfigUtil {
+	protected static final Log log = LogFactory.getLog(ConfigUtil.class);
+    private static String WEBAPP_DIR;
     private static File WEBAPP_DIR_FILE;
+    private static String APP_BASE_URL;
     
-    private PathUtil(){
-    }
     
     /**
      * only sets base dir once when first called
@@ -66,31 +66,20 @@ public class PathUtil {
     	}
 	}
 
-	public static File getDataDir(DatasourceBasedResource resource) throws IOException{
-		return getDataDir(resource, false);
+	public static File getWebappDir() {
+		return WEBAPP_DIR_FILE;
 	}
-	public static File getDataDir(DatasourceBasedResource resource, boolean createFile) throws IOException{
-    	File dir = new File(WEBAPP_DIR_FILE, String.format("data/%s", resource.getServiceName()));
-		if (createFile){
-			FileUtils.forceMkdir(dir);			
-		}
-		return dir;
-    }
 
-    public static File getDumpFile(DatasourceBasedResource resource, Extension extension, boolean createFile) throws IOException{    	
-		File file = new File(getDataDir(resource, createFile), String.format("%s.txt", extension.getTablename()));
-		if (createFile){
-			file.createNewFile();
+	public void setAppBaseUrl(String appBaseUrl) {
+		appBaseUrl=appBaseUrl.trim();
+		while(appBaseUrl.endsWith("/")){
+			appBaseUrl = (String) appBaseUrl.subSequence(0, appBaseUrl.length()-1);
 		}
-		return file;
-	}    
-    
-    public static File getDumpArchive(DatasourceBasedResource resource, boolean createFile) throws IOException{
-		File file = new File(getDataDir(resource, createFile), "data.zip");
-		if (createFile){
-			file.createNewFile();
-		}
-		return file;    	
-    }
-    
+		APP_BASE_URL = appBaseUrl;
+	}
+
+	public static String getAppBaseUrl(){
+		return APP_BASE_URL;
+	}
+	
 }

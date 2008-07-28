@@ -9,6 +9,7 @@ import org.gbif.scheduler.model.Job;
 import org.gbif.util.JSONUtils;
 
 public class JobUtils {
+
 	// resource id
 	public static String getJobGroup(Resource resource){
 		return getJobGroup(resource.getId());
@@ -20,12 +21,4 @@ public class JobUtils {
 		return Long.valueOf(jobGroup.substring(9, jobGroup.length()-1));
 	}
 
-	
-	public static int getSourceTypeId(Class jobClass){
-		if (jobClass.equals(OccDbUploadJob.class)){
-			return 1;
-		}else{
-			return -1;
-		}
-	}
 }

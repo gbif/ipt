@@ -47,6 +47,7 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 	private String guid;
 	private String link;
 	private boolean isDeleted;
+	private boolean isProblematic;
 	private Date modified;
 	private OccurrenceResource resource;
 
@@ -101,6 +102,14 @@ public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
 
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public boolean isProblematic() {
+		return isProblematic;
+	}
+
+	public void setProblematic(boolean isProblematic) {
+		this.isProblematic = isProblematic;
 	}
 
 	@ManyToOne

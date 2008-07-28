@@ -13,7 +13,7 @@ import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.PathUtil;
+import org.gbif.provider.util.ConfigUtil;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Launchable;
 import org.gbif.scheduler.scheduler.Worker;
