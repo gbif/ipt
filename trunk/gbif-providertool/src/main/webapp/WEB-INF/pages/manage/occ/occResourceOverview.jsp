@@ -108,9 +108,10 @@
     		</s:else>
 			<s:label key="occResource.lastImport"/>
 			<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
+
     		<s:if test="%{currentJob}">
-				<s:label key="occResourceOverview.currentJob" value="<s:text name="occResourceOverview.currentJob"/>"/>
-    		</s:if>
+		        <s:label key="occResourceOverview.currentJob" value="%{getText(currentJob.jobClassName)}" />
+			</s:if>
 	    </div>
 		<div class="right">
 			<s:url id="uploadHistoryUrl" action="uploadHistory">
