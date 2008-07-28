@@ -109,7 +109,7 @@
 			<s:label key="occResource.lastImport"/>
 			<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
     		<s:if test="%{currentJob}">
-				<s:label key="occResourceOverview.currentJob" value="%{currentJob.description}"/>
+				<s:label key="occResourceOverview.currentJob" value="<s:text name="occResourceOverview.currentJob"/>"/>
     		</s:if>
 	    </div>
 		<div class="right">

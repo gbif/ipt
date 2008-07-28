@@ -8,7 +8,7 @@ import java.util.Date;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.webapp.action.BaseActionTestCase;
-import org.gbif.scheduler.MockJob;
+import org.gbif.scheduler.mock.MockJob;
 import org.gbif.scheduler.mock.WorkerPoolFactory;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.scheduler.Worker;

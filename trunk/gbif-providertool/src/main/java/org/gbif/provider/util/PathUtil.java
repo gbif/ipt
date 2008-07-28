@@ -51,10 +51,18 @@ public class PathUtil {
      * @param webappDir
      */
     public static void setWebappDir(String webappDir) {
-    	if (WEBAPP_DIR == null && webappDir != null){
-    		log.info("set webapp directory to "+webappDir);
-    		WEBAPP_DIR = webappDir;
-    		WEBAPP_DIR_FILE = new File(webappDir);
+    	if (WEBAPP_DIR == null){
+    		if (webappDir == null){
+    		    throw new NullPointerException();    			
+    		}else{
+    			WEBAPP_DIR_FILE = new File(webappDir);
+    			if (WEBAPP_DIR_FILE.exists()){
+    	    		log.info("set webapp directory to "+webappDir);
+    	    		WEBAPP_DIR = webappDir;
+    			}else{
+    				throw new IllegalArgumentException(String.format("Webapp directory %s doesn't exist.", webappDir));
+    			}
+    		}
     	}
 	}
 
