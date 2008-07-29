@@ -17,9 +17,6 @@
 
 <c:out value="${buttons}" escapeXml="false" />
 
-<c:out value="${datePattern}" escapeXml="false" />
-
-
 <display:table name="occResources" uid="res" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
     <display:column property="title" sortable="true" href="resource.html" media="html"
         paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
