@@ -34,7 +34,12 @@
   <fieldset>
     <legend><s:text name="occResourceOverview.datasource"/></legend>
     <s:if test="%{occResource.hasMetadata()}">
-		<s:label key="occResource.isValidConnection" value="%{occResource.isValidConnection()}"/>
+	    <s:if test="%{occResource.hasDbConnection()}">
+			<s:label key="occResource.hasDbConnection" value="%{occResource.jdbcUrl}"/>
+	    </s:if>
+	    <s:else>
+			<s:label key="occResource.noDbConnection" value=""/>
+	    </s:else>
 	    <s:submit cssClass="button" key="button.edit"/>
     </s:if>
     <s:else>
@@ -43,11 +48,10 @@
   </fieldset>
 </s:form>
 
-<s:form action="editMappingSource" method="get">
+<s:form action="editMapping" method="get">
   <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.mapping"/></legend>
-    <s:if test="%{occResource.isValidConnection()}">
     
   	  <s:label key="occResourceOverview.coreMapping" />
   	  <s:push value="occResource.getCoreMapping()">
@@ -66,7 +70,7 @@
         <s:submit action="editMappingSource" method="" cssClass="button" key="button.add" theme="simple"/>
   	  </c:if>
  	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
-		<s:url id="mappingUrl" action="editMappingSource">
+		<s:url id="mappingUrl" action="editMapping">
 			<s:param name="mapping_id" value="id"/>
 		</s:url>
 		<ul class="subform">
@@ -76,7 +80,6 @@
 			</li>
 		</ul>
 	  </s:iterator>
-    </s:if>
     <s:else>
     	<c:out value="${placeholder}" escapeXml="false"/>
     </s:else>
@@ -99,12 +102,12 @@
 						<label for="upload_resource_recordCount" class="desc"><s:text name="resource.recordCount"/></label>
 					</div> 
 		    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="3000">
-			    		<s:property value="occResource.recordCount"/>
+			    		<s:property value="occResource..getRecordCount()"/>
 		    		</s:div>
 				</li>				
     		</s:if>
     		<s:else>
-				<s:label key="resource.recordCount" value="%{occResource.recordCount}"/>
+				<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
     		</s:else>
     		
     		<s:if test="%{occResource.lastImport}">
