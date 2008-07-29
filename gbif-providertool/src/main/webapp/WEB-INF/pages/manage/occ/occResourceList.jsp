@@ -17,15 +17,16 @@
 
 <c:out value="${buttons}" escapeXml="false" />
 
-<display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
+<c:out value="${datePattern}" escapeXml="false" />
+
+
+<display:table name="occResources" uid="res" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
     <display:column property="title" sortable="true" href="resource.html" media="html"
         paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
-    <display:column sortProperty="lastImport" sortable="true" titleKey="occResource.lastImport">
-         <fmt:formatDate value="${occResourceList.lastImport}" pattern="${datePattern}"/>
-    </display:column>
     <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
-
+	<display:column property="lastUpload.executionDate" sortable="true" titleKey="occResource.lastImport" format="{0,date,${datePattern}}"/>    
+    
     <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>
     <display:setProperty name="paging.banner.items_name"><s:text name="resourceList.resources"/></display:setProperty>
 </display:table>
