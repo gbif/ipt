@@ -138,6 +138,7 @@
                 <artifactId>hibernate3-maven-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
+                    <namingstrategy>org.hibernate.cfg.DefaultComponentSafeNamingStrategy</namingstrategy>                    
                     <components>
                         <component>
                             <name>hbm2ddl</name>

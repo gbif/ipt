@@ -150,16 +150,6 @@ public abstract class OccUploadBaseJob implements Job{
 				e.printStackTrace();
 			}
 			
-			// save upload event
-			Date now = new Date();
-			coreEvent.setExecutionDate(now);
-			uploadEventManager.save(coreEvent);
-			// update resource properties
-			resource.setLastImport(now);
-			resource.setLastImportSourceId(sourceId);
-			resource.setRecordCount(coreEvent.getRecordsUploaded());
-			occResourceManager.save(resource);
-			
 			// zip all files into single archive
 			File archive = resource.getDumpArchiveFile();
 			archive.createNewFile();
@@ -179,8 +169,6 @@ public abstract class OccUploadBaseJob implements Job{
 
 	protected File uploadCore(ImportSource source, OccurrenceResource resource, UploadEvent event, Map<String, Long> idMap) throws InterruptedException {
 				log.info("Uploading occurrence core for resource "+resource.getTitle());
-				// use a single date for now (e.g. to set dateLastModified)
-				Date now = new Date();
 				File out = null;
 				try {
 					// create new tab file
@@ -222,14 +210,14 @@ public abstract class OccUploadBaseJob implements Job{
 								dwc.setDeleted(false);
 							}else if (oldRecord!=null){
 								// modified record
-								dwc.setModified(now);
+								dwc.setModified(new Date());
 								// remove old + insert new record
 								// TODO: could be improved by updating existing record!
 								darwinCoreManager.remove(oldRecord.getId());
 								recordsChanged++;
 							}else{
 								// new record that didnt exist before
-								dwc.setModified(now);
+								dwc.setModified(new Date());
 								recordsAdded++;
 							}
 							// count all inserted records
@@ -251,12 +239,21 @@ public abstract class OccUploadBaseJob implements Job{
 						// flush and close writer/file
 						writer.close();
 						// update resource and upload event statistics
-						recordsDeleted = resource.getRecordCount()+recordsAdded-recordsUploaded;
+						int existingRecords = 0;
+						if (resource.getLastUpload()!=null){
+							existingRecords = resource.getLastUpload().getRecordsUploaded(); 
+						}
+						recordsDeleted = existingRecords+recordsAdded-recordsUploaded;
 						event.setRecordsAdded(recordsAdded);
 						event.setRecordsChanged(recordsChanged);
 						event.setRecordsDeleted(recordsDeleted);
 						event.setRecordsUploaded(recordsUploaded);		
-						resource.setRecordCount(recordsUploaded);
+						// save upload event
+						event.setExecutionDate(new Date());
+						uploadEventManager.save(event);
+						// update resource properties
+						resource.setLastUpload(event);
+						occResourceManager.save(resource);
 						// reset status
 						status.put(resource.getId(), String.format("%s done.", recordsUploaded));
 					}

@@ -15,16 +15,18 @@ public class ViewMappingTest {
 		DatasourceBasedResource r = OccurrenceResource.newInstance(null);
 		r.setTitle("Berlin Moss");
 		vm1 = new ViewMapping();
-		vm1.setCoreIdColumnIndex(3);
-		vm1.setViewSql("Select * from specimen limit 100");
+		vm1.getCoreIdColumn().setColumnName("specimen_id");
+		vm1.setSourceSql("Select * from specimen limit 100");
 		vm1.setResource(r);
+		
 		vm2 = new ViewMapping();
-		vm2.setCoreIdColumnIndex(3);
-		vm2.setViewSql("Select * from specimen limit 100");
+		vm2.getCoreIdColumn().setColumnName("specimen_id");
+		vm2.setSourceSql("Select * from specimen limit 100");
 		vm2.setResource(r);
+		
 		vm3 = new ViewMapping();
-		vm3.setCoreIdColumnIndex(2);
-		vm3.setViewSql("Select * from specimen limit 100");
+		vm3.getCoreIdColumn().setColumnName("field_number");
+		vm3.setSourceSql("Select * from specimen limit 100");
 		vm3.setResource(r);
 	}
 
@@ -37,7 +39,7 @@ public class ViewMappingTest {
 		// equal objects must have the same hashcode
 		if (vm1.equals(vm2)){
 			// FIXME hashcode routine seems wrong!
-			//assertTrue(vm1.hashCode() == vm2.hashCode());
+			assertTrue(vm1.hashCode() == vm2.hashCode());
 		}
 	}
 

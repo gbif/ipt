@@ -1054,136 +1054,13 @@
   </table>
   <table name="PropertyMapping">
     <column>id</column>
-    <column>column_index</column>
+    <column>columnName</column>
     <column>value</column>
     <column>property_id</column>
     <column>viewMapping_id</column>
-    <row>
-      <value>1</value>
-      <value>14</value>
-      <null/>
-      <value>9</value>
-      <value>1</value>
-    </row>
-    <row>
-      <value>2</value>
-      <value>1</value>
-      <null/>
-      <value>6</value>
-      <value>1</value>
-    </row>
-    <row>
-      <value>18</value>
-      <value>1001</value>
-      <value>PreservedSpecimen</value>
-      <value>3</value>
-      <value>1</value>
-    </row>
-    <row>
-      <value>3</value>
-      <value>25</value>
-      <value/>
-      <value>15</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>4</value>
-      <value>2</value>
-      <value/>
-      <value>4</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>5</value>
-      <value>15</value>
-      <value/>
-      <value>40</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>6</value>
-      <value>21</value>
-      <value/>
-      <value>11</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>7</value>
-      <value>19</value>
-      <value/>
-      <value>16</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>8</value>
-      <value>10</value>
-      <value/>
-      <value>31</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>9</value>
-      <value>1002</value>
-      <value>Observation</value>
-      <value>3</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>10</value>
-      <value>22</value>
-      <value/>
-      <value>12</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>11</value>
-      <value>16</value>
-      <value/>
-      <value>32</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>12</value>
-      <value>23</value>
-      <value/>
-      <value>13</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>13</value>
-      <value>18</value>
-      <value/>
-      <value>9</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>14</value>
-      <value>9</value>
-      <value/>
-      <value>28</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>15</value>
-      <value>4</value>
-      <value/>
-      <value>6</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>16</value>
-      <value>24</value>
-      <value/>
-      <value>14</value>
-      <value>2</value>
-    </row>
-    <row>
-      <value>17</value>
-      <value>3</value>
-      <value/>
-      <value>5</value>
-      <value>2</value>
-    </row>
+
+
+
   </table>
   <table name="Resource">
     <column>DTYPE</column>
@@ -1198,8 +1075,7 @@
     <column>jdbcPassword</column>
     <column>jdbcUrl</column>
     <column>jdbcUser</column>
-    <column>lastImport</column>
-    <column>recordCount</column>
+    <column>last_upload_event_fk</column>
     <column>serviceName</column>
     <column>coreMapping_id</column>
     <column>modifier_id</column>
@@ -1217,8 +1093,7 @@
       <value>w32wfun</value>
       <value>jdbc:mysql://localhost/pontaurus</value>
       <value>providertool</value>
-      <value><![CDATA[2008-07-02 00:00:00.0]]></value>
-      <value>18439</value>
+      <value>6</value>
       <value>pontaurus</value>
       <value>1</value>
       <value>4</value>
@@ -1243,8 +1118,7 @@
       <value>w32wfun</value>
       <value>jdbc:mysql://localhost/cornellornithology</value>
       <value>providertool</value>
-      <value><![CDATA[2008-07-02 00:00:00.0]]></value>
-      <value>0</value>
+      <null/>
       <value>cornith</value>
       <value>2</value>
       <value>4</value>
@@ -1339,17 +1213,19 @@
   <table name="ViewMapping">
     <column>DTYPE</column>
     <column>id</column>
-    <column>coreIdColumnIndex</column>
-    <column>viewSql</column>
-    <column>guidColumnIndex</column>
-    <column>linkColumnIndex</column>
+    <column>sourceSql</column>
+    <column>sourceFileLocation</column>
+    <column>localid_col</column>
+    <column>guid_col</column>
+    <column>link_col</column>
     <column>extension_id</column>
     <column>resource_id</column>
     <row>
       <value>CoreViewMapping</value>
       <value>1</value>
-      <value>1</value>
       <value><![CDATA[select * from specimen join taxon on taxon_fk=taxon_id]]></value>
+      <null/>
+      <value>1</value>
       <null/>
       <null/>
       <value>1</value>
@@ -1358,8 +1234,9 @@
     <row>
       <value>CoreViewMapping</value>
       <value>2</value>
-      <value>1</value>
       <value><![CDATA[select * from specimen_small join taxon on taxon_fk=taxon_id]]></value>
+      <null/>
+      <value>1</value>
       <null/>
       <null/>
       <value>1</value>

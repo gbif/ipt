@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -100,6 +101,7 @@ public class Extension extends BaseObject implements Comparable<Extension> {
 		properties.add(property);
 	}
 	
+	@Column(unique=true)
 	public String getTablename() {
 		return tablename;
 	}
@@ -128,7 +130,6 @@ public class Extension extends BaseObject implements Comparable<Extension> {
         result = (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
         result = 31 * result + (tablename != null ? tablename.hashCode() : 0);
         //result = 31 * result + (properties != null ? properties.hashCode() : 0);

@@ -3,6 +3,8 @@
 
 <hibernate-configuration>
     <session-factory>
+        <property name="hibernate.ejb.naming_strategy">org.hibernate.cfg.DefaultComponentSafeNamingStrategy</property>
+
         <mapping class="org.appfuse.model.User"/>
         <mapping class="org.appfuse.model.Role"/>
         <mapping class="org.gbif.provider.model.ChecklistResource"/>

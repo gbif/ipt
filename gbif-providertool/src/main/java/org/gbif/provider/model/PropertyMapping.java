@@ -42,8 +42,8 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	private Long id;	
 	private ViewMapping viewMapping;
 	private ExtensionProperty property;
+	private ColumnMapping mapping;
 	private String value;
-	private Integer column;
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -70,20 +70,39 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 		this.property = property;
 	}
 	
+	
+	public ColumnMapping getMapping() {
+		return mapping;
+	}
+	public void setMapping(ColumnMapping mapping) {
+		this.mapping = mapping;
+	}
+	
 	public String getValue() {
 		return value;
 	}
 	public void setValue(String value) {
-		this.value = value;
+		if (value!=null){
+			value=value.trim();
+			if (value.length()<1){
+				value = null;
+			}
+		}
+		this.value=value;
 	}
+
+	@Transient
+	public String getColumnName() {
+		return mapping.getColumnName();
+	}
+	public void setColumnName(String table, String column) {
+		mapping.setColumnName(table, column);
+	}
+	public void setColumnName(String column) {
+		mapping.setColumnName(column);
+	}
+
 	
-	@Column(name="column_index")
-	public Integer getColumn() {
-		return column;
-	}
-	public void setColumn(Integer column) {
-		this.column = column;
-	}
 	
 	/**
 	 * Indicate wether this mapping has some true mapping content
@@ -91,11 +110,12 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	 */
 	@Transient
 	public boolean isEmpty(){
-		if (column == null && (value == null || value.trim().length() < 1)){
+		if (getColumnName() == null && (getValue() == null)){
 			return true;
 		}
 		return false;
 	}
+	
 	
 	/**
 	 * Natural sort order is by viewMapping, then extension property
@@ -114,31 +134,32 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 			return false;
 		}
 		PropertyMapping rhs = (PropertyMapping) object;
-		return new EqualsBuilder().append(this.value, rhs.value).append(
-				this.column, rhs.column).append(this.property, rhs.property)
-				.append(this.viewMapping, rhs.viewMapping).append(this.id,
-						rhs.id).isEquals();
+		return new EqualsBuilder().append(this.mapping, rhs.mapping).append(
+				this.property, rhs.property).append(this.viewMapping,
+				rhs.viewMapping).append(this.id, rhs.id).isEquals();
 	}
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-        int result = 17;
-        result = (id != null ? id.hashCode() : 0);
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (column != null ? column.hashCode() : 0);
-        result = 31 * result + (property != null ? property.hashCode() : 0);
-        return result;
+	        int result = 17;
+	        result = 31 * (property != null ? property.hashCode() : 0);
+	        result = 31 * (mapping != null ? mapping.hashCode() : 0);
+	        result = 31 * (value != null ? value.hashCode() : 0);
+	        result = 31 * (viewMapping != null ? viewMapping.getExtension().hashCode() : 0);
+	        return result;
 	}
+		
+		
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
 		return new ToStringBuilder(this).append("property", this.property)
 				.append("empty", this.isEmpty()).append("id", this.id).append(
-						"value", this.value).append("viewMapping",
-						this.viewMapping).append("column", this.column)
-				.toString();
+						"value", this.getValue()).append("viewMapping",
+						this.viewMapping).append("column", this.getColumnName())
+				.append("mapping", this.mapping).toString();
 	}
 
 

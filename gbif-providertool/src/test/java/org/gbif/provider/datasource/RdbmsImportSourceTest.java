@@ -27,7 +27,7 @@ public class RdbmsImportSourceTest extends BaseExternalDatasourceTest{
         // use test resource
         CoreViewMapping view = getTestResource().getCoreMapping();
 		try {
-			ResultSet rs = this.datasourceInspectionDao.executeSql(view.getViewSql());
+			ResultSet rs = this.datasourceInspectionDao.executeSql(view.getSourceSql());
 	        // create import source
 			source = RdbmsImportSource.newInstance(rs, view);
 		} catch (SQLException e) {

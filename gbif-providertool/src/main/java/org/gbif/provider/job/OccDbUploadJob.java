@@ -93,7 +93,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 			CoreViewMapping coreViewMapping = resource.getCoreMapping();
 			ResultSet rs;
 			try {
-				rs = datasourceInspectionManager.executeViewSql(coreViewMapping.getViewSql());
+				rs = datasourceInspectionManager.executeViewSql(coreViewMapping.getSourceSql());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				throw new ImportSourceException();
@@ -114,7 +114,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 		}
 		ResultSet rs;
 		try {
-			rs = datasourceInspectionManager.executeViewSql(vm.getViewSql());
+			rs = datasourceInspectionManager.executeViewSql(vm.getSourceSql());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new ImportSourceException(e);

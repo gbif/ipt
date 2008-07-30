@@ -1,26 +1,40 @@
 package org.gbif.provider.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 @Entity
 public class CoreViewMapping extends ViewMapping {
-	private Integer guidColumnIndex;
-	private Integer linkColumnIndex;
+	private ColumnMapping guidColumn = new ColumnMapping ();
+	private ColumnMapping linkColumn = new ColumnMapping ();
 	
 	
-	public Integer getGuidColumnIndex() {
-		return guidColumnIndex;
+	@Embedded
+	@AttributeOverrides( {
+        @AttributeOverride(name="columnName", column = @Column(name="guid_col", length=64) ),
+	} )
+	public ColumnMapping getGuidColumn() {
+		return guidColumn;
 	}
-	public void setGuidColumnIndex(Integer guidColumnIndex) {
-		this.guidColumnIndex = guidColumnIndex;
+	public void setGuidColumn(ColumnMapping guidColumn) {
+		this.guidColumn = guidColumn;
 	}
 	
-	public Integer getLinkColumnIndex() {
-		return linkColumnIndex;
+	@Embedded
+	@AttributeOverrides( {
+        @AttributeOverride(name="columnName", column = @Column(name="link_col", length=64) ),
+	} )
+	public ColumnMapping getLinkColumn() {
+		return linkColumn;
 	}
-	public void setLinkColumnIndex(Integer linkColumnIndex) {
-		this.linkColumnIndex = linkColumnIndex;
+	public void setLinkColumn(ColumnMapping linkColumn) {
+		this.linkColumn = linkColumn;
 	}
+	
+
 	
 	
 }
