@@ -128,6 +128,8 @@
 
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
 
+    <bean id="tabFileProcessManager" class="org.gbif.provider.service.impl.TabFileProcessManagerImpl" />        
+    
     
     <!-- Configure the i18n Log4J appender -->
     <bean id="i18nDatabaseAppender" class="org.gbif.logging.log.I18nDatabaseAppender">
