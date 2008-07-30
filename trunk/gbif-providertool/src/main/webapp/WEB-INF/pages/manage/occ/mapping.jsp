@@ -37,6 +37,8 @@
 	<!-- show db upload if no file source was already configured -->
 		<div id="filesource">
 			<s:form action="uploadMappingSource" enctype="multipart/form-data" method="post" validate="true" id="uploadForm">
+			    <s:hidden key="resource_id"/>
+			    <s:hidden key="mapping_id"/>
 			    <li class="info">
 			        Please upload a tab delimited file to base the mapping on.
 			    </li>

@@ -21,7 +21,7 @@ import org.gbif.provider.service.TabFileProcessManager;
 
 public class SourceFileUploadAction extends BaseAction{
 	private static final long serialVersionUID = -3698917712584074200L;
-	private TabFileProcessManager fileProcessManager;
+	private TabFileProcessManager tabFileProcessManager;
     private GenericManager<ViewMapping, Long> viewMappingManager;
     private File file;
     private String fileContentType;
@@ -62,7 +62,7 @@ public class SourceFileUploadAction extends BaseAction{
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		List<String> headers = fileProcessManager.getColumnHeaders(getFile());
+		List<String> headers = tabFileProcessManager.getColumnHeaders(getFile());
 		log.info(String.format("Tab file %s uploaded with %s columns", getFile().getName(), headers .size()));
 		if (headers.size() > 1){
 			// save file in view mapping
@@ -123,8 +123,9 @@ public class SourceFileUploadAction extends BaseAction{
 	
 	
 	
-	public void setFileProcessManager(TabFileProcessManager fileProcessManager) {
-		this.fileProcessManager = fileProcessManager;
+
+	public void setTabFileProcessManager(TabFileProcessManager tabFileProcessManager) {
+		this.tabFileProcessManager = tabFileProcessManager;
 	}
 
 	public Long getMapping_id() {
