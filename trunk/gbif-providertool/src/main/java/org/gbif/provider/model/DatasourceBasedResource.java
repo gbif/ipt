@@ -74,8 +74,16 @@ public class DatasourceBasedResource extends Resource {
 		return serviceName;
 	}
 	public void setServiceName(String serviceName) {
+		serviceName=serviceName.toLowerCase().trim().replace(" ", "_");
 		this.serviceName = serviceName;
-	}	
+	}
+	@Override
+	public void setTitle(String title) {
+		this.title = title;
+		if (serviceName == null){
+			setServiceName(title);
+		}
+	}
 	
 	@Column(length=64)
 	public String getJdbcDriverClass() {
