@@ -16,6 +16,7 @@
 
 package org.gbif.provider.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,8 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -60,8 +64,9 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Extension extension;
-	private String viewSql;
-	private Integer coreIdColumnIndex;
+	private String sourceSql;
+	private String sourceFileLocation;
+	private ColumnMapping coreIdColumn = new ColumnMapping ();
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -89,24 +94,52 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 		this.extension = extension;
 	}
 	
-	public String getViewSql() {
-		return viewSql;
+	public String getSourceSql() {
+		return sourceSql;
 	}
-	public void setViewSql(String sql) {
-		this.viewSql = sql;
+	public void setSourceSql(String sourceSql) {
+		if (sourceSql != null){
+			this.sourceFileLocation=null;
+		}
+		this.sourceSql = sourceSql;
 	}
 	
+	public String getSourceFileLocation() {
+		return sourceFileLocation;
+	}
+	public void setSourceFileLocation(String sourceFileLocation) {
+		this.sourceFileLocation = sourceFileLocation;
+	}
+	@Transient
+	public File getSourceFile() {
+		File file = null;
+		if (this.sourceFileLocation != null){
+			file = new File(this.sourceFileLocation);
+		}
+		return file;
+	}	
+	public void setSourceFile(File file) {
+		if (file != null){
+			this.sourceSql=null;
+		}
+		this.sourceFileLocation = file.getAbsolutePath();
+	}	
 	/**
 	 * Index of resultset column for the local or global identifier for a core-record. 
 	 * Acts as the primary key for the core mapping or the foreign key for extension mappings
 	 * @return
 	 */
-	public Integer getCoreIdColumnIndex() {
-		return coreIdColumnIndex;
+	@Embedded
+	@AttributeOverrides( {
+        @AttributeOverride(name="columnName", column = @Column(name="localid_col", length=64)),
+	} )
+	public ColumnMapping getCoreIdColumn() {
+		return coreIdColumn;
 	}
-	public void setCoreIdColumnIndex(Integer coreIdColumnIndex) {
-		this.coreIdColumnIndex = coreIdColumnIndex;
-	}	
+	public void setCoreIdColumn(ColumnMapping coreIdColumn) {
+		this.coreIdColumn = coreIdColumn;
+	}
+
 	
 	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
 	@MapKey(columns = @Column(name = "property_id"))
@@ -166,8 +199,9 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
         result = 31 * result + (resource != null ? (resource.getId() != null ? resource.getId().hashCode() : 0) : 0);
         //result = 31 * result + (resource != null ? resource.hashCode() : 0);
         result = 31 * result + (propertyMappings != null ? propertyMappings.hashCode() : 0);
-        result = 31 * result + (viewSql != null ? viewSql.hashCode() : 0);
-        result = 31 * result + (coreIdColumnIndex != null ? coreIdColumnIndex.hashCode() : 0);
+        result = 31 * result + (sourceSql != null ? sourceSql.hashCode() : 0);
+        result = 31 * result + (sourceFileLocation != null ? sourceFileLocation.hashCode() : 0);
+        result = 31 * result + (coreIdColumn != null ? coreIdColumn.hashCode() : 0);
         return result;
 	}
 	/**
@@ -176,8 +210,9 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 	public String toString() {
 		return new ToStringBuilder(this)
 		.append("id", this.id)
-		.append("viewSql", this.viewSql)
-		.append("coreIdColumnIndex", this.coreIdColumnIndex)
+		.append("sourceSql", this.sourceSql)
+		.append("sourceFileLocation", this.sourceFileLocation)
+		.append("coreIdColumn", this.coreIdColumn)
 		.append("extension", this.extension)
 		.toString();
 	}

@@ -51,6 +51,9 @@
     <bean id="checklistResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
     </bean>
+    <bean id="dataResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
+        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
+    </bean>
     <bean id="resourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
@@ -91,6 +94,9 @@
     </bean>
     <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
         <constructor-arg ref="checklistResourceDao"/>
+    </bean>
+    <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
+        <constructor-arg ref="dataResourceDao"/>
     </bean>
     <bean id="resourceManager" class="org.gbif.provider.service.impl.ResourceManagerImpl">        
         <constructor-arg ref="resourceDao"/>

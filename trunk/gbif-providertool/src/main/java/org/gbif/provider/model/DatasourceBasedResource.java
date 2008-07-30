@@ -30,6 +30,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -58,9 +60,7 @@ public class DatasourceBasedResource extends Resource {
 	private String jdbcUrl = "jdbc:mysql://localhost/YOUR_DATABASE";
 	private String jdbcUser;
 	private String jdbcPassword;
-	private Date lastImport;
-	private Integer lastImportSourceId;
-	private int recordCount;
+	private UploadEvent lastUpload;
 	private CoreViewMapping coreMapping;
 	// extension mappings, not including the core mapping
 	private Map<Long, ViewMapping> extensionMappings = new HashMap<Long, ViewMapping>();
@@ -69,7 +69,7 @@ public class DatasourceBasedResource extends Resource {
 
 	
 	
-	@Column(length=32)
+	@Column(length=32, unique=true)
 	public String getServiceName() {
 		return serviceName;
 	}
@@ -109,28 +109,15 @@ public class DatasourceBasedResource extends Resource {
 		this.jdbcPassword = jdbcPassword;
 	}
 	
-	
-	public Date getLastImport() {
-		return lastImport;
+	@OneToOne
+	@JoinColumn(name="last_upload_event_fk", nullable=true) 
+	public UploadEvent getLastUpload() {
+		return lastUpload;
 	}
-	public void setLastImport(Date lastImport) {
-		this.lastImport = lastImport;
-	}
-	
-	public Integer getLastImportSourceId() {
-		return lastImportSourceId;
-	}
-	public void setLastImportSourceId(Integer lastImportSourceId) {
-		this.lastImportSourceId = lastImportSourceId;
+	public void setLastUpload(UploadEvent lastUpload) {
+		this.lastUpload = lastUpload;
 	}
 	
-	public int getRecordCount() {
-		return recordCount;
-	}
-	public void setRecordCount(int recordCount) {
-		this.recordCount = recordCount;
-	}
-
 	@Transient
 	public Set<ViewMapping> getAllMappings() {
 		Set<ViewMapping> all = new HashSet<ViewMapping>(extensionMappings.values());
@@ -204,28 +191,42 @@ public class DatasourceBasedResource extends Resource {
 	}
 
 	@Transient
-	public boolean isValidConnection(){
-		boolean isValidConnection = false;
+	public boolean hasDbConnection(){
+		boolean hasDbConnection = false;
 		try {
 			DataSource dsa = getDatasource();
 			if (dsa!=null){
 				Connection con = dsa.getConnection();
-				isValidConnection = true;
+				hasDbConnection = true;
 			}
 		} catch (SQLException e) {
-			isValidConnection = false;
+			hasDbConnection = false;
 		}
-		return isValidConnection ;
+		return hasDbConnection ;
 	}
 	
 	@Transient
 	public boolean hasData(){
-		if (recordCount > 0){
+		if (lastUpload != null && lastUpload.getRecordsUploaded()>0){
 			return true;
 		}
 		return false;
 	}
 	
+	@Transient
+	public int getRecordCount(){
+		if (lastUpload != null){
+			return lastUpload.getRecordsUploaded();
+		}
+		return 0;
+	}
+	@Transient
+	public Date getLastUploadDate(){
+		if (lastUpload != null){
+			return lastUpload.getExecutionDate();
+		}
+		return null;
+	}
 	/**
 	 * Checks to see whether a resource has the minimal mappings to proceed with an upload
 	 * @return
@@ -243,12 +244,52 @@ public class DatasourceBasedResource extends Resource {
 	@Transient
 	public File getDataDir(){
     	File dir = new File(ConfigUtil.getWebappDir(), String.format("data/%s", getServiceName()));
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+		return dir;
+	}
+
+	@Transient
+	public File getSourceDataDir(){
+    	File dir = new File(ConfigUtil.getWebappDir(), String.format("sourcedata/%s", getServiceName()));
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 		return dir;
 	}
 	
 	@Transient
+    public File getDumpFile(Extension extension) throws IOException{    	
+		File file = new File(getDataDir(), String.format("%s.txt", extension.getTablename()));
+		return file;
+	}    
+
+	@Transient
+    public File getDumpSourceFile(Extension extension) throws IOException{    	
+		File file = new File(getSourceDataDir(), String.format("%s.txt", extension.getTablename()));
+		return file;
+	}    
+
+	@Transient
+    public File getDumpArchiveFile(){
+		File file = new File(getDataDir(), "data.zip");
+		return file;    	
+    }
+
+	@Transient
 	public String getResourceBaseUrl(){
     	return String.format("%s/data/%s", ConfigUtil.getAppBaseUrl(), getServiceName());
+	}
+
+	@Transient
+    public String getDumpArchiveUrl(){
+		return String.format("%s/occ/data.zip", getResourceBaseUrl());
+    }
+
+	@Transient
+	public String getRecordResolverEndpoint(){
+		return String.format("%s/detail", getResourceBaseUrl());
 	}
 
 }

@@ -38,7 +38,7 @@
 			<s:label key="occResource.hasDbConnection" value="%{occResource.jdbcUrl}"/>
 	    </s:if>
 	    <s:else>
-			<s:label key="occResource.noDbConnection" value=""/>
+	    	<p class="reminder"><s:text name="occResource.noDbConnection" /></p>
 	    </s:else>
 	    <s:submit cssClass="button" key="button.edit"/>
     </s:if>
@@ -57,7 +57,7 @@
   	  <s:push value="occResource.getCoreMapping()">
 		<li>
 			<s:property value="extension.name"/>
-			<s:url id="mappingUrl" action="editMappingSource">
+			<s:url id="mappingUrl" action="editMapping">
 				<s:param name="mapping_id" value="id"/>
 			</s:url>
 			<s:a href="%{mappingUrl}"><s:property value="propertyMappings.size"/> concepts</s:a>
@@ -67,7 +67,7 @@
   	  <s:label key="occResourceOverview.extensionMappings"/>
       <c:if test="${not empty extensions}">
 		<s:select id="extension_id" name="extension_id" list="extensions" listKey="id" listValue="name"/>
-        <s:submit action="editMappingSource" method="" cssClass="button" key="button.add" theme="simple"/>
+        <s:submit action="editMapping" method="" cssClass="button" key="button.add" theme="simple"/>
   	  </c:if>
  	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
 		<s:url id="mappingUrl" action="editMapping">
@@ -80,9 +80,6 @@
 			</li>
 		</ul>
 	  </s:iterator>
-    <s:else>
-    	<c:out value="${placeholder}" escapeXml="false"/>
-    </s:else>
 	</fieldset>
 </s:form>
 
@@ -90,55 +87,55 @@
   <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.cache"/></legend>
-    <s:if test="%{occResource.hasMinimalMapping()}">
-    	<div class="left">
-    		<s:if test="%{currentJob}">
-				<s:url id="recordCountUrl" action="uploadStatus">
-					<s:param name="resource_id" value="resource_id" />
-					<s:param name="ajax" value="true"/>
-				</s:url>
-				<li id="wwgrp_upload_resource_recordCount" class="wwgrp">
-					<div id="wwlbl_upload_resource_recordCount" class="wwlbl">
-						<label for="upload_resource_recordCount" class="desc"><s:text name="resource.recordCount"/></label>
-					</div> 
-		    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="3000">
-			    		<s:property value="occResource..getRecordCount()"/>
-		    		</s:div>
-				</li>				
-    		</s:if>
-    		<s:else>
-				<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
-    		</s:else>
-    		
-    		<s:if test="%{occResource.lastImport}">
-				<s:label key="occResource.lastImport"/>
-				<s:url id="logsUrl" action="logEvents" namespace="/admin">
-					<s:param name="sourceId" value="occResource.lastImportSourceId" />
-					<s:param name="sourceType" value="1" />
-				</s:url>
-				<s:a href="%{logsUrl}">log entries</s:a>
-			</s:if>
-			
-			<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
-
-    		<s:if test="%{currentJob}">
-		        <s:label key="occResourceOverview.currentJob" value="%{getText(currentJob.jobClassName)}" />
-			</s:if>
-	    </div>
-		<div class="right">
-			<s:url id="uploadHistoryUrl" action="uploadHistory">
-				<s:param name="resource_id" value="resource_id"/>
+	<div class="left">
+		<s:if test="%{currentJob}">
+			<s:url id="recordCountUrl" action="uploadStatus">
+				<s:param name="resource_id" value="resource_id" />
+				<s:param name="ajax" value="true"/>
 			</s:url>
-			<s:a href="%{uploadHistoryUrl}">
-				<img src="<s:property value="gChartData"/>" width="400" height="200"/>
-			</s:a>
-		</div>
-		<div class="break">
-		</div>
+			<li id="wwgrp_upload_resource_recordCount" class="wwgrp">
+				<div id="wwlbl_upload_resource_recordCount" class="wwlbl">
+					<label for="upload_resource_recordCount" class="desc"><s:text name="resource.recordCount"/></label>
+				</div> 
+	    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="3000">
+		    		<s:property value="occResource.getRecordCount()"/>
+	    		</s:div>
+			</li>				
+		</s:if>
+		<s:else>
+			<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
+		</s:else>
+		
+		<s:if test="%{occResource.lastImport}">
+			<s:label key="occResource.lastImport"/>
+			<s:url id="logsUrl" action="logEvents" namespace="/admin">
+				<s:param name="sourceId" value="occResource.lastImportSourceId" />
+				<s:param name="sourceType" value="1" />
+			</s:url>
+			<s:a href="%{logsUrl}">log entries</s:a>
+		</s:if>
+		
+		<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
+
+		<s:if test="%{currentJob}">
+	        <s:label key="occResourceOverview.currentJob" value="%{getText(currentJob.jobClassName)}" />
+		</s:if>
+    </div>
+	<div class="right">
+		<s:url id="uploadHistoryUrl" action="uploadHistory">
+			<s:param name="resource_id" value="resource_id"/>
+		</s:url>
+		<s:a href="%{uploadHistoryUrl}">
+			<img src="<s:property value="gChartData"/>" width="400" height="200"/>
+		</s:a>
+	</div>
+	<div class="break">
+	</div>
+    <s:if test="%{occResource.hasMinimalMapping()}">
 	    <s:submit cssClass="button" key="button.upload"/>
     </s:if>
     <s:else>
-    	<c:out value="${placeholder}" escapeXml="false"/>
+    	<p class="reminder">Please finalize the core mapping before uploading data</p>
     </s:else>
   </fieldset>
 </s:form>
@@ -148,11 +145,10 @@
   <fieldset>
     <legend><s:text name="occResourceOverview.validation"/></legend>
     <s:if test="%{occResource.hasData()}">
-		<s:label key="Problematic records"/>
 	    <s:submit cssClass="button" key="button.validate"/>
     </s:if>
     <s:else>
-    	<c:out value="${placeholder}" escapeXml="false"/>
+    	<p class="reminder">Please upload data first</p>
     </s:else>
   </fieldset>
 </s:form>

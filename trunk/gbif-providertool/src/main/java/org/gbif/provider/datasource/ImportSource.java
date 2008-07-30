@@ -6,5 +6,5 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.ExtensionRecord;
 
 public interface ImportSource extends Iterator<ImportRecord>, Iterable<ImportRecord>{
-	
+	public void close();
 }

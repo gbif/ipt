@@ -51,9 +51,10 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
     private ArrayList<String> viewColumnHeaders;
     private List preview;
     private Map<ExtensionProperty, Map> mapOptions;
-    private SortedMap<Integer, String> columnOptions;
+    private SortedMap<String, String> columnOptions;
 	private Long mapping_id;
 	private Long extension_id;
+	private OccurrenceResource resource;
 		
 	public void setDatasourceInspectionManager(
 			DatasourceInspectionManager datasourceInspectionManager) {
@@ -67,6 +68,10 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	public void setViewMappingManager(
 			GenericManager<ViewMapping, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
+	}
+
+	public OccurrenceResource getResource() {
+		return resource;
 	}
 
 	public ViewMapping getMapping() {
@@ -113,18 +118,22 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		return mapOptions;
 	}
 	
-	public SortedMap<Integer, String> getColumnOptions() {
+	public SortedMap<String, String> getColumnOptions() {
 		return columnOptions;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
+		// get resource
+		resource = occResourceManager.get(resource_id);
+
+		// get/create view mapping
         if (mapping_id != null) {
         	mapping = viewMappingManager.get(mapping_id);
         }else{
             if (extension_id != null) {
             	mapping = new ViewMapping();
-            	mapping.setResource(occResourceManager.get(resource_id));
+            	mapping.setResource(resource);
             	mapping.setExtension(extensionManager.get(extension_id));
             }
         }
@@ -148,14 +157,18 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
 
 	}
-
+	private void prepareWithDatasource(){
+        prepareSourceDataPreview();
+		prepareMappingsOptions();		
+	}
 	private void prepareSourceDataPreview(){
 		log.debug("prepareSourceDataPreview");
         // get resultset preview and number of available comuns for mapping
         viewColumnHeaders = new ArrayList<String>();
-        if (mapping.getViewSql() !=null){
+        if (mapping.getSourceSql() !=null){
 			try {
-	    		ResultSet rs = datasourceInspectionManager.executeViewSql(mapping.getViewSql());
+				ResultSet rs = datasourceInspectionManager.executeViewSql(mapping.getSourceSql());
+				// get metadata
 	            ResultSetMetaData meta = rs.getMetaData();
 	            int columnNum = meta.getColumnCount();
 	            for (int i=1; i<=columnNum; i++){
@@ -172,6 +185,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	                }
 	                preview.add(rowList);
 	            }
+				rs.close();
 	        } catch (SQLException e) {
 	            String msg = getText("mapping.sqlError");
 	            saveMessage(msg);
@@ -187,25 +201,23 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		mapOptions = new HashMap<ExtensionProperty, Map>();
         Extension extension = mapping.getExtension();
         // generate basic column mapping options
-        columnOptions = new TreeMap<Integer, String>();
-    	Integer i = 1;
+        columnOptions = new TreeMap<String, String>();
     	if (viewColumnHeaders != null){
     		for (String head : viewColumnHeaders){
-    			columnOptions.put(i, "Column "+i+ " ["+head+"]");
-    			i++;
+    			columnOptions.put(head, head);
     		}
     	}
         for (ExtensionProperty prop : extension.getProperties()){        	
         	//get real controlled vocabulary for properties from db
-        	i=FIXED_TERMS_IDX;
-        	SortedMap<Integer, String> options;
+        	int i=FIXED_TERMS_IDX;
+        	SortedMap<String, String> options;
         	if (prop.hasTerms()){
         		// create new option map with controlled vocabulary
-            	options = new TreeMap<Integer, String>(columnOptions);
-            	options.put(i, "--- Fixed values ---");
+            	options = new TreeMap<String, String>(columnOptions);
+            	options.put("", "--- Fixed values ---");
             	for (String term : prop.getTerms()){
             		i++;
-                	options.put(i, term);
+                	options.put(term, term);
             	}
         	}else{
         		// reuse the basic mapping options
@@ -215,9 +227,9 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         }		
 	}
 	
-	public String editSource(){
-        prepareSourceDataPreview();
-        return SUCCESS;
+	public String edit(){
+		prepareWithDatasource();
+		return SUCCESS;
 	}
 
     public String saveSource() throws Exception {
@@ -227,7 +239,8 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         if (delete != null) {
             return delete();
         }
-        prepareSourceDataPreview();
+        prepareWithDatasource();
+        
         // cascade-save view mapping
         boolean isNew = (mapping.getId() == null);
         mapping = viewMappingManager.save(mapping);
@@ -235,23 +248,18 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         saveMessage(getText(key));
         return SUCCESS;
     }
-
-	public String editProperties(){
-		prepareMappingsOptions();
-		return SUCCESS;
-	}
 	
 	public String saveProperties() throws Exception {
         if (cancel != null) {
             return "cancel";
         }
-		prepareMappingsOptions();
+		prepareWithDatasource();
         // update property mapping values
         for (PropertyMapping pm : mappings){
-        	if (pm !=null && pm.getColumn()!=null && pm.getColumn() >= 1000){
-        		Integer key = pm.getColumn();
-        		if (key == 1000){
-            		pm.setColumn(null);
+        	if (pm !=null && pm.getColumnName()!=null && pm.getColumnName().startsWith("#")){
+        		String key = pm.getColumnName();
+        		if (key == ""){
+            		pm.setColumnName(null);
         		}else{
         			Map<Integer, String> options = mapOptions.get(pm.getProperty()); 
             		pm.setValue(options.get(key));

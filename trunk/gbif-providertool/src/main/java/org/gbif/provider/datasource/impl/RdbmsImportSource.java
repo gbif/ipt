@@ -31,6 +31,7 @@ import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.CoreViewMapping;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.ColumnMapping;
 import org.gbif.provider.model.ViewMapping;
 
 /**
@@ -44,9 +45,9 @@ public class RdbmsImportSource implements ImportSource{
 	private Collection<PropertyMapping> properties;
 	private ResultSet rs;
 	private boolean hasNext;
-	private Integer coreIdColumnIndex;
-	private Integer guidColumnIndex;
-	private Integer linkColumnIndex;
+	private ColumnMapping coreIdColumn = new ColumnMapping();
+	private ColumnMapping guidColumn = new ColumnMapping();
+	private ColumnMapping linkColumn = new ColumnMapping();
 	private Integer maxRecords;
 	
 
@@ -58,7 +59,7 @@ public class RdbmsImportSource implements ImportSource{
     	source.rs = rs;
     	//FIXME: clone mappings
     	source.properties = view.getPropertyMappings().values();
-    	source.coreIdColumnIndex = view.getCoreIdColumnIndex();
+    	source.coreIdColumn = view.getCoreIdColumn();
     	source.maxRecords = maxRecords;
     	try {
     		source.hasNext = rs.next();
@@ -75,8 +76,8 @@ public class RdbmsImportSource implements ImportSource{
     public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view, Integer maxRecords){
     	ViewMapping extView = (ViewMapping) view;
     	RdbmsImportSource source = RdbmsImportSource.newInstance(rs, extView, maxRecords);
-    	source.guidColumnIndex = view.getGuidColumnIndex();
-    	source.linkColumnIndex = view.getLinkColumnIndex();
+    	source.guidColumn = view.getGuidColumn();
+    	source.linkColumn = view.getLinkColumn();
     	return source;
     }
     public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view){
@@ -102,18 +103,18 @@ public class RdbmsImportSource implements ImportSource{
 			try {
 				row = new ImportRecord();
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
-				if (coreIdColumnIndex != null){
-					row.setLocalId(rs.getString(coreIdColumnIndex));	
+				if (coreIdColumn != null){
+					row.setLocalId(rs.getString(coreIdColumn.getColumnName()));	
 				}
-				if (guidColumnIndex != null){
-					row.setGuid(rs.getString(guidColumnIndex));					
+				if (guidColumn != null){
+					row.setGuid(rs.getString(guidColumn.getColumnName()));					
 				}
-				if (linkColumnIndex != null){
-					row.setLink(rs.getString(linkColumnIndex));
+				if (linkColumn != null){
+					row.setLink(rs.getString(linkColumn.getColumnName()));
 				}
 		    	for (PropertyMapping pm : properties){
-		    		if (pm.getColumn() != null && pm.getColumn() < 1000){
-						row.setPropertyValue(pm.getProperty(), rs.getString(pm.getColumn()));
+		    		if (pm.getColumnName() != null && !pm.getColumnName().startsWith("#")){
+						row.setPropertyValue(pm.getProperty(), rs.getString(pm.getColumnName()));
 		    		}else if (pm.getValue() != null){
 						row.setPropertyValue(pm.getProperty(), pm.getValue());
 		    		}
@@ -143,6 +144,15 @@ public class RdbmsImportSource implements ImportSource{
 
 	public void remove() {
 	    throw new UnsupportedOperationException();
+	}
+	public void close() {
+		hasNext=false;
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

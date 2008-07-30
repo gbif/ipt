@@ -11,9 +11,7 @@
 
 <display:table name="occResources" class="table" requestURI="" id="occResourceList" export="false" pagesize="5">
     <display:column property="title" sortable="true" titleKey="resource.title" href="resource.html" media="html" paramId="id" paramProperty="id"/>
-    <display:column sortProperty="modified" sortable="true" titleKey="resource.modified">
-         <fmt:formatDate value="${occResourceList.modified}" pattern="${datePattern}"/>
-    </display:column>
+    <display:column property="modified" sortable="true" titleKey="resource.modified" format="{0,date,${datePattern}}"/>
     <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
 
     <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>
@@ -25,9 +23,7 @@
 
 <display:table name="checklistResources" class="table" requestURI="" id="checklistResourceList" export="false" pagesize="5">
     <display:column property="title" sortable="true" titleKey="resource.title" href="resource.html" media="html" paramId="id" paramProperty="id"/>
-    <display:column sortProperty="modified" sortable="true" titleKey="resource.modified">
-         <fmt:formatDate value="${checklistResourceList.modified}" pattern="${datePattern}"/>
-    </display:column>
+    <display:column property="modified" sortable="true" titleKey="resource.modified" format="{0,date,${datePattern}}"/>
     <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
 
     <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>
@@ -40,9 +36,7 @@
 
 <display:table name="resources" class="table" requestURI="" id="resourceList" export="false" pagesize="5">
     <display:column property="title" sortable="true" titleKey="resource.title" href="resource.html" media="html" paramId="id" paramProperty="id"/>
-    <display:column sortProperty="modified" sortable="true" titleKey="resource.modified">
-         <fmt:formatDate value="${resourceList.modified}" pattern="${datePattern}"/>
-    </display:column>
+    <display:column property="modified" sortable="true" titleKey="resource.modified" format="{0,date,${datePattern}}"/>
     <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
 
     <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>

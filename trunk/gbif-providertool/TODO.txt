@@ -1,2 +1,0 @@
-TODO: unit tests for all model equals/hashcode methods. create 3 equal instances and 1 unequal for each class. assure that equal instances return the same hashcode
-TODO: write dwc DAO tests 

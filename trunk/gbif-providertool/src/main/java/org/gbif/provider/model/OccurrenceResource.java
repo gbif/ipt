@@ -63,22 +63,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		return new File(super.getDataDir(), "occ");
 	}
 
-	@Transient
-    public File getDumpArchiveFile(){
-		File file = new File(getDataDir(), "data.zip");
-		return file;    	
-    }
-
-	@Transient
-    public String getDumpArchiveUrl(){
-		return String.format("%s/occ/data.zip", getResourceBaseUrl());
-    }
-
-	@Transient
-    public File getDumpFile(Extension extension) throws IOException{    	
-		File file = new File(getDataDir(), String.format("%s.txt", extension.getTablename()));
-		return file;
-	}    
 
 	@Transient
 	public String getTapirEndpoint(){
@@ -89,12 +73,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	public String getWfsEndpoint(){
 		return String.format("%s/wfs", getResourceBaseUrl());
 	}
-	
-	@Transient
-	public String getRecordResolverEndpoint(){
-		return String.format("%s/detail", getResourceBaseUrl());
-	}
-    
+	    
 
     
 	public String toString() {
