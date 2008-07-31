@@ -255,9 +255,8 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         for (PropertyMapping pm : mappings){
         	if (pm !=null && pm.getColumn().getColumnName()!=null){
         		String key = pm.getColumn().getColumnName();
-        		if (key == ""){
-            		pm.getColumn().setColumnName(null);
-        		}else if (key.startsWith("#")){
+        		// copy controlled terms into value property...
+        		if (key.startsWith("#")){
         			Map<Integer, String> options = mapOptions.get(pm.getProperty()); 
             		pm.setValue(options.get(key));
         		}
