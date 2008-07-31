@@ -125,8 +125,8 @@
 			list="columnOptions" />
 	 
 	    <s:iterator value="mappings" status="stat"> 
-			<s:select label="%{property.name}" name="mappings[%{#stat.index}].columnName" required="%{property.required}"
-				value="%{mappings[#stat.index].columnName}"
+			<s:select label="%{property.name}" name="mappings[%{#stat.index}].column.columnName" required="%{property.required}"
+				value="%{mappings[#stat.index].column.columnName}"
 				headerKey="" emptyOption="true" 
 				list="mapOptions[property]" />
 				<!-- headerValue="Select a column or value ..." -->
