@@ -12,8 +12,11 @@ public class ColumnMapping {
 	public String getColumnName() {
 		return columnName;
 	}
-	public void setColumnName(String columnName) {
-		this.columnName = columnName;
+	public void setColumnName(String colName) {
+		if (colName != null && colName.trim().equals("")){
+			colName=null;
+		}
+		this.columnName = colName;
 	}
 	public void setColumnName(String table, String columnName) {
 		this.columnName = String.format("[%s].[%s]", table.trim(), columnName.trim());
