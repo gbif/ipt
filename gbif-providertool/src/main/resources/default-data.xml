@@ -1198,9 +1198,9 @@
       <value>6</value>
     </row>
   </table>
- <!--  
+
   <table name="view_mapping">
-    <column>DTYPE</column>
+    <column>mapping_type</column>
     <column>id</column>
     <column>sourceSql</column>
     <column>sourceFileLocation</column>
@@ -1210,7 +1210,7 @@
     <column>extension_id</column>
     <column>resource_id</column>
     <row>
-      <value>CoreViewMapping</value>
+      <value>CORE</value>
       <value>1</value>
       <value><![CDATA[select * from specimen join taxon on taxon_fk=taxon_id]]></value>
       <null/>
@@ -1218,10 +1218,10 @@
       <null/>
       <null/>
       <value>1</value>
-      <null/>
+      <value>1</value>
     </row>
     <row>
-      <value>CoreViewMapping</value>
+      <value>CORE</value>
       <value>2</value>
       <value><![CDATA[select * from specimen_small join taxon on taxon_fk=taxon_id]]></value>
       <null/>
@@ -1229,10 +1229,10 @@
       <null/>
       <null/>
       <value>1</value>
-      <null/>
+      <value>2</value>
     </row>
   </table>
- -->
+
   <table name="app_user">
     <column>id</column>
     <column>account_expired</column>
