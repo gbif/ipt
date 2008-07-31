@@ -42,8 +42,18 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	private Long id;	
 	private ViewMappingBase viewMapping;
 	private ExtensionProperty property;
-	private ColumnMapping mapping;
+	private ColumnMapping column = new ColumnMapping ();
 	private String value;
+	
+	public static PropertyMapping newInstance(){
+		PropertyMapping pm = new PropertyMapping();
+		return pm;
+	}
+	public static PropertyMapping newInstance(ExtensionProperty property){
+		PropertyMapping pm = newInstance();
+		pm.setProperty(property);
+		return pm;
+	}
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -70,14 +80,13 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 		this.property = property;
 	}
 	
-	
-	public ColumnMapping getMapping() {
-		return mapping;
+	public ColumnMapping getColumn() {
+		return column;
 	}
-	public void setMapping(ColumnMapping mapping) {
-		this.mapping = mapping;
+	public void setColumn(ColumnMapping column) {
+		this.column = column;
 	}
-	
+
 	public String getValue() {
 		return value;
 	}
@@ -91,18 +100,6 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 		this.value=value;
 	}
 
-	@Transient
-	public String getColumnName() {
-		return mapping.getColumnName();
-	}
-	public void setColumnName(String table, String column) {
-		mapping.setColumnName(table, column);
-	}
-	public void setColumnName(String column) {
-		mapping.setColumnName(column);
-	}
-
-	
 	
 	/**
 	 * Indicate wether this mapping has some true mapping content
@@ -110,7 +107,7 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	 */
 	@Transient
 	public boolean isEmpty(){
-		if (getColumnName() == null && (getValue() == null)){
+		if (column.getColumnName() == null && (getValue() == null)){
 			return true;
 		}
 		return false;
@@ -134,7 +131,7 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 			return false;
 		}
 		PropertyMapping rhs = (PropertyMapping) object;
-		return new EqualsBuilder().append(this.mapping, rhs.mapping).append(
+		return new EqualsBuilder().append(this.column, rhs.column).append(
 				this.property, rhs.property).append(this.viewMapping,
 				rhs.viewMapping).append(this.id, rhs.id).isEquals();
 	}
@@ -144,7 +141,7 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	public int hashCode() {
 	        int result = 17;
 	        result = 31 * (property != null ? property.hashCode() : 0);
-	        result = 31 * (mapping != null ? mapping.hashCode() : 0);
+	        result = 31 * (column != null ? column.hashCode() : 0);
 	        result = 31 * (value != null ? value.hashCode() : 0);
 	        result = 31 * (viewMapping != null ? viewMapping.getExtension().hashCode() : 0);
 	        return result;
@@ -155,11 +152,12 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("property", this.property)
-				.append("empty", this.isEmpty()).append("id", this.id).append(
-						"value", this.getValue()).append("viewMapping",
-						this.viewMapping).append("column", this.getColumnName())
-				.append("mapping", this.mapping).toString();
+		return new ToStringBuilder(this)
+				.append("id", this.id)
+				.append("property", this.property)
+				.append("viewMapping", this.viewMapping)
+				.append("value", this.getValue())
+				.append("column", this.column).toString();
 	}
 
 

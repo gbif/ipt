@@ -59,7 +59,7 @@
     </bean>
     
     <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
-        <constructor-arg value="org.gbif.provider.model.ViewMapping"/>
+        <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
     </bean>
 
     <bean id="extensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
