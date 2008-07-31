@@ -57,8 +57,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	private Long extension_id;
 	private OccurrenceResource resource;
 		
-	public void setDatasourceInspectionManager(
-			DatasourceInspectionManager datasourceInspectionManager) {
+	public void setDatasourceInspectionManager(DatasourceInspectionManager datasourceInspectionManager) {
 		this.datasourceInspectionManager = datasourceInspectionManager;
 	}
 
@@ -66,8 +65,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		this.extensionManager = extensionManager;
 	}
 
-	public void setViewMappingManager(
-			GenericManager<ViewMappingBase, Long> viewMappingManager) {
+	public void setViewMappingManager(GenericManager<ViewMappingBase, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 
@@ -86,7 +84,6 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	public List<PropertyMapping> getMappings() {
 		return mappings;
 	}
-
 	public void setMappings(List<PropertyMapping> mappings) {
 		this.mappings = mappings;
 	}
@@ -150,8 +147,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
             	filledMappings++;
     		}else{
     			// create new empty one. Remember to link them to the ViewMapping before they get saved
-        		PropertyMapping propMap = new PropertyMapping();
-        		propMap.setProperty(prop);
+        		PropertyMapping propMap = PropertyMapping.newInstance(prop);
             	mappings.add(propMap);
     		}
     	}
@@ -257,10 +253,10 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		prepareWithDatasource();
         // update property mapping values
         for (PropertyMapping pm : mappings){
-        	if (pm !=null && pm.getColumnName()!=null && pm.getColumnName().startsWith("#")){
-        		String key = pm.getColumnName();
+        	if (pm !=null && pm.getColumn().getColumnName()!=null && pm.getColumn().getColumnName().startsWith("#")){
+        		String key = pm.getColumn().getColumnName();
         		if (key == ""){
-            		pm.setColumnName(null);
+            		pm.getColumn().setColumnName(null);
         		}else{
         			Map<Integer, String> options = mapOptions.get(pm.getProperty()); 
             		pm.setValue(options.get(key));

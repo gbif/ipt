@@ -120,13 +120,13 @@
 	
 		<c:out value="${buttons}" escapeXml="false" /> 
 	 
-	 	<s:select key="mapping.coreIdColumn.column" required="true"
+	 	<s:select key="mapping.coreIdColumn.columnName" required="true"
 			headerKey="Select identifier for core record" emptyOption="true" 
 			list="columnOptions" />
 	 
 	    <s:iterator value="mappings" status="stat"> 
-			<s:select label="%{property.name}" name="mappings[%{#stat.index}].column" required="%{property.required}"
-				value="%{mappings[#stat.index].column}"
+			<s:select label="%{property.name}" name="mappings[%{#stat.index}].columnName" required="%{property.required}"
+				value="%{mappings[#stat.index].columnName}"
 				headerKey="" emptyOption="true" 
 				list="mapOptions[property]" />
 				<!-- headerValue="Select a column or value ..." -->

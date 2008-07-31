@@ -113,8 +113,8 @@ public class RdbmsImportSource implements ImportSource{
 					row.setLink(rs.getString(linkColumn.getColumnName()));
 				}
 		    	for (PropertyMapping pm : properties){
-		    		if (pm.getColumnName() != null && !pm.getColumnName().startsWith("#")){
-						row.setPropertyValue(pm.getProperty(), rs.getString(pm.getColumnName()));
+		    		if (pm.getColumn() != null && pm.getColumn().getColumnName() != null && !pm.getColumn().getColumnName().startsWith("#")){
+						row.setPropertyValue(pm.getProperty(), rs.getString(pm.getColumn().getColumnName()));
 		    		}else if (pm.getValue() != null){
 						row.setPropertyValue(pm.getProperty(), pm.getValue());
 		    		}
