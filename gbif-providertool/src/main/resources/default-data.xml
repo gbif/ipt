@@ -1052,16 +1052,7 @@
     <column>timestamp</column>
     <column>user_id</column>
   </table>
-  <table name="PropertyMapping">
-    <column>id</column>
-    <column>columnName</column>
-    <column>value</column>
-    <column>property_id</column>
-    <column>viewMapping_id</column>
 
-
-
-  </table>
   <table name="Resource">
     <column>DTYPE</column>
     <column>id</column>
@@ -1077,7 +1068,6 @@
     <column>jdbcUser</column>
     <column>last_upload_event_fk</column>
     <column>serviceName</column>
-    <column>coreMapping_id</column>
     <column>modifier_id</column>
     <column>creator_id</column>
     <row>
@@ -1095,7 +1085,6 @@
       <value>providertool</value>
       <value>6</value>
       <value>pontaurus</value>
-      <value>1</value>
       <value>4</value>
       <value>4</value>
     </row>
@@ -1120,7 +1109,6 @@
       <value>providertool</value>
       <null/>
       <value>cornith</value>
-      <value>2</value>
       <value>4</value>
       <value>4</value>
     </row>
@@ -1210,7 +1198,8 @@
       <value>6</value>
     </row>
   </table>
-  <table name="ViewMapping">
+ <!--  
+  <table name="view_mapping">
     <column>DTYPE</column>
     <column>id</column>
     <column>sourceSql</column>
@@ -1243,6 +1232,7 @@
       <null/>
     </row>
   </table>
+ -->
   <table name="app_user">
     <column>id</column>
     <column>account_expired</column>

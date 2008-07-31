@@ -51,18 +51,12 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	public static OccurrenceResource newInstance(Extension core){
 		OccurrenceResource resource =  new OccurrenceResource();
 		// ensure that core mapping exists
-		CoreViewMapping coreVM = new CoreViewMapping();
+		ViewCoreMapping coreVM = new ViewCoreMapping();
 		coreVM.setExtension(core);
+		coreVM.setResource(resource);
 		resource.setCoreMapping(coreVM);
 		return resource;
 	}
-
-	@Override
-	@Transient
-	public File getDataDir(){
-		return new File(super.getDataDir(), "occ");
-	}
-
 
 	@Transient
 	public String getTapirEndpoint(){

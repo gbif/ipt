@@ -40,7 +40,7 @@ import org.appfuse.model.BaseObject;
 @Entity
 public class PropertyMapping extends BaseObject implements Comparable<PropertyMapping> {
 	private Long id;	
-	private ViewMapping viewMapping;
+	private ViewMappingBase viewMapping;
 	private ExtensionProperty property;
 	private ColumnMapping mapping;
 	private String value;
@@ -55,10 +55,10 @@ public class PropertyMapping extends BaseObject implements Comparable<PropertyMa
 	
 	@ManyToOne(optional=false)
 	//@JoinColumn(name="viewMapping_id", insertable=false, updatable=false, nullable=false)
-	public ViewMapping getViewMapping() {
+	public ViewMappingBase getViewMapping() {
 		return viewMapping;
 	}
-	public void setViewMapping(ViewMapping viewMapping) {
+	public void setViewMapping(ViewMappingBase viewMapping) {
 		this.viewMapping = viewMapping;
 	}
 	

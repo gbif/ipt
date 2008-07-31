@@ -28,12 +28,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.CoreViewMapping;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 
 
 /**

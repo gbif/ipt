@@ -3,11 +3,13 @@ package org.gbif.provider.model;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 @Entity
-public class CoreViewMapping extends ViewMapping {
+@DiscriminatorValue("CORE")
+public class ViewCoreMapping extends ViewMappingBase {
 	private ColumnMapping guidColumn = new ColumnMapping ();
 	private ColumnMapping linkColumn = new ColumnMapping ();
 	

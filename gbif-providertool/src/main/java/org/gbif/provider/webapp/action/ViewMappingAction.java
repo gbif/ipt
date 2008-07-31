@@ -33,7 +33,8 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewExtensionMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.hibernate.type.SortedMapType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	private static Integer FIXED_TERMS_IDX = 1000;
     private DatasourceInspectionManager datasourceInspectionManager;
     private GenericManager<Extension, Long> extensionManager;
-    private GenericManager<ViewMapping, Long> viewMappingManager;
-    private ViewMapping mapping;
+    private GenericManager<ViewMappingBase, Long> viewMappingManager;
+    private ViewMappingBase mapping;
     private List<PropertyMapping> mappings;
     private ArrayList<String> viewColumnHeaders;
     private List preview;
@@ -66,7 +67,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public void setViewMappingManager(
-			GenericManager<ViewMapping, Long> viewMappingManager) {
+			GenericManager<ViewMappingBase, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 
@@ -74,11 +75,11 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		return resource;
 	}
 
-	public ViewMapping getMapping() {
+	public ViewMappingBase getMapping() {
 		return mapping;
 	}
 	
-	public void setMapping(ViewMapping mapping) {
+	public void setMapping(ViewMappingBase mapping) {
 		this.mapping = mapping;
 	}
 
@@ -132,7 +133,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         	mapping = viewMappingManager.get(mapping_id);
         }else{
             if (extension_id != null) {
-            	mapping = new ViewMapping();
+            	mapping = new ViewExtensionMapping();
             	mapping.setResource(resource);
             	mapping.setExtension(extensionManager.get(extension_id));
             }

@@ -31,7 +31,7 @@ import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.CoreViewMapping;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
@@ -39,7 +39,7 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.scheduler.scheduler.Launchable;
 
 public abstract class OccUploadBaseJob implements Job{
@@ -138,7 +138,7 @@ public abstract class OccUploadBaseJob implements Job{
 				// run import of core into db & dump file
 				dumpFiles.add(uploadCore(source, resource, coreEvent, idMap));
 				// upload further extensions one by one
-				for (ViewMapping vm : resource.getExtensionMappings().values()){
+				for (ViewMappingBase vm : resource.getExtensionMappings().values()){
 					Extension ext = vm.getExtension();
 					//  prepare import source
 					source = this.getImportSource(seed, resource, ext, maxRecords);
@@ -317,7 +317,7 @@ public abstract class OccUploadBaseJob implements Job{
 		return out;
 	}
 	
-	protected static TabFileWriter prepareTabFile(OccurrenceResource resource, CoreViewMapping coreViewMapping) throws IOException{
+	protected static TabFileWriter prepareTabFile(OccurrenceResource resource, ViewCoreMapping coreViewMapping) throws IOException{
 		List<String> additionalHeader = new ArrayList<String>();
 		return prepareTabFile(resource, coreViewMapping.getExtension(), additionalHeader);
 	}
@@ -334,7 +334,7 @@ public abstract class OccUploadBaseJob implements Job{
 		header.add(CoreRecord.ID_COLUMN_NAME);
 		header.add(CoreRecord.MODIFIED_COLUMN_NAME);
 		// add only existing mapped concepts
-		ViewMapping mapping = resource.getExtensionMapping(extension);
+		ViewMappingBase mapping = resource.getExtensionMapping(extension);
 		if (mapping == null){
 			throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",resource.getTitle(), extension.getName()));
 		}

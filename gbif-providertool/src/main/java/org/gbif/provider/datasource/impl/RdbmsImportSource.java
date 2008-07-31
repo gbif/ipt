@@ -29,10 +29,10 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.CoreViewMapping;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ColumnMapping;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 
 /**
  * Import source for relational databases that maps a sql resultset into CoreRecords and allows to iterate over them.
@@ -51,7 +51,7 @@ public class RdbmsImportSource implements ImportSource{
 	private Integer maxRecords;
 	
 
-    public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view, Integer maxRecords){
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewMappingBase view, Integer maxRecords){
     	if (rs == null || view == null){
     		throw new IllegalArgumentException();
     	}
@@ -69,18 +69,18 @@ public class RdbmsImportSource implements ImportSource{
 		}
     	return source;
     }
-    public static RdbmsImportSource newInstance(ResultSet rs, ViewMapping view){
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewMappingBase view){
     	return newInstance(rs, view, null);
     }
     
-    public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view, Integer maxRecords){
-    	ViewMapping extView = (ViewMapping) view;
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewCoreMapping view, Integer maxRecords){
+    	ViewMappingBase extView = (ViewMappingBase) view;
     	RdbmsImportSource source = RdbmsImportSource.newInstance(rs, extView, maxRecords);
     	source.guidColumn = view.getGuidColumn();
     	source.linkColumn = view.getLinkColumn();
     	return source;
     }
-    public static RdbmsImportSource newInstance(ResultSet rs, CoreViewMapping view){
+    public static RdbmsImportSource newInstance(ResultSet rs, ViewCoreMapping view){
     	return newInstance(rs, view, null);
     }
     

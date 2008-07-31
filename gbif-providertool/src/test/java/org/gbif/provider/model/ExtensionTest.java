@@ -9,13 +9,13 @@ import java.util.Set;
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.CoreViewMapping;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 import org.junit.Test;
@@ -44,6 +44,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 	@Test
 	public void testExtensionPropertyList() throws Exception{
 		Extension extension = new Extension();
+		extension.setName("testExtensionPropertyList");
 		ExtensionProperty propMap = new ExtensionProperty();
 		extension.addProperty(propMap);
 		extension = extensionManager.save(extension);
@@ -61,16 +62,16 @@ public class ExtensionTest extends BaseDaoTestCase{
 		OccurrenceResource occRes = resourceFactory.newOccurrenceResourceInstance();
 
 		Extension ext1 = new Extension();
-		ext1.setName("test extension 1");
+		ext1.setName("testExtensionMap 1");
 		ext1 = extensionManager.save(ext1);
-		ViewMapping map1 = new ViewMapping();
+		ViewExtensionMapping map1 = new ViewExtensionMapping();
 		map1.setExtension(ext1);
 		occRes.addExtensionMapping(map1);
 
 		Extension ext2 = new Extension();
-		ext2.setName("test extension 2");
+		ext2.setName("testExtensionMap 2");
 		ext2 = extensionManager.save(ext2);
-		ViewMapping map2 = new ViewMapping();
+		ViewExtensionMapping map2 = new ViewExtensionMapping();
 		map2.setExtension(ext2);
 		occRes.addExtensionMapping(map2);
 		
@@ -79,7 +80,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 		
 		// check retrieved data. what about the hibernate cache?
 		DatasourceBasedResource res = occResourceManager.get(occId);		
-		Collection<ViewMapping> allMappings = res.getAllMappings();
+		Collection<ViewMappingBase> allMappings = res.getAllMappings();
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);
