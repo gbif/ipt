@@ -253,11 +253,11 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		prepareWithDatasource();
         // update property mapping values
         for (PropertyMapping pm : mappings){
-        	if (pm !=null && pm.getColumn().getColumnName()!=null && pm.getColumn().getColumnName().startsWith("#")){
+        	if (pm !=null && pm.getColumn().getColumnName()!=null){
         		String key = pm.getColumn().getColumnName();
         		if (key == ""){
             		pm.getColumn().setColumnName(null);
-        		}else{
+        		}else if (key.startsWith("#")){
         			Map<Integer, String> options = mapOptions.get(pm.getProperty()); 
             		pm.setValue(options.get(key));
         		}
