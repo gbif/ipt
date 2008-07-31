@@ -21,15 +21,19 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,6 +41,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
@@ -53,7 +58,8 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
  *
  */
 @Entity
-public class DatasourceBasedResource extends Resource {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+public abstract class DatasourceBasedResource extends Resource {
 	private static Log log = LogFactory.getLog(DatasourceBasedResource.class);
 	private String serviceName;
 	private String jdbcDriverClass = "com.mysql.jdbc.Driver";
@@ -61,9 +67,9 @@ public class DatasourceBasedResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private UploadEvent lastUpload;
-	private CoreViewMapping coreMapping;
+	private ViewCoreMapping coreMapping;
 	// extension mappings, not including the core mapping
-	private Map<Long, ViewMapping> extensionMappings = new HashMap<Long, ViewMapping>();
+	private Map<Long, ViewExtensionMapping> extensionMappings = new HashMap<Long, ViewExtensionMapping>();
 	// transient properties
 	private DataSource datasource;
 
@@ -74,7 +80,9 @@ public class DatasourceBasedResource extends Resource {
 		return serviceName;
 	}
 	public void setServiceName(String serviceName) {
-		serviceName=serviceName.toLowerCase().trim().replace(" ", "_");
+		if (serviceName!=null){
+			serviceName=serviceName.toLowerCase().trim().replace(" ", "_");
+		}
 		this.serviceName = serviceName;
 	}
 	@Override
@@ -127,40 +135,45 @@ public class DatasourceBasedResource extends Resource {
 	}
 	
 	@Transient
-	public Set<ViewMapping> getAllMappings() {
-		Set<ViewMapping> all = new HashSet<ViewMapping>(extensionMappings.values());
+	public Set<ViewMappingBase> getAllMappings() {
+		Set<ViewMappingBase> all = new HashSet<ViewMappingBase>(extensionMappings.values());
 		if (getCoreMapping() != null){
 			all.add(getCoreMapping());
 		}
 		return all;
 	}
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	public CoreViewMapping getCoreMapping() {
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="resource")
+//    @JoinColumn(insertable=false, updatable=false)
+//    @org.hibernate.annotations.Where(clause="mapping_type='CORE'")        
+	public ViewCoreMapping getCoreMapping() {
 		return coreMapping;
 	}
-	public void setCoreMapping(CoreViewMapping coreMapping) {
-		//coreMapping.setResource(this);
+	public void setCoreMapping(ViewCoreMapping coreMapping) {
 		this.coreMapping = coreMapping;
 	}
 	
-	@OneToMany(mappedBy="resource", cascade=CascadeType.ALL)
+
+
+	@OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="resource_id", insertable=false, updatable=false)
+    @org.hibernate.annotations.Where(clause="mapping_type='EXT'")        
 	@MapKey(columns = @Column(name = "extension_id"))
-	public Map<Long, ViewMapping> getExtensionMappings() {
+	public Map<Long, ViewExtensionMapping> getExtensionMappings() {
 		return extensionMappings;
 	}
-	public void setExtensionMappings(Map<Long, ViewMapping> extensionMappings) {
+	public void setExtensionMappings(Map<Long, ViewExtensionMapping> extensionMappings) {
 		this.extensionMappings = extensionMappings;
 	}
-	public void addExtensionMapping(ViewMapping mapping) {
+	public void addExtensionMapping(ViewExtensionMapping mapping) {
 		mapping.setResource(this);
 		this.extensionMappings.put(mapping.getExtension().getId(), mapping);
 	}
 
 	@Transient
-	public ViewMapping getExtensionMapping(Extension extension) {
-		ViewMapping result = null;
-		for (ViewMapping vm : this.getAllMappings()){
+	public ViewMappingBase getExtensionMapping(Extension extension) {
+		ViewMappingBase result = null;
+		for (ViewMappingBase vm : this.getAllMappings()){
 			if(vm.getExtension().equals(extension)){
 				result = vm;
 				break;
@@ -292,7 +305,7 @@ public class DatasourceBasedResource extends Resource {
 
 	@Transient
     public String getDumpArchiveUrl(){
-		return String.format("%s/occ/data.zip", getResourceBaseUrl());
+		return String.format("%s/data.zip", getResourceBaseUrl());
     }
 
 	@Transient

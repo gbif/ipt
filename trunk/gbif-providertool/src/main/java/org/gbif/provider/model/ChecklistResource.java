@@ -39,8 +39,9 @@ public class ChecklistResource extends DatasourceBasedResource {
 	public static ChecklistResource newInstance(Extension core){
 		ChecklistResource resource =  new ChecklistResource();
 		// ensure that core mapping exists
-		CoreViewMapping coreVM = new CoreViewMapping();
+		ViewCoreMapping coreVM = new ViewCoreMapping();
 		coreVM.setExtension(core);
+		coreVM.setResource(resource);
 		resource.setCoreMapping(coreVM);
 		return resource;
 	}

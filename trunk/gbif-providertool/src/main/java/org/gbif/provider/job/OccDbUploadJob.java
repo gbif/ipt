@@ -21,7 +21,7 @@ import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
-import org.gbif.provider.model.CoreViewMapping;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
@@ -29,7 +29,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
@@ -90,7 +90,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 			// set resource context for DatasourceInterceptor
 			DatasourceContextHolder.setResourceId(resourceId);
 			// create rdbms source
-			CoreViewMapping coreViewMapping = resource.getCoreMapping();
+			ViewCoreMapping coreViewMapping = resource.getCoreMapping();
 			ResultSet rs;
 			try {
 				rs = datasourceInspectionManager.executeViewSql(coreViewMapping.getSourceSql());
@@ -108,7 +108,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 		// set resource context for DatasourceInterceptor
 		DatasourceContextHolder.setResourceId(resourceId);
 		// create rdbms source
-		ViewMapping vm = resource.getExtensionMapping(extension);
+		ViewMappingBase vm = resource.getExtensionMapping(extension);
 		if (vm == null){
 			throw new ImportSourceException("No mapping exists for extension "+extension.getName());
 		}

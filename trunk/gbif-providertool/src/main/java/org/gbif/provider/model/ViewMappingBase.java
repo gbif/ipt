@@ -28,18 +28,24 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -60,7 +66,10 @@ import org.hibernate.annotations.MapKey;
  *
  */
 @Entity
-public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="mapping_type", discriminatorType = DiscriminatorType.STRING)
+@Table(name="view_mapping")
+public abstract class ViewMappingBase extends BaseObject implements Comparable<ViewMappingBase> {
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Extension extension;
@@ -78,7 +87,7 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name="resource_id", nullable=true) 
+    @JoinColumn(name="resource_id", nullable=false)
 	public DatasourceBasedResource getResource() {
 		return resource;
 	}
@@ -180,7 +189,7 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
 	 * Natural sort order is resource, then extension
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
-	public int compareTo(ViewMapping view) {
+	public int compareTo(ViewMappingBase view) {
 		if (resource != null){
 			int resCmp = resource.compareTo(view.resource);
 			int extComp = (extension == null ? extComp = -1 : extension.compareTo(view.extension)); 
@@ -223,11 +232,11 @@ public class ViewMapping extends BaseObject implements Comparable<ViewMapping> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ViewMapping)) {
+        if (!(o instanceof ViewMappingBase)) {
             return false;
         }
 
-        final ViewMapping vm = (ViewMapping) o;
+        final ViewMappingBase vm = (ViewMappingBase) o;
 
         return this.hashCode() == vm.hashCode();
 	}

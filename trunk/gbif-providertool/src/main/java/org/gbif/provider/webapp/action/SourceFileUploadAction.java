@@ -14,7 +14,7 @@ import org.appfuse.webapp.action.BaseAction;
 import org.appfuse.webapp.action.FileUploadAction;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.TabFileProcessManager;
 
@@ -22,7 +22,7 @@ import org.gbif.provider.service.TabFileProcessManager;
 public class SourceFileUploadAction extends BaseAction{
 	private static final long serialVersionUID = -3698917712584074200L;
 	private TabFileProcessManager tabFileProcessManager;
-    private GenericManager<ViewMapping, Long> viewMappingManager;
+    private GenericManager<ViewMappingBase, Long> viewMappingManager;
     private File file;
     private String fileContentType;
     private String fileFileName;
@@ -38,7 +38,7 @@ public class SourceFileUploadAction extends BaseAction{
             return "cancel";
         }
         // check where it who wants this file and where to save
-		ViewMapping mapping = viewMappingManager.get(mapping_id);
+		ViewMappingBase mapping = viewMappingManager.get(mapping_id);
 		DatasourceBasedResource resource = mapping.getResource();
         // the directory to upload to
 		File targetFile = resource.getDumpSourceFile(mapping.getExtension());
@@ -139,7 +139,7 @@ public class SourceFileUploadAction extends BaseAction{
 
 
 	public void setViewMappingManager(
-			GenericManager<ViewMapping, Long> viewMappingManager) {
+			GenericManager<ViewMappingBase, Long> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 

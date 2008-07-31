@@ -9,8 +9,8 @@ import java.sql.Statement;
 
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.CoreViewMapping;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewCoreMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.util.BaseExternalDatasourceTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class RdbmsImportSourceTest extends BaseExternalDatasourceTest{
 		// @Before triggered in superclasses doesnt work for me. Should really, but dont know why. So I use direct calls instead
 		setUpExternalDatasource();
         // use test resource
-        CoreViewMapping view = getTestResource().getCoreMapping();
+        ViewCoreMapping view = getTestResource().getCoreMapping();
 		try {
 			ResultSet rs = this.datasourceInspectionDao.executeSql(view.getSourceSql());
 	        // create import source

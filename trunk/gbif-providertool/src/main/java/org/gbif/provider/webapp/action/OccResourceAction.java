@@ -31,7 +31,7 @@ import org.gbif.provider.job.OccUploadBaseJob;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
@@ -45,7 +45,7 @@ import com.opensymphony.xwork2.Preparable;
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
 	private ResourceFactory resourceFactory;
 	private GenericManager<Extension> extensionManager;
-	private GenericManager<ViewMapping> viewMappingManager;
+	private GenericManager<ViewMappingBase> viewMappingManager;
 	private UploadEventManager uploadEventManager;
 	private JobManager jobManager;
 	
@@ -87,7 +87,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public void setViewMappingManager(
-			GenericManager<ViewMapping> viewMappingManager) {
+			GenericManager<ViewMappingBase> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 
@@ -144,7 +144,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 			}
 		}
 		// filter already mapped extensions
-		for (ViewMapping map : occResource.getAllMappings()) {
+		for (ViewMappingBase map : occResource.getAllMappings()) {
 			extensions.remove(map.getExtension());
 		}
 		// investigate upload jobs

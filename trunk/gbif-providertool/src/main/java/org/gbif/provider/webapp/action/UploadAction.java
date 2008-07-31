@@ -41,7 +41,7 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMapping;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.scheduler.model.Job;
