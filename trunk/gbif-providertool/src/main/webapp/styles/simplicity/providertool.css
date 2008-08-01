@@ -2,6 +2,11 @@
 
 /* PROVIDERTOOL customising simplicity */
 
+
+h2 {
+	margin-top: 20px;
+}
+
 table.lefthead td {
 	padding-left: 20px;
 }
@@ -60,3 +65,32 @@ ul.actionmenu li{
 }
 
             
+ 
+ 
+/*    PORTAL    */
+div.chart{
+	width: 340px;
+	display: block;
+	float: left;
+	height: 300px;
+}
+#time-pie {
+	width: 500px;
+}
+#loc-tax, #loc-geoserver, #col-pie {
+	position: relative;
+	left: 30px;
+}
+.map img{
+	border: 1px solid #000;
+}
+.chart img{
+	display: block;
+	margin-top: 5px;
+}
+
+div.chart select {
+	float: right;
+	bottom: 5px;
+	position: relative;
+}

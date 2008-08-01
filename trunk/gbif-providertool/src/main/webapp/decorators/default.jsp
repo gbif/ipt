@@ -28,23 +28,26 @@
                 <%@ include file="/common/messages.jsp" %>
                 <h1><decorator:getProperty property="meta.heading"/></h1>
                 <decorator:body/>
-            </div>
+            </div><!-- end main -->
 
             <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
-            <c:if test="${currentMenu == 'AdminMenu'}">
+
             <div id="sub">
-                <menu:useMenuDisplayer name="Velocity" config="cssVerticalMenu.vm" permissions="rolesAdapter">
-                    <menu:displayMenu name="AdminMenu"/>
-                </menu:useMenuDisplayer>
-            </div>
-            </c:if>
+            	<div>HALLO FERKEL</div>            
+				<div id="fullsearch">
+					<s:form name="search">
+						<label>Search</label>
+						<s:textfield name="q" theme="simple"/>
+					</s:form>
+				</div>
+            </div><!-- end sub -->
 
             <div id="nav">
                 <div class="wrapper">
                     <h2 class="accessibility">Navigation</h2>
                     <jsp:include page="/common/menu.jsp"/>
                 </div>
-                <hr/>
+                <!-- <hr/> -->
             </div><!-- end nav -->
         </div>
 
