@@ -8,12 +8,12 @@
 
 <display:table name="extensions" uid="ext" class="table" requestURI="" export="true" pagesize="25">
     <display:column property="name" sortable="true" titleKey="extension.name" 
-    	href="${ext.link}" media="html" />
-    <display:column property="namespace" sortable="true" titleKey="extension.namespace"/>
-    <display:column sortable="true" titleKey="extension.propertyCount"
-    	href="extension.html" media="html" paramId="id" paramProperty="id">
+    	href="extension.html" media="html" paramId="id" paramProperty="id"/>
+    <display:column sortable="true" titleKey="extension.propertyCount">
     	 ${fn:length(ext.properties)}
     </display:column>
+    <display:column property="link" sortable="true" titleKey="ext.link" autolink="true"  media="html" />
+    
     <display:setProperty name="paging.banner.item_name"><s:text name="extensionList.extension"/></display:setProperty>
     <display:setProperty name="paging.banner.items_name"><s:text name="extensionList.extensions"/></display:setProperty>
 </display:table>

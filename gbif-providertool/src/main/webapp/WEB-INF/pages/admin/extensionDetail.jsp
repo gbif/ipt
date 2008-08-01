@@ -7,7 +7,6 @@
 
 <s:form action="extensions">
 	<s:label key="extension.name"/>
-	<s:label key="extension.namespace"/>
 	<li class="wwgrp">
 	    <div class="wwlbl">
 			<label class="desc"><s:text name='extension.link'/></label>
@@ -20,8 +19,8 @@
 	<ul class="subform">
 	<s:iterator value="extension.properties" status="stat">
 	  <div class="subentry">
-		<s:property value="name"/>
-		<a href="<s:property value="link"/>" target="_blank">(info)</a>
+		<a href="<s:property value="link"/>" target="_blank"><s:property value="name"/></a>
+		 <label>Namespace:</label><s:property value="namespace"/> <label>Qualname:</label><s:property value="qualname"/>
 	  </div>
 	    <c:if test="${not empty terms}">
 			<div class="terms subform">
