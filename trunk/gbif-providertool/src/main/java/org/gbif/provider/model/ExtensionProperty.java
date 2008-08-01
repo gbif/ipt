@@ -41,12 +41,13 @@ public class ExtensionProperty extends BaseObject implements Comparable<Extensio
 	private Long id;
 	private Extension extension;
 	private String name;
+	private String namespace;
 	private String qualName;
 	private String columnName;
+	private int columnLength;
 	private String link;
 	private boolean required;
 	private List<String> terms = new ArrayList<String>();
-	private int columnLength;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,6 +69,7 @@ public class ExtensionProperty extends BaseObject implements Comparable<Extensio
 		this.extension = extension;
 	}
 
+	@Column(length = 128)
 	public String getQualName() {
 		return qualName;
 	}
@@ -76,12 +78,22 @@ public class ExtensionProperty extends BaseObject implements Comparable<Extensio
 		this.qualName = qualName;
 	}
 
+	@Column(length = 128)
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Column(length = 128)
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
 	}
 
 	/**

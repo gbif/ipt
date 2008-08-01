@@ -52,10 +52,9 @@ import org.hibernate.annotations.IndexColumn;
 public class Extension extends BaseObject implements Comparable<Extension> {
 	private Long id;	
 	private String name;
-	private String namespace;
+	private String tablename;
 	private String link;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
-	private String tablename;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -70,13 +69,6 @@ public class Extension extends BaseObject implements Comparable<Extension> {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getNamespace() {
-		return namespace;
-	}
-	public void setNamespace(String namespace) {
-		this.namespace = namespace;
 	}
 	
 	public String getLink() {
@@ -118,7 +110,7 @@ public class Extension extends BaseObject implements Comparable<Extension> {
 			return false;
 		}
 		Extension rhs = (Extension) object;
-		return new EqualsBuilder().append(this.namespace, rhs.namespace)
+		return new EqualsBuilder()
 				.append(this.link, rhs.link).append(this.name, rhs.name).append(
 						this.id, rhs.id).isEquals();
 	}
@@ -129,7 +121,6 @@ public class Extension extends BaseObject implements Comparable<Extension> {
         int result = 17;
         result = (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
         result = 31 * result + (tablename != null ? tablename.hashCode() : 0);
         //result = 31 * result + (properties != null ? properties.hashCode() : 0);
@@ -139,16 +130,13 @@ public class Extension extends BaseObject implements Comparable<Extension> {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).append("name", this.name).append("id", this.id).append(
-				"namespace", this.namespace)
-				.toString();
+		return new ToStringBuilder(this).append("name", this.name).append("id", this.id).toString();
 	}
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	public int compareTo(Extension object) {
-		return new CompareToBuilder().append(this.namespace, object.namespace)
-				.append(this.id, object.id).toComparison();
+		return new CompareToBuilder().append(this.id, object.id).toComparison();
 	}
 	
 	
