@@ -346,16 +346,26 @@
         </testResources>
     </build>
 
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <id>appfuse</id>
-            <url>http://static.appfuse.org/repository</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>appfuse</id>
+			<url>http://static.appfuse.org/repository</url>
+		</repository>
+		<repository>
+			<id>JSON code Repository</id>
+			<url>http://struts2plugin-maven-repo.googlecode.com/svn/trunk/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
 
     <pluginRepositories>
         <pluginRepository>
