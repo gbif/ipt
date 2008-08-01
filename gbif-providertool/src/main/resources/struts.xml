@@ -135,8 +135,8 @@
         <action name="occResources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-        <action name="occResource">
-            <result>/WEB-INF/pages/missing.jsp</result>
+        <action name="occResource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
+            <result>/WEB-INF/pages/portal/occ/index.jsp</result>
         </action>
         
         <!-- checklist actions -->
