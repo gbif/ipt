@@ -33,12 +33,29 @@
             <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
 
             <div id="sub">
-            	<div>HALLO FERKEL</div>            
 				<div id="fullsearch">
-					<s:form name="search">
-						<label>Search</label>
+					<label>Fulltext Search</label>
+					<s:form name="search" theme="simple">
 						<s:textfield name="q" theme="simple"/>
 					</s:form>
+				</div>
+
+				<div id="taxnav">
+					<label>Navigate Taxonomy</label>
+					<pre>
+Plantae
+  Asteraceae
+    Hieracium
+					</pre>
+				</div>
+
+				<div id="locnav">
+					<label>Navigate Geography</label>
+					<pre>
+Europe
+  Great Britain
+    Cornwales
+					</pre>
 				</div>
             </div><!-- end sub -->
 
