@@ -20,15 +20,6 @@
   </fieldset>
 </s:form>
 
-<s:form>
-<fieldset>
-	<legend><s:text name="occResourceOverview.services"/></legend>
-	<s:label key="occResourceOverview.tabfile" value="%{occResource.getDumpArchiveUrl()}"/>
-	<s:label key="occResourceOverview.tapir" value="%{occResource.getTapirEndpoint()}"/>
-	<s:label key="occResourceOverview.wfs" value="%{occResource.getWfsEndpoint()}"/>
-</fieldset>
-</s:form>
-
 
 <s:form action="editResourceConnection" method="get">
   <s:hidden name="resource_id" value="%{occResource.id}"/>
