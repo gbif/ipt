@@ -92,7 +92,7 @@
 		<li><a onclick="Effect.toggle('sourcepreview', 'blind', { duration: 0.3 }); return false;">sourcedata</a></li>
 		<li><a onclick="Effect.toggle('preview', 'blind', { duration: 0.3 }); return false;">preview mapping</a></li>
 	</ul>
-	<div id="sourcepreview">
+	<div id="sourcepreview" style="display:none">
 		<table class="table">
 			<thead>
 				<tr>

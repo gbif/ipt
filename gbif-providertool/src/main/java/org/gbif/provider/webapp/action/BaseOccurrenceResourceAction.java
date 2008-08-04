@@ -33,12 +33,10 @@ import org.gbif.provider.model.OccurrenceResource;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction implements Preparable, SessionAware{
+public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction{
 	// new cant be used. Just call the getter new so the parameter becomes new. Neu is german for new ;)
     protected ResourceManager<OccurrenceResource> occResourceManager;
 	protected Long resource_id;
-	protected OccurrenceResource occResource;
-	protected Map session;
 	
     public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
@@ -63,37 +61,6 @@ public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.Base
 	        }
 	    }
 		return null;
-	}
-
-	public void prepare() throws Exception{
-		if (resource_id != null) {
-			// get resource
-			occResource = occResourceManager.get(resource_id);
-			
-			// update recently viewed resources in session
-			LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
-			Queue<LabelValue> queue; 
-			Object rr = session.get(Constants.RECENT_RESOURCES);
-			if (rr != null && rr instanceof Queue){
-				queue = (Queue) rr;
-			}else{
-				queue = new ConcurrentLinkedQueue<LabelValue>(); 
-			}
-			// remove old entry from queue if it existed before and insert at tail again
-			queue.remove(res);
-			queue.add(res);
-			if (queue.size()>10){
-				// only remember last 10 resources
-				queue.remove();
-			}
-			// save back to session
-			log.debug("Recently viewed resources: "+queue.toString());
-			session.put(Constants.RECENT_RESOURCES, queue);
-		}
-	}
-
-	public void setSession(Map session) {
-		this.session=session;
 	}
 
 }

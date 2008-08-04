@@ -21,9 +21,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.appfuse.model.LabelValue;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.job.JobUtils;
@@ -42,13 +45,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
+public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
 	private ResourceFactory resourceFactory;
 	private GenericManager<Extension> extensionManager;
 	private GenericManager<ViewMappingBase> viewMappingManager;
 	private UploadEventManager uploadEventManager;
 	private JobManager jobManager;
-	
+	protected Map session;
+
 	private List<Extension> extensions;
 	private List occResources;
 	private OccurrenceResource occResource;
@@ -69,67 +73,33 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	        };  
 	  
 
-	public Map<String, String> getJdbcDriverClasses() {
-		return jdbcDriverClasses;
-	}
-
-	public void setResourceFactory(ResourceFactory resourceFactory) {
-		this.resourceFactory = resourceFactory;
-	}
-
-	public void setJobManager(JobManager jobManager) {
-		this.jobManager = jobManager;
-	}
-
-	public void setExtensionManager(
-			GenericManager<Extension> extensionManager) {
-		this.extensionManager = extensionManager;
-	}
-
-	public void setViewMappingManager(
-			GenericManager<ViewMappingBase> viewMappingManager) {
-		this.viewMappingManager = viewMappingManager;
-	}
-
-	public void setUploadEventManager(UploadEventManager uploadEventManager) {
-		this.uploadEventManager = uploadEventManager;
-	}
-
-	public List getOccResources() {
-		return occResources;
-	}
-
-	public List getExtensions() {
-		return extensions;
-	}
-
-	public Job getCurrentJob() {
-		return currentJob;
-	}
-
-	public Job getNextUpload() {
-		return nextUpload;
-	}
-
-	public String getGChartData() {
-		return gChartData;
-	}
-
-	public OccurrenceResource getOccResource() {
-		return occResource;
-	}
-
-	public void setOccResource(OccurrenceResource occResource) {
-		this.occResource = occResource;
-	}
-
 	public void prepare() throws Exception{
-		super.prepare();
-		if (resource_id != null) {
-			occResource = occResourceManager.get(resource_id);
-		} else {
+		if (resource_id == null) {
 			occResource = resourceFactory.newOccurrenceResourceInstance();
-		}
+		} else {
+			// get resource
+			occResource = occResourceManager.get(resource_id);
+			
+			// update recently viewed resources in session
+			LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
+			Queue<LabelValue> queue; 
+			Object rr = session.get(Constants.RECENT_RESOURCES);
+			if (rr != null && rr instanceof Queue){
+				queue = (Queue) rr;
+			}else{
+				queue = new ConcurrentLinkedQueue<LabelValue>(); 
+			}
+			// remove old entry from queue if it existed before and insert at tail again
+			queue.remove(res);
+			queue.add(res);
+			if (queue.size()>10){
+				// only remember last 10 resources
+				queue.remove();
+			}
+			// save back to session
+			log.debug("Recently viewed resources: "+queue.toString());
+			session.put(Constants.RECENT_RESOURCES, queue);
+			}
 	}
 
 	public String execute() {
@@ -203,4 +173,66 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	public String count() {
 		return SUCCESS;
 	}
+	
+
+	
+
+	public Map<String, String> getJdbcDriverClasses() {
+		return jdbcDriverClasses;
+	}
+
+	public void setResourceFactory(ResourceFactory resourceFactory) {
+		this.resourceFactory = resourceFactory;
+	}
+
+	public void setJobManager(JobManager jobManager) {
+		this.jobManager = jobManager;
+	}
+
+	public void setExtensionManager(
+			GenericManager<Extension> extensionManager) {
+		this.extensionManager = extensionManager;
+	}
+
+	public void setViewMappingManager(
+			GenericManager<ViewMappingBase> viewMappingManager) {
+		this.viewMappingManager = viewMappingManager;
+	}
+
+	public void setUploadEventManager(UploadEventManager uploadEventManager) {
+		this.uploadEventManager = uploadEventManager;
+	}
+
+	public List getOccResources() {
+		return occResources;
+	}
+
+	public List getExtensions() {
+		return extensions;
+	}
+
+	public Job getCurrentJob() {
+		return currentJob;
+	}
+
+	public Job getNextUpload() {
+		return nextUpload;
+	}
+
+	public String getGChartData() {
+		return gChartData;
+	}
+
+	public OccurrenceResource getOccResource() {
+		return occResource;
+	}
+
+	public void setOccResource(OccurrenceResource occResource) {
+		this.occResource = occResource;
+	}
+
+	public void setSession(Map session) {
+		this.session = session;
+	}
+	
 }

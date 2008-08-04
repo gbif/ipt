@@ -98,11 +98,11 @@
 			<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
 		</s:else>
 		
-		<s:if test="%{occResource.lastImport}">
-			<s:label key="occResource.lastImport"/>
+		<s:if test="%{occResource.lastUpload}">
+			<s:label key="occResource.lastUpload" value="%{occResource.lastUpload.executionDate}"/>
 			<s:url id="logsUrl" action="logEvents" namespace="/admin">
-				<s:param name="sourceId" value="occResource.lastImportSourceId" />
-				<s:param name="sourceType" value="1" />
+				<s:param name="sourceId" value="occResource.lastUpload.jobSourceId" />
+				<s:param name="sourceType" value="occResource.lastUpload.jobSourceType" />
 			</s:url>
 			<s:a href="%{logsUrl}">log entries</s:a>
 		</s:if>
