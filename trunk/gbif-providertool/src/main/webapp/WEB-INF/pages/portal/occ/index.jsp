@@ -3,6 +3,7 @@
 <head>
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="heading" content="<s:property value="occResource.title"/>"/>
+    <meta name="submenu" content="search"/>
 	<s:head theme="ajax" debug="true"/>
 </head>
 
@@ -15,7 +16,16 @@
 	</s:form>
 </div>
 
-
+<div id="metadata">
+	<s:form>
+	<fieldset>
+		<legend><s:text name="occResourceOverview.services"/></legend>
+		<s:label key="occResourceOverview.tabfile" value="%{occResource.getDumpArchiveUrl()}"/>
+		<s:label key="occResourceOverview.tapir" value="%{occResource.getTapirEndpoint()}"/>
+		<s:label key="occResourceOverview.wfs" value="%{occResource.getWfsEndpoint()}"/>
+	</fieldset>
+	</s:form>
+</div>
 
 <div id="byLocation" class="clearfix">
 	<h2>By Location</h2>

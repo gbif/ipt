@@ -123,7 +123,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		this.occResource = occResource;
 	}
 
-	public void prepare() {
+	public void prepare() throws Exception{
+		super.prepare();
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
 		} else {

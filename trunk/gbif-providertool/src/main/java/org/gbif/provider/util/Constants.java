@@ -30,4 +30,5 @@ public class Constants {
     public static final Long TEST_RESOURCE_ID = 1L;
     public static final Long TEST_USER_ID = 4L;
     public static final String TEST_BASE_DIR = "/tmp";
+    public static final String RECENT_RESOURCES = "recentResources";
 }

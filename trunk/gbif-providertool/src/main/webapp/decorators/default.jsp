@@ -31,32 +31,69 @@
             </div><!-- end main -->
 
             <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
+            <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 
             <div id="sub">
-				<div id="fullsearch">
-					<label>Fulltext Search</label>
-					<s:form name="search" theme="simple">
-						<s:textfield name="q" theme="simple"/>
-					</s:form>
-				</div>
+			    <c:choose>
+			        <c:when test='${currentSubMenu == "manage"}'>
+						<div id="actions">
+							<label>Resource Actions</label>
+							<ul class="plain">
+								<s:url id="newRes" action="addResource">
+									<s:param name="resource_id" value="" />
+								</s:url>
+								<li><s:a href="%{newRes}">New Resource</s:a></li>
 
-				<div id="taxnav">
-					<label>Navigate Taxonomy</label>
-					<pre>
+								<s:url id="listRes" action="resources" />
+								<li><s:a href="%{listRes}">List Resources</s:a></li>
+							</ul>
+						</div>
+						
+						<div id="recentlyViewedResources">
+							<label>Recent Resources</label>
+							<ul class="plain">
+								<s:iterator value="#session.recentResources" status="resstatus">
+									<s:url id="resLink" action="resource" >
+										<s:param name="resource_id" value="value" />
+									</s:url>
+									<li><s:a href="%{resLink}"><s:property value="label"/></s:a></li>
+								</s:iterator>
+							</ul>
+						</div>
+			        </c:when>
+			        
+			        <c:when test='${currentSubMenu == "search"}'>
+						<div id="fullsearch">
+							<label>Fulltext Search</label>
+							<s:form name="search" theme="simple">
+								<s:textfield name="q" theme="simple"/>
+							</s:form>
+						</div>
+		
+						<div id="taxnav">
+							<label>Navigate Taxonomy</label>
+							<pre>
 Plantae
   Asteraceae
     Hieracium
-					</pre>
-				</div>
-
-				<div id="locnav">
-					<label>Navigate Geography</label>
-					<pre>
+							</pre>
+						</div>
+		
+						<div id="locnav">
+							<label>Navigate Geography</label>
+							<pre>
 Europe
   Great Britain
     Cornwales
-					</pre>
-				</div>
+							</pre>
+						</div>
+					</c:when>
+					
+			        <c:otherwise>
+			            NO SUBMENU
+					</c:otherwise>
+			    </c:choose>
+
             </div><!-- end sub -->
 
             <div id="nav">

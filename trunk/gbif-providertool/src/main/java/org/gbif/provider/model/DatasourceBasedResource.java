@@ -125,7 +125,7 @@ public abstract class DatasourceBasedResource extends Resource {
 		this.jdbcPassword = jdbcPassword;
 	}
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="last_upload_event_fk", nullable=true) 
 	public UploadEvent getLastUpload() {
 		return lastUpload;
