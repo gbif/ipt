@@ -63,7 +63,10 @@ ul.actionmenu li{
 	padding-right: 10px;
 	padding-left: 10px;
 }
-
+ul.plain {
+    list-style: none;
+    padding: 0;
+}
             
  
  

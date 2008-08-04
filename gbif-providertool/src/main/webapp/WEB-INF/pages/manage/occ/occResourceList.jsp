@@ -4,11 +4,12 @@
     <title><s:text name="occResourceList.title"/></title>
     <meta name="heading" content="<s:text name='occResourceList.heading'/>"/>
     <meta name="menu" content="MainMenu"/>
+    <meta name="submenu" content="manage"/>
 </head>
 
 <c:set var="buttons">
     <input type="button" style="margin-right: 5px" class="button"
-        onclick="location.href='<s:url action="editResourceMetadata"><s:param name="neu" value="true"/></s:url>'"
+        onclick="location.href='<s:url action="addResource"/>'"
         value="<s:text name="button.add"/>"/>
 
     <input type="button" class="button" onclick="location.href='<c:url value="/home.html"/>'"

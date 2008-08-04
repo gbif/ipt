@@ -103,6 +103,7 @@ public abstract class ViewMappingBase extends BaseObject implements Comparable<V
 		this.extension = extension;
 	}
 	
+	@Lob
 	public String getSourceSql() {
 		return sourceSql;
 	}
