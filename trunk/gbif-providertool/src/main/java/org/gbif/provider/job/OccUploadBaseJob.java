@@ -88,15 +88,15 @@ public abstract class OccUploadBaseJob implements Job{
 
 			// set sourceId to jobID
 			Integer sourceId = null;
-			if (seed.get(Launchable.JOB_ID) != null && seed.get(Launchable.JOB_ID) != "null"){
+			if (seed.get(Launchable.JOB_ID) != null && !seed.get(Launchable.JOB_ID).equals("null")){
 				try{
 					sourceId = Integer.valueOf(seed.get(Launchable.JOB_ID).toString());
+					MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, sourceId);
 				} catch (NumberFormatException e) {
 					String[] params = {Launchable.JOB_ID, seed.toString()};
 					logdb.warn("{0} in seed is no Integer {1}", params, e);
 				}
 			}
-			MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, (String) seed.get(Launchable.JOB_ID));
 			MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, getSourceType());
 
 			Integer maxRecords = null;
@@ -117,6 +117,9 @@ public abstract class OccUploadBaseJob implements Job{
 
 			// track upload in upload event metadata (mainly statistics)
 			UploadEvent coreEvent = new UploadEvent();
+			coreEvent.setJobSourceId(sourceId);
+			coreEvent.setJobSourceType(getSourceType());
+			coreEvent.setExecutionDate(new Date());
 			coreEvent.setResource(resource);
 			
 			
@@ -249,8 +252,7 @@ public abstract class OccUploadBaseJob implements Job{
 						event.setRecordsDeleted(recordsDeleted);
 						event.setRecordsUploaded(recordsUploaded);		
 						// save upload event
-						event.setExecutionDate(new Date());
-						uploadEventManager.save(event);
+						event = uploadEventManager.save(event);
 						// update resource properties
 						resource.setLastUpload(event);
 						occResourceManager.save(resource);

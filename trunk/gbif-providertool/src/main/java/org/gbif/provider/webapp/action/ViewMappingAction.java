@@ -57,68 +57,6 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	private Long extension_id;
 	private OccurrenceResource resource;
 		
-	public void setDatasourceInspectionManager(DatasourceInspectionManager datasourceInspectionManager) {
-		this.datasourceInspectionManager = datasourceInspectionManager;
-	}
-
-	public void setExtensionManager(GenericManager<Extension, Long> extensionManager) {
-		this.extensionManager = extensionManager;
-	}
-
-	public void setViewMappingManager(GenericManager<ViewMappingBase, Long> viewMappingManager) {
-		this.viewMappingManager = viewMappingManager;
-	}
-
-	public OccurrenceResource getResource() {
-		return resource;
-	}
-
-	public ViewMappingBase getMapping() {
-		return mapping;
-	}
-	
-	public void setMapping(ViewMappingBase mapping) {
-		this.mapping = mapping;
-	}
-
-	public List<PropertyMapping> getMappings() {
-		return mappings;
-	}
-	public void setMappings(List<PropertyMapping> mappings) {
-		this.mappings = mappings;
-	}
-
-	public Long getMapping_id() {
-		return mapping_id;
-	}
-
-	public void setMapping_id(Long mapping_id) {
-		this.mapping_id = mapping_id;
-	}
-
-	public Long getExtension_id() {
-		return extension_id;
-	}
-
-	public void setExtension_id(Long extension_id) {
-		this.extension_id = extension_id;
-	}
-	
-	public List<String> getViewColumnHeaders() {
-		return viewColumnHeaders;
-	}
-
-	public List getPreview() {
-		return preview;
-	}
-
-	public Map<ExtensionProperty, Map> getMapOptions() {
-		return mapOptions;
-	}
-	
-	public SortedMap<String, String> getColumnOptions() {
-		return columnOptions;
-	}
 
 	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
@@ -214,7 +152,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
             	options.put("", "--- Fixed values ---");
             	for (String term : prop.getTerms()){
             		i++;
-                	options.put(term, term);
+                	options.put("#"+term, term);
             	}
         	}else{
         		// reuse the basic mapping options
@@ -259,6 +197,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         		if (key.startsWith("#")){
         			Map<Integer, String> options = mapOptions.get(pm.getProperty()); 
             		pm.setValue(options.get(key));
+            		pm.getColumn().setColumnName(null);
         		}
         	}
         	// save only non-empty property mappings
@@ -281,4 +220,72 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         return "cancel";
     }
 
+    
+    
+
+    
+
+	public void setDatasourceInspectionManager(DatasourceInspectionManager datasourceInspectionManager) {
+		this.datasourceInspectionManager = datasourceInspectionManager;
+	}
+
+	public void setExtensionManager(GenericManager<Extension, Long> extensionManager) {
+		this.extensionManager = extensionManager;
+	}
+
+	public void setViewMappingManager(GenericManager<ViewMappingBase, Long> viewMappingManager) {
+		this.viewMappingManager = viewMappingManager;
+	}
+
+	public OccurrenceResource getResource() {
+		return resource;
+	}
+
+	public ViewMappingBase getMapping() {
+		return mapping;
+	}
+	
+	public void setMapping(ViewMappingBase mapping) {
+		this.mapping = mapping;
+	}
+
+	public List<PropertyMapping> getMappings() {
+		return mappings;
+	}
+	public void setMappings(List<PropertyMapping> mappings) {
+		this.mappings = mappings;
+	}
+
+	public Long getMapping_id() {
+		return mapping_id;
+	}
+
+	public void setMapping_id(Long mapping_id) {
+		this.mapping_id = mapping_id;
+	}
+
+	public Long getExtension_id() {
+		return extension_id;
+	}
+
+	public void setExtension_id(Long extension_id) {
+		this.extension_id = extension_id;
+	}
+	
+	public List<String> getViewColumnHeaders() {
+		return viewColumnHeaders;
+	}
+
+	public List getPreview() {
+		return preview;
+	}
+
+	public Map<ExtensionProperty, Map> getMapOptions() {
+		return mapOptions;
+	}
+	
+	public SortedMap<String, String> getColumnOptions() {
+		return columnOptions;
+	}
+    
 }
