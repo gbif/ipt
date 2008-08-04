@@ -141,42 +141,54 @@ public class DarwinCore extends CoreRecord{
 			}else if(propName.equals("MinimumElevationInMeters")){
 				dwc.setMinimumElevationInMeters(val);
 				// try to convert into proper type
-				try {
-					Integer typedVal = Integer.valueOf(val);
-					dwc.setMinimumElevationInMetersAsInteger(typedVal);
-				} catch (NumberFormatException e) {
-					dwc.setProblematic(true);
-					logdb.warn("Couldnt transform value '{0}' for property MinimumElevationInMeters into Integer value", val, e);
+				Integer typedVal = null;
+				if (val !=null){
+					try {
+						typedVal = Integer.valueOf(val);
+						dwc.setMinimumElevationInMetersAsInteger(typedVal);
+					} catch (NumberFormatException e) {
+						dwc.setProblematic(true);
+						logdb.warn("Couldnt transform value '{0}' for property MinimumElevationInMeters into Integer value", val, e);
+					}
 				}
 			}else if(propName.equals("MaximumElevationInMeters")){
 				dwc.setMaximumElevationInMeters(val);
 				// try to convert into proper type
-				try {
-					Integer typedVal = Integer.valueOf(val);
-					dwc.setMaximumElevationInMetersAsInteger(typedVal);
-				} catch (NumberFormatException e) {
-					dwc.setProblematic(true);
-					logdb.warn("Couldnt transform value '{0}' for property MaximumElevationInMeters into Integer value", val, e);
+				Integer typedVal = null;
+				if (val !=null){
+					try {
+						typedVal = Integer.valueOf(val);
+						dwc.setMaximumElevationInMetersAsInteger(typedVal);
+					} catch (NumberFormatException e) {
+						dwc.setProblematic(true);
+						logdb.warn("Couldnt transform value '{0}' for property MaximumElevationInMeters into Integer value", val, e);
+					}
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
 				dwc.setMinimumDepthInMeters(val);
 				// try to convert into proper type
-				try {
-					Integer typedVal = Integer.valueOf(val);
-					dwc.setMinimumDepthInMetersAsInteger(typedVal);
-				} catch (NumberFormatException e) {
-					dwc.setProblematic(true);
-					logdb.warn("Couldnt transform value '{0}' for property MinimumDepthInMeters into Integer value", val, e);
+				Integer typedVal = null;
+				if (val !=null){
+					try {
+						typedVal = Integer.valueOf(val);
+						dwc.setMinimumDepthInMetersAsInteger(typedVal);
+					} catch (NumberFormatException e) {
+						dwc.setProblematic(true);
+						logdb.warn("Couldnt transform value '{0}' for property MinimumDepthInMeters into Integer value", val, e);
+					}
 				}
 			}else if(propName.equals("MaximumDepthInMeters")){
 				dwc.setMaximumDepthInMeters(val);
 				// try to convert into proper type
-				try {
-					Integer typedVal = Integer.valueOf(val);
-					dwc.setMaximumDepthInMetersAsInteger(typedVal);
-				} catch (NumberFormatException e) {
-					dwc.setProblematic(true);
-					logdb.warn("Couldnt transform value '{0}' for property MaximumDepthInMeters into Integer value", val, e);
+				Integer typedVal = null;
+				if (val !=null){
+					try {
+						typedVal = Integer.valueOf(val);
+						dwc.setMaximumDepthInMetersAsInteger(typedVal);
+					} catch (NumberFormatException e) {
+						dwc.setProblematic(true);
+						logdb.warn("Couldnt transform value '{0}' for property MaximumDepthInMeters into Integer value", val, e);
+					}
 				}
 			}else if(propName.equals("CollectingMethod")){
 				dwc.setCollectingMethod(val);
