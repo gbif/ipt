@@ -4938,7 +4938,7 @@ CREATE TABLE  `providertool`.`Job` (
   `runningGroup` varchar(255) default NULL,
   `started` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`Job`
@@ -4969,7 +4969,7 @@ CREATE TABLE  `providertool`.`LogEvent` (
   `user_id` bigint(20) default NULL,
   PRIMARY KEY  (`id`),
   KEY `FK7A73ADD6F503D155` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`LogEvent`
@@ -4977,7 +4977,9 @@ CREATE TABLE  `providertool`.`LogEvent` (
 
 /*!40000 ALTER TABLE `LogEvent` DISABLE KEYS */;
 LOCK TABLES `LogEvent` WRITE;
-INSERT INTO `providertool`.`LogEvent` VALUES  (7,-1,'{\"causeDetails\":[{\"className\":\"java.lang.NumberFormatException\",\"fileName\":\"NumberFormatException.java\",\"lineNumber\":48,\"methodName\":\"forInputString\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":447,\"methodName\":\"parseInt\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":553,\"methodName\":\"valueOf\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":105,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":\"For input string: \\\"\\\"null\\\"\\\"\"}',NULL,4,'{0} in seed is no Integer {1}','{\"list\":[\"maxRecords\",\"{userId=4, webappDir=/Users/markus/workspace/gbif-providertool/target/work/webapp/, jobId=3, maxRecords=\\\"null\\\", resourceId=1}\"]}',-1,1,'2008-08-04 10:52:47',NULL),
+INSERT INTO `providertool`.`LogEvent` VALUES  (37,-1,'{\"causeDetails\":[{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":197,\"methodName\":\"uploadCore\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":139,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":null}',NULL,5,'Error uploading data',NULL,-1,1,'2008-08-04 15:10:00',NULL),
+ (36,-1,'{\"causeDetails\":[{\"className\":\"com.mysql.jdbc.SQLError\",\"fileName\":\"SQLError.java\",\"lineNumber\":910,\"methodName\":\"createSQLException\"},{\"className\":\"com.mysql.jdbc.ResultSet\",\"fileName\":\"ResultSet.java\",\"lineNumber\":970,\"methodName\":\"findColumn\"},{\"className\":\"com.mysql.jdbc.ResultSet\",\"fileName\":\"ResultSet.java\",\"lineNumber\":5613,\"methodName\":\"getString\"},{\"className\":\"org.gbif.provider.datasource.impl.RdbmsImportSource\",\"fileName\":\"RdbmsImportSource.java\",\"lineNumber\":117,\"methodName\":\"next\"},{\"className\":\"org.gbif.provider.datasource.impl.RdbmsImportSource\",\"fileName\":\"RdbmsImportSource.java\",\"lineNumber\":1,\"methodName\":\"next\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":190,\"methodName\":\"uploadCore\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":139,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":\"Column \'HumanObservation\' not found.\"}',NULL,5,'Exception while iterating RDBMS source',NULL,-1,1,'2008-08-04 15:10:00',NULL),
+ (7,-1,'{\"causeDetails\":[{\"className\":\"java.lang.NumberFormatException\",\"fileName\":\"NumberFormatException.java\",\"lineNumber\":48,\"methodName\":\"forInputString\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":447,\"methodName\":\"parseInt\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":553,\"methodName\":\"valueOf\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":105,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":\"For input string: \\\"\\\"null\\\"\\\"\"}',NULL,4,'{0} in seed is no Integer {1}','{\"list\":[\"maxRecords\",\"{userId=4, webappDir=/Users/markus/workspace/gbif-providertool/target/work/webapp/, jobId=3, maxRecords=\\\"null\\\", resourceId=1}\"]}',-1,1,'2008-08-04 10:52:47',NULL),
  (8,-1,'{\"causeDetails\":[{\"className\":\"java.lang.NumberFormatException\",\"fileName\":\"NumberFormatException.java\",\"lineNumber\":48,\"methodName\":\"forInputString\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":447,\"methodName\":\"parseInt\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":553,\"methodName\":\"valueOf\"},{\"className\":\"org.gbif.provider.model.DarwinCore\",\"fileName\":\"DarwinCore.java\",\"lineNumber\":145,\"methodName\":\"newInstance\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":199,\"methodName\":\"uploadCore\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":139,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":\"For input string: \\\"?\\\"\"}',NULL,4,'Couldnt transform value \'{0}\' for property MinimumElevationInMeters into Integer value','{\"list\":[\"?\"]}',-1,1,'2008-08-04 10:52:51',NULL),
  (9,-1,'{\"causeDetails\":[{\"className\":\"java.lang.NumberFormatException\",\"fileName\":\"NumberFormatException.java\",\"lineNumber\":48,\"methodName\":\"forInputString\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":447,\"methodName\":\"parseInt\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":553,\"methodName\":\"valueOf\"},{\"className\":\"org.gbif.provider.model.DarwinCore\",\"fileName\":\"DarwinCore.java\",\"lineNumber\":145,\"methodName\":\"newInstance\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":199,\"methodName\":\"uploadCore\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":139,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":\"For input string: \\\"?\\\"\"}',NULL,4,'Couldnt transform value \'{0}\' for property MinimumElevationInMeters into Integer value','{\"list\":[\"?\"]}',-1,1,'2008-08-04 10:52:52',NULL),
  (10,-1,'{\"causeDetails\":[{\"className\":\"java.lang.NumberFormatException\",\"fileName\":\"NumberFormatException.java\",\"lineNumber\":48,\"methodName\":\"forInputString\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":447,\"methodName\":\"parseInt\"},{\"className\":\"java.lang.Integer\",\"fileName\":\"Integer.java\",\"lineNumber\":553,\"methodName\":\"valueOf\"},{\"className\":\"org.gbif.provider.model.DarwinCore\",\"fileName\":\"DarwinCore.java\",\"lineNumber\":145,\"methodName\":\"newInstance\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":199,\"methodName\":\"uploadCore\"},{\"className\":\"org.gbif.provider.job.OccUploadBaseJob\",\"fileName\":\"OccUploadBaseJob.java\",\"lineNumber\":139,\"methodName\":\"launch\"},{\"className\":\"org.gbif.scheduler.scheduler.Worker$Runner\",\"fileName\":\"Worker.java\",\"lineNumber\":96,\"methodName\":\"run\"},{\"className\":\"java.lang.Thread\",\"fileName\":\"Thread.java\",\"lineNumber\":613,\"methodName\":\"run\"}],\"message\":\"For input string: \\\"~ 1800\\\"\"}',NULL,4,'Couldnt transform value \'{0}\' for property MinimumElevationInMeters into Integer value','{\"list\":[\"~ 1800\"]}',-1,1,'2008-08-04 10:52:52',NULL),
@@ -5039,7 +5041,7 @@ INSERT INTO `providertool`.`PropertyMapping` VALUES  (1,'genus.family',NULL,1,15
  (5,'locality.locality',NULL,1,31),
  (6,'genus.genus',NULL,1,16),
  (7,'taxon.rank',NULL,1,18),
- (8,'','PreservedSpecimen',1,3),
+ (8,NULL,'PreservedSpecimen',1,3),
  (9,'locality.altitude',NULL,1,32),
  (10,'taxon.epitheton',NULL,1,17),
  (11,'taxon.full_name',NULL,1,9),
@@ -5055,7 +5057,7 @@ INSERT INTO `providertool`.`PropertyMapping` VALUES  (1,'genus.family',NULL,1,15
  (21,'specimen_small.collector',NULL,2,40),
  (22,'taxon.kingdom',NULL,2,11),
  (23,'taxon.genus',NULL,2,16),
- (24,'HumanObservation',NULL,2,3),
+ (24,NULL,'HumanObservation',2,3),
  (25,'taxon.phylum',NULL,2,12),
  (26,'specimen_small.altitude',NULL,2,32),
  (27,'taxon.species',NULL,2,17),
@@ -5063,7 +5065,7 @@ INSERT INTO `providertool`.`PropertyMapping` VALUES  (1,'genus.family',NULL,1,15
  (29,'taxon.scientific_name',NULL,2,9),
  (30,'specimen_small.year',NULL,2,38),
  (31,'specimen_small.country',NULL,2,28),
- (32,'','ICZN',2,21),
+ (32,NULL,'ICZN',2,21),
  (33,'specimen_small.catalog_number',NULL,2,6),
  (34,'taxon.orderrr',NULL,2,14),
  (35,'specimen_small.collection_code',NULL,2,5);
@@ -5107,7 +5109,7 @@ CREATE TABLE  `providertool`.`Resource` (
 /*!40000 ALTER TABLE `Resource` DISABLE KEYS */;
 LOCK TABLES `Resource` WRITE;
 INSERT INTO `providertool`.`Resource` VALUES  ('OccurrenceResource',1,'2008-06-23 17:10:51','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar',NULL,NULL,'2008-08-04 10:52:58','Pontaurus DB','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool','pontaurus',11,4,NULL),
- ('OccurrenceResource',2,'2008-06-25 17:10:51','The Great Backyard Bird Count is an annual four-day event that engages bird watchers of all ages in counting birds to create a real-time snapshot of where the birds are across the continent. Anyone can participate, from beginning bird watchers to experts. It takes as little as 15 minutes. It?s free, fun, and easy?and it helps the birds.\n\n        Participants count birds anywhere for as little or as long as they wish during the four-day period. They tally the highest number of birds of each species seen together at any one time. To report their counts, they fill out an online checklist at the Great Backyard Bird Count web site.\n        \n        As the count progresses, anyone with Internet access can explore what is being reported from their own towns or anywhere in the United States and Canada. They can also see how this year\'s numbers compare with those from previous years. Participants may also send in photographs of the birds they see. A selection of images is posted in the online photo gallery.\n        \n        In 2007, participants reported a record-breaking 11 million birds of 616 species. They submitted more than 80,000 checklists, an all-time record for the ten years of the count.',NULL,NULL,'2008-06-25 17:11:44','Cornell Ornithology','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/cornellornithology','providertool','cornith',NULL,4,4);
+ ('OccurrenceResource',2,'2008-06-25 17:10:51','The Great Backyard Bird Count is an annual four-day event that engages bird watchers of all ages in counting birds to create a real-time snapshot of where the birds are across the continent. Anyone can participate, from beginning bird watchers to experts. It takes as little as 15 minutes. It?s free, fun, and easy?and it helps the birds.\n\n        Participants count birds anywhere for as little or as long as they wish during the four-day period. They tally the highest number of birds of each species seen together at any one time. To report their counts, they fill out an online checklist at the Great Backyard Bird Count web site.\n        \n        As the count progresses, anyone with Internet access can explore what is being reported from their own towns or anywhere in the United States and Canada. They can also see how this year\'s numbers compare with those from previous years. Participants may also send in photographs of the birds they see. A selection of images is posted in the online photo gallery.\n        \n        In 2007, participants reported a record-breaking 11 million birds of 616 species. They submitted more than 80,000 checklists, an all-time record for the ten years of the count.',NULL,NULL,'2008-08-04 15:10:00','Cornell Ornithology','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/cornellornithology','providertool','cornith',NULL,4,NULL);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Resource` ENABLE KEYS */;
 
@@ -5155,7 +5157,7 @@ CREATE TABLE  `providertool`.`UploadEvent` (
   `resource_id` bigint(20) NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `FKA176B4F9D00577D2` (`resource_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `providertool`.`UploadEvent`

@@ -48,6 +48,11 @@ div#header .right {
 	background: url(/images/mandatory.gif) no-repeat;
 	padding-left: 20px;
 }
+ 
+
+/* @group menus */
+
+
 ul.actionmenu {
 	float: none;
 	clear: none;
@@ -67,37 +72,20 @@ ul.plain {
     list-style: none;
     padding: 0;
 }
-            
- 
- 
-/*    PORTAL    */
-div.chart{
-	width: 340px;
-	display: block;
-	float: left;
-	height: 200px;
-	margin-bottom: 20px;
+
+ul.minimenu{
+    list-style: none;
+    padding: 0;
 }
-#time-pie {
-	width: 500px;
-}
-#loc-tax, #loc-geoserver, #col-pie {
-	position: relative;
-	left: 30px;
-}
-.map img{
-	border: 1px solid #000;
-}
-.chart img{
-	display: block;
-	margin-top: 5px;
+ul.minimenu li{
+	float: right;
+	list-style-type: none;
+	display: inline;
+    margin: 0;
+    padding: 0;
+	padding-left: 10px;
 }
 
-div.chart select {
-	float: right;
-	bottom: 5px;
-	position: relative;
-}
 
 #taxnav, #locnav {
 	margin-top: 50px;
@@ -108,3 +96,53 @@ div.chart select {
 	font-weight: bold;
 	font-style: italic;
 }
+/* @end */
+
+
+ 
+
+/* @group Charts */
+
+
+div.chart, div.stats{
+	width: 340px;
+	display: block;
+	float: left;
+	margin-bottom: 20px;
+}
+
+div.stats label{
+	font-size: 1.2em;
+	font-style: italic;
+}
+div.stats img{
+	display: block;
+	margin-top: 5px;
+}
+div.stats.clearfix{
+	margin-top: 25px;
+	display: block;
+	clear: both;
+}
+
+div.chart{
+	height: 200px;
+}
+div.chart select {
+	float: right;
+	bottom: 5px;
+	position: relative;
+}
+.map img{
+	border: 1px solid #000;
+}
+
+
+
+/* SPECIFIC */
+#loc-tax, #loc-geoserver, #col-pie, #tax2-pie, #time-pie {
+	position: relative;
+	left: 35px;
+}
+
+/* @end */
