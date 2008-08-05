@@ -50,14 +50,16 @@ import com.opensymphony.xwork2.Preparable;
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
 	private UploadEventManager uploadEventManager;	
 	private OccurrenceResource occResource;
-	private List locTypes;
-	private List taxTypes;
+	private List<RegionType> locTypes;
+	private RegionType locDefault;
+	private List<Rank> taxTypes;
+	private Rank taxDefault;
 	public String occByRegionUrl;
-	public String occByRegionUrl2;
-	public String occByRegionUrl3;
-	public String occByRegionUrl4;
-	public String occByRegionUrl5;
-	public String occByRegionUrl6;
+	public String occByTaxonUrl;
+	public String occByTop10TaxaUrl;
+	public String occByInstitutionUrl;
+	public String occByCollectionUrl;
+	public String occByBasisOfRecordUrl;
 
 	public void prepare() {
 		if (resource_id != null) {
@@ -68,7 +70,14 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public String execute() {
-		occByRegionUrl = occResourceManager.occByBasisOfRecordPieUrl(resource_id);
+		locDefault = RegionType.Country;
+		taxDefault = Rank.Kingdom;
+		occByRegionUrl = occResourceManager.occByRegionPieUrl(resource_id, locDefault);
+		occByTaxonUrl = occResourceManager.occByTaxonPieUrl(resource_id, taxDefault);
+		occByTop10TaxaUrl = occResourceManager.top10TaxaPieUrl(resource_id);
+		occByInstitutionUrl = occResourceManager.occByInstitutionPieUrl(resource_id);
+		occByCollectionUrl = occResourceManager.occByCollectionPieUrl(resource_id);
+		occByBasisOfRecordUrl = occResourceManager.occByBasisOfRecordPieUrl(resource_id);
 		return SUCCESS;
 	}
 
@@ -92,6 +101,38 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public List getTaxTypes() {
 		return taxTypes;
+	}
+
+	public RegionType getLocDefault() {
+		return locDefault;
+	}
+
+	public Rank getTaxDefault() {
+		return taxDefault;
+	}
+
+	public String getOccByRegionUrl() {
+		return occByRegionUrl;
+	}
+
+	public String getOccByTaxonUrl() {
+		return occByTaxonUrl;
+	}
+
+	public String getOccByTop10TaxaUrl() {
+		return occByTop10TaxaUrl;
+	}
+
+	public String getOccByInstitutionUrl() {
+		return occByInstitutionUrl;
+	}
+
+	public String getOccByCollectionUrl() {
+		return occByCollectionUrl;
+	}
+
+	public String getOccByBasisOfRecordUrl() {
+		return occByBasisOfRecordUrl;
 	}
 	
 	

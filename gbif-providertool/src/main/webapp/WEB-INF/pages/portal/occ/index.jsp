@@ -54,8 +54,8 @@
 
 <div id="loc-pie" class="stats chart">
 	<label>Occurrences by Region</label>
-	<s:select name="locType" list="locTypes" theme="simple"/>
-	<img src="http://chart.apis.google.com/chart?cht=p3&chs=320x160&chl=USA|Canada|Mexico&chts=000000,16&chco=CACACA,DF7417,01A1DB&chd=e:czczGa" />
+	<s:select name="locType" list="locTypes" value="locDefault.columnName" theme="simple"/>
+	<img src="<s:property value="occByRegionUrl"/>" />
 </div>
 <div id="loc-geoserver" class="stats map">
 	<label>GeoServer point map</label>
@@ -77,13 +77,13 @@
 
 <div id="tax-pie" class="stats chart">
 	<label>Occurrences by Taxon</label>
-	<s:select name="taxType" title="rank" list="taxTypes" theme="simple"/>
-	<img src="http://chart.apis.google.com/chart?cht=p3&chs=320x160&chl=Abies|Pinus|Fagus&chts=000000,16&chco=CACACA,DF7417,01A1DB&chd=e:czczGa" />
+	<s:select name="taxType" title="rank" list="taxTypes" value="taxDefault.columnName" theme="simple"/>
+	<img src="<s:property value="occByTaxonUrl"/>" />
 </div>
 <div id="tax2-pie" class="stats chart">
 	<label>Top 10 Taxa</label>
-	<s:select name="taxType" title="rank" list="taxTypes" theme="simple"/>
-	<img src="http://chart.apis.google.com/chart?cht=p3&chs=320x160&chl=Abies alba|Pinus picea L.|Fagus sylvatica L.&chts=000000,16&chco=CACACA,DF7417,01A1DB&chd=e:czczGa" />
+	<s:select name="taxType" title="rank" list="taxTypes" value="taxDefault.columnName" theme="simple"/>
+	<img src="<s:property value="occByTop10TaxaUrl"/>" />
 </div>
 
 
@@ -93,18 +93,18 @@
 
 <div id="inst-pie" class="stats chart">
 	<label>Occurrences by Institution</label>
-	<img src="http://chart.apis.google.com/chart?cht=p3&chs=320x160&chl=BGBM|RBGK|NYBG&chts=000000,16&chco=CACACA,DF7417,01A1DB&chd=e:czczGa" />
+	<img src="<s:property value="occByInstitutionUrl"/>" />
 </div>
 <div id="col-pie" class="stats chart">
 	<label>Occurrences by Collection</label>
-	<img src="http://chart.apis.google.com/chart?cht=p3&chs=320x160&chl=B|K|NY&chts=000000,16&chco=CACACA,DF7417,01A1DB&chd=e:czczGa" />
+	<img src="<s:property value="occByCollectionUrl"/>" />
 </div>
 
 
 
 <div id="recordbasis-pie" class="stats chart">
 	<label>Occurrences by Basis of Record</label>		
-	<img src="<s:property value="occByRegionUrl"/>" />
+	<img src="<s:property value="occByBasisOfRecordUrl"/>" />
 </div>
 <div id="time-pie" class="stats chart">
 	<label>Occurrences by Year Collected</label>		
