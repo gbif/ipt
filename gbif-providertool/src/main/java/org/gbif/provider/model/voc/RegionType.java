@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public enum RegionType {
-	Continent,
-	Waterbody,
-	Island,
-	Country,
-	State,
-	County;	
+	Continent("continent"),
+	Waterbody("waterBody"),
+	Island("island"),
+	Country("country"),
+	State("stateProvince"),
+	County("county");	
 	
 	public static final List<RegionType> DARWIN_CORE_REGIONS;
 	  static  
@@ -22,6 +22,11 @@ public enum RegionType {
 	    dwc.add( Country );  
 	    dwc.add( State );  
 	    DARWIN_CORE_REGIONS = Collections.unmodifiableList(dwc);  
-	  }  
+	  };
 	  
+	  
+	public String columnName;	
+	private RegionType (String colName){
+		columnName=colName;
+	}
 }

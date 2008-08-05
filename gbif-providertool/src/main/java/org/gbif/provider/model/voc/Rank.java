@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public enum Rank {
-	Kingdom,
-	Phylum,
-	Class,
-	Order,
-	Family,
-	Genus;	
+	Kingdom("kingdom"),
+	Phylum("phylum"),
+	Class("classs"),
+	Order("order"),
+	Family("family"),
+	Genus("genus");	
 	
 	public static final List<Rank> DARWIN_CORE_RANKS;
 	  static  
@@ -24,5 +24,11 @@ public enum Rank {
 	    dwcRanks.add( Genus );  
 	    DARWIN_CORE_RANKS = Collections.unmodifiableList(dwcRanks);  
 	  }  
+
+	  
+	public String columnName;	
+	private Rank (String colName){
+		columnName=colName;
+	}
 	  
 }
