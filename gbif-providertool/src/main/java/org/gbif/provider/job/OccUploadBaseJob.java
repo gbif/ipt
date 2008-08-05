@@ -15,6 +15,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
 import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -24,8 +26,6 @@ import org.gbif.provider.util.ZipUtil;
 import org.gbif.logging.log.I18nDatabaseAppender;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.dao.DarwinCoreDao;
-import org.gbif.provider.dao.ExtensionRecordDao;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -52,16 +52,16 @@ public abstract class OccUploadBaseJob implements Job{
 	
 	protected UploadEventManager uploadEventManager;
 	protected CoreRecordManager<DarwinCore> darwinCoreManager;
-	protected ExtensionRecordDao extensionRecordDao;
+	protected ExtensionRecordManager extensionRecordManager;
 	protected ResourceManager<OccurrenceResource> occResourceManager;
 	protected Map<Long, String> status = new HashMap<Long, String>();
 
 	protected OccUploadBaseJob(UploadEventManager uploadEventManager, CoreRecordManager<DarwinCore> darwinCoreManager, 
-			ExtensionRecordDao extensionRecordDao, ResourceManager<OccurrenceResource> occResourceManager) {
+			ExtensionRecordManager extensionRecordManager, ResourceManager<OccurrenceResource> occResourceManager) {
 		super();
 		this.uploadEventManager = uploadEventManager;
 		this.darwinCoreManager = darwinCoreManager;
-		this.extensionRecordDao = extensionRecordDao;
+		this.extensionRecordManager = extensionRecordManager;
 		this.occResourceManager = occResourceManager;
 	}
 	
@@ -179,7 +179,7 @@ public abstract class OccUploadBaseJob implements Job{
 					out = writer.getFile();
 					
 					// flag all previously existing records as deleted before updating/inserting new ones
-					darwinCoreManager.flagAsDeleted(resource.getId());
+					darwinCoreManager.flagAllAsDeleted(resource);
 
 					// keep track of the following statistics for UploadEvent
 					int recordsUploaded = 0;
@@ -305,7 +305,7 @@ public abstract class OccUploadBaseJob implements Job{
 					}else{
 						// TODO: check if record has changed
 						ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
-						extensionRecordDao.insertExtensionRecord(extRec);
+						extensionRecordManager.insertExtensionRecord(extRec);
 					}
 				}
 			} finally {

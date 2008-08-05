@@ -14,27 +14,19 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.dao.jdbc;
+package org.gbif.provider.service.impl;
 
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.gbif.provider.dao.DarwinCoreDao;
-import org.gbif.provider.dao.DatasourceInspectionDao;
-import org.gbif.provider.dao.ExtensionRecordDao;
-import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionRecord;
+import org.gbif.provider.service.ExtensionRecordManager;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.stereotype.Repository;
 
-public class ExtensionRecordDaoImpl extends SimpleJdbcDaoSupport implements ExtensionRecordDao {	
+public class ExtensionRecordManagerJDBC extends SimpleJdbcDaoSupport implements ExtensionRecordManager {	
 
 	public void insertExtensionRecord(ExtensionRecord record) {
 		String sql = "";

@@ -17,21 +17,29 @@
 package org.gbif.provider.service.impl;
 
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gbif.provider.dao.DatasourceInspectionDao;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
-public class DatasourceInspectionManagerImpl implements DatasourceInspectionManager {
-	@Autowired
-	private DatasourceInspectionDao dao;
-
+public class DatasourceInspectionManagerJDBC extends SimpleJdbcDaoSupport implements DatasourceInspectionManager {
+	
+	private DatabaseMetaData getDatabaseMetaData() throws SQLException {
+		return this.getConnection().getMetaData();
+	}
+	private ResultSet executeSql(String sql) throws SQLException {
+		PreparedStatement ps = this.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		ResultSet rs = ps.executeQuery();
+		return rs;
+	}
+	
+	
 	public List getAllTables() throws SQLException {
-		DatabaseMetaData dbmd = dao.getDatabaseMetaData();
+		DatabaseMetaData dbmd = getDatabaseMetaData();
 		List<String> tableNames = new ArrayList<String>();
 	    ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
     	while (rs.next()) {
@@ -41,6 +49,6 @@ public class DatasourceInspectionManagerImpl implements DatasourceInspectionMana
 	}
 	
 	public ResultSet executeViewSql(String viewSql) throws SQLException{
-		return dao.executeSql(viewSql);
-	}
+		return executeSql(viewSql);
+	}	
 }

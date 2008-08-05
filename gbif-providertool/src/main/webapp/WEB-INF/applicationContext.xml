@@ -38,99 +38,85 @@
             <map key-type="java.lang.Long" />            
         </property>
     </bean>
+
+
     
+    <!--  ABSTRACT MANAGERS / DATASOURCES  -->
+    <bean id="entityManagerFactory"
+        class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!--property name="jpaVendorAdapter">
+            <bean
+                class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="MYSQL" />
+                <property name="showSql" value="true" />
+            </bean>
+        </property-->
+    </bean>
     
-    <!-- DAOs  -->
-    <bean id="abstractDao" abstract="true">
+    <!--bean id="transactionManager"
+        class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean-->
+    
+    <bean id="abstractHibernate" abstract="true">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-
-    <bean id="occResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
-        <constructor-arg value="org.gbif.provider.model.OccurrenceResource"/>
+    
+    
+    <!--  MANAGER  -->
+    <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
+        <constructor-arg ref="extensionManager"/>
     </bean>
-    <bean id="checklistResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
+    
+    <!-- 
+        <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl" parent="abstractHibernate">        
+        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
+        </bean>
+    -->
+    <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractHibernate"/>
+    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate" parent="abstractHibernate">        
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
     </bean>
-    <bean id="dataResourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
-        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
-    </bean>
-    <bean id="resourceDao" class="org.gbif.provider.dao.hibernate.ResourceDaoImpl" parent="abstractDao">
+    <bean id="resourceManager" class="org.gbif.provider.service.impl.ResourceManagerHibernate" parent="abstractHibernate">        
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
-    
-    <bean id="viewMappingDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
+
+    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractHibernate">        
         <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
-    </bean>
-
-    <bean id="extensionDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate" parent="abstractDao">
+    </bean>    
+    
+    <bean id="extensionManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractHibernate">        
         <constructor-arg value="org.gbif.provider.model.Extension"/>
+    </bean>    
+    
+    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractHibernate"/>        
+    
+    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractHibernate"/>        
+        
+    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" >
+        <property name="dataSource" ref="dataSource"/>        
     </bean>
 
-    <bean id="uploadEventDao" class="org.gbif.provider.dao.hibernate.UploadEventDaoImpl" parent="abstractDao"/>
-    
-    <bean id="darwinCoreDao" class="org.gbif.provider.dao.hibernate.DarwinCoreDaoImpl" parent="abstractDao"/>
-
-    <bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractDao"/>
-
-    <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractDao"/>
-    
-
-    <!-- JDBC DAOs -->
-    <bean id="datasourceInspectionDao" class="org.gbif.provider.dao.jdbc.DatasourceInspectionDaoImpl">
+    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerJDBC">        
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
-
-    <bean id="extensionRecordDao" class="org.gbif.provider.dao.jdbc.ExtensionRecordDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    
+    <bean id="tabFileProcessManager" class="org.gbif.provider.service.impl.TabFileProcessManagerImpl"/>        
     
     
-    <!--  Managers  -->
-    <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
-        <constructor-arg ref="extensionDao"/>
-    </bean>
-    <bean id="occResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
-        <constructor-arg ref="occResourceDao"/>
-    </bean>
-    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
-        <constructor-arg ref="checklistResourceDao"/>
-    </bean>
-    <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl">        
-        <constructor-arg ref="dataResourceDao"/>
-    </bean>
-    <bean id="resourceManager" class="org.gbif.provider.service.impl.ResourceManagerImpl">        
-        <constructor-arg ref="resourceDao"/>
-    </bean>
-
-    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerImpl">        
-        <constructor-arg ref="viewMappingDao"/>
-    </bean>    
     
-    <bean id="extensionManager" class="org.gbif.provider.service.impl.GenericManagerImpl">        
-        <constructor-arg ref="extensionDao"/>
-    </bean>    
-    
-    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerImpl">        
-        <constructor-arg ref="uploadEventDao"/>
-    </bean>    
-    
-    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.CoreRecordManagerImpl">        
-        <constructor-arg ref="darwinCoreDao"/>
-    </bean>    
-    
+    <!-- SCHEDULER -->
+    <bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractHibernate"/>
     <bean id="jobManager" class="org.gbif.scheduler.service.impl.JobManagerImpl">        
         <constructor-arg ref="jobDao"/>
     </bean>
-
+    
+    <!-- LOGGING -->
+    <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractHibernate"/>
     <bean id="logEventManager" class="org.gbif.logging.service.impl.LogEventManagerImpl">
         <constructor-arg ref="logEventDao"/>
     </bean>
-
-    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl" />        
-
-    <bean id="tabFileProcessManager" class="org.gbif.provider.service.impl.TabFileProcessManagerImpl" />        
-    
-    
     <!-- Configure the i18n Log4J appender -->
     <bean id="i18nDatabaseAppender" class="org.gbif.logging.log.I18nDatabaseAppender">
         <property name="logEventDao" ref="logEventDao"/>
@@ -142,23 +128,8 @@
         <constructor-arg ref="occResourceManager"/>
         <constructor-arg ref="uploadEventManager"/>
         <constructor-arg ref="datasourceInspectionManager"/>
-        <constructor-arg ref="extensionRecordDao"/>
+        <constructor-arg ref="extensionRecordManager"/>
         <constructor-arg ref="darwinCoreManager"/>
     </bean> 
-    
-    
-    <!-- the default transactional advice for Jobs implementing the TransactionJob interface-->
-    <!--tx:advice id="txJobAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="launch" read-only="false" rollback-for="JobException"/>
-        </tx:attributes>
-    </tx:advice-->
-    
-    <!-- ensure that the above transactional advice runs for any execution
-        of an operation defined by the Launchable  interface -->
-    <!--aop:config>
-        <aop:pointcut id="transactionJob" expression="execution(* org.gbif.provider.job.TransactionJob.*(..))"/>
-        <aop:advisor advice-ref="txJobAdvice" pointcut-ref="transactionJob"/>
-        </aop:config-->
     
 </beans>

@@ -104,7 +104,7 @@
 
 <div id="recordbasis-pie" class="stats chart">
 	<label>Occurrences by Basis of Record</label>		
-	<img src="http://chart.apis.google.com/chart?cht=p3&chs=320x160&chl=Specimen|Observation|Fossil&chts=000000,16&chco=CACACA,DF7417,01A1DB&chd=e:czczGa" />
+	<img src="<s:property value="occByRegionUrl"/>" />
 </div>
 <div id="time-pie" class="stats chart">
 	<label>Occurrences by Year Collected</label>		

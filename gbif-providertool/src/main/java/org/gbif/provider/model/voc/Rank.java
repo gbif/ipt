@@ -1,4 +1,4 @@
-package org.gbif.provider.voc;
+package org.gbif.provider.model.voc;
 
 import java.util.ArrayList;
 import java.util.Collections;

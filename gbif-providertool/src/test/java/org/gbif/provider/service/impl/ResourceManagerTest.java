@@ -14,37 +14,36 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.dao;
+package org.gbif.provider.service.impl;
 
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.gbif.provider.dao.ResourceDao;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.util.Constants;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 
-public class ResourceDaoTest extends BaseDaoTestCase{
-	protected ResourceDao<Resource> resourceDao;
-	protected ResourceDao<OccurrenceResource> occResourceDao;
-	protected ResourceDao<ChecklistResource> checklistResourceDao;
+public class ResourceManagerTest extends BaseDaoTestCase{
+	protected ResourceManager<Resource> resourceManager;
+	protected ResourceManager<OccurrenceResource> occResourceManager;
+	protected ResourceManager<ChecklistResource> checklistResourceManager;
 
-	public void setResourceDao(ResourceDao<Resource> resourceDao) {
-		this.resourceDao = resourceDao;
+	public void setResourceManager(ResourceManager<Resource> resourceManager) {
+		this.resourceManager = resourceManager;
 	}
 
-	public void setOccResourceDao(ResourceDao<OccurrenceResource> occResourceDao) {
-		this.occResourceDao = occResourceDao;
+	public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
+		this.occResourceManager = occResourceManager;
 	}
 
-	public void setChecklistResourceDao(
-			ResourceDao<ChecklistResource> checklistResourceDao) {
-		this.checklistResourceDao = checklistResourceDao;
+	public void setChecklistResourceManager(
+			ResourceManager<ChecklistResource> checklistResourceManager) {
+		this.checklistResourceManager = checklistResourceManager;
 	}
 
 
@@ -52,19 +51,19 @@ public class ResourceDaoTest extends BaseDaoTestCase{
 	@Test
 	public void testGetResourcesByUser(){
 		try {
-			List<Resource> resources = resourceDao.getResourcesByUser(Constants.TEST_USER_ID);
+			List<Resource> resources = resourceManager.getResourcesByUser(Constants.TEST_USER_ID);
 			assertTrue(resources.size() > 0);
-			resources = resourceDao.getResourcesByUser(Constants.TEST_USER_ID+100L);
+			resources = resourceManager.getResourcesByUser(Constants.TEST_USER_ID+100L);
 			assertTrue(resources.size() == 0);
 			
-			List<OccurrenceResource> occResources = occResourceDao.getResourcesByUser(Constants.TEST_USER_ID);
+			List<OccurrenceResource> occResources = occResourceManager.getResourcesByUser(Constants.TEST_USER_ID);
 			assertTrue(occResources.size() > 0);
-			occResources = occResourceDao.getResourcesByUser(Constants.TEST_USER_ID+100L);
+			occResources = occResourceManager.getResourcesByUser(Constants.TEST_USER_ID+100L);
 			assertTrue(occResources.size() == 0);
 			
-			List<ChecklistResource> checkResources = checklistResourceDao.getResourcesByUser(Constants.TEST_USER_ID);
+			List<ChecklistResource> checkResources = checklistResourceManager.getResourcesByUser(Constants.TEST_USER_ID);
 			assertTrue(checkResources.size() == 0);
-			checkResources = checklistResourceDao.getResourcesByUser(Constants.TEST_USER_ID+100L);
+			checkResources = checklistResourceManager.getResourcesByUser(Constants.TEST_USER_ID+100L);
 			assertTrue(checkResources.size() == 0);
 		}catch(ObjectRetrievalFailureException e){
 			logger.debug(e.getMessage());

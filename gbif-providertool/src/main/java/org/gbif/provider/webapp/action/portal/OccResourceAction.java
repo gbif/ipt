@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.provider.service.GenericManager;
@@ -32,12 +33,13 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.voc.Rank;
-import org.gbif.provider.voc.RegionType;
+import org.gbif.provider.util.GPieBuilder;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.service.JobManager;
@@ -50,6 +52,12 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private OccurrenceResource occResource;
 	private List locTypes;
 	private List taxTypes;
+	public String occByRegionUrl;
+	public String occByRegionUrl2;
+	public String occByRegionUrl3;
+	public String occByRegionUrl4;
+	public String occByRegionUrl5;
+	public String occByRegionUrl6;
 
 	public void prepare() {
 		if (resource_id != null) {
@@ -60,6 +68,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public String execute() {
+		occByRegionUrl = occResourceManager.occByBasisOfRecordPieUrl(resource_id);
 		return SUCCESS;
 	}
 
