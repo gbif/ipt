@@ -14,7 +14,6 @@ import javax.persistence.OneToOne;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.model.BaseObject;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -22,7 +21,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 
 @Entity
-public class Taxon extends BaseObject implements Comparable {
+public class Taxon  implements BaseObject, Comparable {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
 		private Long id;

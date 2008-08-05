@@ -2,22 +2,22 @@ package org.gbif.provider.util;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.service.GenericManager;
-import org.gbif.provider.dao.DatasourceInspectionDao;
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.service.DatasourceInspectionManager;
 
 public abstract class BaseExternalDatasourceTest extends BaseDaoTestCase {
-
-	public DatasourceInspectionDao datasourceInspectionDao;
+	protected DatasourceInspectionManager datasourceInspectionManager;
 	private DatasourceRegistry datasourceRegistry;
 	private GenericManager<OccurrenceResource, Long> occResourceManager;
 	private DatasourceBasedResource resource;
 
-	public void setDatasourceInspectionDao(
-			DatasourceInspectionDao datasourceInspectionDao) {
-		this.datasourceInspectionDao = datasourceInspectionDao;
+
+	public void setDatasourceInspectionManager(
+			DatasourceInspectionManager datasourceInspectionManager) {
+		this.datasourceInspectionManager = datasourceInspectionManager;
 	}
 
 	public void setDatasourceRegistry(DatasourceRegistry datasourceRegistry) {

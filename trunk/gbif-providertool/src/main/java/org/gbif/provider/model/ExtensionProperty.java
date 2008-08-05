@@ -32,12 +32,11 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
 @Entity
-public class ExtensionProperty extends BaseObject implements Comparable<ExtensionProperty> {
+public class ExtensionProperty implements BaseObject, Comparable<ExtensionProperty> {
 	private Long id;
 	private Extension extension;
 	private String name;

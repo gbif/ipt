@@ -3,22 +3,15 @@ package org.gbif.provider.service;
 import java.util.List;
 
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.OccurrenceResource;
 
 public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<T>{
 
 	/**
 	 * Flag all core records for a given resource as deleted by setting coreRecord.isDeleted=true
-	 * @param resourceId
+	 * @param resource that contains the core records to be flagged
 	 */
-	public void flagAsDeleted(Long resourceId);
-	
-	/**
-	 * Update sideleted flag for a single record
-	 * @param id
-	 * @param resourceId
-	 * @param isDeleted
-	 */
-	public void updateIsDeleted(Long id, Long resourceId, boolean isDeleted);
+	public void flagAllAsDeleted(OccurrenceResource resource);
 	
 	/**
 	 * Find a core record via its local ID within a given resource

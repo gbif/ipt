@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.appfuse.model.BaseObject;
 import org.gbif.provider.datasource.ImportRecord;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -27,7 +26,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author markus
  *
  */
-public class ExtensionRecord extends BaseObject {
+public class ExtensionRecord {
 	private Long coreId;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 

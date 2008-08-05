@@ -476,6 +476,7 @@
             <version>${wiser.version}</version>
             <scope>test</scope>
         </dependency>
+        
         <!-- non appfuse archetype ones -->
         <dependency>
             <groupId>com.googlecode</groupId>

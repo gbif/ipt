@@ -15,8 +15,6 @@ import org.apache.log4j.MDC;
 import org.appfuse.model.User;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.logging.log.I18nDatabaseAppender;
-import org.gbif.provider.dao.DarwinCoreDao;
-import org.gbif.provider.dao.ExtensionRecordDao;
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -31,6 +29,8 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -49,10 +49,10 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 			ResourceManager<OccurrenceResource> occResourceManager,
 			UploadEventManager uploadEventManager,
 			DatasourceInspectionManager datasourceInspectionManager,
-			ExtensionRecordDao extensionRecordDao,
+			ExtensionRecordManager extensionRecordManager,
 			CoreRecordManager<DarwinCore> darwinCoreManager
 			) {
-		super(uploadEventManager, darwinCoreManager, extensionRecordDao, occResourceManager);
+		super(uploadEventManager, darwinCoreManager, extensionRecordManager, occResourceManager);
 		this.datasourceInspectionManager = datasourceInspectionManager;
 	}
 

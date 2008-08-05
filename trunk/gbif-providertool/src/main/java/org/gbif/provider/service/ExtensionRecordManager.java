@@ -14,20 +14,23 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.dao;
+package org.gbif.provider.service;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
-import org.appfuse.dao.GenericDao;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.ExtensionRecord;
 
-public interface ResourceDao<T extends Resource> extends GenericDao<T, Long>{
-	
+public interface ExtensionRecordManager {
+	public void insertExtensionRecord(ExtensionRecord record);
+	public void insertExtensionRecords(ExtensionRecord[] records);
 	/**
-	 * Return all resources created by that user
-	 * @param userId
-	 * @return
+	 * Delete all extension records for a given resource that are linked to a core record which is flagged as deleted
+	 * @param extension
+	 * @param resourceId
 	 */
-	public List<T> getResourcesByUser(Long userId);
+	public void deleteOrphans(Extension extension, Long resourceId);
 }

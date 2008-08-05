@@ -19,10 +19,8 @@ package org.gbif.provider.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -32,7 +30,6 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,21 +38,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.appfuse.model.Address;
-import org.appfuse.model.BaseObject;
-import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.MapKey;
 
 /**
@@ -69,7 +56,7 @@ import org.hibernate.annotations.MapKey;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="mapping_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name="view_mapping")
-public abstract class ViewMappingBase extends BaseObject implements Comparable<ViewMappingBase> {
+public abstract class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase> {
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Extension extension;

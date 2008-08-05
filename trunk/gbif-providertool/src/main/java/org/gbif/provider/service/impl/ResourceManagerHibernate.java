@@ -17,19 +17,16 @@
 package org.gbif.provider.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
-import org.appfuse.dao.GenericDao;
-import org.appfuse.service.GenericManager;
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.dao.ResourceDao;
-import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ResourceManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -38,17 +35,16 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @param <T>
  */
-public class ResourceManagerImpl<T extends Resource> extends GenericManagerImpl<T> implements ResourceManager<T> {
-	private static I18nLog logdb = I18nLogFactory.getLog(ResourceManagerImpl.class);
-	protected ResourceDao<T> resourceDao;
-
-	public ResourceManagerImpl(ResourceDao<T> resourceDao) {
-		super(resourceDao);
-		this.resourceDao=resourceDao;
+public class ResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements ResourceManager<T> {
+	private static I18nLog logdb = I18nLogFactory.getLog(ResourceManagerHibernate.class);
+	
+	public ResourceManagerHibernate(final Class<T> persistentClass) {
+		super(persistentClass);
 	}
 
-	public List<T> getResourcesByUser(Long userId) {
-		return resourceDao.getResourcesByUser(userId);
+	public List<T> getResourcesByUser(final Long userId) {
+		return getSession().createQuery(String.format("select res FROM %s res WHERE res.creator.id = :userId", persistentClass.getSimpleName()))
+    		.setParameter("userId", userId).list();
 	}
 
 }

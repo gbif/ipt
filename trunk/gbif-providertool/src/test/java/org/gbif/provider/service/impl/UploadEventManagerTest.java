@@ -14,28 +14,30 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.dao;
+package org.gbif.provider.service.impl;
 
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
 import org.junit.Test;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 
-public class UploadEventDaoTest extends BaseDaoTestCase{
-	protected UploadEventDao uploadEventDao;
+public class UploadEventManagerTest extends BaseDaoTestCase{
+	protected UploadEventManager uploadEventManager;
 
-	public void setUploadEventDao(UploadEventDao uploadEventDao) {
-		this.uploadEventDao = uploadEventDao;
+	public void setUploadEventManager(UploadEventManager uploadEventManager) {
+		this.uploadEventManager = uploadEventManager;
 	}
-	
+
+
 	@Test
 	public void testGetUploadEventsByResource(){
 		try {
-			List<UploadEvent> events = uploadEventDao.getUploadEventsByResource(Constants.TEST_RESOURCE_ID);
+			List<UploadEvent> events = uploadEventManager.getUploadEventsByResource(Constants.TEST_RESOURCE_ID);
 			for (UploadEvent ev : events){
 				logger.debug(ev);
 			}

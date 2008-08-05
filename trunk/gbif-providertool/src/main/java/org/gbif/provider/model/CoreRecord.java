@@ -28,7 +28,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.appfuse.model.BaseObject;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -36,7 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 @MappedSuperclass
-public class CoreRecord extends BaseObject implements Comparable<CoreRecord> {
+public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 	public static final String ID_COLUMN_NAME = "#id";
 	public static final String MODIFIED_COLUMN_NAME = "#modified";
 

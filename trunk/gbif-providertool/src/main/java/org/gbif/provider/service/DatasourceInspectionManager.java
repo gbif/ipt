@@ -16,6 +16,7 @@
 
 package org.gbif.provider.service;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

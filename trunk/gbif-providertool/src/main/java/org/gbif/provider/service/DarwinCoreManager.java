@@ -1,4 +1,4 @@
-package org.gbif.provider.dao;
+package org.gbif.provider.service;
 
 import java.util.List;
 
@@ -6,6 +6,6 @@ import org.appfuse.dao.GenericDao;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.UploadEvent;
 
-public interface DarwinCoreDao extends CoreRecordDao<DarwinCore>{
+public interface DarwinCoreManager extends CoreRecordManager<DarwinCore>{
 	
 }

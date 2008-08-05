@@ -39,9 +39,11 @@ public class GChartBuilderTest {
 
 	@Test
 	public void testGenerateChartDataString() {
-		System.out.println(chartBuilder.generateChartDataString(300,200));
+		String result = chartBuilder.generateChartDataString(300,200);
+//		System.out.println(result);
 		chartBuilder.clear();
-		System.out.println(chartBuilder.generateChartDataString(300,200));
+		result = chartBuilder.generateChartDataString(300,200);
+//		System.out.println(result);
 	}
 
 }

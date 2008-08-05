@@ -14,29 +14,20 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.dao;
-
-import java.util.List;
+package org.gbif.provider.service.impl;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.gbif.provider.dao.ResourceDao;
-import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.util.Constants;
+import org.gbif.provider.service.DarwinCoreManager;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectRetrievalFailureException;
 
 
-public class DarwinCoreDaoTest extends BaseDaoTestCase{
-	protected DarwinCoreDao darwinCoreDao;
+public class DarwinCoreMangerTest extends BaseDaoTestCase{
+	protected DarwinCoreManager darwinCoreManager;
 
-	public void setDarwinCoreDao(DarwinCoreDao darwinCoreDao) {
-		this.darwinCoreDao = darwinCoreDao;
+	public void setDarwinCoreManager(DarwinCoreManager darwinCoreManager) {
+		this.darwinCoreManager = darwinCoreManager;
 	}
-
 
 
 	@Test
@@ -51,7 +42,7 @@ public class DarwinCoreDaoTest extends BaseDaoTestCase{
 		dwc.setScientificName("Abies alba");
 		dwc.setGenus("Abies");
 		
-		dwc = darwinCoreDao.save(dwc);
+		dwc = darwinCoreManager.save(dwc);
 		System.out.println(dwc);
 	}
 }

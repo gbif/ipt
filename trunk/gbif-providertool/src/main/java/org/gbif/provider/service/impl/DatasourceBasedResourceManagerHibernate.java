@@ -16,23 +16,9 @@
 
 package org.gbif.provider.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import org.appfuse.dao.GenericDao;
-import org.appfuse.service.GenericManager;
-import org.gbif.provider.dao.ResourceDao;
 import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ResourceManager;
-import org.gbif.provider.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -42,13 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @param <T>
  */
-public class DatasourceBasedResourceManagerImpl<T extends DatasourceBasedResource> extends ResourceManagerImpl<T> implements ResourceManager<T> {
+public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedResource> extends ResourceManagerHibernate<T> implements ResourceManager<T> {
+	
+	public DatasourceBasedResourceManagerHibernate(Class<T> persistentClass) {
+		super(persistentClass);
+	}
+
 	@Autowired
 	private DatasourceRegistry registry;
-	
-	public DatasourceBasedResourceManagerImpl(ResourceDao<T> resourceDao) {
-		super(resourceDao);
-	}
 	
 
 	@Override
