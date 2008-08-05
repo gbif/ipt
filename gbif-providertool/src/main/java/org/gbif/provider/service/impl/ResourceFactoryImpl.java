@@ -1,22 +1,21 @@
 package org.gbif.provider.service.impl;
 
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ResourceFactoryImpl implements ResourceFactory{
-	private GenericManagerHibernate<Extension> extensionManager;
+	private GenericManager<Extension> extensionManager;
 
-	private ResourceFactoryImpl(GenericManagerHibernate<Extension> extensionManager) {
+	public ResourceFactoryImpl(GenericManager<Extension> extensionManager) {
 		super();
 		this.extensionManager = extensionManager;
 	}
 
-
+	
 	public OccurrenceResource newOccurrenceResourceInstance(){
 		Extension core = extensionManager.get(OccurrenceResource.EXTENSION_ID);
 		OccurrenceResource resource =  OccurrenceResource.newInstance(core);
