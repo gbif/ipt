@@ -89,12 +89,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
 		return SUCCESS;
 	}
-	public String statsByCountrySpecies() {
-		//FIXME: this should be number of species per country...
-		data = occResourceManager.occByRegion(resource_id, RegionType.Country);
-		chartUrl = occResourceManager.occByRegionPieUrl(data, RegionType.Country, width, height, title);
-		return SUCCESS;
-	}	
 
 	public String statsByTaxon() {
 		Rank rnk = Rank.getByInt(rank);
