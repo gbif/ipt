@@ -1,6 +1,7 @@
 package org.gbif.provider.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         	Long count = (Long) row[1];
         	data.add(new StatsCount(label, count));
         }
+        // sort data
+        Collections.sort(data);
         return data;
 	}
 	
@@ -210,7 +213,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	
 	public List<StatsCount> top10Taxa(Long resourceId) {
-        List<Object[]> occBySth = getSession().createQuery("select dwc.scientificName, count(dwc)   from DarwinCoreTaxonomy dwc   where dwc.dwc.resource.id = :resourceId   group by dwc.scientificName")
+        List<Object[]> occBySth = getSession().createQuery("select dwc.scientificName, count(dwc)  from DarwinCoreTaxonomy dwc   where dwc.dwc.resource.id = :resourceId   group by dwc.scientificName  order by count(dwc) desc")
 						    	.setParameter("resourceId", resourceId)
 						    	.setMaxResults(10)
 						    	.list();

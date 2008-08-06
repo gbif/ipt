@@ -119,9 +119,8 @@ div.stats img{
 	display: block;
 	margin-top: 5px;
 }
-div.stats.clearfix{
-	margin-top: 25px;
-	display: block;
+br.clearfix{
+	margin-top: 75px;
 	clear: both;
 }
 
@@ -144,7 +143,7 @@ div.chart select {
 
 
 /* SPECIFIC */
-#loc-tax, #loc-geoserver, #col-pie, #tax2-pie, #time-pie {
+#tax-stats, #loc-tax, #loc-geoserver, #col-pie, #tax2-pie, #time-pie {
 	position: relative;
 	left: 35px;
 }

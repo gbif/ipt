@@ -21,10 +21,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.appfuse.model.LabelValue;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.job.JobUtils;
@@ -47,37 +50,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
+public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
 	private UploadEventManager uploadEventManager;	
+	protected Map session;
 	private OccurrenceResource occResource;
 	private List<RegionType> locTypes;
 	private RegionType locDefault;
 	private List<Rank> taxTypes;
 	private Rank taxDefault;
-	public String occByRegionUrl;
-	public String occByTaxonUrl;
-	public String occByTop10TaxaUrl;
-	public String occByInstitutionUrl;
-	public String occByCollectionUrl;
-	public String occByBasisOfRecordUrl;
+	public String geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
 
+	
 	public void prepare() {
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
 		}
 		locTypes=RegionType.DARWIN_CORE_REGIONS;
 		taxTypes=Rank.DARWIN_CORE_RANKS;
+		
+		// update recently viewed resources in session
+		updateRecentResouces();
 	}
-
+	
+	private void updateRecentResouces(){
+		LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
+		Queue<LabelValue> queue; 
+		Object rr = session.get(Constants.RECENT_RESOURCES);
+		if (rr != null && rr instanceof Queue){
+			queue = (Queue) rr;
+		}else{
+			queue = new ConcurrentLinkedQueue<LabelValue>(); 
+		}
+		// remove old entry from queue if it existed before and insert at tail again
+		queue.remove(res);
+		queue.add(res);
+		if (queue.size()>10){
+			// only remember last 10 resources
+			queue.remove();
+		}
+		// save back to session
+		log.debug("Recently viewed resources: "+queue.toString());
+		session.put(Constants.RECENT_RESOURCES, queue);
+	}
+		
 	public String execute() {
 		locDefault = RegionType.Country;
 		taxDefault = Rank.Kingdom;
-		occByRegionUrl = occResourceManager.occByRegionPieUrl(resource_id, locDefault, 320, 160, false);
-		occByTaxonUrl = occResourceManager.occByTaxonPieUrl(resource_id, taxDefault, 320, 160, false);
-		occByTop10TaxaUrl = occResourceManager.top10TaxaPieUrl(resource_id, 320, 160, false);
-//		occByInstitutionUrl = occResourceManager.occByInstitutionPieUrl(resource_id);
-//		occByCollectionUrl = occResourceManager.occByCollectionPieUrl(resource_id);
-//		occByBasisOfRecordUrl = occResourceManager.occByBasisOfRecordPieUrl(resource_id);
 		return SUCCESS;
 	}
 
@@ -111,29 +129,12 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return taxDefault;
 	}
 
-	public String getOccByRegionUrl() {
-		return occByRegionUrl;
+	public void setSession(Map session) {
+		this.session = session;
 	}
 
-	public String getOccByTaxonUrl() {
-		return occByTaxonUrl;
+	public String getGeoserverMapUrl() {
+		return geoserverMapUrl;
 	}
 
-	public String getOccByTop10TaxaUrl() {
-		return occByTop10TaxaUrl;
-	}
-
-	public String getOccByInstitutionUrl() {
-		return occByInstitutionUrl;
-	}
-
-	public String getOccByCollectionUrl() {
-		return occByCollectionUrl;
-	}
-
-	public String getOccByBasisOfRecordUrl() {
-		return occByBasisOfRecordUrl;
-	}
-	
-	
 }
