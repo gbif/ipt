@@ -72,12 +72,12 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	public String execute() {
 		locDefault = RegionType.Country;
 		taxDefault = Rank.Kingdom;
-		occByRegionUrl = occResourceManager.occByRegionPieUrl(resource_id, locDefault);
-		occByTaxonUrl = occResourceManager.occByTaxonPieUrl(resource_id, taxDefault);
-		occByTop10TaxaUrl = occResourceManager.top10TaxaPieUrl(resource_id);
-		occByInstitutionUrl = occResourceManager.occByInstitutionPieUrl(resource_id);
-		occByCollectionUrl = occResourceManager.occByCollectionPieUrl(resource_id);
-		occByBasisOfRecordUrl = occResourceManager.occByBasisOfRecordPieUrl(resource_id);
+		occByRegionUrl = occResourceManager.occByRegionPieUrl(resource_id, locDefault, 320, 160, false);
+		occByTaxonUrl = occResourceManager.occByTaxonPieUrl(resource_id, taxDefault, 320, 160, false);
+		occByTop10TaxaUrl = occResourceManager.top10TaxaPieUrl(resource_id, 320, 160, false);
+//		occByInstitutionUrl = occResourceManager.occByInstitutionPieUrl(resource_id);
+//		occByCollectionUrl = occResourceManager.occByCollectionPieUrl(resource_id);
+//		occByBasisOfRecordUrl = occResourceManager.occByBasisOfRecordPieUrl(resource_id);
 		return SUCCESS;
 	}
 

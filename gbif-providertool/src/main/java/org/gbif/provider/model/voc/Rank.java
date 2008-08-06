@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public enum Rank {
-	Kingdom("kingdom"),
-	Phylum("phylum"),
-	Class("classs"),
-	Order("order"),
-	Family("family"),
-	Genus("genus");	
+	Kingdom(1, "kingdom"),
+	Phylum(2, "phylum"),
+	Class(3, "classs"),
+	Order(4, "order"),
+	Family(5, "family"),
+	Genus(6 ,"genus");	
 	
 	public static final List<Rank> DARWIN_CORE_RANKS;
 	  static  
@@ -26,9 +26,20 @@ public enum Rank {
 	  }  
 
 	  
+	public int index;	
 	public String columnName;	
-	private Rank (String colName){
+	private Rank (int idx, String colName){
 		columnName=colName;
+		index=idx;
+	}
+
+	public static Rank getByInt(int i){
+		for (Rank r : DARWIN_CORE_RANKS){
+			if (r.index == i){
+				return r;
+			}
+		}
+		return null;
 	}
 	  
 }

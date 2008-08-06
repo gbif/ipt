@@ -4,9 +4,14 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="heading" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
+	<script src="/scripts/FancyZoom.js" type="text/javascript"></script>
+	<script src="/scripts/FancyZoomHTML.js" type="text/javascript"></script>
 	<s:head theme="ajax" debug="true"/>
 </head>
 
+
+
+<body onload="setupZoom()">
 
 <s:form>
 <fieldset>
@@ -28,9 +33,8 @@
 </s:form>
 
 
-
 <div id="loc-stats" class="stats clearfix">
-	<label>Georeference Stats</label>
+	<label>Geographic Stats</label>
 	<ul class="plain">
 		<li>3421 with coordinates, precision from 0 to 10000 meter</li> 
 		<li>1673 with altitude, precision from 0 to 10000 meter</li> 
@@ -40,7 +44,6 @@
 
 <div class="clearfix">
 </div>
-
 
 
 <div id="loc-countries" class="stats map">
@@ -55,7 +58,20 @@
 <div id="loc-pie" class="stats chart">
 	<label>Occurrences by Region</label>
 	<s:select name="locType" list="locTypes" value="locDefault.columnName" theme="simple"/>
+
+	<s:url id="occResourceStatsByRegionUrl" action="occResourceStatsByRegion">
+		<s:param name="resource_id" value="resource_id" />
+	</s:url>
+	<s:a href="%{occResourceStatsByRegionUrl}" >
+		<s:action name="occResourceChartByRegion" namespace="/ajax" executeResult="true"/>
+	</s:a>
+
+	<!--
+	<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}">
+		<s:property value="occResource.getRecordCount()"/>
+	</s:div>
 	<img src="<s:property value="occByRegionUrl"/>" />
+	-->
 </div>
 <div id="loc-geoserver" class="stats map">
 	<label>GeoServer point map</label>
@@ -111,6 +127,6 @@
 	<img src="http://chart.apis.google.com/chart?cht=bvs&chs=320x160&chd=t:10,50,60,40,50,60,100,40,20,80,40,77,20,50,60,100,40,20,80,40,7,15,5,9,55,7850,40,50,60,100,40,20,60,100,13,56,48,13,20,10,50,78,60,80,40,50,60,100,40,20,40,50,60,0,80,40,50,60,100,40,20&chco=c6d9fd&chbh=3" />
 </div>
 
-
-
 <br/>
+
+</body>

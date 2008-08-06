@@ -137,6 +137,10 @@ div.chart select {
 	border: 1px solid #000;
 }
 
+#stats-chart {
+	text-align: center; 
+	margin: auto;
+}
 
 
 /* SPECIFIC */
@@ -146,3 +150,4 @@ div.chart select {
 }
 
 /* @end */
+

@@ -16,8 +16,7 @@
 
         <decorator:head/>
     </head>
-<body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/>>
-
+<body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/><decorator:getProperty property="body.onload" writeEntireProperty="true"/> >
     <div id="page">
         <div id="header" class="clearfix">
             <jsp:include page="/common/header.jsp"/>
@@ -35,6 +34,7 @@
 
             <div id="sub">
 			    <c:choose>
+	                <h1 id="resourceName"><decorator:getProperty property="meta.resource"/></h1>
 			        <c:when test='${currentSubMenu == "manage"}'>
 						<div id="actions">
 							<label>Resource Actions</label>

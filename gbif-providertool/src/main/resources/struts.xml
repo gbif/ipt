@@ -138,6 +138,12 @@
         <action name="occResource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
             <result>/WEB-INF/pages/portal/occ/index.jsp</result>
         </action>
+        <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
+            <param name="width">700</param>
+            <param name="height">400</param>
+            <param name="title">true</param>
+            <result>/WEB-INF/pages/portal/stats.jsp</result>
+        </action>
         
         <!-- checklist actions -->
         <action name="taxResources">
@@ -148,7 +154,14 @@
         <action name="resources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-        
+
+    </package>
+    
+    <!-- undecorated AJAX calls needed by the portal -->
+    <package name="portalAJAX" namespace="/ajax" extends="default">
+        <action name="occResourceChartBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
+            <result>/WEB-INF/pages/ajax/chartimg.jsp</result>
+        </action>
     </package>
     
     
