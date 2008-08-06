@@ -14,7 +14,7 @@ import com.googlecode.gchartjava.PieChart;
 import com.googlecode.gchartjava.Slice;
 
 public class GPieBuilder {
-	private static final List<Color> COLORS = Arrays.asList(new Color("76A4FB"),new Color("80C65A"),new Color("CA3D05"), new Color("ffc624"),new Color("666666"));
+	private static final List<Color> COLORS = Arrays.asList(new Color("76A4FB"),new Color("18427D"),new Color("80C65A"),new Color("CA3D05"),new Color("B4C24B"),new Color("FF7C0A"), new Color("6DA474"), new Color("ffc624"),new Color("666666"));
 	
 	public static String generateChartDataString(int width, int height, List<StatsCount> data, Long totalRecords){
 		return generateChartDataString(width, height, null, data, totalRecords);
