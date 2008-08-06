@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 public enum RegionType {
-	Continent("continent"),
-	Waterbody("waterBody"),
-	Island("island"),
-	Country("country"),
-	State("stateProvince"),
-	County("county");	
+	Continent(1,"continent"),
+	Waterbody(2,"waterBody"),
+	Island(3,"island"),
+	Country(4,"country"),
+	State(5,"stateProvince"),
+	County(6,"county");	
 	
 	public static final List<RegionType> DARWIN_CORE_REGIONS;
 	  static  
@@ -25,8 +25,20 @@ public enum RegionType {
 	  };
 	  
 	  
+	public int index;	
 	public String columnName;	
-	private RegionType (String colName){
+	private RegionType (int idx, String colName){
+		index=idx;
 		columnName=colName;
 	}
+	
+	public static RegionType getByInt(int i){
+		for (RegionType r : DARWIN_CORE_REGIONS){
+			if (r.index == i){
+				return r;
+			}
+		}
+		return null;
+	}
+
 }
