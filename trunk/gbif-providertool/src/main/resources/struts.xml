@@ -131,6 +131,11 @@
     <!-- Actions showing data to the public, anonymous users -->
     <package name="portal" namespace="/" extends="default">
         
+        <!-- all resources! has to be changed once checklists are added -->
+        <action name="resource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
+            <result>/WEB-INF/pages/portal/occ/index.jsp</result>
+        </action>
+
         <!-- occurrence actions -->
         <action name="occResources">
             <result>/WEB-INF/pages/missing.jsp</result>

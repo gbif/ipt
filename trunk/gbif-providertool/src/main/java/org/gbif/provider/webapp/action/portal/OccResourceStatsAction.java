@@ -80,17 +80,29 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		}
 	}
 
+	public String statsByCountry() {
+		return statsByRegion(RegionType.Country);
+	}	
 	public String statsByRegion() {
 		RegionType r = RegionType.getByInt(region);
-		data = occResourceManager.occByRegion(resource_id, r);
-		chartUrl = occResourceManager.occByRegionPieUrl(data, r, width, height, title);
+		return statsByRegion(r);
+	}	
+	private String statsByRegion(RegionType reg) {
+		data = occResourceManager.occByRegion(resource_id, reg);
+		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
 		return SUCCESS;
 	}
+	public String statsByCountrySpecies() {
+		//FIXME: this should be number of species per country...
+		data = occResourceManager.occByRegion(resource_id, RegionType.Country);
+		chartUrl = occResourceManager.occByRegionPieUrl(data, RegionType.Country, width, height, title);
+		return SUCCESS;
+	}	
 
 	public String statsByTaxon() {
-		Rank r = Rank.getByInt(rank);
-		data = occResourceManager.occByTaxon(resource_id, r);
-		chartUrl = occResourceManager.occByTaxonPieUrl(data, r, width, height, title);
+		Rank rnk = Rank.getByInt(rank);
+		data = occResourceManager.occByTaxon(resource_id, rnk);
+		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
 		return SUCCESS;
 	}
 	
@@ -117,7 +129,12 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		chartUrl = occResourceManager.occByBasisOfRecordPieUrl(data, width, height, title);
 		return SUCCESS;
 	}
-	
+
+	public String statsByDateColected() {
+		data = occResourceManager.occByDateColected(resource_id);
+		chartUrl = occResourceManager.occByDateColectedUrl(data, width, height, title);
+		return SUCCESS;
+	}
 	
 	
 	//

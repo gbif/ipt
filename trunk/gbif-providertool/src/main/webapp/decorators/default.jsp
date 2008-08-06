@@ -33,8 +33,8 @@
             <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 
             <div id="sub">
+                <h1 id="resourceName"><decorator:getProperty property="meta.resource"/></h1>
 			    <c:choose>
-	                <h1 id="resourceName"><decorator:getProperty property="meta.resource"/></h1>
 			        <c:when test='${currentSubMenu == "manage"}'>
 						<div id="actions">
 							<label>Resource Actions</label>
@@ -46,18 +46,6 @@
 
 								<s:url id="listRes" action="resources" />
 								<li><s:a href="%{listRes}">List Resources</s:a></li>
-							</ul>
-						</div>
-						
-						<div id="recentlyViewedResources">
-							<label>Recent Resources</label>
-							<ul class="plain">
-								<s:iterator value="#session.recentResources" status="resstatus">
-									<s:url id="resLink" action="resource" >
-										<s:param name="resource_id" value="value" />
-									</s:url>
-									<li><s:a href="%{resLink}"><s:property value="label"/></s:a></li>
-								</s:iterator>
 							</ul>
 						</div>
 			        </c:when>
@@ -90,9 +78,21 @@ Europe
 					</c:when>
 					
 			        <c:otherwise>
-			            NO SUBMENU
+			            <!-- NO SUBMENU -->
 					</c:otherwise>
 			    </c:choose>
+			    
+				<div id="recentlyViewedResources">
+					<label>Recent Resources</label>
+					<ul class="plain">
+						<s:iterator value="#session.recentResources" status="resstatus">
+							<s:url id="resLink" action="resource" >
+								<s:param name="resource_id" value="value" />
+							</s:url>
+							<li><s:a href="%{resLink}"><s:property value="label"/></s:a></li>
+						</s:iterator>
+					</ul>
+				</div>
 
             </div><!-- end sub -->
 
