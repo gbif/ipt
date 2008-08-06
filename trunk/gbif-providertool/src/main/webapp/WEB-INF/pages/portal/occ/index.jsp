@@ -53,21 +53,21 @@
 
 <div id="loc-countries" class="stats map">
 	<label><s:text name="stats.occByCountry"/></label>
-	<s:url id="occResourceStatsByCountryUrl" action="occResourceStatsByCountry">
+	<s:url id="occResourceChartByOccurrencePerCountry" action="occResourceStatsByCountry">
 		<s:param name="resource_id" value="resource_id" />
 		<s:param name="region" value="4" />
 	</s:url>
-	<s:a href="%{occResourceStatsByCountryUrl}" >
-		<s:action name="occResourceChartByCountry" namespace="/ajax" executeResult="true"/>
+	<s:a href="%{occResourceChartByOccurrencePerCountryUrl}" >
+		<s:action name="occResourceChartByOccurrencePerCountry" namespace="/ajax" executeResult="true"/>
 	</s:a>
 </div>
 <div id="loc-tax" class="stats map">
 	<label><s:text name="stats.speciesPerCountry"/></label>
-	<s:url id="occResourceStatsByCountrySpeciesUrl" action="occResourceStatsByCountrySpecies">
+	<s:url id="occResourceChartBySpeciesPerCountryUrl" action="occResourceStatsByCountrySpecies">
 		<s:param name="resource_id" value="resource_id" />
 	</s:url>
-	<s:a href="%{occResourceStatsByCountrySpeciesUrl}" >
-		<s:action name="occResourceChartByCountrySpecies" namespace="/ajax" executeResult="true"/>
+	<s:a href="%{occResourceChartBySpeciesPerCountryUrl}" >
+		<s:action name="occResourceChartBySpeciesPerCountry" namespace="/ajax" executeResult="true"/>
 	</s:a>
 </div>
 

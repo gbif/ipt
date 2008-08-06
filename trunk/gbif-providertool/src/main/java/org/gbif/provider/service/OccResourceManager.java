@@ -43,7 +43,14 @@ public interface OccResourceManager extends ResourceManager<OccurrenceResource>{
 	// maps
 	public String occByCountryMapUrl(Long resourceId, int width, int height, boolean title);
 	public String occByCountryMapUrl(List<StatsCount> data, int width, int height, boolean title);
-	public List<StatsCount> occByCountryMap(Long resourceId);
+	public List<StatsCount> occByCountry(Long resourceId);
 	
 	public String speciesByCountryMapUrl(Long resourceId, int width, int height, boolean title);
+	public String speciesByCountryMapUrl(List<StatsCount> data, int width, int height, boolean title);
+	/**
+	 * Get number of distinct species/taxa per country
+	 * @param resourceId
+	 * @return
+	 */
+	public List<StatsCount> speciesByCountry(Long resourceId);
 }

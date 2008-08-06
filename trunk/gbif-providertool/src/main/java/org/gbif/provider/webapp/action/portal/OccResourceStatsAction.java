@@ -80,9 +80,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		}
 	}
 
-	public String statsByCountry() {
-		return statsByRegion(RegionType.Country);
-	}	
 	public String statsByRegion() {
 		RegionType r = RegionType.getByInt(region);
 		return statsByRegion(r);
@@ -137,6 +134,20 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	}
 	
 	
+	
+	// MAPS
+	public String statsByCountry() {
+		data = occResourceManager.occByCountry(resource_id);
+		chartUrl = occResourceManager.occByCountryMapUrl(data, width, height, title);
+		return SUCCESS;
+	}	
+	public String statsBySpeciesPerCountry() {
+		//FIXME: this should be number of species per country...
+		data = occResourceManager.speciesByCountry(resource_id);
+		chartUrl = occResourceManager.speciesByCountryMapUrl(data, width, height, title);
+		return SUCCESS;
+	}	
+
 	//
 	// GETTER SETTER SECTION
 	//
