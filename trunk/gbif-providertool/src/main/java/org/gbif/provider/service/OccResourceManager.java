@@ -55,4 +55,8 @@ public interface OccResourceManager extends ResourceManager<OccurrenceResource>{
 	 * @return
 	 */
 	public List<StatsCount> speciesByCountry(Long resourceId);
+	
+	// helper
+	public GeographicalArea getMapArea(String area);
+
 }
