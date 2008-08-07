@@ -10,6 +10,8 @@ import org.gbif.provider.util.Constants;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.gchartjava.GeographicalArea;
+
 public class OccResourceManagerHibernateTest extends BaseDaoTestCase{
 	static int width=440;
 	static int height=220;
@@ -58,11 +60,11 @@ public class OccResourceManagerHibernateTest extends BaseDaoTestCase{
 
 	@Test
 	public void testByCountryMapUrl() {
-		System.out.println(occResourceManager.occByCountryMapUrl(Constants.TEST_RESOURCE_ID, width, height));
+		System.out.println(occResourceManager.occByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
 
 	@Test
 	public void testSpeciesByCountryMapUrl() {
-		System.out.println(occResourceManager.speciesByCountryMapUrl(Constants.TEST_RESOURCE_ID, width, height));
+		System.out.println(occResourceManager.speciesByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
 }
