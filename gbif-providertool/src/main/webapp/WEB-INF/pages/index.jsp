@@ -2,10 +2,11 @@
 
 <head>
     <title><s:text name="home.title"/></title>
-    <meta name="heading" content="<s:text name='home.heading'/>"/>
     <meta name="menu" content="MainMenu"/>
 </head>
 
+
+<h1><s:text name='home.heading'/></h1>
 
 <h3>Occurrence Resources</h3>
 

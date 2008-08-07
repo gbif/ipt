@@ -2,7 +2,7 @@
 
 <head>
     <title><s:text name="occResourceOverview.title"/></title>
-    <meta name="heading" content="<s:property value="occResource.title"/>"/>
+    <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
 	<s:head theme="ajax" debug="true"/>
 </head>
@@ -14,7 +14,7 @@
 	<legend><s:text name="occResource.description"/></legend>
 	<div id="metadata">
 		<s:property value="occResource.description"/>
-		<s:label key="occResourceOverview.cache" value="%{occResource.lastUpload.recordsUploaded} records uploaded %{occResource.lastUpload.executionDate}"/>
+		<s:label key="occResourceOverview.cache" value="%{occResource.lastUpload.recordsUploaded} total records uploaded %{occResource.lastUpload.executionDate}"/>
 		<ul class="minimenu">
 			<li>
 				<a onclick="Effect.toggle('services', 'blind', { duration: 0.3 }); return false;">(<s:text name="occResourceOverview.services"/>)</a>
@@ -35,14 +35,15 @@
 <div id="loc-stats" class="stats">
 	<label><s:text name="stats.geoStats"/></label>
 	<ul class="plain">
-		<li>3421 with coordinates, precision from 0 to 10000 meter</li> 
-		<li>1673 with altitude, precision from 0 to 10000 meter</li> 
+		<li>3421 with coordinates, precision from 0 to 10000m</li> 
+		<li>1673 with altitude, precision from 0 to 10000m</li> 
+		<li>23 countries</li> 
 	</ul>
 </div>
 <div id="tax-stats" class="stats">
 	<label><s:text name="stats.taxStats"/></label>
 	<ul class="plain">
-		<li>673 Species or infraspecific</li> 
+		<li>673 Terminal taxa</li> 
 		<li>673 Genera</li> 
 	</ul>
 </div>
