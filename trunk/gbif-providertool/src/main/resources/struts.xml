@@ -144,10 +144,14 @@
             <result>/WEB-INF/pages/portal/occ/index.jsp</result>
         </action>
         <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
-            <param name="width">700</param>
-            <param name="height">400</param>
+            <param name="zoom">true</param>
             <param name="title">true</param>
             <result>/WEB-INF/pages/portal/stats.jsp</result>
+        </action>
+        <action name="occResourceMapBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
+            <param name="zoom">true</param>
+            <param name="title">true</param>
+            <result>/WEB-INF/pages/portal/mapstats.jsp</result>
         </action>
         
         <!-- checklist actions -->

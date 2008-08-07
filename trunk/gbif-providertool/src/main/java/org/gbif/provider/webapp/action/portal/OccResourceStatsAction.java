@@ -41,20 +41,20 @@ import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.GPieBuilder;
+import org.gbif.provider.util.GChartBuilder;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.service.JobManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.googlecode.gchartjava.GeographicalArea;
 import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.config.entities.Parameterizable;
 
 /**
  * ActionClass to generate the data for a single occurrence resource statistic with chart image and data
  * Can be parameterized with:
- *  "width" : image width. Defaults to 320
- *  "height" : image height. Defaults to 160
+ *  "zoom" : return the largest image possible if true. Defaults to false
  *  "title" : set title in image? Defaults to false
  * @author markus
  *
@@ -62,6 +62,10 @@ import com.opensymphony.xwork2.config.entities.Parameterizable;
 public class OccResourceStatsAction extends BaseOccurrenceResourceAction implements Preparable {
 	public static int DEFAULT_WIDTH = 320;
 	public static int DEFAULT_HEIGHT = 160;
+	public static int ZOOM_CHART_WIDTH = 700;
+	public static int ZOOM_CHART_HEIGHT = 400;
+	public static int ZOOM_MAP_WIDTH = 440;
+	public static int ZOOM_MAP_HEIGHT = 220;
 
 	private OccurrenceResource occResource;
 	private int region = 1;
@@ -71,12 +75,21 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	private int height = DEFAULT_HEIGHT;
 	// set title in chart image
 	private boolean title = false;
+	// use zoom size instead of default?
+	private boolean zoom = false;
+	// map focus
+	private String area = GeographicalArea.WORLD.toString();
 	public String chartUrl;
 	public List<StatsCount> data;
 
 	public void prepare() {
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
+		}
+		if (zoom) {
+			// use chart default zoom. map methods have to set sizes themselves
+			width=ZOOM_CHART_WIDTH;
+			height=ZOOM_CHART_HEIGHT;
 		}
 	}
 
@@ -131,17 +144,36 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	
 	// MAPS
 	public String statsByCountry() {
+		setMapSize();
 		data = occResourceManager.occByCountry(resource_id);
-		chartUrl = occResourceManager.occByCountryMapUrl(data, width, height, title);
+		chartUrl = occResourceManager.occByCountryMapUrl(getMapArea(), data, width, height);
 		return SUCCESS;
 	}	
 	public String statsBySpeciesPerCountry() {
-		//FIXME: this should be number of species per country...
+		setMapSize();
 		data = occResourceManager.speciesByCountry(resource_id);
-		chartUrl = occResourceManager.speciesByCountryMapUrl(data, width, height, title);
+		chartUrl = occResourceManager.speciesByCountryMapUrl(getMapArea(), data, width, height);
 		return SUCCESS;
 	}	
 
+	
+	private void setMapSize(){
+		if (zoom) {
+			width=ZOOM_MAP_WIDTH;
+			height=ZOOM_MAP_HEIGHT;
+		}
+	}
+	private GeographicalArea getMapArea(){		
+		GeographicalArea a;
+		try {
+			a = GeographicalArea.valueOf(area.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			a = GeographicalArea.WORLD;
+		}
+		return a;		
+	}
+	
+	
 	//
 	// GETTER SETTER SECTION
 	//
@@ -190,4 +222,13 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		this.title = title;
 	}
 
+	public void setZoom(boolean zoom) {
+		this.zoom = zoom;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+	
+	
 }

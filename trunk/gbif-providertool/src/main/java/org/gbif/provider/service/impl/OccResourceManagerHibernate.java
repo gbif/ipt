@@ -15,11 +15,13 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.util.GPieBuilder;
+import org.gbif.provider.util.GChartBuilder;
 import org.hibernate.Query;
 
+import com.googlecode.gchartjava.GeographicalArea;
+
 public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
-	protected static GPieBuilder gpb = new GPieBuilder();
+	protected static GChartBuilder gpb = new GChartBuilder();
 	public OccResourceManagerHibernate() {
 		super(OccurrenceResource.class);
 	}
@@ -66,7 +68,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By BasisOfRecord";
 		}
         // get chart string
-		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
+		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
 	}
 
 
@@ -89,7 +91,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By CollectionCode";
 		}
         // get chart string
-		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
+		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
 	}
 
 	
@@ -97,21 +99,13 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	public List<StatsCount> occByCountry(Long resourceId) {
 		return occByRegion(resourceId, RegionType.Country);
 	}
-	public String occByCountryMapUrl(Long resourceId, int width, int height, boolean title) {
+	public String occByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height) {
 		List<StatsCount> data = occByCountry(resourceId);
-		return occByCountryMapUrl(data, width, height, title);
+		return occByCountryMapUrl(area, data, width, height);
 	}
-	public String occByCountryMapUrl(List<StatsCount> data, int width, int height, boolean title) {
-		String titleText = null;
-		if (title){
-			titleText = "Occurrences By Country";
-		}
+	public String occByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height) {
         // get chartmap string
-		// FIXME: implement this method...
-//		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
-
-		String chartUrl = "http://chart.apis.google.com/chart?chs=320x160&cht=t&chtm=world&chco=cccccc,fff5f0,99000d&chld=SENLAUFONZKRCALUJPUSBMLIISBBNOSIGBFIDKEEMCCHHKATITJMBELVDEFRMYESSGCYGUMOBNAGSKBYIEMQADHRNCBSMTHUAECLQAREPTCZVIKWSCPLLTILMUAWPRROGFPFGYCRBHUYBABGLBGPGRARBRMXDOPETRMARUSTMDVNJOFMVETTSATHOMIRZACOMNUABZTNSVZWVCCNFJAZSDGTMKECIDEGSRHTPKPSPAGECVALTGSYDZBJPHINAMKGBOGASNKZNASZLYGMNGHNVUBWWSUZPYKEBTTOLSZMKMNIGWKIPGGHERLKUGCUDJCMGQCGYESOCITZAFTMMZSBNPMRGNAORWBFMLBIMGMWTDLABDCFKHTJETCDNEMM&chd=t:58.1,56.4,53.6,53.5,52,52,51.7,51.6,50.7,50.5,49.9,48.2,47.4,45.3,44.6,42.2,41,40.6,40,39.5,38.9,38.8,38.2,37.3,36.7,35.4,34.8,34,32.9,32.9,32.3,30.8,30.3,29.7,29.3,28.2,27.5,27.1,26.9,26.5,25.8,25.1,24.8,24.7,24.5,24.3,24.2,22.6,22.4,22,21.5,21.3,20.7,20.6,20.4,19.9,19.8,19.7,19.7,18.6,18.4,18.4,17.6,16.8,16.8,16.4,16.2,16.2,16.2,15.7,15.7,15.7,14.9,14.5,13.7,13.6,13.1,12.9,12.8,12.5,11.7,11.6,11.6,11.2,10,9.7,9.6,9.6,9.5,9.5,9.3,8.6,8.5,8.3,8.2,7.9,7.7,7.5,7.3,7.2,7.1,6.4,6.4,6.4,6.3,6.2,6.1,6,6,5.6,5.5,5.5,5.4,5.3,5.2,5,4.9,4.6,4.6,4.6,4.5,4.4,4.4,4.3,4.2,4.1,4,4,4,3.7,3.5,3.1,3,3,3,2.9,2.9,2.7,2.7,2.6,2.6,2.5,2.5,2.4,2.4,2.3,2.2,2.2,1.9,1.8,1.8,1.7,1.4,1.4,1.4,1.3,1.3,1.3,1.1,1.1,1.1,1,0.8,0.8,0.8,0.8,0.8,0.8,0.7,0.6,0.6,0.5,0.5,0.5,0.5,0.4,0.4,0.4,0.4,0.3,0.3,0.3,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.1&chf=bg,s,e0f2ff";
-		return chartUrl;
+		return gpb.generateMapChartUrl(width, height, data, area);
 	}
 	
 	
@@ -122,27 +116,19 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	public List<StatsCount> speciesByCountry(Long resourceId) {
 		// FIXME: implement this method...
 		List<StatsCount> data = new ArrayList<StatsCount>();
-		data.add(new StatsCount("Germany", 123l));
-		data.add(new StatsCount("United Kingdom", 101l));
-		data.add(new StatsCount("United States", 423l));
-		data.add(new StatsCount("Brazil", 1123l));
+		data.add(new StatsCount("DE", 123l));
+		data.add(new StatsCount("UK", 101l));
+		data.add(new StatsCount("US", 423l));
+		data.add(new StatsCount("BR", 1123l));
 		return data;
 	}
-	public String speciesByCountryMapUrl(Long resourceId, int width, int height, boolean title) {
+	public String speciesByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height) {
 		List<StatsCount> data = speciesByCountry(resourceId);
-		return speciesByCountryMapUrl(data, width, height, title);
+		return speciesByCountryMapUrl(area, data, width, height);
 	}
-	public String speciesByCountryMapUrl(List<StatsCount> data, int width, int height, boolean title) {
-		String titleText = null;
-		if (title){
-			titleText = "Distinct Taxa Per Country";
-		}
+	public String speciesByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height) {
         // get chartmap string
-		// FIXME: implement this method...
-//		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
-
-		String chartUrl = "http://chart.apis.google.com/chart?chs=320x160&cht=t&chtm=world&chco=cccccc,fff5f0,99000d&chld=SENLAUFONZKRCALUJPUSBMLIISBBNOSIGBFIDKEEMCCHHKATITJMBELVDEFRMYESSGCYGUMOBNAGSKBYIEMQADHRNCBSMTHUAECLQAREPTCZVIKWSCPLLTILMUAWPRROGFPFGYCRBHUYBABGLBGPGRARBRMXDOPETRMARUSTMDVNJOFMVETTSATHOMIRZACOMNUABZTNSVZWVCCNFJAZSDGTMKECIDEGSRHTPKPSPAGECVALTGSYDZBJPHINAMKGBOGASNKZNASZLYGMNGHNVUBWWSUZPYKEBTTOLSZMKMNIGWKIPGGHERLKUGCUDJCMGQCGYESOCITZAFTMMZSBNPMRGNAORWBFMLBIMGMWTDLABDCFKHTJETCDNEMM&chd=t:58.1,56.4,53.6,53.5,52,52,51.7,51.6,50.7,50.5,49.9,48.2,47.4,45.3,44.6,42.2,41,40.6,40,39.5,38.9,38.8,38.2,37.3,36.7,35.4,34.8,34,32.9,32.9,32.3,30.8,30.3,29.7,29.3,28.2,27.5,27.1,26.9,26.5,25.8,25.1,24.8,24.7,24.5,24.3,24.2,22.6,22.4,22,21.5,21.3,20.7,20.6,20.4,19.9,19.8,19.7,19.7,18.6,18.4,18.4,17.6,16.8,16.8,16.4,16.2,16.2,16.2,15.7,15.7,15.7,14.9,14.5,13.7,13.6,13.1,12.9,12.8,12.5,11.7,11.6,11.6,11.2,10,9.7,9.6,9.6,9.5,9.5,9.3,8.6,8.5,8.3,8.2,7.9,7.7,7.5,7.3,7.2,7.1,6.4,6.4,6.4,6.3,6.2,6.1,6,6,5.6,5.5,5.5,5.4,5.3,5.2,5,4.9,4.6,4.6,4.6,4.5,4.4,4.4,4.3,4.2,4.1,4,4,4,3.7,3.5,3.1,3,3,3,2.9,2.9,2.7,2.7,2.6,2.6,2.5,2.5,2.4,2.4,2.3,2.2,2.2,1.9,1.8,1.8,1.7,1.4,1.4,1.4,1.3,1.3,1.3,1.1,1.1,1.1,1,0.8,0.8,0.8,0.8,0.8,0.8,0.7,0.6,0.6,0.5,0.5,0.5,0.5,0.4,0.4,0.4,0.4,0.3,0.3,0.3,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.1&chf=bg,s,e0f2ff";
-		return chartUrl;
+		return gpb.generateMapChartUrl(width, height, data, area);
 	}
 
 	
@@ -188,7 +174,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By InstitutionCode";
 		}
         // get chart string
-		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
+		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
 	}
 	
 	
@@ -210,7 +196,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By "+region.toString();
 		}
         // get chart string
-		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
+		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
 	}
 	
 	
@@ -230,7 +216,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By "+rank.toString();
 		}
         // get chart string
-		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
+		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
 	}
 	
 	
@@ -253,7 +239,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By Top 10 Taxa";
 		}
         // get chart string
-		return gpb.generateChartDataString(width, height, titleText, data, sumData(data));
+		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
 	}
 
 }

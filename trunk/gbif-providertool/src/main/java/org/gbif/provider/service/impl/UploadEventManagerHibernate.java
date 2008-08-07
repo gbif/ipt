@@ -39,7 +39,7 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.GChartBuilder;
+import org.gbif.provider.util.UploadChartBuilder;
 import org.gbif.provider.webapp.action.UploadAction;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -70,7 +70,7 @@ public class UploadEventManagerHibernate extends GenericDaoHibernate<UploadEvent
 
 	public String getGoogleChartData(Long resourceId, int width, int height) {
 		List<UploadEvent> events = this.getUploadEventsByResource(resourceId);
-		GChartBuilder chartBuilder = new GChartBuilder();
+		UploadChartBuilder chartBuilder = new UploadChartBuilder();
 		Map<Date, Long> uploadedDS = new HashMap<Date, Long>();
 		Map<Date, Long> changedDS = new HashMap<Date, Long>();
 		Map<Date, Long> addedDS = new HashMap<Date, Long>();

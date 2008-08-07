@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class OccResourceManagerHibernateTest extends BaseDaoTestCase{
-	static int width=200;
-	static int height=100;
+	static int width=440;
+	static int height=220;
 	static boolean title=true;
 	
 	private OccResourceManager occResourceManager;
@@ -57,8 +57,12 @@ public class OccResourceManagerHibernateTest extends BaseDaoTestCase{
 	}
 
 	@Test
-	public void testSpeciesByCountryMapUrl() {
-		System.out.println(occResourceManager.speciesByCountryMapUrl(Constants.TEST_RESOURCE_ID, width, height, title));
+	public void testByCountryMapUrl() {
+		System.out.println(occResourceManager.occByCountryMapUrl(Constants.TEST_RESOURCE_ID, width, height));
 	}
 
+	@Test
+	public void testSpeciesByCountryMapUrl() {
+		System.out.println(occResourceManager.speciesByCountryMapUrl(Constants.TEST_RESOURCE_ID, width, height));
+	}
 }
