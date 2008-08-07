@@ -39,6 +39,12 @@ import org.gbif.provider.job.OccDbUploadJob;
 
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 
 /**
@@ -49,10 +55,13 @@ import org.gbif.logging.log.I18nLogFactory;
  *
  */
 @Entity
+@Indexed
 public class DarwinCore extends CoreRecord{
 	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
 	
+	@IndexedEmbedded
 	private DarwinCoreTaxonomy tax;
+	@IndexedEmbedded
 	private DarwinCoreLocation loc;
 	// calculated fields
 	private float latitudeAsFloat;
@@ -63,7 +72,9 @@ public class DarwinCore extends CoreRecord{
 	private String globalUniqueIdentifier;
 	private String basisOfRecord;
 	private String institutionCode;
+    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String collectionCode;
+    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String catalogNumber;
 	private String informationWithheld;
 	private String remarks;

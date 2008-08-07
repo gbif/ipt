@@ -35,6 +35,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.appfuse.model.BaseObject;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 /**
  * The core class for taxon occurrence records with normalised properties used by the webapp.
@@ -44,8 +50,11 @@ import org.hibernate.annotations.Parameter;
  *
  */
 @Entity
+@Indexed
 public class DarwinCoreLocation {
+	@DocumentId
 	private Long id;
+	@ContainedIn
 	private DarwinCore dwc;
 	// derived typed properties
 	private Integer minimumElevationInMetersAsInteger;
@@ -59,9 +68,11 @@ public class DarwinCoreLocation {
 	private String waterBody;
 	private String islandGroup;
 	private String island;
+    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String country;
 	private String stateProvince;
 	private String county;
+    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String locality;
 	private String minimumElevationInMeters;
 	private String maximumElevationInMeters;

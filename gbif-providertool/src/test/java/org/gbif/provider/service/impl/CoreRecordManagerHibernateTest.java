@@ -24,12 +24,15 @@ public class CoreRecordManagerHibernateTest extends BaseDaoTestCase{
 		this.occResourceManager = occResourceManager;
 	}
 
-
 	@Test
 	public void testFlagAllAsDeleted() {
 		OccurrenceResource resource = (OccurrenceResource) occResourceManager.get(Constants.TEST_RESOURCE_ID);
 		darwinCoreManager.flagAllAsDeleted(resource);
 	}
 
+	@Test
+	public void testReindex() {
+		darwinCoreManager.reindex(Constants.TEST_RESOURCE_ID);		
+	}
 
 }
