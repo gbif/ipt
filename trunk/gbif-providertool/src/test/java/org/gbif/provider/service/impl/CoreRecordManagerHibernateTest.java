@@ -33,6 +33,7 @@ public class CoreRecordManagerHibernateTest extends BaseDaoTestCase{
 	@Test
 	public void testReindex() {
 		darwinCoreManager.reindex(Constants.TEST_RESOURCE_ID);		
+//		darwinCoreManager.reindex(2l);		
 	}
 
 }
