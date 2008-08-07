@@ -2,129 +2,103 @@ package org.gbif.provider.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
-import java.text.SimpleDateFormat;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.dto.StatsCount;
+import org.gbif.provider.model.voc.Rank;
+
+import com.googlecode.gchartjava.Color;
+import com.googlecode.gchartjava.Country;
+import com.googlecode.gchartjava.Fill;
+import com.googlecode.gchartjava.GeographicalArea;
+import com.googlecode.gchartjava.LinearGradientFill;
+import com.googlecode.gchartjava.MapChart;
+import com.googlecode.gchartjava.PieChart;
+import com.googlecode.gchartjava.PoliticalBoundary;
+import com.googlecode.gchartjava.Slice;
+import com.googlecode.gchartjava.SolidFill;
 
 public class GChartBuilder {
-	// dark blue, light blue, green, red, dark yellow, dark grey
-	private final List<String> COLORS = Arrays.asList("224499","76A4FB","80C65A","CA3D05",   "ffc624","333333");
-	private final int DATE_PRECISION = 1000000;
-	private List<Dataset<Date, Long>> datasets = new ArrayList<Dataset<Date, Long>>();
-	
-	private class Dataset<K, V>{
-		public String title;
-		public SortedMap<K, V> data; 
-	}
-	
-	public void addDataset(Map<Date, Long> dataset, String title){
-		Dataset<Date, Long> d = new Dataset<Date, Long>();
-		d.title=title;
-		d.data=new TreeMap<Date, Long>(dataset);
-		datasets.add(d);
-	}
-	
-	public String generateChartDataString(int width, int height){
-		 // comma separated values, | separated datasets. First dataset for x values, second for y
-		 String data = "";
-		 // dataset properties
-		 String datasetTitles = "";
-		 String datasetColors = "";
-		 int colorIndex = 0;
-		 // min & max values for both axis
-		 Long minYValue = 0L;
-		 Long maxYValue = null;
-		 Date minXValue = null;
-		 Date maxXValue = null;
-		 for (Dataset<Date, Long> d : datasets){
-			 // add dataset title
-			 datasetTitles += d.title+" |";
-			 // define color for this dataset line
-			 datasetColors += COLORS.get(colorIndex)+",";
-			 colorIndex++;
-			 if (colorIndex >= COLORS.size()){
-				 // reset color index, repeating colors
-				 colorIndex=0;
-			 }
-			 String yData = "";
-			 for (Date date : d.data.keySet()){
-				 Long val = d.data.get(date);
-				 // update min/max counters
-				 if (maxYValue == null || maxYValue < val){
-					 maxYValue=val;
-				 }
-				 if (minXValue == null || minXValue.after(date)){
-					 minXValue=date;
-				 }
-				 if (maxXValue == null || maxXValue.before(date)){
-					 maxXValue=date;
-				 }
-				 // build x-axis dataset immediately into the full data string (y-axis dataset is appended later on)
-				 data += date.getTime()/DATE_PRECISION + ",";
-				 // build y-axis dataset
-				 yData += val+",";
-			 }
-			 // remove trailing , or |
-			 data=trimString(data);
-			 yData=trimString(yData);
+    private final static Log log = LogFactory.getLog(GChartBuilder.class);
 
-			 // append y-axis dataset
-			 data +="|"+yData+"|";
-		 }
-		 
-		 // check if any data was submitted at all!
-		 if (maxYValue == null || minXValue == null || maxXValue == null){
-			 return null;
-		 }
-		 
-		 // calc y axis label
-		 // round max up for nicer values 
-		 Long step = 20L * (int) Math.ceil(maxYValue/100.0);
-		 maxYValue=step*5L;
-		 String yAxis="|";
-		 // for min/max=0 it doesnt make sense to have many xaxis labels
-		 if (step != 0){
-			 for (int i=1; i<6; i++){
-				 yAxis+="|"+step*i;
-			 }
-		 }
-		 
-		 // calc x axis labels
-		 SimpleDateFormat sdf =  new SimpleDateFormat("MMM''yy");
-		 String xAxis1="|"+sdf.format(minXValue)+"|"+sdf.format(maxXValue);
-		 sdf.applyPattern("yyyy");
-		 String xAxis2="|"+sdf.format(minXValue)+"|"+sdf.format(maxXValue);
-		 //TODO: chg=xaxis step, yaxis step
-		 
-		 // min, max scale for both axis
-		 String minMax = "";
-		 String minMaxPerDataset = minXValue.getTime()/DATE_PRECISION+","+maxXValue.getTime()/DATE_PRECISION+","+minYValue+","+maxYValue+",";
-		 for (Dataset d : datasets){
-			 minMax += minMaxPerDataset;
-		 }
-		 
-		 // remove trailing , or |
-		 data=trimString(data);
-		 datasetTitles=trimString(datasetTitles);
-		 datasetColors=trimString(datasetColors);
-		 minMax=trimString(minMax);
-		 return "http://chart.apis.google.com/chart?cht=lxy&chs="+width+"x"+height+"&chxt=x,r&chxl=0:"+xAxis1+"|1:"+yAxis+"&chds="+minMax+"&chco="+datasetColors+"&chdlp=l&chdl="+datasetTitles+"&chd=t:"+data;
-	}
-	private String trimString(String x){
-		 if (x.endsWith(",") || x.endsWith("|")){
-			 x = x.substring(0, x.length()-1);
-		 }
-		 return x;
-	}
+    private static final List<Color> COLORS = Arrays.asList(new Color("76A4FB"),new Color("D7E9F5"),new Color("18427D"),new Color("80C65A"),new Color("CA3D05"),new Color("B4C24B"),new Color("FF7C0A"), new Color("6DA474"), new Color("ffc624"),new Color("666666"));
+	private static final Fill MAP_BACK = new SolidFill(new Color("e0f2ff"));
+	private static final Color MAP_EMPTY = new Color("ffffff");
+	private static final Color MAP_LOW = new Color("EDF0D4");
+	private static final Color MAP_HIGH = new Color("13390D");
 	
-	/**
-	 * Removes all datasets from the chartbuilder
-	 */
-	public void clear(){
-		datasets.clear();
+	  
+	public static String generatePiaChartUrl(int width, int height, List<StatsCount> data, Long totalRecords){
+		return generatePiaChartUrl(width, height, null, data, totalRecords);
+	}
+
+	public static String generatePiaChartUrl(int width, int height, String title, List<StatsCount> data, Long totalRecords){
+		LinkedList<Color> colors = new LinkedList<Color>(COLORS);
+		List<Slice> slices = new ArrayList<Slice>();
+		for (StatsCount stat: data){
+			// rotate through colors
+			Color c = colors.poll();
+			colors.add(c);
+			// calculate percentage from total
+			int perc = (int) (100 * stat.getCount() / totalRecords);
+			slices.add(new Slice(perc, c, stat.getLabel()));
+		}
+
+        PieChart chart = new PieChart(slices);
+        chart.setSize(width, height);
+        chart.setThreeD(false);
+        
+        String result;
+        if (title != null){
+        	chart.setTitle(title,Color.BLACK,16);
+        	result = chart.createURLString();
+        }else{
+        	chart.setTitle("",Color.BLACK,16);
+        	result = chart.createURLString().split("&chtt=")[0];
+        }
+		return result;
+	}
+
+	
+	public static String generateMapChartUrl(int width, int height, List<StatsCount> data){
+		return generateMapChartUrl(width, height, data, null);
+	}
+	public static String generateMapChartUrl(int width, int height, List<StatsCount> data, GeographicalArea area){
+		if (area == null){
+			// default is a world map
+			area = GeographicalArea.WORLD;
+		}
+		List<PoliticalBoundary> cdata = translateIntoPoliticalBoundaries(data);
+		MapChart map = new MapChart(area);
+		map.addPoliticalBoundaries(cdata);
+		map.setSize(width, height);
+		map.setColorGradient(MAP_EMPTY, MAP_LOW, MAP_HIGH);
+		map.setBackgroundFill(MAP_BACK);
+
+		return map.createURLString();
+	}
+
+	private static List<PoliticalBoundary> translateIntoPoliticalBoundaries(List<StatsCount> data){
+		List<PoliticalBoundary> cdata = new ArrayList<PoliticalBoundary>();
+		Long maxRecords = Collections.max(data).getCount();
+		for (StatsCount stat : data){
+			// check that ~ISO code exists, i.e. must be 2 characters only!
+			if(stat.getLabel().length()==2){
+				// calculate percentage from total
+				int perc = (int) (100 * stat.getCount() / maxRecords);
+				Country c = new Country(stat.getLabel(), perc);
+				cdata.add(c);
+			}else{
+				log.debug(String.format("Country with invalid ISO code %s ignored",stat.getLabel()));
+			}
+		}
+		return cdata;
 	}
 }

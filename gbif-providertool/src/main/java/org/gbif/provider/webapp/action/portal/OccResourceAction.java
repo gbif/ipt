@@ -42,7 +42,7 @@ import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.GPieBuilder;
+import org.gbif.provider.util.GChartBuilder;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.gbif.scheduler.model.Job;
 import org.gbif.scheduler.service.JobManager;

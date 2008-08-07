@@ -7,6 +7,8 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 
+import com.googlecode.gchartjava.GeographicalArea;
+
 public interface OccResourceManager extends ResourceManager<OccurrenceResource>{
 	// pie charts
 	public String occByRegionPieUrl(Long resourceId, RegionType region, int width, int height, boolean title);
@@ -41,12 +43,12 @@ public interface OccResourceManager extends ResourceManager<OccurrenceResource>{
 
 	
 	// maps
-	public String occByCountryMapUrl(Long resourceId, int width, int height, boolean title);
-	public String occByCountryMapUrl(List<StatsCount> data, int width, int height, boolean title);
+	public String occByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height);
+	public String occByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height);
 	public List<StatsCount> occByCountry(Long resourceId);
 	
-	public String speciesByCountryMapUrl(Long resourceId, int width, int height, boolean title);
-	public String speciesByCountryMapUrl(List<StatsCount> data, int width, int height, boolean title);
+	public String speciesByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height);
+	public String speciesByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height);
 	/**
 	 * Get number of distinct species/taxa per country
 	 * @param resourceId

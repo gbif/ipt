@@ -12,6 +12,8 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.gchartjava.GeographicalArea;
+
 public class GPieBuilderTest {
 
 	@Before
@@ -20,7 +22,7 @@ public class GPieBuilderTest {
 
 	@Test
 	public void testPie(){
-		GPieBuilder gb = new GPieBuilder();
+		GChartBuilder gb = new GChartBuilder();
 		List<StatsCount> data = new ArrayList<StatsCount>();
 		data.add(new StatsCount("Harald", 1012l));
 		data.add(new StatsCount("Stefan", 79l));
@@ -32,13 +34,39 @@ public class GPieBuilderTest {
 			totalRecords += val.getCount();
 		}
 		String expectedString = "http://chart.apis.google.com/chart?cht=p&chs=320x160&chl=Harald|Stefan|Freerk|Fritz|Bernd&chts=000000,16&chco=76A4FB,D7E9F5,18427D,80C65A,CA3D05&chd=e:LhApKPYUQA&chtt=Phonecalls+per+Friend";
-		String result = gb.generateChartDataString(320, 160, "Phonecalls per Friend", data, totalRecords);
-		System.out.println(result);
+		String result = gb.generatePiaChartUrl(320, 160, "Phonecalls per Friend", data, totalRecords);
+//		System.out.println(result);
         assertEquals(expectedString, result);
         
 		expectedString = "http://chart.apis.google.com/chart?cht=p&chs=320x160&chl=Harald|Stefan|Freerk|Fritz|Bernd&chts=000000,16&chco=76A4FB,D7E9F5,18427D,80C65A,CA3D05&chd=e:LhApKPYUQA";
-		result = gb.generateChartDataString(320, 160, data, totalRecords);
-		System.out.println(result);
+		result = gb.generatePiaChartUrl(320, 160, data, totalRecords);
+//		System.out.println(result);
         assertEquals(expectedString, result);
+	}
+	
+	@Test
+	public void testMap(){
+		GChartBuilder gb = new GChartBuilder();
+		List<StatsCount> data = new ArrayList<StatsCount>();
+		data.add(new StatsCount("DE", 1012l));
+		data.add(new StatsCount("UK", 790l));
+		data.add(new StatsCount("FR", 1291l));
+		data.add(new StatsCount("AR", 8222l));
+		data.add(new StatsCount("BR", 12122l));
+		data.add(new StatsCount("DA", 522l));
+		data.add(new StatsCount("RU", 1342l));
+		data.add(new StatsCount("Belgium", 18842l));
+		String expectedString = "http://chart.apis.google.com/chart?cht=t&chtm=world&chs=440x220&chld=DEUKFRARBRDARU&chco=FFFFFF,EDF0D4,13390D&chf=bg,s,E0F2FF&chd=e:DNCkD2bho9BSEf";
+		String result = gb.generateMapChartUrl(440, 220, data);
+//		System.out.println(result);
+        assertEquals(expectedString, result);
+	}	
+
+	@Test
+	public void testGetArea(){
+		GeographicalArea a;
+		a = GeographicalArea.valueOf("SOUTH_AMERICA");
+		a = GeographicalArea.valueOf("south_america".toUpperCase());
+		System.out.println(a);
 	}
 }

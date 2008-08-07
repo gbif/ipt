@@ -14,11 +14,11 @@ import org.junit.Test;
 import java.util.Arrays;
 
 public class GChartBuilderTest {
-	private GChartBuilder chartBuilder;
+	private UploadChartBuilder chartBuilder;
 	
 	@Before
 	public void setUp() throws Exception {
-		chartBuilder = new GChartBuilder();
+		chartBuilder = new UploadChartBuilder();
 		Long baseTime = 839977698718L;
 		Long dateTime;
 		Random rnd = new Random();

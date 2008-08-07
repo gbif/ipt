@@ -1,4 +1,3 @@
-/* @override http://localhost:8080/styles/simplicity/providertool.css */
 
 /* PROVIDERTOOL customising simplicity */
 
@@ -54,9 +53,8 @@ div#header .right {
 
 
 ul.actionmenu {
-	float: none;
-	clear: none;
-	display: block;
+	list-style-type: none;
+    padding: 0;
 }
 ul.actionmenu li{
 	float: none;
@@ -136,7 +134,7 @@ div.chart select {
 	border: 1px solid #000;
 }
 
-#stats-chart {
+#stats-chart, #stats-menu {
 	text-align: center; 
 	margin: auto;
 }
