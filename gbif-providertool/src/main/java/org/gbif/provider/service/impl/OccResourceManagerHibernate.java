@@ -107,7 +107,15 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         // get chartmap string
 		return gpb.generateMapChartUrl(width, height, data, area);
 	}
-	
+	public GeographicalArea getMapArea(String area){		
+		GeographicalArea a;
+		try {
+			a = GeographicalArea.valueOf(area.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			a = GeographicalArea.WORLD;
+		}
+		return a;		
+	}
 	
 	
 	/* (non-Javadoc)

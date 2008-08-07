@@ -146,32 +146,23 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public String statsByCountry() {
 		setMapSize();
 		data = occResourceManager.occByCountry(resource_id);
-		chartUrl = occResourceManager.occByCountryMapUrl(getMapArea(), data, width, height);
+		chartUrl = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
 		return SUCCESS;
 	}	
 	public String statsBySpeciesPerCountry() {
 		setMapSize();
 		data = occResourceManager.speciesByCountry(resource_id);
-		chartUrl = occResourceManager.speciesByCountryMapUrl(getMapArea(), data, width, height);
+		chartUrl = occResourceManager.speciesByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
 		return SUCCESS;
 	}	
 
-	
 	private void setMapSize(){
 		if (zoom) {
 			width=ZOOM_MAP_WIDTH;
 			height=ZOOM_MAP_HEIGHT;
 		}
 	}
-	private GeographicalArea getMapArea(){		
-		GeographicalArea a;
-		try {
-			a = GeographicalArea.valueOf(area.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			a = GeographicalArea.WORLD;
-		}
-		return a;		
-	}
+
 	
 	
 	//
