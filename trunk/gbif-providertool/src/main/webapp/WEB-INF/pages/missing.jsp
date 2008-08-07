@@ -2,9 +2,10 @@
 
 <head>
     <title>Missing Feature</title>
-    <meta name="heading" content="Missing Feature"/>
     <meta name="menu" content="MainMenu"/>
 </head>
+
+<h1>Missing Feature</h1>
 
 <div class="separator"></div>
 

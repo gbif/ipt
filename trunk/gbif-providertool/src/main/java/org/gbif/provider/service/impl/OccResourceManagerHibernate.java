@@ -44,6 +44,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         }
         // sort data
         Collections.sort(data);
+        Collections.reverse(data);
         return data;
 	}
 	

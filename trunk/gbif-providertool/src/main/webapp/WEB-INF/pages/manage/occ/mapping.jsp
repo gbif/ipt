@@ -2,7 +2,7 @@
 
 <head>
     <title><s:text name="occResourceOverview.title"/></title>
-    <meta name="heading" content="<s:property value="mapping.resource.title"/>"/>
+    <meta name="resource" content="<s:property value="mapping.resource.title"/>"/>
     <meta name="submenu" content="manage"/>
 </head>
 

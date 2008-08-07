@@ -2,8 +2,8 @@
 
 <head>
     <title><s:text name="occResourceList.title"/></title>
+    <meta name="resource" content="<s:property value="resource.title"/>"/>
     <meta name="heading" content="<s:text name='upload.heading'/>"/>
-    <meta name="menu" content="MainMenu"/>
     <meta name="submenu" content="manage"/>
 </head>
 
