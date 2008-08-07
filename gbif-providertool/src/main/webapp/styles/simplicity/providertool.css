@@ -61,11 +61,19 @@ ul.actionmenu li{
 	list-style-type: none;
 	display: inline;
 	border: 1px solid #c1c6d0;
-    margin: 0;
     padding: 0;
 	padding-right: 10px;
 	padding-left: 10px;
+	margin: 0 2px;
 }
+
+ul.actionmenu form {
+	display: inline;
+}
+ul.actionmenu .wwFormTable{
+	position: absolute;
+}
+
 ul.plain {
     list-style: none;
     padding: 0;
@@ -125,9 +133,9 @@ br.clearfix{
 div.chart{
 	height: 200px;
 }
-div.chart select {
+div.chart form {
 	float: right;
-	bottom: 5px;
+	bottom: 15px;
 	position: relative;
 }
 .map img{
@@ -138,6 +146,9 @@ div.chart select {
 	text-align: center; 
 	margin: auto;
 }
+#stats-map {
+	height: 225px; 
+}
 
 
 /* SPECIFIC */
@@ -147,4 +158,5 @@ div.chart select {
 }
 
 /* @end */
+
 

@@ -54,10 +54,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private UploadEventManager uploadEventManager;	
 	protected Map session;
 	private OccurrenceResource occResource;
-	private List<RegionType> locTypes;
-	private RegionType locDefault;
-	private List<Rank> taxTypes;
-	private Rank taxDefault;
+	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
+	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
 	public String geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
 
 	
@@ -65,9 +63,13 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
 		}
-		locTypes=RegionType.DARWIN_CORE_REGIONS;
-		taxTypes=Rank.DARWIN_CORE_RANKS;
-		
+		// prepare select lists
+		for (RegionType rt : RegionType.DARWIN_CORE_REGIONS){
+			regionClasses.put(rt.ordinal(), rt.name());
+		}
+		for (Rank rt : Rank.DARWIN_CORE_RANKS){
+			ranks.put(rt.ordinal(), rt.name());
+		}
 		// update recently viewed resources in session
 		updateRecentResouces();
 	}
@@ -94,8 +96,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 		
 	public String execute() {
-		locDefault = RegionType.Country;
-		taxDefault = Rank.Kingdom;
 		return SUCCESS;
 	}
 
@@ -113,28 +113,20 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		this.occResource = occResource;
 	}
 
-	public List getLocTypes() {
-		return locTypes;
-	}
-
-	public List getTaxTypes() {
-		return taxTypes;
-	}
-
-	public RegionType getLocDefault() {
-		return locDefault;
-	}
-
-	public Rank getTaxDefault() {
-		return taxDefault;
-	}
-
 	public void setSession(Map session) {
 		this.session = session;
 	}
 
 	public String getGeoserverMapUrl() {
 		return geoserverMapUrl;
+	}
+
+	public Map<Integer, String> getRegionClasses() {
+		return regionClasses;
+	}
+
+	public Map<Integer, String> getRanks() {
+		return ranks;
 	}
 
 }

@@ -66,10 +66,14 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public static int ZOOM_CHART_HEIGHT = 400;
 	public static int ZOOM_MAP_WIDTH = 440;
 	public static int ZOOM_MAP_HEIGHT = 220;
+	
+	public static final String MAP_RESULT = "map";
+	public static final String PIE_RESULT = "pie";
+	public static final String CHART_RESULT = "chart";
 
 	private OccurrenceResource occResource;
-	private int region = 1;
-	private int rank = 1;
+	private int region = 3;
+	private int rank = 0;
 	// chart image size
 	private int width = DEFAULT_WIDTH;
 	private int height = DEFAULT_HEIGHT;
@@ -80,64 +84,61 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	// map focus
 	private String area = GeographicalArea.WORLD.toString();
 	public String chartUrl;
+	// the last part of the action name as matched with the struts.xml expression. Used to link further
+	public String action;
 	public List<StatsCount> data;
 
 	public void prepare() {
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
 		}
-		if (zoom) {
-			// use chart default zoom. map methods have to set sizes themselves
-			width=ZOOM_CHART_WIDTH;
-			height=ZOOM_CHART_HEIGHT;
-		}
 	}
 
 	public String statsByRegion() {
 		RegionType r = RegionType.getByInt(region);
 		return statsByRegion(r);
-	}	
+	}
 	private String statsByRegion(RegionType reg) {
 		data = occResourceManager.occByRegion(resource_id, reg);
 		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
-		return SUCCESS;
+		return PIE_RESULT;
 	}
 
 	public String statsByTaxon() {
 		Rank rnk = Rank.getByInt(rank);
 		data = occResourceManager.occByTaxon(resource_id, rnk);
 		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
-		return SUCCESS;
+		return PIE_RESULT;
 	}
 	
 	public String statsByTop10Taxa() {
 		data = occResourceManager.top10Taxa(resource_id);
 		chartUrl = occResourceManager.top10TaxaPieUrl(data, width, height, title);
-		return SUCCESS;
+		return PIE_RESULT;
 	}
 	
 	public String statsByInstitution() {
 		data = occResourceManager.occByInstitution(resource_id);
 		chartUrl = occResourceManager.occByInstitutionPieUrl(data, width, height, title);
-		return SUCCESS;
+		return PIE_RESULT;
 	}
 
 	public String statsByCollection() {
 		data = occResourceManager.occByCollection(resource_id);
 		chartUrl = occResourceManager.occByCollectionPieUrl(data, width, height, title);
-		return SUCCESS;
+		return PIE_RESULT;
 	}
 
 	public String statsByBasisOfRecord() {
 		data = occResourceManager.occByBasisOfRecord(resource_id);
 		chartUrl = occResourceManager.occByBasisOfRecordPieUrl(data, width, height, title);
-		return SUCCESS;
+		return PIE_RESULT;
 	}
 
 	public String statsByDateColected() {
 		data = occResourceManager.occByDateColected(resource_id);
 		chartUrl = occResourceManager.occByDateColectedUrl(data, width, height, title);
-		return SUCCESS;
+		return CHART_RESULT;
 	}
 	
 	
@@ -147,13 +148,13 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		setMapSize();
 		data = occResourceManager.occByCountry(resource_id);
 		chartUrl = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
-		return SUCCESS;
+		return MAP_RESULT;
 	}	
 	public String statsBySpeciesPerCountry() {
 		setMapSize();
 		data = occResourceManager.speciesByCountry(resource_id);
 		chartUrl = occResourceManager.speciesByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
-		return SUCCESS;
+		return MAP_RESULT;
 	}	
 
 	private void setMapSize(){
@@ -215,10 +216,23 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 
 	public void setZoom(boolean zoom) {
 		this.zoom = zoom;
+		if (zoom) {
+			// use chart default zoom. map methods have to set sizes themselves
+			width=ZOOM_CHART_WIDTH;
+			height=ZOOM_CHART_HEIGHT;
+		}
 	}
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}
 	
 	
