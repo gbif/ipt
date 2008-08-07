@@ -58,6 +58,12 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 						.setParameter("resourceId", resourceId);
 		return query.list();
     }
+    
+    public ScrollableResults scrollResource(final Long resourceId) {
+        Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId", persistentClass.getName()))
+						.setParameter("resourceId", resourceId);
+        return query.scroll(ScrollMode.FORWARD_ONLY);
+    }      
 
     
     public T findByLocalId(final String localId, final Long resourceId) {
@@ -110,16 +116,21 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 	}
 
 	public void reindex(Long resourceId){
-		FullTextSession fullTextSession = Search.createFullTextSession(getSession());
-//		Transaction tx = fullTextSession.beginTransaction();
-		List<T> coreRecords = getAll(resourceId);
+		Session hibernateSession = getSession();
+		FullTextSession fullTextSession = Search.createFullTextSession(hibernateSession);
+		ScrollableResults results = scrollResource(resourceId);
+		Transaction tx = fullTextSession.beginTransaction();
+
 		Long counter = 0l;
-		for (T core : coreRecords) {
-//		    fullTextSession.index(core);
-		    if (++counter % 100 == 0){
-		    	log.debug(String.format("Indexed %s records of resource %s", counter, resourceId));
+		while (results.next()){
+            fullTextSession.index((T)results.get(0)); 
+		    if (++counter % 1000 == 0){
+                fullTextSession.flush(); //apply changes to indexes 
+                fullTextSession.clear(); //clear since the queue is processed 
+	            hibernateSession.clear(); 
+                log.debug(String.format("Indexed %s records of resource %s", counter, resourceId));
 		    }
 		}
-//		tx.commit(); //index are written at commit time  		
+		tx.commit(); //index are written at commit time  		
 	}
 }

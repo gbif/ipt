@@ -5,10 +5,12 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.OccurrenceResource;
+import org.hibernate.ScrollableResults;
 
 public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<T>{
 
     public List<T> getAll(final Long resourceId);
+    public ScrollableResults scrollResource(final Long resourceId);
     
 	/**
 	 * Flag all core records for a given resource as deleted by setting coreRecord.isDeleted=true
