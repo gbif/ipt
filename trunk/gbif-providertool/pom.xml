@@ -358,6 +358,12 @@
             <id>gbif</id>
             <url>http://tools.gbif.org/maven/repository/</url>
         </repository>        
+        <repository>
+            <id>repository.jboss.org</id>
+            <name>JBoss Maven Repository</name>
+            <url>http://repository.jboss.org/maven2</url>
+            <layout>default</layout>
+        </repository>
         <!-- for the JSON struts2 plugin -->
         <repository>
             <id>Maven Plugin Repository</id>
@@ -495,6 +501,11 @@
             <artifactId>gchartjava</artifactId>
             <version>0.5.1</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>3.0.1.GA</version>
         </dependency>
         
         <!-- GBIF stuff -->
@@ -757,5 +768,8 @@
         <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool_test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
         <jdbc.username>providertool</jdbc.username>
         <jdbc.password>w32wfun</jdbc.password>
+        
+        <!-- Hibernate search -->
+        <h8search.indexBase>/Users/markus/Desktop/lucene</h8search.indexBase>
     </properties>
 </project>

@@ -33,6 +33,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
 
 @MappedSuperclass
 public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
@@ -41,8 +45,10 @@ public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 
 	protected static final Log log = LogFactory.getLog(CoreRecord.class);
 
+	@DocumentId
 	private Long id;
 	private String localId;
+    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String guid;
 	private String link;
 	private boolean isDeleted;

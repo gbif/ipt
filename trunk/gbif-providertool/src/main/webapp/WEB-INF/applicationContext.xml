@@ -84,7 +84,7 @@
         <constructor-arg ref="extensionManager"/>
     </bean>
 
-
+    
     
     <!-- SCHEDULER -->
     <bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractManager"/>

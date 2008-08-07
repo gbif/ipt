@@ -67,4 +67,5 @@ public class OccResourceManagerHibernateTest extends BaseDaoTestCase{
 	public void testSpeciesByCountryMapUrl() {
 		System.out.println(occResourceManager.speciesByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
+	
 }

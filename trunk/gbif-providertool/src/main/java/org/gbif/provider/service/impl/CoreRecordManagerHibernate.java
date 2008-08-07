@@ -19,8 +19,14 @@ package org.gbif.provider.service.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.CoreRecordManager;
 import org.hibernate.CacheMode;
@@ -28,6 +34,9 @@ import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -37,11 +46,21 @@ import org.hibernate.Session;
  * @param <T>
  */
 public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericManagerHibernate<T> implements CoreRecordManager<T> {
-	public CoreRecordManagerHibernate(Class<T> persistentClass) {
+	protected String[] FIELD_NAMES;
+	
+	public CoreRecordManagerHibernate(Class<T> persistentClass, String[] searchableFieldNames) {
 		super(persistentClass);
+		this.FIELD_NAMES = searchableFieldNames;
 	}
 
-	public T findByLocalId(final String localId, final Long resourceId) {
+    public List<T> getAll(final Long resourceId) {
+        Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId", persistentClass.getName()))
+						.setParameter("resourceId", resourceId);
+		return query.list();
+    }
+
+    
+    public T findByLocalId(final String localId, final Long resourceId) {
         Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId and core.localId = :localId", persistentClass.getName()))
 						.setParameter("resourceId", resourceId)
 						.setParameter("localId", localId);
@@ -81,4 +100,26 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 		log.info(String.format("%s %s records of resource were flagged as deleted.", count, persistentClass.getName(), resource.getId()));
 	}
 
+	public List<T> search(final Long resourceId, final String q) throws ParseException {
+	     FullTextSession fullTextSession = Search.createFullTextSession(getSession());
+	     QueryParser parser = new MultiFieldQueryParser(FIELD_NAMES, new StandardAnalyzer());
+	     org.apache.lucene.search.Query query = parser.parse(q);
+	     org.hibernate.Query hibernateQuery = fullTextSession.createFullTextQuery(query, persistentClass);
+	     List results = hibernateQuery.list();
+	     return results;
+	}
+
+	public void reindex(Long resourceId){
+		FullTextSession fullTextSession = Search.createFullTextSession(getSession());
+//		Transaction tx = fullTextSession.beginTransaction();
+		List<T> coreRecords = getAll(resourceId);
+		Long counter = 0l;
+		for (T core : coreRecords) {
+//		    fullTextSession.index(core);
+		    if (++counter % 100 == 0){
+		    	log.debug(String.format("Indexed %s records of resource %s", counter, resourceId));
+		    }
+		}
+//		tx.commit(); //index are written at commit time  		
+	}
 }
