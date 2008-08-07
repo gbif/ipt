@@ -5,6 +5,22 @@
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
 	<s:head theme="ajax" debug="true"/>
+	
+	<script type="text/javascript">
+	 	dojo.require("dojo.event.*");
+	 	function showme(evt) {
+	   		alert(evt);
+	 	}
+	 	function init() {
+	 		var sel = dojo.byId("rank");
+	 		var anch = dojo.byId("myBelovedTrigger");
+	 		showme(sel);
+	 		showme(anch);
+		 	dojo.event.connect(sel, "onChange", anch, "onClick");
+		 	
+		 	dojo.addOnLoad (init);
+	 	}
+	</script>	
 </head>
 
 
@@ -53,42 +69,28 @@
 
 
 <div id="loc-countries" class="stats map">
-	<label><s:text name="stats.occByCountry"/></label>
-	<s:url id="occResourceMapByCountryUrl" action="occResourceMapByCountry">
-		<s:param name="resource_id" value="resource_id" />
-		<s:param name="region" value="4" />
-	</s:url>
-	<s:a href="%{occResourceMapByCountryUrl}" >
-		<s:action name="occResourceChartByCountry" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<label><s:text name="stats.occByCountry"/></label>	
+	<div id="imgByCountry">
+		<s:action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 <div id="loc-tax" class="stats map">
 	<label><s:text name="stats.speciesPerCountry"/></label>
-	<s:url id="occResourceMapBySpeciesPerCountryUrl" action="occResourceMapBySpeciesPerCountry">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceMapBySpeciesPerCountryUrl}" >
-		<s:action name="occResourceChartBySpeciesPerCountry" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<div id="imgBySpeciesPerCountry">
+		<s:action name="occResourceStatsBySpeciesPerCountry" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 
 <div id="loc-pie" class="stats chart">
 	<label><s:text name="stats.occByRegion"/></label>
-	<s:select name="locType" list="locTypes" value="locDefault.columnName" theme="simple"/>
-
-	<s:url id="occResourceStatsByRegionUrl" action="occResourceStatsByRegion">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByRegionUrl}" >
-		<s:action name="occResourceChartByRegion" namespace="/ajax" executeResult="true"/>
-	</s:a>
-
-	<!--
-	<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}">
-		<s:property value="occResource.getRecordCount()"/>
+	<s:form id="regionClassForm" theme="ajax" action="occResourceStatsByRegion" namespace="/ajax">
+		<s:hidden name="resource_id" value="%{resource_id}" />
+		<s:select id="regionClass" name="region" list="regionClasses" value="region" theme="ajax"/>
+		<s:a targets="imgByRegion" theme="ajax">go </s:a>
+	</s:form>
+	<s:div id="imgByRegion">
+		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true"/>
 	</s:div>
-	<img src="<s:property value="occByRegionUrl"/>" />
-	-->
 </div>
 <div id="loc-geoserver" class="stats map">
 	<label><s:text name="stats.occPointMap"/></label>
@@ -101,23 +103,20 @@
 
 <div id="tax-pie" class="stats chart">
 	<label><s:text name="stats.occByTaxon"/></label>
-	<s:select name="taxType" title="rank" list="taxTypes" value="taxDefault.columnName" theme="simple"/>
-	<s:url id="occResourceStatsByTaxonUrl" action="occResourceStatsByTaxon">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByTaxonUrl}" >
-		<s:action name="occResourceChartByTaxon" namespace="/ajax" executeResult="true"/>
-	</s:a>
-
+	<s:form id="regionClassForm" theme="ajax" action="occResourceStatsByTaxon" namespace="/ajax">
+		<s:hidden name="resource_id" value="%{resource_id}" />
+		<s:select id="rank" name="rank" list="ranks" value="rank" theme="ajax"/>
+		<s:a targets="imgByTaxon" theme="ajax">go </s:a>
+	</s:form>
+	<s:div id="imgByTaxon">
+		<s:action name="occResourceStatsByTaxon" namespace="/ajax" executeResult="true"/>
+	</s:div>
 </div>
 <div id="tax2-pie" class="stats chart">
 	<label><s:text name="stats.occByTop10Taxa"/></label>
-	<s:url id="occResourceStatsByTop10TaxaUrl" action="occResourceStatsByTop10Taxa">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByTop10TaxaUrl}" >
-		<s:action name="occResourceChartByTop10Taxa" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<div id="imgByTop10Taxa">
+		<s:action name="occResourceStatsByTop10Taxa" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 
 
@@ -127,21 +126,15 @@
 
 <div id="inst-pie" class="stats chart">
 	<label><s:text name="stats.occByInstitution"/></label>
-	<s:url id="occResourceStatsByInstitutionUrl" action="occResourceStatsByInstitution">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByInstitutionUrl}" >
-		<s:action name="occResourceChartByInstitution" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<div id="imgByInstitution">
+		<s:action name="occResourceStatsByInstitution" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 <div id="col-pie" class="stats chart">
 	<label><s:text name="stats.occByCollection"/></label>
-	<s:url id="occResourceStatsByCollectionUrl" action="occResourceStatsByCollection">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByCollectionUrl}" >
-		<s:action name="occResourceChartByCollection" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<div id="imgByCollection">
+		<s:action name="occResourceStatsByCollection" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 
 
@@ -150,21 +143,15 @@
 
 <div id="recordbasis-pie" class="stats chart">
 	<label><s:text name="stats.occByBasisOfRecord"/></label>
-	<s:url id="occResourceStatsByBasisOfRecordUrl" action="occResourceStatsByBasisOfRecord">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByBasisOfRecordUrl}" >
-		<s:action name="occResourceChartByBasisOfRecord" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<div id="imgByBasisOfRecord">
+		<s:action name="occResourceStatsByBasisOfRecord" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 <div id="time-pie" class="stats chart">
 	<label><s:text name="stats.occByDateColected"/></label>
-	<s:url id="occResourceStatsByDateColectedUrl" action="occResourceStatsByDateColected">
-		<s:param name="resource_id" value="resource_id" />
-	</s:url>
-	<s:a href="%{occResourceStatsByDateColectedUrl}" >
-		<s:action name="occResourceChartByDateColected" namespace="/ajax" executeResult="true"/>
-	</s:a>
+	<div id="imgByDateColected">
+		<s:action name="occResourceStatsByDateColected" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
 
 <br class="clearfix" />

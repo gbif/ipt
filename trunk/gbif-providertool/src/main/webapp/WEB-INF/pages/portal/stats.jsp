@@ -4,7 +4,6 @@
     <title><s:text name="occResourceOverview.title"/> Statistics</title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
-	<s:head theme="ajax" debug="true"/>
 </head>
 
 
