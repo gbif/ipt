@@ -142,7 +142,7 @@ div.chart form {
 	border: 1px solid #000;
 }
 
-#stats-chart, #stats-menu {
+#stats-chart, #stats-menu, #stats-map {
 	text-align: center; 
 	margin: auto;
 }

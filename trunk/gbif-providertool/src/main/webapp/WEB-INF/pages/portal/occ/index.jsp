@@ -4,7 +4,7 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
-	<s:head theme="ajax" debug="true"/>
+	<s:head theme="ajax" debug="false"/>
 </head>
 	
   
@@ -71,7 +71,9 @@
 	</s:form>
 	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax"/>
 	<div id="imgByRegion">
-		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true"/>
+		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true">
+			<s:param name="type" value="3"/>
+		</s:action>
 	</div>
 </div>
 <script>
