@@ -88,7 +88,7 @@ Europe
 					<label>Recent Resources</label>
 					<ul class="plain">
 						<s:iterator value="#session.recentResources" status="resstatus">
-							<s:url id="resLink" action="resource" >
+							<s:url id="resLink" action="resource" includeParams="none">
 								<s:param name="resource_id" value="value" />
 							</s:url>
 							<li><s:a href="%{resLink}"><s:property value="label"/></s:a></li>

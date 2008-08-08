@@ -4,7 +4,7 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="manage"/>
-	<s:head theme="ajax" debug="true"/>
+	<s:head theme="ajax" debug="false"/>
 </head>
 
 <c:set var="placeholder">
