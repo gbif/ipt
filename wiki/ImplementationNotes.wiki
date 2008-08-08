@@ -1,5 +1,6 @@
 === Implemented ===
  * Appfuse2 [http://appfuse.org/display/APF/AppFuse+QuickStart#AppFuseQuickStart-create Struts 2 Basic archetype]
+ * 2 tier architecture with merged DAO/Service layer
  * Geoserver with custom [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/GT2-gbif-providertool/ datasource module] for WFS and maps 
  * statistic charts via google chart API using http://code.google.com/p/gchartjava/
  * Cache DB as embedded H2 database (optionally also external mysql/postgres database) 
