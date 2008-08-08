@@ -41,6 +41,11 @@
         <level value="WARN"/>
     </logger>
 
+    <!-- Turn off all webwork2 util stuff -->
+    <logger name="com.opensymphony.xwork2.util">
+        <level value="ERROR"/>
+    </logger>
+
     <!-- http://issues.appfuse.org/browse/APF-736#action_11786 -->
     <logger name="com.opensymphony.xwork2.util.XWorkConverter">
         <level value="FATAL"/>
@@ -54,8 +59,9 @@
     <!-- Turn off warnings from messages.jsp -->
     <logger name="com.opensymphony.xwork2.util.OgnlValueStack">
         <level value="ERROR"/>
-    </logger>
-   
+    </logger>    
+    
+    
     <logger name="org.appfuse">
         <level value="INFO"/>
     </logger>
