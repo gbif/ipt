@@ -16,40 +16,16 @@
 
 package org.gbif.provider.webapp.action.portal;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
-import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.model.LabelValue;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.datasource.DatasourceInterceptor;
-import org.gbif.provider.job.JobUtils;
-import org.gbif.provider.job.OccUploadBaseJob;
-import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
-import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.GChartBuilder;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
-import org.gbif.scheduler.model.Job;
-import org.gbif.scheduler.service.JobManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.googlecode.gchartjava.GeographicalArea;
 import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.config.entities.Parameterizable;
 
 /**
  * ActionClass to generate the data for a single occurrence resource statistic with chart image and data
@@ -72,8 +48,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public static final String CHART_RESULT = "chart";
 
 	private OccurrenceResource occResource;
-	private int region = 3;
-	private int rank = 0;
 	// chart image size
 	private int width = DEFAULT_WIDTH;
 	private int height = DEFAULT_HEIGHT;
@@ -81,11 +55,15 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	private boolean title = false;
 	// use zoom size instead of default?
 	private boolean zoom = false;
+	// subtype of what to select. eg rank (family) or regionClass (continent)
+	private int type = 0;
+	// list of all avilable types as Enums
+	public List types;
 	// map focus
 	private String area = GeographicalArea.WORLD.toString();
 	public String chartUrl;
 	// the last part of the action name as matched with the struts.xml expression. Used to link further
-	public String action;
+	public String action="";
 	public List<StatsCount> data;
 
 	public void prepare() {
@@ -95,17 +73,19 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	}
 
 	public String statsByRegion() {
-		RegionType r = RegionType.getByInt(region);
+		RegionType r = RegionType.getByInt(type);
 		return statsByRegion(r);
 	}
 	private String statsByRegion(RegionType reg) {
+		types = RegionType.DARWIN_CORE_REGIONS;
 		data = occResourceManager.occByRegion(resource_id, reg);
 		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
 		return PIE_RESULT;
 	}
 
 	public String statsByTaxon() {
-		Rank rnk = Rank.getByInt(rank);
+		Rank rnk = Rank.getByInt(type);
+		types = Rank.DARWIN_CORE_RANKS;
 		data = occResourceManager.occByTaxon(resource_id, rnk);
 		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
 		return PIE_RESULT;
@@ -178,22 +158,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		this.occResource = occResource;
 	}
 
-	public int getRegion() {
-		return region;
-	}
-
-	public void setRegion(int region) {
-		this.region = region;
-	}
-
-	public int getRank() {
-		return rank;
-	}
-
-	public void setRank(int rank) {
-		this.rank = rank;
-	}
-
 	public String getChartUrl() {
 		return chartUrl;
 	}
@@ -234,6 +198,17 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public void setAction(String action) {
 		this.action = action;
 	}
-	
-	
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public List<Enum> getTypes() {
+		return types;
+	}
+		
 }
