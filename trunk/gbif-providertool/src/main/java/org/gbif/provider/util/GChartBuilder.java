@@ -63,6 +63,9 @@ public class GChartBuilder {
         	chart.setTitle("",Color.BLACK,16);
         	result = chart.createURLString().split("&chtt=")[0];
         }
+        
+        // surround | with spaces
+//        result = result.replaceAll("\\|", "\\\\|");
 		return result;
 	}
 

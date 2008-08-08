@@ -4,10 +4,10 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
-	<s:head theme="ajax" debug="true"/>	
+	<s:head theme="ajax" debug="true"/>
 </head>
-
-
+	
+  
 <s:form>
 <fieldset>
 	<legend><s:text name="occResource.description"/></legend>
@@ -66,17 +66,28 @@
 
 <div id="loc-pie" class="stats chart">
 	<label><s:text name="stats.occByRegion"/></label>
-	<s:form id="regionClassForm" theme="ajax" action="occResourceStatsByRegion" namespace="/ajax">
-		<s:hidden name="resource_id" value="%{resource_id}" />
-		<s:select name="region" list="regionClasses" value="region" onchange="dojo.event.topic.publish('imgByRegion_topic');return false;" theme="ajax"/>
+	<s:form id="regionClassForm">
+		<s:select id="regionClass" name="region" list="regionClasses" value="3" theme="simple"/>
 	</s:form>
-	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax" includeParams="none"/>
-	<s:div id="imgByRegion" href="%{imgByRegionUrl}" formId="regionClassForm" listenTopics="imgByRegion_topic" theme="ajax"></s:div>
+	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax"/>
+	<div id="imgByRegion">
+		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true"/>
+	</div>
 </div>
+<script>
+function updateByRegion(){
+	var url = '<s:property value="imgByRegionUrl"/>';
+	var params = { region: $F("regionClass") }; 
+	var target = 'imgByRegion';	
+	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+};
+$('regionClass').observe('change', updateByRegion);
+</script>	
 <div id="loc-geoserver" class="stats map">
 	<label><s:text name="stats.occPointMap"/></label>
 	<img src="<s:property value="geoserverMapUrl"/>" />
 </div>
+
 			
 
 <br class="clearfix" />
@@ -84,15 +95,23 @@
 
 <div id="tax-pie" class="stats chart">
 	<label><s:text name="stats.occByTaxon"/></label>
-	<s:form id="rankForm" theme="ajax" >
-		<s:hidden name="resource_id" value="%{resource_id}" />
-		<s:select name="rank" list="ranks" value="rank" onchange="dojo.event.topic.publish('imgByTaxon_topic');return false;"/>
+	<s:form id="rankForm">
+		<s:select id="rank" list="ranks" value="rank" theme="simple"/>
 	</s:form>
-	<s:url id="imgByTaxonUrl" action="occResourceStatsByTaxon" namespace="/ajax" includeParams="none"/>
-	<s:div id="imgByTaxon" listenTopics="imgByTaxon_topic" theme="ajax" formId="rankForm" href="%{imgByTaxonUrl}">
+	<s:url id="imgByTaxonUrl" action="occResourceStatsByTaxon" namespace="/ajax"/>
+	<div id="imgByTaxon">
 		<s:action name="occResourceStatsByTaxon" namespace="/ajax" executeResult="true"/>
-	</s:div>
+	</div>
 </div>
+<script>
+function updateByTaxon(){
+	var url = '<s:property value="imgByTaxonUrl"/>';
+	var params = { rank: $F("rank") }; 
+	var target = 'imgByTaxon';	
+	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+};
+$('rank').observe('change', updateByTaxon);
+</script>	
 <div id="tax2-pie" class="stats chart">
 	<label><s:text name="stats.occByTop10Taxa"/></label>
 	<div id="imgByTop10Taxa">
