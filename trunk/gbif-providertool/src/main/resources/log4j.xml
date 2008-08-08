@@ -41,8 +41,8 @@
         <level value="WARN"/>
     </logger>
 
-    <!-- Turn off all webwork2 util stuff -->
-    <logger name="com.opensymphony.xwork2.util">
+    <!-- Turn off all webwork2 stuff -->
+    <logger name="com.opensymphony.xwork2">
         <level value="ERROR"/>
     </logger>
 
@@ -61,7 +61,6 @@
         <level value="ERROR"/>
     </logger>    
     
-    
     <logger name="org.appfuse">
         <level value="INFO"/>
     </logger>
@@ -70,6 +69,12 @@
     <logger name="org.codehaus">
         <level value="WARN"/>
     </logger>
+    <!-- org.tuckey.web.filters.urlrewrite.UrlRewriter -->
+    <logger name="org.tuckey">
+        <level value="WARN"/>
+    </logger>
+
+    
     <!-- GBIF things -->
     <logger name="org.gbif" additivity="false">
         <level value="DEBUG"/>

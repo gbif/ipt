@@ -137,8 +137,8 @@
         </action>
 
         <!-- occurrence actions -->
-        <action name="occResources">
-            <result>/WEB-INF/pages/missing.jsp</result>
+        <action name="occResources" class="org.gbif.provider.webapp.action.portal.OccResourceAction" method="list">
+            <result>/WEB-INF/pages/portal/occ/resourceList.jsp</result>
         </action>
         <action name="occResource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
             <result>/WEB-INF/pages/portal/occ/index.jsp</result>
