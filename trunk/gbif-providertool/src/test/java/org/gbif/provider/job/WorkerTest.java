@@ -6,8 +6,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.appfuse.dao.BaseDaoTestCase;
 import org.appfuse.webapp.action.BaseActionTestCase;
+import org.gbif.provider.util.ConfigUtil;
 import org.gbif.scheduler.mock.MockJob;
 import org.gbif.scheduler.mock.WorkerPoolFactory;
 import org.gbif.scheduler.model.Job;
@@ -30,6 +33,7 @@ public class WorkerTest extends BaseDaoTestCase {
 
     @Override
     protected void onSetUpBeforeTransaction() throws Exception {
+    	ConfigUtil.setWebappDir(System.getProperty("java.io.tmpdir"));
 		super.onSetUpBeforeTransaction();
 		workerPool = workerPoolFactory.newWorkerPool("TestInstance1");
 	}
@@ -67,18 +71,14 @@ public class WorkerTest extends BaseDaoTestCase {
 		// reset MockJob.result
 		MockJob.result="not run yet";
 		assertFalse(MockJob.goodResult.equals(MockJob.result));
-		try {
-			worker.execute(workerPool, classToRun, dataAsJSON);
-		} catch (ObjectRetrievalFailureException e) {
-			// supposed to throw that as we dont use a job from the jobDao but created a new one
-		}
+		worker.execute(workerPool, classToRun, dataAsJSON);
 		// assert that job really run after waiting for 5 seconds to give the job a fair chance to run as it is a different thread
 		Thread.sleep(5000);
 		assertEquals(MockJob.goodResult, MockJob.result);
 	}
 	
 	@Test
-	public void testOccDbUploadJob() throws Exception {
+	public void t32estOccDbUploadJob() throws Exception {
 		// test occDbUploadJob
 		Job job = new Job();
 		job.setDescription("test rdbms upload job");
@@ -95,11 +95,7 @@ public class WorkerTest extends BaseDaoTestCase {
 		String dataAsJSON = job.getDataAsJSON();
 
 		Worker worker = workerPool.borrowObject(job);
-		try {
-			worker.execute(workerPool, classToRun, dataAsJSON);
-		} catch (ObjectRetrievalFailureException e) {
-			// supposed to throw that as we dont use a job from the jobDao but created a new one
-		}
+		worker.execute(workerPool, classToRun, dataAsJSON);
 	}
 
 }

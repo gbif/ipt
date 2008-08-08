@@ -16,33 +16,40 @@
 
 package org.gbif.provider.service.impl;
 
+import java.util.UUID;
+
+import javax.persistence.EntityExistsException;
+
 import org.appfuse.dao.BaseDaoTestCase;
+import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.util.Constants;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
+import org.springframework.test.AssertThrows;
 
 
 public class DarwinCoreMangerTest extends BaseDaoTestCase{
 	protected DarwinCoreManager darwinCoreManager;
+	private GenericManager<OccurrenceResource, Long> occResourceManager;
 
+	@Test
+	public void testSave(){
+		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		DarwinCore dwc = DarwinCore.newMock(res);
+		dwc = darwinCoreManager.save(dwc);		
+	}
+
+	
 	public void setDarwinCoreManager(DarwinCoreManager darwinCoreManager) {
 		this.darwinCoreManager = darwinCoreManager;
 	}
 
-
-	@Test
-	public void testSave(){
-		DarwinCore dwc = DarwinCore.newInstance();
-		dwc.setCatalogNumber("befhjsa6788-x");
-		dwc.setBasisOfRecord("specimen");
-		dwc.setInstitutionCode("RBGK");
-		// location
-		dwc.setCountry("Spain");
-		// taxonomy
-		dwc.setScientificName("Abies alba");
-		dwc.setGenus("Abies");
-		
-		dwc = darwinCoreManager.save(dwc);
-		System.out.println(dwc);
+	public void setOccResourceManager(
+			GenericManager<OccurrenceResource, Long> occResourceManager) {
+		this.occResourceManager = occResourceManager;
 	}
+	
 }

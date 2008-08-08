@@ -31,7 +31,7 @@ public class DarwinCoreTest {
 		dwc.setCatalogNumber("befhjsa6788-x");
 		dwc.setScientificName("Abies alba");
 		dwc.setBasisOfRecord("specimen");
-		System.out.println(dwc);
+//		System.out.println(dwc);
 		assertTrue(dwc.hashCode() > 0);
 		assertTrue(dwc.toString().length() > 0);
 		assertTrue(dwc.equals(dwc));
@@ -43,7 +43,7 @@ public class DarwinCoreTest {
 		dwc2.setBasisOfRecord("specimen");
 		assertTrue(dwc.equals(dwc2));
 		assertTrue(dwc.hashCode() == dwc2.hashCode());
-		System.out.println(dwc2);
+//		System.out.println(dwc2);
 		
 		dwc2.setInstitutionCode("RBGK");
 		assertFalse(dwc.hashCode() == dwc2.hashCode());

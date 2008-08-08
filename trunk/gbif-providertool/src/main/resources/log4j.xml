@@ -12,10 +12,6 @@
 
     <appender name="I18NDATABASE" class="org.gbif.logging.log.I18nDatabaseAppender"/>
     
-    <logger name="com.opensymphony.xwork2.util.OgnlValueStack">
-        <level value="ERROR"/>
-    </logger>
-    
     <logger name="net.sf.ehcache">
         <level value="ERROR"/>
     </logger>
@@ -38,7 +34,7 @@
     </logger>
   
     <logger name="org.hibernate.SQL">
-        <level value="WARN"/>
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="org.springframework">
@@ -76,7 +72,7 @@
     </logger>
     
     <root>
-        <level value="WARN"/>
+        <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

@@ -507,7 +507,12 @@
             <artifactId>hibernate-search</artifactId>
             <version>3.0.1.GA</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>3.0.0.GA</version>
+        </dependency>
+
         <!-- GBIF stuff -->
         <dependency>
             <groupId>org.gbif</groupId>
@@ -680,6 +685,7 @@
                 <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
                 <jdbc.username>providertool</jdbc.username>
                 <jdbc.password>w32wfun</jdbc.password>
+                <h8search.indexBase>${java.io.tmpdir}/lucene/providertool</h8search.indexBase>
             </properties>
             <build>
                 <plugins>
@@ -770,6 +776,6 @@
         <jdbc.password>w32wfun</jdbc.password>
         
         <!-- Hibernate search -->
-        <h8search.indexBase>/Users/markus/Desktop/lucene</h8search.indexBase>
+        <h8search.indexBase>${java.io.tmpdir}/lucene/providertool_test</h8search.indexBase>
     </properties>
 </project>
