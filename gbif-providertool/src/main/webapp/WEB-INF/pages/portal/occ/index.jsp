@@ -4,25 +4,8 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="search"/>
-	<s:head theme="ajax" debug="true"/>
-	
-	<script type="text/javascript">
-	 	dojo.require("dojo.event.*");
-	 	function showme(evt) {
-	   		alert(evt);
-	 	}
-	 	function init() {
-	 		var sel = dojo.byId("rank");
-	 		var anch = dojo.byId("myBelovedTrigger");
-	 		showme(sel);
-	 		showme(anch);
-		 	dojo.event.connect(sel, "onChange", anch, "onClick");
-		 	
-		 	dojo.addOnLoad (init);
-	 	}
-	</script>	
+	<s:head theme="ajax" debug="true"/>	
 </head>
-
 
 
 <s:form>
@@ -85,12 +68,10 @@
 	<label><s:text name="stats.occByRegion"/></label>
 	<s:form id="regionClassForm" theme="ajax" action="occResourceStatsByRegion" namespace="/ajax">
 		<s:hidden name="resource_id" value="%{resource_id}" />
-		<s:select id="regionClass" name="region" list="regionClasses" value="region" theme="ajax"/>
-		<s:a targets="imgByRegion" theme="ajax">go </s:a>
+		<s:select name="region" list="regionClasses" value="region" onchange="dojo.event.topic.publish('imgByRegion_topic');return false;" theme="ajax"/>
 	</s:form>
-	<s:div id="imgByRegion">
-		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true"/>
-	</s:div>
+	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax" includeParams="none"/>
+	<s:div id="imgByRegion" href="%{imgByRegionUrl}" formId="regionClassForm" listenTopics="imgByRegion_topic" theme="ajax"></s:div>
 </div>
 <div id="loc-geoserver" class="stats map">
 	<label><s:text name="stats.occPointMap"/></label>
@@ -103,12 +84,12 @@
 
 <div id="tax-pie" class="stats chart">
 	<label><s:text name="stats.occByTaxon"/></label>
-	<s:form id="regionClassForm" theme="ajax" action="occResourceStatsByTaxon" namespace="/ajax">
+	<s:form id="rankForm" theme="ajax" >
 		<s:hidden name="resource_id" value="%{resource_id}" />
-		<s:select id="rank" name="rank" list="ranks" value="rank" theme="ajax"/>
-		<s:a targets="imgByTaxon" theme="ajax">go </s:a>
+		<s:select name="rank" list="ranks" value="rank" onchange="dojo.event.topic.publish('imgByTaxon_topic');return false;"/>
 	</s:form>
-	<s:div id="imgByTaxon">
+	<s:url id="imgByTaxonUrl" action="occResourceStatsByTaxon" namespace="/ajax" includeParams="none"/>
+	<s:div id="imgByTaxon" listenTopics="imgByTaxon_topic" theme="ajax" formId="rankForm" href="%{imgByTaxonUrl}">
 		<s:action name="occResourceStatsByTaxon" namespace="/ajax" executeResult="true"/>
 	</s:div>
 </div>

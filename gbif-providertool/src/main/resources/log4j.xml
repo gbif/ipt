@@ -34,7 +34,7 @@
     </logger>
   
     <logger name="org.hibernate.SQL">
-        <level value="DEBUG"/>
+        <level value="WARN"/>
     </logger>
 
     <logger name="org.springframework">
@@ -59,7 +59,11 @@
     <logger name="org.appfuse">
         <level value="INFO"/>
     </logger>
-    
+
+    <!-- org.codehaus.xfire.aegis, org.codehaus.xfire.spring.remoting.Jsr181HandlerMapping -->
+    <logger name="org.codehaus">
+        <level value="WARN"/>
+    </logger>
     <!-- GBIF things -->
     <logger name="org.gbif" additivity="false">
         <level value="DEBUG"/>
