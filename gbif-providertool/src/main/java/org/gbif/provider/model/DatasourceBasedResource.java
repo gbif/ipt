@@ -20,6 +20,8 @@ package org.gbif.provider.model;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
@@ -50,6 +52,7 @@ import org.gbif.provider.util.ConfigUtil;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 
 /**
@@ -192,7 +195,13 @@ public abstract class DatasourceBasedResource extends Resource {
 	public void udpateDatasource() {
 		if (this.getJdbcUrl() != null && jdbcDriverClass != null){			
 			try {
-				datasource = new SingleConnectionDataSource(this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword(), true);
+				Class.forName(this.jdbcDriverClass);	
+				Driver driver = DriverManager.getDriver(this.getJdbcUrl());
+				
+				datasource = new SimpleDriverDataSource(driver, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword());
+			} catch(java.lang.ClassNotFoundException e) {
+				System.err.print("ClassNotFoundException: ");
+				System.err.println(e.getMessage());
 			} catch (Exception e) {
 				datasource = null;
 				log.debug(String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s, Password=%s", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword()), e);

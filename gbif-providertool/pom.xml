@@ -502,6 +502,7 @@
             <version>0.5.1</version>
             <type>jar</type>
         </dependency>
+        <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search</artifactId>
@@ -512,7 +513,13 @@
             <artifactId>hibernate-validator</artifactId>
             <version>3.0.0.GA</version>
         </dependency>
-
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
         <!-- GBIF stuff -->
         <dependency>
             <groupId>org.gbif</groupId>
@@ -742,7 +749,7 @@
         
         <!-- Framework dependency versions -->
         <appfuse.version>2.0.2</appfuse.version>
-        <spring.version>2.5.2</spring.version>
+        <spring.version>2.5.5</spring.version>
 
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>

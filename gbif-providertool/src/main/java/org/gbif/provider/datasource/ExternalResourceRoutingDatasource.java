@@ -48,6 +48,14 @@ public class ExternalResourceRoutingDatasource extends AbstractRoutingDataSource
 		if (dataSource == null) {
 			throw new IllegalStateException("Cannot determine target DataSource for resource key [" + lookupKey + "]");
 		}
+		// confirm that connection is open... just so we know whats happening
+		try {
+			if (dataSource.getConnection().isClosed()){
+				log.warn("Datasource db connection is closed!");
+			}
+		} catch (SQLException e) {
+			log.warn("Datasource db connection is closed!", e);
+		}
 		return dataSource;
 	}
 

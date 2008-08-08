@@ -61,6 +61,11 @@
         <level value="ERROR"/>
     </logger>    
     
+    <!-- Turn off warnings from VelocityMenuDisplayer -->
+    <logger name="net.sf.navigator.displayer">
+        <level value="ERROR"/>
+    </logger>    
+
     <logger name="org.appfuse">
         <level value="INFO"/>
     </logger>
