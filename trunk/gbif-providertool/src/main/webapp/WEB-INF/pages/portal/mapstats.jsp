@@ -19,7 +19,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="world" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">World</s:a>
+				<s:a targets="stats-map" theme="ajax">World</s:a>
 			</s:form>
 		</li>
 		<li>
@@ -27,7 +27,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="africa" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">Africa</s:a>
+				<s:a targets="stats-map" theme="ajax">Africa</s:a>
 			</s:form>
 		</li>
 		<li>
@@ -35,7 +35,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="asia" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">Asia</s:a>
+				<s:a targets="stats-map" theme="ajax">Asia</s:a>
 			</s:form>
 		</li>
 		<li>
@@ -43,7 +43,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="europe" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">Europe</s:a>
+				<s:a targets="stats-map" theme="ajax">Europe</s:a>
 			</s:form>
 		</li>
 		<li>
@@ -51,7 +51,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="middle_east" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">Middle East</s:a>
+				<s:a targets="stats-map" theme="ajax">Middle East</s:a>
 			</s:form>
 		</li>
 		<li>
@@ -59,7 +59,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="south_america" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">South America</s:a>
+				<s:a targets="stats-map" theme="ajax">South America</s:a>
 			</s:form>
 		</li>
 		<li>
@@ -67,7 +67,7 @@
 				<s:hidden name="zoom" value="true" />
 				<s:hidden name="area" value="usa" />
 				<s:hidden name="resource_id" value="%{resource_id}" />
-				<s:a targets="stats-chart" theme="ajax">USA</s:a>
+				<s:a targets="stats-map" theme="ajax">USA</s:a>
 			</s:form>
 		</li>
 	</ul>
