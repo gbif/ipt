@@ -51,9 +51,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
-	private UploadEventManager uploadEventManager;	
 	protected Map session;
 	private OccurrenceResource occResource;
+	private List<OccurrenceResource> resources;
 	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
 	public String geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
@@ -62,6 +62,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	public void prepare() {
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
+			// update recently viewed resources in session
+			updateRecentResouces();
 		}
 		// prepare select lists
 		for (RegionType rt : RegionType.DARWIN_CORE_REGIONS){
@@ -70,8 +72,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		for (Rank rt : Rank.DARWIN_CORE_RANKS){
 			ranks.put(rt.ordinal(), rt.name());
 		}
-		// update recently viewed resources in session
-		updateRecentResouces();
 	}
 	
 	private void updateRecentResouces(){
@@ -99,12 +99,11 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return SUCCESS;
 	}
 
+	public String list() {
+		resources = occResourceManager.getAll();
+		return SUCCESS;
+	}	
 	
-	
-	public void setUploadEventManager(UploadEventManager uploadEventManager) {
-		this.uploadEventManager = uploadEventManager;
-	}
-
 	public OccurrenceResource getOccResource() {
 		return occResource;
 	}
@@ -127,6 +126,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public Map<Integer, String> getRanks() {
 		return ranks;
+	}
+
+	public List<OccurrenceResource> getResources() {
+		return resources;
 	}
 
 }
