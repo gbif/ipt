@@ -37,6 +37,7 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.validator.NotNull;
 
 @MappedSuperclass
 public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
@@ -47,13 +48,16 @@ public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 
 	@DocumentId
 	private Long id;
+	@NotNull
 	private String localId;
     @Field(index=Index.TOKENIZED, store=Store.NO)
+	@NotNull
 	private String guid;
 	private String link;
 	private boolean isDeleted;
 	private boolean isProblematic;
 	private Date modified;
+	@NotNull
 	private OccurrenceResource resource;
 
 	@Id
@@ -125,7 +129,18 @@ public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 	public void setResource(OccurrenceResource resource) {
 		this.resource = resource;
 	}
+	
+	@Transient
+	public Long getResourceId(){
+		if (resource != null){
+			return resource.getId();
+		}else{
+			return null;
+		}
+		
+	}
 
+	
 	public int compareTo(CoreRecord object) {
 		return this.id.compareTo(object.id);
 	}

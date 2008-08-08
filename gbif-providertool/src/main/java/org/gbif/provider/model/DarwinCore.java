@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +38,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.job.OccDbUploadJob;
+import org.gbif.provider.util.Constants;
 
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
@@ -93,6 +96,26 @@ public class DarwinCore extends CoreRecord{
 		dwc.tax.setDwc(dwc);
 		dwc.loc = new DarwinCoreLocation();
 		dwc.loc.setDwc(dwc);
+		return dwc;
+	}
+	public static DarwinCore newMock(OccurrenceResource resource){
+		Random rnd = new Random();
+		DarwinCore dwc = DarwinCore.newInstance();
+		// populate instance
+		dwc.setResource(resource);
+		// set unique localId to ensure we can save this record. Otherwise we might get a non unique constraint exception...
+		String guid = UUID.randomUUID().toString();
+		dwc.setLocalId(guid);
+		dwc.setGuid(guid);
+		dwc.setCatalogNumber("rbgk-"+rnd.nextInt()+"-x");
+		dwc.setBasisOfRecord("PreservedSpecimen");
+		dwc.setInstitutionCode("RBGK");
+		// location
+		dwc.setCountry("PL");
+		// taxonomy
+		dwc.setScientificName("Abies alba L.");
+		dwc.setGenus("Abies");
+		dwc.setFamily("Pinaceae");
 		return dwc;
 	}
 	public static DarwinCore newInstance(ImportRecord iRec){

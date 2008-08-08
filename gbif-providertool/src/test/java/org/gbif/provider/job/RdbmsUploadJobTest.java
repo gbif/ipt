@@ -35,7 +35,7 @@ public class RdbmsUploadJobTest extends RdbmsImportSourceTest{
 		UploadEvent event = new UploadEvent();
 		Map<String, Object> seed = OccDbUploadJob.getSeed(resource.getId(), 4L, 25);
 		seed.put(Launchable.JOB_ID, "1");
-		seed.put(Launchable.WEBAPP_DIR, "/tmp");
+		seed.put(Launchable.WEBAPP_DIR, System.getProperty("java.io.tmpdir"));
 		occDbUploadJob.launch(seed);
 	}
 
