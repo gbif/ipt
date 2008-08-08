@@ -100,7 +100,7 @@ public abstract class OccUploadBaseJob implements Job{
 			MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, getSourceType());
 
 			Integer maxRecords = null;
-			if (seed.get(MAX_RECORDS) != null && seed.get(MAX_RECORDS) != "null"){
+			if (seed.get(MAX_RECORDS) != null && seed.get(MAX_RECORDS).toString().trim().toLowerCase().equals("null")){
 				try{
 					maxRecords = Integer.valueOf(seed.get(MAX_RECORDS).toString());
 				} catch (NumberFormatException e) {
@@ -178,17 +178,18 @@ public abstract class OccUploadBaseJob implements Job{
 					TabFileWriter writer = prepareTabFile(resource, resource.getCoreMapping());
 					out = writer.getFile();
 					
-					// flag all previously existing records as deleted before updating/inserting new ones
-					darwinCoreManager.flagAllAsDeleted(resource);
-
 					// keep track of the following statistics for UploadEvent
 					int recordsUploaded = 0;
 					int recordsDeleted = 0;
 					int recordsChanged = 0;
 					int recordsAdded = 0;
-					
+
+					// make sure in the finally section that writer is closed and upload event is created properly.
+					// for individual record exception there is another inner try/catch
 					try{
-						
+						// flag all previously existing records as deleted before updating/inserting new ones
+						darwinCoreManager.flagAllAsDeleted(resource);
+
 						// go through source records one by one
 						for (ImportRecord rec : source){
 							// check if thread should shutdown...
@@ -196,47 +197,62 @@ public abstract class OccUploadBaseJob implements Job{
 							    throw new InterruptedException();
 							}			
 
-							// get previous record or null if it didnt exist yet based on localID and resource
-							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), resource.getId());
-							// get darwincore record based on this core record
-							DarwinCore dwc = DarwinCore.newInstance(rec);
-							
-							// attach to the occurrence resource
-							dwc.setResource(resource);
-							
-							// assign managed properties
-							updateManagedProperties(dwc, oldRecord);
-							
-							// check if new record version is different from old one
-							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
-								// same record. reset isDeleted flag = false
-								dwc.setDeleted(false);
-							}else if (oldRecord!=null){
-								// modified record
-								dwc.setModified(new Date());
-								// remove old + insert new record
-								// TODO: could be improved by updating existing record!
-								darwinCoreManager.remove(oldRecord.getId());
-								recordsChanged++;
-							}else{
-								// new record that didnt exist before
-								dwc.setModified(new Date());
-								recordsAdded++;
+							 // get darwincore record based on this core record alone. no exceptions here!
+							 DarwinCore dwc = DarwinCore.newInstance(rec);								
+
+							 try {
+								// get previous record or null if it didnt exist yet based on localID and resource
+								DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), resource.getId());
+								
+								// attach to the occurrence resource
+								dwc.setResource(resource);								
+								// assign managed properties
+								updateManagedProperties(dwc, oldRecord);
+								
+								// check if new record version is different from old one
+								if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
+									// same record. just reset isDeleted flag of old record and thats it!
+									oldRecord.setDeleted(false);
+									dwc = darwinCoreManager.save(oldRecord);
+									
+								}else if (oldRecord!=null){
+									// modified record that existed before.
+									// copying all new properties to oldRecord is too cumbersome, so
+									// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
+									dwc.setModified(new Date());									
+									darwinCoreManager.remove(oldRecord.getId());
+									dwc = darwinCoreManager.save(dwc);									
+									// increase counter of changed records
+									recordsChanged++;
+									
+								}else{
+									// new record that didnt exist before. Just save new dwc
+									dwc.setModified(new Date());
+									dwc = darwinCoreManager.save(dwc);
+									// increase counter of added records
+									recordsAdded++;
+								}
+								
+								// increase counter for uploaded records no matter if this record is new or modified. 
+								recordsUploaded++;
+
+								// write record to tab file
+								writer.write(dwc.getDataMap());
+
+							} catch (Exception e) {
+								logdb.error(String.format("Error uploading record %s of resource %s", rec.getId(), resource.getTitle()), e);
 							}
-							// count all inserted records
-							recordsUploaded++;
+							
 							// keep track of upload status outside of this method so that we can create services for it
 							status.put(resource.getId(), String.valueOf(recordsUploaded));
+							
+							//FIXME: clear session cache once in a while...
 							if (recordsUploaded % 1000 == 0){
 								log.debug(recordsUploaded+" uploaded for resource "+resource.getId());
 							}
-							// insert/update record
-							dwc = darwinCoreManager.save(dwc);
-							// write record to tab file
-							writer.write(dwc.getDataMap());
-							// the new darwin core id used for all other extensions
-							Long coreId = dwc.getId();
-							idMap.put(rec.getLocalId(), coreId);
+
+							// the new darwin core id (managed by hibernate) used for all other extensions
+							idMap.put(rec.getLocalId(), dwc.getId());
 						}
 					} finally {
 						// flush and close writer/file
@@ -256,6 +272,7 @@ public abstract class OccUploadBaseJob implements Job{
 						// update resource properties
 						resource.setLastUpload(event);
 						occResourceManager.save(resource);
+						
 						// reset status
 						status.put(resource.getId(), String.format("%s done.", recordsUploaded));
 					}

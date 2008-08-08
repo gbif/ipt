@@ -16,6 +16,8 @@
 
 package org.gbif.provider.datasource;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -61,7 +63,15 @@ public class DatasourceRegistry{
 			if (dsa == null){
 				log.warn("Trying to register a resource without any datasource");
 			}else{
-				datasources.put(resource.getId(), dsa);
+				// try to mark the source as read-only. Used for imports only!
+				try {
+					dsa.getConnection().setReadOnly(true);
+					dsa.getConnection().setHoldability(ResultSet.HOLD_CURSORS_OVER_COMMIT);
+					// finally register source for future use!!!
+					datasources.put(resource.getId(), dsa);
+				} catch (SQLException e) {
+					log.error("Cant open connection to datasource. Dont register this source", e);
+				}
 			}
 		}
 	}
