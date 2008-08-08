@@ -77,7 +77,7 @@
 <script>
 function updateByRegion(){
 	var url = '<s:property value="imgByRegionUrl"/>';
-	var params = { region: $F("regionClass") }; 
+	var params = { type: $F("regionClass") }; 
 	var target = 'imgByRegion';	
 	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 };
@@ -106,7 +106,7 @@ $('regionClass').observe('change', updateByRegion);
 <script>
 function updateByTaxon(){
 	var url = '<s:property value="imgByTaxonUrl"/>';
-	var params = { rank: $F("rank") }; 
+	var params = { type: $F("rank") }; 
 	var target = 'imgByTaxon';	
 	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 };
