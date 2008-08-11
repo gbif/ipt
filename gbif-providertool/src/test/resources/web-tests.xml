@@ -9,7 +9,7 @@
 
     <!-- runs all targets -->
     <target name="run-all-tests" 
-        depends="Login,Logout,Signup,StaticPages,UserTests"
+        depends="Login,Logout,StaticPages,UserTests"
         description="Call and executes all test cases (targets)"/>
     
     <!-- runs user-related tests -->
@@ -136,5 +136,5 @@
             </steps>
         </webtest>
     </target>
-
+    
 </project>
