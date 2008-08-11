@@ -136,17 +136,30 @@ public abstract class OccUploadBaseJob implements Job{
 			// try to upload records
 			try {
 				Map<String, Long> idMap = new HashMap<String, Long>();
-				// prepare import source. Source is implementation specific
+				
+				// prepare core import source. Source is implementation specific
 				ImportSource source = this.getCoreImportSource(seed, resource, maxRecords);
 				// run import of core into db & dump file
-				dumpFiles.add(uploadCore(source, resource, coreEvent, idMap));
+				try {
+					File coreFile = uploadCore(source, resource, coreEvent, idMap);
+					dumpFiles.add(coreFile);
+				} finally {
+					source.close();
+				}
+				
 				// upload further extensions one by one
 				for (ViewMappingBase vm : resource.getExtensionMappings().values()){
 					Extension ext = vm.getExtension();
 					//  prepare import source
 					source = this.getImportSource(seed, resource, ext, maxRecords);
 					// run import into db & dump file
-					dumpFiles.add(uploadExtension(source, idMap, resource, ext));
+					try {
+						File extFile = uploadExtension(source, idMap, resource, ext);
+						dumpFiles.add(extFile);
+					} finally {
+						source.close();
+					}
+					source.close();
 				}
 			} catch (Exception e) {
 				logdb.error("Error uploading data", e);
