@@ -10,7 +10,7 @@
 </div>
 
 <div id="logo" class="right">
-	<a href="http://data.gbif.org/"><img src="/images/logo.gif" /></a>
+	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
 </div>
 
 <hr />
