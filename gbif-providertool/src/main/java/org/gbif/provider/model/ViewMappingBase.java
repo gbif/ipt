@@ -56,7 +56,7 @@ import org.hibernate.annotations.MapKey;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="mapping_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name="view_mapping")
-public abstract class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase> {
+public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase> {
 	private Long id;
 	private DatasourceBasedResource resource;
 	private Extension extension;

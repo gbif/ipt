@@ -91,15 +91,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 			DatasourceContextHolder.setResourceId(resourceId);
 			// create rdbms source
 			ViewCoreMapping coreViewMapping = resource.getCoreMapping();
-			ResultSet rs;
-			try {
-				rs = datasourceInspectionManager.executeViewSql(coreViewMapping.getSourceSql());
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				throw new ImportSourceException();
-			}	        
-			RdbmsImportSource source = RdbmsImportSource.newInstance(rs, coreViewMapping, maxRecords);
-
+			RdbmsImportSource source = RdbmsImportSource.newInstance(datasourceInspectionManager.getExternalConnection(), coreViewMapping, maxRecords);
 			return source;
 	}
 	
@@ -112,14 +104,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 		if (vm == null){
 			throw new ImportSourceException("No mapping exists for extension "+extension.getName());
 		}
-		ResultSet rs;
-		try {
-			rs = datasourceInspectionManager.executeViewSql(vm.getSourceSql());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			throw new ImportSourceException(e);
-		}
-		RdbmsImportSource source = RdbmsImportSource.newInstance(rs, vm, maxRecords);
+		RdbmsImportSource source = RdbmsImportSource.newInstance(datasourceInspectionManager.getExternalConnection(), vm, maxRecords);
 
 		return source;
 }

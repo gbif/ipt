@@ -102,29 +102,13 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         viewColumnHeaders = new ArrayList<String>();
         if (mapping.getSourceSql() !=null){
 			try {
-				ResultSet rs = datasourceInspectionManager.executeViewSql(mapping.getSourceSql());
-				// get metadata
-	            ResultSetMetaData meta = rs.getMetaData();
-	            int columnNum = meta.getColumnCount();
-	            for (int i=1; i<=columnNum; i++){
-	            	viewColumnHeaders.add(meta.getTableName(i)+"."+meta.getColumnName(i));
-	            }
 	            // get first 5 rows into list of list for previewing data
-	            preview = new ArrayList();
-	            int row=0;
-	            while (row < 5 && rs.next()){
-	            	row += 1;
-	            	List rowList=new ArrayList(columnNum);
-	                for (int i=1; i<=columnNum; i++){
-	                	rowList.add(rs.getObject(i));
-	                }
-	                preview.add(rowList);
-	            }
-				rs.close();
+	            preview = datasourceInspectionManager.getPreview(mapping.getSourceSql());
+	            viewColumnHeaders = (ArrayList<String>) preview.remove(0);
 	        } catch (SQLException e) {
 	            String msg = getText("mapping.sqlError");
 	            saveMessage(msg);
-	            log.warn(msg);
+	            log.warn(msg, e);
 			}
         }
 	}

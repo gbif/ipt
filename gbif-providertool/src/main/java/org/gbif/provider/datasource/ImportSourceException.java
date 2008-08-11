@@ -19,4 +19,8 @@ public class ImportSourceException extends Exception {
 	public ImportSourceException(Exception e) {
 		super(e);
 	}
+
+	public ImportSourceException(String message, Exception e) {
+		super(message, e);
+	}
 }

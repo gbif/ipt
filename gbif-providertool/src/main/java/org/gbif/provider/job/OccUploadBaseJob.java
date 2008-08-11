@@ -246,9 +246,10 @@ public abstract class OccUploadBaseJob implements Job{
 							// keep track of upload status outside of this method so that we can create services for it
 							status.put(resource.getId(), String.valueOf(recordsUploaded));
 							
-							//FIXME: clear session cache once in a while...
+							// clear session cache once in a while...
 							if (recordsUploaded % 1000 == 0){
 								log.debug(recordsUploaded+" uploaded for resource "+resource.getId());
+								darwinCoreManager.flush();
 							}
 
 							// the new darwin core id (managed by hibernate) used for all other extensions

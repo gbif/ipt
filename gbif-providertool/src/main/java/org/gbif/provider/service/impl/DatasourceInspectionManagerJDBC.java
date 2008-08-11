@@ -16,10 +16,13 @@
 
 package org.gbif.provider.service.impl;
 
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,18 +31,44 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 public class DatasourceInspectionManagerJDBC extends SimpleJdbcDaoSupport implements DatasourceInspectionManager {
 	
-	private DatabaseMetaData getDatabaseMetaData() throws SQLException {
-		return this.getConnection().getMetaData();
-	}
-	private ResultSet executeSql(String sql) throws SQLException {
-		PreparedStatement ps = this.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		ResultSet rs = ps.executeQuery();
-		return rs;
+	/**
+	 * @param sql
+	 * @return a list of 5 rows plus a first header row of strings that contains the column names as TABLE.COLUMNNAME 
+	 * @throws SQLException
+	 */
+	public List getPreview(String sql) throws SQLException {
+		Statement stmt = this.getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+//	    stmt.setFetchSize(Integer.MIN_VALUE);       
+		ResultSet rs = stmt.executeQuery(sql);
+		List preview = new ArrayList();
+		List<String> columnHeaders = new ArrayList<String>();
+		
+		// get metadata
+        ResultSetMetaData meta = rs.getMetaData();
+        int columnNum = meta.getColumnCount();
+        for (int i=1; i<=columnNum; i++){
+        	columnHeaders.add(meta.getTableName(i)+"."+meta.getColumnName(i));
+        }
+        preview.add(columnHeaders);
+        
+        // get first 5 rows into list of list for previewing data
+        int row=0;
+        while (row < 5 && rs.next()){
+        	row += 1;
+        	List rowList=new ArrayList(columnNum);
+            for (int i=1; i<=columnNum; i++){
+            	rowList.add(rs.getObject(i));
+            }
+            preview.add(rowList);
+        }
+		rs.close();
+		stmt.close();
+		return preview;
 	}
 	
 	
 	public List getAllTables() throws SQLException {
-		DatabaseMetaData dbmd = getDatabaseMetaData();
+		DatabaseMetaData dbmd = this.getConnection().getMetaData();
 		List<String> tableNames = new ArrayList<String>();
 	    ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
     	while (rs.next()) {
@@ -47,8 +76,10 @@ public class DatasourceInspectionManagerJDBC extends SimpleJdbcDaoSupport implem
     	}
 	    return tableNames;
 	}
+
+
+	public Connection getExternalConnection() {
+		return this.getConnection();
+	}
 	
-	public ResultSet executeViewSql(String viewSql) throws SQLException{
-		return executeSql(viewSql);
-	}	
 }
