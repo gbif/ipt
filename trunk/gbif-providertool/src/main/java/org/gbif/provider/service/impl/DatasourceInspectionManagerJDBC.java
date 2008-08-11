@@ -18,7 +18,6 @@ package org.gbif.provider.service.impl;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,9 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class DatasourceInspectionManagerJDBC extends SimpleJdbcDaoSupport implements DatasourceInspectionManager {
+public class DatasourceInspectionManagerJDBC extends JdbcDaoSupport implements DatasourceInspectionManager {
 	
 	/**
 	 * @param sql
@@ -75,11 +74,6 @@ public class DatasourceInspectionManagerJDBC extends SimpleJdbcDaoSupport implem
     		tableNames.add((String) rs.getObject(3)); 
     	}
 	    return tableNames;
-	}
-
-
-	public Connection getExternalConnection() {
-		return this.getConnection();
 	}
 	
 }

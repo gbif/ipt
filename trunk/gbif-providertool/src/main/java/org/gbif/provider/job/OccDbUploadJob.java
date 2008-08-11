@@ -1,6 +1,7 @@
 package org.gbif.provider.job;
 
 import java.io.File;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -91,7 +92,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 			DatasourceContextHolder.setResourceId(resourceId);
 			// create rdbms source
 			ViewCoreMapping coreViewMapping = resource.getCoreMapping();
-			RdbmsImportSource source = RdbmsImportSource.newInstance(datasourceInspectionManager.getExternalConnection(), coreViewMapping, maxRecords);
+			RdbmsImportSource source = RdbmsImportSource.newInstance(resource, coreViewMapping, maxRecords);
 			return source;
 	}
 	
@@ -104,7 +105,7 @@ public class OccDbUploadJob extends OccUploadBaseJob{
 		if (vm == null){
 			throw new ImportSourceException("No mapping exists for extension "+extension.getName());
 		}
-		RdbmsImportSource source = RdbmsImportSource.newInstance(datasourceInspectionManager.getExternalConnection(), vm, maxRecords);
+		RdbmsImportSource source = RdbmsImportSource.newInstance(resource, vm, maxRecords);
 
 		return source;
 }
