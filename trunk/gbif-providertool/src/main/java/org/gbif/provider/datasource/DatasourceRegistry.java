@@ -66,7 +66,6 @@ public class DatasourceRegistry{
 				// try to mark the source as read-only. Used for imports only!
 				try {
 					dsa.getConnection().setReadOnly(true);
-					dsa.getConnection().setHoldability(ResultSet.HOLD_CURSORS_OVER_COMMIT);
 					// finally register source for future use!!!
 					datasources.put(resource.getId(), dsa);
 				} catch (SQLException e) {
