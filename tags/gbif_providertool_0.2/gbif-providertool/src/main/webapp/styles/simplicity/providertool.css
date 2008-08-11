@@ -1,0 +1,162 @@
+
+/* PROVIDERTOOL customising simplicity */
+
+
+h2 {
+	margin-top: 20px;
+}
+
+table.lefthead td {
+	padding-left: 20px;
+}
+table.lefthead th, td {
+	padding-bottom: 5px;
+}
+
+.subentry {
+	display: block;
+	color: #8f0000;
+}
+
+.subform {
+	margin-left: 50px;
+}
+div#preview td {
+	padding: 5px;
+}
+div.break {
+	clear: both;
+	padding-top: 25px;
+}
+
+div#header .left {
+        float: left;
+}
+
+div#header .right {
+        padding: 0 39px;
+        float: right;
+}    
+#logo {
+	top: 15px;
+	position: relative;
+}
+.reminder {
+	font-style: italic;
+	color: gray;
+	background: url(/images/mandatory.gif) no-repeat;
+	padding-left: 20px;
+}
+ 
+
+/* @group menus */
+
+
+ul.actionmenu {
+	list-style-type: none;
+    padding: 0;
+}
+ul.actionmenu li{
+	float: none;
+	list-style-type: none;
+	display: inline;
+	border: 1px solid #c1c6d0;
+    padding: 0;
+	padding-right: 10px;
+	padding-left: 10px;
+	margin: 0 2px;
+}
+
+ul.actionmenu form {
+	display: inline;
+}
+ul.actionmenu .wwFormTable{
+	position: absolute;
+}
+
+ul.plain {
+    list-style: none;
+    padding: 0;
+}
+
+ul.minimenu{
+    list-style: none;
+    padding: 0;
+}
+ul.minimenu li{
+	float: right;
+	list-style-type: none;
+	display: inline;
+    margin: 0;
+    padding: 0;
+	padding-left: 10px;
+}
+
+
+#taxnav, #locnav {
+	margin-top: 50px;
+}
+
+#sub div label {
+	font-variant: normal;
+	font-weight: bold;
+	font-style: italic;
+}
+/* @end */
+
+
+ 
+
+/* @group Charts */
+
+
+div.chart, div.stats{
+	width: 340px;
+	display: block;
+	float: left;
+	margin-bottom: 20px;
+}
+
+div.stats label{
+	font-size: 1.2em;
+	font-style: italic;
+}
+div.stats img{
+	display: block;
+	margin-top: 5px;
+}
+br.clearfix{
+	margin-top: 75px;
+	clear: both;
+}
+
+div.chart{
+	height: 200px;
+}
+div.chart form {
+	float: right;
+	bottom: 25px;
+	position: relative;
+}
+.map img{
+	border: 1px solid #000;
+}
+
+#stats-chart, #stats-menu, #stats-map {
+	text-align: center; 
+	margin: auto;
+}
+#stats-map {
+	height: 225px; 
+}
+
+
+/* SPECIFIC */
+#tax-stats, #loc-tax, #loc-geoserver, #col-pie, #tax2-pie, #time-pie {
+	position: relative;
+	left: 35px;
+}
+
+/* @end */
+
+
