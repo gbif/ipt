@@ -25,5 +25,4 @@ import java.util.List;
 public interface DatasourceInspectionManager {
 	public List getAllTables() throws SQLException;
 	public List getPreview(String sql) throws SQLException;
-	public Connection getExternalConnection();
 }

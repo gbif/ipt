@@ -17,6 +17,8 @@
 package org.gbif.provider.datasource.impl;
 
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,11 +37,13 @@ import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ColumnMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 /**
  * Import source for relational databases that maps a sql resultset into CoreRecords and allows to iterate over them.
@@ -63,43 +67,55 @@ public class RdbmsImportSource implements ImportSource{
 	private ColumnMapping linkColumn = new ColumnMapping();
 	
 
-    public static RdbmsImportSource newInstance(Connection conn, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
-    	if (conn == null || view == null){
+    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
+    	if (resource == null || view == null){
     		throw new NullPointerException();
     	}
     	RdbmsImportSource source = new RdbmsImportSource();
-    	source.conn = conn;
+    	// try to load JDBC driver
+		try {
+			Class.forName(resource.getJdbcDriverClass());
+		} catch (ClassNotFoundException e) {
+			throw new ImportSourceException("Cant find JDBC driver class", e);
+		}
+    	// try to connect to db via JDBC
+		try {
+			Driver driver = DriverManager.getDriver(resource.getJdbcUrl());
+			source.conn = DriverManager.getConnection(resource.getJdbcUrl(), resource.getJdbcUser(), resource.getJdbcPassword());
+		} catch (SQLException e) {
+			throw new ImportSourceException("Cant connect to database", e);
+		}
     	//FIXME: clone mappings
     	source.viewSql=view.getSourceSql();
     	source.properties = view.getPropertyMappings().values();
     	source.coreIdColumn = view.getCoreIdColumn();
     	source.maxRecords = maxRecords;
     	try {
-    		source.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			source.stmt = source.conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
     		source.stmt.setFetchSize(Integer.MIN_VALUE);       
     		source.rs = source.stmt.executeQuery(source.viewSql);
     		source.hasNext = source.rs.next();
-		} catch (SQLException e1) {
-			log.error("Exception while creating RDBMS resultset import source", e1);
+		} catch (SQLException e) {
+			log.error("Exception while creating RDBMS resultset import source", e);
 			source.hasNext = false;
-			throw new ImportSourceException("Cant init sql result set", e1);
+			throw new ImportSourceException("Cant init sql result set", e);
 		}
     	return source;
     }
     
-    public static RdbmsImportSource newInstance(Connection conn, ViewMappingBase view) throws ImportSourceException{
-    	return newInstance(conn, view, null);
+    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
+    	return newInstance(resource, view, null);
     }
     
-    public static RdbmsImportSource newInstance(Connection conn, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
+    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
-    	RdbmsImportSource source = RdbmsImportSource.newInstance(conn, extView, maxRecords);
+    	RdbmsImportSource source = RdbmsImportSource.newInstance(resource, extView, maxRecords);
     	source.guidColumn = view.getGuidColumn();
     	source.linkColumn = view.getLinkColumn();
     	return source;
     }
-    public static RdbmsImportSource newInstance(Connection conn, ViewCoreMapping view) throws ImportSourceException{
-    	return newInstance(conn, view, null);
+    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
+    	return newInstance(resource, view, null);
     }
     
 	private RdbmsImportSource() {

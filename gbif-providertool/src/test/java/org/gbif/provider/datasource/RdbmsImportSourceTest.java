@@ -28,7 +28,7 @@ public class RdbmsImportSourceTest extends BaseExternalDatasourceTest{
         ViewCoreMapping view = getTestResource().getCoreMapping();
         try {
 			// create import source
-			source = RdbmsImportSource.newInstance(this.datasourceInspectionManager.getExternalConnection(), view);
+			source = RdbmsImportSource.newInstance(this.getTestResource(), view);
 		} catch (ImportSourceException e) {
 			e.printStackTrace();
 			fail("Couldnt setup import source");

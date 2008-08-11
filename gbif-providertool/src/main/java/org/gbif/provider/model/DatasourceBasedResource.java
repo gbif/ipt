@@ -196,8 +196,7 @@ public abstract class DatasourceBasedResource extends Resource {
 		if (this.getJdbcUrl() != null && jdbcDriverClass != null){			
 			try {
 				Class.forName(this.jdbcDriverClass);	
-				Driver driver = DriverManager.getDriver(this.getJdbcUrl());
-				
+				Driver driver = DriverManager.getDriver(this.getJdbcUrl());				
 				datasource = new SimpleDriverDataSource(driver, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword());
 			} catch(java.lang.ClassNotFoundException e) {
 				System.err.print("ClassNotFoundException: ");
