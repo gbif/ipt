@@ -48,6 +48,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class OccurrenceResource extends DatasourceBasedResource {
 	public static final Long EXTENSION_ID = 1l;
 	
+	// cached statistics
+	private int recTotal;
+	private int recWithCoordinates;
+	private int recWithCountry;
+	private int recWithAltitude;
+	private int recWithDate;
+	private int numCountries;
+	
+	private int numTerminalTaxa;
+	private int numSpecies;
+	private int numGenera;
+	private int numFamilies;
+	private int numOrders;
+	private int numClasses;
+	private int numPhyla;
+	private int numKingdoms;
+	
 	public static OccurrenceResource newInstance(Extension core){
 		OccurrenceResource resource =  new OccurrenceResource();
 		// ensure that core mapping exists
@@ -56,6 +73,119 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		coreVM.setResource(resource);
 		resource.setCoreMapping(coreVM);
 		return resource;
+	}
+
+	public int getRecTotal() {
+		return recTotal;
+	}
+
+	public void setRecTotal(int recTotal) {
+		this.recTotal = recTotal;
+	}
+
+	public int getRecWithCoordinates() {
+		return recWithCoordinates;
+	}
+
+	public void setRecWithCoordinates(int recWithCoordinates) {
+		this.recWithCoordinates = recWithCoordinates;
+	}
+
+	public int getRecWithCountry() {
+		return recWithCountry;
+	}
+
+	public void setRecWithCountry(int recWithCountry) {
+		this.recWithCountry = recWithCountry;
+	}
+
+	public int getRecWithAltitude() {
+		return recWithAltitude;
+	}
+
+	public void setRecWithAltitude(int recWithAltitude) {
+		this.recWithAltitude = recWithAltitude;
+	}
+
+	public int getRecWithDate() {
+		return recWithDate;
+	}
+
+	public void setRecWithDate(int recWithDate) {
+		this.recWithDate = recWithDate;
+	}
+
+
+	public int getNumCountries() {
+		return numCountries;
+	}
+
+	public void setNumCountries(int numCountries) {
+		this.numCountries = numCountries;
+	}
+
+	public int getNumTerminalTaxa() {
+		return numTerminalTaxa;
+	}
+
+	public void setNumTerminalTaxa(int numTerminalTaxa) {
+		this.numTerminalTaxa = numTerminalTaxa;
+	}
+
+	public int getNumGenera() {
+		return numGenera;
+	}
+
+	public void setNumGenera(int numGenera) {
+		this.numGenera = numGenera;
+	}
+
+	public int getNumFamilies() {
+		return numFamilies;
+	}
+
+	public void setNumFamilies(int numFamilies) {
+		this.numFamilies = numFamilies;
+	}
+
+	public int getNumOrders() {
+		return numOrders;
+	}
+
+	public void setNumOrders(int numOrders) {
+		this.numOrders = numOrders;
+	}
+
+	public int getNumClasses() {
+		return numClasses;
+	}
+
+	public void setNumClasses(int numClasses) {
+		this.numClasses = numClasses;
+	}
+
+	public int getNumPhyla() {
+		return numPhyla;
+	}
+
+	public void setNumPhyla(int numPhyla) {
+		this.numPhyla = numPhyla;
+	}
+
+	public int getNumKingdoms() {
+		return numKingdoms;
+	}
+
+	public void setNumKingdoms(int numKingdoms) {
+		this.numKingdoms = numKingdoms;
+	}
+
+	public int getNumSpecies() {
+		return numSpecies;
+	}
+
+	public void setNumSpecies(int numSpecies) {
+		this.numSpecies = numSpecies;
 	}
 
 	@Transient

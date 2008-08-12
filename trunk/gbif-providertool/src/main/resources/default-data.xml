@@ -110601,6 +110601,20 @@
     <column>last_upload_event_fk</column>
     <column>creator_id</column>
     <column>modifier_id</column>
+    <column>recTotal</column>
+    <column>recWithCoordinates</column>
+    <column>recWithCountry</column>
+    <column>recWithAltitude</column>
+    <column>recWithDate</column>
+    <column>numCountries</column>
+    <column>numTerminalTaxa</column>
+    <column>numSpecies</column>
+    <column>numGenera</column>
+    <column>numFamilies</column>
+    <column>numOrders</column>
+    <column>numClasses</column>
+    <column>numPhyla</column>
+    <column>numKingdoms</column>
     <row>
       <value>OccurrenceResource</value>
       <value>1</value>
@@ -110618,6 +110632,20 @@
       <value>11</value>
       <value>4</value>
       <null/>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
     </row>
     <row>
       <value>OccurrenceResource</value>
@@ -110642,6 +110670,20 @@
       <null/>
       <value>4</value>
       <value>4</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
     </row>
   </table>
   <table name="Taxon">

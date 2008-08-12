@@ -10,7 +10,9 @@ public enum Rank {
 	Class("classs"),
 	Order("order"),
 	Family("family"),
-	Genus("genus");	
+	Genus("genus"),
+	Species(null),	
+	InfraSpecies(null);	
 	
 	public static final List<Rank> DARWIN_CORE_RANKS;
 	  static  
@@ -24,7 +26,14 @@ public enum Rank {
 	    dwcRanks.add( Genus );  
 	    DARWIN_CORE_RANKS = Collections.unmodifiableList(dwcRanks);  
 	  }  
-
+	public static final List<Rank> ALL_RANKS;
+	  static  
+	  {  
+	    List<Rank> dwcRanks = new ArrayList<Rank>(DARWIN_CORE_RANKS);  
+	    dwcRanks.add( Species );  
+	    dwcRanks.add( InfraSpecies );  
+	    ALL_RANKS = Collections.unmodifiableList(dwcRanks);  
+	  } 
 	  
 	public String columnName;	
 	private Rank (String colName){
@@ -32,7 +41,7 @@ public enum Rank {
 	}
 
 	public static Rank getByInt(int i){
-		for (Rank r : DARWIN_CORE_RANKS){
+		for (Rank r : ALL_RANKS){
 			if (r.ordinal() == i){
 				return r;
 			}

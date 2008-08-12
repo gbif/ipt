@@ -70,6 +70,7 @@ public class DarwinCore extends CoreRecord{
 	private float latitudeAsFloat;
 	private float longitudeAsFloat;
 	private Taxon taxon;
+	private Region region;
 	
 	// DarwinCore 1.4 elements
 	private String globalUniqueIdentifier;
@@ -346,6 +347,15 @@ public class DarwinCore extends CoreRecord{
 		this.taxon = taxon;
 	}
 
+	@ManyToOne(optional = true)
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+
+	
 	public float getLatitudeAsFloat() {
 		return latitudeAsFloat;
 	}
