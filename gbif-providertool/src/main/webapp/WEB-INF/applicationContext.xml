@@ -70,6 +70,10 @@
     
     <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractManager"/>        
         
+    <bean id="taxonManager" class="org.gbif.provider.service.impl.TaxonManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
+
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" >
         <property name="dataSource" ref="dataSource"/>        
     </bean>
@@ -110,6 +114,16 @@
         <constructor-arg ref="datasourceInspectionManager"/>
         <constructor-arg ref="extensionRecordManager"/>
         <constructor-arg ref="darwinCoreManager"/>
+    </bean> 
+    <bean id="taxonomyBuilder" class="org.gbif.provider.job.TaxonomyBuilder">
+        <constructor-arg ref="occResourceManager"/>
+        <constructor-arg ref="darwinCoreManager"/>
+        <constructor-arg ref="taxonManager"/>
+    </bean> 
+    <bean id="geographyBuilder" class="org.gbif.provider.job.GeographyBuilder">
+        <constructor-arg ref="occResourceManager"/>
+        <constructor-arg ref="darwinCoreManager"/>
+        <constructor-arg ref="regionManager"/>
     </bean> 
     
 </beans>

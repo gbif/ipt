@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,18 +19,24 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.model.voc.Rank;
 
 
 @Entity
-public class Taxon  implements BaseObject, Comparable {
+public class Taxon  implements BaseObject, Comparable<Taxon>, TreeNode<Taxon> {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
 		private Long id;
+		private DatasourceBasedResource resource;
 		private Taxon parent;
 		private String rank;
+		private Rank dwcRank;
+		private String fullname;
 		private String name;
 		private String authorship;
-		private String fullname;
+		private String code;
+		private Long lft;
+		private Long rgt;
 		
 		
 		@Id
@@ -41,6 +48,14 @@ public class Taxon  implements BaseObject, Comparable {
 			this.id = id;
 		}
 		
+		@ManyToOne(optional = false)
+		public DatasourceBasedResource getResource() {
+			return resource;
+		}
+		public void setResource(DatasourceBasedResource resource) {
+			this.resource = resource;
+		}
+
 		@ManyToOne(optional = true)
 		public Taxon getParent() {
 			return parent;
@@ -55,6 +70,24 @@ public class Taxon  implements BaseObject, Comparable {
 		public void setRank(String rank) {
 			this.rank = rank;
 		}
+		
+		public Rank getDwcRank() {
+			return dwcRank;
+		}
+		@Transient
+		public Enum getType() {
+			return dwcRank;
+		}
+		public void setType(Enum t) {
+			if (t instanceof Rank){
+				setDwcRank((Rank)t);
+			}else{
+				throw new IllegalArgumentException();				
+			}
+		}
+		public void setDwcRank(Rank dwcRank) {
+			this.dwcRank = dwcRank;
+		}
 		public String getName() {
 			return name;
 		}
@@ -67,6 +100,13 @@ public class Taxon  implements BaseObject, Comparable {
 		public void setAuthorship(String authorship) {
 			this.authorship = authorship;
 		}
+		@Transient
+		public String getLabel() {
+			return getFullname();
+		}
+		public void setLabel(String label) {
+			setFullname(label);			
+		}
 		public String getFullname() {
 			return fullname;
 		}
@@ -74,17 +114,33 @@ public class Taxon  implements BaseObject, Comparable {
 			this.fullname = fullname;
 		}
 		
-		
+		public String getCode() {
+			return code;
+		}
+		public void setCode(String code) {
+			this.code = code;
+		}
+		public Long getLft() {
+			return lft;
+		}
+		public void setLft(Long lft) {
+			this.lft = lft;
+		}
+		public Long getRgt() {
+			return rgt;
+		}
+		public void setRgt(Long rgt) {
+			this.rgt = rgt;
+		}
 		/**
 		 * @see java.lang.Comparable#compareTo(Object)
 		 */
-		public int compareTo(Object object) {
-			Taxon myClass = (Taxon) object;
+		public int compareTo(Taxon taxon) {
 			return new CompareToBuilder().append(this.authorship,
-					myClass.authorship).append(this.rank, myClass.rank).append(
-					this.fullname, myClass.fullname)
-					.append(this.name, myClass.name).append(this.parent,
-							myClass.parent).append(this.id, myClass.id)
+					taxon.authorship).append(this.rank, taxon.rank).append(
+					this.fullname, taxon.fullname)
+					.append(this.name, taxon.name).append(this.parent,
+							taxon.parent).append(this.id, taxon.id)
 					.toComparison();
 		}
 		/**
@@ -114,11 +170,11 @@ public class Taxon  implements BaseObject, Comparable {
 		 * @see java.lang.Object#toString()
 		 */
 		public String toString() {
-			return new ToStringBuilder(this).append("name", this.name).append(
-					"rank", this.rank).append("parent", this.parent).append("id",
-					this.id).append("authorship", this.authorship).append(
-					"fullname", this.fullname).toString();
+			String parentName = "";
+			if (this.parent != null){
+				parentName = String.format(" p=%s %s", this.parent.getId(), this.parent.getFullname());
+			}
+			return String.format("%s [%s,%s%s]", this.getFullname(), this.getId(), this.rank, parentName);
 		}
-		
 		
 }

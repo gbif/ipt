@@ -22,6 +22,7 @@
         <mapping class="org.gbif.provider.model.ExtensionProperty"/>
         <mapping class="org.gbif.provider.model.OccurrenceResource"/>
         <mapping class="org.gbif.provider.model.PropertyMapping"/>
+        <mapping class="org.gbif.provider.model.Region"/>
         <mapping class="org.gbif.provider.model.Resource"/>
         <mapping class="org.gbif.provider.model.Taxon"/>
         <mapping class="org.gbif.provider.model.UploadEvent"/>
