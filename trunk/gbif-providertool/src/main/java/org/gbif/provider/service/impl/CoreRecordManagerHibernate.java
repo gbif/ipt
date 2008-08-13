@@ -110,28 +110,6 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 		log.info(String.format("%s %s records of resource were flagged as deleted.", count, persistentClass.getName(), resource.getId()));
 	}
 
-	
-	
-	
-	/* Override the save method to check the localId unique constraint within a single resource.
-	 * Raise EntityExistsException if record with this localId exists already!
-	 * (non-Javadoc)
-	 * @see org.gbif.provider.service.impl.GenericManagerHibernate#save(org.gbif.provider.model.BaseObject)
-	 */
-	@Override
-	public T save(T obj) {
-		if (obj.getId() == null){
-			// only check localId constraint for transient objects
-			Long resourceId = obj.getResourceId();
-			String localId = obj.getLocalId();
-			T twin = this.findByLocalId(localId, resourceId);
-			if (twin != null){
-				
-				throw new EntityExistsException(String.format("CoreRecord must have a unique localId within a resource. But localId %s exists already for resourceId %s",localId, resourceId));
-			}
-		}
-		return super.save(obj);
-	}
 
 	public List<T> search(final Long resourceId, final String q) throws ParseException {
 	     FullTextSession fullTextSession = Search.createFullTextSession(getSession());

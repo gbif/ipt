@@ -19,19 +19,15 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 
 	@Override
 	public DarwinCore save(DarwinCore dwc) {
-		Session session = getSession();
-		if (dwc.getId() == null){
-			// only check localId constraint for transient objects
-			Long resourceId = dwc.getResourceId();
-			String localId = dwc.getLocalId();
-			DarwinCore twin = this.findByLocalId(localId, resourceId);
-			if (twin != null){				
-				throw new EntityExistsException(String.format("DarwinCoreRecord must have a unique localId within a resource. But localId %s exists already for resourceId %s",localId, resourceId));
-			}
-		}
-		session.saveOrUpdate(dwc.getTax());
-		session.saveOrUpdate(dwc);
-		return dwc;
-//		return super.save(obj);
+//		if (dwc.getId() == null){
+//			// only check localId constraint for transient objects
+//			Long resourceId = dwc.getResourceId();
+//			String localId = dwc.getLocalId();
+//			DarwinCore twin = this.findByLocalId(localId, resourceId);
+//			if (twin != null){				
+//				throw new EntityExistsException(String.format("DarwinCoreRecord must have a unique localId within a resource. But localId %s exists already for resourceId %s",localId, resourceId));
+//			}
+//		}
+		return super.save(dwc);
 	}
 }

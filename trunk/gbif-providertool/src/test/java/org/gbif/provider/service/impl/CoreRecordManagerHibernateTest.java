@@ -49,18 +49,22 @@ public class CoreRecordManagerHibernateTest extends BaseDaoTestCase{
 		//FIXME: somehow this ttest persists only the dwc, but not the dwc.tax and dwc.loc component. This causes other tests later own to fail!
 		new AssertThrows(EntityExistsException.class) {
             public void test() {
-            	final String LOCAL_ID = "xcf-x";
-        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
-
-        		DarwinCore dwc = DarwinCore.newMock(res);
-				dwc.setLocalId(LOCAL_ID);
-				dwc = darwinCoreManager.save(dwc);
-				
-				// create new dwc record with different data, but the same localId!
-        		DarwinCore dwcTwin = DarwinCore.newMock(res);
-				dwcTwin.setLocalId(LOCAL_ID);		
-				// should raise exception...
-		        dwcTwin = darwinCoreManager.save(dwcTwin);
+            	try{
+	            	final String LOCAL_ID = "xcf-x";
+	        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+	
+	        		DarwinCore dwc = DarwinCore.newMock(res);
+					dwc.setLocalId(LOCAL_ID);
+					dwc = darwinCoreManager.save(dwc);
+					
+					// create new dwc record with different data, but the same localId!
+	        		DarwinCore dwcTwin = DarwinCore.newMock(res);
+					dwcTwin.setLocalId(LOCAL_ID);		
+					// should raise exception...
+			        dwcTwin = darwinCoreManager.save(dwcTwin);
+            	}finally{
+            		darwinCoreManager.flush();            		
+            	}
             }
         }.runTest();
 	}
@@ -68,13 +72,17 @@ public class CoreRecordManagerHibernateTest extends BaseDaoTestCase{
 	@Test
 	public void testConstraintSave(){		
 		new AssertThrows(PropertyValueException.class) {
-            public void test() {	
-        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
-        		DarwinCore dwc = DarwinCore.newMock(res);
-        		// remove resource to check if constraints work
-        		dwc.setResource(null);
-        		// should raise PropertyValueException
-        		dwc = darwinCoreManager.save(dwc);		
+            public void test() {
+            	try{
+	        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+	        		DarwinCore dwc = DarwinCore.newMock(res);
+	        		// remove resource to check if constraints work
+	        		dwc.setResource(null);
+	        		// should raise PropertyValueException
+	        		dwc = darwinCoreManager.save(dwc);		
+            	}finally{
+            		darwinCoreManager.flush();            		
+            	}
             }
 		}.runTest();
 	}
@@ -84,6 +92,7 @@ public class CoreRecordManagerHibernateTest extends BaseDaoTestCase{
 		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
 		DarwinCore dwc = DarwinCore.newMock(res);
 		dwc = darwinCoreManager.save(dwc);		
+		darwinCoreManager.flush();            		
 	}
 }
 
