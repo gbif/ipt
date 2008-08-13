@@ -339,7 +339,6 @@ public class DarwinCore extends CoreRecord{
 	
 	
 	@ManyToOne(optional = true)
-	@org.hibernate.annotations.Index(name="taxon")
 	public Taxon getTaxon() {
 		return taxon;
 	}
