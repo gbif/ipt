@@ -15,12 +15,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TaxonomyBuilderTest extends BaseDaoTestCase{
+public class TaxonomyBuilderTest extends BaseDaoTestCase {
 	@Autowired
 	private TaxonomyBuilder taxonomyBuilder;
 
-
-	private DwcTaxon getNewTaxon(){
+	private DwcTaxon getNewTaxon() {
 		DwcTaxon dt = new DwcTaxon();
 		dt.setFullname("Bellis perennis L.");
 		dt.setAuthorship("L.");
@@ -30,19 +29,20 @@ public class TaxonomyBuilderTest extends BaseDaoTestCase{
 		dt.setSpeciesEpi("perennis");
 		return dt;
 	}
-	
+
 	@Test
-	public void testExplodeTaxa(){
+	public void testExplodeTaxa() {
 		DwcTaxon dt = getNewTaxon();
 		List<DwcTaxon> taxa = DwcTaxon.explodeTaxon(dt);
 		assertEquals(taxa.size(), 4);
 	}
-	
-	
+
 	@Test
 	public void testExtractTaxa() {
-		SortedSet<DwcTaxon> taxa = taxonomyBuilder.extractTaxonomy(Constants.TEST_RESOURCE_ID, false);
-		System.out.println(String.format("%s taxa found in test resource", taxa.size()));
+		SortedSet<DwcTaxon> taxa = taxonomyBuilder.extractTaxonomy(
+				Constants.TEST_RESOURCE_ID, false);
+		System.out.println(String.format("%s taxa found in test resource", taxa
+				.size()));
 		assertTrue(taxa.first().getFullname().equals("Apiaceae"));
 		assertTrue(taxa.last().getFullname().equals("noch unbestimmt !!!"));
 		assertTrue(taxa.size() == 857);
@@ -50,7 +50,8 @@ public class TaxonomyBuilderTest extends BaseDaoTestCase{
 
 	@Test
 	public void testLaunch() {
-		Map<String, Object>seed = taxonomyBuilder.getSeed(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		Map<String, Object> seed = taxonomyBuilder.getSeed(
+				Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		try {
 			taxonomyBuilder.launch(seed);
 		} catch (Exception e) {
