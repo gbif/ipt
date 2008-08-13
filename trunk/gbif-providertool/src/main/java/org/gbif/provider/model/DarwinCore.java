@@ -16,10 +16,7 @@
 
 package org.gbif.provider.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -27,30 +24,16 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.gbif.provider.datasource.ImportRecord;
-import org.gbif.provider.job.OccDbUploadJob;
-import org.gbif.provider.util.Constants;
-
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
-import org.hibernate.search.annotations.DocumentId;
+import org.gbif.provider.datasource.ImportRecord;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -356,6 +339,7 @@ public class DarwinCore extends CoreRecord{
 	
 	
 	@ManyToOne(optional = true)
+	@org.hibernate.annotations.Index(name="taxon")
 	public Taxon getTaxon() {
 		return taxon;
 	}
@@ -372,14 +356,14 @@ public class DarwinCore extends CoreRecord{
 	}
 
 	
-//	@Column(nullable=true)
+	@org.hibernate.annotations.Index(name="latitude_as_float")
 	public Float getLatitudeAsFloat() {
 		return latitudeAsFloat;
 	}
 	public void setLatitudeAsFloat(Float latitudeAsFloat) {
 		this.latitudeAsFloat = latitudeAsFloat;
 	}
-	@Column(nullable=true)
+	@org.hibernate.annotations.Index(name="longitude_as_float")
 	public Float getLongitudeAsFloat() {
 		return longitudeAsFloat;
 	}
@@ -409,6 +393,7 @@ public class DarwinCore extends CoreRecord{
 		this.basisOfRecord = basisOfRecord;
 	}
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="inst_code")
 	public String getInstitutionCode() {
 		return institutionCode;
 	}
@@ -416,12 +401,14 @@ public class DarwinCore extends CoreRecord{
 		this.institutionCode = institutionCode;
 	}
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="coll_code")
 	public String getCollectionCode() {
 		return collectionCode;
 	}
 	public void setCollectionCode(String collectionCode) {
 		this.collectionCode = collectionCode;
 	}
+	@org.hibernate.annotations.Index(name="cat_num")
 	public String getCatalogNumber() {
 		return catalogNumber;
 	}

@@ -119,6 +119,7 @@ public class DarwinCoreLocation {
 		this.higherGeography = higherGeography;
 	}
 	@Column(length = 64)
+	@org.hibernate.annotations.Index(name="continent")
 	public String getContinent() {
 		return continent;
 	}
@@ -126,6 +127,7 @@ public class DarwinCoreLocation {
 		this.continent = continent;
 	}
 	@Column(length = 255)
+	@org.hibernate.annotations.Index(name="waterbody")
 	public String getWaterBody() {
 		return waterBody;
 	}
@@ -147,6 +149,7 @@ public class DarwinCoreLocation {
 		this.island = island;
 	}
 	@Column(length = 128)
+	@org.hibernate.annotations.Index(name="country")
 	public String getCountry() {
 		return country;
 	}
@@ -154,6 +157,7 @@ public class DarwinCoreLocation {
 		this.country = country;
 	}
 	@Column(length = 128)
+	@org.hibernate.annotations.Index(name="state")
 	public String getStateProvince() {
 		return stateProvince;
 	}
@@ -161,6 +165,7 @@ public class DarwinCoreLocation {
 		this.stateProvince = stateProvince;
 	}
 	@Column(length = 255)
+	@org.hibernate.annotations.Index(name="county")
 	public String getCounty() {
 		return county;
 	}
@@ -175,6 +180,7 @@ public class DarwinCoreLocation {
 		this.locality = locality;
 	}
 
+	@org.hibernate.annotations.Index(name="altitude")
 	public Integer getMinimumElevationInMetersAsInteger() {
 		return minimumElevationInMetersAsInteger;
 	}
@@ -189,6 +195,7 @@ public class DarwinCoreLocation {
 			Integer maximumElevationInMetersAsInteger) {
 		this.maximumElevationInMetersAsInteger = maximumElevationInMetersAsInteger;
 	}
+	@org.hibernate.annotations.Index(name="depth")
 	public Integer getMinimumDepthInMetersAsInteger() {
 		return minimumDepthInMetersAsInteger;
 	}
@@ -247,6 +254,7 @@ public class DarwinCoreLocation {
 	}
 	
 	@Column(length = 64)
+	@org.hibernate.annotations.Index(name="date_collected")
 	public String getEarliestDateCollected() {
 		return earliestDateCollected;
 	}
