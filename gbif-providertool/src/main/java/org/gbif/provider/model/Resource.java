@@ -91,6 +91,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	
 	
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="title")
 	public String getTitle() {
 		return title;
 	}

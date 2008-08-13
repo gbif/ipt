@@ -106,6 +106,7 @@ public class DarwinCoreTaxonomy  {
 	}
 	
 	
+	@org.hibernate.annotations.Index(name="sci_name")
 	public String getScientificName() {
 		return scientificName;
 	}
@@ -120,6 +121,7 @@ public class DarwinCoreTaxonomy  {
 		this.higherTaxon = higherTaxon;
 	}
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="kingdom")
 	public String getKingdom() {
 		return kingdom;
 	}
@@ -127,6 +129,7 @@ public class DarwinCoreTaxonomy  {
 		this.kingdom = kingdom;
 	}
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="phylum")
 	public String getPhylum() {
 		return phylum;
 	}
@@ -134,6 +137,7 @@ public class DarwinCoreTaxonomy  {
 		this.phylum = phylum;
 	}
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="class")
 	public String getClasss() {
 		return classs;
 	}
@@ -142,6 +146,7 @@ public class DarwinCoreTaxonomy  {
 	}
 	
 	@Column(length=128, name="orderrr")
+	@org.hibernate.annotations.Index(name="orderrr")
 	public String getOrder() {
 		return order;
 	}
@@ -150,6 +155,7 @@ public class DarwinCoreTaxonomy  {
 	}
 
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="family")
 	public String getFamily() {
 		return family;
 	}
@@ -157,6 +163,7 @@ public class DarwinCoreTaxonomy  {
 		this.family = family;
 	}
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="genus")
 	public String getGenus() {
 		return genus;
 	}
