@@ -138,13 +138,10 @@
                 <artifactId>hibernate3-maven-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <namingstrategy>org.hibernate.cfg.DefaultComponentSafeNamingStrategy</namingstrategy>                    
                     <components>
                         <component>
                             <name>hbm2ddl</name>
                             <implementation>annotationconfiguration</implementation>
-                            <!-- Use 'jpaconfiguration' if you're using JPA. -->
-                            <!--<implementation>jpaconfiguration</implementation>-->
                             <outputDirectory>target</outputDirectory>
                         </component>
                     </components>
@@ -154,6 +151,7 @@
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
                         <skip>${initdb.skip}</skip>
                         <outputfilename>providertool.sql</outputfilename>
+                        <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
                     </componentProperties>
                 </configuration>
                 <executions>
@@ -784,5 +782,10 @@
         
         <!-- Hibernate search -->
         <h8search.indexBase>${java.io.tmpdir}/lucene/providertool_test</h8search.indexBase>
+        <!--  
+            org.hibernate.cfg.DefaultComponentSafeNamingStrategy
+            org.hibernate.cfg.ImprovedNamingStrategy
+        -->
+        <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
     </properties>
 </project>

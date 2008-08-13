@@ -70,7 +70,7 @@ public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 		this.id = id;
 	}
 
-	@Column(length = 128)
+	@Column(length=128)
 	public String getLocalId() {
 		return localId;
 	}
@@ -79,7 +79,6 @@ public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 		this.localId = localId;
 	}
 
-	@Column(length = 128)
 	public String getGuid() {
 		return guid;
 	}
@@ -88,7 +87,6 @@ public class CoreRecord implements BaseObject, Comparable<CoreRecord> {
 		this.guid = guid;
 	}
 
-	@Column(length = 128)
 	public String getLink() {
 		return link;
 	}

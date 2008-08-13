@@ -6,7 +6,7 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"
-                value="[providertoolkit] %p [%t] %c{1}.%M(%L) | %m%n"/>
+                value="[IPT] %p %t-%c{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
 
@@ -33,9 +33,11 @@
         <level value="WARN"/>
     </logger>
   
-    <logger name="org.hibernate.SQL">
-        <level value="WARN"/>
+    <logger name="org.hibernate.SQL" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
+    
 
     <logger name="org.springframework">
         <level value="WARN"/>
@@ -92,7 +94,7 @@
     </logger>
     
     <root>
-        <level value="WARN"/>
+        <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

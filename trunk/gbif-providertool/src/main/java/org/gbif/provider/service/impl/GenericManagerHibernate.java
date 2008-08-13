@@ -103,5 +103,10 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 	     */
 		public void remove(T obj) {
 	    	getSession().delete(obj);
-		}	    
+		}
+
+		
+		public void flush() {
+			getSession().flush();
+		}
 	}

@@ -12,5 +12,7 @@ public interface GenericManager<T> extends org.appfuse.service.GenericManager<T,
 	 * @return
 	 */
 	public List<T> getAllDistinct();
+	
+	public void flush();
 		
 }

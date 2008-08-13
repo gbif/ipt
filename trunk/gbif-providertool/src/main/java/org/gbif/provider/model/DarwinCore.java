@@ -27,9 +27,17 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -48,6 +56,7 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.validator.NotNull;
 
 
 /**
@@ -58,17 +67,22 @@ import org.hibernate.search.annotations.Store;
  *
  */
 @Entity
+@Table(name="dwcore"
+//	, uniqueConstraints = {@UniqueConstraint(columnNames={"resource_id", "local_id"})}
+) 
 @Indexed
 public class DarwinCore extends CoreRecord{
 	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
-	
+
 	@IndexedEmbedded
+	@NotNull
 	private DarwinCoreTaxonomy tax;
 	@IndexedEmbedded
+	@NotNull
 	private DarwinCoreLocation loc;
 	// calculated fields
-	private float latitudeAsFloat;
-	private float longitudeAsFloat;
+	private Float latitudeAsFloat;
+	private Float longitudeAsFloat;
 	private Taxon taxon;
 	private Region region;
 	
@@ -322,7 +336,8 @@ public class DarwinCore extends CoreRecord{
 		return m;
 	}
 	
-	@OneToOne(mappedBy="dwc", cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	public DarwinCoreTaxonomy getTax() {
 		return tax;
 	}
@@ -330,7 +345,8 @@ public class DarwinCore extends CoreRecord{
 		this.tax = tax;
 	}
 	
-	@OneToOne(mappedBy="dwc", cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	public DarwinCoreLocation getLoc() {
 		return loc;
 	}
@@ -356,16 +372,18 @@ public class DarwinCore extends CoreRecord{
 	}
 
 	
-	public float getLatitudeAsFloat() {
+//	@Column(nullable=true)
+	public Float getLatitudeAsFloat() {
 		return latitudeAsFloat;
 	}
-	public void setLatitudeAsFloat(float latitudeAsFloat) {
+	public void setLatitudeAsFloat(Float latitudeAsFloat) {
 		this.latitudeAsFloat = latitudeAsFloat;
 	}
-	public float getLongitudeAsFloat() {
+	@Column(nullable=true)
+	public Float getLongitudeAsFloat() {
 		return longitudeAsFloat;
 	}
-	public void setLongitudeAsFloat(float longitudeAsFloat) {
+	public void setLongitudeAsFloat(Float longitudeAsFloat) {
 		this.longitudeAsFloat = longitudeAsFloat;
 	}
 
@@ -383,18 +401,21 @@ public class DarwinCore extends CoreRecord{
 	public Date getDateLastModified() {
 		return this.getModified();
 	}
+	@Column(length=128)
 	public String getBasisOfRecord() {
 		return basisOfRecord;
 	}
 	public void setBasisOfRecord(String basisOfRecord) {
 		this.basisOfRecord = basisOfRecord;
 	}
+	@Column(length=128)
 	public String getInstitutionCode() {
 		return institutionCode;
 	}
 	public void setInstitutionCode(String institutionCode) {
 		this.institutionCode = institutionCode;
 	}
+	@Column(length=128)
 	public String getCollectionCode() {
 		return collectionCode;
 	}
@@ -420,6 +441,7 @@ public class DarwinCore extends CoreRecord{
 		this.remarks = remarks;
 	}
 
+	@Column(length=64)
 	public String getSex() {
 		return sex;
 	}

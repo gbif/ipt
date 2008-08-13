@@ -28,6 +28,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -50,6 +53,7 @@ import org.hibernate.search.annotations.Store;
  *
  */
 @Entity
+@Table(name="dwcore_loc") 
 @Indexed
 public class DarwinCoreLocation {
 	@DocumentId
@@ -73,6 +77,7 @@ public class DarwinCoreLocation {
 	private String stateProvince;
 	private String county;
     @Field(index=Index.TOKENIZED, store=Store.NO)
+	@Lob
 	private String locality;
 	private String minimumElevationInMeters;
 	private String maximumElevationInMeters;
@@ -86,7 +91,8 @@ public class DarwinCoreLocation {
 	private String dayOfYear;
 	private String collector;	
 	
-	@Id @GeneratedValue(generator="dwcidloc")
+	@Id
+	@GeneratedValue(generator="dwcidloc")
 	@GenericGenerator(name="dwcidloc", strategy = "foreign", 
 			parameters={@Parameter (name="property", value = "dwc")}
 	)
@@ -105,14 +111,14 @@ public class DarwinCoreLocation {
 		this.dwc = dwc;
 	}
 	
-	
+	@Lob
 	public String getHigherGeography() {
 		return higherGeography;
 	}
 	public void setHigherGeography(String higherGeography) {
 		this.higherGeography = higherGeography;
 	}
-	@Column(length = 128)
+	@Column(length = 64)
 	public String getContinent() {
 		return continent;
 	}
@@ -197,7 +203,7 @@ public class DarwinCoreLocation {
 			Integer maximumDepthInMetersAsInteger) {
 		this.maximumDepthInMetersAsInteger = maximumDepthInMetersAsInteger;
 	}
-	@Column(length = 32)
+	@Column(length = 64)
 	public String getMinimumElevationInMeters() {
 		return minimumElevationInMeters;
 	}
@@ -211,7 +217,7 @@ public class DarwinCoreLocation {
 	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
 		this.maximumElevationInMeters = maximumElevationInMeters;
 	}
-	@Column(length = 32)
+	@Column(length = 64)
 	public String getMinimumDepthInMeters() {
 		return minimumDepthInMeters;
 	}
@@ -255,7 +261,7 @@ public class DarwinCoreLocation {
 		this.latestDateCollected = latestDateCollected;
 	}
 	
-	@Column(length = 16)
+	@Column(length=32)
 	public String getDayOfYear() {
 		return dayOfYear;
 	}

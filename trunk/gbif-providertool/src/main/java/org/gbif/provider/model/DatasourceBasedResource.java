@@ -159,9 +159,9 @@ public abstract class DatasourceBasedResource extends Resource {
 
 
 	@OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="resource_id", insertable=false, updatable=false)
+    @JoinColumn(name="resource_fk", insertable=false, updatable=false)
     @org.hibernate.annotations.Where(clause="mapping_type='EXT'")        
-	@MapKey(columns = @Column(name = "extension_id"))
+	@MapKey(columns = @Column(name = "extension_fk"))
 	public Map<Long, ViewExtensionMapping> getExtensionMappings() {
 		return extensionMappings;
 	}

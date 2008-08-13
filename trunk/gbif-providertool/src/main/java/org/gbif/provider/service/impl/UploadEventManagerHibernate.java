@@ -16,39 +16,14 @@
 
 package org.gbif.provider.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.appfuse.dao.GenericDao;
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.service.impl.GenericManagerHibernate;
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.datasource.ExternalResourceRoutingDatasource;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.UploadChartBuilder;
-import org.gbif.provider.webapp.action.UploadAction;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-
-import com.opensymphony.xwork2.TextProvider;
-import com.opensymphony.xwork2.TextProviderFactory;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -57,7 +32,7 @@ import com.opensymphony.xwork2.TextProviderFactory;
  *
  * @param <T>
  */
-public class UploadEventManagerHibernate extends GenericDaoHibernate<UploadEvent, Long> implements UploadEventManager {
+public class UploadEventManagerHibernate extends GenericManagerHibernate<UploadEvent> implements UploadEventManager {
 	public UploadEventManagerHibernate() {
 		super(UploadEvent.class);
 	}

@@ -28,6 +28,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -59,7 +61,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	}
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "extension_id", insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = "extension_fk", insertable = false, updatable = false, nullable = false)
 	public Extension getExtension() {
 		return extension;
 	}
@@ -68,7 +70,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.extension = extension;
 	}
 
-	@Column(length = 128)
+	@Column(length=255)
 	public String getQualName() {
 		return qualName;
 	}
@@ -77,7 +79,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.qualName = qualName;
 	}
 
-	@Column(length = 128)
+	@Column(length=64)
 	public String getName() {
 		return name;
 	}
@@ -86,7 +88,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.name = name;
 	}
 
-	@Column(length = 128)
+	@Column(length=128)
 	public String getNamespace() {
 		return namespace;
 	}
@@ -102,7 +104,6 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	 * 
 	 * @return
 	 */
-	@Column(length = 32)
 	public String getColumnName() {
 		return columnName;
 	}
@@ -125,6 +126,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.columnLength = columnLength;
 	}
 
+	@Column(length=255)
 	public String getLink() {
 		return link;
 	}
@@ -143,7 +145,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 
 	@CollectionOfElements
 	@IndexColumn(name = "term_order", base = 0, nullable = false)
-	@JoinColumn(name = "ExtensionProperty_id", nullable = false)
+	@JoinColumn(name = "extension_property_fk", nullable = false)
 	public List<String> getTerms() {
 		return terms;
 	}

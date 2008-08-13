@@ -196,6 +196,7 @@ public abstract class OccUploadBaseJob implements Job{
 					int recordsDeleted = 0;
 					int recordsChanged = 0;
 					int recordsAdded = 0;
+					int recordsErroneous = 0;
 
 					// make sure in the finally section that writer is closed and upload event is created properly.
 					// for individual record exception there is another inner try/catch
@@ -253,6 +254,7 @@ public abstract class OccUploadBaseJob implements Job{
 								writer.write(dwc.getDataMap());
 
 							} catch (Exception e) {
+								recordsErroneous++;
 								logdb.error(String.format("Error uploading record %s of resource %s", rec.getId(), resource.getTitle()), e);
 							}
 							
@@ -277,10 +279,14 @@ public abstract class OccUploadBaseJob implements Job{
 							existingRecords = resource.getLastUpload().getRecordsUploaded(); 
 						}
 						recordsDeleted = existingRecords+recordsAdded-recordsUploaded;
+						// logging
+						log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
+						// store event
 						event.setRecordsAdded(recordsAdded);
 						event.setRecordsChanged(recordsChanged);
 						event.setRecordsDeleted(recordsDeleted);
 						event.setRecordsUploaded(recordsUploaded);		
+						event.setRecordsErroneous(recordsErroneous);		
 						// save upload event
 						event = uploadEventManager.save(event);
 						// update resource properties

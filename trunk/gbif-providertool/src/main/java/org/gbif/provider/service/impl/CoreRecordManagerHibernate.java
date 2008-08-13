@@ -160,8 +160,4 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 		}
 		tx.commit(); //index are written at commit time  		
 	}
-
-	public void flush() {
-		getSession().flush();
-	}
 }

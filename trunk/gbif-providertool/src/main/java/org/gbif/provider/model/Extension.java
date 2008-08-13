@@ -35,6 +35,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -63,6 +64,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		this.id = id;
 	}
 
+	@Column(length=128)
 	public String getName() {
 		return name;
 	}
@@ -70,6 +72,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		this.name = name;
 	}
 	
+	@Column(length=255)
 	public String getLink() {
 		return link;
 	}
@@ -79,7 +82,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@IndexColumn(name = "property_order",base=0, nullable=false)
-	@JoinColumn(name="extension_id", nullable=false) 
+	@JoinColumn(name="extension_fk", nullable=false) 
 	public List<ExtensionProperty> getProperties() {
 		return properties;
 	}
@@ -92,7 +95,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		properties.add(property);
 	}
 	
-	@Column(unique=true)
+	@Column(length=64, unique=true)
 	public String getTablename() {
 		return tablename;
 	}

@@ -126,10 +126,15 @@ public class TaxonomyBuilder implements org.gbif.provider.job.Job {
 		ScrollableResults dwcRecords = darwinCoreManager.scrollResource(resourceId);
 		
 		boolean hasNext = true;
-//		while (hasNext = dwcRecords.next()){
-		for (DarwinCore dwc : darwinCoreManager.getAll(resourceId)){
-//			DarwinCore dwc = (DarwinCore) dwcRecords.get()[0];
+		while (hasNext = dwcRecords.next()){
+//		for (DarwinCore dwc : darwinCoreManager.getAll(resourceId)){
+			DarwinCore dwc = (DarwinCore) dwcRecords.get()[0];
 			if (dwc == null){
+				log.debug("DarwinCore NULL record ignored for building the taxonomy");
+				continue;
+			}
+			else if (dwc.getTax()==null || dwc.getLoc()==null){
+				log.warn(String.format("DarwinCore record %s without mandatory tax/loc component ignored for building the taxonomy", dwc.getId()));
 				continue;
 			}
 			DwcTaxon dt = DwcTaxon.newDwcTaxon(dwc);

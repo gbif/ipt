@@ -3,14 +3,17 @@ package org.gbif.provider.model;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
@@ -64,6 +67,7 @@ public class Taxon  implements BaseObject, Comparable<Taxon>, TreeNode<Taxon> {
 			this.parent = parent;
 		}
 		
+		@Column(length=128)
 		public String getRank() {
 			return rank;
 		}
@@ -88,12 +92,14 @@ public class Taxon  implements BaseObject, Comparable<Taxon>, TreeNode<Taxon> {
 		public void setDwcRank(Rank dwcRank) {
 			this.dwcRank = dwcRank;
 		}
+		@Column(length=128)
 		public String getName() {
 			return name;
 		}
 		public void setName(String name) {
 			this.name = name;
 		}
+		@Column(length=128)
 		public String getAuthorship() {
 			return authorship;
 		}

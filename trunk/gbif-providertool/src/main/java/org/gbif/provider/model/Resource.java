@@ -27,6 +27,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
@@ -73,7 +74,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.guid = guid;
 	}
 	
-	@Column(length=128)
 	public String getLink() {
 		return link;
 	}
