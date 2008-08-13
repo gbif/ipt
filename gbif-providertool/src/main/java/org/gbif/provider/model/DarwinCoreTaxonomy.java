@@ -25,8 +25,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -49,6 +53,7 @@ import org.hibernate.search.annotations.Store;
  *
  */
 @Entity
+@Table(name="dwcore_tax") 
 @Indexed
 public class DarwinCoreTaxonomy  {
 	@DocumentId
@@ -80,7 +85,8 @@ public class DarwinCoreTaxonomy  {
 	private String identificationQualifer;
 	
 	
-	@Id @GeneratedValue(generator="dwcidtax")
+	@Id
+	@GeneratedValue(generator="dwcidtax")
 	@GenericGenerator(name="dwcidtax", strategy = "foreign", 
 			parameters={@Parameter (name="property", value = "dwc")}
 	)
@@ -100,35 +106,34 @@ public class DarwinCoreTaxonomy  {
 	}
 	
 	
-	@Column(length = 255)
 	public String getScientificName() {
 		return scientificName;
 	}
 	public void setScientificName(String scientificName) {
 		this.scientificName = scientificName;
 	}
-	@Column(length = 255)
+	@Lob
 	public String getHigherTaxon() {
 		return higherTaxon;
 	}
 	public void setHigherTaxon(String higherTaxon) {
 		this.higherTaxon = higherTaxon;
 	}
-	@Column(length = 128)
+	@Column(length=64)
 	public String getKingdom() {
 		return kingdom;
 	}
 	public void setKingdom(String kingdom) {
 		this.kingdom = kingdom;
 	}
-	@Column(length = 128)
+	@Column(length=64)
 	public String getPhylum() {
 		return phylum;
 	}
 	public void setPhylum(String phylum) {
 		this.phylum = phylum;
 	}
-	@Column(length = 128)
+	@Column(length=64)
 	public String getClasss() {
 		return classs;
 	}
@@ -143,56 +148,57 @@ public class DarwinCoreTaxonomy  {
 	public void setOrder(String order) {
 		this.order = order;
 	}
-	@Column(length = 128)
+
+	@Column(length=128)
 	public String getFamily() {
 		return family;
 	}
 	public void setFamily(String family) {
 		this.family = family;
 	}
-	@Column(length = 128)
+	@Column(length=64)
 	public String getGenus() {
 		return genus;
 	}
 	public void setGenus(String genus) {
 		this.genus = genus;
 	}
-	@Column(length = 128)
+	@Column(length=128)
 	public String getSpecificEpithet() {
 		return specificEpithet;
 	}
 	public void setSpecificEpithet(String specificEpithet) {
 		this.specificEpithet = specificEpithet;
 	}
-	@Column(length = 128)
+	@Column(length=128)
 	public String getInfraspecificRank() {
 		return infraspecificRank;
 	}
 	public void setInfraspecificRank(String infraspecificRank) {
 		this.infraspecificRank = infraspecificRank;
 	}
-	@Column(length = 128)
+	@Column(length=128)
 	public String getInfraspecificEpithet() {
 		return infraspecificEpithet;
 	}
 	public void setInfraspecificEpithet(String infraspecificEpithet) {
 		this.infraspecificEpithet = infraspecificEpithet;
 	}
-	@Column(length = 255)
+	@Column(length=128)
 	public String getAuthorYearOfScientificName() {
 		return authorYearOfScientificName;
 	}
 	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
 		this.authorYearOfScientificName = authorYearOfScientificName;
 	}
-	@Column(length = 64)
+	@Column(length=64)
 	public String getNomenclaturalCode() {
 		return nomenclaturalCode;
 	}
 	public void setNomenclaturalCode(String nomenclaturalCode) {
 		this.nomenclaturalCode = nomenclaturalCode;
 	}
-	@Column(length = 64)
+	@Column(length=64)
 	public String getIdentificationQualifer() {
 		return identificationQualifer;
 	}

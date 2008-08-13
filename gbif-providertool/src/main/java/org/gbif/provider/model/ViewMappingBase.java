@@ -74,7 +74,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	}
 	
 	@ManyToOne
-    @JoinColumn(name="resource_id", nullable=false)
+    @JoinColumn(name="resource_fk", nullable=false)
 	public DatasourceBasedResource getResource() {
 		return resource;
 	}
@@ -139,7 +139,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 
 	
 	@OneToMany(mappedBy="viewMapping", cascade=CascadeType.ALL)
-	@MapKey(columns = @Column(name = "property_id"))
+	@MapKey(columns = @Column(name = "property_fk"))
 	public Map<Long, PropertyMapping> getPropertyMappings() {
 		return propertyMappings;
 	}

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -30,6 +31,7 @@ public class UploadEvent implements BaseObject{
 	private int recordsDeleted;
 	private int recordsChanged;
 	private int recordsAdded;
+	private int recordsErroneous;
 	// job metadata. needed for linking to eventLogs
 	private int jobSourceId;
 	private int jobSourceType;
@@ -44,7 +46,7 @@ public class UploadEvent implements BaseObject{
 	}
 
 	@ManyToOne
-	@JoinColumn(name="resource_id", nullable=false) 
+	@JoinColumn(name="resource_fk", nullable=false) 
 	public DatasourceBasedResource getResource() {
 		return resource;
 	}
@@ -87,7 +89,12 @@ public class UploadEvent implements BaseObject{
 		this.recordsAdded = recordsAdded;
 	}
 	
-	
+	public int getRecordsErroneous() {
+		return recordsErroneous;
+	}
+	public void setRecordsErroneous(int recordsErroneous) {
+		this.recordsErroneous = recordsErroneous;
+	}
 	public int getJobSourceId() {
 		return jobSourceId;
 	}
@@ -142,9 +149,5 @@ public class UploadEvent implements BaseObject{
 						"recordsAdded", this.recordsAdded).append(
 						"recordsDeleted", this.recordsDeleted).toString();
 	}
-	
-	
-	
-	
 	
 }

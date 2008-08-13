@@ -23,12 +23,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /**
  * A mapping between a single extension property (concept) and a resource represented via the viewMapping.
@@ -63,7 +65,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	}
 	
 	@ManyToOne(optional=false)
-	//@JoinColumn(name="viewMapping_id", insertable=false, updatable=false, nullable=false)
+	//@JoinColumn(name="view_mapping_fk", insertable=false, updatable=false, nullable=false)
 	public ViewMappingBase getViewMapping() {
 		return viewMapping;
 	}

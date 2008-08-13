@@ -44,5 +44,4 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<
 	 */
 	public List<T> search(Long resourceId, String q) throws ParseException;
 	public void reindex(Long resourceId);
-	public void flush();
 }

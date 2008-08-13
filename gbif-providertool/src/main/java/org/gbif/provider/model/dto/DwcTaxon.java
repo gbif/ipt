@@ -25,7 +25,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 			throw new NullPointerException();
 		}
 		if (dwc.getTax()==null){
-			System.out.println(dwc.toString());
+			throw new NullPointerException("dwc.tax is NULL. Shouldnt!");
 		}
 		DwcTaxon tax = new DwcTaxon();
 		tax.taxon.setResource(dwc.getResource());

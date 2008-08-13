@@ -1,5 +1,6 @@
 package org.gbif.provider.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -9,6 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ColumnMapping {
 	private String columnName;
 
+	@Column(length=128)
 	public String getColumnName() {
 		return columnName;
 	}

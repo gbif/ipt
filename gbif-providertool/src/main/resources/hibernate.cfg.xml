@@ -3,7 +3,8 @@
 
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.ejb.naming_strategy">org.hibernate.cfg.DefaultComponentSafeNamingStrategy</property>
+        <!--property name="hibernate.ejb.naming_strategy"></property-->
+        <property name="hibernate.ejb.naming_strategy">${hibernate.namingStrategy}</property>
         <!-- the default directory provider -->
         <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
         <!--  the default base directory for the indecies -->

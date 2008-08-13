@@ -22,8 +22,11 @@
             <!-- Turn batching off for better error messages under PostgreSQL -->
             <!-- hibernate.jdbc.batch_size=0 -->
         </property>
+        <property name="namingStrategy" ref="namingStrategy"/>
     </bean>
 
+    <bean id="namingStrategy" class="${hibernate.namingStrategy}"/>
+    
     <!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
