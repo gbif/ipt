@@ -93,8 +93,9 @@ public class Scheduler{
 									worker.execute(pool, classToRun, dataAsJSON);
 									
 									
-								} finally { // if any of the above fails, then we NEED to return the object
+								} catch (Exception e) { // if any of the above fails, then we NEED to return the object
 									try {
+										logger.error("Unable to execute job: " + e.getMessage(), e);
 										pool.returnObject(worker);
 									} catch (Exception e1) {
 										logger.error("FATAL: no longer able to return to pool: " + e1.getMessage(), e1);
