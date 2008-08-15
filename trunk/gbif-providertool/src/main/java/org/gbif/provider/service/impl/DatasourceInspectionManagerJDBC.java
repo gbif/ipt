@@ -29,7 +29,7 @@ import org.gbif.provider.service.DatasourceInspectionManager;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 public class DatasourceInspectionManagerJDBC extends JdbcDaoSupport implements DatasourceInspectionManager {
-	
+	private static final int PREVIEW_SIZE = 5;
 	/**
 	 * @param sql
 	 * @return a list of 5 rows plus a first header row of strings that contains the column names as TABLE.COLUMNNAME 
@@ -37,7 +37,8 @@ public class DatasourceInspectionManagerJDBC extends JdbcDaoSupport implements D
 	 */
 	public List getPreview(String sql) throws SQLException {
 		Statement stmt = this.getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-//	    stmt.setFetchSize(Integer.MIN_VALUE);       
+		stmt.setMaxRows(PREVIEW_SIZE);
+		stmt.setFetchSize(PREVIEW_SIZE);
 		ResultSet rs = stmt.executeQuery(sql);
 		List preview = new ArrayList();
 		List<String> columnHeaders = new ArrayList<String>();
@@ -52,7 +53,7 @@ public class DatasourceInspectionManagerJDBC extends JdbcDaoSupport implements D
         
         // get first 5 rows into list of list for previewing data
         int row=0;
-        while (row < 5 && rs.next()){
+        while (row < PREVIEW_SIZE && rs.next()){
         	row += 1;
         	List rowList=new ArrayList(columnNum);
             for (int i=1; i<=columnNum; i++){
