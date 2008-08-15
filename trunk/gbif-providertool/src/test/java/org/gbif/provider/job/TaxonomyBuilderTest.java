@@ -39,14 +39,12 @@ public class TaxonomyBuilderTest extends BaseDaoTestCase {
 
 	@Test
 	public void testExtractTaxa() {
-		SortedSet<DwcTaxon> taxa = taxonomyBuilder.extractTaxonomy(
-				Constants.TEST_RESOURCE_ID, false);
-		System.out.println(String.format("%s taxa found in test resource", taxa
-				.size()));
+		SortedSet<DwcTaxon> taxa = taxonomyBuilder.extractTaxonomy(Constants.TEST_RESOURCE_ID, false);
+		log.debug(String.format("%s taxa found in test resource", taxa.size()));
 		// assertions based on PonTaurus dataset...
 		assertTrue(taxa.first().getFullname().equals("Apiaceae"));
 		assertTrue(taxa.last().getFullname().equals("noch unbestimmt !!!"));
-		assertTrue(taxa.size() == 857);
+		assertTrue(taxa.size() == 860);
 	}
 
 	@Test

@@ -108,6 +108,8 @@ public class TaxonomyBuilder implements org.gbif.provider.job.Job {
 		// get resource
 		OccurrenceResource resource = occResourceManager.get(resourceId);
 		
+		// remove previously existing taxa
+		removeTaxonomy(resource);
 		// create unique, naturally sorted taxa from dwc records
 		SortedSet<DwcTaxon> taxonomy = extractTaxonomy(resourceId, true);
 		
@@ -118,6 +120,11 @@ public class TaxonomyBuilder implements org.gbif.provider.job.Job {
 		calcStats(resource, taxonomy);
 	}
 	
+
+	private void removeTaxonomy(OccurrenceResource resource) {
+		log.info("Removing previously existing taxonomy from resource %s"+resource.getId());
+		taxonManager.deleteAll(resource);		
+	}
 
 	public SortedSet<DwcTaxon> extractTaxonomy(Long resourceId, boolean persist){
 		log.info("Generating taxonomy from occurrence records for resource %s"+resourceId);
