@@ -17,6 +17,7 @@
 package org.gbif.provider.model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -24,16 +25,23 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
+import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -51,12 +59,27 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table(name="dwcore"
-//	, uniqueConstraints = {@UniqueConstraint(columnNames={"resource_id", "local_id"})}
+	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 ) 
 @Indexed
-public class DarwinCore extends CoreRecord{
+public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
+	// for core record
+	@DocumentId
+	private Long id;
+	@NotNull
+	private String localId;
+    @Field(index=Index.TOKENIZED, store=Store.NO)
+	@NotNull
+	private String guid;
+	private String link;
+	private boolean isDeleted;
+	private boolean isProblematic;
+	private Date modified;
+	@NotNull
+	private OccurrenceResource resource;
 
+	// DarinCore derived datatypes. calculated from raw Strings
 	@IndexedEmbedded
 	@NotNull
 	private DarwinCoreTaxonomy tax;
@@ -70,7 +93,6 @@ public class DarwinCore extends CoreRecord{
 	private Region region;
 	
 	// DarwinCore 1.4 elements
-	private String globalUniqueIdentifier;
 	private String basisOfRecord;
 	private String institutionCode;
     @Field(index=Index.TOKENIZED, store=Store.NO)
@@ -103,9 +125,10 @@ public class DarwinCore extends CoreRecord{
 		dwc.setResource(resource);
 		// set unique localId to ensure we can save this record. Otherwise we might get a non unique constraint exception...
 		String guid = UUID.randomUUID().toString();
-		dwc.setLocalId(guid);
+		String localId = rnd.nextInt(99999999)+"";
+		dwc.setLocalId(localId);
 		dwc.setGuid(guid);
-		dwc.setCatalogNumber("rbgk-"+rnd.nextInt()+"-x");
+		dwc.setCatalogNumber("rbgk-"+localId+"-x");
 		dwc.setBasisOfRecord("PreservedSpecimen");
 		dwc.setInstitutionCode("RBGK");
 		// location
@@ -270,7 +293,14 @@ public class DarwinCore extends CoreRecord{
 	
 	@Transient
 	public Map<String, String> getDataMap(){
-		Map<String, String> m = super.getDataMap();
+		Map<String, String> m = new HashMap<String, String>();
+		m.put(ID_COLUMN_NAME, this.getGuid());
+		String modified = null;
+		if (this.getModified() != null) {
+			modified = this.getModified().toString();
+		}
+		m.put(MODIFIED_COLUMN_NAME, modified);
+
 		m.put("GlobalUniqueIdentifier", getGlobalUniqueIdentifier());
 		m.put("BasisOfRecord", getBasisOfRecord());
 		m.put("InstitutionCode", getInstitutionCode());
@@ -319,8 +349,81 @@ public class DarwinCore extends CoreRecord{
 		return m;
 	}
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+
+	// CORE RECORD
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}	
+
+	@Column(length=128)
+	public String getLocalId() {
+		return localId;
+	}
+
+	public void setLocalId(String localId) {
+		this.localId = localId;
+	}	
+
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public Date getModified() {
+		return modified;
+	}
+
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public boolean isProblematic() {
+		return isProblematic;
+	}
+
+	public void setProblematic(boolean isProblematic) {
+		this.isProblematic = isProblematic;
+	}
+	
+	@ManyToOne
+	public OccurrenceResource getResource() {
+		return resource;
+	}
+
+	public void setResource(OccurrenceResource resource) {
+		this.resource = resource;
+	}
+	
+
+	// OTHER
+	// optional = false breaks hibernate IdGeneration somehow... buuh
+	// cascade=CascadeType.ALL
+    @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
 	public DarwinCoreTaxonomy getTax() {
 		return tax;
 	}
@@ -328,8 +431,8 @@ public class DarwinCore extends CoreRecord{
 		this.tax = tax;
 	}
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	// optional = false breaks hibernate IdGeneration somehow... buuh
+    @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
 	public DarwinCoreLocation getLoc() {
 		return loc;
 	}
@@ -371,11 +474,15 @@ public class DarwinCore extends CoreRecord{
 	}
 
 	
+	/**
+	 * Aliases for set/getGuid() which are part of any core record, not only darwin core
+	 * @return
+	 */
 	public String getGlobalUniqueIdentifier() {
-		return globalUniqueIdentifier;
+		return guid;
 	}
 	public void setGlobalUniqueIdentifier(String globalUniqueIdentifier) {
-		this.globalUniqueIdentifier = globalUniqueIdentifier;
+		this.guid = globalUniqueIdentifier;
 	}
 	/**no need for extra date last modified. Forward to CoreRecord property
 	 * @return
@@ -741,11 +848,11 @@ public class DarwinCore extends CoreRecord{
 			.append("scientificName",this.getScientificName())
 			.append("localID", this.getLocalId())
 			.append("deleted", this.isDeleted())
-			.append("globalUniqueIdentifier", this.globalUniqueIdentifier)
 			.append("institutionCode", this.institutionCode)
 			.append("collectionCode",this.collectionCode)
 			.append("catalogNumber",this.catalogNumber)
 			.append("country",this.getCountry())
+			.append("guid", this.guid)
 			.toString();
 	}
 	/**
@@ -768,11 +875,10 @@ public class DarwinCore extends CoreRecord{
 	public int hashCode() {
         int result = 17;
         // core record
-        result = (getGuid() != null ? getGuid().hashCode() : 0);
-        result = 31 * result + (getLink() != null ? getLink().hashCode() : 0);
-        result = 31 * result + (getLocalId() != null ? getLocalId().hashCode() : 0);
+        result = 31 * result + (guid != null ? guid.hashCode() : 0);
+        result = 31 * result + (link != null ? link.hashCode() : 0);
+        result = 31 * result + (localId != null ? localId.hashCode() : 0);
         // this dwc class
-        result = 31 * result + (globalUniqueIdentifier != null ? globalUniqueIdentifier.hashCode() : 0);
         result = 31 * result + (basisOfRecord != null ? basisOfRecord.hashCode() : 0);
         result = 31 * result + (institutionCode != null ? institutionCode.hashCode() : 0);
         result = 31 * result + (collectionCode != null ? collectionCode.hashCode() : 0);
@@ -825,5 +931,14 @@ public class DarwinCore extends CoreRecord{
         return result;
 	}
 	
-	
+	public int compareTo(DarwinCore myClass) {
+		return new CompareToBuilder()
+				.append(this.institutionCode, myClass.institutionCode)
+				.append(this.collectionCode, myClass.collectionCode)
+				.append(this.catalogNumber, myClass.catalogNumber)
+				.append(this.getScientificName(),	myClass.getScientificName())
+				.append(this.localId, myClass.localId)
+				.append(this.guid,myClass.guid)
+				.toComparison();
+	}
 }

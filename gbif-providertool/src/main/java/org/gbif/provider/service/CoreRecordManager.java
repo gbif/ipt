@@ -9,22 +9,24 @@ import org.hibernate.ScrollableResults;
 
 public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<T>{
 
-    public List<T> getAll(final Long resourceId);
-    public ScrollableResults scrollResource(final Long resourceId);
+    List<T> getAll(final Long resourceId);
+    ScrollableResults scrollResource(final Long resourceId);
     
 	/**
 	 * Flag all core records for a given resource as deleted by setting coreRecord.isDeleted=true
 	 * @param resource that contains the core records to be flagged
 	 */
-	public void flagAllAsDeleted(OccurrenceResource resource);
+	void flagAllAsDeleted(OccurrenceResource resource);
 	
 	/**
-	 * Find a core record via its local ID within a given resource
+	 * Find a core record via its local ID within a given resource.
+	 * This method assures to return a single record, as the combination is guaranteed to be unique in the database.
+	 * @See save
 	 * @param localId the local identifier used in the source
 	 * @param resourceId the resource identifier for the source
 	 * @return
 	 */
-	public T findByLocalId(String localId, Long resourceId);
+	T findByLocalId(String localId, Long resourceId);
 	
 	/**
 	 * same as get by id, but allows underlying db to be partitioned by resource
@@ -32,7 +34,7 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<
 	 * @param resourceId
 	 * @return
 	 */
-	public T get(Long Id, Long resourceId);
+	T get(Long Id, Long resourceId);
 	
 	
 	/**
@@ -42,6 +44,14 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<
 	 * @return
 	 * @throws ParseException 
 	 */
-	public List<T> search(Long resourceId, String q) throws ParseException;
-	public void reindex(Long resourceId);
+	List<T> search(Long resourceId, String q) throws ParseException;
+	void reindex(Long resourceId);
+	
+    /**
+     * Generic method to save a core record - handles both update and insert.
+     * Make sure the local_id + resource_fk combination is unique, otherwise you will get an EntityExistsException
+     * @param object the object to save
+     * @return the updated object
+     */
+    T save(T object);	
 }
