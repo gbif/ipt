@@ -180,16 +180,28 @@ public class TaxonomyBuilder implements org.gbif.provider.job.Job {
 		Long idx = 0l;
 		for (DwcTaxon dt : taxonomy){
 			Taxon t = dt.getTaxon();
-			// last taxon on the stack is not the parent. 
-			// Get last taxon from stack, set rgt index and compare again
-			if (t.getRank().toLowerCase().startsWith("fam")){
+			if (t.getDwcRank() == null){
+				// dont do nothing special
+			}
+			else if (t.getDwcRank().equals(Rank.Family)){
 				log.debug("process family "+t.getFullname());
+			}
+			else if (t.getDwcRank().equals(Rank.Order)){
+				log.debug("process order "+t.getFullname());
+			}
+			else if (t.getDwcRank().equals(Rank.Class)){
+				log.debug("process class "+t.getFullname());
+			}
+			else if (t.getDwcRank().equals(Rank.Kingdom)){
+				log.debug("process kingdom "+t.getFullname());
 			}
 			// process right values for taxa on stack. But only ...
 			// if stack has parents at all and if new taxon is either 
 			// a) a root taxon (parent==null)
 			// b) or the last stack taxon is not the parent of this taxon
 			while (parentStack.size()>0 && (t.getParent() == null || !t.getParent().equals(parentStack.peek()))){
+				// last taxon on the stack is not the parent. 
+				// Get last taxon from stack, set rgt index and compare again
 				Taxon nonParent = parentStack.pop();
 				nonParent.setRgt(idx++);				
 				if (persist){
