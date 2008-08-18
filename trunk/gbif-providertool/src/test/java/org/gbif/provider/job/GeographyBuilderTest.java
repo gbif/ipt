@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.SortedSet;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.dto.DwcRegion;
 import org.gbif.provider.model.dto.DwcTaxon;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GeographyBuilderTest extends BaseDaoTestCase{
 	@Autowired
 	private GeographyBuilder geographyBuilder;
+	@Autowired
+	private OccResourceManager occResourceManager;
 
 	private DwcRegion getNewRegion(){
 		DwcRegion dt = new DwcRegion();
@@ -30,11 +34,12 @@ public class GeographyBuilderTest extends BaseDaoTestCase{
 
 	@Test
 	public void testExtractHierarchy() {
-		SortedSet<Region> taxa = geographyBuilder.extractHierarchy(Constants.TEST_RESOURCE_ID, false);
-		System.out.println(String.format("%s regions found in test resource", taxa.size()));
-//		assertTrue(taxa.first().getLabel().equals("Apiaceae"));
-//		assertTrue(taxa.last().getLabel().equals("noch unbestimmt !!!"));
-//		assertTrue(taxa.size() == 857);
+		OccurrenceResource resource = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		SortedSet<Region> regions = geographyBuilder.extractHierarchy(resource, false);
+		System.out.println(String.format("%s regions found in test resource", regions.size()));
+		assertTrue(regions.first().getLabel().equals("PL"));
+		assertTrue(regions.last().getLabel().equals("Doganbey - Seferihisar. N 38°06´25´´ O 26°51´03´´ near the sea., 0m"));
+		assertTrue(regions.size() == 161);
 	}
 
 	
@@ -45,14 +50,4 @@ public class GeographyBuilderTest extends BaseDaoTestCase{
 		assertEquals(regions.size(), 4);
 	}
 
-//	@Test
-//	public void testLaunch() {
-//		Map<String, Object>seed = geographyBuilder.getSeed(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
-//		try {
-//			geographyBuilder.launch(seed);
-//		} catch (Exception e) {
-//			fail();
-//			e.printStackTrace();
-//		}
-//	}
 }
