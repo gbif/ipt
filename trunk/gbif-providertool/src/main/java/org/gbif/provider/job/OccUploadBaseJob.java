@@ -343,6 +343,8 @@ public abstract class OccUploadBaseJob implements Job{
 						if (extension.getId() == DarwinCore.GEO_EXTENSION_ID){
 							// this is the geo extension!
 							DarwinCore dwc = darwinCoreManager.get(coreId);
+							dwc.updateWithGeoExtension(extRec);
+							darwinCoreManager.save(dwc);
 						}
 					}
 				}
