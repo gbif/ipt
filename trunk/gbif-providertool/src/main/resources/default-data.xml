@@ -106790,7 +106790,7 @@
     </row>
   </table>
   <table name="extension_property_terms">
-    <column>ExtensionProperty_fk</column>
+    <column>extension_property_fk</column>
     <column>element</column>
     <column>term_order</column>
     <row>

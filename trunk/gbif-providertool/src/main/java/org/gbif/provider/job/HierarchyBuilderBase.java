@@ -98,7 +98,7 @@ public abstract class HierarchyBuilderBase<T extends TreeNode<T>> implements org
 		OccurrenceResource resource = occResourceManager.get(resourceId);
 		
 		// create unique, naturally sorted regions from dwc records
-		SortedSet<T> hierarchy = extractHierarchy(resourceId, true);
+		SortedSet<T> hierarchy = extractHierarchy(resource, true);
 		
 		// assign nested set indices and save hierarchy
 		calcNestedSetIndices(hierarchy, true);
@@ -107,7 +107,7 @@ public abstract class HierarchyBuilderBase<T extends TreeNode<T>> implements org
 		calcStats(resource, hierarchy, true);
 	}
 	
-	protected abstract SortedSet<T> extractHierarchy(Long resourceId, boolean persist);
+	protected abstract SortedSet<T> extractHierarchy(OccurrenceResource resource, boolean persist);
 
 	protected abstract void calcStats(OccurrenceResource resource, SortedSet<T> hierarchy, boolean persist);
 

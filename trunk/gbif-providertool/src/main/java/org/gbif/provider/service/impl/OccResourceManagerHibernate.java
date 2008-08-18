@@ -122,12 +122,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	 * @see org.gbif.provider.service.OccResourceManager#speciesByCountry(java.lang.Long)
 	 */
 	public List<StatsCount> speciesByCountry(Long resourceId) {
-		// FIXME: implement this method...
-		List<StatsCount> data = new ArrayList<StatsCount>();
-		data.add(new StatsCount("DE", 123l));
-		data.add(new StatsCount("UK", 101l));
-		data.add(new StatsCount("US", 423l));
-		data.add(new StatsCount("BR", 1123l));
+		OccurrenceResource resource = get(resourceId);
+		List<StatsCount> data = resource.getTaxaStatsByCountry();
 		return data;
 	}
 	public String speciesByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height) {

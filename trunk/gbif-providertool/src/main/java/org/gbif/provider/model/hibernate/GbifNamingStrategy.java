@@ -25,7 +25,7 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy {
 		if (propertyName != null && propertyName.length()>1){
 			colFk = propertyToColumnName(propertyName)+suffix;			
 		}else{
-			colFk = propertyTableName+suffix;			
+			colFk = propertyToColumnName(propertyTableName)+suffix;			
 		}
 //		log.debug("foreignKeyColumnName: "+colFk);
 		return colFk;

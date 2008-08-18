@@ -18,21 +18,29 @@ package org.gbif.provider.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.util.ConfigUtil;
 import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.MapKey;
 import org.hibernate.annotations.MapKeyManyToMany;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -55,6 +63,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	private int recWithAltitude;
 	private int recWithDate;
 	private int numCountries;
+	private Map<String, Long> numTaxaByCountry;
 	
 	private int numTerminalTaxa;
 	private int numSpecies;
@@ -124,6 +133,26 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		this.numCountries = numCountries;
 	}
 
+	
+	@CollectionOfElements
+	@MapKey(columns = @Column(name = "country", length=64))
+	public Map<String, Long> getNumTaxaByCountry() {
+		return numTaxaByCountry;
+	}
+	public void setNumTaxaByCountry(Map<String, Long> numTaxaByCountry) {
+		this.numTaxaByCountry = numTaxaByCountry;
+	}
+	@Transient
+	public List<StatsCount> getTaxaStatsByCountry() {
+		List<StatsCount> taxaStatsByCountry = new ArrayList<StatsCount>();
+		for (String country : numTaxaByCountry.keySet()){
+			taxaStatsByCountry.add(new StatsCount(country, numTaxaByCountry.get(country)));
+		}
+		return taxaStatsByCountry;
+	}
+
+
+	
 	public int getNumTerminalTaxa() {
 		return numTerminalTaxa;
 	}
@@ -188,6 +217,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		this.numSpecies = numSpecies;
 	}
 
+	
 	@Transient
 	public String getTapirEndpoint(){
 		return String.format("%s/tapir", getResourceBaseUrl());
