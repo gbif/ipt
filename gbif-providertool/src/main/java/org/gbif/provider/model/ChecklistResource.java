@@ -34,7 +34,7 @@ import org.gbif.provider.util.Constants;
 @Entity
 public class ChecklistResource extends DatasourceBasedResource {
 	//FIXME: create new extension for taxa. right now uses the dwc one so that tests dont fail...
-	public static final Long EXTENSION_ID = 1L;
+	public static final Long CORE_EXTENSION_ID = 1L;
 	
 	public static ChecklistResource newInstance(Extension core){
 		ChecklistResource resource =  new ChecklistResource();

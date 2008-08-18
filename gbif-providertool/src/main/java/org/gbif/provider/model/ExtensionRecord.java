@@ -1,8 +1,13 @@
 package org.gbif.provider.model;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -26,9 +31,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author markus
  *
  */
-public class ExtensionRecord {
+public class ExtensionRecord implements Iterable<ExtensionProperty>{
 	private Long coreId;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
+	private boolean hasNext;
+	private Set<ExtensionProperty> keys;
 
 	public static ExtensionRecord newInstance(ImportRecord iRec){
 		ExtensionRecord extRec = new ExtensionRecord();
@@ -44,12 +51,14 @@ public class ExtensionRecord {
 		this.coreId = coreId;
 	}
 	
-	@Transient
 	public Map<ExtensionProperty, String> getProperties() {
 		return properties;
 	}
 	public void setProperties(Map<ExtensionProperty, String> properties) {
 		this.properties = properties;
+	}
+	public String getPropertyValue(ExtensionProperty property) {
+		return properties.get(property);
 	}
 	public void setPropertyValue(ExtensionProperty property, String value) {
 		properties.put(property, value);
@@ -57,6 +66,35 @@ public class ExtensionRecord {
 	}
 	
 	
+
+	public Iterator<ExtensionProperty> iterator() {
+		keys = properties.keySet();
+		return null;
+		
+	}
+
+	private class PropertyIterator implements Iterator<ExtensionProperty> {
+        private int index = 0;
+        private ExtensionProperty[] props;
+      
+        protected PropertyIterator(){
+        	index = 0;
+        	this.props = (ExtensionProperty[]) properties.keySet().toArray(new ExtensionProperty[properties.keySet().size()]);
+        }
+        public boolean hasNext()   {
+            return index < props.length;  
+        }
+        public ExtensionProperty next()  {
+        	if(hasNext())
+                return props[index++];
+            else
+                throw new NoSuchElementException();
+        }
+        public void remove()  {
+    	    throw new UnsupportedOperationException();		
+        }
+	}
+
 	
 	/**
 	 * @see java.lang.Object#equals(Object)

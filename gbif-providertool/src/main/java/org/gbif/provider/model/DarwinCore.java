@@ -64,6 +64,11 @@ import org.hibernate.validator.NotNull;
 @Indexed
 public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
+	public static final Long GEO_EXTENSION_ID = 3l;
+	public static final ExtensionProperty LATITUDE_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/DecimalLatitude");
+	public static final ExtensionProperty LONGITUDE_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/DecimalLongitude");
+	public static final ExtensionProperty GEODATUM_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/GeodeticDatum");
+
 	// for core record
 	@DocumentId
 	private Long id;
@@ -289,6 +294,56 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 		}
 		return dwc;
+	}
+	
+	public void updateWithGeoExtension(ExtensionRecord extRec){
+		Float latitude = null;
+		Float longitude = null;
+		String geodatum = null;
+		// tmp raw value
+		String val; 
+		for (ExtensionProperty prop : extRec){
+			// check string coordinates
+			if(prop.equals(LATITUDE_PROP)){
+				val = extRec.getPropertyValue(prop);
+				if (val !=null){
+					try {
+						latitude = Float.valueOf(val);
+					} catch (NumberFormatException e) {
+						setProblematic(true);
+						logdb.warn("Couldnt transform value '{0}' for property DecimalLatitude into Float value", val, e);
+					}
+				}
+			}
+			else if(prop.equals(LONGITUDE_PROP)){
+				val = extRec.getPropertyValue(prop);
+				if (val !=null){
+					try {
+						longitude = Float.valueOf(val);
+					} catch (NumberFormatException e) {
+						setProblematic(true);
+						logdb.warn("Couldnt transform value '{0}' for property DecimalLongitude into Float value", val, e);
+					}
+				}
+			}
+			else if(prop.equals(GEODATUM_PROP)){
+				geodatum=extRec.getPropertyValue(prop);
+			}
+		}
+		setCoordinates(latitude, longitude, geodatum);
+	}
+			
+	/**
+	 * Transforms coordinates into WGS84 coordinates and sets the properties
+	 * @param latitude
+	 * @param longitude
+	 * @param geodatum
+	 */
+	public void setCoordinates(Float latitude, Float longitude, String geodatum) {
+		if (latitude != null && longitude != null){
+			setLongitudeAsFloat(longitude);
+			setLatitudeAsFloat(latitude);
+		}
 	}
 	
 	@Transient

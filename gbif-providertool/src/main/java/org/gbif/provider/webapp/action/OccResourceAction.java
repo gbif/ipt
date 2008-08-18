@@ -108,7 +108,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		// get all availabel extensions for new mappings
 		extensions = extensionManager.getAll();
 		for (Extension ext : extensions) {
-			if (ext.getId().equals(OccurrenceResource.EXTENSION_ID)) {
+			if (ext.getId().equals(OccurrenceResource.CORE_EXTENSION_ID)) {
 				// only show extensions sensu strictu. remove core "extension"
 				extensions.remove(ext);
 				break;

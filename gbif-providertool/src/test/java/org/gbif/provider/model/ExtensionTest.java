@@ -50,7 +50,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 		extension = extensionManager.save(extension);
 		this.flush();
 		// check dwc, checklist and inserted extensions
-		for (Long extId : Arrays.asList(ChecklistResource.EXTENSION_ID, OccurrenceResource.EXTENSION_ID, extension.getId())){
+		for (Long extId : Arrays.asList(ChecklistResource.CORE_EXTENSION_ID, OccurrenceResource.CORE_EXTENSION_ID, extension.getId())){
 			Extension ext = extensionManager.get(extId);
 			List<ExtensionProperty> props = ext.getProperties(); 
 			assertFalse(props.isEmpty());
@@ -84,7 +84,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);
-		assertTrue(res.getCoreMapping().getExtension().getId().equals(OccurrenceResource.EXTENSION_ID));
+		assertTrue(res.getCoreMapping().getExtension().getId().equals(OccurrenceResource.CORE_EXTENSION_ID));
 		// the core mapping should not be in the extension mappings map
 		assertFalse(res.getExtensionMappings().containsValue(res.getCoreMapping()));
 		// but in all mappings it should:
