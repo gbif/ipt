@@ -17,13 +17,13 @@ public class ResourceFactoryImpl implements ResourceFactory{
 
 	
 	public OccurrenceResource newOccurrenceResourceInstance(){
-		Extension core = extensionManager.get(OccurrenceResource.EXTENSION_ID);
+		Extension core = extensionManager.get(OccurrenceResource.CORE_EXTENSION_ID);
 		OccurrenceResource resource =  OccurrenceResource.newInstance(core);
 		return resource;
 	}
 	
 	public ChecklistResource newChecklistResourceInstance(){
-		Extension core = extensionManager.get(ChecklistResource .EXTENSION_ID);
+		Extension core = extensionManager.get(ChecklistResource .CORE_EXTENSION_ID);
 		ChecklistResource resource =  ChecklistResource.newInstance(core);
 		return resource;
 	}

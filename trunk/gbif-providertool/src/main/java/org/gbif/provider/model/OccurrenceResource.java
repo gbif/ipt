@@ -46,7 +46,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
-	public static final Long EXTENSION_ID = 1l;
+	public static final Long CORE_EXTENSION_ID = 1l;
 	
 	// cached statistics
 	private int recTotal;

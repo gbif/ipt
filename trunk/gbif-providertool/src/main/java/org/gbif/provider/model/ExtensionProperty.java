@@ -50,6 +50,14 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private boolean required;
 	private List<String> terms = new ArrayList<String>();
 
+	public ExtensionProperty() {
+		super();
+	}
+	public ExtensionProperty(String qualName) {
+		super();
+		this.qualName = qualName;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {

@@ -10,36 +10,31 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
-import org.gbif.provider.service.CoreRecordManager;
-import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.service.ResourceManager;
-import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.ConfigUtil;
-import org.gbif.provider.util.TabFileWriter;
-import org.gbif.provider.util.ZipUtil;
 import org.gbif.logging.log.I18nDatabaseAppender;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.util.ConfigUtil;
+import org.gbif.provider.util.TabFileWriter;
+import org.gbif.provider.util.ZipUtil;
 import org.gbif.scheduler.scheduler.Launchable;
 
 public abstract class OccUploadBaseJob implements Job{
@@ -329,11 +324,12 @@ public abstract class OccUploadBaseJob implements Job{
 
 			try{
 				out = writer.getFile();
+				// Do we need a
 				for (ImportRecord rec : source){
 					// check if thread should shutdown...
 					if (Thread.interrupted()) {
 					    throw new InterruptedException();
-					}
+					}					
 					Long coreId = idMap.get(rec.getLocalId());
 					if (coreId == null){
 						String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};
@@ -343,6 +339,11 @@ public abstract class OccUploadBaseJob implements Job{
 						// TODO: check if record has changed
 						ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 						extensionRecordManager.insertExtensionRecord(extRec);
+						// see if darwin core record is affected, e.g. geo extension => coordinates
+						if (extension.getId() == DarwinCore.GEO_EXTENSION_ID){
+							// this is the geo extension!
+							DarwinCore dwc = darwinCoreManager.get(coreId);
+						}
 					}
 				}
 			} finally {
