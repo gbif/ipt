@@ -90,7 +90,10 @@ public class GChartBuilder {
 
 	private static List<PoliticalBoundary> translateIntoPoliticalBoundaries(List<StatsCount> data){
 		List<PoliticalBoundary> cdata = new ArrayList<PoliticalBoundary>();
-		Long maxRecords = Collections.max(data).getCount();
+		Long maxRecords = 1l;
+		if (!data.isEmpty()){
+			maxRecords = Collections.max(data).getCount();
+		}
 		for (StatsCount stat : data){
 			// check that ~ISO code exists, i.e. must be 2 characters only!
 			if(stat.getLabel().length()==2){
