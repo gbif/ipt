@@ -1,5 +1,7 @@
 package org.gbif.provider.model.dto;
 
+import javax.persistence.Embeddable;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
