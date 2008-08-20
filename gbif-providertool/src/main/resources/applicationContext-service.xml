@@ -9,45 +9,36 @@
     <!-- =================================================================== -->
     <!-- AOP: Configuration and Aspects                                      -->
     <!-- =================================================================== -->
+
+<!-- 
+-->
     <aop:config>
         <aop:advisor id="userManagerTx" advice-ref="userManagerTxAdvice" pointcut="execution(* *..service.UserManager.*(..))" order="0"/>        
         <aop:advisor id="userManagerSecurity" advice-ref="userSecurityAdvice" pointcut="execution(* *..service.UserManager.saveUser(..))" order="1"/>
-        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* *..service.*Manager.*(..))" order="2"/>
-        <aop:advisor id="callableTx" advice-ref="callableAdvice" pointcut="execution(* *..Callable.*(..))" order="3"/>
     </aop:config>
-    
-    <!-- Enable @Transactional support -->
-    <tx:annotation-driven/>
-    
-    <!-- Enable @AspectJ support -->
-    <aop:aspectj-autoproxy/>
-
-    <!-- Enable @Configured support -->
-    <aop:spring-configured/>
-    
-    <tx:advice id="callableAdvice">
-        <tx:attributes>
-            <!-- Read-only commented out to make things easier for end-users -->
-            <!-- http://issues.appfuse.org/browse/APF-556 -->
-            <!--tx:method name="get*" read-only="true"/-->
-            <tx:method name="*"/>
-        </tx:attributes>
-    </tx:advice>
 
     <tx:advice id="txAdvice">
         <tx:attributes>
-            <!-- Read-only commented out to make things easier for end-users -->
-            <!-- http://issues.appfuse.org/browse/APF-556 -->
-            <!--tx:method name="get*" read-only="true"/-->
             <tx:method name="*"/>
         </tx:attributes>
     </tx:advice>
-
+    
     <tx:advice id="userManagerTxAdvice">
         <tx:attributes>
             <tx:method name="save*" rollback-for="UserExistsException"/>
         </tx:attributes>
     </tx:advice>
+    
+    <!-- Enable @AspectJ support -->
+    <!-- 
+    <aop:aspectj-autoproxy/>
+    -->
+    <!-- Enable @Configured support -->
+    <!-- 
+    <aop:spring-configured/>
+    -->
+    
+    
     
     <bean id="userSecurityAdvice" class="org.appfuse.service.UserSecurityAdvice"/>
     

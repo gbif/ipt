@@ -22,7 +22,7 @@
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
-            <Item name="Jobs" title="menu.admin.jobs" page="/scheduler/jobs.html"/>
+            <Item name="ActiveTasks" title="menu.admin.activeTasks" page="/admin/activeTasks.html"/>
             <Item name="LogEvents" title="menu.admin.logEvents" page="/logging/logEvents.html"/>
             <Item name="Extensions" title="menu.explorer.extensions" page="/admin/extensions.html"/>
         </Menu>

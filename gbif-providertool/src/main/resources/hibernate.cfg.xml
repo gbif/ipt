@@ -36,7 +36,6 @@
         <mapping class="org.gbif.provider.model.ViewExtensionMapping"/>
         <!-- imported logging & job classes -->
         <mapping class="org.gbif.logging.model.LogEvent"/>
-        <mapping class="org.gbif.scheduler.model.Job"/>
         
     </session-factory>
 </hibernate-configuration>

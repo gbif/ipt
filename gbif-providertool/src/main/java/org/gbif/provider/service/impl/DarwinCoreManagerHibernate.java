@@ -7,11 +7,16 @@ import javax.persistence.EntityExistsException;
 
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.id.IdentifierGenerationException;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly=true)
 public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<DarwinCore> implements DarwinCoreManager  {
 	public static String[] searchFields = {"scientificName","locality","country","guid"};
 	
@@ -20,6 +25,7 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public DarwinCore save(DarwinCore dwc) {
 		// removed the unique checking here cause its too performance consuming
 		// the database has a unique constraint on resource_fk + local_id 

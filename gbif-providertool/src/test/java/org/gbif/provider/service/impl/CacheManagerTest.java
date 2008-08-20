@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CacheManagerTest extends RdbmsImportSourceTest{
 	@Autowired
 	private CacheManager cacheManager;
-	@Autowired
-	private OccResourceManager occResourceManager;
 
 	@Test
 	public void testRunUpload() {

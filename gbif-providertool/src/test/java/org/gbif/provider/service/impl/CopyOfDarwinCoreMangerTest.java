@@ -25,6 +25,7 @@ import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.hibernate.PropertyValueException;
@@ -34,10 +35,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.AssertThrows;
 
 
-public class DarwinCoreMangerTest extends ContextAwareTestBase{
+public class CopyOfDarwinCoreMangerTest extends ContextAwareTestBase{
 	@Autowired
 	protected DarwinCoreManager darwinCoreManager;
-	private GenericManager<OccurrenceResource, Long> occResourceManager;
+	@Autowired
+	private OccResourceManager occResourceManager;
 
 	@Test
 	public void testSave(){
@@ -72,49 +74,5 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
         }.runTest();
 	}
 	
-	@Test
-	public void testConstraintSave(){		
-		new AssertThrows(PropertyValueException.class) {
-            public void test() {
-        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
-        		DarwinCore dwc = DarwinCore.newMock(res);
-        		// remove resource to check if constraints work
-        		dwc.setResource(null);
-        		// should raise PropertyValueException
-        		dwc = darwinCoreManager.save(dwc);		
-        		darwinCoreManager.flush();            		
-            }
-		}.runTest();
-	}
-	
-	
-	@Test
-	public void testFlagAllAsDeleted() {
-		OccurrenceResource resource = (OccurrenceResource) occResourceManager.get(Constants.TEST_RESOURCE_ID);
-		darwinCoreManager.flagAllAsDeleted(resource);
-	}
-
-	@Test
-	public void te32stReindex() {
-//		darwinCoreManager.reindex(Constants.TEST_RESOURCE_ID);		
-//		darwinCoreManager.reindex(2l);		
-	}
-
-	
-	@Test
-	public void testSimpleSave(){		
-		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
-		DarwinCore dwc = DarwinCore.newMock(res);
-    	try{
-    		dwc = darwinCoreManager.save(dwc);		
-    	}finally{
-    		darwinCoreManager.flush();            		
-    	}
-	}
-	
-	
-	public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
 	
 }

@@ -22,11 +22,12 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 
-public class UploadEventManagerTest extends BaseDaoTestCase{
+public class UploadEventManagerTest extends ContextAwareTestBase{
 	protected UploadEventManager uploadEventManager;
 
 	public void setUploadEventManager(UploadEventManager uploadEventManager) {

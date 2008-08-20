@@ -106864,20 +106864,6 @@
       <value>4</value>
     </row>
   </table>
-  <table name="job">
-    <column>id</column>
-    <column>created</column>
-    <column>data_as_json</column>
-    <column>description</column>
-    <column>instance_id</column>
-    <column>job_class_name</column>
-    <column>job_group</column>
-    <column>name</column>
-    <column>next_fire_time</column>
-    <column>repeat_in_days</column>
-    <column>running_group</column>
-    <column>started</column>
-  </table>
   <table name="log_event">
     <column>id</column>
     <column>group_id</column>

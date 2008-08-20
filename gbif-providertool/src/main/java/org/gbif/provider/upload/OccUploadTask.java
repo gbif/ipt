@@ -49,7 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 	 * @author markus
 	 *
 	 */
-	public class OccUploadTask extends TaskBase implements CachingTask{
+	public class OccUploadTask extends TaskBase implements Task<UploadEvent>{
 		public static final int SOURCE_TYPE_ID = 1;
 		private Integer maxRecords;
 		private Map<String, Long> idMap = new HashMap<String, Long>();
@@ -79,17 +79,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		
 		public UploadEvent call() throws Exception{
-			log.info(String.format("Starting %s for resource %s",this.getClass().getSimpleName(), resource.getId()));
+			log.info(String.format("Starting %s for resource %s",this.getClass().getSimpleName(), getResourceId()));
 			//TODO: set this in the scheduler constructor???
 //			MDC.put(I18nDatabaseAppender.MDC_INSTANCE_ID, null);
 			MDC.put(I18nDatabaseAppender.MDC_USER, userId);
-			MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, JobUtils.getJobGroup(resource.getId()));
+			MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, JobUtils.getJobGroup(getResourceId()));
 			MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, this.hashCode());
 			MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, SOURCE_TYPE_ID);
 			
 			try {
-				// get resource
-				resource = occResourceManager.get(resource.getId());
 				List<File> dumpFiles = new ArrayList<File>();
 				
 				// create new taxonomy builder
@@ -99,7 +97,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 				event.setJobSourceId(this.hashCode());
 				event.setJobSourceType(SOURCE_TYPE_ID);
 				event.setExecutionDate(new Date());
-				event.setResource(resource);
+				event.setResource(getResource());
 								
 				// clear old data/events
 				resetResourceCache();				
@@ -109,7 +107,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 				dumpFiles.add(coreFile);
 				
 				// upload further extensions one by one
-				for (ViewMappingBase vm : resource.getExtensionMappings().values()){
+				for (ViewMappingBase vm : getResource().getExtensionMappings().values()){
 					Extension ext = vm.getExtension();
 					// run import into db & dump file
 					try {
@@ -123,7 +121,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 				}
 				
 				// zip all files into single archive
-				File archive = resource.getDumpArchiveFile();
+				File archive = getResource().getDumpArchiveFile();
 				archive.createNewFile();
 				ZipUtil.zipFiles(dumpFiles, archive);			
 				
@@ -137,7 +135,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 		}
 		
 		private void resetResourceCache(){
-			File dataDir = resource.getDataDir();
+			File dataDir = getResource().getDataDir();
 			try {
 				FileUtils.deleteDirectory(dataDir);
 				log.info("Removed old occurrence data dir "+dataDir.getAbsolutePath());
@@ -147,21 +145,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 				e.printStackTrace();
 			}
 			// clear taxa
-			taxonManager.deleteAll(resource);
+			taxonManager.deleteAll(getResource());
 			// clear regions
-			regionManager.deleteAll(resource);
+			regionManager.deleteAll(getResource());
 			// clear resource stats
-			resource.resetStats();
-			occResourceManager.save(resource);
+			getResource().resetStats();
+			occResourceManager.save(getResource());
 		}
 		
 		protected File uploadCore() throws InterruptedException {
-			log.info("Uploading occurrence core for resource "+resource.getTitle());					
+			log.info("Uploading occurrence core for resource "+getResource().getTitle());					
 			ImportSource source;
 			File out = null;
 			try {
 				// create new tab file
-				TabFileWriter writer = prepareTabFile(resource.getCoreMapping());
+				TabFileWriter writer = prepareTabFile(getResource().getCoreMapping());
 				out = writer.getFile();
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
 				source = this.getCoreImportSource();
@@ -170,7 +168,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 				// for individual record exception there is another inner try/catch
 				try{
 					// flag all previously existing records as deleted before updating/inserting new ones
-					darwinCoreManager.flagAllAsDeleted(resource);
+					darwinCoreManager.flagAllAsDeleted(getResource());
 
 					// go through source records one by one
 					for (ImportRecord rec : source){
@@ -184,10 +182,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 						 try {
 							// get previous record or null if it didnt exist yet based on localID and resource
-							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), resource.getId());
+							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), getResourceId());
 							
 							// attach to the occurrence resource
-							dwc.setResource(resource);
+							dwc.setResource(getResource());
 							
 							// assign managed properties
 							updateManagedProperties(dwc, oldRecord);
@@ -228,12 +226,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 						} catch (Exception e) {
 							recordsErroneous.addAndGet(1);
-							logdb.error(String.format("Error uploading record %s of resource %s", rec.getId(), resource.getTitle()), e);
+							logdb.error(String.format("Error uploading record %s of resource %s", rec.getId(), getResource().getTitle()), e);
 						}
 						
 						// clear session cache once in a while...
 						if (recordsUploaded.get() % 1000 == 0){
-							log.debug(recordsUploaded+" uploaded for resource "+resource.getId());
+							log.debug(recordsUploaded+" uploaded for resource "+getResourceId());
 							darwinCoreManager.flush();
 						}
 
@@ -247,8 +245,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 					// update resource and upload event statistics
 					int existingRecords = 0;
-					if (resource.getLastUpload()!=null){
-						existingRecords = resource.getLastUpload().getRecordsUploaded(); 
+					if (getResource().getLastUpload()!=null){
+						existingRecords = getResource().getLastUpload().getRecordsUploaded(); 
 					}
 					recordsDeleted.set(existingRecords+recordsAdded.get()-recordsUploaded.get());
 					// logging
@@ -262,8 +260,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 					// save upload event
 					event = uploadEventManager.save(event);
 					// update resource properties
-					resource.setLastUpload(event);
-					occResourceManager.save(resource);
+					getResource().setLastUpload(event);
+					occResourceManager.save(getResource());
 				}
 
 			} catch (IOException e) {
@@ -322,7 +320,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 						}					
 						Long coreId = idMap.get(rec.getLocalId());
 						if (coreId == null){
-							String[] paras = {rec.getLocalId(), extension.getName(), resource.getId().toString()};
+							String[] paras = {rec.getLocalId(), extension.getName(), getResourceId().toString()};
 							//FIXME: use i18n job logging ???
 							log.warn("uploadManager.unknownLocalId" +paras.toString());
 						}else{
@@ -361,7 +359,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 		}
 		private TabFileWriter prepareTabFile(Extension extension, List<String> additionalHeader) throws IOException{
 			// create new file, overwriting existing one
-			File file = resource.getDumpFile(extension);
+			File file = getResource().getDumpFile(extension);
 			file.createNewFile();
 
 			List<String> header = new ArrayList<String>();
@@ -369,9 +367,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 			header.add(CoreRecord.ID_COLUMN_NAME);
 			header.add(CoreRecord.MODIFIED_COLUMN_NAME);
 			// add only existing mapped concepts
-			ViewMappingBase mapping = resource.getExtensionMapping(extension);
+			ViewMappingBase mapping = getResource().getExtensionMapping(extension);
 			if (mapping == null){
-				throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",resource.getTitle(), extension.getName()));
+				throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",getResource().getTitle(), extension.getName()));
 			}
 			for (ExtensionProperty prop : mapping.getMappedProperties()){
 				header.add(prop.getName());
@@ -382,25 +380,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 		}
 
 		private ImportSource getCoreImportSource() throws ImportSourceException{
-			Long resourceId = resource.getId();
+			Long resourceId = getResourceId();
 			// set resource context for DatasourceInterceptor
 			DatasourceContextHolder.setResourceId(resourceId);
 			// create rdbms source
-			ViewCoreMapping coreViewMapping = resource.getCoreMapping();
-			RdbmsImportSource source = RdbmsImportSource.newInstance(resource, coreViewMapping, maxRecords);
+			ViewCoreMapping coreViewMapping = getResource().getCoreMapping();
+			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), coreViewMapping, maxRecords);
 			return source;
 		}
 
 		private ImportSource getImportSource(Extension extension) throws ImportSourceException{
-			Long resourceId = resource.getId();
+			Long resourceId = getResourceId();
 			// set resource context for DatasourceInterceptor
 			DatasourceContextHolder.setResourceId(resourceId);
 			// create rdbms source
-			ViewMappingBase vm = resource.getExtensionMapping(extension);
+			ViewMappingBase vm = getResource().getExtensionMapping(extension);
 			if (vm == null){
 				throw new ImportSourceException("No mapping exists for extension "+extension.getName());
 			}
-			RdbmsImportSource source = RdbmsImportSource.newInstance(resource, vm, maxRecords);
+			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), vm, maxRecords);
 
 			return source;
 		}

@@ -34,14 +34,23 @@ public class TaxonManagerHibernate extends GenericManagerHibernate<Taxon> implem
 		return result;
 	}
 
+	/* Delete all taxa of a given resource, thereby updating all darwin core records for the same resource (setting taxon=null)
+	 * (non-Javadoc)
+	 * @see org.gbif.provider.service.TaxonManager#deleteAll(org.gbif.provider.model.OccurrenceResource)
+	 */
 	public int deleteAll(OccurrenceResource resource) {
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 		Session session = getSession();
-		String hqlUpdate = "delete Taxon tax WHERE tax.resource = :resource";
-		int count = session.createQuery( hqlUpdate )
-		        .setEntity("resource", resource)
-		        .executeUpdate();
+		
+		// first remove taxa from dwcore records
+		String hqlUpdate = "update DarwinCore dwc SET dwc.taxon=null WHERE dwc.resource = :resource";
+		session.createQuery( hqlUpdate ).setEntity("resource", resource).executeUpdate();
+		
+		// now delete taxa
+		hqlUpdate = "delete Taxon tax WHERE tax.resource = :resource";
+		int count = session.createQuery( hqlUpdate ).setEntity("resource", resource).executeUpdate();
+		
 		log.info(String.format("Removed %s taxa bound to resource %s", count, resource.getTitle()));
 		return count;
 	}

@@ -12,6 +12,10 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="org.gbif.provider" /> 
+
+    <!-- Enable @Transactional support -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
     
     <!-- application properties -->    
     <bean id="configUtil" class="org.gbif.provider.util.ConfigUtil">
@@ -42,7 +46,7 @@
 
     <!--  MANAGER  -->
     <bean id="abstractManager" abstract="true">
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <!--property name="sessionFactory" ref="sessionFactory"/-->
     </bean>
 
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
@@ -99,6 +103,7 @@
 
     
     <!-- TASK EXECUTOR -->
+
     <bean id="uploadExecutor" factory-method="newSingleThreadExecutor" class="java.util.concurrent.Executors" >
         <!-- max number of concurrent uploads -->
         <!--constructor-arg value="1"/-->
@@ -109,9 +114,9 @@
     </bean>
     <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.upload.OccUploadTask" />
     <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.upload.TaxonomyBuilder" />
-    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.upload.GeographyBuilder" />
+    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.upload.GeographyBuilder"/>
 
-    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" >
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager">
         <property name="uploadExecutor" ref="uploadExecutor"/>
         <property name="processingExecutor" ref="processingExecutor"/>
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
