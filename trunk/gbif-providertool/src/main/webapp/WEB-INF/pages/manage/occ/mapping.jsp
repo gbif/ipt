@@ -26,6 +26,13 @@
 	    
 	    <!-- cssClass="text large" -->    
 	    <s:textarea key="mapping.sourceSql" required="true" cssClass="text large"/>
+	    <span>
+	    Copy already existing sources
+	    <ul class="clean">
+	    	<li>core</li>
+	    	<li>geospatial</li>
+	    </ul>
+	    </span>
 	    <br/>
 	    
 	    <s:submit cssClass="button" key="button.save" theme="simple"/>

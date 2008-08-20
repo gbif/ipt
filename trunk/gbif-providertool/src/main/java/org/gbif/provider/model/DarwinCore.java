@@ -61,7 +61,7 @@ import org.hibernate.validator.NotNull;
 @Table(name="dwcore"
 	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 ) 
-@Indexed
+//@Indexed
 public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
 	public static final Long GEO_EXTENSION_ID = 3l;

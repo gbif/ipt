@@ -16,32 +16,22 @@
 
 package org.gbif.provider.webapp.action;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.datasource.DatasourceInterceptor;
-import org.gbif.provider.job.JobUtils;
-import org.gbif.provider.job.OccUploadBaseJob;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.scheduler.model.Job;
-import org.gbif.scheduler.service.JobManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -50,15 +40,14 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private GenericManager<Extension> extensionManager;
 	private GenericManager<ViewMappingBase> viewMappingManager;
 	private UploadEventManager uploadEventManager;
-	private JobManager jobManager;
+	private CacheManager cacheManager;
 	protected Map session;
 
 	private List<Extension> extensions;
 	private List occResources;
 	private OccurrenceResource occResource;
 	private String gChartData;
-	private Job currentJob;
-	private Job nextUpload;
+	
 	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
 	        {  
 	            {  
@@ -118,25 +107,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		for (ViewMappingBase map : occResource.getAllMappings()) {
 			extensions.remove(map.getExtension());
 		}
-		// investigate upload jobs
-		List<Job> jobs = jobManager.getJobsInGroup(JobUtils.getJobGroup(occResource));
-		for (Job j : jobs) {
-			if (j.getStarted() != null) {
-				// job is running
-				if (currentJob != null){					
-					log.warn("Multiple jobs running in parallel for resource "+resource_id);
-				}
-				currentJob = j;
-			} else {
-				try {
-					Class jobClass = Class.forName(j.getJobClassName());
-					if (jobClass.isAssignableFrom(OccUploadBaseJob.class) && (nextUpload == null || j.getNextFireTime().after(nextUpload.getNextFireTime()))) {
-						nextUpload = j;
-					}
-				} catch (ClassNotFoundException e) {
-				}
-			}
-		}
 		return SUCCESS;
 	}
 
@@ -170,6 +140,14 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return "delete";
 	}
 
+	public String submitUploadTask() throws Exception{
+		// run task in different thread
+		cacheManager.runUpload(resource_id, getCurrentUser().getId(), null);
+		
+        saveMessage(getText("upload.addedJob"));
+		return SUCCESS;
+	}
+	
 	public String count() {
 		return SUCCESS;
 	}
@@ -183,10 +161,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public void setResourceFactory(ResourceFactory resourceFactory) {
 		this.resourceFactory = resourceFactory;
-	}
-
-	public void setJobManager(JobManager jobManager) {
-		this.jobManager = jobManager;
 	}
 
 	public void setExtensionManager(
@@ -211,14 +185,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return extensions;
 	}
 
-	public Job getCurrentJob() {
-		return currentJob;
-	}
-
-	public Job getNextUpload() {
-		return nextUpload;
-	}
-
 	public String getGChartData() {
 		return gChartData;
 	}
@@ -233,6 +199,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public void setSession(Map session) {
 		this.session = session;
+	}
+
+	public void setCacheManager(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
 	}
 	
 }

@@ -34,14 +34,16 @@ public class TaxonManagerHibernate extends GenericManagerHibernate<Taxon> implem
 		return result;
 	}
 
-	public void deleteAll(OccurrenceResource resource) {
+	public int deleteAll(OccurrenceResource resource) {
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 		Session session = getSession();
-		String hqlUpdate = String.format("delete Taxon tax WHERE tax.resource = :resource", persistentClass.getName());
+		String hqlUpdate = "delete Taxon tax WHERE tax.resource = :resource";
 		int count = session.createQuery( hqlUpdate )
 		        .setEntity("resource", resource)
 		        .executeUpdate();
+		log.info(String.format("Removed %s taxa bound to resource %s", count, resource.getTitle()));
+		return count;
 	}
 
 

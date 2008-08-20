@@ -3,14 +3,18 @@
 
 <hibernate-configuration>
     <session-factory>
-        <!--property name="hibernate.ejb.naming_strategy"></property-->
         <property name="hibernate.ejb.naming_strategy">${hibernate.namingStrategy}</property>
+
+        
+        <!-- HIBERNATE SEARCH -->
         <!-- the default directory provider -->
         <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
         <!--  the default base directory for the indecies -->
         <property name="hibernate.search.default.indexBase">${h8search.indexBase}</property>
-        
+        <!-- turn off indexing by default for tests -->
+        <property name="hibernate.search.autoregister_listeners">false</property>
 
+        
         <mapping class="org.appfuse.model.User"/>
         <mapping class="org.appfuse.model.Role"/>
         <mapping class="org.gbif.provider.model.ChecklistResource"/>

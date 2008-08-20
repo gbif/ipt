@@ -1,8 +1,9 @@
-package org.gbif.provider.job;
+package org.gbif.provider.util;
 
 import static org.junit.Assert.*;
 
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.util.JobUtils;
 import org.junit.Before;
 import org.junit.Test;
 
