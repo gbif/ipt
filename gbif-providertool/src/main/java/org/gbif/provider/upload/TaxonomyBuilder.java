@@ -1,10 +1,7 @@
 package org.gbif.provider.upload;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.Stack;
@@ -14,27 +11,15 @@ import java.util.concurrent.Callable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.MDC;
-import org.appfuse.model.User;
-import org.gbif.logging.log.I18nDatabaseAppender;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.util.JobUtils;
-import org.gbif.scheduler.model.Job;
-import org.gbif.scheduler.scheduler.Launchable;
-import org.gbif.util.JSONUtils;
 import org.hibernate.ScrollableResults;
 import org.springframework.beans.factory.annotation.Autowired;
 

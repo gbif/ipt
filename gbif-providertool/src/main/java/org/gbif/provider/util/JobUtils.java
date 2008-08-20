@@ -1,12 +1,6 @@
 package org.gbif.provider.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.appfuse.model.User;
 import org.gbif.provider.model.Resource;
-import org.gbif.scheduler.model.Job;
-import org.gbif.util.JSONUtils;
 
 public class JobUtils {
 
