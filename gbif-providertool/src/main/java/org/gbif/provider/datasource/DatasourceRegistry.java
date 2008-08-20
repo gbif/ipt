@@ -16,26 +16,19 @@
 
 package org.gbif.provider.datasource;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.service.GenericManager;
-import org.gbif.provider.job.OccDbUploadJob;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 /**
  * Registry of active external datasources (=DatasourceBasedResource) used by ExternalResourceRoutingDatasource.
@@ -69,7 +62,7 @@ public class DatasourceRegistry{
 					// finally register source for future use!!!
 					datasources.put(resource.getId(), dsa);
 				} catch (SQLException e) {
-					log.error("Cant open connection to datasource. Dont register this source", e);
+					log.warn("Cant open connection to datasource. Dont register datasource for resource "+resource.getId());
 				}
 			}
 		}

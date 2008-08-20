@@ -7,7 +7,8 @@ public interface TaxonManager extends TreeNodeManager<Taxon>{
 	/**
 	 * Delete all taxon records for a given resource
 	 * @param resource that contains the taxon records to be removed
+	 * @return number of deleted taxa
 	 */
-	void deleteAll(OccurrenceResource resource);
+	 int deleteAll(OccurrenceResource resource);
 	
 }

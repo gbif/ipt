@@ -45,11 +45,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <!-- 
-        <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerImpl" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
-        </bean>
-    -->
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
     <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
@@ -89,13 +84,8 @@
     </bean>
 
     
-    
-    <!-- SCHEDULER -->
-    <bean id="jobDao" class="org.gbif.scheduler.dao.hibernate.JobDaoHibernate" parent="abstractManager"/>
-    <bean id="jobManager" class="org.gbif.scheduler.service.impl.JobManagerImpl">        
-        <constructor-arg ref="jobDao"/>
-    </bean>
-    
+
+
     <!-- LOGGING -->
     <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractManager"/>
     <bean id="logEventManager" class="org.gbif.logging.service.impl.LogEventManagerImpl">
@@ -105,25 +95,28 @@
     <bean id="i18nDatabaseAppender" class="org.gbif.logging.log.I18nDatabaseAppender">
         <property name="logEventDao" ref="logEventDao"/>
     </bean>
+
+
     
+    <!-- TASK EXECUTOR -->
+    <bean id="uploadExecutor" factory-method="newSingleThreadExecutor" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent uploads -->
+        <!--constructor-arg value="1"/-->
+    </bean>
+    <bean id="processingExecutor" factory-method="newFixedThreadPool" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent processing threads. Default is 2x max concurrent uploads -->
+        <constructor-arg value="2"/>
+    </bean>
+    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.upload.OccUploadTask" />
+    <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.upload.TaxonomyBuilder" />
+    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.upload.GeographyBuilder" />
+
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" >
+        <property name="uploadExecutor" ref="uploadExecutor"/>
+        <property name="processingExecutor" ref="processingExecutor"/>
+        <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
+        <lookup-method name="newOccProcessingTask" bean="processingTask"/>
+    </bean>
     
-    <!-- SCHEDULER JOBS -->
-    <bean id="occDbUploadJob" class="org.gbif.provider.job.OccDbUploadJob">
-        <constructor-arg ref="occResourceManager"/>
-        <constructor-arg ref="uploadEventManager"/>
-        <constructor-arg ref="datasourceInspectionManager"/>
-        <constructor-arg ref="extensionRecordManager"/>
-        <constructor-arg ref="darwinCoreManager"/>
-    </bean> 
-    <bean id="taxonomyBuilder" class="org.gbif.provider.job.TaxonomyBuilder">
-        <constructor-arg ref="occResourceManager"/>
-        <constructor-arg ref="darwinCoreManager"/>
-        <constructor-arg ref="taxonManager"/>
-    </bean> 
-    <bean id="geographyBuilder" class="org.gbif.provider.job.GeographyBuilder">
-        <constructor-arg ref="occResourceManager"/>
-        <constructor-arg ref="darwinCoreManager"/>
-        <constructor-arg ref="regionManager"/>
-    </bean> 
     
 </beans>

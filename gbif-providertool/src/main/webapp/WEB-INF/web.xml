@@ -222,9 +222,10 @@
     <listener>
         <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
     </listener>
-    <listener>
+    
+    <!--listener>
         <listener-class>org.gbif.scheduler.webapp.listener.SchedulerStartupListener</listener-class>
-    </listener>
+    </listener-->
     
     <servlet>
         <servlet-name>dwr-invoker</servlet-name>

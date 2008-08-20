@@ -19,31 +19,22 @@ package org.gbif.provider.datasource.impl;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.job.OccDbUploadJob;
-import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ColumnMapping;
+import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 /**
  * Import source for relational databases that maps a sql resultset into CoreRecords and allows to iterate over them.
@@ -51,7 +42,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
  *
  */
 public class RdbmsImportSource implements ImportSource{
-	private static I18nLog log = I18nLogFactory.getLog(OccDbUploadJob.class);
+	private static I18nLog log = I18nLogFactory.getLog(RdbmsImportSource.class);
 
 	private Connection conn;
 	private Statement stmt;

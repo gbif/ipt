@@ -18,4 +18,15 @@
         <constructor-arg ref="mockInstance"/>
     </bean>    
     
+    <!-- test sandbox -->
+    <!-- 
+    <bean id="dummyUploadTask" scope="prototype" class="org.gbif.provider.sandbox.DummyUploadTask">
+        <property name="processingExecutor" ref="processingExecutor"/>
+        <property name="darwinCoreManager" ref="darwinCoreManager"/>
+        <lookup-method name="newProcessingTask" bean="dummyProcessingTask"/>
+    </bean> 
+    <bean id="dummyProcessingTask" scope="prototype" class="org.gbif.provider.sandbox.DummyProcessingTask">
+        <property name="taxonManager" ref="taxonManager"/>
+    </bean> 
+    -->
 </beans>

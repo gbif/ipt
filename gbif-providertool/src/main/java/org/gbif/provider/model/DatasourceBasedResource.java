@@ -70,6 +70,7 @@ public abstract class DatasourceBasedResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private UploadEvent lastUpload;
+	private Integer uploadScheduleIntervalInDays;
 	private ViewCoreMapping coreMapping;
 	// extension mappings, not including the core mapping
 	private Map<Long, ViewExtensionMapping> extensionMappings = new HashMap<Long, ViewExtensionMapping>();
@@ -321,4 +322,17 @@ public abstract class DatasourceBasedResource extends Resource {
 		return String.format("%s/detail", getResourceBaseUrl());
 	}
 
+	@Transient
+	public boolean isUploading(){
+		//FIXME: implement this via lastUploadLog or new isUploading boolean flag
+		return false;
+	}
+	
+	public Integer getUploadScheduleIntervalInDays() {
+		return uploadScheduleIntervalInDays;
+	}
+	public void setUploadScheduleIntervalInDays(Integer uploadScheduleIntervalInDays) {
+		this.uploadScheduleIntervalInDays = uploadScheduleIntervalInDays;
+	}
+	
 }

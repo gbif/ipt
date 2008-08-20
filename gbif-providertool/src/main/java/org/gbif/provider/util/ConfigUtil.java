@@ -17,23 +17,9 @@
 package org.gbif.provider.util;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.job.OccDbUploadJob;
-import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ViewMappingBase;
 
 
 /**

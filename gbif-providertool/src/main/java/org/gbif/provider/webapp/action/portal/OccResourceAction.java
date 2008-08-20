@@ -16,37 +16,19 @@
 
 package org.gbif.provider.webapp.action.portal;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.datasource.DatasourceInterceptor;
-import org.gbif.provider.job.JobUtils;
-import org.gbif.provider.job.OccUploadBaseJob;
-import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
-import org.gbif.provider.service.DatasourceInspectionManager;
-import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.GChartBuilder;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
-import org.gbif.scheduler.model.Job;
-import org.gbif.scheduler.service.JobManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 

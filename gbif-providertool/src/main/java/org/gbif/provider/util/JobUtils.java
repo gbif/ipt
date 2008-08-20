@@ -1,4 +1,4 @@
-package org.gbif.provider.job;
+package org.gbif.provider.util;
 
 import java.util.HashMap;
 import java.util.Map;

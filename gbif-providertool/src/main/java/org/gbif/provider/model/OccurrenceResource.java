@@ -63,7 +63,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	private int recWithAltitude;
 	private int recWithDate;
 	private int numCountries;
-	private Map<String, Long> numTaxaByCountry;
+	private Map<String, Long> numTaxaByCountry = new HashMap<String, Long>();
 	
 	private int numTerminalTaxa;
 	private int numSpecies;
@@ -81,6 +81,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		coreVM.setExtension(core);
 		coreVM.setResource(resource);
 		resource.setCoreMapping(coreVM);
+		resource.resetStats();
 		return resource;
 	}
 
@@ -232,5 +233,26 @@ public class OccurrenceResource extends DatasourceBasedResource {
     
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
+	}
+
+	public void resetStats() {
+		recTotal=0;
+		recWithCoordinates=0;
+		recWithCountry=0;
+		recWithAltitude=0;
+		recWithDate=0;
+		numCountries=0;
+		numTaxaByCountry.clear();
+		
+		numTerminalTaxa=0;
+		numSpecies=0;
+		numGenera=0;
+		numFamilies=0;
+		numOrders=0;
+		numClasses=0;
+		numPhyla=0;
+		numKingdoms=0;
+		
+		setLastUpload(null);		
 	}
 }
