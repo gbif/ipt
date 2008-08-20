@@ -519,6 +519,7 @@
         </dependency>
         
         <!-- GBIF stuff -->
+        <!-- 
         <dependency>
             <groupId>org.gbif</groupId>
             <artifactId>scheduler</artifactId>
@@ -531,6 +532,7 @@
             <version>1.0-SNAPSHOT</version>
             <type>warpath</type>
         </dependency>
+        -->
         
         <dependency>
             <groupId>org.gbif</groupId>
