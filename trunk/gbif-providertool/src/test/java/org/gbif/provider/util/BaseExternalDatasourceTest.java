@@ -8,7 +8,7 @@ import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DatasourceInspectionManager;
 
-public abstract class BaseExternalDatasourceTest extends BaseDaoTestCase {
+public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 	protected DatasourceInspectionManager datasourceInspectionManager;
 	private DatasourceRegistry datasourceRegistry;
 	private GenericManager<OccurrenceResource, Long> occResourceManager;

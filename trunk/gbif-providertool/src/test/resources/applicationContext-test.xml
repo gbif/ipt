@@ -10,14 +10,6 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
     default-lazy-init="true">
     
-    <bean id="workerPoolFactory" class="org.gbif.scheduler.mock.WorkerPoolFactory">
-        <constructor-arg ref="jobDao"/>
-    </bean>
-    <bean id="mockInstance" class="org.gbif.scheduler.mock.MockInstance"/>
-    <bean id="mockJob" class="org.gbif.scheduler.mock.MockJob">
-        <constructor-arg ref="mockInstance"/>
-    </bean>    
-    
     <!-- test sandbox -->
     <!-- 
     <bean id="dummyUploadTask" scope="prototype" class="org.gbif.provider.sandbox.DummyUploadTask">

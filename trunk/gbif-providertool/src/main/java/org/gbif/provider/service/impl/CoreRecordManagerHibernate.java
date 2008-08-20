@@ -41,6 +41,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -49,6 +50,7 @@ import org.hibernate.search.Search;
  *
  * @param <T>
  */
+@Transactional(readOnly=true)
 public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericManagerHibernate<T> implements CoreRecordManager<T> {
 	protected String[] FIELD_NAMES;
 	
@@ -84,6 +86,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 		return (T) query.uniqueResult();
 	}
 
+	@Transactional(readOnly=false)
 	public void flagAllAsDeleted(OccurrenceResource resource) {
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html

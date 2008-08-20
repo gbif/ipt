@@ -1,26 +1,8 @@
 package org.gbif.provider.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.appfuse.dao.BaseDaoTestCase;
-import org.appfuse.service.GenericManager;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.util.Constants;
 import org.junit.Test;
 
 public class DarwinCoreTest {

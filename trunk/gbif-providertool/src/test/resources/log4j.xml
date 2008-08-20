@@ -6,7 +6,7 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"
-                value="[IPT] %p %t-%c{1}.%M(%L) | %m%n"/>
+                value="%p %t-%c{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
 
@@ -16,32 +16,38 @@
         <level value="ERROR"/>
     </logger>
 
-    <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
-    <logger name="org.springframework.security">
-        <level value="ERROR"/>
-    </logger>
-
-    <logger name="org.apache">
-        <level value="WARN"/>
-    </logger>
-
     <logger name="org.apache.velocity">
         <level value="FATAL"/>
     </logger>
+
+
 
   
     <logger name="org.hibernate">
         <level value="WARN"/>
     </logger>
-    <logger name="org.hibernate.SQL" additivity="false">
+    <logger name="org.hibernate.SQL">
         <level value="WARN"/>
-        <appender-ref ref="CONSOLE"/>
     </logger>
-    
+    <logger name="  org.hibernate.transaction">
+        <level value="WARN"/>
+    </logger>
 
+    <logger name="org.springframework.orm">
+        <level value="WARN"/>
+    </logger>    
+    <logger name="org.springframework.transaction">
+        <level value="WARN"/>
+    </logger>    
+    
     <logger name="org.springframework">
         <level value="WARN"/>
     </logger>
+    <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
+    <logger name="org.springframework.security">
+        <level value="ERROR"/>
+    </logger>
+
 
     <!-- Turn off all webwork2 stuff -->
     <logger name="com.opensymphony.xwork2">
@@ -69,7 +75,7 @@
     </logger>    
 
     <logger name="org.appfuse">
-        <level value="WARN"/>
+        <level value="INFO"/>
     </logger>
 
     <!-- org.codehaus.xfire.aegis, org.codehaus.xfire.spring.remoting.Jsr181HandlerMapping -->
@@ -94,7 +100,7 @@
     </logger>
     
     <root>
-        <level value="DEBUG"/>
+        <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

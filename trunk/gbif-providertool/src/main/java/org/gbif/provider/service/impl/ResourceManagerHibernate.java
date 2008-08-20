@@ -18,15 +18,10 @@ package org.gbif.provider.service.impl;
 
 import java.util.List;
 
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ResourceManager;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.

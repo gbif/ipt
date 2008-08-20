@@ -18,17 +18,17 @@ package org.gbif.provider.service.impl;
 
 import java.util.List;
 
-import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 
-public class ResourceManagerTest extends BaseDaoTestCase{
+public class ResourceManagerTest extends ContextAwareTestBase{
 	protected ResourceManager<Resource> resourceManager;
 	protected ResourceManager<OccurrenceResource> occResourceManager;
 	protected ResourceManager<ChecklistResource> checklistResourceManager;

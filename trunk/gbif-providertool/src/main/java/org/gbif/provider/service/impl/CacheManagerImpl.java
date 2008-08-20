@@ -7,15 +7,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.upload.CachingTask;
 import org.gbif.provider.upload.OccUploadTask;
+import org.gbif.provider.upload.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.TaskRejectedException;
 
 
@@ -29,9 +26,9 @@ public class CacheManagerImpl implements CacheManager{
 	private UploadEventManager uploadEventManager;
 
     private final Map<Long, Future> futures = new ConcurrentHashMap<Long, Future>();
-    private final Map<Long, CachingTask> uploads = new ConcurrentHashMap<Long, CachingTask>();
+    private final Map<Long, Task> uploads = new ConcurrentHashMap<Long, Task>();
 
-	private void submitUpload(CachingTask task) throws TaskRejectedException{
+	private void submitUpload(Task task) throws TaskRejectedException{
 		Long resourceId = task.getResourceId();
 		if (futures.containsKey(resourceId)){
 			Future f = futures.get(resourceId);
@@ -49,7 +46,7 @@ public class CacheManagerImpl implements CacheManager{
 	protected OccUploadTask newOccUploadTask(){
 		throw new NotImplementedException("Should have been overriden by Springs method injection");
 	}
-	protected CachingTask newOccProcessingTask(){
+	protected Task newOccProcessingTask(){
 		throw new NotImplementedException("Should have been overriden by Springs method injection");
 	}
 

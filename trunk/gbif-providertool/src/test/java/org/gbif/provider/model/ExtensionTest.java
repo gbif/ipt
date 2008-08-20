@@ -18,7 +18,10 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
+
 
 public class ExtensionTest extends BaseDaoTestCase{
     private GenericManager<Extension, Long> extensionManager;
@@ -48,7 +51,6 @@ public class ExtensionTest extends BaseDaoTestCase{
 		ExtensionProperty propMap = new ExtensionProperty();
 		extension.addProperty(propMap);
 		extension = extensionManager.save(extension);
-		this.flush();
 		// check dwc, checklist and inserted extensions
 		for (Long extId : Arrays.asList(ChecklistResource.CORE_EXTENSION_ID, OccurrenceResource.CORE_EXTENSION_ID, extension.getId())){
 			Extension ext = extensionManager.get(extId);
@@ -76,7 +78,6 @@ public class ExtensionTest extends BaseDaoTestCase{
 		occRes.addExtensionMapping(map2);
 		
 		Long occId = occResourceManager.save(occRes).getId();
-		this.flush();
 		
 		// check retrieved data. what about the hibernate cache?
 		DatasourceBasedResource res = occResourceManager.get(occId);		

@@ -1,18 +1,15 @@
 package org.gbif.provider.service.impl;
 
-import static org.junit.Assert.*;
-
-import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
-import org.junit.Before;
+import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
 
 import com.googlecode.gchartjava.GeographicalArea;
 
-public class OccResourceManagerHibernateTest extends BaseDaoTestCase{
+public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 	static int width=440;
 	static int height=220;
 	static boolean title=true;

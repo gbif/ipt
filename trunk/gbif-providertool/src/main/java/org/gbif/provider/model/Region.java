@@ -133,7 +133,7 @@ import org.gbif.provider.model.voc.RegionType;
 			public String toString() {
 				String parentName = "";
 				if (this.parent != null){
-					parentName = String.format(" p=%s %s", this.parent.getId(), this.parent.getLabel());
+					parentName = String.format(" (%s,%s)", this.parent.getId(), this.parent.getLabel());
 				}
 				return String.format("%s [%s,%s%s]", this.label, this.getId(), this.rank, parentName);
 			}

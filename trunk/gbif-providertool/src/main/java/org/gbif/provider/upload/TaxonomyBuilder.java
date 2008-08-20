@@ -2,6 +2,7 @@ package org.gbif.provider.upload;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.Stack;
@@ -9,11 +10,13 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.model.voc.Rank;
@@ -22,9 +25,11 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.hibernate.ScrollableResults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 
-public class TaxonomyBuilder extends TaskBase implements Callable<SortedSet<DwcTaxon>>, RecordPostProcessor<DarwinCore, SortedSet<DwcTaxon>> {
+@Transactional(readOnly=false)
+public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<DarwinCore, Set<DwcTaxon>> {
 	public static final int SOURCE_TYPE_ID = 2;
 	private static final Log log = LogFactory.getLog(TaxonomyBuilder.class);
 	private static I18nLog logdb = I18nLogFactory.getLog(TaxonomyBuilder.class);
@@ -46,6 +51,7 @@ public class TaxonomyBuilder extends TaskBase implements Callable<SortedSet<DwcT
 	 * (non-Javadoc)
 	 * @see java.util.concurrent.Callable#call()
 	 */
+	@Transactional(readOnly=false)
 	public SortedSet<DwcTaxon> call() throws Exception {
 		init(SOURCE_TYPE_ID);
 
@@ -53,13 +59,13 @@ public class TaxonomyBuilder extends TaskBase implements Callable<SortedSet<DwcT
 		removeTaxonomy();
 		
 		// create unique, naturally sorted taxa from dwc records
-		log.info("Generating taxonomy from occurrence records for resource %s"+resource.getId());
+		log.info("Generating taxonomy from occurrence records for resource "+getResourceId());
 		// create taxa from dwc
-		ScrollableResults dwcRecords = darwinCoreManager.scrollResource(resource.getId());
+		ScrollableResults records = darwinCoreManager.scrollResource(getResourceId());
 		
 		boolean hasNext = true;
-		while (hasNext = dwcRecords.next()){
-			DarwinCore dwc = (DarwinCore) dwcRecords.get()[0];
+		while (hasNext = records.next()){
+			DarwinCore dwc = (DarwinCore) records.get()[0];
 			processRecord(dwc);			
 			darwinCoreManager.save(dwc);
 		}
@@ -86,7 +92,7 @@ public class TaxonomyBuilder extends TaskBase implements Callable<SortedSet<DwcT
 		}
 		DwcTaxon dt = DwcTaxon.newDwcTaxon(dwc);
 
-		Taxon tax;
+		Taxon tax=null;
 		if (taxa.containsKey(dt)){
 			// taxon exists already. use persistent one for dwc
 			tax = taxa.get(dt).getTaxon();				
@@ -94,16 +100,15 @@ public class TaxonomyBuilder extends TaskBase implements Callable<SortedSet<DwcT
 			taxa.get(dt).setTerminal(true);
 		}else{
 			// try to "insert" the entire taxonomic hierarchy
-			tax = dt.getTaxon();
 			Taxon parent = null;
 			for (DwcTaxon explodedDTaxon : DwcTaxon.explodeTaxon(dt)){
 				if (! taxa.containsKey(explodedDTaxon)){
-					Taxon explodedTaxon = explodedDTaxon.getTaxon();
+					tax = explodedDTaxon.getTaxon();
 					// link into hierarchy if this is not a root taxon
-					explodedTaxon.setParent(parent);
-					explodedTaxon = taxonManager.save(explodedTaxon);
+					tax.setParent(parent);
+					tax = taxonManager.save(tax);
 					taxa.put(explodedDTaxon, explodedDTaxon);				
-					parent = explodedTaxon; 
+					parent = tax; 
 				}else{
 					// use existing taxon as parent
 					parent = taxa.get(explodedDTaxon).getTaxon(); 
@@ -200,20 +205,24 @@ public class TaxonomyBuilder extends TaskBase implements Callable<SortedSet<DwcT
 				numTerminal++;			}
 		}
 		// store stats
-		resource.setNumTerminalTaxa(numTerminal);
-		resource.setNumSpecies(stats.get(Rank.Species));
-		resource.setNumGenera(stats.get(Rank.Genus));
-		resource.setNumFamilies(stats.get(Rank.Family));
-		resource.setNumOrders(stats.get(Rank.Order));
-		resource.setNumClasses(stats.get(Rank.Class));
-		resource.setNumPhyla(stats.get(Rank.Phylum));
-		resource.setNumKingdoms(stats.get(Rank.Kingdom));
-		occResourceManager.save(resource);
+		getResource().setNumTerminalTaxa(numTerminal);
+		getResource().setNumSpecies(stats.get(Rank.Species));
+		getResource().setNumGenera(stats.get(Rank.Genus));
+		getResource().setNumFamilies(stats.get(Rank.Family));
+		getResource().setNumOrders(stats.get(Rank.Order));
+		getResource().setNumClasses(stats.get(Rank.Class));
+		getResource().setNumPhyla(stats.get(Rank.Phylum));
+		getResource().setNumKingdoms(stats.get(Rank.Kingdom));
+		occResourceManager.save(getResource());
 	}
 
 	private void removeTaxonomy() {
-		log.info("Removing previously existing taxonomy from resource %s"+resource.getId());
-		taxonManager.deleteAll(resource);		
+		log.info("Removing previously existing taxonomy from resource %s"+getResourceId());
+		taxonManager.deleteAll(getResource());		
 	}
 
+	public String status() {
+		throw new NotImplementedException("TBD");
+	}
+	
 }

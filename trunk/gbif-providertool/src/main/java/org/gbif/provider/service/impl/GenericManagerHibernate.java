@@ -9,7 +9,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
 import org.gbif.provider.service.GenericManager;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 	/**
 	 * This class serves as the Base class for all other Managers - namely to hold
@@ -27,8 +33,16 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 	 *
 	 * @param <T> a type variable
 	 */
-	public class GenericManagerHibernate<T extends BaseObject> extends HibernateDaoSupport implements GenericManager<T> {		
+	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
+	public class GenericManagerHibernate<T extends BaseObject>  implements GenericManager<T> { //extends HibernateDaoSupport
 		public static int MAX_SEARCH_RESULTS = 50;
+		@Autowired
+		private SessionFactory sessionFactory;		
+
+		protected Session getSession(){
+			return SessionFactoryUtils.getSession(sessionFactory, false);
+		}
+		
 	    /**
 	     * Log variable for all child classes. Uses LogFactory.getLog(getClass()) from Commons Logging
 	     */
@@ -40,7 +54,6 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 	     * @param persistentClass the class type you'd like to persist
 	     */
 	    public GenericManagerHibernate(final Class<T> persistentClass) {
-//	    	super(persistentClass);
 	        this.persistentClass = persistentClass;
 	    }
 
@@ -83,6 +96,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 	    /**
 	     * {@inheritDoc}
 	     */
+		@Transactional(readOnly = false)
 	    public T save(T object) {
 	    	getSession().saveOrUpdate(object);
 	    	return object;
@@ -109,4 +123,9 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 		public void flush() {
 			getSession().flush();
 		}
+
+		public void debugSession() {
+			log.debug(getSession());
+		}
+		
 	}
