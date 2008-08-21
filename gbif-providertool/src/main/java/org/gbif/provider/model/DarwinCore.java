@@ -437,6 +437,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return link;
 	}
 
+	@Transient
+	public String getDetailsLinkIPT() {
+		return String.format("%s/%s", getResource().getRecordResolverEndpoint(), getGuid());
+	}
+
 	public void setLink(String link) {
 		this.link = link;
 	}
@@ -925,6 +930,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	
 	/**
+	 * Works on the raw imported properties and Ignores all secondary derived properties.
+	 * Therefore id, deleted, lat/longAsFloat, modified,created, region & taxon are ignored in the hashing
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {

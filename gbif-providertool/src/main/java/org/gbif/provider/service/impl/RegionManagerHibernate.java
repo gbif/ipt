@@ -40,7 +40,13 @@ public class RegionManagerHibernate extends GenericManagerHibernate<Region> impl
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 		Session session = getSession();
-		String hqlUpdate = "delete Region reg WHERE reg.resource = :resource";
+		
+		// first remove regions from dwcore records
+		String hqlUpdate = "update DarwinCore dwc SET dwc.region=null WHERE dwc.resource = :resource";
+		session.createQuery( hqlUpdate ).setEntity("resource", resource).executeUpdate();
+		
+		// now delete region entities
+		hqlUpdate = "delete Region reg WHERE reg.resource = :resource";
 		int count = session.createQuery( hqlUpdate )
 		        .setEntity("resource", resource)
 		        .executeUpdate();

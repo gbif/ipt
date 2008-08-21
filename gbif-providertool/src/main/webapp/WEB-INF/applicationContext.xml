@@ -18,7 +18,7 @@
     
     
     <!-- application properties -->    
-    <bean id="configUtil" class="org.gbif.provider.util.ConfigUtil">
+    <bean id="cfg" class="org.gbif.provider.util.AppConfig">
         <property name="appBaseUrl" value="${app.baseUrl}" />
     </bean>
 

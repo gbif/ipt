@@ -4,13 +4,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ConfigUtilTest {
-	public ConfigUtil cfg;
+public class AppConfigTest extends ContextAwareTestBase{
+	@Autowired
+	public AppConfig cfg;
 
-	@Before
-	public void setUp() throws Exception {
-		cfg = new ConfigUtil();
+	@Test
+	public void testPropertiesLoaded() {
+		assertEquals("http://localhost:8080", cfg.getAppBaseUrl());
 	}
 
 	@Test

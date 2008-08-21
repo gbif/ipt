@@ -44,34 +44,29 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 
 	@Test
 	public void testBuildHierarchy() throws Exception {
-		geographyBuilder.setResourceId(Constants.TEST_RESOURCE_ID);
-		geographyBuilder.setUserId(Constants.TEST_USER_ID);
+		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		Set<Region> regions = geographyBuilder.call();
 		System.out.println(String.format("%s regions found in test resource", regions.size()));
 		assertTrue(regions.size() > 150);
-//		assertTrue(regions.size() == 161);
+//		assertTrue(regions.size() == 160);
 	}
 
 	
 	@Test
 	public void testBuildHierarchyCallable() throws Exception {
-		System.out.println("START TEST");
-		geographyBuilder.setResourceId(Constants.TEST_RESOURCE_ID);
-		geographyBuilder.setUserId(Constants.TEST_USER_ID);
+		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		System.out.println("SUBMIT TASK");
+		log.debug("Submit geography builder task to single threaded executor");
 		Future<Set<Region>> f = executor.submit(geographyBuilder);
 		try {
 			Set<Region> regions = f.get();
-			System.out.println(String.format("%s regions found in test resource", regions.size()));
-			System.out.println(regions);
+			log.debug(String.format("%s regions found in test resource", regions.size()));
+			log.debug(regions);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
