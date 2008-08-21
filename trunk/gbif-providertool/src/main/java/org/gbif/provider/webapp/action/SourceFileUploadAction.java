@@ -7,15 +7,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.apache.struts2.ServletActionContext;
-import org.appfuse.Constants;
 import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
-import org.appfuse.webapp.action.FileUploadAction;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.service.TabFileProcessManager;
 
 

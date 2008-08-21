@@ -16,11 +16,8 @@
 
 package org.gbif.provider.webapp.action;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +25,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.appfuse.service.GenericManager;
-import org.gbif.provider.datasource.DatasourceInterceptor;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -36,10 +32,7 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
-import org.hibernate.type.SortedMapType;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mysql.jdbc.DatabaseMetaData;
 import com.opensymphony.xwork2.Preparable;
 
 public class ViewMappingAction extends BaseOccurrenceResourceAction implements Preparable{

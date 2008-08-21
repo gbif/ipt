@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,9 +29,11 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Region;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.ExtensionRecordManager;
@@ -42,6 +45,8 @@ import org.gbif.provider.util.JobUtils;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
 
 	/**
 	 * Tha main task responsible for uploading raw data into the cache and doing simple preprocessing while iterating through the ImportSource.
@@ -49,10 +54,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 	 * @author markus
 	 *
 	 */
+	@Transactional(readOnly=false)
 	public class OccUploadTask extends TaskBase implements Task<UploadEvent>{
 		public static final int SOURCE_TYPE_ID = 1;
 		private Integer maxRecords;
 		private Map<String, Long> idMap = new HashMap<String, Long>();
+		private List<File> dumpFiles = new ArrayList<File>();
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
 		private AtomicInteger recordsUploaded = new AtomicInteger(0);
@@ -63,44 +70,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 		
 		
 		@Autowired
-		private OccResourceManager occResourceManager;
-		@Autowired
 		private DarwinCoreManager darwinCoreManager;
 		@Autowired
 		private ExtensionRecordManager extensionRecordManager;
 		@Autowired
 		private UploadEventManager uploadEventManager;
-		@Autowired
-		private TaxonManager taxonManager;
-		@Autowired
-		private RegionManager regionManager;
 		
-		private TaxonomyBuilder taxonomyBuilder;		
+		@Autowired
+		@Qualifier("taxonomyBuilder")
+		private RecordPostProcessor<DarwinCore, Set<DwcTaxon>> taxonomyBuilder;
+		@Autowired
+		@Qualifier("geographyBuilder")
+		private RecordPostProcessor<DarwinCore, Set<Region>> geographyBuilder;
 
 		
 		public UploadEvent call() throws Exception{
-			log.info(String.format("Starting %s for resource %s",this.getClass().getSimpleName(), getResourceId()));
-			//TODO: set this in the scheduler constructor???
-//			MDC.put(I18nDatabaseAppender.MDC_INSTANCE_ID, null);
-			MDC.put(I18nDatabaseAppender.MDC_USER, userId);
-			MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, JobUtils.getJobGroup(getResourceId()));
-			MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, this.hashCode());
-			MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, SOURCE_TYPE_ID);
+			
+			initLogging(SOURCE_TYPE_ID);
 			
 			try {
-				List<File> dumpFiles = new ArrayList<File>();
-				
-				// create new taxonomy builder
-				taxonomyBuilder = new TaxonomyBuilder();
-				// track upload in upload event metadata (mainly statistics)
-				event = new UploadEvent();
-				event.setJobSourceId(this.hashCode());
-				event.setJobSourceType(SOURCE_TYPE_ID);
-				event.setExecutionDate(new Date());
-				event.setResource(getResource());
-								
-				// clear old data/events
-				resetResourceCache();				
+				// prepare upload, removing previous records, calling prepare of helper tasks
+				prepare();
 				
 				// run import of core into db, create taxa and regions & dump file in one go!
 				File coreFile = uploadCore();
@@ -120,10 +110,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 					}
 				}
 				
-				// zip all files into single archive
-				File archive = getResource().getDumpArchiveFile();
-				archive.createNewFile();
-				ZipUtil.zipFiles(dumpFiles, archive);			
+				close();
 				
 			} catch (InterruptedException e) {
 				// interrupt this thread/task
@@ -134,7 +121,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 			return event;		
 		}
 		
-		private void resetResourceCache(){
+		private void close() throws IOException {
+			// zip all files into single archive
+			File archive = getResource().getDumpArchiveFile();
+			archive.createNewFile();
+			ZipUtil.zipFiles(dumpFiles, archive);						
+		}
+
+		private void prepare() {
+			// track upload in upload event metadata (mainly statistics)
+			event = new UploadEvent();
+			event.setJobSourceId(this.hashCode());
+			event.setJobSourceType(SOURCE_TYPE_ID);
+			event.setExecutionDate(new Date());
+			event.setResource(getResource());
+							
+			// clear taxa
+			taxonomyBuilder.init(getResourceId(), getUserId());
+			taxonomyBuilder.prepare();
+			// clear regions
+			geographyBuilder.init(getResourceId(), getUserId());
+			geographyBuilder.prepare();
+			// clear old data/events
+			clearCache();			
+		}
+
+		private void clearCache(){
 			File dataDir = getResource().getDataDir();
 			try {
 				FileUtils.deleteDirectory(dataDir);
@@ -144,10 +156,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// clear taxa
-			taxonManager.deleteAll(getResource());
-			// clear regions
-			regionManager.deleteAll(getResource());
 			// clear resource stats
 			getResource().resetStats();
 			occResourceManager.save(getResource());
@@ -184,15 +192,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 							// get previous record or null if it didnt exist yet based on localID and resource
 							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), getResourceId());
 							
-							// attach to the occurrence resource
-							dwc.setResource(getResource());
-							
 							// assign managed properties
-							updateManagedProperties(dwc, oldRecord);
+							updateDwcProperties(dwc, oldRecord);
 							// extract and assign taxa
-							extractTaxa(dwc);
+							taxonomyBuilder.processRecord(dwc);
 							// extract and assign regions
-							extractRegions(dwc);
+							geographyBuilder.processRecord(dwc);
 							
 							// check if new record version is different from old one
 							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
@@ -230,8 +235,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 						}
 						
 						// clear session cache once in a while...
-						if (recordsUploaded.get() % 1000 == 0){
-							log.debug(recordsUploaded+" uploaded for resource "+getResourceId());
+						if (recordsUploaded.get() > 0 && recordsUploaded.get() % 500 == 0){
+							log.debug(status());
 							darwinCoreManager.flush();
 						}
 
@@ -275,17 +280,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 			return out;
 		}
 
-		private void extractRegions(DarwinCore dwc) {
-			// TODO Auto-generated method stub
-			
-		}
 
-		private void extractTaxa(DarwinCore dwc) {
-			// TODO Auto-generated method stub
-			
-		}
+		private void updateDwcProperties(DarwinCore dwc, DarwinCore oldRecord) {
+			// attach to the occurrence resource
+			dwc.setResource(getResource());
 
-		private void updateManagedProperties(DarwinCore dwc, DarwinCore oldRecord) {
 			// assign new GUID if none exists
 			if (dwc.getGuid() == null){
 				// if old version exists already reuse the previously assigned GUID
@@ -297,7 +296,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 			}			
 			// assign link to detailed record if not existing
 			if (dwc.getLink() == null){
-				dwc.setLink(String.format("%s/%s", dwc.getResource().getRecordResolverEndpoint(), dwc.getGuid()));
+				dwc.setLink(dwc.getDetailsLinkIPT());
 			}
 		}
 
@@ -408,12 +407,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 			this.maxRecords = maxRecords;
 		}
 
-		public void setUserId(Long userId) {
-			this.userId = userId;
-		}
-
 		public synchronized String status() {
-			return String.format("%s records cached", recordsUploaded.get());
+			return String.format("%s occurrences with %s, %s", recordsUploaded.get(), taxonomyBuilder.status(), geographyBuilder.status());
 		}
 
 	}

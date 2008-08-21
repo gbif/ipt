@@ -35,7 +35,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.util.ConfigUtil;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CollectionOfElements;

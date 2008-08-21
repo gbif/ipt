@@ -47,8 +47,7 @@ public class TaxonomyBuilderTest extends ContextAwareTestBase {
 
 	@Test
 	public void testCallable() throws Exception {
-		taxonomyBuilder.setResourceId(Constants.TEST_RESOURCE_ID);
-		taxonomyBuilder.setUserId(Constants.TEST_USER_ID);
+		taxonomyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 
 		Set<DwcTaxon> taxa = taxonomyBuilder.call();
 		log.debug(String.format("%s taxa found in test resource", taxa.size()));

@@ -25,18 +25,18 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Constant values used throughout the application.
  */
-public class ConfigUtil {
-	protected static final Log log = LogFactory.getLog(ConfigUtil.class);
+public class AppConfig {
+	protected static final Log log = LogFactory.getLog(AppConfig.class);
     private static String WEBAPP_DIR;
     private static File WEBAPP_DIR_FILE;
-    private static String APP_BASE_URL;
+    private static String APP_BASE_URL="";
     
     
     /**
      * only sets base dir once when first called
      * @param webappDir
      */
-    public static void setWebappDir(String webappDir) {
+    public void setWebappDir(String webappDir) {
     	if (WEBAPP_DIR == null){
     		if (webappDir == null){
     		    throw new NullPointerException();    			
@@ -67,5 +67,8 @@ public class ConfigUtil {
 	public static String getAppBaseUrl(){
 		return APP_BASE_URL;
 	}
-	
+
+	public String toString(){
+	    return String.format("WEBAPP_DIR=%s, WEBAPP_DIR_FILE=%s, APP_BASE_URL=%s", WEBAPP_DIR, WEBAPP_DIR_FILE, APP_BASE_URL);		
+	}
 }

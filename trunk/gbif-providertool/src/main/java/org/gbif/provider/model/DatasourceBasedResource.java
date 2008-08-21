@@ -48,8 +48,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.util.ConfigUtil;
+import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.MapKey;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -273,7 +274,7 @@ public abstract class DatasourceBasedResource extends Resource {
 	
 	@Transient
 	public File getDataDir(){
-    	File dir = new File(ConfigUtil.getWebappDir(), String.format("data/%s", getServiceName()));
+    	File dir = new File(AppConfig.getWebappDir(), String.format("data/%s", getServiceName()));
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -282,7 +283,7 @@ public abstract class DatasourceBasedResource extends Resource {
 
 	@Transient
 	public File getSourceDataDir(){
-    	File dir = new File(ConfigUtil.getWebappDir(), String.format("sourcedata/%s", getServiceName()));
+    	File dir = new File(AppConfig.getWebappDir(), String.format("sourcedata/%s", getServiceName()));
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -309,7 +310,8 @@ public abstract class DatasourceBasedResource extends Resource {
 
 	@Transient
 	public String getResourceBaseUrl(){
-    	return String.format("%s/data/%s", ConfigUtil.getAppBaseUrl(), getServiceName());
+		String base = AppConfig.getAppBaseUrl();
+    	return String.format("%s/data/%s", base, getServiceName());
 	}
 
 	@Transient

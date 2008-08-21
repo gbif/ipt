@@ -8,10 +8,23 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 
+/**
+ * Extended interface for resource related providertool tasks.
+ * Each tasks needs to be initialised via the init method first before it can be submitted to an executor.
+ * The constructor is avoided for this to allow tasks being declared as Spring prototype beans
+ * thereby being able to use DI
+ * @author markus
+ *
+ * @param <T>
+ */
 public interface Task<T> extends Callable<T>{
-	public void setResourceId(Long resourceId);
-	public Long getResourceId();
-	public OccurrenceResource getResource();
-	public void setUserId(Long userId);
+	/**
+	 * Instead of construvtor call this method once before using a Task bean
+	 * @param resourceId the resource this tasks will work on. Not NULL
+	 * @param userId the user that has submitted this task. Optional, maybe also be null 
+	 */
+	void init(Long resourceId, Long userId);
+	Long getResourceId();
+	OccurrenceResource getResource();
 	String status();
 }

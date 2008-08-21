@@ -1,5 +1,6 @@
 package org.gbif.provider.upload;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
@@ -9,22 +10,21 @@ import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.JobUtils;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public abstract class TaskBase{
 	protected final Log log = LogFactory.getLog(getClass());
 	protected final I18nLog logdb = I18nLogFactory.getLog(getClass());
-	// needs manual setting
-	protected Long userId;
+	// needs manual setting via prepare()
+	private Long userId;
 	private Long resourceId;
 	private OccurrenceResource resource;
 	@Autowired
-	private OccResourceManager occResourceManager;
+	protected OccResourceManager occResourceManager;
 
-	protected void init(Integer SourceTypeId){
+	
+	
+	protected void initLogging(Integer SourceTypeId){
 		log.info(String.format("Starting %s for resource %s", getClass().getSimpleName(), resourceId));
 		//TODO: set this in the scheduler constructor???
 //		MDC.put(I18nDatabaseAppender.MDC_INSTANCE_ID, null);
@@ -35,7 +35,7 @@ public abstract class TaskBase{
 	}
 	
 	
-	public void setUserId(Long userId) {
+	private void setUserId(Long userId) {
 		if (userId == null){
 			throw new NullPointerException();
 		}
@@ -44,7 +44,11 @@ public abstract class TaskBase{
 		}
 		this.userId = userId;
 	}
-	public void setResourceId(Long resourceId) {
+	public Long getUserId() {
+		return userId;
+	}
+
+	private void setResourceId(Long resourceId) {
 		if (this.resourceId != null){
 			throw new IllegalStateException("Resource is already set for this builder!");
 		}
@@ -68,4 +72,11 @@ public abstract class TaskBase{
 		return resource;
 	}
 
+
+	
+	public void init(Long resourceId, Long userId) {
+		setResourceId(resourceId);
+		setUserId(userId);
+	}
+	
 }

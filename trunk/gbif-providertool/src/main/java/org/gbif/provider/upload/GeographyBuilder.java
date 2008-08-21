@@ -1,42 +1,24 @@
 package org.gbif.provider.upload;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcRegion;
-import org.gbif.provider.model.dto.DwcTaxon;
-import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.RegionManager;
-import org.gbif.provider.service.ResourceManager;
-import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -54,17 +36,18 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired
-	private OccResourceManager occResourceManager;
-	@Autowired
 	private RegionManager regionManager;
 	// results
 	// remember distinct number of taxa (=set below) per country (=map key below) too
-	private Map<String, Set<Taxon>> taxaByCountry = new HashMap<String, Set<Taxon>>();
-	private SortedMap<DwcRegion, Region> regions = new TreeMap<DwcRegion, Region>();
+	private Map<String, Set<Taxon>> taxaByCountry;
+	private SortedMap<Integer, Region> regions;
 
 	
 	public SortedSet<Region> call() throws Exception {
-		init(SOURCE_TYPE_ID);
+		
+		initLogging(SOURCE_TYPE_ID);
+	
+		prepare();
 		
 		// create regions from dwc
 		ScrollableResults dwcRecords = darwinCoreManager.scrollResource(getResourceId());
@@ -74,10 +57,8 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 			processRecord(dwc);
 			darwinCoreManager.save(dwc);
 		}
-		SortedSet<Region> result = close();
-		List<Region> regs = new ArrayList<Region>(result);
-//		darwinCoreManager.debugSession();
-		return result;
+		
+		return close();
 	}
 
 	public SortedSet<Region> close() {
@@ -103,23 +84,23 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 		// extract regions
 		DwcRegion dwcReg = DwcRegion.newDwcRegion(dwc);
 		Region reg = null;
-		if (regions.containsKey(dwcReg)){
+		if (regions.containsKey(dwcReg.hashCode())){
 			// region exists already. use persistent one for dwc
-			reg = regions.get(dwcReg);				
+			reg = regions.get(dwcReg.hashCode());				
 		}else{
 			// try to "insert" the entire taxonomic hierarchy
 			Region parent = null;
-			for (DwcRegion explodedDRegion : DwcRegion.explodeRegions(dwcReg)){
-				if (! regions.containsKey(explodedDRegion)){
-					reg = explodedDRegion.getRegion();
+			for (DwcRegion explodedRegion : DwcRegion.explodeRegions(dwcReg)){
+				if (! regions.containsKey(explodedRegion.hashCode())){
+					reg = explodedRegion.getRegion();
 					// link into hierarchy if this is not a root region, e.g. continent
 					reg.setParent(parent);
 					reg = regionManager.save(reg);
-					regions.put(explodedDRegion, reg);				
+					regions.put(explodedRegion.hashCode(), reg);				
 					parent = reg; 
 				}else{
 					// use existing taxon as parent
-					parent = regions.get(explodedDRegion); 
+					parent = regions.get(explodedRegion.hashCode()); 
 				}
 			}
 		}
@@ -139,8 +120,7 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 		}
 		// aggregate stats
 		for (Region dt : regions.values()){
-			Integer i = stats.get(dt.getRank());
-			i++;
+			stats.put(dt.getRank(), stats.get(dt.getRank())+1);
 		}
 		// store stats in resource
 		getResource().setNumCountries(stats.get(RegionType.Country));
@@ -160,7 +140,14 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 
 
 	public String status() {
-		throw new NotImplementedException("TBD");
+		return String.format("%s regions", regions.size());
 	}
 	
+	public void prepare() {
+		taxaByCountry = new HashMap<String, Set<Taxon>>();
+		regions = new TreeMap<Integer, Region>();
+		
+		log.info("Removing previously existing geographic regions from resource "+getResourceId());
+		regionManager.deleteAll(getResource());		
+	}
 }
