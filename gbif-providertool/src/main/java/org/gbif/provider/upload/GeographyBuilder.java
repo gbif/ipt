@@ -41,6 +41,7 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 	// remember distinct number of taxa (=set below) per country (=map key below) too
 	private Map<String, Set<Taxon>> taxaByCountry;
 	private SortedMap<Integer, Region> regions;
+	private Set<Region> terminalRegions;
 
 	
 	public SortedSet<Region> call() throws Exception {
@@ -104,6 +105,7 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 				}
 			}
 		}
+		terminalRegions.add(reg);
 		dwc.setRegion(reg);
 		return dwc;
 	}
@@ -124,6 +126,8 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 		}
 		// store stats in resource
 		getResource().setNumCountries(stats.get(RegionType.Country));
+		getResource().setNumRegions(regions.size());
+		getResource().setNumTerminalRegions(terminalRegions.size());
 		// debug only
 		for (RegionType r : RegionType.ALL_REGIONS){
 			log.info(String.format("Found %s %s regions in resource %s", stats.get(r), r, getResourceId()));
@@ -145,6 +149,7 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 	
 	public void prepare() {
 		taxaByCountry = new HashMap<String, Set<Taxon>>();
+		terminalRegions = new HashSet<Region>();
 		regions = new TreeMap<Integer, Region>();
 		
 		log.info("Removing previously existing geographic regions from resource "+getResourceId());

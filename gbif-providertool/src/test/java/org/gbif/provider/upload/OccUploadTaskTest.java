@@ -27,6 +27,9 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<UploadEvent> f = executor.submit(occUploadTask);
 		try {
+			Thread.sleep(10000);
+			f.cancel(true);
+			Thread.sleep(10000);
 			UploadEvent event = f.get();
 			System.out.println(event);
 		} catch (InterruptedException e) {

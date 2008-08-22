@@ -38,17 +38,19 @@
 		<li><s:property value="occResource.recWithCountry"/> with country information</li> 
 		<li><s:property value="occResource.recWithAltitude"/> with altitude information</li>
 		<li><s:property value="occResource.recWithDate"/> with collection date</li>
-		<li><s:property value="occResource.numCountries"/> countries represented</li>
+		<li><s:property value="occResource.numCountries"/> distinct countries</li>
+		<li><s:property value="occResource.numRegions"/> distinct regions</li>
 	</ul>
 </div>
 <div id="tax-stats" class="stats">
 	<label><s:text name="stats.taxStats"/></label>
 	<ul class="plain">
-		<li><s:property value="occResource.numTerminalTaxa"/> Terminal taxa</li> 
-		<li><s:property value="occResource.numSpecies"/> Species</li>
-		<li><s:property value="occResource.numGenera"/> Genera</li> 
-		<li><s:property value="occResource.numFamilies"/> Families</li> 
-		<li><s:property value="occResource.numOrders"/> Orders</li> 
+		<li><s:property value="occResource.numTaxa"/> distinct taxa</li> 
+		<li><s:property value="occResource.numTerminalTaxa"/> terminal taxa</li> 
+		<li><s:property value="occResource.numSpecies"/> species</li>
+		<li><s:property value="occResource.numGenera"/> genera</li> 
+		<li><s:property value="occResource.numFamilies"/> families</li> 
+		<li><s:property value="occResource.numOrders"/> orders</li> 
 	</ul>
 </div>
 

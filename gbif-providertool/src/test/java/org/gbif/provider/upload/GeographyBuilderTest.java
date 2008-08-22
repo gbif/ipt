@@ -12,6 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import javax.persistence.EntityExistsException;
+
 import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
@@ -26,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.AssertThrows;
 
 public class GeographyBuilderTest extends ContextAwareTestBase{
 	@Autowired
@@ -52,7 +55,6 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 //		assertTrue(regions.size() == 160);
 	}
 
-	
 	@Test
 	public void testBuildHierarchyCallable() throws Exception {
 		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
@@ -66,8 +68,8 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 			log.debug(regions);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
+		} finally {
+			f.cancel(true);
 		}
 	}
 	

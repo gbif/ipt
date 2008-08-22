@@ -246,10 +246,10 @@
         </action>
 
         <action name="upload" class="org.gbif.provider.webapp.action.UploadAction" method="upload">
-            <result>/WEB-INF/pages/manage/occ/uploadProgress.jsp</result>
+            <result>/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
         </action>
         <action name="cancelUpload" class="org.gbif.provider.webapp.action.UploadAction" method="cancel">
-            <result>/WEB-INF/pages/missing.jsp</result>
+            <result>/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
         </action>
         <action name="process" class="org.gbif.provider.webapp.action.UploadAction" method="process">
             <result>/WEB-INF/pages/missing.jsp</result>
@@ -258,8 +258,12 @@
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
         <action name="status" class="org.gbif.provider.webapp.action.UploadAction" method="status">
-            <result>/WEB-INF/pages/manage/occ/uploadProgress.jsp</result>
-            <result name="ajax">/WEB-INF/pages/ajax/count.jsp</result>
+            <result>/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
+            <result name="ajax">/WEB-INF/pages/ajax/status.jsp</result>
+            <result name="ready" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
         </action>
 
         <action name="history" class="org.gbif.provider.webapp.action.UploadAction" method="history">

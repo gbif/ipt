@@ -5,6 +5,6 @@ import java.util.Set;
 
 public interface RecordPostProcessor<IN, OUT> extends Task<OUT>{
 	void prepare();
-	IN processRecord(IN record);
+	IN processRecord(IN record) throws InterruptedException;
 	OUT close();
 }

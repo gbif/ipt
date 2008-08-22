@@ -91,7 +91,9 @@
 
 
     <!-- LOGGING -->
-    <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate" parent="abstractManager"/>
+    <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
     <bean id="logEventManager" class="org.gbif.logging.service.impl.LogEventManagerImpl">
         <constructor-arg ref="logEventDao"/>
     </bean>

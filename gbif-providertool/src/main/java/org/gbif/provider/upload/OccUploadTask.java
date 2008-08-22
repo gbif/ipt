@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
@@ -45,17 +46,20 @@ import org.springframework.transaction.annotation.Transactional;
 	@Transactional(readOnly=false)
 	public class OccUploadTask extends TaskBase implements Task<UploadEvent>{
 		public static final int SOURCE_TYPE_ID = 1;
-		private Integer maxRecords;
 		private Map<String, Long> idMap = new HashMap<String, Long>();
 		private List<File> dumpFiles = new ArrayList<File>();
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
-		private AtomicInteger recordsUploaded = new AtomicInteger(0);
-		private AtomicInteger recordsDeleted = new AtomicInteger(0);
-		private AtomicInteger recordsChanged = new AtomicInteger(0);
-		private AtomicInteger recordsAdded = new AtomicInteger(0);
-		private AtomicInteger recordsErroneous = new AtomicInteger(0);
-		
+		private AtomicInteger recordsUploaded;
+		private AtomicInteger recordsDeleted;
+		private AtomicInteger recordsChanged;
+		private AtomicInteger recordsAdded;
+		private AtomicInteger recordsErroneous;
+		private int recWithCoordinates;
+		private int recWithCountry;
+		private int recWithAltitude;
+		private int recWithDate;
+
 		
 		@Autowired
 		private DarwinCoreManager darwinCoreManager;
@@ -101,22 +105,61 @@ import org.springframework.transaction.annotation.Transactional;
 				close();
 				
 			} catch (InterruptedException e) {
-				// interrupt this thread/task
+				// thread was interrupted. Try to exit nicely by removing all potentially corrupt data.
+				prepare();
+				logdb.fatal("log.uploadCanceled", e);
 				throw e;
-			} catch (Exception e) {
-				logdb.error("Fatal Error occurred while running "+this.getClass().getSimpleName(), e);
 			}
 			return event;		
 		}
 		
 		private void close() throws IOException {
+			taxonomyBuilder.close();
+			geographyBuilder.close();
+			setStats();
 			// zip all files into single archive
 			File archive = getResource().getDumpArchiveFile();
 			archive.createNewFile();
 			ZipUtil.zipFiles(dumpFiles, archive);						
 		}
 
+		private void setStats(){
+			// update resource and upload event statistics
+			recordsDeleted.set(getResource().getRecTotal()+recordsAdded.get()-recordsUploaded.get());
+			// store event
+			event.setRecordsAdded(recordsAdded.get());
+			event.setRecordsChanged(recordsChanged.get());
+			event.setRecordsDeleted(recordsDeleted.get());
+			event.setRecordsUploaded(recordsUploaded.get());		
+			event.setRecordsErroneous(recordsErroneous.get());		
+			// save upload event
+			event = uploadEventManager.save(event);
+			
+			// update resource properties
+			getResource().setLastUpload(event);
+			getResource().setRecTotal(recordsUploaded.get());
+			getResource().setRecWithCoordinates(recWithCoordinates);
+			getResource().setRecWithCountry(recWithCountry);
+			getResource().setRecWithAltitude(recWithAltitude);
+			getResource().setRecWithDate(recWithDate);
+			occResourceManager.save(getResource());
+			
+			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
+			log.info(status());
+		}
+
 		private void prepare() {
+			recordsUploaded = new AtomicInteger(0);
+			recordsDeleted = new AtomicInteger(0);
+			recordsChanged = new AtomicInteger(0);
+			recordsAdded = new AtomicInteger(0);
+			recordsErroneous = new AtomicInteger(0);
+
+			recWithCoordinates=0;
+			recWithCountry=0;
+			recWithAltitude=0;
+			recWithDate=0;
+
 			// track upload in upload event metadata (mainly statistics)
 			event = new UploadEvent();
 			event.setJobSourceId(this.hashCode());
@@ -169,9 +212,9 @@ import org.springframework.transaction.annotation.Transactional;
 					// go through source records one by one
 					for (ImportRecord rec : source){
 						// check if thread should shutdown...
-						if (Thread.interrupted()) {
-						    throw new InterruptedException();
-						}			
+						if (Thread.currentThread().isInterrupted()){
+							throw new InterruptedException("Occurrence upload task was interrupted externally");
+						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
 						 DarwinCore dwc = DarwinCore.newInstance(rec);								
@@ -212,15 +255,30 @@ import org.springframework.transaction.annotation.Transactional;
 								recordsAdded.addAndGet(1);
 							}
 							
-							// increase counter for uploaded records no matter if this record is new or modified. 
+							// count statistics
 							recordsUploaded.addAndGet(1);
+							if (dwc.getLongitudeAsFloat()!=null && dwc.getLatitudeAsFloat()!=null){
+								recWithCoordinates++;
+							}
+							if(StringUtils.trimToNull(dwc.getCountry())!=null){
+								recWithCountry++;
+							}
+							if(StringUtils.trimToNull(dwc.getEarliestDateCollected())!=null){
+								//FIXME: no date type, so might contain rubbish
+								recWithDate++;
+							}
+							if(dwc.getMinimumElevationInMetersAsInteger()!=null){
+								recWithAltitude++;
+							}
 							
 							// write record to tab file
 							writer.write(dwc.getDataMap());
 
+						} catch (InterruptedException e) {
+							throw e;
 						} catch (Exception e) {
 							recordsErroneous.addAndGet(1);
-							logdb.warn("log.uploadRecord", new String[]{rec.getId().toString(), getResource().getTitle()}, e);
+							logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
 						}
 						
 						// clear session cache once in a while...
@@ -236,27 +294,6 @@ import org.springframework.transaction.annotation.Transactional;
 					source.close();
 					// flush and close writer/file				
 					writer.close();
-
-					// update resource and upload event statistics
-					int existingRecords = 0;
-					if (getResource().getLastUpload()!=null){
-						existingRecords = getResource().getLastUpload().getRecordsUploaded(); 
-					}
-					recordsDeleted.set(existingRecords+recordsAdded.get()-recordsUploaded.get());
-					// logging
-					log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
-					log.info(status());
-					// store event
-					event.setRecordsAdded(recordsAdded.get());
-					event.setRecordsChanged(recordsChanged.get());
-					event.setRecordsDeleted(recordsDeleted.get());
-					event.setRecordsUploaded(recordsUploaded.get());		
-					event.setRecordsErroneous(recordsErroneous.get());		
-					// save upload event
-					event = uploadEventManager.save(event);
-					// update resource properties
-					getResource().setLastUpload(event);
-					occResourceManager.save(getResource());
 				}
 
 			} catch (IOException e) {
@@ -304,9 +341,9 @@ import org.springframework.transaction.annotation.Transactional;
 					// Do we need a
 					for (ImportRecord rec : source){
 						// check if thread should shutdown...
-						if (Thread.interrupted()) {
-						    throw new InterruptedException();
-						}					
+						if (Thread.currentThread().isInterrupted()){
+							throw new InterruptedException("Occurrence upload task was interrupted externally");
+						}
 						Long coreId = idMap.get(rec.getLocalId());
 						if (coreId == null){
 							String[] paras = {rec.getLocalId(), extension.getName(), getResourceId().toString()};
@@ -370,31 +407,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 		private ImportSource getCoreImportSource() throws ImportSourceException{
 			Long resourceId = getResourceId();
-			// set resource context for DatasourceInterceptor
+			//FIXME: need to decide here whether file or rdbm upload and create import source accordingly 
+			// create rdbms source & set resource context for DatasourceInterceptor
 			DatasourceContextHolder.setResourceId(resourceId);
-			// create rdbms source
 			ViewCoreMapping coreViewMapping = getResource().getCoreMapping();
-			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), coreViewMapping, maxRecords);
+			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), coreViewMapping);
 			return source;
 		}
 
 		private ImportSource getImportSource(Extension extension) throws ImportSourceException{
 			Long resourceId = getResourceId();
-			// set resource context for DatasourceInterceptor
+			//FIXME: need to decide here whether file or rdbm upload and create import source accordingly 
+			// create rdbms source & set resource context for DatasourceInterceptor
 			DatasourceContextHolder.setResourceId(resourceId);
-			// create rdbms source
 			ViewMappingBase vm = getResource().getExtensionMapping(extension);
 			if (vm == null){
 				throw new ImportSourceException("No mapping exists for extension "+extension.getName());
 			}
-			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), vm, maxRecords);
+			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), vm);
 
 			return source;
-		}
-		
-		
-		public void setMaxRecords(Integer maxRecords) {
-			this.maxRecords = maxRecords;
 		}
 
 		public synchronized String status() {

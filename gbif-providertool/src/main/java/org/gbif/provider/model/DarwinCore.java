@@ -208,7 +208,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						dwc.setMinimumElevationInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
 						dwc.setProblematic(true);
-						logdb.warn("log.transform", new String[]{val, "MinimumElevationInMeters", "Integer"}, e);
+						logdb.warn("log.transform", new String[]{val, "MinimumElevationInMeters", "Integer"});
 					}
 				}
 			}else if(propName.equals("MaximumElevationInMeters")){
@@ -221,7 +221,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						dwc.setMaximumElevationInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
 						dwc.setProblematic(true);
-						logdb.warn("log.transform", new String[]{val, "MaximumElevationInMeters", "Integer"}, e);
+						logdb.warn("log.transform", new String[]{val, "MaximumElevationInMeters", "Integer"});
 					}
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
@@ -234,7 +234,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						dwc.setMinimumDepthInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
 						dwc.setProblematic(true);
-						logdb.warn("log.transform", new String[]{val, "MinimumDepthInMeters", "Integer"}, e);
+						logdb.warn("log.transform", new String[]{val, "MinimumDepthInMeters", "Integer"});
 					}
 				}
 			}else if(propName.equals("MaximumDepthInMeters")){
@@ -247,7 +247,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						dwc.setMaximumDepthInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
 						dwc.setProblematic(true);
-						logdb.warn("log.transform", new String[]{val, "MaximumDepthInMeters", "Integer"}, e);
+						logdb.warn("log.transform", new String[]{val, "MaximumDepthInMeters", "Integer"});
 					}
 				}
 			}else if(propName.equals("CollectingMethod")){
