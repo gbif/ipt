@@ -12,12 +12,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.MDC;
-import org.gbif.logging.log.I18nDatabaseAppender;
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
@@ -28,20 +22,14 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.RegionManager;
-import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.JobUtils;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,6 +199,7 @@ import org.springframework.transaction.annotation.Transactional;
 								// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
 								dwc.setModified(new Date());									
 								darwinCoreManager.remove(oldRecord.getId());
+								darwinCoreManager.flush();
 								dwc = darwinCoreManager.save(dwc);									
 								// increase counter of changed records
 								recordsChanged.addAndGet(1);
@@ -231,7 +220,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 						} catch (Exception e) {
 							recordsErroneous.addAndGet(1);
-							logdb.error(String.format("Error uploading record %s of resource %s", rec.getId(), getResource().getTitle()), e);
+							logdb.warn("log.uploadRecord", new String[]{rec.getId().toString(), getResource().getTitle()}, e);
 						}
 						
 						// clear session cache once in a while...
@@ -256,6 +245,7 @@ import org.springframework.transaction.annotation.Transactional;
 					recordsDeleted.set(existingRecords+recordsAdded.get()-recordsUploaded.get());
 					// logging
 					log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
+					log.info(status());
 					// store event
 					event.setRecordsAdded(recordsAdded.get());
 					event.setRecordsChanged(recordsChanged.get());
@@ -270,10 +260,10 @@ import org.springframework.transaction.annotation.Transactional;
 				}
 
 			} catch (IOException e) {
-				logdb.error("Couldnt open tab file. Upload aborted", e);
+				logdb.error("log.fileError", e);
 				throw new InterruptedException();
 			} catch (ImportSourceException e) {
-				logdb.error("Couldnt open import source. Upload aborted", e);
+				logdb.error("log.sourceError", e);
 				throw new InterruptedException();
 			}
 
@@ -342,7 +332,7 @@ import org.springframework.transaction.annotation.Transactional;
 				log.error("Couldnt open tab file. Upload aborted", e);
 				throw e;
 			} catch (ImportSourceException e) {
-				logdb.error(String.format("Couldnt open import source for extension %s. Extension skipped", extension.getName()), e);
+				logdb.error("log.sourceExtensionError", extension.getName(), e);
 				throw e;
 			}
 			

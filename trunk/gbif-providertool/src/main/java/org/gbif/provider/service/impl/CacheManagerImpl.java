@@ -7,17 +7,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.upload.OccUploadTask;
 import org.gbif.provider.upload.Task;
+import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.TaskRejectedException;
 
 
 public class CacheManagerImpl implements CacheManager{
+	@Autowired
+	private AppConfig cfg;
+	@Autowired
+	@Qualifier("uploadExecutor")
 	private ExecutorService uploadExecutor;
+	@Autowired
+	@Qualifier("processingExecutor")
 	private ExecutorService processingExecutor;
 
 	@Autowired
@@ -28,7 +37,7 @@ public class CacheManagerImpl implements CacheManager{
     private final Map<Long, Future> futures = new ConcurrentHashMap<Long, Future>();
     private final Map<Long, Task> uploads = new ConcurrentHashMap<Long, Task>();
 
-	private void submitUpload(Task task) throws TaskRejectedException{
+	private Future submitUpload(Task task) throws TaskRejectedException{
 		Long resourceId = task.getResourceId();
 		if (futures.containsKey(resourceId)){
 			Future f = futures.get(resourceId);
@@ -41,9 +50,10 @@ public class CacheManagerImpl implements CacheManager{
 		uploads.put(resourceId, task);
 		Future f = uploadExecutor.submit(task);
 		futures.put(resourceId, f);
+		return f;
 	}
 
-	protected OccUploadTask newOccUploadTask(){
+	protected Task<UploadEvent> newOccUploadTask(){
 		throw new NotImplementedException("Should have been overriden by Springs method injection");
 	}
 	protected Task newOccProcessingTask(){
@@ -75,14 +85,12 @@ public class CacheManagerImpl implements CacheManager{
 		throw new NotImplementedException("TBD");
 	}
 
-	public void runUpload(Long resourceId, Long userId, Integer maxRecords) {
+	public Future runUpload(Long resourceId, Long userId) {
 		// create task
-		OccUploadTask task = newOccUploadTask();
-		task.setUserId(userId);
-		task.setResourceId(resourceId);
-		task.setMaxRecords(maxRecords);
+		Task<UploadEvent> task = newOccUploadTask();
+		task.init(resourceId, userId);
 		// submit
-		submitUpload(task);
+		return submitUpload(task);
 	}
 
 	public void runPostProcess(Long resourceId, Long userId) {

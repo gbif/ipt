@@ -3,12 +3,16 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    <!--appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender"-->
+    <appender name="CONSOLE" class="org.gbif.provider.log.I18nConsoleAppender">
+        <!-- use a comma separated list for the basenames -->
+        <param name="i18nBasenames" value="ApplicationResources"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"
                 value="%p %t-%c{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
+
 
     <appender name="I18NDATABASE" class="org.gbif.logging.log.I18nDatabaseAppender"/>
     
@@ -87,13 +91,8 @@
         <level value="WARN"/>
     </logger>
 
-    
+    <!-- additivity="false" -->
     <!-- GBIF things -->
-    <logger name="org.gbif" additivity="false">
-        <level value="DEBUG"/>
-        <appender-ref ref="CONSOLE"/>
-    </logger>
-    
     <logger name="org.gbif.provider">
         <level value="DEBUG" />
         <appender-ref ref="I18NDATABASE" />

@@ -22,7 +22,6 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testUploadTask() {
-//		occUploadTask.setMaxRecords(100);
 		occUploadTask.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
