@@ -28,8 +28,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class Dbi18LoggingTest2 extends ContextAwareTestBase{
-	private static I18nLog logdb = I18nLogFactory.getLog(Dbi18LoggingTest2.class);
+public class Dbi18LoggingTest extends ContextAwareTestBase{
+	private static I18nLog logdb = I18nLogFactory.getLog(Dbi18LoggingTest.class);
 
 	@Test
 	public void testBuildHierarchy() {
