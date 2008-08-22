@@ -7,17 +7,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.TabFileProcessManager;
 
 
 public class SourceFileUploadAction extends BaseAction{
 	private static final long serialVersionUID = -3698917712584074200L;
 	private TabFileProcessManager tabFileProcessManager;
-    private GenericManager<ViewMappingBase, Long> viewMappingManager;
+    private GenericManager<ViewMappingBase> viewMappingManager;
     private File file;
     private String fileContentType;
     private String fileFileName;
@@ -132,11 +132,9 @@ public class SourceFileUploadAction extends BaseAction{
 		this.mapping_id = mapping_id;
 	}
 
-
 	public void setViewMappingManager(
-			GenericManager<ViewMappingBase, Long> viewMappingManager) {
+			GenericManager<ViewMappingBase> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
-
 
 }

@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -32,14 +31,15 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.GenericManager;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class ViewMappingAction extends BaseOccurrenceResourceAction implements Preparable{
 	private static Integer FIXED_TERMS_IDX = 1000;
     private DatasourceInspectionManager datasourceInspectionManager;
-    private GenericManager<Extension, Long> extensionManager;
-    private GenericManager<ViewMappingBase, Long> viewMappingManager;
+    private GenericManager<Extension> extensionManager;
+    private GenericManager<ViewMappingBase> viewMappingManager;
     private ViewMappingBase mapping;
     private List<PropertyMapping> mappings;
     private ArrayList<String> viewColumnHeaders;
@@ -206,11 +206,11 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		this.datasourceInspectionManager = datasourceInspectionManager;
 	}
 
-	public void setExtensionManager(GenericManager<Extension, Long> extensionManager) {
+	public void setExtensionManager(GenericManager<Extension> extensionManager) {
 		this.extensionManager = extensionManager;
 	}
 
-	public void setViewMappingManager(GenericManager<ViewMappingBase, Long> viewMappingManager) {
+	public void setViewMappingManager(GenericManager<ViewMappingBase> viewMappingManager) {
 		this.viewMappingManager = viewMappingManager;
 	}
 

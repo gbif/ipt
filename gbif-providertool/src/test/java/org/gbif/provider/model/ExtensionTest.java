@@ -3,44 +3,28 @@ package org.gbif.provider.model;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.appfuse.service.GenericManager;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 
 public class ExtensionTest extends BaseDaoTestCase{
-    private GenericManager<Extension, Long> extensionManager;
-    private GenericManager<OccurrenceResource, Long> occResourceManager;
+    @Autowired
+    @Qualifier("extensionManager")
+    private GenericManager<Extension> extensionManager;
+    @Autowired
+    private OccResourceManager occResourceManager;
+    @Autowired
     private ResourceFactory resourceFactory;
 	
 
 	public void setResourceFactory(ResourceFactory resourceFactory) {
 		this.resourceFactory = resourceFactory;
-	}
-
-	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-
-	public void setExtensionManager(
-			GenericManager<Extension, Long> extensionManager) {
-		this.extensionManager = extensionManager;
 	}
 
 

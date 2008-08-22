@@ -78,20 +78,19 @@
     <legend><s:text name="occResourceOverview.cache"/></legend>
 	<div class="left">
 		<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
-		<s:label key="resource.numTerminalTaxa"/>
-		<s:label key="resource.numRegions"/>
+		<s:label key="occResource.numTerminalTaxa"/>
+		<s:label key="occResource.numRegions"/>
 	  	<s:label key="occResourceOverview.extensionCache"/>
 	 	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
 			<ul class="subform">
 				<li>
 					<s:property value="extension.name"/>
-					<s:property value="propertyMappings.size"/> records
+					1000 records
 				</li>
 			</ul>
 		  </s:iterator>
-
 		<s:if test="%{occResource.lastUpload}">
-			<s:label key="occResource.lastUpload" value="%{occResource.lastUpload.executionDate}"/>
+			<s:label key="resource.lastUpload" value="%{occResource.lastUpload.executionDate}"/>
 			<s:url id="logsUrl" action="logEvents" namespace="/admin">
 				<s:param name="sourceId" value="occResource.lastUpload.jobSourceId" />
 				<s:param name="sourceType" value="occResource.lastUpload.jobSourceType" />

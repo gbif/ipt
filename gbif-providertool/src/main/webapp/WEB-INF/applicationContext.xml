@@ -30,12 +30,9 @@
     
 
     <!-- external datasource routing/registry -->
-    <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor">
-    </bean>
+    <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor"/>
     
-    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" >
-        <property name="occResourceManager" ref="occResourceManager"/>
-    </bean>
+    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
     
     <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
         <property name="targetDataSources">

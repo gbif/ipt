@@ -1,38 +1,22 @@
 package org.gbif.provider.util;
 
-import org.appfuse.dao.BaseDaoTestCase;
-import org.appfuse.service.GenericManager;
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.OccResourceManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
+	@Autowired
 	protected DatasourceInspectionManager datasourceInspectionManager;
+	@Autowired
 	private DatasourceRegistry datasourceRegistry;
-	private GenericManager<OccurrenceResource, Long> occResourceManager;
+	@Autowired
+	private OccResourceManager occResourceManager;
 	private DatasourceBasedResource resource;
 
 
-	public void setDatasourceInspectionManager(
-			DatasourceInspectionManager datasourceInspectionManager) {
-		this.datasourceInspectionManager = datasourceInspectionManager;
-	}
-
-	public void setDatasourceRegistry(DatasourceRegistry datasourceRegistry) {
-		this.datasourceRegistry = datasourceRegistry;
-	}
-
-	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-
-	public DatasourceBasedResource getTestResource() {
-		return resource;
-	}
-	
 	/**
 	 * set resource_id = 1 for external datasource tests and register the
 	 * datasource
@@ -45,5 +29,8 @@ public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 		datasourceRegistry.registerDatasource(resource);
 	}
 	
+	public DatasourceBasedResource getTestResource() {
+		return resource;
+	}	
 
 }
