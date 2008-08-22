@@ -107529,7 +107529,8 @@
     <column>rec_with_altitude</column>
     <column>rec_with_date</column>
     <column>num_countries</column>
-    <column>num_terminal_taxa</column>
+    <column>num_regions</column>
+    <column>num_terminal_regions</column>
     <column>num_species</column>
     <column>num_genera</column>
     <column>num_families</column>
@@ -107537,6 +107538,8 @@
     <column>num_classes</column>
     <column>num_phyla</column>
     <column>num_kingdoms</column>
+    <column>num_taxa</column>
+    <column>num_terminal_taxa</column>
     <row>
       <value>OccurrenceResource</value>
       <value>1</value>
@@ -107554,6 +107557,9 @@
       <value>11</value>
       <value>4</value>
       <null/>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
       <value>0</value>
       <value>0</value>
       <value>0</value>
@@ -107592,6 +107598,9 @@
       <null/>
       <value>4</value>
       <value>4</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
       <value>0</value>
       <value>0</value>
       <value>0</value>

@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.util;
 
 import static org.junit.Assert.*;
 
@@ -23,14 +23,13 @@ import org.gbif.provider.model.dto.DwcRegion;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class CopyOfGeographyBuilderTest extends ContextAwareTestBase{
-	private static I18nLog logdb = I18nLogFactory.getLog(CopyOfGeographyBuilderTest.class);
+public class Dbi18LoggingTest extends ContextAwareTestBase{
+	private static I18nLog logdb = I18nLogFactory.getLog(Dbi18LoggingTest.class);
 
 	@Test
 	public void testBuildHierarchy() {

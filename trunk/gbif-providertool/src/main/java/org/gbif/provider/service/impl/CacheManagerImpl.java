@@ -1,5 +1,6 @@
 package org.gbif.provider.service.impl;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,6 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -20,6 +23,8 @@ import org.springframework.core.task.TaskRejectedException;
 
 
 public class CacheManagerImpl implements CacheManager{
+	protected final Log log = LogFactory.getLog(getClass());
+
 	@Autowired
 	private AppConfig cfg;
 	@Autowired
@@ -63,26 +68,53 @@ public class CacheManagerImpl implements CacheManager{
 	
 	
 	public void cleanupResources() {
-		throw new NotImplementedException("TBD");
+		// FIXME: needs implementation
+		log.error("NOT IMPLEMENTED YET");
 	}
 
 	public void clearCache(Long resourceId) {
-		throw new NotImplementedException("TBD");
+		// FIXME: needs implementation
+		log.error("NOT IMPLEMENTED YET");
 	}
 
 	public Set<Long> currentUploads() {
-		throw new NotImplementedException("TBD");
+		for (Long id : futures.keySet()){
+			Future f = futures.get(id);
+			Task t = uploads.get(id);
+			if (f.isDone()){
+				futures.remove(f);
+				uploads.remove(t);
+			}
+		}
+		return new HashSet<Long>(futures.keySet());
 	}
 	public Set<Long> scheduledUploads() {
-		throw new NotImplementedException("TBD");
+		// FIXME: needs implementation
+		log.error("NOT IMPLEMENTED YET");
+		return new HashSet<Long>();
 	}
 
 	public String getUploadStatus(Long resourceId) {
-		throw new NotImplementedException("TBD");
+		Task t = uploads.get(resourceId);
+		String status;
+		if (t!=null){
+			Future f = futures.get(resourceId);
+			if (f.isDone()){
+				status = "Finished: " + t.status();
+				futures.remove(f);
+				uploads.remove(t);
+			}else{
+				status = t.status();			
+			}
+		}else{
+			status = "No activity";			
+		}
+		return status;
 	}
 
 	public void runScheduledResources(Long userId) {
-		throw new NotImplementedException("TBD");
+		// FIXME: needs implementation
+		log.error("NOT IMPLEMENTED YET");
 	}
 
 	public Future runUpload(Long resourceId, Long userId) {
@@ -93,8 +125,18 @@ public class CacheManagerImpl implements CacheManager{
 		return submitUpload(task);
 	}
 
+	public void cancelUpload(Long resourceId) {
+		Future<?> f = futures.get(resourceId);
+		if (f!=null){
+			f.cancel(true);
+		}else{
+			log.warn("No task running for resource "+resourceId);
+		}
+		
+	}
+
 	public void runPostProcess(Long resourceId, Long userId) {
-		throw new NotImplementedException("TBD");
+		log.error("NOT IMPLEMENTED YET");
 	}
 
 	public void setUploadExecutor(ExecutorService uploadExecutor) {
@@ -105,7 +147,6 @@ public class CacheManagerImpl implements CacheManager{
 		this.processingExecutor = processingExecutor;
 	}
 
-	
 	
 	
 }

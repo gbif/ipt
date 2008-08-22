@@ -63,9 +63,11 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	private int recWithAltitude;
 	private int recWithDate;
 	private int numCountries;
+	// distinct number of Region entities
+	private int numRegions;
+	private int numTerminalRegions;
 	private Map<String, Long> numTaxaByCountry = new HashMap<String, Long>();
 	
-	private int numTerminalTaxa;
 	private int numSpecies;
 	private int numGenera;
 	private int numFamilies;
@@ -73,6 +75,9 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	private int numClasses;
 	private int numPhyla;
 	private int numKingdoms;
+	// distinct number of Taxon entities
+	private int numTaxa;
+	private int numTerminalTaxa;
 	
 	public static OccurrenceResource newInstance(Extension core){
 		OccurrenceResource resource =  new OccurrenceResource();
@@ -154,12 +159,20 @@ public class OccurrenceResource extends DatasourceBasedResource {
 
 
 	
-	public int getNumTerminalTaxa() {
-		return numTerminalTaxa;
+	public int getNumRegions() {
+		return numRegions;
 	}
 
-	public void setNumTerminalTaxa(int numTerminalTaxa) {
-		this.numTerminalTaxa = numTerminalTaxa;
+	public void setNumRegions(int numRegions) {
+		this.numRegions = numRegions;
+	}
+
+	public int getNumTaxa() {
+		return numTaxa;
+	}
+
+	public void setNumTaxa(int numTaxa) {
+		this.numTaxa = numTaxa;
 	}
 
 	public int getNumGenera() {
@@ -219,6 +232,22 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	}
 
 	
+	public int getNumTerminalRegions() {
+		return numTerminalRegions;
+	}
+
+	public void setNumTerminalRegions(int numTerminalRegions) {
+		this.numTerminalRegions = numTerminalRegions;
+	}
+
+	public int getNumTerminalTaxa() {
+		return numTerminalTaxa;
+	}
+
+	public void setNumTerminalTaxa(int numTerminalTaxa) {
+		this.numTerminalTaxa = numTerminalTaxa;
+	}
+
 	@Transient
 	public String getTapirEndpoint(){
 		return String.format("%s/tapir", getResourceBaseUrl());
@@ -242,9 +271,10 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		recWithAltitude=0;
 		recWithDate=0;
 		numCountries=0;
+		numRegions=0;
 		numTaxaByCountry.clear();
 		
-		numTerminalTaxa=0;
+		numTaxa=0;
 		numSpecies=0;
 		numGenera=0;
 		numFamilies=0;

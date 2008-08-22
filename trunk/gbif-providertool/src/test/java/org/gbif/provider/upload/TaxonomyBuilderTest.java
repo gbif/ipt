@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.DarwinCore;
@@ -21,11 +25,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.AssertThrows;
 
 public class TaxonomyBuilderTest extends ContextAwareTestBase {
 	@Autowired
 	@Qualifier("taxonomyBuilder")
-	private RecordPostProcessor<DarwinCore, Set<DwcTaxon>> taxonomyBuilder;
+	private RecordPostProcessor<DarwinCore, Set<Taxon>> taxonomyBuilder;
 
 	private DwcTaxon getNewTaxon() {
 		DwcTaxon dt = new DwcTaxon();
@@ -49,11 +54,22 @@ public class TaxonomyBuilderTest extends ContextAwareTestBase {
 	public void testCallable() throws Exception {
 		taxonomyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 
-		Set<DwcTaxon> taxa = taxonomyBuilder.call();
-		log.debug(String.format("%s taxa found in test resource", taxa.size()));
-		// assertions based on PonTaurus dataset...
-		assertTrue(taxa.size() > 850);
-//		assertTrue(taxa.size() == 857);
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		log.debug("Submit geography builder task to single threaded executor");
+		Future<Set<Taxon>> f = executor.submit(taxonomyBuilder);
+		try {
+			Set<Taxon> taxa = f.get();
+			log.debug(String.format("%s taxa found in test resource", taxa.size()));
+			log.debug(taxa);
+			// assertions based on PonTaurus dataset...
+			assertTrue(taxa.size() > 850);
+//			assertTrue(taxa.size() == 857);
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} finally {
+			f.cancel(true);
+		}
+		
 	}
 
 }

@@ -44,6 +44,7 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 	private TaxonManager taxonManager;
 	// results
 	private Map<Integer, Taxon> dwcTaxonHashMap;
+	private Set<Taxon> terminalTaxa;
 
 
 	
@@ -58,16 +59,23 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		// remove previously existing taxa
 		prepare();
 		
-		// create unique, naturally sorted taxa from dwc records
-		log.info("Generating taxonomy from occurrence records for resource "+getResourceId());
-		// create taxa from dwc
-		ScrollableResults records = darwinCoreManager.scrollResource(getResourceId());
-		
-		boolean hasNext = true;
-		while (hasNext = records.next()){
-			DarwinCore dwc = (DarwinCore) records.get()[0];
-			processRecord(dwc);			
-			darwinCoreManager.save(dwc);
+		try{
+			// create unique, naturally sorted taxa from dwc records
+			log.info("Generating taxonomy from occurrence records for resource "+getResourceId());
+			// create taxa from dwc
+			ScrollableResults records = darwinCoreManager.scrollResource(getResourceId());
+			
+			boolean hasNext = true;
+			while (hasNext = records.next()){
+				DarwinCore dwc = (DarwinCore) records.get()[0];
+				processRecord(dwc);			
+				darwinCoreManager.save(dwc);
+			}
+		}catch (InterruptedException e){
+			// remove partial messy data
+			log.warn("Taxonomy Builder was cancelled. Clear partial data.");
+			prepare();
+			throw e;
 		}
 		
 		return close();
@@ -79,7 +87,11 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 	 * (non-Javadoc)
 	 * @see org.gbif.provider.upload.RecordPostProcessor#processRecord(org.gbif.provider.model.CoreRecord)
 	 */
-	public DarwinCore processRecord(DarwinCore dwc) {
+	public DarwinCore processRecord(DarwinCore dwc) throws InterruptedException {
+		// check thread/task cancellation
+		if (Thread.currentThread().isInterrupted()){
+			throw new InterruptedException("Taxonomy builder was interrupted externally");
+		}
 		if (dwc == null){
 			log.debug("DarwinCore NULL record ignored for building the taxonomy");
 			return dwc;
@@ -93,7 +105,7 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		Taxon tax=null;
 		if (dwcTaxonHashMap.containsKey(dt.hashCode())){
 			// taxon exists already. use persistent one for dwc
-			tax = dwcTaxonHashMap.get(dt.hashCode());				
+			tax = dwcTaxonHashMap.get(dt.hashCode());
 		}else{
 			// try to "insert" the entire taxonomic hierarchy
 			Taxon parent = null;
@@ -111,6 +123,7 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 				}
 			}
 		}
+		terminalTaxa.add(tax);
 		dwc.setTaxon(tax);
 		return dwc;
 	}
@@ -134,7 +147,7 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		}
 
 		// persist taxon statistics in resource
-		calcStats(taxonomy);
+		setStats(taxonomy);
 		occResourceManager.save(getResource());
 		
 		return taxonomy;
@@ -189,7 +202,7 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		}
 	}
 
-	private void calcStats(SortedSet<Taxon> taxonomy) {
+	private void setStats(SortedSet<Taxon> taxonomy) {
 		// init stats map		
 		Map<Rank, Integer> stats = new HashMap<Rank, Integer>();
 		stats.put(null, 0);
@@ -206,6 +219,8 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		}
 		log.info(String.format("Found %s distinct taxa in resource %s", taxonomy.size(), getResourceId()));
 		// store stats
+		getResource().setNumTaxa(taxonomy.size());
+		getResource().setNumTerminalTaxa(terminalTaxa.size());
 		getResource().setNumSpecies(stats.get(Rank.Species));
 		getResource().setNumGenera(stats.get(Rank.Genus));
 		getResource().setNumFamilies(stats.get(Rank.Family));
@@ -217,6 +232,8 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 
 	public void prepare() {
 		dwcTaxonHashMap = new HashMap<Integer, Taxon>();
+		terminalTaxa = new HashSet<Taxon>();
+
 		log.info("Removing previously existing taxonomy from resource "+getResourceId());
 		taxonManager.deleteAll(getResource());		
 	}

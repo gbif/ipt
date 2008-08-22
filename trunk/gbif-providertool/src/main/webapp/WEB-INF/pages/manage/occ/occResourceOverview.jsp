@@ -4,7 +4,6 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="manage"/>
-	<s:head theme="ajax" debug="false"/>
 </head>
 
 <c:set var="placeholder">
@@ -75,12 +74,22 @@
 	</fieldset>
 </s:form>
 
-<s:form action="upload" method="get">
-  <s:hidden key="resource_id"/>
   <fieldset>
     <legend><s:text name="occResourceOverview.cache"/></legend>
 	<div class="left">
 		<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
+		<s:label key="resource.numTerminalTaxa"/>
+		<s:label key="resource.numRegions"/>
+	  	<s:label key="occResourceOverview.extensionCache"/>
+	 	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
+			<ul class="subform">
+				<li>
+					<s:property value="extension.name"/>
+					<s:property value="propertyMappings.size"/> records
+				</li>
+			</ul>
+		  </s:iterator>
+
 		<s:if test="%{occResource.lastUpload}">
 			<s:label key="occResource.lastUpload" value="%{occResource.lastUpload.executionDate}"/>
 			<s:url id="logsUrl" action="logEvents" namespace="/admin">
@@ -89,11 +98,9 @@
 			</s:url>
 			<s:a href="%{logsUrl}">log entries</s:a>
 		</s:if>
-		
-		<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
     </div>
 	<div class="right">
-		<s:url id="uploadHistoryUrl" action="uploadHistory">
+		<s:url id="uploadHistoryUrl" action="history">
 			<s:param name="resource_id" value="resource_id"/>
 		</s:url>
 		<s:a href="%{uploadHistoryUrl}">
@@ -103,15 +110,23 @@
 	<div class="break">
 	</div>
     <s:if test="%{occResource.hasMinimalMapping()}">
-	    <s:submit cssClass="button" method="upload" key="button.upload"/>
-	    <s:submit cssClass="button" method="clear" key="button.clear"/>
-	    <s:submit cssClass="button" method="process" key="button.process"/>
+		<s:form action="upload" method="post">
+		  <s:hidden key="resource_id"/>
+		  <s:submit cssClass="button" key="button.upload"/>
+		</s:form>
+		<s:form action="clear" method="post">
+		  <s:hidden key="resource_id"/>
+	    <s:submit cssClass="button" key="button.clear"/>
+		</s:form>
+		<s:form action="process" method="post">
+		  <s:hidden key="resource_id"/>
+	    <s:submit cssClass="button" key="button.process"/>
+		</s:form>
     </s:if>
     <s:else>
     	<p class="reminder">Please finalize the core mapping before uploading data</p>
     </s:else>
   </fieldset>
-</s:form>
 
 <s:form action="validate" method="get">
   <s:hidden key="resource_id"/>

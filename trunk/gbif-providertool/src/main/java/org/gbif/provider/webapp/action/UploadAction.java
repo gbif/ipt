@@ -1,41 +1,61 @@
 package org.gbif.provider.webapp.action;
 
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.service.CacheManager;
+import java.util.List;
 
-public class UploadAction extends BaseOccurrenceResourceAction {
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.service.UploadEventManager;
+
+import com.opensymphony.xwork2.Preparable;
+
+public class UploadAction extends BaseOccurrenceResourceAction implements Preparable{
 	private CacheManager cacheManager;
+	private UploadEventManager uploadEventManager; 
 	private String status;
+	private boolean busy = false;
 	private boolean ajax = false;
 	private OccurrenceResource occResource;
+	private List<UploadEvent> uploadEvents;
 	
+	public void prepare() throws Exception {
+		busy=false;
+		if (resource_id != null){
+			if (cacheManager.currentUploads().contains(resource_id)){
+				busy=true;
+			}
+		}
+	}
+
 	public String upload(){
-        saveMessage(getText("UPLOAD"));
 		if (resource_id != null){
 			// run task in different thread
 			cacheManager.runUpload(resource_id, getCurrentUser().getId());			
-	        saveMessage(getText("upload.addedJob"));
+	        saveMessage(getText("upload.added"));
 		}
 		return SUCCESS;
 	}
 	public String cancel(){
-        saveMessage(getText("CANCEL"));
 		if (resource_id != null){
-			status = cacheManager.getUploadStatus(resource_id);
+			cacheManager.cancelUpload(resource_id);
+	        saveMessage(getText("upload.cancelled"));
 		}
 		return SUCCESS;
 	}
 	public String process(){
-        saveMessage(getText("PROCESS"));
+        saveMessage(getText("upload.processed"));
 		if (resource_id != null){
 			status = cacheManager.getUploadStatus(resource_id);
 		}
 		return SUCCESS;
 	}
 	public String status(){
-        saveMessage(getText("STATUS"));
 		if (resource_id != null){
-			status = cacheManager.getUploadStatus(resource_id);
+			if (busy){
+				status = cacheManager.getUploadStatus(resource_id);
+			}else{
+				return "ready";
+			}
 		}
 		if (ajax){
 			return "ajax";
@@ -45,17 +65,16 @@ public class UploadAction extends BaseOccurrenceResourceAction {
 		}
 	}
 	public String clear(){
-        saveMessage(getText("CLEAR"));
+        saveMessage(getText("upload.cleared"));
 		if (resource_id != null){
-			status = cacheManager.getUploadStatus(resource_id);
+			cacheManager.clearCache(resource_id);
 		}
 		return SUCCESS;
 	}
 
 	public String history(){
-        saveMessage(getText("HISTORY"));
 		if (resource_id != null){
-			status = cacheManager.getUploadStatus(resource_id);
+			uploadEvents = uploadEventManager.getUploadEventsByResource(resource_id);
 		}
 		return SUCCESS;
 	}
@@ -72,6 +91,14 @@ public class UploadAction extends BaseOccurrenceResourceAction {
 	}
 	public OccurrenceResource getOccResource() {
 		return occResource;
+	}
+
+	public List<UploadEvent> getUploadEvents() {
+		return uploadEvents;
+	}
+
+	public void setUploadEventManager(UploadEventManager uploadEventManager) {
+		this.uploadEventManager = uploadEventManager;
 	}
 	
 }
