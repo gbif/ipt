@@ -38,7 +38,6 @@ import com.opensymphony.xwork2.Preparable;
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
 	private ResourceFactory resourceFactory;
 	private GenericManager<Extension> extensionManager;
-	private GenericManager<ViewMappingBase> viewMappingManager;
 	private UploadEventManager uploadEventManager;
 	private CacheManager cacheManager;
 	protected Map session;
@@ -140,21 +139,9 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return "delete";
 	}
 
-	public String submitUploadTask() throws Exception{
-		// run task in different thread
-		cacheManager.runUpload(resource_id, getCurrentUser().getId(), null);
-		
-        saveMessage(getText("upload.addedJob"));
-		return SUCCESS;
-	}
-	
-	public String count() {
-		return SUCCESS;
-	}
-	
 
 	
-
+	
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
 	}
@@ -163,14 +150,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		this.resourceFactory = resourceFactory;
 	}
 
-	public void setExtensionManager(
-			GenericManager<Extension> extensionManager) {
+	public void setExtensionManager(GenericManager<Extension> extensionManager) {
 		this.extensionManager = extensionManager;
-	}
-
-	public void setViewMappingManager(
-			GenericManager<ViewMappingBase> viewMappingManager) {
-		this.viewMappingManager = viewMappingManager;
 	}
 
 	public void setUploadEventManager(UploadEventManager uploadEventManager) {

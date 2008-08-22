@@ -80,24 +80,7 @@
   <fieldset>
     <legend><s:text name="occResourceOverview.cache"/></legend>
 	<div class="left">
-		<s:if test="%{currentJob}">
-			<s:url id="recordCountUrl" action="uploadStatus">
-				<s:param name="resource_id" value="resource_id" />
-				<s:param name="ajax" value="true"/>
-			</s:url>
-			<li id="wwgrp_upload_resource_recordCount" class="wwgrp">
-				<div id="wwlbl_upload_resource_recordCount" class="wwlbl">
-					<label for="upload_resource_recordCount" class="desc"><s:text name="resource.recordCount"/></label>
-				</div> 
-	    		<s:div id="recordCount" theme="ajax" href="%{recordCountUrl}" updateFreq="3000">
-		    		<s:property value="occResource.getRecordCount()"/>
-	    		</s:div>
-			</li>				
-		</s:if>
-		<s:else>
-			<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
-		</s:else>
-		
+		<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
 		<s:if test="%{occResource.lastUpload}">
 			<s:label key="occResource.lastUpload" value="%{occResource.lastUpload.executionDate}"/>
 			<s:url id="logsUrl" action="logEvents" namespace="/admin">
@@ -108,10 +91,6 @@
 		</s:if>
 		
 		<s:label key="occResourceOverview.nextUpload" value="%{nextUpload.nextFireTime}"/>
-
-		<s:if test="%{currentJob}">
-	        <s:label key="occResourceOverview.currentJob" value="%{getText(currentJob.jobClassName)}" />
-		</s:if>
     </div>
 	<div class="right">
 		<s:url id="uploadHistoryUrl" action="uploadHistory">
@@ -124,7 +103,9 @@
 	<div class="break">
 	</div>
     <s:if test="%{occResource.hasMinimalMapping()}">
-	    <s:submit cssClass="button" key="button.upload"/>
+	    <s:submit cssClass="button" method="upload" key="button.upload"/>
+	    <s:submit cssClass="button" method="clear" key="button.clear"/>
+	    <s:submit cssClass="button" method="process" key="button.process"/>
     </s:if>
     <s:else>
     	<p class="reminder">Please finalize the core mapping before uploading data</p>

@@ -35,7 +35,7 @@ public interface CacheManager {
 	 * @param resource
 	 * @return
 	 */
-	void runUpload(Long resourceId, Long userId, Integer maxRecords);
+	Future runUpload(Long resourceId, Long userId);
 
 	/**
 	 * Submit only a new post-processing task to the executor service. Throws an exception in case this resource has already a scheduled or running task

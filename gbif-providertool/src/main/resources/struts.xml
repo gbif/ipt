@@ -197,10 +197,6 @@
         <action name="resource" class="org.gbif.provider.webapp.action.OccResourceAction">
             <result>/WEB-INF/pages/manage/occ/occResourceOverview.jsp</result>
         </action>
-        <action name="uploadStatus" class="org.gbif.provider.webapp.action.JobStatusAction" method="uploadStatus">
-            <result>/WEB-INF/pages/ajax/count.jsp</result>
-        </action>
-        
         <action name="addResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
         </action>
@@ -249,14 +245,24 @@
             </result>
         </action>
 
-        <action name="upload" class="org.gbif.provider.webapp.action.UploadAction">
-            <result>/WEB-INF/pages/manage/occ/uploadSettings.jsp</result>
+        <action name="upload" class="org.gbif.provider.webapp.action.UploadAction" method="upload">
+            <result>/WEB-INF/pages/manage/occ/uploadProgress.jsp</result>
         </action>
-        <action name="addUploadJob" class="org.gbif.provider.webapp.action.UploadAction" method="addUploadJob">
-            <result>/WEB-INF/pages/manage/occ/uploadSettings.jsp</result>
+        <action name="cancelUpload" class="org.gbif.provider.webapp.action.UploadAction" method="cancel">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        <action name="process" class="org.gbif.provider.webapp.action.UploadAction" method="process">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        <action name="clear" class="org.gbif.provider.webapp.action.UploadAction" method="clear">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        <action name="status" class="org.gbif.provider.webapp.action.UploadAction" method="status">
+            <result>/WEB-INF/pages/manage/occ/uploadProgress.jsp</result>
+            <result name="ajax">/WEB-INF/pages/ajax/count.jsp</result>
         </action>
 
-        <action name="uploadHistory" class="org.gbif.provider.webapp.action.UploadAction" method="history">
+        <action name="history" class="org.gbif.provider.webapp.action.UploadAction" method="history">
             <result>/WEB-INF/pages/manage/occ/uploadHistory.jsp</result>
         </action>
         
