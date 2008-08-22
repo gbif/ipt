@@ -26,9 +26,9 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.DatasourceBasedResource;
-import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.service.OccResourceManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Registry of active external datasources (=DatasourceBasedResource) used by ExternalResourceRoutingDatasource.
@@ -40,7 +40,8 @@ import org.gbif.provider.model.OccurrenceResource;
 public class DatasourceRegistry{
 	protected static final Log log = LogFactory.getLog(DatasourceRegistry.class);
 	private Map<Long, DataSource> datasources = new HashMap<Long, DataSource>();
-    private GenericManager<OccurrenceResource, Long> occResourceManager;
+	@Autowired
+    private OccResourceManager occResourceManager;
     
 	public Map<Long, DataSource> getDatasources() {
 		return datasources;
@@ -92,9 +93,6 @@ public class DatasourceRegistry{
 	public boolean containsKey(Long id) {
 		return datasources.containsKey(id);
 	}
-	public void setOccResourceManager(
-			GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
+
 		
 }

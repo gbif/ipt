@@ -17,21 +17,15 @@
 package org.gbif.provider.webapp.action;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletContext;
 
-import org.apache.struts2.interceptor.SessionAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.appfuse.service.GenericManager;
 import org.appfuse.webapp.action.BaseAction;
 import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ResourceManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 

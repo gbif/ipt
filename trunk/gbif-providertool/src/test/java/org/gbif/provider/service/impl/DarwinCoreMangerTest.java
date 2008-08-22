@@ -16,19 +16,15 @@
 
 package org.gbif.provider.service.impl;
 
-import java.util.UUID;
-
 import javax.persistence.EntityExistsException;
 
-import org.appfuse.dao.BaseDaoTestCase;
-import org.appfuse.service.GenericManager;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.hibernate.PropertyValueException;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.AssertThrows;
@@ -37,7 +33,8 @@ import org.springframework.test.AssertThrows;
 public class DarwinCoreMangerTest extends ContextAwareTestBase{
 	@Autowired
 	protected DarwinCoreManager darwinCoreManager;
-	private GenericManager<OccurrenceResource, Long> occResourceManager;
+	@Autowired
+	private OccResourceManager occResourceManager;
 
 	@Test
 	public void testSave(){
@@ -110,11 +107,6 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
     	}finally{
     		darwinCoreManager.flush();            		
     	}
-	}
-	
-	
-	public void setOccResourceManager(GenericManager<OccurrenceResource, Long> occResourceManager) {
-		this.occResourceManager = occResourceManager;
 	}
 	
 }
