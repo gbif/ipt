@@ -59,12 +59,10 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		// get/create view mapping
         if (mapping_id != null) {
         	mapping = viewMappingManager.get(mapping_id);
-        }else{
-            if (extension_id != null) {
-            	mapping = new ViewExtensionMapping();
-            	mapping.setResource(resource);
-            	mapping.setExtension(extensionManager.get(extension_id));
-            }
+        }else if (extension_id != null) {
+        	mapping = new ViewExtensionMapping();
+        	mapping.setResource(resource);
+        	mapping.setExtension(extensionManager.get(extension_id));
         }
         
         // prepare list of property mappings to create form with

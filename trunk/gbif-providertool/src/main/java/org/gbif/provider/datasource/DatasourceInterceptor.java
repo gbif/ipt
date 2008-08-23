@@ -43,7 +43,7 @@ public class DatasourceInterceptor extends AbstractInterceptor{
 			try {
 				resourceId = Long.valueOf(requested_id.toString());
 				DatasourceContextHolder.setResourceId(resourceId);
-				log.debug("Set datasource context to resourceId=" + resourceId);
+//				log.debug("Set datasource context to resourceId=" + resourceId);
 			} catch (NumberFormatException e) {
 				log.warn("Requested resource_id is no integer. No datasource context set: "+requested_id);				
 			}
