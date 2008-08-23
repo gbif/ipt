@@ -80,10 +80,9 @@ public class CacheManagerImpl implements CacheManager{
 	public Set<Long> currentUploads() {
 		for (Long id : futures.keySet()){
 			Future f = futures.get(id);
-			Task t = uploads.get(id);
 			if (f.isDone()){
-				futures.remove(f);
-				uploads.remove(t);
+				futures.remove(id);
+				uploads.remove(id);
 			}
 		}
 		return new HashSet<Long>(futures.keySet());

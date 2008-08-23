@@ -246,10 +246,16 @@
         </action>
 
         <action name="upload" class="org.gbif.provider.webapp.action.UploadAction" method="upload">
-            <result>/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
+            <result type="redirect-action">
+                <param name="actionName">status</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
         </action>
         <action name="cancelUpload" class="org.gbif.provider.webapp.action.UploadAction" method="cancel">
-            <result>/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
+            <result type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
         </action>
         <action name="process" class="org.gbif.provider.webapp.action.UploadAction" method="process">
             <result>/WEB-INF/pages/missing.jsp</result>
