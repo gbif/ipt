@@ -50,16 +50,18 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		return SUCCESS;
 	}
 	public String status(){
-		if (resource_id != null){
-			status = cacheManager.getUploadStatus(resource_id);
-		}
 		if (ajax){
+			if (resource_id != null){
+				status = cacheManager.getUploadStatus(resource_id);
+			}
 			return "ajax";
 		}
 		if (!busy){
 			return "ready";
 		}
-		occResource = occResourceManager.get(resource_id);
+		if (resource_id != null){
+			occResource = occResourceManager.get(resource_id);
+		}
 		return SUCCESS;
 	}
 	public String clear(){
