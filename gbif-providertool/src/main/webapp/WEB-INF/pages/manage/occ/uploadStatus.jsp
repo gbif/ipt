@@ -15,7 +15,7 @@
 	<s:param name="ajax" value="true"/>
 </s:url>
 
-<s:div id="status" theme="ajax" href="%{statusUrl}" updateFreq="2000" 
+<s:div id="status" theme="ajax" href="%{statusUrl}" updateFreq="10000" 
 	startTimerListenTopics="/startTimer" stopTimerListenTopics="/stopTimer" executeScripts="true"
 	errorText="Unable to retrieve resource status" />
 
