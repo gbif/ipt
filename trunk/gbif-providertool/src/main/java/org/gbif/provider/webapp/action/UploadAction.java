@@ -51,18 +51,16 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	}
 	public String status(){
 		if (resource_id != null){
-			if (busy){
-				status = cacheManager.getUploadStatus(resource_id);
-			}else{
-				return "ready";
-			}
+			status = cacheManager.getUploadStatus(resource_id);
 		}
 		if (ajax){
 			return "ajax";
-		}else{
-			occResource = occResourceManager.get(resource_id);
-			return SUCCESS;
 		}
+		if (!busy){
+			return "ready";
+		}
+		occResource = occResourceManager.get(resource_id);
+		return SUCCESS;
 	}
 	public String clear(){
         saveMessage(getText("upload.cleared"));
@@ -99,6 +97,10 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 
 	public void setUploadEventManager(UploadEventManager uploadEventManager) {
 		this.uploadEventManager = uploadEventManager;
+	}
+
+	public boolean isBusy() {
+		return busy;
 	}
 	
 }
