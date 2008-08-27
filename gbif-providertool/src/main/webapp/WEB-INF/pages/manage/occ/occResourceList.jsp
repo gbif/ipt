@@ -23,7 +23,7 @@
         paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
     <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
     <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
-	<display:column property="lastUpload.executionDate" sortable="true" titleKey="occResource.lastImport" format="{0,date,${datePattern}}"/>    
+	<display:column property="lastUpload.executionDate" sortable="true" titleKey="resource.lastUpload" format="{0,date,${datePattern}}"/>    
     
     <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>
     <display:setProperty name="paging.banner.items_name"><s:text name="resourceList.resources"/></display:setProperty>

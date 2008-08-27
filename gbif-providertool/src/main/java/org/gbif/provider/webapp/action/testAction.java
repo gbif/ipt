@@ -25,7 +25,9 @@ import org.appfuse.webapp.action.BaseAction;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.ResourceManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -34,61 +36,20 @@ import com.opensymphony.xwork2.Preparable;
  * @author markus
  *
  */
-public class IndexAction extends BaseAction implements Preparable, ServletContextAware {
-    private ResourceManager<OccurrenceResource> occResourceManager;
-    private ResourceManager<ChecklistResource> checklistResourceManager;
-    private ResourceManager<Resource> resourceManager;
-    private List<OccurrenceResource> occResources;
-    private List<ChecklistResource> checklistResources;
-    private List<Resource> resources;
+public class testAction extends BaseAction implements Preparable, ServletContextAware {
 	private ServletContext context;
+	@Autowired
+	private CacheManager cacheManager;
 
-	public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-	public void setChecklistResourceManager(ResourceManager<ChecklistResource> checklistResourceManager) {
-		this.checklistResourceManager = checklistResourceManager;
-	}
-	public void setResourceManager(ResourceManager<Resource> resourceManager) {
-		this.resourceManager = resourceManager;
-	}
-	
-	public List<ChecklistResource> getChecklistResources() {
-		return checklistResources;
-	}
-	public List<Resource> getResources() {
-		return resources;
-	}
-	public List<OccurrenceResource> getOccResources() {
-		return occResources;
-	}
-	
-	public Integer getOccResourceCount() {
-		return occResources.size();
-	}
-	public Integer getChecklistCount() {
-		return checklistResources.size();
-	}
-	public Integer getResourceCount() {
-		return resources.size();
-	}
-		
-	
-	
 	public void prepare() throws Exception {
-		occResources = occResourceManager.getAllDistinct();
-		checklistResources = checklistResourceManager.getAllDistinct();
-		resources = resourceManager.getAllDistinct();
 	}
 
 	public String execute(){
+		System.out.println(cacheManager.isBusy(1l));
 		return SUCCESS;
 	}
 
 	public void setServletContext(ServletContext context) {
 		this.context=context;
 	}
-
-	
-
 }

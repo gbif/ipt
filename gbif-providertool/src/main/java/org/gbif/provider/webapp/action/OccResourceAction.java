@@ -134,8 +134,19 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public String delete() {
-		occResourceManager.remove(occResource.getId());
+		occResourceManager.remove(occResource);
 		saveMessage(getText("occResource.deleted"));
+
+		// update recently viewed resources in session
+		Object previousQueue = session.get(Constants.RECENT_RESOURCES);
+		if (previousQueue != null && previousQueue instanceof Queue){
+			Queue<LabelValue> queue = (Queue) previousQueue;
+			LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
+			// remove entry from queue if it existed before
+			queue.remove(res);
+			// save back to session
+			session.put(Constants.RECENT_RESOURCES, queue);
+		}		
 		return "delete";
 	}
 

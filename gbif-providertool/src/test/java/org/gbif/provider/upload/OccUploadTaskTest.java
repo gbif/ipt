@@ -1,5 +1,6 @@
 package org.gbif.provider.upload;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,23 +23,26 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testUploadTask() {
+		boolean result = false;
 		occUploadTask.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<UploadEvent> f = executor.submit(occUploadTask);
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 			f.cancel(true);
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 			UploadEvent event = f.get();
 			System.out.println(event);
+		} catch (CancellationException e) {
+			result=true;
+			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		assertTrue(result);
 	}
 	
 }

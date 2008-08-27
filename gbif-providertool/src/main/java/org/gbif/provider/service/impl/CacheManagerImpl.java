@@ -92,7 +92,12 @@ public class CacheManagerImpl implements CacheManager{
 		log.error("NOT IMPLEMENTED YET");
 		return new HashSet<Long>();
 	}
-
+	public boolean isBusy(Long resourceId){
+		if (currentUploads().contains(resourceId) || resourceId==2l){
+			return true;
+		}		
+		return false;
+	}
 	public String getUploadStatus(Long resourceId) {
 		Task t = uploads.get(resourceId);
 		String status;
@@ -106,7 +111,7 @@ public class CacheManagerImpl implements CacheManager{
 				status = t.status();			
 			}
 		}else{
-			status = "No activity";			
+			status = "No activity. Source ready to be used.";			
 		}
 		return status;
 	}
