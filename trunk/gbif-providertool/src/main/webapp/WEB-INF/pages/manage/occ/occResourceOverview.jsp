@@ -74,8 +74,9 @@
 	</fieldset>
 </s:form>
 
-  <fieldset>
-    <legend><s:text name="occResourceOverview.cache"/></legend>
+<fieldset>
+  <legend><s:text name="occResourceOverview.cache"/></legend>
+  <s:form>
 	<div class="left">
 		<s:label key="resource.recordCount" value="%{occResource.getRecordCount()}"/>
 		<s:label key="occResource.numTerminalTaxa"/>
@@ -106,8 +107,8 @@
 			<img src="<s:property value="gChartData"/>" width="400" height="200"/>
 		</s:a>
 	</div>
+  </s:form>	
 	<div class="break">
-	</div>
     <s:if test="%{occResource.hasMinimalMapping()}">
 		<s:form action="upload" method="post">
 		  <s:hidden key="resource_id"/>
@@ -115,16 +116,17 @@
 		</s:form>
 		<s:form action="clear" method="post">
 		  <s:hidden key="resource_id"/>
-	    <s:submit cssClass="button" key="button.clear"/>
+	      <s:submit cssClass="button" key="button.clear"/>
 		</s:form>
 		<s:form action="process" method="post">
 		  <s:hidden key="resource_id"/>
-	    <s:submit cssClass="button" key="button.process"/>
+	      <s:submit cssClass="button" key="button.process" />
 		</s:form>
     </s:if>
     <s:else>
     	<p class="reminder">Please finalize the core mapping before uploading data</p>
     </s:else>
+	</div>
   </fieldset>
 
 <s:form action="validate" method="get">
@@ -138,15 +140,16 @@
     	<p class="reminder">Please upload data first</p>
     </s:else>
   </fieldset>
+
+  <s:label key="occResourceOverview.manager" value="%{occResource.creator.getFullName()}"/>
+  <s:label key="occResourceOverview.lastModified" value="%{occResource.modified} by %{occResource.modifier.getFullName()}"/>
 </s:form>
 
-<s:label key="occResourceOverview.manager" value="%{occResource.creator.getFullName()}"/>
-<s:label key="occResourceOverview.lastModified" value="%{occResource.modified} by %{occResource.modifier.getFullName()}"/>
 
 <c:if test="${not empty occResource.id}">
   <s:form action="saveResource" method="get">
     <s:hidden key="resource_id"/>
-    <s:submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('saveResource')" theme="simple"/>
+    <s:submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>
   </s:form>
 </c:if>
 

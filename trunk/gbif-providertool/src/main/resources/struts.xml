@@ -4,7 +4,6 @@
 
 <struts>
     <!-- Constants -->
-    <constant name="struts.devMode" value="false"/>
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.action.extension" value="html"/>
     <constant name="struts.objectFactory" value="spring"/>
@@ -13,6 +12,14 @@
     <constant name="struts.ui.theme" value="css_xhtml"/>
     <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
     <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <!-- by default dont append existing parameters -->
+    <constant name="struts.url.includeParams" value="none" />
+    
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.i18n.reload" value="true"/>
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    
+    <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
 
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default">
@@ -23,13 +30,14 @@
             <interceptor name="managerOnly" class="managerInterceptor"/>
             <!-- Interceptor to select the external routing datasource -->
             <interceptor name="datasource-selector" class="datasourceInterceptor"/>
+            <interceptor name="resource-watcher" class="resourceInterceptor"/>
+            
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
                 <interceptor-ref name="alias"/>
                 <interceptor-ref name="params"/>
-                <interceptor-ref name="servlet-config"/>
-                <interceptor-ref name="datasource-selector"/>
+                <interceptor-ref name="servlet-config"/>                
                 <interceptor-ref name="prepare"/>
                 <interceptor-ref name="i18n"/>
                 <interceptor-ref name="chain"/>
@@ -55,19 +63,32 @@
                 <interceptor-ref name="fileUpload"/>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
-            <interceptor-stack name="adminCheck">
+            <interceptor-stack name="resourceStack">
+                <interceptor-ref name="resource-watcher"/>
+                <interceptor-ref name="datasource-selector"/>
                 <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="resourceStack"/>
                 <interceptor-ref name="adminOnly"/>
             </interceptor-stack>
             <interceptor-stack name="managerStack">
-                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="resourceStack"/>
                 <interceptor-ref name="managerOnly"/>
+            </interceptor-stack>
+            <interceptor-stack name="portalStack">
+                <interceptor-ref name="resource-watcher"/>
+                <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
         </interceptors>
 
         <default-action-ref name="index" />
 
         <global-results>
+            <result name="resource-busy" type="redirect-action">
+                <param name="actionName">busy</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
             <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
             <result name="mainMenu" type="redirect-action">/index</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
@@ -78,6 +99,22 @@
         </global-exception-mappings>
 
 
+        <action name="test" class="org.gbif.provider.webapp.action.testAction">
+            <result type="redirect-action">
+                <param name="actionName">test2</param>
+                <param name="parse">true</param>
+                <param name="r5">${#parameters.rid}</param>
+            </result>
+        </action>
+        <action name="test2" class="org.gbif.provider.webapp.action.testAction">
+            <result>/WEB-INF/pages/missing.jsp</result>
+            <result name="resource-busy">/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
+        
+        
+        
+        
         <action name="signup" class="signupAction">
             <result name="cancel" type="redirect">/</result>
             <result name="input">/WEB-INF/pages/signup.jsp</result>
@@ -87,12 +124,6 @@
         <action name="saveSignup" class="signupAction" method="save">
             <result name="input">/WEB-INF/pages/signup.jsp</result>
             <result name="success" type="redirect-action">/index</result>
-        </action>
-
-        <action name="editUser" class="userAction" method="edit">
-            <interceptor-ref name="adminCheck"/>
-            <result name="success">/WEB-INF/pages/userForm.jsp</result>
-            <result name="input">/WEB-INF/pages/admin/userList.jsp</result>
         </action>
 
         <action name="editProfile" class="userAction" method="edit">
@@ -130,7 +161,8 @@
 
     <!-- Actions showing data to the public, anonymous users -->
     <package name="portal" namespace="/" extends="default">
-        
+        <default-interceptor-ref name="portalStack" />
+
         <!-- all resources! has to be changed once checklists are added -->
         <action name="resource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
             <result>/WEB-INF/pages/portal/occ/index.jsp</result>
@@ -162,6 +194,11 @@
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
 
+        <action name="busy">
+            <result>/WEB-INF/pages/busy.jsp</result>
+            <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
+        </action>
+        
     </package>
     
     <!-- undecorated AJAX calls needed by the portal -->
@@ -171,6 +208,10 @@
             <result name="pie">/WEB-INF/pages/ajax/chartimg.jsp</result>
             <result name="map">/WEB-INF/pages/ajax/chartimg.jsp</result>
             <result name="chart">/WEB-INF/pages/ajax/chartimg.jsp</result>
+        </action>
+        <action name="resourceStatus" class="org.gbif.provider.webapp.action.UploadAction" method="status">
+            <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
+            <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
         </action>
     </package>
     
@@ -184,8 +225,11 @@
     <!-- Actions managing occurrence resources -->
     <package name="manageOcc" namespace="/manage/occ" extends="manage">
         <default-action-ref name="resources" />
-
         <global-results>
+            <result name="resource-busy" type="redirect-action">
+                <param name="actionName">status</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
             <result name="error" type="redirect-action">resources</result>
         </global-results>
         
@@ -264,9 +308,8 @@
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
         <action name="status" class="org.gbif.provider.webapp.action.UploadAction" method="status">
-            <result>/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
-            <result name="ajax">/WEB-INF/pages/ajax/status.jsp</result>
-            <result name="ready" type="redirect-action">
+            <result name="resource-busy">/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
+            <result name="resource-ready" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
@@ -295,25 +338,28 @@
 
         <!-- Actions in this package will be prefixed with /admin/ -->
     <package name="admin" extends="default" namespace="/admin">
+        <default-interceptor-ref name="adminStack" />
+
         <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
             <result>/WEB-INF/pages/admin/activeUsers.jsp</result>
         </action>
         <action name="users" class="userAction" method="list">
-            <interceptor-ref name="adminCheck"/>
             <result>/WEB-INF/pages/admin/userList.jsp</result>
         </action>
+        <action name="editUser" class="userAction" method="edit">
+            <result name="success">/WEB-INF/pages/userForm.jsp</result>
+            <result name="input">/WEB-INF/pages/admin/userList.jsp</result>
+        </action>
+
         <action name="flushCache" class="com.opensymphony.xwork2.ActionSupport">
-            <interceptor-ref name="adminCheck"/>
             <result>/WEB-INF/pages/admin/flushCache.jsp</result>
         </action>
 
         <action name="activeDatasources" class="org.gbif.provider.webapp.action.DatasourceRegistryAction" method="list">
-            <interceptor-ref name="adminCheck"/>
             <result>/WEB-INF/pages/admin/datasourceList.jsp</result>
         </action>
         
         <action name="activeTasks">
-            <interceptor-ref name="adminCheck"/>
             <result>/WEB-INF/pages/missing.jsp</result>
             <result name="tbd">/WEB-INF/pages/scheduler/jobList.jsp</result>
         </action>

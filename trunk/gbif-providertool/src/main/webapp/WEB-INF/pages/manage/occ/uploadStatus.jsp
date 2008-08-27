@@ -10,14 +10,14 @@
 <h1>Upload in Progress</h1>
 <p class="reminder">This resource is currently being updated and not available. Please wait until the upload is finished or cancel it.</p>
 
-<s:url id="statusUrl" action="status">
-	<s:param name="resource_id" value="resource_id" />
-	<s:param name="ajax" value="true"/>
+<s:url id="statusUrl" action="resourceStatus" namespace="/ajax">
+	<s:param name="resource_id" value="%{#parameters.resource_id}" />
 </s:url>
 
 <s:div id="status" theme="ajax" href="%{statusUrl}" updateFreq="3000" showLoadingText="false" 
 	startTimerListenTopics="/startTimer" stopTimerListenTopics="/stopTimer" executeScripts="true"
-	errorText="Unable to retrieve resource status" />
+	errorText="Unable to retrieve resource status" >
+</s:div>
 
 <br/>
 

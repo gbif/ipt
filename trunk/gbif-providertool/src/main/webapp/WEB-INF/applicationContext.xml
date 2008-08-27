@@ -23,14 +23,16 @@
     </bean>
 
 
-    <!-- security interceptors -->
+    <!-- Struts Interceptors -->
     <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
         <property name="authorizedRoles" value="ROLE_MANAGER"/>
     </bean>
     
-
-    <!-- external datasource routing/registry -->
+    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
+    
     <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor"/>
+    
+    <!-- external datasource routing/registry -->
     
     <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
     

@@ -14,38 +14,44 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.datasource;
+package org.gbif.provider.webapp;
 
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.service.CacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
-public class DatasourceInterceptor extends AbstractInterceptor{
-	protected static final Log log = LogFactory.getLog(DatasourceInterceptor.class);
-
+public class ResourceInterceptor extends AbstractInterceptor{
+	protected static final Log log = LogFactory.getLog(ResourceInterceptor.class);
+	public static final String RESOURCE_BUSY = "resource-busy";
 	public static final String PARAMETER_NAME = "resource_id";
-	
+	@Autowired
+	private CacheManager cacheManager;
+
 	public String intercept(ActionInvocation invocation) throws Exception {
 		//get requested resource
 		Object requested_id = invocation.getInvocationContext().getParameters().get(PARAMETER_NAME);
 		if (requested_id != null && requested_id.getClass().isArray() && ((Object[]) requested_id).length == 1) {
 			requested_id = ((Object[]) requested_id)[0];
 		}
-		// cast to long
+		// cast to integer
 		Long resourceId = null;
 		if (requested_id != null) {
 			try {
 				resourceId = Long.valueOf(requested_id.toString());
-				DatasourceContextHolder.setResourceId(resourceId);
-//				log.debug("Set datasource context to resourceId=" + resourceId);
+				if (cacheManager.isBusy(resourceId)){
+					log.debug(String.format("Resource %s is busy. Issue resultname '%s'", resourceId, RESOURCE_BUSY));
+					return "resource-busy";
+				}
 			} catch (NumberFormatException e) {
-				log.warn("Requested resource_id is no integer. No datasource context set: "+requested_id);				
+				// do nothing, aint no proper resource anyway
 			}
 		}
 

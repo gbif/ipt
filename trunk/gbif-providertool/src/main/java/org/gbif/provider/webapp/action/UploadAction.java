@@ -10,20 +10,18 @@ import org.gbif.provider.service.UploadEventManager;
 import com.opensymphony.xwork2.Preparable;
 
 public class UploadAction extends BaseOccurrenceResourceAction implements Preparable{
+	private static final String BUSY = "resource-busy";
+	private static final String READY = "resource-ready";
 	private CacheManager cacheManager;
 	private UploadEventManager uploadEventManager; 
 	private String status;
 	private boolean busy = false;
-	private boolean ajax = false;
 	private OccurrenceResource occResource;
 	private List<UploadEvent> uploadEvents;
 	
 	public void prepare() throws Exception {
-		busy=false;
 		if (resource_id != null){
-			if (cacheManager.currentUploads().contains(resource_id)){
-				busy=true;
-			}
+			busy=cacheManager.isBusy(resource_id);
 		}
 	}
 
@@ -50,19 +48,15 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		return SUCCESS;
 	}
 	public String status(){
-		if (ajax){
-			if (resource_id != null){
-				status = cacheManager.getUploadStatus(resource_id);
-			}
-			return "ajax";
-		}
-		if (!busy){
-			return "ready";
-		}
 		if (resource_id != null){
 			occResource = occResourceManager.get(resource_id);
+			status = cacheManager.getUploadStatus(resource_id);
 		}
-		return SUCCESS;
+		if (busy){
+			return BUSY;
+		}else{
+			return READY;
+		}
 	}
 	public String clear(){
         saveMessage(getText("upload.cleared"));
@@ -85,9 +79,6 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 
 	public String getStatus() {
 		return status;
-	}
-	public void setAjax(boolean ajax) {
-		this.ajax = ajax;
 	}
 	public OccurrenceResource getOccResource() {
 		return occResource;

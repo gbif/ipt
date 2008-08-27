@@ -2,20 +2,23 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
-import org.appfuse.dao.GenericDao;
-import org.gbif.provider.model.UploadEvent;
-import org.hibernate.Session;
 
-public interface GenericManager<T> extends org.appfuse.service.GenericManager<T, Long>{
+public interface GenericManager<T>{
+    List<T> getAll();
+    List<T> getTop(int maxResults);
 	/**
 	 * Gets all records without duplicates.
 	 * @See GenericDao.getAllDistinct()
 	 * @return
 	 */
-	public List<T> getAllDistinct();
-	
-	public void flush();
-	
-	public void debugSession();
+	List<T> getAllDistinct();
+    T get(Long id);
+    boolean exists(Long id);
 
+    T save(T object);
+    void remove(Long id);
+	void remove(T obj);
+
+	void flush();
+	public void debugSession();
 }

@@ -41,12 +41,12 @@
 						<div id="actions">
 							<label>Resource Actions</label>
 							<ul class="plain">
-								<s:url id="newRes" action="addResource">
+								<s:url id="newRes" action="addResource" includeParams="none">
 									<s:param name="resource_id" value="" />
 								</s:url>
 								<li><s:a href="%{newRes}">New Resource</s:a></li>
 
-								<s:url id="listRes" action="resources" />
+								<s:url id="listRes" action="resources" includeParams="none"/>
 								<li><s:a href="%{listRes}">List Resources</s:a></li>
 							</ul>
 						</div>

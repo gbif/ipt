@@ -27,7 +27,12 @@ public interface CacheManager {
 	 * @return
 	 */
 	String getUploadStatus(Long resourceId);
-
+	
+	/**Returns true if a resource is busy uploading or postprocessing data
+	 * @param resourceId
+	 * @return
+	 */
+	boolean isBusy(Long resourceId);
 	/**
 	 * Submit a new upload job (incl postprocessing) to the executor service. Throws an exception in case this resource has already a scheduled or running upload job
 	 * @param maxRecords stop the upload after this maximum amount of record has been uploaded. Mainly for testing.
