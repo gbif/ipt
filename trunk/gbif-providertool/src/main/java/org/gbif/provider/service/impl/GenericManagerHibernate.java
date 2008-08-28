@@ -118,7 +118,6 @@ import org.springframework.transaction.annotation.Transactional;
 		public void remove(T obj) {
 	    	getSession().delete(obj);
 	    	flush();
-	    	getSession().evict(obj);
 		}
 
 		
