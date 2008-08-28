@@ -67,6 +67,11 @@ public class Taxon  implements BaseObject, Comparable<Taxon>, TreeNode<Taxon> {
 			this.parent = parent;
 		}
 		
+		@Transient
+		public Boolean isLeafNode() {
+			return rgt == lft + 1;
+		}
+		
 		@Column(length=128)
 		public String getRank() {
 			return rank;
@@ -126,12 +131,14 @@ public class Taxon  implements BaseObject, Comparable<Taxon>, TreeNode<Taxon> {
 		public void setCode(String code) {
 			this.code = code;
 		}
+		@org.hibernate.annotations.Index(name="tax_lft")
 		public Long getLft() {
 			return lft;
 		}
 		public void setLft(Long lft) {
 			this.lft = lft;
 		}
+		@org.hibernate.annotations.Index(name="tax_rgt")
 		public Long getRgt() {
 			return rgt;
 		}

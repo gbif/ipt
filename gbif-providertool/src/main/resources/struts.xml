@@ -199,6 +199,10 @@
             <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
         </action>
         
+        <action name="taxonTree" class="org.gbif.provider.webapp.action.TaxonTreeAction">
+            <result>/WEB-INF/pages/portal/testtree.jsp</result>
+        </action>
+        
     </package>
     
     <!-- undecorated AJAX calls needed by the portal -->
@@ -212,6 +216,12 @@
         <action name="resourceStatus" class="org.gbif.provider.webapp.action.UploadAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
+        </action>
+        <action name="taxonTreeNodes" class="org.gbif.provider.webapp.action.TaxonTreeAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
         </action>
     </package>
     

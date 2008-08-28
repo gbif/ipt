@@ -53,6 +53,11 @@ import org.gbif.provider.model.voc.RegionType;
 			public void setParent(Region parent) {
 				this.parent = parent;
 			}
+						
+			@Transient
+			public Boolean isLeafNode() {
+				return rgt == lft + 1;
+			}
 			
 			@Transient
 			public Enum getType() {
@@ -79,12 +84,14 @@ import org.gbif.provider.model.voc.RegionType;
 				this.label = label;
 			}
 			
+			@org.hibernate.annotations.Index(name="reg_lft")
 			public Long getLft() {
 				return lft;
 			}
 			public void setLft(Long lft) {
 				this.lft = lft;
 			}
+			@org.hibernate.annotations.Index(name="reg_rgt")
 			public Long getRgt() {
 				return rgt;
 			}

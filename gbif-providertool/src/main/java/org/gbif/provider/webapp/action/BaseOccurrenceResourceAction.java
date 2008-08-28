@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.context.SecurityContext;
@@ -35,7 +36,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import com.opensymphony.xwork2.Preparable;
 
 public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction{
-	// new cant be used. Just call the getter new so the parameter becomes new. Neu is german for new ;)
+	@Autowired
     protected OccResourceManager occResourceManager;
 	protected Long resource_id;
 	
@@ -58,10 +59,6 @@ public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.Base
 
 	public Long getResource_id() {
 		return resource_id;
-	}
-
-	public void setOccResourceManager(OccResourceManager occResourceManager) {
-		this.occResourceManager = occResourceManager;
 	}
 
 }

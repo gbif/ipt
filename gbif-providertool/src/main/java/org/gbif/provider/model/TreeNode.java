@@ -1,10 +1,10 @@
 package org.gbif.provider.model;
 
 
-public interface TreeNode<T extends TreeNode> {
-	public Long getId();
+public interface TreeNode<T extends TreeNode> extends BaseObject {
 	public String getLabel();
 	public T getParent();
+	public Boolean isLeafNode();
 	public Enum getType();
 	public Long getLft();
 	public Long getRgt();
