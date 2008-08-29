@@ -25,27 +25,23 @@ import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.ScrollableResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Transactional(readOnly=false)
-public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<DarwinCore, Set<Taxon>> {
+public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements RecordPostProcessor<DarwinCore, Set<Taxon>> {
 	public static final int SOURCE_TYPE_ID = 2;
-	private static final Log log = LogFactory.getLog(TaxonomyBuilder.class);
-	private static I18nLog logdb = I18nLogFactory.getLog(TaxonomyBuilder.class);
-
+	private static final Set<Rank> LOG_TYPES = new HashSet<Rank>();
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
-	@Autowired
-	private OccResourceManager occResourceManager;
-	@Autowired
-	private TaxonManager taxonManager;
-	// results
-	private Map<Integer, Taxon> dwcTaxonHashMap;
-	private Set<Taxon> terminalTaxa;
 
+	
+	protected TaxonomyBuilder(TaxonManager taxonManager) {
+		super(taxonManager);
+	}
 
 	
 	/* Run the taxonomy extraction stand alone with its own darwin core iterator.
@@ -103,106 +99,35 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		DwcTaxon dt = DwcTaxon.newDwcTaxon(dwc);
 
 		Taxon tax=null;
-		if (dwcTaxonHashMap.containsKey(dt.hashCode())){
+		if (nodes.containsKey(dt.hashCode())){
 			// taxon exists already. use persistent one for dwc
-			tax = dwcTaxonHashMap.get(dt.hashCode());
+			tax = nodes.get(dt.hashCode());
 		}else{
 			// try to "insert" the entire taxonomic hierarchy
 			Taxon parent = null;
 			for (DwcTaxon explodedTaxon : DwcTaxon.explodeTaxon(dt)){
-				if (! dwcTaxonHashMap.containsKey(explodedTaxon.hashCode())){
+				if (! nodes.containsKey(explodedTaxon.hashCode())){
 					tax = explodedTaxon.getTaxon();
 					// link into hierarchy if this is not a root taxon
 					tax.setParent(parent);
-					tax = taxonManager.save(tax);
-					dwcTaxonHashMap.put(explodedTaxon.hashCode(), tax);				
+					tax = nodeManager.save(tax);
+					nodes.put(explodedTaxon.hashCode(), tax);				
 					parent = tax; 
 				}else{
 					// use existing taxon as parent
-					parent = dwcTaxonHashMap.get(explodedTaxon.hashCode()); 
+					parent = nodes.get(explodedTaxon.hashCode()); 
 				}
 			}
 		}
-		terminalTaxa.add(tax);
+		terminalNodes.add(tax);
 		dwc.setTaxon(tax);
 		return dwc;
 	}
 
-	/* Finalizes the taxonomy extraction run via the processRecord handler.
-	 * Creates a SortedSet of DwcTaxa, calculates + persists nested list indices and resource stats
-	 * Should be called when the external iterator for the DarwinCore handler is finished.
-	 * (non-Javadoc)
-	 * @see org.gbif.provider.upload.RecordPostProcessor#close()
-	 */
-	public Set<Taxon> close(){
-		// convert to sorted set
-		SortedSet<Taxon> taxonomy = new TreeSet<Taxon>(dwcTaxonHashMap.values());
-		
-		// assign nested set indices and save taxonomic hierarchy
-		calcNestedSetIndices(taxonomy);
-		
-		// persist sorted taxa starting with parentless root taxa
-		for (Taxon t : taxonomy){
-			taxonManager.save(t);
-		}
-
-		// persist taxon statistics in resource
-		setStats(taxonomy);
-		occResourceManager.save(getResource());
-		
-		return taxonomy;
-	}
 	
-	private void calcNestedSetIndices(SortedSet<Taxon> taxonomy){
-		log.info(String.format("Calculating nested set indices for taxonomy with %s taxa", taxonomy.size()));
-		Stack<Taxon> parentStack = new Stack<Taxon>();
-		Long idx = 0l;
-		for (Taxon t : taxonomy){
-			if (t.getDwcRank() == null){
-				// dont do nothing special
-			}
-			else if (t.getDwcRank().equals(Rank.Family)){
-				log.debug("process family "+t.getFullname());
-			}
-			else if (t.getDwcRank().equals(Rank.Order)){
-				log.debug("process order "+t.getFullname());
-			}
-			else if (t.getDwcRank().equals(Rank.Class)){
-				log.debug("process class "+t.getFullname());
-			}
-			else if (t.getDwcRank().equals(Rank.Kingdom)){
-				log.debug("process kingdom "+t.getFullname());
-			}
-			// process right values for taxa on stack. But only ...
-			// if stack has parents at all and if new taxon is either 
-			// a) a root taxon (parent==null)
-			// b) or the last stack taxon is not the parent of this taxon
-			while (parentStack.size()>0 && (t.getParent() == null || !t.getParent().equals(parentStack.peek()))){
-				// last taxon on the stack is not the parent. 
-				// Get last taxon from stack, set rgt index and compare again
-				Taxon nonParent = parentStack.pop();
-				nonParent.setRgt(idx++);				
-				taxonManager.save(nonParent);
-			}
-			// the last taxon on stack is the parent or stack is empty. 
-			// Next taxon might be a child, so dont set rgt index yet, but put onto stack
-			t.setLft(idx++);
-			parentStack.push(t);
-			
-			// flush to database from time to time
-			if (idx % 2000 == 0){
-				darwinCoreManager.flush();
-			}
-			
-		}
-		// finally empty the stack, assign rgt value and persist
-		for (Taxon t : parentStack){
-			t.setRgt(idx++);				
-			taxonManager.save(t);
-		}
-	}
 
-	private void setStats(SortedSet<Taxon> taxonomy) {
+	@Override
+	protected void setStats() {
 		// init stats map		
 		Map<Rank, Integer> stats = new HashMap<Rank, Integer>();
 		stats.put(null, 0);
@@ -210,17 +135,17 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 			stats.put(r, 0);
 		}
 		// aggregate stats
-		for (Taxon t : taxonomy){
+		for (Taxon t : nodes.values()){
 			stats.put(t.getDwcRank(), stats.get(t.getDwcRank())+1);
 		}
 		// debug only
 		for (Rank r : Rank.ALL_RANKS){
 			log.info(String.format("Found %s %s taxa in resource %s", stats.get(r), r, getResourceId()));
 		}
-		log.info(String.format("Found %s distinct taxa in resource %s", taxonomy.size(), getResourceId()));
+		log.info(String.format("Found %s distinct taxa in resource %s", nodes.size(), getResourceId()));
 		// store stats
-		getResource().setNumTaxa(taxonomy.size());
-		getResource().setNumTerminalTaxa(terminalTaxa.size());
+		getResource().setNumTaxa(nodes.size());
+		getResource().setNumTerminalTaxa(terminalNodes.size());
 		getResource().setNumSpecies(stats.get(Rank.Species));
 		getResource().setNumGenera(stats.get(Rank.Genus));
 		getResource().setNumFamilies(stats.get(Rank.Family));
@@ -230,17 +155,15 @@ public class TaxonomyBuilder extends TaskBase implements RecordPostProcessor<Dar
 		getResource().setNumKingdoms(stats.get(Rank.Kingdom));
 	}
 
-	public void prepare() {
-		dwcTaxonHashMap = new HashMap<Integer, Taxon>();
-		terminalTaxa = new HashSet<Taxon>();
 
-		log.info("Removing previously existing taxonomy from resource "+getResourceId());
-		taxonManager.deleteAll(getResource());		
+
+	@Override
+	boolean logType(Enum typ) {
+		if (LOG_TYPES.contains(typ)){
+			return true;
+		}
+		return false;
 	}
 
-
-	public String status() {
-		return String.format("%s taxa", dwcTaxonHashMap.size());
-	}
 
 }

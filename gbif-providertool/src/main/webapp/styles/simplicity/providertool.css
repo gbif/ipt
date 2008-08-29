@@ -9,7 +9,7 @@ h2 {
 table.lefthead td {
 	padding-left: 20px;
 }
-table.lefthead th, td {
+table.lefthead th, table.lefthead td {
 	padding-bottom: 5px;
 }
 
@@ -94,7 +94,8 @@ ul.minimenu li{
 
 
 #taxnav, #locnav {
-	margin-top: 50px;
+	margin-top: 20px;
+	float: left;
 }
 
 #sub div label {

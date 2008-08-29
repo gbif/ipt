@@ -76,7 +76,7 @@
 	<s:form id="regionClassForm">
 		<s:select id="regionClass" name="region" list="regionClasses" value="3" theme="simple"/>
 	</s:form>
-	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax"/>
+	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax" includeParams="get"/>
 	<div id="imgByRegion">
 		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true">
 			<s:param name="type" value="3"/>
@@ -107,7 +107,7 @@ $('regionClass').observe('change', updateByRegion);
 	<s:form id="rankForm">
 		<s:select id="rank" list="ranks" value="rank" theme="simple"/>
 	</s:form>
-	<s:url id="imgByTaxonUrl" action="occResourceStatsByTaxon" namespace="/ajax"/>
+	<s:url id="imgByTaxonUrl" action="occResourceStatsByTaxon" namespace="/ajax" includeParams="get"/>
 	<div id="imgByTaxon">
 		<s:action name="occResourceStatsByTaxon" namespace="/ajax" executeResult="true"/>
 	</div>

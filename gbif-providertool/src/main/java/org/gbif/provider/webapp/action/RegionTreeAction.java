@@ -3,15 +3,15 @@ package org.gbif.provider.webapp.action;
 
 import java.util.List;
 
-import org.gbif.provider.model.Taxon;
-import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.model.Region;
+import org.gbif.provider.service.RegionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TaxonTreeAction extends BaseOccurrenceResourceAction {
+public class RegionTreeAction extends BaseOccurrenceResourceAction {
 	@Autowired
-	private TaxonManager taxonManager;
+	private RegionManager regionManager;
     private Long id;
-    private List<Taxon> nodes;
+    private List<Region> nodes;
 	 
     public String execute(){
     	if (id!=null){
@@ -22,12 +22,12 @@ public class TaxonTreeAction extends BaseOccurrenceResourceAction {
     }
     
     public String subNodes(){
-		nodes = taxonManager.getChildren(resource_id, id);
+		nodes = regionManager.getChildren(resource_id, id);
     	return SUCCESS;
     }
     
     public String rootNodes(){
-		nodes = taxonManager.getRoots(resource_id);
+		nodes = regionManager.getRoots(resource_id);
     	return SUCCESS;
     }
     
@@ -41,7 +41,7 @@ public class TaxonTreeAction extends BaseOccurrenceResourceAction {
 		this.id = id;
 	}
 
-	public List<Taxon> getNodes() {
+	public List<Region> getNodes() {
 		return nodes;
 	}
     
