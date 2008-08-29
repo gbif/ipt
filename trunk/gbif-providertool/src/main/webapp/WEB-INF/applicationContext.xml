@@ -114,8 +114,12 @@
         <constructor-arg value="2"/>
     </bean>
     <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.upload.OccUploadTask" />
-    <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.upload.TaxonomyBuilder" />
-    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.upload.GeographyBuilder"/>
+    <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.upload.TaxonomyBuilder">
+        <constructor-arg ref="taxonManager"/>
+    </bean>
+    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.upload.GeographyBuilder">
+        <constructor-arg ref="regionManager"/>
+    </bean>
 
     <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager">
         <property name="uploadExecutor" ref="uploadExecutor"/>

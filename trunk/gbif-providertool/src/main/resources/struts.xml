@@ -99,22 +99,6 @@
         </global-exception-mappings>
 
 
-        <action name="test" class="org.gbif.provider.webapp.action.testAction">
-            <result type="redirect-action">
-                <param name="actionName">test2</param>
-                <param name="parse">true</param>
-                <param name="r5">${#parameters.rid}</param>
-            </result>
-        </action>
-        <action name="test2" class="org.gbif.provider.webapp.action.testAction">
-            <result>/WEB-INF/pages/missing.jsp</result>
-            <result name="resource-busy">/WEB-INF/pages/missing.jsp</result>
-        </action>
-        
-        
-        
-        
-        
         <action name="signup" class="signupAction">
             <result name="cancel" type="redirect">/</result>
             <result name="input">/WEB-INF/pages/signup.jsp</result>
@@ -199,10 +183,6 @@
             <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
         </action>
         
-        <action name="taxonTree" class="org.gbif.provider.webapp.action.TaxonTreeAction">
-            <result>/WEB-INF/pages/portal/testtree.jsp</result>
-        </action>
-        
     </package>
     
     <!-- undecorated AJAX calls needed by the portal -->
@@ -218,6 +198,12 @@
             <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
         </action>
         <action name="taxonTreeNodes" class="org.gbif.provider.webapp.action.TaxonTreeAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionTreeNodes" class="org.gbif.provider.webapp.action.RegionTreeAction">
             <result type="freemarker">
                 <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
                 <param name="contentType">text/xml</param>

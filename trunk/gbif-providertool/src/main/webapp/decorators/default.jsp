@@ -2,6 +2,13 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <%@ include file="/common/taglibs.jsp"%>
+
+<c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
+<c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
+<s:url id="resourceLink" action="resource" includeParams="none">
+	<s:param name="resource_id" value="resource_id" />
+</s:url>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <%@ include file="/common/meta.jsp" %>
@@ -14,6 +21,12 @@
         <script type="text/javascript" src="<c:url value='/scripts/scriptaculous.js'/>"></script>
         <script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>
 
+	    <c:if test='${currentSubMenu == "search"}'>
+			<link rel="STYLESHEET" type="text/css" href="/scripts/dhtmlxtree/dhtmlxtree.css">
+			<script  src="/scripts/dhtmlxtree/dhtmlxcommon.js"></script>
+			<script  src="/scripts/dhtmlxtree/dhtmlxtree.js"></script>
+		</c:if>
+				
         <decorator:head/>
     </head>
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/><decorator:getProperty property="body.onload" writeEntireProperty="true"/> >
@@ -31,11 +44,11 @@
                 <decorator:body/>
             </div><!-- end main -->
 
-            <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
-            <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
-
             <div id="sub">
-                <h1 id="resourceName"><decorator:getProperty property="meta.resource"/></h1>
+                <s:a href="%{resourceLink}">
+                	<h1 id="resourceName"><decorator:getProperty property="meta.resource"/></h1>
+                </s:a>
+
 			    <c:choose>
 			        <c:when test='${currentSubMenu == "manage"}'>
 						<div id="actions">
@@ -50,6 +63,18 @@
 								<li><s:a href="%{listRes}">List Resources</s:a></li>
 							</ul>
 						</div>
+						
+						<div id="recentlyViewedResources">
+							<label>Recent Resources</label>
+							<ul class="plain">
+								<s:iterator value="#session.recentResources" status="resstatus">
+									<s:url id="recentLink" action="resource" includeParams="none">
+										<s:param name="resource_id" value="value" />
+									</s:url>
+									<li><s:a href="%{recentLink}"><s:property value="label"/></s:a></li>
+								</s:iterator>
+							</ul>
+						</div>
 			        </c:when>
 			        
 			        <c:when test='${currentSubMenu == "search"}'>
@@ -62,20 +87,12 @@
 		
 						<div id="taxnav">
 							<label>Navigate Taxonomy</label>
-							<pre>
-Plantae
-  Asteraceae
-    Hieracium
-							</pre>
+               				 <%@ include file="/common/taxontree.jsp" %>
 						</div>
 		
 						<div id="locnav">
 							<label>Navigate Geography</label>
-							<pre>
-Europe
-  Great Britain
-    Cornwales
-							</pre>
+               				 <%@ include file="/common/regiontree.jsp" %>
 						</div>
 					</c:when>
 					
@@ -84,18 +101,6 @@ Europe
 					</c:otherwise>
 			    </c:choose>
 			    
-				<div id="recentlyViewedResources">
-					<label>Recent Resources</label>
-					<ul class="plain">
-						<s:iterator value="#session.recentResources" status="resstatus">
-							<s:url id="resLink" action="resource" includeParams="none">
-								<s:param name="resource_id" value="value" />
-							</s:url>
-							<li><s:a href="%{resLink}"><s:property value="label"/></s:a></li>
-						</s:iterator>
-					</ul>
-				</div>
-
             </div><!-- end sub -->
 
             <div id="nav">

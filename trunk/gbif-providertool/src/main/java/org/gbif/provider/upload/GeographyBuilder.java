@@ -17,6 +17,7 @@ import org.gbif.provider.model.dto.DwcRegion;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.RegionManager;
+import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.ScrollableResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,21 +31,22 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional(readOnly=false)
-public class GeographyBuilder extends TaskBase implements RecordPostProcessor<DarwinCore, Set<Region>>  {
+public class GeographyBuilder extends NestedSetBuilderBase<Region> implements RecordPostProcessor<DarwinCore, Set<Region>>  {
 	public static final int SOURCE_TYPE_ID = 3;
-
+	private static final Set<RegionType> LOG_TYPES = new HashSet<RegionType>();
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
-	@Autowired
-	private RegionManager regionManager;
 	// results
 	// remember distinct number of taxa (=set below) per country (=map key below) too
 	private Map<String, Set<Taxon>> taxaByCountry;
-	private SortedMap<Integer, Region> regions;
-	private Set<Region> terminalRegions;
 
 	
-	public SortedSet<Region> call() throws Exception {
+	public GeographyBuilder(RegionManager regionManager) {
+		super(regionManager);
+	}
+
+	
+	public Set<Region> call() throws Exception {
 		
 		initLogging(SOURCE_TYPE_ID);
 	
@@ -62,15 +64,7 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 		return close();
 	}
 
-	public SortedSet<Region> close() {
-		calcStats();
-		occResourceManager.save(getResource());
-		
-		// convert to sorted set of Regions
-		SortedSet<Region> hierarchy = new TreeSet<Region>(regions.values());
-		return hierarchy;
-		
-	}
+
 
 	public DarwinCore processRecord(DarwinCore dwc) {
 		// update taxa by country
@@ -85,27 +79,27 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 		// extract regions
 		DwcRegion dwcReg = DwcRegion.newDwcRegion(dwc);
 		Region reg = null;
-		if (regions.containsKey(dwcReg.hashCode())){
+		if (nodes.containsKey(dwcReg.hashCode())){
 			// region exists already. use persistent one for dwc
-			reg = regions.get(dwcReg.hashCode());				
+			reg = nodes.get(dwcReg.hashCode());				
 		}else{
 			// try to "insert" the entire taxonomic hierarchy
 			Region parent = null;
 			for (DwcRegion explodedRegion : DwcRegion.explodeRegions(dwcReg)){
-				if (! regions.containsKey(explodedRegion.hashCode())){
+				if (! nodes.containsKey(explodedRegion.hashCode())){
 					reg = explodedRegion.getRegion();
 					// link into hierarchy if this is not a root region, e.g. continent
 					reg.setParent(parent);
-					reg = regionManager.save(reg);
-					regions.put(explodedRegion.hashCode(), reg);				
+					reg = nodeManager.save(reg);
+					nodes.put(explodedRegion.hashCode(), reg);				
 					parent = reg; 
 				}else{
 					// use existing taxon as parent
-					parent = regions.get(explodedRegion.hashCode()); 
+					parent = nodes.get(explodedRegion.hashCode()); 
 				}
 			}
 		}
-		terminalRegions.add(reg);
+		terminalNodes.add(reg);
 		dwc.setRegion(reg);
 		return dwc;
 	}
@@ -113,7 +107,8 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 
 	
 		
-	private void calcStats() {
+	@Override
+	protected void setStats() {
 		// init stats map		
 		Map<RegionType, Integer> stats = new HashMap<RegionType, Integer>();
 		stats.put(null, 0);
@@ -121,13 +116,13 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 			stats.put(r, 0);
 		}
 		// aggregate stats
-		for (Region dt : regions.values()){
+		for (Region dt : nodes.values()){
 			stats.put(dt.getType(), stats.get(dt.getType())+1);
 		}
 		// store stats in resource
 		getResource().setNumCountries(stats.get(RegionType.Country));
-		getResource().setNumRegions(regions.size());
-		getResource().setNumTerminalRegions(terminalRegions.size());
+		getResource().setNumRegions(nodes.size());
+		getResource().setNumTerminalRegions(terminalNodes.size());
 		// debug only
 		for (RegionType r : RegionType.ALL_REGIONS){
 			log.info(String.format("Found %s %s regions in resource %s", stats.get(r), r, getResourceId()));
@@ -139,20 +134,21 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 			numTaxaByCountry.put(country, Long.valueOf(taxaByCountry.get(country).size()));
 		}
 		getResource().setNumTaxaByCountry(numTaxaByCountry);
-		log.info(String.format("Extracted %s geographic distinct regions from resource %s", regions.size(), getResourceId()));		
+		log.info(String.format("Extracted %s geographic distinct regions from resource %s", nodes.size(), getResourceId()));		
 	}
 
 
-	public String status() {
-		return String.format("%s regions", regions.size());
-	}
-	
+	@Override
 	public void prepare() {
 		taxaByCountry = new HashMap<String, Set<Taxon>>();
-		terminalRegions = new HashSet<Region>();
-		regions = new TreeMap<Integer, Region>();
-		
-		log.info("Removing previously existing geographic regions from resource "+getResourceId());
-		regionManager.deleteAll(getResource());		
+		super.prepare();		
+	}
+
+	@Override
+	boolean logType(Enum typ) {
+		if (LOG_TYPES.contains(typ)){
+			return true;
+		}
+		return false;
 	}
 }
