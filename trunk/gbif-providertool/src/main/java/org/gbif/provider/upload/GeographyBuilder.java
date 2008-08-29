@@ -122,7 +122,7 @@ public class GeographyBuilder extends TaskBase implements RecordPostProcessor<Da
 		}
 		// aggregate stats
 		for (Region dt : regions.values()){
-			stats.put(dt.getRank(), stats.get(dt.getRank())+1);
+			stats.put(dt.getType(), stats.get(dt.getType())+1);
 		}
 		// store stats in resource
 		getResource().setNumCountries(stats.get(RegionType.Country));

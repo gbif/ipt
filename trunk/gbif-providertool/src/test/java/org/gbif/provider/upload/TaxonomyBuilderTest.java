@@ -2,6 +2,8 @@ package org.gbif.provider.upload;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,8 +61,10 @@ public class TaxonomyBuilderTest extends ContextAwareTestBase {
 		Future<Set<Taxon>> f = executor.submit(taxonomyBuilder);
 		try {
 			Set<Taxon> taxa = f.get();
-			log.debug(String.format("%s taxa found in test resource", taxa.size()));
-			log.debug(taxa);
+			log.debug(String.format("%s taxa found in test resource. Taxonomically sorted list looks like this:", taxa.size()));
+			List<Taxon> sortedTaxa = new ArrayList<Taxon>(taxa);
+			Collections.sort(sortedTaxa);
+			log.debug(sortedTaxa);
 			// assertions based on PonTaurus dataset...
 			assertTrue(taxa.size() > 850);
 //			assertTrue(taxa.size() == 857);

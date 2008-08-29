@@ -13,7 +13,7 @@ import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.Session;
 
-public class GenericTreeNodeManagerHibernate<T extends TreeNode<T>> extends GenericManagerHibernate<T> implements TreeNodeManager<T> {
+public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends GenericManagerHibernate<T> implements TreeNodeManager<T> {
 
 	public GenericTreeNodeManagerHibernate(final Class<T> persistentClass) {
 	        super(persistentClass);

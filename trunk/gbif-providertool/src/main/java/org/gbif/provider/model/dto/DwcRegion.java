@@ -43,35 +43,35 @@ public class DwcRegion implements Comparable<DwcRegion>{
 	
 	private void setRankAndLabel() {
 		if (locality != null){
-			this.region.setRank(RegionType.Locality);
+			this.region.setType(RegionType.Locality);
 			this.region.setLabel(locality);
 		}
 		else if (county != null){
-			this.region.setRank(RegionType.County);
+			this.region.setType(RegionType.County);
 			this.region.setLabel(county);
 		}
 		else if (stateProvince != null){
-			this.region.setRank(RegionType.State);
+			this.region.setType(RegionType.State);
 			this.region.setLabel(stateProvince);
 		}
 		else if (country != null){
-			this.region.setRank(RegionType.Country);
+			this.region.setType(RegionType.Country);
 			this.region.setLabel(country);
 		}
 		else if (island != null){
-			this.region.setRank(RegionType.Island);
+			this.region.setType(RegionType.Island);
 			this.region.setLabel(island);
 		}
 		else if (islandGroup != null){
-			this.region.setRank(RegionType.IslandGroup);
+			this.region.setType(RegionType.IslandGroup);
 			this.region.setLabel(islandGroup);
 		}
 		else if (waterBody != null){
-			this.region.setRank(RegionType.Waterbody);
+			this.region.setType(RegionType.Waterbody);
 			this.region.setLabel(waterBody);
 		}
 		else if (continent != null){
-			this.region.setRank(RegionType.Continent);
+			this.region.setType(RegionType.Continent);
 			this.region.setLabel(continent);
 		}
 	}
@@ -84,7 +84,7 @@ public class DwcRegion implements Comparable<DwcRegion>{
 	 * @return
 	 */
 	public static DwcRegion newDwcRegion(DwcRegion orig, RegionType rank){
-		if (orig.getRank() != null && rank.compareTo(orig.getRank())>0){
+		if (orig.getType() != null && rank.compareTo(orig.getType())>0){
 			throw new IllegalArgumentException("Can only clone regions of higher or same rank than the original region");
 		}
 		DwcRegion newRegion = new DwcRegion();
@@ -279,8 +279,8 @@ public class DwcRegion implements Comparable<DwcRegion>{
 		return region.getParent();
 	}
 
-	public RegionType getRank() {
-		return region.getRank();
+	public RegionType getType() {
+		return region.getType();
 	}
 
 	public DatasourceBasedResource getResource() {
@@ -308,7 +308,7 @@ public class DwcRegion implements Comparable<DwcRegion>{
 	}
 
 	public void setRank(RegionType rank) {
-		region.setRank(rank);
+		region.setType(rank);
 	}
 
 	public void setResource(DatasourceBasedResource resource) {
