@@ -14,7 +14,7 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.manage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 
 import com.opensymphony.xwork2.Preparable;
 

@@ -1,4 +1,4 @@
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.manage;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 
 import com.opensymphony.xwork2.Preparable;
 

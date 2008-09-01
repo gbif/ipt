@@ -48,6 +48,11 @@ import org.gbif.provider.model.voc.RegionType;
 			return super.getLabel();
 		}
 
+		@Override
+		public RegionType getType() {
+			return super.getType();
+		}
+
 		@org.hibernate.annotations.Index(name="reg_lft")
 		@Override
 		public Long getLft() {

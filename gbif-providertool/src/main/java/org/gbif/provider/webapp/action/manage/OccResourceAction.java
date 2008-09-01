@@ -14,7 +14,7 @@
 
  ***************************************************************************/
 
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.manage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +32,7 @@ import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 
 import com.opensymphony.xwork2.Preparable;
 

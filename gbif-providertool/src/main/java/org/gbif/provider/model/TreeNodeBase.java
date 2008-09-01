@@ -113,13 +113,14 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		List<String> infos = new ArrayList<String>();
-		if (this.getParent() != null){
-			infos.add(this.getParent().getLabel());
+		String infos = "";
+		if (this.type != null && this.getParent() != null){
+			infos = String.format("%s in %s", this.type.toString(), getParent().getLabel());
+		}else if (this.type != null){
+			infos = String.format("%s", this.type.toString());
+		}else if (this.getParent() != null){
+			infos = String.format("%s", getParent().getLabel());
 		}
-		if (this.type != null){
-			infos.add(this.type.toString());
-		}
-		return String.format("%s (%s)", this.getLabel(), StringUtils.join(infos, ","));
+		return String.format("%s (%s)", this.getLabel(), infos);
 	}
 }

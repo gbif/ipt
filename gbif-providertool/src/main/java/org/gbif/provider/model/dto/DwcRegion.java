@@ -118,7 +118,7 @@ public class DwcRegion implements Comparable<DwcRegion>{
 		}
 		if (rank.compareTo(RegionType.County)>=0){
 			newRegion.setCounty(orig.getCounty());
-			newRegion.region.setLabel(newRegion.country);
+			newRegion.region.setLabel(newRegion.county);
 		}
 		if (rank.compareTo(RegionType.Locality)>=0){
 			newRegion.setLocality(orig.getLocality());

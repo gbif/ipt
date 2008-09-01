@@ -9,7 +9,7 @@
 	</s:form>
 </s:if>
 <s:else>
-	<s:form action="resource" method="get">
+	<s:form action="resource" method="get" namespace="/">
 		<s:hidden key="resource_id"/>
 		<s:submit cssClass="button" key="button.done"/>
 	</s:form>

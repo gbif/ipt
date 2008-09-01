@@ -1,4 +1,4 @@
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.manage;
 
 import java.io.File;
 import java.io.FileInputStream;
