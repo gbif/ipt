@@ -48,7 +48,7 @@
   	  <s:push value="occResource.getCoreMapping()">
 		<li>
 			<s:property value="extension.name"/>
-			<s:url id="mappingUrl" action="editMapping">
+			<s:url id="mappingUrl" action="editMapping" includeParams="get">
 				<s:param name="mapping_id" value="id"/>
 			</s:url>
 			<s:a href="%{mappingUrl}"><s:property value="propertyMappings.size"/> concepts</s:a>
@@ -61,7 +61,7 @@
         <s:submit action="editMapping" method="" cssClass="button" key="button.add" theme="simple"/>
   	  </c:if>
  	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
-		<s:url id="mappingUrl" action="editMapping">
+		<s:url id="mappingUrl" action="editMapping" includeParams="get">
 			<s:param name="mapping_id" value="id"/>
 		</s:url>
 		<ul class="subform">
@@ -92,7 +92,7 @@
 		  </s:iterator>
 		<s:if test="%{occResource.lastUpload}">
 			<s:label key="resource.lastUpload" value="%{occResource.lastUpload.executionDate}"/>
-			<s:url id="logsUrl" action="logEvents" namespace="/admin">
+			<s:url id="logsUrl" action="logEvents" namespace="/admin" includeParams="get">
 				<s:param name="sourceId" value="occResource.lastUpload.jobSourceId" />
 				<s:param name="sourceType" value="occResource.lastUpload.jobSourceType" />
 			</s:url>

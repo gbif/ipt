@@ -93,7 +93,7 @@ public class CacheManagerImpl implements CacheManager{
 		return new HashSet<Long>();
 	}
 	public boolean isBusy(Long resourceId){
-		if (currentUploads().contains(resourceId) || resourceId==2l){
+		if (currentUploads().contains(resourceId)){
 			return true;
 		}		
 		return false;

@@ -1,10 +1,11 @@
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.portal;
 
 
 import java.util.List;
 
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaxonTreeAction extends BaseOccurrenceResourceAction {

@@ -193,17 +193,17 @@
             <result name="map">/WEB-INF/pages/ajax/chartimg.jsp</result>
             <result name="chart">/WEB-INF/pages/ajax/chartimg.jsp</result>
         </action>
-        <action name="resourceStatus" class="org.gbif.provider.webapp.action.UploadAction" method="status">
+        <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
         </action>
-        <action name="taxonTreeNodes" class="org.gbif.provider.webapp.action.TaxonTreeAction">
+        <action name="taxonTreeNodes" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
             <result type="freemarker">
                 <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
         </action>
-        <action name="regionTreeNodes" class="org.gbif.provider.webapp.action.RegionTreeAction">
+        <action name="regionTreeNodes" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
             <result type="freemarker">
                 <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
                 <param name="contentType">text/xml</param>
@@ -230,24 +230,24 @@
         </global-results>
         
         
-        <action name="resources" class="org.gbif.provider.webapp.action.OccResourceAction" method="list">
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="list">
             <result>/WEB-INF/pages/manage/occ/occResourceList.jsp</result>
         </action>
         
-        <action name="resource" class="org.gbif.provider.webapp.action.OccResourceAction">
+        <action name="resource" class="org.gbif.provider.webapp.action.manage.OccResourceAction">
             <result>/WEB-INF/pages/manage/occ/occResourceOverview.jsp</result>
         </action>
-        <action name="addResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
+        <action name="addResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
         </action>
-        <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
+        <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
         </action>
-        <action name="editResourceConnection" class="org.gbif.provider.webapp.action.OccResourceAction" method="edit">
+        <action name="editResourceConnection" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/resourceConnectionForm.jsp</result>
         </action>
         
-        <action name="saveResource" class="org.gbif.provider.webapp.action.OccResourceAction" method="save">
+        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="save">
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${occResource.id}</param>
@@ -259,25 +259,17 @@
             <result name="delete" type="redirect-action">resources</result>
         </action>
 
-        <action name="editMapping" class="org.gbif.provider.webapp.action.ViewMappingAction" method="edit">
+        <action name="editMapping" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
         </action>
-        <action name="uploadMappingSource" class="org.gbif.provider.webapp.action.SourceFileUploadAction" method="upload">
-            <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
-            <result name="cancel" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-        </action>
-        <action name="saveMappingSource" class="org.gbif.provider.webapp.action.ViewMappingAction" method="saveSource">
+        <action name="uploadMappingSource" class="org.gbif.provider.webapp.action.manage.SourceFileUploadAction" method="upload">
             <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-
-        <action name="saveMappingProperties" class="org.gbif.provider.webapp.action.ViewMappingAction" method="saveProperties">
+        <action name="saveMappingSource" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="saveSource">
             <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
@@ -285,25 +277,33 @@
             </result>
         </action>
 
-        <action name="upload" class="org.gbif.provider.webapp.action.UploadAction" method="upload">
+        <action name="saveMappingProperties" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="saveProperties">
+            <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+
+        <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-        <action name="cancelUpload" class="org.gbif.provider.webapp.action.UploadAction" method="cancel">
+        <action name="cancelUpload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="cancel">
             <result type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-        <action name="process" class="org.gbif.provider.webapp.action.UploadAction" method="process">
+        <action name="process" class="org.gbif.provider.webapp.action.manage.UploadAction" method="process">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-        <action name="clear" class="org.gbif.provider.webapp.action.UploadAction" method="clear">
+        <action name="clear" class="org.gbif.provider.webapp.action.manage.UploadAction" method="clear">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-        <action name="status" class="org.gbif.provider.webapp.action.UploadAction" method="status">
+        <action name="status" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
             <result name="resource-ready" type="redirect-action">
                 <param name="actionName">resource</param>
@@ -311,7 +311,7 @@
             </result>
         </action>
 
-        <action name="history" class="org.gbif.provider.webapp.action.UploadAction" method="history">
+        <action name="history" class="org.gbif.provider.webapp.action.manage.UploadAction" method="history">
             <result>/WEB-INF/pages/manage/occ/uploadHistory.jsp</result>
         </action>
         
@@ -351,7 +351,7 @@
             <result>/WEB-INF/pages/admin/flushCache.jsp</result>
         </action>
 
-        <action name="activeDatasources" class="org.gbif.provider.webapp.action.DatasourceRegistryAction" method="list">
+        <action name="activeDatasources" class="org.gbif.provider.webapp.action.manage.DatasourceRegistryAction" method="list">
             <result>/WEB-INF/pages/admin/datasourceList.jsp</result>
         </action>
         
@@ -380,11 +380,11 @@
         
 
         <!-- EXTENSIONS -->
-        <action name="extension" class="org.gbif.provider.webapp.action.ExtensionAction">
+        <action name="extension" class="org.gbif.provider.webapp.action.manage.ExtensionAction">
             <result>/WEB-INF/pages/admin/extensionDetail.jsp</result>
         </action>
         
-        <action name="extensions" class="org.gbif.provider.webapp.action.ExtensionAction" method="list">
+        <action name="extensions" class="org.gbif.provider.webapp.action.manage.ExtensionAction" method="list">
             <result>/WEB-INF/pages/admin/extensionList.jsp</result>
         </action>
         

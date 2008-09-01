@@ -14,7 +14,7 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.manage;
 
 import java.util.List;
 
