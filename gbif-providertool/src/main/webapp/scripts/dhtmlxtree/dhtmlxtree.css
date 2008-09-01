@@ -11,8 +11,6 @@
 .dragAndDropRow{ }
 .standartTreeRow_lor{	text-decoration:underline; font-size : 12px; -moz-user-select: none; }
 .selectedTreeRow_lor{   text-decoration:underline; font-size : 12px;  -moz-user-select: none; }
-
-.standartTreeImage{ width:18px; height:18px;  overflow:hidden; border:0; padding:0; margin:0;font-size:1px; }
 .hiddenRow { width:1px;   overflow:hidden;  }
 .dragSpanDiv,.dragSpanDiv td{ 	font-size : 12px; 	background-color:white; }
 
