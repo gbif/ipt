@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="region.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
-    <meta name="submenu" content="search"/>
+    <meta name="submenu" content="resource"/>
 </head>
 	
 

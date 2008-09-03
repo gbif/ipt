@@ -1,32 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <%@ include file="/common/taglibs.jsp"%>
-
-<c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
-<c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 <s:url id="resourceLink" action="resource" includeParams="none">
 	<s:param name="resource_id" value="resource_id" />
 </s:url>
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <%@ include file="/common/meta.jsp" %>
-        <title><decorator:title/> | <s:text name="webapp.name"/></title>
-
-        <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/theme.css'/>" />
-        <link rel="stylesheet" type="text/css" media="print" href="<c:url value='/styles/${appConfig["csstheme"]}/print.css'/>" />
-
+        <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/layout-navtop-subright.css'/>" />
         <script type="text/javascript" src="<c:url value='/scripts/prototype.js'/>"></script>
         <script type="text/javascript" src="<c:url value='/scripts/scriptaculous.js'/>"></script>
-        <script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>
-
-	    <c:if test='${currentSubMenu == "search"}'>
-			<link rel="STYLESHEET" type="text/css" href="/scripts/dhtmlxtree/dhtmlxtree.css">
-			<script  src="/scripts/dhtmlxtree/dhtmlxcommon.js"></script>
-			<script  src="/scripts/dhtmlxtree/dhtmlxtree.js"></script>
-		</c:if>
-				
+        <script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>				
         <decorator:head/>
     </head>
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/><decorator:getProperty property="body.onload" writeEntireProperty="true"/> >
@@ -46,7 +30,7 @@
 
             <div id="sub">
                 <s:a href="%{resourceLink}">
-                	<h1 id="resourceName"><decorator:getProperty property="meta.resource"/></h1>
+                	<h1 id="resourceName">${currentResourceTitle}</h1>
                 </s:a>
 
 			    <c:choose>

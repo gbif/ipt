@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
-    <meta name="submenu" content="search"/>
+    <meta name="submenu" content="resource"/>
 	<s:head theme="ajax" debug="false"/>
 </head>
 	
@@ -20,39 +20,92 @@
 			</li>
 		</ul>
 		<div id="services" style="display:none">
-			<s:label key="occResourceOverview.tabfile" value="%{occResource.getDumpArchiveUrl()}"/>
-			<s:label key="occResourceOverview.tapir" value="%{occResource.getTapirEndpoint()}"/>
-			<s:label key="occResourceOverview.wfs" value="%{occResource.getWfsEndpoint()}"/>
+			<table class="lefthead">
+				<tr>
+					<th><s:text name="occResourceOverview.tabfile"/></th>
+					<td><s:property value="%{occResource.getDumpArchiveUrl()}"/></td>
+				</tr>
+				<tr>
+					<th><s:text name="occResourceOverview.tapir"/></th>
+					<td><s:property value="%{occResource.getTapirEndpoint()}"/></td>
+				</tr>
+				<tr>
+					<th><s:text name="occResourceOverview.wfs"/></th>
+					<td><s:property value="%{occResource.getWfsEndpoint()}"/></td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </s:form>
 
 
 <br class="clearfix" />
+<s:push value="occResource">
 
-
-<div id="loc-stats" class="stats">
+<div id="loc-stats" class="stats stat-table">
 	<label><s:text name="stats.geoStats"/></label>
-	<ul class="plain">
-		<li><s:property value="occResource.recWithCoordinates"/> with coordinates</li> 
-		<li><s:property value="occResource.recWithCountry"/> with country information</li> 
-		<li><s:property value="occResource.recWithAltitude"/> with altitude information</li>
-		<li><s:property value="occResource.recWithDate"/> with collection date</li>
-		<li><s:property value="occResource.numCountries"/> distinct countries</li>
-		<li><s:property value="occResource.numRegions"/> distinct regions</li>
-	</ul>
+	<table class="lefthead">
+		<tr>
+			<td><s:text name="occResource.recWithCoordinates"/></td>
+			<td><s:property value="recWithCoordinates"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.recWithCountry"/></td>
+			<td><s:property value="recWithCountry"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.recWithAltitude"/></td>
+			<td><s:property value="recWithAltitude"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.numCountries"/></td>
+			<td><s:property value="numCountries"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.numRegions"/></td>
+			<td><s:property value="numRegions"/></td>
+		</tr>
+	</table>
 </div>
-<div id="tax-stats" class="stats">
+
+<div id="tax-stats" class="stats stat-table">
 	<label><s:text name="stats.taxStats"/></label>
-	<ul class="plain">
-		<li><s:property value="occResource.numTaxa"/> distinct taxa</li> 
-		<li><s:property value="occResource.numTerminalTaxa"/> terminal taxa</li> 
-		<li><s:property value="occResource.numSpecies"/> species</li>
-		<li><s:property value="occResource.numGenera"/> genera</li> 
-		<li><s:property value="occResource.numFamilies"/> families</li> 
-		<li><s:property value="occResource.numOrders"/> orders</li> 
-	</ul>
+	<table class="lefthead">
+		<tr>
+			<td><s:text name="occResource.numTaxa"/></td>
+			<td><s:property value="numTaxa"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.numTerminalTaxa"/></td>
+			<td><s:property value="numTerminalTaxa"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.numGenera"/></td>
+			<td><s:property value="numGenera"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.numFamilies"/></td>
+			<td><s:property value="numFamilies"/></td>
+		</tr>
+		<tr>
+			<td><s:text name="occResource.numOrders"/></td>
+			<td><s:property value="numOrders"/></td>
+		</tr>
+	</table>
 </div>
+
+<div id="temp-stats" class="stats stat-table">
+	<label><s:text name="stats.tempStats"/></label>
+	<table class="lefthead">
+		<tr>
+			<td><s:text name="occResource.recWithDate"/></td>
+			<td><s:property value="recWithDate"/></td>
+		</tr>
+	</table>
+</div>
+
+</s:push>
+
 
 
 <br class="clearfix" />
@@ -64,7 +117,7 @@
 		<s:action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true"/>
 	</div>
 </div>
-<div id="loc-tax" class="stats map">
+<div id="loc-tax" class="stats map stat-right">
 	<label><s:text name="stats.speciesPerCountry"/></label>
 	<div id="imgBySpeciesPerCountry">
 		<s:action name="occResourceStatsBySpeciesPerCountry" namespace="/ajax" executeResult="true"/>
@@ -92,7 +145,7 @@ function updateByRegion(){
 };
 $('regionClass').observe('change', updateByRegion);
 </script>	
-<div id="loc-geoserver" class="stats map">
+<div id="loc-geoserver" class="stats map stat-right">
 	<label><s:text name="stats.occPointMap"/></label>
 	<img src="<s:property value="geoserverMapUrl"/>" />
 </div>
@@ -120,43 +173,49 @@ function updateByTaxon(){
 	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 };
 $('rank').observe('change', updateByTaxon);
-</script>	
+</script>
+
+<div id="recordbasis-pie" class="stats chart stat-right">
+	<label><s:text name="stats.occByBasisOfRecord"/></label>
+	<div id="imgByBasisOfRecord">
+		<s:action name="occResourceStatsByBasisOfRecord" namespace="/ajax" executeResult="true"/>
+	</div>
+</div>
+
+<!-- 	intgrate into taxon drop down !!!
 <div id="tax2-pie" class="stats chart">
 	<label><s:text name="stats.occByTop10Taxa"/></label>
 	<div id="imgByTop10Taxa">
 		<s:action name="occResourceStatsByTop10Taxa" namespace="/ajax" executeResult="true"/>
 	</div>
 </div>
-
+ -->
 
 <br class="clearfix" />
 
 
 
-<div id="inst-pie" class="stats chart">
-	<label><s:text name="stats.occByInstitution"/></label>
-	<div id="imgByInstitution">
-		<s:action name="occResourceStatsByInstitution" namespace="/ajax" executeResult="true"/>
-	</div>
-</div>
-<div id="col-pie" class="stats chart">
-	<label><s:text name="stats.occByCollection"/></label>
-	<div id="imgByCollection">
+<div id="host-pie" class="stats chart">
+	<label><s:text name="stats.occByHost"/></label>
+	<s:form id="hostForm">
+		<s:select id="hostType" list="ranks" value="rank" theme="simple"/>
+	</s:form>
+	<s:url id="imgByHostUrl" action="occResourceStatsByHost" namespace="/ajax" includeParams="get"/>
+	<div id="imgByHost">
 		<s:action name="occResourceStatsByCollection" namespace="/ajax" executeResult="true"/>
 	</div>
 </div>
+<script>
+function updateByHost(){
+	var url = '<s:property value="imgByHostUrl"/>';
+	var params = { type: $F("hostType") }; 
+	var target = 'imgByHost';	
+	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+};
+$('hostType').observe('change', updateByHost);
+</script>	
 
-
-<br class="clearfix" />
-
-
-<div id="recordbasis-pie" class="stats chart">
-	<label><s:text name="stats.occByBasisOfRecord"/></label>
-	<div id="imgByBasisOfRecord">
-		<s:action name="occResourceStatsByBasisOfRecord" namespace="/ajax" executeResult="true"/>
-	</div>
-</div>
-<div id="time-pie" class="stats chart">
+<div id="time-pie" class="stats chart stat-right">
 	<label><s:text name="stats.occByDateColected"/></label>
 	<div id="imgByDateColected">
 		<s:action name="occResourceStatsByDateColected" namespace="/ajax" executeResult="true"/>

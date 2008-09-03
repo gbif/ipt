@@ -5,7 +5,7 @@
 </s:url>
 
 <display:table name="occurrences" uid="occ" class="table" requestURI="" id="occurrenceList" export="false" pagesize="50">
-    <display:column property="catalogNumber" sortable="true" href="${resUrl}" media="html" paramId="id" paramProperty="id" titleKey="dwc.catalogNumber"/>
+    <display:column property="catalogNumber" sortable="true" href="${resUrl}" media="html" paramId="guid" paramProperty="guid" titleKey="dwc.catalogNumber"/>
     <display:column property="collectionCode" sortable="true" titleKey="dwc.collectionCode"/>
     <display:column property="institutionCode" sortable="true" titleKey="dwc.institutionCode"/>
     <display:column property="country" sortable="true" titleKey="dwc.country"/>

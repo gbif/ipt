@@ -439,7 +439,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 	@Transient
 	public String getDetailsLinkIPT() {
-		return String.format("%s/%s", getResource().getRecordResolverEndpoint(), getGuid());
+		return String.format("%s/%s", getResource().getResourceBaseUrl(), getGuid());
 	}
 
 	public void setLink(String link) {

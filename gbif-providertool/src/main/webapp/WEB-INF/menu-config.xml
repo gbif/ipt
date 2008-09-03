@@ -26,5 +26,7 @@
             <Item name="LogEvents" title="menu.admin.logEvents" page="/logging/logEvents.html"/>
             <Item name="Extensions" title="menu.explorer.extensions" page="/admin/extensions.html"/>
         </Menu>
+        <Menu name="AboutMenu" title="menu.about" page="/about.html">            
+        </Menu>
     </Menus>
 </MenuConfig>

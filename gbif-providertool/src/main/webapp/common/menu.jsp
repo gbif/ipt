@@ -8,5 +8,6 @@
     <menu:displayMenu name="ManagerMenu"/>
     <menu:displayMenu name="AdminMenu"/>
     <menu:displayMenu name="UserMenu"/>
+    <menu:displayMenu name="AboutMenu"/>
 </ul>
 </menu:useMenuDisplayer>

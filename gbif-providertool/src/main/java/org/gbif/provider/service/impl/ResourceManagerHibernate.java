@@ -41,5 +41,12 @@ public class ResourceManagerHibernate<T extends Resource> extends GenericManager
 		return getSession().createQuery(String.format("select res FROM %s res WHERE res.creator.id = :userId", persistentClass.getSimpleName()))
     		.setParameter("userId", userId).list();
 	}
+	
+	@Override
+    public List<T> getTop(int maxResults) {
+        return getSession().createQuery(String.format("from %s order by modified desc", persistentClass.getName()))
+        		.setMaxResults(maxResults)
+        		.list();
+    }
 
 }

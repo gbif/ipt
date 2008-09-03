@@ -154,9 +154,17 @@
         <action name="detail" class="org.gbif.provider.webapp.action.portal.DwcAction">
             <result>/WEB-INF/pages/portal/occ/dwcDetail.jsp</result>
         </action>
-        <action name="data" class="org.gbif.provider.webapp.action.DataAction">
+        <action name="resources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
+        <action name="busy">
+            <result>/WEB-INF/pages/busy.jsp</result>
+            <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
+        </action>
+        <action name="about">
+            <result type="freemarker">/WEB-INF/pages/about.ftl</result>
+        </action>
+        
         
         <!-- occurrence actions -->
         <action name="occResources" class="org.gbif.provider.webapp.action.portal.OccResourceAction" method="list">
@@ -190,17 +198,8 @@
         <action name="taxResources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-        
-        <!-- generic resource actions -->        
-        <action name="resources">
-            <result>/WEB-INF/pages/missing.jsp</result>
-        </action>
-
-        <action name="busy">
-            <result>/WEB-INF/pages/busy.jsp</result>
-            <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
-        </action>
     </package>
+    
     
     <!-- undecorated AJAX calls needed by the portal -->
     <package name="portalAJAX" namespace="/ajax" extends="default">
@@ -229,7 +228,39 @@
     </package>
 
 
-    <!-- Actions showing data to the public, anonymous users -->
+    <!-- Other public, global services -->
+    <package name="portalServices" namespace="/data" extends="default">
+        <default-interceptor-ref name="portalStack" />
+        
+        <action name="data" class="org.gbif.provider.webapp.action.portal.DataAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/zip</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="data.zip"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+        <action name="logo" class="org.gbif.provider.webapp.action.portal.DataAction" method="logo">
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="logo.jpg"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+        <action name="rss" class="org.gbif.provider.webapp.action.IndexAction">
+            <result name="success" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+    </package>
+    
+    
+    
+    <!-- TAPIRlite Actions -->
     <package name="tpr" namespace="/tpr" extends="default">
         
         <!-- all resources! has to be changed once checklists are added -->
@@ -433,6 +464,5 @@
 
 
     <include file="struts-logging.xml"/>
-    <include file="struts-scheduler.xml"/>
     
 </struts>

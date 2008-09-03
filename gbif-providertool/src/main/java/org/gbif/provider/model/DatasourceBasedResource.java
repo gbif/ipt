@@ -274,7 +274,7 @@ public abstract class DatasourceBasedResource extends Resource {
 	
 	@Transient
 	public File getDataDir(){
-    	File dir = new File(AppConfig.getWebappDir(), String.format("data/%s", getServiceName()));
+    	File dir = new File(AppConfig.getDataDir(), getId().toString());
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -283,7 +283,7 @@ public abstract class DatasourceBasedResource extends Resource {
 
 	@Transient
 	public File getSourceDataDir(){
-    	File dir = new File(AppConfig.getWebappDir(), String.format("sourcedata/%s", getServiceName()));
+    	File dir = new File(AppConfig.getDataDir(), String.format("sourcedata/%s", getId()));
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -309,20 +309,27 @@ public abstract class DatasourceBasedResource extends Resource {
     }
 
 	@Transient
+    public File getLogoFile(){
+		File file = new File(getDataDir(), "logo.jpg");
+		return file;    	
+    }
+
+	@Transient
 	public String getResourceBaseUrl(){
 		String base = AppConfig.getAppBaseUrl();
-    	return String.format("%s/data/%s", base, getServiceName());
+    	return String.format("%s/data/%s", base, getId().toString());
 	}
+
+	@Transient
+    public String getDetailsUrl(String guid){
+		String base = AppConfig.getAppBaseUrl();
+    	return String.format("%s/%s/detail.html", getResourceBaseUrl(), guid);
+    }
 
 	@Transient
     public String getDumpArchiveUrl(){
 		return String.format("%s/data.zip", getResourceBaseUrl());
     }
-
-	@Transient
-	public String getRecordResolverEndpoint(){
-		return String.format("%s/detail", getResourceBaseUrl());
-	}
 
 	@Transient
 	public boolean isUploading(){

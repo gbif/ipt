@@ -36,6 +36,12 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericManager<
 	 */
 	T get(Long Id, Long resourceId);
 	
+	/**
+	 * get single record by its GUID
+	 * @param Id
+	 * @return
+	 */
+	T get(String guid);
 	
 	/**
 	 * full text search in all core records of a given resource
