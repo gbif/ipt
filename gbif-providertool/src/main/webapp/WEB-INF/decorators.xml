@@ -19,7 +19,7 @@
         <pattern>/index.*</pattern> 
         <pattern>*/ajax/*</pattern>        
     </excludes> 
-    <decorator name="tapir-envelope" page="tapir.jsp"/>
+    <decorator name="tapir" page="tapir.jsp"/>
     
     <decorator name="fullsize" page="fullsize.jsp"/>
 

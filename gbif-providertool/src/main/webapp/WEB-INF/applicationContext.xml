@@ -23,6 +23,7 @@
         <property name="geoserverBaseUrl" value="${app.geoserverUrl}" />
         <property name="providerTitle" value="${provider.title}" />
         <property name="providerDescription" value="${provider.description}" />
+        <property name="providerDescriptionImage" value="${provider.descriptionImage}" />
         <property name="providerLogo" value="${provider.logo}" />
         <property name="providerHomepage" value="${provider.homepage}" />
     </bean>
