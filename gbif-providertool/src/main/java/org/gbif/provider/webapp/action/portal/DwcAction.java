@@ -11,31 +11,20 @@ import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TaxonAction extends BaseOccurrenceResourceAction {
-	@Autowired
-	private TaxonManager taxonManager;
+public class DwcAction extends BaseOccurrenceResourceAction {
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
     private Long id;
-    private Taxon taxon;
-    private List<DarwinCore> occurrences;
-	public String geoserverMapUrl;
+    private DarwinCore dwc;
 	 
     public String execute(){
     	if (id!=null){
-    		taxon=taxonManager.get(id);
+    		dwc=darwinCoreManager.get(id);
     	}
 		return SUCCESS;
     }
     
-    public String occurrences(){
-    	if (id!=null && resource_id!=null){
-    		taxon=taxonManager.get(id);
-    		occurrences = darwinCoreManager.getByTaxon(id, resource_id);
-    		geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
-    	}
-		return SUCCESS;
-    }
+
 
 	public Long getId() {
 		return id;
@@ -45,12 +34,8 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 		this.id = id;
 	}
 
-	public Taxon getTaxon() {
-		return taxon;
-	}
-
-	public List<DarwinCore> getOccurrences() {
-		return occurrences;
+	public DarwinCore getDwc() {
+		return dwc;
 	}
 
 }

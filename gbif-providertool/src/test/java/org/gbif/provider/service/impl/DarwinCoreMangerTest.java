@@ -16,6 +16,8 @@
 
 package org.gbif.provider.service.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityExistsException;
 
 import org.gbif.provider.model.DarwinCore;
@@ -91,6 +93,12 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 		darwinCoreManager.flagAllAsDeleted(resource);
 	}
 
+	@Test
+	public void testByTaxon() {
+		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(2215l, Constants.TEST_RESOURCE_ID);
+		assertTrue(dwcs.size()>0);
+	}
+	
 	@Test
 	public void te32stReindex() {
 //		darwinCoreManager.reindex(Constants.TEST_RESOURCE_ID);		

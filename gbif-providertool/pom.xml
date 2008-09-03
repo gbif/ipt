@@ -215,6 +215,7 @@
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>6.1.9</version>
                 <configuration>
+		    <port>80</port>
                     <contextPath>/</contextPath>
                     <scanIntervalSeconds>3</scanIntervalSeconds>
                     <scanTargetPatterns>

@@ -151,7 +151,13 @@
         <action name="resource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
             <result>/WEB-INF/pages/portal/occ/index.jsp</result>
         </action>
-
+        <action name="detail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result>/WEB-INF/pages/portal/occ/dwcDetail.jsp</result>
+        </action>
+        <action name="data" class="org.gbif.provider.webapp.action.DataAction">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
         <!-- occurrence actions -->
         <action name="occResources" class="org.gbif.provider.webapp.action.portal.OccResourceAction" method="list">
             <result>/WEB-INF/pages/portal/occ/resourceList.jsp</result>
@@ -168,6 +174,18 @@
             <result name="chart">/WEB-INF/pages/portal/stats.jsp</result>
         </action>
         
+        <action name="occTaxon" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="occurrences">
+            <result>/WEB-INF/pages/portal/occ/taxon.jsp</result>
+        </action>
+
+        <action name="occRegion" class="org.gbif.provider.webapp.action.portal.RegionAction" method="occurrences">
+            <result>/WEB-INF/pages/portal/occ/region.jsp</result>
+        </action>
+
+        <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result>/WEB-INF/pages/portal/occ/dwcDetail.jsp</result>
+        </action>
+        
         <!-- checklist actions -->
         <action name="taxResources">
             <result>/WEB-INF/pages/missing.jsp</result>
@@ -182,7 +200,6 @@
             <result>/WEB-INF/pages/busy.jsp</result>
             <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
         </action>
-        
     </package>
     
     <!-- undecorated AJAX calls needed by the portal -->
@@ -210,9 +227,33 @@
             </result>
         </action>
     </package>
+
+
+    <!-- Actions showing data to the public, anonymous users -->
+    <package name="tpr" namespace="/tpr" extends="default">
+        
+        <!-- all resources! has to be changed once checklists are added -->
+        <action name="service" class="org.gbif.provider.webapp.action.tapir.ServiceAction">
+            <result type="freemarker" name="ping">
+                <param name="location">/WEB-INF/pages/tapir/ping.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="metadata">
+                <param name="location">/WEB-INF/pages/tapir/metadata.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="capabilities">
+                <param name="location">/WEB-INF/pages/tapir/capabilities.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="search">
+                <param name="location">/WEB-INF/pages/tapir/search.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+    </package>
     
-    
-    
+
     <!-- Base package for all managing packages  -->
     <package name="manage" namespace="/manage" extends="default">
         <default-interceptor-ref name="managerStack" />

@@ -21,7 +21,7 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
     }
 
 	public List<T> getChildren(Long resourceId, Long parentId) {
-        return getSession().createQuery(String.format("from %s node where node.parent.id = :parentId and node.resource.id = :resourceId", persistentClass.getName()))
+        return getSession().createQuery(String.format("from %s node where node.parent.id = :parentId and node.resource.id = :resourceId order by lft", persistentClass.getName()))
         .setLong("resourceId", resourceId)
         .setLong("parentId", parentId)
 		.list();
@@ -38,7 +38,7 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 	}
 
 	public List<T> getRoots(Long resourceId) {
-        return getSession().createQuery(String.format("from %s node where node.parent=null and node.resource.id = :resourceId", persistentClass.getName()))
+        return getSession().createQuery(String.format("from %s node where node.parent=null and node.resource.id = :resourceId order by lft", persistentClass.getName()))
         .setLong("resourceId", resourceId)
 		.list();
 	}

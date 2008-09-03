@@ -227,8 +227,10 @@ import org.springframework.transaction.annotation.Transactional;
 							updateDwcProperties(dwc, oldRecord);
 							// extract and assign taxa
 							taxonomyBuilder.processRecord(dwc);
+							oldRecord.setTaxon(dwc.getTaxon()); // also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
 							// extract and assign regions
 							geographyBuilder.processRecord(dwc);
+							oldRecord.setRegion(dwc.getRegion());
 							
 							// check if new record version is different from old one
 							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
