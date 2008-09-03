@@ -27,19 +27,30 @@
     <!-- data dir -->
     <rule>
         <from>^/data/(\d+)/data.zip$</from>
-        <to type="forward">/data.html?resource_id=$1</to>
+        <to type="forward">/data/data.html?resource_id=$1</to>
     </rule>
     <!-- details -->
     <rule>
-        <from>^/data/(\d+)/(.+)$</from>
+        <from>^/data/(\d+)/(.+)/detail.xml$</from>
+        <to type="forward">/detail.html?resource_id=$1&amp;guid=$2&amp;xml=true</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.html$</from>
         <to type="forward">/detail.html?resource_id=$1&amp;guid=$2</to>
     </rule>
+    <!-- rss -->
+    <rule>
+        <from>^/data/(\d+)/rss.xml$</from>
+        <to type="forward">/data/rss.html?resource_id=$1</to>
+    </rule>
+    <rule>
+        <from>^/data/rss.xml$</from>
+        <to type="forward">/data/rss.html</to>
+    </rule>
     <!-- tapir -->
-    <!-- 
     <rule>
         <from>^/tapir/(\d+)/?(.*)$</from>
         <to type="forward">/tapir/service.html?resource_id=$1&amp;$2</to>
     </rule>
-    -->
 </urlrewrite>
 

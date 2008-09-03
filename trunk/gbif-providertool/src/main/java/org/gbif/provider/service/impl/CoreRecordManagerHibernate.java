@@ -85,6 +85,12 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericMan
 						.setParameter("Id", Id);
 		return (T) query.uniqueResult();
 	}
+	
+	public T get(final String guid) {
+		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.guid = :guid", persistentClass.getName()))
+						.setParameter("guid", guid);
+		return (T) query.uniqueResult();
+	}
 
 	@Transactional(readOnly=false)
 	public void flagAllAsDeleted(OccurrenceResource resource) {

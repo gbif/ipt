@@ -1,16 +1,23 @@
+/* @override http://localhost:8080/styles/simplicity/providertool.css */
 
 /* PROVIDERTOOL customising simplicity */
 
+/* @group general */
 
 h2 {
 	margin-top: 20px;
 }
 
-table.lefthead td {
+.reminder {
+	font-style: italic;
+	color: gray;
+	background: url(/images/mandatory.gif) no-repeat;
 	padding-left: 20px;
 }
-table.lefthead th, table.lefthead td {
-	padding-bottom: 5px;
+
+div.break {
+	clear: both;
+	padding-top: 25px;
 }
 
 .subentry {
@@ -21,12 +28,23 @@ table.lefthead th, table.lefthead td {
 .subform {
 	margin-left: 50px;
 }
-div#preview td {
-	padding: 5px;
+
+table.lefthead td {
+	padding-left: 20px;
 }
-div.break {
-	clear: both;
-	padding-top: 25px;
+table.lefthead th, table.lefthead td {
+	padding-bottom: 5px;
+}
+
+
+
+/* @end */
+
+/* @group header */
+
+#logo {
+	top: 15px;
+	position: relative;
 }
 
 div#header .left {
@@ -36,18 +54,11 @@ div#header .left {
 div#header .right {
         padding: 0 39px;
         float: right;
-}    
-#logo {
-	top: 15px;
-	position: relative;
 }
-.reminder {
-	font-style: italic;
-	color: gray;
-	background: url(/images/mandatory.gif) no-repeat;
-	padding-left: 20px;
-}
- 
+
+
+
+/* @end */
 
 /* @group menus */
 
@@ -108,11 +119,26 @@ ul.minimenu li{
 
  
 
-/* @group Charts */
+/* @group charts */
 
 
-div.chart, div.stats{
+div.chart, div.map{
 	width: 340px;
+}
+div.stat-table {
+	width: 233px;
+}
+
+div.stat-table table{
+	margin-top: 10px;
+	line-height: 0.6em;
+	font-size: 0.9 em;
+}
+div.stat-right{
+	position: relative;
+	left: 35px;
+}
+div.chart, div.stats{
 	display: block;
 	float: left;
 	margin-bottom: 20px;
@@ -151,12 +177,20 @@ div.chart form {
 	height: 225px; 
 }
 
+/* @end */
 
-/* SPECIFIC */
-#tax-stats, #loc-tax, #loc-geoserver, #col-pie, #tax2-pie, #time-pie {
-	position: relative;
-	left: 35px;
+/* @group other */
+ 
+#about img{
+	float: right;
+	padding-left: 30px;
 }
+
+div#preview td {
+	padding: 5px;
+}
+
+
 
 /* @end */
 

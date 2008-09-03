@@ -16,79 +16,69 @@
 
 package org.gbif.provider.webapp.action;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
 import org.apache.struts2.util.ServletContextAware;
+import org.appfuse.model.User;
+import org.appfuse.service.UserManager;
 import org.appfuse.webapp.action.BaseAction;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.util.AppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
+import static org.gbif.provider.util.Constants.ADMIN_USER_ID;
 
 /**
  * Homepage of the application giving initial statistics and listing imported resources
  * @author markus
  *
  */
-public class IndexAction extends BaseAction implements Preparable, ServletContextAware {
-    private ResourceManager<OccurrenceResource> occResourceManager;
-    private ResourceManager<ChecklistResource> checklistResourceManager;
+public class IndexAction extends BaseAction{
+	@Autowired
+	@Qualifier("resourceManager")
     private ResourceManager<Resource> resourceManager;
-    private List<OccurrenceResource> occResources;
-    private List<ChecklistResource> checklistResources;
+	@Autowired
+    private UserManager userManager;
     private List<Resource> resources;
-	private ServletContext context;
-
-	public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-	public void setChecklistResourceManager(ResourceManager<ChecklistResource> checklistResourceManager) {
-		this.checklistResourceManager = checklistResourceManager;
-	}
-	public void setResourceManager(ResourceManager<Resource> resourceManager) {
-		this.resourceManager = resourceManager;
+	@Autowired
+	private AppConfig cfg;
+	private User admin;
+	private Date pubDate = new Date();
+	
+	public String execute(){
+		resources = resourceManager.getAllDistinct();
+		return SUCCESS;
 	}
 	
-	public List<ChecklistResource> getChecklistResources() {
-		return checklistResources;
+	public String rss(){
+		admin = userManager.getUser(String.valueOf(ADMIN_USER_ID));
+		resources = resourceManager.getTop(50);
+		return SUCCESS;
 	}
+	
 	public List<Resource> getResources() {
 		return resources;
 	}
-	public List<OccurrenceResource> getOccResources() {
-		return occResources;
-	}
-	
-	public Integer getOccResourceCount() {
-		return occResources.size();
-	}
-	public Integer getChecklistCount() {
-		return checklistResources.size();
-	}
-	public Integer getResourceCount() {
-		return resources.size();
-	}
-		
-	
-	
-	public void prepare() throws Exception {
-		occResources = occResourceManager.getAllDistinct();
-		checklistResources = checklistResourceManager.getAllDistinct();
-		resources = resourceManager.getAllDistinct();
+
+	public AppConfig getCfg() {
+		return cfg;
 	}
 
-	public String execute(){
-		return SUCCESS;
+	public User getAdmin() {
+		return admin;
 	}
 
-	public void setServletContext(ServletContext context) {
-		this.context=context;
+	public Date getPubDate() {
+		return pubDate;
 	}
-
 	
-
 }

@@ -120,6 +120,7 @@ import org.springframework.transaction.annotation.Transactional;
 			// zip all files into single archive
 			File archive = getResource().getDumpArchiveFile();
 			archive.createNewFile();
+			log.info("Dump file archive created at "+archive.getAbsolutePath());
 			ZipUtil.zipFiles(dumpFiles, archive);						
 		}
 

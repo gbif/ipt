@@ -14,24 +14,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DwcAction extends BaseOccurrenceResourceAction {
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
-    private Long id;
+    private String guid;
     private DarwinCore dwc;
 	 
     public String execute(){
-    	if (id!=null){
-    		dwc=darwinCoreManager.get(id);
+    	if (guid!=null){
+    		dwc=darwinCoreManager.get(guid);
     	}
 		return SUCCESS;
     }
     
 
 
-	public Long getId() {
-		return id;
+
+	public String getGuid() {
+		return guid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 	public DarwinCore getDwc() {

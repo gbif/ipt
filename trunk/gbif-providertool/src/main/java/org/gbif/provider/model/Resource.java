@@ -18,6 +18,7 @@ package org.gbif.provider.model;
 
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
@@ -46,7 +48,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class Resource implements BaseObject, Comparable<Resource>, Timestampable{
 	private Long id;
-	protected String guid;
+	protected String guid = UUID.randomUUID().toString();
 	protected String link;
 	// resource metadata
 	protected String title;
@@ -81,6 +83,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.link = link;
 	}
 
+	@Transient
+	public String getType(){
+		return getClass().getSimpleName();
+	}
 		
 	public Date getModified() {
 		return modified;

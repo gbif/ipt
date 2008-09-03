@@ -20,6 +20,11 @@
     <!-- application properties -->    
     <bean id="cfg" class="org.gbif.provider.util.AppConfig">
         <property name="appBaseUrl" value="${app.baseUrl}" />
+        <property name="geoserverBaseUrl" value="${app.geoserverUrl}" />
+        <property name="providerTitle" value="${provider.title}" />
+        <property name="providerDescription" value="${provider.description}" />
+        <property name="providerLogo" value="${provider.logo}" />
+        <property name="providerHomepage" value="${provider.homepage}" />
     </bean>
 
 

@@ -250,12 +250,14 @@ public class OccurrenceResource extends DatasourceBasedResource {
 
 	@Transient
 	public String getTapirEndpoint(){
-		return String.format("%s/tapir", getResourceBaseUrl());
+		String base = AppConfig.getAppBaseUrl();
+    	return String.format("%s/tapir/%s/", base, getId().toString());
 	}
 	
 	@Transient
 	public String getWfsEndpoint(){
-		return String.format("%s/wfs", getResourceBaseUrl());
+		String base = AppConfig.getAppBaseUrl();
+    	return String.format("%s/wfs/%s", base, getId().toString());
 	}
 	    
 
