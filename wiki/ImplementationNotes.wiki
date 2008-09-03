@@ -1,11 +1,18 @@
-=== Implemented ===
+== Key Technologies ==
  * Appfuse2 [http://appfuse.org/display/APF/AppFuse+QuickStart#AppFuseQuickStart-create Struts 2 Basic archetype]
+   * planned to move to pure spring, struts2, hibernate & freemarker implementation, removing many of the appfuse overhead (which sped up initial development though)
  * 2 tier architecture with merged DAO/Service layer
  * Geoserver with custom [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/GT2-gbif-providertool/ datasource module] for WFS and maps 
  * statistic charts via google chart API using http://code.google.com/p/gchartjava/
- * Cache DB as embedded H2 database (optionally also external mysql/postgres database) 
+ * Cache DB as embedded H2 database (optionally also external mysql database) 
 
 === Planned ===
- * solr / lucene for full text search ???
- * use pingback instead of trackback which is easier to spam: alternatives, pingback vs trackback 
+ * solr / lucene for full text search ???
+ * use pingback instead of trackback which is easier to spam: alternatives, pingback vs trackback 
+
+== Metadata ==
+ * Single main user account "admin" that is used as the site tech contact (E.g in TAPIR metadata or RSS feeds)
+   * other users can have admin roles too, but will not be used in TAPIR, RSS, etc
+ * Individual resources have list of data curators (regular system users) assigned, which serve the TAPIR, RSS etc creator metadata
+   * to configure, create or delete resources a user must also have the MANAGER role
  
