@@ -16,18 +16,18 @@
     <docs>http://cyber.law.harvard.edu/rss/rss.html</docs>
     <ttl>15</ttl>
  
-	<@s.iterator value="resources">
+	<#list resources as res>
     <item>
-      <title>${title}</title>
-	  <#if link??>
-      <link>${link}</link>
+      <title>${res.title}</title>
+	  <#if res.link??>
+      <link>${res.link}</link>
 	  </#if>
-      <description>${description}</description>
-	  <enclosure url="${cfg.appBaseUrl!}/logo.html?id=${id}" type="image" />
-      <pubDate>${modified?datetime?string.medium}</pubDate>
-      <guid>${guid}</guid>
+      <description>${res.description}</description>
+	  <enclosure url="${res.logoUrl}" type="image" />
+      <pubDate>${res.modified?datetime?string.medium}</pubDate>
+      <guid>${res.guid}</guid>
     </item>
- 	</@s.iterator>
+ 	</#list>
  
   </channel>
 </#escape>

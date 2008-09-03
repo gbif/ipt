@@ -20,7 +20,7 @@ import org.gbif.provider.model.voc.RegionType;
 	public class Region extends TreeNodeBase<Region, RegionType> {
 		protected static final Log log = LogFactory.getLog(Region.class);
 
-		private DatasourceBasedResource resource;
+		private Resource resource;
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,10 +30,10 @@ import org.gbif.provider.model.voc.RegionType;
 		}
 		
 		@ManyToOne(optional = false)
-		public DatasourceBasedResource getResource() {
+		public Resource getResource() {
 			return resource;
 		}
-		public void setResource(DatasourceBasedResource resource) {
+		public void setResource(Resource resource) {
 			this.resource = resource;
 		}
 

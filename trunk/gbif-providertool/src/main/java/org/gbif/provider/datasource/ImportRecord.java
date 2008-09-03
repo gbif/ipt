@@ -15,10 +15,10 @@ import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -45,7 +45,7 @@ public class ImportRecord  {
 	private boolean isDeleted;
 	private boolean isProblematic;
 	private Date modified;
-	private DatasourceBasedResource resource;
+	private Resource resource;
 
 	
 	
@@ -141,11 +141,11 @@ public class ImportRecord  {
 		this.isProblematic = isProblematic;
 	}
 	
-	public DatasourceBasedResource getResource() {
+	public Resource getResource() {
 		return resource;
 	}
 
-	public void setResource(DatasourceBasedResource resource) {
+	public void setResource(Resource resource) {
 		this.resource = resource;
 	}
 }

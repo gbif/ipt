@@ -37,7 +37,7 @@ import org.gbif.provider.model.voc.Rank;
 public class Taxon extends TreeNodeBase<Taxon, Rank> {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
-		private DatasourceBasedResource resource;
+		private Resource resource;
 		private String rank;
 		private String name;
 		private String authorship;
@@ -52,10 +52,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> {
 		}
 		
 		@ManyToOne(optional = false)
-		public DatasourceBasedResource getResource() {
+		public Resource getResource() {
 			return resource;
 		}
-		public void setResource(DatasourceBasedResource resource) {
+		public void setResource(Resource resource) {
 			this.resource = resource;
 		}
 

@@ -17,6 +17,7 @@
 package org.gbif.provider.model;
 
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ import javax.persistence.Transient;
 
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
+import org.gbif.provider.util.AppConfig;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -181,6 +183,39 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 				.append("id", this.id).append("title", this.title).append(
 						"link", this.link).append("modifier", this.modifier)
 				.append("guid", this.guid).toString();
+	}
+	
+	
+	
+	@Transient
+	public File getDataDir() {
+		File dir = new File(AppConfig.getDataDir(), getId().toString());
+	    if (!dir.exists()) {
+	        dir.mkdirs();
+	    }
+		return dir;
+	}
+	@Transient
+	public File getSourceDataDir() {
+		File dir = new File(AppConfig.getDataDir(), String.format("sourcedata/%s", getId()));
+	    if (!dir.exists()) {
+	        dir.mkdirs();
+	    }
+		return dir;
+	}
+	@Transient
+	public File getLogoFile() {
+		File file = new File(getDataDir(), "logo.jpg");
+		return file;    	
+	}
+	@Transient
+	public String getLogoUrl() {
+		return String.format("%s/logo.jpg", getResourceBaseUrl());
+	}
+	@Transient
+	public String getResourceBaseUrl() {
+		String base = AppConfig.getAppBaseUrl();
+		return String.format("%s/data/%s", base, getId().toString());
 	}
 
 

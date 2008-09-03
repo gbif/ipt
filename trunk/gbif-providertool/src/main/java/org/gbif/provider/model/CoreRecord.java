@@ -65,6 +65,6 @@ public interface CoreRecord extends BaseObject {
 	boolean isProblematic();
 	void setProblematic(boolean isProblematic);
 	
-	DatasourceBasedResource getResource();
+	Resource getResource();
 
 }

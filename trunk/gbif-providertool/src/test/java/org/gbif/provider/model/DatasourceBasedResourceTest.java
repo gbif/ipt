@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DatasourceBasedResourceTest {
-	private DatasourceBasedResource r1;
-	private DatasourceBasedResource r2;
-	private DatasourceBasedResource r3;
+	private Resource r1;
+	private Resource r2;
+	private Resource r3;
 	private static final Date now = new Date();
 	private static final String guid = "ac567-hjds78-asgzc-26347129";
 
@@ -21,7 +21,7 @@ public class DatasourceBasedResourceTest {
 		r3 = getNewResource();
 		r3.setTitle("A different title");
 	}
-	private DatasourceBasedResource getNewResource(){
+	private Resource getNewResource(){
 		DatasourceBasedResource r = OccurrenceResource.newInstance(null);
 		r.setTitle("Berlin Moss");
 		r.setCreated(now);

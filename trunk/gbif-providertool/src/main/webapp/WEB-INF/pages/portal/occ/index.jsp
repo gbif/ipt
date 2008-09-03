@@ -23,11 +23,11 @@
 			<table class="lefthead">
 				<tr>
 					<th><s:text name="occResourceOverview.tabfile"/></th>
-					<td><s:property value="%{occResource.getDumpArchiveUrl()}"/></td>
+					<td><a href="<s:property value="%{occResource.getDumpArchiveUrl()}"/>"><s:property value="%{occResource.getDumpArchiveUrl()}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.tapir"/></th>
-					<td><s:property value="%{occResource.getTapirEndpoint()}"/></td>
+					<td><a href="<s:property value="%{occResource.getTapirEndpoint()}"/>"><s:property value="%{occResource.getTapirEndpoint()}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.wfs"/></th>

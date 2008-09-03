@@ -25,7 +25,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class UploadEvent implements BaseObject{
 	private Long id;
-	private DatasourceBasedResource resource;
+	private Resource resource;
 	private Date executionDate;
 	private int recordsUploaded;
 	private int recordsDeleted;
@@ -47,10 +47,10 @@ public class UploadEvent implements BaseObject{
 
 	@ManyToOne
 	@JoinColumn(name="resource_fk", nullable=false) 
-	public DatasourceBasedResource getResource() {
+	public Resource getResource() {
 		return resource;
 	}
-	public void setResource(DatasourceBasedResource resource) {
+	public void setResource(Resource resource) {
 		this.resource = resource;
 	}
 	

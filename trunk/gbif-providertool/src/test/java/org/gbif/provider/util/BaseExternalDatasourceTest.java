@@ -3,6 +3,7 @@ package org.gbif.provider.util;
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 		datasourceRegistry.registerDatasource(resource);
 	}
 	
-	public DatasourceBasedResource getTestResource() {
+	public Resource getTestResource() {
 		return resource;
 	}	
 

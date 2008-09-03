@@ -18,6 +18,7 @@ package org.gbif.provider.service.impl;
 
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
