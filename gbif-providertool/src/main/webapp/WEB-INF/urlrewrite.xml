@@ -38,6 +38,11 @@
         <from>^/data/(\d+)/(.+)/detail.html$</from>
         <to type="forward">/detail.html?resource_id=$1&amp;guid=$2</to>
     </rule>
+    <!-- images -->
+    <rule>
+        <from>^/data/(\d+)/logo.jpg$</from>
+        <to type="forward">/data/logo.html?resource_id=$1</to>
+    </rule>
     <!-- rss -->
     <rule>
         <from>^/data/(\d+)/rss.xml$</from>

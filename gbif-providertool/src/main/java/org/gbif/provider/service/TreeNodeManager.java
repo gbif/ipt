@@ -2,8 +2,8 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.TreeNode;
 
 public interface TreeNodeManager<T extends TreeNode> extends GenericManager<T> {
@@ -16,5 +16,5 @@ public interface TreeNodeManager<T extends TreeNode> extends GenericManager<T> {
 	 * @param resource that contains the taxon records to be removed
 	 * @return number of deleted regions
 	 */
-	int deleteAll(DatasourceBasedResource resource);
+	int deleteAll(Resource resource);
 }

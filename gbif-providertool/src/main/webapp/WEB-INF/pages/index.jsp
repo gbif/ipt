@@ -8,11 +8,11 @@
 </head>
 
 
-<h1><s:text name='home.heading'/></h1>
+<h1><s:text name='home.heading'/> <s:property value='cfg.providerTitle'/></h1>
 
 <div id="about">
 	<img src="<s:property value='cfg.providerDescriptionImage'/>" />
-	<s:property value='cfg.providerDescription'/>
+	<s:property value='cfg.providerDescription' escape="false"/>
 </div>
 
 <br class="clearfix" />

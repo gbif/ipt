@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gbif.provider.model.BaseObject;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.TreeNode;
 import org.gbif.provider.service.RegionManager;
@@ -43,7 +43,7 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 		.list();
 	}
 
-	public int deleteAll(DatasourceBasedResource resource) {
+	public int deleteAll(Resource resource) {
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 		Session session = getSession();

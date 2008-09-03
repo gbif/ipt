@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
@@ -283,7 +283,7 @@ public class DwcRegion implements Comparable<DwcRegion>{
 		return region.getType();
 	}
 
-	public DatasourceBasedResource getResource() {
+	public Resource getResource() {
 		return region.getResource();
 	}
 
@@ -311,7 +311,7 @@ public class DwcRegion implements Comparable<DwcRegion>{
 		region.setType(rank);
 	}
 
-	public void setResource(DatasourceBasedResource resource) {
+	public void setResource(Resource resource) {
 		region.setResource(resource);
 	}
 

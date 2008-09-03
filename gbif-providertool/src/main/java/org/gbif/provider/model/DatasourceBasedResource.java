@@ -65,7 +65,6 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class DatasourceBasedResource extends Resource {
 	private static Log log = LogFactory.getLog(DatasourceBasedResource.class);
-	private String serviceName;
 	private String jdbcDriverClass = "com.mysql.jdbc.Driver";
 	private String jdbcUrl = "jdbc:mysql://localhost/YOUR_DATABASE";
 	private String jdbcUser;
@@ -78,25 +77,6 @@ public abstract class DatasourceBasedResource extends Resource {
 	// transient properties
 	private DataSource datasource;
 
-	
-	
-	@Column(length=32, unique=true)
-	public String getServiceName() {
-		return serviceName;
-	}
-	public void setServiceName(String serviceName) {
-		if (serviceName!=null){
-			serviceName=serviceName.toLowerCase().trim().replace(" ", "_");
-		}
-		this.serviceName = serviceName;
-	}
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
-		if (serviceName == null){
-			setServiceName(title);
-		}
-	}
 	
 	@Column(length=64)
 	public String getJdbcDriverClass() {
@@ -273,24 +253,6 @@ public abstract class DatasourceBasedResource extends Resource {
 	
 	
 	@Transient
-	public File getDataDir(){
-    	File dir = new File(AppConfig.getDataDir(), getId().toString());
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-		return dir;
-	}
-
-	@Transient
-	public File getSourceDataDir(){
-    	File dir = new File(AppConfig.getDataDir(), String.format("sourcedata/%s", getId()));
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-		return dir;
-	}
-	
-	@Transient
     public File getDumpFile(Extension extension) throws IOException{    	
 		File file = new File(getDataDir(), String.format("%s.txt", extension.getTablename()));
 		return file;
@@ -307,18 +269,6 @@ public abstract class DatasourceBasedResource extends Resource {
 		File file = new File(getDataDir(), "data.zip");
 		return file;    	
     }
-
-	@Transient
-    public File getLogoFile(){
-		File file = new File(getDataDir(), "logo.jpg");
-		return file;    	
-    }
-
-	@Transient
-	public String getResourceBaseUrl(){
-		String base = AppConfig.getAppBaseUrl();
-    	return String.format("%s/data/%s", base, getId().toString());
-	}
 
 	@Transient
     public String getDetailsUrl(String guid){
