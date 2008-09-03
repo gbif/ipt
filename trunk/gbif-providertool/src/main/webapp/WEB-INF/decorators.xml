@@ -8,6 +8,9 @@
         <pattern>/scripts/dojo/*</pattern>
         <pattern>/struts/dojo/*</pattern> 
         <pattern>/resources/*</pattern>
+        <pattern>/data/*</pattern>
+        <pattern>/tapir/*</pattern>
+        <pattern>/tpr/*</pattern>
         <!-- default struts2 patterns -->
         <pattern>/styles/*</pattern>
         <pattern>/scripts/*</pattern>
@@ -15,6 +18,8 @@
         <!-- myown -->
         <pattern>*/ajax/*</pattern>        
     </excludes> 
+    <decorator name="tapir-envelope" page="tapir.jsp"/>
+    
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>

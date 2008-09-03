@@ -165,5 +165,9 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 		return false;
 	}
 
+	@Override
+	public String status() {
+		return String.format("%s taxa", nodes.size());
+	}
 
 }

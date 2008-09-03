@@ -7,6 +7,6 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.UploadEvent;
 
 public interface DarwinCoreManager extends CoreRecordManager<DarwinCore>{
-//	List<DarwinCore> getByTaxon(Long taxonId, Long resourceId);
-//	List<DarwinCore> getByRegion(Long regionId, Long resourceId);
+	List<DarwinCore> getByTaxon(Long taxonId, Long resourceId);
+	List<DarwinCore> getByRegion(Long regionId, Long resourceId);
 }

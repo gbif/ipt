@@ -29,9 +29,9 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<UploadEvent> f = executor.submit(occUploadTask);
 		try {
-			Thread.sleep(5000);
-			f.cancel(true);
-			Thread.sleep(5000);
+//			Thread.sleep(5000);
+//			f.cancel(true);
+//			Thread.sleep(5000);
 			UploadEvent event = f.get();
 			System.out.println(event);
 		} catch (CancellationException e) {
@@ -42,7 +42,7 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		assertTrue(result);
+//		assertTrue(result);
 	}
 	
 }

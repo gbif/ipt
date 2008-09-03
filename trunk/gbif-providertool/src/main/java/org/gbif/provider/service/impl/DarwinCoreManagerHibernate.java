@@ -52,4 +52,20 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 		}
 		return dwc;
 	}
+
+	public List<DarwinCore> getByRegion(Long regionId, Long resourceId) {
+		String hql = String.format("select core FROM %s core WHERE core.resource.id = :resourceId and region.id = :regionId", persistentClass.getName()); 
+        Query query = getSession().createQuery(hql)
+			.setParameter("regionId", regionId)
+			.setParameter("resourceId", resourceId);
+        return query.list();
+	}
+
+	public List<DarwinCore> getByTaxon(Long taxonId, Long resourceId) {
+		String hql = String.format("select core FROM %s core WHERE core.resource.id = :resourceId and taxon.id = :taxonId", persistentClass.getName()); 
+        Query query = getSession().createQuery(hql)
+			.setParameter("taxonId", taxonId)
+			.setParameter("resourceId", resourceId);
+        return query.list();
+	}
 }

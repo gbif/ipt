@@ -37,7 +37,7 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 	
 	protected SortedSet<T> setNestedSetIndices(){
 		SortedSet<T> taxonomy = getSortedNodes();
-		log.info(String.format("Calculating nested set indices for taxonomy with %s taxa", taxonomy.size()));
+		log.info(String.format("Calculating nested set indices for hierarchy with %s nodes", taxonomy.size()));
 		Stack<T> parentStack = new Stack<T>();
 		Long idx = 0l;
 		for (T t : taxonomy){

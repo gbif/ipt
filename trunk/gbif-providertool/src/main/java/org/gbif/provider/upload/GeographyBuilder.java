@@ -79,6 +79,7 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 		// extract regions
 		DwcRegion dwcReg = DwcRegion.newDwcRegion(dwc);
 		Region reg = null;
+		int hc = dwcReg.hashCode();
 		if (nodes.containsKey(dwcReg.hashCode())){
 			// region exists already. use persistent one for dwc
 			reg = nodes.get(dwcReg.hashCode());				
@@ -150,5 +151,10 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String status() {
+		return String.format("%s regions", nodes.size());
 	}
 }

@@ -346,7 +346,9 @@ public class DwcRegion implements Comparable<DwcRegion>{
         result = 31 * result + (stateProvince != null ? stateProvince.hashCode() : 0);
         result = 31 * result + (county != null ? county.hashCode() : 0);
         result = 31 * result + (locality != null ? locality.hashCode() : 0);
-        result = 31 * result + (region.getResource() != null ? region.getResource().hashCode() : 0);
+        if (region.getResource() != null){
+            result = 31 * result + (region.getResource().getId() != null ? region.getResource().getId().hashCode() : 0);
+        }
         return result;
 	}
 
