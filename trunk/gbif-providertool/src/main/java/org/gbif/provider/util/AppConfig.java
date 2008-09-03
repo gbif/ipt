@@ -33,6 +33,7 @@ public class AppConfig {
     private static String GEOSERVER_BASE_URL;
     private String providerTitle;
     private String providerDescription;
+    private String providerDescriptionImage;
     private String providerLogo;
     private String providerHomepage;
     
@@ -112,6 +113,14 @@ public class AppConfig {
 
 	public void setProviderHomepage(String providerHomepage) {
 		this.providerHomepage = providerHomepage;
+	}
+
+	public String getProviderDescriptionImage() {
+		return providerDescriptionImage;
+	}
+
+	public void setProviderDescriptionImage(String providerDescriptionImage) {
+		this.providerDescriptionImage = providerDescriptionImage;
 	}
 
 	public String toString(){

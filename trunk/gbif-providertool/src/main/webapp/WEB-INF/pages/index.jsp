@@ -11,8 +11,8 @@
 <h1><s:text name='home.heading'/></h1>
 
 <div id="about">
-	<img src="<s:text name='home.imageUrl'/>" />
-	<s:text name='provider.description'/>
+	<img src="<s:property value='cfg.providerDescriptionImage'/>" />
+	<s:property value='cfg.providerDescription'/>
 </div>
 
 <br class="clearfix" />

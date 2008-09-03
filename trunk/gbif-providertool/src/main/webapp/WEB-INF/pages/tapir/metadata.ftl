@@ -1,5 +1,5 @@
 <#assign page=JspTaglibs["http://www.opensymphony.com/sitemesh/page"]>
-<@page.applyDecorator name="tapir-envelope" title="ping">
+<@page.applyDecorator name="tapir" title="ping">
 <@page.param name="tapir.content">
 <metadata>
     <dc:title>Global Dragonflies Database</dc:title>
