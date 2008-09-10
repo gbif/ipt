@@ -48,5 +48,4 @@ public class ResourceManagerHibernate<T extends Resource> extends GenericManager
         		.setMaxResults(maxResults)
         		.list();
     }
-
 }

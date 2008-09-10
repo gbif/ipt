@@ -23,7 +23,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *
  */
 @Entity
-public class UploadEvent implements BaseObject{
+public class UploadEvent implements ResourceRelatedObject{
 	private Long id;
 	private Resource resource;
 	private Date executionDate;

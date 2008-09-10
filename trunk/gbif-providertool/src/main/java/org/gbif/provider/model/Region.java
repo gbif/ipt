@@ -17,7 +17,7 @@ import org.gbif.provider.model.voc.RegionType;
 
 
 	@Entity
-	public class Region extends TreeNodeBase<Region, RegionType> {
+	public class Region extends TreeNodeBase<Region, RegionType> implements ResourceRelatedObject{
 		protected static final Log log = LogFactory.getLog(Region.class);
 
 		private Resource resource;

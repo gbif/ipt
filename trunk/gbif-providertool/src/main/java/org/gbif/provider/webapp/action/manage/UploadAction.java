@@ -7,13 +7,16 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class UploadAction extends BaseOccurrenceResourceAction implements Preparable{
 	private static final String BUSY = "resource-busy";
 	private static final String READY = "resource-ready";
+	@Autowired
 	private CacheManager cacheManager;
+	@Autowired
 	private UploadEventManager uploadEventManager; 
 	private String status;
 	private boolean busy = false;
@@ -74,10 +77,6 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		return SUCCESS;
 	}
 
-	public void setCacheManager(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
-
 	public String getStatus() {
 		return status;
 	}
@@ -87,10 +86,6 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 
 	public List<UploadEvent> getUploadEvents() {
 		return uploadEvents;
-	}
-
-	public void setUploadEventManager(UploadEventManager uploadEventManager) {
-		this.uploadEventManager = uploadEventManager;
 	}
 
 	public boolean isBusy() {

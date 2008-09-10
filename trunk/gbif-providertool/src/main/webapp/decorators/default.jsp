@@ -61,7 +61,7 @@
 						</div>
 			        </c:when>
 			        
-			        <c:when test='${currentSubMenu == "search"}'>
+			        <c:when test='${currentSubMenu == "resource"}'>
 						<div id="fullsearch">
 							<label>Fulltext Search</label>
 							<s:form name="search" theme="simple">

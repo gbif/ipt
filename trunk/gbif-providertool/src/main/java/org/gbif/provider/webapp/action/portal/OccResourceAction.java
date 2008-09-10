@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.util.Constants;
@@ -35,9 +36,10 @@ import com.opensymphony.xwork2.Preparable;
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
 	protected Map session;
 	private OccurrenceResource occResource;
-	private List<OccurrenceResource> resources;
+	private List<OccurrenceResource> occResources;
 	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
+	private Map<Integer, String> hostClasses = new TreeMap<Integer, String>();
 	public String geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
 
 	
@@ -54,6 +56,14 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		for (Rank rt : Rank.DARWIN_CORE_RANKS){
 			ranks.put(rt.ordinal(), rt.name());
 		}
+		ranks.put(Rank.Species.ordinal(), "Top 10 Species");
+		
+		// hosting bodies
+		for (HostType ht : HostType.HOSTING_BODIES){
+			hostClasses.put(ht.ordinal(), ht.name());
+		}
+		hostClasses.put(Rank.Species.ordinal(), "Top 10 Species");
+		
 	}
 	
 	private void updateRecentResouces(){
@@ -82,7 +92,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public String list() {
-		resources = occResourceManager.getAll();
+		occResources = occResourceManager.getAll();
 		return SUCCESS;
 	}	
 	
@@ -110,8 +120,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return ranks;
 	}
 
-	public List<OccurrenceResource> getResources() {
-		return resources;
+	public List<OccurrenceResource> getOccResources() {
+		return occResources;
 	}
 
 }

@@ -21,9 +21,12 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -132,27 +135,27 @@ public abstract class DatasourceBasedResource extends Resource {
     @JoinColumn(name="resource_fk", insertable=false, updatable=false)
     @org.hibernate.annotations.Where(clause="mapping_type='EXT'")        
 	@MapKey(columns = @Column(name = "extension_fk"))
-	public Map<Long, ViewExtensionMapping> getExtensionMappings() {
+	public Map<Long, ViewExtensionMapping> getExtensionMappingsMap() {
 		return extensionMappings;
 	}
-	public void setExtensionMappings(Map<Long, ViewExtensionMapping> extensionMappings) {
+	public void setExtensionMappingsMap(Map<Long, ViewExtensionMapping> extensionMappings) {
 		this.extensionMappings = extensionMappings;
+	}
+	@Transient
+	public List<ViewExtensionMapping> getExtensionMappings() {
+		return new ArrayList<ViewExtensionMapping>(extensionMappings.values());
 	}
 	public void addExtensionMapping(ViewExtensionMapping mapping) {
 		mapping.setResource(this);
 		this.extensionMappings.put(mapping.getExtension().getId(), mapping);
 	}
+	public void removeExtensionMapping(ViewMappingBase mapping) {
+		this.extensionMappings.remove(mapping.getExtension().getId());
+	}
 
 	@Transient
 	public ViewMappingBase getExtensionMapping(Extension extension) {
-		ViewMappingBase result = null;
-		for (ViewMappingBase vm : this.getAllMappings()){
-			if(vm.getExtension().equals(extension)){
-				result = vm;
-				break;
-			}
-		}
-		return result;
+		return this.extensionMappings.get(extension.getId());
 	}
 	
 	@Transient

@@ -19,7 +19,7 @@ package org.gbif.provider.webapp.action.manage;
 import java.util.List;
 
 import org.gbif.provider.service.GenericManager;
-import org.appfuse.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.Extension;
 
 import com.opensymphony.xwork2.Preparable;

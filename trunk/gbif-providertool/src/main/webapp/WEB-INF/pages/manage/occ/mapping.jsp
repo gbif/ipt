@@ -4,6 +4,11 @@
     <title><s:text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="mapping.resource.title"/>"/>
     <meta name="submenu" content="manage"/>
+    <script>
+    	function copySQL(sql){
+    		$('mappingSourceSql').value=sql;
+    	}
+    </script>
 </head>
 
 <s:url id="editResourceConnectionUrl" action="editResourceConnection"/>
@@ -25,21 +30,24 @@
 	    <s:hidden key="extension_id"/>
 	    
 	    <!-- cssClass="text large" -->    
-	    <s:textarea key="mapping.sourceSql" required="true" cssClass="text large"/>
-	    <span>
-	    Copy already existing sources
-	    <ul class="clean">
-	    	<li>core</li>
-	    	<li>geospatial</li>
-	    </ul>
-	    </span>
+	    <s:textarea id="mappingSourceSql" key="mapping.sourceSql" required="true" cssClass="text large"/>
+	    <s:if test="%{!existingDbMappings.isEmpty}">
+		    <span>
+		    Copy already existing sources
+			<ul class="actionmenu">
+			  <s:iterator value="existingDbMappings" status="exMapStat">
+		    	<li><a href="JavaScript:copySQL('<s:property value="%{sourceSql}"/>');return false;"><s:property value="%{extension.name}"/></a></li>
+		      </s:iterator>
+		    </ul>
+		    </span>
+	    </s:if>
 	    <br/>
 	    
 	    <s:submit cssClass="button" key="button.save" theme="simple"/>
 	    <s:if test="%{mapping.id}">
-	        <s:submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
+	        <s:submit cssClass="button" name="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
 	    </s:if>
-	    <s:submit cssClass="button" method="cancel" key="button.done" theme="simple"/>
+	    <s:submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
 	
 	  </s:form>
 	</s:if>
@@ -57,6 +65,7 @@
 	<h2>Configure File Import Source</h2>
 	<s:form action="uploadMappingSource" enctype="multipart/form-data" method="post" validate="true" id="uploadForm">
 	    <s:hidden key="resource_id"/>
+	    <s:hidden key="extension_id"/>
 	    <s:hidden key="mapping_id"/>
 	    <li class="info">
 	        Please upload a tab delimited file to base the mapping on.
@@ -64,7 +73,7 @@
 	    <s:file name="file" key="mapping.selectUploadFile" cssClass="text file" required="true"/>
 	    <li class="buttonBar bottom">
 	        <s:submit key="button.upload" name="upload" cssClass="button"/>
-		    <s:submit method="cancel" key="button.cancel" theme="simple" cssClass="button" />
+		    <s:submit name="cancel" key="button.cancel" theme="simple" cssClass="button" />
 	    </li>
 	</s:form>
 	<p>
@@ -127,7 +136,10 @@
 	<c:set var="buttons">
 	    <li class="buttonBar bottom">
 	        <s:submit cssClass="button" key="button.save" theme="simple"/>
-	        <s:submit cssClass="button" method="cancel" key="button.done" theme="simple"/>
+		    <s:if test="%{mapping.id}">
+		        <s:submit cssClass="button" name="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
+		    </s:if>
+	        <s:submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
 	    </li>
 	</c:set>
 	

@@ -41,11 +41,9 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.NotNull;
 
-public interface CoreRecord extends BaseObject {
+public interface CoreRecord extends ResourceRelatedObject {
 	public static final String ID_COLUMN_NAME = "#id";
 	public static final String MODIFIED_COLUMN_NAME = "#modified";
-
-	Long getId();
 
 	String getLocalId();
 	void setLocalId(String localId);
@@ -65,6 +63,4 @@ public interface CoreRecord extends BaseObject {
 	boolean isProblematic();
 	void setProblematic(boolean isProblematic);
 	
-	Resource getResource();
-
 }

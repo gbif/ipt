@@ -182,17 +182,7 @@ $('rank').observe('change', updateByTaxon);
 	</div>
 </div>
 
-<!-- 	intgrate into taxon drop down !!!
-<div id="tax2-pie" class="stats chart">
-	<label><s:text name="stats.occByTop10Taxa"/></label>
-	<div id="imgByTop10Taxa">
-		<s:action name="occResourceStatsByTop10Taxa" namespace="/ajax" executeResult="true"/>
-	</div>
-</div>
- -->
-
 <br class="clearfix" />
-
 
 
 <div id="host-pie" class="stats chart">

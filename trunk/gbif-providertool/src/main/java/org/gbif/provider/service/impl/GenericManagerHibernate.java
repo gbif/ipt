@@ -105,6 +105,7 @@ import org.springframework.transaction.annotation.Transactional;
 	    /**
 	     * {@inheritDoc}
 	     */
+		@Transactional(readOnly = false)
 	    public void remove(Long id) {
 			T obj = get(id);
 			if (obj != null) {
@@ -115,6 +116,7 @@ import org.springframework.transaction.annotation.Transactional;
 	    /**
 	     * {@inheritDoc}
 	     */
+		@Transactional(readOnly = false)
 		public void remove(T obj) {
 	    	getSession().delete(obj);
 	    	flush();

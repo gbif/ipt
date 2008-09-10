@@ -28,7 +28,7 @@ public class DataAction extends BaseOccurrenceResourceAction {
     public String execute() throws FileNotFoundException{
     	if (resource_id != null){
     		OccurrenceResource res = occResourceManager.get(resource_id);
-    		File data = res.getDumpArchiveFile();
+    		File data = cfg.getDumpArchiveFile(res.getId());
     		inputStream = new FileInputStream(data);
     		return SUCCESS;
     	}
@@ -38,7 +38,7 @@ public class DataAction extends BaseOccurrenceResourceAction {
     public String logo() throws FileNotFoundException{
     	if (resource_id != null){
     		OccurrenceResource res = occResourceManager.get(resource_id);
-    		File logo = res.getLogoFile();
+    		File logo = cfg.getResourceLogoFile(res.getId());
     		try {
 				inputStream = new FileInputStream(logo);
 			} catch (FileNotFoundException e) {

@@ -21,7 +21,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.apache.struts2.util.ServletContextAware;
-import org.appfuse.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;

@@ -21,9 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.UploadChartBuilder;
+import org.hibernate.Session;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -32,7 +34,7 @@ import org.gbif.provider.util.UploadChartBuilder;
  *
  * @param <T>
  */
-public class UploadEventManagerHibernate extends GenericManagerHibernate<UploadEvent> implements UploadEventManager {
+public class UploadEventManagerHibernate extends GenericResourceRelatedManagerHibernate<UploadEvent> implements UploadEventManager {
 	public UploadEventManagerHibernate() {
 		super(UploadEvent.class);
 	}
@@ -78,6 +80,5 @@ public class UploadEventManagerHibernate extends GenericManagerHibernate<UploadE
 	public UploadEvent save(UploadEvent object) {
 		return super.save(object);
 	}
-
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Queue;
 
 
-public interface TreeNode<T extends TreeNode, E extends Enum> extends BaseObject {
+public interface TreeNode<T extends TreeNode, E extends Enum> extends ResourceRelatedObject {
 	public String getLabel();
 	public T getParent();
 	/**

@@ -12,16 +12,16 @@ public class AppConfigTest extends ContextAwareTestBase{
 
 	@Test
 	public void testPropertiesLoaded() {
-		assertEquals("http://localhost:8080", cfg.getAppBaseUrl());
+		assertEquals("http://localhost:8080", cfg.getBaseUrl());
 	}
 
 	@Test
 	public void testSetAppBaseUrl() {
-		cfg.setAppBaseUrl("http://localhost:8080/");
-		assertEquals("http://localhost:8080", cfg.getAppBaseUrl());
+		cfg.setBaseUrl("http://localhost:8080/");
+		assertEquals("http://localhost:8080", cfg.getBaseUrl());
 		
-		cfg.setAppBaseUrl(" http://localhost:8080  ");
-		assertEquals("http://localhost:8080", cfg.getAppBaseUrl());
+		cfg.setBaseUrl(" http://localhost:8080  ");
+		assertEquals("http://localhost:8080", cfg.getBaseUrl());
 	}
 
 }

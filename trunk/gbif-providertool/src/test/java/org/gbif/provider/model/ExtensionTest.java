@@ -71,12 +71,12 @@ public class ExtensionTest extends BaseDaoTestCase{
 		assertTrue(res.getExtensionMappings().size()==2);
 		assertTrue(res.getCoreMapping().getExtension().getId().equals(OccurrenceResource.CORE_EXTENSION_ID));
 		// the core mapping should not be in the extension mappings map
-		assertFalse(res.getExtensionMappings().containsValue(res.getCoreMapping()));
+		assertFalse(res.getExtensionMappings().contains(res.getCoreMapping()));
 		// but in all mappings it should:
 		assertTrue(res.getAllMappings().contains(res.getCoreMapping()));
 
-		for (Long i : res.getExtensionMappings().keySet()){
-			Extension e = res.getExtensionMappings().get(i).getExtension();
+		for (Long i : res.getExtensionMappingsMap().keySet()){
+			Extension e = res.getExtensionMappingsMap().get(i).getExtension();
 			Long i2 = e.getId();
 			assertTrue(i.equals(i2));
 		}

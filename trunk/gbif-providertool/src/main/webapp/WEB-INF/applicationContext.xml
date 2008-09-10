@@ -17,21 +17,15 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
     
-    <!-- application properties -->    
-    <bean id="cfg" class="org.gbif.provider.util.AppConfig">
-        <property name="appBaseUrl" value="${app.baseUrl}" />
-        <property name="geoserverBaseUrl" value="${app.geoserverUrl}" />
-        <property name="providerTitle" value="${provider.title}" />
-        <property name="providerDescription" value="${provider.description}" />
-        <property name="providerDescriptionImage" value="${provider.descriptionImage}" />
-        <property name="providerLogo" value="${provider.logo}" />
-        <property name="providerHomepage" value="${provider.homepage}" />
-    </bean>
-
 
     <!-- Struts Interceptors -->
     <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_MANAGER"/>
+        <property name="authorizedRoles">
+            <list>
+                <value>ROLE_ADMIN</value>
+                <value>ROLE_MANAGER</value>
+            </list>
+        </property>
     </bean>
     
     <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
@@ -53,7 +47,7 @@
     <bean id="abstractManager" abstract="true">
         <!--property name="sessionFactory" ref="sessionFactory"/-->
     </bean>
-
+    
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
     <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
@@ -87,11 +81,17 @@
     </bean>
     
     <bean id="tabFileProcessManager" class="org.gbif.provider.service.impl.TabFileProcessManagerImpl"/>        
-    
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
         <constructor-arg ref="extensionManager"/>
     </bean>
+    
 
+    <!-- PROVIDER/APPLICATION CONFIGURATION -->
+    <bean id="providerCfgManager" class="org.gbif.provider.service.impl.ProviderCfgManagerHibernate" parent="abstractManager"/>
+    <bean id="cfg" class="org.gbif.provider.util.AppConfig">        
+        <constructor-arg ref="providerCfgManager"/>
+    </bean>
+    
     
 
 

@@ -1,6 +1,5 @@
 package org.gbif.provider.upload;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
@@ -9,6 +8,7 @@ import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.OccResourceManager;
+import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.JobUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public abstract class TaskBase{
 	protected final Log log = LogFactory.getLog(getClass());
 	protected final I18nLog logdb = I18nLogFactory.getLog(getClass());
 	@Autowired
-	private AppConfig cfg;
+	protected AppConfig cfg;
 	// needs manual setting via prepare()
 	private Long userId;
 	private Long resourceId;

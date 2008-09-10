@@ -64,6 +64,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	private String sourceFileLocation;
 	private ColumnMapping coreIdColumn = new ColumnMapping ();
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
+	private int recTotal = 0;
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -99,6 +100,13 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 			this.sourceFileLocation=null;
 		}
 		this.sourceSql = sourceSql;
+	}
+	
+	public int getRecTotal() {
+		return recTotal;
+	}
+	public void setRecTotal(int recTotal) {
+		this.recTotal = recTotal;
 	}
 	
 	public String getSourceFileLocation() {
