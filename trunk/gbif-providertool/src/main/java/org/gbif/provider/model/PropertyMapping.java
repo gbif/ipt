@@ -16,6 +16,7 @@
 
 package org.gbif.provider.model;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -81,6 +82,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 		this.property = property;
 	}
 	
+    @AttributeOverride(name="columnName", column = @Column(name="column_name") )
 	public ColumnMapping getColumn() {
 		return column;
 	}

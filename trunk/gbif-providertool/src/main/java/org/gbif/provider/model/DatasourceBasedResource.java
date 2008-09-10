@@ -17,17 +17,13 @@
 package org.gbif.provider.model;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,22 +33,14 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.MapKey;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.CannotGetJdbcConnectionException;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 
@@ -250,42 +238,7 @@ public abstract class DatasourceBasedResource extends Resource {
 		}
 		return result;
 	}
-	
-	
-	@Transient
-    public File getDumpFile(Extension extension) throws IOException{    	
-		File file = new File(getDataDir(), String.format("%s.txt", extension.getTablename()));
-		return file;
-	}    
-
-	@Transient
-    public File getDumpSourceFile(Extension extension) throws IOException{    	
-		File file = new File(getSourceDataDir(), String.format("%s.txt", extension.getTablename()));
-		return file;
-	}    
-
-	@Transient
-    public File getDumpArchiveFile(){
-		File file = new File(getDataDir(), "data.zip");
-		return file;    	
-    }
-
-	@Transient
-    public String getDetailsUrl(String guid){
-		String base = AppConfig.getAppBaseUrl();
-    	return String.format("%s/%s/detail.html", getResourceBaseUrl(), guid);
-    }
-
-	@Transient
-    public String getDumpArchiveUrl(){
-		return String.format("%s/data.zip", getResourceBaseUrl());
-    }
-
-	@Transient
-	public boolean isUploading(){
-		//FIXME: implement this via lastUploadLog or new isUploading boolean flag
-		return false;
-	}
+		
 	
 	public Integer getUploadScheduleIntervalInDays() {
 		return uploadScheduleIntervalInDays;

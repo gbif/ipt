@@ -16,36 +16,19 @@
 
 package org.gbif.provider.model;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
-import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.Constants;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.MapKey;
-import org.hibernate.annotations.MapKeyManyToMany;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.model.dto.StatsCount;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.MapKey;
 
 /**
  * A specific resource representing the external datasource for uploading darwincore records
@@ -55,7 +38,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
 	public static final Long CORE_EXTENSION_ID = 1l;
-	
+	private BBox bbox;
 	// cached statistics
 	private int recTotal;
 	private int recWithCoordinates;
@@ -68,7 +51,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	private int numTerminalRegions;
 	private Map<String, Long> numTaxaByCountry = new HashMap<String, Long>();
 	
-	private int numSpecies;
 	private int numGenera;
 	private int numFamilies;
 	private int numOrders;
@@ -88,6 +70,13 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		resource.setCoreMapping(coreVM);
 		resource.resetStats();
 		return resource;
+	}
+
+	public BBox getBbox() {
+		return bbox;
+	}
+	public void setBbox(BBox bbox) {
+		this.bbox = bbox;
 	}
 
 	public int getRecTotal() {
@@ -223,14 +212,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		this.numKingdoms = numKingdoms;
 	}
 
-	public int getNumSpecies() {
-		return numSpecies;
-	}
-
-	public void setNumSpecies(int numSpecies) {
-		this.numSpecies = numSpecies;
-	}
-
 	
 	public int getNumTerminalRegions() {
 		return numTerminalRegions;
@@ -248,18 +229,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		this.numTerminalTaxa = numTerminalTaxa;
 	}
 
-	@Transient
-	public String getTapirEndpoint(){
-		String base = AppConfig.getAppBaseUrl();
-    	return String.format("%s/tapir/%s/", base, getId().toString());
-	}
-	
-	@Transient
-	public String getWfsEndpoint(){
-		String base = AppConfig.getAppBaseUrl();
-    	return String.format("%s/wfs/%s", base, getId().toString());
-	}
-	    
 
     
 	public String toString() {
@@ -277,7 +246,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		numTaxaByCountry.clear();
 		
 		numTaxa=0;
-		numSpecies=0;
 		numGenera=0;
 		numFamilies=0;
 		numOrders=0;

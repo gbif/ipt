@@ -34,7 +34,6 @@ import javax.persistence.Transient;
 
 import org.appfuse.model.User;
 import org.gbif.provider.model.hibernate.Timestampable;
-import org.gbif.provider.util.AppConfig;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -42,19 +41,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A generic resource describing any digitial, online and non digital available biological resources
- * Should be replaced by a proper GBRDS model class.
- * Lacking most properties and multilingual abilities
+ * Only keeps the basic properties, but links to a far more expressive EML file via the embedded ResourceMetadata type.
  * @author markus
- *
  */
 @Entity
 public class Resource implements BaseObject, Comparable<Resource>, Timestampable{
 	private Long id;
 	protected String guid = UUID.randomUUID().toString();
-	protected String link;
 	// resource metadata
-	protected String title;
-	protected String description;
+	protected ResourceMetadata meta = new ResourceMetadata();
 	// resource meta-metadata
 	protected User creator;
 	protected Date created;
@@ -77,13 +72,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public void setGuid(String guid) {
 		this.guid = guid;
 	}
-	
-	public String getLink() {
-		return link;
-	}
-	public void setLink(String link) {
-		this.link = link;
-	}
 
 	@Transient
 	public String getType(){
@@ -97,25 +85,14 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.modified = modified;
 	}
 	
-	
-	@Column(length=128)
-	@org.hibernate.annotations.Index(name="title")
-	public String getTitle() {
-		return title;
+	@ManyToOne
+	public User getModifier() {
+		return modifier;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setModifier(User modifier) {
+		this.modifier = modifier;
 	}
-	
-	@Lob
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	
+
 	@ManyToOne
 	public User getCreator() {
 		return creator;
@@ -131,18 +108,58 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.created = created;
 	}
 	
-	@ManyToOne
-	public User getModifier() {
-		return modifier;
+	public ResourceMetadata getMeta() {
+		return meta;
 	}
-	public void setModifier(User modifier) {
-		this.modifier = modifier;
+	public void setMeta(ResourceMetadata meta) {
+		this.meta = meta;
 	}
 	
+	
+	// DELEGATE METHODS
+	@Transient
+	public String getLink() {
+		return meta.getLink();
+	}
+	@Transient
+	public String getContactEmail() {
+		return meta.getContactEmail();
+	}
+	@Transient
+	public String getContactName() {
+		return meta.getContactName();
+	}
+	@Transient
+	public String getDescription() {
+		return meta.getDescription();
+	}
+	@Transient
+	public String getTitle() {
+		return meta.getTitle();
+	}
+	
+
+	public void setLink(String link) {
+		meta.setLink(link);
+	}
+	public void setContactEmail(String contactEmail) {
+		meta.setContactEmail(contactEmail);
+	}
+	public void setContactName(String contactName) {
+		meta.setContactName(contactName);
+	}
+	public void setDescription(String description) {
+		meta.setDescription(description);
+	}
+	public void setTitle(String title) {
+		meta.setTitle(title);
+	}
+	
+
 	
 	public int compareTo(Resource object) {
-		if (this.title != null){
-			return this.title.compareToIgnoreCase(object.getTitle());
+		if (this.getTitle() != null){
+			return this.getTitle().compareToIgnoreCase(object.getTitle());
 		}else{
 			return "".compareToIgnoreCase(object.getTitle());
 		}
@@ -158,9 +175,9 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		Resource rhs = (Resource) object;
 		return new EqualsBuilder().append(this.modified, rhs.modified).append(
 				this.created, rhs.created).append(this.creator, rhs.creator)
-				.append(this.title, rhs.title).append(this.modifier,
-						rhs.modifier).append(this.description, rhs.description)
-				.append(this.guid, rhs.guid).append(this.link, rhs.link)
+				.append(this.getTitle(), rhs.getTitle()).append(this.modifier,
+						rhs.modifier).append(this.getDescription(), rhs.getDescription())
+				.append(this.guid, rhs.guid).append(this.getLink(), rhs.getLink())
 				.append(this.id, rhs.id).isEquals();
 	}
 	/**
@@ -169,8 +186,8 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public int hashCode() {
 		return new HashCodeBuilder(1501230247, -1510855635).append(
 				this.modified).append(this.created).append(this.creator)
-				.append(this.title).append(this.modifier).append(
-						this.description).append(this.guid).append(this.link)
+				.append(this.getTitle()).append(this.modifier).append(
+						this.getDescription()).append(this.guid).append(this.getLink())
 				.toHashCode();
 	}
 	/**
@@ -179,44 +196,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public String toString() {
 		return new ToStringBuilder(this).append("created", this.created)
 				.append("modified", this.modified).append("creator",
-						this.creator).append("description", this.description)
-				.append("id", this.id).append("title", this.title).append(
-						"link", this.link).append("modifier", this.modifier)
+						this.creator).append("description", this.getDescription())
+				.append("id", this.id).append("title", this.getTitle()).append(
+						"link", this.getLink()).append("modifier", this.modifier)
 				.append("guid", this.guid).toString();
 	}
-	
-	
-	
-	@Transient
-	public File getDataDir() {
-		File dir = new File(AppConfig.getDataDir(), getId().toString());
-	    if (!dir.exists()) {
-	        dir.mkdirs();
-	    }
-		return dir;
-	}
-	@Transient
-	public File getSourceDataDir() {
-		File dir = new File(AppConfig.getDataDir(), String.format("sourcedata/%s", getId()));
-	    if (!dir.exists()) {
-	        dir.mkdirs();
-	    }
-		return dir;
-	}
-	@Transient
-	public File getLogoFile() {
-		File file = new File(getDataDir(), "logo.jpg");
-		return file;    	
-	}
-	@Transient
-	public String getLogoUrl() {
-		return String.format("%s/logo.jpg", getResourceBaseUrl());
-	}
-	@Transient
-	public String getResourceBaseUrl() {
-		String base = AppConfig.getAppBaseUrl();
-		return String.format("%s/data/%s", base, getId().toString());
-	}
-
 
 }
