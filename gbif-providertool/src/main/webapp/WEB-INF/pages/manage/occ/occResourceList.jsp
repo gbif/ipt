@@ -18,19 +18,8 @@
 
 <c:out value="${buttons}" escapeXml="false" />
 
-<display:table name="occResources" uid="res" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
-    <display:column property="title" sortable="true" href="resource.html" media="html"
-        paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
-    <display:column property="serviceName" sortable="true" titleKey="occResource.serviceName"/>
-    <display:column property="recordCount" sortable="true" titleKey="resource.recordCount"/>
-	<display:column property="lastUpload.executionDate" sortable="true" titleKey="resource.lastUpload" format="{0,date,${datePattern}}"/>    
-    
-    <display:setProperty name="paging.banner.item_name"><s:text name="resourceList.resource"/></display:setProperty>
-    <display:setProperty name="paging.banner.items_name"><s:text name="resourceList.resources"/></display:setProperty>
-</display:table>
+<%@ include file="/WEB-INF/pages/inc/occResourceList.jsp"%>
 
 <c:out value="${buttons}" escapeXml="false" />
 
-<script type="text/javascript">
-    highlightTableRows("occResourceList");
-</script>
+<br/>

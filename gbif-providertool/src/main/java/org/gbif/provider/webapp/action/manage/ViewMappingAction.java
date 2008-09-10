@@ -19,11 +19,14 @@ package org.gbif.provider.webapp.action.manage;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -36,7 +39,7 @@ import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class ViewMappingAction extends BaseOccurrenceResourceAction implements Preparable{
+public class ViewMappingAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware{
 	private static Integer FIXED_TERMS_IDX = 1000;
     private DatasourceInspectionManager datasourceInspectionManager;
     private GenericManager<Extension> extensionManager;
@@ -50,6 +53,8 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	private Long mapping_id;
 	private Long extension_id;
 	private OccurrenceResource resource;
+    private Set<ViewMappingBase> existingDbMappings;
+    private Map session;
 		
 
 	@SuppressWarnings("unchecked")
@@ -69,24 +74,35 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         // prepare list of property mappings to create form with
         mappings = new ArrayList<PropertyMapping>();
         int filledMappings = 0;
-    	for (ExtensionProperty prop : mapping.getExtension().getProperties()){
-    		// is this property mapped already?
-    		if (mapping.hasMappedProperty(prop)){
-    			// add existing mapping
-            	mappings.add(mapping.getMappedProperty(prop));
-            	filledMappings++;
-    		}else{
-    			// create new empty one. Remember to link them to the ViewMapping before they get saved
-        		PropertyMapping propMap = PropertyMapping.newInstance(prop);
-            	mappings.add(propMap);
-    		}
-    	}
+        if (mapping != null){
+        	for (ExtensionProperty prop : mapping.getExtension().getProperties()){
+        		// is this property mapped already?
+        		if (mapping.hasMappedProperty(prop)){
+        			// add existing mapping
+                	mappings.add(mapping.getMappedProperty(prop));
+                	filledMappings++;
+        		}else{
+        			// create new empty one. Remember to link them to the ViewMapping before they get saved
+            		PropertyMapping propMap = PropertyMapping.newInstance(prop);
+                	mappings.add(propMap);
+        		}
+        	}
+        }
 		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
 
 	}
 	private void prepareWithDatasource(){
         prepareSourceDataPreview();
-		prepareMappingsOptions();		
+		prepareMappingsOptions();
+		prepareExistingMappings();
+	}
+	private void prepareExistingMappings() {
+		existingDbMappings = new HashSet<ViewMappingBase>();
+		for (ViewMappingBase vm : resource.getAllMappings()){
+			if (vm.getSourceSql() != null && vm.getSourceSql().trim().length() > 5){
+				existingDbMappings.add(vm);
+			}
+		}
 	}
 	private void prepareSourceDataPreview(){
 		log.debug("prepareSourceDataPreview");
@@ -155,6 +171,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         // cascade-save view mapping
         boolean isNew = (mapping.getId() == null);
         mapping = viewMappingManager.save(mapping);
+        mapping_id = mapping.getId(); 
         String key = (isNew) ? "mapping.added" : "mapping.updated";
         saveMessage(getText(key));
         return SUCCESS;
@@ -163,6 +180,9 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	public String saveProperties() throws Exception {
         if (cancel != null) {
             return "cancel";
+        }
+        if (delete != null) {
+            return delete();
         }
 		prepareWithDatasource();
         // update property mapping values
@@ -191,6 +211,7 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 
     
     public String delete() {
+    	resource.removeExtensionMapping(mapping);
     	viewMappingManager.remove(mapping.getId());
         saveMessage(getText("viewMapping.deleted"));
         return "cancel";
@@ -262,6 +283,12 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 	
 	public SortedMap<String, String> getColumnOptions() {
 		return columnOptions;
+	}
+	public Set<ViewMappingBase> getExistingDbMappings() {
+		return existingDbMappings;
+	}
+	public void setSession(Map session) {
+		this.session=session;
 	}
     
 }

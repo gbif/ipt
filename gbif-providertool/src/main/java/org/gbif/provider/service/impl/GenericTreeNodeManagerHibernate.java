@@ -13,8 +13,9 @@ import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Transactional;
 
-public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends GenericManagerHibernate<T> implements TreeNodeManager<T> {
+public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends GenericResourceRelatedManagerHibernate<T> implements TreeNodeManager<T> {
 
 	public GenericTreeNodeManagerHibernate(final Class<T> persistentClass) {
 	        super(persistentClass);
@@ -42,8 +43,10 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
         .setLong("resourceId", resourceId)
 		.list();
 	}
-
-	public int deleteAll(Resource resource) {
+	
+	@Override
+	@Transactional(readOnly = false)
+	public int removeAll(Resource resource) {
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 		Session session = getSession();
@@ -62,5 +65,5 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 		        .executeUpdate();
 		log.info(String.format("Removed %s %ss bound to resource %s", count, propName, resource.getTitle()));
 		return count;
-	}
+	}	
 }

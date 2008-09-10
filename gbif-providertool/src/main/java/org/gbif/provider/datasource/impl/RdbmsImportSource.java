@@ -144,9 +144,11 @@ public class RdbmsImportSource implements ImportSource{
 		    		}
 		    	}
 			} catch (SQLException e) {
-				log.error("Exception while iterating RDBMS source", e);
+				log.error("Exception while retrieving RDBMS source record", e);
+				hasNext = false;
 				row=null;
 			}
+			
 			try {
 				// forward rs cursor
 				hasNext = rs.next();

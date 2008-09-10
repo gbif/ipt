@@ -85,6 +85,8 @@ public class OccurrenceResource extends DatasourceBasedResource {
 
 	public void setRecTotal(int recTotal) {
 		this.recTotal = recTotal;
+		// also set the same number in core mapping
+		getCoreMapping().setRecTotal(recTotal);
 	}
 
 	public int getRecWithCoordinates() {

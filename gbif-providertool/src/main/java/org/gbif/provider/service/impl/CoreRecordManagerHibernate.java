@@ -51,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T>
  */
 @Transactional(readOnly=true)
-public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericManagerHibernate<T> implements CoreRecordManager<T> {
+public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericResourceRelatedManagerHibernate<T> implements CoreRecordManager<T> {
 	protected String[] FIELD_NAMES;
 	
 	public CoreRecordManagerHibernate(Class<T> persistentClass, String[] searchableFieldNames) {

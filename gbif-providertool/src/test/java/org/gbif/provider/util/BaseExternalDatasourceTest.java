@@ -30,7 +30,7 @@ public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 		datasourceRegistry.registerDatasource(resource);
 	}
 	
-	public Resource getTestResource() {
+	public DatasourceBasedResource getTestResource() {
 		return resource;
 	}	
 

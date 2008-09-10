@@ -16,44 +16,33 @@
 
 package org.gbif.provider.webapp.action;
 
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.Authentication;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.SecurityContextHolder;
-import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.model.LabelValue;
 import org.appfuse.model.User;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.ResourceManager;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.model.OccurrenceResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 
-import com.opensymphony.xwork2.Preparable;
-
-public class BaseOccurrenceResourceAction extends org.appfuse.webapp.action.BaseAction{
+public class BaseOccurrenceResourceAction extends BaseAction{
 	@Autowired
     protected OccResourceManager occResourceManager;
 	protected Long resource_id;
 	
 	public User getCurrentUser(){
-		SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
+		final SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
 	    // secure context will be null when running unit tests so leave userId as null
 	    if (secureContext != null) {
-	        Authentication auth = (Authentication) ((SecurityContext) SecurityContextHolder.getContext()).getAuthentication();
+	        final Authentication auth = (Authentication) ((SecurityContext) SecurityContextHolder.getContext()).getAuthentication();
 	        if (auth.getPrincipal() instanceof UserDetails) {
-	            User user = (User) auth.getPrincipal();
+	            final User user = (User) auth.getPrincipal();
 	    		return user;
 	        }
 	    }
 		return null;
 	}
 
-	public void setResource_id(Long resource_id) {
+	public void setResource_id(final Long resource_id) {
 		this.resource_id = resource_id;
 	}
 

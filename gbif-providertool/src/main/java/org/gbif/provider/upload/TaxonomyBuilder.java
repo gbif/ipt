@@ -146,7 +146,6 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 		// store stats
 		getResource().setNumTaxa(nodes.size());
 		getResource().setNumTerminalTaxa(terminalNodes.size());
-		getResource().setNumSpecies(stats.get(Rank.Species));
 		getResource().setNumGenera(stats.get(Rank.Genus));
 		getResource().setNumFamilies(stats.get(Rank.Family));
 		getResource().setNumOrders(stats.get(Rank.Order));

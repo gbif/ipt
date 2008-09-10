@@ -6,7 +6,7 @@
     <meta name="submenu" content="resource"/>
 </head>
 
-<s:put value="dwc">
+<s:push value="dwc">
 <h2><s:property value="taxon.fullname"/></h2>	
 
 <s:form>
@@ -80,7 +80,7 @@
 
 </s:form>
 
-</s:put>
+</s:push>
 
 
 <br class="clearfix" />

@@ -35,13 +35,13 @@ public class Dbi18LoggingTest extends ContextAwareTestBase{
 	public void testBuildHierarchy() {
 		try {
 			int i = 1/0;
-		} catch (Exception e1) {
+		} catch (ArithmeticException e) {
 			log.debug("debug");
-			log.warn("warn", e1);
-			log.error("error", e1);
+			log.warn("warn", e);
+			log.error("error", e);
 			logdb.debug("log.bongo", "debug");
-			logdb.warn("log.bongo", "warn", e1);
-			logdb.error("log.bongo", "error", e1);
+			logdb.warn("log.bongo", "warn", e);
+			logdb.error("log.bongo", "error", e);
 		}
 	}
 

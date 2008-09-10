@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.appfuse.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.TabFileProcessManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class SourceFileUploadAction extends BaseAction{
@@ -22,7 +23,6 @@ public class SourceFileUploadAction extends BaseAction{
     private String fileContentType;
     private String fileFileName;
 	private Long mapping_id;
-
 	/**
      * Upload the file
      * @return String with result (cancel, input or sucess)
@@ -36,7 +36,7 @@ public class SourceFileUploadAction extends BaseAction{
 		ViewMappingBase mapping = viewMappingManager.get(mapping_id);
 		DatasourceBasedResource resource = mapping.getResource();
         // the directory to upload to
-		File targetFile = resource.getDumpSourceFile(mapping.getExtension());
+		File targetFile = cfg.getSourceFile(resource.getId(), mapping.getExtension());
 
         //retrieve the file data
         InputStream stream = new FileInputStream(file);

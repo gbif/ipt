@@ -86,8 +86,12 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public String statsByTaxon() {
 		Rank rnk = Rank.getByInt(type);
 		types = Rank.DARWIN_CORE_RANKS;
-		data = occResourceManager.occByTaxon(resource_id, rnk);
-		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
+		if (rnk == Rank.Species){
+			statsByTop10Taxa();
+		}else{
+			data = occResourceManager.occByTaxon(resource_id, rnk);
+			chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
+		}
 		return PIE_RESULT;
 	}
 	

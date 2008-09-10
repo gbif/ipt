@@ -34,7 +34,7 @@ import org.gbif.provider.model.voc.Rank;
 
 
 @Entity
-public class Taxon extends TreeNodeBase<Taxon, Rank> {
+public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedObject {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
 		private Resource resource;

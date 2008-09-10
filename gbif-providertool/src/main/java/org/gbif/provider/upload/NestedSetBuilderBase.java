@@ -102,7 +102,7 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 	public void prepare() {
 		terminalNodes = new HashSet<T>();
 		nodes = new TreeMap<Integer, T>();
-		nodeManager.deleteAll(getResource());		
+		nodeManager.removeAll(getResource());		
 	}
 	
 	public String status() {

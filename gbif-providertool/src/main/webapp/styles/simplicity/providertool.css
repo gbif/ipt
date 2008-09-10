@@ -192,6 +192,12 @@ div#preview td {
 
 
 
+form#saveMappingProperties ul li {
+    list-style-type: none;
+    margin-left: 0;
+	display: inline;
+}
+
 /* @end */
 
 

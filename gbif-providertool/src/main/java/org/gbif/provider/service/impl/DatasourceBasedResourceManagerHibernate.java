@@ -16,10 +16,16 @@
 
 package org.gbif.provider.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -36,16 +42,30 @@ public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedRe
 	}
 
 	@Autowired
+	protected AppConfig cfg;
+	@Autowired
 	private DatasourceRegistry registry;
+	@Autowired
+	private CacheManager cacheManager;
 	
 
 	@Override
 	public void remove(Long id) {
+		// first remove all associated core records, taxa and regions
+		cacheManager.clearCache(id);
 		// update registry
 		if (registry.containsKey(id)){
 			registry.removeDatasource(id);
 		}
-		// call the real thing
+		// remove data dir
+		File dataDir = cfg.getResourceDataDir(id);
+		try {
+			FileUtils.deleteDirectory(dataDir);
+			log.info("Removed occurrence data dir "+dataDir.getAbsolutePath());
+		} catch (IOException e) {
+			log.error("Cant remove data dir for resource "+id, e);
+		}
+		// remove resource entity
 		super.remove(id);
 	}
 

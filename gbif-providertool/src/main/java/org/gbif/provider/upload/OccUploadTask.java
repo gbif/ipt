@@ -18,6 +18,7 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
@@ -30,6 +31,7 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
@@ -50,15 +52,19 @@ import org.springframework.transaction.annotation.Transactional;
 		private List<File> dumpFiles = new ArrayList<File>();
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
-		private AtomicInteger recordsUploaded;
-		private AtomicInteger recordsDeleted;
-		private AtomicInteger recordsChanged;
-		private AtomicInteger recordsAdded;
-		private AtomicInteger recordsErroneous;
+		private Integer recordsUploaded;
+		private Integer recordsDeleted;
+		private Integer recordsChanged;
+		private Integer recordsAdded;
+		private Integer recordsErroneous;
 		private int recWithCoordinates;
 		private int recWithCountry;
 		private int recWithAltitude;
 		private int recWithDate;
+		private BBox bbox;
+		private AtomicInteger currentUploaded;
+		private AtomicInteger currentErroneous;
+		private String currentExtension;
 
 		
 		@Autowired
@@ -89,7 +95,7 @@ import org.springframework.transaction.annotation.Transactional;
 				dumpFiles.add(coreFile);
 				
 				// upload further extensions one by one
-				for (ViewMappingBase vm : getResource().getExtensionMappings().values()){
+				for (ViewMappingBase vm : getResource().getExtensionMappings()){
 					Extension ext = vm.getExtension();
 					// run import into db & dump file
 					try {
@@ -118,7 +124,7 @@ import org.springframework.transaction.annotation.Transactional;
 			geographyBuilder.close();
 			setStats();
 			// zip all files into single archive
-			File archive = getResource().getDumpArchiveFile();
+			File archive = cfg.getDumpArchiveFile(getResourceId());
 			archive.createNewFile();
 			log.info("Dump file archive created at "+archive.getAbsolutePath());
 			ZipUtil.zipFiles(dumpFiles, archive);						
@@ -126,23 +132,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 		private void setStats(){
 			// update resource and upload event statistics
-			recordsDeleted.set(getResource().getRecTotal()+recordsAdded.get()-recordsUploaded.get());
+			recordsDeleted = getResource().getRecTotal()+recordsAdded-recordsUploaded;
 			// store event
-			event.setRecordsAdded(recordsAdded.get());
-			event.setRecordsChanged(recordsChanged.get());
-			event.setRecordsDeleted(recordsDeleted.get());
-			event.setRecordsUploaded(recordsUploaded.get());		
-			event.setRecordsErroneous(recordsErroneous.get());		
+			event.setRecordsAdded(recordsAdded);
+			event.setRecordsChanged(recordsChanged);
+			event.setRecordsDeleted(recordsDeleted);
+			event.setRecordsUploaded(recordsUploaded);		
+			event.setRecordsErroneous(recordsErroneous);		
 			// save upload event
 			event = uploadEventManager.save(event);
 			
 			// update resource properties
 			getResource().setLastUpload(event);
-			getResource().setRecTotal(recordsUploaded.get());
+			getResource().setRecTotal(recordsUploaded);
 			getResource().setRecWithCoordinates(recWithCoordinates);
 			getResource().setRecWithCountry(recWithCountry);
 			getResource().setRecWithAltitude(recWithAltitude);
 			getResource().setRecWithDate(recWithDate);
+			getResource().setBbox(bbox);
 			occResourceManager.save(getResource());
 			
 			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
@@ -150,17 +157,21 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private void prepare() {
-			recordsUploaded = new AtomicInteger(0);
-			recordsDeleted = new AtomicInteger(0);
-			recordsChanged = new AtomicInteger(0);
-			recordsAdded = new AtomicInteger(0);
-			recordsErroneous = new AtomicInteger(0);
+			currentUploaded = new AtomicInteger(0);
+			currentErroneous = new AtomicInteger(0);
+			recordsUploaded = null;
+			recordsErroneous = null;
+			recordsDeleted = 0;
+			recordsChanged = 0;
+			recordsAdded = 0;
 
 			recWithCoordinates=0;
 			recWithCountry=0;
 			recWithAltitude=0;
 			recWithDate=0;
 
+			bbox=new BBox();
+			
 			// track upload in upload event metadata (mainly statistics)
 			event = new UploadEvent();
 			event.setJobSourceId(this.hashCode());
@@ -174,20 +185,8 @@ import org.springframework.transaction.annotation.Transactional;
 			// clear regions
 			geographyBuilder.init(getResourceId(), getUserId());
 			geographyBuilder.prepare();
-			// clear old data/events
-			clearCache();			
-		}
-
-		private void clearCache(){
-			File dataDir = getResource().getDataDir();
-			try {
-				FileUtils.deleteDirectory(dataDir);
-				log.info("Removed old occurrence data dir "+dataDir.getAbsolutePath());
-				FileUtils.forceMkdir(dataDir);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			// TODO: need to remove old uploaded source and generated dump files first? I guess they will be overwritten
 			// clear resource stats
 			getResource().resetStats();
 			occResourceManager.save(getResource());
@@ -197,6 +196,9 @@ import org.springframework.transaction.annotation.Transactional;
 			log.info("Uploading occurrence core for resource "+getResource().getTitle());					
 			ImportSource source;
 			File out = null;
+			currentExtension = getResource().getCoreMapping().getExtension().getName();
+			currentUploaded.set(0);
+			currentErroneous.set(0);
 			try {
 				// create new tab file
 				TabFileWriter writer = prepareTabFile(getResource().getCoreMapping());
@@ -248,18 +250,18 @@ import org.springframework.transaction.annotation.Transactional;
 								darwinCoreManager.flush();
 								dwc = darwinCoreManager.save(dwc);									
 								// increase counter of changed records
-								recordsChanged.addAndGet(1);
+								recordsChanged += 1;
 								
 							}else{
 								// new record that didnt exist before. Just save new dwc
 								dwc.setModified(new Date());
 								dwc = darwinCoreManager.save(dwc);
 								// increase counter of added records
-								recordsAdded.addAndGet(1);
+								recordsAdded += 1;
 							}
 							
 							// count statistics
-							recordsUploaded.addAndGet(1);
+							currentUploaded.addAndGet(1);
 							if (dwc.getLongitudeAsFloat()!=null && dwc.getLatitudeAsFloat()!=null){
 								recWithCoordinates++;
 							}
@@ -280,12 +282,12 @@ import org.springframework.transaction.annotation.Transactional;
 						} catch (InterruptedException e) {
 							throw e;
 						} catch (Exception e) {
-							recordsErroneous.addAndGet(1);
+							currentErroneous.addAndGet(1);
 							logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
 						}
 						
 						// clear session cache once in a while...
-						if (recordsUploaded.get() > 0 && recordsUploaded.get() % 500 == 0){
+						if (currentUploaded.get() > 0 && currentUploaded.get() % 500 == 0){
 							log.debug(status());
 							darwinCoreManager.flush();
 						}
@@ -294,6 +296,9 @@ import org.springframework.transaction.annotation.Transactional;
 						idMap.put(rec.getLocalId(), dwc.getId());
 					}
 				} finally {
+					// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension uploads
+					recordsUploaded = currentUploaded.get();
+					recordsErroneous = currentErroneous.get(); 
 					source.close();
 					// flush and close writer/file				
 					writer.close();
@@ -326,12 +331,18 @@ import org.springframework.transaction.annotation.Transactional;
 			}			
 			// assign link to detailed record if not existing
 			if (dwc.getLink() == null){
-				dwc.setLink(dwc.getDetailsLinkIPT());
+				dwc.setLink(cfg.getDetailUrl(dwc));
 			}
 		}
 
 		private File uploadExtension(Extension extension) throws InterruptedException, ImportSourceException, IOException {
 			File out = null;
+			// keep track of records for each extension and then store the totals in the viewMapping.
+			// once extension is uploaded this counter will be reset by the next extension.
+			// used to feed status()
+			currentExtension = extension.getName();
+			currentUploaded.set(0);
+			currentErroneous.set(0);
 
 			try {
 				// create new tab file
@@ -354,14 +365,22 @@ import org.springframework.transaction.annotation.Transactional;
 							log.warn("uploadManager.unknownLocalId" +paras.toString());
 						}else{
 							// TODO: check if record has changed
-							ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
-							extensionRecordManager.insertExtensionRecord(extRec);
-							// see if darwin core record is affected, e.g. geo extension => coordinates
-							if (extension.getId() == DarwinCore.GEO_EXTENSION_ID){
-								// this is the geo extension!
-								DarwinCore dwc = darwinCoreManager.get(coreId);
-								dwc.updateWithGeoExtension(extRec);
-								darwinCoreManager.save(dwc);
+							try {
+								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
+								extensionRecordManager.insertExtensionRecord(extRec);
+								currentUploaded.addAndGet(1);
+								// see if darwin core record is affected, e.g. geo extension => coordinates
+								if (extension.getId() == DarwinCore.GEO_EXTENSION_ID){
+									// this is the geo extension!
+									DarwinCore dwc = darwinCoreManager.get(coreId);
+									dwc.updateWithGeoExtension(extRec);
+									// update bbox
+									bbox.expandBox(dwc.getCoordinate());
+									darwinCoreManager.save(dwc);
+								}
+							} catch (Exception e) {
+								currentErroneous.addAndGet(1);
+								logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
 							}
 						}
 					}
@@ -388,7 +407,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 		private TabFileWriter prepareTabFile(Extension extension, List<String> additionalHeader) throws IOException{
 			// create new file, overwriting existing one
-			File file = getResource().getDumpFile(extension);
+			File file = cfg.getDumpFile(getResourceId(), extension);
 			file.createNewFile();
 
 			List<String> header = new ArrayList<String>();
@@ -433,7 +452,12 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		public synchronized String status() {
-			return String.format("%s occurrences with %s, %s", recordsUploaded.get(), taxonomyBuilder.status(), geographyBuilder.status());
+			String coreInfo = "";
+			if (recordsUploaded != null){
+				// core uploaded already
+				coreInfo = String.format(", %s occurrences", recordsUploaded);
+			}
+			return String.format("Uploading %s: %s records with %s, %s%s", currentExtension, currentUploaded.get(), taxonomyBuilder.status(), geographyBuilder.status(), coreInfo);
 		}
 
 	}

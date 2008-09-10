@@ -85,8 +85,7 @@
 	 	  <s:iterator value="occResource.getExtensionMappings()" status="mappingStatus">
 			<ul class="subform">
 				<li>
-					<s:property value="extension.name"/>
-					1000 records
+					<s:property value="extension.name"/> <s:property value="recTotal"/> records
 				</li>
 			</ul>
 		  </s:iterator>

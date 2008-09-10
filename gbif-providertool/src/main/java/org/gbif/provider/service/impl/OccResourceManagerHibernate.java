@@ -14,13 +14,21 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.OccResourceManager;
+import org.gbif.provider.service.RegionManager;
+import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
 import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.googlecode.gchartjava.GeographicalArea;
 
 public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
+	@Autowired
+	protected AppConfig cfg;
+	
 	protected static GChartBuilder gpb = new GChartBuilder();
 	public OccResourceManagerHibernate() {
 		super(OccurrenceResource.class);

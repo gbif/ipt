@@ -1,129 +1,200 @@
-/***************************************************************************
-* Copyright (C) 2008 Global Biodiversity Information Facility Secretariat.
-* All Rights Reserved.
-*
-* The contents of this file are subject to the Mozilla Public
-* License Version 1.1 (the "License"); you may not use this file
-* except in compliance with the License. You may obtain a copy of
-* the License at http://www.mozilla.org/MPL/
-*
-* Software distributed under the License is distributed on an "AS
-* IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
-* implied. See the License for the specific language governing
-* rights and limitations under the License.
-
-***************************************************************************/
-
 package org.gbif.provider.util;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ProviderCfg;
+import org.gbif.provider.service.ProviderCfgManager;
 
-
-/**
- * Constant values used throughout the application.
- */
 public class AppConfig {
-	protected static final Log log = LogFactory.getLog(AppConfig.class);
-    private static File DATA_DIR_FILE;
-    // base urls have NO trailing /
-    private static String APP_BASE_URL="";
-    private static String GEOSERVER_BASE_URL;
-    private String providerTitle;
-    private String providerDescription;
-    private String providerDescriptionImage;
-    private String providerLogo;
-    private String providerHomepage;
-    
-    /**
-     * only sets base dir once when first called
-     * @param dataDir
-     */
-    public void setDataDir(String dataDir) {
-    	if (DATA_DIR_FILE == null){
-    		if (dataDir == null){
-    		    throw new NullPointerException();    			
-    		}else{
-    			DATA_DIR_FILE = new File(dataDir);
-    			if (DATA_DIR_FILE.exists()){
-    	    		log.info("writable data directory set to "+dataDir);
-    			}else{
-    				throw new IllegalArgumentException(String.format("writable data directory %s doesn't exist.", dataDir));
-    			}
-    		}
+	protected final Log log = LogFactory.getLog(AppConfig.class);
+	private ProviderCfgManager providerCfgManager;
+	private static ProviderCfg cfg;
+	
+	
+	private AppConfig(ProviderCfgManager providerCfgManager) {
+		super();
+		this.providerCfgManager = providerCfgManager;
+		cfg=providerCfgManager.load();
+		// assure directories exist 
+		setDataDir(cfg.getDataDir());
+	}
+
+	
+	
+	// OTHER MOSTLY STATIC UTILITY METHODS
+
+	// RESOURCE BASICS
+	public static File getResourceDataDir(Long resourceId) {
+		File dir = new File(getDataDir(), resourceId.toString());
+	    if (!dir.exists()) {
+	        dir.mkdirs();
+	    }
+		return dir;
+	}
+	public static String getResourceDataUrl(Long resourceId) {
+		return String.format("%s/data/%s", getBaseUrl(), resourceId.toString());
+	}	
+
+	public static File getResourceLogoFile(Long resourceId) {
+		File file = new File(getResourceDataDir(resourceId), "logo.jpg");
+		return file;    	
+	}
+
+	public static String getResourceLogoUrl(Long resourceId) {
+		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
+	}
+
+	
+	// CORE RECORDS
+    public static String getDetailUrl(CoreRecord core){
+    	if (core.getResource()==null){
+    		throw new IllegalArgumentException("Core records needs a resource");
     	}
+    	return String.format("%s/%s/detail.html", getResourceDataUrl(core.getResource().getId()), core.getGuid());
+    }
+
+    // SOURCE/UPLOAD FILES
+    public static File getSourceFile(Long resourceId, Extension extension) throws IOException{    	
+		File file = new File(getResourceDataDir(resourceId), String.format("source-%s.txt", extension.getTablename()));
+		return file;
+	}    
+
+    // DUMP FILES
+    public static File getDumpFile(Long resourceId, Extension extension) throws IOException{    	
+		File file = new File(getResourceDataDir(resourceId), String.format("data-%s.txt", extension.getTablename()));
+		return file;
+	}    
+
+    public static File getDumpArchiveFile(Long resourceId){
+		File file = new File(getResourceDataDir(resourceId), "data.zip");
+		return file;    	
+    }
+
+    public static String getDumpArchiveUrl(Long resourceId){
+		return String.format("%s/data.zip", getResourceDataUrl(resourceId));
+    }
+
+    // SERVICE ENDPOINTS
+	public static String getTapirEndpoint(Long resourceId){
+		String base = getBaseUrl();
+    	return String.format("%s/tapir/%s/", base, resourceId.toString());
+	}
+	
+	public static String getWfsEndpoint(Long resourceId){
+		String base = getBaseUrl();
+    	return String.format("%s/wfs/%s", base, resourceId.toString());
+	}
+	
+	
+	
+	
+	// CFG DELEGATE METHODS
+	public static String getBaseUrl() {
+		return cfg.getBaseUrl();
 	}
 
-	public static File getDataDir() {
-		return DATA_DIR_FILE;
+	public static String getContactEmail() {
+		return cfg.getMeta().getContactEmail();
 	}
 
-	public void setAppBaseUrl(String appBaseUrl) {
-		appBaseUrl=appBaseUrl.trim();
-		while(appBaseUrl.endsWith("/")){
-			appBaseUrl = (String) appBaseUrl.subSequence(0, appBaseUrl.length()-1);
+	public static String getContactName() {
+		return cfg.getMeta().getContactName();
+	}
+
+	public static String getDataDir() {
+		return cfg.getDataDir();
+	}
+
+	public static String getDescription() {
+		return cfg.getMeta().getDescription();
+	}
+
+	public static String getDescriptionImage() {
+		return cfg.getDescriptionImage();
+	}
+
+	public static String getGeoserverUrl() {
+		return cfg.getGeoserverUrl();
+	}
+
+	public static String getLink() {
+		return cfg.getMeta().getLink();
+	}
+
+	public static String getTitle() {
+		return cfg.getMeta().getTitle();
+	}
+
+	public void setBaseUrl(String baseUrl) {
+		cfg.setBaseUrl(trimUrl(baseUrl));
+	}
+
+	public void setContactEmail(String contactEmail) {
+		cfg.getMeta().setContactEmail(contactEmail);
+	}
+
+	public void setContactName(String contactName) {
+		cfg.getMeta().setContactName(contactName);
+	}
+
+	public void setDataDir(String dataDir) {
+		if (dataDir == null){
+		    throw new NullPointerException();    			
+		}else{
+			File dataDirFile = new File(dataDir);
+			if (!dataDirFile.exists()){
+				dataDirFile.mkdirs();
+				log.info("Created new main data directory at "+dataDir);
+			}
+			cfg.setDataDir(dataDir);
 		}
-		APP_BASE_URL = appBaseUrl;
-	}
-	public static String getAppBaseUrl(){
-		return APP_BASE_URL;
 	}
 
-	public void setGeoserverBaseUrl(String geoserverBaseUrl) {
-		geoserverBaseUrl=geoserverBaseUrl.trim();
-		while(geoserverBaseUrl.endsWith("/")){
-			geoserverBaseUrl = (String) geoserverBaseUrl.subSequence(0, geoserverBaseUrl.length()-1);
+	public void setDescription(String description) {
+		cfg.getMeta().setDescription(description);
+	}
+
+	public void setDescriptionImage(String descriptionImage) {
+		cfg.setDescriptionImage(descriptionImage);
+	}
+
+	public void setGeoserverUrl(String geoserverUrl) {
+		cfg.setGeoserverUrl(trimUrl(geoserverUrl));
+	}
+
+	public void setLink(String link) {
+		cfg.getMeta().setLink(link);
+	}
+
+	public void setTitle(String title) {
+		cfg.getMeta().setTitle(title);
+	}
+
+	
+	
+	// MANAGER "DELEGATE" METHODS
+	public void load() {
+		cfg = providerCfgManager.load();
+	}
+
+	public void save() {
+		providerCfgManager.save(cfg);
+	}
+
+	
+	
+	// UTILITY METHODS
+	private static String trimUrl(String url){
+		url=url.trim();
+		while(url.endsWith("/")){
+			url = (String) url.subSequence(0, url.length()-1);
 		}
-		GEOSERVER_BASE_URL = geoserverBaseUrl;
-	}
-
-	public static String getGeoserverBaseUrl(){
-		return GEOSERVER_BASE_URL;
-	}
-
-	public String getProviderTitle() {
-		return providerTitle;
-	}
-
-	public void setProviderTitle(String providerTitle) {
-		this.providerTitle = providerTitle;
-	}
-
-	public String getProviderDescription() {
-		return providerDescription;
-	}
-
-	public void setProviderDescription(String providerDescription) {
-		this.providerDescription = providerDescription;
-	}
-
-	public String getProviderLogo() {
-		return providerLogo;
-	}
-
-	public void setProviderLogo(String providerLogo) {
-		this.providerLogo = providerLogo;
-	}
-
-	public String getProviderHomepage() {
-		return providerHomepage;
-	}
-
-	public void setProviderHomepage(String providerHomepage) {
-		this.providerHomepage = providerHomepage;
-	}
-
-	public String getProviderDescriptionImage() {
-		return providerDescriptionImage;
-	}
-
-	public void setProviderDescriptionImage(String providerDescriptionImage) {
-		this.providerDescriptionImage = providerDescriptionImage;
-	}
-
-	public String toString(){
-	    return String.format("Provider=%s, DATA_DIR=%s, APP_BASE_URL=%s, GEOSERVER_BASE_URL=%s", providerTitle, DATA_DIR_FILE, APP_BASE_URL, GEOSERVER_BASE_URL);		
-	}
+		return url;
+	}	
+	
 }
