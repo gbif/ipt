@@ -12,7 +12,8 @@ public enum Rank {
 	Family("family"),
 	Genus("genus"),
 	Species(null),	
-	InfraSpecies(null);	
+	InfraSpecies(null),	
+	TerminalTaxon("scientific_name");	
 	
 	public static final List<Rank> DARWIN_CORE_RANKS;
 	  static  

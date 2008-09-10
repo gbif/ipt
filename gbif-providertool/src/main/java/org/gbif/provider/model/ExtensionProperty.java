@@ -152,7 +152,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	}
 
 	@CollectionOfElements
-	@IndexColumn(name = "term_order", base = 0, nullable = false)
+	@IndexColumn(name = "terms_order", base = 0, nullable = false)
 	@JoinColumn(name = "extension_property_fk", nullable = false)
 	public List<String> getTerms() {
 		return terms;

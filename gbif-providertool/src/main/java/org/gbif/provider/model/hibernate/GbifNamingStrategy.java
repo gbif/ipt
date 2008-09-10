@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.hibernate.util.StringHelper;
 import org.apache.commons.lang.StringUtils;
 
 public class GbifNamingStrategy extends ImprovedNamingStrategy {
@@ -40,7 +41,15 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy {
 			propertyName = propertyName.replaceAll(m.group(0), m.group(1)+m.group(2).toLowerCase());
 		}
 		// call original underscore replacement method
-		return super.propertyToColumnName(propertyName);
+		String x = addUnderscores(propertyName); 
+//		log.debug(String.format("propertyToColumnName=%s :: <%s>", x, propertyName));
+		return x;
+	}
+
+	
+	@Override
+	public String logicalColumnName(String columnName, String propertyName) {
+		return StringHelper.isNotEmpty( columnName ) ? columnName : propertyName;
 	}
 
 }

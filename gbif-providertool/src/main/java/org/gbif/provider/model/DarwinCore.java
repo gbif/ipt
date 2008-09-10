@@ -145,6 +145,9 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return dwc;
 	}
 	public static DarwinCore newInstance(ImportRecord iRec){
+		if (iRec==null){
+			throw new NullPointerException();
+		}
 		DarwinCore dwc = DarwinCore.newInstance();
 		dwc.setGuid(iRec.getGuid());
 		dwc.setLink(iRec.getLink());
@@ -437,11 +440,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return link;
 	}
 
-	@Transient
-	public String getDetailsLinkIPT() {
-		return String.format("%s/%s", getResource().getResourceBaseUrl(), getGuid());
-	}
-
 	public void setLink(String link) {
 		this.link = link;
 	}
@@ -532,7 +530,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setLongitudeAsFloat(Float longitudeAsFloat) {
 		this.longitudeAsFloat = longitudeAsFloat;
 	}
-
+	@Transient
+	public Point getCoordinate(){
+		return new Point(latitudeAsFloat, longitudeAsFloat);
+	}
 	
 	/**
 	 * Aliases for set/getGuid() which are part of any core record, not only darwin core
