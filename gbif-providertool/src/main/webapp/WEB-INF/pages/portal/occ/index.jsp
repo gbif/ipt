@@ -13,6 +13,7 @@
 	<legend><s:text name="occResource.description"/></legend>
 	<div id="metadata">
 		<s:property value="occResource.description"/>
+		
 		<s:label key="occResourceOverview.cache" value="%{occResource.lastUpload.recordsUploaded} total records uploaded %{occResource.lastUpload.executionDate}"/>
 		<ul class="minimenu">
 			<li>

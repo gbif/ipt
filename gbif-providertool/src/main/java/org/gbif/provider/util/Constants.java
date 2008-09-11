@@ -21,11 +21,6 @@ package org.gbif.provider.util;
  * Constant values used throughout the application.
  */
 public class Constants {
-    //~ Static fields/initializers =============================================
-    /**
-     * The primary admin user for the entire installation. Used for provider metadata
-     */
-    public static final Long ADMIN_USER_ID = 1L;
     /**
      * The name of the Administrator role, as specified in web.xml
      */
@@ -34,5 +29,5 @@ public class Constants {
     public static final Long TEST_USER_ID = 4L;
     public static final String TEST_BASE_DIR = "/tmp";
     public static final String RECENT_RESOURCES = "recentResources";
-    public static final String DEFAULT_LOGO = "/images/resource-logo.jpg";
+    public static final String DEFAULT_LOGO = "/images/resource-logo.gif";
 }

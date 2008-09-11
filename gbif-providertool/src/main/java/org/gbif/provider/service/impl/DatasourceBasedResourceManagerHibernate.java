@@ -82,7 +82,9 @@ public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedRe
 	public T get(Long id) {
 		T obj = super.get(id);
 		// init some OnetoMany properties
-		obj.getAllMappings();
+		if (obj != null){
+			obj.getAllMappings();
+		}
 		return obj;
 	}
 

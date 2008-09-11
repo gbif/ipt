@@ -45,7 +45,7 @@ public class ProviderCfgManagerHibernate implements ProviderCfgManager {
 
 	@Transactional(readOnly=false)
 	public void save(ProviderCfg cfg) {
-		getSession().save(cfg);
+		getSession().saveOrUpdate(cfg);
 	}
 	
 }

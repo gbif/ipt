@@ -143,7 +143,7 @@
 
         <!-- all resources! has to be changed once checklists are added -->
         <action name="resource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
-            <result>/WEB-INF/pages/portal/occ/index.jsp</result>
+            <result type="freemarker">/WEB-INF/pages/portal/occ/index.ftl</result>
         </action>
         <action name="detail" class="org.gbif.provider.webapp.action.portal.DwcAction">
             <result>/WEB-INF/pages/portal/occ/dwcDetail.jsp</result>
@@ -155,7 +155,7 @@
             <result>/WEB-INF/pages/busy.jsp</result>
             <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
         </action>
-        <action name="about">
+        <action name="about" class="org.gbif.provider.webapp.action.IndexAction">
             <result type="freemarker">/WEB-INF/pages/about/about.ftl</result>
         </action>
         
@@ -412,7 +412,10 @@
         <!-- Actions in this package will be prefixed with /admin/ -->
     <package name="admin" extends="default" namespace="/admin">
         <default-interceptor-ref name="adminStack" />
-
+        <global-results>
+            <result name="cancel" type="redirect">/index.html</result>
+        </global-results>
+        
         <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
             <result>/WEB-INF/pages/admin/activeUsers.jsp</result>
         </action>
@@ -442,7 +445,14 @@
             <result name="tbd">/WEB-INF/pages/scheduler/jobList.jsp</result>
         </action>
         
+        <action name="config" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
+            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        </action>
+        <action name="saveConfig" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction" method="save">
+            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        </action>
         
+
         <!-- LogEvents -->
         <action name="logEvents" class="org.gbif.logging.webapp.action.LogEventAction" method="list">
             <result>/WEB-INF/pages/logging/logEventList.jsp</result>
@@ -455,9 +465,9 @@
         
         <action name="saveLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="save">
             <result name="input">/WEB-INF/pages/logging/logEventForm.jsp</result>
-            <result name="cancel" type="redirect">logEvents.html</result>
-            <result name="delete" type="redirect">logEvents.html</result>
-            <result name="success" type="redirect">logEvents.html</result>
+            <result name="cancel" type="redirect-action">logEvents</result>
+            <result name="delete" type="redirect-action">logEvents</result>
+            <result name="success" type="redirect-action">logEvents</result>
         </action>
         
 

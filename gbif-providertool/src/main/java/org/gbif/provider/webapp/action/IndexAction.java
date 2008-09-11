@@ -19,23 +19,12 @@ package org.gbif.provider.webapp.action;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
-import org.apache.struts2.util.ServletContextAware;
-import org.appfuse.model.User;
 import org.appfuse.service.UserManager;
-import org.gbif.provider.webapp.action.BaseAction;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
-import com.opensymphony.xwork2.Preparable;
-import static org.gbif.provider.util.Constants.ADMIN_USER_ID;
 
 /**
  * Homepage of the application giving initial statistics and listing imported resources
@@ -46,12 +35,9 @@ public class IndexAction extends BaseAction{
 	@Autowired
 	@Qualifier("resourceManager")
     private ResourceManager<Resource> resourceManager;
-	@Autowired
-    private UserManager userManager;
     private List<Resource> resources;
 	@Autowired
 	private AppConfig cfg;
-	private User admin;
 	private Date pubDate = new Date();
 	
 	public String execute(){
@@ -59,8 +45,11 @@ public class IndexAction extends BaseAction{
 		return SUCCESS;
 	}
 	
+	public String about(){
+		return SUCCESS;
+	}
+
 	public String rss(){
-		admin = userManager.getUser(String.valueOf(ADMIN_USER_ID));
 		resources = resourceManager.getTop(50);
 		return SUCCESS;
 	}
@@ -71,10 +60,6 @@ public class IndexAction extends BaseAction{
 
 	public AppConfig getCfg() {
 		return cfg;
-	}
-
-	public User getAdmin() {
-		return admin;
 	}
 
 	public Date getPubDate() {

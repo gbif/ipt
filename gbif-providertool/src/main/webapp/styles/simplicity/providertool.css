@@ -29,6 +29,14 @@ div.break {
 	margin-left: 50px;
 }
 
+
+form .xlarge{
+    width: 650px;
+}
+form textarea.xlarge{
+    height: 20em;
+}
+
 table.lefthead td {
 	padding-left: 20px;
 }
@@ -181,7 +189,7 @@ div.chart form {
 
 /* @group other */
  
-#about img{
+.right{
 	float: right;
 	padding-left: 30px;
 }
