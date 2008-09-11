@@ -71,4 +71,9 @@ public class BaseAction extends ActionSupport{
 		this.delete = delete;
 	}
 
+
+	public AppConfig getCfg() {
+		return cfg;
+	}
+
 }

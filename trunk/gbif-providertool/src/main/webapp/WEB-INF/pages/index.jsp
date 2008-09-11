@@ -1,18 +1,18 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><s:text name="home.title"/></title>
+    <title><s:property value='cfg.getTitle()'/></title>
     <meta name="menu" content="MainMenu"/>
     <meta name="submenu" content="metadata"/>
     <meta name="decorator" content="fullsize"/>
 </head>
 
 
-<h1><s:text name='home.heading'/> <s:property value='cfg.providerTitle'/></h1>
+<h1><s:property value='cfg.getTitle()'/></h1>
 
 <div id="about">
-	<img src="<s:property value='cfg.providerDescriptionImage'/>" />
-	<s:property value='cfg.providerDescription' escape="false"/>
+	<img class="right" src="<s:property value='cfg.getDescriptionImage()'/>" />
+	<s:property value='cfg.getDescription()' escape="false"/>
 </div>
 
 <br class="clearfix" />

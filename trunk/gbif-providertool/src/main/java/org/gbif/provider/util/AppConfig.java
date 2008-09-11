@@ -13,7 +13,7 @@ import org.gbif.provider.service.ProviderCfgManager;
 public class AppConfig {
 	protected final Log log = LogFactory.getLog(AppConfig.class);
 	private ProviderCfgManager providerCfgManager;
-	private static ProviderCfg cfg;
+	private ProviderCfg cfg;
 	
 	
 	private AppConfig(ProviderCfgManager providerCfgManager) {
@@ -26,32 +26,38 @@ public class AppConfig {
 
 	
 	
-	// OTHER MOSTLY STATIC UTILITY METHODS
-
+	// OTHER UTILITY METHODS, MOSTLY DEFINING PATHS & URLs
+	
+	// WEBAPP BASICS
+	public File getWebappDir() {
+		File dir = new File("/Users/markus/workspace/gbif-providertool/target/work/webapp");
+		return dir;
+	}
+	
 	// RESOURCE BASICS
-	public static File getResourceDataDir(Long resourceId) {
+	public File getResourceDataDir(Long resourceId) {
 		File dir = new File(getDataDir(), resourceId.toString());
 	    if (!dir.exists()) {
 	        dir.mkdirs();
 	    }
 		return dir;
 	}
-	public static String getResourceDataUrl(Long resourceId) {
+	public String getResourceDataUrl(Long resourceId) {
 		return String.format("%s/data/%s", getBaseUrl(), resourceId.toString());
 	}	
 
-	public static File getResourceLogoFile(Long resourceId) {
+	public File getResourceLogoFile(Long resourceId) {
 		File file = new File(getResourceDataDir(resourceId), "logo.jpg");
 		return file;    	
 	}
 
-	public static String getResourceLogoUrl(Long resourceId) {
+	public String getResourceLogoUrl(Long resourceId) {
 		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
 	}
 
 	
 	// CORE RECORDS
-    public static String getDetailUrl(CoreRecord core){
+    public String getDetailUrl(CoreRecord core){
     	if (core.getResource()==null){
     		throw new IllegalArgumentException("Core records needs a resource");
     	}
@@ -59,33 +65,33 @@ public class AppConfig {
     }
 
     // SOURCE/UPLOAD FILES
-    public static File getSourceFile(Long resourceId, Extension extension) throws IOException{    	
+    public File getSourceFile(Long resourceId, Extension extension) throws IOException{    	
 		File file = new File(getResourceDataDir(resourceId), String.format("source-%s.txt", extension.getTablename()));
 		return file;
 	}    
 
     // DUMP FILES
-    public static File getDumpFile(Long resourceId, Extension extension) throws IOException{    	
+    public File getDumpFile(Long resourceId, Extension extension) throws IOException{    	
 		File file = new File(getResourceDataDir(resourceId), String.format("data-%s.txt", extension.getTablename()));
 		return file;
 	}    
 
-    public static File getDumpArchiveFile(Long resourceId){
+    public File getDumpArchiveFile(Long resourceId){
 		File file = new File(getResourceDataDir(resourceId), "data.zip");
 		return file;    	
     }
 
-    public static String getDumpArchiveUrl(Long resourceId){
+    public String getDumpArchiveUrl(Long resourceId){
 		return String.format("%s/data.zip", getResourceDataUrl(resourceId));
     }
 
     // SERVICE ENDPOINTS
-	public static String getTapirEndpoint(Long resourceId){
+	public String getTapirEndpoint(Long resourceId){
 		String base = getBaseUrl();
     	return String.format("%s/tapir/%s/", base, resourceId.toString());
 	}
 	
-	public static String getWfsEndpoint(Long resourceId){
+	public String getWfsEndpoint(Long resourceId){
 		String base = getBaseUrl();
     	return String.format("%s/wfs/%s", base, resourceId.toString());
 	}
@@ -94,39 +100,43 @@ public class AppConfig {
 	
 	
 	// CFG DELEGATE METHODS
-	public static String getBaseUrl() {
+	public String getBaseUrl() {
 		return cfg.getBaseUrl();
 	}
 
-	public static String getContactEmail() {
+	public String getContactEmail() {
 		return cfg.getMeta().getContactEmail();
 	}
 
-	public static String getContactName() {
+	public String getContactName() {
 		return cfg.getMeta().getContactName();
 	}
 
-	public static String getDataDir() {
+	public String getDataDir() {
 		return cfg.getDataDir();
 	}
 
-	public static String getDescription() {
+	public String getDescription() {
 		return cfg.getMeta().getDescription();
 	}
 
-	public static String getDescriptionImage() {
+	public String getEmlUrl() {
+		return cfg.getMeta().getEmlUrl();
+	}
+
+	public String getDescriptionImage() {
 		return cfg.getDescriptionImage();
 	}
 
-	public static String getGeoserverUrl() {
+	public String getGeoserverUrl() {
 		return cfg.getGeoserverUrl();
 	}
 
-	public static String getLink() {
+	public String getLink() {
 		return cfg.getMeta().getLink();
 	}
 
-	public static String getTitle() {
+	public String getTitle() {
 		return cfg.getMeta().getTitle();
 	}
 
@@ -161,6 +171,10 @@ public class AppConfig {
 
 	public void setDescriptionImage(String descriptionImage) {
 		cfg.setDescriptionImage(descriptionImage);
+	}
+
+	public void setEmlUrl(String emlUrl) {
+		cfg.getMeta().setEmlUrl(emlUrl);
 	}
 
 	public void setGeoserverUrl(String geoserverUrl) {

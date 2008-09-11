@@ -12,6 +12,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.gbif.provider.util.Constants.DEFAULT_LOGO;
@@ -19,11 +20,8 @@ import static org.gbif.provider.util.Constants.DEFAULT_LOGO;
 
 public class DataAction extends BaseOccurrenceResourceAction {
 	private InputStream inputStream;
-
-	public InputStream getInputStream()
-	{
-		return inputStream;
-	}
+	@Autowired
+	private AppConfig cfg;
 	
     public String execute() throws FileNotFoundException{
     	if (resource_id != null){
@@ -42,10 +40,15 @@ public class DataAction extends BaseOccurrenceResourceAction {
     		try {
 				inputStream = new FileInputStream(logo);
 			} catch (FileNotFoundException e) {
-				inputStream = new FileInputStream(new File(DEFAULT_LOGO));
+				inputStream = new FileInputStream(new File(cfg.getWebappDir(), DEFAULT_LOGO));
 			}
     		return SUCCESS;
     	}
     	return ERROR;
     }
+    
+	public InputStream getInputStream(){
+		return inputStream;
+	}
+    
 }

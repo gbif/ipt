@@ -1,10 +1,16 @@
+--
+-- Temporary table structure for view `view_ogc_dwc`
+--
+DROP TABLE IF EXISTS `view_ogc_dwc`;
+DROP VIEW IF EXISTS `view_ogc_dwc`;
+
 
 --
--- Temporary table structure for view `providertool`.`view_ogc_dwc`
+-- Temporary table structure for view `view_ogc_dwc`
 --
-DROP TABLE IF EXISTS `providertool`.`view_ogc_dwc`;
-DROP VIEW IF EXISTS `providertool`.`view_ogc_dwc`;
-CREATE TABLE `providertool`.`view_ogc_dwc` (
+DROP TABLE IF EXISTS `view_ogc_dwc`;
+DROP VIEW IF EXISTS `view_ogc_dwc`;
+CREATE TABLE `view_ogc_dwc` (
   `resourceId` bigint(20),
   `kingdom` varchar(128),
   `phylum` varchar(128),
@@ -21,10 +27,9 @@ CREATE TABLE `providertool`.`view_ogc_dwc` (
 
 
 --
--- Definition of view `providertool`.`view_ogc_dwc`
+-- Definition of view `view_ogc_dwc`
 --
 
-DROP TABLE IF EXISTS `providertool`.`view_ogc_dwc`;
-DROP VIEW IF EXISTS `providertool`.`view_ogc_dwc`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `providertool`.`view_ogc_dwc` AS select `dwc`.`resource_id` AS `resourceId`,`t`.`kingdom` AS `kingdom`,`t`.`phylum` AS `phylum`,`t`.`classs` AS `classs`,`t`.`orderrr` AS `orderrr`,`t`.`family` AS `family`,`t`.`genus` AS `genus`,`t`.`scientificName` AS `scientificName`,`dwc`.`basisOfRecord` AS `basisOfRecord`,`dwc`.`latitudeAsFloat` AS `latitude`,`dwc`.`longitudeAsFloat` AS `longitude` from (`providertool`.`DarwinCore` `dwc` join `providertool`.`DarwinCoreTaxonomy` `t` on((`t`.`id` = `dwc`.`id`)));
-
+DROP TABLE IF EXISTS `view_ogc_dwc`;
+DROP VIEW IF EXISTS `view_ogc_dwc`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`providertool`@`localhost` SQL SECURITY DEFINER VIEW `view_ogc_dwc` AS select `dwc`.`resource_fk` AS `resourceId`,`t`.`kingdom` AS `kingdom`,`t`.`phylum` AS `phylum`,`t`.`classs` AS `classs`,`t`.`orderrr` AS `orderrr`,`t`.`family` AS `family`,`t`.`genus` AS `genus`,`t`.`scientific_name` AS `scientificName`,`dwc`.`basis_of_record` AS `basisOfRecord`,`dwc`.`lat` AS `latitude`,`dwc`.`lon` AS `longitude` from (`dwcore` `dwc` join `dwcore_tax` `t` on((`t`.`id` = `dwc`.`id`)));
