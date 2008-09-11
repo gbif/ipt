@@ -22,6 +22,7 @@ import java.sql.SQLException;
 
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionRecord;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -32,7 +33,7 @@ public class ExtensionRecordManagerJDBC extends SimpleJdbcDaoSupport implements 
 		String sql = "";
 		try {
 			PreparedStatement ps = this.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			ResultSet rs = ps.executeQuery();
+//			ResultSet rs = ps.executeQuery();
 		} catch (CannotGetJdbcConnectionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -43,12 +44,11 @@ public class ExtensionRecordManagerJDBC extends SimpleJdbcDaoSupport implements 
 	}
 
 	public void insertExtensionRecords(ExtensionRecord[] records) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
-	public void deleteOrphans(Extension extension, Long resourceId) {
+	public int removeAll(Extension extension, Long resourceId) {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 }

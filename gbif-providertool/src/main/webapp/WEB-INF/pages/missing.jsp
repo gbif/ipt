@@ -11,7 +11,7 @@
 
 <p>
     This feature is under construction.
-    Please try again in the next iteration.
+    Please try again in the next version
 </p>
 
 <p>

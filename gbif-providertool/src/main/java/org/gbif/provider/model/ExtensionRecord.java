@@ -34,8 +34,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ExtensionRecord implements Iterable<ExtensionProperty>{
 	private Long coreId;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
-	private boolean hasNext;
-	private Set<ExtensionProperty> keys;
 
 	public static ExtensionRecord newInstance(ImportRecord iRec){
 		ExtensionRecord extRec = new ExtensionRecord();
@@ -68,8 +66,7 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>{
 	
 
 	public Iterator<ExtensionProperty> iterator() {
-		keys = properties.keySet();
-		return null;
+		return new PropertyIterator();
 		
 	}
 

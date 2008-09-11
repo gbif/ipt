@@ -27,6 +27,7 @@
         <mapping class="org.gbif.provider.model.Extension"/>
         <mapping class="org.gbif.provider.model.ExtensionProperty"/>
         <mapping class="org.gbif.provider.model.OccurrenceResource"/>
+        <mapping class="org.gbif.provider.model.Point"/>
         <mapping class="org.gbif.provider.model.PropertyMapping"/>
         <mapping class="org.gbif.provider.model.ProviderCfg"/>
         <mapping class="org.gbif.provider.model.Region"/>

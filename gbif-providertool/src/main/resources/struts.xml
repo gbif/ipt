@@ -375,7 +375,10 @@
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
         <action name="clear" class="org.gbif.provider.webapp.action.manage.UploadAction" method="clear">
-            <result>/WEB-INF/pages/missing.jsp</result>
+            <result type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
         </action>
         <action name="status" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>

@@ -53,9 +53,9 @@ public class RdbmsImportSource implements ImportSource{
 	private Integer maxRecords;
 	
 	private Collection<PropertyMapping> properties;
-	private ColumnMapping coreIdColumn = new ColumnMapping();
-	private ColumnMapping guidColumn = new ColumnMapping();
-	private ColumnMapping linkColumn = new ColumnMapping();
+	private ColumnMapping coreIdColumn;
+	private ColumnMapping guidColumn;
+	private ColumnMapping linkColumn;
 	
 
     public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{

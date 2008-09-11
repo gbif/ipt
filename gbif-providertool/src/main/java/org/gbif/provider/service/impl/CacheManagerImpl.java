@@ -1,7 +1,6 @@
 package org.gbif.provider.service.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -9,17 +8,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.logging.service.LogEventManager;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -53,6 +50,9 @@ public class CacheManagerImpl implements CacheManager{
 	private RegionManager regionManager;
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
+	@Autowired
+	private LogEventManager logEventManager;
+
 
     private final Map<Long, Future> futures = new ConcurrentHashMap<Long, Future>();
     private final Map<Long, Task> uploads = new ConcurrentHashMap<Long, Task>();
@@ -89,12 +89,16 @@ public class CacheManagerImpl implements CacheManager{
 
 	@Transactional(readOnly=false)
 	public void clearCache(Long resourceId) {
-		DatasourceBasedResource res = occResourceManager.get(resourceId);
+		OccurrenceResource res = occResourceManager.get(resourceId);
+		// update resource stats
+		res.resetStats();
+		occResourceManager.save(res);
 		// remove core record related upload artifacts like taxa & regions
 		taxonManager.removeAll(res);
 		regionManager.removeAll(res);
 		uploadEventManager.removeAll(res);
 		darwinCoreManager.removeAll(res);
+		logEventManager.removeByGroup(resourceId.intValue());
 		// remove generated files
 		File dump = cfg.getDumpArchiveFile(resourceId);
 		dump.delete();

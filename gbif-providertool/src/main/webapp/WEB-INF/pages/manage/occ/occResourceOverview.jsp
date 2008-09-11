@@ -117,10 +117,12 @@
 		  <s:hidden key="resource_id"/>
 	      <s:submit cssClass="button" key="button.clear"/>
 		</s:form>
+		<!-- 
 		<s:form action="process" method="post">
 		  <s:hidden key="resource_id"/>
 	      <s:submit cssClass="button" key="button.process" />
 		</s:form>
+		 -->
     </s:if>
     <s:else>
     	<p class="reminder">Please finalize the core mapping before uploading data</p>

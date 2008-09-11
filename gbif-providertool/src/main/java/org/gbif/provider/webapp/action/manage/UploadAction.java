@@ -45,11 +45,12 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		return SUCCESS;
 	}
 	public String process(){
-        saveMessage(getText("upload.processed"));
 		if (resource_id != null){
 			status = cacheManager.getUploadStatus(resource_id);
+	        saveMessage(getText("upload.processed"));
+			return SUCCESS;
 		}
-		return SUCCESS;
+		return ERROR;
 	}
 	public String status(){
 		if (resource_id != null){
@@ -63,11 +64,12 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		}
 	}
 	public String clear(){
-        saveMessage(getText("upload.cleared"));
 		if (resource_id != null){
 			cacheManager.clearCache(resource_id);
+	        saveMessage(getText("upload.cleared"));
+			return SUCCESS;
 		}
-		return SUCCESS;
+		return ERROR;
 	}
 
 	public String history(){
