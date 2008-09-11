@@ -237,7 +237,9 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}
 
+	@Override
 	public void resetStats() {
+		bbox = new BBox();
 		recTotal=0;
 		recWithCoordinates=0;
 		recWithCountry=0;
@@ -245,16 +247,19 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		recWithDate=0;
 		numCountries=0;
 		numRegions=0;
+		numTerminalRegions=0;
 		numTaxaByCountry.clear();
 		
-		numTaxa=0;
 		numGenera=0;
 		numFamilies=0;
 		numOrders=0;
 		numClasses=0;
 		numPhyla=0;
 		numKingdoms=0;
+
+		numTaxa=0;
+		numTerminalTaxa=0;
 		
-		setLastUpload(null);		
+		super.resetStats();
 	}
 }

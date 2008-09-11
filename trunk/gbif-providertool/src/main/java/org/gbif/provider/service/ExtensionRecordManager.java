@@ -32,5 +32,5 @@ public interface ExtensionRecordManager {
 	 * @param extension
 	 * @param resourceId
 	 */
-	public void deleteOrphans(Extension extension, Long resourceId);
+	public int removeAll(Extension extension, Long resourceId);
 }

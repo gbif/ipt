@@ -2,6 +2,8 @@ package org.gbif.provider.model;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * There are several formats for writing degrees, all of them appearing in the same Lat, Long order.
@@ -18,27 +20,50 @@ public class Point {
 	
 	public Point() {
 	}
+	public Point(Point p){
+		setLatitude(p.latitude);
+		setLongitude(p.longitude);
+	}
 	public Point(Float latitude, Float longitude) {
 		setLatitude(latitude);
 		setLongitude(longitude);
 	}
+	
 	public Float getLatitude() {
-		return latitude;
+		return latitude==null ? null : new Float(latitude);
 	}
 	public void setLatitude(Float latitude) {
-		if (latitude < -90 || latitude > 90){
+		if (latitude != null && (latitude < -90 || latitude > 90)){
 			throw new IllegalArgumentException();
 		}
-		this.latitude = latitude;
+		if (latitude == null){
+			this.latitude = null;
+		}else{
+			this.latitude = new Float(latitude);
+		}
 	}
 	public Float getLongitude() {
-		return longitude;
+		return longitude==null ? null : new Float(longitude);
 	}
 	public void setLongitude(Float longitude) {
-		if (longitude < -180 || longitude > 180){
+		if (longitude != null && (longitude < -180 || longitude > 180)){
 			throw new IllegalArgumentException();
 		}
-		this.longitude = longitude;
+		if (longitude == null){
+			this.longitude = null;
+		}else{
+			this.longitude = new Float(longitude);
+		}
+	}
+
+	/**
+	 * Transforms coordinates into WGS84 coordinates
+	 * @param latitude
+	 * @param longitude
+	 * @param geodatum
+	 */
+	public void transformIntoWGS84(String geodatum) {
+		//TODO: transform point into standard WGS84 datum. Might beed external library for this... 
 	}
 
 	@Transient
@@ -50,5 +75,24 @@ public class Point {
 	}
 	public String toString(){
 		return String.format("%s,%s", latitude, longitude);
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof Point)) {
+			return false;
+		}
+		Point rhs = (Point) object;
+		return new EqualsBuilder().append(this.longitude, rhs.longitude)
+				.append(this.latitude, rhs.latitude).isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(1842455565, -1433355773).append(
+				this.longitude).append(this.latitude).toHashCode();
 	}
 }

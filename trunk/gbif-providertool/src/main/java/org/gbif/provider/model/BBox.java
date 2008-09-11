@@ -5,6 +5,8 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Bounding box representation with 2 points.
@@ -18,78 +20,114 @@ public class BBox {
         @AttributeOverride(name="latitude", column = @Column(name="max_lat") ),
         @AttributeOverride(name="longitude", column = @Column(name="max_long") )
 	} )
-	private Point max = new Point();
+	private Point max;
 	@AttributeOverrides( {
         @AttributeOverride(name="latitude", column = @Column(name="min_lat") ),
         @AttributeOverride(name="longitude", column = @Column(name="min_long") )
 	} )
-	private Point min = new Point();
+	private Point min;
 
 
+	public BBox() {
+		super();
+	}
+	public BBox(Point max, Point min) {
+		super();
+		setMax(max);
+		setMin(min);
+	}
+		
 	public Point getMax() {
-		return max;
-	}
-	public void setMax(Point max) {
-		this.max = max;
-	}
-	public Point getMin() {
-		return min;
-	}
-	public void setMin(Point min) {
-		this.min = min;
+		if (max==null){
+			max = new Point();
+		}
+		return new Point(max);
 	}
 	
-	@Transient
-	public Float getMaxLatitude(){
-		return max.getLatitude();
+	private void setMax(Point max) {
+		this.max = new Point(max);
 	}
-	@Transient
-	public Float getMaxLongitude(){
-		return max.getLongitude();
+	
+	public Point getMin() {
+		if (min==null){
+			min = new Point();
+		}
+		return new Point(min);
 	}
-	@Transient
-	public Float getMinLatitude(){
-		return min.getLatitude();
+	
+	private void setMin(Point min) {
+		this.min = new Point(min);
 	}
-	@Transient
-	public Float getMinLongitude(){
-		return min.getLongitude();
-	}
+	
 	/**
 	 * Expands bounding box boundaries to fit this coordinate into the box
 	 * @param latitude
 	 * @param longitude
 	 */
 	public void expandBox(Point p){
-		if (p != null && p.isValid() && !contains(p)){
-			if (p.getLatitude() > max.getLatitude()){
-				max.setLatitude(p.getLatitude());
-			}
-			if (p.getLatitude() < min.getLatitude()){
-				min.setLatitude(p.getLatitude());
-			}
-			if (p.getLongitude() > max.getLongitude()){
-				max.setLongitude(p.getLongitude());
-			}
-			if (p.getLongitude() < min.getLongitude()){
-				min.setLongitude(p.getLongitude());
+		if (!contains(p)){
+			if (!isValid()){
+				// this BBox doesnt yet contain any points. Use this point for min+max
+				setMin(p);
+				setMax(p);
+			}else{
+				if (p.getLatitude() > getMax().getLatitude()){
+					max.setLatitude(p.getLatitude());
+				}
+				if (p.getLatitude() < getMin().getLatitude()){
+					min.setLatitude(p.getLatitude());
+				}
+				if (p.getLongitude() > getMax().getLongitude()){
+					max.setLongitude(p.getLongitude());
+				}
+				if (p.getLongitude() < getMin().getLongitude()){
+					min.setLongitude(p.getLongitude());
+				}
 			}
 		}
 	}
 	
+	@Transient
+	public boolean isValid(){
+		if (getMin().isValid() && getMax().isValid()){
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Check if point lies within this bbox
 	 * @param p
 	 * @return
 	 */
-	private boolean contains(Point p) {
-		if (p != null && p.isValid() && p.getLatitude() <= max.getLatitude() && p.getLatitude() >= min.getLatitude()  &&  p.getLongitude() <= max.getLongitude() && p.getLongitude() >= min.getLongitude()){
-			return true;
+	public boolean contains(Point p) {
+		if (p != null && p.isValid() && isValid()){
+			if (p.getLatitude() <= getMax().getLatitude() && p.getLatitude() >= getMin().getLatitude()  &&  p.getLongitude() <= getMax().getLongitude() && p.getLongitude() >= getMin().getLongitude()){
+				return true;
+			}
 		}
 		return false;
 	}
 	
 	public String toString(){
 		return String.format("%s %s", min, max);
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof BBox)) {
+			return false;
+		}
+		BBox rhs = (BBox) object;
+		return new EqualsBuilder().append(this.min, rhs.min).append(this.max,
+				rhs.max).isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(1425547953, 342545271).append(this.min)
+				.append(this.max).toHashCode();
 	}
 }

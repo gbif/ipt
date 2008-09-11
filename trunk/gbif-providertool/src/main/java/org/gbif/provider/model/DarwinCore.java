@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +31,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -41,12 +44,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.NotNull;
 
 
@@ -61,7 +58,11 @@ import org.hibernate.validator.NotNull;
 @Table(name="dwcore"
 	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 ) 
-//@Indexed
+
+@org.hibernate.annotations.Table(appliesTo = "tableName", indexes = { 	
+		@org.hibernate.annotations.Index(name="latitude", columnNames = { "lat" }), 
+		@org.hibernate.annotations.Index(name="longitude", columnNames = { "lon" }) 
+		})
 public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
 	public static final Long GEO_EXTENSION_ID = 3l;
@@ -70,11 +71,9 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public static final ExtensionProperty GEODATUM_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/GeodeticDatum");
 
 	// for core record
-	@DocumentId
 	private Long id;
 	@NotNull
 	private String localId;
-    @Field(index=Index.TOKENIZED, store=Store.NO)
 	@NotNull
 	private String guid;
 	private String link;
@@ -85,24 +84,19 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private OccurrenceResource resource;
 
 	// DarinCore derived datatypes. calculated from raw Strings
-	@IndexedEmbedded
 	@NotNull
 	private DarwinCoreTaxonomy tax;
-	@IndexedEmbedded
 	@NotNull
 	private DarwinCoreLocation loc;
 	// calculated fields
-	private Float latitudeAsFloat;
-	private Float longitudeAsFloat;
+	private Point location;
 	private Taxon taxon;
 	private Region region;
 	
 	// DarwinCore 1.4 elements
 	private String basisOfRecord;
 	private String institutionCode;
-    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String collectionCode;
-    @Field(index=Index.TOKENIZED, store=Store.NO)
 	private String catalogNumber;
 	private String informationWithheld;
 	private String remarks;
@@ -121,6 +115,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		dwc.tax.setDwc(dwc);
 		dwc.loc = new DarwinCoreLocation();
 		dwc.loc.setDwc(dwc);
+		dwc.location= new Point();
 		return dwc;
 	}
 	public static DarwinCore newMock(OccurrenceResource resource){
@@ -300,8 +295,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	
 	public void updateWithGeoExtension(ExtensionRecord extRec){
-		Float latitude = null;
-		Float longitude = null;
 		String geodatum = null;
 		// tmp raw value
 		String val; 
@@ -311,10 +304,13 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				val = extRec.getPropertyValue(prop);
 				if (val !=null){
 					try {
-						latitude = Float.valueOf(val);
+						getLocation().setLatitude(Float.valueOf(val));
 					} catch (NumberFormatException e) {
 						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLatitude into Float value", val, e);
+					} catch (IllegalArgumentException e) {
+						setProblematic(true);
+						logdb.warn("Latitude value '{0}' is out of allowed range", val, e);
 					}
 				}
 			}
@@ -322,10 +318,13 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				val = extRec.getPropertyValue(prop);
 				if (val !=null){
 					try {
-						longitude = Float.valueOf(val);
+						getLocation().setLongitude(Float.valueOf(val));
 					} catch (NumberFormatException e) {
 						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLongitude into Float value", val, e);
+					} catch (IllegalArgumentException e) {
+						setProblematic(true);
+						logdb.warn("Longitude value '{0}' is out of allowed range", val, e);
 					}
 				}
 			}
@@ -333,21 +332,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				geodatum=extRec.getPropertyValue(prop);
 			}
 		}
-		setCoordinates(latitude, longitude, geodatum);
+		getLocation().transformIntoWGS84(geodatum);
 	}
 			
-	/**
-	 * Transforms coordinates into WGS84 coordinates and sets the properties
-	 * @param latitude
-	 * @param longitude
-	 * @param geodatum
-	 */
-	public void setCoordinates(Float latitude, Float longitude, String geodatum) {
-		if (latitude != null && longitude != null){
-			setLongitudeAsFloat(longitude);
-			setLatitudeAsFloat(latitude);
-		}
-	}
+
 	
 	@Transient
 	public Map<String, String> getDataMap(){
@@ -483,6 +471,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	// cascade=CascadeType.ALL
     @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
 	public DarwinCoreTaxonomy getTax() {
+    	// shouldnt be the case, but to prevend NPE create assure there is always the loc compound
+    	if (tax==null){
+    		tax = new DarwinCoreTaxonomy();
+    		tax.setDwc(this);
+    	}
 		return tax;
 	}
 	public void setTax(DarwinCoreTaxonomy tax) {
@@ -492,6 +485,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	// optional = false breaks hibernate IdGeneration somehow... buuh
     @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
 	public DarwinCoreLocation getLoc() {
+    	// shouldnt be the case, but to prevend NPE create assure there is always the loc compound
+    	if (loc==null){
+    		loc = new DarwinCoreLocation();
+    		loc.setDwc(this);    		
+    	}
 		return loc;
 	}
 	public void setLoc(DarwinCoreLocation loc) {
@@ -514,31 +512,36 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setRegion(Region region) {
 		this.region = region;
 	}
-
 	
-	@org.hibernate.annotations.Index(name="latitude_as_float")
-	public Float getLatitudeAsFloat() {
-		return latitudeAsFloat;
+    @AttributeOverrides({
+        @AttributeOverride(name="latitude", column = @Column(name="lat")), 
+        @AttributeOverride(name="longitude", column = @Column(name="lon")) 
+    })
+	public Point getLocation() {
+    	// to prevent NPE create new empty point in case it doesnt exist yet
+    	if (location==null){
+    		location=new Point();
+    	}
+		return location;
 	}
-	public void setLatitudeAsFloat(Float latitudeAsFloat) {
-		this.latitudeAsFloat = latitudeAsFloat;
+	public void setLocation(Point location) {
+		this.location = location;
 	}
-	@org.hibernate.annotations.Index(name="longitude_as_float")
-	public Float getLongitudeAsFloat() {
-		return longitudeAsFloat;
-	}
-	public void setLongitudeAsFloat(Float longitudeAsFloat) {
-		this.longitudeAsFloat = longitudeAsFloat;
+	
+	@Transient
+	public Float getLatitude() {
+		return location.getLatitude();
 	}
 	@Transient
-	public Point getCoordinate(){
-		return new Point(latitudeAsFloat, longitudeAsFloat);
+	public Float getLongitude() {
+		return location.getLongitude();
 	}
 	
 	/**
 	 * Aliases for set/getGuid() which are part of any core record, not only darwin core
 	 * @return
 	 */
+	@Transient
 	public String getGlobalUniqueIdentifier() {
 		return guid;
 	}
@@ -582,12 +585,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setCatalogNumber(String catalogNumber) {
 		this.catalogNumber = catalogNumber;
 	}
+	@Lob
 	public String getInformationWithheld() {
 		return informationWithheld;
 	}
 	public void setInformationWithheld(String informationWithheld) {
 		this.informationWithheld = informationWithheld;
 	}
+	@Lob
 	public String getRemarks() {
 		return remarks;
 	}
@@ -608,6 +613,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setLifeStage(String lifeStage) {
 		this.lifeStage = lifeStage;
 	}
+	@Lob
 	public String getAttributes() {
 		return attributes;
 	}
@@ -620,6 +626,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
+	@Lob
 	public String getRelatedInformation() {
 		return relatedInformation;
 	}
@@ -635,164 +642,164 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	// LOCATION FORWARDING
 	@Transient
 	public String getHigherGeography() {
-		return loc.getHigherGeography();
+		return getLoc().getHigherGeography();
 	}
 	public void setHigherGeography(String higherGeography) {
-		loc.setHigherGeography(higherGeography);
+		getLoc().setHigherGeography(higherGeography);
 	}
 	@Transient
 	public String getContinent() {
-		return loc.getContinent();
+		return getLoc().getContinent();
 	}
 	public void setContinent(String continent) {
-		loc.setContinent(continent);
+		getLoc().setContinent(continent);
 	}
 	@Transient
 	public String getWaterBody() {
-		return loc.getWaterBody();
+		return getLoc().getWaterBody();
 	}
 	public void setWaterBody(String waterBody) {
-		loc.setWaterBody(waterBody);
+		getLoc().setWaterBody(waterBody);
 	}
 	@Transient
 	public String getIslandGroup() {
-		return loc.getIslandGroup();
+		return getLoc().getIslandGroup();
 	}
 	public void setIslandGroup(String islandGroup) {
-		loc.setIslandGroup(islandGroup);
+		getLoc().setIslandGroup(islandGroup);
 	}
 	@Transient
 	public String getIsland() {
-		return loc.getIsland();
+		return getLoc().getIsland();
 	}
 	public void setIsland(String island) {
-		loc.setIsland(island);
+		getLoc().setIsland(island);
 	}
 	@Transient
 	public String getCountry() {
-		return loc.getCountry();
+		return getLoc().getCountry();
 	}
 	public void setCountry(String country) {
-		loc.setCountry(country);
+		getLoc().setCountry(country);
 	}
 	@Transient
 	public String getStateProvince() {
-		return loc.getStateProvince();
+		return getLoc().getStateProvince();
 	}
 	public void setStateProvince(String stateProvince) {
-		loc.setStateProvince(stateProvince);
+		getLoc().setStateProvince(stateProvince);
 	}
 	@Transient
 	public String getCounty() {
-		return loc.getCounty();
+		return getLoc().getCounty();
 	}
 	public void setCounty(String county) {
-		loc.setCounty(county);
+		getLoc().setCounty(county);
 	}
 	@Transient
 	public String getLocality() {
 		return loc.getLocality();
 	}
 	public void setLocality(String locality) {
-		loc.setLocality(locality);
+		getLoc().setLocality(locality);
 	}
 	@Transient
 	public Integer getMinimumElevationInMetersAsInteger() {
-		return loc.getMinimumElevationInMetersAsInteger();
+		return getLoc().getMinimumElevationInMetersAsInteger();
 	}
 	public void setMinimumElevationInMetersAsInteger(Integer minimumElevationInMeters) {
-		loc.setMinimumElevationInMetersAsInteger(minimumElevationInMeters);
+		getLoc().setMinimumElevationInMetersAsInteger(minimumElevationInMeters);
 	}
 	@Transient
 	public Integer getMaximumElevationInMetersAsInteger() {
-		return loc.getMaximumElevationInMetersAsInteger();
+		return getLoc().getMaximumElevationInMetersAsInteger();
 	}
 	public void setMaximumElevationInMetersAsInteger(Integer maximumElevationInMeters) {
-		loc.setMaximumElevationInMetersAsInteger(maximumElevationInMeters);
+		getLoc().setMaximumElevationInMetersAsInteger(maximumElevationInMeters);
 	}
 	@Transient
 	public Integer getMinimumDepthInMetersAsInteger() {
-		return loc.getMinimumDepthInMetersAsInteger();
+		return getLoc().getMinimumDepthInMetersAsInteger();
 	}
 	public void setMinimumDepthInMetersAsInteger(Integer minimumDepthInMeters) {
-		loc.setMinimumDepthInMetersAsInteger(minimumDepthInMeters);
+		getLoc().setMinimumDepthInMetersAsInteger(minimumDepthInMeters);
 	}
 	@Transient
 	public Integer getMaximumDepthInMetersAsInteger() {
-		return loc.getMaximumDepthInMetersAsInteger();
+		return getLoc().getMaximumDepthInMetersAsInteger();
 	}
 	public void setMaximumDepthInMetersAsInteger(Integer maximumDepthInMeters) {
-		loc.setMaximumDepthInMetersAsInteger(maximumDepthInMeters);
+		getLoc().setMaximumDepthInMetersAsInteger(maximumDepthInMeters);
 	}
 	@Transient
 	public String getMinimumElevationInMeters() {
-		return loc.getMinimumElevationInMeters();
+		return getLoc().getMinimumElevationInMeters();
 	}
 	public void setMinimumElevationInMeters(String minimumElevationInMeters) {
-		loc.setMinimumElevationInMeters(minimumElevationInMeters);
+		getLoc().setMinimumElevationInMeters(minimumElevationInMeters);
 	}
 	@Transient
 	public String getMaximumElevationInMeters() {
-		return loc.getMaximumElevationInMeters();
+		return getLoc().getMaximumElevationInMeters();
 	}
 	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
-		loc.setMaximumElevationInMeters(maximumElevationInMeters);
+		getLoc().setMaximumElevationInMeters(maximumElevationInMeters);
 	}
 	@Transient
 	public String getMinimumDepthInMeters() {
-		return loc.getMinimumDepthInMeters();
+		return getLoc().getMinimumDepthInMeters();
 	}
 	public void setMinimumDepthInMeters(String minimumDepthInMeters) {
-		loc.setMinimumDepthInMeters(minimumDepthInMeters);
+		getLoc().setMinimumDepthInMeters(minimumDepthInMeters);
 	}
 	@Transient
 	public String getMaximumDepthInMeters() {
-		return loc.getMaximumDepthInMeters();
+		return getLoc().getMaximumDepthInMeters();
 	}
 	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
-		loc.setMaximumDepthInMeters(maximumDepthInMeters);
+		getLoc().setMaximumDepthInMeters(maximumDepthInMeters);
 	}
 	@Transient
 	public String getCollectingMethod() {
-		return loc.getCollectingMethod();
+		return getLoc().getCollectingMethod();
 	}
 	public void setCollectingMethod(String collectingMethod) {
-		loc.setCollectingMethod(collectingMethod);
+		getLoc().setCollectingMethod(collectingMethod);
 	}
 	@Transient
 	public String getValidDistributionFlag() {
-		return loc.getValidDistributionFlag();
+		return getLoc().getValidDistributionFlag();
 	}
 	public void setValidDistributionFlag(String validDistributionFlag) {
-		loc.setValidDistributionFlag(validDistributionFlag);
+		getLoc().setValidDistributionFlag(validDistributionFlag);
 	}
 	@Transient
 	public String getEarliestDateCollected() {
-		return loc.getEarliestDateCollected();
+		return getLoc().getEarliestDateCollected();
 	}
 	public void setEarliestDateCollected(String earliestDateCollected) {
-		loc.setEarliestDateCollected(earliestDateCollected);
+		getLoc().setEarliestDateCollected(earliestDateCollected);
 	}
 	@Transient
 	public String getLatestDateCollected() {
-		return loc.getLatestDateCollected();
+		return getLoc().getLatestDateCollected();
 	}
 	public void setLatestDateCollected(String latestDateCollected) {
-		loc.setLatestDateCollected(latestDateCollected);
+		getLoc().setLatestDateCollected(latestDateCollected);
 	}
 	@Transient
 	public String getDayOfYear() {
-		return loc.getDayOfYear();
+		return getLoc().getDayOfYear();
 	}
 	public void setDayOfYear(String dayOfYear) {
-		loc.setDayOfYear(dayOfYear);
+		getLoc().setDayOfYear(dayOfYear);
 	}
 	@Transient
 	public String getCollector() {
-		return loc.getCollector();
+		return getLoc().getCollector();
 	}
 	public void setCollector(String collector) {
-		loc.setCollector(collector);
+		getLoc().setCollector(collector);
 	}
 
 
@@ -800,101 +807,101 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	
 	@Transient
 	public String getScientificName() {
-		return tax.getScientificName();
+		return getTax().getScientificName();
 	}
 	public void setScientificName(String scientificName) {
-		tax.setScientificName(scientificName);
+		getTax().setScientificName(scientificName);
 	}
 	@Transient
 	public String getHigherTaxon() {
-		return tax.getHigherTaxon();
+		return getTax().getHigherTaxon();
 	}
 	public void setHigherTaxon(String higherTaxon) {
-		tax.setHigherTaxon(higherTaxon);
+		getTax().setHigherTaxon(higherTaxon);
 	}
 	@Transient
 	public String getKingdom() {
-		return tax.getKingdom();
+		return getTax().getKingdom();
 	}
 	public void setKingdom(String kingdom) {
-		tax.setKingdom(kingdom);
+		getTax().setKingdom(kingdom);
 	}
 	@Transient
 	public String getPhylum() {
-		return tax.getPhylum();
+		return getTax().getPhylum();
 	}
 	public void setPhylum(String phylum) {
-		tax.setPhylum(phylum);
+		getTax().setPhylum(phylum);
 	}
 	@Transient
 	public String getClasss() {
-		return tax.getClasss();
+		return getTax().getClasss();
 	}
 	public void setClasss(String classs) {
-		tax.setClasss(classs);
+		getTax().setClasss(classs);
 	}
 	@Transient
 	public String getOrder() {
-		return tax.getOrder();
+		return getTax().getOrder();
 	}
 	public void setOrder(String order) {
-		tax.setOrder(order);
+		getTax().setOrder(order);
 	}
 	@Transient
 	public String getFamily() {
-		return tax.getFamily();
+		return getTax().getFamily();
 	}
 	public void setFamily(String family) {
-		tax.setFamily(family);
+		getTax().setFamily(family);
 	}
 	@Transient
 	public String getGenus() {
-		return tax.getGenus();
+		return getTax().getGenus();
 	}
 	public void setGenus(String genus) {
-		tax.setGenus(genus);
+		getTax().setGenus(genus);
 	}
 	@Transient
 	public String getSpecificEpithet() {
-		return tax.getSpecificEpithet();
+		return getTax().getSpecificEpithet();
 	}
 	public void setSpecificEpithet(String specificEpithet) {
-		tax.setSpecificEpithet(specificEpithet);
+		getTax().setSpecificEpithet(specificEpithet);
 	}
 	@Transient
 	public String getInfraspecificRank() {
-		return tax.getInfraspecificRank();
+		return getTax().getInfraspecificRank();
 	}
 	public void setInfraspecificRank(String infraspecificRank) {
-		tax.setInfraspecificRank(infraspecificRank);
+		getTax().setInfraspecificRank(infraspecificRank);
 	}
 	@Transient
 	public String getInfraspecificEpithet() {
-		return tax.getInfraspecificEpithet();
+		return getTax().getInfraspecificEpithet();
 	}
 	public void setInfraspecificEpithet(String infraspecificEpithet) {
-		tax.setInfraspecificEpithet(infraspecificEpithet);
+		getTax().setInfraspecificEpithet(infraspecificEpithet);
 	}
 	@Transient
 	public String getAuthorYearOfScientificName() {
-		return tax.getAuthorYearOfScientificName();
+		return getTax().getAuthorYearOfScientificName();
 	}
 	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
-		tax.setAuthorYearOfScientificName(authorYearOfScientificName);
+		getTax().setAuthorYearOfScientificName(authorYearOfScientificName);
 	}
 	@Transient
 	public String getNomenclaturalCode() {
-		return tax.getNomenclaturalCode();
+		return getTax().getNomenclaturalCode();
 	}
 	public void setNomenclaturalCode(String nomenclaturalCode) {
-		tax.setNomenclaturalCode(nomenclaturalCode);
+		getTax().setNomenclaturalCode(nomenclaturalCode);
 	}
 	@Transient
 	public String getIdentificationQualifer() {
-		return tax.getIdentificationQualifer();
+		return getTax().getIdentificationQualifer();
 	}
 	public void setIdentificationQualifer(String identificationQualifer) {
-		tax.setIdentificationQualifer(identificationQualifer);
+		getTax().setIdentificationQualifer(identificationQualifer);
 	}
 
 	

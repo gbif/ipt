@@ -155,6 +155,9 @@ public abstract class DatasourceBasedResource extends Resource {
 
 	@Transient
 	public ViewMappingBase getExtensionMapping(Extension extension) {
+		if (extension.equals(getCoreMapping().getExtension())){
+			return getCoreMapping();
+		}
 		return this.extensionMappings.get(extension.getId());
 	}
 	
@@ -249,5 +252,11 @@ public abstract class DatasourceBasedResource extends Resource {
 	public void setUploadScheduleIntervalInDays(Integer uploadScheduleIntervalInDays) {
 		this.uploadScheduleIntervalInDays = uploadScheduleIntervalInDays;
 	}
-	
+
+	/**
+	 * Reset all cached stats, log events etc, so that it looks as if the resource was just created (doesnt change the created timestamp though)
+	 */
+	public void resetStats(){
+		lastUpload=null;
+	}
 }

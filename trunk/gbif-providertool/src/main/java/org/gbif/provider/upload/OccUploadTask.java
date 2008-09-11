@@ -116,10 +116,12 @@ import org.springframework.transaction.annotation.Transactional;
 				logdb.fatal("log.uploadCanceled", e);
 				throw e;
 			}
+			
 			return event;		
 		}
 		
 		private void close() throws IOException {
+			log.info(String.format("Closing upload for resource %s", getResource().getTitle() ));					
 			taxonomyBuilder.close();
 			geographyBuilder.close();
 			setStats();
@@ -153,7 +155,6 @@ import org.springframework.transaction.annotation.Transactional;
 			occResourceManager.save(getResource());
 			
 			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
-			log.info(status());
 		}
 
 		private void prepare() {
@@ -193,7 +194,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 		
 		protected File uploadCore() throws InterruptedException {
-			log.info("Uploading occurrence core for resource "+getResource().getTitle());					
+			log.info("Starting upload of DarwinCore for resource "+getResource().getTitle());					
 			ImportSource source;
 			File out = null;
 			currentExtension = getResource().getCoreMapping().getExtension().getName();
@@ -230,15 +231,16 @@ import org.springframework.transaction.annotation.Transactional;
 							updateDwcProperties(dwc, oldRecord);
 							// extract and assign taxa
 							taxonomyBuilder.processRecord(dwc);
-							oldRecord.setTaxon(dwc.getTaxon()); // also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
 							// extract and assign regions
 							geographyBuilder.processRecord(dwc);
-							oldRecord.setRegion(dwc.getRegion());
 							
 							// check if new record version is different from old one
-							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode() && oldRecord.equals(dwc)){
-								// same record. just reset isDeleted flag of old record and thats it!
+							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode()){
+								// same record. reset isDeleted flag of old record
 								oldRecord.setDeleted(false);
+								// also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
+								oldRecord.setTaxon(dwc.getTaxon()); 
+								oldRecord.setRegion(dwc.getRegion());
 								dwc = darwinCoreManager.save(oldRecord);
 								
 							}else if (oldRecord!=null){
@@ -262,9 +264,6 @@ import org.springframework.transaction.annotation.Transactional;
 							
 							// count statistics
 							currentUploaded.addAndGet(1);
-							if (dwc.getLongitudeAsFloat()!=null && dwc.getLatitudeAsFloat()!=null){
-								recWithCoordinates++;
-							}
 							if(StringUtils.trimToNull(dwc.getCountry())!=null){
 								recWithCountry++;
 							}
@@ -283,6 +282,7 @@ import org.springframework.transaction.annotation.Transactional;
 							throw e;
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
+							e.printStackTrace();
 							logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
 						}
 						
@@ -336,6 +336,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private File uploadExtension(Extension extension) throws InterruptedException, ImportSourceException, IOException {
+			log.info(String.format("Starting upload of %s extension for resource %s", extension.getName(), getResource().getTitle() ));					
 			File out = null;
 			// keep track of records for each extension and then store the totals in the viewMapping.
 			// once extension is uploaded this counter will be reset by the next extension.
@@ -359,6 +360,7 @@ import org.springframework.transaction.annotation.Transactional;
 							throw new InterruptedException("Occurrence upload task was interrupted externally");
 						}
 						Long coreId = idMap.get(rec.getLocalId());
+						rec.setId(coreId);
 						if (coreId == null){
 							String[] paras = {rec.getLocalId(), extension.getName(), getResourceId().toString()};
 							//FIXME: use i18n job logging ???
@@ -370,15 +372,22 @@ import org.springframework.transaction.annotation.Transactional;
 								extensionRecordManager.insertExtensionRecord(extRec);
 								currentUploaded.addAndGet(1);
 								// see if darwin core record is affected, e.g. geo extension => coordinates
-								if (extension.getId() == DarwinCore.GEO_EXTENSION_ID){
+								if (extension.getId().equals(DarwinCore.GEO_EXTENSION_ID)){
 									// this is the geo extension!
 									DarwinCore dwc = darwinCoreManager.get(coreId);
 									dwc.updateWithGeoExtension(extRec);
 									// update bbox
-									bbox.expandBox(dwc.getCoordinate());
+									bbox.expandBox(dwc.getLocation());
 									darwinCoreManager.save(dwc);
+									// increase stats counter
+									if (dwc.getLocation().isValid()){
+										//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
+										// might need to do a count via SQL after upload is done ...
+										recWithCoordinates++;
+									}
 								}
 							} catch (Exception e) {
+								e.printStackTrace();
 								currentErroneous.addAndGet(1);
 								logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
 							}
@@ -393,6 +402,8 @@ import org.springframework.transaction.annotation.Transactional;
 			} catch (ImportSourceException e) {
 				logdb.error("log.sourceExtensionError", extension.getName(), e);
 				throw e;
+			} catch (Exception e){
+				e.printStackTrace();
 			}
 			
 			return out;
@@ -408,6 +419,10 @@ import org.springframework.transaction.annotation.Transactional;
 		private TabFileWriter prepareTabFile(Extension extension, List<String> additionalHeader) throws IOException{
 			// create new file, overwriting existing one
 			File file = cfg.getDumpFile(getResourceId(), extension);
+			// remove previously existing file
+			if (file.exists()){
+				file.delete();
+			}
 			file.createNewFile();
 
 			List<String> header = new ArrayList<String>();
@@ -422,7 +437,9 @@ import org.springframework.transaction.annotation.Transactional;
 			for (ExtensionProperty prop : mapping.getMappedProperties()){
 				header.add(prop.getName());
 			}
-			header.addAll(additionalHeader);
+			if (additionalHeader!=null){
+				header.addAll(additionalHeader);
+			}
 			TabFileWriter writer = new TabFileWriter(file, header);
 			return writer;
 		}
