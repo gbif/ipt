@@ -143,7 +143,7 @@
 
         <!-- all resources! has to be changed once checklists are added -->
         <action name="resource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
-            <result type="freemarker">/WEB-INF/pages/portal/occ/index.ftl</result>
+            <result>/WEB-INF/pages/portal/occ/index.jsp</result>
         </action>
         <action name="detail" class="org.gbif.provider.webapp.action.portal.DwcAction">
             <result>/WEB-INF/pages/portal/occ/dwcDetail.jsp</result>
@@ -244,7 +244,7 @@
             </result>
         </action>
 
-        <action name="rss" class="org.gbif.provider.webapp.action.IndexAction">
+        <action name="rss" class="org.gbif.provider.webapp.action.IndexAction" method="rss">
             <result name="success" type="freemarker">
                 <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
                 <param name="contentType">text/xml</param>
@@ -255,10 +255,10 @@
     
     
     <!-- TAPIRlite Actions -->
-    <package name="tpr" namespace="/tpr" extends="default">
+    <package name="tapir" namespace="/tapir" extends="default">
         
         <!-- all resources! has to be changed once checklists are added -->
-        <action name="service" class="org.gbif.provider.webapp.action.tapir.ServiceAction">
+        <action name="service" class="org.gbif.provider.webapp.action.tapir.TapirAction">
             <result type="freemarker" name="ping">
                 <param name="location">/WEB-INF/pages/tapir/ping.ftl</param>                
                 <param name="contentType">text/xml</param>

@@ -1,5 +1,6 @@
 package org.gbif.provider.service.impl;
 
+import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.OccResourceManager;
@@ -27,13 +28,8 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 	}
 
 	@Test
-	public void testOccByCollectionPieUrl() {
-		System.out.println(occResourceManager.occByCollectionPieUrl(Constants.TEST_RESOURCE_ID, width, height, title));
-	}
-
-	@Test
-	public void testOccByInstitutionPieUrl() {
-		System.out.println(occResourceManager.occByInstitutionPieUrl(Constants.TEST_RESOURCE_ID, width, height, title));
+	public void testOccByHostPieUrl() {
+		System.out.println(occResourceManager.occByHostPieUrl(Constants.TEST_RESOURCE_ID, HostType.Collection, width, height, title));
 	}
 
 	@Test
@@ -51,18 +47,13 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 	}
 
 	@Test
-	public void testTop10TaxaPieUrl() {
-		System.out.println(occResourceManager.top10TaxaPieUrl(Constants.TEST_RESOURCE_ID, width, height, title));
-	}
-
-	@Test
 	public void testByCountryMapUrl() {
 		System.out.println(occResourceManager.occByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
 
 	@Test
 	public void testSpeciesByCountryMapUrl() {
-		System.out.println(occResourceManager.speciesByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
+		System.out.println(occResourceManager.taxaByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
 	
 }

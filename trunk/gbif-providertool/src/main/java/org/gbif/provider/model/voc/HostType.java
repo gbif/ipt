@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public enum HostType {
-	Institution("institution"),
-	Collection("collection");	
+	Institution("institutionCode"),
+	Collection("collectionCode");	
 	
 	public static final List<HostType> HOSTING_BODIES;
 	  static  

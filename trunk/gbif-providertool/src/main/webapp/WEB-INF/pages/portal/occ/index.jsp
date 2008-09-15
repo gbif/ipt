@@ -12,7 +12,8 @@
 <fieldset>
 	<legend><s:text name="occResource.description"/></legend>
 	<div id="metadata">
-		<s:property value="occResource.description"/>
+		<img class="right" src="<s:property value="%{cfg.getResourceLogoUrl(resource_id)}"/>" />
+		<span><s:property value="occResource.description"/></span>
 		
 		<s:label key="occResourceOverview.cache" value="%{occResource.lastUpload.recordsUploaded} total records uploaded %{occResource.lastUpload.executionDate}"/>
 		<ul class="minimenu">
@@ -24,15 +25,15 @@
 			<table class="lefthead">
 				<tr>
 					<th><s:text name="occResourceOverview.tabfile"/></th>
-					<td><a href="<s:property value="%{occResource.getDumpArchiveUrl()}"/>"><s:property value="%{occResource.getDumpArchiveUrl()}"/></a></td>
+					<td><a href="<s:property value="%{cfg.getDumpArchiveUrl(resource_id)}"/>"><s:property value="%{cfg.getDumpArchiveUrl(resource_id)}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.tapir"/></th>
-					<td><a href="<s:property value="%{occResource.getTapirEndpoint()}"/>"><s:property value="%{occResource.getTapirEndpoint()}"/></a></td>
+					<td><a href="<s:property value="%{cfg.getTapirEndpoint(resource_id)}"/>"><s:property value="%{cfg.getTapirEndpoint(resource_id)}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.wfs"/></th>
-					<td><s:property value="%{occResource.getWfsEndpoint()}"/></td>
+					<td><s:property value="%{cfg.getWfsEndpoint(resource_id)}"/></td>
 				</tr>
 			</table>
 		</div>
@@ -119,9 +120,9 @@
 	</div>
 </div>
 <div id="loc-tax" class="stats map stat-right">
-	<label><s:text name="stats.speciesPerCountry"/></label>
-	<div id="imgBySpeciesPerCountry">
-		<s:action name="occResourceStatsBySpeciesPerCountry" namespace="/ajax" executeResult="true"/>
+	<label><s:text name="stats.taxaPerCountry"/></label>
+	<div id="imgByTaxaPerCountry">
+		<s:action name="occResourceStatsByTaxaPerCountry" namespace="/ajax" executeResult="true"/>
 	</div>
 </div>
 
@@ -148,7 +149,7 @@ $('regionClass').observe('change', updateByRegion);
 </script>	
 <div id="loc-geoserver" class="stats map stat-right">
 	<label><s:text name="stats.occPointMap"/></label>
-	<img src="<s:property value="geoserverMapUrl"/>" />
+	<img width="<s:property value="%{width}"/>" height="<s:property value="%{height}"/>" src="<s:property value="geoserverMapUrl"/>" />
 </div>
 
 			
@@ -189,11 +190,11 @@ $('rank').observe('change', updateByTaxon);
 <div id="host-pie" class="stats chart">
 	<label><s:text name="stats.occByHost"/></label>
 	<s:form id="hostForm">
-		<s:select id="hostType" list="ranks" value="rank" theme="simple"/>
+		<s:select id="hostType" list="hostTypes" theme="simple"/>
 	</s:form>
 	<s:url id="imgByHostUrl" action="occResourceStatsByHost" namespace="/ajax" includeParams="get"/>
 	<div id="imgByHost">
-		<s:action name="occResourceStatsByCollection" namespace="/ajax" executeResult="true"/>
+		<s:action name="occResourceStatsByHost" namespace="/ajax" executeResult="true"/>
 	</div>
 </div>
 <script>

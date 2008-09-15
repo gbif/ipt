@@ -1,6 +1,7 @@
 package org.gbif.provider.webapp.action.tapir;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.gbif.provider.model.DarwinCore;
@@ -11,12 +12,13 @@ import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ServiceAction extends BaseOccurrenceResourceAction {
+public class TapirAction extends BaseOccurrenceResourceAction {
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
     private String op;
     private OccurrenceResource resource;
     private List<DarwinCore> records;
+    private Date now = new Date();
 	 
     public String execute(){
     	if (op==null){
@@ -34,23 +36,28 @@ public class ServiceAction extends BaseOccurrenceResourceAction {
     	}
     }
 
+	private String ping() {
+		return "ping";
+	}
+
 	private String capabilities() {
-		// TODO Auto-generated method stub
+		if (resource_id != null) {
+			resource = occResourceManager.get(resource_id);
+		}
 		return "capabilities";
 	}
 
 	private String search() {
-		// TODO Auto-generated method stub
+		if (resource_id != null) {
+			resource = occResourceManager.get(resource_id);
+		}
 		return "search";
 	}
 
-	private String ping() {
-		// TODO Auto-generated method stub
-		return "ping";
-	}
-
 	private String metadata() {
-		// TODO Auto-generated method stub
+		if (resource_id != null) {
+			resource = occResourceManager.get(resource_id);
+		}
 		return "metadata";
 	}
 
@@ -66,6 +73,14 @@ public class ServiceAction extends BaseOccurrenceResourceAction {
 
 	public List<DarwinCore> getRecords() {
 		return records;
+	}
+
+	public OccurrenceResource getResource() {
+		return resource;
+	}
+
+	public Date getNow() {
+		return now;
 	}
     
 }
