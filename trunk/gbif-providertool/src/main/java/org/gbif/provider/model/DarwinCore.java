@@ -16,6 +16,9 @@
 
 package org.gbif.provider.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +47,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.util.Constants;
 import org.hibernate.validator.NotNull;
 
 
@@ -258,10 +262,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				// try to convert into proper type
 				Date typedVal;
 				if (val !=null){
-					try {
-						typedVal = new Date(val);
+					try {						
+						typedVal = Constants.DATE_ISO_FORMAT().parse(val);
 						dwc.setDateCollected(typedVal);
-					} catch (NumberFormatException e) {
+					} catch (ParseException e) {
 						dwc.setProblematic(true);
 						logdb.warn("log.transform", new String[]{val, "EarliestDateCollected", "Date"});
 					}

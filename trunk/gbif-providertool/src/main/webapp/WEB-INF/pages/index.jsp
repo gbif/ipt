@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><s:text name="home.title"/></title>
+    <title><s:property value='cfg.title'/></title>
     <meta name="menu" content="MainMenu"/>
     <meta name="submenu" content="metadata"/>
     <meta name="decorator" content="fullsize"/>

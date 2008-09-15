@@ -7,17 +7,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.service.TabFileProcessManager;
+import org.gbif.provider.webapp.action.BaseAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class SourceFileUploadAction extends BaseAction{
 	private static final long serialVersionUID = -3698917712584074200L;
-	private TabFileProcessManager tabFileProcessManager;
+	@Autowired
+	private DatasourceInspectionManager datasourceInspectionManager;
     private GenericManager<ViewMappingBase> viewMappingManager;
     private File file;
     private String fileContentType;
@@ -32,12 +33,16 @@ public class SourceFileUploadAction extends BaseAction{
         if (this.cancel != null) {
             return "cancel";
         }
+        if (mapping_id == null){
+        	log.error("mapping_id required for file upload");
+        	return ERROR;
+        }
         // check where it who wants this file and where to save
 		ViewMappingBase mapping = viewMappingManager.get(mapping_id);
 		DatasourceBasedResource resource = mapping.getResource();
         // the directory to upload to
 		File targetFile = cfg.getSourceFile(resource.getId(), mapping.getExtension());
-
+		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));
         //retrieve the file data
         InputStream stream = new FileInputStream(file);
 
@@ -57,13 +62,16 @@ public class SourceFileUploadAction extends BaseAction{
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		List<String> headers = tabFileProcessManager.getColumnHeaders(getFile());
-		log.info(String.format("Tab file %s uploaded with %s columns", getFile().getName(), headers .size()));
+		mapping.setSourceFile(targetFile);
+		List<String> headers = datasourceInspectionManager.getHeader(mapping);
+		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
 			// save file in view mapping
-			mapping.setSourceFile(targetFile);
 	        viewMappingManager.save(mapping);
+	        saveMessage(getText("mapping.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
+			mapping.setSourceFile(null);
+	        viewMappingManager.save(mapping);
 	        saveMessage(getText("mapping.sourceFileBroken", String.valueOf(headers.size())));
 		}
 		return SUCCESS;
@@ -118,10 +126,6 @@ public class SourceFileUploadAction extends BaseAction{
 	
 	
 	
-
-	public void setTabFileProcessManager(TabFileProcessManager tabFileProcessManager) {
-		this.tabFileProcessManager = tabFileProcessManager;
-	}
 
 	public Long getMapping_id() {
 		return mapping_id;

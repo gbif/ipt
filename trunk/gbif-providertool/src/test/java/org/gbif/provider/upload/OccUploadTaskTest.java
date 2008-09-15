@@ -23,26 +23,20 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testUploadTask() {
-		boolean result = false;
-		occUploadTask.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+//		occUploadTask.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		occUploadTask.init(4l, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<UploadEvent> f = executor.submit(occUploadTask);
 		try {
-//			Thread.sleep(5000);
-//			f.cancel(true);
-//			Thread.sleep(5000);
 			UploadEvent event = f.get();
 			System.out.println(event);
 		} catch (CancellationException e) {
-			result=true;
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-//		assertTrue(result);
 	}
-	
 }

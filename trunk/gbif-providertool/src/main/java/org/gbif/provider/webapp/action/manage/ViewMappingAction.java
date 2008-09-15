@@ -16,7 +16,6 @@
 
 package org.gbif.provider.webapp.action.manage;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,17 +35,19 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class ViewMappingAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware{
 	private static Integer FIXED_TERMS_IDX = 1000;
+	@Autowired
     private DatasourceInspectionManager datasourceInspectionManager;
     private GenericManager<Extension> extensionManager;
     private GenericManager<ViewMappingBase> viewMappingManager;
     private ViewMappingBase mapping;
     private List<PropertyMapping> mappings;
-    private ArrayList<String> viewColumnHeaders;
+    private List<String> viewColumnHeaders;
     private List preview;
     private Map<ExtensionProperty, Map> mapOptions;
     private SortedMap<String, String> columnOptions;
@@ -69,6 +70,8 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         	mapping = new ViewExtensionMapping();
         	mapping.setResource(resource);
         	mapping.setExtension(extensionManager.get(extension_id));
+        	viewMappingManager.save(mapping);
+        	mapping_id = mapping.getId();
         }
         
         // prepare list of property mappings to create form with
@@ -96,29 +99,19 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
 		prepareMappingsOptions();
 		prepareExistingMappings();
 	}
-	private void prepareExistingMappings() {
-		existingDbMappings = new HashSet<ViewMappingBase>();
-		for (ViewMappingBase vm : resource.getAllMappings()){
-			if (vm.getSourceSql() != null && vm.getSourceSql().trim().length() > 5){
-				existingDbMappings.add(vm);
-			}
-		}
-	}
 	private void prepareSourceDataPreview(){
 		log.debug("prepareSourceDataPreview");
         // get resultset preview and number of available comuns for mapping
         viewColumnHeaders = new ArrayList<String>();
-        if (mapping.getSourceSql() !=null){
-			try {
-	            // get first 5 rows into list of list for previewing data
-	            preview = datasourceInspectionManager.getPreview(mapping.getSourceSql());
-	            viewColumnHeaders = (ArrayList<String>) preview.remove(0);
-	        } catch (SQLException e) {
-	            String msg = getText("mapping.sqlError");
-	            saveMessage(msg);
-	            log.warn(msg, e);
-			}
-        }
+		try {
+            // get first 5 rows into list of list for previewing data
+            preview = datasourceInspectionManager.getPreview(mapping);
+            viewColumnHeaders = (List<String>) preview.remove(0);
+        } catch (Exception e) {
+            String msg = getText("mapping.sqlError");
+            saveMessage(msg);
+            log.warn(msg, e);
+		}
 	}
 
 	private void prepareMappingsOptions() {
@@ -154,6 +147,18 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
         }		
 	}
 	
+	/**
+	 * List all existing view mappings for this resource that have a SQL statement already configured, so that one can reuse existing SQL for other extensions
+	 */
+	private void prepareExistingMappings() {
+		existingDbMappings = new HashSet<ViewMappingBase>();
+		for (ViewMappingBase vm : resource.getAllMappings()){
+			if (vm.getSourceSql() != null && vm.getSourceSql().trim().length() > 5){
+				existingDbMappings.add(vm);
+			}
+		}
+	}
+
 	public String edit(){
 		prepareWithDatasource();
 		return SUCCESS;
@@ -221,10 +226,6 @@ public class ViewMappingAction extends BaseOccurrenceResourceAction implements P
     
 
     
-
-	public void setDatasourceInspectionManager(DatasourceInspectionManager datasourceInspectionManager) {
-		this.datasourceInspectionManager = datasourceInspectionManager;
-	}
 
 	public void setExtensionManager(GenericManager<Extension> extensionManager) {
 		this.extensionManager = extensionManager;

@@ -22,7 +22,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.gbif.provider.model.ViewMappingBase;
+
 public interface DatasourceInspectionManager {
-	public List getAllTables() throws SQLException;
-	public List getPreview(String sql) throws SQLException;
+	/**
+	 * @param view mapping either to file or SQL statement
+	 * @return a list of PREVIEW_SIZE (~5) rows plus a first header row of strings that contains the column names as TABLE.COLUMNNAME 
+	 * @throws Exception
+	 */
+	public List<List<? extends Object>> getPreview(ViewMappingBase view) throws Exception;
+	/**
+	 * @param view
+	 * @return list of column headers only (same first row in getPreview())
+	 * @throws Exception
+	 */
+	public List<String> getHeader(ViewMappingBase view) throws Exception;
+	
 }
