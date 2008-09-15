@@ -180,7 +180,17 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 			props.add(pm.getProperty());
 		}
 		return props;
-	}		
+	}
+	@Transient
+	public boolean isMappedToDatabase() {
+		if (sourceSql != null && sourceSql.trim() != ""){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+
 	/**
 	 * Natural sort order is resource, then extension
 	 * @see java.lang.Comparable#compareTo(Object)

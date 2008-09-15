@@ -17,6 +17,7 @@ import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
+import org.gbif.provider.datasource.impl.FileImportSource;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.CoreRecord;
@@ -446,11 +447,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 		private ImportSource getCoreImportSource() throws ImportSourceException{
 			Long resourceId = getResourceId();
-			//FIXME: need to decide here whether file or rdbm upload and create import source accordingly 
-			// create rdbms source & set resource context for DatasourceInterceptor
-			DatasourceContextHolder.setResourceId(resourceId);
 			ViewCoreMapping coreViewMapping = getResource().getCoreMapping();
-			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), coreViewMapping);
+			ImportSource source; 
+			//decide whether file or rdbm upload and create import source accordingly
+			if (coreViewMapping.isMappedToDatabase()){
+				// create rdbms source & set resource context for DatasourceInterceptor
+				DatasourceContextHolder.setResourceId(resourceId);
+				source = RdbmsImportSource.newInstance(getResource(), coreViewMapping);
+			}else{
+				source = FileImportSource.newInstance(getResource(), coreViewMapping);
+			}
 			return source;
 		}
 
