@@ -40,8 +40,6 @@
 	</div>
 </s:form>
 
-
-<br class="clearfix" />
 <s:push value="occResource">
 
 <div id="loc-stats" class="stats stat-table">

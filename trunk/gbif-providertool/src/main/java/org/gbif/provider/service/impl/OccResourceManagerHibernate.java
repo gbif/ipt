@@ -46,7 +46,10 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	private List<StatsCount> getDataMap(List<Object[]> occBySth){
 		List<StatsCount> data = new ArrayList<StatsCount>();
         for (Object[] row : occBySth){
-        	String label = row[0].toString();
+        	String label = null;
+        	if (row[0]!=null){
+        		label = row[0].toString();
+        	}
         	if (label == null || label.trim().equals("")){
         		label = "?";
         	}
