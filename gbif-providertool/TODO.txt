@@ -1,6 +1,3 @@
- * keep only basic metadata in default-data.xml
- * POM: never run dbunit in default phase. configure dbunit to only run when export or import goal is given on commandline
- * POM: run SQL script for tests loading full pontaurus data
  * activate Photoshop CS3 on macbook
  * FIX: find webapp dir dynamically in AppConfig
  * keep num of occurrences in Taxon+Region class AND use this in occResourceManager stats generation
