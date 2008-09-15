@@ -1,6 +1,7 @@
 <#assign page=JspTaglibs["http://www.opensymphony.com/sitemesh/page"]>
 <@page.applyDecorator name="tapir" title="ping">
 <@page.param name="tapir.content">
+<#escape x as x?xml>
 <capabilities>
 <operations>
   <ping/>
@@ -16,6 +17,14 @@
     </templates>
   </search>
 </operations>
+<concepts>
+ <schema>
+  <#list getAllMappings() map>
+   <mappedConcept id="${map.property.qualName}">
+  <#/list>
+ </schema>
+</concepts>
 </capabilities>
+</#escape>
 </@page.param>
 </@page.applyDecorator>

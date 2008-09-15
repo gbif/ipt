@@ -39,8 +39,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private List<OccurrenceResource> occResources;
 	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
-	private Map<Integer, String> hostClasses = new TreeMap<Integer, String>();
+	private Map<Integer, String> hostTypes = new TreeMap<Integer, String>();
 	public String geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
+	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
+	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 
 	
 	public void prepare() {
@@ -60,10 +62,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		
 		// hosting bodies
 		for (HostType ht : HostType.HOSTING_BODIES){
-			hostClasses.put(ht.ordinal(), ht.name());
+			hostTypes.put(ht.ordinal(), ht.name());
 		}
-		hostClasses.put(Rank.Species.ordinal(), "Top 10 Species");
-		
 	}
 	
 	private void updateRecentResouces(){
@@ -122,6 +122,18 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public List<OccurrenceResource> getOccResources() {
 		return occResources;
+	}
+
+	public Map<Integer, String> getHostTypes() {
+		return hostTypes;
+	}
+
+	public static int getWidth() {
+		return width;
+	}
+
+	public static int getHeight() {
+		return height;
 	}
 
 }

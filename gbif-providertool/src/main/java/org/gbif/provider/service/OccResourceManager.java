@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
+import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 
@@ -19,17 +20,9 @@ public interface OccResourceManager extends ResourceManager<OccurrenceResource>{
 	public String occByTaxonPieUrl(List<StatsCount> data, Rank rank, int width, int height, boolean title);
 	public List<StatsCount> occByTaxon(Long resourceId, Rank rank);
 	
-	public String top10TaxaPieUrl(Long resourceId, int width, int height, boolean title);
-	public String top10TaxaPieUrl(List<StatsCount> data, int width, int height, boolean title);
-	public List<StatsCount> top10Taxa(Long resourceId);
-	
-	public String occByInstitutionPieUrl(Long resourceId, int width, int height, boolean title);
-	public String occByInstitutionPieUrl(List<StatsCount> data, int width, int height, boolean title);
-	public List<StatsCount> occByInstitution(Long resourceId);
-	
-	public String occByCollectionPieUrl(Long resourceId, int width, int height, boolean title);
-	public String occByCollectionPieUrl(List<StatsCount> data, int width, int height, boolean title);
-	public List<StatsCount> occByCollection(Long resourceId);
+	public String occByHostPieUrl(Long resourceId, HostType ht, int width, int height, boolean title);
+	public String occByHostPieUrl(List<StatsCount> data, HostType ht, int width, int height, boolean title);
+	public List<StatsCount> occByHost(Long resourceId, HostType ht);
 	
 	public String occByBasisOfRecordPieUrl(Long resourceId, int width, int height, boolean title);
 	public String occByBasisOfRecordPieUrl(List<StatsCount> data, int width, int height, boolean title);
@@ -47,14 +40,9 @@ public interface OccResourceManager extends ResourceManager<OccurrenceResource>{
 	public String occByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height);
 	public List<StatsCount> occByCountry(Long resourceId);
 	
-	public String speciesByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height);
-	public String speciesByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height);
-	/**
-	 * Get number of distinct species/taxa per country
-	 * @param resourceId
-	 * @return
-	 */
-	public List<StatsCount> speciesByCountry(Long resourceId);
+	public String taxaByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height);
+	public String taxaByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height);
+	public List<StatsCount> taxaByCountry(Long resourceId);
 	
 	// helper
 	public GeographicalArea getMapArea(String area);

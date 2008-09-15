@@ -113,10 +113,8 @@
 
 <div id="loc-countries" class="stats map">
 	<label><@s.text name="stats.occByCountry"/></label>	
-	<div id="imgByCountry">
-		<@s.action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true"/>
-	</div>
 </div>
+
 <div id="loc-tax" class="stats map stat-right">
 	<label><@s.text name="stats.speciesPerCountry"/></label>
 	<div id="imgBySpeciesPerCountry">

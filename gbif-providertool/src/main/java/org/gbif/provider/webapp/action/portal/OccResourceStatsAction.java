@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
+import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
@@ -73,10 +74,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	}
 
 	public String statsByRegion() {
-		RegionType r = RegionType.getByInt(type);
-		return statsByRegion(r);
-	}
-	private String statsByRegion(RegionType reg) {
+		RegionType reg = RegionType.getByInt(type);
 		types = RegionType.DARWIN_CORE_REGIONS;
 		data = occResourceManager.occByRegion(resource_id, reg);
 		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
@@ -86,30 +84,16 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public String statsByTaxon() {
 		Rank rnk = Rank.getByInt(type);
 		types = Rank.DARWIN_CORE_RANKS;
-		if (rnk == Rank.Species){
-			statsByTop10Taxa();
-		}else{
-			data = occResourceManager.occByTaxon(resource_id, rnk);
-			chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
-		}
+		data = occResourceManager.occByTaxon(resource_id, rnk);
+		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
 		return PIE_RESULT;
 	}
 	
-	public String statsByTop10Taxa() {
-		data = occResourceManager.top10Taxa(resource_id);
-		chartUrl = occResourceManager.top10TaxaPieUrl(data, width, height, title);
-		return PIE_RESULT;
-	}
-	
-	public String statsByInstitution() {
-		data = occResourceManager.occByInstitution(resource_id);
-		chartUrl = occResourceManager.occByInstitutionPieUrl(data, width, height, title);
-		return PIE_RESULT;
-	}
-
-	public String statsByCollection() {
-		data = occResourceManager.occByCollection(resource_id);
-		chartUrl = occResourceManager.occByCollectionPieUrl(data, width, height, title);
+	public String statsByHost() {
+		HostType ht = HostType.getByInt(type);
+		types = HostType.HOSTING_BODIES;
+		data = occResourceManager.occByHost(resource_id, ht);
+		chartUrl = occResourceManager.occByHostPieUrl(data, ht, width, height, title);
 		return PIE_RESULT;
 	}
 
@@ -134,10 +118,10 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		chartUrl = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
 		return MAP_RESULT;
 	}	
-	public String statsBySpeciesPerCountry() {
+	public String statsByTaxaPerCountry() {
 		setMapSize();
-		data = occResourceManager.speciesByCountry(resource_id);
-		chartUrl = occResourceManager.speciesByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+		data = occResourceManager.taxaByCountry(resource_id);
+		chartUrl = occResourceManager.taxaByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
 		return MAP_RESULT;
 	}	
 
@@ -213,6 +197,14 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 
 	public List<Enum> getTypes() {
 		return types;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 		
 }

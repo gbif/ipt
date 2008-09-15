@@ -92,6 +92,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private Point location;
 	private Taxon taxon;
 	private Region region;
+	private Date dateCollected;
 	
 	// DarwinCore 1.4 elements
 	private String basisOfRecord;
@@ -254,6 +255,17 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				dwc.setValidDistributionFlag(val);
 			}else if(propName.equals("EarliestDateCollected")){
 				dwc.setEarliestDateCollected(val);
+				// try to convert into proper type
+				Date typedVal;
+				if (val !=null){
+					try {
+						typedVal = new Date(val);
+						dwc.setDateCollected(typedVal);
+					} catch (NumberFormatException e) {
+						dwc.setProblematic(true);
+						logdb.warn("log.transform", new String[]{val, "EarliestDateCollected", "Date"});
+					}
+				}				
 			}else if(propName.equals("LatestDateCollected")){
 				dwc.setLatestDateCollected(val);
 			}else if(propName.equals("DayOfYear")){
@@ -513,7 +525,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.region = region;
 	}
 	
-    @AttributeOverrides({
+    public Date getDateCollected() {
+		return dateCollected;
+	}
+	public void setDateCollected(Date dateCollected) {
+		this.dateCollected = dateCollected;
+	}
+	
+	@AttributeOverrides({
         @AttributeOverride(name="latitude", column = @Column(name="lat")), 
         @AttributeOverride(name="longitude", column = @Column(name="lon")) 
     })

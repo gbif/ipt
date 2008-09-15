@@ -3,3 +3,5 @@
  * POM: run SQL script for tests loading full pontaurus data
  * activate Photoshop CS3 on macbook
  * FIX: find webapp dir dynamically in AppConfig
+ * keep num of occurrences in Taxon+Region class AND use this in occResourceManager stats generation
+ * check portal index, especially year charts

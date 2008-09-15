@@ -2,13 +2,13 @@
 
 <head>
     <title><s:text name="occResourceOverview.title"/> Statistics</title>
-    <meta name="resource" content="<s:property value="occResource.title"/>"/>
+    <meta name="resource" content="<s:property value="%{occResource.title}"/>"/>
     <meta name="submenu" content="resource"/>
 </head>
 
 
 <div id="stats-chart">
-	<img src="<s:property value="chartUrl"/>" />
+	<img src="<s:property value="%{chartUrl}"/>" width="<s:property value="%{width}"/>" height="<s:property value="%{height}"/>" />
 </div>
 
 <div id="stats-menu">
@@ -20,9 +20,9 @@
 				<s:param name="zoom" value="true" />
 				<s:param name="type" value="%{ordinal()}" />
 			</s:url>
-			<s:a href="%{linkID}"><s:property value="name()"/></s:a>
+			<s:a href="%{linkID}"><s:property value="%{name()}"/></s:a>
 		</li>
-	</s:iterator>		
+	</s:iterator>
 	</ul>
 </div>
 
