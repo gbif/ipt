@@ -24,7 +24,7 @@ public class OccUploadTaskTest extends ContextAwareTestBase{
 	@Test
 	public void testUploadTask() {
 //		occUploadTask.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
-		occUploadTask.init(4l, Constants.TEST_USER_ID);
+		occUploadTask.init(3l, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<UploadEvent> f = executor.submit(occUploadTask);
