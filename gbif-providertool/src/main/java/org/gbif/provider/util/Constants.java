@@ -16,6 +16,9 @@
 
 package org.gbif.provider.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 
 /**
  * Constant values used throughout the application.
@@ -30,4 +33,15 @@ public class Constants {
     public static final String TEST_BASE_DIR = "/tmp";
     public static final String RECENT_RESOURCES = "recentResources";
     public static final String DEFAULT_LOGO = "/images/resource-logo.gif";
+    // 1999-07-10
+    private static final DateFormat date_iso_format = new SimpleDateFormat("yyyy-MM-dd");
+    // 2001-07-04T12:08:56.235-0700
+    public static final DateFormat datetime_iso_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    
+    public static synchronized DateFormat DATE_ISO_FORMAT(){
+    	return date_iso_format;
+    }
+    public static synchronized DateFormat DATETIME_ISO_FORMAT(){
+    	return datetime_iso_format;
+    }    
 }

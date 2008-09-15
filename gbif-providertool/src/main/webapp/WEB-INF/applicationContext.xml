@@ -76,11 +76,10 @@
         <property name="dataSource" ref="dataSource"/>        
     </bean>
 
-    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerJDBC">        
+    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl">        
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     
-    <bean id="tabFileProcessManager" class="org.gbif.provider.service.impl.TabFileProcessManagerImpl"/>        
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
         <constructor-arg ref="extensionManager"/>
     </bean>

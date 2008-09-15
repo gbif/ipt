@@ -16,6 +16,8 @@
 
 package org.gbif.provider.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -23,24 +25,56 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.LineIterator;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.util.MalformedTabFileException;
+import org.gbif.provider.util.TabFileReader;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class DatasourceInspectionManagerJDBC extends JdbcDaoSupport implements DatasourceInspectionManager {
+public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements DatasourceInspectionManager {
 	private static final int PREVIEW_SIZE = 5;
-	/**
-	 * @param sql
-	 * @return a list of 5 rows plus a first header row of strings that contains the column names as TABLE.COLUMNNAME 
-	 * @throws SQLException
-	 */
-	public List getPreview(String sql) throws SQLException {
+	
+	public List<List<? extends Object>> getPreview(ViewMappingBase view) throws Exception {
+		if (view == null){
+			throw new NullPointerException();
+		}
+		
+		if (view.getSourceSql()!=null){
+			return getPreview(view.getSourceSql());		
+		}else if(view.getSourceFile().exists()){
+			return getPreview(view.getSourceFile());
+		}else{
+			throw new IllegalArgumentException("Neither file nor SQL source configured");
+		}
+	}
+	public List<String> getHeader(ViewMappingBase view) throws Exception {
+		if (view == null){
+			throw new NullPointerException();
+		}
+		if (view.getSourceSql()!=null){
+			return getHeader(view.getSourceSql());		
+		}else if(view.getSourceFile().exists()){
+			return getHeader(view.getSourceFile());
+		}else{
+			throw new IllegalArgumentException("Neither file nor SQL source configured");
+		}
+	}
+	
+	
+	
+	private List<List<? extends Object>> getPreview(String sql) throws SQLException {
 		Statement stmt = this.getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 		stmt.setMaxRows(PREVIEW_SIZE);
 		stmt.setFetchSize(PREVIEW_SIZE);
 		ResultSet rs = stmt.executeQuery(sql);
-		List preview = new ArrayList();
+		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
 		List<String> columnHeaders = new ArrayList<String>();
 		
 		// get metadata
@@ -65,6 +99,29 @@ public class DatasourceInspectionManagerJDBC extends JdbcDaoSupport implements D
 		stmt.close();
 		return preview;
 	}
+	private List<String> getHeader(String sourceSql) throws SQLException {
+		List<List<? extends Object>> preview = getPreview(sourceSql);
+		return (List<String>) preview.get(0);
+	}
+
+	
+	
+	
+	private List<List<? extends Object>> getPreview(File source) throws IOException, MalformedTabFileException {
+		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
+		TabFileReader reader = new TabFileReader(source);
+		// read file
+		 preview.add(Arrays.asList(reader.getHeader()));
+	     while (reader.hasNext() && preview.size()<7) {
+			 preview.add(Arrays.asList(reader.next()));
+	     }		 
+		 return preview;
+	}
+	private List<String> getHeader(File sourceFile) throws IOException, MalformedTabFileException {
+		TabFileReader reader = new TabFileReader(sourceFile);
+		return Arrays.asList(reader.getHeader());
+	}
+
 	
 	
 	public List getAllTables() throws SQLException {

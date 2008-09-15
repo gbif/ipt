@@ -354,6 +354,11 @@
 
         <action name="uploadMappingSource" class="org.gbif.provider.webapp.action.manage.SourceFileUploadAction" method="upload">
             <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
+            <result type="redirect-action">
+                <param name="actionName">editMapping</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="mapping_id">${mapping_id}</param>
+            </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
