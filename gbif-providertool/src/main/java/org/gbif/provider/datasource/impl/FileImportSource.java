@@ -106,6 +106,7 @@ public class FileImportSource implements ImportSource{
 	}
 	public ImportRecord next() {
 		ImportRecord row = null;
+		currentLine = reader.next();
 		if (hasNext()){
 			try {
 				row = new ImportRecord();
