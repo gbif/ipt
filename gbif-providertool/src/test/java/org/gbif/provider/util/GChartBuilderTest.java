@@ -83,6 +83,19 @@ public class GChartBuilderTest {
 		data.add(new StatsCount("1977", 1977, 1342l));
 		data.add(new StatsCount("2001", 2001, 18842l));
 		String result = gb.generateChronoChartUrl(440, 220, data);
+//		System.out.println(result);
+		result = gb.generateChronoChartUrl(220, 110, data);
+//		System.out.println(result);
+		
+		data = new ArrayList<StatsCount>();
+		data.add(new StatsCount(null, null, 1012l));
+		data.add(new StatsCount("1989", 1989, 790l));
+		result = gb.generateChronoChartUrl(320, 160, data);
+//		System.out.println(result);
+
+		result = gb.generateChronoChartUrl(320, 160, new ArrayList<StatsCount>());
+//		System.out.println(result);
+
 //		String expectedString = "http://chart.apis.google.com/chart?cht=t&chtm=world&chs=440x220&chld=DEUKFRARBRDARU&chco=FFFFFF,EDF0D4,13390D&chf=bg,s,E0F2FF&chd=e:DNCkD2bho9BSEf";
 //      assertEquals(expectedString, result);
 	}	

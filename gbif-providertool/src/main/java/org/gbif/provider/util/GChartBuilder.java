@@ -14,6 +14,8 @@ import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 
+import com.googlecode.gchartjava.AxisInfo;
+import com.googlecode.gchartjava.AxisStyle;
 import com.googlecode.gchartjava.BarChart;
 import com.googlecode.gchartjava.BarChartDataSeries;
 import com.googlecode.gchartjava.Color;
@@ -28,6 +30,7 @@ import com.googlecode.gchartjava.PieChart;
 import com.googlecode.gchartjava.PoliticalBoundary;
 import com.googlecode.gchartjava.Slice;
 import com.googlecode.gchartjava.SolidFill;
+import com.googlecode.gchartjava.AxisStyle.AlignmentEnum;
 
 public class GChartBuilder {
     private final static Log log = LogFactory.getLog(GChartBuilder.class);
@@ -118,16 +121,10 @@ public class GChartBuilder {
 	}
 
 	public static String generateChronoChartUrl(int width, int height, String title, List<StatsCount> data){
-		final int MAX_BARS = width / (BAR_WIDTH+2);
+		final int MAX_BARS = width / (BAR_WIDTH+9);
 		float[] gData = new float[MAX_BARS];
-		int barSize = 1;
 		Integer minYear = null;
 		Integer maxYear = null;
-		
-		if (data.isEmpty()){
-			//FIXME: show special null chart instead of exception throwing
-			throw new NullPointerException();
-		}
 		
 		// can only show 25 bars. aggregate data so that it fits
 		for (StatsCount stat: data){
@@ -139,29 +136,57 @@ public class GChartBuilder {
 				maxYear = year; 
 			}
 		}
-		Integer period = maxYear-minYear;
-		for (int s : BAR_SIZES){
-			if (period/s <= MAX_BARS){
-				barSize = s;
-				break;
-			}
-		}
-		// create new dataset with 1 bar = step size of years
-		Integer startYear = minYear - (minYear % barSize );
-		int barIdx = 0;
-		for (StatsCount stat: data){
-			Integer year = (Integer) stat.getValue();
-			barIdx = (year - startYear) / barSize;
-			gData[barIdx]+= (float) stat.getCount();
-		}
 		
+		// assert that there are some serious years existing before proceeding
+		AxisInfo xAxisInfo = null;
+		AxisInfo yAxisInfo = null;
+		if (maxYear!=null && minYear!=null){
+			Integer period = maxYear-minYear;
+			int barSize = 1;
+			Float maxValue = 0f;
+			
+			for (int s : BAR_SIZES){
+				if (period/s <= MAX_BARS){
+					barSize = s;
+					break;
+				}
+			}
+			// create new dataset with 1 bar = step size of years
+			Integer startYear = minYear - (minYear % barSize );
+			int barIdx = 0;
+			for (StatsCount stat: data){
+				Integer year = (Integer) stat.getValue();
+				if (year != null){
+					barIdx = (year - startYear) / barSize;
+					gData[barIdx]+= (float) stat.getCount();
+					if (gData[barIdx] > maxValue){
+						maxValue=gData[barIdx];
+					}
+				}
+			}
+			// define axis legend
+			List<String> labels = new ArrayList<String>();
+			for (int i=0; i<MAX_BARS; i++){
+				if (i%2==0){
+					labels.add(String.valueOf(startYear+barSize*i));
+				}else{
+					labels.add("");
+				}
+			}
+			xAxisInfo = new AxisInfo(labels);
+			xAxisInfo.setAxisStyle(new AxisStyle(Color.GRAY, 8, AlignmentEnum.CENTER));
+			yAxisInfo = new AxisInfo(0, maxValue.intValue());
+		}
+
 		BarChartDataSeries series = new BarChartDataSeries(DataUtil.normalize(gData), COLORS.get(1));
         BarChart chart = new BarChart(series);
         chart.setSize(width, height);
         chart.setBarWidth(BAR_WIDTH);
         // legend
-//        chart.addXAxisInfo(null);
-//        chart.addYAxisInfo(null);
+        if (xAxisInfo != null){
+            chart.addXAxisInfo(xAxisInfo);
+            chart.addYAxisInfo(yAxisInfo);
+        }
         
 //		String chartUrl = "http://chart.apis.google.com/chart?cht=bvs&chs=320x160&chd=t:10,50,60,40,50,60,100,40,20,80,40,77,20,50,60,100,40,20,80,40,7,15,5,9,55,7850,40,50,60,100,40,20,60,100,13,56,48,13,20,10,50,78,60,80,40,50,60,100,40,20,40,50,60,0,80,40,50,60,100,40,20&chco=c6d9fd&chbh=3";
         
