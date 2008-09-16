@@ -42,6 +42,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.logging.log.I18nLog;
@@ -146,7 +147,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	public static DarwinCore newInstance(ImportRecord iRec){
 		if (iRec==null){
-			throw new NullPointerException();
+			return null;
 		}
 		DarwinCore dwc = DarwinCore.newInstance();
 		dwc.setGuid(iRec.getGuid());
@@ -157,7 +158,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		for (ExtensionProperty prop : iRec.getProperties().keySet()){
 			// set all dwc properties apart from:
 			// DateLastModified: managed by CoreRecord and this software
-			String val = iRec.getPropertyValue(prop);
+			String val = StringUtils.trimToNull(iRec.getPropertyValue(prop));
 			String propName = prop.getName();
 			if(propName.equals("GlobalUniqueIdentifier")){
 				dwc.setGlobalUniqueIdentifier(val);
@@ -313,11 +314,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void updateWithGeoExtension(ExtensionRecord extRec){
 		String geodatum = null;
 		// tmp raw value
-		String val; 
 		for (ExtensionProperty prop : extRec){
+			String val = StringUtils.trimToNull(extRec.getPropertyValue(prop));
 			// check string coordinates
 			if(prop.equals(LATITUDE_PROP)){
-				val = extRec.getPropertyValue(prop);
 				if (val !=null){
 					try {
 						getLocation().setLatitude(Float.valueOf(val));
@@ -331,7 +331,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				}
 			}
 			else if(prop.equals(LONGITUDE_PROP)){
-				val = extRec.getPropertyValue(prop);
 				if (val !=null){
 					try {
 						getLocation().setLongitude(Float.valueOf(val));

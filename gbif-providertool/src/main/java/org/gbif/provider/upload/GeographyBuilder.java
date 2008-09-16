@@ -68,11 +68,11 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 
 	public DarwinCore processRecord(DarwinCore dwc) {
 		// update taxa by country
-		if (! taxaByCountry.containsKey(dwc.getCountry())){
-			taxaByCountry.put(dwc.getCountry(), new HashSet<Taxon>());
-		}
-		Taxon t1 = dwc.getTaxon();
-		if (t1 != null){
+		if(dwc.getCountry() != null && dwc.getTaxon() != null){
+			Taxon t1 = dwc.getTaxon();
+			if (! taxaByCountry.containsKey(dwc.getCountry())){
+				taxaByCountry.put(dwc.getCountry(), new HashSet<Taxon>());
+			}
 			taxaByCountry.get(dwc.getCountry()).add(t1);
 		}
 		

@@ -35,9 +35,8 @@
     <logger name="org.hibernate">
         <level value="WARN"/>
     </logger>
-    <logger name="org.hibernate.SQL" additivity="false">
+    <logger name="org.hibernate.SQL">
         <level value="WARN"/>
-        <appender-ref ref="CONSOLE"/>
     </logger>
     
 
