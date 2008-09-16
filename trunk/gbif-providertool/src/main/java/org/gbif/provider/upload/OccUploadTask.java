@@ -63,7 +63,7 @@ import org.springframework.transaction.annotation.Transactional;
 		private int recWithAltitude;
 		private int recWithDate;
 		private BBox bbox;
-		private AtomicInteger currentUploaded;
+		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
 		private String currentExtension;
 
@@ -159,9 +159,10 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private void prepare() {
-			currentUploaded = new AtomicInteger(0);
+			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
-			recordsUploaded = null;
+			
+			recordsUploaded = 0;
 			recordsErroneous = null;
 			recordsDeleted = 0;
 			recordsChanged = 0;
@@ -199,7 +200,7 @@ import org.springframework.transaction.annotation.Transactional;
 			ImportSource source;
 			File out = null;
 			currentExtension = getResource().getCoreMapping().getExtension().getName();
-			currentUploaded.set(0);
+			currentProcessed.set(0);
 			currentErroneous.set(0);
 			try {
 				// create new tab file
@@ -216,6 +217,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 					// go through source records one by one
 					for (ImportRecord rec : source){
+						// keep track of processed source records
+						currentProcessed.addAndGet(1);
+						
 						// check if thread should shutdown...
 						if (Thread.currentThread().isInterrupted()){
 							throw new InterruptedException("Occurrence upload task was interrupted externally");
@@ -223,7 +227,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 						 // get darwincore record based on this core record alone. no exceptions here!
 						 DarwinCore dwc = DarwinCore.newInstance(rec);								
-
+						 if (dwc == null){
+							currentErroneous.addAndGet(1);
+							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentErroneous.get()), getResource().getTitle()});
+							continue;
+						 }
 						 try {
 							// get previous record or null if it didnt exist yet based on localID and resource
 							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), getResourceId());
@@ -264,7 +272,7 @@ import org.springframework.transaction.annotation.Transactional;
 							}
 							
 							// count statistics
-							currentUploaded.addAndGet(1);
+							recordsUploaded++;
 							if(StringUtils.trimToNull(dwc.getCountry())!=null){
 								recWithCountry++;
 							}
@@ -288,7 +296,7 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 						
 						// clear session cache once in a while...
-						if (currentUploaded.get() > 0 && currentUploaded.get() % 500 == 0){
+						if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0){
 							log.debug(status());
 							darwinCoreManager.flush();
 						}
@@ -298,7 +306,6 @@ import org.springframework.transaction.annotation.Transactional;
 					}
 				} finally {
 					// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension uploads
-					recordsUploaded = currentUploaded.get();
 					recordsErroneous = currentErroneous.get(); 
 					source.close();
 					// flush and close writer/file				
@@ -343,7 +350,7 @@ import org.springframework.transaction.annotation.Transactional;
 			// once extension is uploaded this counter will be reset by the next extension.
 			// used to feed status()
 			currentExtension = extension.getName();
-			currentUploaded.set(0);
+			currentProcessed.set(0);
 			currentErroneous.set(0);
 
 			try {
@@ -371,7 +378,7 @@ import org.springframework.transaction.annotation.Transactional;
 							try {
 								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 								extensionRecordManager.insertExtensionRecord(extRec);
-								currentUploaded.addAndGet(1);
+								currentProcessed.addAndGet(1);
 								// see if darwin core record is affected, e.g. geo extension => coordinates
 								if (extension.getId().equals(DarwinCore.GEO_EXTENSION_ID)){
 									// this is the geo extension!
@@ -480,7 +487,7 @@ import org.springframework.transaction.annotation.Transactional;
 				// core uploaded already
 				coreInfo = String.format(", %s occurrences", recordsUploaded);
 			}
-			return String.format("Uploading %s: %s records with %s, %s%s", currentExtension, currentUploaded.get(), taxonomyBuilder.status(), geographyBuilder.status(), coreInfo);
+			return String.format("Uploading %s: %s records with %s, %s%s", currentExtension, currentProcessed.get(), taxonomyBuilder.status(), geographyBuilder.status(), coreInfo);
 		}
 
 	}
