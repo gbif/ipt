@@ -1,11 +1,13 @@
 package org.gbif.provider.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-public class OccStatByRegionAndTaxon {
+@Entity
+public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 	private Long id;
 	private Resource resource;
 	private Taxon taxon;

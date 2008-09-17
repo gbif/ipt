@@ -129,10 +129,16 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedO
 		}
 
 		public BBox getBbox() {
+			if (bbox==null){
+				bbox = new BBox();
+			}
 			return bbox;
 		}
 		public void setBbox(BBox bbox) {
 			this.bbox = bbox;
+		}
+		public void expandBox(Point p) {
+			getBbox().expandBox(p);
 		}
 
 		public int getOccTotal() {

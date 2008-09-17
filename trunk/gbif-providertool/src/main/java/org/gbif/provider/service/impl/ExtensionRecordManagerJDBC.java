@@ -16,37 +16,67 @@
 
 package org.gbif.provider.service.impl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.sql.DataSource;
 
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-public class ExtensionRecordManagerJDBC extends SimpleJdbcDaoSupport implements ExtensionRecordManager {	
+@Transactional(readOnly=true)
+public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {	
+	@Autowired
+	private SessionFactory sessionFactory;		
+	@Autowired
+	@Qualifier("dataSource")
+	private DataSource dataSource;
 
-	public void insertExtensionRecord(ExtensionRecord record) {
-		String sql = "";
+	private Connection getConnection() throws SQLException {
+		Session s = SessionFactoryUtils.getSession(sessionFactory, false);
+		Connection cn = s.connection();
+//		Connection cn = dataSource.getConnection();
+		return cn;
+	}
+	
+	private void executeSQL(String sql) throws SQLException{
+		Connection cn = getConnection();
+		PreparedStatement ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			PreparedStatement ps = this.getConnection().prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-//			ResultSet rs = ps.executeQuery();
-		} catch (CannotGetJdbcConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ps.execute();
+		}finally{
+			ps.close();
+		}
+	}
+
+	@Transactional(readOnly=false)
+	public void insertExtensionRecord(ExtensionRecord record) {
+		String sql = "insert into play set text='hallo'";
+		try {
+			executeSQL(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	@Transactional(readOnly=false)
 	public void insertExtensionRecords(ExtensionRecord[] records) {
 		// TODO Auto-generated method stub		
 	}
 
+	@Transactional(readOnly=false)
 	public int removeAll(Extension extension, Long resourceId) {
 		// TODO Auto-generated method stub
 		return 0;

@@ -17,7 +17,8 @@ public class CacheManagerTest extends ContextAwareTestBase{
 
 	@Test
 	public void testRunUpload() throws ExecutionException, InterruptedException {
-		Future f = cacheManager.runUpload(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+//		Future f = cacheManager.runUpload(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		Future f = cacheManager.runUpload(2l, Constants.TEST_USER_ID);
 		f.get();
 	}
 }

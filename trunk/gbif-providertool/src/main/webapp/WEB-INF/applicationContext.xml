@@ -64,11 +64,9 @@
         <constructor-arg value="org.gbif.provider.model.Extension"/>
     </bean>    
     
-    <bean id="occStatByRegionAndTaxonManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.OccStatByRegionAndTaxon"/>
-    </bean>    
-
     <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="occStatManager" class="org.gbif.provider.service.impl.OccStatManagerHibernate" parent="abstractManager"/>        
     
     <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractManager"/>        
         
@@ -76,9 +74,7 @@
 
     <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
 
-    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" >
-        <property name="dataSource" ref="dataSource"/>        
-    </bean>
+    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" />
 
     <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl">        
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>

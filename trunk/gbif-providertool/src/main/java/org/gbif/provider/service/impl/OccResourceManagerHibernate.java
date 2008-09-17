@@ -1,6 +1,7 @@
 package org.gbif.provider.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
+import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
@@ -61,7 +63,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         Collections.reverse(data);
         return data;
 	}
-	
+
 	public List<StatsCount> occByBasisOfRecord(Long resourceId) {
 		// get data from db
         List<Object[]> occBySth = getSession().createQuery("select dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")

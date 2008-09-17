@@ -99,12 +99,10 @@
 			headerKey="Select local identifier for core record" emptyOption="false" 
 			list="columnOptions" />
 			
-		<#if view.guidColumn??>
-	 	<@s.select key="view.guidColumn.columnName" required="false"
-			headerKey="Select GUID for core record" emptyOption="true" 
+		<#if view.isCore()>
+	 	<@s.select key="view.guidColumn.columnName" required="false" emptyOption="true" 
 			list="columnOptions" />
-	 	<@s.select key="view.linkColumn.columnName" required="false"
-			headerKey="Select link to record details" emptyOption="true" 
+	 	<@s.select key="view.linkColumn.columnName" required="false" emptyOption="true" 
 			list="columnOptions" />
 	 	</#if>
 	 	

@@ -24,13 +24,14 @@ import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
+import org.gbif.provider.util.ResourceTestBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.AssertThrows;
 
-public class GeographyBuilderTest extends ContextAwareTestBase{
+public class GeographyBuilderTest extends ResourceTestBase{
 	@Autowired
 	@Qualifier("geographyBuilder")
 	private RecordPostProcessor<DarwinCore, Set<Region>> geographyBuilder;
@@ -47,7 +48,8 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 
 	@Test
 	public void testBuildHierarchy() throws Exception {
-		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		setup();
+		geographyBuilder.init(resource, Constants.TEST_USER_ID);
 		
 		Set<Region> regions = geographyBuilder.call();
 		System.out.println(String.format("%s regions found in test resource", regions.size()));
@@ -57,7 +59,8 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 
 	@Test
 	public void testBuildHierarchyCallable() throws Exception {
-		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		setup();
+		geographyBuilder.init(resource, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		log.debug("Submit geography builder task to single threaded executor");

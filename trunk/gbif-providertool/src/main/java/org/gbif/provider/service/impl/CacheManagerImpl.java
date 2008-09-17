@@ -17,6 +17,7 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
+import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -50,6 +51,8 @@ public class CacheManagerImpl implements CacheManager{
 	private RegionManager regionManager;
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
+	@Autowired
+	private OccStatManager occStatManager;
 	@Autowired
 	private LogEventManager logEventManager;
 
@@ -98,6 +101,7 @@ public class CacheManagerImpl implements CacheManager{
 		regionManager.removeAll(res);
 		uploadEventManager.removeAll(res);
 		darwinCoreManager.removeAll(res);
+		occStatManager.removeAll(res);
 		logEventManager.removeByGroup(resourceId.intValue());
 		// remove generated files
 		File dump = cfg.getDumpArchiveFile(resourceId);
@@ -151,7 +155,8 @@ public class CacheManagerImpl implements CacheManager{
 	public Future runUpload(Long resourceId, Long userId) {
 		// create task
 		Task<UploadEvent> task = newOccUploadTask();
-		task.init(resourceId, userId);
+		OccurrenceResource res = occResourceManager.get(resourceId);
+		task.init(res, userId);
 		// submit
 		return submitUpload(task);
 	}
