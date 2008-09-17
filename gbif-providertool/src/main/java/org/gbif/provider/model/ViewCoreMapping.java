@@ -7,6 +7,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("CORE")
@@ -14,6 +15,11 @@ public class ViewCoreMapping extends ViewMappingBase {
 	private ColumnMapping guidColumn = new ColumnMapping ();
 	private ColumnMapping linkColumn = new ColumnMapping ();
 	
+	@Override
+	@Transient
+	public boolean isCore(){
+		return true;
+	}
 	
 	@Embedded
 	@AttributeOverrides( {

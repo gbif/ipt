@@ -1,7 +1,9 @@
 package org.gbif.provider.service;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;

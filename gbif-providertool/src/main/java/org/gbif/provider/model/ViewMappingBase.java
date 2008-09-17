@@ -264,6 +264,11 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 
         return this.hashCode() == vm.hashCode();
 	}
+	
+	@Transient
+	public boolean isCore() {
+		return false;
+	}
 
 	
 }

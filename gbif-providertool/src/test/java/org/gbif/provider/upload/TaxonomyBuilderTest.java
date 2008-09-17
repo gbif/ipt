@@ -23,13 +23,14 @@ import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
+import org.gbif.provider.util.ResourceTestBase;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.AssertThrows;
 
-public class TaxonomyBuilderTest extends ContextAwareTestBase {
+public class TaxonomyBuilderTest extends ResourceTestBase {
 	@Autowired
 	@Qualifier("taxonomyBuilder")
 	private RecordPostProcessor<DarwinCore, Set<Taxon>> taxonomyBuilder;
@@ -54,7 +55,8 @@ public class TaxonomyBuilderTest extends ContextAwareTestBase {
 
 	@Test
 	public void testCallable() throws Exception {
-		taxonomyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		setup();
+		taxonomyBuilder.init(resource, Constants.TEST_USER_ID);
 
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		log.debug("Submit geography builder task to single threaded executor");

@@ -52,7 +52,7 @@
 		  	    <#else>
 					(<@s.a href="${sourceUrl}">sql source</@s.a>)
 		  	    </#if>
-				<@s.a href="%{mappingUrl}">${coreView.propertyMappings?size} concepts</@s.a>
+				<@s.a href="%{mappingUrl}">${coreView.propertyMappings?size} properties</@s.a>
 			</div>
 		</li>
   	  
@@ -71,7 +71,7 @@
 			  	    <#else>
 						(<@s.a href="${sourceUrl}">sql source</@s.a>)
 			  	    </#if>
-					<@s.a href="%{mappingUrl}">${v.propertyMappings?size} concepts</@s.a>
+					<@s.a href="%{mappingUrl}">${v.propertyMappings?size} properties</@s.a>
 				</li>
 		    </#list>
 		</li>

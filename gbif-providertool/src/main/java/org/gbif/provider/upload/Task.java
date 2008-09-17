@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Resource;
 
 /**
  * Extended interface for resource related providertool tasks.
@@ -19,11 +20,11 @@ import org.gbif.provider.model.Region;
  */
 public interface Task<T> extends Callable<T>{
 	/**
-	 * Instead of construvtor call this method once before using a Task bean
+	 * Instead of constructor call this method once before using a Task bean
 	 * @param resourceId the resource this tasks will work on. Not NULL
 	 * @param userId the user that has submitted this task. Optional, maybe also be null 
 	 */
-	void init(Long resourceId, Long userId);
+	void init(OccurrenceResource resource, Long userId);
 	Long getResourceId();
 	OccurrenceResource getResource();
 	String status();

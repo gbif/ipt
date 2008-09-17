@@ -236,7 +236,7 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		numCountries=0;
 		numRegions=0;
 		numTerminalRegions=0;
-		numTaxaByCountry.clear();
+//		numTaxaByCountry.clear();
 		
 		numGenera=0;
 		numFamilies=0;

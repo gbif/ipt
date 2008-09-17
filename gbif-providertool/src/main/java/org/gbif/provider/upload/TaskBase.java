@@ -7,6 +7,7 @@ import org.gbif.logging.log.I18nDatabaseAppender;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ public abstract class TaskBase{
 	protected AppConfig cfg;
 	// needs manual setting when task is created
 	private Long userId;
-	private Long resourceId;
 	private OccurrenceResource resource;
 	@Autowired
 	protected OccResourceManager occResourceManager;
@@ -26,7 +26,7 @@ public abstract class TaskBase{
 	
 	
 	protected void initLogging(Integer SourceTypeId){
-		log.info(String.format("Starting %s for resource %s", getClass().getSimpleName(), resourceId));
+		log.info(String.format("Starting %s for resource %s", getClass().getSimpleName(), getResourceId()));
 		//TODO: set this in the scheduler constructor???
 //		MDC.put(I18nDatabaseAppender.MDC_INSTANCE_ID, null);
 		if (userId==null){
@@ -34,7 +34,7 @@ public abstract class TaskBase{
 		}else{
 			MDC.put(I18nDatabaseAppender.MDC_USER, userId);			
 		}
-		MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, resourceId.intValue());
+		MDC.put(I18nDatabaseAppender.MDC_GROUP_ID, getResourceId().intValue());
 		MDC.put(I18nDatabaseAppender.MDC_SOURCE_ID, this.hashCode());
 		MDC.put(I18nDatabaseAppender.MDC_SOURCE_TYPE, SourceTypeId);
 	}
@@ -50,31 +50,28 @@ public abstract class TaskBase{
 		return userId;
 	}
 
-	private void setResourceId(Long resourceId) {
-		if (resourceId == null){
+	private void setResource(OccurrenceResource resource) {
+		if (resource == null){
 			throw new NullPointerException();
 		}
-		this.resourceId=resourceId;
+		this.resource=resource;
 	}
 
 	public Long getResourceId() {
-		return resourceId;
+		return resource.getId();
 	}
 
 	public OccurrenceResource getResource() {
-		if (resourceId == null){
-			throw new IllegalStateException("Resource is not yet set for this builder!");
-		}
 		if (resource == null){
-			resource = occResourceManager.get(resourceId);
+			throw new IllegalStateException("Resource is not yet set for this builder!");
 		}
 		return resource;
 	}
 
 
 	
-	public void init(Long resourceId, Long userId) {
-		setResourceId(resourceId);
+	public void init(OccurrenceResource res, Long userId) {
+		setResource(res);
 		setUserId(userId);
 	}
 	

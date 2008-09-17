@@ -35,12 +35,15 @@ import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 	/**
@@ -49,7 +52,6 @@ import org.springframework.transaction.annotation.Transactional;
 	 * @author markus
 	 *
 	 */
-	@Transactional(readOnly=false)
 	public class OccUploadTask extends TaskBase implements Task<UploadEvent>{
 		public static final int SOURCE_TYPE_ID = 1;
 		private Map<String, Long> idMap = new HashMap<String, Long>();
@@ -82,8 +84,10 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		private UploadEventManager uploadEventManager;
 		@Autowired
-		@Qualifier("occStatByRegionAndTaxonManager")
-		private GenericManager<OccStatByRegionAndTaxon> occStatByRegionAndTaxonManager;
+		private OccStatManager occStatManager;
+		@Autowired
+		@Qualifier("viewMappingManager")
+		private GenericManager<ViewMappingBase> viewMappingManager;
 		@Autowired
 		@Qualifier("taxonomyBuilder")
 		private RecordPostProcessor<DarwinCore, Set<DwcTaxon>> taxonomyBuilder;
@@ -132,6 +136,10 @@ import org.springframework.transaction.annotation.Transactional;
 		
 
 		public void prepare() {
+			// flag all previously existing records as deleted before updating/inserting new ones
+			darwinCoreManager.flagAllAsDeleted(getResource());
+			occStatManager.removeAll(getResource());
+			
 			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
 			
@@ -157,10 +165,10 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setResource(getResource());
 							
 			// clear taxa
-			taxonomyBuilder.init(getResourceId(), getUserId());
+			taxonomyBuilder.init(getResource(), getUserId());
 			taxonomyBuilder.prepare();
 			// clear regions
-			geographyBuilder.init(getResourceId(), getUserId());
+			geographyBuilder.init(getResource(), getUserId());
 			geographyBuilder.prepare();
 			
 			// TODO: need to remove old uploaded source and generated dump files first? I guess they will be overwritten
@@ -177,8 +185,7 @@ import org.springframework.transaction.annotation.Transactional;
 			if(StringUtils.trimToNull(dwc.getCountry())!=null){
 				recWithCountry++;
 			}
-			if(StringUtils.trimToNull(dwc.getEarliestDateCollected())!=null){
-				//FIXME: no date type, so might contain rubbish
+			if(dwc.getDateCollected()!=null){
 				recWithDate++;
 			}
 			if(dwc.getMinimumElevationInMetersAsInteger()!=null){
@@ -199,6 +206,8 @@ import org.springframework.transaction.annotation.Transactional;
 			if (!taxMap.containsKey(tax)){
 				stat = new OccStatByRegionAndTaxon();
 				stat.setResource(getResource());
+				stat.setRegion(reg);
+				stat.setTaxon(tax);
 				stat.setNumOcc(1);
 				taxMap.put(tax, stat);
 			}else{
@@ -221,6 +230,12 @@ import org.springframework.transaction.annotation.Transactional;
 			ZipUtil.zipFiles(dumpFiles, archive);						
 		}
 
+		private void setFinalExtensionStats(Extension ext){
+			ViewMappingBase view = getResource().getExtensionMapping(ext);				
+			view.setRecTotal(currentProcessed.get()-currentErroneous.get());
+			viewMappingManager.save(view);
+		}
+
 		private void setFinalStats(){
 			// update resource and upload event statistics
 			recordsDeleted = getResource().getRecTotal()+recordsAdded-recordsUploaded;
@@ -234,11 +249,18 @@ import org.springframework.transaction.annotation.Transactional;
 			event = uploadEventManager.save(event);
 			
 			// occByRegionAndTaxon
+			int occStatCount=0;
 			for (Map<Taxon, OccStatByRegionAndTaxon> taxMap : occByRegionAndTaxon.values()){
 				for (OccStatByRegionAndTaxon stat : taxMap.values()){
-					occStatByRegionAndTaxonManager.save(stat);
+					try {
+						occStatManager.save(stat);
+						occStatCount++;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
+			log.debug(occStatCount + " occurrence stats by region & taxon inserted");
 			
 			// update resource properties
 			getResource().setLastUpload(event);
@@ -254,6 +276,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		
+		@Transactional(readOnly=false, noRollbackFor={Exception.class})
 		private File uploadCore() throws InterruptedException {
 			log.info("Starting upload of DarwinCore for resource "+getResource().getTitle());					
 			ImportSource source;
@@ -266,14 +289,11 @@ import org.springframework.transaction.annotation.Transactional;
 				TabFileWriter writer = prepareTabFile(getResource().getCoreMapping());
 				out = writer.getFile();
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
-				source = this.getCoreImportSource();
+				source = this.getImportSource();
 				
 				// make sure in the finally section that source & writer is closed and upload event is created properly.
 				// for individual record exception there is another inner try/catch
 				try{
-					// flag all previously existing records as deleted before updating/inserting new ones
-					darwinCoreManager.flagAllAsDeleted(getResource());
-
 					// go through source records one by one
 					for (ImportRecord rec : source){
 						// keep track of processed source records
@@ -303,7 +323,7 @@ import org.springframework.transaction.annotation.Transactional;
 							geographyBuilder.processRecord(dwc);
 							
 							// save dwc record
-							persistRecord(dwc, oldRecord);
+							dwc = persistRecord(dwc, oldRecord);
 							// write record to tab file
 							writer.write(dwc.getDataMap());
 							
@@ -325,9 +345,6 @@ import org.springframework.transaction.annotation.Transactional;
 							log.debug(status());
 							darwinCoreManager.flush();
 						}
-
-						// the new darwin core id (managed by hibernate) used for all other extensions
-						idMap.put(rec.getLocalId(), dwc.getId());
 					}
 				} finally {
 					// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension uploads
@@ -349,7 +366,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 
-		private void persistRecord(DarwinCore dwc, DarwinCore oldRecord) {
+		private DarwinCore persistRecord(DarwinCore dwc, DarwinCore oldRecord) {
 			// check if new record version is different from old one
 			if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode()){
 				// same record. reset isDeleted flag of old record
@@ -376,7 +393,12 @@ import org.springframework.transaction.annotation.Transactional;
 				dwc = darwinCoreManager.save(dwc);
 				// increase counter of added records
 				recordsAdded += 1;
-			}			
+			}
+			
+			// the new darwin core id (managed by hibernate) used for all other extensions
+			idMap.put(dwc.getLocalId(), dwc.getId());
+
+			return dwc;
 		}
 
 
@@ -399,6 +421,7 @@ import org.springframework.transaction.annotation.Transactional;
 			}
 		}
 
+		@Transactional(readOnly=false, noRollbackFor={Exception.class})
 		private File uploadExtension(Extension extension) throws InterruptedException, ImportSourceException, IOException {
 			log.info(String.format("Starting upload of %s extension for resource %s", extension.getName(), getResource().getTitle() ));					
 			File out = null;
@@ -419,22 +442,26 @@ import org.springframework.transaction.annotation.Transactional;
 					out = writer.getFile();
 					// Do we need a
 					for (ImportRecord rec : source){
+						currentProcessed.addAndGet(1);
 						// check if thread should shutdown...
 						if (Thread.currentThread().isInterrupted()){
 							throw new InterruptedException("Occurrence upload task was interrupted externally");
+						}
+						if (rec == null || rec.getLocalId()==null){
+							currentErroneous.addAndGet(1);
+							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentProcessed.get()), getResource().getTitle()});
+							continue;
 						}
 						Long coreId = idMap.get(rec.getLocalId());
 						rec.setId(coreId);
 						if (coreId == null){
 							String[] paras = {rec.getLocalId(), extension.getName(), getResourceId().toString()};
-							//FIXME: use i18n job logging ???
-							log.warn("uploadManager.unknownLocalId" +paras.toString());
+							logdb.warn("uploadManager.unknownLocalId", paras);
 						}else{
 							// TODO: check if record has changed
 							try {
 								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 								extensionRecordManager.insertExtensionRecord(extRec);
-								currentProcessed.addAndGet(1);
 								// see if darwin core record is affected, e.g. geo extension => coordinates
 								if (extension.getId().equals(DarwinCore.GEO_EXTENSION_ID)){
 									// this is the geo extension!
@@ -448,6 +475,13 @@ import org.springframework.transaction.annotation.Transactional;
 										//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
 										// might need to do a count via SQL after upload is done ...
 										recWithCoordinates++;
+										// update Taxon bbox stats
+										if (dwc.getTaxon()!=null){
+											dwc.getTaxon().expandBox(dwc.getLocation());			
+										}
+										if (dwc.getRegion()!=null){
+											dwc.getRegion().expandBox(dwc.getLocation());			
+										}
 									}
 								}
 							} catch (Exception e) {
@@ -459,6 +493,7 @@ import org.springframework.transaction.annotation.Transactional;
 					}
 				} finally {
 					writer.close();
+					setFinalExtensionStats(extension);
 				}
 			} catch (IOException e) {
 				log.error("Couldnt open tab file. Upload aborted", e);
@@ -508,31 +543,39 @@ import org.springframework.transaction.annotation.Transactional;
 			return writer;
 		}
 
-		private ImportSource getCoreImportSource() throws ImportSourceException{
-			Long resourceId = getResourceId();
-			ViewCoreMapping coreViewMapping = getResource().getCoreMapping();
-			ImportSource source; 
-			//decide whether file or rdbm upload and create import source accordingly
-			if (coreViewMapping.isMappedToFile()){
-				source = FileImportSource.newInstance(getResource(), coreViewMapping);
-			}else{
-				// create rdbms source & set resource context for DatasourceInterceptor
-				DatasourceContextHolder.setResourceId(resourceId);
-				source = RdbmsImportSource.newInstance(getResource(), coreViewMapping);
-			}
-			return source;
+		private ImportSource getImportSource() throws ImportSourceException{
+			return getImportSource(null);
 		}
 
 		private ImportSource getImportSource(Extension extension) throws ImportSourceException{
 			Long resourceId = getResourceId();
-			//FIXME: need to decide here whether file or rdbm upload and create import source accordingly 
-			// create rdbms source & set resource context for DatasourceInterceptor
-			DatasourceContextHolder.setResourceId(resourceId);
-			ViewMappingBase vm = getResource().getExtensionMapping(extension);
-			if (vm == null){
-				throw new ImportSourceException("No mapping exists for extension "+extension.getName());
+			ViewMappingBase vm = null;
+			ImportSource source; 
+
+			if (extension == null){
+				vm = getResource().getCoreMapping();				
+			}else{
+				vm = getResource().getExtensionMapping(extension);				
 			}
-			RdbmsImportSource source = RdbmsImportSource.newInstance(getResource(), vm);
+			
+			if (vm == null){
+				String extName="";
+				if (extension != null){
+					extName="extension "+extension.getName();
+				}else{
+					extName="core extension";
+				}
+				throw new ImportSourceException("No mapping exists for "+extName);
+			}
+			
+			//decide whether file or rdbm upload and create import source accordingly
+			if (vm.isMappedToFile()){
+				source = FileImportSource.newInstance(getResource(), vm);
+			}else{
+				// create rdbms source & set resource context for DatasourceInterceptor
+				DatasourceContextHolder.setResourceId(resourceId);
+				source = RdbmsImportSource.newInstance(getResource(), vm);
+			}
 
 			return source;
 		}
