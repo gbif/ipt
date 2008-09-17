@@ -301,16 +301,16 @@
         </action>
         
         <action name="resource" class="org.gbif.provider.webapp.action.manage.OccResourceAction">
-            <result>/WEB-INF/pages/manage/occ/occResourceOverview.jsp</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceOverview.ftl</result>
         </action>
         <action name="addResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
             <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
         </action>
         <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
-            <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>
         </action>
         <action name="editResourceConnection" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
-            <result>/WEB-INF/pages/manage/occ/resourceConnectionForm.jsp</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/resourceConnectionForm.ftl</result>
         </action>
         
         <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="save">
@@ -325,37 +325,20 @@
             <result name="delete" type="redirect-action">resources</result>
         </action>
 
-        <action name="editMapping" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="edit">
-            <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
+        <action name="editMappingSource" class="org.gbif.provider.webapp.action.manage.SourceMappingAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sourceMapping.ftl</result>
         </action>
-        <action name="saveMappingSource" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="saveSource">
-            <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
+        <action name="uploadMappingSource" class="org.gbif.provider.webapp.action.manage.SourceMappingAction" method="upload">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sourceMapping.ftl</result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
-            <result name="delete" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
         </action>
-
-        <action name="saveMappingProperties" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="saveProperties">
-            <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
-            <result name="cancel" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-            <result name="delete" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-        </action>
-
-        <action name="uploadMappingSource" class="org.gbif.provider.webapp.action.manage.SourceFileUploadAction" method="upload">
-            <result>/WEB-INF/pages/manage/occ/mapping.jsp</result>
+        <action name="saveMappingSource" class="org.gbif.provider.webapp.action.manage.SourceMappingAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/sourceMapping.ftl</result>
             <result type="redirect-action">
-                <param name="actionName">editMapping</param>
+                <param name="actionName">editMappingProperties</param>
                 <param name="resource_id">${resource_id}</param>
                 <param name="mapping_id">${mapping_id}</param>
             </result>
@@ -364,6 +347,18 @@
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
+
+        <action name="editMappingProperties" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="edit">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+        </action>
+        <action name="saveMappingProperties" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="save">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+
         <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
@@ -487,7 +482,16 @@
         
     </package>
 
-
+    
+    <!-- TEST Actions -->
+    <package name="test" namespace="/test" extends="default">
+        <action name="dt" class="org.gbif.provider.webapp.action.test.DisplayTagAction">
+            <result name="success" type="freemarker">
+                <param name="location">/WEB-INF/pages/test/dt.ftl</param>                
+            </result>
+        </action>
+    </package>
+    
     <include file="struts-logging.xml"/>
     
 </struts>

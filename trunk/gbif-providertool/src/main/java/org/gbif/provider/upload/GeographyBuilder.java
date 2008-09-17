@@ -106,10 +106,17 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 	}
 
 
+
+	public void statsPerRecord(DarwinCore dwc) throws InterruptedException {
+		Region region=dwc.getRegion();
+		if (region !=null){
+			region.countOcc(dwc);
+		}
+	}
 	
 		
 	@Override
-	protected void setStats() {
+	protected void setFinalStats() {
 		// init stats map		
 		Map<RegionType, Integer> stats = new HashMap<RegionType, Integer>();
 		stats.put(null, 0);
@@ -157,4 +164,5 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 	public String status() {
 		return String.format("%s regions", nodes.size());
 	}
+
 }

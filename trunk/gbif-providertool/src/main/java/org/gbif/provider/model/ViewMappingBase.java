@@ -42,6 +42,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.MapKey;
 
@@ -113,6 +114,9 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		return sourceFileLocation;
 	}
 	public void setSourceFileLocation(String sourceFileLocation) {
+		if (sourceFileLocation != null){
+			this.sourceSql=null;
+		}
 		this.sourceFileLocation = sourceFileLocation;
 	}
 	@Transient
@@ -182,15 +186,29 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		return props;
 	}
 	@Transient
-	public boolean isMappedToDatabase() {
-		if (sourceSql != null && sourceSql.trim() != ""){
+	public boolean isMappedToFile() {
+		if (StringUtils.isNotBlank(sourceFileLocation)){
 			return true;
 		}else{
 			return false;
 		}
 		
 	}
-
+	
+	@Transient
+	public boolean hasValidSource() {
+		if (isMappedToFile()){
+			if (getSourceFile().exists()){
+				return true;
+			}
+		}else{
+			if(StringUtils.isNotBlank(sourceSql) && sourceSql.trim().length() > 10){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Natural sort order is resource, then extension
 	 * @see java.lang.Comparable#compareTo(Object)

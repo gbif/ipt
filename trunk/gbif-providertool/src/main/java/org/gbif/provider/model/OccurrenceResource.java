@@ -38,9 +38,8 @@ import org.hibernate.annotations.MapKey;
 @Entity
 public class OccurrenceResource extends DatasourceBasedResource {
 	public static final Long CORE_EXTENSION_ID = 1l;
-	private BBox bbox;
+	private BBox bbox = new BBox();
 	// cached statistics
-	private int recTotal;
 	private int recWithCoordinates;
 	private int recWithCountry;
 	private int recWithAltitude;
@@ -77,16 +76,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	}
 	public void setBbox(BBox bbox) {
 		this.bbox = bbox;
-	}
-
-	public int getRecTotal() {
-		return recTotal;
-	}
-
-	public void setRecTotal(int recTotal) {
-		this.recTotal = recTotal;
-		// also set the same number in core mapping
-		getCoreMapping().setRecTotal(recTotal);
 	}
 
 	public int getRecWithCoordinates() {
@@ -240,7 +229,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	@Override
 	public void resetStats() {
 		bbox = new BBox();
-		recTotal=0;
 		recWithCoordinates=0;
 		recWithCountry=0;
 		recWithAltitude=0;

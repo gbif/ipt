@@ -92,10 +92,6 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 			log.debug("DarwinCore NULL record ignored for building the taxonomy");
 			return dwc;
 		}
-		else if (dwc.getTax()==null || dwc.getLoc()==null){
-			log.warn(String.format("DarwinCore record %s without mandatory tax/loc component ignored for building the taxonomy", dwc.getId()));
-			return dwc;
-		}
 		DwcTaxon dt = DwcTaxon.newDwcTaxon(dwc);
 
 		Taxon tax=null;
@@ -125,9 +121,16 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 	}
 
 	
+	public void statsPerRecord(DarwinCore dwc) throws InterruptedException {
+		Taxon tax=dwc.getTaxon();
+		if (tax !=null){
+			tax.countOcc(dwc);
+		}
+	}
 
+	
 	@Override
-	protected void setStats() {
+	protected void setFinalStats() {
 		// init stats map		
 		Map<Rank, Integer> stats = new HashMap<Rank, Integer>();
 		stats.put(null, 0);
