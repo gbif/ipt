@@ -36,9 +36,6 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 	private static final Set<RegionType> LOG_TYPES = new HashSet<RegionType>();
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
-	// results
-	// remember distinct number of taxa (=set below) per country (=map key below) too
-	private Map<String, Set<Taxon>> taxaByCountry;
 
 	
 	public GeographyBuilder(RegionManager regionManager) {
@@ -67,15 +64,6 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 
 
 	public DarwinCore processRecord(DarwinCore dwc) {
-		// update taxa by country
-		if(dwc.getCountry() != null && dwc.getTaxon() != null){
-			Taxon t1 = dwc.getTaxon();
-			if (! taxaByCountry.containsKey(dwc.getCountry())){
-				taxaByCountry.put(dwc.getCountry(), new HashSet<Taxon>());
-			}
-			taxaByCountry.get(dwc.getCountry()).add(t1);
-		}
-		
 		// extract regions
 		DwcRegion dwcReg = DwcRegion.newDwcRegion(dwc);
 		Region reg = null;
@@ -136,21 +124,9 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 			log.info(String.format("Found %s %s regions in resource %s", stats.get(r), r, getResourceId()));
 		}
 		
-		// store taxaByCountry in resource. Convert set of taxa into
-		Map<String,Long> numTaxaByCountry = new HashMap<String, Long>();
-		for (String country : taxaByCountry.keySet()){
-			numTaxaByCountry.put(country, Long.valueOf(taxaByCountry.get(country).size()));
-		}
-		getResource().setNumTaxaByCountry(numTaxaByCountry);
 		log.info(String.format("Extracted %s geographic distinct regions from resource %s", nodes.size(), getResourceId()));		
 	}
 
-
-	@Override
-	public void prepare() {
-		taxaByCountry = new HashMap<String, Set<Taxon>>();
-		super.prepare();		
-	}
 
 	@Override
 	boolean logType(Enum typ) {
