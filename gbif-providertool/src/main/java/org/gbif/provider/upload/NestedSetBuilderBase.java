@@ -87,17 +87,19 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 	 * @see org.gbif.provider.upload.RecordPostProcessor#close()
 	 */
 	public Set<T> close() {
-		// assign nested set indices and save taxonomic hierarchy
+
+		setFinalStats();
+		
+		// assign nested set indices for hierarchy and save each node (incl stats)
 		SortedSet<T> hierarchy = setNestedSetIndices();
 
-		setStats();
 		occResourceManager.save(getResource());
 		
 		return hierarchy;		
 	}
 	
 	
-	protected abstract void setStats();
+	protected abstract void setFinalStats();
 
 	public void prepare() {
 		terminalNodes = new HashSet<T>();

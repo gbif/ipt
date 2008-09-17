@@ -3,8 +3,10 @@ package org.gbif.provider.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import javax.persistence.CascadeType;
@@ -31,6 +33,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.model.voc.Rank;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.MapKey;
 
 
 @Entity
@@ -42,8 +46,11 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedO
 		private String name;
 		private String authorship;
 		private String code;
+		// stats
+		private BBox bbox = new BBox();
+		private int occTotal;
 		
-		
+
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		@Override
@@ -119,6 +126,29 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedO
 		@Override
 		public Long getRgt() {
 			return super.getRgt();
+		}
+
+		public BBox getBbox() {
+			return bbox;
+		}
+		public void setBbox(BBox bbox) {
+			this.bbox = bbox;
+		}
+
+		public int getOccTotal() {
+			return occTotal;
+		}
+		public void setOccTotal(int occTotal) {
+			this.occTotal = occTotal;
+		}
+
+		/**
+		 * Count a single occurrence record
+		 * @param region
+		 */
+		public void countOcc(DarwinCore dwc) {
+			this.occTotal++;
+			bbox.expandBox(dwc.getLocation());			
 		}
 		
 		@Override

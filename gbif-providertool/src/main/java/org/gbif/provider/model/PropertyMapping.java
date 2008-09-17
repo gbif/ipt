@@ -27,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -155,12 +156,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this)
-				.append("id", this.id)
-				.append("property", this.property)
-				.append("viewMapping", this.viewMapping)
-				.append("value", this.getValue())
-				.append("column", this.column).toString();
+		return String.format("%s=>%s", property.getQualName(), value == null ? (column==null ? "null" : column.getColumnName()) : "#"+value);
 	}
 
 

@@ -18,5 +18,5 @@
 </display:table>
 
 <script type="text/javascript">
-    highlightTableRows("occurrenceListTaxonAction.java");
+    highlightTableRows("occurrenceList");
 </script>

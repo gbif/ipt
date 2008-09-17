@@ -25,13 +25,16 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
+import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.TabFileWriter;
@@ -58,14 +61,18 @@ import org.springframework.transaction.annotation.Transactional;
 		private Integer recordsChanged;
 		private Integer recordsAdded;
 		private Integer recordsErroneous;
+		// resource stats
 		private int recWithCoordinates;
 		private int recWithCountry;
 		private int recWithAltitude;
 		private int recWithDate;
 		private BBox bbox;
+		// not stored in resource
+		private Map<Region, Map<Taxon, OccStatByRegionAndTaxon>> occByRegionAndTaxon;
+		// upload status
+		private String currentExtension;
 		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
-		private String currentExtension;
 
 		
 		@Autowired
@@ -74,7 +81,9 @@ import org.springframework.transaction.annotation.Transactional;
 		private ExtensionRecordManager extensionRecordManager;
 		@Autowired
 		private UploadEventManager uploadEventManager;
-		
+		@Autowired
+		@Qualifier("occStatByRegionAndTaxonManager")
+		private GenericManager<OccStatByRegionAndTaxon> occStatByRegionAndTaxonManager;
 		@Autowired
 		@Qualifier("taxonomyBuilder")
 		private RecordPostProcessor<DarwinCore, Set<DwcTaxon>> taxonomyBuilder;
@@ -121,44 +130,8 @@ import org.springframework.transaction.annotation.Transactional;
 			return event;		
 		}
 		
-		private void close() throws IOException {
-			log.info(String.format("Closing upload for resource %s", getResource().getTitle() ));					
-			taxonomyBuilder.close();
-			geographyBuilder.close();
-			setStats();
-			// zip all files into single archive
-			File archive = cfg.getDumpArchiveFile(getResourceId());
-			archive.createNewFile();
-			log.info("Dump file archive created at "+archive.getAbsolutePath());
-			ZipUtil.zipFiles(dumpFiles, archive);						
-		}
 
-		private void setStats(){
-			// update resource and upload event statistics
-			recordsDeleted = getResource().getRecTotal()+recordsAdded-recordsUploaded;
-			// store event
-			event.setRecordsAdded(recordsAdded);
-			event.setRecordsChanged(recordsChanged);
-			event.setRecordsDeleted(recordsDeleted);
-			event.setRecordsUploaded(recordsUploaded);		
-			event.setRecordsErroneous(recordsErroneous);		
-			// save upload event
-			event = uploadEventManager.save(event);
-			
-			// update resource properties
-			getResource().setLastUpload(event);
-			getResource().setRecTotal(recordsUploaded);
-			getResource().setRecWithCoordinates(recWithCoordinates);
-			getResource().setRecWithCountry(recWithCountry);
-			getResource().setRecWithAltitude(recWithAltitude);
-			getResource().setRecWithDate(recWithDate);
-			getResource().setBbox(bbox);
-			occResourceManager.save(getResource());
-			
-			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
-		}
-
-		private void prepare() {
+		public void prepare() {
 			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
 			
@@ -174,6 +147,7 @@ import org.springframework.transaction.annotation.Transactional;
 			recWithDate=0;
 
 			bbox=new BBox();
+			occByRegionAndTaxon = new HashMap<Region, Map<Taxon, OccStatByRegionAndTaxon>>();
 			
 			// track upload in upload event metadata (mainly statistics)
 			event = new UploadEvent();
@@ -195,7 +169,92 @@ import org.springframework.transaction.annotation.Transactional;
 			occResourceManager.save(getResource());
 		}
 		
-		protected File uploadCore() throws InterruptedException {
+		
+		private void statsPerRecord(DarwinCore dwc){
+			// count all uploaded record (added, modified or no changes)
+			recordsUploaded++;
+
+			if(StringUtils.trimToNull(dwc.getCountry())!=null){
+				recWithCountry++;
+			}
+			if(StringUtils.trimToNull(dwc.getEarliestDateCollected())!=null){
+				//FIXME: no date type, so might contain rubbish
+				recWithDate++;
+			}
+			if(dwc.getMinimumElevationInMetersAsInteger()!=null){
+				recWithAltitude++;
+			}
+			
+			// counts per taxon & region
+			Region reg = dwc.getRegion();
+			Taxon tax = dwc.getTaxon();
+			OccStatByRegionAndTaxon stat;
+			Map<Taxon, OccStatByRegionAndTaxon> taxMap;
+			if (!occByRegionAndTaxon.containsKey(reg)){
+				taxMap = new HashMap<Taxon, OccStatByRegionAndTaxon>();
+				occByRegionAndTaxon.put(reg, taxMap);
+			}else{
+				taxMap = occByRegionAndTaxon.get(reg);				
+			}
+			if (!taxMap.containsKey(tax)){
+				stat = new OccStatByRegionAndTaxon();
+				stat.setResource(getResource());
+				stat.setNumOcc(1);
+				taxMap.put(tax, stat);
+			}else{
+				stat = taxMap.get(tax);
+				stat.incrementNumOcc();
+			}
+			
+		}
+		
+		
+		public void close() throws IOException {
+			log.info(String.format("Closing upload for resource %s", getResource().getTitle() ));					
+			taxonomyBuilder.close();
+			geographyBuilder.close();
+			setFinalStats();
+			// zip all files into single archive
+			File archive = cfg.getDumpArchiveFile(getResourceId());
+			archive.createNewFile();
+			log.info("Dump file archive created at "+archive.getAbsolutePath());
+			ZipUtil.zipFiles(dumpFiles, archive);						
+		}
+
+		private void setFinalStats(){
+			// update resource and upload event statistics
+			recordsDeleted = getResource().getRecTotal()+recordsAdded-recordsUploaded;
+			// store event
+			event.setRecordsAdded(recordsAdded);
+			event.setRecordsChanged(recordsChanged);
+			event.setRecordsDeleted(recordsDeleted);
+			event.setRecordsUploaded(recordsUploaded);		
+			event.setRecordsErroneous(recordsErroneous);		
+			// save upload event
+			event = uploadEventManager.save(event);
+			
+			// occByRegionAndTaxon
+			for (Map<Taxon, OccStatByRegionAndTaxon> taxMap : occByRegionAndTaxon.values()){
+				for (OccStatByRegionAndTaxon stat : taxMap.values()){
+					occStatByRegionAndTaxonManager.save(stat);
+				}
+			}
+			
+			// update resource properties
+			getResource().setLastUpload(event);
+			getResource().setRecTotal(recordsUploaded);
+			getResource().setRecWithCoordinates(recWithCoordinates);
+			getResource().setRecWithCountry(recWithCountry);
+			getResource().setRecWithAltitude(recWithAltitude);
+			getResource().setRecWithDate(recWithDate);
+			getResource().setBbox(bbox);
+			occResourceManager.save(getResource());
+			
+			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
+		}
+
+		
+		private File uploadCore() throws InterruptedException {
 			log.info("Starting upload of DarwinCore for resource "+getResource().getTitle());					
 			ImportSource source;
 			File out = null;
@@ -238,54 +297,20 @@ import org.springframework.transaction.annotation.Transactional;
 							
 							// assign managed properties
 							updateDwcProperties(dwc, oldRecord);
-							// extract and assign taxa
+							
+							// extract and assign taxa & regions
 							taxonomyBuilder.processRecord(dwc);
-							// extract and assign regions
 							geographyBuilder.processRecord(dwc);
 							
-							// check if new record version is different from old one
-							if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode()){
-								// same record. reset isDeleted flag of old record
-								oldRecord.setDeleted(false);
-								// also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
-								oldRecord.setTaxon(dwc.getTaxon()); 
-								oldRecord.setRegion(dwc.getRegion());
-								dwc = darwinCoreManager.save(oldRecord);
-								
-							}else if (oldRecord!=null){
-								// modified record that existed before.
-								// copying all new properties to oldRecord is too cumbersome, so
-								// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
-								dwc.setModified(new Date());									
-								darwinCoreManager.remove(oldRecord.getId());
-								darwinCoreManager.flush();
-								dwc = darwinCoreManager.save(dwc);									
-								// increase counter of changed records
-								recordsChanged += 1;
-								
-							}else{
-								// new record that didnt exist before. Just save new dwc
-								dwc.setModified(new Date());
-								dwc = darwinCoreManager.save(dwc);
-								// increase counter of added records
-								recordsAdded += 1;
-							}
-							
-							// count statistics
-							recordsUploaded++;
-							if(StringUtils.trimToNull(dwc.getCountry())!=null){
-								recWithCountry++;
-							}
-							if(StringUtils.trimToNull(dwc.getEarliestDateCollected())!=null){
-								//FIXME: no date type, so might contain rubbish
-								recWithDate++;
-							}
-							if(dwc.getMinimumElevationInMetersAsInteger()!=null){
-								recWithAltitude++;
-							}
-							
+							// save dwc record
+							persistRecord(dwc, oldRecord);
 							// write record to tab file
 							writer.write(dwc.getDataMap());
+							
+							// set stats per record. Saving of final stats must be done in the close() section
+							taxonomyBuilder.statsPerRecord(dwc);
+							geographyBuilder.statsPerRecord(dwc);
+							statsPerRecord(dwc);
 
 						} catch (InterruptedException e) {
 							throw e;
@@ -321,6 +346,37 @@ import org.springframework.transaction.annotation.Transactional;
 			}
 
 			return out;
+		}
+
+
+		private void persistRecord(DarwinCore dwc, DarwinCore oldRecord) {
+			// check if new record version is different from old one
+			if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode()){
+				// same record. reset isDeleted flag of old record
+				oldRecord.setDeleted(false);
+				// also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
+				oldRecord.setTaxon(dwc.getTaxon()); 
+				oldRecord.setRegion(dwc.getRegion());
+				dwc = darwinCoreManager.save(oldRecord);
+				
+			}else if (oldRecord!=null){
+				// modified record that existed before.
+				// copying all new properties to oldRecord is too cumbersome, so
+				// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
+				dwc.setModified(new Date());									
+				darwinCoreManager.remove(oldRecord.getId());
+				darwinCoreManager.flush();
+				dwc = darwinCoreManager.save(dwc);									
+				// increase counter of changed records
+				recordsChanged += 1;
+				
+			}else{
+				// new record that didnt exist before. Just save new dwc
+				dwc.setModified(new Date());
+				dwc = darwinCoreManager.save(dwc);
+				// increase counter of added records
+				recordsAdded += 1;
+			}			
 		}
 
 
@@ -457,12 +513,12 @@ import org.springframework.transaction.annotation.Transactional;
 			ViewCoreMapping coreViewMapping = getResource().getCoreMapping();
 			ImportSource source; 
 			//decide whether file or rdbm upload and create import source accordingly
-			if (coreViewMapping.isMappedToDatabase()){
+			if (coreViewMapping.isMappedToFile()){
+				source = FileImportSource.newInstance(getResource(), coreViewMapping);
+			}else{
 				// create rdbms source & set resource context for DatasourceInterceptor
 				DatasourceContextHolder.setResourceId(resourceId);
 				source = RdbmsImportSource.newInstance(getResource(), coreViewMapping);
-			}else{
-				source = FileImportSource.newInstance(getResource(), coreViewMapping);
 			}
 			return source;
 		}
@@ -481,6 +537,9 @@ import org.springframework.transaction.annotation.Transactional;
 			return source;
 		}
 
+		
+		
+		
 		public synchronized String status() {
 			String coreInfo = "";
 			if (recordsUploaded != null){

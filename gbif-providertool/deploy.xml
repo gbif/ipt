@@ -9,11 +9,11 @@
 	<!-- Deploy reloadable sources - images, css. jsp etc-->
     <target name="deploy.ui">
         <echo level="info">Deploying</echo>
-          <copy todir="${webserver.home}common">
+        <copy todir="${webserver.home}common">
             <fileset dir="src/main/webapp/common">
                 <include name="**/*.*"/> 
             </fileset>  
-          </copy>
+        </copy>
         <copy todir="${webserver.home}decorators">
             <fileset dir="src/main/webapp/decorators">
                 <include name="**/*.*"/> 
@@ -39,23 +39,12 @@
               <include name="**/*.*"/> 
           </fileset>  
         </copy>    	
-          <copy todir="${webserver.home}WEB-INF/classes">
+        <copy todir="${webserver.home}WEB-INF/classes" file="src/main/resources/struts.xml"/>
+        <copy todir="${webserver.home}WEB-INF/classes">
             <fileset dir="target/classes">
                 <include name="**/*.*"/> 
             </fileset>  
-          </copy>			
+        </copy>			
     </target>
 
-	<!-- Deletes the images from tomcat and copies the images from the project
-		 This is a convienience for people using windows to get around the 
-		 jar problem easily -->
-    <target name="deploy.images">
-        <echo level="info">Deploying Images</echo>
-		<delete dir="${webserver.home}images"/>
-          <copy todir="${webserver.home}images">
-            <fileset dir="src/main/webapp/images">
-                <include name="**/*.*"/> 
-            </fileset>  
-          </copy>										
-	</target>	    
 </project>

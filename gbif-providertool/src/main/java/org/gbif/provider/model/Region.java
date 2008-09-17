@@ -1,6 +1,9 @@
 package org.gbif.provider.model;
 
-	import javax.persistence.Column;
+	import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.hibernate.annotations.CollectionOfElements;
 
 
 	@Entity
@@ -21,6 +25,10 @@ import org.gbif.provider.model.voc.RegionType;
 		protected static final Log log = LogFactory.getLog(Region.class);
 
 		private Resource resource;
+		// stats
+		private BBox bbox = new BBox();
+		private int occTotal;
+		
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,6 +70,29 @@ import org.gbif.provider.model.voc.RegionType;
 		@Override
 		public Long getRgt() {
 			return super.getRgt();
+		}
+		
+		public BBox getBbox() {
+			return bbox;
+		}
+		public void setBbox(BBox bbox) {
+			this.bbox = bbox;
+		}
+
+		public int getOccTotal() {
+			return occTotal;
+		}
+		public void setOccTotal(int occTotal) {
+			this.occTotal = occTotal;
+		}
+		
+		/**
+		 * Count a single occurrence record
+		 * @param region
+		 */
+		public void countOcc(DarwinCore dwc) {
+			this.occTotal++;
+			bbox.expandBox(dwc.getLocation());
 		}
 		
 		

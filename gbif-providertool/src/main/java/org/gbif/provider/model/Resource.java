@@ -109,6 +109,9 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 	public ResourceMetadata getMeta() {
+		if (meta==null){
+			meta = new ResourceMetadata();			
+		}
 		return meta;
 	}
 	public void setMeta(ResourceMetadata meta) {
@@ -119,23 +122,23 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	// DELEGATE METHODS
 	@Transient
 	public String getLink() {
-		return meta.getLink();
+		return getMeta().getLink();
 	}
 	@Transient
 	public String getContactEmail() {
-		return meta.getContactEmail();
+		return getMeta().getContactEmail();
 	}
 	@Transient
 	public String getContactName() {
-		return meta.getContactName();
+		return getMeta().getContactName();
 	}
 	@Transient
 	public String getDescription() {
-		return meta.getDescription();
+		return getMeta().getDescription();
 	}
 	@Transient
 	public String getTitle() {
-		return meta.getTitle();
+		return getMeta()	.getTitle();
 	}
 	
 

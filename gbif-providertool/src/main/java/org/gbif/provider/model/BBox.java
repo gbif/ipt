@@ -65,23 +65,25 @@ public class BBox {
 	 * @param longitude
 	 */
 	public void expandBox(Point p){
-		if (!contains(p)){
-			if (!isValid()){
-				// this BBox doesnt yet contain any points. Use this point for min+max
-				setMin(p);
-				setMax(p);
-			}else{
-				if (p.getLatitude() > getMax().getLatitude()){
-					max.setLatitude(p.getLatitude());
-				}
-				if (p.getLatitude() < getMin().getLatitude()){
-					min.setLatitude(p.getLatitude());
-				}
-				if (p.getLongitude() > getMax().getLongitude()){
-					max.setLongitude(p.getLongitude());
-				}
-				if (p.getLongitude() < getMin().getLongitude()){
-					min.setLongitude(p.getLongitude());
+		if (p!=null){
+			if (!contains(p)){
+				if (!isValid()){
+					// this BBox doesnt yet contain any points. Use this point for min+max
+					setMin(p);
+					setMax(p);
+				}else{
+					if (p.getLatitude() > getMax().getLatitude()){
+						max.setLatitude(p.getLatitude());
+					}
+					if (p.getLatitude() < getMin().getLatitude()){
+						min.setLatitude(p.getLatitude());
+					}
+					if (p.getLongitude() > getMax().getLongitude()){
+						max.setLongitude(p.getLongitude());
+					}
+					if (p.getLongitude() < getMin().getLongitude()){
+						min.setLongitude(p.getLongitude());
+					}
 				}
 			}
 		}

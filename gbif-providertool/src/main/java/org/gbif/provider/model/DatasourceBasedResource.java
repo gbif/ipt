@@ -111,6 +111,14 @@ public abstract class DatasourceBasedResource extends Resource {
 	}
 	
 	@Transient
+	public int getRecTotal() {
+		return getCoreMapping().getRecTotal();
+	}
+	public void setRecTotal(int recTotal) {
+		getCoreMapping().setRecTotal(recTotal);
+	}
+	
+	@Transient
 	public Set<ViewMappingBase> getAllMappings() {
 		Set<ViewMappingBase> all = new HashSet<ViewMappingBase>(extensionMappings.values());
 		if (getCoreMapping() != null){
@@ -219,13 +227,6 @@ public abstract class DatasourceBasedResource extends Resource {
 	}
 	
 	@Transient
-	public int getRecordCount(){
-		if (lastUpload != null){
-			return lastUpload.getRecordsUploaded();
-		}
-		return 0;
-	}
-	@Transient
 	public Date getLastUploadDate(){
 		if (lastUpload != null){
 			return lastUpload.getExecutionDate();
@@ -258,5 +259,6 @@ public abstract class DatasourceBasedResource extends Resource {
 	 */
 	public void resetStats(){
 		lastUpload=null;
+		setRecTotal(0);
 	}
 }
