@@ -108,14 +108,14 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		return a;		
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see org.gbif.provider.service.OccResourceManager#speciesByCountry(java.lang.Long)
 	 */
 	public List<StatsCount> taxaByCountry(Long resourceId) {
-		OccurrenceResource resource = get(resourceId);
-		List<StatsCount> data = resource.getTaxaStatsByCountry();
-		return data;
+        List<Object[]> occBySth = getSession().createQuery("select r.label, count(stat)   from OccStatByRegionAndTaxon stat, Region r   where stat.resource.id = :resourceId and stat.region=r  group by stat.region")
+		    	.setParameter("resourceId", resourceId)
+		    	.list();
+        return getDataMap(occBySth);
 	}
 	public String taxaByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height) {
 		List<StatsCount> data = taxaByCountry(resourceId);
@@ -175,8 +175,14 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	
 	public List<StatsCount> occByRegion(Long resourceId, RegionType region) {
-		String hql = String.format("select dwc.%s, count(dwc)   from DarwinCoreLocation dwc   where dwc.dwc.resource.id = :resourceId   group by dwc.%s", region.columnName, region.columnName);
-        List<Object[]> occBySth = getSession().createQuery(hql).setParameter("resourceId", resourceId).list();
+		String hql;
+		List<Object[]> occBySth;
+		// only select certain rank
+		hql = String.format("select r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
+		occBySth = getSession().createQuery(hql)
+			.setParameter("resourceId", resourceId)
+			.setParameter("type", region)
+			.list();
         return getDataMap(occBySth);
 	}
 
@@ -197,8 +203,22 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	
 	public List<StatsCount> occByTaxon(Long resourceId, Rank rank) {
-		String hql = String.format("select dwc.%s, count(dwc)   from DarwinCoreTaxonomy dwc   where dwc.dwc.resource.id = :resourceId   group by dwc.%s", rank.columnName, rank.columnName);
-        List<Object[]> occBySth = getSession().createQuery(hql).setParameter("resourceId", resourceId).list();
+		String hql = "";
+		List<Object[]> occBySth;
+		if (!rank.equals(Rank.TerminalTaxon)){
+			// only select certain rank
+			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			occBySth = getSession().createQuery(hql)
+				.setParameter("resourceId", resourceId)
+				.setParameter("rank", rank)
+				.list();
+		}else{
+			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
+			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+	        occBySth = getSession().createQuery(hql)
+	        	.setParameter("resourceId", resourceId)
+	        	.list();
+		}
         return getDataMap(occBySth);
 	}
 	public String occByTaxonPieUrl(Long resourceId, Rank rank, int width, int height, boolean title) {
@@ -211,6 +231,18 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By "+rank.toString();
 		}
         // get chart string
+		data=limitData(data);
 		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
+	}
+
+
+	
+	/**
+	 * Select top x (i.e. 25) data entries with the most records and group all other as a single #other# entry
+	 * @param data
+	 * @return
+	 */
+	private List<StatsCount> limitData(List<StatsCount> data) {
+		return data;
 	}
 }

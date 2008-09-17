@@ -44,6 +44,7 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.Kingdom, width, height, title));
 		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.Family, width, height, title));
 		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.Genus, width, height, title));
+		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.TerminalTaxon, width, height, title));
 	}
 
 	@Test
@@ -52,7 +53,7 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 	}
 
 	@Test
-	public void testSpeciesByCountryMapUrl() {
+	public void testTaxaByCountryMapUrl() {
 		System.out.println(occResourceManager.taxaByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
 	

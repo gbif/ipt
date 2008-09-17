@@ -48,7 +48,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	// distinct number of Region entities
 	private int numRegions;
 	private int numTerminalRegions;
-	private Map<String, Long> numTaxaByCountry = new HashMap<String, Long>();
 	
 	private int numGenera;
 	private int numFamilies;
@@ -118,26 +117,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 	public void setNumCountries(int numCountries) {
 		this.numCountries = numCountries;
 	}
-
-	
-	@CollectionOfElements
-	@MapKey(columns = @Column(name = "country", length=64))
-	public Map<String, Long> getNumTaxaByCountry() {
-		return numTaxaByCountry;
-	}
-	public void setNumTaxaByCountry(Map<String, Long> numTaxaByCountry) {
-		this.numTaxaByCountry = numTaxaByCountry;
-	}
-	@Transient
-	public List<StatsCount> getTaxaStatsByCountry() {
-		List<StatsCount> taxaStatsByCountry = new ArrayList<StatsCount>();
-		for (String country : numTaxaByCountry.keySet()){
-			taxaStatsByCountry.add(new StatsCount(country, numTaxaByCountry.get(country)));
-		}
-		return taxaStatsByCountry;
-	}
-
-
 	
 	public int getNumRegions() {
 		return numRegions;
@@ -236,7 +215,6 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		numCountries=0;
 		numRegions=0;
 		numTerminalRegions=0;
-//		numTaxaByCountry.clear();
 		
 		numGenera=0;
 		numFamilies=0;
