@@ -52,7 +52,7 @@
     <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
     </bean>
-    <bean id="resourceManager" class="org.gbif.provider.service.impl.ResourceManagerHibernate" parent="abstractManager">        
+    <bean id="resourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
 

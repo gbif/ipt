@@ -7,7 +7,7 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceRelatedObject;
 import org.gbif.provider.model.TreeNode;
 
-public interface ResourceRelatedManager<T extends ResourceRelatedObject> extends GenericManager<T> {
+public interface GenericResourceRelatedManager<T extends ResourceRelatedObject> extends GenericManager<T> {
 	/**
 	 * Delete all records linked to a given resource
 	 * @param resource that contains the records to be removed

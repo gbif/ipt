@@ -24,7 +24,7 @@ import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @param <T>
  */
-public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedResource> extends ResourceManagerHibernate<T> implements ResourceManager<T> {
+public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
 	
 	public DatasourceBasedResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);

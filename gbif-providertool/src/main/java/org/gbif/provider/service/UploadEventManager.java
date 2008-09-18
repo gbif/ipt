@@ -5,7 +5,7 @@ import java.util.List;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.UploadEvent;
 
-public interface UploadEventManager extends ResourceRelatedManager<UploadEvent>{
+public interface UploadEventManager extends GenericResourceRelatedManager<UploadEvent>{
 	/**
 	 * Return a string that represents the upload event statistics for a given resource 
 	 * so that it can be used with the Google Charts API

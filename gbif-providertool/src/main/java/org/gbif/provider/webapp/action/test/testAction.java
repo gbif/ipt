@@ -14,56 +14,42 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action;
+package org.gbif.provider.webapp.action.test;
 
-import java.util.Date;
 import java.util.List;
 
-import org.appfuse.service.UserManager;
+import javax.servlet.ServletContext;
+
+import org.apache.struts2.util.ServletContextAware;
+import org.gbif.provider.webapp.action.BaseAction;
+import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.opensymphony.xwork2.Preparable;
 
 /**
  * Homepage of the application giving initial statistics and listing imported resources
  * @author markus
  *
  */
-public class IndexAction extends BaseAction{
+public class testAction extends BaseAction implements Preparable, ServletContextAware {
+	private ServletContext context;
 	@Autowired
-	@Qualifier("resourceManager")
-    private GenericResourceManager<Resource> resourceManager;
-    private List<Resource> resources;
-	@Autowired
-	private AppConfig cfg;
-	private Date pubDate = new Date();
-	
+	private CacheManager cacheManager;
+
+	public void prepare() throws Exception {
+	}
+
 	public String execute(){
-		resources = resourceManager.getAllDistinct();
-		return SUCCESS;
-	}
-	
-	public String about(){
+		System.out.println(cacheManager.isBusy(1l));
 		return SUCCESS;
 	}
 
-	public String rss(){
-		resources = resourceManager.getTop(50);
-		return SUCCESS;
+	public void setServletContext(ServletContext context) {
+		this.context=context;
 	}
-	
-	public List<Resource> getResources() {
-		return resources;
-	}
-
-	public AppConfig getCfg() {
-		return cfg;
-	}
-
-	public Date getPubDate() {
-		return pubDate;
-	}
-	
 }

@@ -17,6 +17,7 @@
 package org.gbif.provider.webapp.action;
 
 import org.appfuse.model.User;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
@@ -28,7 +29,8 @@ public class BaseOccurrenceResourceAction extends BaseAction{
 	@Autowired
     protected OccResourceManager occResourceManager;
 	protected Long resource_id;
-	
+	protected OccurrenceResource occResource;
+
 	public User getCurrentUser(){
 		final SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
 	    // secure context will be null when running unit tests so leave userId as null
@@ -48,6 +50,10 @@ public class BaseOccurrenceResourceAction extends BaseAction{
 
 	public Long getResource_id() {
 		return resource_id;
+	}
+	
+	public OccurrenceResource getOccResource() {
+		return occResource;
 	}
 
 }

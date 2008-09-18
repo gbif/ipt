@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContextType;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
@@ -54,9 +55,17 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	private List<StatsCount> getDataMap(List<Object[]> occBySth){
 		List<StatsCount> data = new ArrayList<StatsCount>();
         for (Object[] row : occBySth){
-        	Long id = (Long) row[0];
-        	Object value = row[1];
-        	Long count = (Long) row[2];
+        	Long id=null;
+        	Object value;
+        	Long count;
+        	if (row.length==2){
+            	value = row[0];
+            	count = (Long) row[1];
+        	}else{
+            	id = (Long) row[0];
+            	value = row[1];
+            	count = (Long) row[2];
+        	}
         	String label = null;
         	if (value!=null){
 				label = value.toString();
@@ -98,7 +107,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	public List<StatsCount> occByBasisOfRecord(Long resourceId) {
 		// get data from db
-        List<Object[]> occBySth = getSession().createQuery("select null, dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")
+        List<Object[]> occBySth = getSession().createQuery("select dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
         return getDataMap(occBySth);
@@ -120,11 +129,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 
 	
 	
-	public List<StatsCount> occByCountry(Long resourceId) {
-		return occByRegion(resourceId, RegionType.Country);
-	}
 	public String occByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height) {
-		List<StatsCount> data = occByCountry(resourceId);
+		List<StatsCount> data = occByRegion(resourceId, RegionType.Country, null);
 		return occByCountryMapUrl(area, data, width, height);
 	}
 	public String occByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height) {
@@ -163,7 +169,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	public List<StatsCount> occByDateColected(Long resourceId) {
 		// get data from db
-        List<Object[]> occBySth = getSession().createQuery("select null, year(dwc.dateCollected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.dateCollected)")
+        List<Object[]> occBySth = getSession().createQuery("select year(dwc.dateCollected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.dateCollected)")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
         return getDataMap(occBySth);
@@ -186,7 +192,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	
 	public List<StatsCount> occByHost(Long resourceId, HostType ht) {
-		String hql = String.format("select null, dwc.%s, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.%s", ht.columnName, ht.columnName);
+		String hql = String.format("select dwc.%s, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.%s", ht.columnName, ht.columnName);
         List<Object[]> occBySth = getSession().createQuery(hql).setParameter("resourceId", resourceId).list();
         return getDataMap(occBySth);
 	}
@@ -208,20 +214,30 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	
 	
-	public List<StatsCount> occByRegion(Long resourceId, RegionType region) {
+	public List<StatsCount> occByRegion(Long resourceId, RegionType region, Long taxonIdFilter) {
 		String hql;
 		List<Object[]> occBySth;
-		// only select certain rank
-		hql = String.format("select r.id, r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
-		occBySth = getSession().createQuery(hql)
-			.setParameter("resourceId", resourceId)
-			.setParameter("type", region)
-			.list();
+		if (taxonIdFilter!=null){
+			// only select regions of certain type that have taxon taxonFilter
+			hql = String.format("select r.id, r.label, sum(s.numOcc)   from Region r, Region r2, OccStatByRegionAndTaxon s   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  and s.taxon.id=:taxonId  and s.region=r2    group by r");		
+			occBySth = getSession().createQuery(hql)
+				.setParameter("resourceId", resourceId)
+				.setParameter("taxonId", taxonIdFilter)				
+				.setParameter("type", region)
+				.list();
+		}else{
+			// select all regions of certain type
+			hql = String.format("select r.id, r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
+			occBySth = getSession().createQuery(hql)
+				.setParameter("resourceId", resourceId)
+				.setParameter("type", region)
+				.list();
+		}
         return getDataMap(occBySth);
 	}
 
 	public String occByRegionPieUrl(Long resourceId, RegionType region, int width, int height, boolean title) {
-		List<StatsCount> data = occByRegion(resourceId, region);
+		List<StatsCount> data = occByRegion(resourceId, region, null);
 		return occByRegionPieUrl(data, region, width, height, title);
 	}
 

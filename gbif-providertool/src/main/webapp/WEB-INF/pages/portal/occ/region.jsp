@@ -2,7 +2,7 @@
 
 <head>
     <title><s:text name="region.title"/></title>
-    <meta name="resource" content="<s:property value="occResource.title"/>"/>
+    <meta name="resource" content="<s:property value="region.resource.title"/>"/>
     <meta name="submenu" content="resource"/>
 </head>
 	
@@ -11,10 +11,12 @@
 
 <s:form>
 	<fieldset>
-	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="taxon.details"/>)</a></legend>
+	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="region.details"/>)</a></legend>
 	<div id="details" style="display:none">
 		<s:label key="region.label"/>
 		<s:label key="region.type"/>
+		<s:label key="region.occTotal"/>
+		<s:label key="region.parent"/>
 	</div>
 	</fieldset>
 </s:form>
@@ -29,7 +31,7 @@
 			
 <br class="clearfix" />
 
-<%@ include file="/pages/portal/occurrences.jsp" %>
+<%@ include file="/WEB-INF/pages/inc/occurrenceList.jsp"%>
 
 
 <br />

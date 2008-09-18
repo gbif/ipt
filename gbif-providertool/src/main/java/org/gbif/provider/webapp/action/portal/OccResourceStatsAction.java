@@ -49,7 +49,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public static final String PIE_RESULT = "pie";
 	public static final String CHART_RESULT = "chart";
 
-	private OccurrenceResource occResource;
 	// chart image size
 	private int width = DEFAULT_WIDTH;
 	private int height = DEFAULT_HEIGHT;
@@ -66,7 +65,8 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public String chartUrl;
 	// the last part of the action name as matched with the struts.xml expression. Used to link further
 	public String action="";
-	public String recordAction=null;
+	public String recordAction;
+	public Long filter;
 	public List<StatsCount> data;
 
 	public void prepare() {
@@ -79,7 +79,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		recordAction="occRegion";
 		RegionType reg = RegionType.getByInt(type);
 		types = RegionType.DARWIN_CORE_REGIONS;
-		data = occResourceManager.occByRegion(resource_id, reg);
+		data = occResourceManager.occByRegion(resource_id, reg, filter);
 		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
 		return PIE_RESULT;
 	}
@@ -119,7 +119,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	// MAPS
 	public String statsByCountry() {
 		setMapSize();
-		data = occResourceManager.occByCountry(resource_id);
+		data = occResourceManager.occByRegion(resource_id, RegionType.Country, filter);
 		chartUrl = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
 		return MAP_RESULT;
 	}	
@@ -142,14 +142,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	//
 	// GETTER SETTER SECTION
 	//
-	
-	public OccurrenceResource getOccResource() {
-		return occResource;
-	}
-
-	public void setOccResource(OccurrenceResource occResource) {
-		this.occResource = occResource;
-	}
 
 	public String getChartUrl() {
 		return chartUrl;
@@ -214,6 +206,10 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 
 	public String getRecordAction() {
 		return recordAction;
+	}
+
+	public void setFilter(Long filter) {
+		this.filter = filter;
 	}
 		
 }

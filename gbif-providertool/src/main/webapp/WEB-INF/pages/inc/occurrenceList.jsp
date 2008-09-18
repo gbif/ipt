@@ -10,7 +10,7 @@
     <display:column property="institutionCode" sortable="true" titleKey="dwc.institutionCode"/>
     <display:column property="country" sortable="true" titleKey="dwc.country"/>
 	<display:column property="region" sortable="true" titleKey="dwc.region"/>    
-	<display:column property="earliestDateCollected" sortable="true" titleKey="dwc.earliestDateCollected" format="{0,date,${datePattern}}"/>    
+	<display:column property="earliestDateCollected" sortable="true" titleKey="dwc.earliestDateCollected" />    
 	<display:column property="collector" sortable="true" titleKey="dwc.collector"/>    
     
     <display:setProperty name="paging.banner.item_name"><s:text name="dwcList.occurrence"/></display:setProperty>

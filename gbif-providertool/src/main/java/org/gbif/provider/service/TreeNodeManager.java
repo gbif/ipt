@@ -6,7 +6,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.TreeNode;
 
-public interface TreeNodeManager<T extends TreeNode> extends ResourceRelatedManager<T> {
+public interface TreeNodeManager<T extends TreeNode> extends GenericResourceRelatedManager<T> {
 	public List<T> getRoots(Long resourceId);
 	public List<T> getParents(Long resourceId, Long nodeId);
 	public List<T> getChildren(Long resourceId, Long parentId);

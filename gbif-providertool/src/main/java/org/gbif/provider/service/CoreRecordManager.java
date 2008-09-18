@@ -7,7 +7,7 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.OccurrenceResource;
 import org.hibernate.ScrollableResults;
 
-public interface CoreRecordManager<T extends CoreRecord> extends ResourceRelatedManager<T>{
+public interface CoreRecordManager<T extends CoreRecord> extends GenericResourceRelatedManager<T>{
 
     List<T> getAll(final Long resourceId);
     ScrollableResults scrollResource(final Long resourceId);

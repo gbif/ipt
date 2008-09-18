@@ -16,40 +16,35 @@
 
 package org.gbif.provider.webapp.action;
 
-import java.util.List;
-
-import javax.servlet.ServletContext;
-
-import org.apache.struts2.util.ServletContextAware;
-import org.gbif.provider.webapp.action.BaseAction;
-import org.gbif.provider.model.ChecklistResource;
+import org.appfuse.model.User;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 
-import com.opensymphony.xwork2.Preparable;
-
-/**
- * Homepage of the application giving initial statistics and listing imported resources
- * @author markus
- *
- */
-public class testAction extends BaseAction implements Preparable, ServletContextAware {
-	private ServletContext context;
+public class BaseResourceAction extends BaseAction{
 	@Autowired
-	private CacheManager cacheManager;
+	@Qualifier("resourceManager")
+    protected GenericResourceManager<Resource> resourceManager;
+	protected Long resource_id;
+	protected Resource resource;
 
-	public void prepare() throws Exception {
+	public void setResource_id(Long resource_id) {
+		this.resource_id = resource_id;
 	}
 
-	public String execute(){
-		System.out.println(cacheManager.isBusy(1l));
-		return SUCCESS;
+	public Long getResource_id() {
+		return resource_id;
 	}
-
-	public void setServletContext(ServletContext context) {
-		this.context=context;
+	
+	public Resource getResource() {
+		return resource;
 	}
 }

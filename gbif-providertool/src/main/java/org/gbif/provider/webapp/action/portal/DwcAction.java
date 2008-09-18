@@ -8,6 +8,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,8 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	private DarwinCoreManager darwinCoreManager;
     private String guid;
     private DarwinCore dwc;
+	@Autowired
+	private AppConfig cfg;
 	 
     public String execute(){
     	if (guid!=null){

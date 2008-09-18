@@ -21,7 +21,7 @@ import java.util.List;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Resource;
 
-public interface ResourceManager<T extends Resource> extends GenericManager<T> {
+public interface GenericResourceManager<T extends Resource> extends GenericManager<T> {
 	/**
 	 * Return all resources created by that user
 	 * @param userId

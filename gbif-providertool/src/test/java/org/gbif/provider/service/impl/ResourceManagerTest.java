@@ -21,7 +21,7 @@ import java.util.List;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
@@ -29,20 +29,20 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 
 
 public class ResourceManagerTest extends ContextAwareTestBase{
-	protected ResourceManager<Resource> resourceManager;
-	protected ResourceManager<OccurrenceResource> occResourceManager;
-	protected ResourceManager<ChecklistResource> checklistResourceManager;
+	protected GenericResourceManager<Resource> resourceManager;
+	protected GenericResourceManager<OccurrenceResource> occResourceManager;
+	protected GenericResourceManager<ChecklistResource> checklistResourceManager;
 
-	public void setResourceManager(ResourceManager<Resource> resourceManager) {
+	public void setResourceManager(GenericResourceManager<Resource> resourceManager) {
 		this.resourceManager = resourceManager;
 	}
 
-	public void setOccResourceManager(ResourceManager<OccurrenceResource> occResourceManager) {
+	public void setOccResourceManager(GenericResourceManager<OccurrenceResource> occResourceManager) {
 		this.occResourceManager = occResourceManager;
 	}
 
 	public void setChecklistResourceManager(
-			ResourceManager<ChecklistResource> checklistResourceManager) {
+			GenericResourceManager<ChecklistResource> checklistResourceManager) {
 		this.checklistResourceManager = checklistResourceManager;
 	}
 
