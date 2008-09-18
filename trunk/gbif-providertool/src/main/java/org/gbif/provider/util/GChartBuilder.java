@@ -36,6 +36,8 @@ public class GChartBuilder {
     private final static Log log = LogFactory.getLog(GChartBuilder.class);
 
     private static final List<Color> COLORS = Arrays.asList(new Color("76A4FB"),new Color("D7E9F5"),new Color("18427D"),new Color("80C65A"),new Color("CA3D05"),new Color("B4C24B"),new Color("FF7C0A"), new Color("6DA474"), new Color("ffc624"),new Color("666666"));
+    public static final Color OTHER_COLOR = new Color("aaaaaa");
+	public static final String OTHER_LABEL = "other";
 	private static final Fill MAP_BACK = new SolidFill(new Color("e0f2ff"));
 	private static final Color MAP_EMPTY = new Color("ffffff");
 	private static final Color MAP_LOW = new Color("EDF0D4");
@@ -45,15 +47,20 @@ public class GChartBuilder {
 	
 	  
 	public static String generatePiaChartUrl(int width, int height, List<StatsCount> data, Long totalRecords){
-		return generatePiaChartUrl(width, height, null, data, totalRecords);
+		return generatePieChartUrl(width, height, null, data, totalRecords);
 	}
 
-	public static String generatePiaChartUrl(int width, int height, String title, List<StatsCount> data, Long totalRecords){
+	public static String generatePieChartUrl(int width, int height, String title, List<StatsCount> data, Long totalRecords){
 		LinkedList<Color> colors = new LinkedList<Color>(COLORS);
 		List<Slice> slices = new ArrayList<Slice>();
 		for (StatsCount stat: data){
-			// rotate through colors
-			Color c = colors.poll();
+			Color c;
+			if (stat.getLabel().equals(OTHER_LABEL)){
+				c = OTHER_COLOR;
+			}else{
+				// rotate through colors
+				c = colors.poll();
+			}
 			colors.add(c);
 			// calculate percentage from total
 			int perc = (int) (100 * stat.getCount() / totalRecords);

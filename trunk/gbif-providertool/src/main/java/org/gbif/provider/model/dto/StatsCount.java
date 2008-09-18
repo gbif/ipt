@@ -43,7 +43,7 @@ public class StatsCount implements Comparable {
 	public int compareTo(Object object) {
 		StatsCount myClass = (StatsCount) object;
 		return new CompareToBuilder()
-			.append(this.count, myClass.count)
+			.append(myClass.count, this.count)
 			.append(this.label, myClass.label)
 			.toComparison();
 	}

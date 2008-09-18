@@ -28,7 +28,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.googlecode.gchartjava.GeographicalArea;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
+	private static final int MAX_CHART_DATA = 20;
+
 	@Autowired
 	protected AppConfig cfg;
 	
@@ -50,7 +55,11 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         for (Object[] row : occBySth){
         	String label = null;
         	if (row[0]!=null){
-        		label = row[0].toString();
+        		try {
+					label = URLEncoder.encode(row[0].toString(), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
         	}
         	if (label == null || label.trim().equals("")){
         		label = "?";
@@ -60,10 +69,35 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         }
         // sort data
         Collections.sort(data);
-        Collections.reverse(data);
+//        Collections.reverse(data);
         return data;
 	}
 
+	
+	/**
+	 * Select most frequent MAX_CHART_DATA data entries and group all other as a single #other# entry
+	 * @param data
+	 * @return
+	 */
+	private List<StatsCount> limitDataForChart(List<StatsCount> data) {
+		if (data.size()>MAX_CHART_DATA){
+			List<StatsCount> exceedingData = data.subList(MAX_CHART_DATA, data.size()-1);
+			Long cnt = 0l;
+			for (StatsCount stat : exceedingData){
+				cnt+=stat.getCount();
+			}
+			StatsCount other = new StatsCount(GChartBuilder.OTHER_LABEL, cnt);
+			List<StatsCount> limitedData = new ArrayList<StatsCount>();
+			limitedData.add(other);
+			limitedData.addAll(data.subList(0, MAX_CHART_DATA-1));
+			return limitedData;
+		}
+		return data;
+	}
+	
+	
+	
+	
 	public List<StatsCount> occByBasisOfRecord(Long resourceId) {
 		// get data from db
         List<Object[]> occBySth = getSession().createQuery("select dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")
@@ -82,7 +116,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By BasisOfRecord";
 		}
         // get chart string
-		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
+		data=limitDataForChart(data);
+		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
 	}
 
 	
@@ -169,7 +204,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By "+ht.toString();
 		}
         // get chart string
-		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
+		data=limitDataForChart(data);
+		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
 	}
 	
 	
@@ -197,7 +233,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By "+region.toString();
 		}
         // get chart string
-		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
+		data=limitDataForChart(data);
+		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
 	}
 	
 	
@@ -231,18 +268,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			titleText = "Occurrences By "+rank.toString();
 		}
         // get chart string
-		data=limitData(data);
-		return gpb.generatePiaChartUrl(width, height, titleText, data, sumData(data));
+		data=limitDataForChart(data);
+		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
 	}
 
-
-	
-	/**
-	 * Select top x (i.e. 25) data entries with the most records and group all other as a single #other# entry
-	 * @param data
-	 * @return
-	 */
-	private List<StatsCount> limitData(List<StatsCount> data) {
-		return data;
-	}
 }
