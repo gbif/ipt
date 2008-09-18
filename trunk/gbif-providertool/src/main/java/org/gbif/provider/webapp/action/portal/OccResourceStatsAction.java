@@ -118,6 +118,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	
 	// MAPS
 	public String statsByCountry() {
+		recordAction="occRegion";
 		setMapSize();
 		data = occResourceManager.occByRegion(resource_id, RegionType.Country, filter);
 		chartUrl = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
@@ -125,7 +126,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	}	
 	public String statsByTaxaPerCountry() {
 		setMapSize();
-		data = occResourceManager.taxaByCountry(resource_id);
+		data = occResourceManager.taxaByRegion(resource_id, RegionType.Country);
 		chartUrl = occResourceManager.taxaByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
 		return MAP_RESULT;
 	}	

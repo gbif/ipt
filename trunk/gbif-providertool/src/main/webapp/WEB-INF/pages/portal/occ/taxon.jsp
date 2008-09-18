@@ -12,15 +12,40 @@
 <s:form>
 	<fieldset>
 	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="taxon.details"/>)</a></legend>
-	<div id="details" style="display:none">
-		<s:label key="taxon.fullname"/>
-		<s:label key="taxon.name"/>
-		<s:label key="taxon.authorship"/>
-		<s:label key="taxon.rank"/>
-		<s:label key="taxon.code"/>
-		<s:label key="taxon.occTotal"/>
-		<s:label key="taxon.parent"/>
-	</div>
+	<table id="details" style="display:none">
+		<tr>
+		  <th><s:text name="taxon.fullname"/></th>
+		  <td><s:property value="%{taxon.fullname}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.name"/></th>
+		  <td><s:property value="%{taxon.name}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.authorship"/></th>
+		  <td><s:property value="%{taxon.authorship}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.rank"/></th>
+		  <td><s:property value="%{taxon.rank}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.code"/></th>
+		  <td><s:property value="%{taxon.code}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.parent"/></th>
+		  <td><s:property value="%{taxon.parent}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.occTotal"/></th>
+		  <td><s:property value="%{taxon.occTotal}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.bbox"/></th>
+		  <td><s:property value="%{taxon.bbox}"/></td>
+		</tr>
+	</table>
 	</fieldset>
 </s:form>
 

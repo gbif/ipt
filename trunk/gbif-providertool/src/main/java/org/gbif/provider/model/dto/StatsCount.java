@@ -20,6 +20,9 @@ public class StatsCount implements Comparable {
 		this.value= value;
 		this.count = (count==null ? 0L : count);
 	}
+	public StatsCount(String label, Long count) {
+		this(null, label, label, count);
+	}
 	public String getLabel() {
 		return label;
 	}

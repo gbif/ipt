@@ -1,23 +1,40 @@
 <%@ include file="/common/taglibs.jsp"%>
 
+<s:push value="region">
 <head>
-    <title><s:text name="region.title"/></title>
-    <meta name="resource" content="<s:property value="region.resource.title"/>"/>
+    <title><s:text name="title"/></title>
+    <meta name="resource" content="<s:property value="resource.title"/>"/>
     <meta name="submenu" content="resource"/>
 </head>
 	
 
-<h2><s:property value="region.label"/></h2>  
+<h2><s:property value="label"/></h2>  
 
 <s:form>
 	<fieldset>
 	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="region.details"/>)</a></legend>
-	<div id="details" style="display:none">
-		<s:label key="region.label"/>
-		<s:label key="region.type"/>
-		<s:label key="region.occTotal"/>
-		<s:label key="region.parent"/>
-	</div>
+	<table id="details" style="display:none">
+		<tr>
+		  <th><s:text name="region.label"/></th>
+		  <td><s:property value="%{label}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="region.type"/></th>
+		  <td><s:property value="%{type}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="region.parent"/></th>
+		  <td><s:property value="%{parent}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="region.occTotal"/></th>
+		  <td><s:property value="%{occTotal}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.bbox"/></th>
+		  <td><s:property value="%{taxon.bbox}"/></td>
+		</tr>
+	</table>
 	</fieldset>
 </s:form>
 
@@ -29,6 +46,7 @@
 </div>
 
 			
+</s:push>
 <br class="clearfix" />
 
 <%@ include file="/WEB-INF/pages/inc/occurrenceList.jsp"%>
