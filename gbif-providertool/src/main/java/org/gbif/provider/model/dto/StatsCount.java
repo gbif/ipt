@@ -8,15 +8,14 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.CompareToBuilder;
 
 public class StatsCount implements Comparable {
+	private Long id;
 	private String label;
 	private Object value;
 	private Long count;
 	
-	public StatsCount(String label, Long count) {
-		this(label, label, count);
-	}
-	public StatsCount(String label, Object value, Long count) {
+	public StatsCount(Long id, String label, Object value, Long count) {
 		super();
+		this.id=id;
 		this.label = (label==null ? "???" : label);
 		this.value= value;
 		this.count = (count==null ? 0L : count);
@@ -29,6 +28,9 @@ public class StatsCount implements Comparable {
 	}	
 	public Object getValue() {
 		return value;
+	}
+	public Long getId() {
+		return id;
 	}
 	/**
 	 * @see java.lang.Object#toString()

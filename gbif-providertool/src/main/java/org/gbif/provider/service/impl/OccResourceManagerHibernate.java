@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
@@ -53,19 +54,20 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	private List<StatsCount> getDataMap(List<Object[]> occBySth){
 		List<StatsCount> data = new ArrayList<StatsCount>();
         for (Object[] row : occBySth){
+        	Long id = (Long) row[0];
+        	Object value = row[1];
+        	Long count = (Long) row[2];
         	String label = null;
-        	if (row[0]!=null){
-				label = row[0].toString();
+        	if (value!=null){
+				label = value.toString();
         	}
-        	if (label == null || label.trim().equals("")){
+        	if (StringUtils.trimToNull(label)==null){
         		label = "?";
         	}
-        	Long count = (Long) row[1];
-        	data.add(new StatsCount(label, row[0], count));
+        	data.add(new StatsCount(id, label, value, count));
         }
         // sort data
         Collections.sort(data);
-//        Collections.reverse(data);
         return data;
 	}
 
@@ -82,7 +84,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 			for (StatsCount stat : exceedingData){
 				cnt+=stat.getCount();
 			}
-			StatsCount other = new StatsCount(GChartBuilder.OTHER_LABEL, cnt);
+			StatsCount other = new StatsCount(null, GChartBuilder.OTHER_LABEL, GChartBuilder.OTHER_LABEL, cnt);
 			List<StatsCount> limitedData = new ArrayList<StatsCount>();
 			limitedData.add(other);
 			limitedData.addAll(data.subList(0, MAX_CHART_DATA-1));
@@ -96,7 +98,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	public List<StatsCount> occByBasisOfRecord(Long resourceId) {
 		// get data from db
-        List<Object[]> occBySth = getSession().createQuery("select dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")
+        List<Object[]> occBySth = getSession().createQuery("select null, dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
         return getDataMap(occBySth);
@@ -143,7 +145,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	 * @see org.gbif.provider.service.OccResourceManager#speciesByCountry(java.lang.Long)
 	 */
 	public List<StatsCount> taxaByCountry(Long resourceId) {
-        List<Object[]> occBySth = getSession().createQuery("select r.label, count(stat)   from OccStatByRegionAndTaxon stat, Region r   where stat.resource.id = :resourceId and stat.region=r  group by stat.region")
+        List<Object[]> occBySth = getSession().createQuery("select r.id, r.label, count(stat)   from OccStatByRegionAndTaxon stat, Region r   where stat.resource.id = :resourceId and stat.region=r  group by stat.region")
 		    	.setParameter("resourceId", resourceId)
 		    	.list();
         return getDataMap(occBySth);
@@ -161,7 +163,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	public List<StatsCount> occByDateColected(Long resourceId) {
 		// get data from db
-        List<Object[]> occBySth = getSession().createQuery("select year(dwc.dateCollected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.dateCollected)")
+        List<Object[]> occBySth = getSession().createQuery("select null, year(dwc.dateCollected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.dateCollected)")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
         return getDataMap(occBySth);
@@ -184,7 +186,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	
 	
 	public List<StatsCount> occByHost(Long resourceId, HostType ht) {
-		String hql = String.format("select dwc.%s, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.%s", ht.columnName, ht.columnName);
+		String hql = String.format("select null, dwc.%s, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.%s", ht.columnName, ht.columnName);
         List<Object[]> occBySth = getSession().createQuery(hql).setParameter("resourceId", resourceId).list();
         return getDataMap(occBySth);
 	}
@@ -210,7 +212,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		String hql;
 		List<Object[]> occBySth;
 		// only select certain rank
-		hql = String.format("select r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
+		hql = String.format("select r.id, r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
 		occBySth = getSession().createQuery(hql)
 			.setParameter("resourceId", resourceId)
 			.setParameter("type", region)
@@ -241,13 +243,13 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		List<Object[]> occBySth;
 		if (rank== null || rank.equals(Rank.TerminalTaxon)){
 			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 	        occBySth = getSession().createQuery(hql)
 	        	.setParameter("resourceId", resourceId)
 	        	.list();
 		}else{
 			// only select certain rank
-			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("rank", rank)
