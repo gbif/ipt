@@ -66,6 +66,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public String chartUrl;
 	// the last part of the action name as matched with the struts.xml expression. Used to link further
 	public String action="";
+	public String recordAction=null;
 	public List<StatsCount> data;
 
 	public void prepare() {
@@ -75,6 +76,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	}
 
 	public String statsByRegion() {
+		recordAction="occRegion";
 		RegionType reg = RegionType.getByInt(type);
 		types = RegionType.DARWIN_CORE_REGIONS;
 		data = occResourceManager.occByRegion(resource_id, reg);
@@ -83,6 +85,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	}
 
 	public String statsByTaxon() {
+		recordAction="occTaxon";
 		Rank rnk = Rank.getByInt(type);
 		types = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
 		types.add(Rank.TerminalTaxon);
@@ -207,6 +210,10 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 
 	public int getHeight() {
 		return height;
+	}
+
+	public String getRecordAction() {
+		return recordAction;
 	}
 		
 }
