@@ -1,5 +1,7 @@
 package org.gbif.provider.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,7 +66,11 @@ public class GChartBuilder {
 			colors.add(c);
 			// calculate percentage from total
 			int perc = (int) (100 * stat.getCount() / totalRecords);
-			slices.add(new Slice(perc, c, stat.getLabel()));
+			try {
+				slices.add(new Slice(perc, c, URLEncoder.encode(stat.getLabel(), Constants.ENCODING)));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 
         PieChart chart = new PieChart(slices);
