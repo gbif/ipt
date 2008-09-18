@@ -55,10 +55,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		for (RegionType rt : RegionType.DARWIN_CORE_REGIONS){
 			regionClasses.put(rt.ordinal(), rt.name());
 		}
-		for (Rank rt : Rank.DARWIN_CORE_RANKS){
+		for (Rank rt : Rank.DARWIN_CORE_HIGHER_RANKS){
 			ranks.put(rt.ordinal(), rt.name());
 		}
-		ranks.put(Rank.Species.ordinal(), "Top 10 Species");
+		ranks.put(Rank.TerminalTaxon.ordinal(), "All Taxa");
 		
 		// hosting bodies
 		for (HostType ht : HostType.HOSTING_BODIES){

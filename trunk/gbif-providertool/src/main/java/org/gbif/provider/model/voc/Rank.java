@@ -15,7 +15,7 @@ public enum Rank {
 	InfraSpecies(null),	
 	TerminalTaxon("scientific_name");	
 	
-	public static final List<Rank> DARWIN_CORE_RANKS;
+	public static final List<Rank> DARWIN_CORE_HIGHER_RANKS;
 	  static  
 	  {  
 	    List<Rank> dwcRanks = new ArrayList<Rank>();  
@@ -25,14 +25,15 @@ public enum Rank {
 	    dwcRanks.add( Order );  
 	    dwcRanks.add( Family );  
 	    dwcRanks.add( Genus );  
-	    DARWIN_CORE_RANKS = Collections.unmodifiableList(dwcRanks);  
+	    DARWIN_CORE_HIGHER_RANKS = Collections.unmodifiableList(dwcRanks);  
 	  }  
 	public static final List<Rank> ALL_RANKS;
 	  static  
 	  {  
-	    List<Rank> dwcRanks = new ArrayList<Rank>(DARWIN_CORE_RANKS);  
+	    List<Rank> dwcRanks = new ArrayList<Rank>(DARWIN_CORE_HIGHER_RANKS);  
 	    dwcRanks.add( Species );  
 	    dwcRanks.add( InfraSpecies );  
+	    dwcRanks.add( TerminalTaxon );  
 	    ALL_RANKS = Collections.unmodifiableList(dwcRanks);  
 	  } 
 	  

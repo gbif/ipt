@@ -16,6 +16,7 @@
 
 package org.gbif.provider.webapp.action.portal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gbif.provider.model.OccurrenceResource;
@@ -83,7 +84,8 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 
 	public String statsByTaxon() {
 		Rank rnk = Rank.getByInt(type);
-		types = Rank.DARWIN_CORE_RANKS;
+		types = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
+		types.add(Rank.TerminalTaxon);
 		data = occResourceManager.occByTaxon(resource_id, rnk);
 		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
 		return PIE_RESULT;

@@ -55,11 +55,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         for (Object[] row : occBySth){
         	String label = null;
         	if (row[0]!=null){
-        		try {
-					label = URLEncoder.encode(row[0].toString(), "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
+				label = row[0].toString();
         	}
         	if (label == null || label.trim().equals("")){
         		label = "?";
@@ -176,7 +172,6 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	}
 
 	public String occByDateColectedUrl(List<StatsCount> data, int width, int height, boolean title) {
-		// FIXME: implement this method...
 		String titleText = null;
 		if (title){
 			titleText = "Occurrences By DateCollected";
@@ -199,6 +194,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	}
 
 	public String occByHostPieUrl(List<StatsCount> data, HostType ht, int width, int height, boolean title) {
+		assert(ht!=null);
 		String titleText = null;
 		if (title){
 			titleText = "Occurrences By "+ht.toString();
@@ -228,6 +224,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	}
 
 	public String occByRegionPieUrl(List<StatsCount> data, RegionType region, int width, int height, boolean title) {
+		assert(region!=null);
 		String titleText = null;
 		if (title){
 			titleText = "Occurrences By "+region.toString();
@@ -242,19 +239,19 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	public List<StatsCount> occByTaxon(Long resourceId, Rank rank) {
 		String hql = "";
 		List<Object[]> occBySth;
-		if (!rank.equals(Rank.TerminalTaxon)){
+		if (rank== null || rank.equals(Rank.TerminalTaxon)){
+			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
+			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+	        occBySth = getSession().createQuery(hql)
+	        	.setParameter("resourceId", resourceId)
+	        	.list();
+		}else{
 			// only select certain rank
 			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("rank", rank)
 				.list();
-		}else{
-			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
-	        occBySth = getSession().createQuery(hql)
-	        	.setParameter("resourceId", resourceId)
-	        	.list();
 		}
         return getDataMap(occBySth);
 	}
@@ -263,6 +260,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		return occByTaxonPieUrl(data, rank, width, height, title);
 	}
 	public String occByTaxonPieUrl(List<StatsCount> data, Rank rank, int width, int height, boolean title) {
+		assert(rank!=null);
 		String titleText = null;
 		if (title){
 			titleText = "Occurrences By "+rank.toString();

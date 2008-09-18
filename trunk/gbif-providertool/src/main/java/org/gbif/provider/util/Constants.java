@@ -33,6 +33,7 @@ public class Constants {
     public static final String TEST_BASE_DIR = "/tmp";
     public static final String RECENT_RESOURCES = "recentResources";
     public static final String DEFAULT_LOGO = "/images/resource-logo.gif";
+    public static final String ENCODING = "UTF-8";    
     // 1999-07-10
     private static final DateFormat date_iso_format = new SimpleDateFormat("yyyy-MM-dd");
     // 2001-07-04T12:08:56.235-0700
