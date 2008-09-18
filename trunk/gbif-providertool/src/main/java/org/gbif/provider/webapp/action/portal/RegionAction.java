@@ -33,7 +33,7 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     public String occurrences(){
     	if (id!=null && resource_id!=null){
     		region=regionManager.get(id);
-    		occurrences = darwinCoreManager.getByRegion(id, resource_id);
+    		occurrences = darwinCoreManager.getByRegion(id, resource_id, true);
     		geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
     	}
 		return SUCCESS;

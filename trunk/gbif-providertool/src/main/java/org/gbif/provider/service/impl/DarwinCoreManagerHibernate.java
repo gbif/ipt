@@ -53,16 +53,26 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 		return dwc;
 	}
 
-	public List<DarwinCore> getByRegion(Long regionId, Long resourceId) {
-		String hql = String.format("select core FROM %s core WHERE core.resource.id = :resourceId and region.id = :regionId", persistentClass.getName()); 
+	public List<DarwinCore> getByRegion(Long regionId, Long resourceId, boolean inclChildren) {
+		String hql; 
+		if (inclChildren){
+			hql = "select dwc FROM DarwinCore dwc, Region r, Region r2 WHERE dwc.resource.id=:resourceId  and dwc.region=r2  and r.id=:regionId  and r2.lft>=r.lft and r2.rgt<=r.rgt"; 
+		}else{
+			hql = "select dwc FROM DarwinCore dwc WHERE dwc.resource.id=:resourceId  and dwc.region.id=:regionId"; 
+		}
         Query query = getSession().createQuery(hql)
 			.setParameter("regionId", regionId)
 			.setParameter("resourceId", resourceId);
         return query.list();
 	}
 
-	public List<DarwinCore> getByTaxon(Long taxonId, Long resourceId) {
-		String hql = String.format("select core FROM %s core WHERE core.resource.id = :resourceId and taxon.id = :taxonId", persistentClass.getName()); 
+	public List<DarwinCore> getByTaxon(Long taxonId, Long resourceId, boolean inclChildren) {
+		String hql; 
+		if (inclChildren){
+			hql = "select dwc FROM DarwinCore dwc, Taxon t, Taxon t2 WHERE dwc.resource.id=:resourceId  and dwc.taxon=t2  and t.id=:taxonId  and t2.lft>=t.lft and t2.rgt<=t.rgt"; 
+		}else{
+			hql = "select dwc FROM DarwinCore dwc WHERE dwc.resource.id=:resourceId  and dwc.taxon.id=:taxonId"; 
+		}
         Query query = getSession().createQuery(hql)
 			.setParameter("taxonId", taxonId)
 			.setParameter("resourceId", resourceId);

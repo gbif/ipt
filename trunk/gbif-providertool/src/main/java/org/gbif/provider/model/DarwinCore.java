@@ -16,6 +16,9 @@
 
 package org.gbif.provider.model;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -927,7 +930,34 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 
 	
-	
+	@Transient
+	public String getPropertyValue(ExtensionProperty property){
+		String propName = property.getName();
+		if (propName.equals("Class")){
+			propName = "Classs";
+		}
+		String getter = String.format("get%s", propName);
+		String value = null;
+		try {
+			Method m = this.getClass().getMethod(getter);
+			Object obj = m.invoke(this);
+			if (obj!=null){
+				value=obj.toString();
+			}
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

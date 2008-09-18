@@ -2,13 +2,13 @@ package org.gbif.provider.service.impl;
 
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceRelatedObject;
-import org.gbif.provider.service.ResourceRelatedManager;
+import org.gbif.provider.service.GenericResourceRelatedManager;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 	@Transactional(readOnly=true)
-	public class GenericResourceRelatedManagerHibernate<T extends ResourceRelatedObject> extends GenericManagerHibernate<T> implements ResourceRelatedManager<T> {
+	public class GenericResourceRelatedManagerHibernate<T extends ResourceRelatedObject> extends GenericManagerHibernate<T> implements GenericResourceRelatedManager<T> {
 
 	    /**
 	     * Constructor that takes in a class to see which type of entity to persist

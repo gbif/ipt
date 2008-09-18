@@ -21,7 +21,7 @@ import java.util.List;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.ResourceManager;
+import org.gbif.provider.service.GenericResourceManager;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -30,10 +30,10 @@ import org.gbif.provider.service.ResourceManager;
  *
  * @param <T>
  */
-public class ResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements ResourceManager<T> {
-	private static I18nLog logdb = I18nLogFactory.getLog(ResourceManagerHibernate.class);
+public class GenericResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements GenericResourceManager<T> {
+	private static I18nLog logdb = I18nLogFactory.getLog(GenericResourceManagerHibernate.class);
 	
-	public ResourceManagerHibernate(final Class<T> persistentClass) {
+	public GenericResourceManagerHibernate(final Class<T> persistentClass) {
 		super(persistentClass);
 	}
 

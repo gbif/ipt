@@ -20,6 +20,9 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends ActionSupport{
     public static final String CANCEL = "cancel";
+    public static final String OCCURRENCE = "occ";
+    public static final String TAXON = "tax";
+    public static final String METADATA = "meta";
 	@Autowired
 	protected AppConfig cfg;
     // Indicator if the user clicked cancel

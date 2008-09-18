@@ -56,5 +56,10 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 	public void testTaxaByCountryMapUrl() {
 		System.out.println(occResourceManager.taxaByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
 	}
+
+	@Test
+	public void testOccByRegionWithTaxonFilter() {
+		System.out.println(occResourceManager.occByRegion(Constants.TEST_RESOURCE_ID, RegionType.Country, 656l));
+	}
 	
 }

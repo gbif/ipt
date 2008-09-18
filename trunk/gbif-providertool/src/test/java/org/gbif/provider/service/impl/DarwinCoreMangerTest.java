@@ -93,19 +93,6 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 		darwinCoreManager.flagAllAsDeleted(resource);
 	}
 
-	@Test
-	public void testByTaxon() {
-		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(2215l, Constants.TEST_RESOURCE_ID);
-		//FIXME: add proper taxonId once default data is stable
-//		assertTrue(dwcs.size()>0);
-	}
-	
-	@Test
-	public void te32stReindex() {
-//		darwinCoreManager.reindex(Constants.TEST_RESOURCE_ID);		
-//		darwinCoreManager.reindex(2l);		
-	}
-
 	
 	@Test
 	public void testSimpleSave(){		
@@ -116,6 +103,34 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
     	}finally{
     		darwinCoreManager.flush();            		
     	}
+	}
+
+	
+	@Test
+	public void testByTaxon() {
+		Long tid = 656l;
+		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(tid, Constants.TEST_RESOURCE_ID, false);
+		System.out.println(dwcs.size());
+		System.out.println(dwcs);
+		dwcs = darwinCoreManager.getByTaxon(tid, Constants.TEST_RESOURCE_ID, true);
+		System.out.println(dwcs.size());
+		System.out.println(dwcs);
+		//FIXME: add proper taxonId once default data is stable
+//		assertTrue(dwcs.size()>0);
+	}
+	
+	
+	@Test
+	public void testByRegion() {
+		Long rid = 274l;
+		List<DarwinCore> dwcs = darwinCoreManager.getByRegion(rid, Constants.TEST_RESOURCE_ID, false);
+		System.out.println(dwcs.size());
+		System.out.println(dwcs);
+		dwcs = darwinCoreManager.getByRegion(rid, Constants.TEST_RESOURCE_ID, true);
+		System.out.println(dwcs.size());
+		System.out.println(dwcs);
+		//FIXME: add proper taxonId once default data is stable
+//		assertTrue(dwcs.size()>0);
 	}
 	
 }

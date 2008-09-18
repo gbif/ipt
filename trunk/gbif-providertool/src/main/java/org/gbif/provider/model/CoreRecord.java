@@ -63,4 +63,5 @@ public interface CoreRecord extends ResourceRelatedObject {
 	boolean isProblematic();
 	void setProblematic(boolean isProblematic);
 	
+	String getPropertyValue(ExtensionProperty property);
 }
