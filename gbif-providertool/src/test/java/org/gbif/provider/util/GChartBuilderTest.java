@@ -34,7 +34,7 @@ public class GChartBuilderTest {
 			totalRecords += val.getCount();
 		}
 		String expectedString = "http://chart.apis.google.com/chart?cht=p&chs=320x160&chl=Harald|Stefan|Freerk|Fritz|Bernd&chts=000000,16&chco=76A4FB,D7E9F5,18427D,80C65A,CA3D05&chd=e:LhApKPYUQA&chtt=Phonecalls+per+Friend";
-		String result = gb.generatePiaChartUrl(320, 160, "Phonecalls per Friend", data, totalRecords);
+		String result = gb.generatePieChartUrl(320, 160, "Phonecalls per Friend", data, totalRecords);
 //		System.out.println(result);
         assertEquals(expectedString, result);
         
