@@ -52,13 +52,14 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 	}
 	
 	private void executeSQL(String sql) throws SQLException{
-		Connection cn = getConnection();
-		PreparedStatement ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		try {
-			ps.execute();
-		}finally{
-			ps.close();
-		}
+		//FIXME: implement extension upload
+//		Connection cn = getConnection();
+//		PreparedStatement ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//		try {
+//			ps.execute();
+//		}finally{
+//			ps.close();
+//		}
 	}
 
 	@Transactional(readOnly=false)

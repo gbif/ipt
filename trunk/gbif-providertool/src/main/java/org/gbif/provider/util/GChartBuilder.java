@@ -112,7 +112,7 @@ public class GChartBuilder {
 		List<PoliticalBoundary> cdata = new ArrayList<PoliticalBoundary>();
 		Long maxRecords = 1l;
 		if (!data.isEmpty()){
-			maxRecords = Collections.max(data).getCount();
+			maxRecords = Collections.min(data).getCount();
 		}
 		for (StatsCount stat : data){
 			// check that ~ISO code exists, i.e. must be 2 characters only!

@@ -6,8 +6,8 @@
     <groupId>org.gbif.provider</groupId>
     <artifactId>providertool</artifactId>
     <packaging>war</packaging>
-    <!--version>0.3</version-->
-    <version>1.0-SNAPSHOT</version>
+    <version>0.3</version>
+    <!--version>1.0-SNAPSHOT</version-->
     <name>GBIF Provider Software</name>
     <url>http://www.gbif.org</url>
 
@@ -619,52 +619,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.1</version>
-                        <configuration>
-                            <tasks>
-                                <taskdef resource="webtest_base_relaxed.taskdef">
-                                    <classpath refid="maven.test.classpath"/>
-                                </taskdef>
-                                <mkdir dir="target/webtest-data"/>
-                                <!-- Delete old results file if it exists -->
-                                <delete file="target/webtest-data/web-tests-result.xml"/>
-                                <!-- This is so the default will be used if no test case is specified -->
-                                <property name="test" value="run-all-tests"/>
-                                <echo level="info">Testing '${project.build.finalName}' with locale '${user.language}'</echo>
-                                <ant antfile="src/test/resources/web-tests.xml" target="${test}">
-                                    <property name="user.language" value="${user.language}"/>
-                                    <property name="webapp.name" value="${project.build.finalName}"/>
-                                    <property name="host" value="${cargo.host}"/>
-                                    <property name="port" value="${cargo.port}"/>
-                                </ant>
-                            </tasks>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.canoo.webtest</groupId>
-                                <artifactId>webtest</artifactId>
-                                <version>${webtest.version}</version>
-                                <!-- groovy-all doesn't have a pom in central repo -->
-                                <!-- exclude groovy to prevent trying to fetch pom -->
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>groovy</groupId>
-                                        <artifactId>groovy-all</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>

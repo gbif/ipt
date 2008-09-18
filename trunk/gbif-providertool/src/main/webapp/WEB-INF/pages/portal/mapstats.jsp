@@ -74,10 +74,19 @@
 			
 </div>
 
+<s:url id="recordUrl" action="%{recordAction}" includeParams="none">
+	<s:param name="resource_id" value="resource_id" />
+</s:url>
+
 <div id="stats-table">
 	<display:table name="data" class="table" requestURI="" id="dataList" export="true" pagesize="50">
 	    <display:column property="label" sortable="true" titleKey="stats.country"/>
-	    <display:column property="count" sortable="true" titleKey="stats.count"/>
+	    <s:if test="%{recordAction.length() > 0}">	    
+	    	<display:column property="count" sortable="true" titleKey="stats.count" href="${recordUrl}" media="html" paramId="id" paramProperty="id"/>
+		</s:if>
+		<s:else>
+	    	<display:column property="count" sortable="true" titleKey="stats.count"/>
+		</s:else>
 	
 	    <display:setProperty name="paging.banner.item_name"><s:text name="stats.country"/></display:setProperty>
 	    <display:setProperty name="paging.banner.items_name"><s:text name="stats.countries"/></display:setProperty>

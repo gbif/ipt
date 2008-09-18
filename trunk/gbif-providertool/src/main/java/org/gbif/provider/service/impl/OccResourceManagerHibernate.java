@@ -224,7 +224,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		List<Object[]> occBySth;
 		if (taxonIdFilter!=null){
 			// only select regions of certain type that have taxon taxonFilter
-			hql = String.format("select r.id, r.label, sum(s.numOcc)   from Region r, Region r2, OccStatByRegionAndTaxon s   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  and s.taxon.id=:taxonId  and s.region=r2    group by r");		
+			hql = String.format("select r.id, r.label, sum(s.numOcc)   from Region r, Region r2, OccStatByRegionAndTaxon s   where r.resource.id=:resourceId and r2.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  and s.taxon.id=:taxonId  and s.region=r2    group by r");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("taxonId", taxonIdFilter)				
@@ -232,7 +232,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 				.list();
 		}else{
 			// select all regions of certain type
-			hql = String.format("select r.id, r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
+			hql = String.format("select r.id, r.label, sum(r2.occTotal)   from Region r, Region r2   where r.resource.id=:resourceId and r2.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  group by r");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("type", region)
@@ -264,13 +264,13 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		List<Object[]> occBySth;
 		if (rank== null || rank.equals(Rank.TerminalTaxon)){
 			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 	        occBySth = getSession().createQuery(hql)
 	        	.setParameter("resourceId", resourceId)
 	        	.list();
 		}else{
 			// only select certain rank
-			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("rank", rank)
