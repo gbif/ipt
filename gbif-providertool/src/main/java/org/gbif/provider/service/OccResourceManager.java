@@ -15,7 +15,7 @@ import com.googlecode.gchartjava.GeographicalArea;
 
 public interface OccResourceManager extends GenericResourceManager<OccurrenceResource>{
 	// DATA
-	public List<StatsCount> taxaByCountry(Long resourceId);
+	public List<StatsCount> taxaByRegion(Long resourceId, RegionType region);
 	public List<StatsCount> occByRegion(Long resourceId, RegionType region, Long taxonIdFilter);
 	public List<StatsCount> occByTaxon(Long resourceId, Rank rank);
 	public List<StatsCount> occByHost(Long resourceId, HostType ht);

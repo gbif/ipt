@@ -74,22 +74,22 @@ public class GChartBuilderTest {
 	public void testChrono(){
 		GChartBuilder gb = new GChartBuilder();
 		List<StatsCount> data = new ArrayList<StatsCount>();
-		data.add(new StatsCount("1972", 1972, 1012l));
-		data.add(new StatsCount("1989", 1989, 790l));
-		data.add(new StatsCount("1990", 1990, 1291l));
-		data.add(new StatsCount("1979", 1979, 8222l));
-		data.add(new StatsCount("1986", 1986, 12122l));
-		data.add(new StatsCount("1984", 1984, 522l));
-		data.add(new StatsCount("1977", 1977, 1342l));
-		data.add(new StatsCount("2001", 2001, 18842l));
+		data.add(new StatsCount(null, "1972", 1972, 1012l));
+		data.add(new StatsCount(null, "1989", 1989, 790l));
+		data.add(new StatsCount(null, "1990", 1990, 1291l));
+		data.add(new StatsCount(null, "1979", 1979, 8222l));
+		data.add(new StatsCount(null, "1986", 1986, 12122l));
+		data.add(new StatsCount(null, "1984", 1984, 522l));
+		data.add(new StatsCount(null, "1977", 1977, 1342l));
+		data.add(new StatsCount(null, "2001", 2001, 18842l));
 		String result = gb.generateChronoChartUrl(440, 220, data);
 //		System.out.println(result);
 		result = gb.generateChronoChartUrl(220, 110, data);
 //		System.out.println(result);
 		
 		data = new ArrayList<StatsCount>();
-		data.add(new StatsCount(null, null, 1012l));
-		data.add(new StatsCount("1989", 1989, 790l));
+		data.add(new StatsCount(null, null, null, 1012l));
+		data.add(new StatsCount(null, "1989", 1989, 790l));
 		result = gb.generateChronoChartUrl(320, 160, data);
 //		System.out.println(result);
 

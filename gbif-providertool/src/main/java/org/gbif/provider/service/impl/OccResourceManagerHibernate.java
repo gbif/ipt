@@ -147,17 +147,9 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		return a;		
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.gbif.provider.service.OccResourceManager#speciesByCountry(java.lang.Long)
-	 */
-	public List<StatsCount> taxaByCountry(Long resourceId) {
-        List<Object[]> occBySth = getSession().createQuery("select r.id, r.label, count(stat)   from OccStatByRegionAndTaxon stat, Region r   where stat.resource.id = :resourceId and stat.region=r  group by stat.region")
-		    	.setParameter("resourceId", resourceId)
-		    	.list();
-        return getDataMap(occBySth);
-	}
+
 	public String taxaByCountryMapUrl(GeographicalArea area, Long resourceId, int width, int height) {
-		List<StatsCount> data = taxaByCountry(resourceId);
+		List<StatsCount> data = taxaByRegion(resourceId, RegionType.Country);
 		return taxaByCountryMapUrl(area, data, width, height);
 	}
 	public String taxaByCountryMapUrl(GeographicalArea area, List<StatsCount> data, int width, int height) {
@@ -213,6 +205,19 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	}
 	
 	
+	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.OccResourceManager#speciesByCountry(java.lang.Long)
+	 */
+	public List<StatsCount> taxaByRegion(Long resourceId, RegionType region) {
+		// only select regions of certain type that have taxon taxonFilter
+		String hql = "select r.id, r.label, count(distinct s.taxon)   from Region r, Region r2, OccStatByRegionAndTaxon s   WHERE r.resource.id=:resourceId  and r2.resource.id=:resourceId  and r.type=:type  and r2.lft>=r.lft and r2.rgt<=r.rgt  and s.region=r2    group by r";		
+		List<Object[]> occBySth = getSession().createQuery(hql)
+		    	.setParameter("type", region)
+		    	.setParameter("resourceId", resourceId)
+		    	.list();
+        return getDataMap(occBySth);
+	}
 	
 	public List<StatsCount> occByRegion(Long resourceId, RegionType region, Long taxonIdFilter) {
 		String hql;

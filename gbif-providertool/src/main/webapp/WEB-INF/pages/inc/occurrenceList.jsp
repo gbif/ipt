@@ -7,7 +7,7 @@
 <display:table name="occurrences" uid="occ" class="table" requestURI="" id="occurrenceList" export="false" pagesize="50">
     <display:column property="catalogNumber" sortable="true" href="${resUrl}" media="html" paramId="guid" paramProperty="guid" titleKey="dwc.catalogNumber"/>
     <display:column property="collectionCode" sortable="true" titleKey="dwc.collectionCode"/>
-    <display:column property="institutionCode" sortable="true" titleKey="dwc.institutionCode"/>
+	<display:column property="taxon" sortable="true" titleKey="dwc.taxon"/>    
     <display:column property="country" sortable="true" titleKey="dwc.country"/>
 	<display:column property="region" sortable="true" titleKey="dwc.region"/>    
 	<display:column property="earliestDateCollected" sortable="true" titleKey="dwc.earliestDateCollected" />    

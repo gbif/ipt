@@ -30,33 +30,28 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	}
 
 	public String upload(){
-		if (resource_id != null){
-			// run task in different thread
-			cacheManager.runUpload(resource_id, getCurrentUser().getId());			
-	        saveMessage(getText("upload.added"));
-		}
+		assert(resource_id != null);
+		// run task in different thread
+		cacheManager.runUpload(resource_id, getCurrentUser().getId());			
+        saveMessage(getText("upload.added"));
 		return SUCCESS;
 	}
 	public String cancel(){
-		if (resource_id != null){
-			cacheManager.cancelUpload(resource_id);
-	        saveMessage(getText("upload.cancelled"));
-		}
+		assert(resource_id != null);
+		cacheManager.cancelUpload(resource_id);
+        saveMessage(getText("upload.cancelled"));
 		return SUCCESS;
 	}
 	public String process(){
-		if (resource_id != null){
-			status = cacheManager.getUploadStatus(resource_id);
-	        saveMessage(getText("upload.processed"));
-			return SUCCESS;
-		}
-		return ERROR;
+		assert(resource_id != null);
+		status = cacheManager.getUploadStatus(resource_id);
+        saveMessage(getText("upload.processed"));
+		return SUCCESS;
 	}
 	public String status(){
-		if (resource_id != null){
-			occResource = occResourceManager.get(resource_id);
-			status = cacheManager.getUploadStatus(resource_id);
-		}
+		assert(resource_id != null);
+		occResource = occResourceManager.get(resource_id);
+		status = cacheManager.getUploadStatus(resource_id);
 		if (busy){
 			return BUSY;
 		}else{
@@ -64,18 +59,15 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 		}
 	}
 	public String clear(){
-		if (resource_id != null){
-			cacheManager.clearCache(resource_id);
-	        saveMessage(getText("upload.cleared"));
-			return SUCCESS;
-		}
-		return ERROR;
+		assert(resource_id != null);
+		cacheManager.clearCache(resource_id);
+        saveMessage(getText("upload.cleared"));
+		return SUCCESS;
 	}
 
 	public String history(){
-		if (resource_id != null){
-			uploadEvents = uploadEventManager.getUploadEventsByResource(resource_id);
-		}
+		assert(resource_id != null);
+		uploadEvents = uploadEventManager.getUploadEventsByResource(resource_id);
 		return SUCCESS;
 	}
 
