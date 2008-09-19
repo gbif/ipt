@@ -48,11 +48,16 @@ public class GChartBuilder {
 	private static final int[] BAR_SIZES = {1,2,5,10,25,50,100,200,500,1000};
 	
 	  
-	public static String generatePiaChartUrl(int width, int height, List<StatsCount> data, Long totalRecords){
-		return generatePieChartUrl(width, height, null, data, totalRecords);
+	public static String generatePiaChartUrl(int width, int height, List<StatsCount> data){
+		return generatePieChartUrl(width, height, null, data);
 	}
 
-	public static String generatePieChartUrl(int width, int height, String title, List<StatsCount> data, Long totalRecords){
+	public static String generatePieChartUrl(int width, int height, String title, List<StatsCount> data){
+		Long totalRecords = 0l;
+		for (StatsCount stat : data){
+			totalRecords += stat.getCount();
+		}
+
 		LinkedList<Color> colors = new LinkedList<Color>(COLORS);
 		List<Slice> slices = new ArrayList<Slice>();
 		for (StatsCount stat: data){

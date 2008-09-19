@@ -7,6 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
+import org.apache.struts2.util.ServletContextAware;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
@@ -40,7 +43,8 @@ public class DataAction extends BaseOccurrenceResourceAction {
     		try {
 				inputStream = new FileInputStream(logo);
 			} catch (FileNotFoundException e) {
-				inputStream = new FileInputStream(new File(cfg.getWebappDir(), DEFAULT_LOGO));
+				logo = cfg.getWebappFile(DEFAULT_LOGO);
+				inputStream = new FileInputStream(logo);
 			}
     		return SUCCESS;
     	}
@@ -50,5 +54,5 @@ public class DataAction extends BaseOccurrenceResourceAction {
 	public InputStream getInputStream(){
 		return inputStream;
 	}
-    
+   
 }

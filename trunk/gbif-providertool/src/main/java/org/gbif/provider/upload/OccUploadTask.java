@@ -32,12 +32,14 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.service.impl.CacheManagerImpl;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,8 @@ import org.springframework.transaction.annotation.Transactional;
 		private AtomicInteger currentErroneous;
 
 		
+		@Autowired
+		private CacheManager cacheManager;
 		@Autowired
 		private DarwinCoreManager darwinCoreManager;
 		@Autowired
@@ -136,10 +140,17 @@ import org.springframework.transaction.annotation.Transactional;
 		
 
 		public void prepare() {
-			// flag all previously existing records as deleted before updating/inserting new ones
-			darwinCoreManager.flagAllAsDeleted(getResource());
-			occStatManager.removeAll(getResource());
-			
+			// remove all previous upload artifacts
+			cacheManager.clearCache(getResourceId());
+			// clear taxa
+			taxonomyBuilder.init(getResource(), getUserId());
+			taxonomyBuilder.prepare();
+			// clear regions
+			geographyBuilder.init(getResource(), getUserId());
+			geographyBuilder.prepare();
+
+
+			// prepare this instance
 			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
 			
@@ -163,18 +174,6 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setJobSourceType(SOURCE_TYPE_ID);
 			event.setExecutionDate(new Date());
 			event.setResource(getResource());
-							
-			// clear taxa
-			taxonomyBuilder.init(getResource(), getUserId());
-			taxonomyBuilder.prepare();
-			// clear regions
-			geographyBuilder.init(getResource(), getUserId());
-			geographyBuilder.prepare();
-			
-			// TODO: need to remove old uploaded source and generated dump files first? I guess they will be overwritten
-			// clear resource stats
-			getResource().resetStats();
-			occResourceManager.save(getResource());
 		}
 		
 		

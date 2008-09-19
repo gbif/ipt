@@ -16,15 +16,21 @@
 
 package org.gbif.provider.webapp.action.portal;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
+import org.gbif.provider.model.voc.ImageType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.service.ImageCacheManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.googlecode.gchartjava.GeographicalArea;
 import com.opensymphony.xwork2.Preparable;
@@ -38,6 +44,9 @@ import com.opensymphony.xwork2.Preparable;
  *
  */
 public class OccResourceStatsAction extends BaseOccurrenceResourceAction implements Preparable {
+	@Autowired
+	private ImageCacheManager imageCacheManager;
+	
 	public static int DEFAULT_WIDTH = 320;
 	public static int DEFAULT_HEIGHT = 160;
 	public static int ZOOM_CHART_WIDTH = 700;
@@ -57,11 +66,11 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	// use zoom size instead of default?
 	private boolean zoom = false;
 	// subtype of what to select. eg rank (family) or regionClass (continent)
-	private int type = 0;
+	private int type;
 	// list of all avilable types as Enums
 	public List types;
 	// map focus
-	private String area = GeographicalArea.WORLD.toString();
+	private String area;
 	public String chartUrl;
 	// the last part of the action name as matched with the struts.xml expression. Used to link further
 	public String action="";
@@ -75,42 +84,60 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 		}
 	}
 
+	
+	
 	public String statsByRegion() {
 		recordAction="occRegion";
-		RegionType reg = RegionType.getByInt(type);
 		types = RegionType.DARWIN_CORE_REGIONS;
-		data = occResourceManager.occByRegion(resource_id, reg, filter);
-		chartUrl = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
+		if (!useCachedImage(ImageType.ChartByRegion)){
+			RegionType reg = RegionType.getByInt(type);
+			data = occResourceManager.occByRegion(resource_id, reg, filter);
+			String url = occResourceManager.occByRegionPieUrl(data, reg, width, height, title);
+			cacheImage(ImageType.ChartByRegion, url);
+		}
 		return PIE_RESULT;
 	}
 
 	public String statsByTaxon() {
 		recordAction="occTaxon";
-		Rank rnk = Rank.getByInt(type);
 		types = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
 		types.add(Rank.TerminalTaxon);
-		data = occResourceManager.occByTaxon(resource_id, rnk);
-		chartUrl = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
+		if (!useCachedImage(ImageType.ChartByTaxon)){
+			Rank rnk = Rank.getByInt(type);
+			data = occResourceManager.occByTaxon(resource_id, rnk);
+			String url = occResourceManager.occByTaxonPieUrl(data, rnk, width, height, title);
+			cacheImage(ImageType.ChartByTaxon, url);
+		}
 		return PIE_RESULT;
 	}
 	
 	public String statsByHost() {
-		HostType ht = HostType.getByInt(type);
 		types = HostType.HOSTING_BODIES;
-		data = occResourceManager.occByHost(resource_id, ht);
-		chartUrl = occResourceManager.occByHostPieUrl(data, ht, width, height, title);
+		if (!useCachedImage(ImageType.ChartByHost)){
+			HostType ht = HostType.getByInt(type);
+			data = occResourceManager.occByHost(resource_id, ht);
+			String url = occResourceManager.occByHostPieUrl(data, ht, width, height, title);
+			cacheImage(ImageType.ChartByHost, url);
+		}
 		return PIE_RESULT;
 	}
 
 	public String statsByBasisOfRecord() {
-		data = occResourceManager.occByBasisOfRecord(resource_id);
-		chartUrl = occResourceManager.occByBasisOfRecordPieUrl(data, width, height, title);
+		if (!useCachedImage(ImageType.ChartByBasisOfRecord)){
+			data = occResourceManager.occByBasisOfRecord(resource_id);
+			String url = occResourceManager.occByBasisOfRecordPieUrl(data, width, height, title);
+			cacheImage(ImageType.ChartByBasisOfRecord, url);
+		}
 		return PIE_RESULT;
 	}
 
+
 	public String statsByDateColected() {
-		data = occResourceManager.occByDateColected(resource_id);
-		chartUrl = occResourceManager.occByDateColectedUrl(data, width, height, title);
+		if (!useCachedImage(ImageType.ChartByDateCollected)){
+			data = occResourceManager.occByDateColected(resource_id);
+			String url = occResourceManager.occByDateColectedUrl(data, width, height, title);
+			cacheImage(ImageType.ChartByDateCollected, url);
+		}
 		return CHART_RESULT;
 	}
 	
@@ -120,24 +147,53 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public String statsByCountry() {
 		recordAction="occRegion";
 		setMapSize();
-		data = occResourceManager.occByRegion(resource_id, RegionType.Country, filter);
-		chartUrl = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+		if (!useCachedImage(ImageType.CountryMapOfOccurrence)){
+			data = occResourceManager.occByRegion(resource_id, RegionType.Country, filter);
+			String url = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+			cacheImage(ImageType.CountryMapOfOccurrence, url);
+		}
 		return MAP_RESULT;
 	}	
 	public String statsByTaxaPerCountry() {
 		setMapSize();
-		data = occResourceManager.taxaByRegion(resource_id, RegionType.Country);
-		chartUrl = occResourceManager.taxaByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+		if (!useCachedImage(ImageType.CountryMapOfTaxa)){
+			data = occResourceManager.taxaByRegion(resource_id, RegionType.Country);
+			String url = occResourceManager.taxaByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+			cacheImage(ImageType.CountryMapOfTaxa, url);
+		}
 		return MAP_RESULT;
 	}	
 
+	
+	
+	// HELPER
 	private void setMapSize(){
+		area = GeographicalArea.WORLD.toString();
 		if (zoom) {
 			width=ZOOM_MAP_WIDTH;
 			height=ZOOM_MAP_HEIGHT;
 		}
 	}
 
+	private boolean useCachedImage(ImageType type) {
+		File chartCache = getCachedImage(type);
+		if (!zoom && chartCache.exists()){
+			chartUrl = getCachedImageURL(type).toString();
+			return true;
+		}else{
+			return false;
+		}
+	}
+	private File getCachedImage(ImageType chartType){
+		return imageCacheManager.getCachedImage(resource_id, chartType, type, area, width, height);		
+	}
+	private URL getCachedImageURL(ImageType chartType){
+		return imageCacheManager.getCachedImageURL(resource_id, chartType, type, area, width, height);
+	}
+	private String cacheImage(ImageType chartType, String url){
+		chartUrl = cfg.getResourceCacheUrl(resource_id, imageCacheManager.cacheImage(resource_id, chartType, type, area, width, height,  url)).toString();
+		return chartUrl;
+	}	
 	
 	
 	//

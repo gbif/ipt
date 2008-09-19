@@ -6,7 +6,7 @@
 	var taxJustOpened = 1;
 	
 	taxtree=new dhtmlXTreeObject($('taxonTreeBox'),"100%","100%",0);
-	taxtree.setImagePath("/scripts/dhtmlxtree/imgs/");
+	taxtree.setImagePath("<c:url value='/scripts/dhtmlxtree/imgs/'/>");
 	taxtree.enableCheckBoxes(false);
 	taxtree.enableDragAndDrop(false);
 	taxtree.enableTreeImages(false);
@@ -14,8 +14,8 @@
 	taxtree.enableTreeLines(true);
 	taxtree.attachEvent("onClick",onTaxNodeSelect); //set function object to call on node select
 	taxtree.attachEvent("onOpenStart",onTaxNodeOpen); // onOpenStart 
-	taxtree.setXMLAutoLoading("/ajax/taxonTreeNodes.html?resource_id=<s:property value="resource_id"/>");
-	taxtree.loadXML("/ajax/taxonTreeNodes.html?resource_id=<s:property value="resource_id"/>"); //load root level from xml
+	taxtree.setXMLAutoLoading("<c:url value='/ajax/taxonTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>");
+	taxtree.loadXML("<c:url value='/ajax/taxonTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>"); //load root level from xml
 	
 	function onTaxNodeSelect(nodeId){
 		if (taxJustOpened>0){
@@ -24,7 +24,7 @@
 		}else{
 			// only open terminal nodes
 			if (taxtree.hasChildren(nodeId)<1){
-				var taxonUrl = '/occTaxon.html?resource_id='+resourceId+'&id='+nodeId;
+				var taxonUrl = '<c:url value="/occTaxon.html"/>?resource_id='+resourceId+'&id='+nodeId;
 				window.location.href=taxonUrl;
 			}
 		}

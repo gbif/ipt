@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 public class ProviderCfg {
 	private Long id;
 	private ResourceMetadata meta = new ResourceMetadata();
-	private String descriptionImage;
+	private String descriptionImage = "images/provider-description.jpg";
 	private String baseUrl = "http://localhost:8080";
 	private String geoserverUrl = "http://localhost:8080/geoserver";
 	private String dataDir = "/tmp/gbif/ipt";

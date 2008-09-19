@@ -4,6 +4,9 @@
 <s:url id="resourceLink" action="resource" includeParams="none">
 	<s:param name="resource_id" value="resource_id" />
 </s:url>
+<s:url id="resourcePortal" action="resource" namespace="/" includeParams="none">
+	<s:param name="resource_id" value="resource_id" />
+</s:url>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <%@ include file="/common/meta.jsp" %>
@@ -29,7 +32,7 @@
             </div><!-- end main -->
 
             <div id="sub">
-                <s:a href="%{resourceLink}">
+                <s:a href="%{resourcePortal}">
                 	<h1 id="resourceName">${currentResourceTitle}</h1>
                 </s:a>
 

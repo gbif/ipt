@@ -56,14 +56,23 @@ public interface CacheManager {
 	void runPostProcess(Long resourceId, Long userId);
 	
 	/**
-	 * Clear all cached upload artifacts as if the resource has just been newly created, i.e all data apart from the resource metadata itself: 
-	 * core+extension records, taxa, regions, uploadEvents, problemLogs, plus reset all cached stats in the resource entity itself
-	 * Be very careful when using this method as it removes most resource data. 
-	 * When preparing a new upload this method should *not* be used as it also removes the upload history and all core records as opposed to just flag them for deletion.
-	 * Upload tasks need therefore to implement their own cache clearing methods.
+	 * Clear all cached upload artifacts but leaves data which is supposed to last between multiple uploads, i.e uploadEvents and darwin core records.
+	 * Flags all darwin core records as deleted though. 
+	 * When preparing a new upload this method should be used to clean up old upload artifacts. 
 	 * @param resource
 	 */	
 	void clearCache(Long resourceId);
+
+	/**
+	 * Clear all cached upload artifacts and resource data apart from the resource metadata itself. 
+	 * I.e. the resource will be in a state afterwards just as if it has just been newly created.
+	 *  
+	 * Be very careful when using this method as it removes all resource data! 
+	 * When preparing a new upload this method should *not* be used as it also removes the upload history and all core records as opposed to just flag them for deletion.
+	 * Use clearCache instead.
+	 * @param resource
+	 */	
+	void resetResource(Long resourceId);
 	
 	/**
 	 * Go through all resources and run an upload job in case the resource schedule interval indicates so

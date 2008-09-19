@@ -6,8 +6,8 @@
     <groupId>org.gbif.provider</groupId>
     <artifactId>providertool</artifactId>
     <packaging>war</packaging>
-    <version>0.3</version>
-    <!--version>1.0-SNAPSHOT</version-->
+    <!--version>0.4</version-->
+    <version>1.0-SNAPSHOT</version>
     <name>GBIF Provider Software</name>
     <url>http://www.gbif.org</url>
 
@@ -215,7 +215,7 @@
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>6.1.9</version>
                 <configuration>
-		    <port>80</port>
+		            <port>80</port>
                     <contextPath>/</contextPath>
                     <scanIntervalSeconds>3</scanIntervalSeconds>
                     <scanTargetPatterns>
@@ -326,6 +326,15 @@
             <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
+            </testResource>
+            <!-- Allow tests to read/write to fake webapps directory -->
+            <testResource>
+                <directory>src/main/webapp</directory>
+                <targetPath>webapp</targetPath>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>WEB-INF/**/*</exclude>
+                </excludes>
             </testResource>
             <testResource>
                 <directory>src/main/webapp/WEB-INF</directory>
@@ -640,7 +649,6 @@
                 <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
                 <jdbc.username>providertool</jdbc.username>
                 <jdbc.password>w32wfun</jdbc.password>
-                <h8search.indexBase>${java.io.tmpdir}/lucene/providertool</h8search.indexBase>
             </properties>
             <build>
                 <plugins>
@@ -706,9 +714,6 @@
         <servlet.version>2.4</servlet.version>
         <wiser.version>1.2</wiser.version>
 
-        <!-- WebTest dependency versions  -->
-        <webtest.version>R_1702</webtest.version>
-
         <!-- Cargo settings -->
         <cargo.container>tomcat5x</cargo.container>
         <cargo.container.home>${env.CATALINA_HOME}</cargo.container.home>
@@ -726,16 +731,11 @@
         <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
         <jdbc.version>5.0.5</jdbc.version>
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-        <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool_test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
+        <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool_test?useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
         <jdbc.username>providertool</jdbc.username>
         <jdbc.password>w32wfun</jdbc.password>
         
-        <!-- Hibernate search -->
-        <h8search.indexBase>${java.io.tmpdir}/lucene/providertool_test</h8search.indexBase>
-        <!--  
-            org.hibernate.cfg.DefaultComponentSafeNamingStrategy
-            org.hibernate.cfg.ImprovedNamingStrategy
-        -->
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
+        <context.webapp>${project.build.directory}/webapp</context.webapp>        
     </properties>
 </project>
