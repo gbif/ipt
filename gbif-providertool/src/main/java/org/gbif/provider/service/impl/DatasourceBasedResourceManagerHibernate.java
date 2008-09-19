@@ -52,18 +52,10 @@ public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedRe
 	@Override
 	public void remove(Long id) {
 		// first remove all associated core records, taxa and regions
-		cacheManager.clearCache(id);
+		cacheManager.resetResource(id);
 		// update registry
 		if (registry.containsKey(id)){
 			registry.removeDatasource(id);
-		}
-		// remove data dir
-		File dataDir = cfg.getResourceDataDir(id);
-		try {
-			FileUtils.deleteDirectory(dataDir);
-			log.info("Removed occurrence data dir "+dataDir.getAbsolutePath());
-		} catch (IOException e) {
-			log.error("Cant remove data dir for resource "+id, e);
 		}
 		// remove resource entity
 		super.remove(id);

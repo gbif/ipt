@@ -1,6 +1,0 @@
-# Select subtaxonomy
-select t.id, t.parent_fk, t.dwc_rank, t.fullname, t.lft,t.rgt from taxon t, taxon x where t.lft >=x.lft and t.rgt <= x.rgt and x.fullname like 'Festuca' order by lft;
-
-# select region hierarchy
-select t.id, t.parent_fk, t.rank, t.label, t.lft,t.rgt from region t, region x where t.lft >=x.lft and t.rgt <= x.rgt and x.label like 'Karaman' order by lft;
-

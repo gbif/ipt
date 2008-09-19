@@ -80,6 +80,8 @@
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     
+    <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
+    
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
         <constructor-arg ref="extensionManager"/>
     </bean>

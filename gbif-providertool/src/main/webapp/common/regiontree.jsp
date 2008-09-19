@@ -6,7 +6,7 @@
 	var regionJustOpened = 1;
 	
 	regiontree=new dhtmlXTreeObject($('regionTreeBox'),"100%","100%",0);
-	regiontree.setImagePath("/scripts/dhtmlxtree/imgs/");
+	regiontree.setImagePath("<c:url value='/scripts/dhtmlxtree/imgs/'/>");
 	regiontree.enableCheckBoxes(false);
 	regiontree.enableDragAndDrop(false);
 	regiontree.enableTreeImages(false);
@@ -14,8 +14,8 @@
 	regiontree.enableTreeLines(true);
 	regiontree.attachEvent("onClick",onRegionNodeSelect); //set function object to call on node select
 	regiontree.attachEvent("onOpenStart",onRegionNodeOpen); // onOpenStart 
-	regiontree.setXMLAutoLoading("/ajax/regionTreeNodes.html?resource_id=<s:property value="resource_id"/>");
-	regiontree.loadXML("/ajax/regionTreeNodes.html?resource_id=<s:property value="resource_id"/>"); //load root level from xml
+	regiontree.setXMLAutoLoading("<c:url value='/ajax/regionTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>");
+	regiontree.loadXML("<c:url value='/ajax/regionTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>"); //load root level from xml
 	
 	function onRegionNodeSelect(nodeId){
 		if (regionJustOpened>0){
@@ -24,7 +24,7 @@
 		}else{					
 			// only open terminal nodes
 			if (taxtree.hasChildren(nodeId)<1){
-				var regionUrl = '/occRegion.html?resource_id='+resourceId+'&id='+nodeId;;
+				var regionUrl = '<c:url value="/occRegion.html"/>?resource_id='+resourceId+'&id='+nodeId;;
 				window.location.href=regionUrl
 			}
 		}

@@ -43,14 +43,6 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	public OccResourceManagerHibernate() {
 		super(OccurrenceResource.class);
 	}
-
-	private Long sumData(List<StatsCount> data){
-		Long sum = 0l;
-		for (StatsCount stat : data){
-			sum += stat.getCount();
-		}
-		return sum;
-	}
 	
 	private List<StatsCount> getDataMap(List<Object[]> occBySth){
 		List<StatsCount> data = new ArrayList<StatsCount>();
@@ -64,7 +56,11 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
         	}else{
             	id = (Long) row[0];
             	value = row[1];
-            	count = (Long) row[2];
+            	try{
+                	count = (Long) row[2];
+            	} catch (ClassCastException e){
+            		count = Long.valueOf(row[2].toString());
+            	}
         	}
         	String label = null;
         	if (value!=null){
@@ -124,7 +120,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		}
         // get chart string
 		data=limitDataForChart(data);
-		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
+		return gpb.generatePieChartUrl(width, height, titleText, data);
 	}
 
 	
@@ -201,7 +197,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		}
         // get chart string
 		data=limitDataForChart(data);
-		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
+		return gpb.generatePieChartUrl(width, height, titleText, data);
 	}
 	
 	
@@ -254,7 +250,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		}
         // get chart string
 		data=limitDataForChart(data);
-		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
+		return gpb.generatePieChartUrl(width, height, titleText, data);
 	}
 	
 	
@@ -264,7 +260,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		List<Object[]> occBySth;
 		if (rank== null || rank.equals(Rank.TerminalTaxon)){
 			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.fullname, t.occTotal   from Taxon t   where t.resource.id=:resourceId");		
 	        occBySth = getSession().createQuery(hql)
 	        	.setParameter("resourceId", resourceId)
 	        	.list();
@@ -290,7 +286,7 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		}
         // get chart string
 		data=limitDataForChart(data);
-		return gpb.generatePieChartUrl(width, height, titleText, data, sumData(data));
+		return gpb.generatePieChartUrl(width, height, titleText, data);
 	}
 
 }

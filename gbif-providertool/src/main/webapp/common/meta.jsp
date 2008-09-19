@@ -23,8 +23,8 @@
 	        <c:if test='${resource_id != null}'>
 				<link href="/data/${resource_id}/rss.xml" rel="alternate" type="application/rss+xml" title="${currentResourceTitle} RSS Feed" />
 			</c:if>
-			<link rel="STYLESHEET" type="text/css" href="/scripts/dhtmlxtree/dhtmlxtree.css">
-			<script  src="/scripts/dhtmlxtree/dhtmlxcommon.js"></script>
-			<script  src="/scripts/dhtmlxtree/dhtmlxtree.js"></script>
+			<link rel="STYLESHEET" type="text/css" href="<c:url value='/scripts/dhtmlxtree/dhtmlxtree.css'/>">
+			<script  src="<c:url value='/scripts/dhtmlxtree/dhtmlxcommon.js'/>"></script>
+			<script  src="<c:url value='/scripts/dhtmlxtree/dhtmlxtree.js'/>"></script>
           </c:when>        
 	    </c:choose>        

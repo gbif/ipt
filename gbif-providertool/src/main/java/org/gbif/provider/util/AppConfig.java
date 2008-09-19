@@ -2,25 +2,37 @@ package org.gbif.provider.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.util.ServletContextAware;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ProviderCfg;
 import org.gbif.provider.service.ProviderCfgManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.web.context.support.ServletContextResourceLoader;
 
-public class AppConfig {
+public class AppConfig implements ServletContextAware, org.springframework.web.context.ServletContextAware{
 	protected final Log log = LogFactory.getLog(AppConfig.class);
 	private ProviderCfgManager providerCfgManager;
 	private ProviderCfg cfg;
+	@Autowired
+	private ServletContext context;
 	
 	
 	private AppConfig(ProviderCfgManager providerCfgManager) {
 		super();
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
-		// assure directories exist 
+		// assure directories exist
 		setDataDir(cfg.getDataDir());
 	}
 
@@ -30,11 +42,50 @@ public class AppConfig {
 	
 	// WEBAPP BASICS
 	public File getWebappDir() {
-		File dir = new File("/Users/markus/workspace/gbif-providertool/target/work/webapp");
+		File dir = new File(context.getRealPath("/"));
 		return dir;
 	}
+	public File getWebappFile(String relPath){
+		File f = new File(context.getRealPath(relPath));
+		return f;
+	}
+	public URL getWebappURL(String relPath) {
+		if (relPath.startsWith("/")) {
+			relPath = relPath.substring(1);
+		}
+		String url = String.format("%s/%s",this.getBaseUrl(), relPath);
+		try {
+			return new URL(url);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	
 	// RESOURCE BASICS
+	public File getResourceCacheDir(Long resourceId) {
+		File dir = new File(getWebappDir(), resourceId.toString());
+	    if (!dir.exists()) {
+	        dir.mkdirs();
+	    }
+		return dir;
+	}
+	public File getResourceCacheFile(Long resourceId, String relPath) {
+		if (relPath.startsWith("/")) {
+			relPath = relPath.substring(1);
+		}
+		File f = new File(getResourceCacheDir(resourceId), relPath);
+		return f;
+	}
+	public URL getResourceCacheUrl(Long resourceId, String relPath) {
+		if (relPath.startsWith("/")) {
+			relPath = relPath.substring(1);
+		}
+		URL url = getWebappURL(String.format("%s/%s",resourceId, relPath));
+		return url;
+	}
+	
 	public File getResourceDataDir(Long resourceId) {
 		File dir = new File(getDataDir(), resourceId.toString());
 	    if (!dir.exists()) {
@@ -209,6 +260,13 @@ public class AppConfig {
 			url = (String) url.subSequence(0, url.length()-1);
 		}
 		return url;
-	}	
-	
+	}
+
+
+
+	public void setServletContext(ServletContext context) {
+		this.context=context;
+		log.info("Configured new CONTEXT: "+context.toString());
+	}
+
 }

@@ -29,17 +29,13 @@ public class GChartBuilderTest {
 		data.add(new StatsCount("Freerk", 891l));
 		data.add(new StatsCount("Fritz", 2122l));
 		data.add(new StatsCount("Bernd", 1422l));
-		Long totalRecords = 0l;
-		for (StatsCount val : data){
-			totalRecords += val.getCount();
-		}
 		String expectedString = "http://chart.apis.google.com/chart?cht=p&chs=320x160&chl=Harald|Stefan|Freerk|Fritz|Bernd&chts=000000,16&chco=76A4FB,D7E9F5,18427D,80C65A,CA3D05&chd=e:LhApKPYUQA&chtt=Phonecalls+per+Friend";
-		String result = gb.generatePieChartUrl(320, 160, "Phonecalls per Friend", data, totalRecords);
+		String result = gb.generatePieChartUrl(320, 160, "Phonecalls per Friend", data);
 //		System.out.println(result);
         assertEquals(expectedString, result);
         
 		expectedString = "http://chart.apis.google.com/chart?cht=p&chs=320x160&chl=Harald|Stefan|Freerk|Fritz|Bernd&chts=000000,16&chco=76A4FB,D7E9F5,18427D,80C65A,CA3D05&chd=e:LhApKPYUQA";
-		result = gb.generatePiaChartUrl(320, 160, data, totalRecords);
+		result = gb.generatePiaChartUrl(320, 160, data);
 //		System.out.println(result);
         assertEquals(expectedString, result);
 	}

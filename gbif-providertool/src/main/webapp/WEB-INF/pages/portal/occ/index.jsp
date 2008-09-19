@@ -127,12 +127,12 @@
 <div id="loc-pie" class="stats chart">
 	<label><s:text name="stats.occByRegion"/></label>
 	<s:form id="regionClassForm">
-		<s:select id="regionClass" name="region" list="regionClasses" value="3" theme="simple"/>
+		<s:select id="regionClass" name="region" list="regionClasses" value="4" theme="simple"/>
 	</s:form>
 	<s:url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax" includeParams="get"/>
 	<div id="imgByRegion">
 		<s:action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true">
-			<s:param name="type" value="3"/>
+			<s:param name="type" value="4"/>
 		</s:action>
 	</div>
 </div>

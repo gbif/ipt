@@ -1,6 +1,7 @@
 package org.gbif.provider.service.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -93,19 +95,46 @@ public class CacheManagerImpl implements CacheManager{
 	@Transactional(readOnly=false)
 	public void clearCache(Long resourceId) {
 		OccurrenceResource res = occResourceManager.get(resourceId);
+		// flag all old records as deleted, but dont remove them from the cache
+		darwinCoreManager.flagAllAsDeleted(res);
 		// update resource stats
 		res.resetStats();
 		occResourceManager.save(res);
+		
 		// remove core record related upload artifacts like taxa & regions
 		taxonManager.removeAll(res);
 		regionManager.removeAll(res);
-		uploadEventManager.removeAll(res);
-		darwinCoreManager.removeAll(res);
 		occStatManager.removeAll(res);
 		logEventManager.removeByGroup(resourceId.intValue());
+
 		// remove generated files
 		File dump = cfg.getDumpArchiveFile(resourceId);
 		dump.delete();
+		
+		// remove cached static files
+		File cacheDir = cfg.getResourceCacheDir(resourceId);
+		try {
+			FileUtils.deleteDirectory(cacheDir);
+		} catch (IOException e) {
+			log.error("Couldn't remove existing resource cache at "+cacheDir.getAbsolutePath(), e);
+			e.printStackTrace();
+		}
+	}
+
+	@Transactional(readOnly=false)
+	public void resetResource(Long resourceId) {
+		clearCache(resourceId);
+		OccurrenceResource res = occResourceManager.get(resourceId);
+		uploadEventManager.removeAll(res);
+		darwinCoreManager.removeAll(res);
+		// remove data dir
+		File dataDir = cfg.getResourceDataDir(resourceId);
+		try {
+			FileUtils.deleteDirectory(dataDir);
+			log.info("Removed resource data dir "+dataDir.getAbsolutePath());
+		} catch (IOException e) {
+			log.error("Cant remove data dir for resource "+resourceId, e);
+		}
 	}
 
 	public Set<Long> currentUploads() {

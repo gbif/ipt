@@ -60,7 +60,7 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	}
 	public String clear(){
 		assert(resource_id != null);
-		cacheManager.clearCache(resource_id);
+		cacheManager.resetResource(resource_id);
         saveMessage(getText("upload.cleared"));
 		return SUCCESS;
 	}
