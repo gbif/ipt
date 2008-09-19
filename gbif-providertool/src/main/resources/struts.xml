@@ -345,7 +345,7 @@
             <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceOverview.ftl</result>
         </action>
         <action name="addResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
-            <result>/WEB-INF/pages/manage/occ/resourceMetadataForm.jsp</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>
         </action>
         <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
             <result type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>

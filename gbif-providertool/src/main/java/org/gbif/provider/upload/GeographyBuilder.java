@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcRegion;
@@ -58,7 +59,10 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 			darwinCoreManager.save(dwc);
 		}
 		
-		return close();
+		Set<Region> result = close(loadResource());
+		occResourceManager.save(loadResource());
+
+		return result;
 	}
 
 
@@ -104,7 +108,7 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 	
 		
 	@Override
-	protected void setFinalStats() {
+	protected void setFinalStats(OccurrenceResource resource) {
 		// init stats map		
 		Map<RegionType, Integer> stats = new HashMap<RegionType, Integer>();
 		stats.put(null, 0);
@@ -116,15 +120,15 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 			stats.put(dt.getType(), stats.get(dt.getType())+1);
 		}
 		// store stats in resource
-		getResource().setNumCountries(stats.get(RegionType.Country));
-		getResource().setNumRegions(nodes.size());
-		getResource().setNumTerminalRegions(terminalNodes.size());
+		resource.setNumCountries(stats.get(RegionType.Country));
+		resource.setNumRegions(nodes.size());
+		resource.setNumTerminalRegions(terminalNodes.size());
 		// debug only
 		for (RegionType r : RegionType.ALL_REGIONS){
-			log.info(String.format("Found %s %s regions in resource %s", stats.get(r), r, getResourceId()));
+			log.info(String.format("Found %s %s regions in resource %s", stats.get(r), r, resource.getId()));
 		}
 		
-		log.info(String.format("Extracted %s geographic distinct regions from resource %s", nodes.size(), getResourceId()));		
+		log.info(String.format("Extracted %s geographic distinct regions from resource %s", nodes.size(), resource.getId()));
 	}
 
 

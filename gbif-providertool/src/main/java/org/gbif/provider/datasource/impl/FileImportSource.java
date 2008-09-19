@@ -38,6 +38,7 @@ import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.TabFileReader;
 
 /**
@@ -65,14 +66,14 @@ public class FileImportSource implements ImportSource{
     	FileImportSource source = new FileImportSource();
     	// try to setup FileReader
 		try {
-			source.reader = new TabFileReader(view.getSourceFile());
+			source.reader = new TabFileReader(AppConfig.getResourceDataFile(resource.getId(), view.getSourceFile()));
 			Integer i = 0;
 			for (String h : source.reader.getHeader()){
 				source.headerMap.put(h, i);
 				i++;
 			}
 		} catch (Exception e) {
-			throw new ImportSourceException("Cant read source file "+view.getSourceFileLocation(), e);
+			throw new ImportSourceException("Cant read source file "+view.getSourceFile(), e);
 		}
     	//FIXME: clone mappings
     	source.properties = view.getPropertyMappings().values();
@@ -88,7 +89,7 @@ public class FileImportSource implements ImportSource{
     	return source;
     }
     
-	private FileImportSource() {
+	FileImportSource() {
 		// non instantiable class. use above static factory
 	}
 	

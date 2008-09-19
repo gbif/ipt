@@ -24,15 +24,28 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	protected final Log log = LogFactory.getLog(AppConfig.class);
 	private ProviderCfgManager providerCfgManager;
 	private ProviderCfg cfg;
+	// need some static fields to create static methods that can be used outside of spring managed contexts, e.g. for hibernate objects
+	// fields are managed by regular instance setters thanks to singleton
+	private static String baseURL;	
+	private static String dataDIR;	
+	private static ServletContext context;	
+
 	@Autowired
-	private ServletContext context;
-	
-	
+	public void setServletContext(ServletContext ctx) {
+		context=ctx;
+		if (cfg!=null){
+			dataDIR=getDataDir();
+			log.info("Set new application baseDIR: "+dataDIR);
+		}
+		log.info("Configured new CONTEXT: "+context.toString());
+	}
+
+
 	private AppConfig(ProviderCfgManager providerCfgManager) {
 		super();
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
-		// assure directories exist
+		setBaseUrl(cfg.getBaseUrl());
 		setDataDir(cfg.getDataDir());
 	}
 
@@ -41,19 +54,19 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	// OTHER UTILITY METHODS, MOSTLY DEFINING PATHS & URLs
 	
 	// WEBAPP BASICS
-	public File getWebappDir() {
+	public static File getWebappDir() {
 		File dir = new File(context.getRealPath("/"));
 		return dir;
 	}
-	public File getWebappFile(String relPath){
+	public static File getWebappFile(String relPath){
 		File f = new File(context.getRealPath(relPath));
 		return f;
 	}
-	public URL getWebappURL(String relPath) {
+	public static URL getWebappURL(String relPath) {
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
-		String url = String.format("%s/%s",this.getBaseUrl(), relPath);
+		String url = String.format("%s/%s", baseURL, relPath);
 		try {
 			return new URL(url);
 		} catch (MalformedURLException e) {
@@ -64,21 +77,21 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 	
 	// RESOURCE BASICS
-	public File getResourceCacheDir(Long resourceId) {
+	public static File getResourceCacheDir(Long resourceId) {
 		File dir = new File(getWebappDir(), resourceId.toString());
 	    if (!dir.exists()) {
 	        dir.mkdirs();
 	    }
 		return dir;
 	}
-	public File getResourceCacheFile(Long resourceId, String relPath) {
+	public static File getResourceCacheFile(Long resourceId, String relPath) {
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
 		File f = new File(getResourceCacheDir(resourceId), relPath);
 		return f;
 	}
-	public URL getResourceCacheUrl(Long resourceId, String relPath) {
+	public static URL getResourceCacheUrl(Long resourceId, String relPath) {
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
@@ -86,23 +99,33 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		return url;
 	}
 	
-	public File getResourceDataDir(Long resourceId) {
-		File dir = new File(getDataDir(), resourceId.toString());
+	public static File getResourceDataDir(Long resourceId) {
+		if (resourceId==null){
+			throw new NullPointerException("Requires resourceId to find resource data dir");
+		}
+		File dir = new File(dataDIR, resourceId.toString());
 	    if (!dir.exists()) {
 	        dir.mkdirs();
 	    }
 		return dir;
 	}
-	public String getResourceDataUrl(Long resourceId) {
-		return String.format("%s/data/%s", getBaseUrl(), resourceId.toString());
+	public static File getResourceDataFile(Long resourceId, String relPath) {
+		if (relPath.startsWith("/")) {
+			relPath = relPath.substring(1);
+		}
+		File f = new File(getResourceDataDir(resourceId), relPath);
+		return f;
+	}
+	public static String getResourceDataUrl(Long resourceId) {
+		return String.format("%s/data/%s", baseURL, resourceId.toString());
 	}	
 
-	public File getResourceLogoFile(Long resourceId) {
+	public static File getResourceLogoFile(Long resourceId) {
 		File file = new File(getResourceDataDir(resourceId), "logo.jpg");
 		return file;    	
 	}
 
-	public String getResourceLogoUrl(Long resourceId) {
+	public static String getResourceLogoUrl(Long resourceId) {
 		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
 	}
 
@@ -164,7 +187,13 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	}
 
 	public String getDataDir() {
-		return cfg.getDataDir();
+		String dir = cfg.getDataDir();
+		if (dir==null){
+			// use sensible default that tests can access
+			File dataDir = new File(getWebappDir(), "WEB-INF/data");
+			dir = dataDir.getAbsolutePath();
+		}
+		return dir;
 	}
 
 	public String getDescription() {
@@ -193,6 +222,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 	public void setBaseUrl(String baseUrl) {
 		cfg.setBaseUrl(trimUrl(baseUrl));
+		baseURL=getBaseUrl();
 	}
 
 	public void setContactEmail(String contactEmail) {
@@ -204,15 +234,19 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	}
 
 	public void setDataDir(String dataDir) {
-		if (dataDir == null){
-		    throw new NullPointerException();    			
-		}else{
+		if (dataDir != null){
 			File dataDirFile = new File(dataDir);
 			if (!dataDirFile.exists()){
 				dataDirFile.mkdirs();
 				log.info("Created new main data directory at "+dataDir);
 			}
-			cfg.setDataDir(dataDir);
+		}
+		cfg.setDataDir(dataDir);
+		if (context!=null){
+			// can only get dir if context is set. During bean initialisation this might not be the case
+			// therefore also set the static dataDIR in setContext method!
+			dataDIR=getDataDir();
+			log.info("Set new application baseDIR: "+dataDIR);
 		}
 	}
 
@@ -264,9 +298,5 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 
 
-	public void setServletContext(ServletContext context) {
-		this.context=context;
-		log.info("Configured new CONTEXT: "+context.toString());
-	}
 
 }

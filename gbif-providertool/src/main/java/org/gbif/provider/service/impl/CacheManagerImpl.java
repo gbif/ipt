@@ -184,8 +184,7 @@ public class CacheManagerImpl implements CacheManager{
 	public Future runUpload(Long resourceId, Long userId) {
 		// create task
 		Task<UploadEvent> task = newOccUploadTask();
-		OccurrenceResource res = occResourceManager.get(resourceId);
-		task.init(res, userId);
+		task.init(resourceId, userId);
 		// submit
 		return submitUpload(task);
 	}

@@ -3,13 +3,16 @@ package org.gbif.provider.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.gbif.provider.util.ResourceTestBase;
 import org.junit.Test;
 
-public class DarwinCoreTest {
+public class DarwinCoreTest extends ResourceTestBase{
 	
 	@Test
 	public void testDarwinCore() {
-		DarwinCore dwc = DarwinCore.newInstance();
+		OccurrenceResource r = getResourceMock();
+		
+		DarwinCore dwc = DarwinCore.newInstance(r);
 		dwc.setCatalogNumber("befhjsa6788-x");
 		dwc.setScientificName("Abies alba");
 		dwc.setBasisOfRecord("specimen");
@@ -19,7 +22,7 @@ public class DarwinCoreTest {
 		assertTrue(dwc.equals(dwc));
 		assertFalse(dwc.equals(null));
 
-		DarwinCore dwc2 = DarwinCore.newInstance();
+		DarwinCore dwc2 = DarwinCore.newInstance(r);
 		dwc2.setCatalogNumber("befhjsa6788-x");
 		dwc2.setScientificName("Abies alba");
 		dwc2.setBasisOfRecord("specimen");

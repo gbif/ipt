@@ -2,6 +2,19 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<@s.property value="occResource.title"/>"/>
     <meta name="submenu" content="manage"/>
+    
+    <script>
+		function confirmReset() {   
+		    var msg = "Are you sure you want to reset this resource? This will remove all uploaded data and files and clear the entire cache.";
+		    ans = confirm(msg);
+		    if (ans) {
+		        return true;
+		    } else {
+		        return false;
+		    }
+		}
+    </script>
+
 </head>
 
 <#assign placeholder="<br/><br/><br/><br/>">
@@ -126,7 +139,7 @@
 		</@s.form>
 		<@s.form action="clear" method="post">
 		  <@s.hidden key="resource_id"/>
-	      <@s.submit cssClass="button" key="button.clear"/>
+	      <@s.submit cssClass="button" key="button.clear" onclick="return confirmReset()"/>
 		</@s.form>
 		<#-- 
 		<@s.form action="process" method="post">

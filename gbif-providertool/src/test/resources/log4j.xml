@@ -31,7 +31,7 @@
         <level value="WARN"/>
     </logger>
     <logger name="org.hibernate.SQL">
-        <level value="DEBUG"/>
+        <level value="WARN"/>
     </logger>
     <logger name="  org.hibernate.transaction">
         <level value="WARN"/>

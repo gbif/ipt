@@ -145,7 +145,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		view.setSourceFile(targetFile);
+		view.setSourceFileAsFile(targetFile);
 		List<String> headers = datasourceInspectionManager.getHeader(view);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
@@ -153,7 +153,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
 	        viewMappingManager.save(view);
 	        saveMessage(getText("mapping.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
-			view.setSourceFile(null);
+			view.setSourceFileAsFile(null);
 	        viewMappingManager.save(view);
 	        saveMessage(getText("mapping.sourceFileBroken", String.valueOf(headers.size())));
 		}

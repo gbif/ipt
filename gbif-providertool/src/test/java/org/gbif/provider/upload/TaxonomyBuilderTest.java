@@ -56,7 +56,7 @@ public class TaxonomyBuilderTest extends ResourceTestBase {
 	@Test
 	public void testCallable() throws Exception {
 		setup();
-		taxonomyBuilder.init(resource, Constants.TEST_USER_ID);
+		taxonomyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		log.debug("Submit geography builder task to single threaded executor");

@@ -109,7 +109,7 @@ public class RdbmsImportSource implements ImportSource{
     	return newInstance(resource, view, null);
     }
     
-	private RdbmsImportSource() {
+	RdbmsImportSource() {
 		// non instantiable class. use above static factory
 	}
 	

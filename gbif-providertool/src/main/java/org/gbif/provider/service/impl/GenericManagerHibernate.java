@@ -101,6 +101,11 @@ import org.springframework.transaction.annotation.Transactional;
 	    	getSession().saveOrUpdate(object);
 	    	return object;
 	    }
+		@Transactional(readOnly = false)
+		protected BaseObject universalSave(BaseObject obj) {
+	    	getSession().saveOrUpdate(obj);
+	    	return obj;
+		}
 
 	    /**
 	     * {@inheritDoc}
@@ -119,7 +124,11 @@ import org.springframework.transaction.annotation.Transactional;
 		@Transactional(readOnly = false)
 		public void remove(T obj) {
 	    	getSession().delete(obj);
-	    	flush();
+		}
+
+		@Transactional(readOnly = false)
+		protected void universalRemove(BaseObject obj) {
+	    	getSession().delete(obj);
 		}
 
 		

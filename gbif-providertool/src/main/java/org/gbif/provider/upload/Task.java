@@ -24,8 +24,8 @@ public interface Task<T> extends Callable<T>{
 	 * @param resourceId the resource this tasks will work on. Not NULL
 	 * @param userId the user that has submitted this task. Optional, maybe also be null 
 	 */
-	void init(OccurrenceResource resource, Long userId);
+	void init(Long resourceId, Long userId);
 	Long getResourceId();
-	OccurrenceResource getResource();
+	OccurrenceResource loadResource();
 	String status();
 }

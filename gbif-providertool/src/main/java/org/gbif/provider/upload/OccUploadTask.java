@@ -18,6 +18,7 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.impl.FileImportSource;
+import org.gbif.provider.datasource.impl.ImportSourceFactory;
 import org.gbif.provider.datasource.impl.RdbmsImportSource;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.CoreRecord;
@@ -26,6 +27,7 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
@@ -77,6 +79,7 @@ import org.springframework.transaction.annotation.Transactional;
 		private String currentExtension;
 		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
+		private OccurrenceResource resource;
 
 		
 		@Autowired
@@ -113,7 +116,7 @@ import org.springframework.transaction.annotation.Transactional;
 				dumpFiles.add(coreFile);
 				
 				// upload further extensions one by one
-				for (ViewMappingBase vm : getResource().getExtensionMappings()){
+				for (ViewMappingBase vm : resource.getExtensionMappings()){
 					Extension ext = vm.getExtension();
 					// run import into db & dump file
 					try {
@@ -140,13 +143,15 @@ import org.springframework.transaction.annotation.Transactional;
 		
 
 		public void prepare() {
+			resource= loadResource();
+			
 			// remove all previous upload artifacts
 			cacheManager.clearCache(getResourceId());
 			// clear taxa
-			taxonomyBuilder.init(getResource(), getUserId());
+			taxonomyBuilder.init(getResourceId(), getUserId());
 			taxonomyBuilder.prepare();
 			// clear regions
-			geographyBuilder.init(getResource(), getUserId());
+			geographyBuilder.init(getResourceId(), getUserId());
 			geographyBuilder.prepare();
 
 
@@ -173,7 +178,7 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setJobSourceId(this.hashCode());
 			event.setJobSourceType(SOURCE_TYPE_ID);
 			event.setExecutionDate(new Date());
-			event.setResource(getResource());
+			event.setResource(resource);
 		}
 		
 		
@@ -204,7 +209,7 @@ import org.springframework.transaction.annotation.Transactional;
 			}
 			if (!taxMap.containsKey(tax)){
 				stat = new OccStatByRegionAndTaxon();
-				stat.setResource(getResource());
+				stat.setResource(resource);
 				stat.setRegion(reg);
 				stat.setTaxon(tax);
 				stat.setNumOcc(1);
@@ -218,10 +223,11 @@ import org.springframework.transaction.annotation.Transactional;
 		
 		
 		public void close() throws IOException {
-			log.info(String.format("Closing upload for resource %s", getResource().getTitle() ));					
-			taxonomyBuilder.close();
-			geographyBuilder.close();
-			setFinalStats();
+			log.info(String.format("Closing upload for resource %s", getTitle() ));					
+			taxonomyBuilder.close(resource);
+			geographyBuilder.close(resource);
+			addFinalStats(resource);
+			occResourceManager.save(resource);
 			// zip all files into single archive
 			File archive = cfg.getDumpArchiveFile(getResourceId());
 			archive.createNewFile();
@@ -230,20 +236,21 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private void setFinalExtensionStats(Extension ext){
-			ViewMappingBase view = getResource().getExtensionMapping(ext);				
+			ViewMappingBase view = resource.getExtensionMapping(ext);				
 			view.setRecTotal(currentProcessed.get()-currentErroneous.get());
 			viewMappingManager.save(view);
 		}
 
-		private void setFinalStats(){
+		private void addFinalStats(OccurrenceResource resource){
 			// update resource and upload event statistics
-			recordsDeleted = getResource().getRecTotal()+recordsAdded-recordsUploaded;
+			recordsDeleted = resource.getRecTotal()+recordsAdded-recordsUploaded;
 			// store event
+			event.setResource(resource);			
 			event.setRecordsAdded(recordsAdded);
 			event.setRecordsChanged(recordsChanged);
 			event.setRecordsDeleted(recordsDeleted);
 			event.setRecordsUploaded(recordsUploaded);		
-			event.setRecordsErroneous(recordsErroneous);		
+			event.setRecordsErroneous(recordsErroneous);
 			// save upload event
 			event = uploadEventManager.save(event);
 			
@@ -262,14 +269,14 @@ import org.springframework.transaction.annotation.Transactional;
 			log.debug(occStatCount + " occurrence stats by region & taxon inserted");
 			
 			// update resource properties
-			getResource().setLastUpload(event);
-			getResource().setRecTotal(recordsUploaded);
-			getResource().setRecWithCoordinates(recWithCoordinates);
-			getResource().setRecWithCountry(recWithCountry);
-			getResource().setRecWithAltitude(recWithAltitude);
-			getResource().setRecWithDate(recWithDate);
-			getResource().setBbox(bbox);
-			occResourceManager.save(getResource());
+			resource.setLastUpload(event);
+			resource.setRecTotal(recordsUploaded);
+			resource.setRecWithCoordinates(recWithCoordinates);
+			resource.setRecWithCountry(recWithCountry);
+			resource.setRecWithAltitude(recWithAltitude);
+			resource.setRecWithDate(recWithDate);
+			resource.setBbox(bbox);
+			occResourceManager.save(resource);
 			
 			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
 		}
@@ -277,15 +284,15 @@ import org.springframework.transaction.annotation.Transactional;
 		
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
 		private File uploadCore() throws InterruptedException {
-			log.info("Starting upload of DarwinCore for resource "+getResource().getTitle());					
+			log.info("Starting upload of DarwinCore for resource "+ getTitle());					
 			ImportSource source;
 			File out = null;
-			currentExtension = getResource().getCoreMapping().getExtension().getName();
+			currentExtension = resource.getCoreMapping().getExtension().getName();
 			currentProcessed.set(0);
 			currentErroneous.set(0);
 			try {
 				// create new tab file
-				TabFileWriter writer = prepareTabFile(getResource().getCoreMapping());
+				TabFileWriter writer = prepareTabFile(resource.getCoreMapping());
 				out = writer.getFile();
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
 				source = this.getImportSource();
@@ -304,10 +311,10 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
-						 DarwinCore dwc = DarwinCore.newInstance(rec);								
+						 DarwinCore dwc = DarwinCore.newInstance(resource, rec);								
 						 if (dwc == null){
 							currentErroneous.addAndGet(1);
-							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentErroneous.get()), getResource().getTitle()});
+							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentErroneous.get()), getTitle()});
 							continue;
 						 }
 						 try {
@@ -336,7 +343,7 @@ import org.springframework.transaction.annotation.Transactional;
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
 							e.printStackTrace();
-							logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
+							logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getTitle()}, e);
 						}
 						
 						// clear session cache once in a while...
@@ -402,9 +409,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 		private void updateDwcProperties(DarwinCore dwc, DarwinCore oldRecord) {
-			// attach to the occurrence resource
-			dwc.setResource(getResource());
-
 			// assign new GUID if none exists
 			if (dwc.getGuid() == null){
 				// if old version exists already reuse the previously assigned GUID
@@ -422,7 +426,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
 		private File uploadExtension(Extension extension) throws InterruptedException, ImportSourceException, IOException {
-			log.info(String.format("Starting upload of %s extension for resource %s", extension.getName(), getResource().getTitle() ));					
+			log.info(String.format("Starting upload of %s extension for resource %s", extension.getName(), getTitle() ));					
 			File out = null;
 			// keep track of records for each extension and then store the totals in the viewMapping.
 			// once extension is uploaded this counter will be reset by the next extension.
@@ -448,7 +452,7 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 						if (rec == null || rec.getLocalId()==null){
 							currentErroneous.addAndGet(1);
-							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentProcessed.get()), getResource().getTitle()});
+							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentProcessed.get()), getTitle()});
 							continue;
 						}
 						Long coreId = idMap.get(rec.getLocalId());
@@ -486,7 +490,7 @@ import org.springframework.transaction.annotation.Transactional;
 							} catch (Exception e) {
 								e.printStackTrace();
 								currentErroneous.addAndGet(1);
-								logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getResource().getTitle()}, e);
+								logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getTitle()}, e);
 							}
 						}
 					}
@@ -528,9 +532,9 @@ import org.springframework.transaction.annotation.Transactional;
 			header.add(CoreRecord.ID_COLUMN_NAME);
 			header.add(CoreRecord.MODIFIED_COLUMN_NAME);
 			// add only existing mapped concepts
-			ViewMappingBase mapping = getResource().getExtensionMapping(extension);
+			ViewMappingBase mapping = resource.getExtensionMapping(extension);
 			if (mapping == null){
-				throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",getResource().getTitle(), extension.getName()));
+				throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",getTitle(), extension.getName()));
 			}
 			for (ExtensionProperty prop : mapping.getMappedProperties()){
 				header.add(prop.getName());
@@ -547,14 +551,13 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private ImportSource getImportSource(Extension extension) throws ImportSourceException{
-			Long resourceId = getResourceId();
 			ViewMappingBase vm = null;
 			ImportSource source; 
 
 			if (extension == null){
-				vm = getResource().getCoreMapping();				
+				vm = resource.getCoreMapping();				
 			}else{
-				vm = getResource().getExtensionMapping(extension);				
+				vm = resource.getExtensionMapping(extension);				
 			}
 			
 			if (vm == null){
@@ -565,17 +568,9 @@ import org.springframework.transaction.annotation.Transactional;
 					extName="core extension";
 				}
 				throw new ImportSourceException("No mapping exists for "+extName);
-			}
+			}			
 			
-			//decide whether file or rdbm upload and create import source accordingly
-			if (vm.isMappedToFile()){
-				source = FileImportSource.newInstance(getResource(), vm);
-			}else{
-				// create rdbms source & set resource context for DatasourceInterceptor
-				DatasourceContextHolder.setResourceId(resourceId);
-				source = RdbmsImportSource.newInstance(getResource(), vm);
-			}
-
+			source = ImportSourceFactory.newInstance(resource, vm);
 			return source;
 		}
 

@@ -108,11 +108,10 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testByTaxon() {
-		Long tid = 656l;
-		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(tid, Constants.TEST_RESOURCE_ID, false);
+		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(Constants.TEST_TAXON_ID, Constants.TEST_RESOURCE_ID, false);
 		System.out.println(dwcs.size());
 		System.out.println(dwcs);
-		dwcs = darwinCoreManager.getByTaxon(tid, Constants.TEST_RESOURCE_ID, true);
+		dwcs = darwinCoreManager.getByTaxon(Constants.TEST_TAXON_ID, Constants.TEST_RESOURCE_ID, true);
 		System.out.println(dwcs.size());
 		System.out.println(dwcs);
 		//FIXME: add proper taxonId once default data is stable

@@ -8,29 +8,25 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
-public class TabFileReaderTest extends ContextAwareTestBase{
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
+public class TabFileReaderTest extends ContextAwareTestBase{
+	@Autowired
+	private AppConfig cfg;
+	
 	@Test
-	public void testTabFileReader() {
-		Resource r = this.getApplicationContext().getResource("classpath:gbifOccurrenceDownload.txt"); 
-		File f;
-		try {
-			f = r.getFile();
-			TabFileReader reader = new TabFileReader(f);
-			 System.out.println(Arrays.asList(reader.getHeader()));
-			 System.out.println();
-		     for (int i=0; i<25; i++){	    	 
-				 System.out.println(Arrays.asList(reader.next()));
-		     }
-		     reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (MalformedTabFileException e) {
-			e.printStackTrace();
-		}
-		
+	public void testTabFileReader() throws IOException, MalformedTabFileException {
+		File f = new File(cfg.getResourceDataDir(Constants.TEST_RESOURCE_ID), "source-dwcore.txt");
+		TabFileReader reader = new TabFileReader(f);
+		 System.out.println(Arrays.asList(reader.getHeader()));
+		 System.out.println();
+	     for (int i=0; i<25; i++){	    	 
+			 System.out.println(Arrays.asList(reader.next()));
+	     }
+	     reader.close();
 	}
 
 }

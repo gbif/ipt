@@ -1,19 +1,15 @@
 package org.gbif.provider.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityExistsException;
 
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.DarwinCoreExtended;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.DarwinCoreManager;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.id.IdentifierGenerationException;
-import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true)
@@ -78,4 +74,21 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 			.setParameter("resourceId", resourceId);
         return query.list();
 	}
+
+	@Override
+	public int removeAll(Resource resource) {
+		removeAll(resource, DarwinCoreExtended.class);
+		return super.removeAll(resource);
+	}
+
+//	@Override
+//	public void remove(DarwinCore obj) {
+//		DarwinCoreLocation loc = obj.getLoc();
+//		DarwinCoreTaxonomy tax = obj.getTax();
+//		universalRemove(loc);
+//		universalRemove(tax);
+//		super.remove(obj);
+//		
+//	}
+
 }

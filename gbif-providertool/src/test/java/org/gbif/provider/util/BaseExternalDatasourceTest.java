@@ -25,12 +25,12 @@ public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 	 * @throws Exception
 	 */
 	public void setUpExternalDatasource() {
-		DatasourceContextHolder.setResourceId(Constants.TEST_RESOURCE_ID);
-		resource = (DatasourceBasedResource) occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		DatasourceContextHolder.setResourceId(Constants.TEST_DB_RESOURCE_ID);
+		resource = (DatasourceBasedResource) occResourceManager.get(Constants.TEST_DB_RESOURCE_ID);
 		datasourceRegistry.registerDatasource(resource);
 	}
 	
-	public DatasourceBasedResource getTestResource() {
+	public DatasourceBasedResource getTestRdbmsResource() {
 		return resource;
 	}	
 
