@@ -57,24 +57,26 @@ public class GChartBuilder {
 		for (StatsCount stat : data){
 			totalRecords += stat.getCount();
 		}
-
-		LinkedList<Color> colors = new LinkedList<Color>(COLORS);
+		
 		List<Slice> slices = new ArrayList<Slice>();
-		for (StatsCount stat: data){
-			Color c;
-			if (stat.getLabel().equals(OTHER_LABEL)){
-				c = OTHER_COLOR;
-			}else{
-				// rotate through colors
-				c = colors.poll();
-			}
-			colors.add(c);
-			// calculate percentage from total
-			int perc = (int) (100 * stat.getCount() / totalRecords);
-			try {
-				slices.add(new Slice(perc, c, URLEncoder.encode(stat.getLabel(), Constants.ENCODING)));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+		if (totalRecords > 0l){
+			LinkedList<Color> colors = new LinkedList<Color>(COLORS);
+			for (StatsCount stat: data){
+				Color c;
+				if (stat.getLabel().equals(OTHER_LABEL)){
+					c = OTHER_COLOR;
+				}else{
+					// rotate through colors
+					c = colors.poll();
+				}
+				colors.add(c);
+				// calculate percentage from total
+				int perc = (int) (100 * stat.getCount() / totalRecords);
+				try {
+					slices.add(new Slice(perc, c, URLEncoder.encode(stat.getLabel(), Constants.ENCODING)));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -119,15 +121,18 @@ public class GChartBuilder {
 		if (!data.isEmpty()){
 			maxRecords = Collections.min(data).getCount();
 		}
-		for (StatsCount stat : data){
-			// check that ~ISO code exists, i.e. must be 2 characters only!
-			if(stat.getLabel().length()==2){
-				// calculate percentage from total
-				int perc = (int) (100 * stat.getCount() / maxRecords);
-				Country c = new Country(stat.getLabel(), perc);
-				cdata.add(c);
-			}else{
-				log.debug(String.format("Country with invalid ISO code %s ignored",stat.getLabel()));
+		
+		if (maxRecords > 0l){
+			for (StatsCount stat : data){
+				// check that ~ISO code exists, i.e. must be 2 characters only!
+				if(stat.getCount() > 0l && stat.getLabel().length()==2){
+					// calculate percentage from total
+					int perc = (int) (100 * stat.getCount() / maxRecords);
+					Country c = new Country(stat.getLabel(), perc);
+					cdata.add(c);
+				}else{
+					log.debug(String.format("Country with invalid ISO code %s ignored",stat.getLabel()));
+				}
 			}
 		}
 		return cdata;
