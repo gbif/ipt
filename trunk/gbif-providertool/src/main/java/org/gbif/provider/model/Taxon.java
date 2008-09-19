@@ -102,6 +102,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedO
 			this.authorship = authorship;
 		}
 		
+		@org.hibernate.annotations.Index(name="taxon_fullname")
 		public String getFullname() {
 			return getLabel();
 		}

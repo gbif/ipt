@@ -62,7 +62,7 @@ public class SourceFileUploadAction extends BaseAction{
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		mapping.setSourceFile(targetFile);
+		mapping.setSourceFileAsFile(targetFile);
 		List<String> headers = datasourceInspectionManager.getHeader(mapping);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
@@ -70,7 +70,7 @@ public class SourceFileUploadAction extends BaseAction{
 	        viewMappingManager.save(mapping);
 	        saveMessage(getText("mapping.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
-			mapping.setSourceFile(null);
+			mapping.setSourceFileAsFile(null);
 	        viewMappingManager.save(mapping);
 	        saveMessage(getText("mapping.sourceFileBroken", String.valueOf(headers.size())));
 		}

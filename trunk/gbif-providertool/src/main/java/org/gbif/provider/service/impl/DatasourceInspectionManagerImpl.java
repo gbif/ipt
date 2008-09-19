@@ -34,22 +34,27 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.MalformedTabFileException;
 import org.gbif.provider.util.TabFileReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements DatasourceInspectionManager {
 	private static final int PREVIEW_SIZE = 5;
+	@Autowired
+	private AppConfig cfg;
 	
 	public List<List<? extends Object>> getPreview(ViewMappingBase view) throws Exception {
 		if (view == null){
 			throw new NullPointerException();
 		}
+		Long resourceId = view.getResource().getId();
 		
-		if (view.getSourceSql()!=null){
+		if(view.isMappedToFile()){
+			return getPreview(cfg.getResourceDataFile(resourceId, view.getSourceFile()));
+		}else if (view.getSourceSql()!=null){
 			return getPreview(view.getSourceSql());		
-		}else if(view.getSourceFile().exists()){
-			return getPreview(view.getSourceFile());
 		}else{
 			throw new IllegalArgumentException("Neither file nor SQL source configured");
 		}
@@ -58,10 +63,12 @@ public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements D
 		if (view == null){
 			throw new NullPointerException();
 		}
-		if (view.getSourceSql()!=null){
+		Long resourceId = view.getResource().getId();
+
+		if(view.isMappedToFile()){
+			return getHeader(cfg.getResourceDataFile(resourceId, view.getSourceFile()));
+		}else if (view.getSourceSql()!=null){
 			return getHeader(view.getSourceSql());		
-		}else if(view.getSourceFile().exists()){
-			return getHeader(view.getSourceFile());
 		}else{
 			throw new IllegalArgumentException("Neither file nor SQL source configured");
 		}

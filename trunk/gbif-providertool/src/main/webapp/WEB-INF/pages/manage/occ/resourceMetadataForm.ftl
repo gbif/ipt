@@ -5,7 +5,7 @@
 </head>
 
 <@s.form id="occResourceForm" action="saveResource" method="post" validate="true">
-    <@s.hidden name="resource_id" value="${occResource.id}"/>
+    <@s.hidden name="resource_id" value="${(occResource.id)!}"/>
     <@s.textfield key="occResource.title" required="true" cssClass="text xlarge"/>
     <@s.textarea key="occResource.description" cssClass="text xlarge"/>
 

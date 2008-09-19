@@ -44,6 +44,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.MapKey;
 
 /**
@@ -62,7 +63,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	private DatasourceBasedResource resource;
 	private Extension extension;
 	private String sourceSql;
-	private String sourceFileLocation;
+	private String sourceFile;
 	private ColumnMapping coreIdColumn = new ColumnMapping ();
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
 	private int recTotal = 0;
@@ -98,7 +99,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	}
 	public void setSourceSql(String sourceSql) {
 		if (sourceSql != null){
-			this.sourceFileLocation=null;
+			this.sourceFile=null;
 		}
 		this.sourceSql = sourceSql;
 	}
@@ -110,28 +111,21 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		this.recTotal = recTotal;
 	}
 	
-	public String getSourceFileLocation() {
-		return sourceFileLocation;
+	public String getSourceFile() {
+		return sourceFile;
 	}
-	public void setSourceFileLocation(String sourceFileLocation) {
-		if (sourceFileLocation != null){
+	public void setSourceFile(String sourceFile) {
+		if (sourceFile != null){
 			this.sourceSql=null;
 		}
-		this.sourceFileLocation = sourceFileLocation;
+		this.sourceFile = sourceFile;
 	}
-	@Transient
-	public File getSourceFile() {
-		File file = null;
-		if (this.sourceFileLocation != null){
-			file = new File(this.sourceFileLocation);
-		}
-		return file;
-	}	
-	public void setSourceFile(File file) {
+	public void setSourceFileAsFile(File file) {
 		if (file != null){
-			this.sourceSql=null;
+			setSourceFile(file.getName());
+		}else{
+			setSourceFile(null);
 		}
-		this.sourceFileLocation = file.getAbsolutePath();
 	}	
 	/**
 	 * Index of resultset column for the local or global identifier for a core-record. 
@@ -187,7 +181,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	}
 	@Transient
 	public boolean isMappedToFile() {
-		if (StringUtils.isNotBlank(sourceFileLocation)){
+		if (StringUtils.isNotBlank(sourceFile)){
 			return true;
 		}else{
 			return false;
@@ -197,8 +191,8 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	
 	@Transient
 	public boolean hasValidSource() {
-		if (isMappedToFile()){
-			if (getSourceFile().exists()){
+		if (isMappedToFile() && resource != null){
+			if (AppConfig.getResourceDataFile(resource.getId(), sourceFile).exists()){
 				return true;
 			}
 		}else{
@@ -233,7 +227,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
         //result = 31 * result + (resource != null ? resource.hashCode() : 0);
         result = 31 * result + (propertyMappings != null ? propertyMappings.hashCode() : 0);
         result = 31 * result + (sourceSql != null ? sourceSql.hashCode() : 0);
-        result = 31 * result + (sourceFileLocation != null ? sourceFileLocation.hashCode() : 0);
+        result = 31 * result + (sourceFile != null ? sourceFile.hashCode() : 0);
         result = 31 * result + (coreIdColumn != null ? coreIdColumn.hashCode() : 0);
         return result;
 	}
@@ -244,7 +238,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		return new ToStringBuilder(this)
 		.append("id", this.id)
 		.append("sourceSql", this.sourceSql)
-		.append("sourceFileLocation", this.sourceFileLocation)
+		.append("sourceFileLocation", this.sourceFile)
 		.append("coreIdColumn", this.coreIdColumn)
 		.append("extension", this.extension)
 		.toString();

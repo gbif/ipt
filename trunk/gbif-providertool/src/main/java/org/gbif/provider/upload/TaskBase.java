@@ -1,5 +1,6 @@
 package org.gbif.provider.upload;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.MDC;
@@ -19,7 +20,9 @@ public abstract class TaskBase{
 	protected AppConfig cfg;
 	// needs manual setting when task is created
 	private Long userId;
-	private OccurrenceResource resource;
+	private Long resourceId;
+	private String title;
+	
 	@Autowired
 	protected OccResourceManager occResourceManager;
 
@@ -50,29 +53,24 @@ public abstract class TaskBase{
 		return userId;
 	}
 
-	private void setResource(OccurrenceResource resource) {
-		if (resource == null){
-			throw new NullPointerException();
-		}
-		this.resource=resource;
-	}
-
 	public Long getResourceId() {
-		return resource.getId();
+		return resourceId;
 	}
-
-	public OccurrenceResource getResource() {
-		if (resource == null){
-			throw new IllegalStateException("Resource is not yet set for this builder!");
-		}
-		return resource;
+	public OccurrenceResource loadResource() {
+		return occResourceManager.get(resourceId);
 	}
-
 
 	
-	public void init(OccurrenceResource res, Long userId) {
-		setResource(res);
+	public void init(Long resourceId, Long userId) {
+		this.resourceId=resourceId;
 		setUserId(userId);
 	}
-	
+
+	public String getTitle(){
+		if (title==null){
+			// lazy load title
+			title = StringUtils.trimToEmpty(loadResource().getTitle());
+		}
+		return title;
+	}
 }

@@ -28,9 +28,9 @@ public class Constants {
      * The name of the Administrator role, as specified in web.xml
      */
     public static final String MANAGER_ROLE = "ROLE_MANAGER";
-    public static final Long TEST_RESOURCE_ID = 2L;
-    public static final Long TEST_USER_ID = 4L;
-    public static final String TEST_BASE_DIR = "/tmp";
+    public static final Long TEST_DB_RESOURCE_ID = 1L;
+    public static final Long TEST_RESOURCE_ID = 4L;
+    public static final Long TEST_USER_ID = 1L;
     public static final String RECENT_RESOURCES = "recentResources";
     public static final String DEFAULT_LOGO = "images/resource-logo.gif";
     public static final String ENCODING = "UTF-8";    
@@ -38,6 +38,7 @@ public class Constants {
     private static final DateFormat date_iso_format = new SimpleDateFormat("yyyy-MM-dd");
     // 2001-07-04T12:08:56.235-0700
     public static final DateFormat datetime_iso_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+	public static final Long TEST_TAXON_ID = 666l;
     
     public static synchronized DateFormat DATE_ISO_FORMAT(){
     	return date_iso_format;

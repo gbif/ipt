@@ -18,18 +18,23 @@ import org.springframework.transaction.annotation.Transactional;
 	        super(persistentClass);
 	    }
 	    
-		@Transactional(readOnly = false)
 		public int removeAll(Resource resource) {
+			return removeAll(resource, persistentClass);
+		}	
+		
+		@Transactional(readOnly = false)
+		protected int removeAll(Resource resource, Class resourceRelatedClass) {
 			// use DML-style HQL batch updates
 			// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 			Session session = getSession();
-			// now delete region entities
-			String hqlUpdate = String.format("delete %s e WHERE e.resource = :resource", persistentClass.getSimpleName());
+			// now delete resource related entities
+			String hqlUpdate = String.format("delete %s e WHERE e.resource = :resource", resourceRelatedClass.getSimpleName());
 			int count = session.createQuery( hqlUpdate )
 			        .setEntity("resource", resource)
 			        .executeUpdate();
-			log.info(String.format("Removed %s %ss bound to resource %s", count, persistentClass.getSimpleName(), resource.getTitle()));
+			log.info(String.format("Removed %s %ss bound to resource %s", count, resourceRelatedClass.getSimpleName(), resource.getTitle()));
 			return count;
 		}	
+
 	}
 	

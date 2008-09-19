@@ -30,8 +30,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.AssertThrows;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public class GeographyBuilderTest extends ResourceTestBase{
+public class GeographyBuilderTest extends ContextAwareTestBase{
 	@Autowired
 	@Qualifier("geographyBuilder")
 	private RecordPostProcessor<DarwinCore, Set<Region>> geographyBuilder;
@@ -47,9 +49,9 @@ public class GeographyBuilderTest extends ResourceTestBase{
 	}
 
 	@Test
+	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testBuildHierarchy() throws Exception {
-		setup();
-		geographyBuilder.init(resource, Constants.TEST_USER_ID);
+		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		Set<Region> regions = geographyBuilder.call();
 		System.out.println(String.format("%s regions found in test resource", regions.size()));
@@ -58,9 +60,9 @@ public class GeographyBuilderTest extends ResourceTestBase{
 	}
 
 	@Test
+	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testBuildHierarchyCallable() throws Exception {
-		setup();
-		geographyBuilder.init(resource, Constants.TEST_USER_ID);
+		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		log.debug("Submit geography builder task to single threaded executor");

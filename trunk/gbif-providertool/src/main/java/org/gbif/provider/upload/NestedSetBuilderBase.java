@@ -9,6 +9,7 @@ import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.TreeNode;
@@ -86,25 +87,23 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 	 * (non-Javadoc)
 	 * @see org.gbif.provider.upload.RecordPostProcessor#close()
 	 */
-	public Set<T> close() {
+	public Set<T> close(OccurrenceResource resource) {
 
-		setFinalStats();
+		setFinalStats(resource);
 		
 		// assign nested set indices for hierarchy and save each node (incl stats)
 		SortedSet<T> hierarchy = setNestedSetIndices();
 
-		occResourceManager.save(getResource());
-		
 		return hierarchy;		
 	}
 	
 	
-	protected abstract void setFinalStats();
+	protected abstract void setFinalStats(OccurrenceResource resource);
 
 	public void prepare() {
 		terminalNodes = new HashSet<T>();
 		nodes = new TreeMap<Integer, T>();
-		nodeManager.removeAll(getResource());		
+		nodeManager.removeAll(loadResource());		
 	}
 	
 	public String status() {

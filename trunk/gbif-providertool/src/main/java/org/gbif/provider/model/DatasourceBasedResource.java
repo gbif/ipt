@@ -61,7 +61,6 @@ public abstract class DatasourceBasedResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private UploadEvent lastUpload;
-	private Integer uploadScheduleIntervalInDays;
 	private ViewCoreMapping coreMapping;
 	// extension mappings, not including the core mapping
 	private Map<Long, ViewExtensionMapping> extensionMappings = new HashMap<Long, ViewExtensionMapping>();
@@ -247,13 +246,6 @@ public abstract class DatasourceBasedResource extends Resource {
 	}
 		
 	
-	public Integer getUploadScheduleIntervalInDays() {
-		return uploadScheduleIntervalInDays;
-	}
-	public void setUploadScheduleIntervalInDays(Integer uploadScheduleIntervalInDays) {
-		this.uploadScheduleIntervalInDays = uploadScheduleIntervalInDays;
-	}
-
 	/**
 	 * Reset all cached stats, log events etc, so that it looks as if the resource was just created (doesnt change the created timestamp though)
 	 */

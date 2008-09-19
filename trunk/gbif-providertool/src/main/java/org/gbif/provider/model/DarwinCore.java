@@ -16,12 +16,9 @@
 
 package org.gbif.provider.model;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +37,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -90,48 +86,58 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private Date modified;
 	@NotNull
 	private OccurrenceResource resource;
+	@NotNull
+	private DarwinCoreExtended ext;
 
-	// DarinCore derived datatypes. calculated from raw Strings
-	@NotNull
-	private DarwinCoreTaxonomy tax;
-	@NotNull
-	private DarwinCoreLocation loc;
-	// calculated fields
+	// DarinCore derived fields. calculated from raw Strings
 	private Point location;
 	private Taxon taxon;
 	private Region region;
 	private Date dateCollected;
+	private Integer minimumElevationInMetersAsInteger;
+	private Integer maximumElevationInMetersAsInteger;
+	private Integer minimumDepthInMetersAsInteger;
+	private Integer maximumDepthInMetersAsInteger;
 	
 	// DarwinCore 1.4 elements
 	private String basisOfRecord;
 	private String institutionCode;
 	private String collectionCode;
 	private String catalogNumber;
+	// Identification Elements
+	private String scientificName;
+	private String identificationQualifer;
+	// Collecting Event Elements	
+	private String collector;
+	private String earliestDateCollected;
+	private String latestDateCollected;
+	private String dayOfYear;
+	private String collectingMethod;
+	private String validDistributionFlag;
+	// references elements
+	private String imageURL;	
+	private String relatedInformation;	
 	private String informationWithheld;
 	private String remarks;
 	// Biological Elements
 	private String sex;
 	private String lifeStage;
 	private String attributes;
-	// references elements
-	private String imageURL;
-	private String relatedInformation;	
 
 	
-	public static DarwinCore newInstance(){
+	public static DarwinCore newInstance(OccurrenceResource resource){
 		DarwinCore dwc = new DarwinCore();
-		dwc.tax = new DarwinCoreTaxonomy();
-		dwc.tax.setDwc(dwc);
-		dwc.loc = new DarwinCoreLocation();
-		dwc.loc.setDwc(dwc);
+		dwc.ext = new DarwinCoreExtended();
+		dwc.ext.setDwc(dwc);
 		dwc.location= new Point();
+		dwc.resource=resource;
+		dwc.ext.setResource(resource);		
 		return dwc;
 	}
 	public static DarwinCore newMock(OccurrenceResource resource){
 		Random rnd = new Random();
-		DarwinCore dwc = DarwinCore.newInstance();
+		DarwinCore dwc = DarwinCore.newInstance(resource);
 		// populate instance
-		dwc.setResource(resource);
 		// set unique localId to ensure we can save this record. Otherwise we might get a non unique constraint exception...
 		String guid = UUID.randomUUID().toString();
 		String localId = rnd.nextInt(99999999)+"";
@@ -148,11 +154,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		dwc.setFamily("Pinaceae");
 		return dwc;
 	}
-	public static DarwinCore newInstance(ImportRecord iRec){
+	public static DarwinCore newInstance(OccurrenceResource resource, ImportRecord iRec){
 		if (iRec==null){
 			return null;
 		}
-		DarwinCore dwc = DarwinCore.newInstance();
+		DarwinCore dwc = DarwinCore.newInstance(resource);
 		dwc.setGuid(iRec.getGuid());
 		dwc.setLink(iRec.getLink());
 		dwc.setLocalId(iRec.getLocalId());
@@ -426,6 +432,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}	
 
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="source_local_id")
 	public String getLocalId() {
 		return localId;
 	}
@@ -434,6 +441,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.localId = localId;
 	}	
 
+	@org.hibernate.annotations.Index(name="guid")
 	public String getGuid() {
 		return guid;
 	}
@@ -458,6 +466,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.modified = modified;
 	}
 
+	@org.hibernate.annotations.Index(name="deleted")
 	public boolean isDeleted() {
 		return isDeleted;
 	}
@@ -484,34 +493,19 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	
 
-	// OTHER
-	// optional = false breaks hibernate IdGeneration somehow... buuh
-	// cascade=CascadeType.ALL
-    @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
-	public DarwinCoreTaxonomy getTax() {
-    	// shouldnt be the case, but to prevend NPE create assure there is always the loc compound
-    	if (tax==null){
-    		tax = new DarwinCoreTaxonomy();
-    		tax.setDwc(this);
-    	}
-		return tax;
-	}
-	public void setTax(DarwinCoreTaxonomy tax) {
-		this.tax = tax;
-	}
-	
+	// OTHER	
 	// optional = false breaks hibernate IdGeneration somehow... buuh
     @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
-	public DarwinCoreLocation getLoc() {
-    	// shouldnt be the case, but to prevend NPE create assure there is always the loc compound
-    	if (loc==null){
-    		loc = new DarwinCoreLocation();
-    		loc.setDwc(this);    		
+	public DarwinCoreExtended getExt() {
+    	// shouldnt be the case, but to prevend NPE create assure there is always the ext component
+    	if (ext==null){
+    		ext = new DarwinCoreExtended();
+    		ext.setDwc(this);    		
     	}
-		return loc;
+		return ext;
 	}
-	public void setLoc(DarwinCoreLocation loc) {
-		this.loc = loc;
+	public void setExt(DarwinCoreExtended ext) {
+		this.ext = ext;
 	}
 	
 	
@@ -531,6 +525,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.region = region;
 	}
 	
+	@org.hibernate.annotations.Index(name="date_collected")
     public Date getDateCollected() {
 		return dateCollected;
 	}
@@ -562,6 +557,33 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return location.getLongitude();
 	}
 	
+	public Integer getMinimumElevationInMetersAsInteger() {
+		return minimumElevationInMetersAsInteger;
+	}
+	public void setMinimumElevationInMetersAsInteger(Integer minimumElevationInMetersAsInteger) {
+		this.minimumElevationInMetersAsInteger = minimumElevationInMetersAsInteger;
+	}
+	public Integer getMaximumElevationInMetersAsInteger() {
+		return maximumElevationInMetersAsInteger;
+	}
+	public void setMaximumElevationInMetersAsInteger(Integer maximumElevationInMetersAsInteger) {
+		this.maximumElevationInMetersAsInteger = maximumElevationInMetersAsInteger;
+	}
+	public Integer getMinimumDepthInMetersAsInteger() {
+		return minimumDepthInMetersAsInteger;
+	}
+	public void setMinimumDepthInMetersAsInteger(Integer minimumDepthInMetersAsInteger) {
+		this.minimumDepthInMetersAsInteger = minimumDepthInMetersAsInteger;
+	}
+	public Integer getMaximumDepthInMetersAsInteger() {
+		return maximumDepthInMetersAsInteger;
+	}
+	public void setMaximumDepthInMetersAsInteger(Integer maximumDepthInMetersAsInteger) {
+		this.maximumDepthInMetersAsInteger = maximumDepthInMetersAsInteger;
+	}
+	
+	
+	
 	/**
 	 * Aliases for set/getGuid() which are part of any core record, not only darwin core
 	 * @return
@@ -580,7 +602,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public Date getDateLastModified() {
 		return this.getModified();
 	}
-	@Column(length=128)
+	@Column(length=64)
+	@org.hibernate.annotations.Index(name="record_basis")
 	public String getBasisOfRecord() {
 		return basisOfRecord;
 	}
@@ -603,6 +626,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setCollectionCode(String collectionCode) {
 		this.collectionCode = collectionCode;
 	}
+	@Column(length=128)
 	@org.hibernate.annotations.Index(name="cat_num")
 	public String getCatalogNumber() {
 		return catalogNumber;
@@ -632,6 +656,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+	@Column(length=128)
 	public String getLifeStage() {
 		return lifeStage;
 	}
@@ -658,6 +683,69 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setRelatedInformation(String relatedInformation) {
 		this.relatedInformation = relatedInformation;
 	}
+
+	@Lob
+	public String getCollectingMethod() {
+		return collectingMethod;
+	}
+	public void setCollectingMethod(String collectingMethod) {
+		this.collectingMethod = collectingMethod;
+	}
+	@Column(length = 16)
+	public String getValidDistributionFlag() {
+		return validDistributionFlag;
+	}
+	public void setValidDistributionFlag(String validDistributionFlag) {
+		this.validDistributionFlag = validDistributionFlag;
+	}
+	
+	@Column(length = 64)
+	public String getEarliestDateCollected() {
+		return earliestDateCollected;
+	}
+	public void setEarliestDateCollected(String earliestDateCollected) {
+		this.earliestDateCollected = earliestDateCollected;
+	}
+	@Column(length = 64)
+	public String getLatestDateCollected() {
+		return latestDateCollected;
+	}
+	public void setLatestDateCollected(String latestDateCollected) {
+		this.latestDateCollected = latestDateCollected;
+	}
+	
+	@Column(length=32)
+	public String getDayOfYear() {
+		return dayOfYear;
+	}
+	public void setDayOfYear(String dayOfYear) {
+		this.dayOfYear = dayOfYear;
+	}
+	
+	@Column(length = 128)
+	public String getCollector() {
+		return collector;
+	}
+	public void setCollector(String collector) {
+		this.collector = collector;
+	}
+
+	@org.hibernate.annotations.Index(name="sci_name")
+	public String getScientificName() {
+		return scientificName;
+	}
+	public void setScientificName(String scientificName) {
+		this.scientificName = scientificName;
+	}
+	
+	@Column(length=64)
+	public String getIdentificationQualifer() {
+		return identificationQualifer;
+	}
+	public void setIdentificationQualifer(String identificationQualifer) {
+		this.identificationQualifer = identificationQualifer;
+	}	
+
 	
 	
 	//
@@ -667,266 +755,182 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	// LOCATION FORWARDING
 	@Transient
 	public String getHigherGeography() {
-		return getLoc().getHigherGeography();
+		return getExt().getHigherGeography();
 	}
 	public void setHigherGeography(String higherGeography) {
-		getLoc().setHigherGeography(higherGeography);
+		getExt().setHigherGeography(higherGeography);
 	}
 	@Transient
 	public String getContinent() {
-		return getLoc().getContinent();
+		return getExt().getContinent();
 	}
 	public void setContinent(String continent) {
-		getLoc().setContinent(continent);
+		getExt().setContinent(continent);
 	}
 	@Transient
 	public String getWaterBody() {
-		return getLoc().getWaterBody();
+		return getExt().getWaterBody();
 	}
 	public void setWaterBody(String waterBody) {
-		getLoc().setWaterBody(waterBody);
+		getExt().setWaterBody(waterBody);
 	}
 	@Transient
 	public String getIslandGroup() {
-		return getLoc().getIslandGroup();
+		return getExt().getIslandGroup();
 	}
 	public void setIslandGroup(String islandGroup) {
-		getLoc().setIslandGroup(islandGroup);
+		getExt().setIslandGroup(islandGroup);
 	}
 	@Transient
 	public String getIsland() {
-		return getLoc().getIsland();
+		return getExt().getIsland();
 	}
 	public void setIsland(String island) {
-		getLoc().setIsland(island);
+		getExt().setIsland(island);
 	}
 	@Transient
 	public String getCountry() {
-		return getLoc().getCountry();
+		return getExt().getCountry();
 	}
 	public void setCountry(String country) {
-		getLoc().setCountry(country);
+		getExt().setCountry(country);
 	}
 	@Transient
 	public String getStateProvince() {
-		return getLoc().getStateProvince();
+		return getExt().getStateProvince();
 	}
 	public void setStateProvince(String stateProvince) {
-		getLoc().setStateProvince(stateProvince);
+		getExt().setStateProvince(stateProvince);
 	}
 	@Transient
 	public String getCounty() {
-		return getLoc().getCounty();
+		return getExt().getCounty();
 	}
 	public void setCounty(String county) {
-		getLoc().setCounty(county);
+		getExt().setCounty(county);
 	}
 	@Transient
 	public String getLocality() {
-		return loc.getLocality();
+		return ext.getLocality();
 	}
 	public void setLocality(String locality) {
-		getLoc().setLocality(locality);
-	}
-	@Transient
-	public Integer getMinimumElevationInMetersAsInteger() {
-		return getLoc().getMinimumElevationInMetersAsInteger();
-	}
-	public void setMinimumElevationInMetersAsInteger(Integer minimumElevationInMeters) {
-		getLoc().setMinimumElevationInMetersAsInteger(minimumElevationInMeters);
-	}
-	@Transient
-	public Integer getMaximumElevationInMetersAsInteger() {
-		return getLoc().getMaximumElevationInMetersAsInteger();
-	}
-	public void setMaximumElevationInMetersAsInteger(Integer maximumElevationInMeters) {
-		getLoc().setMaximumElevationInMetersAsInteger(maximumElevationInMeters);
-	}
-	@Transient
-	public Integer getMinimumDepthInMetersAsInteger() {
-		return getLoc().getMinimumDepthInMetersAsInteger();
-	}
-	public void setMinimumDepthInMetersAsInteger(Integer minimumDepthInMeters) {
-		getLoc().setMinimumDepthInMetersAsInteger(minimumDepthInMeters);
-	}
-	@Transient
-	public Integer getMaximumDepthInMetersAsInteger() {
-		return getLoc().getMaximumDepthInMetersAsInteger();
-	}
-	public void setMaximumDepthInMetersAsInteger(Integer maximumDepthInMeters) {
-		getLoc().setMaximumDepthInMetersAsInteger(maximumDepthInMeters);
+		getExt().setLocality(locality);
 	}
 	@Transient
 	public String getMinimumElevationInMeters() {
-		return getLoc().getMinimumElevationInMeters();
+		return getExt().getMinimumElevationInMeters();
 	}
 	public void setMinimumElevationInMeters(String minimumElevationInMeters) {
-		getLoc().setMinimumElevationInMeters(minimumElevationInMeters);
+		getExt().setMinimumElevationInMeters(minimumElevationInMeters);
 	}
 	@Transient
 	public String getMaximumElevationInMeters() {
-		return getLoc().getMaximumElevationInMeters();
+		return getExt().getMaximumElevationInMeters();
 	}
 	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
-		getLoc().setMaximumElevationInMeters(maximumElevationInMeters);
+		getExt().setMaximumElevationInMeters(maximumElevationInMeters);
 	}
 	@Transient
 	public String getMinimumDepthInMeters() {
-		return getLoc().getMinimumDepthInMeters();
+		return getExt().getMinimumDepthInMeters();
 	}
 	public void setMinimumDepthInMeters(String minimumDepthInMeters) {
-		getLoc().setMinimumDepthInMeters(minimumDepthInMeters);
+		getExt().setMinimumDepthInMeters(minimumDepthInMeters);
 	}
 	@Transient
 	public String getMaximumDepthInMeters() {
-		return getLoc().getMaximumDepthInMeters();
+		return getExt().getMaximumDepthInMeters();
 	}
 	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
-		getLoc().setMaximumDepthInMeters(maximumDepthInMeters);
-	}
-	@Transient
-	public String getCollectingMethod() {
-		return getLoc().getCollectingMethod();
-	}
-	public void setCollectingMethod(String collectingMethod) {
-		getLoc().setCollectingMethod(collectingMethod);
-	}
-	@Transient
-	public String getValidDistributionFlag() {
-		return getLoc().getValidDistributionFlag();
-	}
-	public void setValidDistributionFlag(String validDistributionFlag) {
-		getLoc().setValidDistributionFlag(validDistributionFlag);
-	}
-	@Transient
-	public String getEarliestDateCollected() {
-		return getLoc().getEarliestDateCollected();
-	}
-	public void setEarliestDateCollected(String earliestDateCollected) {
-		getLoc().setEarliestDateCollected(earliestDateCollected);
-	}
-	@Transient
-	public String getLatestDateCollected() {
-		return getLoc().getLatestDateCollected();
-	}
-	public void setLatestDateCollected(String latestDateCollected) {
-		getLoc().setLatestDateCollected(latestDateCollected);
-	}
-	@Transient
-	public String getDayOfYear() {
-		return getLoc().getDayOfYear();
-	}
-	public void setDayOfYear(String dayOfYear) {
-		getLoc().setDayOfYear(dayOfYear);
-	}
-	@Transient
-	public String getCollector() {
-		return getLoc().getCollector();
-	}
-	public void setCollector(String collector) {
-		getLoc().setCollector(collector);
+		getExt().setMaximumDepthInMeters(maximumDepthInMeters);
 	}
 
 
 	// TAXONOMY FORWARDING
 	
 	@Transient
-	public String getScientificName() {
-		return getTax().getScientificName();
-	}
-	public void setScientificName(String scientificName) {
-		getTax().setScientificName(scientificName);
-	}
-	@Transient
 	public String getHigherTaxon() {
-		return getTax().getHigherTaxon();
+		return getExt().getHigherTaxon();
 	}
 	public void setHigherTaxon(String higherTaxon) {
-		getTax().setHigherTaxon(higherTaxon);
+		getExt().setHigherTaxon(higherTaxon);
 	}
 	@Transient
 	public String getKingdom() {
-		return getTax().getKingdom();
+		return getExt().getKingdom();
 	}
 	public void setKingdom(String kingdom) {
-		getTax().setKingdom(kingdom);
+		getExt().setKingdom(kingdom);
 	}
 	@Transient
 	public String getPhylum() {
-		return getTax().getPhylum();
+		return getExt().getPhylum();
 	}
 	public void setPhylum(String phylum) {
-		getTax().setPhylum(phylum);
+		getExt().setPhylum(phylum);
 	}
 	@Transient
 	public String getClasss() {
-		return getTax().getClasss();
+		return getExt().getClasss();
 	}
 	public void setClasss(String classs) {
-		getTax().setClasss(classs);
+		getExt().setClasss(classs);
 	}
 	@Transient
 	public String getOrder() {
-		return getTax().getOrder();
+		return getExt().getOrder();
 	}
 	public void setOrder(String order) {
-		getTax().setOrder(order);
+		getExt().setOrder(order);
 	}
 	@Transient
 	public String getFamily() {
-		return getTax().getFamily();
+		return getExt().getFamily();
 	}
 	public void setFamily(String family) {
-		getTax().setFamily(family);
+		getExt().setFamily(family);
 	}
 	@Transient
 	public String getGenus() {
-		return getTax().getGenus();
+		return getExt().getGenus();
 	}
 	public void setGenus(String genus) {
-		getTax().setGenus(genus);
+		getExt().setGenus(genus);
 	}
 	@Transient
 	public String getSpecificEpithet() {
-		return getTax().getSpecificEpithet();
+		return getExt().getSpecificEpithet();
 	}
 	public void setSpecificEpithet(String specificEpithet) {
-		getTax().setSpecificEpithet(specificEpithet);
+		getExt().setSpecificEpithet(specificEpithet);
 	}
 	@Transient
 	public String getInfraspecificRank() {
-		return getTax().getInfraspecificRank();
+		return getExt().getInfraspecificRank();
 	}
 	public void setInfraspecificRank(String infraspecificRank) {
-		getTax().setInfraspecificRank(infraspecificRank);
+		getExt().setInfraspecificRank(infraspecificRank);
 	}
 	@Transient
 	public String getInfraspecificEpithet() {
-		return getTax().getInfraspecificEpithet();
+		return getExt().getInfraspecificEpithet();
 	}
 	public void setInfraspecificEpithet(String infraspecificEpithet) {
-		getTax().setInfraspecificEpithet(infraspecificEpithet);
+		getExt().setInfraspecificEpithet(infraspecificEpithet);
 	}
 	@Transient
 	public String getAuthorYearOfScientificName() {
-		return getTax().getAuthorYearOfScientificName();
+		return getExt().getAuthorYearOfScientificName();
 	}
 	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
-		getTax().setAuthorYearOfScientificName(authorYearOfScientificName);
+		getExt().setAuthorYearOfScientificName(authorYearOfScientificName);
 	}
 	@Transient
 	public String getNomenclaturalCode() {
-		return getTax().getNomenclaturalCode();
+		return getExt().getNomenclaturalCode();
 	}
 	public void setNomenclaturalCode(String nomenclaturalCode) {
-		getTax().setNomenclaturalCode(nomenclaturalCode);
-	}
-	@Transient
-	public String getIdentificationQualifer() {
-		return getTax().getIdentificationQualifer();
-	}
-	public void setIdentificationQualifer(String identificationQualifer) {
-		getTax().setIdentificationQualifer(identificationQualifer);
+		getExt().setNomenclaturalCode(nomenclaturalCode);
 	}
 
 	

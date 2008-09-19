@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcTaxon;
@@ -74,7 +75,7 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 			throw e;
 		}
 		
-		return close();
+		return close(loadResource());
 	}
 	
 	
@@ -130,7 +131,7 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 
 	
 	@Override
-	protected void setFinalStats() {
+	protected void setFinalStats(OccurrenceResource resource) {
 		// init stats map		
 		Map<Rank, Integer> stats = new HashMap<Rank, Integer>();
 		stats.put(null, 0);
@@ -143,18 +144,18 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 		}
 		// debug only
 		for (Rank r : Rank.ALL_RANKS){
-			log.info(String.format("Found %s %s taxa in resource %s", stats.get(r), r, getResourceId()));
+			log.info(String.format("Found %s %s taxa in resource %s", stats.get(r), r, resource.getId()));
 		}
-		log.info(String.format("Found %s distinct taxa in resource %s", nodes.size(), getResourceId()));
+		log.info(String.format("Found %s distinct taxa in resource %s", nodes.size(), resource.getId()));
 		// store stats
-		getResource().setNumTaxa(nodes.size());
-		getResource().setNumTerminalTaxa(terminalNodes.size());
-		getResource().setNumGenera(stats.get(Rank.Genus));
-		getResource().setNumFamilies(stats.get(Rank.Family));
-		getResource().setNumOrders(stats.get(Rank.Order));
-		getResource().setNumClasses(stats.get(Rank.Class));
-		getResource().setNumPhyla(stats.get(Rank.Phylum));
-		getResource().setNumKingdoms(stats.get(Rank.Kingdom));
+		resource.setNumTaxa(nodes.size());
+		resource.setNumTerminalTaxa(terminalNodes.size());
+		resource.setNumGenera(stats.get(Rank.Genus));
+		resource.setNumFamilies(stats.get(Rank.Family));
+		resource.setNumOrders(stats.get(Rank.Order));
+		resource.setNumClasses(stats.get(Rank.Class));
+		resource.setNumPhyla(stats.get(Rank.Phylum));
+		resource.setNumKingdoms(stats.get(Rank.Kingdom));
 	}
 
 

@@ -52,6 +52,7 @@ import org.hibernate.annotations.CollectionOfElements;
 		}
 		
 		@Override
+		@org.hibernate.annotations.Index(name="region_name")
 		public String getLabel() {
 			return super.getLabel();
 		}

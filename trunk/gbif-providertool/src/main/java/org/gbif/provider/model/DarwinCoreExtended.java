@@ -23,12 +23,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.NotNull;
 
 /**
  * The core class for taxon occurrence records with normalised properties used by the webapp.
@@ -38,16 +40,11 @@ import org.hibernate.annotations.Parameter;
  *
  */
 @Entity
-@Table(name="dwcore_loc") 
-public class DarwinCoreLocation {
+@Table(name="dwcore_ext") 
+public class DarwinCoreExtended implements ResourceRelatedObject{
 	private Long id;
 	private DarwinCore dwc;
-	// derived typed properties
-	private Integer minimumElevationInMetersAsInteger;
-	private Integer maximumElevationInMetersAsInteger;
-	private Integer minimumDepthInMetersAsInteger;
-	private Integer maximumDepthInMetersAsInteger;
-
+	private OccurrenceResource resource;
 	// Locality Elements
 	private String higherGeography;
 	private String continent;
@@ -63,17 +60,25 @@ public class DarwinCoreLocation {
 	private String maximumElevationInMeters;
 	private String minimumDepthInMeters;
 	private String maximumDepthInMeters;
-	// Collecting Event Elements	
-	private String collectingMethod;
-	private String validDistributionFlag;
-	private String earliestDateCollected;
-	private String latestDateCollected;
-	private String dayOfYear;
-	private String collector;	
+	// Taxonomic Elements apart from ScientificName
+	private String specificEpithet;
+	private String infraspecificRank;
+	private String infraspecificEpithet;
+	private String authorYearOfScientificName;
+	private String nomenclaturalCode;
+	private String higherTaxon;
+	private String kingdom;
+	private String phylum;
+	private String classs;
+	private String order;
+	private String family;
+	private String genus;
+	
+	
 	
 	@Id
-	@GeneratedValue(generator="dwcidloc")
-	@GenericGenerator(name="dwcidloc", strategy = "foreign", 
+	@GeneratedValue(generator="dwcid")
+	@GenericGenerator(name="dwcid", strategy = "foreign", 
 			parameters={@Parameter (name="property", value = "dwc")}
 	)
 	public Long getId() {
@@ -92,6 +97,14 @@ public class DarwinCoreLocation {
 		this.dwc = dwc;
 	}
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	public OccurrenceResource getResource() {
+		return resource;
+	}
+	public void setResource(OccurrenceResource resource) {
+		this.resource = resource;
+	}
+
 	@Lob
 	public String getHigherGeography() {
 		return higherGeography;
@@ -100,7 +113,6 @@ public class DarwinCoreLocation {
 		this.higherGeography = higherGeography;
 	}
 	@Column(length = 64)
-	@org.hibernate.annotations.Index(name="continent")
 	public String getContinent() {
 		return continent;
 	}
@@ -108,7 +120,6 @@ public class DarwinCoreLocation {
 		this.continent = continent;
 	}
 	@Column(length = 255)
-	@org.hibernate.annotations.Index(name="waterbody")
 	public String getWaterBody() {
 		return waterBody;
 	}
@@ -130,7 +141,6 @@ public class DarwinCoreLocation {
 		this.island = island;
 	}
 	@Column(length = 128)
-	@org.hibernate.annotations.Index(name="country")
 	public String getCountry() {
 		return country;
 	}
@@ -138,7 +148,6 @@ public class DarwinCoreLocation {
 		this.country = country;
 	}
 	@Column(length = 128)
-	@org.hibernate.annotations.Index(name="state")
 	public String getStateProvince() {
 		return stateProvince;
 	}
@@ -146,7 +155,6 @@ public class DarwinCoreLocation {
 		this.stateProvince = stateProvince;
 	}
 	@Column(length = 255)
-	@org.hibernate.annotations.Index(name="county")
 	public String getCounty() {
 		return county;
 	}
@@ -161,36 +169,6 @@ public class DarwinCoreLocation {
 		this.locality = locality;
 	}
 
-	@org.hibernate.annotations.Index(name="altitude")
-	public Integer getMinimumElevationInMetersAsInteger() {
-		return minimumElevationInMetersAsInteger;
-	}
-	public void setMinimumElevationInMetersAsInteger(
-			Integer minimumElevationInMetersAsInteger) {
-		this.minimumElevationInMetersAsInteger = minimumElevationInMetersAsInteger;
-	}
-	public Integer getMaximumElevationInMetersAsInteger() {
-		return maximumElevationInMetersAsInteger;
-	}
-	public void setMaximumElevationInMetersAsInteger(
-			Integer maximumElevationInMetersAsInteger) {
-		this.maximumElevationInMetersAsInteger = maximumElevationInMetersAsInteger;
-	}
-	@org.hibernate.annotations.Index(name="depth")
-	public Integer getMinimumDepthInMetersAsInteger() {
-		return minimumDepthInMetersAsInteger;
-	}
-	public void setMinimumDepthInMetersAsInteger(
-			Integer minimumDepthInMetersAsInteger) {
-		this.minimumDepthInMetersAsInteger = minimumDepthInMetersAsInteger;
-	}
-	public Integer getMaximumDepthInMetersAsInteger() {
-		return maximumDepthInMetersAsInteger;
-	}
-	public void setMaximumDepthInMetersAsInteger(
-			Integer maximumDepthInMetersAsInteger) {
-		this.maximumDepthInMetersAsInteger = maximumDepthInMetersAsInteger;
-	}
 	@Column(length = 64)
 	public String getMinimumElevationInMeters() {
 		return minimumElevationInMeters;
@@ -219,52 +197,92 @@ public class DarwinCoreLocation {
 	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
 		this.maximumDepthInMeters = maximumDepthInMeters;
 	}
-	@Column(length = 255)
-	public String getCollectingMethod() {
-		return collectingMethod;
+
+	@Lob
+	public String getHigherTaxon() {
+		return higherTaxon;
 	}
-	public void setCollectingMethod(String collectingMethod) {
-		this.collectingMethod = collectingMethod;
+	public void setHigherTaxon(String higherTaxon) {
+		this.higherTaxon = higherTaxon;
 	}
-	@Column(length = 16)
-	public String getValidDistributionFlag() {
-		return validDistributionFlag;
+	@Column(length=64)
+	public String getKingdom() {
+		return kingdom;
 	}
-	public void setValidDistributionFlag(String validDistributionFlag) {
-		this.validDistributionFlag = validDistributionFlag;
+	public void setKingdom(String kingdom) {
+		this.kingdom = kingdom;
 	}
-	
-	@Column(length = 64)
-	@org.hibernate.annotations.Index(name="date_collected")
-	public String getEarliestDateCollected() {
-		return earliestDateCollected;
+	@Column(length=64)
+	public String getPhylum() {
+		return phylum;
 	}
-	public void setEarliestDateCollected(String earliestDateCollected) {
-		this.earliestDateCollected = earliestDateCollected;
+	public void setPhylum(String phylum) {
+		this.phylum = phylum;
 	}
-	@Column(length = 64)
-	public String getLatestDateCollected() {
-		return latestDateCollected;
+	@Column(length=64)
+	public String getClasss() {
+		return classs;
 	}
-	public void setLatestDateCollected(String latestDateCollected) {
-		this.latestDateCollected = latestDateCollected;
-	}
-	
-	@Column(length=32)
-	public String getDayOfYear() {
-		return dayOfYear;
-	}
-	public void setDayOfYear(String dayOfYear) {
-		this.dayOfYear = dayOfYear;
+	public void setClasss(String classs) {
+		this.classs = classs;
 	}
 	
-	@Column(length = 128)
-	public String getCollector() {
-		return collector;
+	@Column(length=128, name="orderrr")
+	public String getOrder() {
+		return order;
 	}
-	public void setCollector(String collector) {
-		this.collector = collector;
+	public void setOrder(String order) {
+		this.order = order;
 	}
-	
-	
+
+	@Column(length=128)
+	public String getFamily() {
+		return family;
+	}
+	public void setFamily(String family) {
+		this.family = family;
+	}
+	@Column(length=64)
+	@org.hibernate.annotations.Index(name="genus")
+	public String getGenus() {
+		return genus;
+	}
+	public void setGenus(String genus) {
+		this.genus = genus;
+	}
+	@Column(length=128)
+	public String getSpecificEpithet() {
+		return specificEpithet;
+	}
+	public void setSpecificEpithet(String specificEpithet) {
+		this.specificEpithet = specificEpithet;
+	}
+	@Column(length=128)
+	public String getInfraspecificRank() {
+		return infraspecificRank;
+	}
+	public void setInfraspecificRank(String infraspecificRank) {
+		this.infraspecificRank = infraspecificRank;
+	}
+	@Column(length=128)
+	public String getInfraspecificEpithet() {
+		return infraspecificEpithet;
+	}
+	public void setInfraspecificEpithet(String infraspecificEpithet) {
+		this.infraspecificEpithet = infraspecificEpithet;
+	}
+	@Column(length=128)
+	public String getAuthorYearOfScientificName() {
+		return authorYearOfScientificName;
+	}
+	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
+		this.authorYearOfScientificName = authorYearOfScientificName;
+	}
+	@Column(length=64)
+	public String getNomenclaturalCode() {
+		return nomenclaturalCode;
+	}
+	public void setNomenclaturalCode(String nomenclaturalCode) {
+		this.nomenclaturalCode = nomenclaturalCode;
+	}		
 }
