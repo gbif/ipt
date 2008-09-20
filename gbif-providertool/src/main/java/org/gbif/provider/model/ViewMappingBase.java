@@ -45,6 +45,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.TabFileWriter;
 import org.hibernate.annotations.MapKey;
 
 /**
@@ -264,5 +265,4 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		return false;
 	}
 
-	
 }

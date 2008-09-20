@@ -9,29 +9,58 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.ExtensionRecord;
+import org.gbif.provider.model.Record;
+import org.gbif.provider.model.ViewCoreMapping;
+import org.gbif.provider.model.ViewExtensionMapping;
+import org.gbif.provider.model.ViewMappingBase;
 
 
 
 public class TabFileWriter {
+	public static final String ID_COLUMN_NAME = "#id";
+	public static final String GUID_COLUMN_NAME = "#guid";
+	public static final String LINK_COLUMN_NAME = "#link";
+	public static final String MODIFIED_COLUMN_NAME = "#modified";
+
 	private BufferedWriter writer;
-	private final List<String> header;
+	private final List<ExtensionProperty> header;
 	private final File file;
 	
-	public TabFileWriter(File file, List<String> header) throws IOException{
-		this.header=header;
+	public TabFileWriter(File file, ViewCoreMapping view) throws IOException{
+		this.header=view.getMappedProperties();
 		this.file = file;
 		writer = new BufferedWriter(new FileWriter(file));
 		// write headers to tabfile
-		Map<String,String> headerMap = new HashMap<String, String>();
-		for (String col : header){
-			headerMap.put(col, col);
-		}
-		this.write(headerMap);
+		writer.write(valToString(ID_COLUMN_NAME));
+		writer.append("\t");
+		writer.write(valToString(GUID_COLUMN_NAME));
+		writer.append("\t");
+		writer.write(valToString(LINK_COLUMN_NAME));
+		writer.append("\t");
+		writer.write(valToString(MODIFIED_COLUMN_NAME));
+		writePropertyHeader();		
 	}
 	
-	public List<String> getHeader() {
-		return header;
+	public TabFileWriter(File file, ViewMappingBase view) throws IOException{
+		this.header=view.getMappedProperties();
+		this.file = file;
+		writer = new BufferedWriter(new FileWriter(file));
+		// write headers to tabfile
+		writer.write(valToString(ID_COLUMN_NAME));
+		writePropertyHeader();		
+	}
+	
+	private void writePropertyHeader() throws IOException {
+		for (ExtensionProperty prop : header){
+			writer.append("\t");
+			writer.write(prop.getName());
+		}
+		writer.newLine();
 	}
 
 	/**
@@ -40,27 +69,30 @@ public class TabFileWriter {
 	 * @param ln
 	 * @throws IOException 
 	 */
-	public void write(Map<String, String> ln) throws IOException{
-		Iterator<String> iter = header.iterator();
-		while (iter.hasNext()){
-			writer.write(escape(ln.get(iter.next())));
-			if (iter.hasNext()){
-				writer.append("\t");
-			}else{
-				//writer.append("\n");
-				writer.newLine();
-			}			
-		}
+	public void write(CoreRecord rec) throws IOException{
+		writer.write(valToString(rec.getCoreId()));
+		writer.append("\t");
+		writer.write(valToString(rec.getGuid()));
+		writer.append("\t");
+		writer.write(valToString(rec.getLink()));
+		writer.append("\t");
+		writer.write(valToString(rec.getModified()));
+		writeRecordProperties(rec);
 	}
 	
-	private String escape(Object obj){
-		String result = "";
-		if (obj != null){
-			result = obj.toString().replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r");
-		}
-		return result;
+	public void write(ExtensionRecord rec) throws IOException{
+		writer.write(valToString(rec.getCoreId()));
+		writeRecordProperties(rec);
 	}
 	
+	private void writeRecordProperties(Record rec) throws IOException{
+		for (ExtensionProperty prop : header){
+			writer.append("\t");
+			writer.write(valToString(rec.getPropertyValue(prop)));
+		}
+		writer.newLine();
+	}
+
 	public File getFile(){
 		return file;
 	}
@@ -69,4 +101,15 @@ public class TabFileWriter {
 		writer.flush();
 		writer.close();
 	}
+	
+	
+	public static String valToString(Object val){
+		String str = "";
+		if (val!=null){
+			str = val.toString();
+			str = str.replaceAll("\\t", "\\\\t").replaceAll("\\n", "\\\\n").replaceAll("\\r", "\\\\r");
+		}
+		return str;
+	}
+
 }

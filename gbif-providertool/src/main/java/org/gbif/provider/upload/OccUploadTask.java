@@ -32,6 +32,7 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewCoreMapping;
+import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.CacheManager;
@@ -44,6 +45,7 @@ import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.service.impl.CacheManagerImpl;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
+import org.hamcrest.core.IsInstanceOf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Isolation;
@@ -116,11 +118,10 @@ import org.springframework.transaction.annotation.Transactional;
 				dumpFiles.add(coreFile);
 				
 				// upload further extensions one by one
-				for (ViewMappingBase vm : resource.getExtensionMappings()){
-					Extension ext = vm.getExtension();
+				for (ViewExtensionMapping vm : resource.getExtensionMappings()){
 					// run import into db & dump file
 					try {
-						File extFile = uploadExtension(ext);
+						File extFile = uploadExtension(vm);
 						dumpFiles.add(extFile);
 					} catch (ImportSourceException e) {
 						// dont do nothing. Error is logged and core is uploaded. Skip this extension
@@ -292,7 +293,7 @@ import org.springframework.transaction.annotation.Transactional;
 			currentErroneous.set(0);
 			try {
 				// create new tab file
-				TabFileWriter writer = prepareTabFile(resource.getCoreMapping());
+				TabFileWriter writer = getTabFileWriter(resource.getCoreMapping());
 				out = writer.getFile();
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
 				source = this.getImportSource();
@@ -331,7 +332,7 @@ import org.springframework.transaction.annotation.Transactional;
 							// save dwc record
 							dwc = persistRecord(dwc, oldRecord);
 							// write record to tab file
-							writer.write(dwc.getDataMap());
+							writer.write(dwc);
 							
 							// set stats per record. Saving of final stats must be done in the close() section
 							taxonomyBuilder.statsPerRecord(dwc);
@@ -425,21 +426,23 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
-		private File uploadExtension(Extension extension) throws InterruptedException, ImportSourceException, IOException {
-			log.info(String.format("Starting upload of %s extension for resource %s", extension.getName(), getTitle() ));					
+		private File uploadExtension(ViewExtensionMapping vm) throws InterruptedException, ImportSourceException, IOException {
+			String extensionName = vm.getExtension().getName();
+			Extension extension = vm.getExtension();
+			log.info(String.format("Starting upload of %s extension for resource %s", extensionName, getTitle() ));					
 			File out = null;
 			// keep track of records for each extension and then store the totals in the viewMapping.
 			// once extension is uploaded this counter will be reset by the next extension.
 			// used to feed status()
-			currentExtension = extension.getName();
+			currentExtension = extensionName;
 			currentProcessed.set(0);
 			currentErroneous.set(0);
 
 			try {
 				// create new tab file
-				TabFileWriter writer = prepareTabFile(extension);
+				TabFileWriter writer = getTabFileWriter(vm);
 				//  prepare import source
-				ImportSource source = this.getImportSource(extension);
+				ImportSource source = this.getImportSource(vm.getExtension());
 
 				try{
 					out = writer.getFile();
@@ -458,15 +461,16 @@ import org.springframework.transaction.annotation.Transactional;
 						Long coreId = idMap.get(rec.getLocalId());
 						rec.setId(coreId);
 						if (coreId == null){
-							String[] paras = {rec.getLocalId(), extension.getName(), getResourceId().toString()};
+							String[] paras = {rec.getLocalId(), extensionName, getResourceId().toString()};
 							logdb.warn("uploadManager.unknownLocalId", paras);
 						}else{
 							// TODO: check if record has changed
 							try {
 								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 								extensionRecordManager.insertExtensionRecord(extRec);
+								writer.write(extRec);
 								// see if darwin core record is affected, e.g. geo extension => coordinates
-								if (extension.getId().equals(DarwinCore.GEO_EXTENSION_ID)){
+								if (vm.getId().equals(DarwinCore.GEO_EXTENSION_ID)){
 									// this is the geo extension!
 									DarwinCore dwc = darwinCoreManager.get(coreId);
 									dwc.updateWithGeoExtension(extRec);
@@ -502,7 +506,7 @@ import org.springframework.transaction.annotation.Transactional;
 				log.error("Couldnt open tab file. Upload aborted", e);
 				throw e;
 			} catch (ImportSourceException e) {
-				logdb.error("log.sourceExtensionError", extension.getName(), e);
+				logdb.error("log.sourceExtensionError", extensionName, e);
 				throw e;
 			} catch (Exception e){
 				e.printStackTrace();
@@ -511,39 +515,20 @@ import org.springframework.transaction.annotation.Transactional;
 			return out;
 		}
 		
-		private TabFileWriter prepareTabFile(ViewCoreMapping coreViewMapping) throws IOException{
-			List<String> additionalHeader = new ArrayList<String>();
-			return prepareTabFile(coreViewMapping.getExtension(), additionalHeader);
-		}
-		private TabFileWriter prepareTabFile(Extension extension) throws IOException{
-			return prepareTabFile(extension, null);
-		}
-		private TabFileWriter prepareTabFile(Extension extension, List<String> additionalHeader) throws IOException{
+		private TabFileWriter getTabFileWriter(ViewMappingBase view) throws IOException{
 			// create new file, overwriting existing one
-			File file = cfg.getDumpFile(getResourceId(), extension);
+			File file = cfg.getDumpFile(getResourceId(), view.getExtension());
 			// remove previously existing file
 			if (file.exists()){
 				file.delete();
 			}
 			file.createNewFile();
-
-			List<String> header = new ArrayList<String>();
-			// add core record id first as first column
-			header.add(CoreRecord.ID_COLUMN_NAME);
-			header.add(CoreRecord.MODIFIED_COLUMN_NAME);
-			// add only existing mapped concepts
-			ViewMappingBase mapping = resource.getExtensionMapping(extension);
-			if (mapping == null){
-				throw new IllegalArgumentException(String.format("Resource %s does not have the extension %s mapped",getTitle(), extension.getName()));
+			
+			if (view instanceof ViewCoreMapping){
+				return new TabFileWriter(file, (ViewCoreMapping) view);
+			}else{
+				return new TabFileWriter(file, view);				
 			}
-			for (ExtensionProperty prop : mapping.getMappedProperties()){
-				header.add(prop.getName());
-			}
-			if (additionalHeader!=null){
-				header.addAll(additionalHeader);
-			}
-			TabFileWriter writer = new TabFileWriter(file, header);
-			return writer;
 		}
 
 		private ImportSource getImportSource() throws ImportSourceException{

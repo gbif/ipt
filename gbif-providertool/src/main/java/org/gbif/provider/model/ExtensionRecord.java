@@ -18,6 +18,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.util.TabFileWriter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -31,7 +32,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author markus
  *
  */
-public class ExtensionRecord implements Iterable<ExtensionProperty>{
+public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 	private Long coreId;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 
@@ -42,6 +43,9 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>{
 		return extRec;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.model.Record#getCoreId()
+	 */
 	public Long getCoreId() {
 		return coreId;
 	}
@@ -55,6 +59,9 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>{
 	public void setProperties(Map<ExtensionProperty, String> properties) {
 		this.properties = properties;
 	}
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.model.Record#getPropertyValue(org.gbif.provider.model.ExtensionProperty)
+	 */
 	public String getPropertyValue(ExtensionProperty property) {
 		return properties.get(property);
 	}
@@ -62,7 +69,6 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>{
 		properties.put(property, value);
 		
 	}
-	
 	
 
 	public Iterator<ExtensionProperty> iterator() {

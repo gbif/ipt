@@ -1,5 +1,8 @@
 package org.gbif.provider.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -8,6 +11,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.gbif.provider.util.TabFileWriter;
 
 @Entity
 @DiscriminatorValue("CORE")
@@ -42,8 +47,5 @@ public class ViewCoreMapping extends ViewMappingBase {
 	public void setLinkColumn(ColumnMapping linkColumn) {
 		this.linkColumn = linkColumn;
 	}
-	
 
-	
-	
 }
