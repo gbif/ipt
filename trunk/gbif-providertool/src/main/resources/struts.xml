@@ -355,6 +355,7 @@
         </action>
         
         <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${occResource.id}</param>
