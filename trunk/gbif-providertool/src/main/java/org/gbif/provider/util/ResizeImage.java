@@ -20,10 +20,14 @@ import javax.media.jai.OpImage;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sun.media.jai.codec.MemoryCacheSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
 
 public class ResizeImage {
+	protected static final Log log = LogFactory.getLog(ResizeImage.class);
 
 	public static void resizeImage(File source, File resized, int newWidth, int newHeight) throws IOException{
         // read in the original image from a file
@@ -35,11 +39,6 @@ public class ResizeImage {
         double hRatio = ((double)newHeight/(double)originalHeight);
         double wRatio = ((double)newWidth/(double)originalWidth);
         double scale = Math.min(hRatio, wRatio);
-        System.out.println(scale);
-        System.out.println(hRatio);
-        System.out.println(wRatio);
-        System.out.println(originalHeight);
-        System.out.println(originalWidth);
         
         final ParameterBlock parameterBlock=new ParameterBlock();
         parameterBlock.addSource(originalImage);
@@ -54,6 +53,7 @@ public class ResizeImage {
         OutputStream outputStream = new FileOutputStream(resized);
         JAI.create("encode", newImage, outputStream, "PNG", null);
         
+        log.debug("Resized logo image with factor "+scale);
         inputStream.close();
         outputStream.close();     
 
