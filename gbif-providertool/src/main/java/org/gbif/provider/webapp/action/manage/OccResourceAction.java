@@ -16,11 +16,27 @@
 
 package org.gbif.provider.webapp.action.manage;
 
+import java.awt.RenderingHints;
+import java.awt.image.renderable.ParameterBlock;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.media.jai.Interpolation;
+import javax.media.jai.InterpolationBicubic2;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.OpImage;
+import javax.media.jai.RenderedOp;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
@@ -32,14 +48,23 @@ import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
+import com.sun.media.jai.codec.SeekableStream;
 
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
+	@Autowired
 	private ResourceFactory resourceFactory;
+	@Autowired
+	@Qualifier("extensionManager")
 	private GenericManager<Extension> extensionManager;
+	@Autowired
 	private UploadEventManager uploadEventManager;
+	@Autowired
 	private CacheManager cacheManager;
 	protected Map session;
 
@@ -47,7 +72,12 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private List occResources;
 	private OccurrenceResource occResource;
 	private String gChartData;
-	
+
+    private File file;
+    private String fileContentType;
+    private String fileFileName;
+
+    
 	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
 	        {  
 	            {  
@@ -131,9 +161,26 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		occResource = occResourceManager.save(occResource);
 		String key = (isNew) ? "occResource.added" : "occResource.updated";
 		saveMessage(getText(key));
+		try{
+			uploadLogo();
+	        saveMessage(getText("resource.logoUploaded"));
+		}catch (IOException e){
+			saveMessage("Error uploading the logo file");
+		}
 		return SUCCESS;
 	}
 
+	public void uploadLogo() throws IOException{
+        if ("".equals(fileFileName) || file == null) {
+        	return;
+        }
+        // final logo destination
+		File logoFile = cfg.getResourceLogoFile(resource_id);
+        ResizeImage.resizeImage(file, logoFile, Constants.LOGO_SIZE, Constants.LOGO_SIZE);
+
+		log.info(String.format("Logo %s uploaded and resized for resource %s", logoFile.getAbsolutePath(), resource_id));
+	}
+	
 	public String delete() {
 		occResourceManager.remove(occResource);
 		saveMessage(getText("occResource.deleted"));
@@ -156,18 +203,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
-	}
-
-	public void setResourceFactory(ResourceFactory resourceFactory) {
-		this.resourceFactory = resourceFactory;
-	}
-
-	public void setExtensionManager(GenericManager<Extension> extensionManager) {
-		this.extensionManager = extensionManager;
-	}
-
-	public void setUploadEventManager(UploadEventManager uploadEventManager) {
-		this.uploadEventManager = uploadEventManager;
 	}
 
 	public List getOccResources() {
@@ -194,8 +229,27 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		this.session = session;
 	}
 
-	public void setCacheManager(CacheManager cacheManager) {
-		this.cacheManager = cacheManager;
-	}
-	
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+    }
+
+    public void setFileFileName(String fileFileName) {
+        this.fileFileName = fileFileName;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public String getFileContentType() {
+        return fileContentType;
+    }
+
+    public String getFileFileName() {
+        return fileFileName;
+    }
 }

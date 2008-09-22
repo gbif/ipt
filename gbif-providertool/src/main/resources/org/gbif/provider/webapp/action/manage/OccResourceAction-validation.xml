@@ -1,0 +1,19 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="occResource.title">
+        <field-validator type="requiredstring">
+            <message>You must enter a dataset title</message>
+        </field-validator>
+    </field>
+    <field name="occResource.contactName">
+        <field-validator type="requiredstring">
+            <message>You must enter a contact</message>
+        </field-validator>
+    </field>
+    <field name="occResource.contactEmail">
+        <field-validator type="requiredstring">
+            <message>You must enter an email contact</message>
+        </field-validator>
+    </field>
+</validators> 

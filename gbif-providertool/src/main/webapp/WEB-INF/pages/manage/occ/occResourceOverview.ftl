@@ -23,6 +23,7 @@
   <@s.hidden key="resource_id"/>
   <fieldset>
     <legend><@s.text name="occResourceOverview.metadata"/></legend>
+	<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 	<@s.label key="occResource.description"/>
 	<table class="lefthead">
 		<tr>

@@ -119,4 +119,27 @@ public class SourceFileUploadAction extends BaseAction{
 		this.viewMappingManager = viewMappingManager;
 	}
 
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+    }
+
+    public void setFileFileName(String fileFileName) {
+        this.fileFileName = fileFileName;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public String getFileContentType() {
+        return fileContentType;
+    }
+
+    public String getFileFileName() {
+        return fileFileName;
+    }
 }
