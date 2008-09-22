@@ -24,6 +24,20 @@
   <fieldset>
     <legend><@s.text name="occResourceOverview.metadata"/></legend>
 	<@s.label key="occResource.description"/>
+	<table class="lefthead">
+		<tr>
+			<th>Contact</th>
+			<td>${occResource.contactName!} <#if occResource.contactEmail??>&lt;${occResource.contactEmail}&gt;</#if></td>
+		</tr>
+		<tr>
+			<th>Homepage</th>
+			<td><#if occResource.link??><a href="${occResource.link}">Home</a><#else>No homepage configured</#if></td>
+		</tr>
+		<tr>
+			<th>EML</th>
+			<td><#if occResource.emlUrl??><a href="${occResource.emlUrl}">EML</a><#else>No EML configured</#if></td>
+		</tr>
+	</table>
     <@s.submit cssClass="button" key="button.edit"/>
   </fieldset>
 </@s.form>
@@ -103,25 +117,6 @@
 <fieldset>
   <legend><@s.text name="occResourceOverview.cache"/></legend>
   <@s.form>
-	<div class="left">
-		<@s.label key="resource.recordCount" value="${occResource.recTotal}"/>
-		<@s.label key="occResource.numTerminalTaxa"/>
-		<@s.label key="occResource.numRegions"/>
-		<li>
-	  		<label class="desc"><@s.text name="occResourceOverview.extensionCache"/></label>
-	 	  	<#list occResource.getExtensionMappings() as v>
-		  		<li>${v.extension.name} ${v.recTotal} records</li>
-		  	</#list>
-		</li>
-		<#if occResource.lastUpload??>
-			<@s.label key="resource.lastUpload" value="${occResource.lastUpload.executionDate}"/>
-			<@s.url id="logsUrl" action="logEvents" namespace="/admin" includeParams="get">
-				<@s.param name="sourceId" value="occResource.lastUpload.jobSourceId" />
-				<@s.param name="sourceType" value="occResource.lastUpload.jobSourceType" />
-			</@s.url>
-			<@s.a href="%{logsUrl}">log entries</@s.a>
-		</#if>
-    </div>
 	<div class="right">
 		<@s.url id="uploadHistoryUrl" action="history">
 			<@s.param name="resource_id" value="resource_id"/>
@@ -130,16 +125,52 @@
 			<img src="<@s.property value="gChartData"/>" width="400" height="200"/>
 		</@s.a>
 	</div>
-  </@s.form>	
-	<div class="break">
+	<table>
+		<#if occResource.lastUpload??>
+			<@s.url id="logsUrl" action="logEvents" namespace="/admin" includeParams="get">
+				<@s.param name="sourceId" value="occResource.lastUpload.jobSourceId" />
+				<@s.param name="sourceType" value="occResource.lastUpload.jobSourceType" />
+			</@s.url>
+			<tr>
+				<th colspan="2"><@s.text name="resource.lastUpload"/></th>
+			</tr>
+			<tr>
+				<td colspan="2">${occResource.lastUpload.executionDate}</td>
+			</tr>
+		</#if>
+		<tr>
+			<th><@s.text name="resource.recordCount"/></th>
+			<td>${occResource.recTotal}</td>
+		</tr>
+
+		<tr>
+			<th colspan="2">&nbsp;</th>
+		</tr>		
+		<tr>
+			<th><@s.text name="occResource.numTerminalTaxa"/></th>
+			<td>${occResource.numTerminalTaxa}</td>
+		</tr>
+		<tr>
+			<th><@s.text name="occResource.numRegions"/></th>
+			<td>${occResource.numRegions}</td>
+		</tr>
+ 	  	<#list occResource.getExtensionMappings() as v>
+			<tr>
+				<th>${v.extension.name}</th>
+				<td>${v.recTotal} records</td>
+			</tr>
+	  	</#list>
+	</table>
+  </@s.form>
+
     <#if occResource.hasMinimalMapping()>
-		<@s.form action="upload" method="post">
-		  <@s.hidden key="resource_id"/>
-		  <@s.submit cssClass="button" key="button.upload"/>
+		<@s.form action="upload" method="post" >
+		  <@s.hidden key="resource_id" />
+		  <@s.submit cssClass="button" key="button.upload" theme="simple"/>
 		</@s.form>
 		<@s.form action="clear" method="post">
-		  <@s.hidden key="resource_id"/>
-	      <@s.submit cssClass="button" key="button.clear" onclick="return confirmReset()"/>
+		  <@s.hidden key="resource_id" />
+	      <@s.submit cssClass="button" key="button.clear" onclick="return confirmReset()" theme="simple"/>
 		</@s.form>
 		<#-- 
 		<@s.form action="process" method="post">
@@ -150,14 +181,14 @@
     <#else>
     	<p class="reminder">Please finalize the core mapping before uploading data</p>
     </#if>
-	</div>
-  </fieldset>
-
+</fieldset>
+	
 <@s.form action="validate" method="get">
   <@s.hidden key="resource_id"/>
   <fieldset>
     <legend><@s.text name="occResourceOverview.validation"/></legend>
     <#if occResource.hasData()>
+		<div><@s.a href="%{logsUrl}">Upload error logs</@s.a></div>
 	    <@s.submit cssClass="button" key="button.validate"/>
     <#else>
     	<p class="reminder">Please upload data first</p>

@@ -1,18 +1,31 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
-    <meta name="resource" content="<@s.property value="occResource.title"/>"/>
+    <meta name="resource" content="${occResource.title}"/>
     <meta name="submenu" content="manage"/>
 </head>
 
 <@s.form id="occResourceForm" action="saveResource" method="post" validate="true">
+<fieldset>
+    <legend><@s.text name="occResourceOverview.metadata"/></legend>
     <@s.hidden name="resource_id" value="${(occResource.id)!}"/>
-    <@s.textfield key="occResource.title" required="true" cssClass="text xlarge"/>
-    <@s.textarea key="occResource.description" cssClass="text xlarge"/>
+	<@s.textfield key="occResource.title" required="true" cssClass="text xlarge"/>
+	<@s.textfield key="occResource.link" required="true" cssClass="text xlarge"/>
+    <div>
+        <div class="left">
+			<@s.textfield key="occResource.contactName" required="true" cssClass="text medium"/>
+        </div>
+        <div>
+			<@s.textfield key="occResource.contactEmail" required="true" cssClass="text large"/>
+        </div>
+    </div>
+	<@s.textfield key="occResource.emlUrl" required="false" cssClass="text xlarge"/>
+	<@s.textarea key="occResource.description" cssClass="text xlarge"/>
 
-    <li class="buttonBar bottom">
-        <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-        <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
-    </li>
+    <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
+    <@s.submit cssClass="button" name="eml" key="button.eml" theme="simple"/>
+    <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
+</fieldset>
+  
 </@s.form>
 
 <script type="text/javascript">

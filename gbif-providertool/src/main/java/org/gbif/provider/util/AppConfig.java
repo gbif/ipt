@@ -78,7 +78,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	
 	// RESOURCE BASICS
 	public static File getResourceCacheDir(Long resourceId) {
-		File dir = new File(getWebappDir(), resourceId.toString());
+		File dir = new File(getWebappDir(), "cache/"+resourceId.toString());
 	    if (!dir.exists()) {
 	        dir.mkdirs();
 	    }
@@ -95,7 +95,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
-		URL url = getWebappURL(String.format("%s/%s",resourceId, relPath));
+		URL url = getWebappURL(String.format("cache/%s/%s",resourceId, relPath));
 		return url;
 	}
 	
