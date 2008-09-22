@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:ipt="http://ipt.gbif.org/">
 <#escape x as x?xml>
   <channel>
     <title>${cfg.title}</title>
@@ -21,6 +21,12 @@
       <title>${res.title}</title>
 	  <#if res.link??>
       <link>${res.link}</link>
+	  </#if>
+	  <#if res.emlUrl??>
+      <ipt:emlLink>${res.emlUrl}</ipt:emlLink>
+	  </#if>
+	  <#if res.contactName??>
+      <ipt:contact>${res.contactName} <#if res.contactEmail??>&lt;${res.contactEmail}&gt;</#if></ipt:contact>
 	  </#if>
       <description>&lt;img src="${cfg.getResourceLogoUrl(res.id)}" align="left" style="padding-right:5px;" /&gt; 
       ${res.description}</description>
