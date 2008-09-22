@@ -22,8 +22,8 @@
 	  <#if res.link??>
       <link>${res.link}</link>
 	  </#if>
-      <description>${res.description}</description>
-	  <enclosure url="${cfg.getResourceLogoUrl(res.id)}" type="image" />
+      <description>&lt;img src="${cfg.getResourceLogoUrl(res.id)}" align="left" style="padding-right:5px;" /&gt; 
+      ${res.description}</description>
       <pubDate>${res.modified?datetime?string.medium}</pubDate>
       <guid>${res.guid}</guid>
     </item>

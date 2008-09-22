@@ -24,6 +24,18 @@
 		<div id="services" style="display:none">
 			<table class="lefthead">
 				<tr>
+					<th>Contact</th>
+					<td><s:property value="%{occResource.contactName}"/> <s:if test="%{occResource.contactEmail}">&lt;<s:property value="%{occResource.contactEmail}"/>&gt;</s:if></td>
+				</tr>
+				<tr>
+					<th>Homepage</th>
+					<td><a href="<s:property value="%{occResource.link}"/>"><s:property value="%{occResource.link}"/></a></td>
+				</tr>
+				<tr>
+					<th>EML</th>
+					<td><a href="<s:property value="%{occResource.emlUrl}"/>"><s:property value="%{occResource.emlUrl}"/></a></td>
+				</tr>
+				<tr>
 					<th><s:text name="occResourceOverview.tabfile"/></th>
 					<td><a href="<s:property value="%{cfg.getDumpArchiveUrl(resource_id)}"/>"><s:property value="%{cfg.getDumpArchiveUrl(resource_id)}"/></a></td>
 				</tr>

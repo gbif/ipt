@@ -79,6 +79,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public List<StatsCount> data;
 
 	public void prepare() {
+		area = GeographicalArea.WORLD.toString();
 		if (resource_id != null) {
 			occResource = occResourceManager.get(resource_id);
 		}
@@ -168,7 +169,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	
 	// HELPER
 	private void setMapSize(){
-		area = GeographicalArea.WORLD.toString();
 		if (zoom) {
 			width=ZOOM_MAP_WIDTH;
 			height=ZOOM_MAP_HEIGHT;
