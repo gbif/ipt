@@ -276,6 +276,16 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 	
 	
+	public String getGoogleMapsApiKey() {
+		return cfg.getGoogleMapsApiKey();
+	}
+
+
+	public void setGoogleMapsApiKey(String googleMapsApiKey) {
+		cfg.setGoogleMapsApiKey(googleMapsApiKey);
+	}
+
+
 	// MANAGER "DELEGATE" METHODS
 	public void load() {
 		cfg = providerCfgManager.load();

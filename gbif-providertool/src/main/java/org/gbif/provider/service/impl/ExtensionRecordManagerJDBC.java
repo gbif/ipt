@@ -23,6 +23,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.Resource;
@@ -38,7 +40,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true)
 public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {	
-	@Autowired
+    protected static final Log log = LogFactory.getLog(ExtensionRecordManagerJDBC.class);
+
+    @Autowired
 	private SessionFactory sessionFactory;		
 	@Autowired
 	@Qualifier("dataSource")
@@ -64,6 +68,7 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 
 	@Transactional(readOnly=false)
 	public void insertExtensionRecord(ExtensionRecord record) {
+		//FIXME implement
 		String sql = "insert into play set text='hallo'";
 		try {
 			executeSQL(sql);
@@ -74,12 +79,13 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 
 	@Transactional(readOnly=false)
 	public void insertExtensionRecords(ExtensionRecord[] records) {
-		// TODO Auto-generated method stub		
+		//FIXME implement
 	}
 
 	@Transactional(readOnly=false)
 	public int removeAll(Extension extension, Long resourceId) {
-		// TODO Auto-generated method stub
+		log.debug(String.format("Removed %s records for extension %s", 0, extension.getName()));
+		//FIXME implement
 		return 0;
 	}
 }

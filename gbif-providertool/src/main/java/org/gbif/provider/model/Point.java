@@ -63,7 +63,10 @@ public class Point {
 	 * @param geodatum
 	 */
 	public void transformIntoWGS84(String geodatum) {
-		//TODO: transform point into standard WGS84 datum. Might beed external library for this... 
+		//TODO: transform point into standard WGS84 datum. Might beed external library for this...
+		if (geodatum==null){
+			return;
+		}
 	}
 
 	@Transient

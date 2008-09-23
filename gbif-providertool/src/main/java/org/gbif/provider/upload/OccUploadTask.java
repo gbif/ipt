@@ -459,24 +459,25 @@ import org.springframework.transaction.annotation.Transactional;
 								extensionRecordManager.insertExtensionRecord(extRec);
 								writer.write(extRec);
 								// see if darwin core record is affected, e.g. geo extension => coordinates
-								if (vm.getId().equals(DarwinCore.GEO_EXTENSION_ID)){
+								if (vm.getExtension().getId().equals(DarwinCore.GEO_EXTENSION_ID)){
 									// this is the geo extension!
 									DarwinCore dwc = darwinCoreManager.get(coreId);
-									dwc.updateWithGeoExtension(extRec);
-									// update bbox
-									bbox.expandBox(dwc.getLocation());
-									darwinCoreManager.save(dwc);
-									// increase stats counter
-									if (dwc.getLocation().isValid()){
-										//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
-										// might need to do a count via SQL after upload is done ...
-										recWithCoordinates++;
-										// update Taxon bbox stats
-										if (dwc.getTaxon()!=null){
-											dwc.getTaxon().expandBox(dwc.getLocation());			
-										}
-										if (dwc.getRegion()!=null){
-											dwc.getRegion().expandBox(dwc.getLocation());			
+									if (dwc.updateWithGeoExtension(extRec)){
+										// update bbox
+										bbox.expandBox(dwc.getLocation());
+										darwinCoreManager.save(dwc);
+										// increase stats counter
+										if (dwc.getLocation().isValid()){
+											//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
+											// might need to do a count via SQL after upload is done ...
+											recWithCoordinates++;
+											// update Taxon bbox stats
+											if (dwc.getTaxon()!=null){
+												dwc.getTaxon().expandBox(dwc.getLocation());			
+											}
+											if (dwc.getRegion()!=null){
+												dwc.getRegion().expandBox(dwc.getLocation());			
+											}
 										}
 									}
 								}
