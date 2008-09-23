@@ -73,6 +73,9 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 		mappings = new ArrayList<PropertyMapping>();
         int filledMappings = 0;
     	for (ExtensionProperty prop : view.getExtension().getProperties()){
+        	if (prop == null){
+        		continue;
+        	}
     		// is this property mapped already?
     		if (view.hasMappedProperty(prop)){
     			// add existing mapping
@@ -98,7 +101,10 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 
     	// create specific, sorted mapping options for each extension property based on columnOptions & controlled vocabulary
 		mapOptions = new HashMap<Long, List>();
-        for (ExtensionProperty prop : view.getExtension().getProperties()){        	
+        for (ExtensionProperty prop : view.getExtension().getProperties()){
+        	if (prop == null){
+        		continue;
+        	}
         	//get real controlled vocabulary for properties from db
         	int i=FIXED_TERMS_IDX;
         	List<String> options;

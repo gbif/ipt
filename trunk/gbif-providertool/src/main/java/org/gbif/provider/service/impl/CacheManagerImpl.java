@@ -16,8 +16,10 @@ import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.service.LogEventManager;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
@@ -53,6 +55,8 @@ public class CacheManagerImpl implements CacheManager{
 	private RegionManager regionManager;
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
+	@Autowired
+	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
 	private OccStatManager occStatManager;
 	@Autowired
@@ -97,6 +101,11 @@ public class CacheManagerImpl implements CacheManager{
 		OccurrenceResource res = occResourceManager.get(resourceId);
 		// flag all old records as deleted, but dont remove them from the cache
 		darwinCoreManager.flagAllAsDeleted(res);
+		// remove extension data
+		for (ViewMappingBase vm : res.getExtensionMappings()){
+			vm.setRecTotal(0);
+			extensionRecordManager.removeAll(vm.getExtension(), resourceId);
+		}
 		// update resource stats
 		res.resetStats();
 		occResourceManager.save(res);

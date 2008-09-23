@@ -161,7 +161,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	
 	@Transient
 	public boolean hasMappedProperty(ExtensionProperty property) {
-		if (propertyMappings.containsKey(property.getId())){
+		if (property!=null && propertyMappings.containsKey(property.getId())){
 			return true;
 		}
 		return false;

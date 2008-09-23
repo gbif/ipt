@@ -158,7 +158,7 @@
  	  	<#list occResource.getExtensionMappings() as v>
 			<tr>
 				<th>${v.extension.name}</th>
-				<td>${v.recTotal} records</td>
+				<td>${v.recTotal}</td>
 			</tr>
 	  	</#list>
 	</table>

@@ -321,8 +321,9 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return dwc;
 	}
 	
-	public void updateWithGeoExtension(ExtensionRecord extRec){
+	public boolean updateWithGeoExtension(ExtensionRecord extRec){
 		String geodatum = null;
+		Point loc = new Point();
 		// tmp raw value
 		for (ExtensionProperty prop : extRec){
 			String val = StringUtils.trimToNull(extRec.getPropertyValue(prop));
@@ -330,7 +331,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			if(prop.equals(LATITUDE_PROP)){
 				if (val !=null){
 					try {
-						getLocation().setLatitude(Float.valueOf(val));
+						loc.setLatitude(Float.valueOf(val));
 					} catch (NumberFormatException e) {
 						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLatitude into Float value", val, e);
@@ -343,7 +344,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			else if(prop.equals(LONGITUDE_PROP)){
 				if (val !=null){
 					try {
-						getLocation().setLongitude(Float.valueOf(val));
+						loc.setLongitude(Float.valueOf(val));
 					} catch (NumberFormatException e) {
 						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLongitude into Float value", val, e);
@@ -357,7 +358,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				geodatum=extRec.getPropertyValue(prop);
 			}
 		}
-		getLocation().transformIntoWGS84(geodatum);
+		loc.transformIntoWGS84(geodatum);
+		if (loc.isValid()){
+			setLocation(loc);
+			return true;
+		}
+		return false;
 	}
 			
 

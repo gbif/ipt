@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 @Entity
 public class ProviderCfg {
 	private Long id;
@@ -16,6 +18,7 @@ public class ProviderCfg {
 	private String descriptionImage;
 	private String baseUrl;
 	private String geoserverUrl;
+	private String googleMapsApiKey;
 	private String dataDir;
 	
 	
@@ -64,6 +67,15 @@ public class ProviderCfg {
 	}
 	public void setDataDir(String dataDir) {
 		this.dataDir = dataDir;
+	}
+	
+	@Column(length=128)
+	public String getGoogleMapsApiKey() {
+		return googleMapsApiKey;
+	}
+	public void setGoogleMapsApiKey(String googleMapsApiKey) {
+		googleMapsApiKey = StringUtils.trimToNull(googleMapsApiKey);
+		this.googleMapsApiKey = googleMapsApiKey;
 	}
 		
 }
