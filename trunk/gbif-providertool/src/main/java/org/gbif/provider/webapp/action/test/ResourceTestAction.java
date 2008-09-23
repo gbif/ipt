@@ -21,7 +21,9 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.apache.struts2.util.ServletContextAware;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
@@ -36,20 +38,9 @@ import com.opensymphony.xwork2.Preparable;
  * @author markus
  *
  */
-public class testAction extends BaseAction implements Preparable, ServletContextAware {
-	private ServletContext context;
-	@Autowired
-	private CacheManager cacheManager;
-
-	public void prepare() throws Exception {
-	}
-
+public class ResourceTestAction extends BaseResourceAction {
 	public String execute(){
-		System.out.println(cacheManager.isBusy(1l));
+		resource=resourceManager.get(Constants.TEST_RESOURCE_ID);
 		return SUCCESS;
-	}
-
-	public void setServletContext(ServletContext context) {
-		this.context=context;
 	}
 }

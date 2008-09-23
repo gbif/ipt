@@ -532,6 +532,11 @@
                 <param name="location">/WEB-INF/pages/test/dt.ftl</param>                
             </result>
         </action>
+        <action name="map" class="org.gbif.provider.webapp.action.test.ResourceTestAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/test/geomap.ftl</param>                
+            </result>
+        </action>
     </package>
     
     <include file="struts-logging.xml"/>

@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.util.ServletContextAware;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.Point;
 import org.gbif.provider.model.ProviderCfg;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,6 +221,10 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		return cfg.getMeta().getTitle();
 	}
 
+	public Point getLocation() {
+		return cfg.getMeta().getLocation();
+	}
+
 	public void setBaseUrl(String baseUrl) {
 		cfg.setBaseUrl(trimUrl(baseUrl));
 		baseURL=getBaseUrl();
@@ -274,6 +279,9 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		cfg.getMeta().setTitle(title);
 	}
 
+	public void setLocation(Point location) {
+		cfg.getMeta().setLocation(location);
+	}
 	
 	
 	public String getGoogleMapsApiKey() {

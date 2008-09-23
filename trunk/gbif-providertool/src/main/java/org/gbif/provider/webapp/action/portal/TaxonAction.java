@@ -8,10 +8,13 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.MapUtil;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaxonAction extends BaseOccurrenceResourceAction {
+	@Autowired
+	private MapUtil mapUtil;
 	@Autowired
 	private TaxonManager taxonManager;
 	@Autowired
@@ -20,10 +23,14 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
     private Taxon taxon;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
+	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
+	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	 
     public String execute(){
     	if (id!=null){
     		taxon=taxonManager.get(id);
+			// geoserver map link
+			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
     	}
 		return SUCCESS;
     }
@@ -51,6 +58,18 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 
 	public List<DarwinCore> getOccurrences() {
 		return occurrences;
+	}
+
+	public String getGeoserverMapUrl() {
+		return geoserverMapUrl;
+	}
+
+	public static int getWidth() {
+		return width;
+	}
+
+	public static int getHeight() {
+		return height;
 	}
 
 }

@@ -29,9 +29,9 @@
 <#assign core=dwc.resource.coreMapping>
 <fieldset>
 	<h2>${core.extension.name}</h2>
-	<#if (dwc.location)?? && cfg.googleMapsApiKey??>
+<#if (dwc.location)?? && cfg.googleMapsApiKey??>
 	<#-- STATIC IMAGE: <img class="right" src="http://maps.google.com/staticmap?center=${dwc.location.latitude!0},${dwc.location.longitude!0}&zoom=10&size=300x300&maptype=terrain&markers=${dwc.location.latitude!0},${dwc.location.longitude!0},reds&key=${cfg.googleMapsApiKey}" /-->	
-    <div id="map" style="width: 300px; height: 300px" class="right"></div>
+    <div id="map" style="width: 250px; height: 250px" class="right"></div>
 	
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=${cfg.googleMapsApiKey}" type="text/javascript"></script>
     <script type="text/javascript">
@@ -50,7 +50,7 @@
       }
     </script>
     	
-	</#if>	
+</#if>	
 
 	<table>	
 	<#list core.extension.properties as p>

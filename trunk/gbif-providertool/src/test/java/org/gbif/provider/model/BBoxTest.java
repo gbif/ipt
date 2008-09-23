@@ -51,4 +51,12 @@ public class BBoxTest {
 		assertFalse(bbox.contains(p4));
 	}
 
+	@Test
+	public void testBoxRatio() {
+		System.out.println(bbox);
+		bbox.fitRatio(1.4);
+		System.out.println(bbox);
+		bbox.fitRatio(1.2);
+		System.out.println(bbox);
+	}
 }

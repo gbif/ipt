@@ -61,7 +61,7 @@
 </div>
 <div id="loc-geoserver" class="stats map">
 	<label><s:text name="stats.occPointMap"/></label>
-	<img src="<s:property value="geoserverMapUrl"/>" />
+	<img src="<s:property value="geoserverMapUrl"/>" width="<s:property value="width"/>" height="<s:property value="height"/>" />
 </div>
 
 			
