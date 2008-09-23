@@ -182,6 +182,9 @@
     <#else>
     	<p class="reminder">Please finalize the core mapping before uploading data</p>
     </#if>
+    
+    <div class="clearfix" ></div>
+    
 </fieldset>
 	
 <@s.form action="validate" method="get">

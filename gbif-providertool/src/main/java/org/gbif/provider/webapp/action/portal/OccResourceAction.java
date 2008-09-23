@@ -29,18 +29,22 @@ import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.util.MapUtil;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
 	protected Map session;
+	@Autowired
+	private MapUtil mapUtil;
 	private OccurrenceResource occResource;
 	private List<OccurrenceResource> occResources;
 	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
 	private Map<Integer, String> hostTypes = new TreeMap<Integer, String>();
-	public String geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
+	public String geoserverMapUrl;
 	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 
@@ -50,6 +54,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 			occResource = occResourceManager.get(resource_id);
 			// update recently viewed resources in session
 			updateRecentResouces();
+			// geoserver map link
+			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, occResource.getBbox(), null, null);
 		}
 		// prepare select lists
 		for (RegionType rt : RegionType.DARWIN_CORE_REGIONS){
@@ -64,6 +70,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		for (HostType ht : HostType.HOSTING_BODIES){
 			hostTypes.put(ht.ordinal(), ht.name());
 		}
+		
 	}
 	
 	private void updateRecentResouces(){

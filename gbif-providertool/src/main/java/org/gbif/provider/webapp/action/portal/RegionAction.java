@@ -10,10 +10,13 @@ import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.MapUtil;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RegionAction extends BaseOccurrenceResourceAction {
+	@Autowired
+	private MapUtil mapUtil;
 	@Autowired
 	private RegionManager regionManager;
 	@Autowired
@@ -22,10 +25,14 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     private Region region;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
+	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
+	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	 
     public String execute(){
     	if (id!=null){
     		region=regionManager.get(id);
+			// geoserver map link
+			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
     	}
 		return SUCCESS;
     }
@@ -53,6 +60,18 @@ public class RegionAction extends BaseOccurrenceResourceAction {
 
 	public Region getRegion() {
 		return region;
+	}
+
+	public String getGeoserverMapUrl() {
+		return geoserverMapUrl;
+	}
+
+	public static int getWidth() {
+		return width;
+	}
+
+	public static int getHeight() {
+		return height;
 	}
 
 }

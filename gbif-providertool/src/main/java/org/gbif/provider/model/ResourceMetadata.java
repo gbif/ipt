@@ -36,6 +36,7 @@ public class ResourceMetadata{
 	protected String description;
 	protected String contactName;
 	protected String contactEmail;
+	protected Point location;
 
 	public String getLink() {
 		return link;
@@ -82,6 +83,13 @@ public class ResourceMetadata{
 	}
 	public void setContactEmail(String contactEmail) {
 		this.contactEmail = contactEmail;
+	}
+	
+	public Point getLocation() {
+		return location;
+	}
+	public void setLocation(Point location) {
+		this.location = location;
 	}
 	
 

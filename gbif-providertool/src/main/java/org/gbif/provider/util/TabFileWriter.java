@@ -22,10 +22,10 @@ import org.gbif.provider.model.ViewMappingBase;
 
 
 public class TabFileWriter {
-	public static final String ID_COLUMN_NAME = "#ID";
-	public static final String GUID_COLUMN_NAME = "#GUID";
-	public static final String LINK_COLUMN_NAME = "#DETAILS";
-	public static final String MODIFIED_COLUMN_NAME = "#MODIFIED";
+	public static final String ID_COLUMN_NAME = "ipt:coreid";
+	public static final String GUID_COLUMN_NAME = "ipt:guid";
+	public static final String LINK_COLUMN_NAME = "ipt:link";
+	public static final String MODIFIED_COLUMN_NAME = "ipt:modified";
 
 	private BufferedWriter writer;
 	private final List<ExtensionProperty> header;

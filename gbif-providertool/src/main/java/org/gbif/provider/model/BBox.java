@@ -97,6 +97,29 @@ public class BBox {
 		return false;
 	}
 
+	/** Increases BBox to make sure that bbox and map width/height ratios are the same
+	 * @param ratio
+	 */
+	@Transient
+	public void fitRatio(double ratio){
+		if (isValid()){
+			double lat = (double) max.getLatitude() - (double) min.getLatitude();
+			double lon = (double) max.getLongitude() - (double) min.getLongitude();
+			double existingRatio = lat/lon;
+			if (ratio > existingRatio){
+				// need to extend the latitude on both min+max
+				Float increase = (float) ((lat * ratio / existingRatio) - lat)/2;
+				min.setLatitude(min.getLatitude()-increase);
+				max.setLatitude(max.getLatitude()+increase);
+			}else if (ratio < existingRatio){
+				// need to extend the longitude on both min+max
+				Float increase = (float) ((lon * ratio / existingRatio) - lon)/2;
+				min.setLongitude(min.getLongitude()-increase);
+				max.setLongitude(max.getLongitude()+increase);
+			}
+		}
+	}
+	
 	/**
 	 * Check if point lies within this bbox
 	 * @param p
@@ -111,6 +134,9 @@ public class BBox {
 		return false;
 	}
 	
+	public String toWMSString(){
+		return String.format("%s,%s,%s,%s", min.getLongitude(), min.getLatitude(), max.getLongitude(), max.getLatitude());
+	}
 	public String toString(){
 		return String.format("%s %s", min, max);
 	}
