@@ -1,5 +1,7 @@
 package org.gbif.provider.model;
 
+import java.util.Arrays;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -28,6 +30,12 @@ public class BBox {
 	private Point min;
 
 
+	public static BBox NewWorldInstance() {
+		BBox world = new BBox(new Point(90f,180f), new Point(-90f,-180f));
+		return world;
+	}
+
+	
 	public BBox() {
 		super();
 	}
@@ -36,7 +44,7 @@ public class BBox {
 		setMax(max);
 		setMin(min);
 	}
-		
+	
 	public Point getMax() {
 		if (max==null){
 			max = new Point();
@@ -97,6 +105,38 @@ public class BBox {
 		return false;
 	}
 
+	/** Try to expand BBox by factor given but keep box centered and expand to maximum possible in case we reach world limits.
+	 * @param factor 0-1 for shrinking, >1 for expanding boxes
+	 */
+	@Transient
+	public void resize(float factor){
+		if (factor < 0f){
+			throw new IllegalArgumentException("Factor must be larger than 0");
+		}
+		if (!isValid()){
+			throw new IllegalStateException("BBox is not valid");
+		}
+		float minX = min.getLongitude();
+		float minY = min.getLatitude();
+		float maxX = max.getLongitude();
+		float maxY = max.getLatitude();
+		float width = maxX-minX;
+		float height = maxY-minY;
+		// detect maximum possible expand factor
+		float[] maxFactors = {(factor-1)/2f, (90f-maxY)/height, (90+minY)/height,  (180f-maxX)/width, (180f+minX)/width};
+		Arrays.sort(maxFactors);
+		float expandFactor = maxFactors[0];
+		// change bbox		
+		minX=minX-(expandFactor*width);
+		maxX=maxX+(expandFactor*width);
+		minY=minY-(expandFactor*height);
+		maxY=maxY+(expandFactor*height);
+		min.setLongitude(minX);
+		min.setLatitude(minY);
+		max.setLongitude(maxX);
+		max.setLatitude(maxY);
+	}
+	
 	/** Expands BBox so that its longitude/latitude ratio becomes 2:1 which is often used for maps (360° : 180°).
 	 */
 	@Transient
