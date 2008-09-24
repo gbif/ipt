@@ -44,14 +44,10 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 
     @Autowired
 	private SessionFactory sessionFactory;		
-	@Autowired
-	@Qualifier("dataSource")
-	private DataSource dataSource;
 
 	private Connection getConnection() throws SQLException {
 		Session s = SessionFactoryUtils.getSession(sessionFactory, false);
 		Connection cn = s.connection();
-//		Connection cn = dataSource.getConnection();
 		return cn;
 	}
 	
@@ -75,11 +71,6 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Transactional(readOnly=false)
-	public void insertExtensionRecords(ExtensionRecord[] records) {
-		//FIXME implement
 	}
 
 	@Transactional(readOnly=false)

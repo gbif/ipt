@@ -41,6 +41,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.hibernate.annotations.IndexColumn;
 
 /**
@@ -53,6 +54,8 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	private Long id;	
 	private String name;
 	private String tablename;
+	private boolean installed;
+	private ExtensionType type;
 	private String link;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
 
@@ -103,7 +106,19 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		this.tablename = tablename;
 	}
 	
+	public ExtensionType getType() {
+		return type;
+	}
+	public void setType(ExtensionType type) {
+		this.type = type;
+	}
 	
+	public boolean isInstalled() {
+		return installed;
+	}
+	public void setInstalled(boolean installed) {
+		this.installed = installed;
+	}
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
@@ -113,8 +128,10 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		}
 		Extension rhs = (Extension) object;
 		return new EqualsBuilder()
-				.append(this.link, rhs.link).append(this.name, rhs.name).append(
-						this.id, rhs.id).isEquals();
+				.append(this.link, rhs.link)
+				.append(this.name, rhs.name)
+				.append(this.type, rhs.type)
+				.append(this.id, rhs.id).isEquals();
 	}
 	/**
 	 * @see java.lang.Object#hashCode()
@@ -125,7 +142,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
         result = 31 * result + (tablename != null ? tablename.hashCode() : 0);
-        //result = 31 * result + (properties != null ? properties.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
 	}
 	/**

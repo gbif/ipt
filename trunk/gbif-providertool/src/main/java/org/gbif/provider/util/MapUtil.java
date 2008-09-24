@@ -24,7 +24,6 @@ public class MapUtil {
 			float ratio = (float) width / (float) height;
 			bbox.expandToMapRatio(ratio);
 		}
-		// FIXME: add taxon+region filter to FeatureType
 		LinkedList<String> filters = new LinkedList<String>();
 		
 		filters.add(String.format("<PropertyIsEqualTo><PropertyName>ResourceId</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", resourceId));

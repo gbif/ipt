@@ -26,7 +26,6 @@ import org.gbif.provider.model.ExtensionRecord;
 
 public interface ExtensionRecordManager {
 	public void insertExtensionRecord(ExtensionRecord record);
-	public void insertExtensionRecords(ExtensionRecord[] records);
 	/**
 	 * Delete all extension records for a given resource that are linked to a core record which is flagged as deleted
 	 * @param extension

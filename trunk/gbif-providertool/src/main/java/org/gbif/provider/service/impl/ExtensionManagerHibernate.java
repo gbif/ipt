@@ -1,8 +1,13 @@
 package org.gbif.provider.service.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
@@ -17,21 +22,112 @@ import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension> implements ExtensionManager {
-	@Autowired
-	private GenericManager<ExtensionProperty> extensionPropertyManager;
+    protected static final Log log = LogFactory.getLog(ExtensionManagerHibernate.class);
+    @Autowired
+	private SessionFactory sessionFactory;		
 
 	public ExtensionManagerHibernate() {
 	        super(Extension.class);
     }
 
-	public void installExtension(Extension extension){
-		
+	private Connection getConnection() throws SQLException {
+		Session s = SessionFactoryUtils.getSession(sessionFactory, false);
+		Connection cn = s.connection();
+		return cn;
 	}
+	
+	public void installExtension(Extension extension){
+		String table = extension.getTablename();
+		if (table==null){
+			throw new IllegalArgumentException("Extension needs to define a tablename");
+		}
+		if (extension.getProperties().size()==0){
+			throw new IllegalArgumentException("Extension needs to define properties");
+		}
+
+		Connection cn;
+		try {
+			cn = getConnection();
+			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid BIGINT NOT NULL, INDEX(coreid))", table);
+			PreparedStatement ps = cn.prepareStatement(ddl);
+			try {
+				ps.execute();
+			}finally{
+				ps.close();
+			}
+			for (ExtensionProperty prop : extension.getProperties()){
+				if (prop!=null && prop.getColumnName()!=null && prop.getColumnLength()>0){
+					ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, prop.getColumnName(), prop.getColumnLength());
+					ps = cn.prepareStatement(ddl);
+					try {
+						ps.execute();
+					}finally{
+						ps.close();
+					}
+				}else{
+					log.warn("Extension property doesnt contain valid column description");
+				}
+			}
+			// persist extension in case it isnt yet
+			extension.setInstalled(true);
+			save(extension);
+		} catch (SQLException e) {
+			extension.setInstalled(false);
+			save(extension);
+			e.printStackTrace();
+		}
+	}
+	
 	public void removeExtension(Extension extension){
-		
+		String table = extension.getTablename();
+		if (table==null){
+			throw new IllegalArgumentException("Extension needs to define a tablename");
+		}
+
+		Connection cn;
+		PreparedStatement ps=null;
+		try {
+			cn = getConnection();
+			String ddl = String.format("DROP TABLE IF EXISTS %s", table);
+			ps = cn.prepareStatement(ddl);
+			ps.execute();
+			extension.setInstalled(false);
+			save(extension);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if (ps!=null){
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
+	
+	private void removeExtensionCompletely(Extension extension) throws SQLException{
+		removeExtension(extension);
+		// remove extension, its properties and potentially existing property mappings
+		Session session = getSession();
+		for (ExtensionProperty prop : extension.getProperties()){
+			// delete all existing property mappings
+			String hqlUpdate = "delete PropertyMapping WHERE property = :property";
+			int count = session.createQuery( hqlUpdate ).setEntity("property", prop).executeUpdate();
+			log.info(String.format("Removed %s property mappings bound to extension property %s", count, prop.getQualName()));
+			// remove property itself
+			universalRemove(prop);
+		}
+		// finally remove extension
+		remove(extension);
 	}
 }

@@ -14,22 +14,50 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action.manage;
+package org.gbif.provider.webapp.action.admin;
 
 import java.util.List;
 
+import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.Extension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class ExtensionAction extends BaseAction implements Preparable{
-    private GenericManager<Extension> extensionManager;
+public class ExtensionAction extends BaseAction {
+	@Autowired
+    private ExtensionManager extensionManager;
     private List<Extension> extensions;
     private Extension extension;
     private Long id;
 
+	public String execute(){
+		return detail();
+	}
+
+	public String detail(){
+		extension = extensionManager.get(id);
+		return SUCCESS;
+	}
+
+	public String list(){
+		extensions = extensionManager.getAll();
+		return SUCCESS;
+	}
+	public String add(){
+		extension = extensionManager.get(id);
+		extensionManager.installExtension(extension);
+		return SUCCESS;
+	}
+	public String remove(){
+		extensions = extensionManager.getAll();
+		return SUCCESS;
+	}
+
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -44,25 +72,6 @@ public class ExtensionAction extends BaseAction implements Preparable{
 
 	public Extension getExtension() {
 		return extension;
-	}
-
-	public void setExtensionManager(GenericManager<Extension> extensionManager) {
-		this.extensionManager = extensionManager;
-	}
-
-	public void prepare() throws Exception {
-		// TODO Auto-generated method stub		
-	}
-	
-	public String execute(){
-		extension = extensionManager.get(id);
-		extension.getProperties();
-		return SUCCESS;
-	}
-
-	public String list(){
-		extensions = extensionManager.getAll();
-		return SUCCESS;
 	}
 
 }

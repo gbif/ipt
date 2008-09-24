@@ -60,9 +60,7 @@
         <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
     </bean>    
     
-    <bean id="extensionManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.Extension"/>
-    </bean>    
+    <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
     
     <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
     

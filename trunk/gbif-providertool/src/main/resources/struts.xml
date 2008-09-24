@@ -514,12 +514,20 @@
         
 
         <!-- EXTENSIONS -->
-        <action name="extension" class="org.gbif.provider.webapp.action.manage.ExtensionAction">
-            <result>/WEB-INF/pages/admin/extensionDetail.jsp</result>
+        <action name="extensions" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="list">
+            <result type="freemarker">/WEB-INF/pages/admin/extensionList.ftl</result>
         </action>
-        
-        <action name="extensions" class="org.gbif.provider.webapp.action.manage.ExtensionAction" method="list">
-            <result>/WEB-INF/pages/admin/extensionList.jsp</result>
+        <action name="extension" class="org.gbif.provider.webapp.action.admin.ExtensionAction">
+            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
+        </action>
+        <action name="extensionDetail" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="detail">
+            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
+        </action>
+        <action name="addExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="add">
+            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
+        </action>
+        <action name="delExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="remove">
+            <result type="freemarker">/WEB-INF/pages/admin/extensionList.ftl</result>
         </action>
         
     </package>
