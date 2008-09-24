@@ -23,8 +23,8 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
     private Taxon taxon;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
-	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
-	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
+	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
+	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	 
     public String execute(){
     	if (id!=null){
@@ -39,7 +39,7 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
     	if (id!=null && resource_id!=null){
     		taxon=taxonManager.get(id);
     		occurrences = darwinCoreManager.getByTaxon(id, resource_id, true);
-    		geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
+			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
     	}
 		return SUCCESS;
     }
@@ -64,11 +64,11 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 		return geoserverMapUrl;
 	}
 
-	public static int getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public static int getHeight() {
+	public int getHeight() {
 		return height;
 	}
 

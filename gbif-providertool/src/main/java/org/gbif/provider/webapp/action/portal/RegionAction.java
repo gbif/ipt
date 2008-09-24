@@ -25,8 +25,8 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     private Region region;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
-	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
-	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
+	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
+	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	 
     public String execute(){
     	if (id!=null){
@@ -41,7 +41,7 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     	if (id!=null && resource_id!=null){
     		region=regionManager.get(id);
     		occurrences = darwinCoreManager.getByRegion(id, resource_id, true);
-    		geoserverMapUrl = "http://chart.apis.google.com/chart?cht=t&chs=320x160&chd=s:_&chtm=world";
+			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
     	}
 		return SUCCESS;
     }
@@ -66,11 +66,11 @@ public class RegionAction extends BaseOccurrenceResourceAction {
 		return geoserverMapUrl;
 	}
 
-	public static int getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public static int getHeight() {
+	public int getHeight() {
 		return height;
 	}
 

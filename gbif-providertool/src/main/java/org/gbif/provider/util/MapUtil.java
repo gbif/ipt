@@ -11,11 +11,11 @@ public class MapUtil {
 	private AppConfig cfg;
 	
 	public String getGeoserverMapUrl(Long resourceId, int width, int height, BBox bbox, Taxon taxon, Region region){
-		if (bbox == null){
+		if (bbox == null || !bbox.isValid()){
 			bbox = new BBox(new Point(90f,45f), new Point(-90f,-45f));
 		}else{
-			double ratio = (double) height / (double) width;
-			bbox.fitRatio(ratio);			
+			float ratio = (float) height / (float) width;
+			bbox.expandToMapRatio(ratio);			
 		}
 		// FIXME: add taxon+region filter
 		// filter: "<Filter><PropertyIsEqualTo><PropertyName>ScientificName</PropertyName><Literal>Arenaria acerosa Boiss.</Literal></PropertyIsEqualTo></Filter>"

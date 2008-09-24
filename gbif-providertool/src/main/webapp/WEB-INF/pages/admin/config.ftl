@@ -10,9 +10,9 @@
   <fieldset>
     <legend><@s.text name="config.metadata"/></legend>
 	<@s.textfield key="config.title" required="true" cssClass="text xlarge"/>
-    <div class="right">
+    <div class="googlemap">
 		<#if (config.location)?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.location.latitude!0},${config.location.longitude!0}&t=h&z=15"><img style="padding-right:15px" src="http://maps.google.com/staticmap?center=${config.location.latitude!0},${config.location.longitude!0}&zoom=5&size=95x95&key=${cfg.googleMapsApiKey}" /></a>	
+			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.location.latitude!0},${config.location.longitude!0}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.location.latitude!0},${config.location.longitude!0}&zoom=5&size=95x95&key=${cfg.googleMapsApiKey}" /></a>	
 		</#if>
     </div>
 	<@s.textfield key="config.link" required="true" cssClass="text large"/>

@@ -53,10 +53,13 @@ public class BBoxTest {
 
 	@Test
 	public void testBoxRatio() {
-		System.out.println(bbox);
-		bbox.fitRatio(1.4);
-		System.out.println(bbox);
-		bbox.fitRatio(1.2);
-		System.out.println(bbox);
+//		System.out.println(bbox);
+		bbox.expandToMapRatio();
+//		System.out.println(bbox);
+		bbox.expandBox(p4);
+//		System.out.println(bbox);
+		bbox.expandToMapRatio();
+//		System.out.println(bbox);
+		assertTrue(bbox.isValid());
 	}
 }
