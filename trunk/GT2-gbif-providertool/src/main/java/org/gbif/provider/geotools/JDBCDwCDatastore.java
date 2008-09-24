@@ -15,7 +15,6 @@
 package org.gbif.provider.geotools;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +28,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.gbif.portal.geotools.density.PointDataFeatureAttributeReader;
-import org.gbif.portal.geotools.density.PointDensity;
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DefaultFeatureReader;
 import org.geotools.data.FeatureReader;
@@ -40,12 +37,10 @@ import org.geotools.feature.DefaultFeatureTypeFactory;
 import org.geotools.feature.FeatureType;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.type.GeometricAttributeType;
-import org.geotools.feature.type.NumericAttributeType;
 import org.geotools.feature.type.TextualAttributeType;
 import org.geotools.filter.Filter;
 import org.geotools.filter.Filters;
 
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -61,13 +56,16 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	 */
 	protected static AttributeType[] types = {
 		new TextualAttributeType("ResourceId", false, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Kingdom", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Phylum", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Class", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Order", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Family", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Genus", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("GUID", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("TaxonId", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("RegionId", true, 1, 1, "0", Filter.INCLUDE),
 		new TextualAttributeType("ScientificName", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("Locality", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("InstitutionCode", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("CollectionCode", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("CatalogNumber", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("Collector", true, 1, 1, "0", Filter.INCLUDE),
+		new TextualAttributeType("DateCollected", true, 1, 1, "0", Filter.INCLUDE),
 		new TextualAttributeType("BasisOfRecord", true, 1, 1, "0", Filter.INCLUDE),
 		new GeometricAttributeType("Geom", Point.class, false, null, null, null)};		
 	
@@ -121,13 +119,16 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		
 		List<DwcRecord> records = dao.getRecords(
 				parsedQuery.getResourceId(), 
-				parsedQuery.getKingdom(), 
-				parsedQuery.getPhylum(), 
-				parsedQuery.getKlass(), 
-				parsedQuery.getOrder(), 
-				parsedQuery.getFamily(), 
-				parsedQuery.getGenus(), 
+				parsedQuery.getGuid(), 
+				parsedQuery.getTaxonId(), 
+				parsedQuery.getRegionId(), 
 				parsedQuery.getScientificName(), 
+				parsedQuery.getLocality(), 
+				parsedQuery.getInstitutionCode(), 
+				parsedQuery.getCollectionCode(), 
+				parsedQuery.getCatalogNumber(), 
+				parsedQuery.getCollector(), 
+				parsedQuery.getDateCollected(), 
 				parsedQuery.getBasisOfRecord(), 
 				parsedQuery.getMinY(), 
 				parsedQuery.getMaxY(), 

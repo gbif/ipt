@@ -8,6 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.data.AttributeReader;
 import org.geotools.feature.AttributeType;
+import org.geotools.feature.type.GeometricAttributeType;
+import org.geotools.feature.type.TextualAttributeType;
+import org.geotools.filter.Filter;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
@@ -39,27 +42,34 @@ public class DwcRecordFeatureAttributeReader implements AttributeReader {
 	 * Reads the data
 	 * @see org.geotools.data.AttributeReader#read(int)
 	 */
+	
 	public Object read(int index) throws ArrayIndexOutOfBoundsException {
 		DwcRecord row = data.get(cursor);		
 		if (index==0) 
 			return row.getResourceId();
 		else if (index==1) 
-			return row.getKingdom();
+			return row.getGuid();
 		else if (index==2) 
-			return row.getPhylum();
+			return row.getTaxonId();
 		else if (index==3) 
-			return row.getKlass();
+			return row.getRegionId();
 		else if (index==4) 
-			return row.getOrder();
-		else if (index==5) 
-			return row.getFamily();
-		else if (index==6) 
-			return row.getGenus();
-		else if (index==7) 
 			return row.getScientificName();
+		else if (index==5) 
+			return row.getLocality();
+		else if (index==6) 
+			return row.getInstitutionCode();
+		else if (index==7) 
+			return row.getCollectionCode();
 		else if (index==8) 
+			return row.getCatalogNumber();
+		else if (index==9) 
+			return row.getCollector();
+		else if (index==10) 
+			return row.getDateCollected();
+		else if (index==11) 
 			return row.getBasisOfRecord();
-		else if (index==9) {
+		else if (index==12) {
 			Coordinate c= new Coordinate(row.getLongitude(), row.getLatitude());
 			// TODO - 4326 ???
 			return new Point(c, new PrecisionModel(), 4326);

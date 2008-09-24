@@ -19,88 +19,47 @@ package org.gbif.provider.geotools;
  */
 public class DwcRecord {
 	protected Integer resourceId;
-	protected String kingdom;
-	protected String phylum;
-	protected String klass;
-	protected String order;
-	protected String family;
-	protected String genus;
+	protected String guid;
+	protected Long taxonId;
+	protected Long regionId;
 	protected String scientificName;
+	protected String locality;
+	protected String institutionCode;
+	protected String collectionCode;
+	protected String catalogNumber;
+	protected String collector;
+	protected String dateCollected;
 	protected String basisOfRecord;
 	protected Double latitude;
 	protected Double longitude;
 	
-	/**
-	 * @param dataResourceId
-	 * @param kingdom
-	 * @param phylum
-	 * @param klass
-	 * @param order
-	 * @param family
-	 * @param genus
-	 * @param species
-	 * @param scientificName
-	 * @param basisOfRecord
-	 * @param latitude
-	 * @param longitude
-	 */
-	public DwcRecord(Integer resourceId, String kingdom, String phylum,
-			String klass, String order, String family, String genus,
-			String scientificName, String basisOfRecord,
-			Double latitude, Double longitude) {
+	public DwcRecord(Integer resourceId, String guid, Long taxonId, Long regionId, 
+			String scientificName, String locality,
+			String institutionCode,	String collectionCode, String catalogNumber, String collector,
+			String dateCollected, String basisOfRecord, Double latitude, Double longitude) {
+		super();
 		this.resourceId = resourceId;
-		this.kingdom = kingdom;
-		this.phylum = phylum;
-		this.klass = klass;
-		this.order = order;
-		this.family = family;
-		this.genus = genus;
+		this.guid = guid;
+		this.taxonId = taxonId;
+		this.regionId = regionId;
 		this.scientificName = scientificName;
+		this.locality = locality;
+		this.institutionCode = institutionCode;
+		this.collectionCode = collectionCode;
+		this.catalogNumber = catalogNumber;
+		this.collector = collector;
+		this.dateCollected = dateCollected;
 		this.basisOfRecord = basisOfRecord;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
+
+
 	public Integer getResourceId() {
 		return resourceId;
 	}
 	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
-	}
-	public String getKingdom() {
-		return kingdom;
-	}
-	public void setKingdom(String kingdom) {
-		this.kingdom = kingdom;
-	}
-	public String getPhylum() {
-		return phylum;
-	}
-	public void setPhylum(String phylum) {
-		this.phylum = phylum;
-	}
-	public String getKlass() {
-		return klass;
-	}
-	public void setKlass(String klass) {
-		this.klass = klass;
-	}
-	public String getOrder() {
-		return order;
-	}
-	public void setOrder(String order) {
-		this.order = order;
-	}
-	public String getFamily() {
-		return family;
-	}
-	public void setFamily(String family) {
-		this.family = family;
-	}
-	public String getGenus() {
-		return genus;
-	}
-	public void setGenus(String genus) {
-		this.genus = genus;
 	}
 	public String getScientificName() {
 		return scientificName;
@@ -125,6 +84,84 @@ public class DwcRecord {
 	}
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
+	}
+
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
+	}
+
+	public String getDateCollected() {
+		return dateCollected;
+	}
+
+	public void setDateCollected(String dateCollected) {
+		this.dateCollected = dateCollected;
+	}
+
+	public String getInstitutionCode() {
+		return institutionCode;
+	}
+
+	public void setInstitutionCode(String institutionCode) {
+		this.institutionCode = institutionCode;
+	}
+
+	public String getCollectionCode() {
+		return collectionCode;
+	}
+
+	public void setCollectionCode(String collectionCode) {
+		this.collectionCode = collectionCode;
+	}
+
+	public String getCatalogNumber() {
+		return catalogNumber;
+	}
+
+	public void setCatalogNumber(String catalogNumber) {
+		this.catalogNumber = catalogNumber;
+	}
+
+	public String getCollector() {
+		return collector;
+	}
+
+	public void setCollector(String collector) {
+		this.collector = collector;
+	}
+
+
+	public Long getTaxonId() {
+		return taxonId;
+	}
+
+
+	public void setTaxonId(Long taxonId) {
+		this.taxonId = taxonId;
+	}
+
+
+	public Long getRegionId() {
+		return regionId;
+	}
+
+
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
+
+
+	public String getLocality() {
+		return locality;
+	}
+
+
+	public void setLocality(String locality) {
+		this.locality = locality;
 	}
 	
 }
