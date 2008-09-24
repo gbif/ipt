@@ -15,8 +15,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Embeddable
 public class Point {
-	private Float latitude;
+	// x (east/west)
 	private Float longitude;
+	// y (north/south)
+	private Float latitude;
 	
 	public Point() {
 	}

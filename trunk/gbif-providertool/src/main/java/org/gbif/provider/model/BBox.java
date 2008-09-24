@@ -97,25 +97,57 @@ public class BBox {
 		return false;
 	}
 
-	/** Increases BBox to make sure that bbox and map width/height ratios are the same
-	 * @param ratio
+	/** Expands BBox so that its longitude/latitude ratio becomes 2:1 which is often used for maps (360° : 180°).
 	 */
 	@Transient
-	public void fitRatio(double ratio){
+	public void expandToMapRatio(){
+		expandToMapRatio(2f);
+	}
+	
+	/** Expands BBox so that its longitude/latitude ratio becomes the specified width/height ratio. Takes care to not go beyond the -180/180 + -90/90 bboc limits and might shift the center of the bbox if this is not otherwise possible.
+	 */
+	@Transient
+	public void expandToMapRatio(float mapRatio){
+		// longitude=x, latitude=y
 		if (isValid()){
-			double lat = (double) max.getLatitude() - (double) min.getLatitude();
-			double lon = (double) max.getLongitude() - (double) min.getLongitude();
-			double existingRatio = lat/lon;
-			if (ratio > existingRatio){
-				// need to extend the latitude on both min+max
-				Float increase = (float) ((lat * ratio / existingRatio) - lat)/2;
-				min.setLatitude(min.getLatitude()-increase);
-				max.setLatitude(max.getLatitude()+increase);
-			}else if (ratio < existingRatio){
-				// need to extend the longitude on both min+max
-				Float increase = (float) ((lon * ratio / existingRatio) - lon)/2;
-				min.setLongitude(min.getLongitude()-increase);
-				max.setLongitude(max.getLongitude()+increase);
+			float width = max.getLongitude() - min.getLongitude();
+			float height = max.getLatitude() - min.getLatitude();
+			float ratio = width/height;
+			
+			if (mapRatio > ratio){
+				// was rather a square before. need to extend the latitude on both min+max
+				float equalWidthIncrease = ((height * mapRatio) - width)/2;
+				float minX =  min.getLongitude();
+				float maxX =  max.getLongitude();
+				if (minX-equalWidthIncrease < -90f){
+					minX=-90f;
+					maxX = width*mapRatio;
+				} else if (maxX+equalWidthIncrease > 90f){
+					minX= 90 - width*mapRatio;
+					maxX = 90f;
+				} else{
+					minX= minX-equalWidthIncrease;
+					maxX = maxX+equalWidthIncrease;
+				}
+				min.setLongitude(minX);
+				max.setLongitude(maxX);
+			}else if (mapRatio < ratio){
+				// was more of a flat rectangle before. need to extend the longitude on both min+max
+				float equalHeightIncrease = ((width / mapRatio) - height)/2;
+				float minY =  min.getLatitude();
+				float maxY =  max.getLatitude();
+				if (minY-equalHeightIncrease < -90f){
+					minY=-90f;
+					maxY = width*mapRatio;
+				} else if (maxY+equalHeightIncrease > 90f){
+					minY= 90 - width*mapRatio;
+					maxY = 90f;
+				} else{
+					minY= minY-equalHeightIncrease;
+					maxY = maxY+equalHeightIncrease;
+				}
+				min.setLatitude(minY);
+				max.setLatitude(maxY);
 			}
 		}
 	}
@@ -134,6 +166,9 @@ public class BBox {
 		return false;
 	}
 	
+	/**format used in WMS for bboxes: minX(longitude), minY(latitude), maxX, maxY
+	 * @return
+	 */
 	public String toWMSString(){
 		return String.format("%s,%s,%s,%s", min.getLongitude(), min.getLatitude(), max.getLongitude(), max.getLatitude());
 	}
