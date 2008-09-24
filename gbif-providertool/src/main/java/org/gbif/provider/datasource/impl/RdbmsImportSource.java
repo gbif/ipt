@@ -56,12 +56,10 @@ public class RdbmsImportSource implements ImportSource{
 	private ColumnMapping coreIdColumn;
 	private ColumnMapping guidColumn;
 	private ColumnMapping linkColumn;
-	
+	private Long resourceId;
 
-    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
-    	if (resource == null || view == null){
-    		throw new NullPointerException();
-    	}
+
+	protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
     	RdbmsImportSource source = new RdbmsImportSource();
     	// try to load JDBC driver
 		try {
@@ -77,6 +75,7 @@ public class RdbmsImportSource implements ImportSource{
 			throw new ImportSourceException("Cant connect to database", e);
 		}
     	//FIXME: clone mappings
+    	source.resourceId=resource.getId();
     	source.viewSql=view.getSourceSql();
     	source.properties = view.getPropertyMappings().values();
     	source.coreIdColumn = view.getCoreIdColumn();
@@ -94,18 +93,18 @@ public class RdbmsImportSource implements ImportSource{
     	return source;
     }
     
-    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
+    protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
     	return newInstance(resource, view, null);
     }
     
-    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
+    protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
     	RdbmsImportSource source = RdbmsImportSource.newInstance(resource, extView, maxRecords);
     	source.guidColumn = view.getGuidColumn();
     	source.linkColumn = view.getLinkColumn();
     	return source;
     }
-    public static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
+    protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
     	return newInstance(resource, view, null);
     }
     
@@ -125,11 +124,8 @@ public class RdbmsImportSource implements ImportSource{
 		ImportRecord row = null;
 		if (hasNext){
 			try {
-				row = new ImportRecord();
+				row = new ImportRecord(resourceId, rs.getString(coreIdColumn.getColumnName()));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
-				if (coreIdColumn != null){
-					row.setLocalId(rs.getString(coreIdColumn.getColumnName()));	
-				}
 				if (guidColumn != null){
 					row.setGuid(rs.getString(guidColumn.getColumnName()));					
 				}
@@ -172,6 +168,10 @@ public class RdbmsImportSource implements ImportSource{
 	    throw new UnsupportedOperationException();
 	}
 	
+	public Long getResourceId() {
+		return resourceId;
+	}
+
 	public void close() {
 		hasNext=false;
 		try {

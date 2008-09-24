@@ -20,12 +20,12 @@
         </Menu>
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/users.html">
             <Item name="ProviderCfg" title="menu.admin.config" page="/admin/config.html"/>
+            <Item name="Extensions" title="menu.explorer.extensions" page="/admin/extensions.html"/>
+            <Item name="LogEvents" title="menu.admin.logEvents" page="/logging/logEvents.html"/>
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
             <Item name="ActiveTasks" title="menu.admin.activeTasks" page="/admin/activeTasks.html"/>
-            <Item name="LogEvents" title="menu.admin.logEvents" page="/logging/logEvents.html"/>
-            <Item name="Extensions" title="menu.explorer.extensions" page="/admin/extensions.html"/>
         </Menu>
         <Menu name="AboutMenu" title="menu.about" page="/about.html">            
         </Menu>

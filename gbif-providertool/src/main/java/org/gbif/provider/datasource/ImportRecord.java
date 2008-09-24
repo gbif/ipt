@@ -31,23 +31,25 @@ import org.hibernate.validator.NotNull;
  * @author markus
  *
  */
-//implements CoreRecord<ImportRecord>
 public class ImportRecord  {
 	private static I18nLog logdb = I18nLogFactory.getLog(ImportRecord.class);
 
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 	private Extension extension;
+	private Long resourceId;
 	// for core record
-	private Long id;
+	private Long coreid;
 	private String localId;
 	private String guid;
 	private String link;
-	private boolean isDeleted;
-	private boolean isProblematic;
-	private Date modified;
-	private Resource resource;
 
 	
+	
+	public ImportRecord(Long resourceId, String localId) {
+		super();
+		this.localId = localId;
+		this.resourceId = resourceId;
+	}
 	
 	public Map<ExtensionProperty, String> getProperties() {
 		return properties;
@@ -86,20 +88,16 @@ public class ImportRecord  {
 	
 	// CORE RECORD
 	public Long getId() {
-		return id;
+		return coreid;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.coreid = id;
 	}	
 
 	public String getLocalId() {
 		return localId;
 	}
-
-	public void setLocalId(String localId) {
-		this.localId = localId;
-	}	
 
 	public String getGuid() {
 		return guid;
@@ -116,36 +114,8 @@ public class ImportRecord  {
 	public void setLink(String link) {
 		this.link = link;
 	}
-
-	public Date getModified() {
-		return modified;
-	}
-
-	public void setModified(Date modified) {
-		this.modified = modified;
-	}
-
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
-	public boolean isProblematic() {
-		return isProblematic;
-	}
-
-	public void setProblematic(boolean isProblematic) {
-		this.isProblematic = isProblematic;
-	}
 	
-	public Resource getResource() {
-		return resource;
-	}
-
-	public void setResource(Resource resource) {
-		this.resource = resource;
+	public Long getResourceId() {
+		return resourceId;
 	}
 }

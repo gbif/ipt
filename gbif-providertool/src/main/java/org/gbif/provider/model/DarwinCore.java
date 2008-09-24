@@ -163,7 +163,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		dwc.setGuid(iRec.getGuid());
 		dwc.setLink(iRec.getLink());
 		dwc.setLocalId(iRec.getLocalId());
-		dwc.setModified(iRec.getModified());
 		dwc.setDeleted(false);
 		for (ExtensionProperty prop : iRec.getProperties().keySet()){
 			// set all dwc properties apart from:

@@ -151,11 +151,11 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
 		if (headers.size() > 1){
 			// save file in view mapping
 	        viewMappingManager.save(view);
-	        saveMessage(getText("mapping.sourceFileUploaded", String.valueOf(headers.size())));
+	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
 			view.setSourceFileAsFile(null);
 	        viewMappingManager.save(view);
-	        saveMessage(getText("mapping.sourceFileBroken", String.valueOf(headers.size())));
+	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}
 		
 		prepare();
@@ -177,7 +177,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
         boolean isNew = (view.getId() == null);
         view = viewMappingManager.save(view);
         mapping_id = view.getId(); 
-        String key = (isNew) ? "mapping.added" : "mapping.updated";
+        String key = (isNew) ? "view.added" : "view.updated";
         saveMessage(getText(key));
 
 		return SUCCESS;
@@ -187,7 +187,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
     public String delete() {
     	resource.removeExtensionMapping(view);
     	viewMappingManager.remove(view.getId());
-        saveMessage(getText("viewMapping.deleted"));
+        saveMessage(getText("view.deleted"));
         return CANCEL;
     }
 

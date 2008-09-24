@@ -15,6 +15,7 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Point;
 import org.gbif.provider.model.ProviderCfg;
+import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -23,6 +24,8 @@ import org.springframework.web.context.support.ServletContextResourceLoader;
 
 public class AppConfig implements ServletContextAware, org.springframework.web.context.ServletContextAware{
 	protected final Log log = LogFactory.getLog(AppConfig.class);
+	@Autowired
+	private IptNamingStrategy namingStrategy;
 	private ProviderCfgManager providerCfgManager;
 	private ProviderCfg cfg;
 	// need some static fields to create static methods that can be used outside of spring managed contexts, e.g. for hibernate objects
@@ -141,13 +144,13 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
     // SOURCE/UPLOAD FILES
     public File getSourceFile(Long resourceId, Extension extension) throws IOException{    	
-		File file = new File(getResourceDataDir(resourceId), String.format("source-%s.txt", extension.getTablename()));
+		File file = new File(getResourceDataDir(resourceId), String.format("source-%s.txt", namingStrategy.extensionTableName(extension)));
 		return file;
 	}    
 
     // DUMP FILES
     public File getDumpFile(Long resourceId, Extension extension) throws IOException{    	
-		File file = new File(getResourceDataDir(resourceId), String.format("data-%s.txt", extension.getTablename()));
+		File file = new File(getResourceDataDir(resourceId), String.format("data-%s.txt", namingStrategy.extensionTableName(extension)));
 		return file;
 	}    
 

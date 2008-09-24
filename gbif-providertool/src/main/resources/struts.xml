@@ -527,7 +527,7 @@
             <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
         </action>
         <action name="delExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="remove">
-            <result type="freemarker">/WEB-INF/pages/admin/extensionList.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
         </action>
         
     </package>

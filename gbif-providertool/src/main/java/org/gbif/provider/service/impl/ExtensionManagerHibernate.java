@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
@@ -16,6 +18,8 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.TreeNode;
+import org.gbif.provider.model.hibernate.IptNamingStrategy;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.RegionManager;
@@ -23,6 +27,7 @@ import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +36,8 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
     protected static final Log log = LogFactory.getLog(ExtensionManagerHibernate.class);
     @Autowired
 	private SessionFactory sessionFactory;		
+	@Autowired
+	private IptNamingStrategy namingStrategy;
 
 	public ExtensionManagerHibernate() {
 	        super(Extension.class);
@@ -42,11 +49,12 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		return cn;
 	}
 	
+	@Transactional(readOnly=false)
 	public void installExtension(Extension extension){
-		String table = extension.getTablename();
-		if (table==null){
-			throw new IllegalArgumentException("Extension needs to define a tablename");
+		if (extension==null || extension.getName()==null){
+			throw new IllegalArgumentException("Extension needs to have a name");
 		}
+		String table = namingStrategy.extensionTableName(extension);
 		if (extension.getProperties().size()==0){
 			throw new IllegalArgumentException("Extension needs to define properties");
 		}
@@ -54,7 +62,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		Connection cn;
 		try {
 			cn = getConnection();
-			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid BIGINT NOT NULL, INDEX(coreid))", table);
+			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL, INDEX(coreid), INDEX(resource_fk))", table);
 			PreparedStatement ps = cn.prepareStatement(ddl);
 			try {
 				ps.execute();
@@ -62,8 +70,8 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 				ps.close();
 			}
 			for (ExtensionProperty prop : extension.getProperties()){
-				if (prop!=null && prop.getColumnName()!=null && prop.getColumnLength()>0){
-					ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, prop.getColumnName(), prop.getColumnLength());
+				if (prop!=null && prop.getName()!=null && prop.getColumnLength()>0){
+					ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, namingStrategy.propertyToColumnName(prop.getName()), prop.getColumnLength());
 					ps = cn.prepareStatement(ddl);
 					try {
 						ps.execute();
@@ -84,11 +92,12 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		}
 	}
 	
+	@Transactional(readOnly=false)
 	public void removeExtension(Extension extension){
-		String table = extension.getTablename();
-		if (table==null){
-			throw new IllegalArgumentException("Extension needs to define a tablename");
+		if (extension==null || extension.getName()==null){
+			throw new IllegalArgumentException("Extension needs to have a name");
 		}
+		String table = namingStrategy.extensionTableName(extension);
 
 		Connection cn;
 		PreparedStatement ps=null;
@@ -115,6 +124,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 	
 	
 	
+	@Transactional(readOnly=false)
 	private void removeExtensionCompletely(Extension extension) throws SQLException{
 		removeExtension(extension);
 		// remove extension, its properties and potentially existing property mappings
@@ -130,4 +140,12 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		// finally remove extension
 		remove(extension);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Extension> getAllInstalled(ExtensionType type) {
+        return getSession().createQuery(String.format("from Extension where installed=true and type=:type"))
+        	.setParameter("type", type)
+        	.list();
+	}
+	
 }

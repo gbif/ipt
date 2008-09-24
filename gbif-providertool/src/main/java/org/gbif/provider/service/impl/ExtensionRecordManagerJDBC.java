@@ -20,17 +20,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
@@ -41,42 +47,84 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly=true)
 public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {	
     protected static final Log log = LogFactory.getLog(ExtensionRecordManagerJDBC.class);
-
     @Autowired
 	private SessionFactory sessionFactory;		
+	@Autowired
+	private IptNamingStrategy namingStrategy;
 
-	private Connection getConnection() throws SQLException {
-		Session s = SessionFactoryUtils.getSession(sessionFactory, false);
+	private Connection getConnection() {
+		Session s = getSession();
 		Connection cn = s.connection();
 		return cn;
 	}
-	
-	private void executeSQL(String sql) throws SQLException{
-		//FIXME: implement extension upload
-//		Connection cn = getConnection();
-//		PreparedStatement ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-//		try {
-//			ps.execute();
-//		}finally{
-//			ps.close();
-//		}
+	private Session getSession() {
+		return SessionFactoryUtils.getSession(sessionFactory, false);
 	}
 
 	@Transactional(readOnly=false)
-	public void insertExtensionRecord(ExtensionRecord record) {
-		//FIXME implement
-		String sql = "insert into play set text='hallo'";
+	public void insertExtensionRecord(ExtensionRecord rec) {
+		String table = namingStrategy.extensionTableName(rec.getExtension());
+		String sql = String.format("insert into %s set coreid=%s, resource_fk=%s", table, rec.getCoreId(), rec.getResourceId());
+		for (ExtensionProperty p : rec){
+			sql += String.format(", %s='%s'", namingStrategy.propertyToColumnName(p.getName()), rec.getPropertyValue(p));
+		}
+		Connection cn = getConnection();
+		PreparedStatement ps = null;
 		try {
-			executeSQL(sql);
+			System.out.println(sql);
+			ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			int count = ps.executeUpdate(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (rec.getExtension()==null){
+				log.error(String.format("Couldn't insert record for extension=NULL", rec.getExtension()), e);
+			}else{
+				log.error(String.format("Couldn't insert record for extension %s", rec.getExtension().getName()), e);
+			}
+		}finally{
+			if (ps!=null){
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
 	@Transactional(readOnly=false)
 	public int removeAll(Extension extension, Long resourceId) {
-		log.debug(String.format("Removed %s records for extension %s", 0, extension.getName()));
-		//FIXME implement
+		String table = namingStrategy.extensionTableName(extension);
+		String sql = String.format("delete from %s where resource_fk=%s", table, resourceId);
+		Connection cn = getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			int count = ps.executeUpdate(sql);
+			log.debug(String.format("Removed %s records for extension %s", count, extension.getName()));
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't rmove all records for extension %s", extension.getName()));
+			e.printStackTrace();
+		}finally{
+			if (ps!=null){
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return 0;
+	}
+	
+	
+	public List<ExtensionRecord> getExtensionRecords(DatasourceBasedResource resource, Long coreid) {
+		// TODO Auto-generated method stub
+		return new ArrayList<ExtensionRecord>();
+	}
+	
+	
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid) {
+		// TODO Auto-generated method stub
+		return new ArrayList<ExtensionRecord>();
 	}
 }
