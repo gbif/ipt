@@ -62,4 +62,22 @@ public class BBoxTest {
 //		System.out.println(bbox);
 		assertTrue(bbox.isValid());
 	}
+
+	@Test
+	public void testWorldBox() {
+		bbox = BBox.NewWorldInstance();
+//		System.out.println(bbox);
+		assertTrue(bbox.isValid());
+	}
+
+	@Test
+	public void testExpandBoxByPercentage() {
+		bbox = BBox.NewWorldInstance();
+		System.out.println(bbox);
+		bbox.resize(1.8f);
+		System.out.println(bbox);
+		bbox.resize(0.2f);
+		System.out.println(bbox);
+		assertTrue(bbox.isValid());
+	}
 }

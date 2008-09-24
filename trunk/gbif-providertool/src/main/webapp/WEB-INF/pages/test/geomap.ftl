@@ -97,7 +97,7 @@
                 {singleTile: true, ratio: 1} 
             );
         
-            map.addLayers([countries,untiled, tiled]);
+            map.addLayers([countries, untiled, tiled]);
             
             // setup controls and initial zooms
             map.addControl(new OpenLayers.Control.PanZoomBar());
