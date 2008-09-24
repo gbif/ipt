@@ -47,14 +47,14 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 * @see org.geotools.data.DataStoreFactorySpi#getDescription()
 	 */
 	public String getDescription() {
-		return "GBIF Provider Toolkit Database.  Please ensure that the appropriate JDBC driver (only mysql is supported currently) is on the classpath";
+		return "GBIF Integrated Provider Toolkit Database.  Please ensure that the appropriate JDBC driver (only mysql is supported currently) is on the classpath";
 	}
 
 	/**
 	 * @see org.geotools.data.DataStoreFactorySpi#getDisplayName()
 	 */
 	public String getDisplayName() {
-		return "GBIF Provider Toolkit Database";
+		return "GBIF Integrated Provider Toolkit Database";
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 */
 	public Param[] getParametersInfo() {
 		Param[] p = {
-				new Param("url", String.class, "Database URL", true, "jdbc:mysql://localhost:3306/p3"),
+				new Param("url", String.class, "Database URL", true, "jdbc:mysql://localhost:3306/ipt"),
 				new Param("user", String.class, "Database user", true, "root"),
 				new Param("password", String.class, "Database password", true, "password")
 				
