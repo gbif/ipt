@@ -45,7 +45,6 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private String name;
 	private String namespace;
 	private String qualName;
-	private String columnName;
 	private int columnLength;
 	private String link;
 	private boolean required;
@@ -104,21 +103,6 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 
 	public void setNamespace(String namespace) {
 		this.namespace = namespace;
-	}
-
-	/**
-	 * The database column name to be generated/used for this extension property
-	 * Should be 32 characters max and only use lowercase alphabetical
-	 * characters and underscore
-	 * 
-	 * @return
-	 */
-	public String getColumnName() {
-		return columnName;
-	}
-
-	public void setColumnName(String columnName) {
-		this.columnName = columnName;
 	}
 
 	/**
@@ -198,7 +182,6 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
         result = 31 * result + (qualName != null ? qualName.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + columnLength;
-        result = 31 * result + (columnName != null ? columnName.hashCode() : 0);
         result = 31 * result + (required ? 1 : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
         return result;

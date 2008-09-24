@@ -17,14 +17,18 @@
 package org.gbif.provider.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionRecord;
 
 public interface ExtensionRecordManager {
+	public List<ExtensionRecord> getExtensionRecords(DatasourceBasedResource resource, Long coreid);
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid);
 	public void insertExtensionRecord(ExtensionRecord record);
 	/**
 	 * Delete all extension records for a given resource that are linked to a core record which is flagged as deleted

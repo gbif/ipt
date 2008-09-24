@@ -57,12 +57,9 @@ public class FileImportSource implements ImportSource{
 	private ColumnMapping coreIdColumn;
 	private ColumnMapping guidColumn;
 	private ColumnMapping linkColumn;
-	
+	private Long resourceId;
 
-    public static FileImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
-    	if (resource == null || view == null){
-    		throw new NullPointerException();
-    	}
+    protected static FileImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
     	FileImportSource source = new FileImportSource();
     	// try to setup FileReader
 		try {
@@ -76,12 +73,13 @@ public class FileImportSource implements ImportSource{
 			throw new ImportSourceException("Cant read source file "+view.getSourceFile(), e);
 		}
     	//FIXME: clone mappings
+    	source.resourceId=resource.getId();
     	source.properties = view.getPropertyMappings().values();
     	source.coreIdColumn = view.getCoreIdColumn();
     	return source;
     }
     
-    public static FileImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
+    protected static FileImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
     	FileImportSource source = FileImportSource.newInstance(resource, extView);
     	source.guidColumn = view.getGuidColumn();
@@ -110,11 +108,8 @@ public class FileImportSource implements ImportSource{
 		currentLine = reader.next();
 		if (hasNext()){
 			try {
-				row = new ImportRecord();
+				row = new ImportRecord(resourceId, getCurrentValue(coreIdColumn.getColumnName()));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
-				if (coreIdColumn != null){
-					row.setLocalId(getCurrentValue(coreIdColumn.getColumnName()));	
-				}
 				if (guidColumn != null){
 					row.setGuid(getCurrentValue(guidColumn.getColumnName()));					
 				}
@@ -135,6 +130,10 @@ public class FileImportSource implements ImportSource{
 			
 		}
 		return row;
+	}
+
+	public Long getResourceId() {
+		return resourceId;
 	}
 
 	public void remove() {

@@ -68,11 +68,11 @@ public class SourceFileUploadAction extends BaseAction{
 		if (headers.size() > 1){
 			// save file in view mapping
 	        viewMappingManager.save(mapping);
-	        saveMessage(getText("mapping.sourceFileUploaded", String.valueOf(headers.size())));
+	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
 			mapping.setSourceFileAsFile(null);
 	        viewMappingManager.save(mapping);
-	        saveMessage(getText("mapping.sourceFileBroken", String.valueOf(headers.size())));
+	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}
 		return SUCCESS;
     }

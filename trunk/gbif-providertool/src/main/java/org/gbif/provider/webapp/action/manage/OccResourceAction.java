@@ -16,56 +16,37 @@
 
 package org.gbif.provider.webapp.action.manage;
 
-import java.awt.RenderingHints;
-import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationBicubic2;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.OpImage;
-import javax.media.jai.RenderedOp;
-
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.model.voc.ExtensionType;
+import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
-import com.sun.media.jai.codec.SeekableStream;
 
 public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
 	@Autowired
 	private ResourceFactory resourceFactory;
 	@Autowired
-	@Qualifier("extensionManager")
-	private GenericManager<Extension> extensionManager;
+	private ExtensionManager extensionManager;
 	@Autowired
 	private UploadEventManager uploadEventManager;
-	@Autowired
-	private CacheManager cacheManager;
 	protected Map session;
 
 	private List<Extension> extensions;
@@ -124,8 +105,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	public String execute() {
 		// create GoogleChart string
 		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
-		// get all availabel extensions for new mappings
-		extensions = extensionManager.getAll();
+		// get all installed extensions for mappings
+		extensions = extensionManager.getAllInstalled(ExtensionType.Occurrence);
 		for (Extension ext : extensions) {
 			if (ext.getId().equals(OccurrenceResource.CORE_EXTENSION_ID)) {
 				// only show extensions sensu strictu. remove core "extension"

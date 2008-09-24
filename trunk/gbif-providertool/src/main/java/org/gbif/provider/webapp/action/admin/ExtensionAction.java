@@ -22,6 +22,7 @@ import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -29,8 +30,11 @@ import com.opensymphony.xwork2.Preparable;
 public class ExtensionAction extends BaseAction {
 	@Autowired
     private ExtensionManager extensionManager;
-    private List<Extension> extensions;
+	@Autowired
+	private IptNamingStrategy namingStrategy;
+	private List<Extension> extensions;
     private Extension extension;
+    private String tableName;
     private Long id;
 
 	public String execute(){
@@ -39,6 +43,7 @@ public class ExtensionAction extends BaseAction {
 
 	public String detail(){
 		extension = extensionManager.get(id);
+		tableName=namingStrategy.extensionTableName(extension);
 		return SUCCESS;
 	}
 
@@ -49,10 +54,13 @@ public class ExtensionAction extends BaseAction {
 	public String add(){
 		extension = extensionManager.get(id);
 		extensionManager.installExtension(extension);
+		tableName=namingStrategy.extensionTableName(extension);
 		return SUCCESS;
 	}
 	public String remove(){
-		extensions = extensionManager.getAll();
+		extension = extensionManager.get(id);
+		extensionManager.removeExtension(extension);
+		tableName=namingStrategy.extensionTableName(extension);
 		return SUCCESS;
 	}
 
@@ -72,6 +80,10 @@ public class ExtensionAction extends BaseAction {
 
 	public Extension getExtension() {
 		return extension;
+	}
+
+	public String getTableName() {
+		return tableName;
 	}
 
 }

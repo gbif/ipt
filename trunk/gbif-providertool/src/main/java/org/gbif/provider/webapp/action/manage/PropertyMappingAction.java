@@ -136,7 +136,7 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
             preview = datasourceInspectionManager.getPreview(view);
             viewColumnHeaders = (List<String>) preview.remove(0);
         } catch (Exception e) {
-            String msg = getText("mapping.sqlError");
+            String msg = getText("view.sqlError");
             saveMessage(msg);
             log.warn(msg, e);
 		}
@@ -174,7 +174,7 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
         }
         // cascade-save view mapping
         view = viewMappingManager.save(view);
-        saveMessage(getText("viewMapping.updated"));
+        saveMessage(getText("view.updated"));
         return SUCCESS;
     }
 

@@ -5,11 +5,13 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.util.StringHelper;
 import org.apache.commons.lang.StringUtils;
 
-public class GbifNamingStrategy extends ImprovedNamingStrategy {
+public class GbifNamingStrategy extends ImprovedNamingStrategy implements IptNamingStrategy{
 	static final Pattern MULTI_UPPERCASE = Pattern.compile("([A-Z])([A-Z]+)");
 
 	protected final Log log = LogFactory.getLog(getClass());
@@ -34,6 +36,7 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy {
 
 	@Override
 	public String propertyToColumnName(String propertyName) {
+		propertyName = StringUtils.deleteWhitespace(propertyName);
 		// transform multiple upper case characters into CamelCase
 		Matcher m = MULTI_UPPERCASE.matcher(propertyName);
 		while(m.find()){
@@ -50,6 +53,24 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy {
 	@Override
 	public String logicalColumnName(String columnName, String propertyName) {
 		return StringHelper.isNotEmpty( columnName ) ? columnName : propertyName;
+	}
+
+	
+	public String extensionTableName(Extension ext) {
+		if (ext !=null){
+			String prefix = "ext_";
+			if (ext.getType()==ExtensionType.Occurrence){
+				prefix += "dwc_";
+			} else if (ext.getType()==ExtensionType.Checklist){
+				prefix += "tax_";
+			}
+			// replace all whitespace
+			String extensionName = StringUtils.deleteWhitespace(ext.getName());
+			// use Hibernate NamingStrategy now for the rest...
+			return tableName(prefix+extensionName);
+		}else{
+			return null;
+		}
 	}
 
 }

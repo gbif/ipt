@@ -11,8 +11,8 @@ import org.gbif.provider.util.TabFileReader;
 
 public class ImportSourceFactory {
     public static ImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
-    	if (resource == null || view == null){
-    		throw new NullPointerException();
+    	if (resource == null || resource.getId()==null || view == null || view.getCoreIdColumn()==null){
+    		throw new IllegalArgumentException();
     	}
     	
     	if (view.isMappedToFile()){
@@ -21,5 +21,6 @@ public class ImportSourceFactory {
 			DatasourceContextHolder.setResourceId(resource.getId());
         	return RdbmsImportSource.newInstance(resource, view);
     	}
+
     }
 }

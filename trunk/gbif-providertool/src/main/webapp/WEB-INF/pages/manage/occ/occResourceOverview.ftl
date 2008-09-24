@@ -105,7 +105,7 @@
 		</li>
 	  
 	  <#-- add new extension-->
-      <#if extensions??>
+      <#if !(extensions?size==0)>
       	<li>
 		<@s.select id="extension_id" name="extension_id" list="extensions" listKey="id" listValue="name" theme="simple"/>
 		

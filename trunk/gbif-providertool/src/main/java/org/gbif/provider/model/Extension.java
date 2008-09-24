@@ -53,7 +53,6 @@ import org.hibernate.annotations.IndexColumn;
 public class Extension implements BaseObject, Comparable<Extension> {
 	private Long id;	
 	private String name;
-	private String tablename;
 	private boolean installed;
 	private ExtensionType type;
 	private String link;
@@ -67,7 +66,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		this.id = id;
 	}
 
-	@Column(length=128)
+	@Column(length=128, unique=true)
 	public String getName() {
 		return name;
 	}
@@ -96,14 +95,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	public void addProperty(ExtensionProperty property) {
 		property.setExtension(this);
 		properties.add(property);
-	}
-	
-	@Column(length=64, unique=true)
-	public String getTablename() {
-		return tablename;
-	}
-	public void setTablename(String tablename) {
-		this.tablename = tablename;
 	}
 	
 	public ExtensionType getType() {
@@ -141,7 +132,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
         result = (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
-        result = 31 * result + (tablename != null ? tablename.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
 	}
