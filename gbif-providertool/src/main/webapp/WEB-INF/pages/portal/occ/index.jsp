@@ -45,7 +45,11 @@
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.wfs"/></th>
-					<td><s:property value="%{cfg.getWfsEndpoint(resource_id)}"/></td>
+					<td>http://db1.gbif.org:8080/geoserver/wfs</td>
+				</tr>
+				<tr>
+					<th>WMS</th>
+					<td>http://db1.gbif.org:8080/geoserver/wms</td>
 				</tr>
 			</table>
 		</div>
