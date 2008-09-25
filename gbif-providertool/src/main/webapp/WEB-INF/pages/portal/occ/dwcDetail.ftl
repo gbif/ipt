@@ -71,7 +71,7 @@
 	<#list view.propertyMappings.values() as pm>
 	 <tr>
 		<th>${pm.property.name}</th>
-		<td>Foo Bar | ${pm.property.columnName}</td>
+		<td>sorry, not implemented</td>
 	 </tr>
 	</#list>
 	</table>
