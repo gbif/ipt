@@ -6,7 +6,8 @@
     <groupId>org.gbif.provider</groupId>
     <artifactId>ipt</artifactId>
     <packaging>war</packaging>
-    <version>0.4-SNAPSHOT</version>
+    <!-- -SNAPSHOT -->
+    <version>0.4</version>
     <name>GBIF Provider Software</name>
     <url>http://www.gbif.org</url>
 
@@ -184,6 +185,7 @@
                 </configuration>
                 
                 <executions>
+                    <!-- 
                     <execution>
                         <id>drop-db-before-test-if-any</id>
                         <phase>process-test-resources</phase>
@@ -191,11 +193,11 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <!-- need another database to drop the targeted one -->
+                            #need another database to drop the targeted one
                             <url>${jdbc.url2}</url>
                             <autocommit>true</autocommit>
                             <sqlCommand>drop database ${jdbc.db}</sqlCommand>
-                            <!-- ignore error when database is not avaiable -->
+                            #ignore error when database is not avaiable
                             <onError>continue</onError>
                         </configuration>
                     </execution>
@@ -207,11 +209,12 @@
                         </goals>
                         <configuration>
                             <url>${jdbc.url2}</url>
-                            <!-- no transaction -->
+                            <# no transaction
                             <autocommit>true</autocommit>
                             <sqlCommand>create database ${jdbc.db}</sqlCommand>
                         </configuration>
                     </execution>
+                    -->
                     <execution>
                         <id>create-schema</id>
                         <phase>process-test-resources</phase>
@@ -221,8 +224,24 @@
                         <configuration>
                             <autocommit>true</autocommit>
                             <srcFiles>
-                                <srcFile>src/main/resources/ipt-schema.sql</srcFile>
+                                <srcFile>${basedir}/db/ipt-dump.sql</srcFile>
                             </srcFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-data</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <orderFile>ascending</orderFile>
+                            <fileset>
+                                <basedir>${basedir}</basedir>
+                                <includes>
+                                    <include>db/ipt-dump.sql</include>
+                                </includes>
+                            </fileset>
                         </configuration>
                     </execution>                    
                 </executions>                
