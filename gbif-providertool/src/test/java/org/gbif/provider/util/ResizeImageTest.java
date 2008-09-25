@@ -7,13 +7,15 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.Resource;
 
 public class ResizeImageTest extends ContextAwareTestBase{
 
 	@Test
 	public void testResize() throws Exception {
-		File in = new File("/Users/markus/Desktop/ubuntu-logo.jpg");
-		File out = new File("/Users/markus/Desktop/ubuntu.png");
+		Resource res = this.applicationContext.getResource("classpath:test-image.jpg");
+		File in = res.getFile();
+		File out = new File(in.getParent(), "test-image2.jpg");
 		try {
 			ResizeImage.resizeImage(in, out, 68, 68);
 		} catch (IOException e) {

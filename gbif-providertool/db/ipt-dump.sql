@@ -18,15 +18,8 @@
 -- Create schema providertool
 --
 
-CREATE DATABASE IF NOT EXISTS providertool;
-USE providertool;
-
---
--- Definition of table `providertool`.`app_user`
---
-
-DROP TABLE IF EXISTS `providertool`.`app_user`;
-CREATE TABLE  `providertool`.`app_user` (
+DROP TABLE IF EXISTS `app_user`;
+CREATE TABLE `app_user` (
   `id` bigint(20) NOT NULL auto_increment,
   `account_expired` bit(1) NOT NULL,
   `account_locked` bit(1) NOT NULL,
@@ -50,26 +43,12 @@ CREATE TABLE  `providertool`.`app_user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`app_user`
---
-
-/*!40000 ALTER TABLE `app_user` DISABLE KEYS */;
-LOCK TABLES `app_user` WRITE;
-INSERT INTO `providertool`.`app_user` VALUES  (1,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-admin@mailinator.com',0x01,'Admiral','Adminska','d033e22ae348aeb5660fc2140aec35850c4da997','\"admin\"','','admin',0,'http://www.gbif.org'),
+INSERT INTO `app_user` VALUES  (1,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-admin@mailinator.com',0x01,'Admiral','Adminska','d033e22ae348aeb5660fc2140aec35850c4da997','\"admin\"','','admin',0,'http://www.gbif.org'),
  (2,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-manager@mailinator.com',0x01,'Manfred','Macher','1a8565a9dc72048ba03b4156be3e569f22771f23','\"manager\"','','manager',0,'http://www.gbif.org'),
  (3,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-user@mailinator.com',0x01,'Usanna','Usirna','12dea96fec20593566ab75692c9949596833adc9','\"user\"','','user',2,'http://www.gbif.org');
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `app_user` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`dwcore`
---
-
-DROP TABLE IF EXISTS `providertool`.`dwcore`;
-CREATE TABLE  `providertool`.`dwcore` (
+DROP TABLE IF EXISTS `dwcore`;
+CREATE TABLE `dwcore` (
   `id` bigint(20) NOT NULL auto_increment,
   `attributes` text,
   `basis_of_record` varchar(64) default NULL,
@@ -123,14 +102,7 @@ CREATE TABLE  `providertool`.`dwcore` (
   KEY `FKB1603AB286115B5A` (`region_fk`),
   KEY `FKB1603AB2F4A31FEE` (`taxon_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9933 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `providertool`.`dwcore`
---
-
-/*!40000 ALTER TABLE `dwcore` DISABLE KEYS */;
-LOCK TABLES `dwcore` WRITE;
-INSERT INTO `providertool`.`dwcore` VALUES  (6500,NULL,'PreservedSpecimen','1',NULL,'B','Markus Döring','1999-06-18 00:00:00',NULL,0x00,'1999-06-18 00:00:00.0','6d975510-889e-4c92-8137-25e905fa675e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/6d975510-889e-4c92-8137-25e905fa675e/detail.html','1',38.1069,26.8508,NULL,NULL,NULL,0,'2008-09-25 01:07:02',0x00,NULL,NULL,'Ballota acetabulosa (L.) Benth.',NULL,NULL,1,4540,22337),
+INSERT INTO `dwcore` VALUES  (6500,NULL,'PreservedSpecimen','1',NULL,'B','Markus Döring','1999-06-18 00:00:00',NULL,0x00,'1999-06-18 00:00:00.0','6d975510-889e-4c92-8137-25e905fa675e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/6d975510-889e-4c92-8137-25e905fa675e/detail.html','1',38.1069,26.8508,NULL,NULL,NULL,0,'2008-09-25 01:07:02',0x00,NULL,NULL,'Ballota acetabulosa (L.) Benth.',NULL,NULL,1,4540,22337),
  (6501,NULL,'PreservedSpecimen','1035',NULL,'B','Markus Döring','1999-07-30 00:00:00',NULL,0x00,'1999-07-30 00:00:00.0','fd255a66-922c-46f4-a69f-6900b16d0543',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/fd255a66-922c-46f4-a69f-6900b16d0543/detail.html','1035',37.42,34.568,NULL,NULL,NULL,2350,'2008-09-25 01:07:02',0x00,NULL,NULL,'Achillea falcata L.',NULL,NULL,1,4542,22341),
  (6502,NULL,'PreservedSpecimen','1036',NULL,'B','Markus Döring','1999-07-30 00:00:00',NULL,0x00,'1999-07-30 00:00:00.0','e4e4ca1c-ca56-4bbc-bebc-2958cd4d7a9b',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/e4e4ca1c-ca56-4bbc-bebc-2958cd4d7a9b/detail.html','1036',37.42,34.568,NULL,NULL,NULL,2350,'2008-09-25 01:07:02',0x00,NULL,NULL,'Centaurea carduiformis var. carduiformis',NULL,NULL,1,4542,22344),
  (6503,NULL,'PreservedSpecimen','1037',NULL,'B','Markus Döring','1999-07-30 00:00:00',NULL,0x00,'1999-07-30 00:00:00.0','232b3ddc-74a5-4aa1-9538-f51301151f04',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/232b3ddc-74a5-4aa1-9538-f51301151f04/detail.html','1037',37.42,34.568,NULL,NULL,NULL,2350,'2008-09-25 01:07:02',0x00,NULL,NULL,'Sanguisorba minor subsp. muricata (Spach) Briq.',NULL,NULL,1,4542,22349),
@@ -288,7 +260,7 @@ INSERT INTO `providertool`.`dwcore` VALUES  (6500,NULL,'PreservedSpecimen','1',N
  (6655,NULL,'PreservedSpecimen','1175',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','ac2c12ed-63d4-43d4-b855-30d6ef0b4a06',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/ac2c12ed-63d4-43d4-b855-30d6ef0b4a06/detail.html','1175',37.828,35.136,NULL,NULL,NULL,2900,'2008-09-25 01:07:04',0x00,NULL,NULL,'Veronica caespitosa var. caespitosa',NULL,NULL,1,4565,22633),
  (6656,NULL,'PreservedSpecimen','1176',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','c59e09f1-4cd5-4650-adc9-e5686c9601e9',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/c59e09f1-4cd5-4650-adc9-e5686c9601e9/detail.html','1176',37.828,35.136,NULL,NULL,NULL,2900,'2008-09-25 01:07:04',0x00,NULL,NULL,'Asperula stricta subsp. grandiflora Schönb.-Tem.',NULL,NULL,1,4565,22635),
  (6657,NULL,'PreservedSpecimen','1176x113',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','cfe820a0-f667-4fe7-b6b4-27c55816726a',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/cfe820a0-f667-4fe7-b6b4-27c55816726a/detail.html','1176x113',37.828,35.136,NULL,NULL,NULL,2890,'2008-09-25 01:07:04',0x00,NULL,NULL,'Asperula stricta subsp. grandiflora Schönb.-Tem.',NULL,NULL,1,4567,22635);
-INSERT INTO `providertool`.`dwcore` VALUES  (6658,NULL,'PreservedSpecimen','1177',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','cb1620ce-5201-4e39-a82b-a692d0e73933',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/cb1620ce-5201-4e39-a82b-a692d0e73933/detail.html','1177',37.828,35.136,NULL,NULL,NULL,2900,'2008-09-25 01:07:04',0x00,NULL,NULL,'Bupleurum falcatum subsp. cernuum (Ten.) Arc.',NULL,NULL,1,4565,22628),
+INSERT INTO `dwcore` VALUES  (6658,NULL,'PreservedSpecimen','1177',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','cb1620ce-5201-4e39-a82b-a692d0e73933',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/cb1620ce-5201-4e39-a82b-a692d0e73933/detail.html','1177',37.828,35.136,NULL,NULL,NULL,2900,'2008-09-25 01:07:04',0x00,NULL,NULL,'Bupleurum falcatum subsp. cernuum (Ten.) Arc.',NULL,NULL,1,4565,22628),
  (6659,NULL,'PreservedSpecimen','1178',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','bb9f5ad2-c5d7-474b-ab03-02cbea875bf7',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/bb9f5ad2-c5d7-474b-ab03-02cbea875bf7/detail.html','1178',37.828,35.136,NULL,NULL,NULL,2900,'2008-09-25 01:07:04',0x00,NULL,NULL,'Thymus brachychilus Jalas',NULL,NULL,1,4565,22637),
  (6660,NULL,'PreservedSpecimen','1179',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','8a579fa4-0436-433d-912b-800d583d2d62',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/8a579fa4-0436-433d-912b-800d583d2d62/detail.html','1179',37.828,35.136,NULL,NULL,NULL,2900,'2008-09-25 01:07:04',0x00,NULL,NULL,'Allium tauricola Boiss.',NULL,NULL,1,4565,22639),
  (6661,NULL,'PreservedSpecimen','1180',NULL,'B','Markus Döring','1999-08-06 00:00:00',NULL,0x00,'1999-08-06 00:00:00.0','8236b220-f4ab-4fce-af1f-6156f041f074',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/8236b220-f4ab-4fce-af1f-6156f041f074/detail.html','1180',37.828,35.136,NULL,NULL,NULL,2800,'2008-09-25 01:07:04',0x00,NULL,NULL,'Swertia longifolia Boiss.',NULL,NULL,1,4564,22643),
@@ -444,7 +416,7 @@ INSERT INTO `providertool`.`dwcore` VALUES  (6658,NULL,'PreservedSpecimen','1177
  (6811,NULL,'PreservedSpecimen','1322',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','8f6b2c72-7189-422d-bd23-60de3833a1b6',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/8f6b2c72-7189-422d-bd23-60de3833a1b6/detail.html','1322',37.9,35.152,NULL,NULL,NULL,2450,'2008-09-25 01:07:05',0x00,NULL,NULL,'Stylidium pilosum Labill.',NULL,NULL,1,4581,22773),
  (6812,NULL,'PreservedSpecimen','1322x122',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','b4fc7906-f9f9-4f64-9c01-21829b8846db',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b4fc7906-f9f9-4f64-9c01-21829b8846db/detail.html','1322x122',37.9,35.152,NULL,NULL,NULL,2310,'2008-09-25 01:07:05',0x00,NULL,NULL,'noch unbestimmt !!!',NULL,NULL,1,4582,22504),
  (6813,NULL,'PreservedSpecimen','1323',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','49345702-eb8a-4381-8dbe-d3eaec74c270',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/49345702-eb8a-4381-8dbe-d3eaec74c270/detail.html','1323',37.9,35.152,NULL,NULL,NULL,2450,'2008-09-25 01:07:05',0x00,NULL,NULL,'Astragalus lanatus Lab.',NULL,NULL,1,4581,22774);
-INSERT INTO `providertool`.`dwcore` VALUES  (6814,NULL,'PreservedSpecimen','1323x122',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','aba3e919-2081-4336-82ba-6f9ce20e3fdd',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/aba3e919-2081-4336-82ba-6f9ce20e3fdd/detail.html','1323x122',37.9,35.152,NULL,NULL,NULL,2310,'2008-09-25 01:07:05',0x00,NULL,NULL,'Astragalus haussknechtii Bunge',NULL,NULL,1,4582,22355),
+INSERT INTO `dwcore` VALUES  (6814,NULL,'PreservedSpecimen','1323x122',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','aba3e919-2081-4336-82ba-6f9ce20e3fdd',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/aba3e919-2081-4336-82ba-6f9ce20e3fdd/detail.html','1323x122',37.9,35.152,NULL,NULL,NULL,2310,'2008-09-25 01:07:05',0x00,NULL,NULL,'Astragalus haussknechtii Bunge',NULL,NULL,1,4582,22355),
  (6815,NULL,'PreservedSpecimen','1324',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','7cde2f5b-17be-4159-930b-94f2b8c80e25',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/7cde2f5b-17be-4159-930b-94f2b8c80e25/detail.html','1324',37.9,35.152,NULL,NULL,NULL,2450,'2008-09-25 01:07:05',0x00,NULL,NULL,'Thesium billardieri Boiss.',NULL,NULL,1,4581,22414),
  (6816,NULL,'PreservedSpecimen','1324x122',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','d82de80e-5b80-4f81-bc4f-ef8e8fb9968c',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/d82de80e-5b80-4f81-bc4f-ef8e8fb9968c/detail.html','1324x122',37.9,35.152,NULL,NULL,NULL,2310,'2008-09-25 01:07:05',0x00,NULL,NULL,'Thesium billardieri Boiss.',NULL,NULL,1,4582,22414),
  (6817,NULL,'PreservedSpecimen','1325',NULL,'B','Markus Döring','1999-08-08 00:00:00',NULL,0x00,'1999-08-08 00:00:00.0','b3d565da-3a76-45d8-b3c5-5e743353f291',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b3d565da-3a76-45d8-b3c5-5e743353f291/detail.html','1325',37.9,35.152,NULL,NULL,NULL,2400,'2008-09-25 01:07:05',0x00,NULL,NULL,'Campanula stricta var. libanotica (A. DC.) Boiss.',NULL,NULL,1,4583,22776),
@@ -600,7 +572,7 @@ INSERT INTO `providertool`.`dwcore` VALUES  (6814,NULL,'PreservedSpecimen','1323
  (6967,NULL,'PreservedSpecimen','1506',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','6bf4e1d5-fa0b-43ef-bed0-535b2e59e43e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/6bf4e1d5-fa0b-43ef-bed0-535b2e59e43e/detail.html','1506',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Tanacetum argenteum subsp. argenteum',NULL,NULL,1,4600,22764),
  (6968,NULL,'PreservedSpecimen','1507',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','c7a49368-46a4-4f0d-8b62-818d1cfa923d',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/c7a49368-46a4-4f0d-8b62-818d1cfa923d/detail.html','1507',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Sesleria alba Sm.',NULL,NULL,1,4600,22585),
  (6969,NULL,'PreservedSpecimen','1508',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','d1de46b9-b0d8-4540-ba11-6ab78c1aefa4',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/d1de46b9-b0d8-4540-ba11-6ab78c1aefa4/detail.html','1508',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Poa bulbosa agg. L.',NULL,NULL,1,4600,22416);
-INSERT INTO `providertool`.`dwcore` VALUES  (6970,NULL,'PreservedSpecimen','1509',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','55389675-7417-4692-a3c4-27fecf9648ec',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/55389675-7417-4692-a3c4-27fecf9648ec/detail.html','1509',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Ranunculus demissus var. major Boiss.',NULL,NULL,1,4600,22492),
+INSERT INTO `dwcore` VALUES  (6970,NULL,'PreservedSpecimen','1509',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','55389675-7417-4692-a3c4-27fecf9648ec',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/55389675-7417-4692-a3c4-27fecf9648ec/detail.html','1509',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Ranunculus demissus var. major Boiss.',NULL,NULL,1,4600,22492),
  (6971,NULL,'PreservedSpecimen','151',NULL,'B','Markus Döring','1999-06-27 00:00:00',NULL,0x00,'1999-06-27 00:00:00.0','3cff28c3-48c8-48e1-9eed-9e05eed02acd',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/3cff28c3-48c8-48e1-9eed-9e05eed02acd/detail.html','151',36.563,29.63,NULL,NULL,NULL,1600,'2008-09-25 01:07:06',0x00,NULL,NULL,'Alkanna orientalis var. leucantha (Bornm.) Hub.- Mor.',NULL,NULL,1,4601,22851),
  (6972,NULL,'PreservedSpecimen','1510',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','da1d8f72-5774-4404-8a04-553e38d04cfe',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/da1d8f72-5774-4404-8a04-553e38d04cfe/detail.html','1510',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Acantholimon lycaonicum Boiss. & Heldr.',NULL,NULL,1,4600,22571),
  (6973,NULL,'PreservedSpecimen','1511',NULL,'B','Markus Döring','1999-08-12 00:00:00',NULL,0x00,'1999-08-12 00:00:00.0','8436c253-fdd1-40e7-a453-e5930b684a02',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/8436c253-fdd1-40e7-a453-e5930b684a02/detail.html','1511',37.8213,35.1105,NULL,NULL,NULL,2350,'2008-09-25 01:07:06',0x00,NULL,NULL,'Cruciata taurica (Pall. ex Willd.) Ehrend.',NULL,NULL,1,4600,22496),
@@ -758,7 +730,7 @@ INSERT INTO `providertool`.`dwcore` VALUES  (6970,NULL,'PreservedSpecimen','1509
  (7125,NULL,'PreservedSpecimen','243x19',NULL,'B','Markus Döring','1999-07-04 00:00:00',NULL,0x00,'1999-07-04 00:00:00.0','ee12712a-e319-467a-bec4-c13b9eab6ab2',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/ee12712a-e319-467a-bec4-c13b9eab6ab2/detail.html','243x19',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Bromus tomentellus subsp. tomentellus',NULL,NULL,1,4618,22612),
  (7126,NULL,'PreservedSpecimen','244',NULL,'B','Markus Döring','1999-07-02 00:00:00',NULL,0x00,'1999-07-02 00:00:00.0','2aea9c97-8693-4319-9dee-3abefe0b15e8',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/2aea9c97-8693-4319-9dee-3abefe0b15e8/detail.html','244',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Festuca valesiaca Schleicher ex Gaudin',NULL,NULL,1,4577,22363),
  (7127,NULL,'PreservedSpecimen','245a',NULL,'B','Markus Döring','1999-07-02 00:00:00',NULL,0x00,'1999-07-02 00:00:00.0','f165ed71-0666-4388-950d-45e4fca20614',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/f165ed71-0666-4388-950d-45e4fca20614/detail.html','245a',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Scorzonera cana var. radicosa (Boiss.) D.F.Chamb.',NULL,NULL,1,4577,22454);
-INSERT INTO `providertool`.`dwcore` VALUES  (7128,NULL,'PreservedSpecimen','245b',NULL,'B','Markus Döring','1999-07-02 00:00:00',NULL,0x00,'1999-07-02 00:00:00.0','36f5531e-0a8f-4ccb-b10e-f9cbb69e2010',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/36f5531e-0a8f-4ccb-b10e-f9cbb69e2010/detail.html','245b',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Scorzonera cana var. radicosa (Boiss.) D.F.Chamb.',NULL,NULL,1,4577,22454),
+INSERT INTO `dwcore` VALUES  (7128,NULL,'PreservedSpecimen','245b',NULL,'B','Markus Döring','1999-07-02 00:00:00',NULL,0x00,'1999-07-02 00:00:00.0','36f5531e-0a8f-4ccb-b10e-f9cbb69e2010',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/36f5531e-0a8f-4ccb-b10e-f9cbb69e2010/detail.html','245b',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Scorzonera cana var. radicosa (Boiss.) D.F.Chamb.',NULL,NULL,1,4577,22454),
  (7129,NULL,'PreservedSpecimen','246',NULL,'B','Markus Döring','1999-07-04 00:00:00',NULL,0x00,'1999-07-04 00:00:00.0','cf7cbbe9-51a4-436c-aca3-1d197f061152',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/cf7cbbe9-51a4-436c-aca3-1d197f061152/detail.html','246',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Veronica cuneifolia subsp. isaurica P.H.Davis',NULL,NULL,1,4618,22901),
  (7130,NULL,'PreservedSpecimen','246x16',NULL,'B','Markus Döring','1999-07-02 00:00:00',NULL,0x00,'1999-07-02 00:00:00.0','1da1cc4e-4bda-411c-8fc5-78143955398a',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/1da1cc4e-4bda-411c-8fc5-78143955398a/detail.html','246x16',36.6,30.1,NULL,NULL,NULL,2350,'2008-09-25 01:07:07',0x00,NULL,NULL,'Veronica cuneifolia subsp. isaurica P.H.Davis',NULL,NULL,1,4607,22901),
  (7131,NULL,'PreservedSpecimen','247',NULL,'B','Markus Döring','1999-07-02 00:00:00',NULL,0x00,'1999-07-02 00:00:00.0','807120e8-bfe1-4741-a436-a0434999ce4e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/807120e8-bfe1-4741-a436-a0434999ce4e/detail.html','247',36.6,30.1,NULL,NULL,NULL,2300,'2008-09-25 01:07:07',0x00,NULL,NULL,'Thymus sipyleus var. davisianus Ronniger',NULL,NULL,1,4577,22709),
@@ -916,7 +888,7 @@ INSERT INTO `providertool`.`dwcore` VALUES  (7128,NULL,'PreservedSpecimen','245b
  (7283,NULL,'PreservedSpecimen','38',NULL,'B','Markus Döring','1999-06-19 00:00:00',NULL,0x00,'1999-06-19 00:00:00.0','e679be31-ccc1-4962-911e-e6283023a6b6',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/e679be31-ccc1-4962-911e-e6283023a6b6/detail.html','38',37.07,28.8,NULL,NULL,NULL,1900,'2008-09-25 01:07:09',0x00,NULL,NULL,'Galium incanum subsp. elatius (Boiss.) Ehrend.',NULL,NULL,1,4619,22714),
  (7284,NULL,'PreservedSpecimen','380',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','ba37259b-c043-432f-9c0d-f581bf968556',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/ba37259b-c043-432f-9c0d-f581bf968556/detail.html','380',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:09',0x00,NULL,NULL,'Dianthus anatolicus Boiss.',NULL,NULL,1,4631,22399),
  (7285,NULL,'PreservedSpecimen','381',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','3c870187-0b32-4301-9327-3e41763d2317',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/3c870187-0b32-4301-9327-3e41763d2317/detail.html','381',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:10',0x00,NULL,NULL,'Acantholimon lycaonicum Boiss. & Heldr.',NULL,NULL,1,4631,22571);
-INSERT INTO `providertool`.`dwcore` VALUES  (7286,NULL,'PreservedSpecimen','382',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','2a16362c-054d-49b4-b3be-3257ead0941e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/2a16362c-054d-49b4-b3be-3257ead0941e/detail.html','382',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:10',0x00,NULL,NULL,'Elytrigia divaricata (Boiss. & Balansa) Nevski',NULL,NULL,1,4631,22932),
+INSERT INTO `dwcore` VALUES  (7286,NULL,'PreservedSpecimen','382',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','2a16362c-054d-49b4-b3be-3257ead0941e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/2a16362c-054d-49b4-b3be-3257ead0941e/detail.html','382',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:10',0x00,NULL,NULL,'Elytrigia divaricata (Boiss. & Balansa) Nevski',NULL,NULL,1,4631,22932),
  (7287,NULL,'PreservedSpecimen','383',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','e085fdae-8c27-4801-bb85-f6dcaef567b6',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/e085fdae-8c27-4801-bb85-f6dcaef567b6/detail.html','383',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:10',0x00,NULL,NULL,'Festuca valesiaca Schleicher ex Gaudin',NULL,NULL,1,4631,22363),
  (7288,NULL,'PreservedSpecimen','384',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','f5185a46-aafc-4d19-8978-a32156492ba7',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/f5185a46-aafc-4d19-8978-a32156492ba7/detail.html','384',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:10',0x00,NULL,NULL,'Sedum album L.',NULL,NULL,1,4631,22685),
  (7289,NULL,'PreservedSpecimen','385',NULL,'B','Markus Döring','1999-07-10 00:00:00',NULL,0x00,'1999-07-10 00:00:00.0','b1def360-943f-4657-a0a7-edceb7a16c45',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b1def360-943f-4657-a0a7-edceb7a16c45/detail.html','385',36.824,30.337,NULL,NULL,NULL,2500,'2008-09-25 01:07:10',0x00,NULL,NULL,'Asyneuma virgatum subsp. cichoriiforme (Boiss.) Damboldt',NULL,NULL,1,4631,23006),
@@ -1072,9 +1044,9 @@ INSERT INTO `providertool`.`dwcore` VALUES  (7286,NULL,'PreservedSpecimen','382'
  (7439,NULL,'PreservedSpecimen','517',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','a2f77091-fd8a-4468-ad78-c3d1c1e8b5b4',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/a2f77091-fd8a-4468-ad78-c3d1c1e8b5b4/detail.html','517',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Astragalus angustifolius subsp. angustifolius',NULL,NULL,1,4643,22785),
  (7440,NULL,'PreservedSpecimen','518',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','4232a345-322e-4fb3-b047-988cb8d46aea',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/4232a345-322e-4fb3-b047-988cb8d46aea/detail.html','518',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Acantholimon lycaonicum Boiss. & Heldr.',NULL,NULL,1,4643,22571),
  (7441,NULL,'PreservedSpecimen','519',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','890451ed-96e3-47a6-9e67-bf9bbd0b1683',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/890451ed-96e3-47a6-9e67-bf9bbd0b1683/detail.html','519',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Bromus tomentellus subsp. tomentellus',NULL,NULL,1,4643,22612),
- (7442,NULL,'PreservedSpecimen','52',NULL,'B','Markus Döring','1999-06-19 00:00:00',NULL,0x00,'1999-06-19 00:00:00.0','87de09e3-3cc0-4a6b-bc58-bf0189fb843e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/87de09e3-3cc0-4a6b-bc58-bf0189fb843e/detail.html','52',37.07,28.8,NULL,NULL,NULL,2000,'2008-09-25 01:07:11',0x00,NULL,NULL,'Sedum ursi t´Hart',NULL,NULL,1,4620,22839);
-INSERT INTO `providertool`.`dwcore` VALUES  (7443,NULL,'PreservedSpecimen','520',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','59619eed-adf6-4619-9252-e5d3a7cdc161',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/59619eed-adf6-4619-9252-e5d3a7cdc161/detail.html','520',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Veronica thymoides subsp. pseudocinerea M.A.Fischer',NULL,NULL,1,4643,22444),
- (7444,NULL,'PreservedSpecimen','521',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','b40e4c8a-5806-4441-b080-ebf7eb3ced29',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b40e4c8a-5806-4441-b080-ebf7eb3ced29/detail.html','521',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Draba bruniifolia var. nana (Stapf) Schulz',NULL,NULL,1,4643,22512),
+ (7442,NULL,'PreservedSpecimen','52',NULL,'B','Markus Döring','1999-06-19 00:00:00',NULL,0x00,'1999-06-19 00:00:00.0','87de09e3-3cc0-4a6b-bc58-bf0189fb843e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/87de09e3-3cc0-4a6b-bc58-bf0189fb843e/detail.html','52',37.07,28.8,NULL,NULL,NULL,2000,'2008-09-25 01:07:11',0x00,NULL,NULL,'Sedum ursi t´Hart',NULL,NULL,1,4620,22839),
+ (7443,NULL,'PreservedSpecimen','520',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','59619eed-adf6-4619-9252-e5d3a7cdc161',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/59619eed-adf6-4619-9252-e5d3a7cdc161/detail.html','520',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Veronica thymoides subsp. pseudocinerea M.A.Fischer',NULL,NULL,1,4643,22444);
+INSERT INTO `dwcore` VALUES  (7444,NULL,'PreservedSpecimen','521',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','b40e4c8a-5806-4441-b080-ebf7eb3ced29',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b40e4c8a-5806-4441-b080-ebf7eb3ced29/detail.html','521',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Draba bruniifolia var. nana (Stapf) Schulz',NULL,NULL,1,4643,22512),
  (7445,NULL,'PreservedSpecimen','522',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','8739f608-4b5f-4080-91fe-03eba46c925d',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/8739f608-4b5f-4080-91fe-03eba46c925d/detail.html','522',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Poa alpina subsp. fallax F.Herm.',NULL,NULL,1,4643,22614),
  (7446,NULL,'PreservedSpecimen','523',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','ea62dff6-437c-4072-97af-62d7f7116d79',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/ea62dff6-437c-4072-97af-62d7f7116d79/detail.html','523',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Festuca pinifolia var. pinifolia',NULL,NULL,1,4643,22517),
  (7447,NULL,'PreservedSpecimen','524',NULL,'B','Markus Döring','1999-07-15 00:00:00',NULL,0x00,'1999-07-15 00:00:00.0','d075b4a2-3779-41b1-a4b8-375ad70acc70',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/d075b4a2-3779-41b1-a4b8-375ad70acc70/detail.html','524',37.68,31.31,NULL,NULL,NULL,2500,'2008-09-25 01:07:11',0x00,NULL,NULL,'Paronychia chionaea Boiss.',NULL,NULL,1,4643,22857),
@@ -1229,9 +1201,9 @@ INSERT INTO `providertool`.`dwcore` VALUES  (7443,NULL,'PreservedSpecimen','520'
  (7596,NULL,'PreservedSpecimen','664',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','f1463bb2-01be-4358-8691-c3e736c5d8d2',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/f1463bb2-01be-4358-8691-c3e736c5d8d2/detail.html','664',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Arenaria serpyllifolia L.',NULL,NULL,1,4654,22706),
  (7597,NULL,'PreservedSpecimen','665',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','898c6251-1410-456a-9bd3-2c54dd1005c8',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/898c6251-1410-456a-9bd3-2c54dd1005c8/detail.html','665',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Ziziphora clinopodioides Lam.',NULL,NULL,1,4654,22750),
  (7598,NULL,'PreservedSpecimen','666',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','2162a175-423c-431a-b7fb-17ad015472d4',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/2162a175-423c-431a-b7fb-17ad015472d4/detail.html','666',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Minuartia leucocephala (Boiss.) Mattf.',NULL,NULL,1,4654,22816),
- (7599,NULL,'PreservedSpecimen','667a',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','4abcb49c-dc45-44c7-abc2-0bbb1a85557b',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/4abcb49c-dc45-44c7-abc2-0bbb1a85557b/detail.html','667a',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Taraxacum hellenicum Dahlst.',NULL,NULL,1,4654,23097);
-INSERT INTO `providertool`.`dwcore` VALUES  (7600,NULL,'PreservedSpecimen','667b',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','cc061bfc-dbdb-47e0-8a3d-da4fa9cd8771',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/cc061bfc-dbdb-47e0-8a3d-da4fa9cd8771/detail.html','667b',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Leontodon oxylepis var. oxylepis',NULL,NULL,1,4654,22488),
- (7601,NULL,'PreservedSpecimen','668',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','b7349f6d-3db8-4f9d-a477-49efb5b5de39',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b7349f6d-3db8-4f9d-a477-49efb5b5de39/detail.html','668',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Sedum album L.',NULL,NULL,1,4654,22685),
+ (7599,NULL,'PreservedSpecimen','667a',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','4abcb49c-dc45-44c7-abc2-0bbb1a85557b',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/4abcb49c-dc45-44c7-abc2-0bbb1a85557b/detail.html','667a',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Taraxacum hellenicum Dahlst.',NULL,NULL,1,4654,23097),
+ (7600,NULL,'PreservedSpecimen','667b',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','cc061bfc-dbdb-47e0-8a3d-da4fa9cd8771',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/cc061bfc-dbdb-47e0-8a3d-da4fa9cd8771/detail.html','667b',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Leontodon oxylepis var. oxylepis',NULL,NULL,1,4654,22488);
+INSERT INTO `dwcore` VALUES  (7601,NULL,'PreservedSpecimen','668',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','b7349f6d-3db8-4f9d-a477-49efb5b5de39',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b7349f6d-3db8-4f9d-a477-49efb5b5de39/detail.html','668',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Sedum album L.',NULL,NULL,1,4654,22685),
  (7602,NULL,'PreservedSpecimen','669a',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','dc9deef5-a8a5-4dbc-98d3-a1bd05b6f749',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/dc9deef5-a8a5-4dbc-98d3-a1bd05b6f749/detail.html','669a',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Minuartia leucocephala (Boiss.) Mattf.',NULL,NULL,1,4654,22816),
  (7603,NULL,'PreservedSpecimen','669b',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','e36cea9c-00b3-4937-bf46-8d636755e073',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/e36cea9c-00b3-4937-bf46-8d636755e073/detail.html','669b',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Arenaria acerosa Boiss.',NULL,NULL,1,4654,22502),
  (7604,NULL,'PreservedSpecimen','669x67',NULL,'B','Markus Döring','1999-07-19 00:00:00',NULL,0x00,'1999-07-19 00:00:00.0','38a8702b-e025-47c4-ab35-c73fb6e2e035',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/38a8702b-e025-47c4-ab35-c73fb6e2e035/detail.html','669x67',36.833,32.147,NULL,NULL,NULL,2100,'2008-09-25 01:07:12',0x00,NULL,NULL,'Minuartia leucocephala (Boiss.) Mattf.',NULL,NULL,1,4656,22816),
@@ -1387,9 +1359,9 @@ INSERT INTO `providertool`.`dwcore` VALUES  (7600,NULL,'PreservedSpecimen','667b
  (7754,NULL,'PreservedSpecimen','793',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','39f757b0-36d1-46a3-9626-56b446859062',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/39f757b0-36d1-46a3-9626-56b446859062/detail.html','793',36.67,32.87,NULL,NULL,NULL,2100,'2008-09-25 01:07:13',0x00,NULL,NULL,'Dianthus anatolicus Boiss.',NULL,NULL,1,4677,22399),
  (7755,NULL,'PreservedSpecimen','794',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','19339df2-2e22-470c-8f2f-81469c993cf0',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/19339df2-2e22-470c-8f2f-81469c993cf0/detail.html','794',36.67,32.87,NULL,NULL,NULL,2100,'2008-09-25 01:07:13',0x00,NULL,NULL,'Achillea falcata L.',NULL,NULL,1,4677,22341),
  (7756,NULL,'PreservedSpecimen','795',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','9a20d84e-a6fd-4bb1-9802-09c4e98080f3',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/9a20d84e-a6fd-4bb1-9802-09c4e98080f3/detail.html','795',36.67,32.87,NULL,NULL,NULL,2050,'2008-09-25 01:07:13',0x00,NULL,NULL,'Gypsophila laricina Schreb.',NULL,NULL,1,4675,22702),
- (7757,NULL,'PreservedSpecimen','796',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','0887bb00-9354-4914-9054-bb98a484c51d',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/0887bb00-9354-4914-9054-bb98a484c51d/detail.html','796',36.67,32.87,NULL,NULL,NULL,2100,'2008-09-25 01:07:13',0x00,NULL,NULL,'Galium cf. incanum Sm.',NULL,NULL,1,4677,22862);
-INSERT INTO `providertool`.`dwcore` VALUES  (7758,NULL,'PreservedSpecimen','797',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','b9413754-915a-4763-bf0f-8addfffe816e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b9413754-915a-4763-bf0f-8addfffe816e/detail.html','797',36.67,32.87,NULL,NULL,NULL,2050,'2008-09-25 01:07:13',0x00,NULL,NULL,'Minuartia anatolica var. anatolica',NULL,NULL,1,4675,23148),
- (7759,NULL,'PreservedSpecimen','798',NULL,'B','Markus Döring','1999-07-26 00:00:00',NULL,0x00,'1999-07-26 00:00:00.0','5e522d16-19c4-450d-aa7a-0e18fed15e1b',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/5e522d16-19c4-450d-aa7a-0e18fed15e1b/detail.html','798',37.404,34.558,NULL,NULL,NULL,2650,'2008-09-25 01:07:13',0x00,NULL,NULL,'Inula acaulis var. acaulis',NULL,NULL,1,4679,23150),
+ (7757,NULL,'PreservedSpecimen','796',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','0887bb00-9354-4914-9054-bb98a484c51d',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/0887bb00-9354-4914-9054-bb98a484c51d/detail.html','796',36.67,32.87,NULL,NULL,NULL,2100,'2008-09-25 01:07:13',0x00,NULL,NULL,'Galium cf. incanum Sm.',NULL,NULL,1,4677,22862),
+ (7758,NULL,'PreservedSpecimen','797',NULL,'B','Markus Döring','1999-07-23 00:00:00',NULL,0x00,'1999-07-23 00:00:00.0','b9413754-915a-4763-bf0f-8addfffe816e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/b9413754-915a-4763-bf0f-8addfffe816e/detail.html','797',36.67,32.87,NULL,NULL,NULL,2050,'2008-09-25 01:07:13',0x00,NULL,NULL,'Minuartia anatolica var. anatolica',NULL,NULL,1,4675,23148);
+INSERT INTO `dwcore` VALUES  (7759,NULL,'PreservedSpecimen','798',NULL,'B','Markus Döring','1999-07-26 00:00:00',NULL,0x00,'1999-07-26 00:00:00.0','5e522d16-19c4-450d-aa7a-0e18fed15e1b',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/5e522d16-19c4-450d-aa7a-0e18fed15e1b/detail.html','798',37.404,34.558,NULL,NULL,NULL,2650,'2008-09-25 01:07:13',0x00,NULL,NULL,'Inula acaulis var. acaulis',NULL,NULL,1,4679,23150),
  (7760,NULL,'PreservedSpecimen','799',NULL,'B','Markus Döring','1999-07-26 00:00:00',NULL,0x00,'1999-07-26 00:00:00.0','7ad2f239-5334-4016-87dc-39c1532491d2',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/7ad2f239-5334-4016-87dc-39c1532491d2/detail.html','799',37.404,34.558,NULL,NULL,NULL,2650,'2008-09-25 01:07:13',0x00,NULL,NULL,'Gentiana boissieri Boiss.',NULL,NULL,1,4679,23152),
  (7761,NULL,'PreservedSpecimen','799x86',NULL,'B','Markus Döring','1999-07-28 00:00:00',NULL,0x00,'1999-07-28 00:00:00.0','eb42afb1-bc60-407b-9c5f-8eb916f3dbfd',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/eb42afb1-bc60-407b-9c5f-8eb916f3dbfd/detail.html','799x86',37.397,34.584,NULL,NULL,NULL,2700,'2008-09-25 01:07:13',0x00,NULL,NULL,'Gentiana boissieri Boiss.',NULL,NULL,1,4680,23152),
  (7762,NULL,'PreservedSpecimen','8',NULL,'B','Markus Döring','1999-06-19 00:00:00',NULL,0x00,'1999-06-19 00:00:00.0','a6956eae-559a-4ec3-b1b1-5a46bc37314f',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/a6956eae-559a-4ec3-b1b1-5a46bc37314f/detail.html','8',37.07,28.8,NULL,NULL,NULL,740,'2008-09-25 01:07:13',0x00,NULL,NULL,'Epilobium hirsutum L.',NULL,NULL,1,4681,23155),
@@ -1545,9 +1517,9 @@ INSERT INTO `providertool`.`dwcore` VALUES  (7758,NULL,'PreservedSpecimen','797'
  (7912,NULL,'PreservedSpecimen','922',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','4286aa03-0998-49fe-9ae8-7e35f0ffaf5a',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/4286aa03-0998-49fe-9ae8-7e35f0ffaf5a/detail.html','922',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Veronica thymoides subsp. pseudocinerea M.A.Fischer',NULL,NULL,1,4613,22444),
  (7913,NULL,'PreservedSpecimen','923',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','4bead274-0152-4e65-ab7d-c2a59260c7f8',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/4bead274-0152-4e65-ab7d-c2a59260c7f8/detail.html','923',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Thymus sipyleus var. sipyleus',NULL,NULL,1,4613,23193),
  (7914,NULL,'PreservedSpecimen','924',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','ea757d56-e61d-49df-acad-ff5a31df6af5',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/ea757d56-e61d-49df-acad-ff5a31df6af5/detail.html','924',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Potentilla recta L.',NULL,NULL,1,4613,23194),
- (7915,NULL,'PreservedSpecimen','925',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','3fc8b107-53a6-432c-86f0-e514d088344d',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/3fc8b107-53a6-432c-86f0-e514d088344d/detail.html','925',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Asperula stricta subsp. grandiflora Schönb.-Tem.',NULL,NULL,1,4613,22635);
-INSERT INTO `providertool`.`dwcore` VALUES  (7916,NULL,'PreservedSpecimen','926',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','87aa441a-834b-4960-960d-25e82ed94d06',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/87aa441a-834b-4960-960d-25e82ed94d06/detail.html','926',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Plantago media L.',NULL,NULL,1,4613,22376),
- (7917,NULL,'PreservedSpecimen','928',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','096b0b9f-d2e0-46ac-8623-9f318d19400a',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/096b0b9f-d2e0-46ac-8623-9f318d19400a/detail.html','928',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Astragalus plumosus var. plumosus',NULL,NULL,1,4613,23195),
+ (7915,NULL,'PreservedSpecimen','925',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','3fc8b107-53a6-432c-86f0-e514d088344d',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/3fc8b107-53a6-432c-86f0-e514d088344d/detail.html','925',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Asperula stricta subsp. grandiflora Schönb.-Tem.',NULL,NULL,1,4613,22635),
+ (7916,NULL,'PreservedSpecimen','926',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','87aa441a-834b-4960-960d-25e82ed94d06',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/87aa441a-834b-4960-960d-25e82ed94d06/detail.html','926',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Plantago media L.',NULL,NULL,1,4613,22376);
+INSERT INTO `dwcore` VALUES  (7917,NULL,'PreservedSpecimen','928',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','096b0b9f-d2e0-46ac-8623-9f318d19400a',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/096b0b9f-d2e0-46ac-8623-9f318d19400a/detail.html','928',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Astragalus plumosus var. plumosus',NULL,NULL,1,4613,23195),
  (7918,NULL,'PreservedSpecimen','929',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','e105d682-ffbe-4654-83d4-a31f7652823a',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/e105d682-ffbe-4654-83d4-a31f7652823a/detail.html','929',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Inula oculus-christi L.',NULL,NULL,1,4613,23196),
  (7919,NULL,'PreservedSpecimen','93',NULL,'B','Markus Döring','1999-06-21 00:00:00',NULL,0x00,'1999-06-21 00:00:00.0','566ebbd4-03c8-40fa-863d-042e9dd021b9',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/566ebbd4-03c8-40fa-863d-042e9dd021b9/detail.html','93',37.07,28.8,NULL,NULL,NULL,1950,'2008-09-25 01:07:14',0x00,NULL,NULL,'Genista sandrasica Hartvig & Strid',NULL,NULL,1,4552,23078),
  (7920,NULL,'PreservedSpecimen','930',NULL,'B','Markus Döring','1999-07-29 00:00:00',NULL,0x00,'1999-07-29 00:00:00.0','7e77e053-7b96-4654-bb0f-29f02abf3081',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/7e77e053-7b96-4654-bb0f-29f02abf3081/detail.html','930',37.42,34.568,NULL,NULL,NULL,2360,'2008-09-25 01:07:14',0x00,NULL,NULL,'Salvia argentea L.',NULL,NULL,1,4613,22762),
@@ -1663,16 +1635,9 @@ INSERT INTO `providertool`.`dwcore` VALUES  (7916,NULL,'PreservedSpecimen','926'
  (8030,NULL,'PreservedSpecimen','1032',NULL,'B','Markus Döring','1999-07-31 00:00:00',NULL,0x00,'1999-07-31 00:00:00.0','9b09b7da-5166-4c08-b477-d44971856049',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/9b09b7da-5166-4c08-b477-d44971856049/detail.html','1032',37.42,34.568,NULL,NULL,NULL,2380,'2008-09-25 01:07:15',0x00,NULL,NULL,'Medicago x varia Martyn',NULL,NULL,1,4697,23052),
  (8031,NULL,'PreservedSpecimen','1033',NULL,'B','Markus Döring','1999-07-31 00:00:00',NULL,0x00,'1999-07-31 00:00:00.0','457bfb4a-b0c7-46c2-b2e8-4acbed303c85',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/457bfb4a-b0c7-46c2-b2e8-4acbed303c85/detail.html','1033',37.42,34.568,NULL,NULL,NULL,2380,'2008-09-25 01:07:15',0x00,NULL,NULL,'Tragopogon olympicus Boiss.',NULL,NULL,1,4697,22494),
  (8032,NULL,'PreservedSpecimen','1034',NULL,'B','Markus Döring','1999-07-31 00:00:00',NULL,0x00,'1999-07-31 00:00:00.0','35cdc009-b3a6-488c-a01b-68217b4714db',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/35cdc009-b3a6-488c-a01b-68217b4714db/detail.html','1034',37.42,34.568,NULL,NULL,NULL,2380,'2008-09-25 01:07:15',0x00,NULL,NULL,'Alkanna spec.',NULL,NULL,1,4697,23224);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `dwcore` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`dwcore_ext`
---
-
-DROP TABLE IF EXISTS `providertool`.`dwcore_ext`;
-CREATE TABLE  `providertool`.`dwcore_ext` (
+DROP TABLE IF EXISTS `dwcore_ext`;
+CREATE TABLE `dwcore_ext` (
   `id` bigint(20) NOT NULL,
   `author_year_of_scientific_name` varchar(128) default NULL,
   `classs` varchar(64) default NULL,
@@ -1704,14 +1669,7 @@ CREATE TABLE  `providertool`.`dwcore_ext` (
   KEY `FK3CAC4B146A2EF90B` (`resource_fk`),
   KEY `FK3CAC4B14258F7CF7` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `providertool`.`dwcore_ext`
---
-
-/*!40000 ALTER TABLE `dwcore_ext` DISABLE KEYS */;
-LOCK TABLES `dwcore_ext` WRITE;
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (6500,'(L.) Benth.',NULL,'Asia','TR',NULL,'Lamiaceae','Ballota',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Doganbey - Seferihisar. Near sea , 0m. N 38°06´25´´ O 26°51´03´´',NULL,NULL,NULL,'0','ICBN','Lamiales','Magnoliophyta','acetabulosa','Ïzmir',NULL,1),
+INSERT INTO `dwcore_ext` VALUES  (6500,'(L.) Benth.',NULL,'Asia','TR',NULL,'Lamiaceae','Ballota',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Doganbey - Seferihisar. Near sea , 0m. N 38°06´25´´ O 26°51´03´´',NULL,NULL,NULL,'0','ICBN','Lamiales','Magnoliophyta','acetabulosa','Ïzmir',NULL,1),
  (6501,'L.',NULL,'Asia','TR',NULL,'Asteraceae','Achillea',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to Meydan, 2350m',NULL,NULL,NULL,'2350','ICBN','Asterales','Magnoliophyta','falcata','Nigde',NULL,1),
  (6502,NULL,NULL,'Asia','TR',NULL,'Asteraceae','Centaurea',NULL,NULL,'carduiformis','Variety',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to Meydan, 2350m',NULL,NULL,NULL,'2350','ICBN','Asterales','Magnoliophyta','carduiformis','Nigde',NULL,1),
  (6503,'(Spach) Briq.',NULL,'Asia','TR',NULL,'Rosaceae','Sanguisorba',NULL,NULL,'muricata','Subspecies',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to Meydan, 2350m',NULL,NULL,NULL,'2350','ICBN','Rosales','Magnoliophyta','minor','Nigde',NULL,1),
@@ -1935,7 +1893,7 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (6500,'(L.) Benth.',NULL,'Asia',
  (6721,'M.A. Fischer',NULL,'Asia','TR',NULL,'Scrophulariaceae','Veronica',NULL,NULL,'massicytica','Subspecies',NULL,NULL,'Plantae','Lycian Akdaglari above Gömbe, above Subasi Yayla, 2500m',NULL,NULL,NULL,'2500','ICBN','Scrophulariales','Magnoliophyta','cuneifolia','Mugla',NULL,1),
  (6722,'Bornm.',NULL,'Asia','TR',NULL,'Asteraceae','Centaurea',NULL,NULL,NULL,'Variety',NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2450m',NULL,NULL,NULL,'2450','ICBN','Asterales','Magnoliophyta','reuterana','Adana',NULL,1),
  (6723,'Bornm.',NULL,'Asia','TR',NULL,'Asteraceae','Centaurea',NULL,NULL,NULL,'Variety',NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2600m',NULL,NULL,NULL,'2600','ICBN','Asterales','Magnoliophyta','reuterana','Adana',NULL,1);
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (6724,'Schreb.',NULL,'Asia','TR',NULL,'Caryophyllaceae','Gypsophila',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2450m',NULL,NULL,NULL,'2450','ICBN','Caryophyllales','Magnoliophyta','laricina','Adana',NULL,1),
+INSERT INTO `dwcore_ext` VALUES  (6724,'Schreb.',NULL,'Asia','TR',NULL,'Caryophyllaceae','Gypsophila',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2450m',NULL,NULL,NULL,'2450','ICBN','Caryophyllales','Magnoliophyta','laricina','Adana',NULL,1),
  (6725,'Willd.',NULL,'Asia','TR',NULL,'Fabaceae','Genista',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2450m',NULL,NULL,NULL,'2450','ICBN','Fabales','Magnoliophyta','albida','Adana',NULL,1),
  (6726,'(I. Schischk.) Tutin',NULL,'Asia','TR',NULL,'Apiaceae','Pimpinella',NULL,NULL,'lithophila','Subspecies',NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2450m',NULL,NULL,NULL,'2450','ICBN','Apiales','Magnoliophyta','tragium','Adana',NULL,1),
  (6727,'Ledeb.',NULL,'Asia','TR',NULL,'Fabaceae','Astragalus',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Kayacik Deresi, entrance to Narpiz Bogazi gorge, northern slope, 2450m',NULL,NULL,NULL,'2450','ICBN','Fabales','Magnoliophyta','condensatus','Adana',NULL,1),
@@ -2168,9 +2126,9 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (6724,'Schreb.',NULL,'Asia','TR'
  (6954,'Boiss.',NULL,'Asia','TR',NULL,'Asteraceae','Scorzonera',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Asterales','Magnoliophyta','cinerea','Nigde',NULL,1),
  (6955,'Rech. f.',NULL,'Asia','TR',NULL,'Lamiaceae','Teucrium',NULL,NULL,'tauricola','Subspecies',NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Lamiales','Magnoliophyta','chamaedrys','Nigde',NULL,1),
  (6956,'Boiss.',NULL,'Asia','TR',NULL,'Asteraceae','Scorzonera',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Asterales','Magnoliophyta','cinerea','Nigde',NULL,1),
- (6957,'Lindl.',NULL,'Asia','TR',NULL,'Papaveraceae','Papaver',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Papaverales','Magnoliophyta','persicum','Nigde',NULL,1);
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (6958,'L.',NULL,'Asia','TR',NULL,'Caryophyllaceae','Arenaria',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Caryophyllales','Magnoliophyta','serpyllifolia','Nigde',NULL,1),
- (6959,'Coode & Cullen',NULL,'Asia','TR',NULL,'Caryophyllaceae','Silene',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Caryophyllales','Magnoliophyta','nuncupanda','Nigde',NULL,1),
+ (6957,'Lindl.',NULL,'Asia','TR',NULL,'Papaveraceae','Papaver',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Papaverales','Magnoliophyta','persicum','Nigde',NULL,1),
+ (6958,'L.',NULL,'Asia','TR',NULL,'Caryophyllaceae','Arenaria',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Caryophyllales','Magnoliophyta','serpyllifolia','Nigde',NULL,1);
+INSERT INTO `dwcore_ext` VALUES  (6959,'Coode & Cullen',NULL,'Asia','TR',NULL,'Caryophyllaceae','Silene',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Caryophyllales','Magnoliophyta','nuncupanda','Nigde',NULL,1),
  (6960,'L.',NULL,'Asia','TR',NULL,'Primulaceae','Androsace',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Lycian Akdaglari above Gömbe, 2800m',NULL,NULL,NULL,'2800','ICBN','Primulales','Magnoliophyta','villosa','Mugla',NULL,1),
  (6961,'L.',NULL,'Asia','TR',NULL,'Dipsacaceae','Scabiosa',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Dipsacales','Magnoliophyta','ochroleuca','Nigde',NULL,1),
  (6962,'Parolly',NULL,'Asia','TR',NULL,'Rubiaceae','Galium',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Aladaglari, Emli Vadisi, upper valley above Siyirma Bogazi. N37°45´52´´ O35°09´59´´, 2200m',NULL,NULL,NULL,'2200','ICBN','Rubiales','Magnoliophyta','aladaghense','Nigde',NULL,1),
@@ -2410,9 +2368,9 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (6958,'L.',NULL,'Asia','TR',NULL
  (7196,'Schott & Kotschy',NULL,'Asia','TR',NULL,'Papaveraceae','Papaver',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, western scree slope far beneath the summit, 2200m',NULL,NULL,NULL,'2200','ICBN','Papaverales','Magnoliophyta','polychaetum','Antalya',NULL,1),
  (7197,'Schott & Kotschy',NULL,'Asia','TR',NULL,'Papaveraceae','Papaver',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, western scree slope far beneath the summit, 2200m',NULL,NULL,NULL,'2200','ICBN','Papaverales','Magnoliophyta','polychaetum','Antalya',NULL,1),
  (7198,'(I. Schischk.) Tutin',NULL,'Asia','TR',NULL,'Apiaceae','Pimpinella',NULL,NULL,'lithophila','Subspecies',NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, western scree slope far beneath the summit, 2200m',NULL,NULL,NULL,'2200','ICBN','Apiales','Magnoliophyta','tragium','Antalya',NULL,1),
- (7199,NULL,NULL,'Asia','TR',NULL,'Lamiaceae','Marrubium',NULL,NULL,'globosum','Subspecies',NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, Yayla Ekizce, 1800m',NULL,NULL,NULL,'~ 1800','ICBN','Lamiales','Magnoliophyta','globosum','Antalya',NULL,1);
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (7200,'Ehrend.',NULL,'Asia','TR',NULL,'Rubiaceae','Galium',NULL,NULL,'centrale','Subspecies',NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, western scree slope far beneath the summit, 2200m',NULL,NULL,NULL,'2200','ICBN','Rubiales','Magnoliophyta','incanum','Antalya',NULL,1),
- (7201,'Boiss. & Heldr.',NULL,'Asia','TR',NULL,'Plumbaginaceae','Acantholimon',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, 26003000m',NULL,NULL,NULL,'2600-3000','ICBN','Plumbaginales','Magnoliophyta','lycaonicum','Antalya',NULL,1),
+ (7199,NULL,NULL,'Asia','TR',NULL,'Lamiaceae','Marrubium',NULL,NULL,'globosum','Subspecies',NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, Yayla Ekizce, 1800m',NULL,NULL,NULL,'~ 1800','ICBN','Lamiales','Magnoliophyta','globosum','Antalya',NULL,1),
+ (7200,'Ehrend.',NULL,'Asia','TR',NULL,'Rubiaceae','Galium',NULL,NULL,'centrale','Subspecies',NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, western scree slope far beneath the summit, 2200m',NULL,NULL,NULL,'2200','ICBN','Rubiales','Magnoliophyta','incanum','Antalya',NULL,1);
+INSERT INTO `dwcore_ext` VALUES  (7201,'Boiss. & Heldr.',NULL,'Asia','TR',NULL,'Plumbaginaceae','Acantholimon',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, 26003000m',NULL,NULL,NULL,'2600-3000','ICBN','Plumbaginales','Magnoliophyta','lycaonicum','Antalya',NULL,1),
  (7202,'Boiss. & Heldr.',NULL,'Asia','TR',NULL,'Asteraceae','Onopordum',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, Yayla Ekizce, 1800m',NULL,NULL,NULL,'~ 1800','ICBN','Asterales','Magnoliophyta','sibthorpianum','Antalya',NULL,1),
  (7203,'(Stev.) Fed.',NULL,'Asia','TR',NULL,'Fabaceae','Vavilovia',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Kizlar sivrisi, Yayla Ekizce, 1800m',NULL,NULL,NULL,'~ 1800','ICBN','Fabales','Magnoliophyta','formosa','Antalya',NULL,1),
  (7204,NULL,NULL,'Asia','TR',NULL,'unbekannt','noch unbestimmt !!!',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Sandras Dagi above Agla, plateau below Çiçekbaba Tepesi, 1900m',NULL,NULL,NULL,'1900','ICBN',NULL,NULL,NULL,'Mugla',NULL,1),
@@ -2636,9 +2594,9 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (7200,'Ehrend.',NULL,'Asia','TR'
  (7422,'Boiss.',NULL,'Asia','TR',NULL,'Ranunculaceae','Ranunculus',NULL,NULL,NULL,'Variety',NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above Saklikent, bottom end of slope along the road from Saklikent to the observatory, 1950m',NULL,NULL,NULL,'1950','ICBN','Ranunculales','Magnoliophyta','demissus','Antalya',NULL,1),
  (7423,'(C.Koch) Grossh.',NULL,'Asia','TR',NULL,'Poaceae','Alopecurus',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above Saklikent, bottom end of slope along the road from Saklikent to the observatory, 1950m',NULL,NULL,NULL,'1950','ICBN','Cyperales','Magnoliophyta','armenus','Antalya',NULL,1),
  (7424,'Trin.',NULL,'Asia','TR',NULL,'Poaceae','Stipa',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above Saklikent, bottom end of slope along the road from Saklikent to the observatory, 1950m',NULL,NULL,NULL,'1950','ICBN','Cyperales','Magnoliophyta','holosericea','Antalya',NULL,1),
- (7425,'(Boiss. & Heldr.) Pénzes',NULL,'Asia','TR',NULL,'Poaceae','Bromus',NULL,NULL,'anatolicus','Subspecies',NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1950m',NULL,NULL,NULL,'1950','ICBN','Cyperales','Magnoliophyta','japonicus','Antalya',NULL,1);
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (7426,'Willd.',NULL,'Asia','TR',NULL,'Fabaceae','Astragalus',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above Saklikent, bottom end of slope along the road from Saklikent to the observatory, 1950m',NULL,NULL,NULL,'1950','ICBN','Fabales','Magnoliophyta','microcephalus','Antalya',NULL,1),
- (7427,'Lam.',NULL,'Asia','TR',NULL,'Papaveraceae','Fumaria',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1950m',NULL,NULL,NULL,'1950','ICBN','Papaverales','Magnoliophyta','parviflora','Antalya',NULL,1),
+ (7425,'(Boiss. & Heldr.) Pénzes',NULL,'Asia','TR',NULL,'Poaceae','Bromus',NULL,NULL,'anatolicus','Subspecies',NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1950m',NULL,NULL,NULL,'1950','ICBN','Cyperales','Magnoliophyta','japonicus','Antalya',NULL,1),
+ (7426,'Willd.',NULL,'Asia','TR',NULL,'Fabaceae','Astragalus',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above Saklikent, bottom end of slope along the road from Saklikent to the observatory, 1950m',NULL,NULL,NULL,'1950','ICBN','Fabales','Magnoliophyta','microcephalus','Antalya',NULL,1);
+INSERT INTO `dwcore_ext` VALUES  (7427,'Lam.',NULL,'Asia','TR',NULL,'Papaveraceae','Fumaria',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1950m',NULL,NULL,NULL,'1950','ICBN','Papaverales','Magnoliophyta','parviflora','Antalya',NULL,1),
  (7428,'L.',NULL,'Asia','TR',NULL,'Lamiaceae','Stachys',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1900m',NULL,NULL,NULL,'1900','ICBN','Lamiales','Magnoliophyta','cretica s.l.','Antalya',NULL,1),
  (7429,NULL,NULL,'Asia','TR',NULL,'unbekannt','noch unbestimmt !!!',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1950m',NULL,NULL,NULL,'1950','ICBN',NULL,NULL,NULL,'Antalya',NULL,1),
  (7430,'J.R.Edm.',NULL,'Asia','TR',NULL,'Lamiaceae','Scutellaria',NULL,NULL,'pinnatifida','Subspecies',NULL,NULL,'Plantae','Beydaglari, Bakirli Dagi above SaklikentSakklikent, 1900m',NULL,NULL,NULL,'1900','ICBN','Lamiales','Magnoliophyta','orientalis','Antalya',NULL,1),
@@ -2849,9 +2807,9 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (7426,'Willd.',NULL,'Asia','TR',
  (7635,NULL,NULL,'Asia','TR',NULL,'Brassicaceae','Alyssum',NULL,NULL,'pateri','Subspecies',NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Capparales','Magnoliophyta','pateri','Antalya',NULL,1),
  (7636,'Boiss.',NULL,'Asia','TR',NULL,'Brassicaceae','Alyssum',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Capparales','Magnoliophyta','aurantiacum','Antalya',NULL,1),
  (7637,'Boiss.',NULL,'Asia','TR',NULL,'Brassicaceae','Thlaspi',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Capparales','Magnoliophyta','papillosum','Antalya',NULL,1),
- (7638,'L.',NULL,'Asia','TR',NULL,'Dipsacaceae','Scabiosa',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Dipsacales','Magnoliophyta','ochroleuca','Antalya',NULL,1);
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (7639,'Boiss.',NULL,'Asia','TR',NULL,'Caryophyllaceae','Cerastium',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Sandras Dagi above Agla, summit region of Altinsivrisi, 2120m',NULL,NULL,NULL,'2120','ICBN','Caryophyllales','Magnoliophyta','macranthum','Mugla',NULL,1),
- (7640,'(Boiss. & Heldr.) P.H.Davis',NULL,'Asia','TR',NULL,'Lamiaceae','Marrubium',NULL,NULL,'micranthum','Subspecies',NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Lamiales','Magnoliophyta','globosum','Antalya',NULL,1),
+ (7638,'L.',NULL,'Asia','TR',NULL,'Dipsacaceae','Scabiosa',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Dipsacales','Magnoliophyta','ochroleuca','Antalya',NULL,1),
+ (7639,'Boiss.',NULL,'Asia','TR',NULL,'Caryophyllaceae','Cerastium',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Sandras Dagi above Agla, summit region of Altinsivrisi, 2120m',NULL,NULL,NULL,'2120','ICBN','Caryophyllales','Magnoliophyta','macranthum','Mugla',NULL,1);
+INSERT INTO `dwcore_ext` VALUES  (7640,'(Boiss. & Heldr.) P.H.Davis',NULL,'Asia','TR',NULL,'Lamiaceae','Marrubium',NULL,NULL,'micranthum','Subspecies',NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Lamiales','Magnoliophyta','globosum','Antalya',NULL,1),
  (7641,NULL,NULL,'Asia','TR',NULL,'Asteraceae','Centaurea',NULL,NULL,'urvillei','Subspecies',NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Asterales','Magnoliophyta','urvillei','Antalya',NULL,1),
  (7642,'(Boiss.) D.F.Chamb.',NULL,'Asia','TR',NULL,'Asteraceae','Scorzonera',NULL,NULL,NULL,'Variety',NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Asterales','Magnoliophyta','cana','Antalya',NULL,1),
  (7643,NULL,NULL,'Asia','TR',NULL,'Apiaceae','Bunium',NULL,NULL,'microcarpum','Subspecies',NULL,NULL,'Plantae','Geyik Daglari, Akdagi, northern foothill, 2250m',NULL,NULL,NULL,'2250','ICBN','Apiales','Magnoliophyta','microcarpum','Antalya',NULL,1),
@@ -3078,9 +3036,9 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (7639,'Boiss.',NULL,'Asia','TR',
  (7864,NULL,NULL,'Asia','TR',NULL,'unbekannt','noch unbestimmt !!!',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN',NULL,NULL,NULL,'Nigde',NULL,1),
  (7865,'Steven ex R.Roem. & Schultes',NULL,'Asia','TR',NULL,'Poaceae','Sesleria',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Cyperales','Magnoliophyta','phleoides','Nigde',NULL,1),
  (7866,'F.Herm.',NULL,'Asia','TR',NULL,'Poaceae','Poa',NULL,NULL,'fallax','Subspecies',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Cyperales','Magnoliophyta','alpina','Nigde',NULL,1),
- (7867,'Boiss. & Heldr.',NULL,'Asia','TR',NULL,'Plumbaginaceae','Acantholimon',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Plumbaginales','Magnoliophyta','lycaonicum','Nigde',NULL,1);
-INSERT INTO `providertool`.`dwcore_ext` VALUES  (7868,'P.H. Davis',NULL,'Asia','TR',NULL,'Lamiaceae','Ajuga',NULL,NULL,'glareosa','Subspecies',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Lamiales','Magnoliophyta','chamaepitys','Nigde',NULL,1),
- (7869,'L.',NULL,'Asia','TR',NULL,'Dipsacaceae','Scabiosa',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2760m',NULL,NULL,NULL,'2760','ICBN','Dipsacales','Magnoliophyta','ochroleuca','Nigde',NULL,1),
+ (7867,'Boiss. & Heldr.',NULL,'Asia','TR',NULL,'Plumbaginaceae','Acantholimon',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Plumbaginales','Magnoliophyta','lycaonicum','Nigde',NULL,1),
+ (7868,'P.H. Davis',NULL,'Asia','TR',NULL,'Lamiaceae','Ajuga',NULL,NULL,'glareosa','Subspecies',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Lamiales','Magnoliophyta','chamaepitys','Nigde',NULL,1);
+INSERT INTO `dwcore_ext` VALUES  (7869,'L.',NULL,'Asia','TR',NULL,'Dipsacaceae','Scabiosa',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2760m',NULL,NULL,NULL,'2760','ICBN','Dipsacales','Magnoliophyta','ochroleuca','Nigde',NULL,1),
  (7870,NULL,NULL,'Asia','TR',NULL,'Caryophyllaceae','Arenaria',NULL,NULL,NULL,'Variety',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Caryophyllales','Magnoliophyta','ledebouriana','Nigde',NULL,1),
  (7871,'Boiss.',NULL,'Asia','TR',NULL,'Ranunculaceae','Ranunculus',NULL,NULL,NULL,'Variety',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Ranunculales','Magnoliophyta','demissus','Nigde',NULL,1),
  (7872,'Dahlst.',NULL,'Asia','TR',NULL,'Asteraceae','Taraxacum',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari above Meydan, cirque system around tarn Karagöl, between Tahtakaya and Egerkaya, 2700m',NULL,NULL,NULL,'2700','ICBN','Asterales','Magnoliophyta','sintenisii','Nigde',NULL,1),
@@ -3244,16 +3202,9 @@ INSERT INTO `providertool`.`dwcore_ext` VALUES  (7868,'P.H. Davis',NULL,'Asia','
  (8030,'Martyn',NULL,'Asia','TR',NULL,'Fabaceae','Medicago',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',NULL,NULL,NULL,'2380','ICBN','Fabales','Magnoliophyta','x varia','Nigde',NULL,1),
  (8031,'Boiss.',NULL,'Asia','TR',NULL,'Asteraceae','Tragopogon',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',NULL,NULL,NULL,'2380','ICBN','Asterales','Magnoliophyta','olympicus','Nigde',NULL,1),
  (8032,NULL,NULL,'Asia','TR',NULL,'Boraginaceae','Alkanna',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',NULL,NULL,NULL,'2380','ICBN','Lamiales','Magnoliophyta','spec.','Nigde',NULL,1);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `dwcore_ext` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`ext_dwc_dwcgeospatial`
---
-
-DROP TABLE IF EXISTS `providertool`.`ext_dwc_dwcgeospatial`;
-CREATE TABLE  `providertool`.`ext_dwc_dwcgeospatial` (
+DROP TABLE IF EXISTS `ext_dwc_dwcgeospatial`;
+CREATE TABLE `ext_dwc_dwcgeospatial` (
   `coreid` bigint(20) NOT NULL,
   `resource_fk` bigint(20) NOT NULL,
   `decimal_latitude` varchar(128) default NULL,
@@ -3273,14 +3224,7 @@ CREATE TABLE  `providertool`.`ext_dwc_dwcgeospatial` (
   KEY `coreid` (`coreid`),
   KEY `resource_fk` (`resource_fk`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`ext_dwc_dwcgeospatial`
---
-
-/*!40000 ALTER TABLE `ext_dwc_dwcgeospatial` DISABLE KEYS */;
-LOCK TABLES `ext_dwc_dwcgeospatial` WRITE;
-INSERT INTO `providertool`.`ext_dwc_dwcgeospatial` VALUES  (6500,1,'38.10695','26.85083','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `ext_dwc_dwcgeospatial` VALUES  (6500,1,'38.10695','26.85083','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (6501,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (6502,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (6503,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -3934,7 +3878,7 @@ INSERT INTO `providertool`.`ext_dwc_dwcgeospatial` VALUES  (6500,1,'38.10695','2
  (7151,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7152,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7153,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `providertool`.`ext_dwc_dwcgeospatial` VALUES  (7154,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `ext_dwc_dwcgeospatial` VALUES  (7154,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7155,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7156,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7157,1,'36.60000','30.10000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -4588,7 +4532,7 @@ INSERT INTO `providertool`.`ext_dwc_dwcgeospatial` VALUES  (7154,1,'36.60000','3
  (7805,1,'37.40400','34.55800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7806,1,'37.40400','34.55800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7807,1,'37.40400','34.55800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `providertool`.`ext_dwc_dwcgeospatial` VALUES  (7808,1,'37.40400','34.55800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+INSERT INTO `ext_dwc_dwcgeospatial` VALUES  (7808,1,'37.40400','34.55800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7809,1,'37.40000','34.57000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7810,1,'37.40000','34.57000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (7811,1,'37.40000','34.57000','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -4813,16 +4757,9 @@ INSERT INTO `providertool`.`ext_dwc_dwcgeospatial` VALUES  (7808,1,'37.40400','3
  (8030,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (8031,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (8032,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `ext_dwc_dwcgeospatial` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`extension`
---
-
-DROP TABLE IF EXISTS `providertool`.`extension`;
-CREATE TABLE  `providertool`.`extension` (
+DROP TABLE IF EXISTS `extension`;
+CREATE TABLE `extension` (
   `id` bigint(20) NOT NULL auto_increment,
   `link` varchar(255) default NULL,
   `name` varchar(128) default NULL,
@@ -4830,29 +4767,15 @@ CREATE TABLE  `providertool`.`extension` (
   `type` int(11) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`extension`
---
-
-/*!40000 ALTER TABLE `extension` DISABLE KEYS */;
-LOCK TABLES `extension` WRITE;
-INSERT INTO `providertool`.`extension` VALUES  (1,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard','Darwin Core',0x00,NULL),
+INSERT INTO `extension` VALUES  (1,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard','Darwin Core',0x00,NULL),
  (2,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CuratorialExtension','DwC Curatorial',0x00,0),
  (3,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension','DwC Geospatial',0x01,0),
  (4,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/PaleontologyElement','DwC Paleontology',0x00,0),
  (5,NULL,'Multimedia',0x00,0),
  (6,NULL,'Identification',0x00,0);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `extension` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`extension_property`
---
-
-DROP TABLE IF EXISTS `providertool`.`extension_property`;
-CREATE TABLE  `providertool`.`extension_property` (
+DROP TABLE IF EXISTS `extension_property`;
+CREATE TABLE `extension_property` (
   `id` bigint(20) NOT NULL auto_increment,
   `column_length` int(11) NOT NULL,
   `link` varchar(255) default NULL,
@@ -4865,14 +4788,7 @@ CREATE TABLE  `providertool`.`extension_property` (
   PRIMARY KEY  (`id`),
   KEY `FKB1C849D5E6B2BACE` (`extension_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=413 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`extension_property`
---
-
-/*!40000 ALTER TABLE `extension_property` DISABLE KEYS */;
-LOCK TABLES `extension_property` WRITE;
-INSERT INTO `providertool`.`extension_property` VALUES  (3,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/BasisOfRecord','BasisOfRecord',NULL,'http://rs.tdwg.org/dwc/dwcore/BasisOfRecord',0x00,1,0),
+INSERT INTO `extension_property` VALUES  (3,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/BasisOfRecord','BasisOfRecord',NULL,'http://rs.tdwg.org/dwc/dwcore/BasisOfRecord',0x00,1,0),
  (4,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InstitutionCode','InstitutionCode',NULL,'http://rs.tdwg.org/dwc/dwcore/InstitutionCode',0x00,1,1),
  (5,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectionCode','CollectionCode',NULL,'http://rs.tdwg.org/dwc/dwcore/CollectionCode',0x00,1,2),
  (6,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CatalogNumber','CatalogNumber',NULL,'http://rs.tdwg.org/dwc/dwcore/CatalogNumber',0x00,1,3),
@@ -4958,30 +4874,16 @@ INSERT INTO `providertool`.`extension_property` VALUES  (3,128,'http://wiki.tdwg
  (410,128,NULL,'TaxonConceptReference','http://ipt.gbif.org/ext/identification','http://ipt.gbif.org/ext/identification/TaxonConceptReference',0x00,6,3),
  (411,128,NULL,'Kingdom','http://ipt.gbif.org/ext/identification','http://ipt.gbif.org/ext/identification/Kingdom',0x00,6,4),
  (412,128,NULL,'NomenclaturalCode','http://ipt.gbif.org/ext/identification','http://ipt.gbif.org/ext/identification/NomenclaturalCode',0x00,6,5);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `extension_property` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`extension_property_terms`
---
-
-DROP TABLE IF EXISTS `providertool`.`extension_property_terms`;
-CREATE TABLE  `providertool`.`extension_property_terms` (
+DROP TABLE IF EXISTS `extension_property_terms`;
+CREATE TABLE `extension_property_terms` (
   `extension_property_fk` bigint(20) NOT NULL,
   `terms_element` varchar(255) default NULL,
   `terms_order` int(11) NOT NULL,
   PRIMARY KEY  (`extension_property_fk`,`terms_order`),
   KEY `FK8EEB829DB9EEC66D` (`extension_property_fk`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`extension_property_terms`
---
-
-/*!40000 ALTER TABLE `extension_property_terms` DISABLE KEYS */;
-LOCK TABLES `extension_property_terms` WRITE;
-INSERT INTO `providertool`.`extension_property_terms` VALUES  (3,'PreservedSpecimen',0),
+INSERT INTO `extension_property_terms` VALUES  (3,'PreservedSpecimen',0),
  (3,'FossilSpecimen',1),
  (3,'LivingSpecimen',2),
  (3,'HumanObservation',3),
@@ -4995,16 +4897,9 @@ INSERT INTO `providertool`.`extension_property_terms` VALUES  (3,'PreservedSpeci
  (21,'BC',2),
  (21,'ICNCP',3),
  (21,'BioCode',4);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `extension_property_terms` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`log_event`
---
-
-DROP TABLE IF EXISTS `providertool`.`log_event`;
-CREATE TABLE  `providertool`.`log_event` (
+DROP TABLE IF EXISTS `log_event`;
+CREATE TABLE `log_event` (
   `id` bigint(20) NOT NULL auto_increment,
   `group_id` int(11) NOT NULL,
   `info_as_json` text,
@@ -5019,14 +4914,7 @@ CREATE TABLE  `providertool`.`log_event` (
   PRIMARY KEY  (`id`),
   KEY `FK8805F5DFF503D0FF` (`user_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9005 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`log_event`
---
-
-/*!40000 ALTER TABLE `log_event` DISABLE KEYS */;
-LOCK TABLES `log_event` WRITE;
-INSERT INTO `providertool`.`log_event` VALUES  (7141,1,NULL,NULL,4,'log.transform','{\"list\":[\"?\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:07',NULL),
+INSERT INTO `log_event` VALUES  (7141,1,NULL,NULL,4,'log.transform','{\"list\":[\"?\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:07',NULL),
  (7142,1,NULL,NULL,4,'log.transform','{\"list\":[\"?\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:07',NULL),
  (7143,1,NULL,NULL,4,'log.transform','{\"list\":[\"~ 1800\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:08',NULL),
  (7144,1,NULL,NULL,4,'log.transform','{\"list\":[\"2600-3000\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:08',NULL),
@@ -5057,16 +4945,9 @@ INSERT INTO `providertool`.`log_event` VALUES  (7141,1,NULL,NULL,4,'log.transfor
  (7169,1,NULL,NULL,4,'log.nullRecord','{\"list\":[\"1\",\"Pontaurus DB\"]}',2146407,1,'2008-09-25 01:07:15',NULL),
  (7170,1,NULL,NULL,4,'uploadManager.unknownLocalId','{\"list\":[\"CatalogNumber\",\"DwC Geospatial\",\"1\"]}',2146407,1,'2008-09-25 01:07:31',NULL),
  (7171,1,NULL,NULL,4,'log.nullRecord','{\"list\":[\"1535\",\"Pontaurus DB\"]}',2146407,1,'2008-09-25 01:07:32',NULL);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `log_event` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`occ_stat_by_region_and_taxon`
---
-
-DROP TABLE IF EXISTS `providertool`.`occ_stat_by_region_and_taxon`;
-CREATE TABLE  `providertool`.`occ_stat_by_region_and_taxon` (
+DROP TABLE IF EXISTS `occ_stat_by_region_and_taxon`;
+CREATE TABLE `occ_stat_by_region_and_taxon` (
   `id` bigint(20) NOT NULL auto_increment,
   `num_occ` int(11) NOT NULL,
   `region_fk` bigint(20) default NULL,
@@ -5077,14 +4958,7 @@ CREATE TABLE  `providertool`.`occ_stat_by_region_and_taxon` (
   KEY `FK18B7A48486115B5A` (`region_fk`),
   KEY `FK18B7A484F4A31FEE` (`taxon_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=38779 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`occ_stat_by_region_and_taxon`
---
-
-/*!40000 ALTER TABLE `occ_stat_by_region_and_taxon` DISABLE KEYS */;
-LOCK TABLES `occ_stat_by_region_and_taxon` WRITE;
-INSERT INTO `providertool`.`occ_stat_by_region_and_taxon` VALUES  (38036,1,4667,1,22416),
+INSERT INTO `occ_stat_by_region_and_taxon` VALUES  (38036,1,4667,1,22416),
  (38035,1,4667,1,23103),
  (38034,1,4667,1,23118),
  (38033,1,4667,1,22803),
@@ -6541,16 +6415,9 @@ INSERT INTO `providertool`.`occ_stat_by_region_and_taxon` VALUES  (38036,1,4667,
  (36582,1,4603,1,22864),
  (36581,1,4603,1,22866),
  (36580,1,4603,1,22854);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `occ_stat_by_region_and_taxon` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`property_mapping`
---
-
-DROP TABLE IF EXISTS `providertool`.`property_mapping`;
-CREATE TABLE  `providertool`.`property_mapping` (
+DROP TABLE IF EXISTS `property_mapping`;
+CREATE TABLE `property_mapping` (
   `id` bigint(20) NOT NULL auto_increment,
   `column_name` varchar(255) default NULL,
   `value` varchar(255) default NULL,
@@ -6559,15 +6426,8 @@ CREATE TABLE  `providertool`.`property_mapping` (
   PRIMARY KEY  (`id`),
   KEY `FKD70CF8645010B26D` (`property_fk`),
   KEY `FKD70CF864A02FD6D4` (`view_mapping_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=102 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`property_mapping`
---
-
-/*!40000 ALTER TABLE `property_mapping` DISABLE KEYS */;
-LOCK TABLES `property_mapping` WRITE;
-INSERT INTO `providertool`.`property_mapping` VALUES  (1,'Family',NULL,1,15),
+) ENGINE=MyISAM AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
+INSERT INTO `property_mapping` VALUES  (1,'Family',NULL,1,15),
  (2,'InstitutionCode',NULL,1,4),
  (3,'InfraspecificEpithet',NULL,1,19),
  (4,'Collector',NULL,1,40),
@@ -6620,17 +6480,23 @@ INSERT INTO `providertool`.`property_mapping` VALUES  (1,'Family',NULL,1,15),
  (70,'Coordinate precision',NULL,16,103),
  (71,'Longitude',NULL,16,101),
  (100,NULL,'WGS84',12,102),
- (101,NULL,'1000',12,103);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `property_mapping` ENABLE KEYS */;
+ (101,NULL,'1000',12,103),
+ (102,'family.family',NULL,24,15),
+ (103,NULL,'BGBM',24,4),
+ (104,'family.kingdom',NULL,24,11),
+ (105,'taxon.genus',NULL,24,16),
+ (106,NULL,'PreservedSpecimen',24,3),
+ (107,'family.phylum',NULL,24,12),
+ (108,'taxon.epitheton',NULL,24,17),
+ (109,'family.class',NULL,24,13),
+ (110,'taxon.full_name',NULL,24,9),
+ (111,NULL,'ICBN',24,21),
+ (112,'specimen.specimen_id',NULL,24,6),
+ (113,'family.orderr',NULL,24,14),
+ (114,NULL,'B',24,5);
 
-
---
--- Definition of table `providertool`.`provider_cfg`
---
-
-DROP TABLE IF EXISTS `providertool`.`provider_cfg`;
-CREATE TABLE  `providertool`.`provider_cfg` (
+DROP TABLE IF EXISTS `provider_cfg`;
+CREATE TABLE `provider_cfg` (
   `id` bigint(20) NOT NULL auto_increment,
   `base_url` varchar(128) default NULL,
   `data_dir` varchar(128) default NULL,
@@ -6648,24 +6514,10 @@ CREATE TABLE  `providertool`.`provider_cfg` (
   PRIMARY KEY  (`id`),
   KEY `title` (`meta_title`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+INSERT INTO `provider_cfg` VALUES  (1,'http://localhost:8080','/Users/markus/workspace/gbif-providertool/target/work/webapp/WEB-INF/data','http://localhost:8080/images/provider-description.jpg','http://localhost:8081/geoserver','ipt-admin@mailinator.com','Admiral Adminski','<p>An oasis in the hustle and bustle of the metropolis, the Berlin Botanic Garden is a plant paradise of world importance with a history of over 300 years. It had a forerunner in the early 17th century that came from the princely kitchen and herbal garden which was located in the pleasure gardens of the Berlin castle. In 1679 the Grand-Duke gave instructions to open an agricultural model garden which was laid out in Schöneberg, a village near Berlin and now one of its districts, on the grounds of the present day Kleist park. Two hundred years later at the beginning of this century, it was relocated to Dahlem, due to the lack of space in Schöneberg.</p><p>Today the Botanic Garden Berlin-Dahlem comprises an area of 126 acres and hence is one of the world´s largest and most important gardens. About 22,000 different species of plants are cultivated here. In the 39 acres of the plant-geography section - one of the biggest of its kind in the world - you can travel all the way around the Northern Hemisphere, and in the 42 acre Arboretum and taxonomy section you can get an insight into the relationship among woody and herbaceous plants. The greenhouse complex consists of 16 houses open to the public and offers the possibility to travel through tropical and subtropical vegetation. These living collections, along with the preserved collections, form the basis for the continued expansion of scientific study within the plant kingdom, with the goal to deepen the knowledge necessary for the utilization and protection of plant diversity on earth.</p>','','http://www.bgbm.org','Botanic Garden & Botanical Museum Berlin-Dahlem','ABQIAAAAs4UCz4AD9c1tM6-bUpn1rBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSTNOgUCVVh1_hYHFtrPZsdeOTANA',52.4589,13.3048);
 
---
--- Dumping data for table `providertool`.`provider_cfg`
---
-
-/*!40000 ALTER TABLE `provider_cfg` DISABLE KEYS */;
-LOCK TABLES `provider_cfg` WRITE;
-INSERT INTO `providertool`.`provider_cfg` VALUES  (1,'http://localhost:8080','/Users/markus/workspace/gbif-providertool/target/work/webapp/WEB-INF/data','http://localhost:8080/images/provider-description.jpg','http://localhost:8081/geoserver','ipt-admin@mailinator.com','Admiral Adminski','<p>An oasis in the hustle and bustle of the metropolis, the Berlin Botanic Garden is a plant paradise of world importance with a history of over 300 years. It had a forerunner in the early 17th century that came from the princely kitchen and herbal garden which was located in the pleasure gardens of the Berlin castle. In 1679 the Grand-Duke gave instructions to open an agricultural model garden which was laid out in Schöneberg, a village near Berlin and now one of its districts, on the grounds of the present day Kleist park. Two hundred years later at the beginning of this century, it was relocated to Dahlem, due to the lack of space in Schöneberg.</p><p>Today the Botanic Garden Berlin-Dahlem comprises an area of 126 acres and hence is one of the world´s largest and most important gardens. About 22,000 different species of plants are cultivated here. In the 39 acres of the plant-geography section - one of the biggest of its kind in the world - you can travel all the way around the Northern Hemisphere, and in the 42 acre Arboretum and taxonomy section you can get an insight into the relationship among woody and herbaceous plants. The greenhouse complex consists of 16 houses open to the public and offers the possibility to travel through tropical and subtropical vegetation. These living collections, along with the preserved collections, form the basis for the continued expansion of scientific study within the plant kingdom, with the goal to deepen the knowledge necessary for the utilization and protection of plant diversity on earth.</p>','','http://www.bgbm.org','Botanic Garden & Botanical Museum Berlin-Dahlem','ABQIAAAAs4UCz4AD9c1tM6-bUpn1rBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSTNOgUCVVh1_hYHFtrPZsdeOTANA',52.4589,13.3048);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `provider_cfg` ENABLE KEYS */;
-
-
---
--- Definition of table `providertool`.`region`
---
-
-DROP TABLE IF EXISTS `providertool`.`region`;
-CREATE TABLE  `providertool`.`region` (
+DROP TABLE IF EXISTS `region`;
+CREATE TABLE `region` (
   `id` bigint(20) NOT NULL auto_increment,
   `bbox_max_latitude` float default NULL,
   `bbox_max_longitude` float default NULL,
@@ -6684,14 +6536,7 @@ CREATE TABLE  `providertool`.`region` (
   KEY `FKC84826F4FD0995E4` (`parent_fk`),
   KEY `FKC84826F42E6479A` (`resource_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4838 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`region`
---
-
-/*!40000 ALTER TABLE `region` DISABLE KEYS */;
-LOCK TABLES `region` WRITE;
-INSERT INTO `providertool`.`region` VALUES  (4672,NULL,NULL,NULL,NULL,'Oyuklu Dagi N of Ermenek, 1900m',121,3,122,7,4671,1),
+INSERT INTO `region` VALUES  (4672,NULL,NULL,NULL,NULL,'Oyuklu Dagi N of Ermenek, 1900m',121,3,122,7,4671,1),
  (4669,NULL,NULL,NULL,NULL,'Geyik Daglari, Büyük Geyik Dagi, plateau between central lake and northern exit to Anatolia, 2000m',103,24,104,7,4576,1),
  (4682,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari above Meydan, scree slope S of tarn Karagöl, 2675m',249,17,250,7,4541,1),
  (4687,NULL,NULL,NULL,NULL,'Sandras Dagi above Agla, ascent from Çirali to the Ciçekbaba Tepesi, 2150m',169,4,170,7,4543,1),
@@ -6852,16 +6697,9 @@ INSERT INTO `providertool`.`region` VALUES  (4672,NULL,NULL,NULL,NULL,'Oyuklu Da
  (4695,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2090m',273,12,274,7,4541,1),
  (4696,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl. N37°25´40´´ O34°34´05´´, 2400m',285,31,286,7,4541,1),
  (4697,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',279,5,280,7,4541,1);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `region` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`resource`
---
-
-DROP TABLE IF EXISTS `providertool`.`resource`;
-CREATE TABLE  `providertool`.`resource` (
+DROP TABLE IF EXISTS `resource`;
+CREATE TABLE `resource` (
   `dtype` varchar(31) NOT NULL,
   `id` bigint(20) NOT NULL auto_increment,
   `created` datetime default NULL,
@@ -6906,51 +6744,24 @@ CREATE TABLE  `providertool`.`resource` (
   KEY `FKEBABC40E4FFFD4FE` (`creator_fk`),
   KEY `FKEBABC40E497AF9C2` (`last_upload_event_fk`),
   KEY `FKEBABC40EA1C4CE73` (`modifier_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+INSERT INTO `resource` VALUES  ('OccurrenceResource',1,'2008-06-23 17:10:51','79df229e-2d76-474f-a0b8-b576cf1786cd','markus@mailinator.com','Markus Döring','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar',NULL,'','Pontaurus','2008-09-25 03:23:12','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool',38.1069,35.152,36.538,26.8508,0,1,45,188,1,33,2,161,893,152,517,1505,1533,1533,1533,1,1,63,NULL,NULL),
+ ('OccurrenceResource',2,'2008-09-16 20:23:41','79df229e-2d76-474f-a0b8-b576cf3386cd',NULL,NULL,'Hong Kong Herbarium dataset downloaded from GBIF and updated country names to ISO codes \r\nhttp://us.mirror.gbif.org/datasets/network/25',NULL,NULL,'Hong Kong Herbarium','2008-09-25 01:31:21','com.mysql.jdbc.Driver','','jdbc:mysql://localhost/YOUR_DATABASE','',NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,NULL,NULL,NULL),
+ ('OccurrenceResource',6,'2008-09-25 03:22:18','1af97d7c-1f46-4ecc-b959-b8789ad89cdc','markus@mailinator.com','Markus Döring','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar ',NULL,NULL,'Pontaurus DB','2008-09-25 03:26:59','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool',NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,NULL,NULL,NULL);
 
---
--- Dumping data for table `providertool`.`resource`
---
-
-/*!40000 ALTER TABLE `resource` DISABLE KEYS */;
-LOCK TABLES `resource` WRITE;
-INSERT INTO `providertool`.`resource` VALUES  ('OccurrenceResource',1,'2008-06-23 17:10:51','79df229e-2d76-474f-a0b8-b576cf1786cd',NULL,NULL,'Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar',NULL,NULL,'Pontaurus DB','2008-09-25 01:07:34','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool',38.1069,35.152,36.538,26.8508,0,1,45,188,1,33,2,161,893,152,517,1505,1533,1533,1533,1,NULL,63,NULL,NULL),
- ('OccurrenceResource',2,'2008-09-16 20:23:41','79df229e-2d76-474f-a0b8-b576cf3386cd',NULL,NULL,'Hong Kong Herbarium dataset downloaded from GBIF and updated country names to ISO codes \r\nhttp://us.mirror.gbif.org/datasets/network/25',NULL,NULL,'Hong Kong Herbarium','2008-09-25 01:31:21','com.mysql.jdbc.Driver','','jdbc:mysql://localhost/YOUR_DATABASE','',NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,NULL,NULL,NULL);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `resource` ENABLE KEYS */;
-
-
---
--- Definition of table `providertool`.`role`
---
-
-DROP TABLE IF EXISTS `providertool`.`role`;
-CREATE TABLE  `providertool`.`role` (
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
   `id` bigint(20) NOT NULL auto_increment,
   `description` varchar(64) default NULL,
   `name` varchar(20) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`role`
---
-
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-LOCK TABLES `role` WRITE;
-INSERT INTO `providertool`.`role` VALUES  (1,'Administrator role (can edit Users and Datasources)','ROLE_ADMIN'),
+INSERT INTO `role` VALUES  (1,'Administrator role (can edit Users and Datasources)','ROLE_ADMIN'),
  (2,'Default role for all Users','ROLE_USER'),
  (3,'Manager role (can edit Datasources)','ROLE_MANAGER');
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`taxon`
---
-
-DROP TABLE IF EXISTS `providertool`.`taxon`;
-CREATE TABLE  `providertool`.`taxon` (
+DROP TABLE IF EXISTS `taxon`;
+CREATE TABLE `taxon` (
   `id` bigint(20) NOT NULL auto_increment,
   `authorship` varchar(128) default NULL,
   `bbox_max_latitude` float default NULL,
@@ -6973,14 +6784,7 @@ CREATE TABLE  `providertool`.`taxon` (
   KEY `FK6908ECA7FAFDA0E` (`parent_fk`),
   KEY `FK6908ECA2E6479A` (`resource_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=23539 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`taxon`
---
-
-/*!40000 ALTER TABLE `taxon` DISABLE KEYS */;
-LOCK TABLES `taxon` WRITE;
-INSERT INTO `providertool`.`taxon` VALUES  (23075,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Arenaria cf. pamphylica',481,NULL,0,'Species',484,22501,1),
+INSERT INTO `taxon` VALUES  (23075,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Arenaria cf. pamphylica',481,NULL,0,'Species',484,22501,1),
  (23077,'(Freyn & Bornm.) D.F.Chamb. & Matthews',NULL,NULL,NULL,NULL,'ICBN',NULL,'Astragalus plumosus var. krugianus (Freyn & Bornm.) D.F.Chamb. & Matthews',869,NULL,3,'Variety',870,22354,1),
  (23189,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Stipa pulcherrima',779,NULL,0,'Species',782,22560,1),
  (23188,'Jalas',NULL,NULL,NULL,NULL,'ICBN',NULL,'Thymus longicaulis var. alternatus Jalas',1212,NULL,1,'Variety',1213,23079,1),
@@ -7559,7 +7363,7 @@ INSERT INTO `providertool`.`taxon` VALUES  (23075,NULL,NULL,NULL,NULL,NULL,'ICBN
  (22608,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Festuca anatolica',709,NULL,0,'Species',712,22362,1),
  (22607,'(Brand) Bornm.',NULL,NULL,NULL,NULL,'ICBN',NULL,'Omphalodes luciliae subsp. cilicica (Brand) Bornm.',1030,NULL,1,'Subspecies',1031,22606,1),
  (22606,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Omphalodes luciliae',1029,NULL,0,'Species',1032,22605,1);
-INSERT INTO `providertool`.`taxon` VALUES  (22605,NULL,NULL,NULL,NULL,NULL,'ICBN',5,'Omphalodes',1028,NULL,0,'Genus',1033,22466,1),
+INSERT INTO `taxon` VALUES  (22605,NULL,NULL,NULL,NULL,NULL,'ICBN',5,'Omphalodes',1028,NULL,0,'Genus',1033,22466,1),
  (22603,'Rothm.',NULL,NULL,NULL,NULL,'ICBN',NULL,'Alchemilla ellenbergiana Rothm.',1515,NULL,2,NULL,1516,22602,1),
  (22604,'Bornm.',NULL,NULL,NULL,NULL,'ICBN',NULL,'Veronica tauricola Bornm.',1709,NULL,4,NULL,1710,22439,1),
  (22602,NULL,NULL,NULL,NULL,NULL,'ICBN',5,'Alchemilla',1514,NULL,0,'Genus',1519,22346,1),
@@ -7873,16 +7677,9 @@ INSERT INTO `providertool`.`taxon` VALUES  (22605,NULL,NULL,NULL,NULL,NULL,'ICBN
  (23200,'Vahl',NULL,NULL,NULL,NULL,'ICBN',NULL,'Salvia multicaulis Vahl',1131,NULL,2,NULL,1132,22405,1),
  (23223,NULL,NULL,NULL,NULL,NULL,'ICBN',NULL,'Linum spec.',1311,NULL,1,NULL,1312,22801,1),
  (23224,NULL,NULL,NULL,NULL,NULL,'ICBN',NULL,'Alkanna spec.',1011,NULL,1,NULL,1012,22850,1);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `taxon` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`upload_event`
---
-
-DROP TABLE IF EXISTS `providertool`.`upload_event`;
-CREATE TABLE  `providertool`.`upload_event` (
+DROP TABLE IF EXISTS `upload_event`;
+CREATE TABLE `upload_event` (
   `id` bigint(20) NOT NULL auto_increment,
   `execution_date` datetime default NULL,
   `job_source_id` int(11) NOT NULL,
@@ -7896,50 +7693,22 @@ CREATE TABLE  `providertool`.`upload_event` (
   PRIMARY KEY  (`id`),
   KEY `FKAF0A9EDC2E6479A` (`resource_fk`)
 ) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+INSERT INTO `upload_event` VALUES  (63,'2008-09-25 01:07:02',2146407,1,1533,0,0,1,1533,1);
 
---
--- Dumping data for table `providertool`.`upload_event`
---
-
-/*!40000 ALTER TABLE `upload_event` DISABLE KEYS */;
-LOCK TABLES `upload_event` WRITE;
-INSERT INTO `providertool`.`upload_event` VALUES  (63,'2008-09-25 01:07:02',2146407,1,1533,0,0,1,1533,1);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `upload_event` ENABLE KEYS */;
-
-
---
--- Definition of table `providertool`.`user_role`
---
-
-DROP TABLE IF EXISTS `providertool`.`user_role`;
-CREATE TABLE  `providertool`.`user_role` (
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
   `user_id` bigint(20) NOT NULL,
   `role_id` bigint(20) NOT NULL,
   PRIMARY KEY  (`user_id`,`role_id`),
   KEY `FK143BF46AF503D155` (`user_id`),
   KEY `FK143BF46A4FD90D75` (`role_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`user_role`
---
-
-/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-LOCK TABLES `user_role` WRITE;
-INSERT INTO `providertool`.`user_role` VALUES  (1,1),
+INSERT INTO `user_role` VALUES  (1,1),
  (2,3),
  (3,2);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
-
---
--- Definition of table `providertool`.`view_mapping`
---
-
-DROP TABLE IF EXISTS `providertool`.`view_mapping`;
-CREATE TABLE  `providertool`.`view_mapping` (
+DROP TABLE IF EXISTS `view_mapping`;
+CREATE TABLE `view_mapping` (
   `mapping_type` varchar(31) NOT NULL,
   `id` bigint(20) NOT NULL auto_increment,
   `localid_col` varchar(64) default NULL,
@@ -7953,21 +7722,12 @@ CREATE TABLE  `providertool`.`view_mapping` (
   PRIMARY KEY  (`id`),
   KEY `FKA8F48534D005777C` (`resource_fk`),
   KEY `FKA8F48534E6B2BACE` (`extension_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `providertool`.`view_mapping`
---
-
-/*!40000 ALTER TABLE `view_mapping` DISABLE KEYS */;
-LOCK TABLES `view_mapping` WRITE;
-INSERT INTO `providertool`.`view_mapping` VALUES  ('CORE',1,'CatalogNumber',1533,'source-ext_darwin_core.txt',NULL,NULL,NULL,1,1),
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+INSERT INTO `view_mapping` VALUES  ('CORE',1,'CatalogNumber',1533,'source-ext_darwin_core.txt',NULL,NULL,NULL,1,1),
  ('EXT',12,'CatalogNumber',1534,'source-ext_dwc_dwcgeospatial.txt',NULL,NULL,NULL,3,1),
  ('CORE',13,'Catalogue No',0,'source-dwcore.txt',NULL,'GUID','GBIF portal url',1,2),
- ('EXT',16,'Catalogue No',0,'source-geospatial.txt',NULL,NULL,NULL,3,2);
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `view_mapping` ENABLE KEYS */;
-
+ ('EXT',16,'Catalogue No',0,'source-geospatial.txt',NULL,NULL,NULL,3,2),
+ ('CORE',24,'specimen.specimen_id',0,NULL,'select * from specimen join taxon on taxon_fk=taxon_id join family on family_fk=family_id join locality on locality_fk=locality_id',NULL,NULL,1,6);
 
 
 

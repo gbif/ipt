@@ -21,6 +21,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Lob;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * A generic resource describing any digitial, online and non digital available biological resources
  * Should be replaced by a proper GBRDS model class.
@@ -42,14 +44,14 @@ public class ResourceMetadata{
 		return link;
 	}
 	public void setLink(String link) {
-		this.link = link;
+		this.link = StringUtils.trimToNull(link);
 	}
 
 	public String getEmlUrl() {
 		return emlUrl;
 	}
 	public void setEmlUrl(String emlUrl) {
-		this.emlUrl = emlUrl;
+		this.emlUrl = StringUtils.trimToNull(emlUrl);
 	}
 	
 	@Column(length=128)
@@ -58,7 +60,7 @@ public class ResourceMetadata{
 		return title;
 	}
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = StringUtils.trimToNull(title);
 	}
 	
 	@Lob
@@ -74,7 +76,7 @@ public class ResourceMetadata{
 		return contactName;
 	}
 	public void setContactName(String contactName) {
-		this.contactName = contactName;
+		this.contactName = StringUtils.trimToNull(contactName);
 	}
 	
 	@Column(length=64)
@@ -82,7 +84,7 @@ public class ResourceMetadata{
 		return contactEmail;
 	}
 	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
+		this.contactEmail = StringUtils.trimToNull(contactEmail);
 	}
 	
 	public Point getLocation() {

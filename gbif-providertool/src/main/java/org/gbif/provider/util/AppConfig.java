@@ -121,7 +121,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		return f;
 	}
 	public static String getResourceDataUrl(Long resourceId) {
-		return String.format("%s/data/%s", baseURL, resourceId.toString());
+		return String.format("%s/data/%s", baseURL, resourceId);
 	}	
 
 	public static File getResourceLogoFile(Long resourceId) {
