@@ -19,7 +19,7 @@ public class TabFileReaderTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testTabFileReader() throws IOException, MalformedTabFileException {
-		File f = new File(cfg.getResourceDataDir(Constants.TEST_RESOURCE_ID), "source-dwcore.txt");
+		File f = new File(cfg.getResourceDataDir(Constants.TEST_RESOURCE_ID), "source-ext_darwin_core.txt");
 		TabFileReader reader = new TabFileReader(f);
 		 System.out.println(Arrays.asList(reader.getHeader()));
 		 System.out.println();

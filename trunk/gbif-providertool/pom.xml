@@ -123,6 +123,7 @@
                     <wtpversion>1.5</wtpversion>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>hibernate3-maven-plugin</artifactId>
@@ -136,11 +137,14 @@
                         </component>
                     </components>
                     <componentProperties>
-                        <drop>true</drop>
                         <jdk5>true</jdk5>
+                        <drop>true</drop>
+                        <create>true</create>
+                        <format>true</format>
+                        <export>false</export>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
                         <skip>${initdb.skip}</skip>
-                        <outputfilename>providertool.sql</outputfilename>
+                        <outputfilename>ipt-ddl.sql</outputfilename>
                         <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
                     </componentProperties>
                 </configuration>
@@ -160,7 +164,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
+            
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sql-maven-plugin</artifactId>
@@ -185,36 +189,6 @@
                 </configuration>
                 
                 <executions>
-                    <!-- 
-                    <execution>
-                        <id>drop-db-before-test-if-any</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            #need another database to drop the targeted one
-                            <url>${jdbc.url2}</url>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>drop database ${jdbc.db}</sqlCommand>
-                            #ignore error when database is not avaiable
-                            <onError>continue</onError>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create-db</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>${jdbc.url2}</url>
-                            <# no transaction
-                            <autocommit>true</autocommit>
-                            <sqlCommand>create database ${jdbc.db}</sqlCommand>
-                        </configuration>
-                    </execution>
-                    -->
                     <execution>
                         <id>create-schema</id>
                         <phase>process-test-resources</phase>
@@ -228,6 +202,7 @@
                             </srcFiles>
                         </configuration>
                     </execution>
+                    <!-- 
                     <execution>
                         <id>create-data</id>
                         <phase>process-test-resources</phase>
@@ -235,6 +210,7 @@
                             <goal>execute</goal>
                         </goals>
                         <configuration>
+                            <autocommit>true</autocommit>
                             <orderFile>ascending</orderFile>
                             <fileset>
                                 <basedir>${basedir}</basedir>
@@ -243,7 +219,8 @@
                                 </includes>
                             </fileset>
                         </configuration>
-                    </execution>                    
+                    </execution>
+                    -->
                 </executions>                
             </plugin>
             
@@ -637,54 +614,6 @@
     </reporting>
 
     <profiles>
-        <profile>
-            <id>integration-test</id>
-            <activation>
-                <property>
-                    <name>!maven.test.skip</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.cargo</groupId>
-                        <artifactId>cargo-maven2-plugin</artifactId>
-                        <version>0.3</version>
-                        <configuration>
-                            <wait>${cargo.wait}</wait>
-                            <container>
-                                <containerId>${cargo.container}</containerId>
-                                <home>${cargo.container.home}</home>
-                            </container>
-                            <configuration>
-                                <home>${project.build.directory}/${cargo.container}/container</home>
-                                <properties>
-                                    <cargo.hostname>${cargo.host}</cargo.hostname>
-                                    <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
-                                </properties>
-                            </configuration>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>start-container</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>stop-container</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
         <!-- ================= Production Settings Profile ================= -->
         <!-- Use "-P prod" when you want to use the settings in this profile -->
         <!-- =============================================================== -->
@@ -698,30 +627,16 @@
                 <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
                 <jdbc.version>5.0.5</jdbc.version>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.db>providertool</jdbc.db>
                 <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
                 <jdbc.username>providertool</jdbc.username>
                 <jdbc.password>w32wfun</jdbc.password>
             </properties>
-            <build>
-                <plugins>
-                    <!-- Override location of data file for DbUnit to load (doesn't have negative keys) -->
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>dbunit-maven-plugin</artifactId>
-                        <configuration>
-                            <src>src/main/resources/default-data.xml</src>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
         
         <!-- ================= Database Profiles ================= -->
         <profile>
             <id>h2</id>
             <properties>
-                <dbunit.dataTypeFactoryName>org.dbunit.ext.hsqldb.HsqldbDataTypeFactory</dbunit.dataTypeFactoryName>
                 <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
                 <jdbc.groupId>com.h2database</jdbc.groupId>
                 <jdbc.artifactId>h2</jdbc.artifactId>
@@ -763,16 +678,12 @@
         
         <!-- Database settings -->
         <initdb.skip>false</initdb.skip>
-        <dbunit.dataTypeFactoryName>org.dbunit.dataset.datatype.DefaultDataTypeFactory</dbunit.dataTypeFactoryName>
-        <dbunit.operation.type>CLEAN_INSERT</dbunit.operation.type>
         <hibernate.dialect>org.hibernate.dialect.MySQLMyISAMDialect</hibernate.dialect>
         <jdbc.groupId>mysql</jdbc.groupId>
         <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
         <jdbc.version>5.0.5</jdbc.version>
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-        <jdbc.db>ipt_test</jdbc.db>
         <jdbc.url><![CDATA[jdbc:mysql://localhost/ipt_test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
-        <jdbc.url2>jdbc:mysql://localhost/test</jdbc.url2>
         <jdbc.username>providertool</jdbc.username>
         <jdbc.password>w32wfun</jdbc.password>
         
