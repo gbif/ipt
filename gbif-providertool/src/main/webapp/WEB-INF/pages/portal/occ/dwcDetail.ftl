@@ -64,17 +64,21 @@
 	</table>
 </fieldset>
 
-<#list dwc.resource.extensionMappings as view>
+<#list extensions as ext>
 <fieldset>
-	<h2>${view.extension.name}</h2>	
-	<table>	
-	<#list view.propertyMappings.values() as pm>
-	 <tr>
-		<th>${pm.property.name}</th>
-		<td>sorry, not implemented</td>
-	 </tr>
+	<h2>${ext.name}</h2>	
+	<#list extWrapper.getExtensionRecords(ext) as eRec>
+
+		<table>	
+		<#list eRec.properties as p>
+		 <tr>
+			<th>${p.name}</th>
+			<td>${eRec.getPropertyValue(p)}</td>
+		 </tr>
+		</#list>
+		</table>
+		<br/>
 	</#list>
-	</table>
 </fieldset>
 </#list>
 	

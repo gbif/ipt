@@ -30,8 +30,10 @@ import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.ViewExtensionMapping;
+import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.hibernate.Session;
@@ -71,8 +73,7 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		Connection cn = getConnection();
 		PreparedStatement ps = null;
 		try {
-			System.out.println(sql);
-			ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ps = cn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			int count = ps.executeUpdate(sql);
 		} catch (SQLException e) {
 			if (rec.getExtension()==null){
@@ -117,14 +118,49 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 	}
 	
 	
-	public List<ExtensionRecord> getExtensionRecords(DatasourceBasedResource resource, Long coreid) {
-		// TODO Auto-generated method stub
-		return new ArrayList<ExtensionRecord>();
+	public ExtensionRecordsWrapper getExtensionRecords(DatasourceBasedResource resource, Long coreid) {
+		ExtensionRecordsWrapper wrapper = new ExtensionRecordsWrapper(coreid);
+		for (ViewExtensionMapping view : resource.getExtensionMappings()){
+			wrapper.addExtensionRecords(getExtensionRecords(view.getExtension(), coreid, resource.getId()));
+		}
+		return wrapper;
 	}
 	
 	
-	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid) {
-		// TODO Auto-generated method stub
-		return new ArrayList<ExtensionRecord>();
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreId, Long resourceId) {
+		List<ExtensionRecord> records = new ArrayList<ExtensionRecord>();
+		String table = namingStrategy.extensionTableName(extension);
+		String sql = String.format("select * from %s where coreid=%s and resource_fk=%s", table, coreId, resourceId);
+		Connection cn = getConnection();
+		PreparedStatement ps = null;
+		try {
+			ps = cn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet result = ps.executeQuery(sql);
+			// create extension records from JDBC resultset
+			while (result.next()){
+				ExtensionRecord rec = new ExtensionRecord(coreId, resourceId);
+				for (ExtensionProperty p : extension.getProperties()){
+					String value = result.getString(namingStrategy.propertyToColumnName(p.getName()));
+					if (value!=null){
+						rec.setPropertyValue(p, value);
+					}
+				}
+				if (!rec.isEmpty()){
+					records.add(rec);
+				}
+			}
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't read extension records for extension=%s", extension), e);
+		}finally{
+			if (ps!=null){
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return records;
 	}
 }

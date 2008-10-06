@@ -24,11 +24,12 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DatasourceBasedResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.ExtensionRecord;
+import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 
 public interface ExtensionRecordManager {
-	public List<ExtensionRecord> getExtensionRecords(DatasourceBasedResource resource, Long coreid);
-	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid);
+	public ExtensionRecordsWrapper getExtensionRecords(DatasourceBasedResource resource, Long coreid);
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid, Long resourceId);
 	public void insertExtensionRecord(ExtensionRecord record);
 	/**
 	 * Delete all extension records for a given resource that are linked to a core record which is flagged as deleted

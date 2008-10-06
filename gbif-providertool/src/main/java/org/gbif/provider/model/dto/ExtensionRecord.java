@@ -1,10 +1,12 @@
-package org.gbif.provider.model;
+package org.gbif.provider.model.dto;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -18,6 +20,9 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.Record;
 import org.gbif.provider.util.TabFileWriter;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -39,29 +44,31 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 
 	public static ExtensionRecord newInstance(ImportRecord iRec){
-		ExtensionRecord extRec = new ExtensionRecord();
-		extRec.setCoreId(iRec.getId());
-		extRec.setResourceId(iRec.getResourceId());
-		extRec.setProperties(iRec.getProperties());
+		ExtensionRecord extRec = new ExtensionRecord(iRec.getId(), iRec.getResourceId(), iRec.getProperties());
 		return extRec;
 	}
 	
+	public ExtensionRecord(Long coreId, Long resourceId) {
+		super();
+		this.coreId = coreId;
+		this.resourceId = resourceId;
+	}
+	public ExtensionRecord(Long coreId, Long resourceId, Map<ExtensionProperty, String> properties) {
+		super();
+		this.coreId = coreId;
+		this.resourceId = resourceId;
+		this.properties = properties;
+		}
+
 	/* (non-Javadoc)
 	 * @see org.gbif.provider.model.Record#getCoreId()
 	 */
 	public Long getCoreId() {
 		return coreId;
 	}
-	public void setCoreId(Long coreId) {
-		this.coreId = coreId;
-	}
-	
+
 	public Long getResourceId() {
 		return resourceId;
-	}
-
-	public void setResourceId(Long resourceId) {
-		this.resourceId = resourceId;
 	}
 
 	public Extension getExtension(){
@@ -75,11 +82,8 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 		}
 		return extension;
 	}
-	public Map<ExtensionProperty, String> getProperties() {
-		return properties;
-	}
-	public void setProperties(Map<ExtensionProperty, String> properties) {
-		this.properties = properties;
+	public List<ExtensionProperty> getProperties() {
+		return new ArrayList<ExtensionProperty>(properties.keySet());
 	}
 	/* (non-Javadoc)
 	 * @see org.gbif.provider.model.Record#getPropertyValue(org.gbif.provider.model.ExtensionProperty)
@@ -92,6 +96,10 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 		
 	}
 	
+
+	public boolean isEmpty() {
+		return properties.isEmpty();
+	}
 
 	public Iterator<ExtensionProperty> iterator() {
 		return new PropertyIterator();
