@@ -13,11 +13,11 @@ import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.ExtensionRecord;
 import org.gbif.provider.model.Record;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.dto.ExtensionRecord;
 
 
 

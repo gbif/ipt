@@ -47,6 +47,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.TabFileWriter;
 import org.hibernate.validator.NotNull;

@@ -14,7 +14,7 @@
  </tr>
  <tr>
 	<th><@s.text name='extension.link'/></th>
-	<td><a href="${extension.link}" target="_blank">${extension.link}</a></td>
+	<td><#if extension.link??><a href="${extension.link}" target="_blank">${extension.link}</a></#if></td>
  </tr>
 <#if extension.type??> 
  <tr>
@@ -35,7 +35,7 @@
 			  	<#if p.link??>
 					<a class="info" href="${p.link}" target="_blank">${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}</span></a>
 			  	<#else>
-					${p.name}
+					<a class="info">${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}</span></a>
 			  	</#if>
 			  	
 			    <#if !(p.terms?size==0)>
