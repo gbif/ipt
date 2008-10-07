@@ -5,7 +5,7 @@
 <struts>
     <!-- Constants -->
     <constant name="struts.i18n.encoding" value="UTF-8"/>
-    <constant name="struts.action.extension" value="html"/>
+    <constant name="struts.action.extension" value="html,xml,do"/>
     <constant name="struts.objectFactory" value="spring"/>
     <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
     <constant name="struts.multipart.maxSize" value="2097152"/>
@@ -156,6 +156,7 @@
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
+        <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
         <action name="detail" class="org.gbif.provider.webapp.action.ForwardAction">
             <result name="occ" type="redirect-action">
                 <param name="actionName">occDetail</param>
@@ -276,6 +277,42 @@
                 <param name="contentType">text/xml</param>
             </result>
         </action>
+        
+        <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
+        <action name="detail" class="org.gbif.provider.webapp.action.ForwardAction">
+            <result name="occ" type="redirect-action">
+                <param name="actionName">occDetail</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="guid">${guid}</param>
+                <param name="format">${format}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">taxDetail</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="guid">${guid}</param>
+                <param name="format">${format}</param>
+            </result>
+            <result name="meta" type="redirect-action">
+                <param name="actionName">metaResource</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="format">${format}</param>
+            </result>            
+        </action>
+        <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="xml" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="json" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="contentType">text/json</param>
+            </result>
+        </action>
+
     </package>
     
     

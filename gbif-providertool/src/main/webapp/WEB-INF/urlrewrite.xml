@@ -31,12 +31,16 @@
     </rule>
     <!-- details -->
     <rule>
-        <from>^/data/(\d+)/(.+)/detail.xml$</from>
-        <to type="forward">/detail.html?resource_id=$1&amp;guid=$2&amp;xml=true</to>
-    </rule>
-    <rule>
         <from>^/data/(\d+)/(.+)/detail.html$</from>
         <to type="forward">/detail.html?resource_id=$1&amp;guid=$2</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.xml$</from>
+        <to type="forward">/data/detail.xml?resource_id=$1&amp;guid=$2&amp;format=xml</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.json$</from>
+        <to type="forward">/data/detail.do?resource_id=$1&amp;guid=$2&amp;format=json</to>
     </rule>
     <!-- images -->
     <rule>
