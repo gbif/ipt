@@ -136,10 +136,13 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	
 	// CORE RECORDS
     public String getDetailUrl(CoreRecord core){
+    	return getDetailUrl(core, "html");
+    }
+    public String getDetailUrl(CoreRecord core, String format){
     	if (core.getResource()==null){
     		throw new IllegalArgumentException("Core records needs a resource");
     	}
-    	return String.format("%s/%s/detail.html", getResourceDataUrl(core.getResource().getId()), core.getGuid());
+    	return String.format("%s/%s/detail.%s", getResourceDataUrl(core.getResource().getId()), core.getGuid(), format);
     }
 
     // SOURCE/UPLOAD FILES

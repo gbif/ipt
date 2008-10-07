@@ -8,22 +8,25 @@
         <pattern>/scripts/dojo/*</pattern>
         <pattern>/struts/dojo/*</pattern> 
         <pattern>/resources/*</pattern>
-        <pattern>/data/*</pattern>
-        <pattern>/tapir/*</pattern>
-        <pattern>/tpr/*</pattern>
         <!-- default struts2 patterns -->
         <pattern>/styles/*</pattern>
         <pattern>/scripts/*</pattern>
         <pattern>/images/*</pattern>
-        <!-- myown -->
-        <pattern>/index.*</pattern> 
+        <!-- IPT -->
+        <pattern>/data/*</pattern>
         <pattern>*/ajax/*</pattern>        
     </excludes> 
-    <decorator name="tapir" page="tapir.jsp"/>
-    
-    <decorator name="fullsize" page="fullsize.jsp"/>
 
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>
+
+    <decorator name="fullsize" page="fullsize.jsp">
+        <pattern>/index.*</pattern> 
+    </decorator>
+
+    <decorator name="tapir" page="tapir.jsp">
+        <pattern>/tapir/*</pattern>
+    </decorator>
+    
 </decorators>

@@ -23,6 +23,10 @@
 	<th>SourceID</th>
 	<td><a href="${dwc.link}">${dwc.localId}</a></td>
  </tr>
+ <tr>
+	<th>Data</th>
+	<td><a href="${cfg.getDetailUrl(dwc,'xml')}">XML</a>, JSON</td>
+ </tr>
 </table>
 
 
@@ -67,18 +71,20 @@
 <#list extensions as ext>
 <fieldset>
 	<h2>${ext.name}</h2>	
+	<table>	
 	<#list extWrapper.getExtensionRecords(ext) as eRec>
-
-		<table>	
 		<#list eRec.properties as p>
 		 <tr>
 			<th>${p.name}</th>
 			<td>${eRec.getPropertyValue(p)}</td>
 		 </tr>
 		</#list>
-		</table>
-		<br/>
+		 <tr>
+			<th>&nbsp;</th>
+			<td>&nbsp;</td>
+		 </tr>
 	</#list>
+	</table>
 </fieldset>
 </#list>
 	

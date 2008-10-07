@@ -5,6 +5,7 @@ import org.gbif.provider.model.OccurrenceResource;
 
 public class ForwardAction extends BaseResourceAction{
 	private String guid;
+	private String format;
 	
 	public String execute(){
 		assert(resource_id!=null);
@@ -35,6 +36,14 @@ public class ForwardAction extends BaseResourceAction{
 
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 	
 }

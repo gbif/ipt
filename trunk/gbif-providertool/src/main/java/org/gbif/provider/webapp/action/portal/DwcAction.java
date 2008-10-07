@@ -2,7 +2,9 @@ package org.gbif.provider.webapp.action.portal;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
@@ -13,6 +15,7 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,6 +28,9 @@ public class DwcAction extends BaseOccurrenceResourceAction {
     private DarwinCore dwc;
     private ExtensionRecordsWrapper extWrapper;
     private List<Extension> extensions;
+    private String format;
+    private NamespaceRegistry nsr;
+    private Map<Object, Object> json;
 	@Autowired
 	private AppConfig cfg;
 	 
@@ -34,6 +40,15 @@ public class DwcAction extends BaseOccurrenceResourceAction {
     		if (dwc !=null){
         		extWrapper = extensionRecordManager.getExtensionRecords(dwc.getResource(), dwc.getCoreId());
         		extensions = extWrapper.getExtensions();
+            	if (format!=null && format.equalsIgnoreCase("xml")){
+            		nsr = new NamespaceRegistry(dwc.getResource());
+            		return "xml";
+            	}
+            	else if (format!=null && format.equalsIgnoreCase("json")){
+            		//TODO: create map to serialise into JSON
+            		json = new HashMap<Object, Object>();
+            		return "json";
+            	}
     		}else{
     			extensions = new ArrayList<Extension>();
     		}
@@ -62,6 +77,20 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 
 	public List<Extension> getExtensions() {
 		return extensions;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+
+
+
+	public NamespaceRegistry getNsr() {
+		return nsr;
 	}
 
 }
