@@ -4,7 +4,7 @@
 <head>
     <title><s:text name="title"/></title>
     <meta name="resource" content="<s:property value="resource.title"/>"/>
-    <meta name="submenu" content="resource"/>
+    <meta name="submenu" content="occ"/>
 </head>
 	
 

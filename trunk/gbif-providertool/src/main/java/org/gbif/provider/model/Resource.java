@@ -33,6 +33,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.appfuse.model.User;
+import org.gbif.metadata.eml.Eml;
 import org.gbif.provider.model.hibernate.Timestampable;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;

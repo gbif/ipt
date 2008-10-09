@@ -22,6 +22,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Lob;
 
 import org.apache.commons.lang.StringUtils;
+import org.gbif.metadata.eml.Eml;
 
 /**
  * A generic resource describing any digitial, online and non digital available biological resources
@@ -33,7 +34,7 @@ import org.apache.commons.lang.StringUtils;
 @Embeddable
 public class ResourceMetadata{
 	protected String link;
-	protected String emlUrl;
+	protected Eml eml;
 	protected String title;
 	protected String description;
 	protected String contactName;
