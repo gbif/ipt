@@ -1,108 +1,49 @@
--- MySQL Administrator dump 1.4
 --
--- ------------------------------------------------------
--- Server version	5.0.51b
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
-
---
--- Create schema providertool
+-- Please make sure the basic IPT SCHEMA is existing. 
+--      see IPT-DDL.SQL
+-- here only non-hibernate tables are created and data is inserted
 --
 
-DROP TABLE IF EXISTS `app_user`;
-CREATE TABLE `app_user` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `account_expired` bit(1) NOT NULL,
-  `account_locked` bit(1) NOT NULL,
-  `address_address` varchar(150) default NULL,
-  `address_city` varchar(50) NOT NULL,
-  `address_country` varchar(100) default NULL,
-  `postal_code` varchar(15) NOT NULL,
-  `address_province` varchar(100) default NULL,
-  `credentials_expired` bit(1) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `account_enabled` bit(1) default NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `password_hint` varchar(255) default NULL,
-  `phone_number` varchar(255) default NULL,
-  `username` varchar(50) NOT NULL,
-  `version` int(11) default NULL,
-  `website` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-INSERT INTO `app_user` VALUES  (1,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-admin@mailinator.com',0x01,'Admiral','Adminska','d033e22ae348aeb5660fc2140aec35850c4da997','\"admin\"','','admin',0,'http://www.gbif.org'),
+DROP TABLE IF EXISTS `ext_dwc_dwcgeospatial`;
+CREATE TABLE `ext_dwc_dwcgeospatial` (
+  `coreid` bigint(20) NOT NULL,
+  `resource_fk` bigint(20) NOT NULL,
+  `decimal_latitude` varchar(128) default NULL,
+  `decimal_longitude` varchar(128) default NULL,
+  `geodetic_datum` varchar(128) default NULL,
+  `coordinate_uncertainty_in_meters` varchar(128) default NULL,
+  `footprint_wkt` varchar(128) default NULL,
+  `footprint_spatial_fit` varchar(128) default NULL,
+  `verbatim_coordinates` varchar(128) default NULL,
+  `verbatim_latitude` varchar(128) default NULL,
+  `verbatim_longitude` varchar(128) default NULL,
+  `verbatim_coordinate_system` varchar(128) default NULL,
+  `georeference_protocol` varchar(128) default NULL,
+  `georeference_sources` varchar(128) default NULL,
+  `georeference_verification_status` varchar(128) default NULL,
+  `georeference_remarks` varchar(128) default NULL,
+  KEY `coreid` (`coreid`),
+  KEY `resource_fk` (`resource_fk`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
+
+
+
+--
+--
+-- DATA INSERTS
+--
+--
+
+INSERT INTO app_user VALUES  (1,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-admin@mailinator.com',0x01,'Admiral','Adminska','d033e22ae348aeb5660fc2140aec35850c4da997','\"admin\"','','admin',0,'http://www.gbif.org'),
  (2,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-manager@mailinator.com',0x01,'Manfred','Macher','1a8565a9dc72048ba03b4156be3e569f22771f23','\"manager\"','','manager',0,'http://www.gbif.org'),
  (3,0x00,0x00,'','Copenhagen','DK','2100','DK',0x00,'ipt-user@mailinator.com',0x01,'Usanna','Usirna','12dea96fec20593566ab75692c9949596833adc9','\"user\"','','user',2,'http://www.gbif.org');
 
-DROP TABLE IF EXISTS `dwcore`;
-CREATE TABLE `dwcore` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `attributes` text,
-  `basis_of_record` varchar(64) default NULL,
-  `catalog_number` varchar(128) default NULL,
-  `collecting_method` text,
-  `collection_code` varchar(128) default NULL,
-  `collector` varchar(128) default NULL,
-  `date_collected` datetime default NULL,
-  `day_of_year` varchar(32) default NULL,
-  `deleted` bit(1) NOT NULL,
-  `earliest_date_collected` varchar(64) default NULL,
-  `guid` varchar(255) NOT NULL,
-  `identification_qualifer` varchar(64) default NULL,
-  `image_url` varchar(255) default NULL,
-  `information_withheld` text,
-  `institution_code` varchar(128) default NULL,
-  `latest_date_collected` varchar(64) default NULL,
-  `life_stage` varchar(128) default NULL,
-  `link` varchar(255) default NULL,
-  `local_id` varchar(128) NOT NULL,
-  `lat` float default NULL,
-  `lon` float default NULL,
-  `maximum_depth_in_meters_as_integer` int(11) default NULL,
-  `maximum_elevation_in_meters_as_integer` int(11) default NULL,
-  `minimum_depth_in_meters_as_integer` int(11) default NULL,
-  `minimum_elevation_in_meters_as_integer` int(11) default NULL,
-  `modified` datetime default NULL,
-  `problematic` bit(1) NOT NULL,
-  `related_information` text,
-  `remarks` text,
-  `scientific_name` varchar(255) default NULL,
-  `sex` varchar(64) default NULL,
-  `valid_distribution_flag` varchar(16) default NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  `region_fk` bigint(20) default NULL,
-  `taxon_fk` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `local_id` (`local_id`,`resource_fk`),
-  KEY `deleted` (`deleted`),
-  KEY `longitude` (`lon`),
-  KEY `inst_code` (`institution_code`),
-  KEY `coll_code` (`collection_code`),
-  KEY `sci_name` (`scientific_name`),
-  KEY `cat_num` (`catalog_number`),
-  KEY `record_basis` (`basis_of_record`),
-  KEY `date_collected` (`date_collected`),
-  KEY `guid` (`guid`),
-  KEY `latitude` (`lat`),
-  KEY `source_local_id` (`local_id`),
-  KEY `FKB1603AB26A2EF90B` (`resource_fk`),
-  KEY `FKB1603AB286115B5A` (`region_fk`),
-  KEY `FKB1603AB2F4A31FEE` (`taxon_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=9933 DEFAULT CHARSET=utf8;
-INSERT INTO `dwcore` VALUES  (6500,NULL,'PreservedSpecimen','1',NULL,'B','Markus Döring','1999-06-18 00:00:00',NULL,0x00,'1999-06-18 00:00:00.0','6d975510-889e-4c92-8137-25e905fa675e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/6d975510-889e-4c92-8137-25e905fa675e/detail.html','1',38.1069,26.8508,NULL,NULL,NULL,0,'2008-09-25 01:07:02',0x00,NULL,NULL,'Ballota acetabulosa (L.) Benth.',NULL,NULL,1,4540,22337),
+
+INSERT INTO dwcore VALUES  (6500,NULL,'PreservedSpecimen','1',NULL,'B','Markus Döring','1999-06-18 00:00:00',NULL,0x00,'1999-06-18 00:00:00.0','6d975510-889e-4c92-8137-25e905fa675e',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/6d975510-889e-4c92-8137-25e905fa675e/detail.html','1',38.1069,26.8508,NULL,NULL,NULL,0,'2008-09-25 01:07:02',0x00,NULL,NULL,'Ballota acetabulosa (L.) Benth.',NULL,NULL,1,4540,22337),
  (6501,NULL,'PreservedSpecimen','1035',NULL,'B','Markus Döring','1999-07-30 00:00:00',NULL,0x00,'1999-07-30 00:00:00.0','fd255a66-922c-46f4-a69f-6900b16d0543',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/fd255a66-922c-46f4-a69f-6900b16d0543/detail.html','1035',37.42,34.568,NULL,NULL,NULL,2350,'2008-09-25 01:07:02',0x00,NULL,NULL,'Achillea falcata L.',NULL,NULL,1,4542,22341),
  (6502,NULL,'PreservedSpecimen','1036',NULL,'B','Markus Döring','1999-07-30 00:00:00',NULL,0x00,'1999-07-30 00:00:00.0','e4e4ca1c-ca56-4bbc-bebc-2958cd4d7a9b',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/e4e4ca1c-ca56-4bbc-bebc-2958cd4d7a9b/detail.html','1036',37.42,34.568,NULL,NULL,NULL,2350,'2008-09-25 01:07:02',0x00,NULL,NULL,'Centaurea carduiformis var. carduiformis',NULL,NULL,1,4542,22344),
  (6503,NULL,'PreservedSpecimen','1037',NULL,'B','Markus Döring','1999-07-30 00:00:00',NULL,0x00,'1999-07-30 00:00:00.0','232b3ddc-74a5-4aa1-9538-f51301151f04',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/232b3ddc-74a5-4aa1-9538-f51301151f04/detail.html','1037',37.42,34.568,NULL,NULL,NULL,2350,'2008-09-25 01:07:02',0x00,NULL,NULL,'Sanguisorba minor subsp. muricata (Spach) Briq.',NULL,NULL,1,4542,22349),
@@ -1636,39 +1577,12 @@ INSERT INTO `dwcore` VALUES  (7917,NULL,'PreservedSpecimen','928',NULL,'B','Mark
  (8031,NULL,'PreservedSpecimen','1033',NULL,'B','Markus Döring','1999-07-31 00:00:00',NULL,0x00,'1999-07-31 00:00:00.0','457bfb4a-b0c7-46c2-b2e8-4acbed303c85',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/457bfb4a-b0c7-46c2-b2e8-4acbed303c85/detail.html','1033',37.42,34.568,NULL,NULL,NULL,2380,'2008-09-25 01:07:15',0x00,NULL,NULL,'Tragopogon olympicus Boiss.',NULL,NULL,1,4697,22494),
  (8032,NULL,'PreservedSpecimen','1034',NULL,'B','Markus Döring','1999-07-31 00:00:00',NULL,0x00,'1999-07-31 00:00:00.0','35cdc009-b3a6-488c-a01b-68217b4714db',NULL,NULL,NULL,'BGBM',NULL,NULL,'http://localhost:8080/data/1/35cdc009-b3a6-488c-a01b-68217b4714db/detail.html','1034',37.42,34.568,NULL,NULL,NULL,2380,'2008-09-25 01:07:15',0x00,NULL,NULL,'Alkanna spec.',NULL,NULL,1,4697,23224);
 
-DROP TABLE IF EXISTS `dwcore_ext`;
-CREATE TABLE `dwcore_ext` (
-  `id` bigint(20) NOT NULL,
-  `author_year_of_scientific_name` varchar(128) default NULL,
-  `classs` varchar(64) default NULL,
-  `continent` varchar(64) default NULL,
-  `country` varchar(128) default NULL,
-  `county` varchar(255) default NULL,
-  `family` varchar(128) default NULL,
-  `genus` varchar(64) default NULL,
-  `higher_geography` text,
-  `higher_taxon` text,
-  `infraspecific_epithet` varchar(128) default NULL,
-  `infraspecific_rank` varchar(128) default NULL,
-  `island` varchar(255) default NULL,
-  `island_group` varchar(255) default NULL,
-  `kingdom` varchar(64) default NULL,
-  `locality` text,
-  `maximum_depth_in_meters` varchar(32) default NULL,
-  `maximum_elevation_in_meters` varchar(32) default NULL,
-  `minimum_depth_in_meters` varchar(64) default NULL,
-  `minimum_elevation_in_meters` varchar(64) default NULL,
-  `nomenclatural_code` varchar(64) default NULL,
-  `orderrr` varchar(128) default NULL,
-  `phylum` varchar(64) default NULL,
-  `specific_epithet` varchar(128) default NULL,
-  `state_province` varchar(128) default NULL,
-  `water_body` varchar(255) default NULL,
-  `resource_fk` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FK3CAC4B146A2EF90B` (`resource_fk`),
-  KEY `FK3CAC4B14258F7CF7` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+
+
+
 INSERT INTO `dwcore_ext` VALUES  (6500,'(L.) Benth.',NULL,'Asia','TR',NULL,'Lamiaceae','Ballota',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','Doganbey - Seferihisar. Near sea , 0m. N 38°06´25´´ O 26°51´03´´',NULL,NULL,NULL,'0','ICBN','Lamiales','Magnoliophyta','acetabulosa','Ïzmir',NULL,1),
  (6501,'L.',NULL,'Asia','TR',NULL,'Asteraceae','Achillea',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to Meydan, 2350m',NULL,NULL,NULL,'2350','ICBN','Asterales','Magnoliophyta','falcata','Nigde',NULL,1),
  (6502,NULL,NULL,'Asia','TR',NULL,'Asteraceae','Centaurea',NULL,NULL,'carduiformis','Variety',NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to Meydan, 2350m',NULL,NULL,NULL,'2350','ICBN','Asterales','Magnoliophyta','carduiformis','Nigde',NULL,1),
@@ -3203,27 +3117,10 @@ INSERT INTO `dwcore_ext` VALUES  (7869,'L.',NULL,'Asia','TR',NULL,'Dipsacaceae',
  (8031,'Boiss.',NULL,'Asia','TR',NULL,'Asteraceae','Tragopogon',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',NULL,NULL,NULL,'2380','ICBN','Asterales','Magnoliophyta','olympicus','Nigde',NULL,1),
  (8032,NULL,NULL,'Asia','TR',NULL,'Boraginaceae','Alkanna',NULL,NULL,NULL,NULL,NULL,NULL,'Plantae','d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',NULL,NULL,NULL,'2380','ICBN','Lamiales','Magnoliophyta','spec.','Nigde',NULL,1);
 
-DROP TABLE IF EXISTS `ext_dwc_dwcgeospatial`;
-CREATE TABLE `ext_dwc_dwcgeospatial` (
-  `coreid` bigint(20) NOT NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  `decimal_latitude` varchar(128) default NULL,
-  `decimal_longitude` varchar(128) default NULL,
-  `geodetic_datum` varchar(128) default NULL,
-  `coordinate_uncertainty_in_meters` varchar(128) default NULL,
-  `footprint_wkt` varchar(128) default NULL,
-  `footprint_spatial_fit` varchar(128) default NULL,
-  `verbatim_coordinates` varchar(128) default NULL,
-  `verbatim_latitude` varchar(128) default NULL,
-  `verbatim_longitude` varchar(128) default NULL,
-  `verbatim_coordinate_system` varchar(128) default NULL,
-  `georeference_protocol` varchar(128) default NULL,
-  `georeference_sources` varchar(128) default NULL,
-  `georeference_verification_status` varchar(128) default NULL,
-  `georeference_remarks` varchar(128) default NULL,
-  KEY `coreid` (`coreid`),
-  KEY `resource_fk` (`resource_fk`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
 INSERT INTO `ext_dwc_dwcgeospatial` VALUES  (6500,1,'38.10695','26.85083','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (6501,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (6502,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -4758,15 +4655,10 @@ INSERT INTO `ext_dwc_dwcgeospatial` VALUES  (7808,1,'37.40400','34.55800','WGS84
  (8031,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
  (8032,1,'37.42000','34.56800','WGS84','1000',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
-DROP TABLE IF EXISTS `extension`;
-CREATE TABLE `extension` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `link` varchar(255) default NULL,
-  `name` varchar(128) default NULL,
-  `installed` bit(1) default NULL,
-  `type` int(11) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+
+
+
 INSERT INTO `extension` VALUES  (1,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard','Darwin Core',0x00,NULL),
  (2,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CuratorialExtension','DwC Curatorial',0x00,0),
  (3,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/GeospatialExtension','DwC Geospatial',0x01,0),
@@ -4774,20 +4666,9 @@ INSERT INTO `extension` VALUES  (1,'http://wiki.tdwg.org/twiki/bin/view/DarwinCo
  (5,NULL,'Multimedia',0x00,0),
  (6,NULL,'Identification',0x00,0);
 
-DROP TABLE IF EXISTS `extension_property`;
-CREATE TABLE `extension_property` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `column_length` int(11) NOT NULL,
-  `link` varchar(255) default NULL,
-  `name` varchar(64) default NULL,
-  `namespace` varchar(128) default NULL,
-  `qual_name` varchar(255) default NULL,
-  `required` bit(1) NOT NULL,
-  `extension_fk` bigint(20) NOT NULL,
-  `property_order` int(11) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FKB1C849D5E6B2BACE` (`extension_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=413 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `extension_property` VALUES  (3,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/BasisOfRecord','BasisOfRecord',NULL,'http://rs.tdwg.org/dwc/dwcore/BasisOfRecord',0x00,1,0),
  (4,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/InstitutionCode','InstitutionCode',NULL,'http://rs.tdwg.org/dwc/dwcore/InstitutionCode',0x00,1,1),
  (5,128,'http://wiki.tdwg.org/twiki/bin/view/DarwinCore/CollectionCode','CollectionCode',NULL,'http://rs.tdwg.org/dwc/dwcore/CollectionCode',0x00,1,2),
@@ -4875,14 +4756,10 @@ INSERT INTO `extension_property` VALUES  (3,128,'http://wiki.tdwg.org/twiki/bin/
  (411,128,NULL,'Kingdom','http://ipt.gbif.org/ext/identification','http://ipt.gbif.org/ext/identification/Kingdom',0x00,6,4),
  (412,128,NULL,'NomenclaturalCode','http://ipt.gbif.org/ext/identification','http://ipt.gbif.org/ext/identification/NomenclaturalCode',0x00,6,5);
 
-DROP TABLE IF EXISTS `extension_property_terms`;
-CREATE TABLE `extension_property_terms` (
-  `extension_property_fk` bigint(20) NOT NULL,
-  `terms_element` varchar(255) default NULL,
-  `terms_order` int(11) NOT NULL,
-  PRIMARY KEY  (`extension_property_fk`,`terms_order`),
-  KEY `FK8EEB829DB9EEC66D` (`extension_property_fk`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
 INSERT INTO `extension_property_terms` VALUES  (3,'PreservedSpecimen',0),
  (3,'FossilSpecimen',1),
  (3,'LivingSpecimen',2),
@@ -4898,22 +4775,9 @@ INSERT INTO `extension_property_terms` VALUES  (3,'PreservedSpecimen',0),
  (21,'ICNCP',3),
  (21,'BioCode',4);
 
-DROP TABLE IF EXISTS `log_event`;
-CREATE TABLE `log_event` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `group_id` int(11) NOT NULL,
-  `info_as_json` text,
-  `instance_id` varchar(255) default NULL,
-  `level` int(11) NOT NULL,
-  `message` varchar(255) default NULL,
-  `message_params_as_json` text,
-  `source_id` int(11) NOT NULL,
-  `source_type` int(11) NOT NULL,
-  `timestamp` datetime default NULL,
-  `user_fk` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FK8805F5DFF503D0FF` (`user_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=9005 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `log_event` VALUES  (7141,1,NULL,NULL,4,'log.transform','{\"list\":[\"?\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:07',NULL),
  (7142,1,NULL,NULL,4,'log.transform','{\"list\":[\"?\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:07',NULL),
  (7143,1,NULL,NULL,4,'log.transform','{\"list\":[\"~ 1800\",\"MinimumElevationInMeters\",\"Integer\"]}',2146407,1,'2008-09-25 01:07:08',NULL),
@@ -4946,18 +4810,9 @@ INSERT INTO `log_event` VALUES  (7141,1,NULL,NULL,4,'log.transform','{\"list\":[
  (7170,1,NULL,NULL,4,'uploadManager.unknownLocalId','{\"list\":[\"CatalogNumber\",\"DwC Geospatial\",\"1\"]}',2146407,1,'2008-09-25 01:07:31',NULL),
  (7171,1,NULL,NULL,4,'log.nullRecord','{\"list\":[\"1535\",\"Pontaurus DB\"]}',2146407,1,'2008-09-25 01:07:32',NULL);
 
-DROP TABLE IF EXISTS `occ_stat_by_region_and_taxon`;
-CREATE TABLE `occ_stat_by_region_and_taxon` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `num_occ` int(11) NOT NULL,
-  `region_fk` bigint(20) default NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  `taxon_fk` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FK18B7A4842E6479A` (`resource_fk`),
-  KEY `FK18B7A48486115B5A` (`region_fk`),
-  KEY `FK18B7A484F4A31FEE` (`taxon_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=38779 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `occ_stat_by_region_and_taxon` VALUES  (38036,1,4667,1,22416),
  (38035,1,4667,1,23103),
  (38034,1,4667,1,23118),
@@ -6416,17 +6271,9 @@ INSERT INTO `occ_stat_by_region_and_taxon` VALUES  (38036,1,4667,1,22416),
  (36581,1,4603,1,22866),
  (36580,1,4603,1,22854);
 
-DROP TABLE IF EXISTS `property_mapping`;
-CREATE TABLE `property_mapping` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `column_name` varchar(255) default NULL,
-  `value` varchar(255) default NULL,
-  `view_mapping_fk` bigint(20) NOT NULL,
-  `property_fk` bigint(20) default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FKD70CF8645010B26D` (`property_fk`),
-  KEY `FKD70CF864A02FD6D4` (`view_mapping_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `property_mapping` VALUES  (1,'Family',NULL,1,15),
  (2,'InstitutionCode',NULL,1,4),
  (3,'InfraspecificEpithet',NULL,1,19),
@@ -6495,47 +6342,14 @@ INSERT INTO `property_mapping` VALUES  (1,'Family',NULL,1,15),
  (113,'family.orderr',NULL,24,14),
  (114,NULL,'B',24,5);
 
-DROP TABLE IF EXISTS `provider_cfg`;
-CREATE TABLE `provider_cfg` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `base_url` varchar(128) default NULL,
-  `data_dir` varchar(128) default NULL,
-  `description_image` varchar(255) default NULL,
-  `geoserver_url` varchar(128) default NULL,
-  `meta_contact_email` varchar(64) default NULL,
-  `meta_contact_name` varchar(128) default NULL,
-  `meta_description` text,
-  `meta_eml_url` varchar(255) default NULL,
-  `meta_link` varchar(255) default NULL,
-  `meta_title` varchar(128) default NULL,
-  `google_maps_api_key` varchar(128) default NULL,
-  `meta_location_latitude` float default NULL,
-  `meta_location_longitude` float default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `title` (`meta_title`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `provider_cfg` VALUES  (1,'http://localhost:8080','/Users/markus/workspace/gbif-providertool/target/work/webapp/WEB-INF/data','http://localhost:8080/images/provider-description.jpg','http://localhost:8081/geoserver','ipt-admin@mailinator.com','Admiral Adminski','<p>An oasis in the hustle and bustle of the metropolis, the Berlin Botanic Garden is a plant paradise of world importance with a history of over 300 years. It had a forerunner in the early 17th century that came from the princely kitchen and herbal garden which was located in the pleasure gardens of the Berlin castle. In 1679 the Grand-Duke gave instructions to open an agricultural model garden which was laid out in Schöneberg, a village near Berlin and now one of its districts, on the grounds of the present day Kleist park. Two hundred years later at the beginning of this century, it was relocated to Dahlem, due to the lack of space in Schöneberg.</p><p>Today the Botanic Garden Berlin-Dahlem comprises an area of 126 acres and hence is one of the world´s largest and most important gardens. About 22,000 different species of plants are cultivated here. In the 39 acres of the plant-geography section - one of the biggest of its kind in the world - you can travel all the way around the Northern Hemisphere, and in the 42 acre Arboretum and taxonomy section you can get an insight into the relationship among woody and herbaceous plants. The greenhouse complex consists of 16 houses open to the public and offers the possibility to travel through tropical and subtropical vegetation. These living collections, along with the preserved collections, form the basis for the continued expansion of scientific study within the plant kingdom, with the goal to deepen the knowledge necessary for the utilization and protection of plant diversity on earth.</p>','','http://www.bgbm.org','Botanic Garden & Botanical Museum Berlin-Dahlem','ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBRqvhxpY7TkOMyyh7uRUaqihGBq9RQz2W3s6_j8jCMHDZqzpIIjGwIBQg',52.4589,13.3048);
 
-DROP TABLE IF EXISTS `region`;
-CREATE TABLE `region` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `bbox_max_latitude` float default NULL,
-  `bbox_max_longitude` float default NULL,
-  `bbox_min_latitude` float default NULL,
-  `bbox_min_longitude` float default NULL,
-  `label` varchar(255) default NULL,
-  `lft` bigint(20) default NULL,
-  `occ_total` int(11) NOT NULL,
-  `rgt` bigint(20) default NULL,
-  `type` int(11) default NULL,
-  `parent_fk` bigint(20) default NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `reg_lft` (`lft`),
-  KEY `reg_rgt` (`rgt`),
-  KEY `FKC84826F4FD0995E4` (`parent_fk`),
-  KEY `FKC84826F42E6479A` (`resource_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=4838 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `region` VALUES  (4672,NULL,NULL,NULL,NULL,'Oyuklu Dagi N of Ermenek, 1900m',121,3,122,7,4671,1),
  (4669,NULL,NULL,NULL,NULL,'Geyik Daglari, Büyük Geyik Dagi, plateau between central lake and northern exit to Anatolia, 2000m',103,24,104,7,4576,1),
  (4682,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari above Meydan, scree slope S of tarn Karagöl, 2675m',249,17,250,7,4541,1),
@@ -6698,92 +6512,21 @@ INSERT INTO `region` VALUES  (4672,NULL,NULL,NULL,NULL,'Oyuklu Dagi N of Ermenek
  (4696,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl. N37°25´40´´ O34°34´05´´, 2400m',285,31,286,7,4541,1),
  (4697,NULL,NULL,NULL,NULL,'d. Ulukisla, Bolkar Daglari, upper Arpalik (Maden) Deresi, slopes along the road from Darbogaz to tarn Karagöl, 2380m',279,5,280,7,4541,1);
 
-DROP TABLE IF EXISTS `resource`;
-CREATE TABLE `resource` (
-  `dtype` varchar(31) NOT NULL,
-  `id` bigint(20) NOT NULL auto_increment,
-  `created` datetime default NULL,
-  `guid` varchar(128) default NULL,
-  `meta_contact_email` varchar(64) default NULL,
-  `meta_contact_name` varchar(128) default NULL,
-  `meta_description` text,
-  `meta_eml_url` varchar(255) default NULL,
-  `meta_link` varchar(255) default NULL,
-  `meta_title` varchar(128) default NULL,
-  `modified` datetime default NULL,
-  `jdbc_driver_class` varchar(64) default NULL,
-  `jdbc_password` varchar(64) default NULL,
-  `jdbc_url` varchar(128) default NULL,
-  `jdbc_user` varchar(64) default NULL,
-  `bbox_max_latitude` float default NULL,
-  `bbox_max_longitude` float default NULL,
-  `bbox_min_latitude` float default NULL,
-  `bbox_min_longitude` float default NULL,
-  `num_classes` int(11) default NULL,
-  `num_countries` int(11) default NULL,
-  `num_families` int(11) default NULL,
-  `num_genera` int(11) default NULL,
-  `num_kingdoms` int(11) default NULL,
-  `num_orders` int(11) default NULL,
-  `num_phyla` int(11) default NULL,
-  `num_regions` int(11) default NULL,
-  `num_taxa` int(11) default NULL,
-  `num_terminal_regions` int(11) default NULL,
-  `num_terminal_taxa` int(11) default NULL,
-  `rec_with_altitude` int(11) default NULL,
-  `rec_with_coordinates` int(11) default NULL,
-  `rec_with_country` int(11) default NULL,
-  `rec_with_date` int(11) default NULL,
-  `creator_fk` bigint(20) default NULL,
-  `modifier_fk` bigint(20) default NULL,
-  `last_upload_event_fk` bigint(20) default NULL,
-  `meta_location_latitude` float default NULL,
-  `meta_location_longitude` float default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `title` (`meta_title`),
-  KEY `FKEBABC40E4FFFD4FE` (`creator_fk`),
-  KEY `FKEBABC40E497AF9C2` (`last_upload_event_fk`),
-  KEY `FKEBABC40EA1C4CE73` (`modifier_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+
+
 INSERT INTO `resource` VALUES  ('OccurrenceResource',1,'2008-06-23 17:10:51','79df229e-2d76-474f-a0b8-b576cf1786cd','markus@mailinator.com','Markus Döring','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar',NULL,'','Pontaurus','2008-09-25 03:23:12','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool',38.1069,35.152,36.538,26.8508,0,1,45,188,1,33,2,161,893,152,517,1505,1533,1533,1533,1,1,63,NULL,NULL),
  ('OccurrenceResource',2,'2008-09-16 20:23:41','79df229e-2d76-474f-a0b8-b576cf3386cd',NULL,NULL,'Hong Kong Herbarium dataset downloaded from GBIF and updated country names to ISO codes \r\nhttp://us.mirror.gbif.org/datasets/network/25',NULL,NULL,'Hong Kong Herbarium','2008-09-25 01:31:21','com.mysql.jdbc.Driver','','jdbc:mysql://localhost/YOUR_DATABASE','',NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,NULL,NULL,NULL),
  ('OccurrenceResource',6,'2008-09-25 03:22:18','1af97d7c-1f46-4ecc-b959-b8789ad89cdc','markus@mailinator.com','Markus Döring','Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar ',NULL,NULL,'Pontaurus DB','2008-09-25 03:26:59','com.mysql.jdbc.Driver','w32wfun','jdbc:mysql://localhost/pontaurus','providertool',NULL,NULL,NULL,NULL,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,NULL,NULL,NULL);
 
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `description` varchar(64) default NULL,
-  `name` varchar(20) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
 INSERT INTO `role` VALUES  (1,'Administrator role (can edit Users and Datasources)','ROLE_ADMIN'),
  (2,'Default role for all Users','ROLE_USER'),
  (3,'Manager role (can edit Datasources)','ROLE_MANAGER');
 
-DROP TABLE IF EXISTS `taxon`;
-CREATE TABLE `taxon` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `authorship` varchar(128) default NULL,
-  `bbox_max_latitude` float default NULL,
-  `bbox_max_longitude` float default NULL,
-  `bbox_min_latitude` float default NULL,
-  `bbox_min_longitude` float default NULL,
-  `code` varchar(255) default NULL,
-  `dwc_rank` int(11) default NULL,
-  `fullname` varchar(255) default NULL,
-  `lft` bigint(20) default NULL,
-  `name` varchar(128) default NULL,
-  `occ_total` int(11) NOT NULL,
-  `rank` varchar(128) default NULL,
-  `rgt` bigint(20) default NULL,
-  `parent_fk` bigint(20) default NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `tax_lft` (`lft`),
-  KEY `tax_rgt` (`rgt`),
-  KEY `FK6908ECA7FAFDA0E` (`parent_fk`),
-  KEY `FK6908ECA2E6479A` (`resource_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=23539 DEFAULT CHARSET=latin1;
+
+
 INSERT INTO `taxon` VALUES  (23075,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Arenaria cf. pamphylica',481,NULL,0,'Species',484,22501,1),
  (23077,'(Freyn & Bornm.) D.F.Chamb. & Matthews',NULL,NULL,NULL,NULL,'ICBN',NULL,'Astragalus plumosus var. krugianus (Freyn & Bornm.) D.F.Chamb. & Matthews',869,NULL,3,'Variety',870,22354,1),
  (23189,NULL,NULL,NULL,NULL,NULL,'ICBN',6,'Stipa pulcherrima',779,NULL,0,'Species',782,22560,1),
@@ -7678,63 +7421,20 @@ INSERT INTO `taxon` VALUES  (22605,NULL,NULL,NULL,NULL,NULL,'ICBN',5,'Omphalodes
  (23223,NULL,NULL,NULL,NULL,NULL,'ICBN',NULL,'Linum spec.',1311,NULL,1,NULL,1312,22801,1),
  (23224,NULL,NULL,NULL,NULL,NULL,'ICBN',NULL,'Alkanna spec.',1011,NULL,1,NULL,1012,22850,1);
 
-DROP TABLE IF EXISTS `upload_event`;
-CREATE TABLE `upload_event` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `execution_date` datetime default NULL,
-  `job_source_id` int(11) NOT NULL,
-  `job_source_type` int(11) NOT NULL,
-  `records_added` int(11) NOT NULL,
-  `records_changed` int(11) NOT NULL,
-  `records_deleted` int(11) NOT NULL,
-  `records_erroneous` int(11) NOT NULL,
-  `records_uploaded` int(11) NOT NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FKAF0A9EDC2E6479A` (`resource_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
+
+
 INSERT INTO `upload_event` VALUES  (63,'2008-09-25 01:07:02',2146407,1,1533,0,0,1,1533,1);
 
-DROP TABLE IF EXISTS `user_role`;
-CREATE TABLE `user_role` (
-  `user_id` bigint(20) NOT NULL,
-  `role_id` bigint(20) NOT NULL,
-  PRIMARY KEY  (`user_id`,`role_id`),
-  KEY `FK143BF46AF503D155` (`user_id`),
-  KEY `FK143BF46A4FD90D75` (`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
 INSERT INTO `user_role` VALUES  (1,1),
  (2,3),
  (3,2);
 
-DROP TABLE IF EXISTS `view_mapping`;
-CREATE TABLE `view_mapping` (
-  `mapping_type` varchar(31) NOT NULL,
-  `id` bigint(20) NOT NULL auto_increment,
-  `localid_col` varchar(64) default NULL,
-  `rec_total` int(11) NOT NULL,
-  `source_file` varchar(64) default NULL,
-  `source_sql` text,
-  `guid_col` varchar(64) default NULL,
-  `link_col` varchar(64) default NULL,
-  `extension_fk` bigint(20) default NULL,
-  `resource_fk` bigint(20) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `FKA8F48534D005777C` (`resource_fk`),
-  KEY `FKA8F48534E6B2BACE` (`extension_fk`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+
+
 INSERT INTO `view_mapping` VALUES  ('CORE',1,'CatalogNumber',1533,'source-ext_darwin_core.txt',NULL,NULL,NULL,1,1),
  ('EXT',12,'CatalogNumber',1534,'source-ext_dwc_dwcgeospatial.txt',NULL,NULL,NULL,3,1),
  ('CORE',13,'Catalogue No',0,'source-dwcore.txt',NULL,'GUID','GBIF portal url',1,2),
  ('EXT',16,'Catalogue No',0,'source-geospatial.txt',NULL,NULL,NULL,3,2),
  ('CORE',24,'specimen.specimen_id',0,NULL,'select * from specimen join taxon on taxon_fk=taxon_id join family on family_fk=family_id join locality on locality_fk=locality_id',NULL,NULL,1,6);
-
-
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

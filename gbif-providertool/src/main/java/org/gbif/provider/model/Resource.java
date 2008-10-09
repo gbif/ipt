@@ -19,6 +19,8 @@ package org.gbif.provider.model;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Basic;
@@ -35,6 +37,7 @@ import javax.persistence.Transient;
 import org.appfuse.model.User;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.provider.model.hibernate.Timestampable;
+import org.hibernate.annotations.CollectionOfElements;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -51,6 +54,8 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected String guid = UUID.randomUUID().toString();
 	// resource metadata
 	protected ResourceMetadata meta = new ResourceMetadata();
+	protected BBox geoCoverage;
+	protected Set<String> keywords = new HashSet<String>();
 	// resource meta-metadata
 	protected User creator;
 	protected Date created;
@@ -107,6 +112,22 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+	
+	@CollectionOfElements
+	//@JoinColumn(name = "eml_fk", nullable = false)
+	public Set<String> getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(Set<String> keywords) {
+		this.keywords = keywords;
+	}
+	
+	public BBox getGeoCoverage() {
+		return geoCoverage;
+	}
+	public void setGeoCoverage(BBox geoCoverage) {
+		this.geoCoverage = geoCoverage;
 	}
 	
 	public ResourceMetadata getMeta() {

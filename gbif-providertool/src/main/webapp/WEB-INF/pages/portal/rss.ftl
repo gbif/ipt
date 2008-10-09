@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<rss version="2.0" xmlns:ipt="http://ipt.gbif.org/">
+<rss version="2.0" xmlns:ipt="http://ipt.gbif.org/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
 <#escape x as x?xml>
   <channel>
     <title>${cfg.title}</title>
@@ -22,9 +22,7 @@
 	  <#if res.link??>
       <link>${res.link}</link>
 	  </#if>
-	  <#if res.emlUrl??>
-      <ipt:emlLink>${res.emlUrl}</ipt:emlLink>
-	  </#if>
+      <ipt:emlLink>${cfg.emlUrl(res.guid)}</ipt:emlLink>
 	  <#if res.contactName??>
       <ipt:contact>${res.contactName} <#if res.contactEmail??>&lt;${res.contactEmail}&gt;</#if></ipt:contact>
 	  </#if>
