@@ -31,8 +31,6 @@
         </div>
 
 	    
-    
-	<@s.textfield key="config.emlUrl" required="false" cssClass="text xlarge"/>
 	<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
 	<@s.textarea key="config.description" cssClass="text xlarge"/>
   </fieldset>

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.persistence.Transient;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
@@ -133,7 +134,15 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
 	}
 
-	
+	public static File getEmlFile(String guid) {
+		File eml = new File(getWebappDir(), String.format("eml/eml-%s.xml", guid));
+		return eml;    	
+	}
+
+	public static String getEmlUrl(String guid) {
+		return String.format("%s/eml/eml-%s.xml", baseURL, guid);
+	}
+
 	// CORE RECORDS
     public String getDetailUrl(CoreRecord core){
     	return getDetailUrl(core, "html");
@@ -208,7 +217,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	}
 
 	public String getEmlUrl() {
-		return cfg.getMeta().getEmlUrl();
+		return cfg.getEmlUrl();
 	}
 
 	public String getDescriptionImage() {
@@ -267,10 +276,6 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 	public void setDescriptionImage(String descriptionImage) {
 		cfg.setDescriptionImage(descriptionImage);
-	}
-
-	public void setEmlUrl(String emlUrl) {
-		cfg.getMeta().setEmlUrl(emlUrl);
 	}
 
 	public void setGeoserverUrl(String geoserverUrl) {

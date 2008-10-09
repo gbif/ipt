@@ -17,12 +17,20 @@
 package org.gbif.provider.model;
 
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.metadata.eml.Eml;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.IndexColumn;
 
 /**
  * A generic resource describing any digitial, online and non digital available biological resources
@@ -34,7 +42,6 @@ import org.gbif.metadata.eml.Eml;
 @Embeddable
 public class ResourceMetadata{
 	protected String link;
-	protected Eml eml;
 	protected String title;
 	protected String description;
 	protected String contactName;
@@ -46,13 +53,6 @@ public class ResourceMetadata{
 	}
 	public void setLink(String link) {
 		this.link = StringUtils.trimToNull(link);
-	}
-
-	public String getEmlUrl() {
-		return emlUrl;
-	}
-	public void setEmlUrl(String emlUrl) {
-		this.emlUrl = StringUtils.trimToNull(emlUrl);
 	}
 	
 	@Column(length=128)
@@ -77,9 +77,9 @@ public class ResourceMetadata{
 		return contactName;
 	}
 	public void setContactName(String contactName) {
-		this.contactName = StringUtils.trimToNull(contactName);
+		this.contactName = contactName;
 	}
-	
+
 	@Column(length=64)
 	public String getContactEmail() {
 		return contactEmail;
@@ -94,6 +94,5 @@ public class ResourceMetadata{
 	public void setLocation(Point location) {
 		this.location = location;
 	}
-	
 
 }

@@ -36,7 +36,7 @@
 		</tr>
 		<tr>
 			<th>EML</th>
-			<td><#if occResource.emlUrl??><a href="${occResource.emlUrl}">EML</a><#else>No EML configured</#if></td>
+			<td><a href="${cfg.getEmlUrl(occResource.guid)}">${cfg.getEmlUrl(occResource.guid)}</a></td>
 		</tr>
 	</table>
     <@s.submit cssClass="button" key="button.edit"/>

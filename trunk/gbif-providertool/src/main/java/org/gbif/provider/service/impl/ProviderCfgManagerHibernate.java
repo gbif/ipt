@@ -35,7 +35,7 @@ public class ProviderCfgManagerHibernate implements ProviderCfgManager {
 	}
 
 	public ProviderCfg load() {
-		ProviderCfg cfg =(ProviderCfg) getSession().createQuery(String.format("FROM ProviderCfg")).uniqueResult();
+		ProviderCfg cfg =(ProviderCfg) getSession().createQuery("select cfg from ProviderCfg cfg").uniqueResult();
 		if (cfg == null){
 			// create default config
 			cfg = new ProviderCfg();

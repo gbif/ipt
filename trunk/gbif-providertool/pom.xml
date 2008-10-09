@@ -198,11 +198,10 @@
                         <configuration>
                             <autocommit>true</autocommit>
                             <srcFiles>
-                                <srcFile>${basedir}/db/ipt-dump.sql</srcFile>
+                                <srcFile>${basedir}/db/ipt-ddl.sql</srcFile>
                             </srcFiles>
                         </configuration>
                     </execution>
-                    <!-- 
                     <execution>
                         <id>create-data</id>
                         <phase>process-test-resources</phase>
@@ -211,16 +210,11 @@
                         </goals>
                         <configuration>
                             <autocommit>true</autocommit>
-                            <orderFile>ascending</orderFile>
-                            <fileset>
-                                <basedir>${basedir}</basedir>
-                                <includes>
-                                    <include>db/ipt-dump.sql</include>
-                                </includes>
-                            </fileset>
+                            <srcFiles>
+                                <srcFile>${basedir}/db/ipt-data.sql</srcFile>
+                            </srcFiles>
                         </configuration>
                     </execution>
-                    -->
                 </executions>                
             </plugin>
             

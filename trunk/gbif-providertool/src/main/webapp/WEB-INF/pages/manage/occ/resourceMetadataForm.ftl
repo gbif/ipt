@@ -29,11 +29,19 @@
         </div>
     </div>
 	<@s.textfield key="occResource.link" required="false" cssClass="text xlarge"/>
-	<@s.textfield key="occResource.emlUrl" required="false" cssClass="text xlarge"/>
 	<@s.textarea key="occResource.description" cssClass="text xlarge"/>
+	<#if !occResource.guid>
+	    <@s.file name="file" key="occResource.selectEmlFile" cssClass="text file" required="false"/>
+	<#else>
+		<@s.label key="occResource.emlUrl" value="${cfg.getEmlUrl(occResource.guid)}"/>
+		<@s.url name="emlEditLink" action="dataset" namespace="metadata" method="post">
+			<@s.param name="guid" value="${occResource.guid}"/>
+		</@s.url>
+		<a href="${emlEditLink}">edit</a>
+	</#if>
+	
 
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-    <@s.submit cssClass="button" name="eml" key="button.eml" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
 </fieldset>
   
