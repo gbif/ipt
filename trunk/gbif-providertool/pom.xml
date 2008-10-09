@@ -557,13 +557,26 @@
         <dependency>
             <groupId>org.gbif</groupId>
             <artifactId>logging</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
             <type>war</type>
         </dependency>
         <dependency>
             <groupId>org.gbif</groupId>
             <artifactId>logging</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
+            <type>warpath</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gbif</groupId>
+            <artifactId>gbif-metadataeditor</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.gbif</groupId>
+            <artifactId>gbif-metadataeditor</artifactId>
+            <version>1.1-SNAPSHOT</version>
             <type>warpath</type>
         </dependency>
 
