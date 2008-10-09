@@ -7,7 +7,7 @@
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.action.extension" value="html,xml,do"/>
     <constant name="struts.objectFactory" value="spring"/>
-    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors,MetadataResources"/>
     <constant name="struts.multipart.maxSize" value="2097152"/>
     <constant name="struts.ui.theme" value="css_xhtml"/>
     <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
@@ -585,5 +585,6 @@
     </package>
     
     <include file="struts-logging.xml"/>
+    <include file="struts-metadata.xml"/>
     
 </struts>
