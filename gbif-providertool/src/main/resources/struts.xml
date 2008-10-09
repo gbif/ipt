@@ -174,9 +174,6 @@
             </result>            
         </action>
         <!-- other actions for all resources -->
-        <action name="resources">
-            <result>/WEB-INF/pages/missing.jsp</result>
-        </action>
         <action name="busy">
             <result>/WEB-INF/pages/busy.jsp</result>
             <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
@@ -197,9 +194,9 @@
             <param name="zoom">true</param>
             <param name="title">true</param>
             <param name="action">{1}</param>
-            <result name="pie">/WEB-INF/pages/portal/stats.jsp</result>
-            <result name="map">/WEB-INF/pages/portal/mapstats.jsp</result>
-            <result name="chart">/WEB-INF/pages/portal/stats.jsp</result>
+            <result name="pie">/WEB-INF/pages/portal/occ/stats.jsp</result>
+            <result name="map">/WEB-INF/pages/portal/occ/mapstats.jsp</result>
+            <result name="chart">/WEB-INF/pages/portal/occ/stats.jsp</result>
         </action>
         
         <action name="occTaxon" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="occurrences">
@@ -219,6 +216,15 @@
         <action name="taxResources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
+
+        <!-- metadata actions -->
+        <action name="resources">
+            <result type="freemarker">/WEB-INF/pages/portal/meta/index.ftl</result>
+        </action>
+        <action name="metaResource">
+            <result type="freemarker">/WEB-INF/pages/portal/meta/resource.ftl</result>
+        </action>
+        
     </package>
     
     

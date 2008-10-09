@@ -97,7 +97,10 @@
         <level value="DEBUG" />
         <appender-ref ref="I18NDATABASE" />
     </logger>
-    
+    <logger name="org.gbif.metadata">
+        <level value="DEBUG"/>
+    </logger>
+
     <root>
         <level value="WARN"/>
         <appender-ref ref="CONSOLE"/>
