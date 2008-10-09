@@ -198,6 +198,7 @@
                         <configuration>
                             <autocommit>true</autocommit>
                             <srcFiles>
+                                <srcFile>${basedir}/db/ipt-ddl_non-h8.sql</srcFile>
                                 <srcFile>${basedir}/db/ipt-ddl.sql</srcFile>
                             </srcFiles>
                         </configuration>
