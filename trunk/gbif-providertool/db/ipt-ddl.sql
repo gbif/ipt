@@ -23,6 +23,8 @@
 
     drop table if exists resource;
 
+    drop table if exists resource_keywords;
+
     drop table if exists role;
 
     drop table if exists taxon;
@@ -90,9 +92,9 @@
         scientific_name varchar(255),
         sex varchar(64),
         valid_distribution_flag varchar(16),
+        region_fk bigint,
         resource_fk bigint not null,
         taxon_fk bigint,
-        region_fk bigint,
         primary key (id),
         unique (local_id, resource_fk)
     ) type=MyISAM;
@@ -185,8 +187,8 @@
         id bigint not null auto_increment,
         column_name varchar(255),
         value varchar(255),
-        property_fk bigint,
         view_mapping_fk bigint not null,
+        property_fk bigint,
         primary key (id)
     ) type=MyISAM;
 
@@ -200,7 +202,6 @@
         meta_contact_email varchar(64),
         meta_contact_name varchar(128),
         meta_description text,
-        meta_eml_url varchar(255),
         meta_link varchar(255),
         meta_location_latitude float,
         meta_location_longitude float,
@@ -219,8 +220,8 @@
         occ_total integer not null,
         rgt bigint,
         type integer,
-        resource_fk bigint not null,
         parent_fk bigint,
+        resource_fk bigint not null,
         primary key (id)
     ) type=MyISAM;
 
@@ -228,11 +229,14 @@
         dtype varchar(31) not null,
         id bigint not null auto_increment,
         created datetime,
+        geo_coverage_max_latitude float,
+        geo_coverage_max_longitude float,
+        geo_coverage_min_latitude float,
+        geo_coverage_min_longitude float,
         guid varchar(128),
         meta_contact_email varchar(64),
         meta_contact_name varchar(128),
         meta_description text,
-        meta_eml_url varchar(255),
         meta_link varchar(255),
         meta_location_latitude float,
         meta_location_longitude float,
@@ -261,10 +265,15 @@
         rec_with_coordinates integer,
         rec_with_country integer,
         rec_with_date integer,
+        modifier_fk bigint,
         last_upload_event_fk bigint,
         creator_fk bigint,
-        modifier_fk bigint,
         primary key (id)
+    ) type=MyISAM;
+
+    create table resource_keywords (
+        resource_fk bigint not null,
+        keywords_element varchar(255)
     ) type=MyISAM;
 
     create table role (
@@ -459,16 +468,22 @@
         references app_user (id);
 
     alter table resource 
+        add index FKEBABC40E497AF9C2 (last_upload_event_fk), 
+        add constraint FKEBABC40E497AF9C2 
+        foreign key (last_upload_event_fk) 
+        references upload_event (id);
+
+    alter table resource 
         add index FKEBABC40EA1C4CE73 (modifier_fk), 
         add constraint FKEBABC40EA1C4CE73 
         foreign key (modifier_fk) 
         references app_user (id);
 
-    alter table resource 
-        add index FKEBABC40E497AF9C2 (last_upload_event_fk), 
-        add constraint FKEBABC40E497AF9C2 
-        foreign key (last_upload_event_fk) 
-        references upload_event (id);
+    alter table resource_keywords 
+        add index FKBFE8BCBB2E6479A (resource_fk), 
+        add constraint FKBFE8BCBB2E6479A 
+        foreign key (resource_fk) 
+        references resource (id);
 
     create index tax_lft on taxon (lft);
 
