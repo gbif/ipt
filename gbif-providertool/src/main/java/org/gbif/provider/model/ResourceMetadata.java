@@ -17,20 +17,11 @@
 package org.gbif.provider.model;
 
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.gbif.metadata.eml.Eml;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.IndexColumn;
 
 /**
  * A generic resource describing any digitial, online and non digital available biological resources

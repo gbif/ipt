@@ -1,5 +1,7 @@
 package org.gbif.provider.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -14,7 +16,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  *
  */
 @Embeddable
-public class Point {
+public class Point implements Serializable{
 	// x (east/west), -180/180
 	private Float longitude;
 	// y (north/south), -90/90

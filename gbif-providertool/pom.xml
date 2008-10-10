@@ -562,19 +562,6 @@
             <type>warpath</type>
         </dependency>
 
-        <dependency>
-            <groupId>org.gbif</groupId>
-            <artifactId>gbif-metadataeditor</artifactId>
-            <version>1.1-SNAPSHOT</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>org.gbif</groupId>
-            <artifactId>gbif-metadataeditor</artifactId>
-            <version>1.1-SNAPSHOT</version>
-            <type>warpath</type>
-        </dependency>
-
         <!-- JAI is used for logo processing -->
         <dependency>
             <groupId>javax.media</groupId>

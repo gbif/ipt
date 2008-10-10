@@ -13,7 +13,9 @@
         <pattern>/scripts/*</pattern>
         <pattern>/images/*</pattern>
         <!-- IPT -->
+        <pattern>/cache/*</pattern>
         <pattern>/data/*</pattern>
+        <pattern>/eml/*</pattern>
         <pattern>*/ajax/*</pattern>        
     </excludes> 
 

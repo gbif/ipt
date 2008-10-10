@@ -1,5 +1,6 @@
 package org.gbif.provider.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.persistence.AttributeOverride;
@@ -17,7 +18,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  *
  */
 @Embeddable
-public class BBox {
+public class BBox implements Serializable{
 	@AttributeOverrides( {
         @AttributeOverride(name="latitude", column = @Column(name="max_lat") ),
         @AttributeOverride(name="longitude", column = @Column(name="max_long") )
@@ -43,6 +44,11 @@ public class BBox {
 		super();
 		setMax(max);
 		setMin(min);
+	}
+	public BBox(Float maxX, Float maxY, Float minX, Float minY) {
+		super();
+		setMax(new Point(maxX, maxY));
+		setMin(new Point(minX, minY));
 	}
 	
 	public Point getMax() {

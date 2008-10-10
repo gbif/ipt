@@ -17,41 +17,29 @@
 package org.gbif.provider.webapp.action.manage;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.model.LabelValue;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionManager;
-import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.ResizeImage;
-import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
-	@Autowired
-	private ResourceFactory resourceFactory;
+public class OccResourceAction extends BaseResourceAction<OccurrenceResource> implements Preparable, SessionAware {
 	@Autowired
 	private ExtensionManager extensionManager;
 	@Autowired
 	private UploadEventManager uploadEventManager;
-	protected Map session;
 
 	private List<Extension> extensions;
-	private List occResources;
-	private OccurrenceResource occResource;
 	private String gChartData;
 
     private File file;
@@ -60,48 +48,29 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
     
 	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
-	        {  
-	            {  
-	                put("com.mysql.jdbc.Driver", "MySQL");
-	                put("org.postgresql.Driver", "Postrges");
-	                put("org.h2.Driver", "H2");
-	                put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
-	                put("oracle.jdbc.OracleDriver", "Oracle");  
-	                put("org.hsqldb.jdbcDriver", "HSQL");  
-	                put("org.apache.derby.jdbc.ClientDriver", "Derby");  
-	            }  
-	        };  
-	  
-
-	public void prepare() throws Exception{
-		if (resource_id == null) {
-			occResource = resourceFactory.newOccurrenceResourceInstance();
-		} else {
-			// get resource
-			occResource = occResourceManager.get(resource_id);
-			
-			// update recently viewed resources in session
-			LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
-			Queue<LabelValue> queue; 
-			Object rr = session.get(Constants.RECENT_RESOURCES);
-			if (rr != null && rr instanceof Queue){
-				queue = (Queue) rr;
-			}else{
-				queue = new ConcurrentLinkedQueue<LabelValue>(); 
-			}
-			// remove old entry from queue if it existed before and insert at tail again
-			queue.remove(res);
-			queue.add(res);
-			if (queue.size()>10){
-				// only remember last 10 resources
-				queue.remove();
-			}
-			// save back to session
-			log.debug("Recently viewed resources: "+queue.toString());
-			session.put(Constants.RECENT_RESOURCES, queue);
-			}
+        {  
+            {  
+                put("com.mysql.jdbc.Driver", "MySQL");
+                put("org.postgresql.Driver", "Postrges");
+                put("org.h2.Driver", "H2");
+                put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
+                put("oracle.jdbc.OracleDriver", "Oracle");  
+                put("org.hsqldb.jdbcDriver", "HSQL");  
+                put("org.apache.derby.jdbc.ClientDriver", "Derby");  
+            }  
+        };  
+        
+	@Autowired
+	public void sssutResourceManager(OccResourceManager occResourceManager) {
+		this.resourceManager = occResourceManager;
 	}
 
+	@Override
+	protected OccurrenceResource newResource() {
+		return resourceFactory.newOccurrenceResourceInstance();
+	}
+
+	@Override
 	public String execute() {
 		// create GoogleChart string
 		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
@@ -115,14 +84,15 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 			}
 		}
 		// filter already mapped extensions
-		for (ViewMappingBase map : occResource.getAllMappings()) {
+		for (ViewMappingBase map : resource.getAllMappings()) {
 			extensions.remove(map.getExtension());
 		}
 		return SUCCESS;
 	}
 
+	@Override
 	public String list() {
-		occResources = occResourceManager.getResourcesByUser(getCurrentUser().getId());
+		resources = resourceManager.getResourcesByUser(getCurrentUser().getId());
 		return SUCCESS;
 	}
 
@@ -130,64 +100,11 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return SUCCESS;
 	}
 
-	public String save() throws Exception {
-		if (cancel != null) {
-			return "cancel";
-		}
-		if (delete != null) {
-			return delete();
-		}
-
-		boolean isNew = (occResource.getId() == null);
-		occResource = occResourceManager.save(occResource);
-		String key = (isNew) ? "occResource.added" : "occResource.updated";
-		saveMessage(getText(key));
-		try{
-			uploadLogo();
-	        saveMessage(getText("resource.logoUploaded"));
-		}catch (IOException e){
-			saveMessage("Error uploading the logo file");
-		}
-		return SUCCESS;
-	}
-
-	public void uploadLogo() throws IOException{
-        if ("".equals(fileFileName) || file == null) {
-        	return;
-        }
-        // final logo destination
-		File logoFile = cfg.getResourceLogoFile(resource_id);
-        ResizeImage.resizeImage(file, logoFile, Constants.LOGO_SIZE, Constants.LOGO_SIZE);
-
-		log.info(String.format("Logo %s uploaded and resized for resource %s", logoFile.getAbsolutePath(), resource_id));
-	}
-	
-	public String delete() {
-		occResourceManager.remove(occResource);
-		saveMessage(getText("occResource.deleted"));
-
-		// update recently viewed resources in session
-		Object previousQueue = session.get(Constants.RECENT_RESOURCES);
-		if (previousQueue != null && previousQueue instanceof Queue){
-			Queue<LabelValue> queue = (Queue) previousQueue;
-			LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
-			// remove entry from queue if it existed before
-			queue.remove(res);
-			// save back to session
-			session.put(Constants.RECENT_RESOURCES, queue);
-		}		
-		return "delete";
-	}
-
 
 	
 	
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
-	}
-
-	public List getOccResources() {
-		return occResources;
 	}
 
 	public List getExtensions() {
@@ -198,39 +115,4 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return gChartData;
 	}
 
-	public OccurrenceResource getOccResource() {
-		return occResource;
-	}
-
-	public void setOccResource(OccurrenceResource occResource) {
-		this.occResource = occResource;
-	}
-
-	public void setSession(Map session) {
-		this.session = session;
-	}
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public void setFileContentType(String fileContentType) {
-        this.fileContentType = fileContentType;
-    }
-
-    public void setFileFileName(String fileFileName) {
-        this.fileFileName = fileFileName;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public String getFileContentType() {
-        return fileContentType;
-    }
-
-    public String getFileFileName() {
-        return fileFileName;
-    }
 }

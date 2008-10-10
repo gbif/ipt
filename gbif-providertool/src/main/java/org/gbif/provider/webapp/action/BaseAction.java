@@ -13,60 +13,36 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.appfuse.Constants;
+import org.appfuse.model.User;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class BaseAction extends ActionSupport{
-    public static final String CANCEL = "cancel";
+public class BaseAction extends org.appfuse.webapp.action.BaseAction {
     public static final String OCCURRENCE = "occ";
     public static final String TAXON = "tax";
     public static final String METADATA = "meta";
 	@Autowired
 	protected AppConfig cfg;
-    // Indicator if the user clicked cancel
-    protected String cancel;
-    // Set to "delete" when a "delete" request parameter is passed in
-	protected String delete;
-    /**
-     * Transient log to prevent session synchronization issues - children can use instance for logging.
-     */
-    protected transient final Log log = LogFactory.getLog(getClass());
 
-    
-    /**
-     * Save the message in the session, appending if messages already exist
-     * @param msg the message to put in the session
-     */
-    @SuppressWarnings("unchecked")
-    protected void saveMessage(String msg) {
-        List messages = (List) getRequest().getSession().getAttribute("messages");
-        if (messages == null) {
-            messages = new ArrayList();
-        }
-        messages.add(msg);
-        getRequest().getSession().setAttribute("messages", messages);
-    }
-
-
-    /**
-     * Convenience method to get the request
-     * @return current request
-     */
-    protected HttpServletRequest getRequest() {
-        return ServletActionContext.getRequest();
-    }
-
-    /**
-     * Convenience method to get the response
-     * @return current response
-     */
-    protected HttpServletResponse getResponse() {
-        return ServletActionContext.getResponse();
-    }
-
-
+	public User getCurrentUser(){
+		final SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
+	    // secure context will be null when running unit tests so leave userId as null
+	    if (secureContext != null) {
+	        final Authentication auth = (Authentication) ((SecurityContext) SecurityContextHolder.getContext()).getAuthentication();
+	        if (auth.getPrincipal() instanceof UserDetails) {
+	            final User user = (User) auth.getPrincipal();
+	    		return user;
+	        }
+	    }
+		return null;
+	}
+	
 	public void setCancel(String cancel) {
 		this.cancel = cancel;
 	}

@@ -20,6 +20,7 @@ package org.gbif.provider.model;
 import java.io.File;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,8 +36,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.appfuse.model.User;
-import org.gbif.metadata.eml.Eml;
+import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.hibernate.Timestampable;
+import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.CollectionOfElements;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -54,6 +57,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected String guid = UUID.randomUUID().toString();
 	// resource metadata
 	protected ResourceMetadata meta = new ResourceMetadata();
+	// persistent EML properties so we can search & aggregate on them easily
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
 	// resource meta-metadata
@@ -119,17 +123,23 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public Set<String> getKeywords() {
 		return keywords;
 	}
-	public void setKeywords(Set<String> keywords) {
+	/** Persistent EML property. To change use eml.setKeywords()
+	 * @param geoCoverage
+	 */
+	private void setKeywords(Set<String> keywords) {
 		this.keywords = keywords;
 	}
 	
 	public BBox getGeoCoverage() {
 		return geoCoverage;
 	}
-	public void setGeoCoverage(BBox geoCoverage) {
+	/** Persistent EML property. To change use eml.setGeoCoverage()
+	 * @param geoCoverage
+	 */
+	private void setGeoCoverage(BBox geoCoverage) {
 		this.geoCoverage = geoCoverage;
 	}
-	
+
 	public ResourceMetadata getMeta() {
 		if (meta==null){
 			meta = new ResourceMetadata();			
@@ -181,6 +191,23 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 
+	
+	/**
+	 * updates persistent EML properties on resource based on EML values
+	 */
+	public void updateWithEml(Eml eml){
+		// keywords
+		Set<String> keys = new HashSet<String>();
+		keys.addAll(eml.getKeywords());
+		for (TaxonKeyword k : eml.getTaxonomicCoverage()){
+			keys.add(k.getCommonName());
+			keys.add(k.getScientificName());
+		}
+		this.keywords = keys;
+		// geoCoverage
+		this.geoCoverage = eml.geographicCoverage().getBoundingCoordinates();
+	}
+	
 	
 	public int compareTo(Resource object) {
 		if (this.getTitle() != null){

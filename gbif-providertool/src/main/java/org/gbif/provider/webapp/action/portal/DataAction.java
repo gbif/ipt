@@ -17,19 +17,19 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
+import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.gbif.provider.util.Constants.DEFAULT_LOGO;
 
 
-public class DataAction extends BaseOccurrenceResourceAction {
+public class DataAction extends BaseResourceAction {
 	private InputStream inputStream;
 	@Autowired
 	private AppConfig cfg;
 	
     public String execute() throws FileNotFoundException{
     	if (resource_id != null){
-    		OccurrenceResource res = occResourceManager.get(resource_id);
-    		File data = cfg.getDumpArchiveFile(res.getId());
+    		File data = cfg.getDumpArchiveFile(resource_id);
     		inputStream = new FileInputStream(data);
     		return SUCCESS;
     	}
@@ -38,8 +38,7 @@ public class DataAction extends BaseOccurrenceResourceAction {
 
     public String logo() throws FileNotFoundException{
     	if (resource_id != null){
-    		OccurrenceResource res = occResourceManager.get(resource_id);
-    		File logo = cfg.getResourceLogoFile(res.getId());
+    		File logo = cfg.getResourceLogoFile(resource_id);
     		try {
 				inputStream = new FileInputStream(logo);
 			} catch (FileNotFoundException e) {

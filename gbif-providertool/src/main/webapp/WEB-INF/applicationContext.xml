@@ -83,6 +83,8 @@
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
         <constructor-arg ref="extensionManager"/>
     </bean>
+    <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl">        
+    </bean>
     
 
     <!-- PROVIDER/APPLICATION CONFIGURATION & Utilities-->

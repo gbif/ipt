@@ -8,6 +8,8 @@
 
 ALTER DATABASE ipt_test DEFAULT CHARACTER SET utf8;
 
+SET FOREIGN_KEY_CHECKS=0;
+
 
 DROP TABLE IF EXISTS `ext_dwc_dwcgeospatial`;
 CREATE TABLE `ext_dwc_dwcgeospatial` (
@@ -30,3 +32,4 @@ CREATE TABLE `ext_dwc_dwcgeospatial` (
   KEY `coreid` (`coreid`),
   KEY `resource_fk` (`resource_fk`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+

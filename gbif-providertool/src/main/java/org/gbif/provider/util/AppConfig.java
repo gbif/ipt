@@ -134,13 +134,13 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
 	}
 
-	public static File getEmlFile(String guid) {
-		File eml = new File(getWebappDir(), String.format("eml/eml-%s.xml", guid));
+	public static File getEmlFile(Long resourceId) {
+		File eml = new File(getResourceDataDir(resourceId), "eml.ser");
 		return eml;    	
 	}
 
 	public static String getEmlUrl(String guid) {
-		return String.format("%s/eml/eml-%s.xml", baseURL, guid);
+		return String.format("%s/data/eml-%s.xml", baseURL, guid);
 	}
 
 	// CORE RECORDS
@@ -182,8 +182,10 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	}
 	
 	public String getWfsEndpoint(Long resourceId){
-		String base = getBaseUrl();
-    	return String.format("%s/wfs/%s", base, resourceId.toString());
+    	return String.format("%s/wfs?", getGeoserverUrl());
+	}
+	public String getWmsEndpoint(Long resourceId){
+    	return String.format("%s/wms?", getGeoserverUrl());
 	}
 	
 	
