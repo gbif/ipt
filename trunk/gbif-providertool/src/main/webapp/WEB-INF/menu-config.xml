@@ -7,12 +7,12 @@
         <Menu name="ExplorerMenu" title="menu.explorer" page="/resources.html">            
             <Item name="OccResources" title="menu.explorer.occurrences" page="/occResources.html"/>
             <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
-            <Item name="resources" title="menu.explorer.resources" page="/resources.html"/>
+            <Item name="Resources" title="menu.explorer.resources" page="/resources.html"/>
         </Menu>
         <Menu name="ManagerMenu" title="menu.manager" page="/resources.html" roles="ROLE_ADMIN,ROLE_MANAGER">
             <Item name="OccResources" title="menu.explorer.occurrences" page="/manage/occ/resources.html"/>
             <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
-            <Item name="resources" title="menu.explorer.resources" page="/resources.html"/>
+            <Item name="Resources" title="menu.explorer.resources" page="/manage/meta/resources.html"/>
         </Menu> 
         <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER,ROLE_MANAGER">
             <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>

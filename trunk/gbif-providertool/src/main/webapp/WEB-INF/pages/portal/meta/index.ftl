@@ -24,22 +24,20 @@ h2        {clear: both;}
 
 <h2>Latest EML documents</h2>	
 
-<#assign records = []>
-<#if (records?size==0)>
+<#if (resources?size==0)>
 	<p>The repository is still empty.</p>
 <#else>
-	<table>	
+	<table class="layout">	
 	 <tr>
 		<th>Title</th>
 		<th>Last Modified</th>
 		<th>Originator</th>
 	 </tr>
-	 <#list records as m>
+	 <#list resources as m>
 	 <tr>
-	 	<@s.url name="resourceLink" action="resource"><@s.param name="resource_id" value="${m.id?c}"/></@s.url>
-		<td><a href="${resourceLink}">${m.title}</a></td>
-		<td>${m.lastModified}</td>
-		<td>${m.creator}</td>
+		<td><a href="metaResource.html?resource_id=${m.id?c}">${m.title!""}</a></td>
+		<td>${m.modified?date}</td>
+		<td>${m.creator.lastName!(m.creator.firstName!(m.creator.username!))}</td>
 	 </tr>
 	 </#list>
 	</table>

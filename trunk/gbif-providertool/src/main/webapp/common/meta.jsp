@@ -14,12 +14,12 @@
         <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/theme.css'/>" />
         <link rel="stylesheet" type="text/css" media="print" href="<c:url value='/styles/${appConfig["csstheme"]}/print.css'/>" />
 	    <c:choose>
-	      <c:when test='${currentSubMenu == "metadata"}'>
+	      <c:when test='${currentSubMenu == "meta"}'>
 			<link href="/data/rss.xml" rel="alternate" type="application/rss+xml" title="RSS Feed for all resources" />
           </c:when>        
 	      <c:when test='${currentSubMenu == "manage"}'>
           </c:when>        
-          <c:when test='${currentSubMenu == "resource"}'>
+          <c:when test='${currentSubMenu == "occ"}'>
 	        <c:if test='${resource_id != null}'>
 				<link href="/data/${resource_id}/rss.xml" rel="alternate" type="application/rss+xml" title="${currentResourceTitle} RSS Feed" />
 			</c:if>

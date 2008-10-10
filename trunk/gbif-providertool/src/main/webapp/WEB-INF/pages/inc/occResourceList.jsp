@@ -1,6 +1,6 @@
 <%@ include file="/common/taglibs.jsp"%>
 
-<display:table name="occResources" uid="res" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
+<display:table name="resources" uid="res" class="table" requestURI="" id="occResourceList" export="false" pagesize="25">
     <display:column property="title" sortable="true" href="resource.html" media="html" paramId="resource_id" paramProperty="id" titleKey="resource.title"/>
     <display:column property="recTotal" sortable="true" titleKey="resource.recordCount"/>
     <display:column property="numTerminalTaxa" sortable="true" titleKey="occResource.numTerminalTaxa"/>

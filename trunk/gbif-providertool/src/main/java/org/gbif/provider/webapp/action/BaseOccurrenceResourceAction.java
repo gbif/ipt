@@ -31,18 +31,7 @@ public class BaseOccurrenceResourceAction extends BaseAction{
 	protected Long resource_id;
 	protected OccurrenceResource occResource;
 
-	public User getCurrentUser(){
-		final SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
-	    // secure context will be null when running unit tests so leave userId as null
-	    if (secureContext != null) {
-	        final Authentication auth = (Authentication) ((SecurityContext) SecurityContextHolder.getContext()).getAuthentication();
-	        if (auth.getPrincipal() instanceof UserDetails) {
-	            final User user = (User) auth.getPrincipal();
-	    		return user;
-	        }
-	    }
-		return null;
-	}
+
 
 	public void setResource_id(final Long resource_id) {
 		this.resource_id = resource_id;

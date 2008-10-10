@@ -1,6 +1,6 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
-    <meta name="resource" content="<@s.property value="occResource.title"/>"/>
+    <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="submenu" content="manage"/>
     
     <script>
@@ -24,19 +24,19 @@
   <fieldset>
     <legend><@s.text name="occResourceOverview.metadata"/></legend>
 	<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
-	<@s.label key="occResource.description"/>
+	<@s.label key="resource.description"/>
 	<table class="lefthead">
 		<tr>
 			<th>Contact</th>
-			<td>${occResource.contactName!} <#if occResource.contactEmail??>&lt;${occResource.contactEmail}&gt;</#if></td>
+			<td>${resource.contactName!} <#if resource.contactEmail??>&lt;${resource.contactEmail}&gt;</#if></td>
 		</tr>
 		<tr>
 			<th>Homepage</th>
-			<td><#if occResource.link??><a href="${occResource.link}">Home</a><#else>No homepage configured</#if></td>
+			<td><#if resource.link??><a href="${resource.link}">${resource.link}</a></#if></td>
 		</tr>
 		<tr>
 			<th>EML</th>
-			<td><a href="${cfg.getEmlUrl(occResource.guid)}">${cfg.getEmlUrl(occResource.guid)}</a></td>
+			<td><a href="${cfg.getEmlUrl(resource.guid)}">${cfg.getEmlUrl(resource.guid)}</a></td>
 		</tr>
 	</table>
     <@s.submit cssClass="button" key="button.edit"/>
@@ -45,12 +45,12 @@
 
 
 <@s.form action="editResourceConnection" method="get">
-  <@s.hidden name="resource_id" value="${occResource.id}"/>
+  <@s.hidden name="resource_id" value="${resource.id}"/>
   <fieldset>
     <legend><@s.text name="occResourceOverview.datasource"/></legend>
-    <#if occResource.hasMetadata()>
-	    <#if occResource.hasDbConnection()>
-			<@s.label key="occResource.hasDbConnection" value="${occResource.jdbcUrl}"/>
+    <#if resource.hasMetadata()>
+	    <#if resource.hasDbConnection()>
+			<@s.label key="occResource.hasDbConnection" value="${resource.jdbcUrl}"/>
 	    <#else>
 	    	<p class="reminder"><@s.text name="occResource.noDbConnection" /></p>
 	    </#if>
@@ -66,7 +66,7 @@
   <fieldset>
     <legend><@s.text name="occResourceOverview.mapping"/></legend>
 		<li>
-	  	    <#assign coreView=occResource.getCoreMapping()/>
+	  	    <#assign coreView=resource.getCoreMapping()/>
 			<@s.url id="sourceUrl" action="editMappingSource" includeParams="get">
 				<@s.param name="mapping_id" value="${coreView.id}"/>
 			</@s.url>
@@ -86,7 +86,7 @@
   	  
 		<li>
 	  		<label class="desc"><@s.text name="occResourceOverview.extensionMappings"/></label>
-			<#list occResource.getExtensionMappings() as v>
+			<#list resource.getExtensionMappings() as v>
 				<@s.url id="sourceUrl" action="editMappingSource" includeParams="get">
 					<@s.param name="mapping_id" value="${v.id?c}"/>
 				</@s.url>
@@ -127,21 +127,21 @@
 		</@s.a>
 	</div>
 	<table>
-		<#if occResource.lastUpload??>
+		<#if resource.lastUpload??>
 			<@s.url id="logsUrl" action="logEvents" namespace="/admin" includeParams="get">
-				<@s.param name="sourceId" value="occResource.lastUpload.jobSourceId" />
-				<@s.param name="sourceType" value="occResource.lastUpload.jobSourceType" />
+				<@s.param name="sourceId" value="resource.lastUpload.jobSourceId" />
+				<@s.param name="sourceType" value="resource.lastUpload.jobSourceType" />
 			</@s.url>
 			<tr>
 				<th colspan="2"><@s.text name="resource.lastUpload"/></th>
 			</tr>
 			<tr>
-				<td colspan="2">${occResource.lastUpload.executionDate}</td>
+				<td colspan="2">${resource.lastUpload.executionDate}</td>
 			</tr>
 		</#if>
 		<tr>
 			<th><@s.text name="resource.recordCount"/></th>
-			<td>${occResource.recTotal}</td>
+			<td>${resource.recTotal}</td>
 		</tr>
 
 		<tr>
@@ -149,13 +149,13 @@
 		</tr>		
 		<tr>
 			<th><@s.text name="occResource.numTerminalTaxa"/></th>
-			<td>${occResource.numTerminalTaxa}</td>
+			<td>${resource.numTerminalTaxa}</td>
 		</tr>
 		<tr>
 			<th><@s.text name="occResource.numRegions"/></th>
-			<td>${occResource.numRegions}</td>
+			<td>${resource.numRegions}</td>
 		</tr>
- 	  	<#list occResource.getExtensionMappings() as v>
+ 	  	<#list resource.getExtensionMappings() as v>
 			<tr>
 				<th>${v.extension.name}</th>
 				<td>${v.recTotal}</td>
@@ -164,7 +164,7 @@
 	</table>
   </@s.form>
 
-    <#if occResource.hasMinimalMapping()>
+    <#if resource.hasMinimalMapping()>
 		<@s.form action="upload" method="post" >
 		  <@s.hidden key="resource_id" />
 		  <@s.submit cssClass="button" key="button.upload" theme="simple"/>
@@ -191,7 +191,7 @@
   <@s.hidden key="resource_id"/>
   <fieldset>
     <legend><@s.text name="occResourceOverview.validation"/></legend>
-    <#if occResource.hasData()>
+    <#if resource.hasData()>
 		<div><@s.a href="%{logsUrl}">Upload error logs</@s.a></div>
 	    <@s.submit cssClass="button" key="button.validate"/>
     <#else>
@@ -199,12 +199,12 @@
     </#if>
   </fieldset>
 
-  <@s.label key="occResourceOverview.manager" value="%{occResource.creator.getFullName()}"/>
-  <@s.label key="occResourceOverview.lastModified" value="%{occResource.modified} by %{occResource.modifier.getFullName()}"/>
+  <@s.label key="occResourceOverview.manager" value="%{resource.creator.getFullName()}"/>
+  <@s.label key="occResourceOverview.lastModified" value="%{resource.modified} by %{resource.modifier.getFullName()}"/>
 </@s.form>
 
 
-<#if (occResource.id)??>
+<#if (resource.id)??>
   <@s.form action="saveResource" method="get">
     <@s.hidden key="resource_id"/>
     <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>

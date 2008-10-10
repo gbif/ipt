@@ -1,0 +1,38 @@
+package org.gbif.provider.service.impl;
+
+import static org.junit.Assert.*;
+
+import org.gbif.provider.model.BBox;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.service.impl.ResourceFactoryImpl;
+import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.ContextAwareTestBase;
+import org.gbif.provider.util.ResourceTestBase;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class EmlManagerTest extends ResourceTestBase{
+	@Autowired
+	private EmlManager emlManager;
+
+	@Test
+	public void testLoadResource() {
+		setup();
+
+		Eml eml = emlManager.load(resource);
+		eml.addKeyword("Italia");
+		eml.addKeyword("Romans");
+		eml.addKeyword("River");
+		eml.addKeyword("Climate change");
+		BBox bbox = new BBox(12f,32f,-3f,-123f);
+		eml.geographicCoverage().setBoundingCoordinates(bbox);
+		eml.geographicCoverage().setDescription("ick weiss auch nicht welche Ecke der Welt das sein soll...");
+		
+		emlManager.save(eml);
+	}
+
+}

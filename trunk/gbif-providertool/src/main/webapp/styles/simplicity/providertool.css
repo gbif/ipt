@@ -140,14 +140,14 @@ ul.indexmenu li{
 	float: left;
 }
 
-#sub div {
+#sub label {
+	display: block;
 	margin-top: 20px;
-}
-#sub div label {
 	font-variant: normal;
 	font-weight: bold;
 	font-style: italic;
 }
+
 /* @end */
 
 
@@ -218,6 +218,12 @@ div.chart form {
 .right{
 	float: right;
 	padding-left: 30px;
+}
+
+.rightf{
+	float: right;
+	padding-left: 20px;
+	padding-right: 15px;
 }
 
 div#preview td {

@@ -218,11 +218,11 @@
         </action>
 
         <!-- metadata actions -->
-        <action name="resources">
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaResourceAction" method="list">
             <result type="freemarker">/WEB-INF/pages/portal/meta/index.ftl</result>
         </action>
-        <action name="metaResource">
-            <result type="freemarker">/WEB-INF/pages/portal/meta/resource.ftl</result>
+        <action name="metaResource" class="org.gbif.provider.webapp.action.manage.MetaResourceAction">
+            <result>/WEB-INF/pages/missing.jsp</result>
         </action>
         
     </package>
@@ -388,20 +388,20 @@
             <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceOverview.ftl</result>
         </action>
         <action name="addResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
         </action>
         <action name="editResourceMetadata" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
         </action>
         <action name="editResourceConnection" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="edit">
             <result type="freemarker">/WEB-INF/pages/manage/occ/resourceConnectionForm.ftl</result>
         </action>
         
         <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
-                <param name="resource_id">${occResource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
@@ -491,7 +491,36 @@
     
     <!-- Actions managing generic resources  -->
     <package name="manageRes" namespace="/manage/meta" extends="manage">
-    </package>
+        <default-action-ref name="resources" />
+        
+        
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaResourceAction" method="list">
+            <result>/WEB-INF/pages/manage/meta/resourceList.jsp</result>
+        </action>
+        
+        <action name="addResource" class="org.gbif.provider.webapp.action.manage.MetaResourceAction">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+        </action>
+        <action name="resource" class="org.gbif.provider.webapp.action.manage.MetaResourceAction">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+        </action>        
+        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetaResourceAction" method="save">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resources</param>
+            </result>
+            <result name="delete" type="redirect-action">resources</result>
+        </action>        
+        <action name="importEml" class="org.gbif.provider.webapp.action.manage.MetaResourceAction" method="importEml">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="error" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+        </action>
+        
+   </package>
     
 
         <!-- Actions in this package will be prefixed with /admin/ -->

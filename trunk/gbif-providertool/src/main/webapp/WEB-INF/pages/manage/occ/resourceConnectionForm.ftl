@@ -1,19 +1,19 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
-    <meta name="resource" content="${occResource.title}"/>
+    <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="manage"/>
 </head>
 
 <@s.form id="occResourceForm" action="saveResource" method="get" validate="true">
     <li style="display: none">
-        <@s.hidden name="resource_id" value="%{occResource.id}"/>
+        <@s.hidden name="resource_id" value="%{resource.id}"/>
     </li>
 
- 	<@s.select key="occResource.jdbcDriverClass" required="true" headerKey="Select database system" emptyOption="false" 
+ 	<@s.select key="resource.jdbcDriverClass" required="true" headerKey="Select database system" emptyOption="false" 
 		list="jdbcDriverClasses" />
-    <@s.textfield key="occResource.jdbcUrl" required="true" maxlength="120" cssClass="text large"/>
-    <@s.textfield key="occResource.jdbcUser" required="true" maxlength="120" cssClass="text large"/>
-    <@s.textfield key="occResource.jdbcPassword" required="true" maxlength="120" cssClass="text large"/>
+    <@s.textfield key="resource.jdbcUrl" required="true" maxlength="120" cssClass="text large"/>
+    <@s.textfield key="resource.jdbcUser" required="true" maxlength="120" cssClass="text large"/>
+    <@s.textfield key="resource.jdbcPassword" required="true" maxlength="120" cssClass="text large"/>
 
     <li class="buttonBar bottom">
         <@s.submit cssClass="button" method="save" key="button.save" theme="simple"/>

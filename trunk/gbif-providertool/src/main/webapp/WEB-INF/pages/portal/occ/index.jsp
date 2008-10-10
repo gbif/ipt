@@ -33,7 +33,7 @@
 				</tr>
 				<tr>
 					<th>EML</th>
-					<td><a href="<s:property value="%{occResource.emlUrl}"/>"><s:property value="%{occResource.emlUrl}"/></a></td>
+					<td><a href="<s:property value="%{cfg.getEmlUrl(occResource.guid)}"/>"><s:property value="%{cfg.getEmlUrl(occResource.guid)}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.tabfile"/></th>
@@ -45,11 +45,11 @@
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.wfs"/></th>
-					<td>http://db1.gbif.org:8080/geoserver/wfs</td>
+					<td><a href="<s:property value="%{cfg.getWfsEndpoint(resource_id)}"/>request=GetCapabilities"><s:property value="%{cfg.getWfsEndpoint(resource_id)}"/></a></td>
 				</tr>
 				<tr>
-					<th>WMS</th>
-					<td>http://db1.gbif.org:8080/geoserver/wms</td>
+					<th><s:text name="occResourceOverview.wms"/></th>
+					<td><a href="<s:property value="%{cfg.getWmsEndpoint(resource_id)}"/>request=GetCapabilities"><s:property value="%{cfg.getWmsEndpoint(resource_id)}"/></a></td>
 				</tr>
 			</table>
 		</div>
