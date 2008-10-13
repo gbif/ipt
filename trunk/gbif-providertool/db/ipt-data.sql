@@ -7378,3 +7378,8 @@ INSERT INTO `view_mapping` (`mapping_type`,`id`,`localid_col`,`rec_total`,`sourc
  ('EXT',16,'Catalogue No',0,'source-geospatial.txt',NULL,NULL,NULL,3,2),
  ('CORE',24,'specimen.specimen_id',0,NULL,'select * from specimen join taxon on taxon_fk=taxon_id join family on family_fk=family_id join locality on locality_fk=locality_id',NULL,NULL,1,6);
 
+
+
+
+
+SET FOREIGN_KEY_CHECKS=1;

@@ -7,7 +7,7 @@
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.action.extension" value="html,xml,do"/>
     <constant name="struts.objectFactory" value="spring"/>
-    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors,MetadataResources"/>
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
     <constant name="struts.multipart.maxSize" value="2097152"/>
     <constant name="struts.ui.theme" value="css_xhtml"/>
     <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
@@ -53,7 +53,7 @@
                 </interceptor-ref>
                 <interceptor-ref name="conversionError"/>
                 <interceptor-ref name="validation">
-                    <param name="excludeMethods">cancel,execute,delete,edit,list</param>
+                    <param name="excludeMethods">cancel,execute,delete,edit,list,back,input</param>
                 </interceptor-ref>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
@@ -354,19 +354,64 @@
         
         <action name="resource" class="org.gbif.provider.webapp.action.ForwardAction">
             <result name="occ" type="redirect-action">
-                <param name="actionName">/manage/occ/resource</param>
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage/occ</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
             <result name="tax" type="redirect-action">
-                <param name="actionName">/manage/tax/resource</param>
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage/tax</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
             <result name="meta" type="redirect-action">
-                <param name="actionName">/manage/meta/resource</param>
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage/meta</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
     </package>
+    
+    
+    <!-- EML editor  -->
+    <package name="eml" namespace="/manage/eml" extends="default">
+        <default-interceptor-ref name="managerStack" />
+        <global-results>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="error" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </global-results>
+        
+
+        <action name="view" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
+            <result name="success">/WEB-INF/pages/eml/eml.ftl</result>
+        </action>
+
+
+        <action name="*Form" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
+            <result type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+        </action>
+        <action name="*" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
+            <result name="back" type="redirect-action">
+                <param name="actionName">${backPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">${nextPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+        
+    </package>
+    
     
     <!-- Actions managing occurrence resources -->
     <package name="manageOcc" namespace="/manage/occ" extends="manage">
@@ -378,6 +423,14 @@
             </result>
             <result name="error" type="redirect-action">resources</result>
         </global-results>
+
+        <action name="eml">
+            <result type="redirect-action">
+                <param name="actionName">creatorForm</param>
+                <param name="namespace">/manage/eml</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
         
         
         <action name="resources" class="org.gbif.provider.webapp.action.manage.OccResourceAction" method="list">

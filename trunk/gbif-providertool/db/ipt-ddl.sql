@@ -532,3 +532,6 @@
         add constraint FKA8F48534E6B2BACE 
         foreign key (extension_fk) 
         references extension (id);
+
+
+

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class MetaResourceAction extends org.gbif.provider.webapp.action.manage.BaseResourceAction<Resource> implements Preparable, SessionAware{    
+public class MetaResourceAction extends org.gbif.provider.webapp.action.manage.BaseResourceManagerAction<Resource> implements Preparable, SessionAware{    
 	@Autowired()
 	public void setResourceManager(@Qualifier("resourceManager") GenericResourceManager<Resource> resourceManager) {
 		this.resourceManager = resourceManager;

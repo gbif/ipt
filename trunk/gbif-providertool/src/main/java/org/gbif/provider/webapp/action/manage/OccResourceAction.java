@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseResourceAction<OccurrenceResource> implements Preparable, SessionAware {
+public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResource> implements Preparable, SessionAware {
 	@Autowired
 	private ExtensionManager extensionManager;
 	@Autowired

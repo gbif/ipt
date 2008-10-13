@@ -248,6 +248,14 @@
                     <dependentWarExcludes>
                         WEB-INF/lib/*, **/jdbc.properties,**/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**
                     </dependentWarExcludes>
+                    <webResources>
+                        <resource>
+                            <!-- this is relative to the pom.xml directory -->
+                            <directory>data</directory>
+                            <!-- by default targetPath=WAR root directory -->
+                            <targetPath>WEB-INF/data</targetPath>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>
@@ -328,11 +336,6 @@
                     <include>applicationContext-resources.xml</include>
                     <include>struts.xml</include>
                 </includes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/webapp/WEB-INF/data</directory>
-                <targetPath>data</targetPath>
                 <filtering>false</filtering>
             </resource>
         </resources>

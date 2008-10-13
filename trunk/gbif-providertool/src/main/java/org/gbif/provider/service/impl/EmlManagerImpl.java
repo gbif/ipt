@@ -31,10 +31,14 @@ public class EmlManagerImpl implements EmlManager{
 	public GenericResourceManager<Resource> resourceManager;
 
 	public Eml load(Resource resource) {
-		if (resource==null || resource.getId()==null){
-			throw new IllegalArgumentException("Needs persistent resource with ID");
+		if (resource==null){
+			throw new NullPointerException("EML file requires resource");
 		}
-		return Eml.loadFile(resource, cfg.getEmlFile(resource.getId()));
+    	File emlFile = null;
+    	if (resource.getId()!=null){
+    		emlFile = cfg.getEmlFile(resource.getId());
+    	}
+		return Eml.loadFile(resource, emlFile);
 	}
 	
 	
@@ -42,22 +46,26 @@ public class EmlManagerImpl implements EmlManager{
 	 * serialises the EML document into some file. Whatever the easiest way is. XMLStream?
 	 */
 	public void save(Eml eml){
-		// first persist EML file
+		// update persistent EML properties on resource
+		Resource res = eml.getResource();
+		res.updateWithEml(eml);
+		resourceManager.save(res);		
+		// now persist EML file (resource must have ID now)
 	     FileOutputStream fos = null;
 	     ObjectOutputStream out = null;
 	     try
 	     {
-	       fos = new FileOutputStream(eml.getFile());
-	       out = new ObjectOutputStream(fos);
-	       out.writeObject(eml);
-	       out.close();
+	    	File emlFile = eml.getFile();
+	    	if (emlFile==null){
+	    		emlFile = cfg.getEmlFile(res.getId());
+	    	}
+	        fos = new FileOutputStream(emlFile);
+	        out = new ObjectOutputStream(fos);
+	        out.writeObject(eml);
+	        out.close();
 	     }catch(IOException ex){
-	       ex.printStackTrace();
+	        ex.printStackTrace();
 	     }
-		// then update persistent EML properties on resource
-		Resource res = eml.getResource();
-		res.updateWithEml(eml);
-		resourceManager.save(res);		
 	}
 	
 }

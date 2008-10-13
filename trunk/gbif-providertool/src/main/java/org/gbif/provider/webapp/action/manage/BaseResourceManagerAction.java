@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public abstract class BaseResourceAction<T extends Resource> extends BaseAction implements Preparable, SessionAware{
+public abstract class BaseResourceManagerAction<T extends Resource> extends BaseAction implements Preparable, SessionAware{
 	protected Map session;
 	@Autowired
 	protected ResourceFactory resourceFactory;
