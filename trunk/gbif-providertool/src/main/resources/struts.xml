@@ -398,6 +398,19 @@
             <result type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
             <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
         </action>
+        <!-- the last action in the EML editing workflow -->
+        <action name="methods" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
+            <result name="back" type="redirect-action">
+                <param name="actionName">${backPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
         <action name="*" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
             <result name="back" type="redirect-action">
                 <param name="actionName">${backPage}Form</param>
@@ -673,6 +686,5 @@
     </package>
     
     <include file="struts-logging.xml"/>
-    <include file="struts-metadata.xml"/>
     
 </struts>
