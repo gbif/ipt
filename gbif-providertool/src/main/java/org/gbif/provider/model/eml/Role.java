@@ -22,26 +22,4 @@ public enum Role implements Serializable{
 	FIELD_STATION_MANAGER,
 	INFORMATION_MANAGER;
 	
-	public static final List<Role> ALL;
-	  static  
-	  {  
-	    List<Role> hosts = new ArrayList<Role>();  
-	    hosts.add(ORIGINATOR);
-	    hosts.add(AUTHOR);
-	    hosts.add(CONTENT_PROVIDER);
-	    hosts.add(CUSTODIAN_STEWARD);
-	    hosts.add(DISTRIBUTOR);
-	    hosts.add(EDITOR);
-	    hosts.add(METADATA_PROVIDER);
-	    hosts.add(OWNER);
-	    hosts.add(POINT_OF_CONTACT);
-	    hosts.add(PRINCIPAL_INVESTIGATOR);
-	    hosts.add(PROCESSOR);
-	    hosts.add(PUBLISHER);
-	    hosts.add(USER);
-	    hosts.add(FIELD_STATION_MANAGER);
-	    hosts.add(INFORMATION_MANAGER); 
-	    ALL = Collections.unmodifiableList(hosts);  
-	  };
-	  
 }

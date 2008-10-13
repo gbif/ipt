@@ -36,6 +36,10 @@ form .xlarge{
 form textarea.xlarge{
     height: 20em;
 }
+form .xhalf{
+    width: 317px;
+    float: left;
+}
 
 table.lefthead td {
 	padding-left: 20px;

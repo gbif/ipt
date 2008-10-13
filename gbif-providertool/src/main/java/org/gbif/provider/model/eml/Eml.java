@@ -49,11 +49,12 @@ public class Eml implements Serializable{
 	private Eml(){
 		super();
 		this.pubDate = new Date();
+		this.resourceCreator.setRole(Role.ORIGINATOR);
 	}
 	
 	public static Eml loadFile(Resource resource, File file) {
 		Eml eml = new Eml();
-		if (file.exists()){
+		if (file!=null && file.exists()){
 			// load existing file
 			 FileInputStream fis = null;
 			 ObjectInputStream in = null;
@@ -260,6 +261,38 @@ public class Eml implements Serializable{
 
 	public TaxonKeyword lowestCommonTaxon() {
 		return lowestCommonTaxon;
+	}
+
+	public Agent getResourceCreator() {
+		return resourceCreator;
+	}
+
+	public void setResourceCreator(Agent resourceCreator) {
+		this.resourceCreator = resourceCreator;
+	}
+
+	public GeoKeyword getGeographicCoverage() {
+		return geographicCoverage;
+	}
+
+	public void setGeographicCoverage(GeoKeyword geographicCoverage) {
+		this.geographicCoverage = geographicCoverage;
+	}
+
+	public TimeKeyword getTemporalCoverage() {
+		return temporalCoverage;
+	}
+
+	public void setTemporalCoverage(TimeKeyword temporalCoverage) {
+		this.temporalCoverage = temporalCoverage;
+	}
+
+	public TaxonKeyword getLowestCommonTaxon() {
+		return lowestCommonTaxon;
+	}
+
+	public void setLowestCommonTaxon(TaxonKeyword lowestCommonTaxon) {
+		this.lowestCommonTaxon = lowestCommonTaxon;
 	}
 
 }

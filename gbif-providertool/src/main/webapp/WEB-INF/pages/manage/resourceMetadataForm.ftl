@@ -22,21 +22,13 @@
     </div>
 	<@s.textfield key="resource.link" required="false" cssClass="text xlarge"/>
 	<@s.textarea key="resource.description" cssClass="text xlarge"/>
-	<#if resource.title??>
-		<table>
-		  <tr>
-			<th><@s.text name="resource.emlUrl"/></th>
-			<td><a href="${cfg.getEmlUrl(resource.guid)}">${cfg.getEmlUrl(resource.guid)}</a> 
-			    <@s.submit cssClass="button" action="edit" namespace="/metadata" key="button.edit" theme="simple"/>
-			    <a href="<@s.url action="edit" namespace="/metadata"/>">edit</a>
-			</td>
-		  </tr>
-		</table>
-	</#if>
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
 	<#if resource.id??>
 	    <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>
+	</#if>
+	<#if resource.title??>
+	    <@s.submit cssClass="button" key="button.eml" action="eml" theme="simple"/>
 	</#if>
     </@s.form>
 	
