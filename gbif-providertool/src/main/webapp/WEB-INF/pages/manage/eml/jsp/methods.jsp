@@ -1,9 +1,9 @@
-<@s.form id="emlForm" action="tempcoverage" method="post" validate="false">
+<@s.form id="emlForm" action="methods" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.tempcoverage"/></legend>
+	<legend><@s.text name="eml.resourceCreator"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
-	<@s.hidden name="backPage" value="taxcoverage"/>
-	<@s.hidden name="nextPage" value="rights"/>
+	<@s.hidden name="backPage" value="tempcoverage"/>
+	<@s.hidden name="nextPage" value="project"/>
 
 	<@s.select key="eml.resourceCreator.role" label="%{getText('agent.role')}" list="roles" cssClass="text medium"/>
 	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" cssClass="text medium"/>
@@ -36,7 +36,6 @@
 
 
 	<div class="break" />
-    <@s.submit cssClass="button" key="button.back" name="back" theme="simple"/>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
 </fieldset>

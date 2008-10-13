@@ -1,23 +1,43 @@
-<@s.form id="emlForm" action="dataset" method="get" validate="false">
+<@s.form id="emlForm" action="geocoverage" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.geographicCoverage"/></legend>
-	<@s.hidden name="resource_id" value="${resource_id}"/>
+	<legend><@s.text name="eml.resourceCreator"/></legend>
+	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="backPage" value="creator"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
-	
-	<@s.textfield key="eml.title" required="true" cssClass="text xlarge"/>
-	<@s.textarea key="eml.abstract" required="true" cssClass="text xlarge"/>
-	
-	<@s.label key="eml.title" cssClass="text xlarge"/>
-	<@s.label key="eml.abstract" cssClass="text xlarge"/>
-	<li id="wwgrp_editDatasetForm_eml_dataset_language" class="wwgrp"> 
-		<@s.select key="eml.language" list="isoLanguageI18nCodeMap" cssClass="text medium" value="defaultDatasetLanguage"/>
-	</li>
-	<@s.label key="eml.pubDate" cssClass="text medium"/>
-	
+
+	<@s.select key="eml.resourceCreator.role" label="%{getText('agent.role')}" list="roles" cssClass="text medium"/>
+	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" cssClass="text medium"/>
+	<div>
+		<div class="left">
+			<@s.textfield key="eml.resourceCreator.firstName" label="%{getText('agent.firstName')}" required="true" cssClass="text xhalf" />
+		</div>
+		<div class="left">
+			<@s.textfield key="eml.resourceCreator.lastName" label="%{getText('agent.lastName')}" required="true" cssClass="text xhalf" />
+		</div>
+	</div>
+	<div>
+		<div class="left">
+			<@s.textfield key="eml.resourceCreator.organisation" label="%{getText('agent.organisation')}" required="false" cssClass="text xhalf"/>
+		</div>
+		<div class="left">
+			<@s.textfield key="eml.resourceCreator.position" label="%{getText('agent.position')}" required="false" cssClass="text xhalf"/>
+		</div>
+	</div>
+	<div>
+		<div class="left">
+			<@s.textfield key="eml.resourceCreator.phone" label="%{getText('agent.phone')}" required="false" cssClass="text xhalf"/>
+		</div>
+		<div class="left">
+			<@s.textfield key="eml.resourceCreator.email" label="%{getText('agent.email')}" required="true" cssClass="text xhalf"/>
+		</div>
+	</div>
+	<@s.textfield key="eml.resourceCreator.homepage" label="%{getText('agent.homepage')}" required="false" cssClass="text xlarge"/>
+	<@s.textfield key="eml.resourceCreator.address.address" label="%{getText('agent.address.address')}" required="false" cssClass="text xlarge"/>
+
+
 	<div class="break" />
-    <@s.submit cssClass="button" key="button.back"   method="back"/>
-    <@s.submit cssClass="button" key="button.cancel" method="cancel" />
-    <@s.submit cssClass="button" key="button.next" name="next"/>
+    <@s.submit cssClass="button" key="button.back" name="back" theme="simple"/>
+    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
+    <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
 </fieldset>
 </@s.form>

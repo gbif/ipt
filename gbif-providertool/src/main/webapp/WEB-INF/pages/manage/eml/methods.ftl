@@ -1,9 +1,9 @@
 <@s.form id="emlForm" action="dataset" method="get" validate="false">
 <fieldset>
-	<legend>DATASET</legend>
+	<legend><@s.text name="eml.methods"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id}"/>
-	<@s.hidden name="backPage" value="dataset"/>
-	<@s.hidden name="nextPage" value="creator"/>
+	<@s.hidden name="backPage" value="project"/>
+
 	<@s.textfield key="eml.title" required="true" cssClass="text xlarge"/>
 	<@s.textarea key="eml.abstract" required="true" cssClass="text xlarge"/>
 	
@@ -16,6 +16,6 @@
 	
     <@s.submit cssClass="button" key="button.back"   method="back"/>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" />
-    <@s.submit cssClass="button" key="button.next" name="next"/>
+    <@s.submit cssClass="button" key="button.done" method="save" theme="simple"/>
 </fieldset>
 </@s.form>
