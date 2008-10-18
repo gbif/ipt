@@ -65,7 +65,6 @@ public abstract class BaseResourceManagerAction<T extends Resource> extends Base
 	}
 	
 	public String save(){
-		assert(resource!=null);
 		if (cancel != null) {
 			return "cancel";
 		}
@@ -133,7 +132,7 @@ public abstract class BaseResourceManagerAction<T extends Resource> extends Base
         	return false;
         }
         // final logo destination
-		File logoFile = cfg.getResourceLogoFile(resource_id);
+		File logoFile = cfg.getResourceLogoFile(resource.getId());
         try {
         	uploadData(logoFile);
     		// do sth with the file

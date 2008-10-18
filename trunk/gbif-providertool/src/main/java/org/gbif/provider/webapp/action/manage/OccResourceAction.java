@@ -60,11 +60,6 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
             }  
         };  
         
-	@Autowired
-	public void sssutResourceManager(OccResourceManager occResourceManager) {
-		this.resourceManager = occResourceManager;
-	}
-
 	@Override
 	protected OccurrenceResource newResource() {
 		return resourceFactory.newOccurrenceResourceInstance();
