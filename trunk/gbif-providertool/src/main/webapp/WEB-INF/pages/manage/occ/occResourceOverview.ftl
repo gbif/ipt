@@ -78,7 +78,7 @@
 		        <#if coreView.isMappedToFile()>
 					(<@s.a href="${sourceUrl}">file source</@s.a>)
 		  	    <#else>
-					(<@s.a href="${sourceUrl}">sql source</@s.a>)
+					(<@s.a href="${sourceUrl}">data source</@s.a>)
 		  	    </#if>
 				<@s.a href="%{mappingUrl}">${coreView.propertyMappings?size} properties</@s.a>
 			</div>
