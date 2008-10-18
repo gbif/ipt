@@ -28,7 +28,7 @@
 	    <@s.hidden key="mapping_id"/>
 	    <@s.hidden key="extension_id"/>
 	    	    
-	    <@s.textarea id="mappingSourceSql" key="view.sourceSql" required="true" cssClass="text large"/>
+	    <@s.textarea id="mappingSourceSql" key="view.sourceSql" required="true" cssClass="text xlarge slim"/>
 	    <#if existingDbMappings??>
 		    <span>
 		    Copy already existing sources

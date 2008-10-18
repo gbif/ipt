@@ -82,6 +82,10 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 	
 	// RESOURCE BASICS
+	public static String getResourceUrl(String guid) {
+		return String.format("%s/resource.html?guid=%s", baseURL, guid);
+	}
+
 	public static File getResourceCacheDir(Long resourceId) {
 		File dir = new File(getWebappDir(), "cache/"+resourceId.toString());
 	    if (!dir.exists()) {

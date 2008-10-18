@@ -1,18 +1,18 @@
 <table class="table">
 	<thead>
 		<tr>
-			<s:iterator value="viewColumnHeaders" id="header" status="headStat">
-			<th><s:property value="header"/></th>
-			</s:iterator>
+			<#list viewColumnHeaders as h>
+			<th>${h}</th>
+			</#list>
 		</tr>
 	</thead>
 	<tbody>
-	<s:iterator value="preview" status="rowStat">
+		<#list preview as row>
 		<tr>
-			<s:iterator value="preview[#rowStat.count]" status="colStat">
-				<td><s:property value="preview[#rowStat.count][#colStat.count-1]"/></td>
-			</s:iterator>
+			<#list viewColumnHeaders as h2>
+				<td>${row[h2_index]}</td>
+			</#list>
 		</tr>
-	</s:iterator>
+		</#list>
 	</tbody>
 </table>

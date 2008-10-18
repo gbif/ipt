@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
@@ -57,7 +58,7 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
     private List<String> columnOptions;
     private Map<Long, List> mapOptions;
     private List<String> viewColumnHeaders;
-    private List preview;
+    private List<List<? extends Object>> preview;
     private Map session;
 		
 
@@ -68,7 +69,9 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 		resource = occResourceManager.get(resource_id);
     	view = viewMappingManager.get(mapping_id);
     	assert view.hasValidSource();
-    	
+	}
+	
+	public void prepareMappings(){
         // prepare list of property mappings to create form with and to be filled
 		mappings = new ArrayList<PropertyMapping>();
         int filledMappings = 0;
@@ -91,7 +94,9 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 	}
 	
 	private void prepareUI(){
-        // generate basic column mapping options based on source headers
+		prepareMappings();
+		
+		// generate basic column mapping options based on source headers
 		columnOptions = new ArrayList<String>();
 		try {
 			columnOptions = datasourceInspectionManager.getHeader(view);
@@ -159,8 +164,8 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 		prepareUI();
         // update property mapping values
         for (PropertyMapping pm : mappings){
-        	if (pm !=null && pm.getColumn().getColumnName()!=null){
-        		String key = pm.getColumn().getColumnName();
+        	if (pm !=null && pm.getColumn() !=null){
+        		String key = StringUtils.trimToEmpty(pm.getColumn().getColumnName());
         		// copy controlled terms into value property...
         		if (key.startsWith("#")){
             		pm.setValue(key.substring(1));
@@ -216,7 +221,7 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 		return viewColumnHeaders;
 	}
 
-	public List getPreview() {
+	public List<List<? extends Object>> getPreview() {
 		return preview;
 	}
 

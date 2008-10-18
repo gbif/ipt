@@ -39,8 +39,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	protected Map session;
 	@Autowired
 	private MapUtil mapUtil;
-	private OccurrenceResource occResource;
-	private List<OccurrenceResource> occResources;
+	private List<OccurrenceResource> resources;
 	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
 	private Map<Integer, String> hostTypes = new TreeMap<Integer, String>();
@@ -99,7 +98,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 
 	public String list() {
-		occResources = occResourceManager.getAll();
+		resources = occResourceManager.getAll();
 		return SUCCESS;
 	}	
 	
@@ -127,8 +126,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return ranks;
 	}
 
-	public List<OccurrenceResource> getOccResources() {
-		return occResources;
+	public List<OccurrenceResource> getResources() {
+		return resources;
 	}
 
 	public Map<Integer, String> getHostTypes() {

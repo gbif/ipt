@@ -7,8 +7,8 @@
     <description>Resource metadata of ${cfg.title}</description>
     <language>en-us</language>
     <!-- Tue, 10 Jun 2003 04:00:00 GMT -->
-    <pubDate>${pubDate?datetime?string.medium}</pubDate>
-    <lastBuildDate>${pubDate?datetime?string.medium}</lastBuildDate>
+    <pubDate>${resources[0].modified?datetime?string.medium}</pubDate>
+    <lastBuildDate>${resources[0].modified?datetime?string.medium}</lastBuildDate>
     <generator>GBIF IPT <@s.text name="webapp.version"/></generator>
     <#if admin??>
     <webMaster>${cfg.contactEmail}</webMaster>
@@ -19,15 +19,16 @@
 	<#list resources as res>
     <item>
       <title>${res.title}</title>
+      <link>${cfg.getResourceUrl(res.guid)}</link>
+      <ipt:emlLink>${cfg.getEmlUrl(res.guid)}</ipt:emlLink>
 	  <#if res.link??>
-      <link>${res.link}</link>
+      <ipt:homeLink>${res.link}</ipt:homeLink>
 	  </#if>
-      <ipt:emlLink>${cfg.emlUrl(res.guid)}</ipt:emlLink>
 	  <#if res.contactName??>
       <ipt:contact>${res.contactName} <#if res.contactEmail??>&lt;${res.contactEmail}&gt;</#if></ipt:contact>
 	  </#if>
       <description>&lt;img src="${cfg.getResourceLogoUrl(res.id)}" align="left" style="padding-right:5px;" /&gt; 
-      ${res.description}</description>
+      ${res.description} &lt;a href="${cfg.getEmlUrl(res.guid)}"&gt;EML&lt;/a&gt;</description>
       <pubDate>${res.modified?datetime?string.medium}</pubDate>
       <guid>${res.guid}</guid>
     </item>

@@ -8,6 +8,16 @@ public class TaxonKeyword implements Serializable{
 	private String commonName;
 	
 	
+	public TaxonKeyword() {
+		super();
+	}
+	public TaxonKeyword(String scientificName, String rank, String commonName) {
+		super();
+		this.scientificName=scientificName;
+		this.rank=rank;
+		this.commonName=commonName;
+	}
+	
 	public String getScientificName() {
 		return scientificName;
 	}

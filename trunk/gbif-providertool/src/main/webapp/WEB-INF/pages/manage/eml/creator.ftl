@@ -1,11 +1,16 @@
+<head>
+    <title>EML - <@s.text name="eml.resourceCreator"/></title>
+    <meta name="resource" content="${eml.title!}"/>
+    <meta name="submenu" content="eml"/>
+</head>
+
 <@s.form id="emlForm" action="creator" method="post" validate="false">
+	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
 <fieldset>
 	<legend><@s.text name="eml.resourceCreator"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="geocoverage"/>
 
-	<@s.select key="eml.resourceCreator.role" label="%{getText('agent.role')}" list="roles" cssClass="text medium"/>
-	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" cssClass="text medium"/>
 	<div>
 		<div class="left">
 			<@s.textfield key="eml.resourceCreator.firstName" label="%{getText('agent.firstName')}" required="true" cssClass="text xhalf" />
@@ -48,9 +53,9 @@
 			<@s.textfield key="eml.resourceCreator.address.country" label="%{getText('agent.address.country')}" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
+</fieldset>
 
 	<div class="break" />
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
-</fieldset>
 </@s.form>

@@ -17,7 +17,7 @@
 
 <h3>Hosted resources</h3>
 
-<%@ include file="/WEB-INF/pages/inc/resourceList.jsp"%>
+<%@ include file="/WEB-INF/pages/inc/dataResourceList.jsp"%>
 
 <s:url id="metaRepoUrl" action="resources"/>
 <p>

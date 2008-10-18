@@ -5,10 +5,11 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.GenericResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.gbif.provider.webapp.action.manage.BaseResourceManagerAction;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class MetaResourceAction extends org.gbif.provider.webapp.action.manage.BaseResourceManagerAction<Resource> implements Preparable, SessionAware{    
+public class MetaResourceAction extends BaseResourceManagerAction<Resource> implements Preparable, SessionAware{    
 	@Autowired()
 	public void setResourceManager(@Qualifier("resourceManager") GenericResourceManager<Resource> resourceManager) {
 		this.resourceManager = resourceManager;

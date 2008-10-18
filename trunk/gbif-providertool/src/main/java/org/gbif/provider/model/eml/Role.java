@@ -21,5 +21,4 @@ public enum Role implements Serializable{
 	USER,
 	FIELD_STATION_MANAGER,
 	INFORMATION_MANAGER;
-	
 }

@@ -1,1 +1,0 @@
-<%@ include file="/common/taglibs.jsp"%><s:set name="responseBody" value="responseBody"/>${responseBody}
