@@ -122,7 +122,6 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
         if (delete != null) {
             return delete();
         }
-		assert(resource_id!=null && mapping_id!=null && file!=null);
         // the directory to upload to
 		File targetFile = cfg.getSourceFile(resource_id, view.getExtension());
 		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));

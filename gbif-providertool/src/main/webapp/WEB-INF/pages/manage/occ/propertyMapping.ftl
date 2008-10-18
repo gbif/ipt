@@ -21,11 +21,12 @@
 	</ul>
 	
 	<div id="sourcepreview" style="display:none">
-		AJAX CALL TO BE DONE...
+		Retrieving source data ...
 	</div>
 	
 	<div id="uploadpreview" style="display:none">
-		AJAX CALL TO BE DONE...
+		Retrieving mapping preview ...<br/>
+		<p class="reminder">Not implemented yet, sorry!</p>
 	</div>
 	
 <script>

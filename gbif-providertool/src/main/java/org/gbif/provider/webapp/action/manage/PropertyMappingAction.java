@@ -64,11 +64,11 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 
 	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
-		assert(resource_id!=null && mapping_id!=null);
 		// get resource & view
 		resource = occResourceManager.get(resource_id);
     	view = viewMappingManager.get(mapping_id);
-    	assert view.hasValidSource();
+
+		prepareMappings();
 	}
 	
 	public void prepareMappings(){
@@ -94,7 +94,6 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 	}
 	
 	private void prepareUI(){
-		prepareMappings();
 		
 		// generate basic column mapping options based on source headers
 		columnOptions = new ArrayList<String>();
