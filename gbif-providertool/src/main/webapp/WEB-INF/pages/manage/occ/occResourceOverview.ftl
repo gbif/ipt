@@ -169,11 +169,11 @@
 		  <@s.hidden key="resource_id" />
 		  <@s.submit cssClass="button" key="button.upload" theme="simple"/>
 		</@s.form>
+		<#--
 		<@s.form action="clear" method="post">
 		  <@s.hidden key="resource_id" />
 	      <@s.submit cssClass="button" key="button.clear" onclick="return confirmReset()" theme="simple"/>
 		</@s.form>
-		<#-- 
 		<@s.form action="process" method="post">
 		  <@s.hidden key="resource_id"/>
 	      <@s.submit cssClass="button" key="button.process" />

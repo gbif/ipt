@@ -73,7 +73,6 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
     
 	@SuppressWarnings("unchecked")
 	public void prepare() throws Exception {
-		assert(resource_id!=null && (mapping_id!=null || extension_id!=null));
 		// get resource
 		resource = occResourceManager.get(resource_id);
 
