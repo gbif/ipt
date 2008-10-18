@@ -53,7 +53,7 @@ function sourcePreview(){
 	    <#list mappings as m> 
 		  <div class="mapping">
 			<fieldset>
-			<legend>${m.property.name}<#if m.property.link??> <a href="${m.property.link}" target="_blank">(def)</a> </#if></legend>
+			<legend>${m.property.name}<#if m.property.link??> <a href="${m.property.link}" target="_blank">(about)</a> </#if></legend>
 					<div class="left">
 						<@s.select style="display: inline" name="mappings[${m_index}].column.columnName" required="${m.property.required?string}"
 							list="mapOptions[${m.property.id?c}]" value="mappings[${m_index}].column.columnName"

@@ -108,7 +108,7 @@
 
         <action name="saveSignup" class="signupAction" method="save">
             <result name="input">/WEB-INF/pages/signup.jsp</result>
-            <result name="success" type="redirect-action">/index</result>
+            <result name="success" type="redirect-action">index</result>
         </action>
 
         <action name="editProfile" class="userAction" method="edit">
@@ -116,7 +116,12 @@
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="error">/WEB-INF/pages/index.jsp</result>
         </action>
-
+        <action name="saveUser" class="userAction" method="save">
+            <result name="cancel" type="redirect-action">users</result>
+            <result name="input">/WEB-INF/pages/userForm.jsp</result>
+            <result name="success" type="redirect-action">index</result>
+        </action>
+        
 
         <action name="passwordHint" class="passwordHintAction">
             <result name="input">/</result>
