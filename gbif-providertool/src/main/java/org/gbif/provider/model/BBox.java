@@ -107,7 +107,7 @@ public class BBox implements Serializable{
 	
 	@Transient
 	public boolean isValid(){
-		if (getMin().isValid() && getMax().isValid()){
+		if (min!=null && max!=null && min.isValid() && max.isValid()){
 			return true;
 		}
 		return false;

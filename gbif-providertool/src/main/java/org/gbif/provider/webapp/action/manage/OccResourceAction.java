@@ -27,9 +27,11 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -46,7 +48,6 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
     private String fileContentType;
     private String fileFileName;
 
-    
 	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
         {  
             {  
@@ -110,4 +111,9 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
 		return gChartData;
 	}
 
+	@Autowired		
+	public void sssutResourceManager(OccResourceManager occResourceManager) {		
+		this.resourceManager = occResourceManager;		
+	}
+	
 }
