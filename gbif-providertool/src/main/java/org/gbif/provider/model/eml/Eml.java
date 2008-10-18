@@ -30,12 +30,10 @@ public class Eml implements Serializable{
 	private List<String> keywords = new ArrayList<String>();
 	private GeoKeyword geographicCoverage = new GeoKeyword();  // should be a list really
 	private TimeKeyword temporalCoverage = new TimeKeyword();   // should be a list really
-	private String taxonomicSystem;
-	private String taxonomicClassification;
-	private List<TaxonKeyword> taxonomicCoverage = new ArrayList<TaxonKeyword>();
-	// taxonomy - other metadata
+	// taxonomy
+	private String taxonomicCoverageDescription;
 	private TaxonKeyword lowestCommonTaxon = new TaxonKeyword();
-	private String latestTaxonomicScrutiny;
+	private List<TaxonKeyword> taxonomicClassification = new ArrayList<TaxonKeyword>();
 	// methods
 	private String methods;
 	private String samplingDescription;
@@ -46,7 +44,7 @@ public class Eml implements Serializable{
 	private String maintenance;
 	
 	
-	private Eml(){
+	public Eml(){
 		super();
 		this.pubDate = new Date();
 		this.resourceCreator.setRole(Role.ORIGINATOR);
@@ -151,39 +149,23 @@ public class Eml implements Serializable{
 		this.intellectualRights = intellectualRights;
 	}
 
-	public String getTaxonomicSystem() {
-		return taxonomicSystem;
+
+
+	public String getTaxonomicCoverageDescription() {
+		return taxonomicCoverageDescription;
 	}
 
-	public void setTaxonomicSystem(String taxonomicSystem) {
-		this.taxonomicSystem = taxonomicSystem;
+	public void setTaxonomicCoverageDescription(String taxonomicCoverageDescription) {
+		this.taxonomicCoverageDescription = taxonomicCoverageDescription;
 	}
 
-	public String getTaxonomicClassification() {
+	public List<TaxonKeyword> getTaxonomicClassification() {
 		return taxonomicClassification;
 	}
 
-	public void setTaxonomicClassification(String taxonomicClassification) {
+	public void setTaxonomicClassification(
+			List<TaxonKeyword> taxonomicClassification) {
 		this.taxonomicClassification = taxonomicClassification;
-	}
-
-	public List<TaxonKeyword> getTaxonomicCoverage() {
-		return taxonomicCoverage;
-	}
-
-	public void setTaxonomicCoverage(List<TaxonKeyword> taxonomicCoverage) {
-		this.taxonomicCoverage = taxonomicCoverage;
-	}
-	public void addTaxonomicCoverage(TaxonKeyword taxonomicCoverage) {
-		this.taxonomicCoverage.add(taxonomicCoverage);
-	}
-	
-	public String getLatestTaxonomicScrutiny() {
-		return latestTaxonomicScrutiny;
-	}
-
-	public void setLatestTaxonomicScrutiny(String latestTaxonomicScrutiny) {
-		this.latestTaxonomicScrutiny = latestTaxonomicScrutiny;
 	}
 
 	public String getMethods() {

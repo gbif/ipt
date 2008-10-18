@@ -6,20 +6,6 @@
 				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 				http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<util:list id="creatorRoles">
-		<value>creator.role.originator</value>
-		<value>creator.role.content.provider</value>
-		<value>creator.role.principal.investigator</value>		
-		<value>creator.role.editor</value>
-		<value>creator.role.publisher</value>		
-		<value>creator.role.processor</value>
-		<value>creator.role.custodian</value>		
-		<value>creator.role.author</value>
-		<value>creator.role.metadata.provider</value>
-		<value>creator.role.distributor</value>
-		<value>creator.role.user</value>
-	</util:list>	
-
 	<util:map id="isoLanguageI18nCodeMap">
 		<entry key="ab" value="Abkhazian"/>
 		<entry key="aa" value="Afar"/>
@@ -493,47 +479,47 @@
 		<entry key="ANT" value="region.ANT"/>	
 	</util:map>
 	
-	<util:list id="majorTaxonRanks">
-		<value>taxonrank.kingdom</value>
-		<value>taxonrank.phylum</value>
-		<value>taxonrank.class</value>
-		<value>taxonrank.order</value>
-		<value>taxonrank.family</value>
-		<value>taxonrank.genus</value>
-		<value>taxonrank.species</value>
-		<value>taxonrank.subspecies</value>
-	</util:list>	
+	<util:map id="majorTaxonRanks">
+		<entry key="kingdom" value="taxonrank.kingdom"/>
+		<entry key="phylum" value="taxonrank.phylum"/>
+		<entry key="class" value="taxonrank.class"/>
+		<entry key="order" value="taxonrank.order"/>
+		<entry key="family" value="taxonrank.family"/>
+		<entry key="genus" value="taxonrank.genus"/>
+		<entry key="species" value="taxonrank.species"/>
+		<entry key="subspecies" value="taxonrank.subspecies"/>
+	</util:map>	
 	
-	<util:list id="otherTaxonRanks">
-		<value>taxonrank.suborder</value>
-		<value>taxonrank.infraorder</value>
-		<value>taxonrank.superfamily</value>
-		<value>taxonrank.subfamily</value>
-		<value>taxonrank.tribe</value>
-		<value>taxonrank.subtribe</value>
-		<value>taxonrank.nothogenus</value>
-		<value>taxonrank.subgenus</value>
-		<value>taxonrank.section</value>
-		<value>taxonrank.subsection</value>
-		<value>taxonrank.series</value>
-		<value>taxonrank.subseries</value>
-		<value>taxonrank.nothospecies</value>
-		<value>taxonrank.subspecies</value>
-		<value>taxonrank.nothosubspecies</value>
-		<value>taxonrank.variety</value>
-		<value>taxonrank.nothovariety</value>
-		<value>taxonrank.form</value>
-		<value>taxonrank.nothoform</value>
-		<value>taxonrank.biovar</value>
-		<value>taxonrank.serovar</value>
-		<value>taxonrank.cultivar</value>
-		<value>taxonrank.pathovar</value>
-		<value>taxonrank.infraspecific</value>
-		<value>taxonrank.aberration</value>
-		<value>taxonrank.mutation</value>
-		<value>taxonrank.race</value>
-		<value>taxonrank.confersubspecies</value>
-		<value>taxonrank.formaspecialis</value>
-		<value>taxonrank.hybrid</value>
-	</util:list>
+	<util:map id="otherTaxonRanks">
+		<entry key="suborder" value="taxonrank.suborder"/>
+		<entry key="infraorder" value="taxonrank.infraorder"/>
+		<entry key="superfamily" value="taxonrank.superfamily"/>
+		<entry key="subfamily" value="taxonrank.subfamily"/>
+		<entry key="tribe" value="taxonrank.tribe"/>
+		<entry key="subtribe" value="taxonrank.subtribe"/>
+		<entry key="nothogenus" value="taxonrank.nothogenus"/>
+		<entry key="subgenus" value="taxonrank.subgenus"/>
+		<entry key="section" value="taxonrank.section"/>
+		<entry key="subsection" value="taxonrank.subsection"/>
+		<entry key="series" value="taxonrank.series"/>
+		<entry key="subseries" value="taxonrank.subseries"/>
+		<entry key="nothospecies" value="taxonrank.nothospecies"/>
+		<entry key="subspecies" value="taxonrank.subspecies"/>
+		<entry key="nothosubspecies" value="taxonrank.nothosubspecies"/>
+		<entry key="variety" value="taxonrank.variety"/>
+		<entry key="nothovariety" value="taxonrank.nothovariety"/>
+		<entry key="form" value="taxonrank.form"/>
+		<entry key="nothoform" value="taxonrank.nothoform"/>
+		<entry key="biovar" value="taxonrank.biovar"/>
+		<entry key="serovar" value="taxonrank.serovar"/>
+		<entry key="cultivar" value="taxonrank.cultivar"/>
+		<entry key="pathovar" value="taxonrank.pathovar"/>
+		<entry key="infraspecific" value="taxonrank.infraspecific"/>
+		<entry key="aberration" value="taxonrank.aberration"/>
+		<entry key="mutation" value="taxonrank.mutation"/>
+		<entry key="race" value="taxonrank.race"/>
+		<entry key="confersubspecies" value="taxonrank.confersubspecies"/>
+		<entry key="formaspecialis" value="taxonrank.formaspecialis"/>
+		<entry key="hybrid" value="taxonrank.hybrid"/>
+	</util:map>
 </beans>

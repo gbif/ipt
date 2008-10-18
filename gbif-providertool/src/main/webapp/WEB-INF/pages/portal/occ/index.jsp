@@ -10,7 +10,7 @@
   
 <s:form>
 <fieldset>
-	<legend><s:text name="occResource.description"/></legend>
+	<legend><s:text name="resource.description"/></legend>
 	<div id="metadata">
 		<img class="right" src="<s:property value="%{cfg.getResourceLogoUrl(resource_id)}"/>" />
 		<span><s:property value="occResource.description"/></span>

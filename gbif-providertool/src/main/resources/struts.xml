@@ -92,6 +92,7 @@
             <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
             <result name="mainMenu" type="redirect-action">/index</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
+            <result name="cancel" type="redirect">/</result>
         </global-results>
 
         <global-exception-mappings>
@@ -111,6 +112,7 @@
         </action>
 
         <action name="editProfile" class="userAction" method="edit">
+            <result name="input">/WEB-INF/pages/userForm.jsp</result>
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="error">/WEB-INF/pages/index.jsp</result>
         </action>
@@ -142,22 +144,22 @@
         <default-interceptor-ref name="portalStack" />
 
         <!-- forwarding actions for all resource types. Allows easy linking without knowing the type of resource -->        
-        <action name="resource" class="org.gbif.provider.webapp.action.ForwardAction">
+        <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
                 <param name="actionName">occResource</param>
-                <param name="resource_id">${resource_id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="tax" type="redirect-action">
                 <param name="actionName">taxResource</param>
-                <param name="resource_id">${resource_id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="meta" type="redirect-action">
                 <param name="actionName">metaResource</param>
-                <param name="resource_id">${resource_id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
-        <action name="detail" class="org.gbif.provider.webapp.action.ForwardAction">
+        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
                 <param name="actionName">occDetail</param>
                 <param name="resource_id">${resource_id}</param>
@@ -216,7 +218,13 @@
         <action name="taxResources">
             <result>/WEB-INF/pages/missing.jsp</result>
         </action>
-
+        <action name="taxResource">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        <action name="taxDetail">
+            <result>/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
         <!-- metadata actions -->
         <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaResourceAction" method="list">
             <result type="freemarker">/WEB-INF/pages/portal/meta/index.ftl</result>
@@ -252,6 +260,15 @@
                 <param name="contentType">text/xml</param>
             </result>
         </action>
+        <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="sourcePreview">
+            <result>/WEB-INF/pages/ajax/preview.jsp</result>
+        </action>
+        <action name="uploadPreview" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="sourcePreview">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/preview.ftl</param>                
+            </result>
+        </action>
+        
     </package>
 
 
@@ -277,7 +294,7 @@
             </result>
         </action>
 
-        <action name="rss" class="org.gbif.provider.webapp.action.IndexAction" method="rss">
+        <action name="rss" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
             <result name="success" type="freemarker">
                 <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
                 <param name="contentType">text/xml</param>
@@ -285,7 +302,7 @@
         </action>
         
         <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
-        <action name="detail" class="org.gbif.provider.webapp.action.ForwardAction">
+        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
                 <param name="actionName">occDetail</param>
                 <param name="resource_id">${resource_id}</param>
@@ -299,10 +316,16 @@
                 <param name="format">${format}</param>
             </result>
             <result name="meta" type="redirect-action">
-                <param name="actionName">metaResource</param>
+                <param name="actionName">eml</param>
                 <param name="resource_id">${resource_id}</param>
                 <param name="format">${format}</param>
             </result>            
+        </action>
+        <action name="eml" class="org.gbif.provider.webapp.action.portal.ResourceAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/meta/eml.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
         </action>
         <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
             <result type="freemarker">
@@ -318,7 +341,12 @@
                 <param name="contentType">text/json</param>
             </result>
         </action>
-
+        <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result>/WEB-INF/pages/missing.jsp</result>
+            <result name="xml">/WEB-INF/pages/missing.jsp</result>
+            <result name="json">/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
     </package>
     
     
@@ -352,7 +380,7 @@
     <package name="manage" namespace="/manage" extends="default">
         <default-interceptor-ref name="managerStack" />
         
-        <action name="resource" class="org.gbif.provider.webapp.action.ForwardAction">
+        <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="namespace">/manage/occ</param>
@@ -404,7 +432,7 @@
                 <param name="actionName">${backPage}Form</param>
                 <param name="resource_id">${#parameters.resource_id}</param>
             </result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/methods.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="namespace">/manage</param>

@@ -42,6 +42,11 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	public GenericResourceManagerHibernate(final Class<T> persistentClass) {
 		super(persistentClass);
 	}
+	
+	public T get(final String guid) {
+		return (T) getSession().createQuery(String.format("select res FROM %s res WHERE guid = :guid", persistentClass.getSimpleName()))
+		.setParameter("guid", guid).uniqueResult();
+	}
 
 	public List<T> getResourcesByUser(final Long userId) {
 		return getSession().createQuery(String.format("select res FROM %s res WHERE res.creator.id = :userId", persistentClass.getSimpleName()))

@@ -199,7 +199,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		// keywords
 		Set<String> keys = new HashSet<String>();
 		keys.addAll(eml.getKeywords());
-		for (TaxonKeyword k : eml.getTaxonomicCoverage()){
+		for (TaxonKeyword k : eml.getTaxonomicClassification()){
 			keys.add(k.getCommonName());
 			keys.add(k.getScientificName());
 		}

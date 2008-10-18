@@ -198,7 +198,8 @@
                         <configuration>
                             <autocommit>true</autocommit>
                             <srcFiles>
-                                <srcFile>${basedir}/db/ipt-ddl_non-h8.sql</srcFile>
+                                <!-- FIXME: use proper buildpath variable here -->
+                                <srcFile>${basedir}/target/classes/ipt-ddl_non-h8.sql</srcFile>
                                 <srcFile>${basedir}/db/ipt-ddl.sql</srcFile>
                             </srcFiles>
                         </configuration>
@@ -338,6 +339,13 @@
                 </includes>
                 <filtering>false</filtering>
             </resource>
+            <resource>
+                <directory>db</directory>
+                <includes>
+                    <include>ipt-ddl_non-h8.sql</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
         </resources>
         <testResources>
             <testResource>
@@ -352,11 +360,6 @@
                 <excludes>
                     <exclude>WEB-INF</exclude>
                 </excludes>
-            </testResource>
-            <testResource>
-                <directory>src/main/webapp/WEB-INF/data</directory>
-                <targetPath>data</targetPath>
-                <filtering>false</filtering>
             </testResource>
         </testResources>
     </build>
@@ -625,7 +628,8 @@
                 <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
                 <jdbc.version>5.0.5</jdbc.version>
                 <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:mysql://localhost/providertool?createDatabaseIfNotExist=false&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
+                <jdbc.database>ipt</jdbc.database>
+                <jdbc.url><![CDATA[jdbc:mysql://localhost/${jdbc.database}?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
                 <jdbc.username>providertool</jdbc.username>
                 <jdbc.password>w32wfun</jdbc.password>
             </properties>
@@ -681,7 +685,8 @@
         <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
         <jdbc.version>5.0.5</jdbc.version>
         <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-        <jdbc.url><![CDATA[jdbc:mysql://localhost/ipt_test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
+        <jdbc.database>ipt_test</jdbc.database>
+        <jdbc.url><![CDATA[jdbc:mysql://localhost/${jdbc.database}?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
         <jdbc.username>providertool</jdbc.username>
         <jdbc.password>w32wfun</jdbc.password>
         

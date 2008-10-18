@@ -19,6 +19,9 @@ div.break {
 	clear: both;
 	padding-top: 25px;
 }
+div.newline {
+	clear: both;
+}
 
 .subentry {
 	display: block;
@@ -35,6 +38,9 @@ form .xlarge{
 }
 form textarea.xlarge{
     height: 20em;
+}
+form textarea.slim{
+    height: 8em;
 }
 form .xhalf{
     width: 317px;

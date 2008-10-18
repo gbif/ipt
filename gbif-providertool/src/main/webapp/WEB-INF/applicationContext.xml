@@ -4,10 +4,12 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
                         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
                         default-lazy-init="true">
 
     <context:annotation-config/>
@@ -51,6 +53,9 @@
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
     <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
+    </bean>
+    <bean id="datasourceBasedResourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
     </bean>
     <bean id="resourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.Resource"/>
@@ -134,6 +139,5 @@
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
         <lookup-method name="newOccProcessingTask" bean="processingTask"/>
     </bean>
-    
-    
+        
 </beans>

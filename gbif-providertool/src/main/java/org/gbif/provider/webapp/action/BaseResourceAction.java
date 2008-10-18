@@ -43,13 +43,18 @@ public class BaseResourceAction extends BaseAction implements SessionAware{
 	@Qualifier("resourceManager")
     protected GenericResourceManager<Resource> resourceManager;
 	protected Long resource_id;
+	protected String guid;
 	protected Resource resource;
 	protected Map session;
 
 	public void prepare() {
 		if (resource_id != null) {
 			resource = resourceManager.get(resource_id);
-			// update recently viewed resources in session
+		}else if (guid != null){
+			resource = resourceManager.get(guid);
+		}
+		// update recently viewed resources in session
+		if (resource != null) {
 			updateRecentResouces();
 		}
 	}
@@ -91,6 +96,14 @@ public class BaseResourceAction extends BaseAction implements SessionAware{
 	
 	public void setSession(Map session) {
 		this.session = session;
+	}
+	
+	public String getGuid() {
+		return guid;
+	}
+
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 
 }
