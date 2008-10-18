@@ -593,6 +593,14 @@
         <default-action-ref name="resources" />
         
         
+        <action name="eml">
+            <result type="redirect-action">
+                <param name="actionName">creatorForm</param>
+                <param name="namespace">/manage/eml</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+
         <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaResourceAction" method="list">
             <result>/WEB-INF/pages/manage/meta/resourceList.jsp</result>
         </action>
