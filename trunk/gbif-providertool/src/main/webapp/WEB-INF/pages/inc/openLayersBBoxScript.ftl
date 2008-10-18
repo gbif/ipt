@@ -16,6 +16,12 @@
     //add the polygon layer
     var polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer");
     
+    if ($('bbox_left').value!="" && $('bbox_bottom').value!="" && $('bbox_right').value !=null && $('bbox_top').value!=null){
+	    var bounds = new OpenLayers.Bounds($('bbox_left').value, $('bbox_bottom').value, $('bbox_right').value, $('bbox_top').value);
+	    boundingBox = new OpenLayers.Feature.Vector(bounds.toGeometry());
+	    polygonLayer.addFeatures(boundingBox);        
+    }
+    
     map.addLayers([wmsLayer, satelliteLayer, polygonLayer]);
     map.addControl( new OpenLayers.Control.LayerSwitcher() );
     map.addControl( new OpenLayers.Control.MousePosition() );

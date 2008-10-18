@@ -2,7 +2,7 @@
 
 <s:push value="region">
 <head>
-    <title><s:text name="title"/></title>
+    <title><s:text name="region.title"/></title>
     <meta name="resource" content="<s:property value="resource.title"/>"/>
     <meta name="submenu" content="occ"/>
 </head>

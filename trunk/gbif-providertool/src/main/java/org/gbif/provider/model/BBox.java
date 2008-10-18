@@ -52,10 +52,11 @@ public class BBox implements Serializable{
 	}
 	
 	public Point getMax() {
-		if (max==null){
-			max = new Point();
-		}
-		return new Point(max);
+//		if (max==null){
+//			max = new Point();
+//		}
+//		return new Point(max);
+		return max;
 	}
 	
 	private void setMax(Point max) {
@@ -63,10 +64,11 @@ public class BBox implements Serializable{
 	}
 	
 	public Point getMin() {
-		if (min==null){
-			min = new Point();
-		}
-		return new Point(min);
+//		if (min==null){
+//			min = new Point();
+//		}
+//		return new Point(min);
+		return min;
 	}
 	
 	private void setMin(Point min) {
