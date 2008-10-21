@@ -558,7 +558,11 @@ import org.springframework.transaction.annotation.Transactional;
 				// core uploaded already
 				coreInfo = String.format(", %s occurrences", recordsUploaded);
 			}
-			return String.format("Uploading %s: %s records with %s, %s%s", currentExtension, currentProcessed.get(), taxonomyBuilder.status(), geographyBuilder.status(), coreInfo);
+			if (currentProcessed!=null){
+				return String.format("Uploading %s: %s records with %s, %s%s", currentExtension, currentProcessed.get(), taxonomyBuilder.status(), geographyBuilder.status(), coreInfo);
+			}else{
+				return "Waiting for upload to start.";
+			}
 		}
 
 	}

@@ -52,27 +52,27 @@ public class BBox implements Serializable{
 	}
 	
 	public Point getMax() {
-//		if (max==null){
-//			max = new Point();
-//		}
-//		return new Point(max);
 		return max;
 	}
 	
 	private void setMax(Point max) {
-		this.max = new Point(max);
+		if (max==null){
+			this.max=null;
+		}else{
+			this.max = new Point(max);
+		}
 	}
 	
 	public Point getMin() {
-//		if (min==null){
-//			min = new Point();
-//		}
-//		return new Point(min);
 		return min;
 	}
 	
 	private void setMin(Point min) {
-		this.min = new Point(min);
+		if (min==null){
+			this.min=null;
+		}else{
+			this.min = new Point(min);
+		}
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class BBox implements Serializable{
 	 * @param longitude
 	 */
 	public void expandBox(Point p){
-		if (p!=null){
+		if (p!=null && p.isValid()){
 			if (!contains(p)){
 				if (!isValid()){
 					// this BBox doesnt yet contain any points. Use this point for min+max
@@ -131,7 +131,7 @@ public class BBox implements Serializable{
 		float width = maxX-minX;
 		float height = maxY-minY;
 		// detect maximum possible expand factor
-		float[] maxFactors = {(factor-1)/2f, (90f-maxY)/height, (90+minY)/height,  (180f-maxX)/width, (180f+minX)/width};
+		float[] maxFactors = {(factor-1)/2f, (Point.MAX_LATITUDE-maxY)/height, (Point.MAX_LATITUDE+minY)/height,  (Point.MAX_LONGITUDE-maxX)/width, (Point.MAX_LONGITUDE+minX)/width};
 		Arrays.sort(maxFactors);
 		float expandFactor = maxFactors[0];
 		// change bbox		
@@ -167,12 +167,12 @@ public class BBox implements Serializable{
 				float equalWidthIncrease = ((height * mapRatio) - width)/2;
 				float minX =  min.getLongitude();
 				float maxX =  max.getLongitude();
-				if (minX-equalWidthIncrease < -90f){
-					minX=-90f;
+				if (minX-equalWidthIncrease < Point.MIN_LONGITUDE){
+					minX=Point.MIN_LONGITUDE;
 					maxX = width*mapRatio;
-				} else if (maxX+equalWidthIncrease > 90f){
-					minX= 90 - width*mapRatio;
-					maxX = 90f;
+				} else if (maxX+equalWidthIncrease > Point.MAX_LONGITUDE){
+					minX= Point.MAX_LONGITUDE - width*mapRatio;
+					maxX = Point.MAX_LONGITUDE;
 				} else{
 					minX= minX-equalWidthIncrease;
 					maxX = maxX+equalWidthIncrease;
@@ -184,12 +184,12 @@ public class BBox implements Serializable{
 				float equalHeightIncrease = ((width / mapRatio) - height)/2;
 				float minY =  min.getLatitude();
 				float maxY =  max.getLatitude();
-				if (minY-equalHeightIncrease < -90f){
-					minY=-90f;
+				if (minY-equalHeightIncrease < Point.MIN_LATITUDE){
+					minY=Point.MIN_LATITUDE;
 					maxY = width*mapRatio;
-				} else if (maxY+equalHeightIncrease > 90f){
-					minY= 90 - width*mapRatio;
-					maxY = 90f;
+				} else if (maxY+equalHeightIncrease > Point.MAX_LATITUDE){
+					minY= Point.MAX_LATITUDE - width*mapRatio;
+					maxY = Point.MAX_LATITUDE;
 				} else{
 					minY= minY-equalHeightIncrease;
 					maxY = maxY+equalHeightIncrease;
@@ -240,5 +240,16 @@ public class BBox implements Serializable{
 	public int hashCode() {
 		return new HashCodeBuilder(1425547953, 342545271).append(this.min)
 				.append(this.max).toHashCode();
+	}
+
+
+	/** returns the size of the surface defined by this bbox
+	 * @return
+	 */
+	@Transient
+	public float surface() {
+		float width=max.getLongitude()-min.getLongitude();
+		float height=max.getLatitude()-min.getLatitude();
+		return width*height;
 	}
 }

@@ -180,7 +180,7 @@ public class CacheManagerImpl implements CacheManager{
 				status = t.status();			
 			}
 		}else{
-			status = "No activity. Source ready to be used.";			
+			status = "Source ready to be used.";			
 		}
 		return status;
 	}
