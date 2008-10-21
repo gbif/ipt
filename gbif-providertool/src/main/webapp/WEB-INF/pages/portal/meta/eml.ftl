@@ -16,7 +16,7 @@
     xmlns:txt="eml://ecoinformatics.org/text-2.0.1" 
     xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    packageId="IPT-${resource.guid}" system="GBIF-IPT" scope="system">
+    packageId="${resource.guid}-${resource.modified?string("HHmmss")}" system="GBIF-IPT" scope="system">
     <dataset>
         <alternateIdentifier>${resource.guid}</alternateIdentifier>
         <title>${eml.title}</title>

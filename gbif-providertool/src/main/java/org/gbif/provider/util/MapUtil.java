@@ -20,6 +20,15 @@ public class MapUtil {
 		if (bbox == null || !bbox.isValid()){
 			bbox = BBox.NewWorldInstance();
 		}else{
+			if (bbox.surface()==0f){
+				if (bbox.getMax().getLatitude()+0.1f < Point.MAX_LATITUDE){
+					bbox.getMax().setLatitude(bbox.getMax().getLatitude()+0.1f);
+					bbox.getMax().setLongitude(bbox.getMax().getLongitude()+0.1f);
+				}else{
+					bbox.getMin().setLatitude(bbox.getMin().getLatitude()-0.1f);
+					bbox.getMin().setLongitude(bbox.getMin().getLongitude()-0.1f);
+				}
+			}
 			bbox.resize(1.2f);
 			float ratio = (float) width / (float) height;
 			bbox.expandToMapRatio(ratio);

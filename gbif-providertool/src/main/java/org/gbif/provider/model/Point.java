@@ -17,6 +17,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Embeddable
 public class Point implements Serializable{
+	public static final Float MAX_LONGITUDE = new Float(180f);
+	public static final Float MIN_LONGITUDE = new Float(-180f);
+	public static final Float MAX_LATITUDE = new Float(90f);
+	public static final Float MIN_LATITUDE = new Float(-90f);
 	// x (east/west), -180/180
 	private Float longitude;
 	// y (north/south), -90/90
@@ -37,7 +41,7 @@ public class Point implements Serializable{
 		return latitude==null ? null : new Float(latitude);
 	}
 	public void setLatitude(Float latitude) {
-		if (latitude != null && (latitude < -90 || latitude > 90)){
+		if (latitude != null && (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE)){
 			throw new IllegalArgumentException();
 		}
 		if (latitude == null){
@@ -50,7 +54,7 @@ public class Point implements Serializable{
 		return longitude==null ? null : new Float(longitude);
 	}
 	public void setLongitude(Float longitude) {
-		if (longitude != null && (longitude < -180 || longitude > 180)){
+		if (longitude != null && (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE)){
 			throw new IllegalArgumentException();
 		}
 		if (longitude == null){

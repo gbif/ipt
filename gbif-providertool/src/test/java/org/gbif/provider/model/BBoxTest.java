@@ -80,4 +80,13 @@ public class BBoxTest {
 		System.out.println(bbox);
 		assertTrue(bbox.isValid());
 	}
+
+	@Test
+	public void testSurface() {
+		bbox = new BBox(13.2f, 4.0f, 13.2f, 4.0f);
+		System.out.println(bbox);
+		System.out.println(bbox.surface());
+		assertTrue(bbox.isValid());
+		assertTrue(bbox.surface()==0f);
+	}
 }

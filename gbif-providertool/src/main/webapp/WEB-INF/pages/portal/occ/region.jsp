@@ -32,7 +32,7 @@
 		</tr>
 		<tr>
 		  <th><s:text name="taxon.bbox"/></th>
-		  <td><s:property value="%{taxon.bbox}"/></td>
+		  <td><s:property value="%{region.bbox}"/></td>
 		</tr>
 	</table>
 	</fieldset>
