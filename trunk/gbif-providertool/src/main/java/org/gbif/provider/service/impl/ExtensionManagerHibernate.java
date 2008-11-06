@@ -62,13 +62,26 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		Connection cn;
 		try {
 			cn = getConnection();
-			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL, INDEX(coreid), INDEX(resource_fk))", table);
+			// create table basics
+			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL)", table);
 			PreparedStatement ps = cn.prepareStatement(ddl);
 			try {
 				ps.execute();
 			}finally{
 				ps.close();
 			}
+			// create indices
+			String[] indexedColumns = {"coreid","resource_fk"};
+			for (String col : indexedColumns){
+				ddl = String.format("CREATE INDEX IDX%s_%s ON %s(%s)", table, col, table, col);
+				ps = cn.prepareStatement(ddl);
+				try {
+					ps.execute();
+				}finally{
+					ps.close();
+				}
+			}
+			// add columns
 			for (ExtensionProperty prop : extension.getProperties()){
 				if (prop!=null && prop.getName()!=null && prop.getColumnLength()>0){
 					ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, namingStrategy.propertyToColumnName(prop.getName()), prop.getColumnLength());

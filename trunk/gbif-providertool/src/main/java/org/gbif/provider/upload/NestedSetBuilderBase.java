@@ -14,10 +14,15 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.TreeNode;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends TaskBase{
+	@Autowired
+	// doesnt belong into a generic nested set / tree node class, I know.
+	// but as all this is probably changing anyway I leave it here as a quick patch
+	private OccStatManager occStatManager;
 	protected TreeNodeManager<T> nodeManager;
 	// results
 	protected Map<Integer, T> nodes;
@@ -94,7 +99,7 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 		// assign nested set indices for hierarchy and save each node (incl stats)
 		SortedSet<T> hierarchy = setNestedSetIndices();
 
-		return hierarchy;		
+		return hierarchy;
 	}
 	
 	
@@ -103,6 +108,7 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 	public void prepare() {
 		terminalNodes = new HashSet<T>();
 		nodes = new TreeMap<Integer, T>();
+		occStatManager.removeAll(loadResource());
 		nodeManager.removeAll(loadResource());		
 	}
 	

@@ -54,7 +54,7 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 		// get property name for this entity
 		String propName = persistentClass.getSimpleName().toLowerCase();
 		
-		// first remove regions from dwcore records
+		// first remove treeNodes from dwcore records
 		String hqlUpdate = String.format("update DarwinCore dwc SET dwc.%s=null WHERE dwc.resource = :resource", propName);
 		session.createQuery( hqlUpdate ).setEntity("resource", resource).executeUpdate();
 		

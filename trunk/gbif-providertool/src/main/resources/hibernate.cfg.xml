@@ -17,6 +17,7 @@
         
         <mapping class="org.appfuse.model.User"/>
         <mapping class="org.appfuse.model.Role"/>
+        <mapping class="org.gbif.provider.model.Annotation"/>
         <mapping class="org.gbif.provider.model.BBox"/>
         <mapping class="org.gbif.provider.model.ChecklistResource"/>
         <mapping class="org.gbif.provider.model.CoreRecord"/>

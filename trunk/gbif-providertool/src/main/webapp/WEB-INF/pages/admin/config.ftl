@@ -40,9 +40,9 @@
 
   <fieldset>
     <legend><@s.text name="config.settings"/></legend>
+	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
-	<@s.textfield key="config.dataDir" required="false" cssClass="text xlarge"/>
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>
