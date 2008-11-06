@@ -19,7 +19,6 @@ public class ProviderCfg {
 	private String baseUrl;
 	private String geoserverUrl;
 	private String googleMapsApiKey;
-	private String dataDir;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -58,15 +57,6 @@ public class ProviderCfg {
 	}
 	public void setGeoserverUrl(String geoserverUrl) {
 		this.geoserverUrl = geoserverUrl;
-	}
-	
-	
-	@Column(length=128)
-    public String getDataDir() {
-		return dataDir;
-	}
-	public void setDataDir(String dataDir) {
-		this.dataDir = dataDir;
 	}
 	
 	@Column(length=128)

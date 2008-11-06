@@ -29,6 +29,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	private IptNamingStrategy namingStrategy;
 	private ProviderCfgManager providerCfgManager;
 	private ProviderCfg cfg;
+	private String datadir;
 	// need some static fields to create static methods that can be used outside of spring managed contexts, e.g. for hibernate objects
 	// fields are managed by regular instance setters thanks to singleton
 	private static String baseURL;	
@@ -38,25 +39,33 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	@Autowired
 	public void setServletContext(ServletContext ctx) {
 		context=ctx;
-		if (cfg!=null){
-			dataDIR=getDataDir();
-			log.info("Set new application baseDIR: "+dataDIR);
-		}
 		log.info("Configured new CONTEXT: "+context.toString());
 	}
-
 
 	private AppConfig(ProviderCfgManager providerCfgManager) {
 		super();
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
 		setBaseUrl(cfg.getBaseUrl());
-		setDataDir(cfg.getDataDir());
 	}
 
 	
 	
 	// OTHER UTILITY METHODS, MOSTLY DEFINING PATHS & URLs
+	
+	// ALL ESSENTIAL DATA DIR
+	public String getDataDir() {
+		File dataDir = new File(this.datadir);
+		return dataDir.getAbsolutePath();
+	}
+	public void setDataDir(String dataDir) {
+		this.datadir = dataDir;
+		if (dataDir == null || !(new File(dataDir).exists())){
+			log.warn("Proposed data directory doesnt exist: "+dataDir);
+		}
+		dataDIR=getDataDir();
+		log.info("Using data directory: "+dataDIR);
+	}
 	
 	// WEBAPP BASICS
 	public static File getWebappDir() {
@@ -208,16 +217,6 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 		return cfg.getMeta().getContactName();
 	}
 
-	public String getDataDir() {
-		String dir = cfg.getDataDir();
-		if (dir==null){
-			// use sensible default that tests can access
-			File dataDir = new File(getWebappDir(), "WEB-INF/data");
-			dir = dataDir.getAbsolutePath();
-		}
-		return dir;
-	}
-
 	public String getDescription() {
 		return cfg.getMeta().getDescription();
 	}
@@ -257,23 +256,6 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 
 	public void setContactName(String contactName) {
 		cfg.getMeta().setContactName(contactName);
-	}
-
-	public void setDataDir(String dataDir) {
-		if (dataDir != null){
-			File dataDirFile = new File(dataDir);
-			if (!dataDirFile.exists()){
-				dataDirFile.mkdirs();
-				log.info("Created new main data directory at "+dataDir);
-			}
-		}
-		cfg.setDataDir(dataDir);
-		if (context!=null){
-			// can only get dir if context is set. During bean initialisation this might not be the case
-			// therefore also set the static dataDIR in setContext method!
-			dataDIR=getDataDir();
-			log.info("Set new application baseDIR: "+dataDIR);
-		}
 	}
 
 	public void setDescription(String description) {

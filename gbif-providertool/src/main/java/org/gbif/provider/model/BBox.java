@@ -59,6 +59,7 @@ public class BBox implements Serializable{
 		if (max==null){
 			this.max=null;
 		}else{
+			// dont want to reference the same object. make copy
 			this.max = new Point(max);
 		}
 	}
@@ -71,6 +72,7 @@ public class BBox implements Serializable{
 		if (min==null){
 			this.min=null;
 		}else{
+			// dont want to reference the same object. make copy
 			this.min = new Point(min);
 		}
 	}

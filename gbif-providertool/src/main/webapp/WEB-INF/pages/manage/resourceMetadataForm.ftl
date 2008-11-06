@@ -28,7 +28,7 @@
 	    <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>
 	</#if>
 	<#if resource.title??>
-	    <@s.submit cssClass="button" key="button.eml" action="eml" theme="simple"/>
+	    <@s.submit cssClass="button" key="button.details" action="eml" theme="simple"/>
 	</#if>
     </@s.form>
 	
