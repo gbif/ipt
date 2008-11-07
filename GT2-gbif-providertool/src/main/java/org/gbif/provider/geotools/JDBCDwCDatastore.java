@@ -137,6 +137,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 				1000); // TODO - pass in in the factory...
 		
 		try {
+			log.debug("Found "+records.size() + " DwcRecords");
 			return new DefaultFeatureReader(new DwcRecordFeatureAttributeReader(records));
 		} catch (SchemaException e1) {
 			// Should not happen
