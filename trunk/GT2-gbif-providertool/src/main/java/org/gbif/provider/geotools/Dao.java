@@ -51,17 +51,18 @@ public class Dao extends JdbcDaoSupport {
 		// and the limit
 		String limit = " limit " + maxResults;
 		
+		List<DwcRecord> records = null;
 		if (params.size() == 0) {
 			logger.info(select + limit);
-			return (List<DwcRecord>)
-				getJdbcTemplate().query(select,new RowMapperResultSetExtractor(dwcRowMapper,1000));			
+			records = (List<DwcRecord>)
+			getJdbcTemplate().query(select + limit,new RowMapperResultSetExtractor(dwcRowMapper,1000));
 		} else {
 			logger.info(select + where + limit);
-			return (List<DwcRecord>)
-				getJdbcTemplate().query(select + where + limit,
-					params.toArray(),
-				new RowMapperResultSetExtractor(dwcRowMapper,1000));
+			records = (List<DwcRecord>) getJdbcTemplate().query(select + where + limit, params.toArray(), new RowMapperResultSetExtractor(dwcRowMapper,1000));
 		}
+		logger.info("SQL parameter: "+ params.toString());
+		logger.info("Records found: "+ records.size());
+		return records;
 	}
 
 	/**

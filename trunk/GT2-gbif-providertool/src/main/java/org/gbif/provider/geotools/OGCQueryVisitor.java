@@ -27,7 +27,7 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @SuppressWarnings("deprecation")
 public class OGCQueryVisitor extends AbstractFilterVisitor {
-	protected Log logger = LogFactory.getLog(this.getClass());
+	protected Log logger = LogFactory.getLog(OGCQueryVisitor.class);
 	
 	// the features of interest
 	protected Integer resourceId;
@@ -72,13 +72,15 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 			if (resourceIdAsString!=null && resourceIdAsString.length()>0) {
 				try {
 					resourceId = Integer.parseInt(lit.getValue().toString());
+					logger.debug("Resource id from request: " + resourceId);
 				} catch (NumberFormatException e) {
 					logger.warn("Ignoring invalid resource id from request: " + resourceIdAsString);
 				}
 			}
-		} else if (capture==2) 
+		} else if (capture==2){ 
 			guid = lit.getValue().toString();
-		else if (capture==3){
+			logger.debug("GUID from request: " + guid);
+		}else if (capture==3){
 			String taxonIdAsString = lit.getValue().toString();
 			if (taxonIdAsString!=null && taxonIdAsString.length()>0) {
 				try {
@@ -92,7 +94,8 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 			String regionIdAsString = lit.getValue().toString();
 			if (regionIdAsString!=null && regionIdAsString.length()>0) {
 				try {
-					taxonId = Long.parseLong(regionIdAsString);
+					regionId = Long.parseLong(regionIdAsString);
+					logger.debug("regionId from request: " + regionId);
 				} catch (NumberFormatException e) {
 					logger.warn("Ignoring invalid region id from request: " + regionIdAsString);
 				}
@@ -120,6 +123,8 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 				Geometry geom =  new WKTReader().read(geomString);
 				if (geom instanceof Polygon) {
 					coords =  ((Polygon)geom).getCoordinates();
+					logger.debug("coords from request: " + coords.toString());
+					logger.debug("coords length from request: " + coords.length);
 				}
 			} catch (ParseException e) {
 				// logger.severe("Error parsing geom: " + e);
