@@ -16,7 +16,11 @@
 	taxtree.attachEvent("onOpenStart",onTaxNodeOpen); // onOpenStart 
 	taxtree.setXMLAutoLoading("<c:url value='/ajax/taxonTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>");
 	taxtree.loadXML("<c:url value='/ajax/taxonTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>"); //load root level from xml
-	
+	// check if tree should be opened with a certan node (all parent node ids given in correct order)
+	if (<s:property value="id"/>>0){
+		alert(<s:property value="parentIds"/>);	
+	}
+
 	function onTaxNodeSelect(nodeId){
 		if (taxJustOpened>0){
 			//auto click when opening a new node. prevend this 

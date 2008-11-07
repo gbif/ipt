@@ -40,6 +40,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	@Autowired
 	private MapUtil mapUtil;
 	private List<OccurrenceResource> resources;
+	private Map<Integer, String> countryClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
 	private Map<Integer, String> hostTypes = new TreeMap<Integer, String>();
@@ -57,6 +58,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, occResource.getBbox(), null, null);
 		}
 		// prepare select lists
+		countryClasses.put(1, "occurrences");
+		countryClasses.put(2, "distinct taxa");
 		for (RegionType rt : RegionType.DARWIN_CORE_REGIONS){
 			regionClasses.put(rt.ordinal(), rt.name());
 		}
@@ -116,6 +119,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public String getGeoserverMapUrl() {
 		return geoserverMapUrl;
+	}
+
+	public Map<Integer, String> getCountryClasses() {
+		return countryClasses;
 	}
 
 	public Map<Integer, String> getRegionClasses() {

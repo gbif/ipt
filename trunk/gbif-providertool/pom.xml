@@ -143,7 +143,6 @@
                         <format>true</format>
                         <export>false</export>
                         <propertyfile>target/classes/jdbc.properties</propertyfile>
-                        <skip>${initdb.skip}</skip>
                         <outputfilename>ipt-ddl.sql</outputfilename>
                         <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
                     </componentProperties>
@@ -163,61 +162,6 @@
                         <version>${jdbc.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>sql-maven-plugin</artifactId>
-                <version>1.1</version>
-                
-                <!--jar file that has the jdbc driver -->
-                <dependencies>
-                    <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                    </dependency>
-                </dependencies>
-                
-                <!-- common configurations -->
-                <configuration>
-                    <driver>${jdbc.driverClassName}</driver>
-                    <url>${jdbc.url}</url>
-                    <username>${jdbc.username}</username>
-                    <password>${jdbc.password}</password>
-                    <skip>${initdb.skip}</skip>
-                </configuration>
-                
-                <executions>
-                    <execution>
-                        <id>create-schema</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <autocommit>true</autocommit>
-                            <srcFiles>
-                                <!-- FIXME: use proper buildpath variable here -->
-                                <srcFile>${basedir}/target/classes/ipt-ddl_non-h8.sql</srcFile>
-                                <srcFile>${basedir}/db/ipt-ddl.sql</srcFile>
-                            </srcFiles>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>create-data</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <autocommit>true</autocommit>
-                            <srcFiles>
-                                <srcFile>${basedir}/db/ipt-data.sql</srcFile>
-                            </srcFiles>
-                        </configuration>
-                    </execution>
-                </executions>                
             </plugin>
             
             <plugin>
@@ -249,14 +193,16 @@
                     <dependentWarExcludes>
                         WEB-INF/lib/*, **/jdbc.properties,**/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**
                     </dependentWarExcludes>
+                    <!-- 
                     <webResources>
                         <resource>
-                            <!-- this is relative to the pom.xml directory -->
+                            <! this is relative to the pom.xml directory >
                             <directory>data</directory>
-                            <!-- by default targetPath=WAR root directory -->
+                            <! by default targetPath=WAR root directory >
                             <targetPath>WEB-INF/data</targetPath>
                         </resource>
-                    </webResources>
+                        </webResources>
+                    -->
                 </configuration>
             </plugin>
             <plugin>
@@ -339,27 +285,17 @@
                 </includes>
                 <filtering>false</filtering>
             </resource>
-            <resource>
-                <directory>db</directory>
-                <includes>
-                    <include>ipt-ddl_non-h8.sql</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
         </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
-            <!-- Allow tests to read/write to fake webapps directory -->
+            <!-- Allow tests to read/write to fake webapps directory and use the default IPT data -->            
             <testResource>
                 <directory>src/main/webapp</directory>
                 <targetPath>webapp</targetPath>
                 <filtering>false</filtering>
-                <excludes>
-                    <exclude>WEB-INF</exclude>
-                </excludes>
             </testResource>
         </testResources>
     </build>
@@ -521,7 +457,7 @@
             <version>0.5.1</version>
             <type>jar</type>
         </dependency>
-        <!-- Hibernate -->
+        <!-- Hibernate 3.2.6GA used by appfuse -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search</artifactId>
@@ -540,21 +476,6 @@
         </dependency>
         
         <!-- GBIF stuff -->
-        <!-- 
-        <dependency>
-            <groupId>org.gbif</groupId>
-            <artifactId>scheduler</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>org.gbif</groupId>
-            <artifactId>scheduler</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>warpath</type>
-        </dependency>
-        -->
-        
         <dependency>
             <groupId>org.gbif</groupId>
             <artifactId>logging</artifactId>
@@ -621,32 +542,22 @@
         <profile>
             <id>prod</id>
             <properties>
-                <initdb.skip>true</initdb.skip>
+                <!-- 
+                    relative paths are interpreted to current java working dir.
+                    In Tomcat that is xxx, which is what we use here for production deployment
+                    In jetty this is the direcory where you started maven, normally the project root
+                    Therefore use the jetty profile which contains the proper relative path
+                -->
+                <ipt.datadir>data</ipt.datadir>
                 <maven.test.skip>true</maven.test.skip>
-                <hibernate.dialect>org.hibernate.dialect.MySQLMyISAMDialect</hibernate.dialect>
-                <jdbc.groupId>mysql</jdbc.groupId>
-                <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
-                <jdbc.version>5.0.5</jdbc.version>
-                <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-                <jdbc.database>ipt</jdbc.database>
-                <jdbc.url><![CDATA[jdbc:mysql://localhost/${jdbc.database}?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
-                <jdbc.username>providertool</jdbc.username>
-                <jdbc.password>w32wfun</jdbc.password>
             </properties>
         </profile>
-        
-        <!-- ================= Database Profiles ================= -->
         <profile>
-            <id>h2</id>
+            <id>jetty</id>
             <properties>
-                <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
-                <jdbc.groupId>com.h2database</jdbc.groupId>
-                <jdbc.artifactId>h2</jdbc.artifactId>
-                <jdbc.version>1.0.20061217</jdbc.version>
-                <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-                <jdbc.url><![CDATA[jdbc:h2:${java.io.tmpdir}/ipt]]></jdbc.url>
-                <jdbc.username>sa</jdbc.username>
-                <jdbc.password></jdbc.password>
+                <!-- relative paths for jetty -->
+                <ipt.datadir>${project.build.directory}/work/webapp/data</ipt.datadir>
+                <maven.test.skip>true</maven.test.skip>
             </properties>
         </profile>
     </profiles>
@@ -678,19 +589,20 @@
         <cargo.port>8080</cargo.port>
         <cargo.wait>false</cargo.wait>
         
-        <!-- Database settings -->
-        <initdb.skip>false</initdb.skip>
-        <hibernate.dialect>org.hibernate.dialect.MySQLMyISAMDialect</hibernate.dialect>
-        <jdbc.groupId>mysql</jdbc.groupId>
-        <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
-        <jdbc.version>5.0.5</jdbc.version>
-        <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-        <jdbc.database>ipt_test</jdbc.database>
-        <jdbc.url><![CDATA[jdbc:mysql://localhost/${jdbc.database}?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]></jdbc.url>
-        <jdbc.username>providertool</jdbc.username>
-        <jdbc.password>w32wfun</jdbc.password>
+        <!-- IPT context -->
+        <ipt.datadir>${project.build.testOutputDirectory}/webapp/data</ipt.datadir>
         
+        <!-- Database settings -->
+        <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
+        <jdbc.groupId>com.h2database</jdbc.groupId>
+        <jdbc.artifactId>h2</jdbc.artifactId>
+        <jdbc.version>1.0.79</jdbc.version>
+        <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
+        <jdbc.url><![CDATA[jdbc:h2:${ipt.datadir}/db/ipt]]></jdbc.url>
+        <!-- ;MODE=MYSQL -->
+        <jdbc.username>sa</jdbc.username>
+        <jdbc.password></jdbc.password>
+
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
-        <context.webapp>${project.build.directory}/webapp</context.webapp>        
     </properties>
 </project>

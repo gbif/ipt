@@ -3,6 +3,7 @@ package org.gbif.provider.service.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,32 +65,32 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			cn = getConnection();
 			// create table basics
 			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL)", table);
-			PreparedStatement ps = cn.prepareStatement(ddl);
+			Statement st = cn.createStatement();
 			try {
-				ps.execute();
+				st.execute(ddl);
 			}finally{
-				ps.close();
+				st.close();
 			}
 			// create indices
 			String[] indexedColumns = {"coreid","resource_fk"};
 			for (String col : indexedColumns){
 				ddl = String.format("CREATE INDEX IDX%s_%s ON %s(%s)", table, col, table, col);
-				ps = cn.prepareStatement(ddl);
+				st = cn.createStatement();
 				try {
-					ps.execute();
+					st.execute(ddl);
 				}finally{
-					ps.close();
+					st.close();
 				}
 			}
 			// add columns
 			for (ExtensionProperty prop : extension.getProperties()){
 				if (prop!=null && prop.getName()!=null && prop.getColumnLength()>0){
 					ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, namingStrategy.propertyToColumnName(prop.getName()), prop.getColumnLength());
-					ps = cn.prepareStatement(ddl);
+					st = cn.createStatement();
 					try {
-						ps.execute();
+						st.execute(ddl);
 					}finally{
-						ps.close();
+						st.close();
 					}
 				}else{
 					log.warn("Extension property doesnt contain valid column description");
@@ -113,21 +114,21 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		String table = namingStrategy.extensionTableName(extension);
 
 		Connection cn;
-		PreparedStatement ps=null;
+		Statement st = null;
 		try {
 			cn = getConnection();
+			st = cn.createStatement();
 			String ddl = String.format("DROP TABLE IF EXISTS %s", table);
-			ps = cn.prepareStatement(ddl);
-			ps.execute();
+			st.execute(ddl);
 			extension.setInstalled(false);
 			save(extension);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			if (ps!=null){
+			if (st!=null){
 				try {
-					ps.close();
+					st.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

@@ -129,16 +129,34 @@
 
 <div id="loc-countries" class="stats map">
 	<label><s:text name="stats.occByCountry"/></label>	
+	<s:form id="countryClassForm">
+		<s:select id="countryClass" name="country" list="countryClasses" value="1" theme="simple"/>
+	</s:form>
+	<s:url id="imgByCountryUrl" action="occResourceStatsByCountry" namespace="/ajax" includeParams="get"/>
 	<div id="imgByCountry">
-		<s:action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true"/>
+		<s:action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true">
+			<s:param name="type" value="1"/>
+		</s:action>
 	</div>
 </div>
-<div id="loc-tax" class="stats map stat-right">
-	<label><s:text name="stats.taxaPerCountry"/></label>
-	<div id="imgByTaxaPerCountry">
-		<s:action name="occResourceStatsByTaxaPerCountry" namespace="/ajax" executeResult="true"/>
-	</div>
+<script>
+function updateByCountry(){
+	var url = '<s:property value="imgByCountryUrl"/>';
+	var params = { type: $F("countryClass") }; 
+	var target = 'imgByCountry';	
+	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+};
+$('countryClass').observe('change', updateByCountry);
+</script>	
+
+<div id="loc-geoserver" class="stats map stat-right">
+	<label><s:text name="stats.occPointMap"/></label>
+	<img width="<s:property value="%{width}"/>" height="<s:property value="%{height}"/>" src="<s:property value="geoserverMapUrl"/>" />
 </div>
+
+
+<br class="clearfix" />
+
 
 <div id="loc-pie" class="stats chart">
 	<label><s:text name="stats.occByRegion"/></label>
@@ -161,17 +179,8 @@ function updateByRegion(){
 };
 $('regionClass').observe('change', updateByRegion);
 </script>	
-<div id="loc-geoserver" class="stats map stat-right">
-	<label><s:text name="stats.occPointMap"/></label>
-	<img width="<s:property value="%{width}"/>" height="<s:property value="%{height}"/>" src="<s:property value="geoserverMapUrl"/>" />
-</div>
 
-			
-
-<br class="clearfix" />
-
-
-<div id="tax-pie" class="stats chart">
+<div id="tax-pie" class="stats chart stat-right">
 	<label><s:text name="stats.occByTaxon"/></label>
 	<s:form id="rankForm">
 		<s:select id="rank" list="ranks" value="rank" theme="simple"/>
@@ -191,17 +200,18 @@ function updateByTaxon(){
 $('rank').observe('change', updateByTaxon);
 </script>
 
-<div id="recordbasis-pie" class="stats chart stat-right">
+
+<br class="clearfix" />
+
+
+<div id="recordbasis-pie" class="stats chart">
 	<label><s:text name="stats.occByBasisOfRecord"/></label>
 	<div id="imgByBasisOfRecord">
 		<s:action name="occResourceStatsByBasisOfRecord" namespace="/ajax" executeResult="true"/>
 	</div>
 </div>
 
-<br class="clearfix" />
-
-
-<div id="host-pie" class="stats chart">
+<div id="host-pie" class="stats chart stat-right">
 	<label><s:text name="stats.occByHost"/></label>
 	<s:form id="hostForm">
 		<s:select id="hostType" list="hostTypes" theme="simple"/>
@@ -221,7 +231,11 @@ function updateByHost(){
 $('hostType').observe('change', updateByHost);
 </script>	
 
-<div id="time-pie" class="stats chart stat-right">
+
+<br class="clearfix" />
+
+
+<div id="time-pie" class="stats chart">
 	<label><s:text name="stats.occByDateColected"/></label>
 	<div id="imgByDateColected">
 		<s:action name="occResourceStatsByDateColected" namespace="/ajax" executeResult="true"/>
