@@ -10,9 +10,5 @@ public enum ImageType {
 	ChartByHost(),
 	ChartByBasisOfRecord(),
 	ChartByDateCollected(),
-	CountryMapOfOccurrence(),
-	CountryMapOfTaxa(),
-	OccMapByTaxa(),
-	OccMapByRegion();	
-
+	CountryMapOfOccurrence();
 }

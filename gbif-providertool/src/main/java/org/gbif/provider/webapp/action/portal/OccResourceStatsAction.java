@@ -146,25 +146,26 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	
 	// MAPS
 	public String statsByCountry() {
-		recordAction="occRegion";
 		setMapSize();
+		if (type==2){
+			//TODO: link to list of taxon found in that country
+			recordAction="";
+		}else{
+			recordAction="occRegion";
+		}
 		if (!useCachedImage(ImageType.CountryMapOfOccurrence)){
-			data = occResourceManager.occByRegion(resource_id, RegionType.Country, filter);
-			String url = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+			String url;
+			if (type==2){
+				data = occResourceManager.taxaByRegion(resource_id, RegionType.Country);
+				url = occResourceManager.taxaByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+			}else{
+				data = occResourceManager.occByRegion(resource_id, RegionType.Country, filter);
+				url = occResourceManager.occByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
+			}
 			cacheImage(ImageType.CountryMapOfOccurrence, url);
 		}
 		return MAP_RESULT;
-	}	
-	public String statsByTaxaPerCountry() {
-		setMapSize();
-		if (!useCachedImage(ImageType.CountryMapOfTaxa)){
-			data = occResourceManager.taxaByRegion(resource_id, RegionType.Country);
-			String url = occResourceManager.taxaByCountryMapUrl(occResourceManager.getMapArea(area), data, width, height);
-			cacheImage(ImageType.CountryMapOfTaxa, url);
-		}
-		return MAP_RESULT;
-	}	
-
+	}
 	
 	
 	// HELPER

@@ -20,6 +20,7 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
     private Long id;
+    private List<Long> parentIds;
     private Taxon taxon;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
@@ -70,6 +71,10 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public List<Long> getParentIds() {
+		return parentIds;
 	}
 
 }

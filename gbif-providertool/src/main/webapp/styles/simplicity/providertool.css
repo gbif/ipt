@@ -204,7 +204,7 @@ br.clearfix{
 div.chart{
 	height: 200px;
 }
-div.chart form {
+div.chart form, div.map form {
 	float: right;
 	bottom: 25px;
 	position: relative;

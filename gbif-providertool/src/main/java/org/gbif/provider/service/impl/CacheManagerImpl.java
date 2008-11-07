@@ -111,9 +111,9 @@ public class CacheManagerImpl implements CacheManager{
 		occResourceManager.save(res);
 		
 		// remove core record related upload artifacts like taxa & regions
+		occStatManager.removeAll(res);
 		taxonManager.removeAll(res);
 		regionManager.removeAll(res);
-		occStatManager.removeAll(res);
 		logEventManager.removeByGroup(resourceId.intValue());
 
 		// remove generated files
