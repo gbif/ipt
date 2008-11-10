@@ -19,8 +19,10 @@ public class TaxonTreeAction extends BaseOccurrenceResourceAction {
     private Long id;
     private String parents="";
     private List<Taxon> nodes;
-	 
-    public String execute(){
+	private String treeType = "taxon";
+	
+
+	public String execute(){
     	if (id!=null && id>0l){
     		// open tree up to the id. 
     		// To do this first find all parent nodes
@@ -65,5 +67,8 @@ public class TaxonTreeAction extends BaseOccurrenceResourceAction {
 		this.parents = parents;
 	}
 
+    public String getTreeType() {
+		return treeType;
+	}
     
 }
