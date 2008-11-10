@@ -15,7 +15,7 @@
 	taxtree.attachEvent("onClick",onTaxNodeSelect); //set function object to call on node select
 	taxtree.attachEvent("onOpenStart",onTaxNodeOpen); // onOpenStart 
 	taxtree.setXMLAutoLoading("<c:url value='/ajax/taxonSubTree.html'/>?resource_id=<s:property value="resource_id"/>");
-	taxtree.loadXML("<c:url value='/ajax/taxonTree.html'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="id"/>"); //load root level from xml
+	taxtree.loadXML("<c:url value='/ajax/taxonTree.html'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="taxon_id"/>"); //load root level from xml
 
 	function onTaxNodeSelect(nodeId){
 		if (taxJustOpened>0){

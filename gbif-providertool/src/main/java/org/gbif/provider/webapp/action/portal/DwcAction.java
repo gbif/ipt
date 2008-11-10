@@ -24,6 +24,8 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
+    private Long taxon_id;
+    private Long region_id;
     private String guid;
     private DarwinCore dwc;
     private ExtensionRecordsWrapper extWrapper;
@@ -38,6 +40,8 @@ public class DwcAction extends BaseOccurrenceResourceAction {
     	if (guid!=null){
     		dwc=darwinCoreManager.get(guid);
     		if (dwc !=null){
+    			region_id = dwc.getRegion().getId();
+    			taxon_id = dwc.getTaxon().getId();
         		extWrapper = extensionRecordManager.getExtensionRecords(dwc.getResource(), dwc.getCoreId());
         		extensions = extWrapper.getExtensions();
             	if (format!=null && format.equalsIgnoreCase("xml")){
@@ -84,6 +88,20 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	}
 	public void setFormat(String format) {
 		this.format = format;
+	}
+
+
+
+
+	public Long getTaxon_id() {
+		return taxon_id;
+	}
+
+
+
+
+	public Long getRegion_id() {
+		return region_id;
 	}
 
 
