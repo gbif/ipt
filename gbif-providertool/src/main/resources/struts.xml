@@ -253,15 +253,39 @@
             <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
         </action>
-        <action name="taxonTreeNodes" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
+        <action name="taxonTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
             <result type="freemarker">
-                <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
         </action>
-        <action name="regionTreeNodes" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
+        <action name="taxonSubTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
             <result type="freemarker">
-                <param name="location">/WEB-INF/pages/ajax/treeNodes.ftl</param>                
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="taxonTreeItems" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/treeItems.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionSubTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionTreeItems" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/treeItems.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
         </action>

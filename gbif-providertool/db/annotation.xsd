@@ -8,20 +8,26 @@
                     <xs:sequence>
                         <xs:element name="note" type="xs:string"></xs:element>    
                         <xs:element name="proposal" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation><xs:documentation>A proposed new value for a single property. Multiple proposal can form a single annotation. If multiple proposals for the same record are needed (because of no 100% match), multiple annotations should be created</xs:documentation></xs:annotation>
                             <xs:complexType>
                                 <xs:attribute name="property" type="xs:string"></xs:attribute>
                                 <xs:attribute name="value" type="xs:string"></xs:attribute>
                             </xs:complexType>
                         </xs:element>    
                     </xs:sequence>
-                    <xs:attribute name="about"></xs:attribute>
+                    <xs:attribute name="about">
+                        <xs:annotation>
+                            <xs:documentation>Most likely the URI/GUID of the record</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
                     <xs:attribute name="probability" type="xs:int"></xs:attribute>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="resource" type="xs:string"></xs:attribute>
-        <xs:attribute name="creator" type="xs:string"></xs:attribute>
-        <xs:attribute name="created" type="xs:dateTime"></xs:attribute>
+        <xs:attribute name="token" type="xs:string"><xs:annotation><xs:documentation>The request token</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="dataset" type="xs:anyURI"><xs:annotation><xs:documentation>The URI to the dataset used for this validation/annotation</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="creator" type="xs:string"><xs:annotation><xs:documentation>The agent which created the annotations</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="created" type="xs:dateTime"><xs:annotation><xs:documentation>Time the annotations were created/finished</xs:documentation></xs:annotation></xs:attribute>
     </xs:complexType>
 </xs:element>
 </xs:schema>

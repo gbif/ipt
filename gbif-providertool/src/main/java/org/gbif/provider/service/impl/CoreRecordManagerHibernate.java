@@ -24,10 +24,6 @@ import java.util.List;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.EntityExistsException;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
@@ -39,8 +35,6 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -120,31 +114,10 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	}
 
 
-	public List<T> search(final Long resourceId, final String q) throws ParseException {
-	     FullTextSession fullTextSession = Search.createFullTextSession(getSession());
-	     QueryParser parser = new MultiFieldQueryParser(FIELD_NAMES, new StandardAnalyzer());
-	     org.apache.lucene.search.Query query = parser.parse(q);
-	     org.hibernate.Query hibernateQuery = fullTextSession.createFullTextQuery(query, persistentClass);
-	     List results = hibernateQuery.list();
-	     return results;
+	public List<T> search(final Long resourceId, final String q) {
+	     return null;
 	}
 
 	public void reindex(Long resourceId){
-		Session hibernateSession = getSession();
-		FullTextSession fullTextSession = Search.createFullTextSession(hibernateSession);
-		ScrollableResults results = scrollResource(resourceId);
-		Transaction tx = fullTextSession.beginTransaction();
-
-		Long counter = 0l;
-		while (results.next()){
-            fullTextSession.index((T)results.get(0)); 
-		    if (++counter % 1000 == 0){
-                fullTextSession.flush(); //apply changes to indexes 
-                fullTextSession.clear(); //clear since the queue is processed 
-	            hibernateSession.clear(); 
-                log.debug(String.format("Indexed %s records of resource %s", counter, resourceId));
-		    }
-		}
-		tx.commit(); //index are written at commit time  		
 	}
 }

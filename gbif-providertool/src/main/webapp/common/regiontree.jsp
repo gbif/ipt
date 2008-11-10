@@ -14,19 +14,16 @@
 	regiontree.enableTreeLines(true);
 	regiontree.attachEvent("onClick",onRegionNodeSelect); //set function object to call on node select
 	regiontree.attachEvent("onOpenStart",onRegionNodeOpen); // onOpenStart 
-	regiontree.setXMLAutoLoading("<c:url value='/ajax/regionTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>");
-	regiontree.loadXML("<c:url value='/ajax/regionTreeNodes.html'/>?resource_id=<s:property value="resource_id"/>"); //load root level from xml
+	regiontree.setXMLAutoLoading("<c:url value='/ajax/regionSubTree.xml'/>?resource_id=<s:property value="resource_id"/>");
+	regiontree.loadXML("<c:url value='/ajax/regionTree.xml'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="id"/>"); //load root level from xml
 	
 	function onRegionNodeSelect(nodeId){
 		if (regionJustOpened>0){
 			//auto click when opening a new node. prevend this 
 			regionJustOpened=0;
 		}else{					
-			// only open terminal nodes
-			if (taxtree.hasChildren(nodeId)<1){
-				var regionUrl = '<c:url value="/occRegion.html"/>?resource_id='+resourceId+'&id='+nodeId;;
-				window.location.href=regionUrl
-			}
+			var regionUrl = '<c:url value="/occRegion.html"/>?resource_id='+resourceId+'&id='+nodeId;;
+			window.location.href=regionUrl
 		}
 	}
 	
