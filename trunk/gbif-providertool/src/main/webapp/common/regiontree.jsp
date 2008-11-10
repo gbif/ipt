@@ -15,7 +15,7 @@
 	regiontree.attachEvent("onClick",onRegionNodeSelect); //set function object to call on node select
 	regiontree.attachEvent("onOpenStart",onRegionNodeOpen); // onOpenStart 
 	regiontree.setXMLAutoLoading("<c:url value='/ajax/regionSubTree.xml'/>?resource_id=<s:property value="resource_id"/>");
-	regiontree.loadXML("<c:url value='/ajax/regionTree.xml'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="id"/>"); //load root level from xml
+	regiontree.loadXML("<c:url value='/ajax/regionTree.xml'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="region_id"/>"); //load root level from xml
 	
 	function onRegionNodeSelect(nodeId){
 		if (regionJustOpened>0){

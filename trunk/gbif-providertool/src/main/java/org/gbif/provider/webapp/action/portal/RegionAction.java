@@ -74,4 +74,8 @@ public class RegionAction extends BaseOccurrenceResourceAction {
 		return height;
 	}
 
+	public Long getRegion_id() {
+		return id;
+	}
+
 }
