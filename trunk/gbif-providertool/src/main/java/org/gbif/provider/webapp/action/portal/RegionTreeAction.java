@@ -15,6 +15,7 @@ public class RegionTreeAction extends BaseOccurrenceResourceAction {
     private Long id;
     private String parents="";
     private List<Region> nodes;
+	private String treeType="region";
 	 
     public String execute(){
     	if (id!=null && id>0l){
@@ -61,6 +62,9 @@ public class RegionTreeAction extends BaseOccurrenceResourceAction {
 		this.parents = parents;
 	}
     
+    public String getTreeType() {
+		return treeType;
+	}
     
     
 }
