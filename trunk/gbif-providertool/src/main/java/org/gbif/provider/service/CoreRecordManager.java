@@ -2,7 +2,6 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
-import org.apache.lucene.queryParser.ParseException;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.OccurrenceResource;
 import org.hibernate.ScrollableResults;
@@ -48,9 +47,8 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
 	 * @param resourceId
 	 * @param q
 	 * @return
-	 * @throws ParseException 
 	 */
-	List<T> search(Long resourceId, String q) throws ParseException;
+	List<T> search(Long resourceId, String q);
 	void reindex(Long resourceId);
 	
     /**

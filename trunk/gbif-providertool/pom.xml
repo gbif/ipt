@@ -460,11 +460,6 @@
         <!-- Hibernate 3.2.6GA used by appfuse -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search</artifactId>
-            <version>3.0.1.GA</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>3.0.0.GA</version>
         </dependency>

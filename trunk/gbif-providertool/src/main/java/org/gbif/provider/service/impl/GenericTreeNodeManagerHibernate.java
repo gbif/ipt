@@ -33,6 +33,12 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 		return result;
 	}
 
+	public List<Long> getParentIds(Long resourceId, Long nodeId) {
+        return getSession().createQuery(String.format("SELECT parent.id FROM %s node, %s parent WHERE node.id = :nodeId and node.lft between parent.lft and parent.rgt   ORDER BY parent.lft", persistentClass.getName(), persistentClass.getName()))
+        .setLong("nodeId", nodeId)
+		.list();
+	}	
+
 	public List<T> getParents(Long resourceId, Long nodeId) {
 		List<T> result = new ArrayList<T>(); 
 		return result;
@@ -65,5 +71,6 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 		        .executeUpdate();
 		log.info(String.format("Removed %s %ss bound to resource %s", count, propName, resource.getTitle()));
 		return count;
-	}	
+	}
+
 }
