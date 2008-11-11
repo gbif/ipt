@@ -96,7 +96,7 @@
     <bean id="providerCfgManager" class="org.gbif.provider.service.impl.ProviderCfgManagerHibernate" parent="abstractManager"/>
     <bean id="cfg" class="org.gbif.provider.util.AppConfig">        
         <constructor-arg ref="providerCfgManager"/>
-        <property name="dataDir" value="${ipt.datadir}"/>
+        <property name="dataDir" value="${dataDir}"/>
     </bean>
     <bean id="mapUtil" class="org.gbif.provider.util.MapUtil"/>
     

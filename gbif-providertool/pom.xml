@@ -142,7 +142,7 @@
                         <create>true</create>
                         <format>true</format>
                         <export>false</export>
-                        <propertyfile>target/classes/jdbc.properties</propertyfile>
+                        <propertyfile>target/classes/application.properties</propertyfile>
                         <outputfilename>ipt-ddl.sql</outputfilename>
                         <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
                     </componentProperties>
@@ -191,7 +191,7 @@
                 <version>2.0.2</version>
                 <configuration>
                     <dependentWarExcludes>
-                        WEB-INF/lib/*, **/jdbc.properties,**/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**
+                        WEB-INF/lib/*, **/jdbc.properties, **/application.properties, **/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**
                     </dependentWarExcludes>
                     <!-- 
                     <webResources>
@@ -220,7 +220,7 @@
                 <configuration>
                     <warpathExcludes>
                         applicationContext*.xml,ApplicationResources*.properties,ehcache.xml,
-                        hibernate.cfg.xml,jdbc.properties,log4j.xml,mail.properties,**/persistence.xml,
+                        hibernate.cfg.xml,jdbc.properties,application.properties,log4j.xml,mail.properties,**/persistence.xml,
                         sql-map-config.xml,struts.xml
                     </warpathExcludes>
                 </configuration>
@@ -537,21 +537,6 @@
         <profile>
             <id>prod</id>
             <properties>
-                <!-- 
-                    relative paths are interpreted to current java working dir.
-                    In Tomcat that is xxx, which is what we use here for production deployment
-                    In jetty this is the direcory where you started maven, normally the project root
-                    Therefore use the jetty profile which contains the proper relative path
-                -->
-                <ipt.datadir>data</ipt.datadir>
-                <maven.test.skip>true</maven.test.skip>
-            </properties>
-        </profile>
-        <profile>
-            <id>jetty</id>
-            <properties>
-                <!-- relative paths for jetty -->
-                <ipt.datadir>${project.build.directory}/work/webapp/data</ipt.datadir>
                 <maven.test.skip>true</maven.test.skip>
             </properties>
         </profile>
@@ -581,11 +566,8 @@
         <cargo.container.home>${env.CATALINA_HOME}</cargo.container.home>
         <cargo.container.url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.zip</cargo.container.url>
         <cargo.host>localhost</cargo.host>
-        <cargo.port>8080</cargo.port>
+        <cargo.port>8081</cargo.port>
         <cargo.wait>false</cargo.wait>
-        
-        <!-- IPT context -->
-        <ipt.datadir>${project.build.testOutputDirectory}/webapp/data</ipt.datadir>
         
         <!-- Database settings -->
         <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
@@ -593,10 +575,12 @@
         <jdbc.artifactId>h2</jdbc.artifactId>
         <jdbc.version>1.0.79</jdbc.version>
         <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-        <jdbc.url><![CDATA[jdbc:h2:${ipt.datadir}/db/ipt]]></jdbc.url>
-        <!-- ;MODE=MYSQL -->
         <jdbc.username>sa</jdbc.username>
         <jdbc.password></jdbc.password>
+        
+        <!-- IPT test context only. Production uses spring & IPT_DATA_DIR setting via datadirlocator -->
+        <datadir>${project.build.testOutputDirectory}/webapp/data</datadir>
+        <jdbc.url><![CDATA[jdbc:h2:${datadir}/db/ipt]]></jdbc.url>
 
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
     </properties>

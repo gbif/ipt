@@ -41,8 +41,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class ProviderCfgAction extends BaseAction  {
-
+	
 	public String execute() {
+		
 		return SUCCESS;
 	}
 
@@ -62,4 +63,5 @@ public class ProviderCfgAction extends BaseAction  {
 	public void setConfig(AppConfig cfg) {
 		this.cfg = cfg;
 	}
+	
 }
