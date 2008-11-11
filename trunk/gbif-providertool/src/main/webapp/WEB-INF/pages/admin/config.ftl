@@ -46,7 +46,7 @@
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>
-  
+
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
 </@s.form>

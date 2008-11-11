@@ -7,6 +7,13 @@
 
     <!-- precompiled jsp mappings -->
 
+    <!--
+        <context-param>
+        <param-name>IPT_DATA_DIR</param-name>
+        <param-value>/Users/markus/Desktop/ipt/data</param-value>
+        </context-param> 
+    -->
+    
     <!-- Define the default CSS Theme -->
     <context-param>
         <param-name>csstheme</param-name>

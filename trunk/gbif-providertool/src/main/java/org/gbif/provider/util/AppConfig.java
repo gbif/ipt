@@ -39,7 +39,7 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	@Autowired
 	public void setServletContext(ServletContext ctx) {
 		context=ctx;
-		log.info("Configured new CONTEXT: "+context.toString());
+		log.debug("Set new servlet context: "+context.toString());
 	}
 
 	private AppConfig(ProviderCfgManager providerCfgManager) {
@@ -55,16 +55,12 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	
 	// ALL ESSENTIAL DATA DIR
 	public String getDataDir() {
-		File dataDir = new File(this.datadir);
-		return dataDir.getAbsolutePath();
+		return this.datadir;
 	}
 	public void setDataDir(String dataDir) {
 		this.datadir = dataDir;
-		if (dataDir == null || !(new File(dataDir).exists())){
-			log.warn("Proposed data directory doesnt exist: "+dataDir);
-		}
-		dataDIR=getDataDir();
-		log.info("Using data directory: "+dataDIR);
+		dataDIR = new File(dataDir).getAbsolutePath();
+		log.info("IPT_DATA_DIR: "+dataDIR);
 	}
 	
 	// WEBAPP BASICS
