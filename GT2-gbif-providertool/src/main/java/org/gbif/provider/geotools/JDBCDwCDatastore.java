@@ -129,15 +129,11 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		// parse out the resourceId from the layer name.
 		// convention is to name layers as resource1, resource2, resource31, etc
 		Long resourceId=null;
+		// support weird layer names. Try to find just any number
 		try {
-			resourceId = Long.valueOf(typeName.substring(8));
-		} catch (NumberFormatException e) {
-			// layer named weird. Try to find just any number?
-			try {
-				resourceId = Long.valueOf(typeName.replaceAll("[^0-9]", ""));
-			} catch (NumberFormatException e2) {
-				throw new IOException("Couldnt find resourceId in layer name");
-			}
+			resourceId = Long.valueOf(typeName.replaceAll("[^0-9]", ""));
+		} catch (NumberFormatException e2) {
+			throw new IOException("Couldnt find resourceId in layer name");
 		}
 		log.info("Found IPT resource " + resourceId);
 		
