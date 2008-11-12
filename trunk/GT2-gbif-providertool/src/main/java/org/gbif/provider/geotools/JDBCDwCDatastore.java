@@ -18,56 +18,35 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.dbcp.ConnectionFactory;
-import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
-import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.pool.ObjectPool;
-import org.apache.commons.pool.impl.GenericObjectPool;
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DefaultFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
-import org.geotools.feature.AttributeType;
-import org.geotools.feature.DefaultFeatureTypeFactory;
-import org.geotools.feature.FeatureType;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.type.GeometricAttributeType;
-import org.geotools.feature.type.TextualAttributeType;
-import org.geotools.filter.Filter;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.Filters;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.h2.jdbcx.JdbcDataSource;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeType;
 
 import com.vividsolutions.jts.geom.Point;
 
 /**
  * A simple JDBC property store that connects to a DwC table
  * and maps a Float latitude and longitude to the output
- * @author trobertson
+ * @author mdoering
  */
 public class JDBCDwCDatastore extends AbstractDataStore {
 	protected Log log = LogFactory.getLog(this.getClass());
-
+	private Long resourceId;
+	
 	/**
-	 * The feature types
+	 * The feature type
 	 */
-	protected static AttributeType[] types = {
-		new TextualAttributeType("ResourceId", false, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("GUID", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("TaxonId", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("RegionId", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("ScientificName", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Locality", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("InstitutionCode", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("CollectionCode", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("CatalogNumber", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("Collector", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("DateCollected", true, 1, 1, "0", Filter.INCLUDE),
-		new TextualAttributeType("BasisOfRecord", true, 1, 1, "0", Filter.INCLUDE),
-		new GeometricAttributeType("Geom", Point.class, false, null, null, null)};		
+	protected static SimpleFeatureType type;
 	
 	
 	/**
@@ -76,27 +55,56 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	protected static Dao dao;
 		
 	public JDBCDwCDatastore(Map<String, String> params) {
-		log.info("Creating database pool [" + params.get("url") +"] [" + params.get("user") + "]");
+		log.info("Creating database pool [" + params.get("datadir") +"] [" + params.get("resource") + "]");
+		resourceId = Long.valueOf(params.get("resource"));
 		setupPool(params);
+		setupFeatureType();
 	}
 	
+	private void setupFeatureType() {
+		SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+
+		//set the name
+		b.setName( "darwincore" );
+		b.setNamespaceURI( "http://rs.tdwg.org/dwc/dwcore" );
+
+		//add some properties
+		b.add( "GlobalUniqueIdentifier", String.class );
+		b.add( "ScientificName", String.class );
+		b.add( "Locality", String.class );
+		b.add( "InstitutionCode", String.class );
+		b.add( "CollectionCode", String.class );
+		b.add( "CatalogNumber", String.class );
+		b.add( "Collector", String.class );
+		b.add( "DateCollected", String.class );
+		b.add( "BasisOfRecord", String.class );
+		// non dwc attributes
+		b.add( "taxonId", Integer.class );
+		b.add( "regionId", Integer.class );
+		//add a geometry property
+		b.setCRS( DefaultGeographicCRS.WGS84 );
+		b.add( "location", Point.class );
+
+		//build the type
+		type = b.buildFeatureType();		
+	}
+
 	/**
-	 * @param params The parameters for the DB connection
+	 * @param params The parameters for the H2 DB connection
 	 */
 	protected synchronized static void setupPool(Map<String, String> params) {
 		try {
-			// TODO - move to UI driven config (e.g. passed in params from the factory)
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
 		}
-        ObjectPool connectionPool = new GenericObjectPool(null);
-        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(params.get("url"),params.get("user"), params.get("password"));
-        // this is unused but it takes in the connection pool so I presume that this does the callback to set the factory for the pool 
-        @SuppressWarnings("unused") PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
-        DataSource ds = new PoolingDataSource(connectionPool);
+		// embedded H2 is faster without any connection pool. See H2 documentation 
+        JdbcDataSource ds = new JdbcDataSource(); 
+        ds.setURL(String.format("jdbc:h2:%s", params.get("datadir"))); 
+        ds.setUser("sa"); 
+        ds.setPassword(""); 
         dao = new Dao();
         dao.setDataSource(ds);
-    }		
+    }
 	
 	/**
 	 * @see org.geotools.data.AbstractDataStore#getFeatureReader(java.lang.String)
@@ -118,7 +126,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		Filters.accept( query.getFilter(), parsedQuery );
 		
 		List<DwcRecord> records = dao.getRecords(
-				parsedQuery.getResourceId(), 
+				resourceId,
 				parsedQuery.getGuid(), 
 				parsedQuery.getTaxonId(), 
 				parsedQuery.getRegionId(), 
@@ -147,25 +155,11 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 
 	/**
 	 * Returns the schema that is supported
-	 * Geotools is a constantly developing project and there is deprecated code
-	 * without an obvious replacement
 	 * @see org.geotools.data.AbstractDataStore#getSchema(java.lang.String)
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public FeatureType getSchema(String typeName) throws IOException {
-		DefaultFeatureTypeFactory factory = new DefaultFeatureTypeFactory();
-		for (AttributeType type : JDBCDwCDatastore.types) {
-			factory.addType(type);
-		}
-		factory.setAbstract(false);
-		factory.setName("occurrence");
-		try {
-			return factory.getFeatureType();
-		} catch (SchemaException e) {
-			log.error("Error building the feature type in the getSchema(): " + e.getMessage(), e);
-			return null;
-		}
+	public SimpleFeatureType getSchema(String typeName) throws IOException {
+		return type;
 	}
 
 	/**
@@ -178,5 +172,6 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	public String[] getTypeNames() throws IOException {
 		return new String[]{"occurrence"};
 	}
+
 
 }

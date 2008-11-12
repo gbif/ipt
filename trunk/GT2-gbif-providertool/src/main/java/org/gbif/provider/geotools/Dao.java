@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.util.StringUtils;
 
 /**
  * DAO method
@@ -31,12 +30,12 @@ public class Dao extends JdbcDaoSupport {
 	 * @return All records that match the query
 	 */
 	@SuppressWarnings("unchecked")
-	public List<DwcRecord> getRecords(Integer resourceId, String guid, Long taxonId, Long regionId, String scientificName, String locality, 
+	public List<DwcRecord> getRecords(Long resourceId, String guid, Long taxonId, Long regionId, String scientificName, String locality, 
 			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "select dwc.resource_fk as resource_id, dwc.guid as guid, taxon_fk, region_fk, scientific_name, r.label as locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from dwcore dwc join region r on dwc.region_fk=r.id ";
+		String select = "select dwc.guid as guid, taxon_fk, region_fk, scientific_name, r.label as locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from dwcore dwc join region r on dwc.region_fk=r.id ";
 		
 		// join optional tables
 		if (taxonId != null){
@@ -68,15 +67,16 @@ public class Dao extends JdbcDaoSupport {
 	/**
 	 * Builds the where clause
 	 */
-	private String buildWhere(Integer resourceId, String guid, Long taxonId, Long regionId, String scientificName, String locality, 
+	private String buildWhere(Long resourceId, String guid, Long taxonId, Long regionId, String scientificName, String locality, 
 			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, 
 			List<Object> params) {
 		StringBuffer where = new StringBuffer(" where ");
-		if (resourceId != null) {
-			where.append(" and dwc.resource_fk = ?");
-			params.add(resourceId);
-		}
+		// resource filter
+		where.append(" and dwc.resource_fk = ?");
+		params.add(resourceId);
+		
+		// dynamic filter
 		if (guid != null) {
 			where.append(" and dwc.guid = ?");
 			params.add(guid);
@@ -147,7 +147,6 @@ public class Dao extends JdbcDaoSupport {
 	class DwCRecordRowMapper implements RowMapper {
 		public DwcRecord mapRow(ResultSet rs, int rowNumber) throws SQLException {
 			return new DwcRecord(
-					rs.getInt("resource_id"),
 					rs.getString("guid"),
 					rs.getLong("taxon_fk"),
 					rs.getLong("region_fk"),
@@ -163,4 +162,5 @@ public class Dao extends JdbcDaoSupport {
 					rs.getDouble("lon"));
 		}
 	}
+
 }
