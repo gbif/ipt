@@ -26,11 +26,14 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.type.PropertyTypeImpl;
 import org.geotools.filter.Filters;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.h2.jdbcx.JdbcDataSource;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.PropertyType;
+import org.springframework.util.StringUtils;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -54,16 +57,18 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	protected static Dao dao;
 		
 	public JDBCDwCDatastore(Map<String, String> params) {
+		// indicates that this is a read-only DataStore
+		super(false);
 		log.info("Creating datasource [" + params.get("datadir") +"] [" + params.get("user") +"] [" + params.get("password") + "]");
 		setupPool(params);
-		setupFeatureType();
+		type = getFeatureType("dwcore");
 	}
 	
-	private void setupFeatureType() {
+	private SimpleFeatureType getFeatureType(String name) {
 		SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
 
 		//set the name
-		b.setName( "darwincore" );
+		b.setName(name);
 		b.setNamespaceURI( "http://rs.tdwg.org/dwc/dwcore" );
 
 		//add some properties
@@ -83,7 +88,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		b.add( "Geom", Point.class );
 
 		//build the type
-		type = b.buildFeatureType();		
+		return b.buildFeatureType();		
 	}
 
 	/**
@@ -121,7 +126,20 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	protected FeatureReader getFeatureReader(String typeName, Query query) throws IOException {
 		log.info("Layer requested: " + typeName);
 		log.info("Filter supplied: " + query.getFilter());
-		Long resourceId = 1l;
+		// parse out the resourceId from the layer name.
+		// convention is to name layers as resource1, resource2, resource31, etc
+		Long resourceId=null;
+		try {
+			resourceId = Long.valueOf(typeName.substring(8));
+		} catch (NumberFormatException e) {
+			// layer named weird. Try to find just any number?
+			try {
+				resourceId = Long.valueOf(typeName.replaceAll("[^0-9]", ""));
+			} catch (NumberFormatException e2) {
+				throw new IOException("Couldnt find resourceId in layer name");
+			}
+		}
+		log.info("Found IPT resource " + resourceId);
 		
 		// parse out the values from the query
 		OGCQueryVisitor parsedQuery = new OGCQueryVisitor();
@@ -148,7 +166,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		
 		try {
 			log.debug("Found "+records.size() + " DwcRecords");
-			return new DefaultFeatureReader(new DwcRecordFeatureAttributeReader(records), type);
+			return new DefaultFeatureReader(new DwcRecordFeatureAttributeReader(records), getFeatureType(typeName));
 		} catch (SchemaException e1) {
 			// Should not happen
 			throw new IOException("Unable to get data - schema is corrupt: " + e1.getMessage());
@@ -161,7 +179,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	 */
 	@Override
 	public SimpleFeatureType getSchema(String typeName) throws IOException {
-		return type;
+		return getFeatureType(typeName);
 	}
 
 	/**
