@@ -19,9 +19,8 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 */
 	public boolean canProcess(Map params) {
 		if (params != null 
-				&& params.containsKey("url")
-				&& params.containsKey("user")
-				&& params.containsKey("password"))
+				&& params.containsKey("datadir")
+				&& params.containsKey("resource"))
 			return true;
 		else
 			return false;
@@ -47,14 +46,14 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 * @see org.geotools.data.DataStoreFactorySpi#getDescription()
 	 */
 	public String getDescription() {
-		return "GBIF Integrated Provider Toolkit Database.  Please ensure that the appropriate JDBC driver (only mysql is supported currently) is on the classpath";
+		return "GBIF Integrated Publishing Toolkit H2 Datastore.";
 	}
 
 	/**
 	 * @see org.geotools.data.DataStoreFactorySpi#getDisplayName()
 	 */
 	public String getDisplayName() {
-		return "GBIF Integrated Provider Toolkit Database";
+		return "GBIF Integrated Publishing Toolkit H2 Datastore";
 	}
 
 	/**
@@ -62,10 +61,11 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 */
 	public Param[] getParametersInfo() {
 		Param[] p = {
-				new Param("url", String.class, "Database URL", true, "jdbc:mysql://localhost:3306/ipt"),
-				new Param("user", String.class, "Database user", true, "root"),
-				new Param("password", String.class, "Database password", true, "password")
-				
+//				new Param("url", String.class, "Database URL (datadir)", true, "/Users/xxx/ipt/data"),
+//				new Param("user", String.class, "Database user (resourceID)", true, "1"),
+//				new Param("password", String.class, "Database password", true, "password")
+				new Param("datadir", String.class, "IPT Data Directory", true, "/Users/xxx/ipt/data"),
+				new Param("resource", Long.class, "Resource ID", true, 1)
 		};
 		return p;
 	}

@@ -7,10 +7,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.data.AttributeReader;
-import org.geotools.feature.AttributeType;
-import org.geotools.feature.type.GeometricAttributeType;
-import org.geotools.feature.type.TextualAttributeType;
-import org.geotools.filter.Filter;
+import org.opengis.feature.type.AttributeDescriptor;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
@@ -41,35 +38,32 @@ public class DwcRecordFeatureAttributeReader implements AttributeReader {
 	/**
 	 * Reads the data
 	 * @see org.geotools.data.AttributeReader#read(int)
-	 */
-	
+	 */	
 	public Object read(int index) throws ArrayIndexOutOfBoundsException {
 		DwcRecord row = data.get(cursor);		
 		if (index==0) 
-			return row.getResourceId();
-		else if (index==1) 
 			return row.getGuid();
-		else if (index==2) 
+		else if (index==1) 
 			return row.getTaxonId();
-		else if (index==3) 
+		else if (index==2) 
 			return row.getRegionId();
-		else if (index==4) 
+		else if (index==3) 
 			return row.getScientificName();
-		else if (index==5) 
+		else if (index==4) 
 			return row.getLocality();
-		else if (index==6) 
+		else if (index==5) 
 			return row.getInstitutionCode();
-		else if (index==7) 
+		else if (index==6) 
 			return row.getCollectionCode();
-		else if (index==8) 
+		else if (index==7) 
 			return row.getCatalogNumber();
-		else if (index==9) 
+		else if (index==8) 
 			return row.getCollector();
-		else if (index==10) 
+		else if (index==9) 
 			return row.getDateCollected();
-		else if (index==11) 
+		else if (index==10) 
 			return row.getBasisOfRecord();
-		else if (index==12) {
+		else if (index==11) {
 			Coordinate c= new Coordinate(row.getLongitude(), row.getLatitude());
 			// TODO - 4326 ???
 			return new Point(c, new PrecisionModel(), 4326);
@@ -90,15 +84,14 @@ public class DwcRecordFeatureAttributeReader implements AttributeReader {
 	 * @see org.geotools.data.AttributeReader#getAttributeCount()
 	 */
 	public int getAttributeCount() {
-		return JDBCDwCDatastore.types.length;
+		return JDBCDwCDatastore.type.getAttributeCount();
 	}
 
 	/**
 	 * @see org.geotools.data.AttributeReader#getAttributeType(int)
 	 */
-	public AttributeType getAttributeType(int index)
-			throws ArrayIndexOutOfBoundsException {
-		return JDBCDwCDatastore.types[index];
+	public AttributeDescriptor getAttributeType(int index) throws ArrayIndexOutOfBoundsException {
+		return JDBCDwCDatastore.type.getDescriptor(index);
 	}
 
 	/**

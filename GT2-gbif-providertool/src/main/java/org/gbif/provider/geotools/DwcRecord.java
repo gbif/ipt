@@ -18,7 +18,6 @@ package org.gbif.provider.geotools;
  * @author trobertson
  */
 public class DwcRecord {
-	protected Integer resourceId;
 	protected String guid;
 	protected Long taxonId;
 	protected Long regionId;
@@ -33,12 +32,11 @@ public class DwcRecord {
 	protected Double latitude;
 	protected Double longitude;
 	
-	public DwcRecord(Integer resourceId, String guid, Long taxonId, Long regionId, 
+	public DwcRecord(String guid, Long taxonId, Long regionId, 
 			String scientificName, String locality,
 			String institutionCode,	String collectionCode, String catalogNumber, String collector,
 			String dateCollected, String basisOfRecord, Double latitude, Double longitude) {
 		super();
-		this.resourceId = resourceId;
 		this.guid = guid;
 		this.taxonId = taxonId;
 		this.regionId = regionId;
@@ -55,12 +53,6 @@ public class DwcRecord {
 	}
 
 
-	public Integer getResourceId() {
-		return resourceId;
-	}
-	public void setResourceId(Integer resourceId) {
-		this.resourceId = resourceId;
-	}
 	public String getScientificName() {
 		return scientificName;
 	}

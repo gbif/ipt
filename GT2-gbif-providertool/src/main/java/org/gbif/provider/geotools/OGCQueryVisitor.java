@@ -3,16 +3,12 @@ package org.gbif.provider.geotools;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.geotools.feature.type.GeometricAttributeType;
-import org.geotools.feature.type.TextualAttributeType;
 import org.geotools.filter.AttributeExpression;
-import org.geotools.filter.Filter;
 import org.geotools.filter.LiteralExpression;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
@@ -30,7 +26,6 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 	protected Log logger = LogFactory.getLog(OGCQueryVisitor.class);
 	
 	// the features of interest
-	protected Integer resourceId;
 	protected String guid;
 	protected Long taxonId;
 	protected Long regionId;
@@ -46,19 +41,18 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 	
 	// sax style capturing toggle
 	// 0 = no capture
-	// 1 = capture resourceId;
-	// 2 = capture guid;
-	// 3 = capture taxonId;
-	// 4 = capture regionId;
-	// 5 = capture scientificName;
-	// 6 = capture locality;
-	// 7 = capture institutionCode;
-	// 8 = capture collectionCode;
-	// 9 = capture catalogNumber;
-	// 10 = capture collector;
-	// 11 = capture dateCollected;
-	// 12 = capture basisOfRecord;
-	// 13 = capture coords
+	// 1 = capture guid;
+	// 2 = capture taxonId;
+	// 3 = capture regionId;
+	// 4 = capture scientificName;
+	// 5 = capture locality;
+	// 6 = capture institutionCode;
+	// 7 = capture collectionCode;
+	// 8 = capture catalogNumber;
+	// 9 = capture collector;
+	// 10 = capture dateCollected;
+	// 11 = capture basisOfRecord;
+	// 12 = capture coords
 
 	protected int capture = 0;
 
@@ -67,20 +61,10 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 	 * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.LiteralExpression)
 	 */
 	public void visit(LiteralExpression lit) {
-		if (capture==1) {
-			String resourceIdAsString = lit.getValue().toString();
-			if (resourceIdAsString!=null && resourceIdAsString.length()>0) {
-				try {
-					resourceId = Integer.parseInt(lit.getValue().toString());
-					logger.debug("Resource id from request: " + resourceId);
-				} catch (NumberFormatException e) {
-					logger.warn("Ignoring invalid resource id from request: " + resourceIdAsString);
-				}
-			}
-		} else if (capture==2){ 
+		if (capture==1){ 
 			guid = lit.getValue().toString();
 			logger.debug("GUID from request: " + guid);
-		}else if (capture==3){
+		}else if (capture==2){
 			String taxonIdAsString = lit.getValue().toString();
 			if (taxonIdAsString!=null && taxonIdAsString.length()>0) {
 				try {
@@ -90,7 +74,7 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 				}
 			}
 		}
-		else if (capture==4){
+		else if (capture==3){
 			String regionIdAsString = lit.getValue().toString();
 			if (regionIdAsString!=null && regionIdAsString.length()>0) {
 				try {
@@ -101,23 +85,23 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 				}
 			}
 		}
-		else if (capture==5)  
+		else if (capture==4)  
 			scientificName = lit.getValue().toString();
-		else if (capture==6)  
+		else if (capture==5)  
 			locality = lit.getValue().toString();
-		else if (capture==7)  
+		else if (capture==6)  
 			institutionCode = lit.getValue().toString();
-		else if (capture==8)  
+		else if (capture==7)  
 			collectionCode = lit.getValue().toString();
-		else if (capture==9)  
+		else if (capture==8)  
 			catalogNumber = lit.getValue().toString();
-		else if (capture==10)  
+		else if (capture==9)  
 			collector = lit.getValue().toString();
-		else if (capture==11)  
+		else if (capture==10)  
 			dateCollected = lit.getValue().toString();
-		else if (capture==12)  
+		else if (capture==11)  
 			basisOfRecord = lit.getValue().toString();
-		else if (capture==13) {
+		else if (capture==12) {
 			String geomString = lit.getValue().toString();
 			try {
 				Geometry geom =  new WKTReader().read(geomString);
@@ -135,51 +119,32 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 		super.visit(lit);
 	}
 	
-	/**
-	 * Sets the capturing toggle
-	// 0 = no capture
-	// 1 = capture resourceId;
-	// 2 = capture guid;
-	// 3 = capture taxonId;
-	// 4 = capture regionId;
-	// 5 = capture scientificName;
-	// 6 = capture locality;
-	// 7 = capture institutionCode;
-	// 8 = capture collectionCode;
-	// 9 = capture catalogNumber;
-	// 10 = capture collector;
-	// 11 = capture dateCollected;
-	// 12 = capture basisOfRecord;
-	// 13 = capture coords
-	 * 
-	 */
+
 	public void visit(AttributeExpression exp) {
-		if (exp.getAttributePath().equals("ResourceId")) {
+		if (exp.getAttributePath().equals("GUID")) {
 			capture=1;
-		} else if (exp.getAttributePath().equals("GUID")) {
-			capture=2;
 		} else if (exp.getAttributePath().equals("TaxonId")) {
-			capture=3;
+			capture=2;
 		} else if (exp.getAttributePath().equals("RegionId")) {
-			capture=4;
+			capture=3;
 		} else if (exp.getAttributePath().equals("ScientificName")) {
-			capture=5;
+			capture=4;
 		} else if (exp.getAttributePath().equals("Locality")) {
-			capture=6;
+			capture=5;
 		} else if (exp.getAttributePath().equals("InstitutionCode")) {
-			capture=7;
+			capture=6;
 		} else if (exp.getAttributePath().equals("CollectionCode")) {
-			capture=8;
+			capture=7;
 		} else if (exp.getAttributePath().equals("CatalogNumber")) {
-			capture=9;
+			capture=8;
 		} else if (exp.getAttributePath().equals("Collector")) {
-			capture=10;
+			capture=9;
 		} else if (exp.getAttributePath().equals("DateCollected")) {
-			capture=11;
+			capture=10;
 		} else if (exp.getAttributePath().equals("BasisOfRecord")) {
-			capture=12;
+			capture=11;
 		} else if (exp.getAttributePath().equals("Geom")) {
-			capture=13;
+			capture=12;
 		} else {
 			capture=0;
 		}
@@ -212,10 +177,6 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 		return logger;
 	}
 
-	public Integer getResourceId() {
-		return resourceId;
-	}
-	
 	public String getGuid() {
 		return guid;
 	}
