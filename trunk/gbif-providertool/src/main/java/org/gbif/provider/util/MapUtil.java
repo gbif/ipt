@@ -35,7 +35,6 @@ public class MapUtil {
 		}
 		LinkedList<String> filters = new LinkedList<String>();
 		
-		filters.add(String.format("<PropertyIsEqualTo><PropertyName>ResourceId</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", resourceId));
 		if (taxon != null){
 			filters.add(String.format("<PropertyIsEqualTo><PropertyName>TaxonId</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", taxon.getId()));
 		}
@@ -44,14 +43,17 @@ public class MapUtil {
 		}
 		
 		// produce final filter string
-		String filter = filters.poll();
-		while (!filters.isEmpty()){
-			filter = String.format("<And>%s%s</And>", filters.poll(), filter);
+		String filter="";
+		if (!filters.isEmpty()){
+			filter = filters.poll();
+			while (!filters.isEmpty()){
+				filter = String.format("<And>%s%s</And>", filters.poll(), filter);
+			}
+			filter = String.format("<Filter>%s</Filter>", filter);
 		}
-		filter = String.format("<Filter>%s</Filter>", filter);
 		// produce entire WMS URL
 		try {
-			return String.format("%s/wms?bbox=%s&styles=&request=GetMap&layers=gbif:countries,gbif:occurrence&width=%s&height=%s&srs=EPSG:4326&bgcolor=0x7391AD&Format=image/jpeg&filter=()(%s)", cfg.getGeoserverUrl(), bbox.toWMSString(), width, height, URLEncoder.encode(filter, Constants.ENCODING));
+			return String.format("%s/wms?bbox=%s&styles=&request=GetMap&layers=gbif:countries,gbif:resource%s&width=%s&height=%s&srs=EPSG:4326&bgcolor=0x7391AD&Format=image/jpeg&filter=()(%s)", cfg.getGeoserverUrl(), bbox.toWMSString(), resourceId, width, height, URLEncoder.encode(filter, Constants.ENCODING));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
