@@ -99,8 +99,8 @@ public class JDBCDwCDatastore extends AbstractDataStore {
         String url = String.format("jdbc:h2:%s/db/ipt", params.get("datadir")); 
         log.debug("Using JDBC URL: " + url);
         ds.setURL(url); 
-        ds.setUser(params.get("user")); 
-        ds.setPassword(params.get("password")); 
+        ds.setUser("sa"); // params.get("user") 
+        ds.setPassword(""); // params.get("password") 
         log.debug(ds);
         dao = new Dao();
         dao.setDataSource(ds);
@@ -148,7 +148,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		
 		try {
 			log.debug("Found "+records.size() + " DwcRecords");
-			return new DefaultFeatureReader(new DwcRecordFeatureAttributeReader(records));
+			return new DefaultFeatureReader(new DwcRecordFeatureAttributeReader(records), type);
 		} catch (SchemaException e1) {
 			// Should not happen
 			throw new IOException("Unable to get data - schema is corrupt: " + e1.getMessage());
