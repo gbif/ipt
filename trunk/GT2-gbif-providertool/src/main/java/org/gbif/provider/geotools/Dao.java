@@ -71,7 +71,7 @@ public class Dao extends JdbcDaoSupport {
 			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, 
 			List<Object> params) {
-		StringBuffer where = new StringBuffer(" where dwc.resource_fk = ?");
+		StringBuffer where = new StringBuffer(" where dwc.resource_fk = ? ");
 		params.add(resourceId);
 		// dynamic filter
 		if (guid != null) {
@@ -134,8 +134,7 @@ public class Dao extends JdbcDaoSupport {
 			where.append(" and lon <= ?");
 			params.add(maxLongitude);
 		}
-		String whereAsString = where.toString();
-		return (whereAsString.replaceFirst(" and ", ""));
+		return where.toString();
 	}
 
 	/**
