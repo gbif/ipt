@@ -40,8 +40,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author mdoering
  */
 public class JDBCDwCDatastore extends AbstractDataStore {
-	protected Log log = LogFactory.getLog(this.getClass());
-	private Long resourceId;
+	protected static Log log = LogFactory.getLog(JDBCDwCDatastore.class);
 	
 	/**
 	 * The feature type
@@ -55,8 +54,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	protected static Dao dao;
 		
 	public JDBCDwCDatastore(Map<String, String> params) {
-		log.info("Creating database pool [" + params.get("datadir") +"] [" + params.get("resource") + "]");
-		resourceId = Long.valueOf(params.get("resource"));
+		log.info("Creating datasource [" + params.get("datadir") +"] [" + params.get("user") +"] [" + params.get("password") + "]");
 		setupPool(params);
 		setupFeatureType();
 	}
@@ -70,6 +68,8 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 
 		//add some properties
 		b.add( "GlobalUniqueIdentifier", String.class );
+		b.add( "TaxonId", Integer.class ); // non dwc attribute
+		b.add( "RegionId", Integer.class ); // non dwc attribute
 		b.add( "ScientificName", String.class );
 		b.add( "Locality", String.class );
 		b.add( "InstitutionCode", String.class );
@@ -78,12 +78,9 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		b.add( "Collector", String.class );
 		b.add( "DateCollected", String.class );
 		b.add( "BasisOfRecord", String.class );
-		// non dwc attributes
-		b.add( "taxonId", Integer.class );
-		b.add( "regionId", Integer.class );
 		//add a geometry property
 		b.setCRS( DefaultGeographicCRS.WGS84 );
-		b.add( "location", Point.class );
+		b.add( "Geom", Point.class );
 
 		//build the type
 		type = b.buildFeatureType();		
@@ -97,11 +94,14 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
 		}
-		// embedded H2 is faster without any connection pool. See H2 documentation 
-        JdbcDataSource ds = new JdbcDataSource(); 
-        ds.setURL(String.format("jdbc:h2:%s", params.get("datadir"))); 
-        ds.setUser("sa"); 
-        ds.setPassword(""); 
+		// embedded H2 is apparently faster without connection pools. See H2 documentation 
+        JdbcDataSource ds = new JdbcDataSource();
+        String url = String.format("jdbc:h2:%s/db/ipt", params.get("datadir")); 
+        log.debug("Using JDBC URL: " + url);
+        ds.setURL(url); 
+        ds.setUser(params.get("user")); 
+        ds.setPassword(params.get("password")); 
+        log.debug(ds);
         dao = new Dao();
         dao.setDataSource(ds);
     }
@@ -119,7 +119,9 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	 */
 	@Override
 	protected FeatureReader getFeatureReader(String typeName, Query query) throws IOException {
+		log.info("Layer requested: " + typeName);
 		log.info("Filter supplied: " + query.getFilter());
+		Long resourceId = 1l;
 		
 		// parse out the values from the query
 		OGCQueryVisitor parsedQuery = new OGCQueryVisitor();
@@ -142,7 +144,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 				parsedQuery.getMaxY(), 
 				parsedQuery.getMinX(), 
 				parsedQuery.getMaxX(), 
-				1000); // TODO - pass in in the factory...
+				5000); // TODO - pass in in the factory...
 		
 		try {
 			log.debug("Found "+records.size() + " DwcRecords");

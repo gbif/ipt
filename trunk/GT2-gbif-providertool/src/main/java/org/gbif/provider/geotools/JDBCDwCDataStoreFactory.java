@@ -20,7 +20,8 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	public boolean canProcess(Map params) {
 		if (params != null 
 				&& params.containsKey("datadir")
-				&& params.containsKey("resource"))
+				&& params.containsKey("user")
+				&& params.containsKey("password"))
 			return true;
 		else
 			return false;
@@ -61,11 +62,9 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 */
 	public Param[] getParametersInfo() {
 		Param[] p = {
-//				new Param("url", String.class, "Database URL (datadir)", true, "/Users/xxx/ipt/data"),
-//				new Param("user", String.class, "Database user (resourceID)", true, "1"),
-//				new Param("password", String.class, "Database password", true, "password")
-				new Param("datadir", String.class, "IPT Data Directory", true, "/Users/xxx/ipt/data"),
-				new Param("resource", Long.class, "Resource ID", true, 1)
+				new Param("datadir", String.class, "IPT Data Directory", true, "/usr/local/tomcat/webapps/ipt/data"),
+				new Param("user", String.class, "Database user", false, "sa"),
+				new Param("password", String.class, "Database password", false, "")
 		};
 		return p;
 	}
