@@ -17,8 +17,11 @@ public class ProviderCfg {
 	private ResourceMetadata meta = new ResourceMetadata();
 	private String descriptionImage;
 	private String baseUrl;
-	private String geoserverUrl;
 	private String googleMapsApiKey;
+	private String geoserverUrl;
+	private String geoserverDataDir;
+	private String geoserverUser;
+	private String geoserverPass;
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -57,6 +60,30 @@ public class ProviderCfg {
 	}
 	public void setGeoserverUrl(String geoserverUrl) {
 		this.geoserverUrl = geoserverUrl;
+	}
+	
+	@Column(length=128)
+	public String getGeoserverDataDir() {
+		return geoserverDataDir;
+	}
+	public void setGeoserverDataDir(String geoserverDataDir) {
+		this.geoserverDataDir = geoserverDataDir;
+	}
+
+	@Column(length=64)
+	public String getGeoserverUser() {
+		return geoserverUser;
+	}
+	public void setGeoserverUser(String geoserverUser) {
+		this.geoserverUser = geoserverUser;
+	}
+
+	@Column(length=64)
+	public String getGeoserverPass() {
+		return geoserverPass;
+	}
+	public void setGeoserverPass(String geoserverPass) {
+		this.geoserverPass = geoserverPass;
 	}
 	
 	@Column(length=128)

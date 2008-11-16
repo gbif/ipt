@@ -19,6 +19,42 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
     
+    <!-- APPLICATION CONFIGURATION -->
+    <bean id="providerCfgManager" class="org.gbif.provider.service.impl.ProviderCfgManagerHibernate" parent="abstractManager"/>
+    <bean id="cfg" class="org.gbif.provider.util.AppConfig">        
+        <constructor-arg ref="providerCfgManager"/>
+        <constructor-arg value="${webappDir}"/>
+        <constructor-arg value="${dataDir}"/>
+    </bean>
+    
+    
+    <!-- Utility singletons -->
+    <bean id="mapUtil" class="org.gbif.provider.util.MapUtil"/>
+    <bean id="geoserverUtils" class="org.gbif.provider.geoserver.GeoserverUtils" />
+    
+    
+    <!-- Parsing freemarker templates other than struts2 -->
+    <!-- 
+    <bean id="freemarkerConfig"   class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="templateLoaderPath" value="file:${webappDir}/WEB-INF/pages"></property>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="datetime_format">yyyy-MM-dd</prop>
+                <prop key="number_format">0.#####</prop>
+                <prop key="url_escaping_charset">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+    -->
+    <bean id="freemarkerCfg" class="freemarker.template.Configuration">
+        <property name="defaultEncoding" value="utf8"/>
+        <property name="directoryForTemplateLoading" value="${webappDir}/WEB-INF/pages"></property>
+    </bean>
+    
+    
+    
+    <!-- H2 DATABASE SERVER (currently needed for geoserver) -->
     <bean id="org.h2.tools.Server" 
         class="org.h2.tools.Server" 
         factory-method="createTcpServer" 
@@ -100,16 +136,6 @@
     </bean>
     
 
-    <!-- PROVIDER/APPLICATION CONFIGURATION & Utilities-->
-    <bean id="providerCfgManager" class="org.gbif.provider.service.impl.ProviderCfgManagerHibernate" parent="abstractManager"/>
-    <bean id="cfg" class="org.gbif.provider.util.AppConfig">        
-        <constructor-arg ref="providerCfgManager"/>
-        <property name="dataDir" value="${dataDir}"/>
-    </bean>
-    <bean id="mapUtil" class="org.gbif.provider.util.MapUtil"/>
-    
-
-
     <!-- LOGGING -->
     <bean id="logEventDao" class="org.gbif.logging.dao.hibernate.LogEventDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -148,5 +174,5 @@
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
         <lookup-method name="newOccProcessingTask" bean="processingTask"/>
     </bean>
-        
+    
 </beans>

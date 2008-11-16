@@ -29,8 +29,7 @@
         <div>
 			<@s.textfield key="config.location.longitude" required="false" cssClass="text small"/>
         </div>
-
-	    
+    </div>	    
 	<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
 	<@s.textarea key="config.description" cssClass="text xlarge"/>
   </fieldset>
@@ -42,10 +41,27 @@
     <legend><@s.text name="config.settings"/></legend>
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
-	<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>
+
+<br/>
+<br/>
+
+  <fieldset>
+    <legend><@s.text name="config.geoserver"/></legend>
+	<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
+	<@s.textfield key="config.geoserverDataDir" required="true" cssClass="text xlarge"/>
+    <div>
+        <div class="left">
+			<@s.textfield key="config.geoserverUser" required="true" cssClass="text xlarge"/>
+        </div>
+        <div>
+			<@s.textfield key="config.geoserverPass" required="true" cssClass="text xlarge"/>
+        </div>
+    </div>
+  </fieldset>
+
 
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>

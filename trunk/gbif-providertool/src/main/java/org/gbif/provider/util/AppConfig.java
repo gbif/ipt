@@ -23,30 +23,32 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.context.support.ServletContextResourceLoader;
 
-public class AppConfig implements ServletContextAware, org.springframework.web.context.ServletContextAware{
+public class AppConfig{
 	protected final Log log = LogFactory.getLog(AppConfig.class);
 	@Autowired
 	private IptNamingStrategy namingStrategy;
 	private ProviderCfgManager providerCfgManager;
 	private ProviderCfg cfg;
-	private String datadir;
 	// need some static fields to create static methods that can be used outside of spring managed contexts, e.g. for hibernate objects
 	// fields are managed by regular instance setters thanks to singleton
 	private static String baseURL;	
 	private static String dataDIR;	
-	private static ServletContext context;	
+	private static File webappDIR;	
 
-	@Autowired
-	public void setServletContext(ServletContext ctx) {
-		context=ctx;
-		log.debug("Set new servlet context: "+context.toString());
-	}
-
-	private AppConfig(ProviderCfgManager providerCfgManager) {
+	private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir) {
 		super();
+		AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
+		log.info("IPT_DATA_DIR: "+dataDIR);
+		
+		AppConfig.webappDIR = new File(webappDir);
+		log.info("IPT_WEBAPP_DIR: "+webappDIR.getAbsolutePath());
+
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
 		setBaseUrl(cfg.getBaseUrl());
+		log.info("IPT_BASE_URL: "+baseURL);
+		log.info("GEOSERVER_URL: "+cfg.getGeoserverUrl());
+		log.info("GEOSERVER_DATA_DIR: "+cfg.getGeoserverDataDir());
 	}
 
 	
@@ -55,22 +57,15 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	
 	// ALL ESSENTIAL DATA DIR
 	public String getDataDir() {
-		return this.datadir;
+		return dataDIR;
 	}
-	public void setDataDir(String dataDir) {
-		this.datadir = dataDir;
-		dataDIR = new File(dataDir).getAbsolutePath();
-		log.info("IPT_DATA_DIR: "+dataDIR);
-	}
-	
+
 	// WEBAPP BASICS
 	public static File getWebappDir() {
-		File dir = new File(context.getRealPath("/"));
-		return dir;
+		return webappDIR;
 	}
 	public static File getWebappFile(String relPath){
-		File f = new File(context.getRealPath(relPath));
-		return f;
+		return new File(webappDIR,relPath);
 	}
 	public static URL getWebappURL(String relPath) {
 		if (relPath.startsWith("/")) {
@@ -282,12 +277,35 @@ public class AppConfig implements ServletContextAware, org.springframework.web.c
 	public String getGoogleMapsApiKey() {
 		return cfg.getGoogleMapsApiKey();
 	}
-
-
 	public void setGoogleMapsApiKey(String googleMapsApiKey) {
 		cfg.setGoogleMapsApiKey(googleMapsApiKey);
 	}
 
+
+	
+	public String getGeoserverDataDir() {
+		return cfg.getGeoserverDataDir();
+	}
+
+	public String getGeoserverPass() {
+		return cfg.getGeoserverPass();
+	}
+
+	public String getGeoserverUser() {
+		return cfg.getGeoserverUser();
+	}
+	
+	public void setGeoserverDataDir(String geoserverDataDir) {
+		cfg.setGeoserverDataDir(geoserverDataDir);
+	}
+
+	public void setGeoserverPass(String geoserverPass) {
+		cfg.setGeoserverPass(geoserverPass);
+	}
+
+	public void setGeoserverUser(String geoserverUser) {
+		cfg.setGeoserverUser(geoserverUser);
+	}
 
 	// MANAGER "DELEGATE" METHODS
 	public void load() {

@@ -291,10 +291,14 @@
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
-            <!-- Allow tests to read/write to fake webapps directory and use the default IPT data -->            
             <testResource>
-                <directory>src/main/webapp</directory>
-                <targetPath>webapp</targetPath>
+                <directory>src/main/webapp/data</directory>
+                <targetPath>test-webapp/data</targetPath>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/main/webapp/WEB-INF/pages</directory>
+                <targetPath>test-webapp/WEB-INF/pages</targetPath>
                 <filtering>false</filtering>
             </testResource>
         </testResources>
@@ -579,7 +583,8 @@
         <jdbc.password></jdbc.password>
         
         <!-- IPT test context only. Production uses spring & IPT_DATA_DIR setting via datadirlocator -->
-        <datadir>${project.build.testOutputDirectory}/webapp/data</datadir>
+        <webappdir>${project.build.testOutputDirectory}/test-webapp</webappdir>
+        <datadir>${webappdir}/data</datadir>
         <jdbc.url><![CDATA[jdbc:h2:${datadir}/db/ipt]]></jdbc.url>
 
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
