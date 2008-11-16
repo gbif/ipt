@@ -1,6 +1,7 @@
 package org.gbif.provider.geoserver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,7 +9,36 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.util.AppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
+import freemarker.cache.TemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.TemplateException;
+
 public class GeoserverUtils {
+	@Autowired
+	private AppConfig cfg;
+	@Autowired
+	private Configuration freemarker;
+	
+	public String buildFeatureTypeDescriptor(OccurrenceResource resource){
+		try {
+			System.out.println(freemarker.getSettings());
+			return FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate("featureTypeInfo.ftl"), resource);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public void reloadCatalog(String geoserverBaseUrl, String username, String password) throws IOException{
 		// do login
 			if (geoserverBaseUrl==null){

@@ -31,17 +31,5 @@ public class AppConfigTest extends ContextAwareTestBase{
 		assertEquals("http://localhost:8080", cfg.getBaseUrl());
 	}
 	
-	@Test
-	public void testWebappResources() throws MalformedURLException {
-		File newFile = cfg.getWebappFile("/KlausMariaBrandauerNackt.jpg");
-		assertTrue(newFile!=null);
-		assertFalse(newFile.exists());
-
-		String img = "/images/favicon.ico";
-		File oldFile = cfg.getWebappFile(img);
-		assertTrue(oldFile.exists());
-		URL oldURL = cfg.getWebappURL(img);
-}
-
 
 }

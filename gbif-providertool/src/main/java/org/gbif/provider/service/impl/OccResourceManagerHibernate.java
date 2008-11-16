@@ -44,6 +44,33 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 		super(OccurrenceResource.class);
 	}
 	
+	
+	
+	
+	/* Co-manage geoserver FeatureType for this resource, removing existing featuretype in geoservers datadir
+	 * (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate#remove(java.lang.Long)
+	 */
+	@Override
+	public void remove(Long id) {
+		// TODO Auto-generated method stub
+		super.remove(id);
+	}
+
+	/* Co-manage geoserver FeatureType for this resource, potentially adding new featuretype in geoservers datadir
+	 *  (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate#save(org.gbif.provider.model.DatasourceBasedResource)
+	 */
+	@Override
+	public OccurrenceResource save(OccurrenceResource resource) {
+		// create new featuretype description file
+		
+		return super.save(resource);
+	}
+
+
+
+
 	private List<StatsCount> getDataMap(List<Object[]> occBySth){
 		List<StatsCount> data = new ArrayList<StatsCount>();
         for (Object[] row : occBySth){
