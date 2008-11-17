@@ -60,7 +60,7 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 */
 	public Param[] getParametersInfo() {
 		Param[] p = {
-				new Param("datadir", String.class, "IPT Data Directory", true, "/usr/local/tomcat/webapps/ipt/data")
+				new Param("datadir", String.class, "IPT Data Directory", true, "tcp:localhost")
 //				new Param("user", String.class, "Database user", false, "sa"),
 //				new Param("password", String.class, "Database password", false, "")
 		};

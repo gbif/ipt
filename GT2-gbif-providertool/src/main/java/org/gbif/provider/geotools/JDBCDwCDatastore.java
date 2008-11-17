@@ -26,14 +26,10 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.PropertyTypeImpl;
 import org.geotools.filter.Filters;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.h2.jdbcx.JdbcDataSource;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.PropertyType;
-import org.springframework.util.StringUtils;
 
 import com.vividsolutions.jts.geom.Point;
 
