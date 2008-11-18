@@ -9,7 +9,7 @@
   <abstract>${description}</abstract>
   <wmspath>/</wmspath>
   <numDecimals value = "0" />
-  <keywords>${keywords}</keywords>
+  <keywords>biodiversity species occurrence ipt gbif <#list keywords as k> ${k}</#list></keywords>
   <latLonBoundingBox dynamic = "false" miny = "${bbox.min.y!-90}" maxy = "${bbox.max.y!90}" maxx = "${bbox.max.x!180}" minx = "${bbox.min.x!-180}" />
   <nativeBBox dynamic = "false" miny = "-90.0" maxy = "90.0" maxx = "180.0" minx = "-180.0" />
   <!--

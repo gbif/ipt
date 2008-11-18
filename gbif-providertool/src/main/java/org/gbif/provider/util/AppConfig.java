@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.persistence.Transient;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.util.ServletContextAware;
@@ -283,8 +284,11 @@ public class AppConfig{
 
 
 	
-	public String getGeoserverDataDir() {
-		return cfg.getGeoserverDataDir();
+	public File getGeoserverDataDir() {
+		if (StringUtils.trimToNull(cfg.getGeoserverDataDir())!=null){
+			return new File(cfg.getGeoserverDataDir());
+		}
+		return null;
 	}
 
 	public String getGeoserverPass() {
@@ -297,6 +301,9 @@ public class AppConfig{
 	
 	public void setGeoserverDataDir(String geoserverDataDir) {
 		cfg.setGeoserverDataDir(geoserverDataDir);
+	}
+	public void setGeoserverDataDir(File geoserverDataDir) {
+		cfg.setGeoserverDataDir(geoserverDataDir.getAbsolutePath());
 	}
 
 	public void setGeoserverPass(String geoserverPass) {

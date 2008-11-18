@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.gbif.provider.geoserver.GeoserverUtils;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
@@ -30,6 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.googlecode.gchartjava.GeographicalArea;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -38,6 +44,8 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 
 	@Autowired
 	protected AppConfig cfg;
+	@Autowired
+	protected GeoserverUtils geoTools;
 	
 	protected static GChartBuilder gpb = new GChartBuilder();
 	public OccResourceManagerHibernate() {
@@ -63,13 +71,18 @@ public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerH
 	 */
 	@Override
 	public OccurrenceResource save(OccurrenceResource resource) {
-		// create new featuretype description file
-		
-		return super.save(resource);
+		if (resource.getId()==null){
+			// ID needed to build featuretypeinfo. So save first if resource is not persistent yet
+			resource = super.save(resource);			
+		}
+		try {
+			geoTools.updateFeatureType(resource);
+		} catch (IOException e) {
+			log.error("Cant write new Geoserver FeatureTypeInfo for resource "+resource.getId(), e);
+		}
+		return super.save(resource);		
 	}
-
-
-
+	
 
 	private List<StatsCount> getDataMap(List<Object[]> occBySth){
 		List<StatsCount> data = new ArrayList<StatsCount>();
