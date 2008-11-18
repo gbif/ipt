@@ -1,25 +1,29 @@
 package org.gbif.provider.geoserver;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.TemplateException;
 
 public class GeoserverUtils {
+	protected final Log log = LogFactory.getLog(GeoserverUtils.class);
 	@Autowired
 	private AppConfig cfg;
 	@Autowired
@@ -39,7 +43,37 @@ public class GeoserverUtils {
 		return null;
 	}
 	
-	public void reloadCatalog(String geoserverBaseUrl, String username, String password) throws IOException{
+	public void updateFeatureType(OccurrenceResource resource) throws IOException{
+		// create new featuretype description
+		String featureTypeInfo = this.buildFeatureTypeDescriptor(resource);
+		// commpare hashcode with previous one
+		if (resource.getFeatureHash() == null || !resource.getFeatureHash().equals(featureTypeInfo.hashCode())){
+			if (cfg.getGeoserverDataDir() == null || !cfg.getGeoserverDataDir().exists()){
+				log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
+				throw new IOException("Geoserver datadir configured wrongly");
+			}
+			File fti = new File(cfg.getGeoserverDataDir(), String.format("featureTypes/ipt_resource%s/info.xml", resource.getId()));
+			if (fti.exists()){
+				fti.delete();				
+			}else{
+				FileUtils.forceMkdir(fti.getParentFile());
+			}
+			fti.createNewFile();
+			FileWriter fstream = new FileWriter(fti);
+	        BufferedWriter out = new BufferedWriter(fstream);
+	        out.write(featureTypeInfo);
+	        out.close();
+	        fstream.close();
+			this.reloadCatalog();
+			// remember new feature hashcode
+			resource.setFeatureHash(featureTypeInfo.hashCode());				
+		}
+	}
+	
+	public void reloadCatalog() throws IOException{
+		String geoserverBaseUrl = cfg.getGeoserverUrl();
+		String username = cfg.getGeoserverUser();
+		String password = cfg.getGeoserverPass();
 		// do login
 			if (geoserverBaseUrl==null){
 				geoserverBaseUrl="http://localhost:8080/geoserver";
@@ -57,8 +91,9 @@ public class GeoserverUtils {
 	       BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
 	       while(in.ready())
 	       {   responseString+= in.readLine();  }
-	       System.out.println("------------------------------------------------------\nresponseString:"+responseString);
-
+	       //System.out.println("------------------------------------------------------\nresponseString:"+responseString);
+	       log.debug("Logged into Geoserver as admin");
+	       
 	        // reload
 	       String cookie=conn.getHeaderField("Set-Cookie");
 	       System.out.println("cookie-text:"+cookie);
@@ -75,18 +110,20 @@ public class GeoserverUtils {
 	       responseString=new String();
 	       while(in.ready())
 	       {   responseString+= in.readLine();  }
-	       System.out.println("------------------------------------------------------\nresponseString:"+responseString);
+	       //System.out.println("------------------------------------------------------\nresponseString:"+responseString);
+	       log.info("Reloaded Geoserver config");
 
 	        //logout
-	       URL url3=new URL(String.format("%s/geoserver/admin/logout.do", geoserverBaseUrl));
+	       URL url3=new URL(String.format("%s/admin/logout.do", geoserverBaseUrl));
 	       URLConnection conn3 = url3.openConnection();
 	       conn3.setRequestProperty("Cookie",cookieString);
 	       conn3.connect();
-	        inStream = conn3.getInputStream();
+	       inStream = conn3.getInputStream();
 	       in = new BufferedReader(new InputStreamReader(inStream));
 	       responseString=new String();
 	       while(in.ready())
 	       {   responseString+= in.readLine();  }
-	      System.out.println("------------------------------------------------------\nresponseString:"+responseString);		
+	       //System.out.println("------------------------------------------------------\nresponseString:"+responseString);		
+	       log.debug("Logged out of Geoserver");
 	}
 }

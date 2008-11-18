@@ -39,6 +39,7 @@ import org.hibernate.annotations.MapKey;
 public class OccurrenceResource extends DatasourceBasedResource {
 	public static final Long CORE_EXTENSION_ID = 1l;
 	private BBox bbox = new BBox();
+	private Integer featureHash;
 	// cached statistics
 	private int recWithCoordinates;
 	private int recWithCountry;
@@ -199,8 +200,14 @@ public class OccurrenceResource extends DatasourceBasedResource {
 		this.numTerminalTaxa = numTerminalTaxa;
 	}
 
+	public Integer getFeatureHash() {
+		return featureHash;
+	}
 
-    
+	public void setFeatureHash(Integer featureHash) {
+		this.featureHash = featureHash;
+	}
+
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}
