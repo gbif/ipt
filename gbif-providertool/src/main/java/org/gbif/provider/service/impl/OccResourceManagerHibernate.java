@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContextType;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.geoserver.GeoserverUtils;
+import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;

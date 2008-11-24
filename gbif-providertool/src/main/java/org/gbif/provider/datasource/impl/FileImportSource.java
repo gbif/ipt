@@ -34,8 +34,10 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.ColumnMapping;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.SourceBase;
+import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.util.AppConfig;
@@ -59,18 +61,22 @@ public class FileImportSource implements ImportSource{
 	private ColumnMapping linkColumn;
 	private Long resourceId;
 
-    protected static FileImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
+    protected static FileImportSource newInstance(DataResource resource, ViewMappingBase view) throws ImportSourceException{
+		if (!(view.getSource() instanceof SourceFile)){
+			throw new IllegalArgumentException("View needs to have a source of type SourceFile");
+		}
+		SourceFile src = (SourceFile) view.getSource();
     	FileImportSource source = new FileImportSource();
     	// try to setup FileReader
 		try {
-			source.reader = new TabFileReader(AppConfig.getResourceDataFile(resource.getId(), view.getSourceFile()));
+			source.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()));
 			Integer i = 0;
 			for (String h : source.reader.getHeader()){
 				source.headerMap.put(h, i);
 				i++;
 			}
 		} catch (Exception e) {
-			throw new ImportSourceException("Cant read source file "+view.getSourceFile(), e);
+			throw new ImportSourceException("Cant read source file "+src.getFilename(), e);
 		}
     	//FIXME: clone mappings
     	source.resourceId=resource.getId();
@@ -79,7 +85,7 @@ public class FileImportSource implements ImportSource{
     	return source;
     }
     
-    protected static FileImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
+    protected static FileImportSource newInstance(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
     	FileImportSource source = FileImportSource.newInstance(resource, extView);
     	source.guidColumn = view.getGuidColumn();

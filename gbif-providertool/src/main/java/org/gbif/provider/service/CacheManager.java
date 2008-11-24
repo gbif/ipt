@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.appfuse.model.User;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.UploadEvent;
 
 public interface CacheManager {

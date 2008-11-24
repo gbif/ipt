@@ -19,12 +19,12 @@ package org.gbif.provider.webapp.action.manage;
 import java.util.List;
 
 import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 
 public class DatasourceRegistryAction extends BaseOccurrenceResourceAction {
     private DatasourceRegistry datasourceRegistry;
-    private List<DatasourceBasedResource> datasources;
+    private List<DataResource> datasources;
 
 	public void setDatasourceRegistry(DatasourceRegistry datasourceRegistry) {
 		this.datasourceRegistry = datasourceRegistry;

@@ -9,11 +9,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
 import org.gbif.provider.service.GenericManager;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,16 +58,20 @@ import org.springframework.transaction.annotation.Transactional;
 	        this.persistentClass = persistentClass;
 	    }
 
+	    protected Query query(String hql) {
+	        return getSession().createQuery(hql);
+	    }
+	    
 	    /**
 	     * {@inheritDoc}
 	     */
 	    public List<T> getAll() {
-	        return getSession().createQuery(String.format("from %s", persistentClass.getName()))
+	        return query(String.format("from %s", persistentClass.getName()))
 	        		.list();
 	    }
 
 	    public List<T> getTop(int maxResults) {
-	        return getSession().createQuery(String.format("from %s", persistentClass.getName()))
+	        return query(String.format("from %s", persistentClass.getName()))
 	        		.setMaxResults(maxResults)
 	        		.list();
 	    }

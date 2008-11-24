@@ -331,7 +331,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			if(prop.equals(LATITUDE_PROP)){
 				if (val !=null){
 					try {
-						loc.setLatitude(Float.valueOf(val));
+						loc.setLatitude(Double.valueOf(val));
 					} catch (NumberFormatException e) {
 						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLatitude into Float value", val, e);
@@ -344,7 +344,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			else if(prop.equals(LONGITUDE_PROP)){
 				if (val !=null){
 					try {
-						loc.setLongitude(Float.valueOf(val));
+						loc.setLongitude(Double.valueOf(val));
 					} catch (NumberFormatException e) {
 						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLongitude into Float value", val, e);
@@ -358,7 +358,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				geodatum=extRec.getPropertyValue(prop);
 			}
 		}
-		loc.transformIntoWGS84(geodatum);
 		if (loc.isValid()){
 			setLocation(loc);
 			return true;
@@ -501,11 +500,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	
 	@Transient
-	public Float getLatitude() {
+	public Double getLatitude() {
 		return location.getLatitude();
 	}
 	@Transient
-	public Float getLongitude() {
+	public Double getLongitude() {
 		return location.getLongitude();
 	}
 	

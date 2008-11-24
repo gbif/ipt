@@ -23,7 +23,7 @@
         <mapping class="org.gbif.provider.model.CoreRecord"/>
         <mapping class="org.gbif.provider.model.DarwinCore"/>
         <mapping class="org.gbif.provider.model.DarwinCoreExtended"/>
-        <mapping class="org.gbif.provider.model.DatasourceBasedResource"/>
+        <mapping class="org.gbif.provider.model.DataResource"/>
         <mapping class="org.gbif.provider.model.Extension"/>
         <mapping class="org.gbif.provider.model.ExtensionProperty"/>
         <mapping class="org.gbif.provider.model.OccurrenceResource"/>
@@ -34,6 +34,9 @@
         <mapping class="org.gbif.provider.model.Region"/>
         <mapping class="org.gbif.provider.model.Resource"/>
         <mapping class="org.gbif.provider.model.ResourceMetadata"/>
+        <mapping class="org.gbif.provider.model.SourceBase"/>
+        <mapping class="org.gbif.provider.model.SourceSql"/>
+        <mapping class="org.gbif.provider.model.SourceFile"/>
         <mapping class="org.gbif.provider.model.Taxon"/>
         <mapping class="org.gbif.provider.model.UploadEvent"/>
         <mapping class="org.gbif.provider.model.ViewMappingBase"/>

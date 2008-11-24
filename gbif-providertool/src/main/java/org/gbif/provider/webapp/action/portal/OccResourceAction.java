@@ -24,12 +24,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
+import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.MapUtil;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -2,7 +2,7 @@ package org.gbif.provider.util;
 
 import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -15,7 +15,7 @@ public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 	private DatasourceRegistry datasourceRegistry;
 	@Autowired
 	private OccResourceManager occResourceManager;
-	private DatasourceBasedResource resource;
+	private DataResource resource;
 
 
 	/**
@@ -26,11 +26,11 @@ public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 	 */
 	public void setUpExternalDatasource() {
 		DatasourceContextHolder.setResourceId(Constants.TEST_DB_RESOURCE_ID);
-		resource = (DatasourceBasedResource) occResourceManager.get(Constants.TEST_DB_RESOURCE_ID);
+		resource = (DataResource) occResourceManager.get(Constants.TEST_DB_RESOURCE_ID);
 		datasourceRegistry.registerDatasource(resource);
 	}
 	
-	public DatasourceBasedResource getTestRdbmsResource() {
+	public DataResource getTestRdbmsResource() {
 		return resource;
 	}	
 

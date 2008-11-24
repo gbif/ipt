@@ -16,6 +16,8 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.impl.ImportSourceFactory;
+import org.gbif.provider.geo.TransformationUtils;
+import org.gbif.provider.geo.TransformationUtils.Wgs84Transformer;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
@@ -73,6 +75,8 @@ import org.springframework.transaction.annotation.Transactional;
 		private OccurrenceResource resource;
 
 		
+		@Autowired
+		private TransformationUtils wgs84Util;
 		@Autowired
 		private CacheManager cacheManager;
 		@Autowired
@@ -465,6 +469,14 @@ import org.springframework.transaction.annotation.Transactional;
 									if (dwc.updateWithGeoExtension(extRec)){
 										// update bbox
 										bbox.expandBox(dwc.getLocation());
+										// potentially transform coordinates
+										String geodatum=extRec.getPropertyValue(DarwinCore.GEODATUM_PROP);
+										if (geodatum!=null && dwc.getLocation()!=null){
+											// FIXME: keep hasmap of used datums and their transformer. 
+											// Its expensive to create those
+											// Wgs84Transformer t = wgs84Util.getWgs84Transformer(geodatum);
+											wgs84Util.transformIntoWGS84(dwc.getLocation(), geodatum);
+										}
 										darwinCoreManager.save(dwc);
 										// increase stats counter
 										if (dwc.getLocation().isValid()){

@@ -29,8 +29,9 @@
     
     
     <!-- Utility singletons -->
-    <bean id="mapUtil" class="org.gbif.provider.util.MapUtil"/>
-    <bean id="geoserverUtils" class="org.gbif.provider.geoserver.GeoserverUtils" />
+    <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
+    <bean id="geoserverUtils" class="org.gbif.provider.geo.GeoserverUtils" />
+    <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
     
     
     <!-- Parsing freemarker templates other than struts2 -->

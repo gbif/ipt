@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @param <T>
  */
-public class DatasourceBasedResourceManagerHibernate<T extends DatasourceBasedResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
+public class DatasourceBasedResourceManagerHibernate<T extends DataResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
 	
 	public DatasourceBasedResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);

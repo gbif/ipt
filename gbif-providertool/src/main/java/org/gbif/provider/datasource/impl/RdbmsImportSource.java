@@ -31,8 +31,10 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.ColumnMapping;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
 
@@ -59,8 +61,12 @@ public class RdbmsImportSource implements ImportSource{
 	private Long resourceId;
 
 
-	protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
-    	RdbmsImportSource source = new RdbmsImportSource();
+	protected static RdbmsImportSource newInstance(DataResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
+		if (!(view.getSource() instanceof SourceSql)){
+			throw new IllegalArgumentException("View needs to have a source of type SourceSql ");
+		}
+		SourceSql src = (SourceSql) view.getSource();
+		RdbmsImportSource source = new RdbmsImportSource();
     	// try to load JDBC driver
 		try {
 			Class.forName(resource.getJdbcDriverClass());
@@ -76,7 +82,7 @@ public class RdbmsImportSource implements ImportSource{
 		}
     	//FIXME: clone mappings
     	source.resourceId=resource.getId();
-    	source.viewSql=view.getSourceSql();
+    	source.viewSql=src.getSql();
     	source.properties = view.getPropertyMappings().values();
     	source.coreIdColumn = view.getCoreIdColumn();
     	source.maxRecords = maxRecords;
@@ -93,18 +99,18 @@ public class RdbmsImportSource implements ImportSource{
     	return source;
     }
     
-    protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewMappingBase view) throws ImportSourceException{
+    protected static RdbmsImportSource newInstance(DataResource resource, ViewMappingBase view) throws ImportSourceException{
     	return newInstance(resource, view, null);
     }
     
-    protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
+    protected static RdbmsImportSource newInstance(DataResource resource, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
     	RdbmsImportSource source = RdbmsImportSource.newInstance(resource, extView, maxRecords);
     	source.guidColumn = view.getGuidColumn();
     	source.linkColumn = view.getLinkColumn();
     	return source;
     }
-    protected static RdbmsImportSource newInstance(DatasourceBasedResource resource, ViewCoreMapping view) throws ImportSourceException{
+    protected static RdbmsImportSource newInstance(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
     	return newInstance(resource, view, null);
     }
     

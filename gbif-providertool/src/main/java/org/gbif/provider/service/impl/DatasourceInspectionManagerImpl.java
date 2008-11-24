@@ -32,6 +32,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
@@ -49,38 +51,41 @@ public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements D
 		if (view == null){
 			throw new NullPointerException();
 		}
-		Long resourceId = view.getResource().getId();
 		
-		if(view.isMappedToFile()){
-			return getPreview(cfg.getResourceDataFile(resourceId, view.getSourceFile()));
-		}else if (view.getSourceSql()!=null){
-			return getPreview(view.getSourceSql());		
+		if(view.getSource()==null){
+			throw new IllegalArgumentException("No source configured");
+		}else if(view.getSource() instanceof SourceFile){
+			SourceFile src = (SourceFile) view.getSource(); 
+			return getPreview(src);		
 		}else{
-			throw new IllegalArgumentException("Neither file nor SQL source configured");
+			SourceSql src = (SourceSql) view.getSource(); 
+			return getPreview(src);		
 		}
 	}
+	
 	public List<String> getHeader(ViewMappingBase view) throws Exception {
 		if (view == null){
 			throw new NullPointerException();
 		}
-		Long resourceId = view.getResource().getId();
 
-		if(view.isMappedToFile()){
-			return getHeader(cfg.getResourceDataFile(resourceId, view.getSourceFile()));
-		}else if (view.getSourceSql()!=null){
-			return getHeader(view.getSourceSql());		
+		if(view.getSource()==null){
+			throw new IllegalArgumentException("No source configured");
+		}else if(view.getSource() instanceof SourceFile){
+			SourceFile src = (SourceFile) view.getSource(); 
+			return getHeader(src);		
 		}else{
-			throw new IllegalArgumentException("Neither file nor SQL source configured");
+			SourceSql src = (SourceSql) view.getSource(); 
+			return getHeader(src);		
 		}
 	}
 	
 	
 	
-	private List<List<? extends Object>> getPreview(String sql) throws SQLException {
+	private List<List<? extends Object>> getPreview(SourceSql source) throws SQLException {
 		Statement stmt = this.getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 		stmt.setMaxRows(PREVIEW_SIZE);
 		stmt.setFetchSize(PREVIEW_SIZE);
-		ResultSet rs = stmt.executeQuery(sql);
+		ResultSet rs = stmt.executeQuery(source.getSql());
 		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
 		List<String> columnHeaders = new ArrayList<String>();
 		
@@ -106,17 +111,17 @@ public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements D
 		stmt.close();
 		return preview;
 	}
-	private List<String> getHeader(String sourceSql) throws SQLException {
-		List<List<? extends Object>> preview = getPreview(sourceSql);
+	private List<String> getHeader(SourceSql source) throws SQLException {
+		List<List<? extends Object>> preview = getPreview(source);
 		return (List<String>) preview.get(0);
 	}
 
 	
 	
 	
-	private List<List<? extends Object>> getPreview(File source) throws IOException, MalformedTabFileException {
+	private List<List<? extends Object>> getPreview(SourceFile source) throws IOException, MalformedTabFileException {
 		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
-		TabFileReader reader = new TabFileReader(source);
+		TabFileReader reader = new TabFileReader(getSourceFile(source));
 		// read file
 		 preview.add(Arrays.asList(reader.getHeader()));
 	     while (reader.hasNext() && preview.size()<7) {
@@ -124,11 +129,14 @@ public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements D
 	     }		 
 		 return preview;
 	}
-	private List<String> getHeader(File sourceFile) throws IOException, MalformedTabFileException {
-		TabFileReader reader = new TabFileReader(sourceFile);
+	private List<String> getHeader(SourceFile source) throws IOException, MalformedTabFileException {
+		TabFileReader reader = new TabFileReader(getSourceFile(source));
 		return Arrays.asList(reader.getHeader());
 	}
-
+	private File getSourceFile(SourceFile source){
+		File sourceFile = cfg.getResourceSourceFile(source.getResource().getId(), source.getFilename());
+		return sourceFile;
+	}
 	
 	
 	public List getAllTables() throws SQLException {

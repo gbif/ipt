@@ -7,6 +7,26 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import org.geotools.data.*;
+import org.geotools.geometry.GeneralDirectPosition;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeodeticCRS;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateFilter;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
+
+
 /**
  * There are several formats for writing degrees, all of them appearing in the same Lat, Long order.
  * In DD Decimal Degrees (49.5000°,-123.5000°), generally with 4-6 decimal numbers.
@@ -17,63 +37,78 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Embeddable
 public class Point implements Serializable{
-	public static final Float MAX_LONGITUDE = new Float(180f);
-	public static final Float MIN_LONGITUDE = new Float(-180f);
-	public static final Float MAX_LATITUDE = new Float(90f);
-	public static final Float MIN_LATITUDE = new Float(-90f);
+	public static final Double MAX_LONGITUDE = new Double(180);
+	public static final Double MIN_LONGITUDE = new Double(-180);
+	public static final Double MAX_LATITUDE = new Double(90);
+	public static final Double MIN_LATITUDE = new Double(-90);
 	// x (east/west), -180/180
-	private Float longitude;
+	private Double longitude;
 	// y (north/south), -90/90
-	private Float latitude;
+	private Double latitude;
 	
+
 	public Point() {
 	}
 	public Point(Point p){
 		setLatitude(p.latitude);
 		setLongitude(p.longitude);
 	}
-	public Point(Float latitude, Float longitude) {
+	public Point(Double latitude, Double longitude) {
 		setLatitude(latitude);
 		setLongitude(longitude);
 	}
-	
-	public Float getLatitude() {
-		return latitude==null ? null : new Float(latitude);
+	public Point(Double latitude, Double longitude, String datum) {
+		this(latitude, longitude);
+		transformIntoWGS84(datum);
 	}
-	public void setLatitude(Float latitude) {
+	
+	@Transient
+	public Coordinate getCoordinate() {
+		return new Coordinate(latitude, longitude);
+	}
+	public void setCoordinate(Coordinate coord) {
+		this.latitude = coord.x;
+		this.longitude= coord.y;
+	}
+
+	@Transient
+	public Double getX() {
+		return getLatitude();
+	}
+	public Double getLatitude() {
+		return latitude==null ? null : new Double(latitude);
+	}
+	public void setX(Double x) {
+		setLatitude(x);
+	}
+	public void setLatitude(Double latitude) {
 		if (latitude != null && (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE)){
 			throw new IllegalArgumentException();
 		}
 		if (latitude == null){
 			this.latitude = null;
 		}else{
-			this.latitude = new Float(latitude);
+			this.latitude = new Double(latitude);
 		}
 	}
-	public Float getLongitude() {
-		return longitude==null ? null : new Float(longitude);
+	@Transient
+	public Double getY() {
+		return getLongitude();
 	}
-	public void setLongitude(Float longitude) {
+	public Double getLongitude() {
+		return longitude==null ? null : new Double(longitude);
+	}
+	public void setY(Double y) {
+		setLongitude(y);
+	}
+	public void setLongitude(Double longitude) {
 		if (longitude != null && (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE)){
 			throw new IllegalArgumentException();
 		}
 		if (longitude == null){
 			this.longitude = null;
 		}else{
-			this.longitude = new Float(longitude);
-		}
-	}
-
-	/**
-	 * Transforms coordinates into WGS84 coordinates
-	 * @param latitude
-	 * @param longitude
-	 * @param geodatum
-	 */
-	public void transformIntoWGS84(String geodatum) {
-		//TODO: transform point into standard WGS84 datum. Might beed external library for this...
-		if (geodatum==null){
-			return;
+			this.longitude = new Double(longitude);
 		}
 	}
 

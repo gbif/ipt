@@ -1,6 +1,7 @@
 package org.gbif.provider.geoserver;
 
 
+import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.ContextAwareTestBase;

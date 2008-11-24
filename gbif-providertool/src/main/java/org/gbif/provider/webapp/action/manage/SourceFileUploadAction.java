@@ -7,7 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
@@ -39,7 +40,7 @@ public class SourceFileUploadAction extends BaseAction{
         }
         // check where it who wants this file and where to save
 		ViewMappingBase mapping = viewMappingManager.get(mapping_id);
-		DatasourceBasedResource resource = mapping.getResource();
+		DataResource resource = mapping.getResource();
         // the directory to upload to
 		File targetFile = cfg.getSourceFile(resource.getId(), mapping.getExtension());
 		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));
@@ -62,7 +63,7 @@ public class SourceFileUploadAction extends BaseAction{
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		mapping.setSourceFileAsFile(targetFile);
+		mapping.setSource(new SourceFile(targetFile));
 		List<String> headers = datasourceInspectionManager.getHeader(mapping);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
@@ -70,7 +71,7 @@ public class SourceFileUploadAction extends BaseAction{
 	        viewMappingManager.save(mapping);
 	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
-			mapping.setSourceFileAsFile(null);
+			mapping.setSource(null);
 	        viewMappingManager.save(mapping);
 	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}

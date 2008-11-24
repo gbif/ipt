@@ -31,11 +31,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.DatasourceInspectionManager;
@@ -143,7 +144,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		view.setSourceFileAsFile(targetFile);
+		view.setSource(new SourceFile(targetFile));
 		List<String> headers = datasourceInspectionManager.getHeader(view);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
@@ -151,7 +152,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
 	        viewMappingManager.save(view);
 	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
-			view.setSourceFileAsFile(null);
+			view.setSource(null);
 	        viewMappingManager.save(view);
 	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}
