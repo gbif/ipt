@@ -60,10 +60,9 @@ import org.hibernate.annotations.MapKey;
 @Table(name="view_mapping")
 public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase> {
 	private Long id;
-	private DatasourceBasedResource resource;
+	private DataResource resource;
 	private Extension extension;
-	private String sourceSql;
-	private String sourceFile;
+	private SourceBase source;
 	private ColumnMapping coreIdColumn = new ColumnMapping ();
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
 	private int recTotal = 0;
@@ -78,10 +77,10 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	
 	@ManyToOne
     @JoinColumn(name="resource_fk", nullable=false)
-	public DatasourceBasedResource getResource() {
+	public DataResource getResource() {
 		return resource;
 	}
-	public void setResource(DatasourceBasedResource resource) {
+	public void setResource(DataResource resource) {
 		this.resource = resource;
 	}
 	
@@ -92,17 +91,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	public void setExtension(Extension extension) {
 		this.extension = extension;
 	}
-	
-	@Lob
-	public String getSourceSql() {
-		return sourceSql;
-	}
-	public void setSourceSql(String sourceSql) {
-		if (sourceSql != null){
-			this.sourceFile=null;
-		}
-		this.sourceSql = sourceSql;
-	}
+
 	
 	public int getRecTotal() {
 		return recTotal;
@@ -111,22 +100,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		this.recTotal = recTotal;
 	}
 	
-	public String getSourceFile() {
-		return sourceFile;
-	}
-	public void setSourceFile(String sourceFile) {
-		if (sourceFile != null){
-			this.sourceSql=null;
-		}
-		this.sourceFile = sourceFile;
-	}
-	public void setSourceFileAsFile(File file) {
-		if (file != null){
-			setSourceFile(file.getName());
-		}else{
-			setSourceFile(null);
-		}
-	}	
+
 	/**
 	 * Index of resultset column for the local or global identifier for a core-record. 
 	 * Acts as the primary key for the core mapping or the foreign key for extension mappings
@@ -157,6 +131,14 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		propertyMapping.setViewMapping(this);
 		propertyMappings.put(propertyMapping.getProperty().getId(), propertyMapping);
 	}
+		
+	@ManyToOne
+	public SourceBase getSource() {
+		return source;
+	}
+	public void setSource(SourceBase source) {
+		this.source = source;
+	}
 	
 	@Transient
 	public boolean hasMappedProperty(ExtensionProperty property) {
@@ -181,26 +163,19 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	}
 	@Transient
 	public boolean isMappedToFile() {
-		if (StringUtils.isNotBlank(sourceFile)){
+		if (this.source instanceof SourceFile){
 			return true;
 		}else{
 			return false;
 		}
-		
 	}
 	
 	@Transient
 	public boolean hasValidSource() {
-		if (isMappedToFile() && resource != null){
-			if (AppConfig.getResourceDataFile(resource.getId(), sourceFile).exists()){
-				return true;
-			}
-		}else{
-			if(StringUtils.isNotBlank(sourceSql) && sourceSql.trim().length() > 10){
-				return true;
-			}
+		if (source==null){
+			return false;
 		}
-		return false;
+		return source.isValid();
 	}
 	
 	/**
@@ -226,8 +201,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
         result = 31 * result + (resource != null ? (resource.getId() != null ? resource.getId().hashCode() : 0) : 0);
         //result = 31 * result + (resource != null ? resource.hashCode() : 0);
         result = 31 * result + (propertyMappings != null ? propertyMappings.hashCode() : 0);
-        result = 31 * result + (sourceSql != null ? sourceSql.hashCode() : 0);
-        result = 31 * result + (sourceFile != null ? sourceFile.hashCode() : 0);
+        result = 31 * result + (source != null ? source.hashCode() : 0);
         result = 31 * result + (coreIdColumn != null ? coreIdColumn.hashCode() : 0);
         return result;
 	}
@@ -237,8 +211,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	public String toString() {
 		return new ToStringBuilder(this)
 		.append("id", this.id)
-		.append("sourceSql", this.sourceSql)
-		.append("sourceFileLocation", this.sourceFile)
+		.append("source", this.source)
 		.append("coreIdColumn", this.coreIdColumn)
 		.append("extension", this.extension)
 		.toString();

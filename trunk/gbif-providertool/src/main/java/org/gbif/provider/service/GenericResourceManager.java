@@ -18,7 +18,7 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 
 public interface GenericResourceManager<T extends Resource> extends GenericManager<T> {

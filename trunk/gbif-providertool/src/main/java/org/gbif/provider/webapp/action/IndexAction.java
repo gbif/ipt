@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.service.UserManager;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
@@ -35,8 +35,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class IndexAction extends BaseAction{
 	@Autowired
 	@Qualifier("datasourceBasedResourceManager")
-    private GenericResourceManager<DatasourceBasedResource> datasourceBasedResourceManager;
-    private List<DatasourceBasedResource> resources;
+    private GenericResourceManager<DataResource> datasourceBasedResourceManager;
+    private List<DataResource> resources;
 	@Autowired
 	private AppConfig cfg;
 	private Date pubDate = new Date();
@@ -51,7 +51,7 @@ public class IndexAction extends BaseAction{
 	}
 
 	
-	public List<DatasourceBasedResource> getResources() {
+	public List<DataResource> getResources() {
 		return resources;
 	}
 

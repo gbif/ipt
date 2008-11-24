@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ViewExtensionMapping;
@@ -97,7 +97,7 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 	}
 	
 	
-	public ExtensionRecordsWrapper getExtensionRecords(DatasourceBasedResource resource, Long coreid) {
+	public ExtensionRecordsWrapper getExtensionRecords(DataResource resource, Long coreid) {
 		ExtensionRecordsWrapper wrapper = new ExtensionRecordsWrapper(coreid);
 		for (ViewExtensionMapping view : resource.getExtensionMappings()){
 			wrapper.addExtensionRecords(getExtensionRecords(view.getExtension(), coreid, resource.getId()));

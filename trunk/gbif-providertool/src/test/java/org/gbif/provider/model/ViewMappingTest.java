@@ -12,21 +12,22 @@ public class ViewMappingTest {
 
 	@Before
 	public void setUp() throws Exception {
-		DatasourceBasedResource r = OccurrenceResource.newInstance(null);
+		DataResource r = OccurrenceResource.newInstance(null);
 		r.setTitle("Berlin Moss");
+		SourceSql src = new SourceSql("Select * from specimen limit 100");
 		vm1 = new ViewExtensionMapping();
 		vm1.getCoreIdColumn().setColumnName("specimen_id");
-		vm1.setSourceSql("Select * from specimen limit 100");
+		vm1.setSource(src);
 		vm1.setResource(r);
 		
 		vm2 = new ViewExtensionMapping();
 		vm2.getCoreIdColumn().setColumnName("specimen_id");
-		vm2.setSourceSql("Select * from specimen limit 100");
+		vm2.setSource(src);
 		vm2.setResource(r);
 		
 		vm3 = new ViewExtensionMapping();
 		vm3.getCoreIdColumn().setColumnName("field_number");
-		vm3.setSourceSql("Select * from specimen limit 100");
+		vm3.setSource(src);
 		vm3.setResource(r);
 	}
 

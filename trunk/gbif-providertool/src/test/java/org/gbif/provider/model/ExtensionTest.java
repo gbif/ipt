@@ -64,7 +64,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 		Long occId = occResourceManager.save(occRes).getId();
 		
 		// check retrieved data. what about the hibernate cache?
-		DatasourceBasedResource res = occResourceManager.get(occId);		
+		DataResource res = occResourceManager.get(occId);		
 		Collection<ViewMappingBase> allMappings = res.getAllMappings();
 
 		assertTrue(res.getAllMappings().size()==3);

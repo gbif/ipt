@@ -52,7 +52,7 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
         {  
             {  
                 put("com.mysql.jdbc.Driver", "MySQL");
-                put("org.postgresql.Driver", "Postrges");
+                put("org.postgresql.Driver", "Postgres");
                 put("org.h2.Driver", "H2");
                 put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
                 put("oracle.jdbc.OracleDriver", "Oracle");  

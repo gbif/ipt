@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.UploadChartBuilder;

@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,7 +51,7 @@ public class DatasourceRegistry{
 	}
 
 
-	public void registerDatasource(DatasourceBasedResource resource){
+	public void registerDatasource(DataResource resource){
 		if (resource != null){
 			DataSource dsa = resource.getDatasource();
 			if (dsa == null){
@@ -71,7 +71,7 @@ public class DatasourceRegistry{
 	
 	public DataSource getDataSource(Long id){
 		if (id != null && !datasources.containsKey(id)){
-			DatasourceBasedResource resource = occResourceManager.get(id);
+			DataResource resource = occResourceManager.get(id);
 			registerDatasource(resource);
 		}
 		return datasources.get(id);			
@@ -82,8 +82,8 @@ public class DatasourceRegistry{
 		datasources.remove(dsa);
 	}
 	
-	public List<DatasourceBasedResource> getAll(){
-		ArrayList<DatasourceBasedResource> activeResources = new ArrayList<DatasourceBasedResource>();
+	public List<DataResource> getAll(){
+		ArrayList<DataResource> activeResources = new ArrayList<DataResource>();
 		for (Long id: datasources.keySet()){
 			activeResources.add(occResourceManager.get(id));
 		}

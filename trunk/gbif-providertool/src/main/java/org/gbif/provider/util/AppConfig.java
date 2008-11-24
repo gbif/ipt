@@ -126,6 +126,9 @@ public class AppConfig{
 		File f = new File(getResourceDataDir(resourceId), relPath);
 		return f;
 	}
+	public static File getResourceSourceFile(Long resourceId, String filename) {
+		return getResourceDataFile(resourceId, String.format("sources/%s",filename));
+	}
 	public static String getResourceDataUrl(Long resourceId) {
 		return String.format("%s/data/%s", baseURL, resourceId);
 	}	
@@ -187,13 +190,12 @@ public class AppConfig{
 	}
 	
 	public String getWfsEndpoint(Long resourceId){
-    	return String.format("%s/wfs?", getGeoserverUrl());
+    	return String.format("%s/wfs?request=DescribeFeatureType&typeName=gbif:resource%s", getGeoserverUrl(), resourceId);
 	}
 	public String getWmsEndpoint(Long resourceId){
-    	return String.format("%s/wms?", getGeoserverUrl());
+    	return String.format("%s/wms?request=GetMap&bbox=-180,-90,180,90&layers=gbif:countries,gbif:resource%s&width=320&height=160&bgcolor=0x7391AD&Format=image/jpeg", getGeoserverUrl(), resourceId);
 	}
-	
-	
+		
 	
 	
 	// CFG DELEGATE METHODS

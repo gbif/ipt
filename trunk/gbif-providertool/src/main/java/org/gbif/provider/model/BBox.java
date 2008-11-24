@@ -32,7 +32,7 @@ public class BBox implements Serializable{
 
 
 	public static BBox NewWorldInstance() {
-		BBox world = new BBox(new Point(90f,180f), new Point(-90f,-180f));
+		BBox world = new BBox(new Point(90.0,180.0), new Point(-90.0,-180.0));
 		return world;
 	}
 
@@ -45,7 +45,7 @@ public class BBox implements Serializable{
 		setMax(max);
 		setMin(min);
 	}
-	public BBox(Float maxX, Float maxY, Float minX, Float minY) {
+	public BBox(Double maxX, Double maxY, Double minX, Double minY) {
 		super();
 		setMax(new Point(maxX, maxY));
 		setMin(new Point(minX, minY));
@@ -119,23 +119,23 @@ public class BBox implements Serializable{
 	 * @param factor 0-1 for shrinking, >1 for expanding boxes
 	 */
 	@Transient
-	public void resize(float factor){
+	public void resize(double factor){
 		if (factor < 0f){
 			throw new IllegalArgumentException("Factor must be larger than 0");
 		}
 		if (!isValid()){
 			throw new IllegalStateException("BBox is not valid");
 		}
-		float minX = min.getLongitude();
-		float minY = min.getLatitude();
-		float maxX = max.getLongitude();
-		float maxY = max.getLatitude();
-		float width = maxX-minX;
-		float height = maxY-minY;
+		double minX = min.getLongitude();
+		double minY = min.getLatitude();
+		double maxX = max.getLongitude();
+		double maxY = max.getLatitude();
+		double width = maxX-minX;
+		double height = maxY-minY;
 		// detect maximum possible expand factor
-		float[] maxFactors = {(factor-1)/2f, (Point.MAX_LATITUDE-maxY)/height, (Point.MAX_LATITUDE+minY)/height,  (Point.MAX_LONGITUDE-maxX)/width, (Point.MAX_LONGITUDE+minX)/width};
+		double[] maxFactors = {(factor-1)/2f, (Point.MAX_LATITUDE-maxY)/height, (Point.MAX_LATITUDE+minY)/height,  (Point.MAX_LONGITUDE-maxX)/width, (Point.MAX_LONGITUDE+minX)/width};
 		Arrays.sort(maxFactors);
-		float expandFactor = maxFactors[0];
+		double expandFactor = maxFactors[0];
 		// change bbox		
 		minX=minX-(expandFactor*width);
 		maxX=maxX+(expandFactor*width);
@@ -157,18 +157,18 @@ public class BBox implements Serializable{
 	/** Expands BBox so that its longitude/latitude ratio becomes the specified width/height ratio. Takes care to not go beyond the -180/180 + -90/90 bboc limits and might shift the center of the bbox if this is not otherwise possible.
 	 */
 	@Transient
-	public void expandToMapRatio(float mapRatio){
+	public void expandToMapRatio(double mapRatio){
 		// longitude=x, latitude=y
 		if (isValid()){
-			float width = max.getLongitude() - min.getLongitude();
-			float height = max.getLatitude() - min.getLatitude();
-			float ratio = width/height;
+			double width = max.getLongitude() - min.getLongitude();
+			double height = max.getLatitude() - min.getLatitude();
+			double ratio = width/height;
 			
 			if (mapRatio > ratio){
 				// was rather a square before. need to extend the latitude on both min+max
-				float equalWidthIncrease = ((height * mapRatio) - width)/2;
-				float minX =  min.getLongitude();
-				float maxX =  max.getLongitude();
+				double equalWidthIncrease = ((height * mapRatio) - width)/2;
+				double minX =  min.getLongitude();
+				double maxX =  max.getLongitude();
 				if (minX-equalWidthIncrease < Point.MIN_LONGITUDE){
 					minX=Point.MIN_LONGITUDE;
 					maxX = width*mapRatio;
@@ -183,9 +183,9 @@ public class BBox implements Serializable{
 				max.setLongitude(maxX);
 			}else if (mapRatio < ratio){
 				// was more of a flat rectangle before. need to extend the longitude on both min+max
-				float equalHeightIncrease = ((width / mapRatio) - height)/2;
-				float minY =  min.getLatitude();
-				float maxY =  max.getLatitude();
+				double equalHeightIncrease = ((width / mapRatio) - height)/2;
+				double minY =  min.getLatitude();
+				double maxY =  max.getLatitude();
 				if (minY-equalHeightIncrease < Point.MIN_LATITUDE){
 					minY=Point.MIN_LATITUDE;
 					maxY = width*mapRatio;
@@ -249,9 +249,9 @@ public class BBox implements Serializable{
 	 * @return
 	 */
 	@Transient
-	public float surface() {
-		float width=max.getLongitude()-min.getLongitude();
-		float height=max.getLatitude()-min.getLatitude();
+	public double surface() {
+		double width=max.getLongitude()-min.getLongitude();
+		double height=max.getLatitude()-min.getLatitude();
 		return width*height;
 	}
 }

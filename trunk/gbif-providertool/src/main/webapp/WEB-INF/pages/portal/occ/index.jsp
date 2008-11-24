@@ -45,11 +45,11 @@
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.wfs"/></th>
-					<td><a href="<s:property value="%{cfg.getWfsEndpoint(resource_id)}"/>request=GetCapabilities"><s:property value="%{cfg.getWfsEndpoint(resource_id)}"/></a></td>
+					<td><a href="<s:property value="%{cfg.getWfsEndpoint(resource_id)}"/>"><s:property value="%{cfg.getWfsEndpoint(resource_id)}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="occResourceOverview.wms"/></th>
-					<td><a href="<s:property value="%{cfg.getWmsEndpoint(resource_id)}"/>request=GetCapabilities"><s:property value="%{cfg.getWmsEndpoint(resource_id)}"/></a></td>
+					<td><a href="<s:property value="%{cfg.getWmsEndpoint(resource_id)}"/>"><s:property value="%{cfg.getWmsEndpoint(resource_id)}"/></a></td>
 				</tr>
 			</table>
 		</div>

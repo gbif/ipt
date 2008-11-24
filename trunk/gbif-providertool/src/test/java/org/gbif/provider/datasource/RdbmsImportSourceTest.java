@@ -13,11 +13,9 @@ public class RdbmsImportSourceTest extends BaseExternalDatasourceTest{
 	protected void setUpSource() {
 		// @Before triggered in superclasses doesnt work for me. Should really, but dont know why. So I use direct calls instead
 		setUpExternalDatasource();
-        // use test resource
-        ViewCoreMapping view = getTestRdbmsResource().getCoreMapping();
         try {
 			// create import source
-			source = ImportSourceFactory.newInstance(this.getTestRdbmsResource(), view);
+			source = ImportSourceFactory.newInstance(this.getTestRdbmsResource(), getTestRdbmsResource().getCoreMapping());
 		} catch (ImportSourceException e) {
 			e.printStackTrace();
 			fail("Couldnt setup import source");

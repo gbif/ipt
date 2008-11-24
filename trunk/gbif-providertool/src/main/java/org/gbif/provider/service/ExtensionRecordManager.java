@@ -21,14 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 
 public interface ExtensionRecordManager {
-	public ExtensionRecordsWrapper getExtensionRecords(DatasourceBasedResource resource, Long coreid);
+	public ExtensionRecordsWrapper getExtensionRecords(DataResource resource, Long coreid);
 	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid, Long resourceId);
 	public void insertExtensionRecord(ExtensionRecord record);
 	/**

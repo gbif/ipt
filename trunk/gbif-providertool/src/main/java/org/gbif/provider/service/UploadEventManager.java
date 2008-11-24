@@ -2,7 +2,7 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
-import org.gbif.provider.model.DatasourceBasedResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.UploadEvent;
 
 public interface UploadEventManager extends GenericResourceRelatedManager<UploadEvent>{
