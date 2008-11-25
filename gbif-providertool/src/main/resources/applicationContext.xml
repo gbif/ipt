@@ -33,21 +33,7 @@
     <bean id="geoserverUtils" class="org.gbif.provider.geo.GeoserverUtils" />
     <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
     
-    
     <!-- Parsing freemarker templates other than struts2 -->
-    <!-- 
-    <bean id="freemarkerConfig"   class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
-        <property name="templateLoaderPath" value="file:${webappDir}/WEB-INF/pages"></property>
-        <property name="freemarkerSettings">
-            <props>
-                <prop key="date_format">yyyy-MM-dd</prop>
-                <prop key="datetime_format">yyyy-MM-dd</prop>
-                <prop key="number_format">0.#####</prop>
-                <prop key="url_escaping_charset">UTF-8</prop>
-            </props>
-        </property>
-    </bean>
-    -->
     <bean id="freemarkerCfg" class="freemarker.template.Configuration">
         <property name="defaultEncoding" value="utf8"/>
         <property name="directoryForTemplateLoading" value="${webappDir}/WEB-INF/pages"></property>

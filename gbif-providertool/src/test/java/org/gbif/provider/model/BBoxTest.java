@@ -14,10 +14,10 @@ public class BBoxTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		p1 = new Point(54f, 123f);
-		p2 = new Point(31.243f, -13.9883f);
-		p3 = new Point(41.1f, -3.9f);
-		p4 = new Point(41.1f, -33.9f);
+		p1 = new Point(54.0, 123.0);
+		p2 = new Point(31.243, -13.9883);
+		p3 = new Point(41.1, -3.9);
+		p4 = new Point(41.1, -33.9);
 		bbox = new BBox(p1, p2);
 	}
 
@@ -83,7 +83,7 @@ public class BBoxTest {
 
 	@Test
 	public void testSurface() {
-		bbox = new BBox(13.2f, 4.0f, 13.2f, 4.0f);
+		bbox = new BBox(13.2, 4.0, 13.2, 4.0);
 		System.out.println(bbox);
 		System.out.println(bbox.surface());
 		assertTrue(bbox.isValid());
