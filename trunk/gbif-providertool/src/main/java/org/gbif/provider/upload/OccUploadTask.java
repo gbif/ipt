@@ -39,6 +39,8 @@ import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -475,7 +477,13 @@ import org.springframework.transaction.annotation.Transactional;
 											// FIXME: keep hasmap of used datums and their transformer. 
 											// Its expensive to create those
 											// Wgs84Transformer t = wgs84Util.getWgs84Transformer(geodatum);
-											wgs84Util.transformIntoWGS84(dwc.getLocation(), geodatum);
+											try {
+												wgs84Util.transformIntoWGS84(dwc.getLocation(), geodatum);
+											} catch (FactoryException e) {
+												log.debug("Can't recognise geodatic datum "+geodatum);
+											} catch (TransformException e) {
+												log.warn("Can't transform coordinates with geodatic datum "+geodatum);
+											}											 
 										}
 										darwinCoreManager.save(dwc);
 										// increase stats counter

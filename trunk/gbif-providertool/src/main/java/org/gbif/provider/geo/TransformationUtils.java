@@ -22,8 +22,9 @@ public class TransformationUtils {
 	protected final Log log = LogFactory.getLog(TransformationUtils.class);
     private CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
     private CoordinateOperationFactory coFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
-    private static final CoordinateReferenceSystem outCRS = DefaultGeographicCRS.WGS84;
+    private final CoordinateReferenceSystem outCRS = DefaultGeographicCRS.WGS84;
 
+    
 	/**
 	 * Transforms a point into WGS84 coordinates using geotools. 
 	 * If many points with the same datum are transformed create a Wgs84Transformer.

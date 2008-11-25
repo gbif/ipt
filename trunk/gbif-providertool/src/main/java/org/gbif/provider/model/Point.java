@@ -4,26 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import org.geotools.data.*;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeodeticCRS;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 
 
@@ -56,10 +41,6 @@ public class Point implements Serializable{
 	public Point(Double latitude, Double longitude) {
 		setLatitude(latitude);
 		setLongitude(longitude);
-	}
-	public Point(Double latitude, Double longitude, String datum) {
-		this(latitude, longitude);
-		transformIntoWGS84(datum);
 	}
 	
 	@Transient

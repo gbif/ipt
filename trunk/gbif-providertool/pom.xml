@@ -336,9 +336,6 @@
         </repository>
         <!-- geotools -->
         <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
             <id>geotools</id>
             <name>Geotools repository</name>
             <url>http://maven.geotools.fr/repository</url>
@@ -512,12 +509,12 @@
         <!-- Geotools -->
         <dependency>
             <groupId>org.geotools</groupId>
-            <artifactId>gt2-main</artifactId>
+            <artifactId>gt-main</artifactId>
             <version>${gt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
-            <artifactId>gt2-referencing</artifactId>
+            <artifactId>gt-referencing</artifactId>
             <version>${gt.version}</version>
         </dependency>
         
@@ -578,7 +575,7 @@
         <!-- Framework dependency versions -->
         <appfuse.version>2.0.2</appfuse.version>
         <spring.version>2.5.5</spring.version>
-        <gt.version>2.5-SNAPSHOT</gt.version>
+        <gt.version>2.5.1</gt.version>
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>
         <jsp.version>2.0</jsp.version>
