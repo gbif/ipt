@@ -17,6 +17,8 @@
 package org.gbif.provider.model;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -177,7 +179,7 @@ public abstract class DataResource extends Resource {
 	public void setSources(Set<SourceBase> sources) {
 		this.sources = sources;
 	}
-	
+    
 	@Transient
 	public DataSource getDatasource() {
 		if (datasource == null){

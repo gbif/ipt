@@ -163,9 +163,8 @@ public class AppConfig{
     }
 
     // SOURCE/UPLOAD FILES
-    public File getSourceFile(Long resourceId, Extension extension) throws IOException{    	
-		File file = new File(getResourceDataDir(resourceId), String.format("source-%s.txt", namingStrategy.extensionTableName(extension)));
-		return file;
+    public File getSourceFile(Long resourceId, String fileName) throws IOException{    	
+		return new File(getResourceDataDir(resourceId), String.format("sources/%s", fileName));
 	}    
 
     // DUMP FILES

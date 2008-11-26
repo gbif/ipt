@@ -1,7 +1,7 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${view.resource.title}"/>
-    <meta name="submenu" content="manage"/>
+    <meta name="submenu" content="manage_resource"/>
 	<@s.head theme="ajax" debug="false"/>
 </head>
 
@@ -49,6 +49,28 @@ function sourcePreview(){
 		<div class="break"/>
         <@s.submit cssClass="button" key="button.save" theme="simple"/>
         <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
+
+		<h2>Configure Basic Properties</h2>
+	 	<@s.select key="view.coreIdColumn.columnName" required="true"
+			headerKey="Select local identifier for core record" emptyOption="false" 
+			list="columnOptions" />
+			
+		<#if view.isCore()>
+		 	<@s.select key="view.guidColumn.columnName" required="false" emptyOption="true" 
+				list="columnOptions" />
+		 	<@s.select key="view.linkColumn.columnName" required="false" emptyOption="true" 
+				list="columnOptions" />
+	 	</#if>
+	 	
+	 	<br/>
+	 	
+	    <li class="buttonBar bottom">
+	        <@s.submit cssClass="button" key="button.save" theme="simple"/>
+		    <#if (view.id)??>
+		        <@s.submit cssClass="button" name="delete" key="button.delete" onclick="return confirmDelete('import source')" theme="simple"/>
+		    </#if>
+	        <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
+	    </li>
 
 		<div class="break"/>
 	    <#list mappings as m> 

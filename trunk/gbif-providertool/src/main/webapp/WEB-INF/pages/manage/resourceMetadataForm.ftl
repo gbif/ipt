@@ -1,15 +1,21 @@
 
-<fieldset>
-	<@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
+<@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
+  <fieldset>
     <legend><@s.text name="resource.metadata"/></legend>
     <@s.hidden name="resource_id" value="${(resource.id)!}"/>
     <@s.hidden name="guid" value="${(resource.guid)!}"/>
     <#if resource_id??>
 		<img class="rightf" src="${cfg.getResourceLogoUrl(resource_id)}" />
 	</#if>
-	<@s.textfield key="resource.title" required="true" cssClass="text large"/>
-
-    <div>
+	<div>
+		<div class="left">
+			<@s.textfield key="resource.title" required="true" cssClass="text large"/>
+	 	</div>
+		<div class="left">
+		 	<@s.select key="resource.type" required="false" emptyOption="true" list="resourceTypes" cssClass="text medium"/>
+	 	</div>
+ 	</div>
+    <div class="newline">
         <div class="left">
 			<@s.textfield key="resource.contactName" required="true" cssClass="text medium"/>
         </div>
@@ -30,8 +36,10 @@
 	<#if resource.title??>
 	    <@s.submit cssClass="button" key="button.details" action="eml" theme="simple"/>
 	</#if>
-    </@s.form>
+  </fieldset>
+</@s.form>
 	
+	<!--
 	<#if !resource.title??>
 		<hr/>
 		<@s.form id="resourceFormEml" action="importEml" enctype="multipart/form-data" method="post">
@@ -39,8 +47,8 @@
 		    <@s.submit cssClass="button" key="button.import" theme="simple"/>
 		</@s.form>
 	</#if>
+	-->
 	
-</fieldset>
   
 
 <script type="text/javascript">

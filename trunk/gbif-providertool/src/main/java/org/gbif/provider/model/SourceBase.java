@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 @Entity
-public abstract class SourceBase implements BaseObject{
+public abstract class SourceBase implements BaseObject, ResourceRelatedObject{
 	private Long id;	
 	protected DataResource resource;
 

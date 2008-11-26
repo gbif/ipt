@@ -22,12 +22,20 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	private boolean busy = false;
 	private OccurrenceResource occResource;
 	private List<UploadEvent> uploadEvents;
+	private String gChartData;
+	
 	
 	public void prepare() throws Exception {
 		if (resource_id != null){
 			busy=cacheManager.isBusy(resource_id);
-		}
+		}		
 	}
+
+	public String execute() {
+		// create GoogleChart string
+		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
+		return SUCCESS;
+	}		
 
 	public String upload(){
 		assert(resource_id != null);
@@ -84,6 +92,10 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 
 	public boolean isBusy() {
 		return busy;
+	}
+
+	public String getGChartData() {
+		return gChartData;
 	}
 	
 }

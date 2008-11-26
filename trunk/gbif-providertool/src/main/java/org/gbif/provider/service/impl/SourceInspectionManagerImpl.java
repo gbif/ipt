@@ -32,49 +32,46 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.MalformedTabFileException;
 import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class DatasourceInspectionManagerImpl extends JdbcDaoSupport implements DatasourceInspectionManager {
+public class SourceInspectionManagerImpl extends JdbcDaoSupport implements SourceInspectionManager {
 	private static final int PREVIEW_SIZE = 5;
 	@Autowired
 	private AppConfig cfg;
 	
-	public List<List<? extends Object>> getPreview(ViewMappingBase view) throws Exception {
-		if (view == null){
+	public List<List<? extends Object>> getPreview(SourceBase source) throws Exception {
+		if (source == null){
 			throw new NullPointerException();
 		}
 		
-		if(view.getSource()==null){
-			throw new IllegalArgumentException("No source configured");
-		}else if(view.getSource() instanceof SourceFile){
-			SourceFile src = (SourceFile) view.getSource(); 
+		if(source instanceof SourceFile){
+			SourceFile src = (SourceFile) source; 
 			return getPreview(src);		
 		}else{
-			SourceSql src = (SourceSql) view.getSource(); 
+			SourceSql src = (SourceSql) source; 
 			return getPreview(src);		
 		}
 	}
 	
-	public List<String> getHeader(ViewMappingBase view) throws Exception {
-		if (view == null){
+	public List<String> getHeader(SourceBase source) throws Exception {
+		if (source == null){
 			throw new NullPointerException();
 		}
 
-		if(view.getSource()==null){
-			throw new IllegalArgumentException("No source configured");
-		}else if(view.getSource() instanceof SourceFile){
-			SourceFile src = (SourceFile) view.getSource(); 
+		if(source instanceof SourceFile){
+			SourceFile src = (SourceFile) source; 
 			return getHeader(src);		
 		}else{
-			SourceSql src = (SourceSql) view.getSource(); 
+			SourceSql src = (SourceSql) source; 
 			return getHeader(src);		
 		}
 	}

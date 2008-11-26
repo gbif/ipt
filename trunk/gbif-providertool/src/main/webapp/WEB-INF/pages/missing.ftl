@@ -1,5 +1,3 @@
-<%@ include file="/common/taglibs.jsp"%>
-
 <head>
     <title>Missing Feature</title>
     <meta name="menu" content="MainMenu"/>
@@ -12,8 +10,4 @@
 <p>
     This feature is under construction.
     Please try again in the next version
-</p>
-
-<p>
-    Back to application <a href="<s:url action="home"/>">Home</a>.
 </p>

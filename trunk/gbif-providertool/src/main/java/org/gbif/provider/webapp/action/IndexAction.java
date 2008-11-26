@@ -34,15 +34,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class IndexAction extends BaseAction{
 	@Autowired
-	@Qualifier("datasourceBasedResourceManager")
-    private GenericResourceManager<DataResource> datasourceBasedResourceManager;
+	@Qualifier("dataResourceManager")
+    private GenericResourceManager<DataResource> dataResourceManager;
     private List<DataResource> resources;
 	@Autowired
 	private AppConfig cfg;
 	private Date pubDate = new Date();
 	
 	public String execute(){
-		resources = datasourceBasedResourceManager.getAllDistinct();
+		resources = dataResourceManager.getAllDistinct();
 		return SUCCESS;
 	}
 	

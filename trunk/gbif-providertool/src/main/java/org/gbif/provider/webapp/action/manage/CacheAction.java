@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResource> implements Preparable, SessionAware {
+public class CacheAction extends BaseResourceMetadataAction<OccurrenceResource> implements Preparable, SessionAware {
 	@Autowired
 	private ExtensionManager extensionManager;
 	@Autowired
@@ -43,10 +43,6 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
 
 	private List<Extension> extensions;
 	private String gChartData;
-
-    private File file;
-    private String fileContentType;
-    private String fileFileName;
 
 	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
         {  
@@ -61,6 +57,13 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
             }  
         };  
         
+
+	@Override
+	public String list() {
+		resources = resourceManager.getResourcesByUser(getCurrentUser().getId());
+		return SUCCESS;
+	}
+
 	@Override
 	protected OccurrenceResource newResource() {
 		return resourceFactory.newOccurrenceResourceInstance();
@@ -68,8 +71,10 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
 
 	@Override
 	public String execute() {
-		// create GoogleChart string
-		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
+		return SUCCESS;
+	}
+
+	public String mapping() {
 		// get all installed extensions for mappings
 		extensions = extensionManager.getAllInstalled(ExtensionType.Occurrence);
 		for (Extension ext : extensions) {
@@ -86,17 +91,12 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
 		return SUCCESS;
 	}
 
-	@Override
-	public String list() {
-		resources = resourceManager.getResourcesByUser(getCurrentUser().getId());
+
+	public String cache() {
+		// create GoogleChart string
+		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
 		return SUCCESS;
 	}
-
-	public String edit() {
-		return SUCCESS;
-	}
-
-
 	
 	
 	public Map<String, String> getJdbcDriverClasses() {
@@ -114,6 +114,10 @@ public class OccResourceAction extends BaseResourceManagerAction<OccurrenceResou
 	@Autowired		
 	public void sssutResourceManager(OccResourceManager occResourceManager) {		
 		this.resourceManager = occResourceManager;		
+	}
+	
+	public void setOccurrenceResourceTypes(Map<String, String> occurrenceResourceTypes) {
+		this.resourceTypes = occurrenceResourceTypes;
 	}
 	
 }

@@ -35,9 +35,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @param <T>
  */
-public class DatasourceBasedResourceManagerHibernate<T extends DataResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
+public class DataResourceManagerHibernate<T extends DataResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
 	
-	public DatasourceBasedResourceManagerHibernate(Class<T> persistentClass) {
+	public DataResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
 	}
 

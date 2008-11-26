@@ -1,6 +1,7 @@
 package org.gbif.provider.model;
 
 import java.io.File;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -13,6 +14,7 @@ import org.gbif.provider.util.AppConfig;
 public class SourceFile extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceFile.class);
 	private String filename;
+	private Date dateUploaded=new Date();
 
 	public SourceFile() {
 		super();
@@ -34,6 +36,14 @@ public class SourceFile extends SourceBase {
 		}else{
 			setFilename(null);
 		}
+	}
+	
+	@Transient
+	public Date getDateUploaded() {
+		return dateUploaded;
+	}
+	public void setDateUploaded(Date dateUploaded) {
+		this.dateUploaded = dateUploaded;
 	}
 	
 	@Override

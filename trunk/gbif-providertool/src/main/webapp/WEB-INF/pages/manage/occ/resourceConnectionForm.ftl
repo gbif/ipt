@@ -1,7 +1,7 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${resource.title}"/>
-    <meta name="submenu" content="manage"/>
+    <meta name="submenu" content="manage_resource"/>
 </head>
 
 <@s.form id="occResourceForm" action="saveResource" method="get" validate="true">

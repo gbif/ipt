@@ -522,4 +522,17 @@
 		<entry key="formaspecialis" value="taxonrank.formaspecialis"/>
 		<entry key="hybrid" value="taxonrank.hybrid"/>
 	</util:map>
+	
+	<util:map id="checklistResourceTypes">
+		<entry key="checklist" value="resourceType.tax.checklist"/>
+		<entry key="nomenclatural" value="resourceType.tax.nomenclatural"/>
+		<entry key="revision" value="resourceType.tax.revision"/>
+		<entry key="derived" value="resourceType.tax.derived"/>
+	</util:map>	
+	<util:map id="occurrenceResourceTypes">
+		<entry key="observations" value="resourceType.occ.observations"/>
+		<entry key="specimen" value="resourceType.occ.specimen"/>
+		<entry key="monitoring" value="resourceType.occ.monitoring"/>
+	</util:map>	
+	
 </beans>

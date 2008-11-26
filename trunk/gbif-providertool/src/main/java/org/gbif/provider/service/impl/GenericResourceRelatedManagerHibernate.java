@@ -1,5 +1,7 @@
 package org.gbif.provider.service.impl;
 
+import java.util.List;
+
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceRelatedObject;
 import org.gbif.provider.service.GenericResourceRelatedManager;
@@ -34,6 +36,12 @@ import org.springframework.transaction.annotation.Transactional;
 			        .executeUpdate();
 			log.info(String.format("Removed %s %ss bound to resource %s", count, resourceRelatedClass.getSimpleName(), resource.getTitle()));
 			return count;
+		}
+
+		public List<T> getAll(Long resourceId) {
+	        return query(String.format("from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
+			        .setLong("resourceId", resourceId)
+	        		.list();
 		}	
 
 	}

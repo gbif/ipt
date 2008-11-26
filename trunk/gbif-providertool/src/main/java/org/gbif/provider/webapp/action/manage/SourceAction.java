@@ -5,28 +5,74 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.ListUtils;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.GenericResourceRelatedManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 
-public class SourceFileUploadAction extends BaseAction{
+public class SourceAction extends BaseResourceAction{
 	private static final long serialVersionUID = -3698917712584074200L;
 	@Autowired
-	private DatasourceInspectionManager datasourceInspectionManager;
-    private GenericManager<ViewMappingBase> viewMappingManager;
+	private SourceInspectionManager sourceInspectionManager;
+	@Autowired
+	@Qualifier("sourceManager")
+    private GenericResourceRelatedManager<SourceBase> sourceManager;
+	@Autowired
+	@Qualifier("fileSourceManager")
+    private GenericResourceRelatedManager<SourceFile> fileSourceManager;
+	@Autowired
+	@Qualifier("sqlSourceManager")
+    private GenericResourceRelatedManager<SourceSql> sqlSourceManager;
+    private List<SourceFile> fileSources;
+    private List<SourceSql> sqlSources;
+    // file upload
     private File file;
     private String fileContentType;
     private String fileFileName;
-	private Long mapping_id;
-	/**
-     * Upload the file
+	private Long sid;
+
+	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
+    {  
+        {  
+            put("com.mysql.jdbc.Driver", "MySQL");
+            put("org.postgresql.Driver", "Postgres");
+            put("org.h2.Driver", "H2");
+            put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
+            put("oracle.jdbc.OracleDriver", "Oracle");  
+            put("org.hsqldb.jdbcDriver", "HSQL");  
+            put("org.apache.derby.jdbc.ClientDriver", "Derby");  
+        }  
+    };  	
+	
+
+    /**
+     * Default method - returns "input"
+     * @return "input"
+     */
+    public String execute() {
+    	fileSources = fileSourceManager.getAll(resource_id);
+    	sqlSources  = sqlSourceManager.getAll(resource_id);
+        return SUCCESS;
+    }
+    
+    /**
+     * Upload a source file
      * @return String with result (cancel, input or sucess)
      * @throws Exception if something goes wrong
 	 */
@@ -34,15 +80,15 @@ public class SourceFileUploadAction extends BaseAction{
         if (this.cancel != null) {
             return "cancel";
         }
-        if (mapping_id == null){
-        	log.error("mapping_id required for file upload");
+        if (sid == null){
+        	log.error("source id required for file upload");
         	return ERROR;
         }
         // check where it who wants this file and where to save
-		ViewMappingBase mapping = viewMappingManager.get(mapping_id);
-		DataResource resource = mapping.getResource();
-        // the directory to upload to
-		File targetFile = cfg.getSourceFile(resource.getId(), mapping.getExtension());
+		DataResource resource = (DataResource) this.getResource();
+		
+        // the file to upload to
+		File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
 		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));
         //retrieve the file data
         InputStream stream = new FileInputStream(file);
@@ -63,27 +109,21 @@ public class SourceFileUploadAction extends BaseAction{
         getRequest().setAttribute("location", targetFile.getAbsolutePath());
         
         // process file
-		mapping.setSource(new SourceFile(targetFile));
-		List<String> headers = datasourceInspectionManager.getHeader(mapping);
+		SourceFile source = new SourceFile();
+		source.setFilename(fileFileName);
+		source.setResource(resource);
+
+		List<String> headers = sourceInspectionManager.getHeader(source);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
 			// save file in view mapping
-	        viewMappingManager.save(mapping);
+			sourceManager.save(source);
 	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
-			mapping.setSource(null);
-	        viewMappingManager.save(mapping);
+			source.setResource(null);
 	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}
 		return SUCCESS;
-    }
-
-    /**
-     * Default method - returns "input"
-     * @return "input"
-     */
-    public String execute() {
-        return INPUT;
     }
 
     @Override
@@ -105,21 +145,6 @@ public class SourceFileUploadAction extends BaseAction{
 	
 	
 	
-
-	public Long getMapping_id() {
-		return mapping_id;
-	}
-
-
-	public void setMapping_id(Long mapping_id) {
-		this.mapping_id = mapping_id;
-	}
-
-	public void setViewMappingManager(
-			GenericManager<ViewMappingBase> viewMappingManager) {
-		this.viewMappingManager = viewMappingManager;
-	}
-
     public void setFile(File file) {
         this.file = file;
     }
@@ -143,4 +168,28 @@ public class SourceFileUploadAction extends BaseAction{
     public String getFileFileName() {
         return fileFileName;
     }
+
+	public Long getSid() {
+		return sid;
+	}
+
+	public void setSid(Long id) {
+		this.sid = id;
+	}
+
+	public List<SourceBase> getSources() {
+		return ListUtils.union(fileSources, fileSources);
+	}
+
+	public List<SourceFile> getFileSources() {
+		return fileSources;
+	}
+
+	public List<SourceSql> getSqlSources() {
+		return sqlSources;
+	}
+	public Map<String, String> getJdbcDriverClasses() {
+		return jdbcDriverClasses;
+	}
+    
 }
