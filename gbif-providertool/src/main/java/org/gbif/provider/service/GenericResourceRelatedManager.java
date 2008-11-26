@@ -14,4 +14,11 @@ public interface GenericResourceRelatedManager<T extends ResourceRelatedObject> 
 	 * @return number of deleted instances of T
 	 */
 	int removeAll(Resource resource);
+
+	/**
+	 * Retrieves all records linked to a given resource
+	 * @param resourceId of the resource in question
+	 * @return number of deleted instances of T
+	 */
+	List<T> getAll(Long resourceId);
 }

@@ -82,16 +82,25 @@
     </bean>
     
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
-    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate" parent="abstractManager">        
+    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DataResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
     </bean>
-    <bean id="datasourceBasedResourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.DatasourceBasedResource"/>
+    <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DataResourceManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.DataResource"/>
     </bean>
     <bean id="resourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
 
+    <bean id="sourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.SourceBase"/>
+    </bean>    
+    <bean id="fileSourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.SourceFile"/>
+    </bean>    
+    <bean id="sqlSourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.SourceSql"/>
+    </bean>    
     <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
     </bean>    
@@ -110,7 +119,7 @@
 
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" />
 
-    <bean id="datasourceInspectionManager" class="org.gbif.provider.service.impl.DatasourceInspectionManagerImpl">        
+    <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl">        
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
     </bean>
     

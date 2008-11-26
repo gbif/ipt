@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public abstract class BaseResourceManagerAction<T extends Resource> extends BaseAction implements Preparable, SessionAware{
+public abstract class BaseResourceMetadataAction<T extends Resource> extends BaseAction implements Preparable, SessionAware{
 	protected Map session;
 	@Autowired
 	protected ResourceFactory resourceFactory;
@@ -36,7 +36,9 @@ public abstract class BaseResourceManagerAction<T extends Resource> extends Base
 	protected T resource;
 	protected List<T> resources;
 	protected Eml eml;
-	// file upload
+	protected Map<String, String> resourceTypes;
+	
+	// file/logo upload
 	protected File file;
 	protected String fileContentType;
 	protected String fileFileName;
@@ -60,7 +62,7 @@ public abstract class BaseResourceManagerAction<T extends Resource> extends Base
 	}
 
 	public String list(){
-		resources = resourceManager.getTop(10);
+		resources = resourceManager.getResourcesByUser(getCurrentUser().getId());
 		return SUCCESS;
 	}
 	
@@ -237,5 +239,9 @@ public abstract class BaseResourceManagerAction<T extends Resource> extends Base
 	public void setResource(T resource) {
 		this.resource = resource;
 	}
-    
+
+	public Map<String, String> getResourceTypes() {
+		return resourceTypes;
+	}
+
 }

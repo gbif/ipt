@@ -473,7 +473,8 @@ import org.springframework.transaction.annotation.Transactional;
 										bbox.expandBox(dwc.getLocation());
 										// potentially transform coordinates
 										String geodatum=extRec.getPropertyValue(DarwinCore.GEODATUM_PROP);
-										if (geodatum!=null && dwc.getLocation()!=null){
+										// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
+										if (false && geodatum!=null && dwc.getLocation()!=null){
 											// FIXME: keep hasmap of used datums and their transformer. 
 											// Its expensive to create those
 											// Wgs84Transformer t = wgs84Util.getWgs84Transformer(geodatum);

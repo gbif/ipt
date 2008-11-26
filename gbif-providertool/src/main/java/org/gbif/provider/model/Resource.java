@@ -84,11 +84,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.guid = guid;
 	}
 
-	@Transient
-	public String getType(){
-		return getClass().getSimpleName();
-	}
-		
 	public Date getModified() {
 		return modified;
 	}
@@ -171,7 +166,11 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	@Transient
 	public String getTitle() {
-		return getMeta()	.getTitle();
+		return getMeta().getTitle();
+	}
+	@Transient
+	public String getType() {
+		return meta.getTitle();
 	}
 	
 
@@ -189,6 +188,9 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	public void setTitle(String title) {
 		meta.setTitle(title);
+	}
+	public void setType(String type) {
+		meta.setType(type);
 	}
 	
 

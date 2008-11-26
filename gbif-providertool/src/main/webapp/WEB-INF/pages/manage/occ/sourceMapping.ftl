@@ -1,7 +1,7 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${view.resource.title}"/>
-    <meta name="submenu" content="manage"/>
+    <meta name="submenu" content="manage_resource"/>
     <script>
     	function copySQL(sql){
     		$('mappingSourceSql').value=sql;
@@ -84,40 +84,5 @@
 	</p>
 </div>
 
-
-<div id="viewBasics">
-<#if columnOptions??>
-	<#-- import source is configured -->
-	<h2>Assign Basic Record Properties</h2>
-	<@s.form action="saveMappingSource" method="post" validate="true">
-	    <li style="display: none">
-	        <@s.hidden key="mapping_id"/>
-		    <@s.hidden key="resource_id"/>
-	    </li>
-	
-	 	<@s.select key="view.coreIdColumn.columnName" required="true"
-			headerKey="Select local identifier for core record" emptyOption="false" 
-			list="columnOptions" />
-			
-		<#if view.isCore()>
-	 	<@s.select key="view.guidColumn.columnName" required="false" emptyOption="true" 
-			list="columnOptions" />
-	 	<@s.select key="view.linkColumn.columnName" required="false" emptyOption="true" 
-			list="columnOptions" />
-	 	</#if>
-	 	
-	 	<br/>
-	 	
-	    <li class="buttonBar bottom">
-	        <@s.submit cssClass="button" key="button.save" theme="simple"/>
-		    <#if (view.id)??>
-		        <@s.submit cssClass="button" name="delete" key="button.delete" onclick="return confirmDelete('import source')" theme="simple"/>
-		    </#if>
-	        <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
-	    </li>
-
-	</@s.form> 
-</#if>
-</div>
 
 <br />

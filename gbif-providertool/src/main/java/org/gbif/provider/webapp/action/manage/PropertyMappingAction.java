@@ -33,7 +33,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ import com.opensymphony.xwork2.Preparable;
 public class PropertyMappingAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware{
 	private static Integer FIXED_TERMS_IDX = 1000;
 	@Autowired
-    private DatasourceInspectionManager datasourceInspectionManager;
+    private SourceInspectionManager sourceInspectionManager;
 	@Autowired
 	@Qualifier("viewMappingManager")
     private GenericManager<ViewMappingBase> viewMappingManager;
@@ -98,7 +98,7 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 		// generate basic column mapping options based on source headers
 		columnOptions = new ArrayList<String>();
 		try {
-			columnOptions = datasourceInspectionManager.getHeader(view);
+			columnOptions = sourceInspectionManager.getHeader(view.getSource());
 		} catch (Exception e) {
 			log.debug("Cant read datasource column headers", e);
 		}
@@ -137,7 +137,7 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
         viewColumnHeaders = new ArrayList<String>();
 		try {
             // get first 5 rows into list of list for previewing data
-            preview = datasourceInspectionManager.getPreview(view);
+            preview = sourceInspectionManager.getPreview(view.getSource());
             viewColumnHeaders = (List<String>) preview.remove(0);
         } catch (Exception e) {
             String msg = getText("view.sqlError");

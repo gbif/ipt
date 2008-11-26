@@ -7,6 +7,9 @@
 <s:url id="resourcePortal" action="resource" namespace="/" includeParams="none">
 	<s:param name="resource_id" value="resource_id" />
 </s:url>
+<s:url id="listRes" action="resources" includeParams="none"/>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <%@ include file="/common/meta.jsp" %>
@@ -35,9 +38,6 @@
 
 			    <c:choose>
 			        <c:when test='${currentSubMenu == "manage"}'>
-		                <s:a href="%{resourcePortal}">
-		                	<h1 id="resourceName">${currentResourceTitle}</h1>
-		                </s:a>
 						<div id="actions">
 							<label>Resource Actions</label>
 							<ul class="plain">
@@ -45,9 +45,6 @@
 									<s:param name="resource_id" value="" />
 								</s:url>
 								<li><s:a href="%{newRes}">New Resource</s:a></li>
-
-								<s:url id="listRes" action="resources" includeParams="none"/>
-								<li><s:a href="%{listRes}">List Resources</s:a></li>
 							</ul>
 						</div>
 						
@@ -60,10 +57,42 @@
 									</s:url>
 									<li><s:a href="%{recentLink}"><s:property value="label"/></s:a></li>
 								</s:iterator>
+								<li><s:a href="%{listRes}">All Resources</s:a></li>
 							</ul>
 						</div>
 			        </c:when>
 
+			        <c:when test='${currentSubMenu == "manage_resource"}'>
+		                <s:a href="%{resourcePortal}">
+		                	<h1 id="resourceName">${currentResourceTitle}</h1>
+		                </s:a>
+						<div id="actions">
+							<label>Resource Configuration</label>
+							<ul class="plain">								
+								<li><a href="<s:url action="resource"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.metadata"/> </a></li>
+								<li><a href="<s:url action="sources"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.sources"/> </a></li>
+								<li><a href="<s:url action="transformations"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.transformations"/> </a></li>
+								<li><a href="<s:url action="coreMapping"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.coreMapping"/> </a></li>
+								<li><a href="<s:url action="extensionMappings"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.extensionMappings"/> </a></li>
+								<li><a href="<s:url action="cache"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.cache"/> </a></li>
+								<li><a href="<s:url action="validation"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.validation"/> </a></li>
+							</ul>
+						</div>
+						
+						<div id="recentlyViewedResources">
+							<label>Recent Resources</label>
+							<ul class="plain">
+								<s:iterator value="#session.recentResources" status="resstatus">
+									<s:url id="recentLink" action="resource" includeParams="none">
+										<s:param name="resource_id" value="value" />
+									</s:url>
+									<li><s:a href="%{recentLink}"><s:property value="label"/></s:a></li>
+								</s:iterator>
+								<li><s:a href="%{listRes}">All Resources</s:a></li>
+							</ul>
+						</div>
+			        </c:when>
+			        
 			        <c:when test='${currentSubMenu == "eml"}'>
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>

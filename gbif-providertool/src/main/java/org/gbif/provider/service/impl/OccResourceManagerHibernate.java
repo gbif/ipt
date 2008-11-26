@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class OccResourceManagerHibernate extends DatasourceBasedResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
+public class OccResourceManagerHibernate extends DataResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
 	private static final int MAX_CHART_DATA = 20;
 
 	@Autowired

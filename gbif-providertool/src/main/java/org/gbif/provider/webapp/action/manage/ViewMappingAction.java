@@ -39,7 +39,9 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.model.voc.ExtensionType;
+import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +49,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class SourceMappingAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware{
+public class ViewMappingAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware{
 	private static Integer FIXED_TERMS_IDX = 1000;
 	@Autowired
-    private DatasourceInspectionManager datasourceInspectionManager;
+    private SourceInspectionManager sourceInspectionManager;
 	@Autowired
-	@Qualifier("extensionManager")
-    private GenericManager<Extension> extensionManager;
+    private ExtensionManager extensionManager;
 	@Autowired
 	@Qualifier("viewMappingManager")
     private GenericManager<ViewMappingBase> viewMappingManager;
@@ -62,6 +63,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
 	private Long extension_id;
 	private ViewMappingBase view;
 	private OccurrenceResource resource;
+	private List<Extension> extensions;
 	// temp stuff
     private SortedMap<String, String> columnOptions;
     private Set<ViewMappingBase> existingDbViews;
@@ -100,7 +102,7 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
 	        columnOptions = new TreeMap<String, String>();
 	    	List<String> viewColumnHeaders;
 			try {
-				viewColumnHeaders = datasourceInspectionManager.getHeader(view);
+				viewColumnHeaders = sourceInspectionManager.getHeader(view.getSource());
 				for (String head : viewColumnHeaders){
 					columnOptions.put(head, head);
 				}
@@ -115,51 +117,6 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
     }
 
     
-    public String upload() throws Exception {
-        if (this.cancel != null) {
-            return "cancel";
-        }
-        if (delete != null) {
-            return delete();
-        }
-        // the directory to upload to
-		File targetFile = cfg.getSourceFile(resource_id, view.getExtension());
-		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));
-        //retrieve the file data
-        InputStream stream = new FileInputStream(file);
-
-        //write the file to the file specified
-        OutputStream bos = new FileOutputStream(targetFile);
-        int bytesRead;
-        byte[] buffer = new byte[8192];
-
-        while ((bytesRead = stream.read(buffer, 0, 8192)) != -1) {
-            bos.write(buffer, 0, bytesRead);
-        }
-
-        bos.close();
-        stream.close();
-
-        // place the data into the request for retrieval on next page
-        getRequest().setAttribute("location", targetFile.getAbsolutePath());
-        
-        // process file
-		view.setSource(new SourceFile(targetFile));
-		List<String> headers = datasourceInspectionManager.getHeader(view);
-		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
-		if (headers.size() > 1){
-			// save file in view mapping
-	        viewMappingManager.save(view);
-	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
-		}else{
-			view.setSource(null);
-	        viewMappingManager.save(view);
-	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
-		}
-		
-		prepare();
-		return SUCCESS;
-    }
 
     public String save() throws Exception {
         if (cancel != null) {
@@ -190,7 +147,24 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
         return CANCEL;
     }
 
-    
+
+	public String mapping() {
+		// get all installed extensions for mappings
+		extensions = extensionManager.getAllInstalled(ExtensionType.Occurrence);
+		for (Extension ext : extensions) {
+			if (ext.getId().equals(OccurrenceResource.CORE_EXTENSION_ID)) {
+				// only show extensions sensu strictu. remove core "extension"
+				extensions.remove(ext);
+				break;
+			}
+		}
+		// filter already mapped extensions
+		for (ViewMappingBase map : resource.getAllMappings()) {
+			extensions.remove(map.getExtension());
+		}
+		return SUCCESS;
+	}
+
     
     
     
@@ -258,5 +232,8 @@ public class SourceMappingAction extends BaseOccurrenceResourceAction implements
 	public void setView(ViewMappingBase view) {
 		this.view = view;
 	}
-    
+
+	public List getExtensions() {
+		return extensions;
+	}
 }

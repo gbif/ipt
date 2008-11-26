@@ -20,6 +20,7 @@ package org.gbif.provider.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Lob;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -33,6 +34,7 @@ import org.apache.commons.lang.StringUtils;
 @Embeddable
 public class ResourceMetadata{
 	protected String link;
+	protected String type = getClass().getSimpleName();
 	protected String title;
 	protected String description;
 	protected String contactName;
@@ -44,6 +46,16 @@ public class ResourceMetadata{
 	}
 	public void setLink(String link) {
 		this.link = StringUtils.trimToNull(link);
+	}
+	
+	@Transient
+//	@Column(length=64)
+//	@org.hibernate.annotations.Index(name="rtype")
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	@Column(length=128)

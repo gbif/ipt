@@ -4,13 +4,13 @@ import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.DatasourceInspectionManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class BaseExternalDatasourceTest extends ContextAwareTestBase {
 	@Autowired
-	protected DatasourceInspectionManager datasourceInspectionManager;
+	protected SourceInspectionManager datasourceInspectionManager;
 	@Autowired
 	private DatasourceRegistry datasourceRegistry;
 	@Autowired
