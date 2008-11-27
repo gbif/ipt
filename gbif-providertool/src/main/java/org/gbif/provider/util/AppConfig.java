@@ -163,8 +163,12 @@ public class AppConfig{
     }
 
     // SOURCE/UPLOAD FILES
-    public File getSourceFile(Long resourceId, String fileName) throws IOException{    	
-		return new File(getResourceDataDir(resourceId), String.format("sources/%s", fileName));
+    public File getSourceFile(Long resourceId, String fileName) throws IOException{
+    	File f = new File(getResourceDataDir(resourceId), String.format("sources/%s", fileName));
+	    if (!f.getParentFile().exists()) {
+	        f.getParentFile().mkdirs();
+	    }
+		return f;
 	}    
 
     // DUMP FILES
