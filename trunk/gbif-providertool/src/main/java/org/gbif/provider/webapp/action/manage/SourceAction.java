@@ -149,7 +149,9 @@ public class SourceAction extends BaseResourceAction implements Preparable{
 			fsource.setResource(null);
 	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}
-		return SUCCESS;
+		
+		// get sources data
+		return list();
     }
 
     
@@ -180,6 +182,7 @@ public class SourceAction extends BaseResourceAction implements Preparable{
             } else if (file.length() > 2097152) {
                 addActionError(getText("maxLengthExceeded"));
             }
+            list();
         }
     }
     
