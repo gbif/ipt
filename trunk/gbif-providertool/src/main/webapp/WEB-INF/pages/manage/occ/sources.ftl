@@ -15,21 +15,22 @@ If your data does not exactly match those formats you have the option to configu
 <div class="break">
 	<p>
 	File data sources are tab delimited files with a maximum of 1MB currently (limit will be removed in final version).
+	To upload a new file version of an existing source, simple upload a file with the same name as the existing one.
 	</p>
 </div>
 <fieldset>
 <legend><@s.text name="sources.filesources"/></legend>
-	<@s.iterator value="fileSources" status="rowstatus">
-	<@s.form action="uploadSource" method="post">
+	<@s.iterator value="fileSources" status="stat">
+	<@s.form action="saveSource" method="post">
 	  <@s.hidden key="resource_id"/>
-	  <@s.hidden key="sid"/>
+	  <@s.hidden key="sid" value="${id}"/>
 		<div class="newline">
 			<div class="left">
-				<strong>${filename}</strong> 
+				<strong>${stat.index+1}) ${filename}</strong> 
 				<span>[${dateUploaded?date}]</span>
 			</div>
 			<div class="right">
-				<@s.submit cssClass="button right" key="button.delete" method="delete" theme="simple"/>
+				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete('file source')" theme="simple"/>
 			</div>
 		</div>
 	</@s.form>
@@ -83,17 +84,19 @@ If your data does not exactly match those formats you have the option to configu
 	<div class="break">
 		<#if resource.hasDbConnection() && (sqlSources?size>0)>
 			<@s.iterator value="sqlSources" status="stat">
+				<div class="newline">
 				<@s.form action="editSource" method="get">
 				  <@s.hidden key="resource_id"/>
 				  <@s.hidden key="sid" value="${id}"/>
 					<div class="left">
-						<strong>${name!"Please enter a name"}</strong> : 
-						<span class="sql">${sql?substring(0, 50)}</span>
+						<strong>${stat.index+1}) ${name!"???"}</strong> : 
+						<span class="sql"><#if (sql?length>50)>${sql?substring(0, 50)}<#else>${sql}</#if></span>
 					</div>
 					<div class="right">
 					  <@s.submit cssClass="button" key="button.edit"/>
 					</div>
 				</@s.form>
+				</div>
 			</@s.iterator>	
 		</#if>
 	</div>

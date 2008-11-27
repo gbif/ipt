@@ -8,9 +8,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.NotNull;
+
 @Entity
 public abstract class SourceBase implements BaseObject, ResourceRelatedObject{
 	private Long id;	
+	@NotNull
 	protected DataResource resource;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -22,7 +25,7 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject{
 	}
 			
 	@ManyToOne(optional=false)
-	@JoinColumn(name = "resource_fk", insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = "resource_fk")
 	public DataResource getResource() {
 		return resource;
 	}

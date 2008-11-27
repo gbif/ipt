@@ -172,7 +172,7 @@ public abstract class DataResource extends Resource {
 		this.jdbcPassword = jdbcPassword;
 	}
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="resource")
 	public Set<SourceBase> getSources() {
 		return sources;
 	}

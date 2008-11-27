@@ -40,6 +40,7 @@ public class SourceAction extends BaseResourceAction implements Preparable{
     private List<SourceFile> fileSources = new ArrayList<SourceFile>();
     private List<SourceSql> sqlSources = new ArrayList<SourceSql>();
     private SourceSql source;
+	private DataResource dataResource;
     // file upload
     private File file;
     private String fileContentType;
@@ -51,8 +52,12 @@ public class SourceAction extends BaseResourceAction implements Preparable{
     @Override
 	public void prepare() {
 		super.prepare();
+		dataResource = (DataResource) resource;
 		if (sid != null) {
-			source = (SourceSql) sourceManager.get(sid);
+			SourceBase s = sourceManager.get(sid);
+			if (s instanceof SourceSql){
+				source = (SourceSql) s;
+			}
 		}else{
 			source = new SourceSql();
 		}
@@ -85,14 +90,15 @@ public class SourceAction extends BaseResourceAction implements Preparable{
 		if (delete != null) {
 			return delete();
 		}
+		source.setResource(dataResource);
     	sourceManager.save(source);
     	return SUCCESS;
     }
     
     
     public String delete() {
-    	if (source != null){
-        	sourceManager.remove(source);
+    	if (sid != null){
+        	sourceManager.remove(sid);
     	}
 		return "delete";
 	}
@@ -103,17 +109,9 @@ public class SourceAction extends BaseResourceAction implements Preparable{
      * @throws Exception if something goes wrong
 	 */
     public String upload() throws Exception {
-    	// find source by filename if it exists already
-        if (sid == null){
-        	log.error("source id required for file upload");
-        	return ERROR;
-        }
-        // check where it who wants this file and where to save
-		DataResource resource = (DataResource) this.getResource();
-		
         // the file to upload to
-		File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
-		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));
+		File targetFile = cfg.getSourceFile(dataResource.getId(), fileFileName);
+		log.debug(String.format("Uploading source file for resource %s to file %s",dataResource.getId(), targetFile.getAbsolutePath()));
         //retrieve the file data
         InputStream stream = new FileInputStream(file);
 
@@ -129,22 +127,20 @@ public class SourceAction extends BaseResourceAction implements Preparable{
         bos.close();
         stream.close();
 
-        // place the data into the request for retrieval on next page
-        getRequest().setAttribute("location", targetFile.getAbsolutePath());
-        
         // process file
-		SourceFile source = new SourceFile();
-		source.setFilename(fileFileName);
-		source.setResource(resource);
+    	// FIXME: select existing source with that filename if already exists.
+		SourceFile fsource = new SourceFile();
+		fsource.setFilename(fileFileName);
+		fsource.setResource(dataResource);
 
-		List<String> headers = sourceInspectionManager.getHeader(source);
+		List<String> headers = sourceInspectionManager.getHeader(fsource);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
 		if (headers.size() > 1){
 			// save file in view mapping
-			sourceManager.save(source);
+			sourceManager.save(fsource);
 	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
-			source.setResource(null);
+			fsource.setResource(null);
 	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
 		}
 		return SUCCESS;
