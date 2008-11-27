@@ -92,9 +92,8 @@
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
 
-    <bean id="sourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.SourceBase"/>
-    </bean>    
+    <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
+    
     <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
     </bean>    
