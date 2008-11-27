@@ -14,7 +14,7 @@ If your data does not exactly match those formats you have the option to configu
 
 <div class="break">
 	<p>
-	File data sources are tab delimited files with a maximum of 1MB currently (limit will be removed in final version).
+	File data sources are tab delimited files with a maximum of 2MB currently (limit will be removed in final version).
 	To upload a new file version of an existing source, simple upload a file with the same name as the existing one.
 	</p>
 </div>
@@ -26,8 +26,10 @@ If your data does not exactly match those formats you have the option to configu
 	  <@s.hidden key="sid" value="${id}"/>
 		<div class="newline">
 			<div class="left">
-				<strong>${stat.index+1}) ${filename}</strong> 
-				<span>[${(dateUploaded??)?datetime}]</span>
+				<strong>${stat.index+1}) ${filename}</strong>
+				<#if dateUploaded??>
+				<span>[${dateUploaded?datetime}]</span>
+				</#if>
 			</div>
 			<div class="right">
 				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete('file source')" theme="simple"/>

@@ -524,10 +524,8 @@
             <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
         </action>
         <action name="uploadSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="upload">
-            <result name="success" type="redirect-action">
-                <param name="actionName">sources</param>
-                <param name="resource_id">${resource.id}</param>
-            </result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
+            <result name="input"  type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
             <result name="error" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
