@@ -14,7 +14,7 @@ import org.gbif.provider.util.AppConfig;
 public class SourceFile extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceFile.class);
 	private String filename;
-	private Date dateUploaded=new Date();
+	private Date dateUploaded;
 
 	public SourceFile() {
 		super();

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.GenericResourceRelatedManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +37,7 @@ public class SourceAction extends BaseResourceAction implements Preparable{
 	@Autowired
 	private SourceInspectionManager sourceInspectionManager;
 	@Autowired
-	@Qualifier("sourceManager")
-    private GenericResourceRelatedManager<SourceBase> sourceManager;
+    private SourceManager sourceManager;
     private List<SourceFile> fileSources = new ArrayList<SourceFile>();
     private List<SourceSql> sqlSources = new ArrayList<SourceSql>();
     private SourceSql source;
@@ -127,11 +128,16 @@ public class SourceAction extends BaseResourceAction implements Preparable{
         bos.close();
         stream.close();
 
-        // process file
-    	// FIXME: select existing source with that filename if already exists.
-		SourceFile fsource = new SourceFile();
-		fsource.setFilename(fileFileName);
-		fsource.setResource(dataResource);
+        // process file. Check if file was uploaded before
+		SourceFile fsource = sourceManager.getSourceByFilename(resource_id, fileFileName);
+		if (fsource==null){
+			// new source
+			fsource = new SourceFile();
+			fsource.setResource(dataResource);
+			fsource.setFilename(fileFileName);
+		}
+		// set new upload timestamp
+		fsource.setDateUploaded(new Date());
 
 		List<String> headers = sourceInspectionManager.getHeader(fsource);
 		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
