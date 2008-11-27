@@ -41,7 +41,7 @@
 						<div id="actions">
 							<label>Resource Actions</label>
 							<ul class="plain">
-								<s:url id="newRes" action="addResource" includeParams="none">
+								<s:url id="newRes" action="resource" includeParams="none">
 									<s:param name="resource_id" value="" />
 								</s:url>
 								<li><s:a href="%{newRes}">New Resource</s:a></li>

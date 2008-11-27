@@ -95,12 +95,6 @@
     <bean id="sourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.SourceBase"/>
     </bean>    
-    <bean id="fileSourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.SourceFile"/>
-    </bean>    
-    <bean id="sqlSourceManager" class="org.gbif.provider.service.impl.GenericResourceRelatedManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.SourceSql"/>
-    </bean>    
     <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
     </bean>    

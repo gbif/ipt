@@ -15,29 +15,39 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.util.AppConfig;
+import org.hibernate.validator.NotNull;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 @Entity
 public class SourceSql extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceSql.class);
 	private String sql;
-	
+	@NotNull
+	private String name;	
 
 	public SourceSql() {
 		super();
 	}
-	public SourceSql(String sql) {
+	public SourceSql(String name, String sql) {
 		super();
 		this.sql = sql;
 	}
+	
 	@Lob
 	public String getSql() {
 		return sql;
 	}
 	public void setSql(String sql) {
 		this.sql = sql;
+	}	
+	
+	@Column(length=128)
+	public String getName() {
+		return name;
 	}
-
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	@Override
 	@Transient

@@ -508,9 +508,6 @@
             <result>/WEB-INF/pages/manage/occ/occResourceList.jsp</result>
         </action>
         
-        <action name="addResource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
-        </action>
         <action name="resource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
             <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
         </action>        
@@ -523,24 +520,45 @@
             <result name="delete" type="redirect-action">resources</result>
         </action>
 
-        <action name="sources" class="org.gbif.provider.webapp.action.manage.SourceAction">
+        <action name="sources" class="org.gbif.provider.webapp.action.manage.SourceAction" method="list">
             <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
         </action>
-        <action name="uploadSource" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="upload">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/viewMapping.ftl</result>
+        <action name="uploadSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="upload">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
         </action>
-        <action name="editResourceConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/resourceConnectionForm.ftl</result>
+        <action name="editSource" class="org.gbif.provider.webapp.action.manage.SourceAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sourceSqlForm.ftl</result>
         </action>
-        <action name="saveSource" class="org.gbif.provider.webapp.action.manage.ViewMappingAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/viewMapping.ftl</result>
-            <result type="redirect-action">
-                <param name="actionName">editMappingProperties</param>
-                <param name="resource_id">${resource_id}</param>
-                <param name="mapping_id">${mapping_id}</param>
+        <action name="saveSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/sourceSqlForm.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="delete" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
-
+        <action name="editConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/resourceConnectionForm.ftl</result>
+        </action>
+        <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/resourceConnectionForm.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>        
+        
         <action name="transformations" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sources">
             <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
         </action>
@@ -618,10 +636,6 @@
             <result>/WEB-INF/pages/manage/meta/resourceList.jsp</result>
         </action>
         
-        <action name="addResource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-        </action>
         <action name="resource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction">
             <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
             <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
