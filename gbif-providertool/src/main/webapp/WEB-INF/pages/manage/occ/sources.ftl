@@ -6,75 +6,106 @@
 
 
 <p>Please upload your data as tab files or define a SQL view to pull it from a database.
-If you can, please provide your data in this format. Otherwise you have the option
-to do simple manipulations to your data in the next configuration step.</p>
+You can define as many sources as you like, but there needs to be at least one.
+Readily supported formats can be <a href="">found here</a>. 
+If your data does not exactly match those formats you have the option to configure simple transformations and adjustments in the next configuration step.
+</p>
 
-<div>
-<legend><@s.text name="fileSources.list"/></legend>
-<table class="lefthead">
-	<tr>
-		<th>Filename</th>
-		<th>Uploaded</th>
-		<th>Columns</th>
-		<th></th>
-	</tr>
-	<#list fileSources as s>
-	<@s.form action="deleteSource" method="post">
+
+<div class="break">
+	<p>
+	File data sources are tab delimited files with a maximum of 1MB currently (limit will be removed in final version).
+	</p>
+</div>
+<fieldset>
+<legend><@s.text name="sources.filesources"/></legend>
+	<@s.iterator value="fileSources" status="rowstatus">
+	<@s.form action="uploadSource" method="post">
 	  <@s.hidden key="resource_id"/>
-		<tr>
-			<td>${s.filename}</td>
-			<td>${s.dateUploaded}</td>
-			<td>?</td>
-			<td><@s.submit cssClass="button" key="button.delete"/></td>
-		</tr>
+	  <@s.hidden key="sid"/>
+		<div class="newline">
+			<div class="left">
+				<strong>${filename}</strong> 
+				<span>[${dateUploaded?date}]</span>
+			</div>
+			<div class="right">
+				<@s.submit cssClass="button right" key="button.delete" method="delete" theme="simple"/>
+			</div>
+		</div>
 	</@s.form>
-	</#list>
-</table>
+	</@s.iterator>
+	
+	<div class="break">
+	  <@s.form action="uploadSource" enctype="multipart/form-data" method="post">
+		<@s.hidden key="resource_id"/>
+		<div class="left">
+			<@s.file name="file" key="sources.selectSourceFile" cssClass="file tablefile" required="false"/>
+		</div>
+		<div class="right">
+			<li class="wwgrp">
+				<div class="wwlbl">&nbsp;</div>
+				<@s.submit cssClass="button" key="button.upload" />
+			</li>
+		</div>
+	  </@s.form>
+	</div>
+</fieldset>
+
+
+<div class="break">
+<p>
+	SQL data sources are sql select statements to an external relational database (like views).
+	The IPT can pull data from those databases when updating the internal cache.
+</p>
 </div>
-    
-
-<div>
-<legend><@s.text name="sqlSources.list"/></legend>
-<@s.form action="editResourceConnection" method="get">
-  <@s.hidden name="resource_id" value="${resource.id}"/>
-	<#if resource.hasDbConnection()>
-		<@s.label key="occResource.hasDbConnection" value="${resource.jdbcUrl}"/>
-	<#else>
-		<p class="reminder"><@s.text name="occResource.noDbConnection" /></p>
-	</#if>
-    <@s.submit cssClass="button" key="button.edit"/>
-</@s.form>
-</div>
-
-
-<#if resource.hasDbConnection()>
-<div>
-	<table class="lefthead">
-		<tr>
-			<th>Name</th>
-			<th>SQL</th>
-			<th>Columns</th>
-			<th></th>
-		</tr>
-		<#list sqlSources as s>
-		<@s.form action="deleteSource" method="post">
+<fieldset>
+<legend><@s.text name="sources.sqlsources"/></legend>
+	<div>
+		<@s.form action="editConnection" method="get">
 		  <@s.hidden key="resource_id"/>
-			<tr>
-				<td>${s.name}</td>
-				<td>${s.sql}</td>
-				<td>?</td>
-				<td><@s.submit cssClass="button" key="button.delete"/></td>
-			</tr>
-			<tr>
-				<td cols="3"><@s.textarea key="sqlSources[${s_index}].sql" title="sql" cssClass="text xlarge"/></td>
-				<td>
-					<@s.submit cssClass="button" key="button.save"/>
-				</td>
-			</tr>
+		  	<div>
+		  	<div class="left">
+			<#if resource.hasDbConnection()>
+				<@s.label key="resource.jdbcUrl" />
+			<#else>
+				<p class="reminder">
+					<@s.text name="sources.noDbConnection" />
+				</p>
+			</#if>
+			</div>
+			<div>		
+		  <@s.submit cssClass="button" key="button.edit" />
+		  </div>
+		  </div>
 		</@s.form>
-		</#list>
-	</table>
-</div>
-</#if>
+	</div>
+
+	<div class="break">
+		<#if resource.hasDbConnection() && (sqlSources?size>0)>
+			<@s.iterator value="sqlSources" status="stat">
+				<@s.form action="editSource" method="get">
+				  <@s.hidden key="resource_id"/>
+				  <@s.hidden key="sid" value="${id}"/>
+					<div class="left">
+						<strong>${name!"Please enter a name"}</strong> : 
+						<span class="sql">${sql?substring(0, 50)}</span>
+					</div>
+					<div class="right">
+					  <@s.submit cssClass="button" key="button.edit"/>
+					</div>
+				</@s.form>
+			</@s.iterator>	
+		</#if>
+	</div>
+	<div class="break">
+		<#if resource.hasDbConnection()>
+			<@s.form action="editSource" method="get">
+			  <@s.hidden key="resource_id"/>
+			  <@s.hidden key="sid" value=""/>
+			  <@s.submit cssClass="button" key="button.add" />
+			</@s.form>
+		</#if>
+	</div>
+</fieldset>
 
 

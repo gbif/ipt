@@ -8,8 +8,8 @@
 
 <#include "/WEB-INF/pages/manage/resourceMetadataForm.ftl">  
 
-<#if resource.creator??>
+<#if resource.modified??>
 <p>
-	<@s.text name="dataResource.lastModified"/> ${resource.modified} by ${resource.modifier.getFullName()}
+	<@s.text name="dataResource.lastModified"/> ${resource.modified} <#if resource.modifier??>by ${resource.modifier.getFullName()}</#if>
 </p>
 </#if>

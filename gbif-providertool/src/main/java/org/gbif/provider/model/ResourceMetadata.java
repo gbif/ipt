@@ -48,9 +48,8 @@ public class ResourceMetadata{
 		this.link = StringUtils.trimToNull(link);
 	}
 	
-	@Transient
-//	@Column(length=64)
-//	@org.hibernate.annotations.Index(name="rtype")
+	@Column(length=64)
+	@org.hibernate.annotations.Index(name="rtype")
 	public String getType() {
 		return type;
 	}

@@ -47,6 +47,25 @@ form .xhalf{
     float: left;
 }
 
+.tablefile{
+	font-size:1em;
+	line-height:1em;
+}
+
+.fullsize {
+	width: 100%;
+}
+
+table.topheader td {
+	padding-right: 10px;
+}
+table.topheader th{
+	padding-top: 20px;
+}
+table.topheader td {
+	padding-top: 5px;
+}
+
 table.lefthead td {
 	padding-left: 20px;
 }
@@ -92,7 +111,7 @@ ul.actionmenu {
 	list-style-type: none;
     padding: 0;
 }
-ul.actionmenu li{
+a.actionbutton, ul.actionmenu li{
 	float: none;
 	list-style-type: none;
 	display: inline;

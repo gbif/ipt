@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -42,7 +43,20 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
 	protected File file;
 	protected String fileContentType;
 	protected String fileFileName;
-
+	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
+    {  
+        {  
+            put("com.mysql.jdbc.Driver", "MySQL");
+            put("org.postgresql.Driver", "Postgres");
+            put("org.h2.Driver", "H2");
+            put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
+            put("oracle.jdbc.OracleDriver", "Oracle");  
+            put("org.hsqldb.jdbcDriver", "HSQL");  
+            put("org.apache.derby.jdbc.ClientDriver", "Derby");  
+        }  
+    };  	
+    
+    
     protected abstract T newResource();
     
 	public void prepare() {
@@ -243,5 +257,7 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
 	public Map<String, String> getResourceTypes() {
 		return resourceTypes;
 	}
-
+	public Map<String, String> getJdbcDriverClasses() {
+		return jdbcDriverClasses;
+	}
 }

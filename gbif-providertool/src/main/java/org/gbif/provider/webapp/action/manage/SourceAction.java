@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.ListUtils;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
@@ -25,61 +27,83 @@ import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.opensymphony.xwork2.Preparable;
 
-public class SourceAction extends BaseResourceAction{
+
+public class SourceAction extends BaseResourceAction implements Preparable{
 	private static final long serialVersionUID = -3698917712584074200L;
 	@Autowired
 	private SourceInspectionManager sourceInspectionManager;
 	@Autowired
 	@Qualifier("sourceManager")
     private GenericResourceRelatedManager<SourceBase> sourceManager;
-	@Autowired
-	@Qualifier("fileSourceManager")
-    private GenericResourceRelatedManager<SourceFile> fileSourceManager;
-	@Autowired
-	@Qualifier("sqlSourceManager")
-    private GenericResourceRelatedManager<SourceSql> sqlSourceManager;
-    private List<SourceFile> fileSources;
-    private List<SourceSql> sqlSources;
+    private List<SourceFile> fileSources = new ArrayList<SourceFile>();
+    private List<SourceSql> sqlSources = new ArrayList<SourceSql>();
+    private SourceSql source;
     // file upload
     private File file;
     private String fileContentType;
     private String fileFileName;
 	private Long sid;
 
-	private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>()   
-    {  
-        {  
-            put("com.mysql.jdbc.Driver", "MySQL");
-            put("org.postgresql.Driver", "Postgres");
-            put("org.h2.Driver", "H2");
-            put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
-            put("oracle.jdbc.OracleDriver", "Oracle");  
-            put("org.hsqldb.jdbcDriver", "HSQL");  
-            put("org.apache.derby.jdbc.ClientDriver", "Derby");  
-        }  
-    };  	
-	
+    
 
-    /**
+    @Override
+	public void prepare() {
+		super.prepare();
+		if (sid != null) {
+			source = (SourceSql) sourceManager.get(sid);
+		}else{
+			source = new SourceSql();
+		}
+	}
+
+	/**
      * Default method - returns "input"
      * @return "input"
      */
     public String execute() {
-    	fileSources = fileSourceManager.getAll(resource_id);
-    	sqlSources  = sqlSourceManager.getAll(resource_id);
+        return SUCCESS;
+    }
+
+    public String list() {
+    	List<SourceBase> sources = sourceManager.getAll(resource_id);
+    	for (SourceBase s : sources){
+    		if (s instanceof SourceFile){
+    			fileSources.add((SourceFile) s);
+    		}else{
+    			sqlSources.add((SourceSql) s);
+    		}
+    	}
         return SUCCESS;
     }
     
-    /**
+    public String save(){
+		if (cancel != null) {
+			return "cancel";
+		}
+		if (delete != null) {
+			return delete();
+		}
+    	sourceManager.save(source);
+    	return SUCCESS;
+    }
+    
+    
+    public String delete() {
+    	if (source != null){
+        	sourceManager.remove(source);
+    	}
+		return "delete";
+	}
+
+	/**
      * Upload a source file
      * @return String with result (cancel, input or sucess)
      * @throws Exception if something goes wrong
 	 */
     public String upload() throws Exception {
-        if (this.cancel != null) {
-            return "cancel";
-        }
+    	// find source by filename if it exists already
         if (sid == null){
         	log.error("source id required for file upload");
         	return ERROR;
@@ -126,8 +150,27 @@ public class SourceAction extends BaseResourceAction{
 		return SUCCESS;
     }
 
-    @Override
-    public void validate() {
+    
+    /* Validate source file upload is a valid tab file
+     * (non-Javadoc)
+     * @see com.opensymphony.xwork2.ActionSupport#validate()
+     */
+    public void validateSave() {
+        if (source != null) {        	
+            getFieldErrors().clear();            
+            try {
+				sourceInspectionManager.getHeader(source);
+			} catch (Exception e) {
+				this.addActionError(getText("sources.invalidSql"));
+			}
+        }
+    }
+    
+    /* Validate sql source change/insert is a valid SQL statement
+     * (non-Javadoc)
+     * @see com.opensymphony.xwork2.ActionSupport#validate()
+     */
+    public void validateUpload() {
         if (getRequest().getMethod().equalsIgnoreCase("post")) {
             getFieldErrors().clear();
             if ("".equals(fileFileName) || file == null) {
@@ -137,7 +180,6 @@ public class SourceAction extends BaseResourceAction{
             }
         }
     }
-    
     
     
     
@@ -188,8 +230,13 @@ public class SourceAction extends BaseResourceAction{
 	public List<SourceSql> getSqlSources() {
 		return sqlSources;
 	}
-	public Map<String, String> getJdbcDriverClasses() {
-		return jdbcDriverClasses;
+
+	public SourceSql getSource() {
+		return source;
 	}
-    
+
+	public void setSource(SourceSql source) {
+		this.source = source;
+	}
+
 }
