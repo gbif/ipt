@@ -92,7 +92,7 @@ If your data does not exactly match those formats you have the option to configu
 				  <@s.hidden key="sid" value="${id}"/>
 					<div class="left">
 						<strong>${stat.index+1}) ${name!"???"}</strong> : 
-						<span class="sql"><#if (sql?length>50)>${sql?substring(0, 50)}<#else>${sql}</#if></span>
+						<span class="citation"><#if (sql?length>50)>${sql?substring(0, 50)}<#else>${sql}</#if></span>
 					</div>
 					<div class="right">
 					  <@s.submit cssClass="button" key="button.edit"/>
@@ -114,3 +114,9 @@ If your data does not exactly match those formats you have the option to configu
 </fieldset>
 
 
+<div class="break">
+<@s.form action="transformations" method="get">
+  <@s.hidden key="resource_id"/>
+  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+</@s.form>
+</div>

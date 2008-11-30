@@ -31,48 +31,70 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.SourceManager;
+import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class PropertyMappingAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware{
+public class PropertyMappingAction extends BaseDataResourceAction implements Preparable{
 	private static Integer FIXED_TERMS_IDX = 1000;
 	@Autowired
     private SourceInspectionManager sourceInspectionManager;
 	@Autowired
+    private SourceManager sourceManager;
+	@Autowired
 	@Qualifier("viewMappingManager")
     private GenericManager<ViewMappingBase> viewMappingManager;
+	@Autowired
+	private ExtensionManager extensionManager;
+	@Autowired
+	@Qualifier("propertyMappingManager")
+    private GenericManager<PropertyMapping> propertyMappingManager;
+	
 	// persistent stuff
-	private Long mapping_id;
-	private Long extension_id;
+	private Long mid;
+	private Long eid;
+	private Long sid;
 	private ViewMappingBase view;
-	private OccurrenceResource resource;
     private List<PropertyMapping> mappings;
 	// temp stuff
-    private List<String> columnOptions;
-    private Map<Long, List> mapOptions;
-    private List<String> viewColumnHeaders;
-    private List<List<? extends Object>> preview;
-    private Map session;
+    private List<String> sourceColumns;
 		
 
-	@SuppressWarnings("unchecked")
-	public void prepare() throws Exception {
-		// get resource & view
-		resource = occResourceManager.get(resource_id);
-    	view = viewMappingManager.get(mapping_id);
-
-		prepareMappings();
-	}
-	
-	public void prepareMappings(){
-        // prepare list of property mappings to create form with and to be filled
+	@Override
+	public void prepare(){
+		super.prepare();
+        if (mid != null) {
+    		// get existing view mapping
+        	view = viewMappingManager.get(mid);
+        }else if (eid != null && sid != null) {
+        	// create new view mapping
+        	view = new ViewExtensionMapping();
+        	view.setResource(dataResource);
+        	view.setExtension(extensionManager.get(eid));
+        	view.setSource(sourceManager.get(sid));
+        	viewMappingManager.save(view);
+        	mid = view.getId();
+        }else{
+        	log.warn("No view mapping could be loaded or created");
+        }
+        // generate basic column mapping options
+		try {
+	        sourceColumns = sourceInspectionManager.getHeader(view.getSource());
+		} catch (Exception e) {
+			sourceColumns = new ArrayList<String>();
+			log.debug("Cant read datasource column headers", e);
+		}
+        // prepare list of property mappings to create form with and to be filled by params interceptor
 		mappings = new ArrayList<PropertyMapping>();
         int filledMappings = 0;
     	for (ExtensionProperty prop : view.getExtension().getProperties()){
@@ -91,107 +113,46 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
     		}
     	}
 		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
+        
 	}
-	
-	private void prepareUI(){
-		
-		// generate basic column mapping options based on source headers
-		columnOptions = new ArrayList<String>();
-		try {
-			columnOptions = sourceInspectionManager.getHeader(view.getSource());
-		} catch (Exception e) {
-			log.debug("Cant read datasource column headers", e);
-		}
 
-    	// create specific, sorted mapping options for each extension property based on columnOptions & controlled vocabulary
-		mapOptions = new HashMap<Long, List>();
-        for (ExtensionProperty prop : view.getExtension().getProperties()){
-        	if (prop == null){
-        		continue;
-        	}
-        	//get real controlled vocabulary for properties from db
-        	int i=FIXED_TERMS_IDX;
-        	List<String> options;
-        	if (prop.hasTerms()){
-        		// create new option map with controlled vocabulary
-            	options = new ArrayList<String>();
-            	options.add("--- Fixed values ---");
-            	for (String term : prop.getTerms()){
-            		i++;
-                	options.add("#"+term);
-            	}
-            	options.add("--- Source columns ---");
-            	options.addAll(columnOptions);
-        	}else{
-        		// reuse the basic mapping options
-            	options = columnOptions;
-        	}
-        	mapOptions.put(prop.getId(), options);
-        }		
+	public String execute(){
+		return SUCCESS;
 	}
-	
 
-	public String sourcePreview(){
-		log.debug("prepareSourceDataPreview");
-        // get resultset preview and number of available comuns for mapping
-        viewColumnHeaders = new ArrayList<String>();
-		try {
-            // get first 5 rows into list of list for previewing data
-            preview = sourceInspectionManager.getPreview(view.getSource());
-            viewColumnHeaders = (List<String>) preview.remove(0);
-        } catch (Exception e) {
-            String msg = getText("view.sqlError");
-            saveMessage(msg);
-            log.warn(msg, e);
-		}
-		return SUCCESS;
-	}
-	
-	public String uploadPreview(){
-		return SUCCESS;
-	}
-	
-	public String edit(){
-		prepareUI();
-		return SUCCESS;
-	}
-	
 	public String save() throws Exception {
         if (cancel != null) {
             return "cancel";
         }
-		prepareUI();
+        if (delete!= null) {
+            return delete();
+        }
         // update property mapping values
         for (PropertyMapping pm : mappings){
         	if (pm !=null && pm.getColumn() !=null){
         		String key = StringUtils.trimToEmpty(pm.getColumn().getColumnName());
-        		// copy controlled terms into value property...
-        		if (key.startsWith("#")){
-            		pm.setValue(key.substring(1));
-            		pm.getColumn().setColumnName(null);
-        		}
         	}
-        	// save only non-empty property mappings
+        	// save non-empty property mappings
         	if (!pm.isEmpty()){
         		view.addPropertyMapping(pm);
+        	// and remove empty ones that are still persistent
+        	}else if(pm.getId()!=null){
+        		view.removePropertyMapping(pm);
+        		propertyMappingManager.remove(pm);
         	}
         }
         // cascade-save view mapping
         view = viewMappingManager.save(view);
-        saveMessage(getText("view.updated"));
         return SUCCESS;
-    }
-
-    
-
+    }	
 	
-	
-
-    
-
-	public OccurrenceResource getResource() {
-		return resource;
+	public String delete(){
+		dataResource.removeExtensionMapping(view);
+        viewMappingManager.remove(view);
+        return SUCCESS;
 	}
+	
+	
 
 	public List<PropertyMapping> getMappings() {
 		return mappings;
@@ -200,43 +161,40 @@ public class PropertyMappingAction extends BaseOccurrenceResourceAction implemen
 		this.mappings = mappings;
 	}
 
-	public Long getMapping_id() {
-		return mapping_id;
+	public Long getMid() {
+		return mid;
 	}
 
-	public void setMapping_id(Long mapping_id) {
-		this.mapping_id = mapping_id;
+	public void setMid(Long mapping_id) {
+		this.mid = mapping_id;
 	}
 
-	public Long getExtension_id() {
-		return extension_id;
+	public Long getEid() {
+		return eid;
 	}
 
-	public void setExtension_id(Long extension_id) {
-		this.extension_id = extension_id;
+	public void setEid(Long extension_id) {
+		this.eid = extension_id;
 	}
 	
-	public List<String> getViewColumnHeaders() {
-		return viewColumnHeaders;
-	}
-
-	public List<List<? extends Object>> getPreview() {
-		return preview;
-	}
-
-	public void setSession(Map session) {
-		this.session=session;
-	}
-
 	public List<String> getColumnOptions() {
-		return columnOptions;
-	}
-
-	public Map<Long, List> getMapOptions() {
-		return mapOptions;
+		return sourceColumns;
 	}
 
 	public ViewMappingBase getView() {
 		return view;
 	}
+
+	public List<String> getSourceColumns() {
+		return sourceColumns;
+	}
+
+	public Long getSid() {
+		return sid;
+	}
+
+	public void setSid(Long sid) {
+		this.sid = sid;
+	}
+	
 }

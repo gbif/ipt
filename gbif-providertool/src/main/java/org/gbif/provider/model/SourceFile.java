@@ -13,7 +13,6 @@ import org.gbif.provider.util.AppConfig;
 @Entity
 public class SourceFile extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceFile.class);
-	private String filename;
 	private Date dateUploaded;
 
 	public SourceFile() {
@@ -24,11 +23,12 @@ public class SourceFile extends SourceBase {
 		setFile(targetFile);
 	}
 	
+	@Transient
 	public String getFilename() {
-		return filename;
+		return name;
 	}
 	public void setFilename(String filename) {
-		this.filename = filename;
+		this.name = filename;
 	}
 	public void setFile(File file) {
 		if (file != null){
@@ -50,7 +50,7 @@ public class SourceFile extends SourceBase {
 	@Transient
 	public boolean isValid() {
 		if (resource != null){
-			if (AppConfig.getResourceSourceFile(resource.getId(), filename).exists()){
+			if (AppConfig.getResourceSourceFile(resource.getId(), name).exists()){
 				return true;
 			}
 		}

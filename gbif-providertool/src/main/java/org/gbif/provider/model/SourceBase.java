@@ -1,5 +1,6 @@
 package org.gbif.provider.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,8 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject{
 	private Long id;	
 	@NotNull
 	protected DataResource resource;
+	@NotNull
+	protected String name;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -31,6 +34,14 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject{
 	}
 	public void setResource(DataResource resource) {
 		this.resource = resource;
+	}
+	
+	@Column(length=128)
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@Transient

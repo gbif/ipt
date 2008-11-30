@@ -45,7 +45,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	private Long id;	
 	private ViewMappingBase viewMapping;
 	private ExtensionProperty property;
-	private ColumnMapping column = new ColumnMapping ();
+	private ColumnMapping column = new ColumnMapping();
 	private String value;
 	
 	public static PropertyMapping newInstance(){
@@ -111,7 +111,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	 */
 	@Transient
 	public boolean isEmpty(){
-		if (column.getColumnName() == null && (getValue() == null)){
+		if ((column == null || column.getColumnName() == null) && (getValue() == null)){
 			return true;
 		}
 		return false;
