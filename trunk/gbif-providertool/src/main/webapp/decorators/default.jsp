@@ -72,10 +72,9 @@
 								<li><a href="<s:url action="resource"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.metadata"/> </a></li>
 								<li><a href="<s:url action="sources"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.sources"/> </a></li>
 								<li><a href="<s:url action="transformations"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.transformations"/> </a></li>
-								<li><a href="<s:url action="coreMapping"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.coreMapping"/> </a></li>
-								<li><a href="<s:url action="extensionMappings"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.extensionMappings"/> </a></li>
+								<li><a href="<s:url action="mappings"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.mappings"/> </a></li>
 								<li><a href="<s:url action="cache"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.cache"/> </a></li>
-								<li><a href="<s:url action="validation"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.validation"/> </a></li>
+								<li><a href="<s:url action="validation"><s:param name="resource_id" value="%{resource_id}" /></s:url>"></a><s:text name="dataResource.validation"/></li>
 							</ul>
 						</div>
 						

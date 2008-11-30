@@ -19,9 +19,21 @@ div.break {
 	clear: both;
 	padding-top: 25px;
 }
+div.minibreak {
+	clear: both;
+	padding-top: 15px;
+}
 div.newline {
+	padding-top: 5px;
 	clear: both;
 }
+div.overhang {
+	clear: both;
+	padding-top: 5px;
+	margin-left: 25px;
+    float: left;
+}
+
 
 .subentry {
 	display: block;
@@ -259,6 +271,9 @@ div#preview td {
 	padding: 5px;
 }
 
+.citation{
+	font-style: italic;
+}
 
 
 form#saveMappingProperties ul li {

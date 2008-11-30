@@ -97,6 +97,9 @@
     <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
     </bean>    
+    <bean id="propertyMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
+    </bean>    
     
     <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
     

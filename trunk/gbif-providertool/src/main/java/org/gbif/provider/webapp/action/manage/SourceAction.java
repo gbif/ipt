@@ -7,32 +7,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.collections.ListUtils;
-import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
-import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.GenericResourceRelatedManager;
 import org.gbif.provider.service.SourceInspectionManager;
-import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceManager;
-import org.gbif.provider.webapp.action.BaseAction;
-import org.gbif.provider.webapp.action.BaseResourceAction;
+import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
 
-public class SourceAction extends BaseResourceAction implements Preparable{
+public class SourceAction extends BaseDataResourceAction implements Preparable{
 	private static final long serialVersionUID = -3698917712584074200L;
 	@Autowired
 	private SourceInspectionManager sourceInspectionManager;
@@ -40,25 +29,23 @@ public class SourceAction extends BaseResourceAction implements Preparable{
     private SourceManager sourceManager;
     private List<SourceFile> fileSources = new ArrayList<SourceFile>();
     private List<SourceSql> sqlSources = new ArrayList<SourceSql>();
-    private SourceSql source;
-	private DataResource dataResource;
+    private SourceBase source;
     // file upload
     private File file;
     private String fileContentType;
     private String fileFileName;
 	private Long sid;
+	// preview only
+    private List<String> previewHeader;
+    private List<List<? extends Object>> preview;
 
     
 
     @Override
 	public void prepare() {
 		super.prepare();
-		dataResource = (DataResource) resource;
 		if (sid != null) {
-			SourceBase s = sourceManager.get(sid);
-			if (s instanceof SourceSql){
-				source = (SourceSql) s;
-			}
+			source = sourceManager.get(sid);
 		}else{
 			source = new SourceSql();
 		}
@@ -73,6 +60,9 @@ public class SourceAction extends BaseResourceAction implements Preparable{
     }
 
     public String list() {
+    	if (resource_id==null){
+    		return ERROR;
+    	}
     	List<SourceBase> sources = sourceManager.getAll(resource_id);
     	for (SourceBase s : sources){
     		if (s instanceof SourceFile){
@@ -155,6 +145,31 @@ public class SourceAction extends BaseResourceAction implements Preparable{
     }
 
     
+    
+    
+	public String sourcePreview(){
+		if (source == null || source.getId()==null){
+			if (sid==null){
+				throw new NullPointerException("SourceID sid required");				
+			}else{
+				throw new IllegalArgumentException("SourceID sid doesnt exist");				
+			}
+		}
+		log.debug("prepareSourceDataPreview");
+        // get resultset preview
+		try {
+            // get first 5 rows into list of list for previewing data
+            preview = sourceInspectionManager.getPreview(source);
+            previewHeader = (List<String>) preview.remove(0);
+        } catch (Exception e) {
+            String msg = getText("view.sqlError");
+            saveMessage(msg);
+            log.warn(msg, e);
+		}
+		return SUCCESS;
+	}
+		
+	
     /* Validate source file upload is a valid tab file
      * (non-Javadoc)
      * @see com.opensymphony.xwork2.ActionSupport#validate()
@@ -236,12 +251,21 @@ public class SourceAction extends BaseResourceAction implements Preparable{
 		return sqlSources;
 	}
 
-	public SourceSql getSource() {
+	public SourceBase getSource() {
 		return source;
 	}
 
 	public void setSource(SourceSql source) {
 		this.source = source;
 	}
+
+	public List<List<? extends Object>> getPreview() {
+		return preview;
+	}
+
+	public List<String> getPreviewHeader() {
+		return previewHeader;
+	}
+
 
 }

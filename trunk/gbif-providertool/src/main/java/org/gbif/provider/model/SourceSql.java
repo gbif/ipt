@@ -22,8 +22,6 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 public class SourceSql extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceSql.class);
 	private String sql;
-	@NotNull
-	private String name;	
 
 	public SourceSql() {
 		super();
@@ -40,15 +38,7 @@ public class SourceSql extends SourceBase {
 	public void setSql(String sql) {
 		this.sql = sql;
 	}	
-	
-	@Column(length=128)
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+		
 	@Override
 	@Transient
 	public boolean isValid() {

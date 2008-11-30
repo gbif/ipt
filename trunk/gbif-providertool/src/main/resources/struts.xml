@@ -289,13 +289,11 @@
                 <param name="contentType">text/xml</param>
             </result>
         </action>
-        <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="sourcePreview">
-            <result>/WEB-INF/pages/ajax/preview.jsp</result>
+        <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
+            <result type="freemarker">/WEB-INF/pages/ajax/preview.ftl</result>
         </action>
-        <action name="uploadPreview" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="sourcePreview">
-            <result type="freemarker">
-                <param name="location">/WEB-INF/pages/ajax/preview.ftl</param>                
-            </result>
+        <action name="uploadPreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
+            <result type="freemarker">/WEB-INF/pages/ajax/preview.ftl</result>
         </action>
         
     </package>
@@ -491,7 +489,10 @@
                 <param name="actionName">status</param>
                 <param name="resource_id">${#parameters.resource_id}</param>
             </result>
-            <result name="cancel" type="redirect-action">resources</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
             <result name="error" type="redirect-action">resources</result>
         </global-results>
 
@@ -516,6 +517,9 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resources</param>
             </result>
             <result name="delete" type="redirect-action">resources</result>
         </action>
@@ -564,21 +568,31 @@
             </result>
         </action>        
         
-        <action name="transformations" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sources">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        <action name="transformations" class="org.gbif.provider.webapp.action.manage.TransformationAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/transformations.ftl</result>
         </action>
         
-        <action name="editMappingProperties" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="edit">
+        <action name="mappings" class="org.gbif.provider.webapp.action.manage.MappingAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/mappings.ftl</result>
+        </action>
+        <action name="propertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction">
             <result type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
         </action>
-        <action name="saveMappingProperties" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="save">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+        <action name="savePropertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">mappings</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
             <result name="cancel" type="redirect-action">
-                <param name="actionName">resource</param>
+                <param name="actionName">mappings</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
 
+        <action name="cache" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/cache.ftl</result>
+        </action>
         <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
@@ -613,8 +627,8 @@
         </action>
         
 
-        <action name="validate">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        <action name="validation" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/validation.ftl</result>
         </action>
         
 </package>
@@ -667,6 +681,7 @@
         <default-interceptor-ref name="adminStack" />
         <global-results>
             <result name="cancel" type="redirect">/index.html</result>
+            <result name="error" type="redirect">/index.html</result>
         </global-results>
         
         <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
@@ -729,16 +744,17 @@
             <result type="freemarker">/WEB-INF/pages/admin/extensionList.ftl</result>
         </action>
         <action name="extension" class="org.gbif.provider.webapp.action.admin.ExtensionAction">
-            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
-        </action>
-        <action name="extensionDetail" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="detail">
-            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/admin/extension.ftl</result>
         </action>
         <action name="addExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="add">
-            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
+            <result type="redirect-action">
+                <param name="actionName">extensions</param>
+            </result>
         </action>
         <action name="delExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="remove">
-            <result type="freemarker">/WEB-INF/pages/admin/extensionDetail.ftl</result>
+            <result type="redirect-action">
+                <param name="actionName">extensions</param>
+            </result>
         </action>
         
     </package>

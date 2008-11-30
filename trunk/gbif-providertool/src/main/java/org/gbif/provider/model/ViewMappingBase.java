@@ -131,6 +131,10 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		propertyMapping.setViewMapping(this);
 		propertyMappings.put(propertyMapping.getProperty().getId(), propertyMapping);
 	}
+	public void removePropertyMapping(PropertyMapping propertyMapping) {
+		propertyMapping.setViewMapping(null);
+		propertyMappings.remove(propertyMapping.getProperty().getId());
+	}
 		
 	@ManyToOne
 	public SourceBase getSource() {

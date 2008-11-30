@@ -37,16 +37,12 @@ public class ExtensionAction extends BaseAction {
     private String tableName;
     private Long id;
 
-	public String execute(){
-		return detail();
-	}
 
-	public String detail(){
+	public String execute(){
 		extension = extensionManager.get(id);
 		tableName=namingStrategy.extensionTableName(extension);
 		return SUCCESS;
 	}
-
 	public String list(){
 		extensions = extensionManager.getAll();
 		return SUCCESS;

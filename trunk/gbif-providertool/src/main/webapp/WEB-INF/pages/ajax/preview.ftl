@@ -1,7 +1,7 @@
 <table class="table">
 	<thead>
 		<tr>
-			<#list viewColumnHeaders as h>
+			<#list previewHeader as h>
 			<th>${h}</th>
 			</#list>
 		</tr>
@@ -9,8 +9,8 @@
 	<tbody>
 		<#list preview as row>
 		<tr>
-			<#list viewColumnHeaders as h2>
-				<td>${row[h2_index]}</td>
+			<#list row as cell>
+				<td>${cell}</td>
 			</#list>
 		</tr>
 		</#list>
