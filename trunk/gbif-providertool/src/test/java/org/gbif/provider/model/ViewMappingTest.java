@@ -14,7 +14,7 @@ public class ViewMappingTest {
 	public void setUp() throws Exception {
 		DataResource r = OccurrenceResource.newInstance(null);
 		r.setTitle("Berlin Moss");
-		SourceSql src = new SourceSql("Select * from specimen limit 100");
+		SourceSql src = new SourceSql("Specimens", "Select * from specimen limit 100");
 		vm1 = new ViewExtensionMapping();
 		vm1.getCoreIdColumn().setColumnName("specimen_id");
 		vm1.setSource(src);
