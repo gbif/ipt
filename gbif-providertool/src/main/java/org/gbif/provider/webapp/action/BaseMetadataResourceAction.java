@@ -17,22 +17,23 @@
 package org.gbif.provider.webapp.action;
 
 import org.appfuse.model.User;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
-public class BaseOccurrenceResourceAction extends BaseResourceAction<OccurrenceResource>{
-    protected OccResourceManager occResourceManager;
+public class BaseMetadataResourceAction extends BaseResourceAction<Resource>{
 
 	@Autowired
-	public void setOccResourceManager(OccResourceManager occResourceManager) {
-		this.resourceManager = occResourceManager;
-		this.occResourceManager = occResourceManager;
+	public void setResourceManager(@Qualifier("resourceManager") GenericResourceManager<Resource> resourceManager) {
+		this.resourceManager = resourceManager;
 	}
 	
-
 }

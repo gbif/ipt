@@ -22,19 +22,17 @@ import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public abstract class BaseResourceMetadataAction<T extends Resource> extends BaseAction implements Preparable, SessionAware{
+public abstract class BaseResourceMetadataAction<T extends Resource> extends BaseResourceAction<T> implements Preparable, SessionAware{
 	protected Map session;
 	@Autowired
 	protected ResourceFactory resourceFactory;
-    protected GenericResourceManager<T> resourceManager;
 	@Autowired
 	protected EmlManager emlManager;
-	protected Long resource_id;
-	protected T resource;
 	protected List<T> resources;
 	protected Eml eml;
 	protected Map<String, String> resourceTypes;
@@ -238,21 +236,6 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
     public String getFileFileName() {
         return fileFileName;
     }
-	public void setResource_id(Long resource_id) {
-		this.resource_id = resource_id;
-	}
-
-	public Long getResource_id() {
-		return resource_id;
-	}
-	
-	public T getResource() {
-		return resource;
-	}
-
-	public void setResource(T resource) {
-		this.resource = resource;
-	}
 
 	public Map<String, String> getResourceTypes() {
 		return resourceTypes;

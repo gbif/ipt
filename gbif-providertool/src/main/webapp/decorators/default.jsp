@@ -117,7 +117,7 @@
 						<div id="fullsearch">
 							<label>Fulltext Search</label>
 							<s:form name="search" theme="simple">
-								<s:textfield name="q" theme="simple"/>
+								<s:textfield name="q" theme="simple" disabled="true"/>
 								<s:hidden name="resource_id" value="%{resource_id}"/>
 							</s:form>
 						</div>
@@ -138,8 +138,8 @@
 	                	<h1>Metadata Repo</h1>
 						<div id="fullsearch">
 							<label>Fulltext Search</label>
-							<s:form name="search" theme="simple">
-								<s:textfield name="q" theme="simple"/>
+							<s:form name="search" theme="simple" >
+								<s:textfield name="q" theme="simple" disabled="true"/>
 							</s:form>
 						</div>
 		

@@ -34,6 +34,6 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 * @param guid of resource to be returned
 	 * @return
 	 */
-	public Resource get(String guid);
+	public T get(String guid);
 
 }

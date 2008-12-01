@@ -81,7 +81,7 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 	public void prepare() {
 		area = GeographicalArea.WORLD.toString();
 		if (resource_id != null) {
-			occResource = occResourceManager.get(resource_id);
+			resource = occResourceManager.get(resource_id);
 		}
 	}
 

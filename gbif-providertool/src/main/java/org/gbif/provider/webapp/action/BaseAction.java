@@ -55,4 +55,11 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 		return cfg;
 	}
 
+	protected Map<String, String> translateI18nMap(Map<String, String> map){
+		for (String key : map.keySet()){
+			String i18Key = map.get(key);
+			map.put(key, getText(i18Key));
+		}
+		return map;
+	}
 }

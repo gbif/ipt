@@ -48,6 +48,6 @@ public class OccMetadataAction extends BaseResourceMetadataAction<OccurrenceReso
 	}
 	
 	public void setOccurrenceResourceTypes(Map<String, String> occurrenceResourceTypes) {
-		this.resourceTypes = occurrenceResourceTypes;
+		this.resourceTypes = translateI18nMap(occurrenceResourceTypes);
 	}
 }

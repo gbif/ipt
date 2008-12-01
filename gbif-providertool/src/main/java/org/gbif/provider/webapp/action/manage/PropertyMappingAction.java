@@ -79,7 +79,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         }else if (eid != null && sid != null) {
         	// create new view mapping
         	view = new ViewExtensionMapping();
-        	view.setResource(dataResource);
+        	view.setResource(resource);
         	view.setExtension(extensionManager.get(eid));
         	view.setSource(sourceManager.get(sid));
         	viewMappingManager.save(view);
@@ -147,7 +147,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     }	
 	
 	public String delete(){
-		dataResource.removeExtensionMapping(view);
+		resource.removeExtensionMapping(view);
         viewMappingManager.remove(view);
         return SUCCESS;
 	}

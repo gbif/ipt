@@ -34,11 +34,12 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:/applicationContext-resources.xml
+            classpath:/applicationContext.xml
             classpath:/applicationContext-dao.xml
+            classpath:/applicationContext-i18n-maps.xml
+            classpath:/applicationContext-resources.xml
             classpath:/applicationContext-service.xml
-            classpath*:/applicationContext.xml
-            /WEB-INF/applicationContext*.xml
+            /WEB-INF/applicationContext-struts.xml
             /WEB-INF/xfire-servlet.xml
             /WEB-INF/security.xml
         </param-value>

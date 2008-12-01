@@ -14,33 +14,26 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action.test;
+package org.gbif.provider.webapp.action;
 
-import java.util.List;
-
-import javax.servlet.ServletContext;
-
-import org.apache.struts2.util.ServletContextAware;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.webapp.action.BaseAction;
-import org.gbif.provider.webapp.action.BaseResourceAction;
+import org.appfuse.model.User;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 
-import com.opensymphony.xwork2.Preparable;
+public class BaseChecklistResourceAction extends BaseResourceAction<ChecklistResource>{
 
-/**
- * Homepage of the application giving initial statistics and listing imported resources
- * @author markus
- *
- */
-public class ResourceTestAction extends BaseResourceAction {
-	public String execute(){
-		resource=resourceManager.get(Constants.TEST_RESOURCE_ID);
-		return SUCCESS;
+	@Autowired
+	public void setResourceManager(@Qualifier("checklistResourceManager") GenericResourceManager<ChecklistResource> checklistResourceManager) {
+		this.resourceManager = checklistResourceManager;
 	}
+	
 }

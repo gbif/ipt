@@ -51,11 +51,11 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	
 	public void prepare() {
 		if (resource_id != null) {
-			occResource = occResourceManager.get(resource_id);
+			resource = occResourceManager.get(resource_id);
 			// update recently viewed resources in session
 			updateRecentResouces();
 			// geoserver map link
-			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, occResource.getBbox(), null, null);
+			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, resource.getBbox(), null, null);
 		}
 		// prepare select lists
 		countryClasses.put(1, "occurrences");
@@ -76,7 +76,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	}
 	
 	private void updateRecentResouces(){
-		LabelValue res = new LabelValue(occResource.getTitle(), resource_id.toString());
+		LabelValue res = new LabelValue(resource.getTitle(), resource_id.toString());
 		Queue<LabelValue> queue; 
 		Object rr = session.get(Constants.RECENT_RESOURCES);
 		if (rr != null && rr instanceof Queue){
@@ -105,14 +105,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return SUCCESS;
 	}	
 	
-	public OccurrenceResource getOccResource() {
-		return occResource;
-	}
-
-	public void setOccResource(OccurrenceResource occResource) {
-		this.occResource = occResource;
-	}
-
 	public void setSession(Map session) {
 		this.session = session;
 	}

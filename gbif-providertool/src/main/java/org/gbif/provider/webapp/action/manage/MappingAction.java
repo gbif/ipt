@@ -63,11 +63,11 @@ public class MappingAction extends BaseDataResourceAction implements Preparable{
 	public void prepare(){
 		super.prepare();
 		sources = sourceManager.getAll(resource_id);
-		coreMapping = dataResource.getCoreMapping();
-		extMappings = dataResource.getExtensionMappings();
-		extensions = extensionManager.getAllInstalled(ExtensionType.byResourceClass(dataResource.getClass()));
+		coreMapping = resource.getCoreMapping();
+		extMappings = resource.getExtensionMappings();
+		extensions = extensionManager.getAllInstalled(ExtensionType.byResourceClass(resource.getClass()));
 		// filter already mapped extensions
-		for (ViewMappingBase map : dataResource.getAllMappings()) {
+		for (ViewMappingBase map : resource.getAllMappings()) {
 			extensions.remove(map.getExtension());
 		}
 	}

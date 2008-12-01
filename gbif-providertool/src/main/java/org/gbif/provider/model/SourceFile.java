@@ -14,6 +14,7 @@ import org.gbif.provider.util.AppConfig;
 public class SourceFile extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceFile.class);
 	private Date dateUploaded;
+	private long fileSize;
 
 	public SourceFile() {
 		super();
@@ -55,5 +56,19 @@ public class SourceFile extends SourceBase {
 			}
 		}
 		return false;
+	}
+	
+	@Transient
+	public long getFileSize() {
+		return fileSize;
+	}
+	@Transient
+	public long getFileSizeInKB() {
+		return fileSize/1024;
+	}
+	public void setFileSize(long fileSize) {
+		this.fileSize = fileSize;
 	}	
+	
+	
 }

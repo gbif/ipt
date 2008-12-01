@@ -25,6 +25,7 @@ import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,7 +33,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.opensymphony.xwork2.Preparable;
 
 
-public class TransformationAction extends BaseResourceAction implements Preparable{
+public class TransformationAction extends BaseDataResourceAction implements Preparable{
 	private static final long serialVersionUID = -3698914322584074200L;
 	private final Map<String, String> transformationTypes = new HashMap<String, String>()   
     {  

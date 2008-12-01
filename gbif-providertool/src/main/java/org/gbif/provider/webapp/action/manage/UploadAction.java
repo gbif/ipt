@@ -25,13 +25,15 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	private String gChartData;
 	
 	
-	public void prepare() throws Exception {
+	public void prepare(){
 		if (resource_id != null){
 			busy=cacheManager.isBusy(resource_id);
 		}		
 	}
 
 	public String execute() {
+		// load resource
+		super.prepare();
 		// create GoogleChart string
 		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
 		return SUCCESS;
