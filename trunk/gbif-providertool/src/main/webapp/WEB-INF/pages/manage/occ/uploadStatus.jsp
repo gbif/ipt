@@ -2,7 +2,7 @@
 
 <head>
     <title><s:text name="occResourceOverview.title"/></title>
-    <meta name="resource" content="<s:property value="occResource.title"/>"/>
+    <meta name="resource" content="<s:property value="resource.title"/>"/>
     <meta name="submenu" content="manage"/>
 	<s:head theme="ajax" debug="false"/>
 </head>

@@ -24,8 +24,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class ResourceAction extends BaseMetadataResourceAction implements Preparable, SessionAware{
-	private Map session;
+public class ResourceAction extends BaseMetadataResourceAction implements Preparable{
 	@Autowired
 	private EmlManager emlManager;
 	private Eml eml;

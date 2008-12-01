@@ -35,8 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable, SessionAware {
-	protected Map session;
+public class OccResourceAction extends BaseOccurrenceResourceAction implements Preparable {
 	@Autowired
 	private MapUtil mapUtil;
 	private List<OccurrenceResource> resources;
@@ -50,10 +49,8 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	
 	public void prepare() {
-		if (resource_id != null) {
-			resource = occResourceManager.get(resource_id);
-			// update recently viewed resources in session
-			updateRecentResouces();
+		super.prepare();
+		if (resource != null) {
 			// geoserver map link
 			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, resource.getBbox(), null, null);
 		}
@@ -75,26 +72,6 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		
 	}
 	
-	private void updateRecentResouces(){
-		LabelValue res = new LabelValue(resource.getTitle(), resource_id.toString());
-		Queue<LabelValue> queue; 
-		Object rr = session.get(Constants.RECENT_RESOURCES);
-		if (rr != null && rr instanceof Queue){
-			queue = (Queue) rr;
-		}else{
-			queue = new ConcurrentLinkedQueue<LabelValue>(); 
-		}
-		// remove old entry from queue if it existed before and insert at tail again
-		queue.remove(res);
-		queue.add(res);
-		if (queue.size()>10){
-			// only remember last 10 resources
-			queue.remove();
-		}
-		// save back to session
-		log.debug("Recently viewed resources: "+queue.toString());
-		session.put(Constants.RECENT_RESOURCES, queue);
-	}
 		
 	public String execute() {
 		return SUCCESS;
@@ -105,10 +82,9 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		return SUCCESS;
 	}	
 	
-	public void setSession(Map session) {
-		this.session = session;
-	}
-
+	
+	
+	
 	public String getGeoserverMapUrl() {
 		return geoserverMapUrl;
 	}

@@ -27,15 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public abstract class BaseResourceMetadataAction<T extends Resource> extends BaseResourceAction<T> implements Preparable, SessionAware{
-	protected Map session;
+public abstract class BaseResourceMetadataAction<T extends Resource> extends BaseResourceAction<T> implements Preparable{
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	@Autowired
 	protected EmlManager emlManager;
 	protected List<T> resources;
 	protected Eml eml;
-	protected Map<String, String> resourceTypes;
+	protected Map<String, String> resourceTypes = new HashMap<String, String>();
 	
 	// file/logo upload
 	protected File file;
@@ -207,11 +206,6 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
 	public Eml getEml() {
 		return eml;
 	}
-
-	public void setSession(Map session) {
-		this.session = session;
-	}
-
 
     public void setFile(File file) {
         this.file = file;
