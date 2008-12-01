@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuConfig>
+    <Displayers>
+        <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+    </Displayers>
+    <Menus>
+        <Menu name="ExplorerMenu" title="menu.explorer" page="/resources.html">            
+            <Item name="OccResources" title="menu.explorer.occurrences" page="/occResources.html"/>
+            <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
+            <Item name="Resources" title="menu.explorer.resources" page="/resources.html"/>
+        </Menu>
+        <Menu name="ManagerMenu" title="menu.manager" page="/resources.html" roles="ROLE_ADMIN,ROLE_MANAGER">
+            <Item name="OccResources" title="menu.explorer.occurrences" page="/manage/occ/resources.html"/>
+            <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
+            <Item name="Resources" title="menu.explorer.resources" page="/manage/meta/resources.html"/>
+        </Menu> 
+        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER,ROLE_MANAGER">
+            <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>
+            <Item name="Logout" title="user.logout" page="/logout.jsp"/>            
+        </Menu>
+        <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/users.html">
+            <Item name="ProviderCfg" title="menu.admin.config" page="/admin/config.html"/>
+            <Item name="Extensions" title="menu.explorer.extensions" page="/admin/extensions.html"/>
+            <Item name="LogEvents" title="menu.admin.logEvents" page="/logging/logEvents.html"/>
+            <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
+            <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
+            <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
+            <Item name="ActiveTasks" title="menu.admin.activeTasks" page="/admin/activeTasks.html"/>
+        </Menu>
+        <Menu name="AboutMenu" title="menu.about" page="/about.html">            
+        </Menu>
+    </Menus>
+</MenuConfig>

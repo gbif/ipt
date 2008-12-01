@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Constants -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.action.extension" value="html,xml,do"/>
+    <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
+    <constant name="struts.multipart.maxSize" value="2097152"/>
+    <constant name="struts.ui.theme" value="css_xhtml"/>
+    <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <!-- by default dont append existing parameters -->
+    <constant name="struts.url.includeParams" value="none" />
+    
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.i18n.reload" value="true"/>
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    
+    <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
+
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="struts-default">
+        
+        <interceptors>
+            <!-- Interceptor to handle allowing only admins to certain actions -->
+            <interceptor name="adminOnly" class="adminInterceptor"/>
+            <interceptor name="managerOnly" class="managerInterceptor"/>
+            <!-- Interceptor to select the external routing datasource -->
+            <interceptor name="datasource-selector" class="datasourceInterceptor"/>
+            <interceptor name="resource-watcher" class="resourceInterceptor"/>
+            
+            <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
+            <interceptor-stack name="defaultStack">
+                <interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="params"/>
+                <interceptor-ref name="servlet-config"/>                
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="scoped-model-driven"/>
+                <interceptor-ref name="model-driven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="static-params"/>
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">cancel,execute,delete,edit,list,back,input</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+            </interceptor-stack>
+            <interceptor-stack name="fileUploadStack">
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            <interceptor-stack name="resourceStack">
+                <interceptor-ref name="resource-watcher"/>
+                <interceptor-ref name="datasource-selector"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="resourceStack"/>
+                <interceptor-ref name="adminOnly"/>
+            </interceptor-stack>
+            <interceptor-stack name="managerStack">
+                <interceptor-ref name="resourceStack"/>
+                <interceptor-ref name="managerOnly"/>
+            </interceptor-stack>
+            <interceptor-stack name="portalStack">
+                <interceptor-ref name="resource-watcher"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-action-ref name="index" />
+
+        <global-results>
+            <result name="resource-busy" type="redirect-action">
+                <param name="actionName">busy</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
+            <result name="mainMenu" type="redirect-action">/index</result>
+            <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
+            <result name="cancel" type="redirect">/</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="org.springframework.dao.DataAccessException" result="dataAccessFailure"/>
+        </global-exception-mappings>
+
+
+        <action name="signup" class="signupAction">
+            <result name="cancel" type="redirect">/</result>
+            <result name="input">/WEB-INF/pages/signup.jsp</result>
+            <result name="success" type="chain">saveSignup</result>
+        </action>
+
+        <action name="saveSignup" class="signupAction" method="save">
+            <result name="input">/WEB-INF/pages/signup.jsp</result>
+            <result name="success" type="redirect-action">index</result>
+        </action>
+
+        <action name="editProfile" class="userAction" method="edit">
+            <result name="input">/WEB-INF/pages/userForm.jsp</result>
+            <result name="success">/WEB-INF/pages/userForm.jsp</result>
+            <result name="error">/WEB-INF/pages/index.jsp</result>
+        </action>
+        <action name="saveUser" class="userAction" method="save">
+            <result name="cancel" type="redirect-action">users</result>
+            <result name="input">/WEB-INF/pages/userForm.jsp</result>
+            <result name="success" type="redirect-action">index</result>
+        </action>
+        
+
+        <action name="passwordHint" class="passwordHintAction">
+            <result name="input">/</result>
+            <result name="success">/</result>
+        </action>
+
+        <action name="uploadFile" class="org.appfuse.webapp.action.FileUploadAction">
+            <interceptor-ref name="fileUploadStack"/>
+            <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
+            <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
+            <result name="cancel" type="redirect-action">index</result>
+        </action>
+        
+        <!-- Application Home -->
+        <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
+            <result>/WEB-INF/pages/index.jsp</result>
+        </action>
+
+    </package>
+
+
+
+    <!-- Actions showing data to the public, anonymous users -->
+    <package name="portal" namespace="/" extends="default">
+        <default-interceptor-ref name="portalStack" />
+
+        <!-- forwarding actions for all resource types. Allows easy linking without knowing the type of resource -->        
+        <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
+            <result name="occ" type="redirect-action">
+                <param name="actionName">occResource</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">taxResource</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="meta" type="redirect-action">
+                <param name="actionName">metaResource</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>
+        <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
+        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
+            <result name="occ" type="redirect-action">
+                <param name="actionName">occDetail</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="guid">${guid}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">taxDetail</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="guid">${guid}</param>
+            </result>
+            <result name="meta" type="redirect-action">
+                <param name="actionName">metaResource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>            
+        </action>
+        <!-- other actions for all resources -->
+        <action name="busy">
+            <result>/WEB-INF/pages/busy.jsp</result>
+            <result name="resource-busy">/WEB-INF/pages/busy.jsp</result>
+        </action>
+        <action name="about" class="org.gbif.provider.webapp.action.IndexAction">
+            <result type="freemarker">/WEB-INF/pages/about/about.ftl</result>
+        </action>
+        
+        
+        <!-- occurrence actions -->
+        <action name="occResources" class="org.gbif.provider.webapp.action.portal.OccResourceAction" method="list">
+            <result>/WEB-INF/pages/portal/occ/resourceList.jsp</result>
+        </action>
+        <action name="occResource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
+            <result>/WEB-INF/pages/portal/occ/index.jsp</result>
+        </action>
+        <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
+            <param name="zoom">true</param>
+            <param name="title">true</param>
+            <param name="action">{1}</param>
+            <result name="pie">/WEB-INF/pages/portal/occ/stats.jsp</result>
+            <result name="map">/WEB-INF/pages/portal/occ/mapstats.jsp</result>
+            <result name="chart">/WEB-INF/pages/portal/occ/stats.jsp</result>
+        </action>
+        
+        <action name="occTaxon" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="occurrences">
+            <result>/WEB-INF/pages/portal/occ/taxon.jsp</result>
+        </action>
+
+        <action name="occRegion" class="org.gbif.provider.webapp.action.portal.RegionAction" method="occurrences">
+            <result>/WEB-INF/pages/portal/occ/region.jsp</result>
+        </action>
+
+        <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result type="freemarker">/WEB-INF/pages/portal/occ/dwcDetail.ftl</result>
+        </action>
+        
+        
+        <!-- checklist actions -->
+        <action name="taxResources">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        </action>
+        <action name="taxResource">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        </action>
+        <action name="taxDetail">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        </action>
+        
+        <!-- metadata actions -->
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="list">
+            <result type="freemarker">/WEB-INF/pages/portal/meta/index.ftl</result>
+        </action>
+        <action name="metaResource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        </action>
+        
+    </package>
+    
+    
+    <!-- undecorated AJAX calls needed by the portal -->
+    <package name="portalAJAX" namespace="/ajax" extends="default">
+        <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
+            <param name="action">{1}</param>
+            <result name="pie">/WEB-INF/pages/ajax/chartimg.jsp</result>
+            <result name="map">/WEB-INF/pages/ajax/chartimg.jsp</result>
+            <result name="chart">/WEB-INF/pages/ajax/chartimg.jsp</result>
+        </action>
+        <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
+            <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
+            <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
+        </action>
+        <action name="taxonTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="taxonSubTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="taxonTreeItems" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/treeItems.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionSubTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="regionTreeItems" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/ajax/treeItems.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
+            <result type="freemarker">/WEB-INF/pages/ajax/preview.ftl</result>
+        </action>
+        <action name="uploadPreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
+            <result type="freemarker">/WEB-INF/pages/ajax/preview.ftl</result>
+        </action>
+        
+    </package>
+
+
+    <!-- Other public, global services -->
+    <package name="portalServices" namespace="/data" extends="default">
+        <default-interceptor-ref name="portalStack" />
+        
+        <action name="data" class="org.gbif.provider.webapp.action.portal.DataAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/zip</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="data.zip"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+        <action name="logo" class="org.gbif.provider.webapp.action.portal.DataAction" method="logo">
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="logo.jpg"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+        <action name="rss" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
+            <result name="success" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        
+        <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
+        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
+            <result name="occ" type="redirect-action">
+                <param name="actionName">occDetail</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="guid">${guid}</param>
+                <param name="format">${format}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">taxDetail</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="guid">${guid}</param>
+                <param name="format">${format}</param>
+            </result>
+            <result name="meta" type="redirect-action">
+                <param name="actionName">eml</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="format">${format}</param>
+            </result>            
+        </action>
+        <action name="eml" class="org.gbif.provider.webapp.action.portal.ResourceAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/meta/eml.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="xml" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="json" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="contentType">text/json</param>
+            </result>
+        </action>
+        <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+            <result name="xml">/WEB-INF/pages/missing.jsp</result>
+            <result name="json">/WEB-INF/pages/missing.jsp</result>
+        </action>
+        
+    </package>
+    
+    
+    
+    <!-- TAPIRlite Actions -->
+    <package name="tapir" namespace="/tapir" extends="default">
+        
+        <!-- all resources! has to be changed once checklists are added -->
+        <action name="service" class="org.gbif.provider.webapp.action.tapir.TapirAction">
+            <result type="freemarker" name="ping">
+                <param name="location">/WEB-INF/pages/tapir/ping.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="metadata">
+                <param name="location">/WEB-INF/pages/tapir/metadata.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="capabilities">
+                <param name="location">/WEB-INF/pages/tapir/capabilities.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="search">
+                <param name="location">/WEB-INF/pages/tapir/search.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+    </package>
+    
+
+    <!-- Base package for all managing packages  -->
+    <package name="manage" namespace="/manage" extends="default">
+        <default-interceptor-ref name="managerStack" />
+        
+        <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
+            <result name="occ" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage/occ</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage/tax</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+            <result name="meta" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage/meta</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+    </package>
+    
+    
+    <!-- EML editor  -->
+    <package name="eml" namespace="/manage/eml" extends="default">
+        <default-interceptor-ref name="managerStack" />
+        <global-results>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="error" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </global-results>
+        
+
+        <action name="view" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
+            <result name="success">/WEB-INF/pages/eml/eml.ftl</result>
+        </action>
+
+
+        <action name="*Form" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
+            <result type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+        </action>
+        <!-- the last action in the EML editing workflow -->
+        <action name="methods" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
+            <result name="back" type="redirect-action">
+                <param name="actionName">${backPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/methods.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+        <action name="*" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
+            <result name="back" type="redirect-action">
+                <param name="actionName">${backPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">${nextPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+        
+    </package>
+    
+    
+    <!-- Actions managing occurrence resources -->
+    <package name="manageOcc" namespace="/manage/occ" extends="manage">
+        <default-action-ref name="resources" />
+        <global-results>
+            <result name="resource-busy" type="redirect-action">
+                <param name="actionName">status</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="error" type="redirect-action">resources</result>
+        </global-results>
+
+        <action name="eml">
+            <result type="redirect-action">
+                <param name="actionName">creatorForm</param>
+                <param name="namespace">/manage/eml</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+        
+        
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="list">
+            <result>/WEB-INF/pages/manage/occ/occResourceList.jsp</result>
+        </action>
+        
+        <action name="resource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
+        </action>        
+        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resources</param>
+            </result>
+            <result name="delete" type="redirect-action">resources</result>
+        </action>
+
+        <action name="sources" class="org.gbif.provider.webapp.action.manage.SourceAction" method="list">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
+        </action>
+        <action name="uploadSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="upload">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
+            <result name="input"  type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
+            <result name="error" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>
+        <action name="editSource" class="org.gbif.provider.webapp.action.manage.SourceAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/sourceSqlForm.ftl</result>
+        </action>
+        <action name="saveSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/sourceSqlForm.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="delete" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>
+        <action name="editConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/resourceConnectionForm.ftl</result>
+        </action>
+        <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/resourceConnectionForm.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>        
+        
+        <action name="transformations" class="org.gbif.provider.webapp.action.manage.TransformationAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/transformations.ftl</result>
+        </action>
+        
+        <action name="mappings" class="org.gbif.provider.webapp.action.manage.MappingAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/mappings.ftl</result>
+        </action>
+        <action name="propertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+        </action>
+        <action name="savePropertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">mappings</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">mappings</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+
+        <action name="cache" class="org.gbif.provider.webapp.action.manage.UploadAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/cache.ftl</result>
+        </action>
+        <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
+            <result type="redirect-action">
+                <param name="actionName">status</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+        <action name="cancelUpload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="cancel">
+            <result type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+        <action name="process" class="org.gbif.provider.webapp.action.manage.UploadAction" method="process">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+        </action>
+        <action name="clear" class="org.gbif.provider.webapp.action.manage.UploadAction" method="clear">
+            <result type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+        <action name="status" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
+            <result name="resource-busy">/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
+            <result name="resource-ready" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="resource_id">${resource_id}</param>
+            </result>
+        </action>
+
+        <action name="history" class="org.gbif.provider.webapp.action.manage.UploadAction" method="history">
+            <result>/WEB-INF/pages/manage/occ/uploadHistory.jsp</result>
+        </action>
+        
+
+        <action name="validation" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/occ/validation.ftl</result>
+        </action>
+        
+</package>
+    
+
+    <!-- Actions managing checklist resources -->
+    <package name="manageTax" namespace="/manage/tax" extends="manage">
+    </package>
+    
+    <!-- Actions managing generic resources  -->
+    <package name="manageRes" namespace="/manage/meta" extends="manage">
+        <default-action-ref name="resources" />
+        
+        
+        <action name="eml">
+            <result type="redirect-action">
+                <param name="actionName">creatorForm</param>
+                <param name="namespace">/manage/eml</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="list">
+            <result>/WEB-INF/pages/manage/meta/resourceList.jsp</result>
+        </action>
+        
+        <action name="resource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+        </action>        
+        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="save">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resources</param>
+            </result>
+            <result name="delete" type="redirect-action">resources</result>
+        </action>        
+        <action name="importEml" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="importEml">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+            <result name="error" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
+        </action>
+        
+   </package>
+    
+
+        <!-- Actions in this package will be prefixed with /admin/ -->
+    <package name="admin" extends="default" namespace="/admin">
+        <default-interceptor-ref name="adminStack" />
+        <global-results>
+            <result name="cancel" type="redirect">/index.html</result>
+            <result name="error" type="redirect">/index.html</result>
+        </global-results>
+        
+        <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
+            <result>/WEB-INF/pages/admin/activeUsers.jsp</result>
+        </action>
+        <action name="users" class="userAction" method="list">
+            <result>/WEB-INF/pages/admin/userList.jsp</result>
+        </action>
+        <action name="editUser" class="userAction" method="edit">
+            <result name="success">/WEB-INF/pages/userForm.jsp</result>
+            <result name="input">/WEB-INF/pages/admin/userList.jsp</result>
+        </action>
+        <action name="saveUser" class="userAction" method="save">
+            <result name="cancel" type="redirect-action">users</result>
+            <result name="input">/WEB-INF/pages/userForm.jsp</result>
+            <result name="success" type="redirect-action">users</result>
+        </action>
+        
+        <action name="flushCache" class="com.opensymphony.xwork2.ActionSupport">
+            <result>/WEB-INF/pages/admin/flushCache.jsp</result>
+        </action>
+
+        <action name="activeDatasources" class="org.gbif.provider.webapp.action.manage.DatasourceRegistryAction" method="list">
+            <result>/WEB-INF/pages/admin/datasourceList.jsp</result>
+        </action>
+        
+        <action name="activeTasks">
+            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+            <result name="tbd">/WEB-INF/pages/scheduler/jobList.jsp</result>
+        </action>
+        
+        <action name="config" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
+            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        </action>
+        <action name="saveConfig" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction" method="save">
+            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        </action>
+        
+
+        <!-- LogEvents -->
+        <action name="logEvents" class="org.gbif.logging.webapp.action.LogEventAction" method="list">
+            <result>/WEB-INF/pages/logging/logEventList.jsp</result>
+        </action>
+        
+        <action name="editLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="edit">
+            <result>/WEB-INF/pages/logEventForm.jsp</result>
+            <result name="error">/WEB-INF/pages/logging/logEventList.jsp</result>
+        </action>
+        
+        <action name="saveLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="save">
+            <result name="input">/WEB-INF/pages/logging/logEventForm.jsp</result>
+            <result name="cancel" type="redirect-action">logEvents</result>
+            <result name="delete" type="redirect-action">logEvents</result>
+            <result name="success" type="redirect-action">logEvents</result>
+        </action>
+        
+
+        <!-- EXTENSIONS -->
+        <action name="extensions" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="list">
+            <result type="freemarker">/WEB-INF/pages/admin/extensionList.ftl</result>
+        </action>
+        <action name="extension" class="org.gbif.provider.webapp.action.admin.ExtensionAction">
+            <result type="freemarker">/WEB-INF/pages/admin/extension.ftl</result>
+        </action>
+        <action name="addExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="add">
+            <result type="redirect-action">
+                <param name="actionName">extensions</param>
+            </result>
+        </action>
+        <action name="delExtension" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="remove">
+            <result type="redirect-action">
+                <param name="actionName">extensions</param>
+            </result>
+        </action>
+        
+    </package>
+
+    
+    <include file="struts-logging.xml"/>
+    
+</struts>

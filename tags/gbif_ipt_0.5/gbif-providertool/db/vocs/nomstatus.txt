@@ -1,0 +1,43 @@
+#
+# NOMENCLATURAL STATUS VOCABULARY
+#
+# Terms for the nomenclatural status of a name. 
+# In case of binary name relationships synonyms point to the accepted second name.
+# So the taxon with taxstatus="synonym" and nomstatus="orthographic variant" points to the accepted name via its acceptedID
+#
+STATUS	ABBREVIATION	DESCRIPTION
+#
+Available	-	Valid
+Ambiguous	nom. ambig.
+Doubtful	nom. dub.
+Confusum	nom. confus.
+Illegitimate	nom. illeg.
+Invalid	nom. inval.
+Combination Invalid	comb. inval.
+Superfluous	nom. superfl.
+Rejected	nom. rej.	Rejected in favour of. Inverse of "conserved against"
+Rejected Prop	nom. rej. prop.
+Utique Rejected	nom. utique rej.
+Conserved	nom. cons.
+Conserved Prop	nom. cons. prop.
+Orthography Conserved Prop	nom. orth. cons.
+Legitimate	-
+Alternative	nom. altern.
+Novum	nom. nov.
+Utique Rejected Prop	nom. utique rej. prop.
+Orthography Conserved	nom. cons.
+Sanctioned	nom. sanct.
+Nudum	nom. nud.
+Subnudum	nom. subnud.
+Provisional	nom. provis.
+Opus Utique Oppr	opus. utique oppr.
+New Combination	comb. nov.	The name is a new combination
+
+
+# WHAT ABOUT THESE ???
+orthographic variant
+homonym later
+replaced	replaced synonym for
+validated	validated by
+validated later	later validated by
+blocking name	inverse of "is new combination blocked by"
