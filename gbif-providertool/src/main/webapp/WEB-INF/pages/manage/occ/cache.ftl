@@ -72,6 +72,7 @@
     
 </fieldset>
 
+<!--
 <div class="break">
 	<a href="<@s.url action="history"><@s.param name="resource_id" value="resource_id"/></@s.url>">
 		<img src="${gChartData}" width="400" height="200"/>
@@ -79,7 +80,6 @@
 </div>	
 
 
-<!--
 <div class="break">
 <@s.form action="validation" method="get">
   <@s.hidden key="resource_id"/>

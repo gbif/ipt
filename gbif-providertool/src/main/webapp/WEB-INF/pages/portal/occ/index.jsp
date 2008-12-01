@@ -2,7 +2,7 @@
 
 <head>
     <title><s:text name="occResource.overview"/></title>
-    <meta name="resource" content="<s:property value="occResource.title"/>"/>
+    <meta name="resource" content="<s:property value="resource.title"/>"/>
     <meta name="submenu" content="occ"/>
 	<s:head theme="ajax" debug="false"/>
 </head>
@@ -13,9 +13,9 @@
 	<legend><s:text name="resource.description"/></legend>
 	<div id="metadata">
 		<img class="right" src="<s:property value="%{cfg.getResourceLogoUrl(resource_id)}"/>" />
-		<span><s:property value="occResource.description"/></span>
+		<span><s:property value="resource.description"/></span>
 		
-		<s:label key="dataResource.cache" value="%{occResource.lastUpload.recordsUploaded} total records uploaded %{occResource.lastUpload.executionDate}"/>
+		<s:label key="dataResource.cache" value="%{resource.lastUpload.recordsUploaded} total records uploaded %{resource.lastUpload.executionDate}"/>
 		<ul class="minimenu">
 			<li>
 				<a onclick="Effect.toggle('services', 'blind', { duration: 0.3 }); return false;">(<s:text name="dataResource.services"/>)</a>
@@ -25,15 +25,15 @@
 			<table class="lefthead">
 				<tr>
 					<th>Contact</th>
-					<td><s:property value="%{occResource.contactName}"/> <s:if test="%{occResource.contactEmail}">&lt;<s:property value="%{occResource.contactEmail}"/>&gt;</s:if></td>
+					<td><s:property value="%{resource.contactName}"/> <s:if test="%{resource.contactEmail}">&lt;<s:property value="%{resource.contactEmail}"/>&gt;</s:if></td>
 				</tr>
 				<tr>
 					<th>Homepage</th>
-					<td><a href="<s:property value="%{occResource.link}"/>"><s:property value="%{occResource.link}"/></a></td>
+					<td><a href="<s:property value="%{resource.link}"/>"><s:property value="%{resource.link}"/></a></td>
 				</tr>
 				<tr>
 					<th>EML</th>
-					<td><a href="<s:property value="%{cfg.getEmlUrl(occResource.guid)}"/>"><s:property value="%{cfg.getEmlUrl(occResource.guid)}"/></a></td>
+					<td><a href="<s:property value="%{cfg.getEmlUrl(resource.guid)}"/>"><s:property value="%{cfg.getEmlUrl(resource.guid)}"/></a></td>
 				</tr>
 				<tr>
 					<th><s:text name="dataResource.tabfile"/></th>
@@ -56,7 +56,7 @@
 	</div>
 </s:form>
 
-<s:push value="occResource">
+<s:push value="resource">
 
 <div id="loc-stats" class="stats stat-table">
 	<label><s:text name="stats.geoStats"/></label>

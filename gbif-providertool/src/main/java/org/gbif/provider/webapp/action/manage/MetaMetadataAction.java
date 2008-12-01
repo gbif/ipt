@@ -22,8 +22,11 @@ public class MetaMetadataAction extends BaseResourceMetadataAction<Resource> imp
 		return resourceFactory.newResourceInstance();
 	}
 	
-	public void setResourceTypes(Map<String, String> resourceTypes) {
-		this.resourceTypes = resourceTypes;
+	public void setChecklistResourceTypes(Map<String, String> checklistResourceTypes) {
+		this.resourceTypes.putAll(translateI18nMap(checklistResourceTypes));
+	}
+	public void setOccurrenceResourceTypes(Map<String, String> occurrenceResourceTypes) {
+		this.resourceTypes.putAll(translateI18nMap(occurrenceResourceTypes));
 	}
 
 }
