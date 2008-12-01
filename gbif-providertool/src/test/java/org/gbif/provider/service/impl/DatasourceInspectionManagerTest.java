@@ -21,7 +21,7 @@ public class DatasourceInspectionManagerTest extends ResourceTestBase{
 	@Test
 	public void testGetHeader() throws Exception {
 		setup();
-		List<String> headers = datasourceInspectionManager.getHeader(resource.getCoreMapping());
+		List<String> headers = datasourceInspectionManager.getHeader(resource.getCoreMapping().getSource());
 		System.out.println(headers);
 	}
 
