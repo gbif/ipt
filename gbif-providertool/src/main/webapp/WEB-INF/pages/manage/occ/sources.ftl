@@ -27,7 +27,13 @@ If your data does not exactly match those formats you have the option to configu
 		<div class="newline">
 			<div class="left">
 				<strong>${stat.index+1}) ${filename}</strong>				
-				<span>[${fileSizeInKB}kB<#if dateUploaded??>, ${dateUploaded?datetime}</#if>]</span>
+				<span>
+					<#if (fileSize<0)>
+						FILE MISSING!
+					<#else>
+						[${fileSizeInKB}kB<#if dateUploaded??>, ${dateUploaded?datetime}</#if>]
+					</#if>
+				</span>
 			</div>
 			<div class="right">
 				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete('file source')" theme="simple"/>
