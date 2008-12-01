@@ -4,13 +4,13 @@
 	<groupId>org.gbif.provider</groupId>
 	<artifactId>gt2-ipt</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<name>IPT Geoserver Datasource</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt2-main</artifactId>
+			<artifactId>gt-main</artifactId>
 			<version>${gt.version}</version>
 		</dependency>
 		<dependency>
@@ -97,7 +97,7 @@
 			<name>codehaus-shapshot-plugins-fr</name>
 			<url>http://maven.geotools.fr/repository/</url>
 			<snapshots>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
@@ -107,7 +107,7 @@
 	
 	
 	<properties>
-		<gt.version>2.5-SNAPSHOT</gt.version>
+		<gt.version>2.5.1</gt.version>
 		<spring.version>2.5.5</spring.version>		
 		<h2.version>1.0.79</h2.version>
 	</properties>
