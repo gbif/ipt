@@ -17,13 +17,14 @@ import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class ResourceAction extends BaseResourceAction implements Preparable, SessionAware{
+public class ResourceAction extends BaseMetadataResourceAction implements Preparable, SessionAware{
 	private Map session;
 	@Autowired
 	private EmlManager emlManager;

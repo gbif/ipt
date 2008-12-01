@@ -12,7 +12,7 @@
 			<@s.textfield key="resource.title" required="true" cssClass="text large"/>
 	 	</div>
 		<div class="left">
-		 	<@s.select key="resource.type" required="false" emptyOption="true" list="resourceTypes" cssClass="text medium"/>
+		 	<@s.select key="resource.type" required="true" emptyOption="false" list="resourceTypes" cssClass="text medium"/>
 	 	</div>
  	</div>
     <div class="newline">

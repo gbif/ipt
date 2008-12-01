@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><s:text name="occResourceOverview.title"/></title>
+    <title><s:text name="occResource.overview"/></title>
     <meta name="resource" content="<s:property value="occResource.title"/>"/>
     <meta name="submenu" content="occ"/>
 	<s:head theme="ajax" debug="false"/>
@@ -15,10 +15,10 @@
 		<img class="right" src="<s:property value="%{cfg.getResourceLogoUrl(resource_id)}"/>" />
 		<span><s:property value="occResource.description"/></span>
 		
-		<s:label key="occResourceOverview.cache" value="%{occResource.lastUpload.recordsUploaded} total records uploaded %{occResource.lastUpload.executionDate}"/>
+		<s:label key="dataResource.cache" value="%{occResource.lastUpload.recordsUploaded} total records uploaded %{occResource.lastUpload.executionDate}"/>
 		<ul class="minimenu">
 			<li>
-				<a onclick="Effect.toggle('services', 'blind', { duration: 0.3 }); return false;">(<s:text name="occResourceOverview.services"/>)</a>
+				<a onclick="Effect.toggle('services', 'blind', { duration: 0.3 }); return false;">(<s:text name="dataResource.services"/>)</a>
 			</li>
 		</ul>
 		<div id="services" style="display:none">
@@ -36,19 +36,19 @@
 					<td><a href="<s:property value="%{cfg.getEmlUrl(occResource.guid)}"/>"><s:property value="%{cfg.getEmlUrl(occResource.guid)}"/></a></td>
 				</tr>
 				<tr>
-					<th><s:text name="occResourceOverview.tabfile"/></th>
+					<th><s:text name="dataResource.tabfile"/></th>
 					<td><a href="<s:property value="%{cfg.getDumpArchiveUrl(resource_id)}"/>"><s:property value="%{cfg.getDumpArchiveUrl(resource_id)}"/></a></td>
 				</tr>
 				<tr>
-					<th><s:text name="occResourceOverview.tapir"/></th>
+					<th><s:text name="dataResource.tapir"/></th>
 					<td><a href="<s:property value="%{cfg.getTapirEndpoint(resource_id)}"/>"><s:property value="%{cfg.getTapirEndpoint(resource_id)}"/></a></td>
 				</tr>
 				<tr>
-					<th><s:text name="occResourceOverview.wfs"/></th>
+					<th><s:text name="dataResource.wfs"/></th>
 					<td><a href="<s:property value="%{cfg.getWfsEndpoint(resource_id)}"/>"><s:property value="%{cfg.getWfsEndpoint(resource_id)}"/></a></td>
 				</tr>
 				<tr>
-					<th><s:text name="occResourceOverview.wms"/></th>
+					<th><s:text name="dataResource.wms"/></th>
 					<td><a href="<s:property value="%{cfg.getWmsEndpoint(resource_id)}"/>"><s:property value="%{cfg.getWmsEndpoint(resource_id)}"/></a></td>
 				</tr>
 			</table>

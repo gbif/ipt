@@ -163,7 +163,7 @@ public class AppConfig{
     }
 
     // SOURCE/UPLOAD FILES
-    public File getSourceFile(Long resourceId, String fileName) throws IOException{
+    public File getSourceFile(Long resourceId, String fileName){
     	File f = new File(getResourceDataDir(resourceId), String.format("sources/%s", fileName));
 	    if (!f.getParentFile().exists()) {
 	        f.getParentFile().mkdirs();

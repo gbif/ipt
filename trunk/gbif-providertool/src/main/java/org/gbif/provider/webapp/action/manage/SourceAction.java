@@ -66,7 +66,19 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
     	List<SourceBase> sources = sourceManager.getAll(resource_id);
     	for (SourceBase s : sources){
     		if (s instanceof SourceFile){
-    			fileSources.add((SourceFile) s);
+    			// try to determine filesize
+    			SourceFile sf = (SourceFile) s;
+    			File f = cfg.getSourceFile(resource_id, sf.getFilename());
+    			if (!f.exists() || !f.isFile()) {
+    			    log.warn(String.format("SourceFile %s for resource %s doesn't exist.", sf.getFilename(), resource_id));
+    	    		sf.setFileSize(-1l);
+    			}else{    			    
+    				sf.setFileSize(f.length());
+    				if (sf.getDateUploaded()==null){
+        				sf.setDateUploaded(new Date(f.lastModified()));
+    				}
+    			}
+    			fileSources.add(sf);
     		}else{
     			sqlSources.add((SourceSql) s);
     		}
@@ -81,7 +93,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		if (delete != null) {
 			return delete();
 		}
-		source.setResource(dataResource);
+		source.setResource(resource);
     	sourceManager.save(source);
     	return SUCCESS;
     }
@@ -101,8 +113,8 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 	 */
     public String upload() throws Exception {
         // the file to upload to
-		File targetFile = cfg.getSourceFile(dataResource.getId(), fileFileName);
-		log.debug(String.format("Uploading source file for resource %s to file %s",dataResource.getId(), targetFile.getAbsolutePath()));
+		File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
+		log.debug(String.format("Uploading source file for resource %s to file %s",resource.getId(), targetFile.getAbsolutePath()));
         //retrieve the file data
         InputStream stream = new FileInputStream(file);
 
@@ -123,7 +135,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		if (fsource==null){
 			// new source
 			fsource = new SourceFile();
-			fsource.setResource(dataResource);
+			fsource.setResource(resource);
 			fsource.setFilename(fileFileName);
 		}
 		// set new upload timestamp

@@ -13,13 +13,14 @@ import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class EmlEditorAction extends BaseResourceAction implements Preparable, SessionAware{
+public class EmlEditorAction extends BaseMetadataResourceAction implements Preparable, SessionAware{
 	private Map session;
 	@Autowired
 	private EmlManager emlManager;
@@ -172,7 +173,7 @@ public class EmlEditorAction extends BaseResourceAction implements Preparable, S
 	}
 
 	public void setIsoCountryI18nCodeMap(Map<String, String> isoCountryI18nCodeMap) {
-		this.isoCountryI18nCodeMap = isoCountryI18nCodeMap;
+		this.isoCountryI18nCodeMap = translateI18nMap(isoCountryI18nCodeMap);
 	}
 
 	public Map<String, String> getMajorTaxonRanks() {
@@ -180,7 +181,7 @@ public class EmlEditorAction extends BaseResourceAction implements Preparable, S
 	}
 
 	public void setMajorTaxonRanks(Map<String, String> majorTaxonRanks) {
-		this.majorTaxonRanks = majorTaxonRanks;
+		this.majorTaxonRanks = translateI18nMap(majorTaxonRanks);
 	}
 
 	public Map<String, String> getOtherTaxonRanks() {
@@ -188,7 +189,7 @@ public class EmlEditorAction extends BaseResourceAction implements Preparable, S
 	}
 
 	public void setOtherTaxonRanks(Map<String, String> otherTaxonRanks) {
-		this.otherTaxonRanks = otherTaxonRanks;
+		this.otherTaxonRanks = translateI18nMap(otherTaxonRanks);
 	}
 
 	public Map<String, String> getAllRanks() {

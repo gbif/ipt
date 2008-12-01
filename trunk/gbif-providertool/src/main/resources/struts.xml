@@ -590,7 +590,7 @@
             </result>
         </action>
 
-        <action name="cache" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
+        <action name="cache" class="org.gbif.provider.webapp.action.manage.UploadAction">
             <result type="freemarker">/WEB-INF/pages/manage/occ/cache.ftl</result>
         </action>
         <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
@@ -759,20 +759,6 @@
         
     </package>
 
-    
-    <!-- TEST Actions -->
-    <package name="test" namespace="/test" extends="default">
-        <action name="dt" class="org.gbif.provider.webapp.action.test.DisplayTagAction">
-            <result name="success" type="freemarker">
-                <param name="location">/WEB-INF/pages/test/dt.ftl</param>                
-            </result>
-        </action>
-        <action name="map" class="org.gbif.provider.webapp.action.test.ResourceTestAction">
-            <result type="freemarker">
-                <param name="location">/WEB-INF/pages/test/geomap.ftl</param>                
-            </result>
-        </action>
-    </package>
     
     <include file="struts-logging.xml"/>
     

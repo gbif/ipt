@@ -36,15 +36,13 @@ import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
-public class BaseResourceAction extends BaseAction implements SessionAware{
+public class BaseResourceAction<T extends Resource> extends BaseAction implements SessionAware{
 	private static final long serialVersionUID = 1643640896L;
 	
-	@Autowired
-	@Qualifier("resourceManager")
-    protected GenericResourceManager<Resource> resourceManager;
+    protected GenericResourceManager<T> resourceManager;
 	protected Long resource_id;
 	protected String guid;
-	protected Resource resource;
+	protected T resource;
 	protected Map session;
 
 	public void prepare() {
@@ -90,7 +88,7 @@ public class BaseResourceAction extends BaseAction implements SessionAware{
 		return resource_id;
 	}
 	
-	public Resource getResource() {
+	public T getResource() {
 		return resource;
 	}
 	
