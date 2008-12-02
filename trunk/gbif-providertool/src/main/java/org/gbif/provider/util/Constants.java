@@ -28,7 +28,6 @@ public class Constants {
      * The name of the Administrator role, as specified in web.xml
      */
     public static final String MANAGER_ROLE = "ROLE_MANAGER";
-    public static final Long TEST_DB_RESOURCE_ID = 6L;
     public static final Long TEST_RESOURCE_ID = 1L;
     public static final Long TEST_USER_ID = 1L;
     public static final String RECENT_RESOURCES = "recentResources";

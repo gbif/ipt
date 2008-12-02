@@ -20,6 +20,22 @@ public class EmlManagerTest extends ResourceTestBase{
 	private EmlManager emlManager;
 
 	@Test
+	public void testSaveResource() {
+		setup();
+
+		Eml eml = new Eml(resource);
+		eml.addKeyword("Italia");
+		eml.addKeyword("Romans");
+		eml.addKeyword("River");
+		eml.addKeyword("Climate change");
+		BBox bbox = new BBox(12.0,32.0,-3.0,-123.0);
+		eml.geographicCoverage().setBoundingCoordinates(bbox);
+		eml.geographicCoverage().setDescription("ick weiss auch nicht welche Ecke der Welt das sein soll...");
+		
+		emlManager.save(eml);
+	}
+	
+	@Test
 	public void testLoadResource() {
 		setup();
 

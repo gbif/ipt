@@ -47,7 +47,7 @@ public class GeoserverUtils {
 		// create new featuretype description
 		String featureTypeInfo = this.buildFeatureTypeDescriptor(resource);
 		// commpare hashcode with previous one
-		if (resource.getFeatureHash() == null || !resource.getFeatureHash().equals(featureTypeInfo.hashCode())){
+		if (featureTypeInfo!=null && (resource.getFeatureHash() == null || !resource.getFeatureHash().equals(featureTypeInfo.hashCode()))){
 			if (cfg.getGeoserverDataDirFile() == null || !cfg.getGeoserverDataDirFile().exists()){
 				log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
 				throw new IOException("Geoserver datadir configured wrongly");

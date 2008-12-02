@@ -7,7 +7,7 @@
     <artifactId>ipt</artifactId>
     <packaging>war</packaging>
     <!-- -SNAPSHOT -->
-    <version>0.5</version>
+    <version>0.6-SNAPSHOT</version>
     <name>GBIF Provider Software</name>
     <url>http://www.gbif.org</url>
 
@@ -518,6 +518,12 @@
             <version>${gt.version}</version>
         </dependency>
         
+        <!-- XStream -->
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.3</version>
+        </dependency>
     </dependencies>
 
     <reporting>
