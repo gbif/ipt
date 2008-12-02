@@ -97,7 +97,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		}
 		// embedded H2 is apparently faster without connection pools. See H2 documentation 
         JdbcDataSource ds = new JdbcDataSource();
-        String url = String.format("jdbc:h2:%s/db/ipt", params.get("datadir")); 
+        String url = String.format("jdbc:h2:%s/db/ipt;auto_server=true", params.get("datadir")); 
         log.debug("Using JDBC URL: " + url);
         ds.setURL(url); 
         ds.setUser("sa"); // params.get("user") 
