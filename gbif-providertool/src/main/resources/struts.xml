@@ -506,14 +506,14 @@
         
         
         <action name="resources" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="list">
-            <result>/WEB-INF/pages/manage/occ/occResourceList.jsp</result>
+            <result>/WEB-INF/pages/manage/occ/resourceList.jsp</result>
         </action>
         
         <action name="resource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/occ/metadata.ftl</result>
         </action>        
         <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/occResourceMetadataForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/metadata.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -717,6 +717,7 @@
             <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>
         <action name="saveConfig" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
             <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>
         

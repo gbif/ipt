@@ -289,7 +289,10 @@ public class AppConfig{
 
 
 	
-	public File getGeoserverDataDir() {
+	public String getGeoserverDataDir() {
+		return cfg.getGeoserverDataDir();
+	}
+	public File getGeoserverDataDirFile() {
 		if (StringUtils.trimToNull(cfg.getGeoserverDataDir())!=null){
 			return new File(cfg.getGeoserverDataDir());
 		}
@@ -306,9 +309,6 @@ public class AppConfig{
 	
 	public void setGeoserverDataDir(String geoserverDataDir) {
 		cfg.setGeoserverDataDir(geoserverDataDir);
-	}
-	public void setGeoserverDataDir(File geoserverDataDir) {
-		cfg.setGeoserverDataDir(geoserverDataDir.getAbsolutePath());
 	}
 
 	public void setGeoserverPass(String geoserverPass) {

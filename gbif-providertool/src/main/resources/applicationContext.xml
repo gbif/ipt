@@ -42,14 +42,16 @@
     
     
     <!-- H2 DATABASE SERVER (currently needed for geoserver) -->
+    <!-- ,-tcpPort,9092 -->
+    <!-- 
     <bean id="org.h2.tools.Server" 
         class="org.h2.tools.Server" 
         factory-method="createTcpServer" 
         init-method="start" 
         destroy-method="stop"> 
-        <!-- ,-tcpPort,9092 -->
         <constructor-arg value="-tcp,-tcpAllowOthers,true,-baseDir,${dataDir}" /> 
     </bean>
+    -->
     
     <!-- Struts Interceptors -->
     <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
