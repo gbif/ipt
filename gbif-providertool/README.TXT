@@ -26,10 +26,14 @@ Which unfortunately doesnt get created and therefore injected before this bean i
 # H2 DATA CACHE
 ####################
 
-The embedded H2 database can be accessed in 3 ways if the IPT is running:
-a) JDBC in embedded mode if running in the same JVM as the IPT (i.e. tomcat)
-b) JDBC via the included H2 tcp server. The basedir is pointing to the datadir folder, so no databases outside can be accessed through this server
-c) HTML console at http://localhost:8080/h2 
+The embedded H2 database can be accessed in 2 ways if the IPT is running:
+a) Manual HTML console at http://localhost:8080/h2 
+b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Use the following Spring bean or connect otherwise:
+    <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
+        <property name="URL" value="jdbc:h2:${dataDir}/db/ipt;auto_server=true"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
 
 
 
