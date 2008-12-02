@@ -143,7 +143,7 @@ public class AppConfig{
 	}
 
 	public static File getEmlFile(Long resourceId) {
-		File eml = new File(getResourceDataDir(resourceId), "eml.ser");
+		File eml = new File(getResourceDataDir(resourceId), "eml.xml");
 		return eml;    	
 	}
 

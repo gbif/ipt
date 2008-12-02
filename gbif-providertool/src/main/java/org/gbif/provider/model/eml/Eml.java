@@ -3,6 +3,7 @@ package org.gbif.provider.model.eml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,7 +21,6 @@ import org.gbif.provider.util.AppConfig;
 public class Eml implements Serializable{
 	private static final long serialVersionUID = 770733523572837495L;
 	private transient Resource resource;
-	private transient File file;
 	// serialised data
 	private Agent resourceCreator = new Agent();
 	private Date pubDate;
@@ -50,37 +50,6 @@ public class Eml implements Serializable{
 		this.resourceCreator.setRole(Role.ORIGINATOR);
 	}
 	
-	public static Eml loadFile(Resource resource, File file) {
-		Eml eml = new Eml();
-		if (file!=null && file.exists()){
-			// load existing file
-			 FileInputStream fis = null;
-			 ObjectInputStream in = null;
-			 try
-			 {
-			   fis = new FileInputStream(file);
-			   in = new ObjectInputStream(fis);
-			   eml = (Eml)in.readObject();
-			   in.close();
-			 }
-			 catch(IOException ex)
-			 {
-			   ex.printStackTrace();
-			 }
-			 catch(ClassNotFoundException ex)
-			 {
-			   ex.printStackTrace();
-			 }			
-		}else{
-			// copy some resource default data that is not delegated (title & description are)
-			eml.resourceCreator.setEmail(resource.getContactEmail());
-			eml.resourceCreator.setLastName(resource.getContactName());
-		}
-		eml.file = file;
-		eml.resource = resource;
-		return eml;
-	}	
-	
 	
 	//
 	// DELEGATOR METHODS for resource
@@ -88,10 +57,6 @@ public class Eml implements Serializable{
 	
 	public Resource getResource() {
 		return resource;
-	}
-
-	public File getFile() {
-		return file;
 	}
 
 	public String getGuid() {
@@ -275,6 +240,11 @@ public class Eml implements Serializable{
 
 	public void setLowestCommonTaxon(TaxonKeyword lowestCommonTaxon) {
 		this.lowestCommonTaxon = lowestCommonTaxon;
+	}
+
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
 	}
 
 }

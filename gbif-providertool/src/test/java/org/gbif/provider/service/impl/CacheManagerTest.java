@@ -3,9 +3,7 @@ package org.gbif.provider.service.impl;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.gbif.provider.datasource.RdbmsImportSourceTest;
 import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Test;
@@ -18,7 +16,6 @@ public class CacheManagerTest extends ContextAwareTestBase{
 	@Test
 	public void testRunUpload() throws ExecutionException, InterruptedException {
 		Future f = cacheManager.runUpload(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
-//		Future f = cacheManager.runUpload(2l, Constants.TEST_USER_ID);
 		f.get();
 	}
 }
