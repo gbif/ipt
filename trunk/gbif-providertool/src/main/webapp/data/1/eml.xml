@@ -1,0 +1,35 @@
+<org.gbif.provider.model.eml.Eml>
+  <resourceCreator>
+    <firstName>Markus</firstName>
+    <lastName>Dšring</lastName>
+    <organisation></organisation>
+    <position></position>
+    <address>
+      <address></address>
+      <city></city>
+      <province></province>
+      <country>Germany</country>
+      <postalCode></postalCode>
+    </address>
+    <phone></phone>
+    <email>markus@mailinator.com</email>
+    <role>ORIGINATOR</role>
+    <homepage></homepage>
+  </resourceCreator>
+  <pubDate>2008-12-02 18:18:56.86 CET</pubDate>
+  <language>ab</language>
+  <keywords/>
+  <geographicCoverage/>
+  <temporalCoverage/>
+  <lowestCommonTaxon/>
+  <taxonomicClassification/>
+  <researchProject>
+    <personnelOriginator>
+      <address/>
+      <role>ORIGINATOR</role>
+    </personnelOriginator>
+    <personnel>
+      <address/>
+    </personnel>
+  </researchProject>
+</org.gbif.provider.model.eml.Eml>
