@@ -48,11 +48,11 @@ public class GeoserverUtils {
 		String featureTypeInfo = this.buildFeatureTypeDescriptor(resource);
 		// commpare hashcode with previous one
 		if (resource.getFeatureHash() == null || !resource.getFeatureHash().equals(featureTypeInfo.hashCode())){
-			if (cfg.getGeoserverDataDir() == null || !cfg.getGeoserverDataDir().exists()){
+			if (cfg.getGeoserverDataDirFile() == null || !cfg.getGeoserverDataDirFile().exists()){
 				log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
 				throw new IOException("Geoserver datadir configured wrongly");
 			}
-			File fti = new File(cfg.getGeoserverDataDir(), String.format("featureTypes/ipt_resource%s/info.xml", resource.getId()));
+			File fti = new File(cfg.getGeoserverDataDirFile(), String.format("featureTypes/ipt_resource%s/info.xml", resource.getId()));
 			if (fti.exists()){
 				fti.delete();				
 			}else{
