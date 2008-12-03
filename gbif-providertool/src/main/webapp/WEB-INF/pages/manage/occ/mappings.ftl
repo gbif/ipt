@@ -39,7 +39,7 @@
 			<@s.submit cssClass="button right" key="button.edit" />
 		</div>
 	<#else>
-			<span>&nbsp;&nbsp;&nbsp;Mapping based on source: </span>
+			<span>&nbsp;&nbsp;&nbsp;Assign source: </span>
 		</div>
 		<div class="left">
 		 	<@s.select key="mappings.sources" name="sid" emptyOption="false" list="sources" listKey="id" listValue="name" theme="simple"/>

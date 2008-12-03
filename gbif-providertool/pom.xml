@@ -7,7 +7,7 @@
     <artifactId>ipt</artifactId>
     <packaging>war</packaging>
     <!-- -SNAPSHOT -->
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.5.1</version>
     <name>GBIF Provider Software</name>
     <url>http://www.gbif.org</url>
 
