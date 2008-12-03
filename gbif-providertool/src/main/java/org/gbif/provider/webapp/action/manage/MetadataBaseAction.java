@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
+import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.service.EmlManager;
@@ -22,20 +24,23 @@ import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseAction;
+import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public abstract class BaseResourceMetadataAction<T extends Resource> extends BaseResourceAction<T> implements Preparable{
+public abstract class MetadataBaseAction extends BaseMetadataResourceAction implements Preparable{
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	@Autowired
 	protected EmlManager emlManager;
-	protected List<T> resources;
 	protected Eml eml;
-	protected Map<String, String> resourceTypes = new HashMap<String, String>();
-	
+	protected List<Resource> resources;
+	protected Map<String, String> occurrenceResourceTypes = new HashMap<String, String>();
+	protected Map<String, String> checklistResourceTypes = new HashMap<String, String>();
+	protected Map<String, String> otherResourceTypes = new HashMap<String, String>();
+	private String resourceClassAlias;
 	// file/logo upload
 	protected File file;
 	protected String fileContentType;
@@ -54,21 +59,22 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
     };  	
     
     
-    protected abstract T newResource();
-    
 	public void prepare() {
-		if (resource_id == null) {
-			resource = newResource();
-		} else {
-			resource = resourceManager.get(resource_id);
-			// update recently viewed resources in session
-			updateRecentResouces();
+		super.prepare();
+		if (resource == null) {
+			// create new empty resource
+			if (resourceClassAlias.equalsIgnoreCase(OccurrenceResource.ALIAS)){
+				resource = resourceFactory.newOccurrenceResourceInstance();				
+			}else if (resourceClassAlias.equalsIgnoreCase(ChecklistResource.ALIAS)){
+				resource = resourceFactory.newChecklistResourceInstance();				
+			}else{
+				resource = resourceFactory.newMetadataResourceInstance();				
+			}
 		}
 		eml = emlManager.load(resource);
 	}
 		
 	public String execute(){
-		assert(resource!=null);
 		return SUCCESS;
 	}
 
@@ -177,29 +183,8 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
         stream.close();
 	}
 	
-	private void updateRecentResouces(){
-		LabelValue res = new LabelValue(resource.getTitle(), resource.getId().toString());
-		Queue<LabelValue> queue; 
-		Object rr = session.get(Constants.RECENT_RESOURCES);
-		if (rr != null && rr instanceof Queue){
-			queue = (Queue) rr;
-		}else{
-			queue = new ConcurrentLinkedQueue<LabelValue>(); 
-		}
-		// remove old entry from queue if it existed before and insert at tail again
-		queue.remove(res);
-		queue.add(res);
-		if (queue.size()>10){
-			// only remember last 10 resources
-			queue.remove();
-		}
-		// save back to session
-		log.debug("Recently viewed resources: "+queue.toString());
-		session.put(Constants.RECENT_RESOURCES, queue);
-	}
-
 	
-	public List<T> getResources() {
+	public List<Resource> getResources() {
 		return resources;
 	}
 
@@ -231,9 +216,30 @@ public abstract class BaseResourceMetadataAction<T extends Resource> extends Bas
         return fileFileName;
     }
 
-	public Map<String, String> getResourceTypes() {
-		return resourceTypes;
+
+	public Map<String, String> getResourceTypes(){
+		
 	}
+
+	public String getResourceClassAlias() {
+		return resourceClassAlias;
+	}
+	public void setResourceClassAlias(String resourceClassAlias) {
+		this.resourceClassAlias = resourceClassAlias;
+	}
+
+	
+	public void setChecklistResourceTypes(Map<String, String> checklistResourceTypes) {
+		this.checklistResourceTypes = translateI18nMap(checklistResourceTypes);
+	}
+	public void setOccurrenceResourceTypes(Map<String, String> occurrenceResourceTypes) {
+		this.occurrenceResourceTypes = translateI18nMap(occurrenceResourceTypes);
+	}
+	public void setOtherResourceTypes(Map<String, String> otherResourceTypes) {
+		this.otherResourceTypes = translateI18nMap(otherResourceTypes);
+	}
+	
+	
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
 	}
