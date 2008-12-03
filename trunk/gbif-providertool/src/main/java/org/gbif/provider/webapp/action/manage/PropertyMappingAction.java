@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
@@ -119,6 +121,32 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     	}
 		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
         
+		// if this mapping is still empty try to automap
+		if (view.getMappedProperties().size()<1){
+			// regex pattern to normalise property names
+			Pattern p = Pattern.compile("[\\s_-]");
+			Matcher m = null;
+			int autoCount = 0;
+			for (PropertyMapping pm : mappings){
+				if (!pm.isEmpty()){
+					// they should all be empty, but just in case...
+					continue;
+				}
+				m = p.matcher(pm.getProperty().getName());
+				String propName = m.replaceAll("");
+				for (String col : sourceColumns){
+					m = p.matcher(col);
+					String colName = m.replaceAll("");
+					if (propName.equalsIgnoreCase(colName)){
+						pm.getColumn().setColumnName(col);
+						autoCount++;
+						break;
+					}
+				}
+			}
+			log.info("Automapping of columns found "+autoCount+" matching properties");
+	        saveMessage("Automapping of columns found "+autoCount+" matching properties");
+		}
 	}
 
 	public String execute(){
