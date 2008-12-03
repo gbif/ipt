@@ -54,6 +54,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class Resource implements BaseObject, Comparable<Resource>, Timestampable{
+	public static final String ALIAS = "meta";
+	
 	private Long id;
 	protected String guid = UUID.randomUUID().toString();
 	// resource metadata
@@ -67,6 +69,9 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected User modifier;
 	protected Date modified;
 	
+	public static String getAlias(){
+		return ALIAS;
+	}
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -170,7 +175,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	@Transient
 	public String getType() {
-		return meta.getTitle();
+		return meta.getType();
 	}
 	
 
@@ -194,6 +199,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 
+	@Transient
+	public boolean isDataResource(){
+		return false;
+	}
 	
 	/**
 	 * updates persistent EML properties on resource based on EML values

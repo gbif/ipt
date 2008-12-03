@@ -245,6 +245,13 @@ public abstract class DataResource extends Resource {
 		}
 		return null;
 	}
+	
+	@Transient
+	@Override
+	public boolean isDataResource(){
+		return true;
+	}
+
 	/**
 	 * Checks to see whether a resource has the minimal mappings to proceed with an upload
 	 * @return

@@ -10,5 +10,8 @@ public interface ResourceFactory {
 	
 	public ChecklistResource newChecklistResourceInstance();
 
-	public Resource newResourceInstance();
+	public Resource newMetadataResourceInstance();
+
+	public Resource newResourceInstance(Class resourceClass);
+
 }

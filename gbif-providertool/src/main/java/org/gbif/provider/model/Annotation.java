@@ -37,6 +37,7 @@ public class Annotation implements BaseObject{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@org.hibernate.annotations.Index(name="annotation_guid")
 	public String getGuid() {
 		return guid;
 	}

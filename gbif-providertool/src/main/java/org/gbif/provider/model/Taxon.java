@@ -60,6 +60,17 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private String name;
 		private String authorship;
 		private String code;
+		// not existing in DwC, but used for TaxonCore
+		private String taxonomicParentID;
+		private String acceptedTaxonID;
+		private String basionymID;
+		private String nomenclaturalReference;
+		private String taxStatus;
+		private String nomStatus;
+		private String notes;
+		// derived
+		private Taxon accepted;
+		private Taxon basionym;
 		
 		// stats
 		private BBox bbox = new BBox();
@@ -176,6 +187,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			setLabel(fullname);
 		}
 		
+		@Column(length=64)
 		public String getCode() {
 			return code;
 		}
@@ -215,6 +227,82 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.occTotal = occTotal;
 		}
 
+		
+		
+		
+		
+		@Column(length=32)
+		public String getTaxonomicParentID() {
+			return taxonomicParentID;
+		}
+		public void setTaxonomicParentID(String taxonomicParentID) {
+			this.taxonomicParentID = taxonomicParentID;
+		}
+
+		@Column(length=32)
+		public String getAcceptedTaxonID() {
+			return acceptedTaxonID;
+		}
+		public void setAcceptedTaxonID(String acceptedTaxonID) {
+			this.acceptedTaxonID = acceptedTaxonID;
+		}
+
+		@Column(length=32)
+		public String getBasionymID() {
+			return basionymID;
+		}
+		public void setBasionymID(String basionymID) {
+			this.basionymID = basionymID;
+		}
+
+		public String getNomenclaturalReference() {
+			return nomenclaturalReference;
+		}
+		public void setNomenclaturalReference(String nomenclaturalReference) {
+			this.nomenclaturalReference = nomenclaturalReference;
+		}
+
+		@Column(length=128)
+		public String getTaxStatus() {
+			return taxStatus;
+		}
+		public void setTaxStatus(String taxStatus) {
+			this.taxStatus = taxStatus;
+		}
+
+		@Column(length=128)
+		public String getNomStatus() {
+			return nomStatus;
+		}
+		public void setNomStatus(String nomStatus) {
+			this.nomStatus = nomStatus;
+		}
+
+		@Lob
+		public String getNotes() {
+			return notes;
+		}
+		public void setNotes(String notes) {
+			this.notes = notes;
+		}
+
+		@ManyToOne(optional = true)
+		public Taxon getAccepted() {
+			return accepted;
+		}
+		public void setAccepted(Taxon accepted) {
+			this.accepted = accepted;
+		}
+
+		@ManyToOne(optional = true)
+		public Taxon getBasionym() {
+			return basionym;
+		}
+		public void setBasionym(Taxon basionym) {
+			this.basionym = basionym;
+		}
+
+		
 		/**
 		 * Count a single occurrence record
 		 * @param region

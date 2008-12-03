@@ -9,7 +9,7 @@ import org.gbif.provider.model.OccurrenceResource;
 
 public enum ExtensionType {
 	Occurrence(1l, OccurrenceResource.class),
-	Checklist(4l, ChecklistResource.class);	
+	Checklist(7l, ChecklistResource.class);	
 	
 	public static final List<ExtensionType> CORE_ENTITIES;
 	  static  

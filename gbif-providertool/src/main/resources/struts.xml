@@ -231,10 +231,10 @@
         </action>
         
         <!-- metadata actions -->
-        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="list">
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
             <result type="freemarker">/WEB-INF/pages/portal/meta/index.ftl</result>
         </action>
-        <action name="metaResource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction">
+        <action name="metaResource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
             <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
         </action>
         
@@ -406,83 +406,6 @@
     <!-- Base package for all managing packages  -->
     <package name="manage" namespace="/manage" extends="default">
         <default-interceptor-ref name="managerStack" />
-        
-        <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
-            <result name="occ" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="namespace">/manage/occ</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-            <result name="tax" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="namespace">/manage/tax</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-            <result name="meta" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="namespace">/manage/meta</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-        </action>
-    </package>
-    
-    
-    <!-- EML editor  -->
-    <package name="eml" namespace="/manage/eml" extends="default">
-        <default-interceptor-ref name="managerStack" />
-        <global-results>
-            <result name="cancel" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="namespace">/manage</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-            <result name="error" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="namespace">/manage</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-        </global-results>
-        
-
-        <action name="view" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
-            <result name="success">/WEB-INF/pages/eml/eml.ftl</result>
-        </action>
-
-
-        <action name="*Form" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
-            <result type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
-        </action>
-        <!-- the last action in the EML editing workflow -->
-        <action name="methods" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
-            <result name="back" type="redirect-action">
-                <param name="actionName">${backPage}Form</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/methods.ftl</result>
-            <result name="success" type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="namespace">/manage</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-        </action>
-        <action name="*" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
-            <result name="back" type="redirect-action">
-                <param name="actionName">${backPage}Form</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/eml/{1}.ftl</result>
-            <result name="success" type="redirect-action">
-                <param name="actionName">${nextPage}Form</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-        </action>
-        
-    </package>
-    
-    
-    <!-- Actions managing occurrence resources -->
-    <package name="manageOcc" namespace="/manage/occ" extends="manage">
         <default-action-ref name="resources" />
         <global-results>
             <result name="resource-busy" type="redirect-action">
@@ -495,51 +418,51 @@
             </result>
             <result name="error" type="redirect-action">resources</result>
         </global-results>
+        
 
-        <action name="eml">
-            <result type="redirect-action">
-                <param name="actionName">creatorForm</param>
-                <param name="namespace">/manage/eml</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
+            <result>/WEB-INF/pages/manage/resourceList.jsp</result>
         </action>
-        
-        
-        <action name="resources" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="list">
-            <result>/WEB-INF/pages/manage/occ/resourceList.jsp</result>
-        </action>
-        
-        <action name="resource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/metadata.ftl</result>
+        <action name="resource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/metadata.ftl</result>
         </action>        
-        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/metadata.ftl</result>
-            <result name="success" type="redirect-action">
+        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/metadata.ftl</result>
+            <result name="occ" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="meta" type="redirect-action">
+                <param name="actionName">creatorForm</param>
+                <param name="namespace">/manage/meta</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resources</param>
             </result>
             <result name="delete" type="redirect-action">resources</result>
         </action>
-
+        
         <action name="sources" class="org.gbif.provider.webapp.action.manage.SourceAction" method="list">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/sources.ftl</result>
         </action>
         <action name="uploadSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="upload">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
-            <result name="input"  type="freemarker">/WEB-INF/pages/manage/occ/sources.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/sources.ftl</result>
+            <result name="input"  type="freemarker">/WEB-INF/pages/manage/sources.ftl</result>
             <result name="error" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <action name="editSource" class="org.gbif.provider.webapp.action.manage.SourceAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/sourceSqlForm.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
         </action>
         <action name="saveSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/sourceSqlForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -553,11 +476,11 @@
                 <param name="resource_id">${resource.id}</param>
             </result>
         </action>
-        <action name="editConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/resourceConnectionForm.ftl</result>
+        <action name="editConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/connectionForm.ftl</result>
         </action>
-        <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.OccMetadataAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/resourceConnectionForm.ftl</result>
+        <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/connectionForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -569,17 +492,17 @@
         </action>        
         
         <action name="transformations" class="org.gbif.provider.webapp.action.manage.TransformationAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/transformations.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/transformations.ftl</result>
         </action>
         
         <action name="mappings" class="org.gbif.provider.webapp.action.manage.MappingAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/mappings.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/mappings.ftl</result>
         </action>
         <action name="propertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/propertyMapping.ftl</result>
         </action>
         <action name="savePropertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/occ/propertyMapping.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/propertyMapping.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">mappings</param>
                 <param name="resource_id">${resource_id}</param>
@@ -589,9 +512,9 @@
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-
+        
         <action name="cache" class="org.gbif.provider.webapp.action.manage.UploadAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/cache.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/manage/cache.ftl</result>
         </action>
         <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
             <result type="redirect-action">
@@ -605,74 +528,83 @@
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-        <action name="process" class="org.gbif.provider.webapp.action.manage.UploadAction" method="process">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
-        </action>
-        <action name="clear" class="org.gbif.provider.webapp.action.manage.UploadAction" method="clear">
-            <result type="redirect-action">
-                <param name="actionName">resource</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-        </action>
         <action name="status" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
-            <result name="resource-busy">/WEB-INF/pages/manage/occ/uploadStatus.jsp</result>
+            <result name="resource-busy">/WEB-INF/pages/manage/uploadStatus.jsp</result>
             <result name="resource-ready" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
+        
+        <action name="validation" class="org.gbif.provider.webapp.action.manage.MetadataAction">
+            <result type="freemarker">/WEB-INF/pages/manage/validation.ftl</result>
+        </action>
 
         <action name="history" class="org.gbif.provider.webapp.action.manage.UploadAction" method="history">
-            <result>/WEB-INF/pages/manage/occ/uploadHistory.jsp</result>
+            <result>/WEB-INF/pages/manage/uploadHistory.jsp</result>
         </action>
         
-
-        <action name="validation" class="org.gbif.provider.webapp.action.manage.OccMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/occ/validation.ftl</result>
-        </action>
-        
-</package>
-    
-
-    <!-- Actions managing checklist resources -->
-    <package name="manageTax" namespace="/manage/tax" extends="manage">
     </package>
     
+    
     <!-- Actions managing generic resources  -->
-    <package name="manageRes" namespace="/manage/meta" extends="manage">
+    <package name="metadata" namespace="/manage/meta" extends="manage">
         <default-action-ref name="resources" />
+        <global-results>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="error" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </global-results>
         
         
-        <action name="eml">
+        <action name="resources">
             <result type="redirect-action">
-                <param name="actionName">creatorForm</param>
-                <param name="namespace">/manage/eml</param>
+                <param name="actionName">resources</param>
+                <param name="namespace">/manage</param>
+                <param name="resourceType">meta</param>
+            </result>
+        </action>
+        
+        <action name="view" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
+            <result name="success">/WEB-INF/pages/meta/eml.ftl</result>
+        </action>      
+
+        <action name="*Form" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
+            <result type="freemarker">/WEB-INF/pages/manage/meta/{1}.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/{1}.ftl</result>
+        </action>
+        <!-- the last action in the EML editing workflow -->
+        <action name="methods" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
+            <result name="back" type="redirect-action">
+                <param name="actionName">${backPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/methods.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">resource</param>
+                <param name="namespace">/manage</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </action>
+        <action name="*" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
+            <result name="back" type="redirect-action">
+                <param name="actionName">${backPage}Form</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/{1}.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">${nextPage}Form</param>
                 <param name="resource_id">${#parameters.resource_id}</param>
             </result>
         </action>
 
-        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="list">
-            <result>/WEB-INF/pages/manage/meta/resourceList.jsp</result>
-        </action>
-        
-        <action name="resource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction">
-            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-        </action>        
-        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="save">
-            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-            <result name="cancel" type="redirect-action">
-                <param name="actionName">resources</param>
-            </result>
-            <result name="delete" type="redirect-action">resources</result>
-        </action>        
-        <action name="importEml" class="org.gbif.provider.webapp.action.manage.MetaMetadataAction" method="importEml">
-            <result type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-            <result name="error" type="freemarker">/WEB-INF/pages/manage/meta/resourceMetadataForm.ftl</result>
-        </action>
-        
    </package>
     
 

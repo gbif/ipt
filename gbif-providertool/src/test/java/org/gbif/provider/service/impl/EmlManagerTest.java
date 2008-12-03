@@ -23,7 +23,8 @@ public class EmlManagerTest extends ResourceTestBase{
 	public void testSaveResource() {
 		setup();
 
-		Eml eml = new Eml(resource);
+		Eml eml = new Eml();
+		eml.setResource(resource);
 		eml.addKeyword("Italia");
 		eml.addKeyword("Romans");
 		eml.addKeyword("River");

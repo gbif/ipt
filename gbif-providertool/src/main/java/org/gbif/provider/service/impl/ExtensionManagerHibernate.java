@@ -85,7 +85,13 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			// add columns
 			for (ExtensionProperty prop : extension.getProperties()){
 				if (prop!=null && prop.getName()!=null && prop.getColumnLength()>0){
-					ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, namingStrategy.propertyToColumnName(prop.getName()), prop.getColumnLength());
+					if (prop.getColumnLength()>256){
+						// use LOB instead of varchar
+						ddl = String.format("ALTER TABLE %s ADD %s clob",table, namingStrategy.propertyToColumnName(prop.getName()));
+					}else{
+						// use varchar
+						ddl = String.format("ALTER TABLE %s ADD %s VARCHAR(%s)",table, namingStrategy.propertyToColumnName(prop.getName()), prop.getColumnLength());
+					}
 					st = cn.createStatement();
 					try {
 						st.execute(ddl);

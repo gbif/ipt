@@ -1,18 +1,7 @@
 package org.gbif.provider.webapp.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.struts2.ServletActionContext;
-import org.appfuse.Constants;
 import org.appfuse.model.User;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +10,6 @@ import org.springframework.security.context.SecurityContext;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
-import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends org.appfuse.webapp.action.BaseAction {
     public static final String OCCURRENCE = "occ";
