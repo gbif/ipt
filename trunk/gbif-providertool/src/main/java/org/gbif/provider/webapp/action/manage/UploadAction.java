@@ -2,16 +2,18 @@ package org.gbif.provider.webapp.action.manage;
 
 import java.util.List;
 
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class UploadAction extends BaseOccurrenceResourceAction implements Preparable{
+public class UploadAction extends BaseDataResourceAction implements Preparable{
 	private static final String BUSY = "resource-busy";
 	private static final String READY = "resource-ready";
 	@Autowired
@@ -20,7 +22,6 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	private UploadEventManager uploadEventManager; 
 	private String status;
 	private boolean busy = false;
-	private OccurrenceResource occResource;
 	private List<UploadEvent> uploadEvents;
 	private String gChartData;
 	
@@ -60,7 +61,7 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 	}
 	public String status(){
 		assert(resource_id != null);
-		occResource = occResourceManager.get(resource_id);
+		resource = resourceManager.get(resource_id);
 		status = cacheManager.getUploadStatus(resource_id);
 		if (busy){
 			return BUSY;
@@ -83,9 +84,6 @@ public class UploadAction extends BaseOccurrenceResourceAction implements Prepar
 
 	public String getStatus() {
 		return status;
-	}
-	public OccurrenceResource getOccResource() {
-		return occResource;
 	}
 
 	public List<UploadEvent> getUploadEvents() {
