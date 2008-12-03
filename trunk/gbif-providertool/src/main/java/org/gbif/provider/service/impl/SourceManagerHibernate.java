@@ -14,7 +14,7 @@ public class SourceManagerHibernate extends	GenericResourceRelatedManagerHiberna
 	}
 
 	public SourceFile getSourceByFilename(Long resourceId, String filename) {
-		return (SourceFile) query("from SourceFile s WHERE s.resource.id = :resourceId and s.filename = :filename")
+		return (SourceFile) query("from SourceFile s WHERE s.resource.id = :resourceId and s.name = :filename")
 			        .setLong("resourceId", resourceId)
 			        .setString("filename", filename)
 	        		.uniqueResult();

@@ -146,10 +146,10 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		if (headers.size() > 1){
 			// save file in view mapping
 			sourceManager.save(fsource);
-	        saveMessage(getText("view.sourceFileUploaded", String.valueOf(headers.size())));
+	        saveMessage(getText("sources.sourceFileUploaded", String.valueOf(headers.size())));
 		}else{
 			fsource.setResource(null);
-	        saveMessage(getText("view.sourceFileBroken", String.valueOf(headers.size())));
+	        saveMessage(getText("sources.sourceFileBroken", String.valueOf(headers.size())));
 		}
 		
 		// get sources data
