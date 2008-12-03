@@ -27,16 +27,27 @@
 <legend>Your Existing Mappings</legend>
 	<i>(could also be visualised with graphviz)</i>
 	<div>
-	  <@s.form action="propertyMapping" method="get">
+	  <@s.form action="propertyMapping" method="post">
 	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value="${coreMapping.id}"/>
 		<div class="left">
 			<strong>${coreMapping.extension.name}</strong>
+	<#if coreMapping.source??> 
 			<span>${coreMapping.propertyMappings?size} properties mapped to source <i>${coreMapping.source.name}</i></span>
 		</div>
 		<div class="right">
 			<@s.submit cssClass="button right" key="button.edit" />
 		</div>
+	<#else>
+			<span>&nbsp;&nbsp;&nbsp;Mapping based on source: </span>
+		</div>
+		<div class="left">
+		 	<@s.select key="mappings.sources" name="sid" emptyOption="false" list="sources" listKey="id" listValue="name" theme="simple"/>
+		</div>
+		<div class="right">
+			<@s.submit cssClass="button right" key="button.save" />
+		</div>
+	</#if>
 	  </@s.form>
 	</div>
 	<div class="break"></div>

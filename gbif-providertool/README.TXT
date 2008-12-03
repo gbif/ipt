@@ -46,7 +46,7 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 
 0.5.1
 - uses XStream for EML metadata persistency
-- bug fixes
+- bug fixes in config UI
 
 0.5
 - uses embedded H2 database

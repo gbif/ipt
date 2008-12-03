@@ -76,6 +76,11 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         if (mid != null) {
     		// get existing view mapping
         	view = viewMappingManager.get(mid);
+        	if (view.getSource()==null && sid != null){
+        		// this is probably the default core mapping without a source assigned yet.
+            	view.setSource(sourceManager.get(sid));
+            	viewMappingManager.save(view);
+        	}
         }else if (eid != null && sid != null) {
         	// create new view mapping
         	view = new ViewExtensionMapping();
