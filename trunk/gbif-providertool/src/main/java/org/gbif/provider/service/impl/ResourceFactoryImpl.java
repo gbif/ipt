@@ -23,13 +23,26 @@ public class ResourceFactoryImpl implements ResourceFactory{
 	}
 	
 	public ChecklistResource newChecklistResourceInstance(){
-		Extension core = extensionManager.get(ChecklistResource .CORE_EXTENSION_ID);
+		Extension core = extensionManager.get(ChecklistResource.CORE_EXTENSION_ID);
 		ChecklistResource resource =  ChecklistResource.newInstance(core);
 		return resource;
 	}
 
-	public Resource newResourceInstance(){
+	public Resource newMetadataResourceInstance(){
 		Resource resource = new Resource();
 		return resource;
+	}
+
+
+	public Resource newResourceInstance(Class resourceClass) {
+		Resource res = null;
+		if (resourceClass.isAssignableFrom(OccurrenceResource.class)){
+			res = newOccurrenceResourceInstance();
+		}else if (resourceClass.isAssignableFrom(ChecklistResource.class)){
+			res = newChecklistResourceInstance();
+		}else{
+			res = newMetadataResourceInstance();
+		}
+		return res;
 	}
 }

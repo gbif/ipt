@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
 import org.appfuse.model.User;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.GenericManager;
@@ -44,6 +45,7 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 	protected String guid;
 	protected T resource;
 	protected Map session;
+	protected String resourceType=Resource.ALIAS;
 
 	public void prepare() {
 		if (resource_id != null) {
@@ -51,14 +53,25 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 		}else if (guid != null){
 			resource = resourceManager.get(guid);
 		}
-		// update recently viewed resources in session
 		if (resource != null) {
+			// update recently viewed resources in session
 			updateRecentResouces();
+			// if resource instance exists this defines the resourceType we are dealing with
+			resourceType = deriveResourceType();
 		}
 	}
 
-	
-	private void updateRecentResouces(){
+	protected String deriveResourceType(){
+		if (resource instanceof OccurrenceResource){
+			return OccurrenceResource.ALIAS;
+		}else if (resource instanceof ChecklistResource){
+			return ChecklistResource.ALIAS;
+		}else{
+			return Resource.ALIAS;
+		}
+	}
+		
+	protected void updateRecentResouces(){
 		LabelValue res = new LabelValue(resource.getTitle(), resource.getId().toString());
 		Queue<LabelValue> queue; 
 		Object rr = session.get(Constants.RECENT_RESOURCES);
@@ -106,6 +119,13 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+
+	public String getResourceType() {
+		return resourceType;
+	}
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
 	}
 
 }

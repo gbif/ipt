@@ -48,7 +48,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.opensymphony.xwork2.Preparable;
 
 public class MappingAction extends BaseDataResourceAction implements Preparable{
-	private static Integer FIXED_TERMS_IDX = 1000;
 	@Autowired
     private SourceManager sourceManager;
 	@Autowired

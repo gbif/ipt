@@ -48,7 +48,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.opensymphony.xwork2.Preparable;
 
 public class PropertyMappingAction extends BaseDataResourceAction implements Preparable{
-	private static Integer FIXED_TERMS_IDX = 1000;
 	@Autowired
     private SourceInspectionManager sourceInspectionManager;
 	@Autowired
@@ -198,16 +197,16 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 		return mid;
 	}
 
-	public void setMid(Long mapping_id) {
-		this.mid = mapping_id;
+	public void setMid(Long mid) {
+		this.mid = mid;
 	}
 
 	public Long getEid() {
 		return eid;
 	}
 
-	public void setEid(Long extension_id) {
-		this.eid = extension_id;
+	public void setEid(Long eid) {
+		this.eid = eid;
 	}
 	
 	public List<String> getColumnOptions() {

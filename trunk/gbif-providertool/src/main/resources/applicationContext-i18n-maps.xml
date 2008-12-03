@@ -534,5 +534,7 @@
 		<entry key="specimen" value="resourceType.occ.specimen"/>
 		<entry key="monitoring" value="resourceType.occ.monitoring"/>
 	</util:map>	
+	<util:map id="otherResourceTypes">
+	</util:map>	
 	
 </beans>

@@ -9,10 +9,10 @@
             <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
             <Item name="Resources" title="menu.explorer.resources" page="/resources.html"/>
         </Menu>
-        <Menu name="ManagerMenu" title="menu.manager" page="/resources.html" roles="ROLE_ADMIN,ROLE_MANAGER">
-            <Item name="OccResources" title="menu.explorer.occurrences" page="/manage/occ/resources.html"/>
-            <Item name="TaxResources" title="menu.explorer.checklists" page="/taxResources.html"/>
-            <Item name="Resources" title="menu.explorer.resources" page="/manage/meta/resources.html"/>
+        <Menu name="ManagerMenu" title="menu.manager" page="/manage/resources.html?resourceType=meta" roles="ROLE_ADMIN,ROLE_MANAGER">
+            <Item name="OccResources" title="menu.explorer.occurrences" page="/manage/resources.html?resourceType=occ"/>
+            <Item name="TaxResources" title="menu.explorer.checklists" page="/manage/resources.html?resourceType=tax"/>
+            <Item name="Resources" title="menu.explorer.resources" page="/manage/resources.html?resourceType=meta"/>
         </Menu> 
         <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER,ROLE_MANAGER">
             <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>
