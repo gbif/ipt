@@ -78,7 +78,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 		try {
 			geoTools.updateFeatureType(resource);
 		} catch (IOException e) {
-			log.error("Cant write new Geoserver FeatureTypeInfo for resource "+resource.getId(), e);
+			log.error("Cant write new Geoserver FeatureTypeInfo for resource "+resource.getId());
 		}
 		return super.save(resource);		
 	}
