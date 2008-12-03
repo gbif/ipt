@@ -1,5 +1,7 @@
 package org.gbif.provider.model;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -35,26 +37,50 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.model.voc.Rank;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKey;
+import org.hibernate.validator.NotNull;
 
 
 @Entity
-public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedObject {
+public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
+		// for core record
+		@NotNull
+		private String localId;
+		@NotNull
+		private String guid;
+		private String link;
+		private boolean isDeleted;
+		private Date modified;
+		@NotNull
 		private Resource resource;
+		
+		// taxon specific
 		private String rank;
 		private String name;
 		private String authorship;
 		private String code;
+		
 		// stats
 		private BBox bbox = new BBox();
 		private int occTotal;
 		
-
+		
+		
+		public static Taxon newInstance(Resource resource){
+			Taxon tax = new Taxon();
+			tax.resource=resource;
+			return tax;
+		}
+		
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		@Override
 		public Long getId() {
+			return super.getId();
+		}
+		@Transient
+		public Long getCoreId() {
 			return super.getId();
 		}
 		
@@ -64,6 +90,46 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedO
 		}
 		public void setResource(Resource resource) {
 			this.resource = resource;
+		}
+
+		
+		@Column(length=128)
+		@org.hibernate.annotations.Index(name="tax_source_local_id")
+		public String getLocalId() {
+			return localId;
+		}
+		public void setLocalId(String localId) {
+			this.localId = localId;
+		}
+
+		@org.hibernate.annotations.Index(name="tax_guid")
+		public String getGuid() {
+			return guid;
+		}
+		public void setGuid(String guid) {
+			this.guid = guid;
+		}
+
+		public String getLink() {
+			return link;
+		}
+		public void setLink(String link) {
+			this.link = link;
+		}
+
+		@org.hibernate.annotations.Index(name="tax_deleted")
+		public boolean isDeleted() {
+			return isDeleted;
+		}
+		public void setDeleted(boolean isDeleted) {
+			this.isDeleted = isDeleted;
+		}
+
+		public Date getModified() {
+			return modified;
+		}
+		public void setModified(Date modified) {
+			this.modified = modified;
 		}
 
 		@ManyToOne(optional = true)
@@ -192,5 +258,35 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements ResourceRelatedO
 					.append(this.name).append(this.getParent()).append(this.getId())
 					.toHashCode();
 		}
+
+		
+		@Transient
+		public String getPropertyValue(ExtensionProperty property){
+			String propName = property.getName();
+			if (propName.equals("Class")){
+				propName = "Classs";
+			}
+			String getter = String.format("get%s", propName);
+			String value = null;
+			try {
+				Method m = this.getClass().getMethod(getter);
+				Object obj = m.invoke(this);
+				if (obj!=null){
+					value=obj.toString();
+				}
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			return value;
+		}
+		
 		
 }

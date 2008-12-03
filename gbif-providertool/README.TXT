@@ -42,6 +42,8 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 ####################
 # VERSION HISTORY
 ####################
+0.6
+- auto column mapping for new mappings
 
 0.5.1
 - uses XStream for EML metadata persistency

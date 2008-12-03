@@ -54,8 +54,5 @@ public interface CoreRecord extends ResourceRelatedObject, Record {
 	boolean isDeleted();
 	void setDeleted(boolean isDeleted);
 	
-	boolean isProblematic();
-	void setProblematic(boolean isProblematic);
-	
 	String getPropertyValue(ExtensionProperty property);
 }

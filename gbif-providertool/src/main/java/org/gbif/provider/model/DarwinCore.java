@@ -84,7 +84,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private String guid;
 	private String link;
 	private boolean isDeleted;
-	private boolean isProblematic;
 	private Date modified;
 	@NotNull
 	private OccurrenceResource resource;
@@ -221,7 +220,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						typedVal = Integer.valueOf(val);
 						dwc.setMinimumElevationInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						dwc.setProblematic(true);
 						logdb.warn("log.transform", new String[]{val, "MinimumElevationInMeters", "Integer"});
 					}
 				}
@@ -234,7 +232,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						typedVal = Integer.valueOf(val);
 						dwc.setMaximumElevationInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						dwc.setProblematic(true);
 						logdb.warn("log.transform", new String[]{val, "MaximumElevationInMeters", "Integer"});
 					}
 				}
@@ -247,7 +244,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						typedVal = Integer.valueOf(val);
 						dwc.setMinimumDepthInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						dwc.setProblematic(true);
 						logdb.warn("log.transform", new String[]{val, "MinimumDepthInMeters", "Integer"});
 					}
 				}
@@ -260,7 +256,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						typedVal = Integer.valueOf(val);
 						dwc.setMaximumDepthInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						dwc.setProblematic(true);
 						logdb.warn("log.transform", new String[]{val, "MaximumDepthInMeters", "Integer"});
 					}
 				}
@@ -277,7 +272,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 						typedVal = Constants.DATE_ISO_FORMAT().parse(val);
 						dwc.setDateCollected(typedVal);
 					} catch (ParseException e) {
-						dwc.setProblematic(true);
 						logdb.warn("log.transform", new String[]{val, "EarliestDateCollected", "Date"});
 					}
 				}				
@@ -333,10 +327,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 					try {
 						loc.setLatitude(Double.valueOf(val));
 					} catch (NumberFormatException e) {
-						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLatitude into Float value", val, e);
 					} catch (IllegalArgumentException e) {
-						setProblematic(true);
 						logdb.warn("Latitude value '{0}' is out of allowed range", val, e);
 					}
 				}
@@ -346,10 +338,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 					try {
 						loc.setLongitude(Double.valueOf(val));
 					} catch (NumberFormatException e) {
-						setProblematic(true);
 						logdb.warn("Couldnt transform value '{0}' for property DecimalLongitude into Float value", val, e);
 					} catch (IllegalArgumentException e) {
-						setProblematic(true);
 						logdb.warn("Longitude value '{0}' is out of allowed range", val, e);
 					}
 				}
@@ -426,14 +416,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.isDeleted = isDeleted;
 	}
 
-	public boolean isProblematic() {
-		return isProblematic;
-	}
-
-	public void setProblematic(boolean isProblematic) {
-		this.isProblematic = isProblematic;
-	}
-	
 	@ManyToOne
 	public OccurrenceResource getResource() {
 		return resource;
