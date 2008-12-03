@@ -42,6 +42,12 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 ####################
 # VERSION HISTORY
 ####################
+0.6
+
+0.5.1
+- uses XStream for EML metadata persistency
+- bug fixes
+
 0.5
 - uses embedded H2 database
 - geoserver plugin updated for geotools 2.5 and H2
@@ -49,6 +55,7 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 - new manager config UI
 - extension entities visualised
 - metadata browse mockup
+- resource type property added to metadata
 - taxon & region trees open corresponding node in taxon & region overview page
 
 0.4

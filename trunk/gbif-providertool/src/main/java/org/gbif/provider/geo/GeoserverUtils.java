@@ -64,7 +64,12 @@ public class GeoserverUtils {
 	        out.write(featureTypeInfo);
 	        out.close();
 	        fstream.close();
-			this.reloadCatalog();
+			try {
+				this.reloadCatalog();
+			} catch (IOException e) {
+				log.error("Cannot reload geoserver catalog. Geoserver not running or URL & login credentials not set correctly?");
+				throw new IOException("Cannot reload geoserver catalog");
+			}
 			// remember new feature hashcode
 			resource.setFeatureHash(featureTypeInfo.hashCode());				
 		}

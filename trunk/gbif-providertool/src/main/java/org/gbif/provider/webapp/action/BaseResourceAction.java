@@ -92,6 +92,10 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 		return resource;
 	}
 	
+	public void setResource(T resource) {
+		this.resource = resource;
+	}
+
 	public void setSession(Map session) {
 		this.session = session;
 	}
