@@ -42,7 +42,6 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 ####################
 # VERSION HISTORY
 ####################
-0.6
 
 0.5.1
 - uses XStream for EML metadata persistency
@@ -62,6 +61,8 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 - google maps integrated
 - simple EML metadata forms
 - eml output
+- provider settings UI
+- improved occurrence webapp
 
 0.3
 - occurrence webapp added
@@ -70,5 +71,5 @@ b) JDBC via the included H2 tcp server. Make sure you are using H2 1.1.x.jar. Us
 
 0.2 
 - nested set created for taxonomy & region hierarchy
-- upload/import working
+- upload/import tasks
 
