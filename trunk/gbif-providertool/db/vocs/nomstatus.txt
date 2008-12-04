@@ -7,14 +7,15 @@
 # In case of binary name relationships synonyms point to the accepted second name.
 # So the taxon with taxstatus="synonym" and nomstatus="orthographic variant" points to the accepted name via its acceptedID
 # 
-# Am I correct in stating that the nomenclatural status of the name only refers to an attribute of a name and not a relationship with another name.
+# Am I correct in stating that the nomenclatural status of the name only refers to an attribute of a name and not a relationship with another name.  Answer YES
 # 
 
 STATUS	ABBREVIATION	DESCRIPTION
 #
-Available	-	Valid (bot. code)
+Available	-	The name is correctly published according to the rules of nomenclature of the ICZN
+Valid	- 	The name is correctly published according to the rules of nomenclature of the ICBN
 Ambiguous	nom. ambig.
-Doubtful	nom. dub.
+Doubtful	nom. dub.	a zoological scientific name that is of unknown or doubtful application
 Confusum	nom. confus.
 Illegitimate	nom. illeg.
 Invalid	nom. inval.
@@ -28,19 +29,22 @@ Conserved Prop	nom. cons. prop.
 Orthography Conserved Prop	nom. orth. cons.
 Legitimate	-
 Alternative	nom. altern.
-Novum	nom. nov.
+Forgotten name	nom. oblit.	a name that has not been used in the scientific community for more than fifty years after its original proposal.
+Novum	nom. nov.	a scientific name that is created specifically to replace a name which is a junior synonym or homonym
 Utique Rejected Prop	nom. utique rej. prop.
-Orthography Conserved	nom. cons.
+Orthography Conserved	nom. cons.	a scientific name that enjoys special nomenclatural protection
 Sanctioned	nom. sanct.
-Nudum	nom. nud.
+Nudum	nom. nud.	A name not (or not yet) published with an adequate description.
 Subnudum	nom. subnud.
-Provisional	nom. provis.
+Provisional	nom. provis.	
 Opus Utique Oppr	opus. utique oppr.
 New Combination	comb. nov.	The name is a new combination
-
+Orthographic variant		A spelling variation of a full combination (name and authorship) that may or may not be a misspelling.  
+Incorrect spelling		A orthographic variant that represents a misspelling of the name.
+Incorrect Original Spelling		
 
 # WHAT ABOUT THESE ???
-orthographic variants
+orthographic variant
 homonym later
 # This one seems like a taxonomic statement
 replaced	replaced synonym for
@@ -49,7 +53,7 @@ validated later	later validated by
 blocking name	inverse of "is new combination blocked by"
 >>>>>>> .r404
 
-# Ultimately I am interested in whether the name ha
+# Ultimately I am interested in whether the name has nomenclaturang standing or it does not.
 
 Correct	The name correctly conforms to the rules of the relevant code of nomenclature and can be used.  Equivalent to "Available" in zoology and "Valid" in Botany.
 Uncertain nomenclatural standing	The nomenclatural standing of the name is unknown.
