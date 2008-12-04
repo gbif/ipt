@@ -2,7 +2,7 @@
 	<thead>
 		<tr>
 			<#list previewHeader as h>
-			<th>${h}</th>
+			<th>${h!}</th>
 			</#list>
 		</tr>
 	</thead>
@@ -10,7 +10,7 @@
 		<#list preview as row>
 		<tr>
 			<#list row as cell>
-				<td>${cell}</td>
+				<td>${cell!"&lt;NULL&gt;"}</td>
 			</#list>
 		</tr>
 		</#list>

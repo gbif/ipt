@@ -249,7 +249,7 @@
             <result name="map">/WEB-INF/pages/ajax/chartimg.jsp</result>
             <result name="chart">/WEB-INF/pages/ajax/chartimg.jsp</result>
         </action>
-        <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
+        <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>
         </action>
@@ -513,25 +513,26 @@
             </result>
         </action>
         
-        <action name="cache" class="org.gbif.provider.webapp.action.manage.UploadAction">
+        <action name="cache" class="org.gbif.provider.webapp.action.manage.ImportAction">
             <result type="freemarker">/WEB-INF/pages/manage/cache.ftl</result>
         </action>
-        <action name="upload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="upload">
+        <action name="import" class="org.gbif.provider.webapp.action.manage.ImportAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-        <action name="cancelUpload" class="org.gbif.provider.webapp.action.manage.UploadAction" method="cancel">
-            <result type="redirect-action">
+        <action name="cancelUpload" class="org.gbif.provider.webapp.action.manage.ImportAction" method="cancel">
+            <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
-        <action name="status" class="org.gbif.provider.webapp.action.manage.UploadAction" method="status">
+        <action name="status" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/manage/uploadStatus.jsp</result>
             <result name="resource-ready" type="redirect-action">
                 <param name="actionName">resource</param>
+                <param name="namespace">/</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
@@ -540,7 +541,7 @@
             <result type="freemarker">/WEB-INF/pages/manage/validation.ftl</result>
         </action>
 
-        <action name="history" class="org.gbif.provider.webapp.action.manage.UploadAction" method="history">
+        <action name="history" class="org.gbif.provider.webapp.action.manage.ImportAction" method="history">
             <result>/WEB-INF/pages/manage/uploadHistory.jsp</result>
         </action>
         

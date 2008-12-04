@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class UploadAction extends BaseDataResourceAction implements Preparable{
+public class ImportAction extends BaseDataResourceAction implements Preparable{
 	private static final String BUSY = "resource-busy";
 	private static final String READY = "resource-ready";
 	@Autowired
@@ -41,27 +41,20 @@ public class UploadAction extends BaseDataResourceAction implements Preparable{
 	}		
 
 	public String upload(){
-		assert(resource_id != null);
 		// run task in different thread
 		cacheManager.runUpload(resource_id, getCurrentUser().getId());			
         saveMessage(getText("upload.added"));
 		return SUCCESS;
 	}
+	
 	public String cancel(){
-		assert(resource_id != null);
 		cacheManager.cancelUpload(resource_id);
         saveMessage(getText("upload.cancelled"));
 		return SUCCESS;
 	}
-	public String process(){
-		assert(resource_id != null);
-		status = cacheManager.getUploadStatus(resource_id);
-        saveMessage(getText("upload.processed"));
-		return SUCCESS;
-	}
+
 	public String status(){
-		assert(resource_id != null);
-		resource = resourceManager.get(resource_id);
+		super.prepare();
 		status = cacheManager.getUploadStatus(resource_id);
 		if (busy){
 			return BUSY;
@@ -69,19 +62,15 @@ public class UploadAction extends BaseDataResourceAction implements Preparable{
 			return READY;
 		}
 	}
-	public String clear(){
-		assert(resource_id != null);
-		cacheManager.resetResource(resource_id);
-        saveMessage(getText("upload.cleared"));
-		return SUCCESS;
-	}
 
 	public String history(){
-		assert(resource_id != null);
 		uploadEvents = uploadEventManager.getUploadEventsByResource(resource_id);
 		return SUCCESS;
 	}
 
+	
+	
+	
 	public String getStatus() {
 		return status;
 	}
