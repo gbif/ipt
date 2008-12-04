@@ -16,8 +16,7 @@ public class TaxonTest {
 	private OccurrenceResource resource;
 
 	private Taxon newTaxon(String name, Taxon parent){
-		Taxon t = new Taxon();
-		t.setResource(resource);
+		Taxon t = Taxon.newInstance(resource);
 		t.setName(name);
 		t.setFullname(name);
 		t.setParent(parent);

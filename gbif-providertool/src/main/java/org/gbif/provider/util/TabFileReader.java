@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.DarwinCore;
@@ -72,11 +73,8 @@ public class TabFileReader implements Iterator<String[]>{
 			log.warn("row contains more columns than header");
 			columns = cl.toArray(new String[header.length-1]);
 		}else if (columns.length < header.length){
-			List<String> cl = Arrays.asList(columns);
-			while(cl.size()<header.length){
-				cl.add(null);
-			}
-			columns = cl.toArray(new String[header.length-1]);
+			// pad missing columns with nulls
+			columns = (String[]) ArrayUtils.addAll(columns, new String[header.length-columns.length]);
 		}
 		return columns;
 	}

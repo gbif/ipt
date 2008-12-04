@@ -21,6 +21,7 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 	private DarwinCoreManager darwinCoreManager;
     private Long id;
     private Taxon taxon;
+    private List<Taxon> taxa;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
@@ -32,6 +33,11 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 			// geoserver map link
 			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
     	}
+		return SUCCESS;
+    }
+    
+    public String list(){
+		taxa=taxonManager.getAll(resource_id);
 		return SUCCESS;
     }
     
@@ -74,6 +80,10 @@ public class TaxonAction extends BaseOccurrenceResourceAction {
 
 	public Long getTaxon_id() {
 		return id;
+	}
+
+	public List<Taxon> getTaxa() {
+		return taxa;
 	}
 
 }

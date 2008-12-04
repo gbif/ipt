@@ -8,7 +8,6 @@
 <fieldset>
 	<legend><@s.text name="eml.taxonomicMetadata"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
-	<@s.hidden name="backPage" value="geocoverage"/>
 	<@s.hidden name="nextPage" value="tempcoverage"/>
 
 	<@s.textarea key="eml.taxonomicCoverageDescription" cssClass="text xlarge slim"/>
@@ -31,7 +30,6 @@
 </fieldset>
 
 	<div class="break" />
-    <@s.submit cssClass="button" key="button.back" method="back" theme="simple"/>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
+    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </@s.form>

@@ -103,6 +103,19 @@ table.layout tr th {
 	position: relative;
 }
 
+#currentResourceClass {
+	background-color: #D7E9F5;
+	color: #ffffff;
+	text-align: center;
+	position: relative;
+	top: 105px;
+	width: 90px;
+	float: right;
+	right: -105px;
+	z-index: 4;
+	padding: 2px;
+}
+
 div#header .left {
         float: left;
 }

@@ -20,7 +20,6 @@
 <fieldset>
 	<legend><@s.text name="eml.temporalCoverage"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
-	<@s.hidden name="backPage" value="taxcoverage"/>
 	<@s.hidden name="nextPage" value="rights"/>
 
 	<div>
@@ -42,7 +41,6 @@
 </fieldset>
 
 	<div class="break" />
-    <@s.submit cssClass="button" key="button.back" method="back" theme="simple"/>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
+    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </@s.form>

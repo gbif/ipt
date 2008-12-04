@@ -69,10 +69,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected User modifier;
 	protected Date modified;
 	
-	public static String getAlias(){
-		return ALIAS;
-	}
-	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
 		return id;

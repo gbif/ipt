@@ -78,7 +78,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 	// for core record
 	private Long id;
-	@NotNull
 	private String localId;
 	@NotNull
 	private String guid;
@@ -372,7 +371,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return id;
 	}
 
-	@Column(length=128)
+	@Column(length=64)
 	@org.hibernate.annotations.Index(name="source_local_id")
 	public String getLocalId() {
 		return localId;
@@ -382,6 +381,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.localId = localId;
 	}	
 
+	@Column(length=128)
 	@org.hibernate.annotations.Index(name="guid")
 	public String getGuid() {
 		return guid;

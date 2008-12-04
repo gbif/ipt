@@ -40,9 +40,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	private OccResourceManager occResourceManager;
 	@Autowired
 	protected ResourceFactory resourceFactory;
-	@Autowired
-	protected EmlManager emlManager;
-	protected Eml eml;
 	protected List<?> resources;
 	protected Map<String, String> occurrenceResourceTypes = new HashMap<String, String>();
 	protected Map<String, String> checklistResourceTypes = new HashMap<String, String>();
@@ -69,15 +66,14 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		super.prepare();
 		if (resource == null && resourceType!=null) {
 			// create new empty resource
-			if (resourceType.equalsIgnoreCase(OccurrenceResource.ALIAS)){
+			if (resourceType.equalsIgnoreCase(OCCURRENCE)){
 				resource = resourceFactory.newOccurrenceResourceInstance();				
-			}else if (resourceType.equalsIgnoreCase(ChecklistResource.ALIAS)){
+			}else if (resourceType.equalsIgnoreCase(CHECKLIST)){
 				resource = resourceFactory.newChecklistResourceInstance();				
 			}else{
 				resource = resourceFactory.newMetadataResourceInstance();				
 			}
 		}
-		eml = emlManager.load(resource);
 	}
 		
 	public String execute(){
@@ -134,27 +130,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		return "delete";
 	}
 
-	public String importEml() {
-        if ("".equals(fileFileName) || file == null) {
-        	return ERROR;
-        }
-        // final eml destination
-		saveMessage(getText("Sorry, reading EML is not yet implemented properly"));
-    	return ERROR;
-
-//    	File emlFile = cfg.getEmlFile(resource.getId());
-//        try {
-//        	uploadData(emlFile);
-//    		// try to parse the EML
-//		} catch (IOException e) {
-//			log.error("Couldnt upload EML file",e);
-//			saveMessage(getText("Error uploading file"));
-//        	return ERROR;
-//		}
-//		
-//		log.info(String.format("EML %s uploaded and parsed for resource %s", emlFile.getAbsolutePath(), resource_id));
-//		return SUCCESS;
-	}
 	
 	private boolean uploadLogo() {
         if ("".equals(fileFileName) || file == null) {
@@ -196,10 +171,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	
 	public List<?> getResources() {
 		return resources;
-	}
-
-	public Eml getEml() {
-		return eml;
 	}
 
     public void setFile(File file) {

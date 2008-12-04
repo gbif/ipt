@@ -8,7 +8,6 @@
 <fieldset>
 	<legend><@s.text name="eml.geographicCoverage"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
-	<@s.hidden name="backPage" value="creator"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
 
 	<div id="map" style="width:512px; height:256px; border:1px solid #ccc;"></div>
@@ -34,7 +33,6 @@
 	<#include "/WEB-INF/pages/inc/openLayersBBoxScript.ftl">  
 
 	<div class="break" />
-    <@s.submit cssClass="button" key="button.back" method="back" theme="simple"/>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
+    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </@s.form>

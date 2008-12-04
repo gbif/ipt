@@ -24,7 +24,7 @@ public class Eml implements Serializable{
 	// serialised data
 	private Agent resourceCreator = new Agent();
 	private Date pubDate;
-	private String language;
+	private String language="en";
 	private String intellectualRights;
 	// keywords
 	private List<String> keywords = new ArrayList<String>();

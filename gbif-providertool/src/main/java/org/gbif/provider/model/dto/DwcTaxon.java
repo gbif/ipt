@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.voc.Rank;
 
 public class DwcTaxon implements Comparable<DwcTaxon>{
-	private Taxon taxon = new Taxon();
+	private Taxon taxon;
 	private String kingdom;
 	private String phylum;
 	private String classs;
@@ -20,12 +21,17 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 	private String infraSpeciesEpi;
 	private boolean terminal;
 	
+	public static DwcTaxon newInstance(Resource resource){
+		DwcTaxon tax = new DwcTaxon();
+		tax.taxon = Taxon.newInstance(resource);
+		return tax;
+	}
+	
 	public static DwcTaxon newDwcTaxon(DarwinCore dwc){
 		if (dwc == null){
 			throw new NullPointerException();
 		}
-		DwcTaxon tax = new DwcTaxon();
-		tax.taxon.setResource(dwc.getResource());
+		DwcTaxon tax = DwcTaxon.newInstance(dwc.getResource());
 		tax.taxon.setCode(dwc.getNomenclaturalCode());
 		tax.taxon.setFullname(dwc.getScientificName());
 		tax.taxon.setAuthorship(dwc.getAuthorYearOfScientificName());
@@ -57,8 +63,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		if (dt.getDwcRank() != null && rank.compareTo(dt.getDwcRank())>0){
 			throw new IllegalArgumentException("Can only clone taxa of higher or same rank than the original taxon");
 		}
-		DwcTaxon tax = new DwcTaxon();
-		tax.taxon.setResource(dt.taxon.getResource());
+		DwcTaxon tax = DwcTaxon.newInstance(dt.taxon.getResource());
 		tax.taxon.setCode(dt.taxon.getCode());
 		tax.taxon.setDwcRank(rank);
 		tax.taxon.setRank(rank.name());
