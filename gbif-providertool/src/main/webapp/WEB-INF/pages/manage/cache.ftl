@@ -26,7 +26,7 @@
   </p>
 
 <div>
-  <@s.form>
+  <@s.form id="banane">
 	<table>
 		<#if resource.lastUpload??>
 			<@s.url id="logsUrl" action="logEvents" namespace="/admin" includeParams="get">
@@ -61,7 +61,7 @@
 
 <div class="newline">
 <#if resource.hasMinimalMapping()>
-	<@s.form action="upload" method="post" >
+	<@s.form id="importForm" action="import" method="post" >
 	  <@s.hidden key="resource_id" />
 	  <@s.submit cssClass="button" key="button.upload" />
 	</@s.form>
