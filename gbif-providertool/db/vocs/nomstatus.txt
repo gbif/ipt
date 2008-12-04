@@ -1,13 +1,18 @@
+
+=======
 #
 # NOMENCLATURAL STATUS VOCABULARY
 #
 # Terms for the nomenclatural status of a name. 
 # In case of binary name relationships synonyms point to the accepted second name.
 # So the taxon with taxstatus="synonym" and nomstatus="orthographic variant" points to the accepted name via its acceptedID
-#
+# 
+# Am I correct in stating that the nomenclatural status of the name only refers to an attribute of a name and not a relationship with another name.
+# 
+
 STATUS	ABBREVIATION	DESCRIPTION
 #
-Available	-	Valid
+Available	-	Valid (bot. code)
 Ambiguous	nom. ambig.
 Doubtful	nom. dub.
 Confusum	nom. confus.
@@ -35,9 +40,34 @@ New Combination	comb. nov.	The name is a new combination
 
 
 # WHAT ABOUT THESE ???
-orthographic variant
+orthographic variants
 homonym later
+# This one seems like a taxonomic statement
 replaced	replaced synonym for
 validated	validated by
 validated later	later validated by
 blocking name	inverse of "is new combination blocked by"
+>>>>>>> .r404
+
+# Ultimately I am interested in whether the name ha
+
+Correct	The name correctly conforms to the rules of the relevant code of nomenclature and can be used.  Equivalent to "Available" in zoology and "Valid" in Botany.
+Uncertain nomenclatural standing	The nomenclatural standing of the name is unknown.
+No Nomenclatural standing	The name is explicitly known to NOT conform to the rules of the code or is not governed by published codes of nomenclature.
+
+# From Mervyn Mansells Neuroptera (Insect) database these fell under Reasons name not (Taxonomically) valid
+
+Synonym
+Homonym
+New Combination
+Nomen Nudum
+Name valid
+Manuscript name only
+Name uncertain
+incomplete name
+Changed combination
+New synonym
+Incorrect spelling
+Species name emended
+Unjustified emendation
+Incorrect Original Spelling
