@@ -18,8 +18,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.ConnectionFactory;
+import org.apache.commons.dbcp.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp.PoolableConnectionFactory;
+import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.pool.ObjectPool;
+import org.apache.commons.pool.impl.GenericObjectPool;
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DefaultFeatureReader;
 import org.geotools.data.FeatureReader;
@@ -95,14 +103,28 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
 		}
-		// embedded H2 is apparently faster without connection pools. See H2 documentation 
-        JdbcDataSource ds = new JdbcDataSource();
-        String url = String.format("jdbc:h2:%s/db/ipt;auto_server=true", params.get("datadir")); 
+        String url = String.format("jdbc:h2:%s/db/ipt;auto_server=true", params.get("datadir"));
+        String user = "sa"; // params.get("user")
+        String pass = "";  // params.get("password") 
         log.debug("Using JDBC URL: " + url);
-        ds.setURL(url); 
-        ds.setUser("sa"); // params.get("user") 
-        ds.setPassword(""); // params.get("password") 
-        log.debug(ds);
+
+//        // embedded H2 is apparently faster without connection pools. See H2 documentation 
+//        JdbcDataSource ds = new JdbcDataSource();
+//        ds.setURL(url); 
+//        ds.setUser(user);  
+//        ds.setPassword(pass); 
+
+        // NO IT ISNT!!!
+        // 100 inserts took 16000 milliseconds, with pool only 250 !!!
+        
+        ObjectPool connectionPool = new GenericObjectPool(null);
+        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(url, user, pass);
+        // this is unused but it takes in the connection pool so I presume that this does the callback to set the factory for the pool 
+        // http://commons.apache.org/dbcp/apidocs/org/apache/commons/dbcp/package-summary.html#package_description
+        @SuppressWarnings("unused") 
+        PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+        DataSource ds = new PoolingDataSource(connectionPool);
+
         dao = new Dao();
         dao.setDataSource(ds);
     }
