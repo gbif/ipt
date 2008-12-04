@@ -13,6 +13,14 @@
 	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
 </div>
 
+<s:if test="resourceType!=null">
+<div id="currentResourceClass">
+	<s:text name="resourceClass.%{resourceType}"/>
+</div>
+</s:if>
+
+
+
 <hr />
 
 <%-- Put constants into request scope --%>

@@ -4,7 +4,7 @@
     <#if resource.isDataResource()>
     	<meta name="submenu" content="manage_resource"/>    
     <#else>
-	    <meta name="submenu" content="manage"/>
+	    <meta name="submenu" content="eml"/>
     </#if>
 </head>
 
@@ -46,7 +46,7 @@
 	    <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>
 	</#if>
 	<#if resource.title?? && resource.isDataResource()>
-	    <@s.submit cssClass="button" key="button.details" action="creatorForm" namespace="/manage/meta" theme="simple"/>
+	    <span class="right"><a href="/manage/meta/creatorForm.html?resource_id=${resource.id}">More Metadata ...</a></span>
 	</#if>
   </fieldset>
 </@s.form>

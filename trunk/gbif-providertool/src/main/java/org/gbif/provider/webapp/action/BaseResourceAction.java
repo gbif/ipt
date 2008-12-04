@@ -45,7 +45,7 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 	protected String guid;
 	protected T resource;
 	protected Map session;
-	protected String resourceType=Resource.ALIAS;
+	protected String resourceType;
 
 	public void prepare() {
 		if (resource_id != null) {
@@ -63,11 +63,13 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 
 	protected String deriveResourceType(){
 		if (resource instanceof OccurrenceResource){
-			return OccurrenceResource.ALIAS;
+			return OCCURRENCE;
 		}else if (resource instanceof ChecklistResource){
-			return ChecklistResource.ALIAS;
+			return CHECKLIST;
+		}else if (resource instanceof Resource){
+			return METADATA;
 		}else{
-			return Resource.ALIAS;
+			return null;
 		}
 	}
 		

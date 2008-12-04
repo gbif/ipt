@@ -17,37 +17,27 @@
 package org.gbif.provider.webapp.action.manage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.SessionAware;
-import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ExtensionManager;
-import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
-import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
 public class PropertyMappingAction extends BaseDataResourceAction implements Preparable{
+	private static final long serialVersionUID = 14321432161l;
 	@Autowired
     private SourceInspectionManager sourceInspectionManager;
 	@Autowired
@@ -77,7 +67,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         if (mid != null) {
     		// get existing view mapping
         	view = viewMappingManager.get(mid);
-        	if (view.getSource()==null && sid != null){
+        	if (view != null && view.getSource() == null && sid != null){
         		// this is probably the default core mapping without a source assigned yet.
             	view.setSource(sourceManager.get(sid));
             	viewMappingManager.save(view);

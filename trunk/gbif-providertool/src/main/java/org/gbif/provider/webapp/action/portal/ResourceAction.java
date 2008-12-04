@@ -43,7 +43,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 		if (resource instanceof OccurrenceResource) {
 			return OCCURRENCE;
 		}else if (resource instanceof ChecklistResource) {
-			return TAXON;
+			return CHECKLIST;
 		}else{
 			return METADATA;
 		}

@@ -8,7 +8,6 @@
 <fieldset>
 	<legend><@s.text name="eml.researchProject"/></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
-	<@s.hidden name="backPage" value="rights"/>
 	<@s.hidden name="nextPage" value="methods"/>
 
 	<@s.textfield key="eml.researchProject.title" cssClass="text xlarge" />
@@ -21,7 +20,6 @@
 
 
 	<div class="break" />
-    <@s.submit cssClass="button" key="button.back" method="back" theme="simple"/>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.next" name="next" theme="simple"/>
+    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </@s.form>

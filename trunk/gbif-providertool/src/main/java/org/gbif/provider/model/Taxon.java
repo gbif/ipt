@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,7 +46,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
 		// for core record
-		@NotNull
 		private String localId;
 		@NotNull
 		private String guid;
@@ -76,11 +76,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private BBox bbox = new BBox();
 		private int occTotal;
 		
-		
-		
 		public static Taxon newInstance(Resource resource){
 			Taxon tax = new Taxon();
 			tax.resource=resource;
+			tax.setGuid(UUID.randomUUID().toString());					
 			return tax;
 		}
 		
@@ -104,7 +103,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 
 		
-		@Column(length=128)
+		@Column(length=64)
 		@org.hibernate.annotations.Index(name="tax_source_local_id")
 		public String getLocalId() {
 			return localId;
@@ -113,6 +112,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.localId = localId;
 		}
 
+		@Column(length=128)
 		@org.hibernate.annotations.Index(name="tax_guid")
 		public String getGuid() {
 			return guid;

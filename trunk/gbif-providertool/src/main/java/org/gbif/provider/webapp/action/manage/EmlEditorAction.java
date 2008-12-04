@@ -25,9 +25,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	private EmlManager emlManager;
 	private Eml eml;
 	
-	protected String back;
-	protected String backPage;
-	protected final String BACK = "back";
 	protected String next;
 	protected String nextPage;
 	protected final String NEXT = "next";
@@ -52,9 +49,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 		if (cancel!=null){
 			return CANCEL;
 		}
-		if (back!=null){
-			return BACK;
-		}
 		if (next==null){
 			return INPUT;
 		}
@@ -73,37 +67,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	}
 	
 	
-	/**
-	 * Back workflow request.
-	 * 
-	 * @return
-	 */
-	public String back() {
-		return BACK;
-	}
-
-	public String getBack() {
-		return back;
-	}
-
-	public void setBack(String back) {
-		this.back = back;
-	}
-
 	public String getNext() {
 		return next;
 	}
 
 	public void setNext(String next) {
 		this.next = next;
-	}
-
-	public String getBackPage() {
-		return backPage;
-	}
-
-	public void setBackPage(String backPage) {
-		this.backPage = backPage;
 	}
 
 	public String getNextPage() {

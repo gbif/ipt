@@ -16,12 +16,16 @@
         </property>
     </bean>
     
-    <!-- org.h2.jdbcx.JdbcDataSource -->
-    <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
-        <property name="URL" value="jdbc:h2:${dataDir}/db/ipt;auto_server=true"/>
-        <property name="user" value="${jdbc.username}"/>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="jdbc:h2:${dataDir}/db/ipt;auto_server=true"/>
+        <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-    </bean>
-    
+        <!-- number of max active connections -->
+        <property name="maxActive" value="100"/>
+        <property name="maxWait" value="1000"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="defaultAutoCommit" value="true"/>
+    </bean>    
     
 </beans>

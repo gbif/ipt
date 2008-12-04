@@ -27,7 +27,7 @@
 <legend>Your Existing Mappings</legend>
 	<i>(could also be visualised with graphviz)</i>
 	<div>
-	  <@s.form action="propertyMapping" method="post">
+	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value="${coreMapping.id}"/>
 		<div class="left">
@@ -54,7 +54,7 @@
 	
 	<@s.iterator value="extMappings" status="stat">
 	<div class="newline">
-	  <@s.form action="propertyMapping" method="get">
+	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value="${id}"/>
 		<div class="left">
@@ -73,7 +73,7 @@
 <fieldset>
 <legend>Add New Mapping</legend>
 	<div>
-	  <@s.form action="propertyMapping" method="post">
+	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value=""/>
 		<div class="left">

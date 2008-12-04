@@ -5,5 +5,5 @@
     <meta name="heading" content="<s:text name='occResourceList.heading'/>"/>
 </head>
 
-<%@ include file="/WEB-INF/pages/inc/occResourceList.jsp"%>
+<%@ include file="/WEB-INF/pages/inc/dataResourceList.jsp"%>
 

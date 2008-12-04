@@ -67,6 +67,16 @@
 						</div>
 					</c:when>
 
+			        <c:when test='${currentSubMenu == "tax"}'>
+		                <s:a href="%{resourcePortal}">
+		                	<h1 id="resourceName">${currentResourceTitle}</h1>
+		                </s:a>
+			        	<%@ include file="/common/submenu_search.jsp" %>
+						<div id="taxnav">
+							<label>Navigate Taxonomy</label>
+               				 <%@ include file="/common/taxontree.jsp" %>
+						</div>
+					</c:when>
 			        
 			        <c:when test='${currentSubMenu == "meta"}'>
 	                	<h1>Metadata Repo</h1>

@@ -31,7 +31,12 @@ import org.springframework.security.userdetails.UserDetails;
 
 public class BaseMetadataResourceAction extends BaseResourceAction<Resource>{
 
-	@Autowired
+    public BaseMetadataResourceAction(){
+    	super();
+    	resourceType=METADATA;
+    }
+
+    @Autowired
 	public void setResourceManager(@Qualifier("resourceManager") GenericResourceManager<Resource> resourceManager) {
 		this.resourceManager = resourceManager;
 	}

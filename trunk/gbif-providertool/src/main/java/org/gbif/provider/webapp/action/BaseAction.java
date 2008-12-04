@@ -3,6 +3,9 @@ package org.gbif.provider.webapp.action;
 import java.util.Map;
 
 import org.appfuse.model.User;
+import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
@@ -12,12 +15,12 @@ import org.springframework.security.userdetails.UserDetails;
 
 
 public class BaseAction extends org.appfuse.webapp.action.BaseAction {
-    public static final String OCCURRENCE = "occ";
-    public static final String TAXON = "tax";
-    public static final String METADATA = "meta";
+    public static final String OCCURRENCE = OccurrenceResource.ALIAS;
+    public static final String CHECKLIST = ChecklistResource.ALIAS;
+    public static final String METADATA = Resource.ALIAS;
 	@Autowired
 	protected AppConfig cfg;
-
+	
 	public User getCurrentUser(){
 		final SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
 	    // secure context will be null when running unit tests so leave userId as null
@@ -50,4 +53,5 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 		}
 		return map;
 	}
+	
 }

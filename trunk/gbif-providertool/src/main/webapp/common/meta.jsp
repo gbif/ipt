@@ -17,8 +17,6 @@
 	      <c:when test='${currentSubMenu == "meta"}'>
 			<link href="/data/rss.xml" rel="alternate" type="application/rss+xml" title="RSS Feed for all resources" />
           </c:when>        
-	      <c:when test='${currentSubMenu == "manage"}'>
-          </c:when>        
           <c:when test='${currentSubMenu == "occ"}'>
 	        <c:if test='${resource_id != null}'>
 				<link href="/data/${resource_id}/rss.xml" rel="alternate" type="application/rss+xml" title="${currentResourceTitle} RSS Feed" />
@@ -26,5 +24,12 @@
 			<link rel="STYLESHEET" type="text/css" href="<c:url value='/scripts/dhtmlxtree/dhtmlxtree.css'/>">
 			<script  src="<c:url value='/scripts/dhtmlxtree/dhtmlxcommon.js'/>"></script>
 			<script  src="<c:url value='/scripts/dhtmlxtree/dhtmlxtree.js'/>"></script>
+          </c:when>        
+	      <c:when test='${currentSubMenu == "tax"}'>
+	        <c:if test='${resource_id != null}'>
+				<link href="/data/${resource_id}/rss.xml" rel="alternate" type="application/rss+xml" title="${currentResourceTitle} RSS Feed" />
+			</c:if>
+          </c:when>        
+	      <c:when test='${currentSubMenu == "manage" || currentSubMenu == "manage_resource"}'>
           </c:when>        
 	    </c:choose>        

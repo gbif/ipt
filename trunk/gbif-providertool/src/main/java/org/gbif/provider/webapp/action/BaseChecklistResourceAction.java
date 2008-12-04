@@ -31,7 +31,12 @@ import org.springframework.security.userdetails.UserDetails;
 
 public class BaseChecklistResourceAction extends BaseResourceAction<ChecklistResource>{
 
-	@Autowired
+    public BaseChecklistResourceAction(){
+    	super();
+    	resourceType=CHECKLIST;
+    }
+    
+    @Autowired
 	public void setResourceManager(@Qualifier("checklistResourceManager") GenericResourceManager<ChecklistResource> checklistResourceManager) {
 		this.resourceManager = checklistResourceManager;
 	}
