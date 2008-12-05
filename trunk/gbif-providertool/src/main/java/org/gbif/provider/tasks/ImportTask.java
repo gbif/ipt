@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.tasks;
 
 	import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,9 @@ import org.gbif.provider.datasource.impl.ImportSourceFactory;
 import org.gbif.provider.geo.TransformationUtils;
 import org.gbif.provider.geo.TransformationUtils.Wgs84Transformer;
 import org.gbif.provider.model.BBox;
+import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
@@ -32,9 +34,12 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.service.CoreRecordFactory;
+import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.TabFileWriter;
@@ -51,8 +56,13 @@ import org.springframework.transaction.annotation.Transactional;
 	 * @author markus
 	 *
 	 */
-	public class OccUploadTask extends TaskBase implements Task<UploadEvent>{
-		public static final int SOURCE_TYPE_ID = 1;
+	/**
+	 * @author markus
+	 *
+	 * @param <T>
+	 * @param <R>
+	 */
+	public abstract class ImportTask<T extends CoreRecord, R extends DataResource> extends TaskBase<UploadEvent, R>{
 		private Map<String, Long> idMap = new HashMap<String, Long>();
 		private List<File> dumpFiles = new ArrayList<File>();
 		// keep track of the following statistics for UploadEvent
@@ -62,47 +72,35 @@ import org.springframework.transaction.annotation.Transactional;
 		private Integer recordsChanged;
 		private Integer recordsAdded;
 		private Integer recordsErroneous;
-		// resource stats
-		private int recWithCoordinates;
-		private int recWithCountry;
-		private int recWithAltitude;
-		private int recWithDate;
-		private BBox bbox;
-		// not stored in resource
-		private Map<Region, Map<Taxon, OccStatByRegionAndTaxon>> occByRegionAndTaxon;
 		// upload status
 		private String currentExtension;
 		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
-		private OccurrenceResource resource;
+		private R resource;
 
 		
 		@Autowired
-		private TransformationUtils wgs84Util;
-		@Autowired
 		private CacheManager cacheManager;
 		@Autowired
-		private DarwinCoreManager darwinCoreManager;
+		private CoreRecordFactory coreRecordFactory;
+		private CoreRecordManager<T> coreRecordManager;
 		@Autowired
 		private ExtensionRecordManager extensionRecordManager;
 		@Autowired
 		private UploadEventManager uploadEventManager;
 		@Autowired
-		private OccStatManager occStatManager;
-		@Autowired
 		@Qualifier("viewMappingManager")
 		private GenericManager<ViewMappingBase> viewMappingManager;
-		@Autowired
-		@Qualifier("taxonomyBuilder")
-		private RecordPostProcessor<DarwinCore, Set<DwcTaxon>> taxonomyBuilder;
-		@Autowired
-		@Qualifier("geographyBuilder")
-		private RecordPostProcessor<DarwinCore, Set<Region>> geographyBuilder;
+		private RecordPostProcessor<T, ?, R>[] postProcessors;
 
 		
+		public ImportTask(CoreRecordManager<T> coreRecordManager, GenericResourceManager<R> resourceManager, RecordPostProcessor<T, ?, R> ... postProcessors){
+			super(resourceManager);
+			this.coreRecordManager = coreRecordManager;
+			this.postProcessors=postProcessors;
+		}
+		
 		public UploadEvent call() throws Exception{
-			
-			initLogging(SOURCE_TYPE_ID);
 			
 			try {
 				// prepare upload, removing previous records, calling prepare of helper tasks
@@ -138,18 +136,17 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 		
 
-		public void prepare() {
+		protected void prepare() {
 			resource= loadResource();
 			
 			// remove all previous upload artifacts
 			cacheManager.clearCache(getResourceId());
-			// clear taxa
-			taxonomyBuilder.init(getResourceId(), getUserId());
-			taxonomyBuilder.prepare();
-			// clear regions
-			geographyBuilder.init(getResourceId(), getUserId());
-			geographyBuilder.prepare();
-
+			
+			// init postprocessors
+			for (RecordPostProcessor<T, ?, R> pp : postProcessors){
+				pp.init(getResourceId(), getUserId());
+				pp.prepare();
+			}
 
 			// prepare this instance
 			currentProcessed = new AtomicInteger(0);
@@ -161,74 +158,30 @@ import org.springframework.transaction.annotation.Transactional;
 			recordsChanged = 0;
 			recordsAdded = 0;
 
-			recWithCoordinates=0;
-			recWithCountry=0;
-			recWithAltitude=0;
-			recWithDate=0;
-
-			bbox=new BBox();
-			occByRegionAndTaxon = new HashMap<Region, Map<Taxon, OccStatByRegionAndTaxon>>();
-			
 			// track upload in upload event metadata (mainly statistics)
 			event = new UploadEvent();
 			event.setJobSourceId(this.hashCode());
-			event.setJobSourceType(SOURCE_TYPE_ID);
+			event.setJobSourceType(taskTypeId());
 			event.setExecutionDate(new Date());
 			event.setResource(resource);
 		}
 		
 		
-		private void statsPerRecord(DarwinCore dwc){
-			// count all uploaded record (added, modified or no changes)
-			recordsUploaded++;
-
-			if(StringUtils.trimToNull(dwc.getCountry())!=null){
-				recWithCountry++;
-			}
-			if(dwc.getDateCollected()!=null){
-				recWithDate++;
-			}
-			if(dwc.getMinimumElevationInMetersAsInteger()!=null){
-				recWithAltitude++;
-			}
-			
-			// counts per taxon & region
-			Region reg = dwc.getRegion();
-			Taxon tax = dwc.getTaxon();
-			OccStatByRegionAndTaxon stat;
-			Map<Taxon, OccStatByRegionAndTaxon> taxMap;
-			if (!occByRegionAndTaxon.containsKey(reg)){
-				taxMap = new HashMap<Taxon, OccStatByRegionAndTaxon>();
-				occByRegionAndTaxon.put(reg, taxMap);
-			}else{
-				taxMap = occByRegionAndTaxon.get(reg);				
-			}
-			if (!taxMap.containsKey(tax)){
-				stat = new OccStatByRegionAndTaxon();
-				stat.setResource(resource);
-				stat.setRegion(reg);
-				stat.setTaxon(tax);
-				stat.setNumOcc(1);
-				taxMap.put(tax, stat);
-			}else{
-				stat = taxMap.get(tax);
-				stat.incrementNumOcc();
-			}
-			
-		}
-		
-		
-		public void close() throws IOException {
+		private void close() throws IOException {
 			log.info(String.format("Closing upload for resource %s", getTitle() ));					
-			taxonomyBuilder.close(resource);
-			geographyBuilder.close(resource);
-			addFinalStats(resource);
-			occResourceManager.save(resource);
+			// close postprocessors
+			for (RecordPostProcessor<T, ?, R> pp : postProcessors){
+				pp.close(resource);
+			}
+			finalHandler(resource);
+			resourceManager.save(resource);
+			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
+
 			// zip all files into single archive
 			File archive = cfg.getDumpArchiveFile(getResourceId());
 			archive.createNewFile();
-			log.info("Dump file archive created at "+archive.getAbsolutePath());
 			ZipUtil.zipFiles(dumpFiles, archive);						
+			log.info("Data archive created at "+archive.getAbsolutePath());
 		}
 
 		private void setFinalExtensionStats(Extension ext){
@@ -237,7 +190,10 @@ import org.springframework.transaction.annotation.Transactional;
 			viewMappingManager.save(view);
 		}
 
-		private void addFinalStats(OccurrenceResource resource){
+		/** Hook for doing final processing for the entire resource, e.g. setting statistics gathered via the record hook 
+		 * @param resource
+		 */
+		protected void finalHandler(R resource){
 			// update resource and upload event statistics
 			recordsDeleted = resource.getRecTotal()+recordsAdded-recordsUploaded;
 			// store event
@@ -250,37 +206,15 @@ import org.springframework.transaction.annotation.Transactional;
 			// save upload event
 			event = uploadEventManager.save(event);
 			
-			// occByRegionAndTaxon
-			int occStatCount=0;
-			for (Map<Taxon, OccStatByRegionAndTaxon> taxMap : occByRegionAndTaxon.values()){
-				for (OccStatByRegionAndTaxon stat : taxMap.values()){
-					try {
-						occStatManager.save(stat);
-						occStatCount++;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			log.debug(occStatCount + " occurrence stats by region & taxon inserted");
-			
 			// update resource properties
 			resource.setLastUpload(event);
 			resource.setRecTotal(recordsUploaded);
-			resource.setRecWithCoordinates(recWithCoordinates);
-			resource.setRecWithCountry(recWithCountry);
-			resource.setRecWithAltitude(recWithAltitude);
-			resource.setRecWithDate(recWithDate);
-			resource.setBbox(bbox);
-			occResourceManager.save(resource);
-			
-			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
 		}
 
 		
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
 		private File uploadCore() throws InterruptedException {
-			log.info("Starting upload of DarwinCore for resource "+ getTitle());					
+			log.info("Starting upload of core records for resource "+ getTitle());					
 			ImportSource source;
 			File out = null;
 			currentExtension = resource.getCoreMapping().getExtension().getName();
@@ -297,55 +231,58 @@ import org.springframework.transaction.annotation.Transactional;
 				// for individual record exception there is another inner try/catch
 				try{
 					// go through source records one by one
-					for (ImportRecord rec : source){
+					for (ImportRecord irec : source){
 						// keep track of processed source records
 						currentProcessed.addAndGet(1);
 						
 						// check if thread should shutdown...
 						if (Thread.currentThread().isInterrupted()){
-							throw new InterruptedException("Occurrence upload task was interrupted externally");
+							throw new InterruptedException(String.format("Cache import task for resource %s was interrupted externally", getResourceId()));
 						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
-						 DarwinCore dwc = DarwinCore.newInstance(resource, rec);								
-						 if (dwc == null){
+						T record = (T) coreRecordFactory.build(resource, irec);
+						if (record == null){
 							currentErroneous.addAndGet(1);
 							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentErroneous.get()), getTitle()});
 							continue;
-						 }
-						 try {
+						}
+						try {
 							// get previous record or null if it didnt exist yet based on localID and resource
-							DarwinCore oldRecord = darwinCoreManager.findByLocalId(rec.getLocalId(), getResourceId());
+							T oldRecord = coreRecordManager.findByLocalId(irec.getLocalId(), getResourceId());
 							
 							// assign managed properties
-							updateDwcProperties(dwc, oldRecord);
+							updateCoreProperties(record, oldRecord);
 							
-							// extract and assign taxa & regions
-							taxonomyBuilder.processRecord(dwc);
-							geographyBuilder.processRecord(dwc);
+							// run postprocessors
+							for (RecordPostProcessor<T, ?, R> pp : postProcessors){
+								pp.processRecord(record);
+							}
 							
-							// save dwc record
-							dwc = persistRecord(dwc, oldRecord);
+							// save core record
+							record = persistRecord(record, oldRecord);
 							// write record to tab file
-							writer.write(dwc);
+							writer.write(record);
 							
 							// set stats per record. Saving of final stats must be done in the close() section
-							taxonomyBuilder.statsPerRecord(dwc);
-							geographyBuilder.statsPerRecord(dwc);
-							statsPerRecord(dwc);
+							// gather stats by postprocessors
+							for (RecordPostProcessor<T, ?, R> pp : postProcessors){
+								pp.statsPerRecord(record);
+							}
+							statsPerRecord(record);
 
 						} catch (InterruptedException e) {
 							throw e;
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
 							e.printStackTrace();
-							logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getTitle()}, e);
+							logdb.warn("log.uploadRecord", new String[]{irec.getLocalId().toString(), getTitle()}, e);
 						}
 						
 						// clear session cache once in a while...
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0){
 							log.debug(status());
-							darwinCoreManager.flush();
+							coreRecordManager.flush();
 						}
 					}
 				} finally {
@@ -368,55 +305,63 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 
-		private DarwinCore persistRecord(DarwinCore dwc, DarwinCore oldRecord) {
+		/** Hook for working with a single record provided for subclasses 
+		 * @param record
+		 */
+		protected void statsPerRecord(T record){
+			// count all uploaded record (added, modified or no changes)
+			recordsUploaded++;
+		}
+
+		private T persistRecord(T record, T oldRecord) {
 			// check if new record version is different from old one
-			if (oldRecord != null && oldRecord.hashCode() == dwc.hashCode()){
+			if (oldRecord != null && oldRecord.hashCode() == record.hashCode()){
 				// same record. reset isDeleted flag of old record
 				oldRecord.setDeleted(false);
 				// also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
-				oldRecord.setTaxon(dwc.getTaxon()); 
-				oldRecord.setRegion(dwc.getRegion());
-				dwc = darwinCoreManager.save(oldRecord);
+//				oldRecord.setTaxon(record.getTaxon()); 
+//				oldRecord.setRegion(record.getRegion());
+				record = coreRecordManager.save(oldRecord);
 				
 			}else if (oldRecord!=null){
 				// modified record that existed before.
 				// copying all new properties to oldRecord is too cumbersome, so
 				// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
-				dwc.setModified(new Date());									
-				darwinCoreManager.remove(oldRecord.getId());
-				darwinCoreManager.flush();
-				dwc = darwinCoreManager.save(dwc);									
+				record.setModified(new Date());									
+				coreRecordManager.remove(oldRecord.getId());
+				coreRecordManager.flush();
+				record = coreRecordManager.save(record);									
 				// increase counter of changed records
 				recordsChanged += 1;
 				
 			}else{
 				// new record that didnt exist before. Just save new dwc
-				dwc.setModified(new Date());
-				dwc = darwinCoreManager.save(dwc);
+				record.setModified(new Date());
+				record = coreRecordManager.save(record);
 				// increase counter of added records
 				recordsAdded += 1;
 			}
 			
 			// the new darwin core id (managed by hibernate) used for all other extensions
-			idMap.put(dwc.getLocalId(), dwc.getId());
+			idMap.put(record.getLocalId(), record.getId());
 
-			return dwc;
+			return record;
 		}
 
 
-		private void updateDwcProperties(DarwinCore dwc, DarwinCore oldRecord) {
+		private void updateCoreProperties(T record, T oldRecord) {
 			// assign new GUID if none exists
-			if (dwc.getGuid() == null){
+			if (record.getGuid() == null){
 				// if old version exists already reuse the previously assigned GUID
 				if (oldRecord != null){
-					dwc.setGuid(oldRecord.getGuid());
+					record.setGuid(oldRecord.getGuid());
 				}else{
-					dwc.setGuid(UUID.randomUUID().toString());					
+					record.setGuid(UUID.randomUUID().toString());					
 				}
 			}			
 			// assign link to detailed record if not existing
-			if (dwc.getLink() == null){
-				dwc.setLink(cfg.getDetailUrl(dwc));
+			if (record.getLink() == null){
+				record.setLink(cfg.getDetailUrl(record));
 			}
 		}
 
@@ -446,7 +391,7 @@ import org.springframework.transaction.annotation.Transactional;
 						currentProcessed.addAndGet(1);
 						// check if thread should shutdown...
 						if (Thread.currentThread().isInterrupted()){
-							throw new InterruptedException("Occurrence upload task was interrupted externally");
+							throw new InterruptedException(String.format("Cache import task for resource %s was interrupted externally", getResourceId()));
 						}
 						if (rec == null || rec.getLocalId()==null){
 							currentErroneous.addAndGet(1);
@@ -464,44 +409,6 @@ import org.springframework.transaction.annotation.Transactional;
 								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 								extensionRecordManager.insertExtensionRecord(extRec);
 								writer.write(extRec);
-								// see if darwin core record is affected, e.g. geo extension => coordinates
-								if (vm.getExtension().getId().equals(DarwinCore.GEO_EXTENSION_ID)){
-									// this is the geo extension!
-									DarwinCore dwc = darwinCoreManager.get(coreId);
-									if (dwc.updateWithGeoExtension(extRec)){
-										// update bbox
-										bbox.expandBox(dwc.getLocation());
-										// potentially transform coordinates
-										String geodatum=extRec.getPropertyValue(DarwinCore.GEODATUM_PROP);
-										// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
-										if (false && geodatum!=null && dwc.getLocation()!=null){
-											// FIXME: keep hasmap of used datums and their transformer. 
-											// Its expensive to create those
-											// Wgs84Transformer t = wgs84Util.getWgs84Transformer(geodatum);
-											try {
-												wgs84Util.transformIntoWGS84(dwc.getLocation(), geodatum);
-											} catch (FactoryException e) {
-												log.debug("Can't recognise geodatic datum "+geodatum);
-											} catch (TransformException e) {
-												log.warn("Can't transform coordinates with geodatic datum "+geodatum);
-											}											 
-										}
-										darwinCoreManager.save(dwc);
-										// increase stats counter
-										if (dwc.getLocation().isValid()){
-											//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
-											// might need to do a count via SQL after upload is done ...
-											recWithCoordinates++;
-											// update Taxon bbox stats
-											if (dwc.getTaxon()!=null){
-												dwc.getTaxon().expandBox(dwc.getLocation());			
-											}
-											if (dwc.getRegion()!=null){
-												dwc.getRegion().expandBox(dwc.getLocation());			
-											}
-										}
-									}
-								}
 							} catch (Exception e) {
 								e.printStackTrace();
 								currentErroneous.addAndGet(1);
@@ -580,7 +487,12 @@ import org.springframework.transaction.annotation.Transactional;
 				coreInfo = String.format(", %s occurrences", recordsUploaded);
 			}
 			if (currentProcessed!=null){
-				return String.format("Uploading %s: %s records with %s, %s%s", currentExtension, currentProcessed.get(), taxonomyBuilder.status(), geographyBuilder.status(), coreInfo);
+				// get postprocessor stats
+				String ppStats="";
+				for (RecordPostProcessor<T, ?, R> pp : postProcessors){
+					ppStats += pp.status();
+				}
+				return String.format("Uploading %s: %s records with %s%s", currentExtension, currentProcessed.get(), ppStats, coreInfo);
 			}else{
 				return "Waiting for upload to start.";
 			}

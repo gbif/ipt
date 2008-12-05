@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.tasks;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +25,7 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
+import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.ScrollableResults;
@@ -33,15 +34,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Transactional(readOnly=false)
-public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements RecordPostProcessor<DarwinCore, Set<Taxon>> {
-	public static final int SOURCE_TYPE_ID = 2;
+public class TaxonomyBuilder extends NestedSetBuilderBase<DarwinCore, Taxon> {
+	public static final int TASK_TYPE_ID = 2;
 	private static final Set<Rank> LOG_TYPES = new HashSet<Rank>();
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
 
 	
-	protected TaxonomyBuilder(TaxonManager taxonManager) {
-		super(taxonManager);
+	@Autowired
+	public TaxonomyBuilder(TaxonManager taxonManager, OccResourceManager resourceManager) {
+		super(taxonManager, resourceManager);
 	}
 
 	
@@ -51,8 +53,6 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	public Set<Taxon> call() throws Exception {
-		initLogging(SOURCE_TYPE_ID);
-
 		// remove previously existing taxa
 		prepare();
 		
@@ -171,6 +171,11 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<Taxon> implements Reco
 	@Override
 	public String status() {
 		return String.format("%s taxa", nodes.size());
+	}
+
+
+	public int taskTypeId() {
+		return TASK_TYPE_ID;
 	}
 
 }

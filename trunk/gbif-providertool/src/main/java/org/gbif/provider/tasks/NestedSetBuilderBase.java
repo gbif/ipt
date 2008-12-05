@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.tasks;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,16 +9,21 @@ import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.TreeNode;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends TaskBase{
+public abstract class NestedSetBuilderBase<CR extends CoreRecord, T extends TreeNode<T, ?>> 
+						extends TaskBase<Set<T>, OccurrenceResource> 
+						implements RecordPostProcessor<CR, Set<T>, OccurrenceResource>{
 	@Autowired
 	// doesnt belong into a generic nested set / tree node class, I know.
 	// but as all this is probably changing anyway I leave it here as a quick patch
@@ -28,8 +33,8 @@ public abstract class NestedSetBuilderBase<T extends TreeNode<T, ?>> extends Tas
 	protected Map<Integer, T> nodes;
 	protected Set<T> terminalNodes;
 
-	protected NestedSetBuilderBase(TreeNodeManager<T> nodeManager) {
-		super();
+	protected NestedSetBuilderBase(TreeNodeManager<T> nodeManager, GenericResourceManager<OccurrenceResource> resourceManager) {
+		super(resourceManager);
 		this.nodeManager = nodeManager;
 	}
 	

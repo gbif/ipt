@@ -39,6 +39,7 @@ import org.hibernate.annotations.MapKey;
 public class OccurrenceResource extends DataResource {
 	public static final String ALIAS = "occ";
 	public static final Long CORE_EXTENSION_ID = 1l;
+	public static final Class CORE_RECORD_CLASS = DarwinCore.class;
 	
 	private BBox bbox = new BBox();
 	private Integer featureHash;
@@ -212,6 +213,11 @@ public class OccurrenceResource extends DataResource {
 
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
+	}
+
+	@Transient
+	public Class getCoreRecordClass(){
+		return CORE_RECORD_CLASS;
 	}
 
 	@Override

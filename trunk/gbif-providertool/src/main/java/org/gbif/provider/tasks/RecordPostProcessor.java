@@ -1,13 +1,14 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.tasks;
 
 import java.util.Set;
 
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 
 
-public interface RecordPostProcessor<IN, OUT> extends Task<OUT>{
+public interface RecordPostProcessor<IN, OUT, R extends DataResource> extends Task<OUT>{
 	void prepare();
 	IN processRecord(IN record) throws InterruptedException;
 	void statsPerRecord(IN record) throws InterruptedException;
-	OUT close(OccurrenceResource resource);
+	OUT close(R resource);
 }

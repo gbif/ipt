@@ -25,7 +25,7 @@ import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.upload.Task;
+import org.gbif.provider.tasks.Task;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

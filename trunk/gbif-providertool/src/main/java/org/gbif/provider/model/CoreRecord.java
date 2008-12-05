@@ -35,6 +35,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.datasource.ImportRecord;
 import org.hibernate.validator.NotNull;
 
 public interface CoreRecord extends ResourceRelatedObject, Record {
