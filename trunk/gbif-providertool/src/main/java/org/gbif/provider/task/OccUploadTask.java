@@ -1,52 +1,24 @@
-package org.gbif.provider.tasks;
+package org.gbif.provider.task;
 
-	import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+	import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.datasource.ImportRecord;
-import org.gbif.provider.datasource.ImportSource;
-import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.datasource.impl.ImportSourceFactory;
 import org.gbif.provider.geo.TransformationUtils;
-import org.gbif.provider.geo.TransformationUtils.Wgs84Transformer;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
-import org.gbif.provider.model.dto.ExtensionRecord;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
-import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.TabFileWriter;
-import org.gbif.provider.util.ZipUtil;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Transactional;
 
 	/**
 	 * Tha main task responsible for uploading raw data into the cache and doing simple preprocessing while iterating through the ImportSource.
@@ -69,18 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		private TransformationUtils wgs84Util;
 		@Autowired
-		private CacheManager cacheManager;
-		@Autowired
-		private DarwinCoreManager darwinCoreManager;
-		@Autowired
-		private ExtensionRecordManager extensionRecordManager;
-		@Autowired
-		private UploadEventManager uploadEventManager;
-		@Autowired
 		private OccStatManager occStatManager;
-		@Autowired
-		@Qualifier("viewMappingManager")
-		private GenericManager<ViewMappingBase> viewMappingManager;
 
 		
 		@Autowired
@@ -95,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 		@Override
 		public void prepare() {
+			super.prepare();
 			recWithCoordinates=0;
 			recWithCountry=0;
 			recWithAltitude=0;

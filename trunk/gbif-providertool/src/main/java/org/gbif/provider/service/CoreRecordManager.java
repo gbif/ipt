@@ -3,6 +3,7 @@ package org.gbif.provider.service;
 import java.util.List;
 
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.hibernate.ScrollableResults;
 
@@ -15,7 +16,7 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
 	 * Flag all core records for a given resource as deleted by setting coreRecord.isDeleted=true
 	 * @param resource that contains the core records to be flagged
 	 */
-	void flagAllAsDeleted(OccurrenceResource resource);
+	void flagAllAsDeleted(DataResource resource);
 	
 	/**
 	 * Find a core record via its local ID within a given resource.

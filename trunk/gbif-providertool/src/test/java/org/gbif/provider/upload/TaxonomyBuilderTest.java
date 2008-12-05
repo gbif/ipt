@@ -21,7 +21,7 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.tasks.RecordPostProcessor;
+import org.gbif.provider.task.RecordPostProcessor;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.gbif.provider.util.ResourceTestBase;

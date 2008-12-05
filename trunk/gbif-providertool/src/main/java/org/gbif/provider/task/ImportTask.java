@@ -1,4 +1,4 @@
-package org.gbif.provider.tasks;
+package org.gbif.provider.task;
 
 	import java.io.File;
 import java.io.IOException;

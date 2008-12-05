@@ -16,25 +16,15 @@
 
 package org.gbif.provider.service.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.EntityExistsException;
-
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.service.CoreRecordManager;
-import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -77,7 +67,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	}
 
 	@Transactional(readOnly=false)
-	public void flagAllAsDeleted(OccurrenceResource resource) {
+	public void flagAllAsDeleted(DataResource resource) {
 		// use DML-style HQL batch updates
 		// http://www.hibernate.org/hib_docs/reference/en/html/batch.html
 		Session session = getSession();

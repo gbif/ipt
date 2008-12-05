@@ -16,12 +16,6 @@ public interface CacheManager {
 	Set<Long> currentUploads();
 	
 	/**
-	 * Retrieve all upload jobs scheduled for execution, running or not yet started
-	 * @return
-	 */
-	Set<Long> scheduledUploads();
-	
-	/**
 	 * Get a simple human readable one liner that explains the current status of an upload job
 	 * @param resource
 	 * @return
@@ -48,13 +42,7 @@ public interface CacheManager {
 	 */
 	void cancelUpload(Long resourceId);
 
-	/**
-	 * Submit only a new post-processing task to the executor service. Throws an exception in case this resource has already a scheduled or running task
-	 * @param resource
-	 * @return
-	 */	
-	void runPostProcess(Long resourceId, Long userId);
-	
+
 	/**
 	 * Clear all cached upload artifacts but leaves data which is supposed to last between multiple uploads, i.e uploadEvents and darwin core records.
 	 * Flags all darwin core records as deleted though. 
@@ -74,14 +62,4 @@ public interface CacheManager {
 	 */	
 	void resetResource(Long resourceId);
 	
-	/**
-	 * Go through all resources and run an upload job in case the resource schedule interval indicates so
-	 */
-	void runScheduledResources(Long userId);
-	
-	/**
-	 * go through all resources and see if unfinished uploads exist. If so, clearCache and maybe submit new upload?
-	 * Useful for restarting a service with an interrupted upload 
-	 */
-	void cleanupResources();
 }
