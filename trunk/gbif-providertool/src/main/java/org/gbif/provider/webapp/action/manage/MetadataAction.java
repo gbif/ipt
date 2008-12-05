@@ -18,6 +18,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -40,6 +41,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	private OccResourceManager occResourceManager;
 	@Autowired
 	protected ResourceFactory resourceFactory;
+	@Autowired
+	private CacheManager cacheManager;
 	protected List<?> resources;
 	protected Map<String, String> occurrenceResourceTypes = new HashMap<String, String>();
 	protected Map<String, String> checklistResourceTypes = new HashMap<String, String>();
@@ -114,6 +117,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String delete() {
+		cacheManager.resetResource(resource.getId());
 		resourceManager.remove(resource);
 		saveMessage(getText("resource.deleted"));
 

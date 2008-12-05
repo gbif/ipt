@@ -45,14 +45,15 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	protected AppConfig cfg;
 	@Autowired
 	private DatasourceRegistry registry;
-	@Autowired
-	private CacheManager cacheManager;
-	
 
+	/* If you want to remove the entire resource with its data directory and other artifacts like extension records etc
+	 * Make sure you call cacheManager.resetResource(id) too!
+	 * (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GenericManagerHibernate#remove(java.lang.Long)
+	 */
 	@Override
 	public void remove(Long id) {
 		// first remove all associated core records, taxa and regions
-		cacheManager.resetResource(id);
 		// update registry
 		if (registry.containsKey(id)){
 			registry.removeDatasource(id);

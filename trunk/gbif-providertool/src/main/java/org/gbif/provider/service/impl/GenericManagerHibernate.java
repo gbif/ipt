@@ -119,7 +119,7 @@ import org.springframework.transaction.annotation.Transactional;
 	    public void remove(Long id) {
 			T obj = get(id);
 			if (obj != null) {
-		    	getSession().delete(obj);
+		    	remove(obj);
 			}
 	    }
 	    

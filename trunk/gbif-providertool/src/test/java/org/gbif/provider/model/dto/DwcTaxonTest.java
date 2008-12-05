@@ -2,13 +2,17 @@ package org.gbif.provider.model.dto;
 
 import static org.junit.Assert.*;
 
+import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.Rank;
 import org.junit.Before;
 import org.junit.Test;
 
 public class DwcTaxonTest {
 	private DwcTaxon getNewTaxon(){
-		DwcTaxon dt = new DwcTaxon();
+		OccurrenceResource r = OccurrenceResource.newInstance();
+		DwcTaxon dt = DwcTaxon.newInstance(r);
 		dt.setFullname("Bellis perennis L.");
 		dt.setAuthorship("L.");
 		dt.setKingdom("Plantae");
