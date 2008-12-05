@@ -14,10 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true)
 public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<DarwinCore> implements DarwinCoreManager  {
-	public static String[] searchFields = {"scientificName","locality","country","guid"};
 	
 	public DarwinCoreManagerHibernate() {
-		super(DarwinCore.class, searchFields);
+		super(DarwinCore.class);
 	}
 
 	@Override
