@@ -11,3 +11,4 @@ heterotypic synonym		subjective syn
 homotypic synonym		objective syn
 pro parte		???
 misapplied		xzy
+unknownn		explicitly setting this to unknown would enable us to use this format for explicit nomenclatural lists
