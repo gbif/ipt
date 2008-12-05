@@ -17,8 +17,9 @@ public class ResourceFactoryImpl implements ResourceFactory{
 
 	
 	public OccurrenceResource newOccurrenceResourceInstance(){
+		OccurrenceResource resource =  OccurrenceResource.newInstance();
 		Extension core = extensionManager.get(OccurrenceResource.CORE_EXTENSION_ID);
-		OccurrenceResource resource =  OccurrenceResource.newInstance(core);
+		resource.getCoreMapping().setExtension(core);
 		return resource;
 	}
 	

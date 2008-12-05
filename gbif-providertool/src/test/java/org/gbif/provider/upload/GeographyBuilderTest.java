@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GeographyBuilderTest extends ContextAwareTestBase{
 	@Autowired
 	@Qualifier("geographyBuilder")
-	private RecordPostProcessor<DarwinCore, Set<Region>> geographyBuilder;
+	private RecordPostProcessor<DarwinCore, Set<Region>, OccurrenceResource> geographyBuilder;
 
 
 	private DwcRegion getNewRegion(){

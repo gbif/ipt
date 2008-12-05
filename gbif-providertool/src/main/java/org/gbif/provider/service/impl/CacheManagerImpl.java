@@ -49,7 +49,7 @@ public class CacheManagerImpl implements CacheManager{
 	private AppConfig cfg;
 	@Autowired
 	@Qualifier("dataResourceManager")
-	private GenericResourceManagerHibernate<DataResource> resourceManager;
+	private GenericResourceManagerHibernate<DataResource> dataResourceManager;
 	@Autowired
 	private UploadEventManager uploadEventManager;
 	@Autowired
@@ -101,7 +101,7 @@ public class CacheManagerImpl implements CacheManager{
 
 	@Transactional(readOnly=false)
 	public void clearCache(Long resourceId) {
-		DataResource res = resourceManager.get(resourceId);
+		DataResource res = dataResourceManager.get(resourceId);
 		// flag all old records as deleted, but dont remove them from the cache
 		if (res instanceof OccurrenceResource){
 			darwinCoreManager.flagAllAsDeleted((OccurrenceResource)res);
@@ -118,7 +118,7 @@ public class CacheManagerImpl implements CacheManager{
 		}
 		// update resource stats
 		res.resetStats();
-		resourceManager.save(res);
+		dataResourceManager.save(res);
 		
 		// remove core record related upload artifacts like taxa & regions
 		regionManager.removeAll(res);
@@ -141,7 +141,7 @@ public class CacheManagerImpl implements CacheManager{
 	@Transactional(readOnly=false)
 	public void resetResource(Long resourceId) {
 		clearCache(resourceId);
-		DataResource res = resourceManager.get(resourceId);
+		DataResource res = dataResourceManager.get(resourceId);
 		uploadEventManager.removeAll(res);
 		darwinCoreManager.removeAll(res);
 		taxonManager.removeAll(res);
@@ -192,7 +192,7 @@ public class CacheManagerImpl implements CacheManager{
 	}
 
 	public Future runUpload(Long resourceId, Long userId) {
-		DataResource res = resourceManager.get(resourceId);
+		DataResource res = dataResourceManager.get(resourceId);
 		// create task
 		Task<UploadEvent> task;
 		if (res instanceof OccurrenceResource){

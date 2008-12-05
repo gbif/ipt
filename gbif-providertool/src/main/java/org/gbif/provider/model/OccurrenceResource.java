@@ -63,11 +63,10 @@ public class OccurrenceResource extends DataResource {
 	private int numTaxa;
 	private int numTerminalTaxa;
 	
-	public static OccurrenceResource newInstance(Extension core){
+	public static OccurrenceResource newInstance(){
 		OccurrenceResource resource =  new OccurrenceResource();
 		// ensure that core mapping exists
 		ViewCoreMapping coreVM = new ViewCoreMapping();
-		coreVM.setExtension(core);
 		coreVM.setResource(resource);
 		resource.setCoreMapping(coreVM);
 		resource.resetStats();

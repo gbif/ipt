@@ -96,9 +96,8 @@
 
     <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
     
-    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.ViewMappingBase"/>
-    </bean>    
+    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerHibernate" parent="abstractManager"/>        
+        
     <bean id="propertyMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
     </bean>    
@@ -126,9 +125,7 @@
     
     <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
     
-    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager">
-        <property name="uploadExecutor" ref="uploadExecutor"/>
-        <property name="processingExecutor" ref="processingExecutor"/>
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager" lazy-init="true">
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
         <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
     </bean>

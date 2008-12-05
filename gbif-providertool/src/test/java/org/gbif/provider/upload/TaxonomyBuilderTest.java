@@ -34,7 +34,7 @@ import org.springframework.test.AssertThrows;
 public class TaxonomyBuilderTest extends ResourceTestBase {
 	@Autowired
 	@Qualifier("taxonomyBuilder")
-	private RecordPostProcessor<DarwinCore, Set<Taxon>> taxonomyBuilder;
+	private RecordPostProcessor<DarwinCore, Set<Taxon>, OccurrenceResource> taxonomyBuilder;
 
 	private DwcTaxon getNewTaxon() {
 		DwcTaxon dt = new DwcTaxon();
