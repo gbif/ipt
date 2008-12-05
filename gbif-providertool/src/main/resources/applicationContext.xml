@@ -115,6 +115,9 @@
 
     <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
 
+    <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
+
+    <!-- cache / import manager -->
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" />
 
     <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl">        
@@ -123,11 +126,19 @@
     
     <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
     
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager">
+        <property name="uploadExecutor" ref="uploadExecutor"/>
+        <property name="processingExecutor" ref="processingExecutor"/>
+        <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
+        <lookup-method name="newOccProcessingTask" bean="processingTask"/>
+    </bean>
+
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
         <constructor-arg ref="extensionManager"/>
     </bean>
-    <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl">        
-    </bean>
+    <bean id="coreRecordFactory" class="org.gbif.provider.service.impl.CoreRecordFactoryImpl"/>        
+    
+    
     
 
     <!-- LOGGING -->
@@ -162,11 +173,4 @@
         <constructor-arg ref="regionManager"/>
     </bean>
 
-    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager">
-        <property name="uploadExecutor" ref="uploadExecutor"/>
-        <property name="processingExecutor" ref="processingExecutor"/>
-        <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
-        <lookup-method name="newOccProcessingTask" bean="processingTask"/>
-    </bean>
-    
 </beans>

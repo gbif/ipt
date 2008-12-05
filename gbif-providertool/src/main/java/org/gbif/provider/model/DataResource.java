@@ -266,6 +266,9 @@ public abstract class DataResource extends Resource {
 	}
 		
 	
+	@Transient
+	abstract public Class getCoreRecordClass();
+	
 	/**
 	 * Reset all cached stats, log events etc, so that it looks as if the resource was just created (doesnt change the created timestamp though)
 	 */

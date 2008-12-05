@@ -1,4 +1,4 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.tasks;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,12 +11,15 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.DwcRegion;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.ScrollableResults;
@@ -32,22 +35,20 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional(readOnly=false)
-public class GeographyBuilder extends NestedSetBuilderBase<Region> implements RecordPostProcessor<DarwinCore, Set<Region>>  {
-	public static final int SOURCE_TYPE_ID = 3;
+public class GeographyBuilder extends NestedSetBuilderBase<DarwinCore, Region>  {
+	public static final int TASK_TYPE_ID = 3;
 	private static final Set<RegionType> LOG_TYPES = new HashSet<RegionType>();
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
 
 	
-	public GeographyBuilder(RegionManager regionManager) {
-		super(regionManager);
+	@Autowired
+	public GeographyBuilder(RegionManager regionManager, OccResourceManager resourceManager) {
+		super(regionManager, resourceManager);
 	}
 
 	
 	public Set<Region> call() throws Exception {
-		
-		initLogging(SOURCE_TYPE_ID);
-	
 		prepare();
 		
 		// create regions from dwc
@@ -60,7 +61,7 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 		}
 		
 		Set<Region> result = close(loadResource());
-		occResourceManager.save(loadResource());
+		resourceManager.save(loadResource());
 
 		return result;
 	}
@@ -143,6 +144,11 @@ public class GeographyBuilder extends NestedSetBuilderBase<Region> implements Re
 	@Override
 	public String status() {
 		return String.format("%s regions", nodes.size());
+	}
+
+
+	public int taskTypeId() {
+		return TASK_TYPE_ID;
 	}
 
 }

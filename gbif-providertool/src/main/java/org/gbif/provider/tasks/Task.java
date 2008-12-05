@@ -1,10 +1,11 @@
-package org.gbif.provider.upload;
+package org.gbif.provider.tasks;
 
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.Callable;
 
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Resource;
@@ -26,6 +27,7 @@ public interface Task<T> extends Callable<T>{
 	 */
 	void init(Long resourceId, Long userId);
 	Long getResourceId();
-	OccurrenceResource loadResource();
+	DataResource loadResource();
 	String status();
+	int taskTypeId();
 }
