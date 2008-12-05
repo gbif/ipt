@@ -22,6 +22,7 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
@@ -49,7 +50,7 @@ public class CacheManagerImpl implements CacheManager{
 	private AppConfig cfg;
 	@Autowired
 	@Qualifier("dataResourceManager")
-	private GenericResourceManagerHibernate<DataResource> dataResourceManager;
+	private GenericResourceManager<DataResource> dataResourceManager;
 	@Autowired
 	private UploadEventManager uploadEventManager;
 	@Autowired
@@ -215,14 +216,5 @@ public class CacheManagerImpl implements CacheManager{
 		
 	}
 
-	public void setUploadExecutor(ExecutorService uploadExecutor) {
-		this.uploadExecutor = uploadExecutor;
-	}
-
-	public void setProcessingExecutor(ExecutorService processingExecutor) {
-		this.processingExecutor = processingExecutor;
-	}
-
-	
 	
 }

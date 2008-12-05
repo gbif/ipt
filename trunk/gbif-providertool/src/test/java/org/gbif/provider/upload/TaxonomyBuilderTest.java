@@ -37,7 +37,8 @@ public class TaxonomyBuilderTest extends ResourceTestBase {
 	private RecordPostProcessor<DarwinCore, Set<Taxon>, OccurrenceResource> taxonomyBuilder;
 
 	private DwcTaxon getNewTaxon() {
-		DwcTaxon dt = new DwcTaxon();
+		OccurrenceResource r = OccurrenceResource.newInstance();
+		DwcTaxon dt = DwcTaxon.newInstance(r);
 		dt.setFullname("Bellis perennis L.");
 		dt.setAuthorship("L.");
 		dt.setKingdom("Plantae");
