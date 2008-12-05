@@ -1,4 +1,4 @@
-package org.gbif.provider.tasks;
+package org.gbif.provider.task;
 
 import java.util.Set;
 import java.util.SortedSet;

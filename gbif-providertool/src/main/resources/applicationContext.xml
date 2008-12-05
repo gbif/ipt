@@ -130,7 +130,7 @@
         <property name="uploadExecutor" ref="uploadExecutor"/>
         <property name="processingExecutor" ref="processingExecutor"/>
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
-        <lookup-method name="newOccProcessingTask" bean="processingTask"/>
+        <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
     </bean>
 
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
@@ -165,12 +165,10 @@
         <!-- max number of concurrent processing threads. Default is 2x max concurrent uploads -->
         <constructor-arg value="2"/>
     </bean>
-    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.upload.OccUploadTask" />
-    <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.upload.TaxonomyBuilder">
-        <constructor-arg ref="taxonManager"/>
-    </bean>
-    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.upload.GeographyBuilder">
-        <constructor-arg ref="regionManager"/>
-    </bean>
+    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
+    <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.task.TaxonomyBuilder"/>
+    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.task.GeographyBuilder"/>
+    
 
 </beans>

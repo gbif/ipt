@@ -14,6 +14,8 @@ import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.service.LogEventManager;
+import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMappingBase;
@@ -46,7 +48,8 @@ public class CacheManagerImpl implements CacheManager{
 	@Autowired
 	private AppConfig cfg;
 	@Autowired
-	private OccResourceManager occResourceManager;
+	@Qualifier("dataResourceManager")
+	private GenericResourceManagerHibernate<DataResource> resourceManager;
 	@Autowired
 	private UploadEventManager uploadEventManager;
 	@Autowired
@@ -85,7 +88,7 @@ public class CacheManagerImpl implements CacheManager{
 	protected Task<UploadEvent> newOccUploadTask(){
 		throw new NotImplementedException("Should have been overriden by Springs method injection");
 	}
-	protected Task newOccProcessingTask(){
+	protected Task<UploadEvent> newChecklistUploadTask(){
 		throw new NotImplementedException("Should have been overriden by Springs method injection");
 	}
 
@@ -98,9 +101,16 @@ public class CacheManagerImpl implements CacheManager{
 
 	@Transactional(readOnly=false)
 	public void clearCache(Long resourceId) {
-		OccurrenceResource res = occResourceManager.get(resourceId);
+		DataResource res = resourceManager.get(resourceId);
 		// flag all old records as deleted, but dont remove them from the cache
-		darwinCoreManager.flagAllAsDeleted(res);
+		if (res instanceof OccurrenceResource){
+			darwinCoreManager.flagAllAsDeleted((OccurrenceResource)res);
+			//taxonManager.flagAllAsDeleted((ChecklistResource)res);
+			taxonManager.removeAll(res);
+			occStatManager.removeAll(res);
+		}else{
+			taxonManager.flagAllAsDeleted((ChecklistResource)res);
+		}
 		// remove extension data
 		for (ViewMappingBase vm : res.getExtensionMappings()){
 			vm.setRecTotal(0);
@@ -108,11 +118,9 @@ public class CacheManagerImpl implements CacheManager{
 		}
 		// update resource stats
 		res.resetStats();
-		occResourceManager.save(res);
+		resourceManager.save(res);
 		
 		// remove core record related upload artifacts like taxa & regions
-		occStatManager.removeAll(res);
-		taxonManager.removeAll(res);
 		regionManager.removeAll(res);
 		logEventManager.removeByGroup(resourceId.intValue());
 
@@ -133,9 +141,10 @@ public class CacheManagerImpl implements CacheManager{
 	@Transactional(readOnly=false)
 	public void resetResource(Long resourceId) {
 		clearCache(resourceId);
-		OccurrenceResource res = occResourceManager.get(resourceId);
+		DataResource res = resourceManager.get(resourceId);
 		uploadEventManager.removeAll(res);
 		darwinCoreManager.removeAll(res);
+		taxonManager.removeAll(res);
 		// remove data dir
 		File dataDir = cfg.getResourceDataDir(resourceId);
 		try {
@@ -156,17 +165,14 @@ public class CacheManagerImpl implements CacheManager{
 		}
 		return new HashSet<Long>(futures.keySet());
 	}
-	public Set<Long> scheduledUploads() {
-		// FIXME: needs implementation
-		log.error("NOT IMPLEMENTED YET");
-		return new HashSet<Long>();
-	}
+
 	public boolean isBusy(Long resourceId){
 		if (currentUploads().contains(resourceId)){
 			return true;
 		}		
 		return false;
 	}
+	
 	public String getUploadStatus(Long resourceId) {
 		Task t = uploads.get(resourceId);
 		String status;
@@ -185,14 +191,15 @@ public class CacheManagerImpl implements CacheManager{
 		return status;
 	}
 
-	public void runScheduledResources(Long userId) {
-		// FIXME: needs implementation
-		log.error("NOT IMPLEMENTED YET");
-	}
-
 	public Future runUpload(Long resourceId, Long userId) {
+		DataResource res = resourceManager.get(resourceId);
 		// create task
-		Task<UploadEvent> task = newOccUploadTask();
+		Task<UploadEvent> task;
+		if (res instanceof OccurrenceResource){
+			task = newOccUploadTask();
+		}else{
+			task = newChecklistUploadTask();
+		}
 		task.init(resourceId, userId);
 		// submit
 		return submitUpload(task);
@@ -206,10 +213,6 @@ public class CacheManagerImpl implements CacheManager{
 			log.warn("No task running for resource "+resourceId);
 		}
 		
-	}
-
-	public void runPostProcess(Long resourceId, Long userId) {
-		log.error("NOT IMPLEMENTED YET");
 	}
 
 	public void setUploadExecutor(ExecutorService uploadExecutor) {

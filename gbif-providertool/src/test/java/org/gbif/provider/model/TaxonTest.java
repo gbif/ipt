@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.dto.DwcTaxon;
-import org.gbif.provider.tasks.TaxonomyBuilder;
+import org.gbif.provider.task.TaxonomyBuilder;
 
 import static org.junit.Assert.*;
 import org.junit.Before;

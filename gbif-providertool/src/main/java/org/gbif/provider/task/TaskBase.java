@@ -1,4 +1,4 @@
-package org.gbif.provider.tasks;
+package org.gbif.provider.task;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
