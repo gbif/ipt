@@ -49,17 +49,18 @@ public interface CacheManager {
 	 * When preparing a new upload this method should be used to clean up old upload artifacts. 
 	 * @param resource
 	 */	
-	void clearCache(Long resourceId);
+	void prepareUpload(Long resourceId);
 
 	/**
-	 * Clear all cached upload artifacts and resource data apart from the resource metadata itself. 
+	 * Remove all data in cache related to this resource apart from the resource instance itself. 
 	 * I.e. the resource will be in a state afterwards just as if it has just been newly created.
+	 * The filesystem is not touched. This is handled by the ResourceManager.remove() method.
 	 *  
 	 * Be very careful when using this method as it removes all resource data! 
 	 * When preparing a new upload this method should *not* be used as it also removes the upload history and all core records as opposed to just flag them for deletion.
-	 * Use clearCache instead.
+	 * Use prepareUpload instead.
 	 * @param resource
 	 */	
-	void resetResource(Long resourceId);
+	void clear(Long resourceId);
 	
 }

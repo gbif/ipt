@@ -101,7 +101,7 @@ public class CacheManagerImpl implements CacheManager{
 	}
 
 	@Transactional(readOnly=false)
-	public void clearCache(Long resourceId) {
+	public void prepareUpload(Long resourceId) {
 		DataResource res = dataResourceManager.get(resourceId);
 		// flag all old records as deleted, but dont remove them from the cache
 		if (res instanceof OccurrenceResource){
@@ -140,19 +140,13 @@ public class CacheManagerImpl implements CacheManager{
 	}
 
 	@Transactional(readOnly=false)
-	public void resetResource(Long resourceId) {
-		clearCache(resourceId);
+	public void clear(Long resourceId) {
+		prepareUpload(resourceId);
 		DataResource res = dataResourceManager.get(resourceId);
-		uploadEventManager.removeAll(res);
-		darwinCoreManager.removeAll(res);
-		taxonManager.removeAll(res);
-		// remove data dir
-		File dataDir = cfg.getResourceDataDir(resourceId);
-		try {
-			FileUtils.deleteDirectory(dataDir);
-			log.info("Removed resource data dir "+dataDir.getAbsolutePath());
-		} catch (IOException e) {
-			log.error("Cant remove data dir for resource "+resourceId, e);
+		if (res != null){
+			uploadEventManager.removeAll(res);
+			darwinCoreManager.removeAll(res);
+			taxonManager.removeAll(res);
 		}
 	}
 

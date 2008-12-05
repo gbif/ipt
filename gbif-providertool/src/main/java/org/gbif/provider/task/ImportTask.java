@@ -140,7 +140,7 @@ import org.springframework.transaction.annotation.Transactional;
 			resource= loadResource();
 			
 			// remove all previous upload artifacts
-			cacheManager.clearCache(getResourceId());
+			cacheManager.prepareUpload(getResourceId());
 			
 			// init postprocessors
 			for (RecordPostProcessor<T, ?, R> pp : postProcessors){
