@@ -117,7 +117,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String delete() {
-		cacheManager.resetResource(resource.getId());
 		resourceManager.remove(resource);
 		saveMessage(getText("resource.deleted"));
 

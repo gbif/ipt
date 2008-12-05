@@ -16,17 +16,22 @@
 
 package org.gbif.provider.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.TaxonKeyword;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -38,6 +43,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GenericResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements GenericResourceManager<T> {
 	private static I18nLog logdb = I18nLogFactory.getLog(GenericResourceManagerHibernate.class);
+	@Autowired
+	protected AppConfig cfg;
 
 	public GenericResourceManagerHibernate(final Class<T> persistentClass) {
 		super(persistentClass);
@@ -60,4 +67,25 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
         		.list();
     }
 	
+	@Override
+	public void remove(T obj) {
+		// first remove all associated core records, taxa and regions
+		if (obj!=null){
+			Long resourceId = obj.getId();
+			if (resourceId != null){
+				// remove data dir
+				File dataDir = cfg.getResourceDataDir(resourceId);
+				try {
+					FileUtils.deleteDirectory(dataDir);
+					log.info("Removed resource data dir "+dataDir.getAbsolutePath());
+				} catch (IOException e) {
+					log.error("Cant remove data dir for resource "+resourceId, e);
+				}
+			}
+			// remove resource entity itself
+			super.remove(obj);
+		}
+	}
+
+
 }
