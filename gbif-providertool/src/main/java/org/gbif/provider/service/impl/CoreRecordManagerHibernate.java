@@ -46,11 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=true)
 public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericResourceRelatedManagerHibernate<T> implements CoreRecordManager<T> {
-	protected String[] FIELD_NAMES;
-	
-	public CoreRecordManagerHibernate(Class<T> persistentClass, String[] searchableFieldNames) {
+	public CoreRecordManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
-		this.FIELD_NAMES = searchableFieldNames;
 	}
 
     public List<T> getAll(final Long resourceId) {
@@ -73,13 +70,6 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 		return (T) query.uniqueResult();
 	}
 
-	public T get(final Long Id, final Long resourceId) {
-		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId AND core.id = :Id", persistentClass.getName()))
-						.setParameter("resourceId", resourceId)
-						.setParameter("Id", Id);
-		return (T) query.uniqueResult();
-	}
-	
 	public T get(final String guid) {
 		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.guid = :guid", persistentClass.getName()))
 						.setParameter("guid", guid);
@@ -118,6 +108,4 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	     return null;
 	}
 
-	public void reindex(Long resourceId){
-	}
 }

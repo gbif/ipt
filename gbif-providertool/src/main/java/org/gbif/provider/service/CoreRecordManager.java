@@ -28,14 +28,6 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
 	T findByLocalId(String localId, Long resourceId);
 	
 	/**
-	 * same as get by id, but allows underlying db to be partitioned by resource
-	 * @param Id
-	 * @param resourceId
-	 * @return
-	 */
-	T get(Long Id, Long resourceId);
-	
-	/**
 	 * get single record by its GUID
 	 * @param Id
 	 * @return
@@ -49,7 +41,6 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
 	 * @return
 	 */
 	List<T> search(Long resourceId, String q);
-	void reindex(Long resourceId);
 	
     /**
      * Generic method to save a core record - handles both update and insert.
