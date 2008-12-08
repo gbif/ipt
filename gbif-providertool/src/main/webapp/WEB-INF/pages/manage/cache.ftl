@@ -61,7 +61,7 @@
 
 <div class="newline">
 <#if resource.hasMinimalMapping()>
-	<@s.form id="importForm" action="import" method="post" >
+	<@s.form action="runImport" method="post" >
 	  <@s.hidden key="resource_id" />
 	  <@s.submit cssClass="button" key="button.upload" />
 	</@s.form>

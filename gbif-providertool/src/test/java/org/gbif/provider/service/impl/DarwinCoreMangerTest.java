@@ -40,7 +40,7 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 
 	@Test
 	public void testSave(){
-		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 		DarwinCore dwc = DarwinCore.newMock(res);
 		// this should fail if run twice... for manual testing only
 		//dwc.setLocalId("12443990");
@@ -54,7 +54,7 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 		new AssertThrows(EntityExistsException.class) {
             public void test() {
             	final String LOCAL_ID = "xcf-x";
-        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+        		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 
         		DarwinCore dwc = DarwinCore.newMock(res);
 				dwc.setLocalId(LOCAL_ID);
@@ -75,7 +75,7 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 	public void testConstraintSave(){		
 		new AssertThrows(PropertyValueException.class) {
             public void test() {
-        		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+        		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
         		DarwinCore dwc = DarwinCore.newMock(res);
         		// remove resource to check if constraints work
         		dwc.setResource(null);
@@ -89,14 +89,14 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testFlagAllAsDeleted() {
-		OccurrenceResource resource = (OccurrenceResource) occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		OccurrenceResource resource = (OccurrenceResource) occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 		darwinCoreManager.flagAllAsDeleted(resource);
 	}
 
 	
 	@Test
 	public void testSimpleSave(){		
-		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 		DarwinCore dwc = DarwinCore.newMock(res);
     	try{
     		dwc = darwinCoreManager.save(dwc);		
@@ -108,10 +108,10 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testByTaxon() {
-		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(Constants.TEST_TAXON_ID, Constants.TEST_RESOURCE_ID, false);
+		List<DarwinCore> dwcs = darwinCoreManager.getByTaxon(Constants.TEST_TAXON_ID, Constants.TEST_OCC_RESOURCE_ID, false);
 		System.out.println(dwcs.size());
 		System.out.println(dwcs);
-		dwcs = darwinCoreManager.getByTaxon(Constants.TEST_TAXON_ID, Constants.TEST_RESOURCE_ID, true);
+		dwcs = darwinCoreManager.getByTaxon(Constants.TEST_TAXON_ID, Constants.TEST_OCC_RESOURCE_ID, true);
 		System.out.println(dwcs.size());
 		System.out.println(dwcs);
 		//FIXME: add proper taxonId once default data is stable
@@ -122,10 +122,10 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 	@Test
 	public void testByRegion() {
 		Long rid = 274l;
-		List<DarwinCore> dwcs = darwinCoreManager.getByRegion(rid, Constants.TEST_RESOURCE_ID, false);
+		List<DarwinCore> dwcs = darwinCoreManager.getByRegion(rid, Constants.TEST_OCC_RESOURCE_ID, false);
 		System.out.println(dwcs.size());
 		System.out.println(dwcs);
-		dwcs = darwinCoreManager.getByRegion(rid, Constants.TEST_RESOURCE_ID, true);
+		dwcs = darwinCoreManager.getByRegion(rid, Constants.TEST_OCC_RESOURCE_ID, true);
 		System.out.println(dwcs.size());
 		System.out.println(dwcs);
 		//FIXME: add proper taxonId once default data is stable

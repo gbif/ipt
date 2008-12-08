@@ -13,8 +13,7 @@ public class DwcTaxonTest {
 	private DwcTaxon getNewTaxon(){
 		OccurrenceResource r = OccurrenceResource.newInstance();
 		DwcTaxon dt = DwcTaxon.newInstance(r);
-		dt.setFullname("Bellis perennis L.");
-		dt.setAuthorship("L.");
+		dt.setScientificName("Bellis perennis L.");
 		dt.setKingdom("Plantae");
 		dt.setFamily("Asteraceae");
 		dt.setGenus("Bellis");
@@ -38,7 +37,7 @@ public class DwcTaxonTest {
 		DwcTaxon family = DwcTaxon.newDwcTaxon(dt, Rank.Family);
 		
 		assertFalse(dt.equals(family));
-		assertTrue(dt.getFamily().equals(family.getFullname()));
+		assertTrue(dt.getFamily().equals(family.getScientificName()));
 	}
 
 }

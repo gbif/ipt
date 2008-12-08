@@ -13,7 +13,7 @@ public abstract class ResourceTestBase extends ContextAwareTestBase {
 	protected OccurrenceResource resource;
 	
 	protected void setup(){
-		resource = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		resource = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 	}
 	protected OccurrenceResource getResourceMock(){
 		OccurrenceResource res = resourceFactory.newOccurrenceResourceInstance();

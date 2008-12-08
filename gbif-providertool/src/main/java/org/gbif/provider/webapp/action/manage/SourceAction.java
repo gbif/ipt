@@ -209,7 +209,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
             } else if (file.length() > 2097152) {
                 addActionError(getText("maxLengthExceeded"));
             }
-            list();
         }
     }
     

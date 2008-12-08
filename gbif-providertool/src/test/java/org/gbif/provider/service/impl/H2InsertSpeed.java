@@ -40,7 +40,7 @@ public class H2InsertSpeed extends ContextAwareTestBase{
 
 	@Test
 	public void testDwcInserts(){
-		OccurrenceResource res = occResourceManager.get(Constants.TEST_RESOURCE_ID);
+		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 		int i = 0;
 		DarwinCore dwc;
 		Date start = new Date();

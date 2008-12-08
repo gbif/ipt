@@ -103,6 +103,9 @@ public class CacheManagerImpl implements CacheManager{
 	@Transactional(readOnly=false)
 	public void prepareUpload(Long resourceId) {
 		DataResource res = dataResourceManager.get(resourceId);
+		if (res==null){
+			throw new NullPointerException("Resource must exist");
+		}
 		// flag all old records as deleted, but dont remove them from the cache
 		if (res instanceof OccurrenceResource){
 			darwinCoreManager.flagAllAsDeleted((OccurrenceResource)res);

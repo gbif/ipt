@@ -19,7 +19,7 @@ public class TabFileReaderTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testTabFileReader() throws IOException, MalformedTabFileException {
-		File f = cfg.getResourceSourceFile(Constants.TEST_RESOURCE_ID, "pontaurus.txt");
+		File f = cfg.getResourceSourceFile(Constants.TEST_OCC_RESOURCE_ID, "pontaurus.txt");
 		TabFileReader reader = new TabFileReader(f);
 		 System.out.println(Arrays.asList(reader.getHeader()));
 		 System.out.println();

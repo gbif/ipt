@@ -42,8 +42,6 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	}
 
 	@Autowired
-	protected AppConfig cfg;
-	@Autowired
 	private DatasourceRegistry registry;
 	@Autowired
 	private CacheManager cacheManager;

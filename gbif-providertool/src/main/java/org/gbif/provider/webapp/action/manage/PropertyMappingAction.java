@@ -207,6 +207,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 		return view;
 	}
 
+	public void setView(ViewMappingBase view) {
+		this.view = view;
+	}
+
 	public List<String> getSourceColumns() {
 		return sourceColumns;
 	}

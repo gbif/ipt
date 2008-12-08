@@ -15,6 +15,7 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.dto.DwcTaxon;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.GenericResourceManager;
@@ -34,10 +35,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		public static final int TASK_TYPE_ID = 7;
 		// resource stats
 		private ChecklistResource resource;
+		private ChecklistResourceManager checklistResourceManager;
 		
 		@Autowired
-		private ChecklistUploadTask(TaxonManager taxonManager, GenericResourceManager<ChecklistResource> checklistResourceManager) {
+		private ChecklistUploadTask(TaxonManager taxonManager, ChecklistResourceManager checklistResourceManager) {
 			super(taxonManager, checklistResourceManager);
+			this.checklistResourceManager=checklistResourceManager;
 		}
 
 

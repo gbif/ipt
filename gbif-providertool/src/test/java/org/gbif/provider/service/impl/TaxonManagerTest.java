@@ -40,7 +40,7 @@ public class TaxonManagerTest extends ContextAwareTestBase{
 
 	@Test
 	public void testRoots(){
-		List<Taxon> rootTaxa = taxonManager.getRoots(Constants.TEST_RESOURCE_ID);
+		List<Taxon> rootTaxa = taxonManager.getRoots(Constants.TEST_OCC_RESOURCE_ID);
 		// FIXME: add good assertion once the test resource default-data.xml includes taxa...
 //		assertTrue(rootTaxa.size()==45);
 //		System.out.println(rootTaxa.size());
