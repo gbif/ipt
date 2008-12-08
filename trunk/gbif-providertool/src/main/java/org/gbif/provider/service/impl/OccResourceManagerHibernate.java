@@ -43,8 +43,6 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	private static final int MAX_CHART_DATA = 20;
 
 	@Autowired
-	protected AppConfig cfg;
-	@Autowired
 	protected GeoserverUtils geoTools;
 	
 	protected static GChartBuilder gpb = new GChartBuilder();
@@ -300,13 +298,13 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 		List<Object[]> occBySth;
 		if (rank== null || rank.equals(Rank.TerminalTaxon)){
 			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.id, t.fullname, t.occTotal   from Taxon t   where t.resource.id=:resourceId");		
+			hql = String.format("select t.id, t.scientificName, t.occTotal   from Taxon t   where t.resource.id=:resourceId");		
 	        occBySth = getSession().createQuery(hql)
 	        	.setParameter("resourceId", resourceId)
 	        	.list();
 		}else{
 			// only select certain rank
-			hql = String.format("select t.id, t.fullname, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.scientificName, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("rank", rank)

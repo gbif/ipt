@@ -84,9 +84,7 @@
     </bean>
     
     <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
-    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.DataResourceManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.ChecklistResource"/>
-    </bean>
+    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.ChecklistResourceManagerHibernate" parent="abstractManager"/>            
     <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DataResourceManagerHibernate" parent="abstractManager">        
         <constructor-arg value="org.gbif.provider.model.DataResource"/>
     </bean>

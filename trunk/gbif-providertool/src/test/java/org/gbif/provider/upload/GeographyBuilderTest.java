@@ -52,7 +52,7 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 	@Test
 	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testBuildHierarchy() throws Exception {
-		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		geographyBuilder.init(Constants.TEST_OCC_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		Set<Region> regions = geographyBuilder.call();
 		System.out.println(String.format("%s regions found in test resource", regions.size()));
@@ -63,7 +63,7 @@ public class GeographyBuilderTest extends ContextAwareTestBase{
 	@Test
 	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testBuildHierarchyCallable() throws Exception {
-		geographyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		geographyBuilder.init(Constants.TEST_OCC_RESOURCE_ID, Constants.TEST_USER_ID);
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		log.debug("Submit geography builder task to single threaded executor");

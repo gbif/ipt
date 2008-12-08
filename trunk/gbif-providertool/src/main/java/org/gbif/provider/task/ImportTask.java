@@ -232,6 +232,9 @@ import org.springframework.transaction.annotation.Transactional;
 				try{
 					// go through source records one by one
 					for (ImportRecord irec : source){
+						if (irec == null){
+							continue;
+						}
 						// keep track of processed source records
 						currentProcessed.addAndGet(1);
 						
@@ -251,6 +254,11 @@ import org.springframework.transaction.annotation.Transactional;
 							// get previous record or null if it didnt exist yet based on localID and resource
 							T oldRecord = coreRecordManager.findByLocalId(irec.getLocalId(), getResourceId());
 							
+							// check if localID was unique. All old records should have deleted flag=true
+							// so if deleted is false, the same localID was inserted before already!
+							if (oldRecord != null && !oldRecord.isDeleted()){
+								logdb.warn("uploadManager.duplicateLocalId", irec.getLocalId());
+							}
 							// assign managed properties
 							updateCoreProperties(record, oldRecord);
 							

@@ -164,26 +164,11 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			super.setType(dwcRank);
 		}
 		
-		@Column(length=128)
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-		@Column(length=128)
-		public String getAuthorship() {
-			return authorship;
-		}
-		public void setAuthorship(String authorship) {
-			this.authorship = authorship;
-		}
-		
-		@org.hibernate.annotations.Index(name="taxon_fullname")
-		public String getFullname() {
+		@org.hibernate.annotations.Index(name="tax_sciname")
+		public String getScientificName() {
 			return getLabel();
 		}
-		public void setFullname(String fullname) {
+		public void setScientificName(String fullname) {
 			setLabel(fullname);
 		}
 		
@@ -263,18 +248,18 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 
 		@Column(length=128)
-		public String getTaxStatus() {
+		public String getTaxonomicStatus() {
 			return taxStatus;
 		}
-		public void setTaxStatus(String taxStatus) {
+		public void setTaxonomicStatus(String taxStatus) {
 			this.taxStatus = taxStatus;
 		}
 
 		@Column(length=128)
-		public String getNomStatus() {
+		public String getNomenclaturalStatus() {
 			return nomStatus;
 		}
-		public void setNomStatus(String nomStatus) {
+		public void setNomenclaturalStatus(String nomStatus) {
 			this.nomStatus = nomStatus;
 		}
 

@@ -24,43 +24,43 @@ public class OccResourceManagerHibernateTest extends ContextAwareTestBase{
 	
 	@Test
 	public void testOccByBasisOfRecordPieUrl() {
-		System.out.println(occResourceManager.occByBasisOfRecordPieUrl(Constants.TEST_RESOURCE_ID, width, height, title));
+		System.out.println(occResourceManager.occByBasisOfRecordPieUrl(Constants.TEST_OCC_RESOURCE_ID, width, height, title));
 	}
 
 	@Test
 	public void testOccByHostPieUrl() {
-		System.out.println(occResourceManager.occByHostPieUrl(Constants.TEST_RESOURCE_ID, HostType.Collection, width, height, title));
+		System.out.println(occResourceManager.occByHostPieUrl(Constants.TEST_OCC_RESOURCE_ID, HostType.Collection, width, height, title));
 	}
 
 	@Test
 	public void testOccByRegionPieUrl() {
-		System.out.println(occResourceManager.occByRegionPieUrl(Constants.TEST_RESOURCE_ID, RegionType.Continent, width, height, title));
-		System.out.println(occResourceManager.occByRegionPieUrl(Constants.TEST_RESOURCE_ID, RegionType.Country, width, height, title));
-		System.out.println(occResourceManager.occByRegionPieUrl(Constants.TEST_RESOURCE_ID, RegionType.Waterbody, width, height, title));
+		System.out.println(occResourceManager.occByRegionPieUrl(Constants.TEST_OCC_RESOURCE_ID, RegionType.Continent, width, height, title));
+		System.out.println(occResourceManager.occByRegionPieUrl(Constants.TEST_OCC_RESOURCE_ID, RegionType.Country, width, height, title));
+		System.out.println(occResourceManager.occByRegionPieUrl(Constants.TEST_OCC_RESOURCE_ID, RegionType.Waterbody, width, height, title));
 	}
 
 	@Test
 	public void testOccByTaxonPieUrl() {
-		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.Kingdom, width, height, title));
-		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.Family, width, height, title));
-		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.Genus, width, height, title));
-		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_RESOURCE_ID, Rank.TerminalTaxon, width, height, title));
+		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_OCC_RESOURCE_ID, Rank.Kingdom, width, height, title));
+		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_OCC_RESOURCE_ID, Rank.Family, width, height, title));
+		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_OCC_RESOURCE_ID, Rank.Genus, width, height, title));
+		System.out.println(occResourceManager.occByTaxonPieUrl(Constants.TEST_OCC_RESOURCE_ID, Rank.TerminalTaxon, width, height, title));
 	}
 
 	@Test
 	public void testByCountryMapUrl() {
-		System.out.println(occResourceManager.occByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
+		System.out.println(occResourceManager.occByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_OCC_RESOURCE_ID, width, height));
 	}
 
 	@Test
 	public void testTaxaByCountryMapUrl() {
-		System.out.println(occResourceManager.taxaByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_RESOURCE_ID, width, height));
-		System.out.println(occResourceManager.taxaByRegion(Constants.TEST_RESOURCE_ID, RegionType.State));
+		System.out.println(occResourceManager.taxaByCountryMapUrl(GeographicalArea.WORLD, Constants.TEST_OCC_RESOURCE_ID, width, height));
+		System.out.println(occResourceManager.taxaByRegion(Constants.TEST_OCC_RESOURCE_ID, RegionType.State));
 	}
 
 	@Test
 	public void testOccByRegionWithTaxonFilter() {
-		System.out.println(occResourceManager.occByRegion(Constants.TEST_RESOURCE_ID, RegionType.Country, 656l));
+		System.out.println(occResourceManager.occByRegion(Constants.TEST_OCC_RESOURCE_ID, RegionType.Country, 656l));
 	}
 	
 }

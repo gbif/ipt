@@ -516,7 +516,7 @@
         <action name="cache" class="org.gbif.provider.webapp.action.manage.ImportAction">
             <result type="freemarker">/WEB-INF/pages/manage/cache.ftl</result>
         </action>
-        <action name="import" class="org.gbif.provider.webapp.action.manage.ImportAction" method="upload">
+        <action name="runImport" class="org.gbif.provider.webapp.action.manage.ImportAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
                 <param name="resource_id">${resource_id}</param>

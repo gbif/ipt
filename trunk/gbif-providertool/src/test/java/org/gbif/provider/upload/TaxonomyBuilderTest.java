@@ -39,8 +39,7 @@ public class TaxonomyBuilderTest extends ResourceTestBase {
 	private DwcTaxon getNewTaxon() {
 		OccurrenceResource r = OccurrenceResource.newInstance();
 		DwcTaxon dt = DwcTaxon.newInstance(r);
-		dt.setFullname("Bellis perennis L.");
-		dt.setAuthorship("L.");
+		dt.setScientificName("Bellis perennis L.");
 		dt.setKingdom("Plantae");
 		dt.setFamily("Asteraceae");
 		dt.setGenus("Bellis");
@@ -58,7 +57,7 @@ public class TaxonomyBuilderTest extends ResourceTestBase {
 	@Test
 	public void testCallable() throws Exception {
 		setup();
-		taxonomyBuilder.init(Constants.TEST_RESOURCE_ID, Constants.TEST_USER_ID);
+		taxonomyBuilder.init(Constants.TEST_OCC_RESOURCE_ID, Constants.TEST_USER_ID);
 
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		log.debug("Submit geography builder task to single threaded executor");

@@ -33,8 +33,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		}
 		DwcTaxon tax = DwcTaxon.newInstance(dwc.getResource());
 		tax.taxon.setCode(dwc.getNomenclaturalCode());
-		tax.taxon.setFullname(dwc.getScientificName());
-		tax.taxon.setAuthorship(dwc.getAuthorYearOfScientificName());
+		tax.taxon.setScientificName(dwc.getScientificName());
 		tax.taxon.setRank(dwc.getInfraspecificRank());
 		// 
 		tax.terminal=true;
@@ -71,31 +70,31 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		// fill target taxon depending on the requested new rank
 		if (rank.compareTo(Rank.Kingdom)>=0){
 			tax.setKingdom(dt.getKingdom());
-			tax.taxon.setFullname(dt.getKingdom());
+			tax.taxon.setScientificName(dt.getKingdom());
 		}
 		if (rank.compareTo(Rank.Phylum)>=0){
 			tax.setPhylum(dt.getPhylum());
-			tax.taxon.setFullname(dt.getPhylum());
+			tax.taxon.setScientificName(dt.getPhylum());
 		}
 		if (rank.compareTo(Rank.Class)>=0){
 			tax.setClasss(dt.getClasss());
-			tax.taxon.setFullname(dt.getClasss());
+			tax.taxon.setScientificName(dt.getClasss());
 		}
 		if (rank.compareTo(Rank.Order)>=0){
 			tax.setOrder(dt.getOrder());
-			tax.taxon.setFullname(dt.getOrder());
+			tax.taxon.setScientificName(dt.getOrder());
 		}
 		if (rank.compareTo(Rank.Family)>=0){
 			tax.setFamily(dt.getFamily());
-			tax.taxon.setFullname(dt.getFamily());
+			tax.taxon.setScientificName(dt.getFamily());
 		}
 		if (rank.compareTo(Rank.Genus)>=0){
 			tax.setGenus(dt.getGenus());
-			tax.taxon.setFullname(dt.getGenus());
+			tax.taxon.setScientificName(dt.getGenus());
 		}
 		if (rank.compareTo(Rank.Species)>=0){
 			tax.setSpeciesEpi(dt.getSpeciesEpi());
-			tax.taxon.setFullname(String.format("%s %s", dt.getGenus(), dt.getSpeciesEpi()));
+			tax.taxon.setScientificName(String.format("%s %s", dt.getGenus(), dt.getSpeciesEpi()));
 		}
 
 		return tax;
@@ -229,10 +228,6 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		this.infraSpeciesEpi = infraSpeciesEpi;
 	}
 
-	public String getAuthorship() {
-		return taxon.getAuthorship();
-	}
-
 	public String getCode() {
 		return taxon.getCode();
 	}
@@ -241,8 +236,8 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		return taxon.getDwcRank();
 	}
 
-	public String getFullname() {
-		return taxon.getFullname();
+	public String getScientificName() {
+		return taxon.getScientificName();
 	}
 
 	public Long getId() {
@@ -251,10 +246,6 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 
 	public Long getLft() {
 		return taxon.getLft();
-	}
-
-	public String getName() {
-		return taxon.getName();
 	}
 
 	public Taxon getParent() {
@@ -269,10 +260,6 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		return taxon.getRgt();
 	}
 
-	public void setAuthorship(String authorship) {
-		taxon.setAuthorship(authorship);
-	}
-
 	public void setCode(String code) {
 		taxon.setCode(code);
 	}
@@ -281,16 +268,12 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 		taxon.setDwcRank(dwcRank);
 	}
 
-	public void setFullname(String fullname) {
-		taxon.setFullname(fullname);
+	public void setScientificName(String fullname) {
+		taxon.setScientificName(fullname);
 	}
 
 	public void setLft(Long lft) {
 		taxon.setLft(lft);
-	}
-
-	public void setName(String name) {
-		taxon.setName(name);
 	}
 
 	public void setParent(Taxon parent) {
@@ -342,8 +325,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
         result = 31 * result + (infraSpeciesEpi != null ? infraSpeciesEpi.hashCode() : 0);
         
         result = 31 * result + (taxon.getCode() != null ? taxon.getCode().hashCode() : 0);
-        result = 31 * result + (taxon.getFullname() != null ? taxon.getFullname().hashCode() : 0);
-        result = 31 * result + (taxon.getAuthorship() != null ? taxon.getAuthorship().hashCode() : 0);
+        result = 31 * result + (taxon.getScientificName() != null ? taxon.getScientificName().hashCode() : 0);
         return result;
 	}
 
@@ -363,7 +345,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 				.append(this.genus,	myClass.genus)
 				.append(this.speciesEpi, myClass.speciesEpi)
 				.append(this.infraSpeciesEpi, myClass.infraSpeciesEpi)
-				.append(this.taxon.getFullname(),	myClass.taxon.getFullname())
+				.append(this.taxon.getScientificName(),	myClass.taxon.getScientificName())
 				.toComparison();
 	}
 
@@ -371,7 +353,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return String.format("%s", this.taxon.getFullname());
+		return String.format("%s", this.taxon.getScientificName());
 	}
 
 }

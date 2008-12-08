@@ -18,8 +18,7 @@ public class TaxonTest {
 
 	private Taxon newTaxon(String name, Taxon parent){
 		Taxon t = Taxon.newInstance(resource);
-		t.setName(name);
-		t.setFullname(name);
+		t.setScientificName(name);
 		t.setParent(parent);
 		return t;
 	}

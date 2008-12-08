@@ -38,7 +38,7 @@ public class UploadEventManagerTest extends ContextAwareTestBase{
 	@Test
 	public void testGetUploadEventsByResource(){
 		try {
-			List<UploadEvent> events = uploadEventManager.getUploadEventsByResource(Constants.TEST_RESOURCE_ID);
+			List<UploadEvent> events = uploadEventManager.getUploadEventsByResource(Constants.TEST_OCC_RESOURCE_ID);
 			for (UploadEvent ev : events){
 				logger.debug(ev);
 			}
