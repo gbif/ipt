@@ -108,7 +108,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	 */
 	@Embedded
 	@AttributeOverrides( {
-        @AttributeOverride(name="columnName", column = @Column(name="localid_col", length=64)),
+        @AttributeOverride(name="columnName", column = @Column(name="localid_col", length=64))
 	} )
 	public ColumnMapping getCoreIdColumn() {
 		return coreIdColumn;

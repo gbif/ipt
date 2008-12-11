@@ -27,9 +27,9 @@ public class ViewCoreMapping extends ViewMappingBase {
 	}
 	
 	@Embedded
-	@AttributeOverrides( {
-        @AttributeOverride(name="columnName", column = @Column(name="guid_col", length=64) ),
-	} )
+	@AttributeOverrides({
+        @AttributeOverride(name="columnName", column = @Column(name="guid_col", length=64) )
+	})
 	public ColumnMapping getGuidColumn() {
 		return guidColumn;
 	}
@@ -39,7 +39,7 @@ public class ViewCoreMapping extends ViewMappingBase {
 	
 	@Embedded
 	@AttributeOverrides( {
-        @AttributeOverride(name="columnName", column = @Column(name="link_col", length=64) ),
+        @AttributeOverride(name="columnName", column = @Column(name="link_col", length=64) )
 	} )
 	public ColumnMapping getLinkColumn() {
 		return linkColumn;
