@@ -603,13 +603,9 @@
         <jdbc.artifactId>h2</jdbc.artifactId>
         <jdbc.version>1.1.104</jdbc.version>
         <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
+        <jdbc.url><![CDATA[jdbc:h2:${datadir}/db/ipt]]></jdbc.url>
         <jdbc.username>sa</jdbc.username>
         <jdbc.password></jdbc.password>
-        
-        <!-- IPT test context only. Production uses spring & IPT_DATA_DIR setting via datadirlocator -->
-        <webappdir>${project.build.testOutputDirectory}/test-webapp</webappdir>
-        <datadir>${webappdir}/data</datadir>
-        <jdbc.url><![CDATA[jdbc:h2:${datadir}/db/ipt]]></jdbc.url>
 
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
     </properties>
