@@ -38,6 +38,8 @@
         <mapping class="org.gbif.provider.model.SourceSql"/>
         <mapping class="org.gbif.provider.model.SourceFile"/>
         <mapping class="org.gbif.provider.model.Taxon"/>
+        <mapping class="org.gbif.provider.model.ThesaurusConcept"/>
+        <mapping class="org.gbif.provider.model.ThesaurusTerm"/>
         <mapping class="org.gbif.provider.model.UploadEvent"/>
         <mapping class="org.gbif.provider.model.ViewMappingBase"/>
         <mapping class="org.gbif.provider.model.ViewCoreMapping"/>

@@ -191,9 +191,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return new ToStringBuilder(this).
-				append("qualName", this.qualName).
-				toString();
+		return name != null ? name : id.toString();
 	}
 
 }

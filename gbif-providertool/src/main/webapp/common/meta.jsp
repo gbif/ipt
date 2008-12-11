@@ -17,7 +17,7 @@
 	      <c:when test='${currentSubMenu == "meta"}'>
 			<link href="/data/rss.xml" rel="alternate" type="application/rss+xml" title="RSS Feed for all resources" />
           </c:when>        
-          <c:when test='${currentSubMenu == "occ"}'>
+          <c:when test='${currentSubMenu == "occ" || currentSubMenu == "tax"}'>
 	        <c:if test='${resource_id != null}'>
 				<link href="/data/${resource_id}/rss.xml" rel="alternate" type="application/rss+xml" title="${currentResourceTitle} RSS Feed" />
 			</c:if>

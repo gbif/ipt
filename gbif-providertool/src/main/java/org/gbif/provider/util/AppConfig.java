@@ -191,6 +191,10 @@ public class AppConfig{
 		String base = getBaseUrl();
     	return String.format("%s/tapir/%s/", base, resourceId.toString());
 	}
+	public String getTcsEndpoint(Long resourceId){
+		String base = getBaseUrl();
+    	return String.format("%s/%s/tcs.xml", base, resourceId.toString());
+	}
 	
 	public String getWfsEndpoint(Long resourceId){
     	return String.format("%s/wfs?request=DescribeFeatureType&typeName=gbif:resource%s", getGeoserverUrl(), resourceId);

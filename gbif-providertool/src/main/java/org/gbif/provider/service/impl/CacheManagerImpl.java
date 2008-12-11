@@ -110,8 +110,8 @@ public class CacheManagerImpl implements CacheManager{
 		if (res instanceof OccurrenceResource){
 			darwinCoreManager.flagAllAsDeleted((OccurrenceResource)res);
 			//taxonManager.flagAllAsDeleted((ChecklistResource)res);
-			taxonManager.removeAll(res);
 			occStatManager.removeAll(res);
+			taxonManager.removeAll(res);
 		}else{
 			taxonManager.flagAllAsDeleted((ChecklistResource)res);
 		}
@@ -123,6 +123,7 @@ public class CacheManagerImpl implements CacheManager{
 		// update resource stats
 		res.resetStats();
 		dataResourceManager.save(res);
+		log.debug("Reset resource stats");
 		
 		// remove core record related upload artifacts like taxa & regions
 		regionManager.removeAll(res);
@@ -131,6 +132,7 @@ public class CacheManagerImpl implements CacheManager{
 		// remove generated files
 		File dump = cfg.getDumpArchiveFile(resourceId);
 		dump.delete();
+		log.debug("Removed data archive");
 		
 		// remove cached static files
 		File cacheDir = cfg.getResourceCacheDir(resourceId);

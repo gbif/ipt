@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.logging.log.I18nLog;
 import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
@@ -18,7 +20,8 @@ import org.gbif.provider.service.CoreRecordFactory;
 import org.gbif.provider.util.Constants;
 
 public class CoreRecordFactoryImpl implements CoreRecordFactory {
-	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
+	private static I18nLog logdb = I18nLogFactory.getLog(CoreRecordFactoryImpl.class);
+	private static Log log = LogFactory.getLog(CoreRecordFactoryImpl.class);
 
 	public CoreRecord build(DataResource resource, ImportRecord rec) {
 		if (resource instanceof OccurrenceResource){
@@ -40,55 +43,11 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		dwc.setLocalId(rec.getLocalId());
 		dwc.setDeleted(false);
 		for (ExtensionProperty prop : rec.getProperties().keySet()){
-			// set all dwc properties apart from:
-			// DateLastModified: managed by CoreRecord and this software
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
 			String propName = prop.getName();
-			if(propName.equals("GlobalUniqueIdentifier")){
-				dwc.setGlobalUniqueIdentifier(val);
-			}else if(propName.equals("BasisOfRecord")){
-				dwc.setBasisOfRecord(val);
-			}else if(propName.equals("InstitutionCode")){
-				dwc.setInstitutionCode(val);
-			}else if(propName.equals("CollectionCode")){
-				dwc.setCollectionCode(val);
-			}else if(propName.equals("CatalogNumber")){
-				dwc.setCatalogNumber(val);
-			}else if(propName.equals("InformationWithheld")){
-				dwc.setInformationWithheld(val);
-			}else if(propName.equals("Remarks")){
-				dwc.setRemarks(val);
-			}else if(propName.equals("Sex")){
-				dwc.setSex(val);
-			}else if(propName.equals("LifeStage")){
-				dwc.setLifeStage(val);
-			}else if(propName.equals("Attributes")){
-				dwc.setAttributes(val);
-			}else if(propName.equals("ImageURL")){
-				dwc.setImageURL(val);
-			}else if(propName.equals("RelatedInformation")){
-				dwc.setRelatedInformation(val);
-			}else if(propName.equals("HigherGeography")){
-				dwc.setHigherGeography(val);
-			}else if(propName.equals("Continent")){
-				dwc.setContinent(val);
-			}else if(propName.equals("WaterBody")){
-				dwc.setWaterBody(val);
-			}else if(propName.equals("IslandGroup")){
-				dwc.setIslandGroup(val);
-			}else if(propName.equals("Island")){
-				dwc.setIsland(val);
-			}else if(propName.equals("Country")){
-				dwc.setCountry(val);
-			}else if(propName.equals("StateProvince")){
-				dwc.setStateProvince(val);
-			}else if(propName.equals("County")){
-				dwc.setCounty(val);
-			}else if(propName.equals("Locality")){
-				dwc.setLocality(val);
-			}else if(propName.equals("MinimumElevationInMeters")){
+			// first try the properties which we try to convert to other data types
+			if(propName.equals("MinimumElevationInMeters")){
 				dwc.setMinimumElevationInMeters(val);
-				// try to convert into proper type
 				Integer typedVal = null;
 				if (val !=null){
 					try {
@@ -100,7 +59,6 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 				}
 			}else if(propName.equals("MaximumElevationInMeters")){
 				dwc.setMaximumElevationInMeters(val);
-				// try to convert into proper type
 				Integer typedVal = null;
 				if (val !=null){
 					try {
@@ -112,7 +70,6 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
 				dwc.setMinimumDepthInMeters(val);
-				// try to convert into proper type
 				Integer typedVal = null;
 				if (val !=null){
 					try {
@@ -124,7 +81,6 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 				}
 			}else if(propName.equals("MaximumDepthInMeters")){
 				dwc.setMaximumDepthInMeters(val);
-				// try to convert into proper type
 				Integer typedVal = null;
 				if (val !=null){
 					try {
@@ -134,13 +90,8 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						logdb.warn("log.transform", new String[]{val, "MaximumDepthInMeters", "Integer"});
 					}
 				}
-			}else if(propName.equals("CollectingMethod")){
-				dwc.setCollectingMethod(val);
-			}else if(propName.equals("ValidDistributionFlag")){
-				dwc.setValidDistributionFlag(val);
 			}else if(propName.equals("EarliestDateCollected")){
 				dwc.setEarliestDateCollected(val);
-				// try to convert into proper type
 				Date typedVal;
 				if (val !=null){
 					try {						
@@ -150,48 +101,36 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						logdb.warn("log.transform", new String[]{val, "EarliestDateCollected", "Date"});
 					}
 				}				
-			}else if(propName.equals("LatestDateCollected")){
-				dwc.setLatestDateCollected(val);
-			}else if(propName.equals("DayOfYear")){
-				dwc.setDayOfYear(val);
-			}else if(propName.equals("Collector")){
-				dwc.setCollector(val);
-			}else if(propName.equals("ScientificName")){
-				dwc.setScientificName(val);
-			}else if(propName.equals("HigherTaxon")){
-				dwc.setHigherTaxon(val);
-			}else if(propName.equals("Kingdom")){
-				dwc.setKingdom(val);
-			}else if(propName.equals("Phylum")){
-				dwc.setPhylum(val);
-			}else if(propName.equals("Classs")){
+			}else if(propName.equals("Class")){
+				// stupid case. property is called Classs because Class is a reserved word in java...
 				dwc.setClasss(val);
-			}else if(propName.equals("Order")){
-				dwc.setOrder(val);
-			}else if(propName.equals("Family")){
-				dwc.setFamily(val);
-			}else if(propName.equals("Genus")){
-				dwc.setGenus(val);
-			}else if(propName.equals("SpecificEpithet")){
-				dwc.setSpecificEpithet(val);
-			}else if(propName.equals("InfraspecificRank")){
-				dwc.setInfraspecificRank(val);
-			}else if(propName.equals("InfraspecificEpithet")){
-				dwc.setInfraspecificEpithet(val);
-			}else if(propName.equals("AuthorYearOfScientificName")){
-				dwc.setAuthorYearOfScientificName(val);
-			}else if(propName.equals("NomenclaturalCode")){
-				dwc.setNomenclaturalCode(val);
-			}else if(propName.equals("IdentificationQualifer")){
-				dwc.setIdentificationQualifer(val);
+			}else{
+				// use reflection to find property
+				if (!dwc.setPropertyValue(prop, val)){
+					log.warn("Can't set unknown property DarwinCore."+propName);
+				}
 			}
-
 		}
 		return dwc;
 	}
 
 	public Taxon build(ChecklistResource resource, ImportRecord rec) {
+		if (rec==null){
+			return null;
+		}
 		Taxon tax = Taxon.newInstance(resource);
+		tax.setGuid(rec.getGuid());
+		tax.setLink(rec.getLink());
+		tax.setLocalId(rec.getLocalId());
+		tax.setDeleted(false);
+		for (ExtensionProperty prop : rec.getProperties().keySet()){
+			// set properties via reflection
+			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
+			if (!tax.setPropertyValue(prop, val)){
+				String propName = prop.getName();
+				log.warn("Can't set unknown property Taxon."+propName);
+			}
+		}
 		return tax;
 	}
 

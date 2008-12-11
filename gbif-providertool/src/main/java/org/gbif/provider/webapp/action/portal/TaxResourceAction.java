@@ -30,6 +30,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.webapp.action.BaseChecklistResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
@@ -38,12 +39,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class TaxResourceAction extends BaseChecklistResourceAction implements Preparable {
-	@Autowired
-	private MapUtil mapUtil;
 	private List<ChecklistResource> resources;
-	private Map<Integer, String> regionClasses = new TreeMap<Integer, String>();
+	private Map<Integer, String> statusClasses = new TreeMap<Integer, String>();
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
-	public String geoserverMapUrl;
 	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 
@@ -55,8 +53,8 @@ public class TaxResourceAction extends BaseChecklistResourceAction implements Pr
 			//geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, resource.getBbox(), null, null);
 		}
 		// prepare select lists
-		for (RegionType rt : RegionType.DARWIN_CORE_REGIONS){
-			regionClasses.put(rt.ordinal(), rt.name());
+		for (StatusType rt : StatusType.ALL_STATUSES){
+			statusClasses.put(rt.ordinal(), rt.name());
 		}
 		for (Rank rt : Rank.DARWIN_CORE_HIGHER_RANKS){
 			ranks.put(rt.ordinal(), rt.name());
@@ -75,13 +73,10 @@ public class TaxResourceAction extends BaseChecklistResourceAction implements Pr
 	}	
 	
 	
-	
-	public String getGeoserverMapUrl() {
-		return geoserverMapUrl;
-	}
 
-	public Map<Integer, String> getRegionClasses() {
-		return regionClasses;
+
+	public Map<Integer, String> getStatusClasses() {
+		return statusClasses;
 	}
 
 	public Map<Integer, String> getRanks() {

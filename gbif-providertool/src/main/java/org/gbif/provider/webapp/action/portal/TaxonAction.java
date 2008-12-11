@@ -8,11 +8,13 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TaxonAction extends BaseOccurrenceResourceAction {
+public class TaxonAction extends BaseDataResourceAction {
 	@Autowired
 	private MapUtil mapUtil;
 	@Autowired

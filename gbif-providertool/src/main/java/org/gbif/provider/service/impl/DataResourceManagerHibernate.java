@@ -18,14 +18,20 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.DatasourceRegistry;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -36,7 +42,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <T>
  */
 public class DataResourceManagerHibernate<T extends DataResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
-	
+	private static final int MAX_CHART_DATA = 20;
+	protected static GChartBuilder gpb = new GChartBuilder();
+
 	public DataResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
 	}
@@ -81,4 +89,60 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		return obj;
 	}
 
+	
+
+	protected List<StatsCount> getDataMap(List<Object[]> occBySth){
+		List<StatsCount> data = new ArrayList<StatsCount>();
+        for (Object[] row : occBySth){
+        	Long id=null;
+        	Object value;
+        	Long count;
+        	if (row.length==2){
+            	value = row[0];
+            	count = (Long) row[1];
+        	}else{
+            	id = (Long) row[0];
+            	value = row[1];
+            	try{
+                	count = (Long) row[2];
+            	} catch (ClassCastException e){
+            		count = Long.valueOf(row[2].toString());
+            	}
+        	}
+        	String label = null;
+        	if (value!=null){
+				label = value.toString();
+        	}
+        	if (StringUtils.trimToNull(label)==null){
+        		label = "?";
+        	}
+        	data.add(new StatsCount(id, label, value, count));
+        }
+        // sort data
+        Collections.sort(data);
+        return data;
+	}
+
+	
+	/**
+	 * Select most frequent MAX_CHART_DATA data entries and group all other as a single #other# entry
+	 * @param data
+	 * @return
+	 */
+	protected List<StatsCount> limitDataForChart(List<StatsCount> data) {
+		if (data.size()>MAX_CHART_DATA){
+			List<StatsCount> exceedingData = data.subList(MAX_CHART_DATA, data.size()-1);
+			Long cnt = 0l;
+			for (StatsCount stat : exceedingData){
+				cnt+=stat.getCount();
+			}
+			StatsCount other = new StatsCount(null, GChartBuilder.OTHER_LABEL, GChartBuilder.OTHER_LABEL, cnt);
+			List<StatsCount> limitedData = new ArrayList<StatsCount>();
+			limitedData.add(other);
+			limitedData.addAll(data.subList(0, MAX_CHART_DATA-1));
+			return limitedData;
+		}
+		return data;
+	}
+	
 }

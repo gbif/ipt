@@ -70,6 +70,14 @@ public abstract class DataResource extends Resource {
 	private Map<Long, ViewExtensionMapping> extensionMappings = new HashMap<Long, ViewExtensionMapping>();
 	// transient properties
 	private DataSource datasource;
+	private int numGenera;
+	private int numFamilies;
+	private int numOrders;
+	private int numClasses;
+	private int numPhyla;
+	private int numKingdoms;
+	private int numTaxa;
+	private int numTerminalTaxa;
 
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -266,14 +274,69 @@ public abstract class DataResource extends Resource {
 	}
 		
 	
-	@Transient
-	abstract public Class getCoreRecordClass();
-	
 	/**
 	 * Reset all cached stats, log events etc, so that it looks as if the resource was just created (doesnt change the created timestamp though)
 	 */
 	public void resetStats(){
+		numGenera=0;
+		numFamilies=0;
+		numOrders=0;
+		numClasses=0;
+		numPhyla=0;
+		numKingdoms=0;
+
+		numTaxa=0;
+		numTerminalTaxa=0;
+
 		lastUpload=null;
 		setRecTotal(0);
+	}
+	public int getNumGenera() {
+		return numGenera;
+	}
+	public void setNumGenera(int numGenera) {
+		this.numGenera = numGenera;
+	}
+	public int getNumFamilies() {
+		return numFamilies;
+	}
+	public void setNumFamilies(int numFamilies) {
+		this.numFamilies = numFamilies;
+	}
+	public int getNumOrders() {
+		return numOrders;
+	}
+	public void setNumOrders(int numOrders) {
+		this.numOrders = numOrders;
+	}
+	public int getNumClasses() {
+		return numClasses;
+	}
+	public void setNumClasses(int numClasses) {
+		this.numClasses = numClasses;
+	}
+	public int getNumPhyla() {
+		return numPhyla;
+	}
+	public void setNumPhyla(int numPhyla) {
+		this.numPhyla = numPhyla;
+	}
+	public int getNumKingdoms() {
+		return numKingdoms;
+	}
+	public void setNumKingdoms(int numKingdoms) {
+		this.numKingdoms = numKingdoms;
+	}
+	public int getNumTaxa() {
+		return numTaxa;
+	}
+	public void setNumTaxa(int numTaxa) {
+		this.numTaxa = numTaxa;
+	}
+	public int getNumTerminalTaxa() {
+		return numTerminalTaxa;
+	}
+	public void setNumTerminalTaxa(int numTerminalTaxa) {
+		this.numTerminalTaxa = numTerminalTaxa;
 	}
 }
