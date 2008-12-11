@@ -58,11 +58,13 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy implements IptNam
 	
 	public String extensionTableName(Extension ext) {
 		if (ext !=null){
-			String prefix = "ext_";
+			String prefix;
 			if (ext.getType()==ExtensionType.Occurrence){
-				prefix += "dwc_";
+				prefix = "dwc_";
 			} else if (ext.getType()==ExtensionType.Checklist){
-				prefix += "tax_";
+				prefix = "tax_";
+			} else{
+				prefix = "ext_";
 			}
 			// replace all whitespace
 			String extensionName = StringUtils.deleteWhitespace(ext.getName());

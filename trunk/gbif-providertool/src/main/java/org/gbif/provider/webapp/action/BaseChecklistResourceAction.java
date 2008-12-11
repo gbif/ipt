@@ -20,6 +20,7 @@ import org.appfuse.model.User;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,17 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
 public class BaseChecklistResourceAction extends BaseResourceAction<ChecklistResource>{
-
+	protected ChecklistResourceManager checklistResourceManager;
+	
     public BaseChecklistResourceAction(){
     	super();
     	resourceType=CHECKLIST;
     }
     
     @Autowired
-	public void setResourceManager(@Qualifier("checklistResourceManager") GenericResourceManager<ChecklistResource> checklistResourceManager) {
+	public void setChecklistResourceManager(ChecklistResourceManager checklistResourceManager) {
 		this.resourceManager = checklistResourceManager;
+		this.checklistResourceManager = checklistResourceManager;
 	}
 	
 }

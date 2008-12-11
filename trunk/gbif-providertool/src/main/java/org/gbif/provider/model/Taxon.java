@@ -58,7 +58,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		// taxon specific
 		private String rank;
 		private String name;
-		private String authorship;
 		private String code;
 		// not existing in DwC, but used for TaxonCore
 		private String taxonomicParentID;
@@ -316,7 +315,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			Taxon rhs = (Taxon) object;
 			return new EqualsBuilder()
 					.append(this.getLabel(), rhs.getLabel())
-					.append(this.authorship, rhs.authorship)
 					.append(this.rank, rhs.rank)
 					.append(this.name, rhs.name)
 					.append(this.getParent(), rhs.getParent())
@@ -326,8 +324,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		 * @see java.lang.Object#hashCode()
 		 */
 		public int hashCode() {
-			return new HashCodeBuilder(2136008009, 497664597).append(
-					this.authorship).append(this.rank).append(this.getLabel())
+			return new HashCodeBuilder(2136008009, 497664597).append(this.rank).append(this.getLabel())
 					.append(this.name).append(this.getParent()).append(this.getId())
 					.toHashCode();
 		}
@@ -336,9 +333,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		@Transient
 		public String getPropertyValue(ExtensionProperty property){
 			String propName = property.getName();
-			if (propName.equals("Class")){
-				propName = "Classs";
-			}
 			String getter = String.format("get%s", propName);
 			String value = null;
 			try {
@@ -360,6 +354,27 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			}
 			return value;
 		}
-		
+		public boolean setPropertyValue(ExtensionProperty property, String value){
+			try {
+				Method m = this.getClass().getMethod(String.format("set%s", property.getName()), String.class);
+				m.invoke(this, value);
+			} catch (SecurityException e) {
+				e.printStackTrace();
+				return false;
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+				return false;
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				return false;
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				return false;
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}		
 		
 }

@@ -201,9 +201,10 @@
             <param name="zoom">true</param>
             <param name="title">true</param>
             <param name="action">{1}</param>
-            <result name="pie">/WEB-INF/pages/portal/occ/stats.jsp</result>
-            <result name="map">/WEB-INF/pages/portal/occ/mapstats.jsp</result>
-            <result name="chart">/WEB-INF/pages/portal/occ/stats.jsp</result>
+            <param name="resourceClass">occ</param>
+            <result name="pie">/WEB-INF/pages/portal/stats.jsp</result>
+            <result name="map">/WEB-INF/pages/portal/mapstats.jsp</result>
+            <result name="chart">/WEB-INF/pages/portal/stats.jsp</result>
         </action>
         
         <action name="occTaxon" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="occurrences">
@@ -224,10 +225,19 @@
             <result>/WEB-INF/pages/portal/tax/resourceList.jsp</result>
         </action>
         <action name="taxResource" class="org.gbif.provider.webapp.action.portal.TaxResourceAction">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/portal/tax/index.ftl</result>
         </action>
         <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.TaxonAction">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/portal/tax/taxon.ftl</result>
+        </action>
+        <action name="taxResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.TaxResourceStatsAction" method="statsBy{1}">
+            <param name="zoom">true</param>
+            <param name="title">true</param>
+            <param name="action">{1}</param>
+            <param name="resourceClass">tax</param>
+            <result name="pie">/WEB-INF/pages/portal/stats.jsp</result>
+            <result name="map">/WEB-INF/pages/portal/mapstats.jsp</result>
+            <result name="chart">/WEB-INF/pages/portal/stats.jsp</result>
         </action>
         
         <!-- metadata actions -->
@@ -245,10 +255,19 @@
     <package name="ajax" namespace="/ajax" extends="default">
         <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
             <param name="action">{1}</param>
+            <param name="resourceClass">occ</param>
             <result name="pie">/WEB-INF/pages/ajax/chartimg.jsp</result>
             <result name="map">/WEB-INF/pages/ajax/chartimg.jsp</result>
             <result name="chart">/WEB-INF/pages/ajax/chartimg.jsp</result>
         </action>
+        <action name="taxResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.TaxResourceStatsAction" method="statsBy{1}">
+            <param name="action">{1}</param>
+            <param name="resourceClass">tax</param>
+            <result name="pie">/WEB-INF/pages/ajax/chartimg.jsp</result>
+            <result name="map">/WEB-INF/pages/ajax/chartimg.jsp</result>
+            <result name="chart">/WEB-INF/pages/ajax/chartimg.jsp</result>
+        </action>
+        
         <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/ajax/status.jsp</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.jsp</result>

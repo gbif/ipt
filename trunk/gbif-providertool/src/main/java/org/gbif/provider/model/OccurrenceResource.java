@@ -39,7 +39,6 @@ import org.hibernate.annotations.MapKey;
 public class OccurrenceResource extends DataResource {
 	public static final String ALIAS = "occ";
 	public static final Long CORE_EXTENSION_ID = 1l;
-	public static final Class CORE_RECORD_CLASS = DarwinCore.class;
 	
 	private BBox bbox = new BBox();
 	private Integer featureHash;
@@ -52,16 +51,6 @@ public class OccurrenceResource extends DataResource {
 	// distinct number of Region entities
 	private int numRegions;
 	private int numTerminalRegions;
-	
-	private int numGenera;
-	private int numFamilies;
-	private int numOrders;
-	private int numClasses;
-	private int numPhyla;
-	private int numKingdoms;
-	// distinct number of Taxon entities
-	private int numTaxa;
-	private int numTerminalTaxa;
 	
 	public static OccurrenceResource newInstance(){
 		OccurrenceResource resource =  new OccurrenceResource();
@@ -129,77 +118,12 @@ public class OccurrenceResource extends DataResource {
 		this.numRegions = numRegions;
 	}
 
-	public int getNumTaxa() {
-		return numTaxa;
-	}
-
-	public void setNumTaxa(int numTaxa) {
-		this.numTaxa = numTaxa;
-	}
-
-	public int getNumGenera() {
-		return numGenera;
-	}
-
-	public void setNumGenera(int numGenera) {
-		this.numGenera = numGenera;
-	}
-
-	public int getNumFamilies() {
-		return numFamilies;
-	}
-
-	public void setNumFamilies(int numFamilies) {
-		this.numFamilies = numFamilies;
-	}
-
-	public int getNumOrders() {
-		return numOrders;
-	}
-
-	public void setNumOrders(int numOrders) {
-		this.numOrders = numOrders;
-	}
-
-	public int getNumClasses() {
-		return numClasses;
-	}
-
-	public void setNumClasses(int numClasses) {
-		this.numClasses = numClasses;
-	}
-
-	public int getNumPhyla() {
-		return numPhyla;
-	}
-
-	public void setNumPhyla(int numPhyla) {
-		this.numPhyla = numPhyla;
-	}
-
-	public int getNumKingdoms() {
-		return numKingdoms;
-	}
-
-	public void setNumKingdoms(int numKingdoms) {
-		this.numKingdoms = numKingdoms;
-	}
-
-	
 	public int getNumTerminalRegions() {
 		return numTerminalRegions;
 	}
 
 	public void setNumTerminalRegions(int numTerminalRegions) {
 		this.numTerminalRegions = numTerminalRegions;
-	}
-
-	public int getNumTerminalTaxa() {
-		return numTerminalTaxa;
-	}
-
-	public void setNumTerminalTaxa(int numTerminalTaxa) {
-		this.numTerminalTaxa = numTerminalTaxa;
 	}
 
 	public Integer getFeatureHash() {
@@ -214,10 +138,6 @@ public class OccurrenceResource extends DataResource {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}
 
-	@Transient
-	public Class getCoreRecordClass(){
-		return CORE_RECORD_CLASS;
-	}
 
 	@Override
 	public void resetStats() {
@@ -229,16 +149,6 @@ public class OccurrenceResource extends DataResource {
 		numCountries=0;
 		numRegions=0;
 		numTerminalRegions=0;
-		
-		numGenera=0;
-		numFamilies=0;
-		numOrders=0;
-		numClasses=0;
-		numPhyla=0;
-		numKingdoms=0;
-
-		numTaxa=0;
-		numTerminalTaxa=0;
 		
 		super.resetStats();
 	}

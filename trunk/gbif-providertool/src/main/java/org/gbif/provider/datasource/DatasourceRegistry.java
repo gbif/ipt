@@ -52,7 +52,7 @@ public class DatasourceRegistry{
 
 
 	public void registerDatasource(DataResource resource){
-		if (resource != null){
+		if (resource != null && resource.hasDbConnection()){
 			DataSource dsa = resource.getDatasource();
 			if (dsa == null){
 				log.warn("Trying to register a resource without any datasource");

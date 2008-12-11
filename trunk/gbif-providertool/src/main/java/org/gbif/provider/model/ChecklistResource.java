@@ -35,8 +35,6 @@ import org.gbif.provider.util.Constants;
 public class ChecklistResource extends DataResource {
 	public static final String ALIAS = "tax";
 	public static final Long CORE_EXTENSION_ID = 7L;
-	public static final Class CORE_RECORD_CLASS = Taxon.class;
-
 	public static ChecklistResource newInstance(Extension core){
 		ChecklistResource resource =  new ChecklistResource();
 		// ensure that core mapping exists
@@ -46,10 +44,10 @@ public class ChecklistResource extends DataResource {
 		resource.setCoreMapping(coreVM);
 		return resource;
 	}
-
-	@Transient
-	public Class getCoreRecordClass(){
-		return CORE_RECORD_CLASS;
+	
+	@Override
+	public void resetStats() {
+		super.resetStats();
 	}
 
 	public String toString() {

@@ -40,12 +40,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class OccResourceManagerHibernate extends DataResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
-	private static final int MAX_CHART_DATA = 20;
 
 	@Autowired
 	protected GeoserverUtils geoTools;
 	
-	protected static GChartBuilder gpb = new GChartBuilder();
 	public OccResourceManagerHibernate() {
 		super(OccurrenceResource.class);
 	}
@@ -82,60 +80,6 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	}
 	
 
-	private List<StatsCount> getDataMap(List<Object[]> occBySth){
-		List<StatsCount> data = new ArrayList<StatsCount>();
-        for (Object[] row : occBySth){
-        	Long id=null;
-        	Object value;
-        	Long count;
-        	if (row.length==2){
-            	value = row[0];
-            	count = (Long) row[1];
-        	}else{
-            	id = (Long) row[0];
-            	value = row[1];
-            	try{
-                	count = (Long) row[2];
-            	} catch (ClassCastException e){
-            		count = Long.valueOf(row[2].toString());
-            	}
-        	}
-        	String label = null;
-        	if (value!=null){
-				label = value.toString();
-        	}
-        	if (StringUtils.trimToNull(label)==null){
-        		label = "?";
-        	}
-        	data.add(new StatsCount(id, label, value, count));
-        }
-        // sort data
-        Collections.sort(data);
-        return data;
-	}
-
-	
-	/**
-	 * Select most frequent MAX_CHART_DATA data entries and group all other as a single #other# entry
-	 * @param data
-	 * @return
-	 */
-	private List<StatsCount> limitDataForChart(List<StatsCount> data) {
-		if (data.size()>MAX_CHART_DATA){
-			List<StatsCount> exceedingData = data.subList(MAX_CHART_DATA, data.size()-1);
-			Long cnt = 0l;
-			for (StatsCount stat : exceedingData){
-				cnt+=stat.getCount();
-			}
-			StatsCount other = new StatsCount(null, GChartBuilder.OTHER_LABEL, GChartBuilder.OTHER_LABEL, cnt);
-			List<StatsCount> limitedData = new ArrayList<StatsCount>();
-			limitedData.add(other);
-			limitedData.addAll(data.subList(0, MAX_CHART_DATA-1));
-			return limitedData;
-		}
-		return data;
-	}
-	
 	
 	
 	

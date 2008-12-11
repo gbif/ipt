@@ -735,7 +735,29 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		}
 		return value;
 	}
-
+	public boolean setPropertyValue(ExtensionProperty property, String value){
+		try {
+			Method m = this.getClass().getMethod(String.format("set%s", property.getName()), String.class);
+			m.invoke(this, value);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			return false;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return false;
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}	
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */

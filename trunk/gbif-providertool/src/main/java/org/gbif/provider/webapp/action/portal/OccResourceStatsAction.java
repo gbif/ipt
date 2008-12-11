@@ -29,6 +29,7 @@ import org.gbif.provider.model.voc.ImageType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.ImageCacheManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,48 +44,15 @@ import com.opensymphony.xwork2.Preparable;
  * @author markus
  *
  */
-public class OccResourceStatsAction extends BaseOccurrenceResourceAction implements Preparable {
+public class OccResourceStatsAction extends ResourceStatsBaseAction<OccurrenceResource> implements Preparable {	
+	private OccResourceManager occResourceManager;
+
 	@Autowired
-	private ImageCacheManager imageCacheManager;
-	
-	public static int DEFAULT_WIDTH = 320;
-	public static int DEFAULT_HEIGHT = 160;
-	public static int ZOOM_CHART_WIDTH = 700;
-	public static int ZOOM_CHART_HEIGHT = 400;
-	public static int ZOOM_MAP_WIDTH = 440;
-	public static int ZOOM_MAP_HEIGHT = 220;
-	
-	public static final String MAP_RESULT = "map";
-	public static final String PIE_RESULT = "pie";
-	public static final String CHART_RESULT = "chart";
-
-	// chart image size
-	private int width = DEFAULT_WIDTH;
-	private int height = DEFAULT_HEIGHT;
-	// set title in chart image
-	private boolean title = false;
-	// use zoom size instead of default?
-	private boolean zoom = false;
-	// subtype of what to select. eg rank (family) or regionClass (continent)
-	private int type;
-	// list of all avilable types as Enums
-	public List types;
-	// map focus
-	private String area;
-	public String chartUrl;
-	// the last part of the action name as matched with the struts.xml expression. Used to link further
-	public String action="";
-	public String recordAction;
-	public Long filter;
-	public List<StatsCount> data;
-
-	public void prepare() {
-		area = GeographicalArea.WORLD.toString();
-		if (resource_id != null) {
-			resource = occResourceManager.get(resource_id);
-		}
+	public OccResourceStatsAction(OccResourceManager occResourceManager){
+		this.resourceManager=occResourceManager;
+		this.occResourceManager=occResourceManager;
 	}
-
+	
 	
 	
 	public String statsByRegion() {
@@ -165,109 +133,6 @@ public class OccResourceStatsAction extends BaseOccurrenceResourceAction impleme
 			cacheImage(ImageType.CountryMapOfOccurrence, url);
 		}
 		return MAP_RESULT;
-	}
-	
-	
-	// HELPER
-	private void setMapSize(){
-		if (zoom) {
-			width=ZOOM_MAP_WIDTH;
-			height=ZOOM_MAP_HEIGHT;
-		}
-	}
-
-	private boolean useCachedImage(ImageType type) {
-		File chartCache = getCachedImage(type);
-		if (!zoom && chartCache.exists()){
-			chartUrl = getCachedImageURL(type).toString();
-			return true;
-		}else{
-			return false;
-		}
-	}
-	private File getCachedImage(ImageType chartType){
-		return imageCacheManager.getCachedImage(resource_id, chartType, type, area, width, height);		
-	}
-	private URL getCachedImageURL(ImageType chartType){
-		return imageCacheManager.getCachedImageURL(resource_id, chartType, type, area, width, height);
-	}
-	private String cacheImage(ImageType chartType, String url){
-		chartUrl = cfg.getResourceCacheUrl(resource_id, imageCacheManager.cacheImage(resource_id, chartType, type, area, width, height,  url)).toString();
-		return chartUrl;
-	}	
-	
-	
-	//
-	// GETTER SETTER SECTION
-	//
-
-	public String getChartUrl() {
-		return chartUrl;
-	}
-
-	public List<StatsCount> getData() {
-		return data;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public void setTitle(boolean title) {
-		this.title = title;
-	}
-
-	public void setZoom(boolean zoom) {
-		this.zoom = zoom;
-		if (zoom) {
-			// use chart default zoom. map methods have to set sizes themselves
-			width=ZOOM_CHART_WIDTH;
-			height=ZOOM_CHART_HEIGHT;
-		}
-	}
-
-	public void setArea(String area) {
-		this.area = area;
-	}
-
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public List<Enum> getTypes() {
-		return types;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public String getRecordAction() {
-		return recordAction;
-	}
-
-	public void setFilter(Long filter) {
-		this.filter = filter;
 	}
 		
 }
