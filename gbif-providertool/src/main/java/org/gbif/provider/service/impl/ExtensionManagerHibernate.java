@@ -43,12 +43,6 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 	public ExtensionManagerHibernate() {
 	        super(Extension.class);
     }
-
-	private Connection getConnection() throws SQLException {
-		Session s = SessionFactoryUtils.getSession(sessionFactory, false);
-		Connection cn = s.connection();
-		return cn;
-	}
 	
 	@Transactional(readOnly=false)
 	public void installExtension(Extension extension){

@@ -8,22 +8,13 @@ public enum HostType {
 	Institution("institutionCode"),
 	Collection("collectionCode");	
 	
-	public static final List<HostType> HOSTING_BODIES;
-	  static  
-	  {  
-	    List<HostType> hosts = new ArrayList<HostType>();  
-	    hosts.add( Institution );  
-	    hosts.add( Collection );  
-	    HOSTING_BODIES = Collections.unmodifiableList(hosts);  
-	  };
-	  
 	public String columnName;	
 	private HostType (String colName){
 		columnName=colName;
 	}
 	
 	public static HostType getByInt(int i){
-		for (HostType r : HOSTING_BODIES){
+		for (HostType r : HostType.values()){
 			if (r.ordinal() == i){
 				return r;
 			}

@@ -35,6 +35,8 @@ import org.gbif.provider.util.Constants;
 public class ChecklistResource extends DataResource {
 	public static final String ALIAS = "tax";
 	public static final Long CORE_EXTENSION_ID = 7L;
+	private int numSynonyms;
+
 	public static ChecklistResource newInstance(Extension core){
 		ChecklistResource resource =  new ChecklistResource();
 		// ensure that core mapping exists
@@ -47,7 +49,17 @@ public class ChecklistResource extends DataResource {
 	
 	@Override
 	public void resetStats() {
+		numSynonyms=0;
 		super.resetStats();
+	}
+
+	@Transient
+	public int getNumSynonyms() {
+		return numSynonyms;
+	}
+
+	public void setNumSynonyms(int numSynonyms) {
+		this.numSynonyms = numSynonyms;
 	}
 
 	public String toString() {

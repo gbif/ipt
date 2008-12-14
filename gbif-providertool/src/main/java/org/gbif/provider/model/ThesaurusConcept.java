@@ -47,4 +47,8 @@ public class ThesaurusConcept implements BaseObject{
 		this.issued = issued;
 	}
 	
+	public String toString(){
+		return identifier;
+	}
+
 }

@@ -66,7 +66,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		ranks.put(Rank.TerminalTaxon.ordinal(), "All Taxa");
 		
 		// hosting bodies
-		for (HostType ht : HostType.HOSTING_BODIES){
+		for (HostType ht : HostType.values()){
 			hostTypes.put(ht.ordinal(), ht.name());
 		}
 		

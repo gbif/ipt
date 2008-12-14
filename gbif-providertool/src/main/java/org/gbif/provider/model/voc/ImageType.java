@@ -7,6 +7,8 @@ import java.util.List;
 public enum ImageType {
 	ChartByRegion(),
 	ChartByTaxon(),
+	ChartByRank(),
+	ChartByStatus(),
 	ChartByHost(),
 	ChartByBasisOfRecord(),
 	ChartByDateCollected(),

@@ -277,7 +277,7 @@ import org.springframework.transaction.annotation.Transactional;
 							for (RecordPostProcessor<T, ?, R> pp : postProcessors){
 								pp.statsPerRecord(record);
 							}
-							statsPerRecord(record);
+							recordHandler(record);
 
 						} catch (InterruptedException e) {
 							throw e;
@@ -316,7 +316,7 @@ import org.springframework.transaction.annotation.Transactional;
 		/** Hook for working with a single record provided for subclasses 
 		 * @param record
 		 */
-		protected void statsPerRecord(T record){
+		protected void recordHandler(T record){
 			// count all uploaded record (added, modified or no changes)
 			recordsUploaded++;
 		}

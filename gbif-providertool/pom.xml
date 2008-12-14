@@ -603,7 +603,6 @@
         <jdbc.artifactId>h2</jdbc.artifactId>
         <jdbc.version>1.1.104</jdbc.version>
         <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
-        <jdbc.url><![CDATA[jdbc:h2:${datadir}/db/ipt]]></jdbc.url>
         <jdbc.username>sa</jdbc.username>
         <jdbc.password></jdbc.password>
 

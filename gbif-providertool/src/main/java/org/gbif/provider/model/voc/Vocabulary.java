@@ -16,6 +16,9 @@ public enum Vocabulary{
 		uri=uri;
 	}
 	
+	public String getUri(){
+		return uri;
+	}
 	public static Vocabulary getByInt(int i){
 		
 		for (Vocabulary r : Vocabulary.values()){

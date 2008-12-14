@@ -22,6 +22,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
@@ -29,6 +31,7 @@ import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.ImageType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.ImageCacheManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -56,11 +59,12 @@ public class TaxResourceStatsAction extends ResourceStatsBaseAction<ChecklistRes
 		this.checklistResourceManager=checklistResourceManager;
 	}
 
-
 	public String statsByTaxon() {
 		recordAction="taxDetail";
-		types = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
-		types.add(Rank.TerminalTaxon);
+		List<Rank> ranks = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
+		ranks.add(Rank.TerminalTaxon);
+		types = ranks.toArray(new Object[1]);
+
 		if (!useCachedImage(ImageType.ChartByTaxon)){
 			Rank rnk = Rank.getByInt(type);
 			data = checklistResourceManager.taxByTaxon(resource_id, rnk);
@@ -70,13 +74,23 @@ public class TaxResourceStatsAction extends ResourceStatsBaseAction<ChecklistRes
 		return PIE_RESULT;
 	}
 	
+	public String statsByRank() {
+		recordAction="taxList";
+		if (!useCachedImage(ImageType.ChartByRank)){
+			data = checklistResourceManager.taxByRank(resource_id);
+			String url = checklistResourceManager.taxByRankPieUrl(data, width, height, title);
+			cacheImage(ImageType.ChartByRank, url);
+		}
+		return PIE_RESULT;
+	}
+
 	public String statsByStatus() {
-		types = HostType.HOSTING_BODIES;
-		if (!useCachedImage(ImageType.ChartByHost)){
-			HostType ht = HostType.getByInt(type);
-			data = checklistResourceManager.taxByStatus(resource_id, ht);
-			String url = checklistResourceManager.taxByStatusPieUrl(data, ht, width, height, title);
-			cacheImage(ImageType.ChartByHost, url);
+		types = HostType.values();
+		if (!useCachedImage(ImageType.ChartByStatus)){
+			StatusType st = StatusType.getByInt(type);
+			data = checklistResourceManager.taxByStatus(resource_id, st);
+			String url = checklistResourceManager.taxByStatusPieUrl(data, st, width, height, title);
+			cacheImage(ImageType.ChartByStatus, url);
 		}
 		return PIE_RESULT;
 	}

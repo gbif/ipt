@@ -20,8 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
@@ -57,7 +59,7 @@ public class OccResourceStatsAction extends ResourceStatsBaseAction<OccurrenceRe
 	
 	public String statsByRegion() {
 		recordAction="occRegion";
-		types = RegionType.DARWIN_CORE_REGIONS;
+		types = RegionType.DARWIN_CORE_REGIONS.toArray();
 		if (!useCachedImage(ImageType.ChartByRegion)){
 			RegionType reg = RegionType.getByInt(type);
 			data = occResourceManager.occByRegion(resource_id, reg, filter);
@@ -69,8 +71,9 @@ public class OccResourceStatsAction extends ResourceStatsBaseAction<OccurrenceRe
 
 	public String statsByTaxon() {
 		recordAction="occTaxon";
-		types = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
-		types.add(Rank.TerminalTaxon);
+		List<Rank> ranks = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
+		ranks.add(Rank.TerminalTaxon);
+		types = ranks.toArray();
 		if (!useCachedImage(ImageType.ChartByTaxon)){
 			Rank rnk = Rank.getByInt(type);
 			data = occResourceManager.occByTaxon(resource_id, rnk);
@@ -81,7 +84,7 @@ public class OccResourceStatsAction extends ResourceStatsBaseAction<OccurrenceRe
 	}
 	
 	public String statsByHost() {
-		types = HostType.HOSTING_BODIES;
+		types = HostType.values();
 		if (!useCachedImage(ImageType.ChartByHost)){
 			HostType ht = HostType.getByInt(type);
 			data = occResourceManager.occByHost(resource_id, ht);

@@ -22,7 +22,8 @@
 			//auto click when opening a new node. prevend this 
 			taxJustOpened=0;
 		}else{
-			var taxonUrl = '<c:url value="/occTaxon.html"/>?resource_id='+resourceId+'&id='+nodeId;
+			var action = '${taxTreeAction}.html';
+			var taxonUrl = '<c:url value="/"/>'+action+'?resource_id='+resourceId+'&id='+nodeId;
 			window.location.href=taxonUrl;
 		}
 	}

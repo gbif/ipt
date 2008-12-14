@@ -11,18 +11,8 @@ public enum ExtensionType {
 	Occurrence(1l, OccurrenceResource.class),
 	Checklist(7l, ChecklistResource.class);	
 	
-	public static final List<ExtensionType> CORE_ENTITIES;
-	  static  
-	  {  
-	    List<ExtensionType> hosts = new ArrayList<ExtensionType>();  
-	    hosts.add( Occurrence );  
-	    hosts.add( Checklist );  
-	    CORE_ENTITIES = Collections.unmodifiableList(hosts);  
-	  };
-	  
-	
 	public static ExtensionType byResourceClass(Class resourceClass){
-		for (ExtensionType et : CORE_ENTITIES){
+		for (ExtensionType et : ExtensionType.values()){
 			if (et.resourceClass.equals(resourceClass)){
 				return et;
 			}
