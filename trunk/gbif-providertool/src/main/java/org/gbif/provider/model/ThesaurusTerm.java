@@ -87,5 +87,7 @@ public class ThesaurusTerm implements BaseObject{
 		this.modified = modified;
 	}
 	
-	
+	public String toString(){
+		return String.format("%s [%s]",title, lang);
+	}
 }

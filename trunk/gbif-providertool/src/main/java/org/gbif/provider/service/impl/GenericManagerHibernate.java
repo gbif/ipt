@@ -1,5 +1,7 @@
 package org.gbif.provider.service.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -43,6 +45,16 @@ import org.springframework.transaction.annotation.Transactional;
 		protected Session getSession(){
 			return SessionFactoryUtils.getSession(sessionFactory, false);
 		}
+		protected Connection getConnection() {
+			Session s = getSession();
+			Connection cn = s.connection();
+			return cn;
+		}
+//		private Connection getConnection() throws SQLException {
+//			Session s = SessionFactoryUtils.getSession(sessionFactory, false);
+//			Connection cn = s.connection();
+//			return cn;
+//		}
 		
 	    /**
 	     * Log variable for all child classes. Uses LogFactory.getLog(getClass()) from Commons Logging

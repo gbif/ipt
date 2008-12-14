@@ -52,4 +52,10 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 		return treeNodeSupport.removeAll(resource, getSession());
 	}
 
+	public int countTerminalNodes(Long resourceId) {
+        return ((Integer) query(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
+        .setLong("resourceId", resourceId)
+        .iterate().next() ).intValue();
+	}
+
 }

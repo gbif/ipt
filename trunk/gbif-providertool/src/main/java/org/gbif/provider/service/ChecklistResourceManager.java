@@ -11,6 +11,7 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.model.voc.StatusType;
 
 import com.googlecode.gchartjava.GeographicalArea;
 
@@ -19,7 +20,10 @@ public interface ChecklistResourceManager extends GenericResourceManager<Checkli
 	List<StatsCount> taxByTaxon(Long resource_id, Rank rnk);
 	String taxByTaxonPieUrl(List<StatsCount> data, Rank rnk, int width, int height, boolean title);
 
-	List<StatsCount> taxByStatus(Long resource_id, HostType ht);
-	String taxByStatusPieUrl(List<StatsCount> data, HostType ht, int width,	int height, boolean title);
+	List<StatsCount> taxByRank(Long resource_id);
+	String taxByRankPieUrl(List<StatsCount> data, int width, int height, boolean title);
+
+	List<StatsCount> taxByStatus(Long resource_id, StatusType type);
+	String taxByStatusPieUrl(List<StatsCount> data, StatusType type, int width,	int height, boolean title);
 
 }

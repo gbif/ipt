@@ -7,12 +7,16 @@ import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Preparable;
 
 public class TaxonAction extends BaseDataResourceAction {
 	@Autowired
@@ -22,16 +26,23 @@ public class TaxonAction extends BaseDataResourceAction {
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
     private Long id;
+    private String guid;
     private Taxon taxon;
+    private String category;
     private List<Taxon> taxa;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
+	
 	 
-    public String execute(){
+	public String execute(){
     	if (id!=null){
     		taxon=taxonManager.get(id);
+    	}else if (guid!=null){
+    		taxon=taxonManager.get(guid);
+    	}
+    	if (taxon!=null){    		
 			// geoserver map link
 			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
     	}
@@ -39,7 +50,11 @@ public class TaxonAction extends BaseDataResourceAction {
     }
     
     public String list(){
-		taxa=taxonManager.getAll(resource_id);
+    	if (category!=null){
+    		taxa=taxonManager.getAllByRank(resource_id, category);
+    	}else{
+    		taxa=taxonManager.getAll(resource_id);
+    	}
 		return SUCCESS;
     }
     
@@ -88,4 +103,16 @@ public class TaxonAction extends BaseDataResourceAction {
 		return taxa;
 	}
 
+	public void setGuid(String guid) {
+		this.guid = guid;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
 }

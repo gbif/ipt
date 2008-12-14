@@ -60,11 +60,11 @@
 		</tr>
 		<tr>
 			<td>Accepted Taxa</td>
-			<td>???</td>
+			<td>${numTaxa-numSynonyms}</td>
 		</tr>
 		<tr>
 			<td>Synonyms</td>
-			<td>???</td>
+			<td>${numSynonyms}</td>
 		</tr>
 	</table>
 </div>
@@ -121,7 +121,7 @@
 
 
 <div id="tax-pie" class="stats chart">
-	<label><@s.text name="stats.occByTaxon"/></label>
+	<label><@s.text name="stats.byTaxon"/></label>
 	<@s.form id="rankForm">
 		<@s.select id="rank" list="ranks" value="rank" theme="simple"/>
 	</@s.form>
@@ -144,7 +144,7 @@ updateByTaxon();
 
 
 <div id="status-pie" class="stats chart stat-right">
-	<label>Status</label>
+	<label><@s.text name="stats.byStatus"/></label>
 	<@s.form id="statusClassForm">
 		<@s.select id="statusClass" name="status" list="statusClasses" value="1" theme="simple"/>
 	</@s.form>
@@ -165,4 +165,22 @@ updateByStatus();
 
 <br class="clearfix" />
 
+
+<div id="rank-pie" class="stats chart">
+	<label><@s.text name="stats.byRank"/></label>
+	<@s.url id="imgByRankUrl" action="taxResourceStatsByRank" namespace="/ajax" includeParams="get"/>
+	<div id="imgByRank"></div>
+</div>
+
+<script>
+function updateByRank(){
+	var url = '${imgByRankUrl}';
+	var target = 'imgByRank';	
+	var myAjax = new Ajax.Updater(target, url, {method: 'get'});
+};
+updateByRank();
+</script>
+
+
+<br class="clearfix" />
 

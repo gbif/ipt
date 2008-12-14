@@ -26,7 +26,6 @@
                 <%@ include file="/common/messages.jsp" %>
                 
                 <h1><decorator:getProperty property="meta.heading"/></h1>
-
                 <decorator:body/>
             </div><!-- end main -->
 

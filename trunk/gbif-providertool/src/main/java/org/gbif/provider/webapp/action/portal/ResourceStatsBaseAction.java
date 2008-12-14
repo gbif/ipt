@@ -72,7 +72,7 @@ public abstract class ResourceStatsBaseAction<T extends Resource> extends BaseRe
 	// subtype of what to select. eg rank (family) or regionClass (continent)
 	protected int type;
 	// list of all avilable types as Enums
-	protected List types;
+	protected Object[] types;
 	// map focus
 	protected String area;
 	protected String chartUrl;
@@ -175,7 +175,7 @@ public abstract class ResourceStatsBaseAction<T extends Resource> extends BaseRe
 		this.type = type;
 	}
 
-	public List<Enum> getTypes() {
+	public Object[] getTypes() {
 		return types;
 	}
 

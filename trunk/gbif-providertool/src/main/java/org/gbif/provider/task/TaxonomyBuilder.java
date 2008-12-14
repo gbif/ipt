@@ -135,7 +135,7 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<DarwinCore, Taxon> {
 		// init stats map		
 		Map<Rank, Integer> stats = new HashMap<Rank, Integer>();
 		stats.put(null, 0);
-		for (Rank r : Rank.ALL_RANKS){
+		for (Rank r : Rank.values()){
 			stats.put(r, 0);
 		}
 		// aggregate stats
@@ -143,7 +143,7 @@ public class TaxonomyBuilder extends NestedSetBuilderBase<DarwinCore, Taxon> {
 			stats.put(t.getDwcRank(), stats.get(t.getDwcRank())+1);
 		}
 		// debug only
-		for (Rank r : Rank.ALL_RANKS){
+		for (Rank r : Rank.values()){
 			log.info(String.format("Found %s %s taxa in resource %s", stats.get(r), r, resource.getId()));
 		}
 		log.info(String.format("Found %s distinct taxa in resource %s", nodes.size(), resource.getId()));

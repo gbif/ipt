@@ -113,7 +113,7 @@ public class GeographyBuilder extends NestedSetBuilderBase<DarwinCore, Region>  
 		// init stats map		
 		Map<RegionType, Integer> stats = new HashMap<RegionType, Integer>();
 		stats.put(null, 0);
-		for (RegionType r : RegionType.ALL_REGIONS){
+		for (RegionType r : RegionType.values()){
 			stats.put(r, 0);
 		}
 		// aggregate stats
@@ -125,7 +125,7 @@ public class GeographyBuilder extends NestedSetBuilderBase<DarwinCore, Region>  
 		resource.setNumRegions(nodes.size());
 		resource.setNumTerminalRegions(terminalNodes.size());
 		// debug only
-		for (RegionType r : RegionType.ALL_REGIONS){
+		for (RegionType r : RegionType.values()){
 			log.info(String.format("Found %s %s regions in resource %s", stats.get(r), r, resource.getId()));
 		}
 		

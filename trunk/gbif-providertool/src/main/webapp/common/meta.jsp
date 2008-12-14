@@ -2,6 +2,7 @@
 <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
 <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 <c:set var="currentResourceTitle" scope="request"><decorator:getProperty property="meta.resource"/></c:set>
+<c:set var="taxTreeAction">taxDetail</c:set>
         <title><decorator:title/> | <s:text name="webapp.name"/></title>
         <!-- HTTP 1.1 -->
         <meta http-equiv="Cache-Control" content="no-store"/>
@@ -21,6 +22,9 @@
 	        <c:if test='${resource_id != null}'>
 				<link href="/data/${resource_id}/rss.xml" rel="alternate" type="application/rss+xml" title="${currentResourceTitle} RSS Feed" />
 			</c:if>
+	        <c:if test='${currentSubMenu == "occ"}'>
+				<c:set var="taxTreeAction">occTaxon</c:set>
+			</c:if>			
 			<link rel="STYLESHEET" type="text/css" href="<c:url value='/scripts/dhtmlxtree/dhtmlxtree.css'/>">
 			<script  src="<c:url value='/scripts/dhtmlxtree/dhtmlxcommon.js'/>"></script>
 			<script  src="<c:url value='/scripts/dhtmlxtree/dhtmlxtree.js'/>"></script>

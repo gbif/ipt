@@ -181,7 +181,7 @@ $('regionClass').observe('change', updateByRegion);
 </script>	
 
 <div id="tax-pie" class="stats chart stat-right">
-	<label><s:text name="stats.occByTaxon"/></label>
+	<label><s:text name="stats.byTaxon"/></label>
 	<s:form id="rankForm">
 		<s:select id="rank" list="ranks" value="rank" theme="simple"/>
 	</s:form>

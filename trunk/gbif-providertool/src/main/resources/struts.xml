@@ -227,6 +227,9 @@
         <action name="taxResource" class="org.gbif.provider.webapp.action.portal.TaxResourceAction">
             <result type="freemarker">/WEB-INF/pages/portal/tax/index.ftl</result>
         </action>
+        <action name="taxList" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="list">
+            <result >/WEB-INF/pages/portal/tax/taxonList.jsp</result>
+        </action>
         <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.TaxonAction">
             <result type="freemarker">/WEB-INF/pages/portal/tax/taxon.ftl</result>
         </action>
@@ -705,6 +708,17 @@
             <result type="redirect-action">
                 <param name="actionName">extensions</param>
             </result>
+        </action>
+
+        <!-- EXTENSIONS -->
+        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
+            <result type="freemarker">/WEB-INF/pages/admin/vocabularyList.ftl</result>
+        </action>
+        <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
+            <result type="freemarker">/WEB-INF/pages/admin/vocabulary.ftl</result>
+        </action>
+        <action name="concept" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="concept">
+            <result type="freemarker">/WEB-INF/pages/admin/concept.ftl</result>
         </action>
         
     </package>

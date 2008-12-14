@@ -102,6 +102,8 @@
     
     <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
     
+    <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        
+
     <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
     
     <bean id="occStatManager" class="org.gbif.provider.service.impl.OccStatManagerHibernate" parent="abstractManager"/>        

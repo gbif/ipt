@@ -28,13 +28,6 @@ public enum RegionType {
 	    DARWIN_CORE_REGIONS = Collections.unmodifiableList(dwc);  
 	  };
 
-		public static final List<RegionType> ALL_REGIONS;
-		  static  
-		  {  
-		    List<RegionType> dwc = new ArrayList<RegionType>(DARWIN_CORE_REGIONS);  
-		    dwc.add( Locality );  
-		    ALL_REGIONS = Collections.unmodifiableList(dwc);  
-		  };
 	  
 	public String columnName;	
 	private RegionType (String colName){
@@ -42,7 +35,7 @@ public enum RegionType {
 	}
 	
 	public static RegionType getByInt(int i){
-		for (RegionType r : ALL_REGIONS){
+		for (RegionType r : RegionType.values()){
 			if (r.ordinal() == i){
 				return r;
 			}

@@ -70,7 +70,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		
 		
 		@Override
-		protected void statsPerRecord(DarwinCore dwc){
+		protected void recordHandler(DarwinCore dwc){
 			if(StringUtils.trimToNull(dwc.getCountry())!=null){
 				recWithCountry++;
 			}

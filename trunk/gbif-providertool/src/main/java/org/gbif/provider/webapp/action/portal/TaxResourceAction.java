@@ -53,10 +53,10 @@ public class TaxResourceAction extends BaseChecklistResourceAction implements Pr
 			//geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, resource.getBbox(), null, null);
 		}
 		// prepare select lists
-		for (StatusType rt : StatusType.ALL_STATUSES){
+		for (StatusType rt : StatusType.values()){
 			statusClasses.put(rt.ordinal(), rt.name());
 		}
-		for (Rank rt : Rank.DARWIN_CORE_HIGHER_RANKS){
+		for (Rank rt : Rank.COMMON_RANKS){
 			ranks.put(rt.ordinal(), rt.name());
 		}
 		ranks.put(Rank.TerminalTaxon.ordinal(), "All Taxa");		

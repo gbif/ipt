@@ -22,6 +22,7 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -84,13 +85,53 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 
 	
 	
+
+
+	public List<StatsCount> taxByRank(Long resourceId) {
+		String hql = "";
+		List<Object[]> taxBySth;
+		// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
+		hql = String.format("select t.rank, count(t)   from Taxon t   where t.resource.id=:resourceId  group by t.rank");		
+        taxBySth = getSession().createQuery(hql)
+        	.setParameter("resourceId", resourceId)
+        	.list();
+        return getDataMap(taxBySth);
+	}
+	public String taxByRankPieUrl(Long resourceId, int width, int height, boolean title) {
+		List<StatsCount> data = taxByRank(resourceId);
+		return taxByRankPieUrl(data, width, height, title);
+	}
+	public String taxByRankPieUrl(List<StatsCount> data, int width, int height, boolean title) {
+		String titleText = null;
+		if (title){
+			titleText = "Taxa By rank";
+		}
+        // get chart string
+		data=limitDataForChart(data);
+		return gpb.generatePieChartUrl(width, height, titleText, data);
+	}
+
 	
-	public List<StatsCount> taxByStatus(Long resource_id, HostType ht) {
-		return new ArrayList<StatsCount>();
+	
+	public List<StatsCount> taxByStatus(Long resourceId, StatusType type) {
+		List<Object[]> taxBySth;
+		String hql = String.format("select t.%s, count(t)  from Taxon t  where t.resource.id=:resourceId and t.lft=t.rgt-1  group by t.%s", type.columnName, type.columnName);		
+		taxBySth = getSession().createQuery(hql)
+			.setParameter("resourceId", resourceId)
+			.list();
+        return getDataMap(taxBySth);
 	}
-
-	public String taxByStatusPieUrl(List<StatsCount> data, HostType ht, int width, int height, boolean title) {
-		return "";
+	public String taxByStatusPieUrl(Long resourceId, StatusType type, int width, int height, boolean title) {
+		List<StatsCount> data = taxByStatus(resourceId, type);
+		return taxByStatusPieUrl(data, type, width, height, title);
 	}
-
+	public String taxByStatusPieUrl(List<StatsCount> data, StatusType type, int width, int height, boolean title) {
+		String titleText = null;
+		if (title){
+			titleText = "Terminal Taxa By "+type.toString();
+		}
+        // get chart string
+		data=limitDataForChart(data);
+		return gpb.generatePieChartUrl(width, height, titleText, data);
+	}
 }

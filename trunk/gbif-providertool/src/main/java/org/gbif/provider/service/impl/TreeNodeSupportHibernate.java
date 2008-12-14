@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-public class TreeNodeSupportHibernate<T> {
+public class TreeNodeSupportHibernate<T>{
 	private final Class persistentClass;
     protected final Log log = LogFactory.getLog(getClass());
 	
@@ -69,4 +70,18 @@ public class TreeNodeSupportHibernate<T> {
 		log.info(String.format("Removed %s %ss bound to resource %s", count, propName, resource.getTitle()));
 		return count;
 	}
+	
+	public int countTerminalNodes(Long resourceId, Session session) {
+        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
+        .setLong("resourceId", resourceId)
+        .iterate().next() ).intValue();
+	}
+
+	public void buildNestedSet(DataResource resource, Session session){
+		//FIXME
+		String hqlUpdate = String.format("update %s e SET e.lft=id*2-1, e.rgt=id*2 WHERE e.resource = :resource", persistentClass.getSimpleName());
+		session.createQuery( hqlUpdate ).setEntity("resource", resource).executeUpdate();
+		log.warn("buildNestedSet not implemented properly yet. Just creating flat list of nodes, not nested");
+	}
+
 }
