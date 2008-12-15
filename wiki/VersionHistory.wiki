@@ -1,0 +1,34 @@
+#summary Version history of releases
+
+=== IPT 0.6 ===
+ * auto column mapping for new mappings
+
+=== IPT 0.5.1 ===
+ * uses XStream for EML metadata persistency
+ * bug fixes in config UI
+
+=== IPT 0.5 ===
+ * uses embedded H2 database
+ * geoserver plugin updated for geotools 2.5 and H2
+ * geoserver feature types are updated by the IPT when occurrence resources are changed
+ * new manager config UI
+ * extension entities visualised
+ * metadata browse mockup
+ * resource type property added to metadata
+ * taxon & region trees open corresponding node in taxon & region overview page
+
+=== IPT 0.4 ===
+ * google maps integrated
+ * simple EML metadata forms
+ * eml output
+ * provider settings UI
+ * improved occurrence webapp
+
+=== IPT 0.3 ===
+ * occurrence webapp added
+ * taxon & region trees implemented
+ * rss feeds
+
+=== IPT 0.2 ===
+ * nested set created for taxonomy & region hierarchy
+ * upload/import tasks
