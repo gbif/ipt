@@ -1,6 +1,5 @@
 #summary Details about the embedded H2 database cache and how to access it
 
-= Introduction =
 The IPT keeps all its data and most configuration in an internal embedded H2 database.
 The instructions found here help you to access this data directly. 
 Please be aware that any modifications done to this database may corrupt the IPT!
