@@ -1,0 +1,59 @@
+#summary Details about the embedded H2 database cache and how to access it
+
+= Introduction =
+The IPT keeps all its data and most configuration in an internal embedded H2 database.
+The instructions found here help you to access this data directly. 
+Please be aware that any modifications done to this database may corrupt the IPT!
+Before modifying any data yourself, please make a backup of your data directoy.
+
+== The H2 Database ==
+The database used for caching the data and storing most configurations is a pure Java RDBMS known as H2.
+Detailed informations about it can be found at http://www.h2database.com/
+
+We have chosen H2 for several reasons:
+ * it is written purely in java which is the language we use for the IPT.
+ * it can run in embedded and server mode
+ * it is faster than similar alternative databases
+
+The database can be accessed directly in 2 mayor ways:
+
+
+=== Access via the web console ===
+H2 comes with a web console similar to PhpMyAdmin. By default the IPT enables the console which is accessible at if the IPT is running:
+http://yourdomain/ipt/h2
+
+To turn off the console comment out the H2Console servlet in the web.xml which uses the class org.h2.server.web.WebServlet
+
+
+=== Access via JDBC ===
+You can also access the H2 database directly via JDBC even if the IPT is not running. 
+To do this you need the H2 1.1.x.jar and use the following connection settings:
+{{{
+ driverClassName=org.h2.Driver
+ url=jdbc:h2:${datadir}/db/ipt;auto_server=true
+ username=sa
+ password=
+}}}
+
+In case you use the spring framework the following bean will create an IPT datasource:
+{{{
+  <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource">
+      <property name="URL" value="jdbc:h2:${datadir}/db/ipt;auto_server=true"/>
+      <property name="user" value="sa"/>
+      <property name="password" value=""/>
+  </bean>
+}}}
+To get better performance you should better use a connection pool such as DBCP:
+{{{
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="org.h2.Driver"/>
+      <property name="url" value="jdbc:h2:${datadir}/db/ipt;auto_server=true"/>
+      <property name="username" value="sa"/>
+      <property name="password" value=""/>
+      <!-- number of max active connections -->
+      <property name="maxActive" value="100"/>
+      <property name="maxWait" value="1000"/>
+      <property name="poolPreparedStatements" value="true"/>
+      <property name="defaultAutoCommit" value="true"/>
+  </bean>
+}}}
