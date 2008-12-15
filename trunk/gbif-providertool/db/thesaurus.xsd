@@ -18,7 +18,7 @@
             
             <xs:sequence>
                 <!-- Many titles per language for synonyms -->
-                <xs:element name="accepted">
+                <xs:element name="preferred">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="term" maxOccurs="unbounded"/>
@@ -26,7 +26,7 @@
                     </xs:complexType>
                 </xs:element>
                 <!-- Many titles per language for synonyms -->
-                <xs:element name="synonym">
+                <xs:element name="alternative">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="term" maxOccurs="unbounded"/>

@@ -26,6 +26,7 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewCoreMapping;
@@ -44,6 +45,8 @@ import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.TabFileWriter;
 import org.gbif.provider.util.ZipUtil;
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Session;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +143,7 @@ import org.springframework.transaction.annotation.Transactional;
 			resource= loadResource();
 			
 			// remove all previous upload artifacts
+			coreRecordManager.removeAll(resource);
 			cacheManager.prepareUpload(getResourceId());
 			
 			// init postprocessors
@@ -281,6 +285,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 						} catch (InterruptedException e) {
 							throw e;
+						} catch (ObjectNotFoundException e2){
+							logdb.warn("log.unknownLocalId", new String[]{irec.getLocalId().toString(), getTitle()});
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
 							e.printStackTrace();
@@ -333,12 +339,12 @@ import org.springframework.transaction.annotation.Transactional;
 				
 			}else if (oldRecord!=null){
 				// modified record that existed before.
-				// copying all new properties to oldRecord is too cumbersome, so
+				// copy all properties to oldRecord is too cumbersome, so
 				// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
-				record.setModified(new Date());									
-				coreRecordManager.remove(oldRecord.getId());
-				coreRecordManager.flush();
-				record = coreRecordManager.save(record);									
+				coreRecordFactory.copyPersistentProperties(oldRecord, record);
+				oldRecord.setDeleted(false);
+				oldRecord.setModified(new Date());									
+				record = coreRecordManager.save(oldRecord);									
 				// increase counter of changed records
 				recordsChanged += 1;
 				

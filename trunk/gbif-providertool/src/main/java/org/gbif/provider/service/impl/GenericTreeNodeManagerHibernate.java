@@ -20,17 +20,13 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 	
 	public GenericTreeNodeManagerHibernate(final Class<T> persistentClass) {
 	        super(persistentClass);
-	        treeNodeSupport = new TreeNodeSupportHibernate<T>(persistentClass);
+	        treeNodeSupport = new TreeNodeSupportHibernate<T>(persistentClass, this);
     }
 
 	
 	
 	public List<T> getChildren(Long resourceId, Long parentId) {
 		return treeNodeSupport.getChildren(resourceId, parentId, getSession());
-	}
-
-	public List<T> getDescendants(Long resourceId, Long nodeId) {
-		return treeNodeSupport.getDescendants(resourceId, nodeId, getSession());
 	}
 
 	public List<Long> getParentIds(Long resourceId, Long nodeId) {
@@ -42,7 +38,7 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 	}
 
 	public List<T> getRoots(Long resourceId) {
-		return treeNodeSupport.getRoots(resourceId, getSession());
+		return treeNodeSupport.getRoots(resourceId, getSession(), null);
 	}
 
 	

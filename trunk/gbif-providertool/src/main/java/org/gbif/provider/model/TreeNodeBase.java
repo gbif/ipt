@@ -19,6 +19,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 	private Long rgt;
 	private E type;
 	
+	@Transient
 	public Long getId() {
 		return id;
 	}
@@ -26,6 +27,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.id = id;
 	}
 
+	@Transient
 	public T getParent() {
 		return parent;
 	}
@@ -33,6 +35,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.parent = parent;
 	}
 	
+	@Transient
 	public String getLabel() {
 		return label;
 	}
@@ -40,6 +43,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.label = label;
 	}
 
+	@Transient
 	public E getType() {
 		return type;
 	}
@@ -47,6 +51,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		type = t;
 	}
 
+	@Transient
 	public Long getLft() {
 		return lft;
 	}
@@ -54,6 +59,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.lft = lft;
 	}
 
+	@Transient
 	public Long getRgt() {
 		return rgt;
 	}
@@ -61,6 +67,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.rgt = rgt;
 	}
 	
+	@Transient
 	public Queue<T> getParents() {
 		Queue<T> parents;
 		if (parent!=null){
@@ -72,8 +79,9 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		return parents;
 	}
 	
+	@Transient
 	public Boolean isLeafNode() {
-		return rgt == lft + 1;
+		return lft==null ? false : rgt == lft + 1;
 	}
 	
 	abstract int compareWithoutHierarchy(T first, T second);

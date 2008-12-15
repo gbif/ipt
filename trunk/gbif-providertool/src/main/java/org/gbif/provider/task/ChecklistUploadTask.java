@@ -69,9 +69,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		protected void recordHandler(Taxon record) {
 			Rank dwcRank = rankCache.get(record.getRank()); 
 			if (dwcRank==null){
+				// query thesaurus to find a matching rank
 				ThesaurusConcept rank = thesaurusManager.getConcept(Vocabulary.Rank, record.getRank());
-				dwcRank = Rank.getByIdentifier(rank.getIdentifier());
-				rankCache.put(record.getRank(), dwcRank);
+				if (rank != null){
+					dwcRank = Rank.getByIdentifier(rank.getIdentifier());
+					rankCache.put(record.getRank(), dwcRank);
+				}
 			}
 			record.setDwcRank(dwcRank);				
 			super.recordHandler(record);
@@ -85,7 +88,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 			taxonManager.lookupAcceptedTaxa(getResourceId());
 			taxonManager.lookupBasionymTaxa(getResourceId());
 			// create nested set indices
-			taxonManager.buildNestedSet(resource);
+			taxonManager.buildNestedSet(getResourceId());
 			taxonManager.setResourceStats(resource);
 			super.finalHandler(resource);
 		}

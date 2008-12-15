@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public enum StatusType {
-	Nomenclature("nomenclaturalStatus"),
-	Taxonomic("taxonomicStatus");	
+	NomenclaturalStatus("nomenclaturalStatus"),
+	TaxonomicStatus("taxonomicStatus");	
 	
 	public String columnName;	
 	private StatusType (String colName){

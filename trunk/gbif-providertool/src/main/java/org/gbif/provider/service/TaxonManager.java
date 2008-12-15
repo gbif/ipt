@@ -11,7 +11,7 @@ public interface TaxonManager extends CoreRecordManager<Taxon>, TreeNodeManager<
 	public void lookupAcceptedTaxa(Long resourceId);
 	public void lookupBasionymTaxa(Long resourceId);
 	public void lookupParentTaxa(Long resourceId);	
-	public void buildNestedSet(ChecklistResource resource);
+	public void buildNestedSet(Long resourceId);
 	public ChecklistResource setResourceStats(ChecklistResource resource);
 	
 	public List<Taxon> getAllByRank(Long resourceId, String rank);	
