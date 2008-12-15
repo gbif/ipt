@@ -1,6 +1,4 @@
-#summary Installation and build instructions
-
-_ based on IPT version 0.5_
+#summary Installation and build instructions based on IPT version 0.5
 
 The default installation of the IPT is using the compiled WAR archives available in the download section.
 Alternatively you can build the IPT from source.
