@@ -89,7 +89,7 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 	}
 
 	public void buildNestedSet(Long resourceId, Session session){
-		List<T> rootNodes = treeNodeManager.getRoots(resourceId);
+		List<T> rootNodes = this.getRoots(resourceId, session, null);
 		log.info("Building nested set for trees: "+rootNodes.toString());
 		Long idx = 1l;
 		for (T node : rootNodes){
