@@ -50,16 +50,19 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 	 * @return
 	 */
 	public List<T> getRoots(Long resourceId, Session session, String filter) {
+        return session.createQuery(String.format("from %s node where node.parent=null and node.resource.id = :resourceId %s  order by lft", persistentClass.getName(), getWhereString(filter)))
+        .setLong("resourceId", resourceId)
+		.list();
+	}
+
+	private String getWhereString(String filter){
 		if (filter == null){
 			filter = "";
 		}else if (!filter.trim().toLowerCase().startsWith("and")){
 			filter = " and "+filter;
 		}
-        return session.createQuery(String.format("from %s node where node.parent=null and node.resource.id = :resourceId %s  order by lft", persistentClass.getName(), filter))
-        .setLong("resourceId", resourceId)
-		.list();
+		return filter;
 	}
-	
 	
 	@Transactional(readOnly = false)
 	public int removeAll(Resource resource, Session session) {
@@ -82,8 +85,8 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 		return count;
 	}
 	
-	public int countTerminalNodes(Long resourceId, Session session) {
-        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
+	public int countTerminalNodes(Long resourceId, Session session, String filter) {
+        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId %s", persistentClass.getSimpleName(), getWhereString(filter)))
         .setLong("resourceId", resourceId)
         .iterate().next() ).intValue();
 	}
