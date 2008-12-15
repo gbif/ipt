@@ -50,7 +50,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public int countTerminalNodes(Long resourceId) {
-		return treeNodeSupport.countTerminalNodes(resourceId, getSession());
+		return treeNodeSupport.countTerminalNodes(resourceId, getSession(), "accepted=true");
 	}
 
 
@@ -113,7 +113,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		resource.setNumPhyla(countByRank(resourceId, Rank.Phylum));
 		resource.setNumTaxa(count(resourceId));
 		resource.setNumTerminalTaxa(countTerminalNodes(resourceId));
-		int cnt = ((Long) query("select count(tax) from Taxon tax WHERE tax.accepted is not null and tax.resource.id = :resourceId")
+		int cnt = ((Long) query("select count(tax) from Taxon tax WHERE tax.accepted=false and tax.resource.id = :resourceId")
 					.setLong("resourceId", resourceId)
 					.iterate().next()).intValue();
 		resource.setNumSynonyms(cnt);
