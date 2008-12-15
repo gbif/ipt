@@ -85,7 +85,7 @@ public class TaxResourceStatsAction extends ResourceStatsBaseAction<ChecklistRes
 	}
 
 	public String statsByStatus() {
-		types = HostType.values();
+		types = StatusType.values();
 		if (!useCachedImage(ImageType.ChartByStatus)){
 			StatusType st = StatusType.getByInt(type);
 			data = checklistResourceManager.taxByStatus(resource_id, st);

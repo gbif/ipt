@@ -68,7 +68,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private String nomStatus;
 		private String notes;
 		// derived
-		private Taxon accepted;
+		private Taxon acceptedTaxon;
 		private Taxon basionym;
 		
 		// stats
@@ -146,6 +146,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		@Override
 		public Taxon getParent() {
 			return super.getParent();
+		}
+		@Override
+		public void setParent(Taxon parent) {
+			super.setParent(parent);
 		}
 				
 		@Column(length=128)
@@ -271,11 +275,11 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 
 		@ManyToOne(optional = true)
-		public Taxon getAccepted() {
-			return accepted;
+		public Taxon getAcceptedTaxon() {
+			return acceptedTaxon;
 		}
-		public void setAccepted(Taxon accepted) {
-			this.accepted = accepted;
+		public void setAcceptedTaxon(Taxon acceptedTaxon) {
+			this.acceptedTaxon = acceptedTaxon;
 		}
 
 		@ManyToOne(optional = true)
@@ -286,6 +290,17 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.basionym = basionym;
 		}
 
+		@org.hibernate.annotations.Index(name="tax_accepted")
+		public boolean isAccepted(){
+			if ((StringUtils.trimToNull(acceptedTaxonID)!=null && !acceptedTaxonID.equals(localId)) || acceptedTaxon != null){
+				return false;
+			}
+			return true;
+		}
+		public void setAccepted(boolean accepted){
+			// dont do anything... we just keep the property persistent to do quick queries
+		}
+		
 		
 		/**
 		 * Count a single occurrence record

@@ -21,6 +21,7 @@ import java.util.List;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.service.CoreRecordManager;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -54,16 +55,28 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 
     
     public T findByLocalId(final String localId, final Long resourceId) {
-        Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId and core.localId = :localId", persistentClass.getName()))
-						.setParameter("resourceId", resourceId)
-						.setParameter("localId", localId);
-		return (T) query.uniqueResult();
+    	T result = null;
+    	try{
+    		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId and core.localId = :localId", persistentClass.getName()))
+						.setLong("resourceId", resourceId)
+						.setString("localId", localId);
+        	result = (T) query.uniqueResult();
+    	} catch (NonUniqueResultException e){
+    		log.debug("local ID is not unique within the resource. Corrupted cache!");
+    	}
+		return result;
 	}
 
 	public T get(final String guid) {
-		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.guid = :guid", persistentClass.getName()))
+    	T result = null;
+    	try{
+    		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.guid = :guid", persistentClass.getName()))
 						.setParameter("guid", guid);
-		return (T) query.uniqueResult();
+        	result = (T) query.uniqueResult();
+    	} catch (NonUniqueResultException e){
+    		log.debug("GUID is not unique. Corrupted cache!");
+    	}
+		return result;
 	}
 
 	@Transactional(readOnly=false)

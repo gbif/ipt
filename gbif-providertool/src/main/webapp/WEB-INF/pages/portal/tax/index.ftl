@@ -51,7 +51,7 @@
 	<label><@s.text name="stats.taxStats"/></label>
 	<table class="lefthead">
 		<tr>
-			<td><@s.text name="occResource.numTaxa"/></td>
+			<td>Distinct Names</td>
 			<td>${numTaxa}</td>
 		</tr>
 		<tr>
@@ -74,7 +74,7 @@
 	<table class="lefthead">
 		<tr>
 			<td>Kingdoms</td>
-			<td>Plantae, Animalia</td>
+			<td>${numKingdoms}</td>
 		</tr>
 		<tr>
 			<td><@s.text name="occResource.numOrders"/></td>

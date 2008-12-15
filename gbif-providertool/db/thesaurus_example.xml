@@ -4,26 +4,26 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://data.gbif.org/thesaurus  thesaurus.xsd">
     <concept dc:identifier="http://iso.org/3166#US" iso3Digit="USA" iso2Digit="US" dc:type="http://iso.org/3166#country" dc:issued="2006-05-04T18:13:51.0Z">
-        <accepted>
+        <preferred>
             <term dc:title="United States of America" dc:lang="en" dc:source="source0" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Vereinigte Staaten von Amerika" dc:lang="de" dc:source="source1" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-        </accepted>
-        <synonym>
+        </preferred>
+        <alternative>
             <term dc:title="USA" dc:lang="en" dc:source="source3" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="US of A" dc:lang="en" dc:source="source4" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="United States" dc:lang="en" dc:source="source5" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-        </synonym>
+        </alternative>
     </concept>
 
     <concept dc:identifier="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" dc:type="http://rs.tdwg.org/ontology/voc/TaxonRank" dc:issued="2006-05-04T18:13:51.0Z">
-        <accepted>
+        <preferred>
             <term dc:title="Species" dc:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Art" dc:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-        </accepted>
-        <synonym>
+        </preferred>
+        <alternative>
             <term dc:title="Spec." dc:lang="en" dc:source="source15" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Sp." dc:lang="en" dc:source="source16" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Spec" dc:lang="en" dc:source="source17" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-        </synonym>
+        </alternative>
     </concept>
 </thesaurus>

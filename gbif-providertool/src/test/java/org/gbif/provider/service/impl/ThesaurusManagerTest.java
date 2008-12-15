@@ -16,9 +16,12 @@
 
 package org.gbif.provider.service.impl;
 
+import static org.junit.Assert.fail;
+
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.ThesaurusManager;
@@ -50,4 +53,15 @@ public class ThesaurusManagerTest extends ContextAwareTestBase{
 		List<?> ts = thesaurusManager.getAllConcepts(voc);
 		assertTrue(ts.size()>10);
 	}
+	
+	@Test	
+	public void testGetConceptVocabularyString() {
+		ThesaurusConcept c = thesaurusManager.getConcept(Vocabulary.Rank, "Species");
+	}
+
+	@Test
+	public void testGetAllConcepts() {
+		List<ThesaurusConcept> concepts = thesaurusManager.getAllConcepts(Vocabulary.Rank);
+	}
+
 }

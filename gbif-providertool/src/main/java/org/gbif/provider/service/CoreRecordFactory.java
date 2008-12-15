@@ -12,4 +12,5 @@ public interface CoreRecordFactory {
 	CoreRecord build(DataResource resource, ImportRecord iRec);
 	DarwinCore build(OccurrenceResource resource, ImportRecord iRec);
 	Taxon build(ChecklistResource resource, ImportRecord iRec);
+	CoreRecord copyPersistentProperties(CoreRecord target, CoreRecord source);
 }

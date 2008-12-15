@@ -18,7 +18,7 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
     	.uniqueResult();
 	}
 	public ThesaurusConcept getConcept(Vocabulary vocabulary, String term) {
-		return (ThesaurusConcept) getSession().createQuery("select c from ThesaurusConcept c, ThesaurusTerm t   where t.concept = c and t.type = :type and t.term = :term")
+		return (ThesaurusConcept) getSession().createQuery("select c from ThesaurusConcept c, ThesaurusTerm t   where t.concept = c and c.type = :type and t.title = :term")
     	.setParameter("type", vocabulary)
     	.setString("term", term)
     	.uniqueResult();

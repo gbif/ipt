@@ -22,17 +22,13 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public TaxonManagerHibernate() {
 		super(Taxon.class);
-        treeNodeSupport = new TreeNodeSupportHibernate<Taxon>(Taxon.class);
+        treeNodeSupport = new TreeNodeSupportHibernate<Taxon>(Taxon.class, this);
 	}
 
 	
 	
 	public List<Taxon> getChildren(Long resourceId, Long parentId) {
 		return treeNodeSupport.getChildren(resourceId, parentId, getSession());
-	}
-
-	public List<Taxon> getDescendants(Long resourceId, Long nodeId) {
-		return treeNodeSupport.getDescendants(resourceId, nodeId, getSession());
 	}
 
 	public List<Long> getParentIds(Long resourceId, Long nodeId) {
@@ -44,7 +40,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getRoots(Long resourceId) {
-		return treeNodeSupport.getRoots(resourceId, getSession());
+		return treeNodeSupport.getRoots(resourceId, getSession(), "accepted=true");
 	}
 
 	@Override
@@ -59,14 +55,14 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 
 
-	public void buildNestedSet(ChecklistResource resource) {
-		treeNodeSupport.buildNestedSet(resource, getSession());
+	public void buildNestedSet(Long resourceId) {
+		treeNodeSupport.buildNestedSet(resourceId, getSession());
 	}
 
 	
 	public void lookupAcceptedTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set accepted_fk = (select tp.id from taxon tp where tp.local_id = t.accepted_taxon_id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set accepted_taxon_fk = (select tp.id from taxon tp where tp.local_id=t.accepted_taxon_id and tp.id!=t.id and resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -78,7 +74,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public void lookupBasionymTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set basionym_fk = (select tp.id from taxon tp where tp.local_id = t.basionym_id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set basionym_fk = (select tp.id from taxon tp where tp.local_id = t.basionym_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -90,7 +86,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public void lookupParentTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set parent_fk = (select tp.id from taxon tp where tp.local_id = t.taxonomic_parent_id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set parent_fk = (select tp.id from taxon tp where tp.local_id = t.taxonomic_parent_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);

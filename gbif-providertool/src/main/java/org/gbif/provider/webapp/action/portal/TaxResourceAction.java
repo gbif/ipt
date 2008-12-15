@@ -59,7 +59,6 @@ public class TaxResourceAction extends BaseChecklistResourceAction implements Pr
 		for (Rank rt : Rank.COMMON_RANKS){
 			ranks.put(rt.ordinal(), rt.name());
 		}
-		ranks.put(Rank.TerminalTaxon.ordinal(), "All Taxa");		
 	}
 	
 		
