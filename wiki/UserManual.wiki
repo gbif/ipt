@@ -1,0 +1,24 @@
+#summary User manual based on version 0.5
+
+The IPT is designed to be used by multiple users and resources.
+We therefore work with 3 different roles, an anonymous or known user, a manager or an admin.
+The IPT is divided into 3 sections according to those 3 access roles. 
+The top menu reflects those roles/sections too with a primary menu shown for each section if you have the corresponding access rights.
+
+== Portal ==
+The portal is meant to publish the resources on the web and is in large parts accessible to the public without any login.
+The only exception are annotations to data, which can only be done if you have a registered login.
+=== Resources ===
+=== Occurrence Resources ===
+=== Checklist Resources ===
+
+== Managing Resources ==
+=== Resources ===
+=== Occurrence Resources ===
+=== Checklist Resources ===
+
+== Administration of IPT ==
+=== Settings ===
+=== Extensions ===
+=== Thesaurus ===
+=== Users ===
