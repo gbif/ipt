@@ -30,6 +30,7 @@ import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
+import org.gbif.provider.util.StatsUtils;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -66,7 +67,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 				.setParameter("rank", rank)
 				.list();
 		}
-        return getDataMap(taxBySth);
+        return StatsUtils.getDataMap(taxBySth);
 	}
 	public String taxByTaxonPieUrl(Long resourceId, Rank rank, int width, int height, boolean title) {
 		List<StatsCount> data = taxByTaxon(resourceId, rank);
@@ -95,7 +96,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
         taxBySth = getSession().createQuery(hql)
         	.setParameter("resourceId", resourceId)
         	.list();
-        return getDataMap(taxBySth);
+        return StatsUtils.getDataMap(taxBySth);
 	}
 	public String taxByRankPieUrl(Long resourceId, int width, int height, boolean title) {
 		List<StatsCount> data = taxByRank(resourceId);
@@ -119,7 +120,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 		taxBySth = getSession().createQuery(hql)
 			.setParameter("resourceId", resourceId)
 			.list();
-        return getDataMap(taxBySth);
+        return StatsUtils.getDataMap(taxBySth);
 	}
 	public String taxByStatusPieUrl(Long resourceId, StatusType type, int width, int height, boolean title) {
 		List<StatsCount> data = taxByStatus(resourceId, type);

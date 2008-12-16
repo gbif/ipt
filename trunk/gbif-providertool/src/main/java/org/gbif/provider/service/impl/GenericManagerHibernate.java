@@ -4,12 +4,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
+import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.service.GenericManager;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -156,5 +159,5 @@ import org.springframework.transaction.annotation.Transactional;
 		public void debugSession() {
 			log.debug(getSession());
 		}
-		
+
 	}

@@ -11,8 +11,11 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.StatsUtils;
+import org.hibernate.Query;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,6 +99,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		}
 	}
 	
+	
 	private int countByRank(Long resourceId, Rank rank){
 		Long cnt = (Long) query("select count(tax) from Taxon tax WHERE tax.dwcRank = :rank and tax.resource.id = :resourceId")
         	.setLong("resourceId", resourceId)
@@ -103,6 +107,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         	.iterate().next();
         return cnt.intValue();
 	}
+	
 	public ChecklistResource setResourceStats(ChecklistResource resource){
 		Long resourceId = resource.getId();
 		resource.setNumClasses(countByRank(resourceId, Rank.Class));
@@ -119,11 +124,37 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		resource.setNumSynonyms(cnt);
 		return resource;
 	}
-	public List<Taxon> getAllByRank(Long resourceId, String rank){
-		return query("from Taxon WHERE rank = :rank and resource.id = :resourceId order by scientificName")
-        	.setLong("resourceId", resourceId)
-        	.setString("rank", rank)
-        	.list();
+	
+	public List<Taxon> getAllByRank(Long resourceId, Long taxonId, String rank){
+		Query query;
+		if (taxonId==null){
+			query = query("from Taxon WHERE rank = :rank and resource.id = :resourceId order by scientificName")
+		        	.setLong("resourceId", resourceId)
+		        	.setString("rank", rank);
+		}else{
+			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.accepted=true and t.lft>root.lft and t.rgt<root.rgt order by t.scientificName")
+		        	.setLong("taxonId", taxonId)
+		        	.setString("rank", rank);
+		}
+		return query.list();
 	}
 
+
+
+	public List<Taxon> getSynonyms(Long taxonId) {
+		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by t.scientificName")
+    	.setLong("taxonId", taxonId)
+    	.list();
+	}
+
+
+	public List<StatsCount> getRankStats(Long taxonId) {
+		String hql = "";
+		List<Object[]> data;
+		hql = "select t.rank, count(t)   from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.accepted=true and t.lft>root.lft and t.rgt<root.rgt   group by t.rank, t.dwcRank  order by t.dwcRank";		
+        data = getSession().createQuery(hql)
+        	.setLong("taxonId", taxonId)
+        	.list();
+        return StatsUtils.getDataMap(data);
+	}
 }

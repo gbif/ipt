@@ -24,6 +24,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -53,6 +54,12 @@ public class TaxonManagerTest extends ContextAwareTestBase{
 		rootTaxa = taxonManager.getRoots(Constants.TEST_CHECKLIST_RESOURCE_ID);
 		System.out.println(rootTaxa);
 		System.out.println(rootTaxa.size());
+		if (!rootTaxa.isEmpty()){
+			Taxon t = rootTaxa.get(0);
+			System.out.println(String.format("%s  [%s-%s]",t.getScientificName(), t.getLft(), t.getRgt()));
+			List<StatsCount> stats = taxonManager.getRankStats(t.getId());
+			System.out.println(stats);
+		}
 	}	
 
 	@Test

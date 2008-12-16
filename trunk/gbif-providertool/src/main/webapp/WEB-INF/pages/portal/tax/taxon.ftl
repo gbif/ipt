@@ -1,94 +1,96 @@
-<%@ include file="/common/taglibs.jsp"%>
-
 <head>
-    <title><s:text name="taxon.title"/></title>
-    <meta name="resource" content="<s:property value="taxon.resource.title"/>"/>
+    <title><@s.text name="taxon.title"/></title>
+    <meta name="resource" content="${taxon.resource.title}"/>
     <meta name="submenu" content="tax"/>
+    <meta name="heading" content="taxon.scientificName"/>
 </head>
 	
 
-<h2><s:property value="taxon.fullname"/></h2>  
 
-<s:form>
+<div id="basics">
 	<fieldset>
-	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="taxon.details"/>)</a></legend>
-	<table id="details" style="display:none">
-		<tr>
-		  <th><s:text name="taxon.fullname"/></th>
-		  <td><s:property value="%{taxon.fullname}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.name"/></th>
-		  <td><s:property value="%{taxon.name}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.authorship"/></th>
-		  <td><s:property value="%{taxon.authorship}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.rank"/></th>
-		  <td><s:property value="%{taxon.rank}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.code"/></th>
-		  <td><s:property value="%{taxon.code}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.parent"/></th>
-		  <td><s:property value="%{taxon.parent}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.occTotal"/></th>
-		  <td><s:property value="%{taxon.occTotal}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.bbox"/></th>
-		  <td><s:property value="%{taxon.bbox}"/></td>
-		</tr>
-	</table>
+		<h2>${taxon.scientificName}</h2>
+		<table>	
+			<tr>
+			  <th><@s.text name="taxon.code"/></th>
+			  <td>${taxon.code}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.basionym"/></th>
+			  <td>${taxon.basionym.scientificName}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.rank"/></th>
+			  <td>${taxon.rank}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.parent"/></th>
+			  <td>${taxon.parent}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.notes"/></th>
+			  <td>${taxon.notes}</td>
+			</tr>
+		</table>
 	</fieldset>
-</s:form>
-
-<br/>
-
-Asterales (order)
------------------
-Synonymy
- ...
- ...
- ...
- 
-Typification
- ...
- 
-Distribution (?)
-
-
-Statistics
- Family: 15
- Genera: 67
- Species: 152
-  
-Pie Chart rank by terminal taxa
- ()
-
-<div id="loc-countries" class="stats map">
-	<label><s:text name="stats.occByCountry"/></label>	
-	<div id="imgByCountry">
-		<s:action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true">
-			<s:param name="filter" value="%{id}"/>
-		</s:action>
-	</div>
-</div>
-<div id="loc-geoserver" class="stats map">
-	<label><s:text name="stats.occPointMap"/></label>
-	<img src="<s:property value="geoserverMapUrl"/>" width="<s:property value="width"/>" height="<s:property value="height"/>" />
 </div>
 
-			
-<br class="clearfix" />
+<#if !taxon.accepted>
+<div id="synonymy">
+	<fieldset>
+		<h2>Synonymy</h2>
+		<table>
+			<#list synonyms as s>	
+			<tr>
+			  <th>&nbsp;</th>
+			  <td>${s.scientificName}</td>
+			</tr>
+			</#list>
+		</table>
+	</fieldset>
+</div>
+</#if>
 
-<%@ include file="/WEB-INF/pages/inc/occurrenceList.jsp"%>
+<div id="typification">
+	<fieldset>
+		<h2>Typification</h2>
+		<table>
+			<#list synonyms as s>	
+			<tr>
+			  <th>&nbsp;</th>
+			  <td>${s.scientificName}</td>
+			</tr>
+			</#list>
+		</table>
+	</fieldset>
+</div>
 
+<div id="distribution">
+	<fieldset>
+		<h2>Distribution</h2>
+		<table>
+			<#list synonyms as s>	
+			<tr>
+			  <th>&nbsp;</th>
+			  <td>${s.scientificName}</td>
+			</tr>
+			</#list>
+		</table>
+	</fieldset>
+</div>
 
-<br />
+<div id="stats">
+	<fieldset>
+		<h2>Statistics</h2>
+		<table>
+			<#list stats as s>	
+			<tr>
+			  <th>${s.label}</th>
+			  <td>${s.count}</td>
+			</tr>
+			</#list>
+		</table>
+	</fieldset>
+
+</div>
+
