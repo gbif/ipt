@@ -68,7 +68,7 @@ public class AppConfig{
 	public static File getWebappFile(String relPath){
 		return new File(webappDIR,relPath);
 	}
-	public static URL getWebappURL(String relPath) {
+	public URL getWebappURL(String relPath) {
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
@@ -83,7 +83,7 @@ public class AppConfig{
 
 	
 	// RESOURCE BASICS
-	public static String getResourceUrl(String guid) {
+	public String getResourceUrl(String guid) {
 		return String.format("%s/resource.html?guid=%s", baseURL, guid);
 	}
 
@@ -101,7 +101,7 @@ public class AppConfig{
 		File f = new File(getResourceCacheDir(resourceId), relPath);
 		return f;
 	}
-	public static URL getResourceCacheUrl(Long resourceId, String relPath) {
+	public URL getResourceCacheUrl(Long resourceId, String relPath) {
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
@@ -129,7 +129,7 @@ public class AppConfig{
 	public static File getResourceSourceFile(Long resourceId, String filename) {
 		return getResourceDataFile(resourceId, String.format("sources/%s",filename));
 	}
-	public static String getResourceDataUrl(Long resourceId) {
+	public String getResourceDataUrl(Long resourceId) {
 		return String.format("%s/data/%s", baseURL, resourceId);
 	}	
 
@@ -138,7 +138,7 @@ public class AppConfig{
 		return file;    	
 	}
 
-	public static String getResourceLogoUrl(Long resourceId) {
+	public String getResourceLogoUrl(Long resourceId) {
 		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
 	}
 
@@ -147,7 +147,7 @@ public class AppConfig{
 		return eml;    	
 	}
 
-	public static String getEmlUrl(String guid) {
+	public String getEmlUrl(String guid) {
 		return String.format("%s/data/eml-%s.xml", baseURL, guid);
 	}
 
@@ -220,10 +220,6 @@ public class AppConfig{
 
 	public String getDescription() {
 		return cfg.getMeta().getDescription();
-	}
-
-	public String getEmlUrl() {
-		return cfg.getEmlUrl();
 	}
 
 	public String getDescriptionImage() {

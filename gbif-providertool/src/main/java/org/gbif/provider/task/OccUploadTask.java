@@ -45,12 +45,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 		
 		@Autowired
-		private OccUploadTask(
-				DarwinCoreManager dwcManager,
-				OccResourceManager resourceManager,
-				@Qualifier("geographyBuilder") RecordPostProcessor<DarwinCore, Set<Region>, OccurrenceResource> geographyBuilder,
-				@Qualifier("taxonomyBuilder") RecordPostProcessor<DarwinCore, Set<DwcTaxon>, OccurrenceResource> taxonomyBuilder) {
-			super(dwcManager, resourceManager, geographyBuilder, taxonomyBuilder);
+		private OccUploadTask(DarwinCoreManager dwcManager, OccResourceManager resourceManager) {
+			super(dwcManager, resourceManager);
 		}
 
 
@@ -71,6 +67,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		
 		@Override
 		protected void recordHandler(DarwinCore dwc){
+			// create derived data
+			
+			// stats
 			if(StringUtils.trimToNull(dwc.getCountry())!=null){
 				recWithCountry++;
 			}

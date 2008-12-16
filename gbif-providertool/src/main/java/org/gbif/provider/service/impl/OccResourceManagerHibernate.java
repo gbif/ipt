@@ -27,6 +27,7 @@ import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
+import org.gbif.provider.util.StatsUtils;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -88,7 +89,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
         List<Object[]> occBySth = getSession().createQuery("select dwc.basisOfRecord, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.basisOfRecord")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
-        return getDataMap(occBySth);
+        return StatsUtils.getDataMap(occBySth);
 	}
 	public String occByBasisOfRecordPieUrl(Long resourceId, int width, int height, boolean title) {
 		List<StatsCount> data = occByBasisOfRecord(resourceId);
@@ -142,7 +143,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
         List<Object[]> occBySth = getSession().createQuery("select year(dwc.dateCollected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.dateCollected)")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
-        return getDataMap(occBySth);
+        return StatsUtils.getDataMap(occBySth);
 	}
 	public String occByDateColectedUrl(Long resourceId, int width, int height, boolean title) {
 		List<StatsCount> data = occByDateColected(resourceId);
@@ -164,7 +165,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	public List<StatsCount> occByHost(Long resourceId, HostType ht) {
 		String hql = String.format("select dwc.%s, count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by dwc.%s", ht.columnName, ht.columnName);
         List<Object[]> occBySth = getSession().createQuery(hql).setParameter("resourceId", resourceId).list();
-        return getDataMap(occBySth);
+        return StatsUtils.getDataMap(occBySth);
 	}
 	public String occByHostPieUrl(Long resourceId, HostType ht, int width, int height, boolean title) {
 		List<StatsCount> data = occByHost(resourceId, ht);
@@ -194,7 +195,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 		    	.setParameter("type", region)
 		    	.setParameter("resourceId", resourceId)
 		    	.list();
-        return getDataMap(occBySth);
+        return StatsUtils.getDataMap(occBySth);
 	}
 	
 	public List<StatsCount> occByRegion(Long resourceId, RegionType region, Long taxonIdFilter) {
@@ -216,7 +217,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 				.setParameter("type", region)
 				.list();
 		}
-        return getDataMap(occBySth);
+        return StatsUtils.getDataMap(occBySth);
 	}
 
 	public String occByRegionPieUrl(Long resourceId, RegionType region, int width, int height, boolean title) {
@@ -254,7 +255,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 				.setParameter("rank", rank)
 				.list();
 		}
-        return getDataMap(occBySth);
+        return StatsUtils.getDataMap(occBySth);
 	}
 	public String occByTaxonPieUrl(Long resourceId, Rank rank, int width, int height, boolean title) {
 		List<StatsCount> data = occByTaxon(resourceId, rank);

@@ -7,23 +7,19 @@
 </head>
 	
 
-<h2><s:property value="taxon.fullname"/></h2>  
+<h2><s:property value="taxon.scientificName"/></h2>  
 
 <s:form>
 	<fieldset>
 	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="taxon.details"/>)</a></legend>
 	<table id="details" style="display:none">
 		<tr>
-		  <th><s:text name="taxon.fullname"/></th>
-		  <td><s:property value="%{taxon.fullname}"/></td>
+		  <th><s:text name="taxon.scientificName"/></th>
+		  <td><s:property value="%{taxon.scientificName}"/></td>
 		</tr>
 		<tr>
 		  <th><s:text name="taxon.name"/></th>
 		  <td><s:property value="%{taxon.name}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.authorship"/></th>
-		  <td><s:property value="%{taxon.authorship}"/></td>
 		</tr>
 		<tr>
 		  <th><s:text name="taxon.rank"/></th>
@@ -44,6 +40,10 @@
 		<tr>
 		  <th><s:text name="taxon.bbox"/></th>
 		  <td><s:property value="%{taxon.bbox}"/></td>
+		</tr>
+		<tr>
+		  <th><s:text name="taxon.notes"/></th>
+		  <td><s:property value="%{taxon.notes}"/></td>
 		</tr>
 	</table>
 	</fieldset>

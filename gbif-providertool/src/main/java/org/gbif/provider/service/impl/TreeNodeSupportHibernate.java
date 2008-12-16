@@ -98,6 +98,7 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 		for (T node : rootNodes){
 			idx = crawlChildren(resourceId, node, idx, session);
 			log.debug(String.format("Nested set indices for tree %s are %s to %s", node.getLabel(), node.getLft(), node.getRgt()));
+			treeNodeManager.flush();
 		}
 	}
 

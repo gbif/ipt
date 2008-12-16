@@ -1,14 +1,17 @@
 package org.gbif.provider.webapp.action.portal;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
@@ -30,28 +33,32 @@ public class TaxonAction extends BaseDataResourceAction {
     private Taxon taxon;
     private String category;
     private List<Taxon> taxa;
+    private List<Taxon> synonyms;
+    private List<StatsCount> stats;
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	
-	 
-	public String execute(){
+	private void setRequestedTaxon(){
     	if (id!=null){
     		taxon=taxonManager.get(id);
     	}else if (guid!=null){
     		taxon=taxonManager.get(guid);
     	}
+	}
+	public String execute(){
+		setRequestedTaxon();
     	if (taxon!=null){    		
-			// geoserver map link
-			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
+			stats = taxonManager.getRankStats(taxon.getId());
+			synonyms = taxonManager.getSynonyms(taxon.getId());
     	}
 		return SUCCESS;
     }
     
     public String list(){
     	if (category!=null){
-    		taxa=taxonManager.getAllByRank(resource_id, category);
+    		taxa=taxonManager.getAllByRank(resource_id, id, category);
     	}else{
     		taxa=taxonManager.getAll(resource_id);
     	}
@@ -113,6 +120,14 @@ public class TaxonAction extends BaseDataResourceAction {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public List<StatsCount> getStats() {
+		return stats;
+	}
+
+	public List<Taxon> getSynonyms() {
+		return synonyms;
 	}
 	
 }

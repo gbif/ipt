@@ -37,7 +37,7 @@
             <electronicMailAddress>${eml.getResourceCreator().email!}</electronicMailAddress>
             <onlineUrl>${resource.link!}</onlineUrl>
         </creator>
-        <pubDate>${eml.pubDate?date?string.short}</pubDate>
+        <pubDate>${eml.pubDate?date?string("yyyy-MM-dd")}</pubDate>
         <language>${eml.language!}</language>
         <abstract>
             <para>${eml.abstract!}</para>
@@ -66,16 +66,22 @@
             <temporalCoverage>
 	            <#if eml.getTemporalCoverage().end??>
                 <rangeOfDates>
-                    <beginDate>${eml.getTemporalCoverage().start?date?string.short}</beginDate>
-                    <endDate>${eml.getTemporalCoverage().end?date?string.short}</endDate>
+                    <beginDate><calendarDate>${eml.getTemporalCoverage().start?date?string("yyyy-MM-dd")}</calendarDate></beginDate>
+                    <endDate><calendarDate>${eml.getTemporalCoverage().end?date?string("yyyy-MM-dd")}</calendarDate></endDate>
                 </rangeOfDates>
                 <#else>
-                <singleDateTime>${eml.getTemporalCoverage().start?date?string.short}</singleDateTime>
+                <singleDateTime><calendarDate>${eml.getTemporalCoverage().start?date?string("yyyy-MM-dd")}</calendarDate></singleDateTime>
                 </#if>
             </temporalCoverage>
             </#if>
             <taxonomicCoverage>
                 <generalTaxonomicCoverage>${eml.taxonomicCoverageDescription!}</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>${eml.lowestCommonTaxon().rank!}</taxonRankName>
+                    <taxonRankValue>${eml.lowestCommonTaxon().scientificName!}</taxonRankValue>
+                    <commonName>${eml.lowestCommonTaxon().commonName!}</commonName>
+                </taxonomicClassification>
+                
 	        	<#list eml.getTaxonomicClassification() as k>
                 <taxonomicClassification>
                     <taxonRankName>${k.rank!}</taxonRankName>
@@ -101,6 +107,7 @@
             </#if>
             <#if eml.samplingDescription??>
             <sampling>
+				<studyExtent><description><para></para></description></studyExtent>
                 <samplingDescription><para>${eml.samplingDescription!}</para></samplingDescription>
             </sampling>
             </#if>
@@ -129,10 +136,22 @@
             </funding>
             </#if>
             <#if eml.researchProject.studyAreaDescription??>
-            <studyAreaDescription>${eml.researchProject.studyAreaDescription!}</studyAreaDescription>
+            <studyAreaDescription>
+                <coverage>
+                    <geographicCoverage>
+                        <geographicDescription>${eml.researchProject.studyAreaDescription!}</geographicDescription>
+                        <boundingCoordinates>
+                            <westBoundingCoordinate></westBoundingCoordinate>
+                            <eastBoundingCoordinate></eastBoundingCoordinate>
+                            <northBoundingCoordinate></northBoundingCoordinate>
+                            <southBoundingCoordinate></southBoundingCoordinate>
+                        </boundingCoordinates>
+                    </geographicCoverage>
+                </coverage>
+            </studyAreaDescription>            
             </#if>
             <#if eml.researchProject.designDescription??>
-            <designDescription>${eml.researchProject.designDescription!}</designDescription>
+            <designDescription><description><para>${eml.researchProject.designDescription!}</para></description></designDescription>
             </#if>
         </project>
     </dataset>

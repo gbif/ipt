@@ -95,9 +95,4 @@ public class ProviderCfg {
 		this.googleMapsApiKey = googleMapsApiKey;
 	}
 	
-	@Transient
-	public String getEmlUrl() {
-		return String.format("%s/eml/provider.eml", baseUrl);
-	}
-
 }
