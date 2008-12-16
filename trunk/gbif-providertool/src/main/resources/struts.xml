@@ -378,22 +378,31 @@
         </action>
         <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
             <result type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
             <result name="xml" type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
             <result name="json" type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/occ/dwcXml.ftl</param>                
+                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
                 <param name="contentType">text/json</param>
             </result>
         </action>
-        <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
-            <result name="xml">/WEB-INF/pages/missing.jsp</result>
-            <result name="json">/WEB-INF/pages/missing.jsp</result>
+        <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.TaxonAction">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="xml" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="json" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
+                <param name="contentType">text/json</param>
+            </result>
         </action>
         
     </package>

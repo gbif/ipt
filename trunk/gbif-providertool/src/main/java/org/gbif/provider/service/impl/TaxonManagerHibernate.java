@@ -133,7 +133,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		        	.setLong("resourceId", resourceId)
 		        	.setString("rank", rank);
 		}else{
-			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.accepted=true and t.lft>root.lft and t.rgt<root.rgt order by t.scientificName")
+			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.accepted=true and t.lft>root.lft and t.rgt<root.rgt and t.rank = :rank   order by t.scientificName")
 		        	.setLong("taxonId", taxonId)
 		        	.setString("rank", rank);
 		}
@@ -155,7 +155,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getSynonyms(Long taxonId) {
-		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by t.scientificName")
+		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by s.scientificName")
     	.setLong("taxonId", taxonId)
     	.list();
 	}

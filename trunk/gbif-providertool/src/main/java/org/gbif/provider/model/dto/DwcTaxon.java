@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.voc.Rank;
@@ -21,7 +22,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 	private String infraSpeciesEpi;
 	private boolean terminal;
 	
-	public static DwcTaxon newInstance(Resource resource){
+	public static DwcTaxon newInstance(DataResource resource){
 		DwcTaxon tax = new DwcTaxon();
 		tax.taxon = Taxon.newInstance(resource);
 		return tax;

@@ -24,6 +24,7 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 
