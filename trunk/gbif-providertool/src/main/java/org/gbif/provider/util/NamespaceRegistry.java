@@ -58,8 +58,11 @@ public class NamespaceRegistry {
 		if (ns.equalsIgnoreCase("http://ipt.gbif.org")){
 			prefix="ipt";
 		}
-		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/dwcore/")){
+		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/")){
 			prefix="dwc";
+		}
+		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/dwcore/")){
+			prefix="dwcore";
 		}
 		else if (ns.equalsIgnoreCase("http://www.w3.org/1999/02/22-rdf-syntax-ns#")){
 			prefix="rdf";
@@ -105,10 +108,13 @@ public class NamespaceRegistry {
 				// make sure prefix is not too long
 				prefix = StringUtils.left(prefix, 6);
 			}
-			ns2prefix.put(ns, prefix);
+			add(ns, prefix);
 		}
 	}	
 	public void add(ExtensionProperty property, String preferredPrefix) {
+		add(property.getNamespace(), preferredPrefix);
+	}	
+	public void add(String namespace, String preferredPrefix) {
 		String prefix = preferredPrefix;
 		if (ns2prefix.containsValue(prefix)){
 			int i = 2;
@@ -117,7 +123,7 @@ public class NamespaceRegistry {
 				i++;
 			}
 		}
-		ns2prefix.put(property.getNamespace(), prefix);
+		ns2prefix.put(namespace, prefix);
 	}	
 	public void addAll(Collection<ExtensionProperty> properties) {
 		for (ExtensionProperty p : properties){

@@ -9,6 +9,6 @@
  </tr>
  <tr>
 	<th>Data</th>
-	<td><a href="${cfg.getDetailUrl(rec,'xml')}">XML</a>, JSON</td>
+	<td><a href="${cfg.getDetailUrl(rec,'xml')}">XML</a></td>
  </tr>
 </table>

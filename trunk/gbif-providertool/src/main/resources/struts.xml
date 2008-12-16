@@ -392,15 +392,15 @@
         </action>
         <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.TaxonAction">
             <result type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
+                <param name="location">/WEB-INF/pages/portal/tax/xmlDetail.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
             <result name="xml" type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
+                <param name="location">/WEB-INF/pages/portal/tax/xmlDetail.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
             <result name="json" type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/xmlDetail.ftl</param>                
+                <param name="location">/WEB-INF/pages/portal/tax/xmlDetail.ftl</param>                
                 <param name="contentType">text/json</param>
             </result>
         </action>

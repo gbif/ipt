@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <record guid="${record.guid}" xmlns="http://ipt.gbif.org" ${nsr.xmlnsDef()}>
+<#escape x as x?xml>
 <#assign core=taxon.resource.coreMapping>
 <#list core.extension.properties as p>
 <#if core.hasMappedProperty(p)>
@@ -18,4 +19,5 @@
   </#list>
   </extension>
 </#list>
+</#escape>
 </record>
