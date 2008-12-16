@@ -1,7 +1,10 @@
 #summary Version history of releases
 
-=== IPT 0.6 ===
+=== IPT 0.6-SNAPSHOT ===
  * auto column mapping for new mappings
+ * checklist upload
+ * checklist webapp for browsing & stats
+ * refactored towards simpler uploading classes
 
 === IPT 0.5.1 ===
  * uses XStream for EML metadata persistency
