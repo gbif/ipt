@@ -75,7 +75,7 @@ public class TaxResourceStatsAction extends ResourceStatsBaseAction<ChecklistRes
 	}
 	
 	public String statsByRank() {
-		recordAction="taxList";
+		recordAction="taxListByRank";
 		if (!useCachedImage(ImageType.ChartByRank)){
 			data = checklistResourceManager.taxByRank(resource_id);
 			String url = checklistResourceManager.taxByRankPieUrl(data, width, height, title);
@@ -85,6 +85,7 @@ public class TaxResourceStatsAction extends ResourceStatsBaseAction<ChecklistRes
 	}
 
 	public String statsByStatus() {
+		recordAction="taxListByStatus";
 		types = StatusType.values();
 		if (!useCachedImage(ImageType.ChartByStatus)){
 			StatusType st = StatusType.getByInt(type);

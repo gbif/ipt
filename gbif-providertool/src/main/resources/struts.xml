@@ -227,9 +227,6 @@
         <action name="taxResource" class="org.gbif.provider.webapp.action.portal.TaxResourceAction">
             <result type="freemarker">/WEB-INF/pages/portal/tax/index.ftl</result>
         </action>
-        <action name="taxList" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="list">
-            <result >/WEB-INF/pages/portal/tax/taxonList.jsp</result>
-        </action>
         <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.TaxonAction">
             <result type="freemarker">/WEB-INF/pages/portal/tax/taxon.ftl</result>
         </action>
@@ -242,7 +239,10 @@
             <result name="map">/WEB-INF/pages/portal/mapstats.jsp</result>
             <result name="chart">/WEB-INF/pages/portal/stats.jsp</result>
         </action>
-        
+        <action name="taxListBy*" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="listBy{1}">
+            <param name="action">{1}</param>
+            <result >/WEB-INF/pages/portal/tax/taxonList.jsp</result>
+        </action>
         <!-- metadata actions -->
         <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
             <result type="freemarker">/WEB-INF/pages/portal/meta/index.ftl</result>

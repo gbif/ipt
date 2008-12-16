@@ -26,8 +26,9 @@
 	</ul>
 </div>
 
-<s:url id="recordUrl" action="%{recordAction}" includeParams="none">
+<s:url id="recordUrl" action="%{recordAction}" includeParams="none" escapeAmp="false">
 	<s:param name="resource_id" value="resource_id" />
+	<s:param name="type" value="type" />
 </s:url>
 
 <div id="stats-table">

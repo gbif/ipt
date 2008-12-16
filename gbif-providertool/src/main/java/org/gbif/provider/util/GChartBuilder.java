@@ -54,6 +54,15 @@ public class GChartBuilder {
 	}
 
 	public static String generatePieChartUrl(int width, int height, String title, List<StatsCount> data){
+		// treat no data. still show a white chart
+		List<Color> addColors = new ArrayList<Color>();
+		if (data == null || data.isEmpty()){
+			StatsCount stat = new StatsCount("", 1l);
+			data = new ArrayList<StatsCount>();
+			data.add(stat);
+			addColors.add(new Color("efefef"));
+		}
+		
 		Long totalRecords = 0l;
 		for (StatsCount stat : data){
 			totalRecords += stat.getCount();
@@ -61,7 +70,8 @@ public class GChartBuilder {
 		
 		List<Slice> slices = new ArrayList<Slice>();
 		if (totalRecords > 0l){
-			LinkedList<Color> colors = new LinkedList<Color>(COLORS);
+			LinkedList<Color> colors = new LinkedList<Color>(addColors);
+			colors.addAll(COLORS);
 			for (StatsCount stat: data){
 				Color c;
 				if (stat.getLabel().equals(OTHER_LABEL)){
