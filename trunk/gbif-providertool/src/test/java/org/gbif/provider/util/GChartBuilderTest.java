@@ -38,6 +38,8 @@ public class GChartBuilderTest {
 		result = gb.generatePiaChartUrl(320, 160, data);
 //		System.out.println(result);
         assertEquals(expectedString, result);
+
+		System.out.println(gb.generatePiaChartUrl(320, 160, null));
 	}
 	
 	@Test

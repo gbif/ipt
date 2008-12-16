@@ -11,6 +11,7 @@ import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -28,10 +29,15 @@ public class TaxonAction extends BaseDataResourceAction {
 	private TaxonManager taxonManager;
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
+	// parameters
     private Long id;
     private String guid;
-    private Taxon taxon;
+    private String action;
+    private int type;
     private String category;
+    // results
+    private String title;
+    private Taxon taxon;
     private List<Taxon> taxa;
     private List<Taxon> synonyms;
     private List<StatsCount> stats;
@@ -56,12 +62,23 @@ public class TaxonAction extends BaseDataResourceAction {
 		return SUCCESS;
     }
     
-    public String list(){
-    	if (category!=null){
-    		taxa=taxonManager.getAllByRank(resource_id, id, category);
-    	}else{
-    		taxa=taxonManager.getAll(resource_id);
+    public String listByRank(){
+    	title = category;
+    	setRequestedTaxon();
+    	if (taxon != null){
+    		title += " below "+taxon.getScientificName();
     	}
+		taxa=taxonManager.getByRank(resource_id, id, category);
+		return SUCCESS;
+    }
+    public String listByStatus(){
+    	StatusType st = StatusType.getByInt(type);
+    	title = String.format("%s - %s", st.name(), category);
+    	setRequestedTaxon();
+    	if (taxon != null){
+    		title += " below "+taxon.getScientificName();
+    	}
+		taxa=taxonManager.getByStatus(resource_id, id, st, category);
 		return SUCCESS;
     }
     
@@ -128,6 +145,18 @@ public class TaxonAction extends BaseDataResourceAction {
 
 	public List<Taxon> getSynonyms() {
 		return synonyms;
+	}
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public String getTitle() {
+		return title;
 	}
 	
 }

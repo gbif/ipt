@@ -13,6 +13,7 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.StatsUtils;
 import org.hibernate.Query;
@@ -125,7 +126,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		return resource;
 	}
 	
-	public List<Taxon> getAllByRank(Long resourceId, Long taxonId, String rank){
+	public List<Taxon> getByRank(Long resourceId, Long taxonId, String rank){
 		Query query;
 		if (taxonId==null){
 			query = query("from Taxon WHERE rank = :rank and resource.id = :resourceId order by scientificName")
@@ -139,7 +140,19 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		return query.list();
 	}
 
-
+	public List<Taxon> getByStatus(Long resourceId, Long taxonId, StatusType st, String category) {
+		Query query;
+		if (taxonId==null){
+			query = query(String.format("from Taxon WHERE %s = :category and resource.id = :resourceId order by scientificName", st.columnName))
+		        	.setLong("resourceId", resourceId)
+		        	.setString("category", category);
+		}else{
+			query = query(String.format("select t from Taxon, Taxon root WHERE root.id=:taxonId and t.resource=root.resource and t.accepted=true and t.lft>root.lft and t.rgt<root.rgt and t.%s=:category   order by t.scientificName", st.columnName))
+		        	.setLong("taxonId", taxonId)
+		        	.setString("category", category);
+		}
+		return query.list();
+	}
 
 	public List<Taxon> getSynonyms(Long taxonId) {
 		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by t.scientificName")
@@ -157,4 +170,6 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         	.list();
         return StatsUtils.getDataMap(data);
 	}
+
+
 }
