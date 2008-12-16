@@ -6,13 +6,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
 
 public class NamespaceRegistry {
 	private Map<String, String> ns2prefix = new HashMap<String, String>();
-	public NamespaceRegistry(OccurrenceResource resource) {
+	public NamespaceRegistry(DataResource resource) {
 		this.addResource(resource);
 	}
 	
@@ -123,7 +124,7 @@ public class NamespaceRegistry {
 			add(p.getNamespace());
 		}
 	}
-	public void addResource(OccurrenceResource resource){
+	public void addResource(DataResource resource){
 		for (ViewMappingBase view : resource.getAllMappings()){
 			this.addAll(view.getMappedProperties());
 		}

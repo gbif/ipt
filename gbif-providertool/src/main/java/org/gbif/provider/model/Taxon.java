@@ -53,7 +53,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private boolean isDeleted;
 		private Date modified;
 		@NotNull
-		private Resource resource;
+		private DataResource resource;
 		
 		// taxon specific
 		private String rank;
@@ -75,7 +75,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private BBox bbox = new BBox();
 		private int occTotal;
 		
-		public static Taxon newInstance(Resource resource){
+		public static Taxon newInstance(DataResource resource){
 			Taxon tax = new Taxon();
 			tax.resource=resource;
 			tax.setGuid(UUID.randomUUID().toString());					
@@ -94,10 +94,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 		
 		@ManyToOne(optional = false)
-		public Resource getResource() {
+		public DataResource getResource() {
 			return resource;
 		}
-		public void setResource(Resource resource) {
+		public void setResource(DataResource resource) {
 			this.resource = resource;
 		}
 

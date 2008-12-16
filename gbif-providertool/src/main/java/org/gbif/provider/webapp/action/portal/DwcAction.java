@@ -110,5 +110,7 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	public NamespaceRegistry getNsr() {
 		return nsr;
 	}
-
+	public DarwinCore getRecord(){
+		return dwc;
+	}
 }

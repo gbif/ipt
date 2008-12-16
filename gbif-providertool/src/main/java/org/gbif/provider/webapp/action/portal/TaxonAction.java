@@ -2,49 +2,64 @@ package org.gbif.provider.webapp.action.portal;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.DarwinCore;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class TaxonAction extends BaseDataResourceAction {
+public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	@Autowired
 	private MapUtil mapUtil;
 	@Autowired
 	private TaxonManager taxonManager;
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
+	@Autowired
+	private ExtensionRecordManager extensionRecordManager;
 	// parameters
     private Long id;
     private String guid;
     private String action;
     private int type;
     private String category;
+    private String format;
     // results
     private String title;
     private Taxon taxon;
     private List<Taxon> taxa;
     private List<Taxon> synonyms;
     private List<StatsCount> stats;
+    // occurrences only
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
+    // xml/json serialisation only
+    private Map<Object, Object> json;
+    private NamespaceRegistry nsr;
+    private ExtensionRecordsWrapper extWrapper;
+    private List<Extension> extensions;
 	
 	private void setRequestedTaxon(){
     	if (id!=null){
@@ -55,9 +70,22 @@ public class TaxonAction extends BaseDataResourceAction {
 	}
 	public String execute(){
 		setRequestedTaxon();
-    	if (taxon!=null){    		
+    	if (taxon!=null){
 			stats = taxonManager.getRankStats(taxon.getId());
 			synonyms = taxonManager.getSynonyms(taxon.getId());
+			if (format != null){
+	    		extWrapper = extensionRecordManager.getExtensionRecords(taxon.getResource(), taxon.getCoreId());
+	    		extensions = extWrapper.getExtensions();
+	        	if (format!=null && format.equalsIgnoreCase("xml")){
+	        		nsr = new NamespaceRegistry(taxon.getResource());
+	        		return "xml";
+	        	}
+	        	else if (format!=null && format.equalsIgnoreCase("json")){
+	        		//TODO: create map to serialise into JSON
+	        		json = new HashMap<Object, Object>();
+	        		return "json";
+	        	}
+			}
     	}
 		return SUCCESS;
     }
@@ -157,6 +185,27 @@ public class TaxonAction extends BaseDataResourceAction {
 	}
 	public String getTitle() {
 		return title;
+	}
+	public Taxon getRecord(){
+		return taxon;
+	}
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	public Map<Object, Object> getJson() {
+		return json;
+	}
+	public NamespaceRegistry getNsr() {
+		return nsr;
+	}
+	public ExtensionRecordsWrapper getExtWrapper() {
+		return extWrapper;
+	}
+	public List<Extension> getExtensions() {
+		return extensions;
 	}
 	
 }
