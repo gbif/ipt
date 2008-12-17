@@ -21,7 +21,7 @@
                 <xs:element name="preferred">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element ref="term" maxOccurs="unbounded"/>
+                            <xs:element ref="term" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -29,7 +29,7 @@
                 <xs:element name="alternative">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element ref="term" maxOccurs="unbounded"/>
+                            <xs:element ref="term" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

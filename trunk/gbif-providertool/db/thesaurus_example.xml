@@ -3,7 +3,7 @@
     xmlns="http://data.gbif.org/thesaurus"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://data.gbif.org/thesaurus  thesaurus.xsd">
-    <concept dc:identifier="http://iso.org/3166#US" iso3Digit="USA" iso2Digit="US" dc:type="http://iso.org/3166#country" dc:issued="2006-05-04T18:13:51.0Z">
+    <concept dc:identifier="US" dc:URI="http://iso.org/3166#US" iso3Digit="USA" dc:type="http://iso.org/3166" dc:issued="2006-05-04T18:13:51.0Z">
         <preferred>
             <term dc:title="United States of America" dc:lang="en" dc:source="source0" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Vereinigte Staaten von Amerika" dc:lang="de" dc:source="source1" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
@@ -15,7 +15,7 @@
         </alternative>
     </concept>
 
-    <concept dc:identifier="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" dc:type="http://rs.tdwg.org/ontology/voc/TaxonRank" dc:issued="2006-05-04T18:13:51.0Z">
+    <concept dc:identifier="species" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" dc:type="http://rs.tdwg.org/ontology/voc/TaxonRank" dc:issued="2006-05-04T18:13:51.0Z">
         <preferred>
             <term dc:title="Species" dc:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Art" dc:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
@@ -25,5 +25,13 @@
             <term dc:title="Sp." dc:lang="en" dc:source="source16" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
             <term dc:title="Spec" dc:lang="en" dc:source="source17" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
         </alternative>
+    </concept>
+    
+    <concept dc:identifier="en" dc:URI="http:/iso.org/iso639-1#en" dc:type="http:/iso.org/iso639-1" dc:issued="2006-05-04T18:13:51.0Z">
+        <preferred>
+            <term dc:title="English" dc:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Englisch" dc:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+        </preferred>
+        <alternative/>        
     </concept>
 </thesaurus>
