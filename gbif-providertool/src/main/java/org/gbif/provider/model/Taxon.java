@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
@@ -42,6 +43,8 @@ import org.hibernate.validator.NotNull;
 
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
+) 
 public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 

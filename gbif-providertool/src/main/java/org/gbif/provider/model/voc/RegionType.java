@@ -14,6 +14,8 @@ public enum RegionType {
 	County("county"),
 	Locality("locality");	
 	
+	public static final String URI = "http://rs.tdwg.org/ontology/voc/TaxonRank";
+
 	public static final List<RegionType> DARWIN_CORE_REGIONS;
 	  static  
 	  {  

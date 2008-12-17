@@ -25,8 +25,8 @@ import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
+import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
-import org.gbif.provider.model.voc.Vocabulary;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -34,39 +34,39 @@ import com.opensymphony.xwork2.Preparable;
 public class ThesaurusAction extends BaseAction {
 	@Autowired
     private ThesaurusManager thesaurusManager;
-	private Vocabulary[] vocabularies;
-	private Vocabulary vocabulary;
+	private List<ThesaurusVocabulary> vocabularies;
+	private ThesaurusVocabulary vocabulary;
 	private List<ThesaurusConcept> concepts;
 	private List<ThesaurusTerm> terms;
     private ThesaurusConcept concept;
-    private Integer id;
+    private Long id;
 
 
 	public String execute(){
-		vocabularies = Vocabulary.values();
+		vocabularies = thesaurusManager.getVocabularies();
 		return SUCCESS;
 	}
 	public String vocabulary(){
-		vocabulary = Vocabulary.getByInt(id);
-		concepts = thesaurusManager.getAllConcepts(vocabulary);
+		vocabulary = thesaurusManager.getVocabulary(id);
+		concepts = thesaurusManager.getAllConcepts(vocabulary.getUri());
 		return SUCCESS;
 	}
 	public String concept(){
 		concept = thesaurusManager.getConcept(new Long(id));
-		terms = thesaurusManager.getAllTerms(concept, false);
+		terms = thesaurusManager.getAllTerms(concept.getUri(), false);
 		return SUCCESS;
 	}
 
 	
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public Vocabulary[] getVocabularies() {
+	public List<ThesaurusVocabulary> getVocabularies() {
 		return vocabularies;
 	}
 	public List<ThesaurusConcept> getConcepts() {
@@ -75,7 +75,7 @@ public class ThesaurusAction extends BaseAction {
 	public List<ThesaurusTerm> getTerms() {
 		return terms;
 	}
-	public Vocabulary getVocabulary() {
+	public ThesaurusVocabulary getVocabulary() {
 		return vocabulary;
 	}
 	public ThesaurusConcept getConcept() {

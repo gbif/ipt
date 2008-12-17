@@ -9,11 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.gbif.provider.model.voc.Vocabulary;
-import org.hibernate.validator.NotNull;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-public class ThesaurusTerm implements BaseObject{
+public class ThesaurusTerm implements Comparable, BaseObject{
 	private Long id;
 	private ThesaurusConcept concept;
 	private boolean accepted;
@@ -48,6 +49,7 @@ public class ThesaurusTerm implements BaseObject{
 		this.accepted = accepted;
 	}
 	
+	@org.hibernate.annotations.Index(name="term_title")
 	public String getTitle() {
 		return title;
 	}
@@ -87,7 +89,48 @@ public class ThesaurusTerm implements BaseObject{
 		this.modified = modified;
 	}
 	
+	
+	
 	public String toString(){
 		return String.format("%s [%s]",title, lang);
+	}
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		ThesaurusTerm myClass = (ThesaurusTerm) object;
+		return new CompareToBuilder().append(this.modified, myClass.modified)
+				.append(this.created, myClass.created).append(this.lang,
+						myClass.lang).append(this.title, myClass.title).append(
+						this.accepted, myClass.accepted).append(this.concept,
+						myClass.concept)
+				.append(this.relation, myClass.relation).append(this.source,
+						myClass.source).append(this.id, myClass.id)
+				.toComparison();
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof ThesaurusTerm)) {
+			return false;
+		}
+		ThesaurusTerm rhs = (ThesaurusTerm) object;
+		return new EqualsBuilder().append(this.modified, rhs.modified).append(
+				this.created, rhs.created).append(this.lang, rhs.lang).append(
+				this.title, rhs.title).append(this.accepted, rhs.accepted)
+				.append(this.concept, rhs.concept).append(this.relation,
+						rhs.relation).append(this.source, rhs.source).append(
+						this.id, rhs.id).isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(877564629, -1011155925)
+				.append(this.modified).append(this.created).append(this.lang)
+				.append(this.title).append(this.accepted).append(this.concept)
+				.append(this.relation).append(this.source).append(this.id)
+				.toHashCode();
 	}
 }

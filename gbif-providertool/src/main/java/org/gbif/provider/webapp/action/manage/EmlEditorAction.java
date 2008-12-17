@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,7 +13,9 @@ import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +26,27 @@ import com.opensymphony.xwork2.Preparable;
 public class EmlEditorAction extends BaseMetadataResourceAction implements Preparable{
 	@Autowired
 	private EmlManager emlManager;
+	@Autowired
+	private ThesaurusManager thesaurusManager;
 	private Eml eml;
 	
 	protected String next;
 	protected String nextPage;
 	protected final String NEXT = "next";
 	
-	protected Map<String, String> isoCountryI18nCodeMap;
-	protected Map<String, String> isoLanguageI18nCodeMap;
-	protected Map<String, String> majorTaxonRanks;
-	protected Map<String, String> otherTaxonRanks;
+	protected Map<Long, String> isoCountryI18nCodeMap;
+	protected Map<Long, String> isoLanguageI18nCodeMap;
+	protected Map<Long, String> ranksI18nCodeMap;
 	
 	public void prepare() {
 		super.prepare();
 		if (resource!=null){
 			eml = emlManager.load(resource);
+			// load term discts according to locale language
+			String lang = getLocaleLanguage();
+			isoCountryI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Country.uri, lang);
+			isoLanguageI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Language.uri, lang);
+			ranksI18nCodeMap = thesaurusManager.getI18nCodeMap(Rank.URI, lang);
 		}
 	}
 		
@@ -82,17 +91,13 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	public void setNextPage(String nextPage) {
 		this.nextPage = nextPage;
 	}
-	public Map<String, String> getIsoLanguageI18nCodeMap() {
+	public Map<Long, String> getIsoLanguageI18nCodeMap() {
 		return isoLanguageI18nCodeMap;
 	}
 
 	public List getRoles() {
 		return  Arrays.asList(Role.values());
 	 }
-
-	public void setIsoLanguageI18nCodeMap(Map<String, String> isoLanguageI18nCodeMap) {
-		this.isoLanguageI18nCodeMap = isoLanguageI18nCodeMap;
-	}
 
 	public String getTaxonomicClassification() {
 		String coverage="";
@@ -136,34 +141,15 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 		eml.setKeywords(keywords);
 	}
 	
-	public Map<String, String> getIsoCountryI18nCodeMap() {
+	public Map<Long, String> getIsoCountryI18nCodeMap() {
 		return isoCountryI18nCodeMap;
 	}
 
-	public void setIsoCountryI18nCodeMap(Map<String, String> isoCountryI18nCodeMap) {
-		this.isoCountryI18nCodeMap = translateI18nMap(isoCountryI18nCodeMap);
+	public Map<Long, String> getAllRanks() {
+		return ranksI18nCodeMap;
 	}
-
-	public Map<String, String> getMajorTaxonRanks() {
-		return majorTaxonRanks;
-	}
-
-	public void setMajorTaxonRanks(Map<String, String> majorTaxonRanks) {
-		this.majorTaxonRanks = translateI18nMap(majorTaxonRanks);
-	}
-
-	public Map<String, String> getOtherTaxonRanks() {
-		return otherTaxonRanks;
-	}
-
-	public void setOtherTaxonRanks(Map<String, String> otherTaxonRanks) {
-		this.otherTaxonRanks = translateI18nMap(otherTaxonRanks);
-	}
-
-	public Map<String, String> getAllRanks() {
-		Map<String, String> ranks = new HashMap<String, String>(majorTaxonRanks);
-		ranks.putAll(otherTaxonRanks);
-		return ranks;
+	public Map<Long, String> getRanksI18nCodeMap() {
+		return ranksI18nCodeMap;
 	}
 	
 }

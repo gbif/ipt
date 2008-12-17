@@ -1,5 +1,5 @@
 <head>
-    <title>${concept.type} Vocabulary</title>
+    <title>${concept.vocabulary.title} Vocabulary</title>
     <meta name="heading" content="${concept.identifier}"/>
     <meta name="menu" content="MainMenu"/>
 </head>
@@ -8,6 +8,10 @@
  <tr>
 	<th>Identifier</th>
 	<td>${concept.identifier}</td>
+ </tr>
+ <tr>
+	<th>URI</th>
+	<td>${concept.uri}</td>
  </tr>
  <tr>
 	<th>Issued</th>

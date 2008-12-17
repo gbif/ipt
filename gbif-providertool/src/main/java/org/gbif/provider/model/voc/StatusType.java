@@ -5,12 +5,15 @@ import java.util.Collections;
 import java.util.List;
 
 public enum StatusType {
-	NomenclaturalStatus("nomenclaturalStatus"),
-	TaxonomicStatus("taxonomicStatus");	
+	NomenclaturalStatus("nomenclaturalStatus", "http://rs.tdwg.org/ontology/voc/NomenclaturalStatus"),
+	TaxonomicStatus("taxonomicStatus", "http://rs.tdwg.org/ontology/voc/TaxonomicStatus");	
 	
-	public String columnName;	
-	private StatusType (String colName){
-		columnName=colName;
+	public String columnName;
+	public String vocabularyUri;
+	
+	private StatusType (String colName, String vocabularyUri){
+		this.columnName=colName;
+		this.vocabularyUri=vocabularyUri;
 	}
 	
 	public static StatusType getByInt(int i){

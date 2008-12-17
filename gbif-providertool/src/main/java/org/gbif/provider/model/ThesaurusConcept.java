@@ -1,21 +1,29 @@
 package org.gbif.provider.model;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-import org.gbif.provider.model.voc.Vocabulary;
-import org.hibernate.validator.NotNull;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-public class ThesaurusConcept implements BaseObject{
+public class ThesaurusConcept implements Comparable, BaseObject{
 	private Long id;
 	private String identifier;
-	private Vocabulary type;
+	private String uri;
+	private ThesaurusVocabulary vocabulary;
+	private Integer conceptOrder;
 	private Date issued;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +34,8 @@ public class ThesaurusConcept implements BaseObject{
 		this.id = id;
 	}
 	
+	@Column(length=64)
+	@org.hibernate.annotations.Index(name="concept_identifier")
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -33,11 +43,21 @@ public class ThesaurusConcept implements BaseObject{
 		this.identifier = identifier;
 	}
 	
-	public Vocabulary getType() {
-		return type;
+	@org.hibernate.annotations.Index(name="concept_uri")
+	public String getUri() {
+		return uri;
 	}
-	public void setType(Vocabulary type) {
-		this.type = type;
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	
+	
+	@ManyToOne(optional=false)
+	public ThesaurusVocabulary getVocabulary() {
+		return vocabulary;
+	}
+	public void setVocabulary(ThesaurusVocabulary vocabulary) {
+		this.vocabulary = vocabulary;
 	}
 	
 	public Date getIssued() {
@@ -47,8 +67,51 @@ public class ThesaurusConcept implements BaseObject{
 		this.issued = issued;
 	}
 	
+	public Integer getConceptOrder() {
+		return conceptOrder;
+	}
+	public void setConceptOrder(Integer conceptOrder) {
+		this.conceptOrder = conceptOrder;
+	}
+	
+	
+	
+	
+	
 	public String toString(){
 		return identifier;
+	}
+	/**
+	 * @see java.lang.Comparable#compareTo(Object)
+	 */
+	public int compareTo(Object object) {
+		ThesaurusConcept myClass = (ThesaurusConcept) object;
+		return new CompareToBuilder().append(this.issued, myClass.issued)
+				.append(this.uri, myClass.uri)
+				.append(this.vocabulary, myClass.vocabulary).append(this.identifier,
+						myClass.identifier).append(this.id, myClass.id)
+				.toComparison();
+	}
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (!(object instanceof ThesaurusConcept)) {
+			return false;
+		}
+		ThesaurusConcept rhs = (ThesaurusConcept) object;
+		return new EqualsBuilder().append(this.issued, rhs.issued).append(
+				this.uri, rhs.uri).append(this.vocabulary, rhs.vocabulary).append(
+				this.identifier, rhs.identifier).append(this.id, rhs.id)
+				.isEquals();
+	}
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return new HashCodeBuilder(-1161377931, -1626651913)
+				.append(this.issued).append(this.uri).append(this.vocabulary)
+				.append(this.identifier).append(this.id).toHashCode();
 	}
 
 }

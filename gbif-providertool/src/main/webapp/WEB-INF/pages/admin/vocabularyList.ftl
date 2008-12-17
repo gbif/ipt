@@ -11,7 +11,7 @@
 	</tr>
 <#list vocabularies as voc>
 	<tr>
-		<td><a href="vocabulary.html?id=${voc.ordinal()?c}">${voc.name()}</a></td>
+		<td><a href="vocabulary.html?id=${voc.id?c}">${voc.title}</a></td>
 		<td>${voc.uri!}</td>
 	</tr>
 </#list>

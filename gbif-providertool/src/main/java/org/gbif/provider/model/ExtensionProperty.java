@@ -48,6 +48,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private int columnLength;
 	private String link;
 	private boolean required;
+	private ThesaurusVocabulary vocabulary;
 	private List<String> terms = new ArrayList<String>();
 
 	public ExtensionProperty() {
@@ -136,19 +137,15 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.required = required;
 	}
 
-	@CollectionOfElements
-	@IndexColumn(name = "terms_order", base = 0, nullable = false)
-	@JoinColumn(name = "extension_property_fk", nullable = false)
-	public List<String> getTerms() {
-		return terms;
+	@ManyToOne(optional = false)
+	public ThesaurusVocabulary getVocabulary() {
+		return vocabulary;
 	}
-
-	public void setTerms(List<String> terms) {
-		this.terms = terms;
+	public void setVocabulary(ThesaurusVocabulary vocabulary) {
+		this.vocabulary = vocabulary;
 	}
-
 	public boolean hasTerms() {
-		return !terms.isEmpty();
+		return vocabulary != null;
 	}
 
 	/**

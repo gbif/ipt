@@ -1,37 +1,15 @@
 package org.gbif.provider.task;
 
-	import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.geo.TransformationUtils;
-import org.gbif.provider.model.BBox;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.OccStatByRegionAndTaxon;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Region;
+	import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ThesaurusConcept;
-import org.gbif.provider.model.ThesaurusTerm;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.dto.DwcTaxon;
+import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.ChecklistResourceManager;
-import org.gbif.provider.service.CoreRecordManager;
-import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.LimitedMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 	/**
 	 * Tha main task responsible for uploading raw data into the cache and doing simple preprocessing while iterating through the ImportSource.
@@ -70,11 +48,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 			Rank dwcRank = rankCache.get(record.getRank()); 
 			if (dwcRank==null){
 				// query thesaurus to find a matching rank
-				ThesaurusConcept rank = thesaurusManager.getConcept(Vocabulary.Rank, record.getRank());
+				ThesaurusConcept rank = thesaurusManager.getConcept(Rank.URI, record.getRank());
 				if (rank != null){
 					dwcRank = Rank.getByIdentifier(rank.getIdentifier());
-					rankCache.put(record.getRank(), dwcRank);
 				}
+				// also keep NULL ranks in cache
+				rankCache.put(record.getRank(), dwcRank);
 			}
 			record.setDwcRank(dwcRank);				
 			super.recordHandler(record);

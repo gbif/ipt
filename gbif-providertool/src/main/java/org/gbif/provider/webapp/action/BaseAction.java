@@ -1,5 +1,6 @@
 package org.gbif.provider.webapp.action;
 
+import java.util.Locale;
 import java.util.Map;
 
 import org.appfuse.model.User;
@@ -40,7 +41,9 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 	public void setDelete(String delete) {
 		this.delete = delete;
 	}
-
+	public String getLocaleLanguage(){
+		return this.getLocale().getLanguage();		
+	}
 
 	public AppConfig getCfg() {
 		return cfg;

@@ -4,29 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public enum Vocabulary{
-	Rank("http://rs.tdwg.org/ontology/voc/TaxonRank"),
-	TaxonomicStatus("http://rs.tdwg.org/ontology/voc/TaxonomicStatus"),
+public enum Vocabulary {
+	Language("http://iso.org/639-1"),
+	Country("http://iso.org/iso3166"),
 	NomenclaturalStatus("http://rs.tdwg.org/ontology/voc/NomenclaturalStatus"),
-	IsoCountry("http://iso.org/3166"),
-	Language("http://iso.org/639-1");	
+	DarwinCoreTypes("http://rs.tdwg.org/dwc/dwctype/"),
+	TaxonomicStatus("http://rs.tdwg.org/ontology/voc/TaxonomicStatus");	
 	
-	public String uri;	
-	private Vocabulary (String uri){
-		uri=uri;
-	}
+	public String uri;
 	
-	public String getUri(){
-		return uri;
+	private Vocabulary (String vocabularyUri){
+		this.uri=vocabularyUri;
 	}
-	public static Vocabulary getByInt(int i){
-		
-		for (Vocabulary r : Vocabulary.values()){
-			if (r.ordinal() == i){
-				return r;
-			}
-		}
-		return null;
-	}
-
 }

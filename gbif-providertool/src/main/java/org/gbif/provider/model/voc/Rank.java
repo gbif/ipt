@@ -17,6 +17,8 @@ public enum Rank {
 	InfraSpecies(null, "http://rs.tdwg.org/ontology/voc/TaxonRank#InfraSpecies"),	
 	TerminalTaxon("scientific_name", "");	
 	
+	public static final String URI = "http://rs.tdwg.org/ontology/voc/TaxonRank";
+	
 	public static final List<Rank> DARWIN_CORE_HIGHER_RANKS;
 	  static  
 	  {  

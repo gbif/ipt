@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Embeddable
-public class ColumnMapping {
+public class SourceColumn {
 	private String columnName;
 
 	@Column(length=128)
@@ -29,10 +29,10 @@ public class ColumnMapping {
 	 * @see java.lang.Object#equals(Object)
 	 */
 	public boolean equals(Object object) {
-		if (!(object instanceof ColumnMapping)) {
+		if (!(object instanceof SourceColumn)) {
 			return false;
 		}
-		ColumnMapping rhs = (ColumnMapping) object;
+		SourceColumn rhs = (SourceColumn) object;
 		return new EqualsBuilder().append(this.columnName, rhs.columnName).isEquals();
 	}
 	/**

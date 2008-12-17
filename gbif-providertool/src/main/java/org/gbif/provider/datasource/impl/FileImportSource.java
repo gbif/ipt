@@ -33,7 +33,7 @@ import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.model.ColumnMapping;
+import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceBase;
@@ -56,9 +56,9 @@ public class FileImportSource implements ImportSource{
 	private Map<String, Integer> headerMap = new HashMap<String, Integer>();
 
 	private Collection<PropertyMapping> properties;
-	private ColumnMapping coreIdColumn;
-	private ColumnMapping guidColumn;
-	private ColumnMapping linkColumn;
+	private SourceColumn coreIdColumn;
+	private SourceColumn guidColumn;
+	private SourceColumn linkColumn;
 	private Long resourceId;
 
     protected static FileImportSource newInstance(DataResource resource, ViewMappingBase view) throws ImportSourceException{
