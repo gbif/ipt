@@ -19,10 +19,12 @@ package org.gbif.provider.service.impl;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.UploadEvent;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -40,28 +42,21 @@ public class ThesaurusManagerTest extends ContextAwareTestBase{
 
 	@Test
 	public void testVoc(){
-		List<?> ts = thesaurusManager.getAllConcepts(Vocabulary.Rank);
+		List<?> ts = thesaurusManager.getAllConcepts(Rank.URI);
 		assertTrue(ts.size()>10);
+		System.out.println(ts);
 	}
 	
 
-	@Test
-	public void testVoc2(){
-		int i = 0;
-		Vocabulary voc = Vocabulary.getByInt(i);
-		assertEquals(Vocabulary.Rank, voc);
-		List<?> ts = thesaurusManager.getAllConcepts(voc);
-		assertTrue(ts.size()>10);
-	}
-	
 	@Test	
 	public void testGetConceptVocabularyString() {
-		ThesaurusConcept c = thesaurusManager.getConcept(Vocabulary.Rank, "Species");
+		ThesaurusConcept c = thesaurusManager.getConcept(Rank.URI, "Species");
 	}
 
 	@Test
-	public void testGetAllConcepts() {
-		List<ThesaurusConcept> concepts = thesaurusManager.getAllConcepts(Vocabulary.Rank);
+	public void testGetI18nCodeMap() {
+		Map<Long, String> m = thesaurusManager.getI18nCodeMap(Rank.URI, "de");
+		System.out.println(m);
 	}
 
 }

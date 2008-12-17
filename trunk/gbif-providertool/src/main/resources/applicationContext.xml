@@ -41,18 +41,6 @@
     
     
     
-    <!-- H2 DATABASE SERVER (currently needed for geoserver) -->
-    <!-- ,-tcpPort,9092 -->
-    <!-- 
-    <bean id="org.h2.tools.Server" 
-        class="org.h2.tools.Server" 
-        factory-method="createTcpServer" 
-        init-method="start" 
-        destroy-method="stop"> 
-        <constructor-arg value="-tcp,-tcpAllowOthers,true,-baseDir,${dataDir}" /> 
-    </bean>
-    -->
-    
     <!-- Struts Interceptors -->
     <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
         <property name="authorizedRoles">
@@ -78,6 +66,8 @@
     </bean>
 
 
+
+
     <!--  MANAGER  -->
     <bean id="abstractManager" abstract="true">
         <!--property name="sessionFactory" ref="sessionFactory"/-->
@@ -100,6 +90,10 @@
         <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
     </bean>    
     
+    <bean id="termMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.TermMapping"/>
+    </bean>    
+
     <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
     
     <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        

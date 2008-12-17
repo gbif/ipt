@@ -45,7 +45,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	private Long id;	
 	private ViewMappingBase viewMapping;
 	private ExtensionProperty property;
-	private ColumnMapping column = new ColumnMapping();
+	private SourceColumn column = new SourceColumn();
 	private String value;
 	
 	public static PropertyMapping newInstance(){
@@ -84,10 +84,10 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	}
 	
     @AttributeOverride(name="columnName", column = @Column(name="column_name") )
-	public ColumnMapping getColumn() {
+	public SourceColumn getColumn() {
 		return column;
 	}
-	public void setColumn(ColumnMapping column) {
+	public void setColumn(SourceColumn column) {
 		this.column = column;
 	}
 

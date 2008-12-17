@@ -18,7 +18,6 @@
         <mapping class="org.appfuse.model.User"/>
         <mapping class="org.appfuse.model.Role"/>
         <mapping class="org.gbif.provider.model.Annotation"/>
-        <mapping class="org.gbif.provider.model.BBox"/>
         <mapping class="org.gbif.provider.model.ChecklistResource"/>
         <mapping class="org.gbif.provider.model.CoreRecord"/>
         <mapping class="org.gbif.provider.model.DarwinCore"/>
@@ -28,7 +27,6 @@
         <mapping class="org.gbif.provider.model.ExtensionProperty"/>
         <mapping class="org.gbif.provider.model.OccurrenceResource"/>
         <mapping class="org.gbif.provider.model.OccStatByRegionAndTaxon"/>        
-        <mapping class="org.gbif.provider.model.Point"/>
         <mapping class="org.gbif.provider.model.PropertyMapping"/>
         <mapping class="org.gbif.provider.model.ProviderCfg"/>
         <mapping class="org.gbif.provider.model.Region"/>
@@ -38,12 +36,18 @@
         <mapping class="org.gbif.provider.model.SourceSql"/>
         <mapping class="org.gbif.provider.model.SourceFile"/>
         <mapping class="org.gbif.provider.model.Taxon"/>
+        <mapping class="org.gbif.provider.model.TermMapping"/>
         <mapping class="org.gbif.provider.model.ThesaurusConcept"/>
         <mapping class="org.gbif.provider.model.ThesaurusTerm"/>
+        <mapping class="org.gbif.provider.model.ThesaurusVocabulary"/>
         <mapping class="org.gbif.provider.model.UploadEvent"/>
         <mapping class="org.gbif.provider.model.ViewMappingBase"/>
         <mapping class="org.gbif.provider.model.ViewCoreMapping"/>
         <mapping class="org.gbif.provider.model.ViewExtensionMapping"/>
+        <!-- embeddedable -->
+        <mapping class="org.gbif.provider.model.BBox"/>
+        <mapping class="org.gbif.provider.model.Point"/>
+        <mapping class="org.gbif.provider.model.SourceColumn"/>
         <!-- imported logging & job classes -->
         <mapping class="org.gbif.logging.model.LogEvent"/>
         

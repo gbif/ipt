@@ -30,7 +30,7 @@ import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.model.ColumnMapping;
+import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceFile;
@@ -55,9 +55,9 @@ public class RdbmsImportSource implements ImportSource{
 	private Integer maxRecords;
 	
 	private Collection<PropertyMapping> properties;
-	private ColumnMapping coreIdColumn;
-	private ColumnMapping guidColumn;
-	private ColumnMapping linkColumn;
+	private SourceColumn coreIdColumn;
+	private SourceColumn guidColumn;
+	private SourceColumn linkColumn;
 	private Long resourceId;
 
 

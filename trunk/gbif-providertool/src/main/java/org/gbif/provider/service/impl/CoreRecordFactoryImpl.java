@@ -86,6 +86,10 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		dwc.setDeleted(false);
 		for (ExtensionProperty prop : rec.getProperties().keySet()){
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
+			if (val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
+				val = val.substring(0, prop.getColumnLength());
+				logdb.warn(String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength()));
+			}
 			String propName = prop.getName();
 			// first try the properties which we try to convert to other data types
 			if(propName.equals("MinimumElevationInMeters")){
@@ -168,6 +172,10 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		for (ExtensionProperty prop : rec.getProperties().keySet()){
 			// set properties via reflection
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
+			if (val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
+				val = val.substring(0, prop.getColumnLength());
+				logdb.warn(String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength()));
+			}
 			if (!tax.setPropertyValue(prop, val)){
 				String propName = prop.getName();
 				log.warn("Can't set unknown property Taxon."+propName);
