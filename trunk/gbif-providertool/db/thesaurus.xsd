@@ -34,7 +34,17 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute ref="dc:identifier" use="required"/>
+            <xs:attribute ref="dc:URI" use="required">
+                <xs:annotation>
+                    <xs:documentation>The proper full URI. Preferrrably pointing to an RDF document in an ontology</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute ref="dc:identifier" use="required">
+                <xs:annotation>
+                    <xs:documentation>A short code locally unique within a vocabulary as identified by the dc:type attribute. 
+                        Should be language neutral as much as possible. E.g. DE for Germany or familia for the family rank</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
             <xs:attribute ref="dc:issued" use="required"/>
             <xs:attribute ref="dc:type" use="required"/>
             <xs:anyAttribute processContents="lax"/>
