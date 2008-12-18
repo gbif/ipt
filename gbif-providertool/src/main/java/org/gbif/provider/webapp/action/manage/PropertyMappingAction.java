@@ -17,19 +17,23 @@
 package org.gbif.provider.webapp.action.manage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
+import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,6 +54,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	@Autowired
 	@Qualifier("propertyMappingManager")
     private GenericManager<PropertyMapping> propertyMappingManager;
+	@Autowired
+    private ThesaurusManager thesaurusManager;
 	
 	// persistent stuff
 	private Long mid;
@@ -59,7 +65,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     private List<PropertyMapping> mappings;
 	// temp stuff
     private List<String> sourceColumns;
-		
+	private Map<Long, Map<String,String>> vocs = new HashMap<Long, Map<String,String>>();	
 
 	@Override
 	public void prepare(){
@@ -106,6 +112,12 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     			// create new empty one. Remember to link them to the ViewMapping before they get saved
         		PropertyMapping propMap = PropertyMapping.newInstance(prop);
             	mappings.add(propMap);
+    		}
+    		
+    		// create vocabulary drop downs
+    		if (prop.getVocabulary()!=null){
+    			ThesaurusVocabulary voc = prop.getVocabulary();
+    			vocs.put(prop.getId(), thesaurusManager.getI18nCodeMap(voc.getUri(), getLocaleLanguage(), false));
     		}
     	}
 		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
@@ -221,6 +233,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 
 	public void setSid(Long sid) {
 		this.sid = sid;
+	}
+
+	public Map<Long, Map<String, String>> getVocs() {
+		return vocs;
 	}
 	
 }

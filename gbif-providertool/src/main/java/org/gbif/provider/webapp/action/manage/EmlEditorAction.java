@@ -34,9 +34,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	protected String nextPage;
 	protected final String NEXT = "next";
 	
-	protected Map<Long, String> isoCountryI18nCodeMap;
-	protected Map<Long, String> isoLanguageI18nCodeMap;
-	protected Map<Long, String> ranksI18nCodeMap;
+	protected Map<String, String> isoCountryI18nCodeMap;
+	protected Map<String, String> isoLanguageI18nCodeMap;
+	protected Map<String, String> ranksI18nCodeMap;
 	
 	public void prepare() {
 		super.prepare();
@@ -44,9 +44,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 			eml = emlManager.load(resource);
 			// load term discts according to locale language
 			String lang = getLocaleLanguage();
-			isoCountryI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Country.uri, lang);
-			isoLanguageI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Language.uri, lang);
-			ranksI18nCodeMap = thesaurusManager.getI18nCodeMap(Rank.URI, lang);
+			isoCountryI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Country.uri, lang, true);
+			isoLanguageI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Language.uri, lang, true);
+			ranksI18nCodeMap = thesaurusManager.getI18nCodeMap(Rank.URI, lang, false);
 		}
 	}
 		
@@ -91,7 +91,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	public void setNextPage(String nextPage) {
 		this.nextPage = nextPage;
 	}
-	public Map<Long, String> getIsoLanguageI18nCodeMap() {
+	public Map<String, String> getIsoLanguageI18nCodeMap() {
 		return isoLanguageI18nCodeMap;
 	}
 
@@ -141,14 +141,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 		eml.setKeywords(keywords);
 	}
 	
-	public Map<Long, String> getIsoCountryI18nCodeMap() {
+	public Map<String, String> getIsoCountryI18nCodeMap() {
 		return isoCountryI18nCodeMap;
 	}
 
-	public Map<Long, String> getAllRanks() {
+	public Map<String, String> getAllRanks() {
 		return ranksI18nCodeMap;
 	}
-	public Map<Long, String> getRanksI18nCodeMap() {
+	public Map<String, String> getRanksI18nCodeMap() {
 		return ranksI18nCodeMap;
 	}
 	
