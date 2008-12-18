@@ -31,7 +31,7 @@ public interface ThesaurusManager extends GenericManager<ThesaurusTerm>{
 	 */
 	public ThesaurusConcept getConcept(Long id);
 	/** try to get concept by the vocabularyURI it belongs to and a term in any language.
-	 * If no term matches, returns null. If multiple concepts match, the first is selected
+	 * If no term matches, returns null. If multiple concepts match, one is selected arbitrarily
 	 * @param vocabularyUri
 	 * @param term
 	 * @return

@@ -23,6 +23,8 @@ import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.gbif.provider.model.ThesaurusConcept;
+import org.gbif.provider.model.ThesaurusTerm;
+import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
@@ -36,17 +38,10 @@ import org.springframework.orm.ObjectRetrievalFailureException;
 
 
 public class ThesaurusManagerTest extends ContextAwareTestBase{
+	public static final String TEST_CONCEPT_URI = "http://rs.tdwg.org/ontology/voc/TaxonRank#Species";
 	@Autowired
 	protected ThesaurusManager thesaurusManager;
 
-
-	@Test
-	public void testVoc(){
-		List<?> ts = thesaurusManager.getAllConcepts(Rank.URI);
-		assertTrue(ts.size()>10);
-		System.out.println(ts);
-	}
-	
 
 	@Test	
 	public void testGetConceptVocabularyString() {
@@ -56,7 +51,56 @@ public class ThesaurusManagerTest extends ContextAwareTestBase{
 	@Test
 	public void testGetI18nCodeMap() {
 		Map<Long, String> m = thesaurusManager.getI18nCodeMap(Rank.URI, "de");
-		System.out.println(m);
+//		System.out.println(m);
+		assertTrue(m.size()>10);
 	}
 
+	@Test
+	public void testGetAllTerms() {
+		List<?> ts = thesaurusManager.getAllTerms(TEST_CONCEPT_URI, true);
+//		System.out.println(ts);
+		assertTrue(ts.size()>0);
+		
+		ts = thesaurusManager.getAllTerms(TEST_CONCEPT_URI, false);
+//		System.out.println(ts);
+		assertTrue(ts.size()>0);
+	}
+	@Test
+	public void testGetConcept() {
+		ThesaurusConcept c = thesaurusManager.getConcept(Rank.URI, "species");
+//		System.out.println(c);
+		assertTrue(c != null);
+	}
+
+	@Test
+	public void testGetAllConcepts(){
+		List<?> ts = thesaurusManager.getAllConcepts(Rank.URI);
+//		System.out.println(ts);
+		assertTrue(ts.size()>10);
+	}
+
+	@Test
+	public void testGetConcepts() {
+		List<?> ts = thesaurusManager.getConcepts(Rank.URI, "species");
+//		System.out.println(ts);
+		assertTrue(ts.size()>1);
+	}
+	@Test
+	public void testGetTerm() {
+		ThesaurusTerm m = thesaurusManager.getTerm("http://rs.tdwg.org/ontology/voc/TaxonRank#Species", "en");
+		assertTrue(m!=null);		
+//		System.out.println(m);
+	}
+	@Test
+	public void testGetVocabularies() {
+		List<ThesaurusVocabulary> vocs = thesaurusManager.getVocabularies();
+//		System.out.println(vocs);
+		assertTrue(vocs.size()>1);
+	}
+	@Test
+	public void testGetVocabulary() {
+		ThesaurusVocabulary voc = thesaurusManager.getVocabulary("http://rs.tdwg.org/ontology/voc/TaxonRank");
+//		System.out.println(voc);
+		assertTrue(voc != null);
+	}
 }
