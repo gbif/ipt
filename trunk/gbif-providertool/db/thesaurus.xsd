@@ -3,9 +3,11 @@
     xmlns="http://data.gbif.org/thesaurus"
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
     targetNamespace="http://data.gbif.org/thesaurus"
     elementFormDefault="qualified">
     <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dc.xsd"/>
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
 <xs:element name="thesaurus">
     <xs:complexType>
         <xs:sequence>
@@ -46,16 +48,18 @@
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute ref="dc:issued" use="required"/>
-            <xs:attribute ref="dc:type" use="required"/>
+            <xs:attribute ref="dc:type" use="required"><xs:annotation><xs:documentation>The vocabulary the term belongs to. Ideally this is a URI pointing to an ontology class for the vocabulary</xs:documentation></xs:annotation></xs:attribute>
             <xs:anyAttribute processContents="lax"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="term">
         <xs:complexType>
-            <xs:attribute ref="dc:title" use="required"/>
-            <xs:attribute ref="dc:lang" use="optional"/>
-            <xs:attribute ref="dc:source" use="required"/>
-            <xs:attribute ref="dc:relation" use="optional"/>
+            <xs:attribute ref="dc:title" use="required">
+                <xs:annotation><xs:documentation>The term itself</xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute ref="xml:lang" use="required"/>
+            <xs:attribute ref="dc:source" use="required"><xs:annotation><xs:documentation>The source where the term originated from</xs:documentation></xs:annotation></xs:attribute>
+            <xs:attribute ref="dc:relation" use="optional"><xs:annotation><xs:documentation>Link to further documentation or definition of the terms meaning</xs:documentation></xs:annotation></xs:attribute>
             <xs:attribute ref="dc:created" use="required"/>
             <xs:attribute ref="dc:modified" use="required"/>  
         </xs:complexType>
