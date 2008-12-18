@@ -51,7 +51,8 @@ public class ThesaurusManagerTest extends ContextAwareTestBase{
 	@Test
 	public void testGetI18nCodeMap() {
 		Map<Long, String> m = thesaurusManager.getI18nCodeMap(Rank.URI, "de");
-//		System.out.println(m);
+		m = thesaurusManager.getI18nCodeMap(Vocabulary.Language.uri, "de");
+		System.out.println(m);
 		assertTrue(m.size()>10);
 	}
 

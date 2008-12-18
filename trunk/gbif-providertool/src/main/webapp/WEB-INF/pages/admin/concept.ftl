@@ -6,23 +6,27 @@
 
 <table>	
  <tr>
-	<th>Identifier</th>
+	<th><@s.text name="concept.identifier"/></th>
 	<td>${concept.identifier}</td>
  </tr>
  <tr>
-	<th>URI</th>
+	<th><@s.text name="concept.uri"/></th>
 	<td>${concept.uri}</td>
  </tr>
  <tr>
-	<th>Issued</th>
-	<td>${concept.issued}</td>
+	<th><@s.text name="concept.link"/></th>
+	<td>${concept.link!}</td>
  </tr>
  <tr>
-	<th>Terms</th>
+	<th><@s.text name="concept.issued"/></th>
+	<td>${concept.issued!}</td>
+ </tr>
+ <tr>
+	<th><@s.text name="concept.terms"/></th>
 	<td>
 		<ul class="plain">
 		<#list terms as t>
-			<li class="<#if t.accepted>accepted<#else>synonym</#if>">
+			<li class="<#if t.preferred>accepted<#else>synonym</#if>">
 				${t.title} (${t.lang})
 			</li>
 			<#assign lastTerm=t/>

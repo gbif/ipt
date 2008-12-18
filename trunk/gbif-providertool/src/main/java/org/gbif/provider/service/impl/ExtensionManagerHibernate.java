@@ -44,6 +44,13 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 	        super(Extension.class);
     }
 	
+	@Override
+	public Extension get(Long id) {
+		Extension e = super.get(id);
+		e.getProperties();
+		return e;
+	}
+
 	@Transactional(readOnly=false)
 	public void installExtension(Extension extension){
 		if (extension==null || extension.getName()==null){

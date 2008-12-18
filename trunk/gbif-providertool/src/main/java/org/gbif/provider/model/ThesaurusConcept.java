@@ -22,6 +22,7 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	private Long id;
 	private String identifier;
 	private String uri;
+	private String link;
 	private ThesaurusVocabulary vocabulary;
 	private Integer conceptOrder;
 	private Date issued;
@@ -61,7 +62,13 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
-	
+		
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
 	
 	@ManyToOne(optional = false, fetch=FetchType.LAZY)
 	public ThesaurusVocabulary getVocabulary() {

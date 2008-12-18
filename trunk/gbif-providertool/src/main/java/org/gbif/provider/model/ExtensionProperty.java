@@ -49,7 +49,6 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private String link;
 	private boolean required;
 	private ThesaurusVocabulary vocabulary;
-	private List<String> terms = new ArrayList<String>();
 
 	public ExtensionProperty() {
 		super();
@@ -137,7 +136,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.required = required;
 	}
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public ThesaurusVocabulary getVocabulary() {
 		return vocabulary;
 	}

@@ -38,14 +38,9 @@
 					<a class="info">${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}</span></a>
 			  	</#if>
 			  	
-			    <#if !(p.terms?size==0)>
+			    <#if p.vocabulary??>
 			    	<span class="info">
-			    		&lt;term info&gt;
-				    	<span><ul class="plain">
-						<#list p.terms as t>
-							<li>${t}</li>
-						</#list>
-						</ul></span>
+			    		--&gt; <a href="vocabulary.html?id=${p.vocabulary.id?c}">vocabulary</a>
 					</span>
 				</#if>
 			</li>
