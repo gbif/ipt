@@ -544,10 +544,10 @@
             </result>
         </action>
         
-        <action name="termMapping" class="org.gbif.provider.webapp.action.manage.TermyMappingAction">
+        <action name="termMapping" class="org.gbif.provider.webapp.action.manage.TermMappingAction">
             <result type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
         </action>
-        <action name="saveTermMapping" class="org.gbif.provider.webapp.action.manage.TermyMappingAction" method="save">
+        <action name="saveTermMapping" class="org.gbif.provider.webapp.action.manage.TermMappingAction" method="save">
             <result name="input" type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">propMapping</param>

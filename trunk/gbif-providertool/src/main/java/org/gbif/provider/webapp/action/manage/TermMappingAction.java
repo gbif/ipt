@@ -98,6 +98,10 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 		this.pmid = pmid;
 	}
 
+	public Long getMid() {
+		return propMapping.getViewMapping().getId();
+	}
+
 	public PropertyMapping getPropMapping() {
 		return propMapping;
 	}
