@@ -1,8 +1,11 @@
 package org.gbif.provider.service.impl;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
@@ -29,7 +32,7 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 	}
 	
 	public List<ThesaurusConcept> getConcepts(String vocabularyUri, String term) {
-		return getSession().createQuery("select c from ThesaurusConcept c join c.terms t  where c.vocabulary.uri=:vocabularyUri and t.title=:term   order by c.conceptOrder")
+		return getSession().createQuery("select c from ThesaurusConcept c join c.terms t  where c.vocabulary.uri=:vocabularyUri and t.title=:term   order by c.conceptOrder, c.identifier")
     	.setString("vocabularyUri", vocabularyUri)
     	.setString("term", term)
     	.list();
@@ -38,7 +41,7 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 	@SuppressWarnings("unchecked")
 	public List<ThesaurusConcept> getAllConcepts(String vocabularyUri) {
 		// select c from  ThesaurusConcept c join ThesaurusVocabulary v  where v.uri=:vocabularyUri 
-		return getSession().createQuery("select con from  ThesaurusConcept con where con.vocabulary.uri=:vocabularyUri ")
+		return getSession().createQuery("select con from  ThesaurusConcept con where con.vocabulary.uri=:vocabularyUri   order by con.conceptOrder, con.identifier")
     	.setString("vocabularyUri", vocabularyUri)
     	.list();
 	}
@@ -65,15 +68,19 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 
 
 	public Map<Long, String> getI18nCodeMap(String vocabularyUri, String language) {
-		Map<Long, String> map = new HashMap<Long, String>();
-		List<Object[]> rows = getSession().createQuery("select c.id, c.identifier, t.title  from ThesaurusConcept c left join c.terms t  with t.lang=:lang   where c.vocabulary.uri=:vocUri")
+		Map<Long, String> map = new LinkedHashMap<Long, String>();
+		List<Object[]> rows = getSession().createQuery("select c.id, c.identifier, t.title, t2.title  from ThesaurusConcept c left join c.terms t  with t.lang=:lang and t.preferred=true  left join c.terms t2  with t2.lang=:english and t2.preferred=true    where c.vocabulary.uri=:vocUri  order by c.conceptOrder, c.identifier")
 			.setString("vocUri", vocabularyUri)
 			.setString("lang", language)
+			.setString("english", "en")
 			.list();  
 		for (Object[] row : rows){
 			// does language specific term exist?
 			if (row[2]!=null){
 				map.put((Long) row[0], (String) row[2]);
+			}else if (row[3]!=null){
+				// does english version exist?
+				map.put((Long) row[0], (String) row[3]);
 			}else{
 				// otherwise use the code/identifier itself
 				map.put((Long) row[0], (String) row[1]);

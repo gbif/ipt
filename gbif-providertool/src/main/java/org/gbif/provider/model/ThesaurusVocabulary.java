@@ -1,20 +1,28 @@
 package org.gbif.provider.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.IndexColumn;
 
 @Entity
 public class ThesaurusVocabulary implements Comparable {
 	private Long id;
 	private String uri;
 	private String title;
+	private List<ThesaurusConcept> concepts;
 	private Date modified;
 	
 	@Id
@@ -38,6 +46,15 @@ public class ThesaurusVocabulary implements Comparable {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	@OneToMany(mappedBy="vocabulary",fetch=FetchType.LAZY)
+	@IndexColumn(name = "conceptOrder",base=0, nullable=false)
+	public List<ThesaurusConcept> getConcepts() {
+		return concepts;
+	}
+	public void setConcepts(List<ThesaurusConcept> concepts) {
+		this.concepts = concepts;
 	}
 	
 	public Date getModified() {

@@ -8,7 +8,7 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.ThesaurusManager;
-import org.gbif.provider.util.LimitedMap;
+import org.gbif.provider.util.CacheMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
 	/**
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 		private ThesaurusManager thesaurusManager;
 		@Autowired
 		private TaxonManager taxonManager;
-		private LimitedMap<String, Rank> rankCache = new LimitedMap<String, Rank>(250);
+		private CacheMap<String, Rank> rankCache = new CacheMap<String, Rank>(250);
 		//dataResource stats
 		
 		@Autowired
