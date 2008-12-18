@@ -5,32 +5,32 @@
  xsi:schemaLocation="http://data.gbif.org/thesaurus  thesaurus.xsd">
     <concept dc:identifier="US" dc:URI="http://iso.org/3166#US" iso3Digit="USA" dc:type="http://iso.org/3166" dc:issued="2006-05-04T18:13:51.0Z">
         <preferred>
-            <term dc:title="United States of America" dc:lang="en" dc:source="source0" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="Vereinigte Staaten von Amerika" dc:lang="de" dc:source="source1" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="United States of America" xml:lang="en" dc:source="source0" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Vereinigte Staaten von Amerika" xml:lang="de" dc:source="source1" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
         </preferred>
         <alternative>
-            <term dc:title="USA" dc:lang="en" dc:source="source3" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="US of A" dc:lang="en" dc:source="source4" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="United States" dc:lang="en" dc:source="source5" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="USA" xml:lang="en" dc:source="source3" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="US of A" xml:lang="en" dc:source="source4" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="United States" xml:lang="en" dc:source="source5" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
         </alternative>
     </concept>
 
     <concept dc:identifier="species" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" dc:type="http://rs.tdwg.org/ontology/voc/TaxonRank" dc:issued="2006-05-04T18:13:51.0Z">
         <preferred>
-            <term dc:title="Species" dc:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="Art" dc:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Species" xml:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Art" xml:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
         </preferred>
         <alternative>
-            <term dc:title="Spec." dc:lang="en" dc:source="source15" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="Sp." dc:lang="en" dc:source="source16" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="Spec" dc:lang="en" dc:source="source17" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Spec." xml:lang="en" dc:source="source15" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Sp." xml:lang="en" dc:source="source16" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Spec" xml:lang="en" dc:source="source17" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
         </alternative>
     </concept>
     
     <concept dc:identifier="en" dc:URI="http:/iso.org/iso639-1#en" dc:type="http:/iso.org/iso639-1" dc:issued="2006-05-04T18:13:51.0Z">
         <preferred>
-            <term dc:title="English" dc:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
-            <term dc:title="Englisch" dc:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="English" xml:lang="en" dc:source="source12" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
+            <term dc:title="Englisch" xml:lang="de" dc:source="source13" dc:created="2006-05-04T18:13:51.0Z" dc:modified="2006-05-04T18:13:51.0Z"/>
         </preferred>
         <alternative/>        
     </concept>
