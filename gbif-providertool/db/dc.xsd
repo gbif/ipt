@@ -5,7 +5,6 @@
     <xs:attribute name="issued" type="xs:dateTime"/>
     <xs:attribute name="type" type="xs:string"/>
     <xs:attribute name="title" type="xs:string" />
-    <xs:attribute name="lang" type="xs:string" />
     <xs:attribute name="source" type="xs:string" />
     <xs:attribute name="relation" type="xs:string" />
     <xs:attribute name="description" type="xs:string" />
