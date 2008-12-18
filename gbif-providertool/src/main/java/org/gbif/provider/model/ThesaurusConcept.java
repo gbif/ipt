@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 public class ThesaurusConcept implements Comparable, BaseObject{
@@ -24,6 +26,15 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	private Integer conceptOrder;
 	private Date issued;
 	
+	
+	private Set<ThesaurusTerm> terms;
+	@OneToMany(mappedBy="concept",fetch=FetchType.LAZY)
+	public Set<ThesaurusTerm> getTerms() {
+		return terms;
+	}
+	public void setTerms(Set<ThesaurusTerm> terms) {
+		this.terms = terms;
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -52,7 +63,7 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	}
 	
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false, fetch=FetchType.LAZY)
 	public ThesaurusVocabulary getVocabulary() {
 		return vocabulary;
 	}
