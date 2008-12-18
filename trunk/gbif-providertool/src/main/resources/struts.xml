@@ -544,6 +544,23 @@
             </result>
         </action>
         
+        <action name="termMapping" class="org.gbif.provider.webapp.action.manage.TermyMappingAction">
+            <result type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
+        </action>
+        <action name="saveTermMapping" class="org.gbif.provider.webapp.action.manage.TermyMappingAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
+            <result name="success" type="redirect-action">
+                <param name="actionName">propMapping</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="mid">${mid}</param>
+            </result>
+            <result name="cancel" type="redirect-action">
+                <param name="actionName">propMapping</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="mid">${mid}</param>
+            </result>
+        </action>
+
         <action name="cache" class="org.gbif.provider.webapp.action.manage.ImportAction">
             <result type="freemarker">/WEB-INF/pages/manage/cache.ftl</result>
         </action>

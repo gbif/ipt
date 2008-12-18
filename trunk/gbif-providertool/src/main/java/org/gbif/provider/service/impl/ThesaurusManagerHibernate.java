@@ -67,23 +67,29 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 	}
 
 
-	public Map<Long, String> getI18nCodeMap(String vocabularyUri, String language) {
-		Map<Long, String> map = new LinkedHashMap<Long, String>();
-		List<Object[]> rows = getSession().createQuery("select c.id, c.identifier, t.title, t2.title  from ThesaurusConcept c left join c.terms t  with t.lang=:lang and t.preferred=true  left join c.terms t2  with t2.lang=:english and t2.preferred=true    where c.vocabulary.uri=:vocUri  order by c.conceptOrder, c.identifier")
+	public Map<String, String> getI18nCodeMap(String vocabularyUri, String language, boolean sortAlphabetically) {
+		Map<String, String> map = new LinkedHashMap<String, String>();
+		String hql;
+		if (sortAlphabetically){
+			hql = "select c.identifier, t.title, t2.title, concat(t.title, t2.title, c.identifier)  from ThesaurusConcept c left join c.terms t  with t.lang=:lang and t.preferred=true  left join c.terms t2  with t2.lang=:english and t2.preferred=true    where c.vocabulary.uri=:vocUri   order by concat(t.title, t2.title, c.identifier)";
+		}else{
+			hql = "select c.identifier, t.title, t2.title  from ThesaurusConcept c left join c.terms t  with t.lang=:lang and t.preferred=true  left join c.terms t2  with t2.lang=:english and t2.preferred=true    where c.vocabulary.uri=:vocUri   order by c.conceptOrder, c.identifier";
+		}
+		List<Object[]> rows = getSession().createQuery(hql)
 			.setString("vocUri", vocabularyUri)
 			.setString("lang", language)
 			.setString("english", "en")
 			.list();  
 		for (Object[] row : rows){
 			// does language specific term exist?
-			if (row[2]!=null){
-				map.put((Long) row[0], (String) row[2]);
-			}else if (row[3]!=null){
+			if (row[1]!=null){
+				map.put((String) row[0], (String) row[1]);
+			}else if (row[2]!=null){
 				// does english version exist?
-				map.put((Long) row[0], (String) row[3]);
+				map.put((String) row[0], (String) row[2]);
 			}else{
 				// otherwise use the code/identifier itself
-				map.put((Long) row[0], (String) row[1]);
+				map.put((String) row[0], (String) row[0]);
 			}
 		}
 		return map;

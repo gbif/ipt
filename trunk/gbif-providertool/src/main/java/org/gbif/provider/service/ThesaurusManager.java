@@ -56,7 +56,7 @@ public interface ThesaurusManager extends GenericManager<ThesaurusTerm>{
 	 * @param language
 	 * @return
 	 */
-	public Map<Long, String> getI18nCodeMap(String vocabularyUri, String language);
+	public Map<String, String> getI18nCodeMap(String vocabularyUri, String language, boolean sortAlphabetically);
 
 	/** lists all known terms for a given concept.
 	 * You can request only preferred terms or get alternative ones too.

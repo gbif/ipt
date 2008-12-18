@@ -8,7 +8,7 @@
 var previewLoaded=0;
 function sourcePreview(){
 	if (previewLoaded<1){
-		var url = '<@s.url action="sourcePreview.html" namespace="/ajax"/>';
+		var url = '<@s.url action="sourcePreview" namespace="/ajax"/>';
 		var params = { sid: ${view.source.id} }; 
 		var target = 'sourcepreview';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
@@ -33,7 +33,7 @@ function sourcePreview(){
         <@s.hidden key="sid"/>
         <@s.hidden key="eid"/>
 	    <@s.hidden key="resource_id"/>
-	    
+
 	 	<@s.select key="view.coreIdColumn.columnName" required="true"
 			headerKey="Select local identifier for core record" emptyOption="false" 
 			list="columnOptions" />
@@ -93,10 +93,15 @@ function sourcePreview(){
 					required="${m.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 			</div>
 			<div class="left">
-				<#if (m.property.terms?size>0)>
+				<#if (m.property.vocabulary??)>
 					<@s.select key="mappings[${m_index}].value"
-						list="mappings[${m_index}].property.terms" 
-						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>
+						list="vocs[${m.property.id}]" 
+						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
+				    <@s.url id="termMappingUrl" action="termMapping">
+					    <@s.param name="resource_id" value="resource_id"/>
+					    <@s.param name="pmid" value="${m.id?c}"/>
+			        </@s.url>
+					<a href="${termMappingUrl}">term mapping</a> 
 				<#else>
 			        <@s.textfield  name="mappings[${m_index}].value" value="${m.value!}" cssClass="large" theme="simple"/>  
 				</#if>
