@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.gbif.logging.log.I18nLog;
@@ -38,6 +39,7 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.TermMappingManager;

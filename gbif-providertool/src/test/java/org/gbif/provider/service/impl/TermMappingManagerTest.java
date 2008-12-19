@@ -48,16 +48,16 @@ public class TermMappingManagerTest extends ResourceTestBase {
 	@Test
 	public void testTermMappings(){
 		SourceColumn sc = new SourceColumn();
-		sc.setColumnName("ScientificName");
-		List<TermMapping> terms = termMappingManager.getTermMappings(1l, sc);
+		sc.setColumnName("TaxonomicStatus");
+		List<TermMapping> terms = termMappingManager.getTermMappings(7l, sc.getColumnName());
 	}	
 	
 	@Test
 	public void testGetMappingMap(){
 		SourceColumn sc = new SourceColumn();
-		sc.setColumnName("ScientificName");
-		Map<String, String> terms = termMappingManager.getMappingMap(1l, sc);
-//		System.out.println(terms);
+		sc.setColumnName("Rank");
+		Map<String, String> terms = termMappingManager.getMappingMap(7l, sc.getColumnName());
+		System.out.println(terms);
 	}	
 	
 }

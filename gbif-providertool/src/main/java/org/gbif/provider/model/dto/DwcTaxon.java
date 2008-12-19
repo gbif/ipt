@@ -33,7 +33,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 			throw new NullPointerException();
 		}
 		DwcTaxon tax = DwcTaxon.newInstance(dwc.getResource());
-		tax.taxon.setCode(dwc.getNomenclaturalCode());
+		tax.taxon.setNomenclaturalCode(dwc.getNomenclaturalCode());
 		tax.taxon.setScientificName(dwc.getScientificName());
 		tax.taxon.setRank(dwc.getInfraspecificRank());
 		// 
@@ -64,7 +64,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 			throw new IllegalArgumentException("Can only clone taxa of higher or same rank than the original taxon");
 		}
 		DwcTaxon tax = DwcTaxon.newInstance(dt.taxon.getResource());
-		tax.taxon.setCode(dt.taxon.getCode());
+		tax.taxon.setNomenclaturalCode(dt.taxon.getNomenclaturalCode());
 		tax.taxon.setDwcRank(rank);
 		tax.taxon.setRank(rank.name());
 		tax.terminal=false;
@@ -230,7 +230,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 	}
 
 	public String getCode() {
-		return taxon.getCode();
+		return taxon.getNomenclaturalCode();
 	}
 
 	public Rank getDwcRank() {
@@ -262,7 +262,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
 	}
 
 	public void setCode(String code) {
-		taxon.setCode(code);
+		taxon.setNomenclaturalCode(code);
 	}
 
 	public void setDwcRank(Rank dwcRank) {
@@ -325,7 +325,7 @@ public class DwcTaxon implements Comparable<DwcTaxon>{
         result = 31 * result + (speciesEpi != null ? speciesEpi.hashCode() : 0);
         result = 31 * result + (infraSpeciesEpi != null ? infraSpeciesEpi.hashCode() : 0);
         
-        result = 31 * result + (taxon.getCode() != null ? taxon.getCode().hashCode() : 0);
+        result = 31 * result + (taxon.getNomenclaturalCode() != null ? taxon.getNomenclaturalCode().hashCode() : 0);
         result = 31 * result + (taxon.getScientificName() != null ? taxon.getScientificName().hashCode() : 0);
         return result;
 	}

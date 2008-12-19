@@ -109,10 +109,11 @@ function confirmTermMapping(idx){
 			</div>
 			<div class="left">
 				<#if (m.property.vocabulary??)>
+				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${m_index}')"/>
+				    or select a static value:
 					<@s.select key="mappings[${m_index}].value"
 						list="vocs[${m.property.id}]" 
 						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
-				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${m_index}')"/>
 				<#else>
 			        <@s.textfield  name="mappings[${m_index}].value" value="${m.value!}" cssClass="large" theme="simple"/>  
 				</#if>

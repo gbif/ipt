@@ -23,12 +23,12 @@ public class TermMappingManagerHibernate extends GenericManagerHibernate<TermMap
 
 	public Map<String, String> getMappingMap(Long sourceId, String column) {
 		Map<String, String> map = new HashMap<String, String>();
-        List<String[]> terms = query("select tm.term, tm.targetTerm from TermMapping tm WHERE tm.source.id=:sourceId and tm.column.columnName=:column")
+        List<Object[]> terms = query("select tm.term, tm.targetTerm from TermMapping tm WHERE tm.source.id=:sourceId and tm.column.columnName=:column")
 	        .setLong("sourceId", sourceId)
 	        .setString("column", column)
 			.list();
-        for (String[]m : terms){
-        	map.put(m[0], m[1]);
+        for (Object[]m : terms){
+        	map.put((String)m[0], (String)m[1]);
         }
         return map;
 	}

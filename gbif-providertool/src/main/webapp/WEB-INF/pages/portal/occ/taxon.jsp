@@ -27,7 +27,7 @@
 		</tr>
 		<tr>
 		  <th><s:text name="taxon.code"/></th>
-		  <td><s:property value="%{taxon.code}"/></td>
+		  <td><s:property value="%{taxon.nomenclaturalCode}"/></td>
 		</tr>
 		<tr>
 		  <th><s:text name="taxon.parent"/></th>

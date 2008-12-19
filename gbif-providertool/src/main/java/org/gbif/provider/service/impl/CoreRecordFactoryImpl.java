@@ -86,7 +86,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		dwc.setDeleted(false);
 		for (ExtensionProperty prop : rec.getProperties().keySet()){
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
-			if (val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
+			if (val!=null && val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
 				val = val.substring(0, prop.getColumnLength());
 				logdb.warn(String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength()));
 			}
@@ -172,7 +172,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		for (ExtensionProperty prop : rec.getProperties().keySet()){
 			// set properties via reflection
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
-			if (val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
+			if (val!=null && val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
 				val = val.substring(0, prop.getColumnLength());
 				logdb.warn(String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength()));
 			}
