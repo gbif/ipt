@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -70,6 +71,7 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
     private Map<String, String> concepts;
 	// temp stuff
     private ThesaurusVocabulary voc;
+    private SourceBase source;
 
     
 	@Override
@@ -78,8 +80,10 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
         if (pmid != null) {
     		// get existing property mapping
         	propMapping = propertyMappingManager.get(pmid);
-        	termMappings = termMappingManager.getTermMappings(propMapping.getViewMapping().getSource().getId(), propMapping.getColumn().getColumnName());
-        	concepts = thesaurusManager.getConceptCodeMap(propMapping.getProperty().getVocabulary().getUri(), getLocaleLanguage(), false);
+        	voc = propMapping.getProperty().getVocabulary();
+        	source = propMapping.getViewMapping().getSource();
+        	termMappings = termMappingManager.getTermMappings(source.getId(), propMapping.getColumn().getColumnName());
+        	concepts = thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false);
 		}
 	}
 
@@ -89,7 +93,7 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 
 	public String scanSource(){
 		try {
-			List<String> terms = new ArrayList<String>(sourceInspectionManager.getDistinctValues(propMapping.getViewMapping().getSource(), propMapping.getColumn()));
+			List<String> terms = new ArrayList<String>(sourceInspectionManager.getDistinctValues(source, propMapping.getColumn()));
 			// first cross check existing mappings with the new list of terms
 			Iterator<TermMapping> itr = termMappings.iterator();
 			while (itr.hasNext()){
@@ -105,7 +109,7 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 			}
 			// now add the remaining terms as new TermMappings
 			for (String t : terms){
-				TermMapping tm = new TermMapping(propMapping.getViewMapping().getSource(), propMapping.getColumn(), t);
+				TermMapping tm = new TermMapping(source, propMapping.getColumn(), t);
 				// try to come up with some automatic default mapping
 				if (concepts.containsKey(t)){
 					tm.setTargetTerm(t);
@@ -175,6 +179,9 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 	public ThesaurusVocabulary getVoc() {
 		return voc;
 	}
-	
-	
+
+	public SourceBase getSource() {
+		return source;
+	}
+		
 }

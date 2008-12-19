@@ -20,7 +20,7 @@
 		<table>	
 			<tr>
 			  <th><@s.text name="taxon.code"/></th>
-			  <td>${taxon.code!}</td>
+			  <td>${taxon.nomenclaturalCode!}</td>
 			</tr>
 			<tr>
 			  <th><@s.text name="taxon.rank"/></th>

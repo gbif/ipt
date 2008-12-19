@@ -61,7 +61,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		// taxon specific
 		private String rank;
 		private String name;
-		private String code;
+		private String nomenclaturalCode;
 		// not existing in DwC, but used for TaxonCore
 		private String taxonomicParentID;
 		private String acceptedTaxonID;
@@ -179,13 +179,14 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 		
 		@Column(length=64)
-		public String getCode() {
-			return code;
+		public String getNomenclaturalCode() {
+			return nomenclaturalCode;
 		}
-		public void setCode(String code) {
-			this.code = code;
+
+		public void setNomenclaturalCode(String nomenclaturalCode) {
+			this.nomenclaturalCode = nomenclaturalCode;
 		}
-		
+
 		@org.hibernate.annotations.Index(name="tax_lft")
 		@Override
 		public Long getLft() {
