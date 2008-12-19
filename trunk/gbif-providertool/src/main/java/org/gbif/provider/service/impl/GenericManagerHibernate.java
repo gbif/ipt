@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
+import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.service.GenericManager;
 import org.hibernate.Criteria;
@@ -121,6 +122,11 @@ import org.springframework.transaction.annotation.Transactional;
 	    	getSession().saveOrUpdate(object);
 	    	return object;
 	    }
+		public void saveAll(Collection<T> objs) {
+			for (T obj : objs){
+				save(obj);
+			}			
+		}
 		@Transactional(readOnly = false)
 		protected BaseObject universalSave(BaseObject obj) {
 	    	getSession().saveOrUpdate(obj);

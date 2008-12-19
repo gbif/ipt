@@ -90,9 +90,7 @@
         <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
     </bean>    
     
-    <bean id="termMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.TermMapping"/>
-    </bean>    
+    <bean id="termMappingManager" class="org.gbif.provider.service.impl.TermMappingManagerHibernate" parent="abstractManager"/>        
 
     <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
     
@@ -145,7 +143,15 @@
     </bean>
 
 
+    <!-- IMPORT SOURCE -->
+    <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
+        <lookup-method name="newFileImportSource" bean="fileImportSource"/>
+        <lookup-method name="newSqlImportSource" bean="sqlImportSource"/>        
+    </bean>
+    <bean id="fileImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.FileImportSource" />
+    <bean id="sqlImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.SqlImportSource" />
     
+
     <!-- TASK EXECUTOR -->
 
     <bean id="uploadExecutor" factory-method="newSingleThreadExecutor" class="java.util.concurrent.Executors" >

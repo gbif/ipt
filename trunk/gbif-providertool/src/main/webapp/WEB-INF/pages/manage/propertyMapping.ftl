@@ -15,6 +15,20 @@ function sourcePreview(){
 		previewLoaded=1;
 	}
 };
+
+
+function confirmTermMapping(idx){
+	//alert(idx);	
+	//alert( $("mappings_idx").value );
+	$("mappings_idx").value = idx;
+	//alert( $("mappings_idx").value );
+	//alert( $('sourceColumn_'+idx).value );
+	if($('sourceColumn_'+idx).value==""){
+		alert('You need to select a source column first');
+		return false;
+	}
+	return true;
+};
 </script>	
 
 </head>
@@ -33,6 +47,7 @@ function sourcePreview(){
         <@s.hidden key="sid"/>
         <@s.hidden key="eid"/>
 	    <@s.hidden key="resource_id"/>
+        <@s.hidden id="mappings_idx" name="mappings_idx" value=""/>
 
 	 	<@s.select key="view.coreIdColumn.columnName" required="true"
 			headerKey="Select local identifier for core record" emptyOption="false" 
@@ -89,7 +104,7 @@ function sourcePreview(){
 		</div>
 		<div class="overhang">
 			<div class="left">
-				<@s.select key="mappings[${m_index}].column.columnName" list="sourceColumns"
+				<@s.select id="sourceColumn_${m_index}" key="mappings[${m_index}].column.columnName" list="sourceColumns"
 					required="${m.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 			</div>
 			<div class="left">
@@ -97,11 +112,7 @@ function sourcePreview(){
 					<@s.select key="mappings[${m_index}].value"
 						list="vocs[${m.property.id}]" 
 						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
-				    <@s.url id="termMappingUrl" action="termMapping">
-					    <@s.param name="resource_id" value="resource_id"/>
-					    <@s.param name="pmid" value="${m.id?c}"/>
-			        </@s.url>
-					<a href="${termMappingUrl}">term mapping</a> 
+				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${m_index}')"/>
 				<#else>
 			        <@s.textfield  name="mappings[${m_index}].value" value="${m.value!}" cssClass="large" theme="simple"/>  
 				</#if>
@@ -116,5 +127,9 @@ function sourcePreview(){
     <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
  
 </@s.form> 
+
+<@s.url id="termMappingUrl" action="terMappingInit">
+    <@s.param name="mappings_idx" value="9"/>
+</@s.url>
 
 </#if>

@@ -40,8 +40,11 @@ import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.TermMappingManager;
+import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.TabFileReader;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Import source for relational databases that maps a sql resultset into CoreRecords and allows to iterate over them.
@@ -51,9 +54,15 @@ import org.gbif.provider.util.TabFileReader;
 public class FileImportSource implements ImportSource{
 	private static I18nLog log = I18nLogFactory.getLog(FileImportSource.class);
 
+	@Autowired
+	private TermMappingManager termMappingManager;
+	
 	private TabFileReader reader;
 	private String[] currentLine;
+	// key=header column name
 	private Map<String, Integer> headerMap = new HashMap<String, Integer>();
+	// key=header column name, value=term mapping map
+	private Map<String, Map<String, String>> vocMap = new HashMap<String, Map<String, String>>();
 
 	private Collection<PropertyMapping> properties;
 	private SourceColumn coreIdColumn;
@@ -61,42 +70,44 @@ public class FileImportSource implements ImportSource{
 	private SourceColumn linkColumn;
 	private Long resourceId;
 
-    protected static FileImportSource newInstance(DataResource resource, ViewMappingBase view) throws ImportSourceException{
+	protected void init(DataResource resource, ViewMappingBase view) throws ImportSourceException{
 		if (!(view.getSource() instanceof SourceFile)){
 			throw new IllegalArgumentException("View needs to have a source of type SourceFile");
 		}
 		SourceFile src = (SourceFile) view.getSource();
-    	FileImportSource source = new FileImportSource();
     	// try to setup FileReader
 		try {
-			source.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()));
+			this.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()));
 			Integer i = 0;
-			for (String h : source.reader.getHeader()){
-				source.headerMap.put(h, i);
+			for (String h : this.reader.getHeader()){
+				this.headerMap.put(h, i);
 				i++;
 			}
 		} catch (Exception e) {
 			throw new ImportSourceException("Cant read source file "+src.getFilename(), e);
 		}
     	//FIXME: clone mappings
-    	source.resourceId=resource.getId();
-    	source.properties = view.getPropertyMappings().values();
-    	source.coreIdColumn = view.getCoreIdColumn();
-    	return source;
+		this.resourceId=resource.getId();
+		this.properties = view.getPropertyMappings().values();
+		this.coreIdColumn = view.getCoreIdColumn();
+		// see if term mappings exist and keep them in vocMap in that case
+		for (String h : this.headerMap.keySet()){
+			Map<String, String> tmap = termMappingManager.getMappingMap(src.getId(), h);
+			if (!tmap.isEmpty()){
+				vocMap.put(h, tmap);
+			}
+    	}
     }
     
-    protected static FileImportSource newInstance(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
+	protected void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
-    	FileImportSource source = FileImportSource.newInstance(resource, extView);
-    	source.guidColumn = view.getGuidColumn();
-    	source.linkColumn = view.getLinkColumn();
-    	return source;
+    	init(resource, extView);
+    	this.guidColumn = view.getGuidColumn();
+    	this.linkColumn = view.getLinkColumn();
     }
     
-	FileImportSource() {
-		// non instantiable class. use above static factory
-	}
-	
+    
+    
 	public Iterator<ImportRecord> iterator() {
 		return this;
 	}
@@ -106,8 +117,7 @@ public class FileImportSource implements ImportSource{
 	}
 
 	private String getCurrentValue(String columnName){
-		Integer col = headerMap.get(columnName);		
-		return currentLine[col];
+		return currentLine[headerMap.get(columnName)];
 	}
 	public ImportRecord next() {
 		ImportRecord row = null;
@@ -123,8 +133,16 @@ public class FileImportSource implements ImportSource{
 					row.setLink(getCurrentValue(linkColumn.getColumnName()));
 				}
 		    	for (PropertyMapping pm : properties){
-		    		if (pm.getColumn() != null && pm.getColumn().getColumnName() != null && !pm.getColumn().getColumnName().startsWith("#")){
-						row.setPropertyValue(pm.getProperty(), getCurrentValue(pm.getColumn().getColumnName()));
+		    		if (pm.getColumn() != null && pm.getColumn().getColumnName() != null){
+		    			String column = pm.getColumn().getColumnName();
+	    				String val = getCurrentValue(column);
+	    				// lookup value in term mapping map
+	    				if (vocMap.containsKey(column)){
+	    					if (vocMap.get(column).containsKey(val)){
+	    						val = vocMap.get(column).get(val);
+	    					}
+		    			}
+						row.setPropertyValue(pm.getProperty(), val);
 		    		}else if (pm.getValue() != null){
 						row.setPropertyValue(pm.getProperty(), pm.getValue());
 		    		}

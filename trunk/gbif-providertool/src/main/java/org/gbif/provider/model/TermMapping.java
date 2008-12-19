@@ -1,5 +1,6 @@
 package org.gbif.provider.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,12 +13,20 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
-public class TermMapping implements Comparable {
+public class TermMapping implements BaseObject, Comparable {
 	private Long id;
 	private SourceBase source;
 	private SourceColumn column = new SourceColumn();
 	private String term;
-	private ThesaurusConcept concept;
+	private String targetTerm;
+	
+	public TermMapping(){
+	}
+	public TermMapping(SourceBase source, SourceColumn column, String term){
+		this.source=source;
+		this.column=column;
+		this.term=term;
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,25 +59,23 @@ public class TermMapping implements Comparable {
 		this.term = term;
 	}
 	
-	@ManyToOne
-	public ThesaurusConcept getConcept() {
-		return concept;
+	@Column(length=128)
+	public String getTargetTerm() {
+		return targetTerm;
 	}
-	public void setConcept(ThesaurusConcept concept) {
-		this.concept = concept;
+	public void setTargetTerm(String targetTerm) {
+		this.targetTerm = targetTerm;
 	}
-	
-	
-	
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	public int compareTo(Object object) {
 		TermMapping myClass = (TermMapping) object;
-		return new CompareToBuilder().append(this.term, myClass.term).append(
-				this.concept, myClass.concept).append(this.column,
-				myClass.column).append(this.source, myClass.source).append(
-				this.id, myClass.id).toComparison();
+		return new CompareToBuilder()
+				.append(this.source, myClass.source)
+				.append(this.column,myClass.column)
+				.append(this.term, myClass.term)
+				.toComparison();
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -79,7 +86,7 @@ public class TermMapping implements Comparable {
 		}
 		TermMapping rhs = (TermMapping) object;
 		return new EqualsBuilder().append(this.term, rhs.term).append(
-				this.concept, rhs.concept).append(this.column, rhs.column)
+				this.targetTerm, rhs.targetTerm).append(this.column, rhs.column)
 				.append(this.source, rhs.source).append(this.id, rhs.id)
 				.isEquals();
 	}
@@ -88,13 +95,13 @@ public class TermMapping implements Comparable {
 	 */
 	public int hashCode() {
 		return new HashCodeBuilder(1938480675, -864001347).append(this.term)
-				.append(this.concept).append(this.column).append(this.source)
+				.append(this.targetTerm).append(this.column).append(this.source)
 				.append(this.id).toHashCode();
 	}
 
 
 	public String toString() {
-		return String.format("%s --> %s", term, concept==null? "" : concept.getIdentifier());
+		return String.format("%s --> %s", term, targetTerm);
 	}
 
 	

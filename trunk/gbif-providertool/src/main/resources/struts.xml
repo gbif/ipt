@@ -542,12 +542,20 @@
                 <param name="actionName">mappings</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
+            <result name="terms" type="redirect-action">
+                <param name="actionName">terMapping</param>
+                <param name="resource_id">${resource_id}</param>
+                <param name="pmid">${pmid}</param>
+            </result>
         </action>
-        
-        <action name="termMapping" class="org.gbif.provider.webapp.action.manage.TermMappingAction">
+                
+        <action name="terMapping" class="org.gbif.provider.webapp.action.manage.TermMappingAction">
             <result type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
         </action>
-        <action name="saveTermMapping" class="org.gbif.provider.webapp.action.manage.TermMappingAction" method="save">
+        <action name="terMappingScan" class="org.gbif.provider.webapp.action.manage.TermMappingAction" method="scanSource">
+            <result type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
+        </action>
+        <action name="saveTerMapping" class="org.gbif.provider.webapp.action.manage.TermMappingAction" method="save">
             <result name="input" type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">propMapping</param>

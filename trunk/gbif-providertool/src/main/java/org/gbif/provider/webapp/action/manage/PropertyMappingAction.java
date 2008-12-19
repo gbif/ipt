@@ -63,6 +63,9 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	private Long sid;
 	private ViewMappingBase view;
     private List<PropertyMapping> mappings;
+	// for term mapping forwarding only
+	private Long pmid;
+	private Integer mappings_idx;
 	// temp stuff
     private List<String> sourceColumns;
 	private Map<Long, Map<String,String>> vocs = new HashMap<Long, Map<String,String>>();	
@@ -117,7 +120,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     		// create vocabulary drop downs
     		if (prop.getVocabulary()!=null){
     			ThesaurusVocabulary voc = prop.getVocabulary();
-    			vocs.put(prop.getId(), thesaurusManager.getI18nCodeMap(voc.getUri(), getLocaleLanguage(), false));
+    			vocs.put(prop.getId(), thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false));
     		}
     	}
 		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
@@ -178,7 +181,15 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         // cascade-save view mapping
         view = viewMappingManager.save(view);
         return SUCCESS;
-    }	
+    }
+	
+	public String termMapping() throws Exception{
+		save();
+		if (mappings_idx!= null){
+			pmid = mappings.get(mappings_idx).getId();
+		}
+		return "terms";
+	}
 	
 	public String delete(){
 		resource.removeExtensionMapping(view);
@@ -238,5 +249,13 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	public Map<Long, Map<String, String>> getVocs() {
 		return vocs;
 	}
-	
+
+	public void setMappings_idx(Integer mappings_idx) {
+		this.mappings_idx = mappings_idx;
+	}
+
+	public Long getPmid() {
+		return pmid;
+	}
+
 }

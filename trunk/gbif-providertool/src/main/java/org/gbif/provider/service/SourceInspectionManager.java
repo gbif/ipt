@@ -21,8 +21,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import org.gbif.provider.model.SourceBase;
+import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.ViewMappingBase;
 
 public interface SourceInspectionManager {
@@ -39,4 +41,11 @@ public interface SourceInspectionManager {
 	 */
 	public List<String> getHeader(SourceBase source) throws Exception;
 	
+	/** scans a single column of a source and returns the list of distinct values found
+	 * @param source
+	 * @param column
+	 * @return
+	 * @throws Exception
+	 */
+	public Set<String> getDistinctValues(SourceBase source, SourceColumn column) throws Exception;
 }

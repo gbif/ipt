@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.datasource.impl.ImportSourceFactory;
+import org.gbif.provider.datasource.ImportSourceFactory;
 import org.gbif.provider.geo.TransformationUtils;
 import org.gbif.provider.geo.TransformationUtils.Wgs84Transformer;
 import org.gbif.provider.model.BBox;
@@ -82,6 +82,8 @@ import org.springframework.transaction.annotation.Transactional;
 		private R resource;
 
 		
+		@Autowired
+		private ImportSourceFactory importSourceFactory;
 		@Autowired
 		private CacheManager cacheManager;
 		@Autowired
@@ -487,7 +489,7 @@ import org.springframework.transaction.annotation.Transactional;
 				throw new ImportSourceException("No mapping exists for "+extName);
 			}			
 			
-			source = ImportSourceFactory.newInstance(resource, vm);
+			source = importSourceFactory.newInstance(resource, vm);
 			return source;
 		}
 

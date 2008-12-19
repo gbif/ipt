@@ -5,7 +5,7 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class ResourceTestBase extends ContextAwareTestBase {
+public abstract class ResourceTestBase extends TransactionalTestBase {
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	@Autowired
