@@ -156,7 +156,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return String.format("%s=>%s", property==null ? "null" : property.getQualName(), value == null ? (column==null ? "null" : column.getColumnName()) : "#"+value);
+		return String.format("%s=>%s", property==null ? "null" : property.getName(), value==null ? (column==null ? "null" : column.getColumnName()) : "#"+value);
 	}
 
 

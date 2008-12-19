@@ -27,12 +27,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.gbif.provider.model.SourceBase;
+import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewMappingBase;
@@ -144,6 +150,102 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
     		tableNames.add((String) rs.getObject(3)); 
     	}
 	    return tableNames;
+	}
+
+	public Set<String> getDistinctValues(SourceBase source, SourceColumn column) throws Exception {
+		if (source==null || column == null){
+			throw new NullPointerException("source and column can't be null");
+		}
+		// first check if column exists
+		List<String> header = getHeader(source);
+		if (!header.contains(column.getColumnName())){
+			throw new IllegalArgumentException(String.format("Source column %s does not exist in source %s", column.getColumnName(), source.getName()));
+		}
+		// column exists. Now iterate through entire source and store distinct terms in memory (uuuh)
+		Set<String> terms = new HashSet<String>();
+		Iterator iter = iterSourceColumn(source, column);
+		while(iter.hasNext()){
+			String term = iter.next().toString();
+			terms.add(term);
+		}
+		return terms;
+	}
+	
+	private Iterator<Object> iterSourceColumn(SourceBase source, SourceColumn column) throws Exception{
+		if (source == null || column == null){
+			throw new NullPointerException("source and column can't be null");
+		}
+
+		if(source instanceof SourceFile){
+			SourceFile src = (SourceFile) source; 
+			return getSourceColumnIterator(src, column);		
+		}else{
+			SourceSql src = (SourceSql) source; 
+			return getSourceColumnIterator(src, column);		
+		}
+	}
+	
+	private Iterator<Object> getSourceColumnIterator(SourceFile source, SourceColumn column) throws IOException, MalformedTabFileException{
+		return new FileIterator(getSourceFile(source), column.getColumnName());
+	}
+	private class FileIterator implements Iterator<Object>{
+		private TabFileReader reader;
+		private int columnIdx;
+		public FileIterator(File source, String column) throws IOException, MalformedTabFileException{
+			reader = new TabFileReader(source);
+			String[] h = reader.getHeader();
+			while (columnIdx<h.length){
+				columnIdx++;
+				if (h[columnIdx].equals(column)){
+					break;
+				}
+			}
+		}
+		public boolean hasNext() {
+			return reader.hasNext();
+		}
+		public Object next() {
+			return reader.next()[columnIdx];
+		}
+		public void remove() {
+			// unsupported			
+		}
+	}
+	
+	private Iterator<Object> getSourceColumnIterator(SourceSql source, SourceColumn column) throws SQLException{
+		return new SqlIterator(source, column);		
+	}
+	private class SqlIterator implements Iterator<Object>{
+		private Statement stmt;
+		private ResultSet rs;
+		private String column;
+		private boolean hasNext;
+		public SqlIterator(SourceSql source, SourceColumn column) throws SQLException{
+			this.stmt = getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			this.stmt.setFetchSize(100);
+			this.rs = stmt.executeQuery(source.getSql());
+			this.column = column.getColumnName();
+    		this.hasNext = rs.next();
+		}
+		public boolean hasNext() {
+			return hasNext;
+		}
+		public Object next() {
+			String val = null;
+			if (hasNext){
+				try {
+					// forward rs cursor
+					hasNext = rs.next();
+					val = rs.getString(column);
+				} catch (SQLException e2) {
+					hasNext = false;
+				}				
+			}
+			return val;
+		}
+		public void remove() {
+			// unsupported			
+		}
 	}
 	
 }

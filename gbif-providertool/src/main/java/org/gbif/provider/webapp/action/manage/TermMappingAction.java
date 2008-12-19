@@ -17,15 +17,20 @@
 package org.gbif.provider.webapp.action.manage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.TermMapping;
+import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
@@ -33,6 +38,7 @@ import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
+import org.gbif.provider.service.TermMappingManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,17 +56,20 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 	@Qualifier("viewMappingManager")
     private GenericManager<ViewMappingBase> viewMappingManager;
 	@Autowired
-	private ExtensionManager extensionManager;
-	@Autowired
 	@Qualifier("propertyMappingManager")
     private GenericManager<PropertyMapping> propertyMappingManager;
 	@Autowired
     private ThesaurusManager thesaurusManager;
+	@Autowired
+	private TermMappingManager termMappingManager;
 	
 	// persistent stuff
 	private Long pmid;
     private PropertyMapping propMapping;
+    private List<TermMapping> termMappings;
+    private Map<String, String> concepts;
 	// temp stuff
+    private ThesaurusVocabulary voc;
 
     
 	@Override
@@ -69,10 +78,53 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
         if (pmid != null) {
     		// get existing property mapping
         	propMapping = propertyMappingManager.get(pmid);
+        	termMappings = termMappingManager.getTermMappings(propMapping.getViewMapping().getSource().getId(), propMapping.getColumn().getColumnName());
+        	concepts = thesaurusManager.getConceptCodeMap(propMapping.getProperty().getVocabulary().getUri(), getLocaleLanguage(), false);
 		}
 	}
 
 	public String execute(){
+		return SUCCESS;
+	}
+
+	public String scanSource(){
+		try {
+			List<String> terms = new ArrayList<String>(sourceInspectionManager.getDistinctValues(propMapping.getViewMapping().getSource(), propMapping.getColumn()));
+			// first cross check existing mappings with the new list of terms
+			Iterator<TermMapping> itr = termMappings.iterator();
+			while (itr.hasNext()){
+				TermMapping tm = itr.next();
+				if (terms.contains(tm.getTerm())){
+					// term already in mappings
+					terms.remove(tm.getTerm());
+				}else{
+					// term doesnt exist anymore. remove mapping
+					termMappingManager.remove(tm);
+					itr.remove();
+				}
+			}
+			// now add the remaining terms as new TermMappings
+			for (String t : terms){
+				TermMapping tm = new TermMapping(propMapping.getViewMapping().getSource(), propMapping.getColumn(), t);
+				// try to come up with some automatic default mapping
+				if (concepts.containsKey(t)){
+					tm.setTargetTerm(t);
+				}else{
+					// or consult thesaurus to find matching concept
+					ThesaurusConcept tc = thesaurusManager.getConcept(voc.getUri(), t);
+					if (tc!=null){
+						tm.setTargetTerm(tc.getIdentifier());
+					}
+				}
+				termMappingManager.save(tm);
+				termMappings.add(tm);
+			}
+			// finally sort mappings
+			Collections.sort(termMappings);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 
@@ -83,6 +135,8 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
         if (delete!= null) {
             return delete();
         }
+        termMappingManager.saveAll(termMappings);
+        termMappingManager.flush();
         return SUCCESS;
     }	
 	
@@ -106,8 +160,21 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 		return propMapping;
 	}
 
-	public void setPropMapping(PropertyMapping propMapping) {
-		this.propMapping = propMapping;
+	public Map<String, String> getConcepts() {
+		return concepts;
+	}
+	
+	public List<TermMapping> getTermMappings() {
+		return termMappings;
 	}
 
+	public void setTermMappings(List<TermMapping> termMappings) {
+		this.termMappings = termMappings;
+	}
+
+	public ThesaurusVocabulary getVoc() {
+		return voc;
+	}
+	
+	
 }

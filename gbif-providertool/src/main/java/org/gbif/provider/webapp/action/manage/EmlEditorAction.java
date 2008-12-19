@@ -44,9 +44,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 			eml = emlManager.load(resource);
 			// load term discts according to locale language
 			String lang = getLocaleLanguage();
-			isoCountryI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Country.uri, lang, true);
-			isoLanguageI18nCodeMap = thesaurusManager.getI18nCodeMap(Vocabulary.Language.uri, lang, true);
-			ranksI18nCodeMap = thesaurusManager.getI18nCodeMap(Rank.URI, lang, false);
+			isoCountryI18nCodeMap = thesaurusManager.getConceptCodeMap(Vocabulary.Country.uri, lang, true);
+			isoLanguageI18nCodeMap = thesaurusManager.getConceptCodeMap(Vocabulary.Language.uri, lang, true);
+			ranksI18nCodeMap = thesaurusManager.getConceptCodeMap(Rank.URI, lang, false);
 		}
 	}
 		

@@ -31,6 +31,7 @@ public class Constants {
     public static final Long TEST_OCC_RESOURCE_ID = 1L;
     public static final Long TEST_CHECKLIST_RESOURCE_ID = 7L;
     public static final Long TEST_USER_ID = 1L;
+    public static final String SCIENTIFIC_NAME_QUALNAME = "http://rs.tdwg.org/dwc/dwcore/ScientificName";
     public static final String RECENT_RESOURCES = "recentResources";
     public static final String DEFAULT_LOGO = "images/resource-logo.gif";
     public static final String ENCODING = "UTF-8";    

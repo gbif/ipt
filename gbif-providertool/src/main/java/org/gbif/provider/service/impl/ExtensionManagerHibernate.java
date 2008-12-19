@@ -168,5 +168,14 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
         	.setParameter("type", type)
         	.list();
 	}
+
+	public ExtensionProperty getProperty(String qualname) {
+		Session session = getSession();
+        Object obj = session.createQuery(String.format("select p from ExtensionProperty p where p.qualName=:qualname"))
+    	.setParameter("qualname", qualname)
+    	.uniqueResult();
+        
+        return (ExtensionProperty) obj;
+	}
 	
 }

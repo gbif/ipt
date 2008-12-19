@@ -67,7 +67,35 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 	}
 
 
-	public Map<String, String> getI18nCodeMap(String vocabularyUri, String language, boolean sortAlphabetically) {
+	public Map<Long, String> getConceptIdMap(String vocabularyUri, String language, boolean sortAlphabetically) {
+		Map<Long, String> map = new LinkedHashMap<Long, String>();
+		String hql;
+		if (sortAlphabetically){
+			hql = "select c.id, c.identifier, t.title, t2.title, concat(t.title, t2.title, c.identifier)  from ThesaurusConcept c left join c.terms t  with t.lang=:lang and t.preferred=true  left join c.terms t2  with t2.lang=:english and t2.preferred=true    where c.vocabulary.uri=:vocUri   order by concat(t.title, t2.title, c.identifier)";
+		}else{
+			hql = "select c.id, c.identifier, t.title, t2.title  from ThesaurusConcept c left join c.terms t  with t.lang=:lang and t.preferred=true  left join c.terms t2  with t2.lang=:english and t2.preferred=true    where c.vocabulary.uri=:vocUri   order by c.conceptOrder, c.identifier";
+		}
+		List<Object[]> rows = getSession().createQuery(hql)
+			.setString("vocUri", vocabularyUri)
+			.setString("lang", language)
+			.setString("english", "en")
+			.list();  
+		for (Object[] row : rows){
+			// does language specific term exist?
+			if (row[2]!=null){
+				map.put((Long) row[0], (String) row[2]);
+			}else if (row[3]!=null){
+				// does english version exist?
+				map.put((Long) row[0], (String) row[3]);
+			}else{
+				// otherwise use the code/identifier itself
+				map.put((Long) row[0], (String) row[1]);
+			}
+		}
+		return map;
+	}
+
+	public Map<String, String> getConceptCodeMap(String vocabularyUri, String language, boolean sortAlphabetically) {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		String hql;
 		if (sortAlphabetically){
