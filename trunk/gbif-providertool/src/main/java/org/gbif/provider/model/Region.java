@@ -44,6 +44,10 @@ import org.hibernate.annotations.CollectionOfElements;
 		public void setResource(Resource resource) {
 			this.resource = resource;
 		}
+		@Transient
+		public Long getResourceId() {
+			return resource.getId();
+		}
 
 		@ManyToOne(optional = true)
 		@Override

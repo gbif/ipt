@@ -27,18 +27,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TermMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,10 +46,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class SqlImportSource implements ImportSource{
-	private static I18nLog log = I18nLogFactory.getLog(SqlImportSource.class);
 
 	@Autowired
 	private TermMappingManager termMappingManager;
+	@Autowired
+	private AnnotationManager annotationManager;
 
 	private Connection conn;
 	private Statement stmt;
@@ -100,7 +99,7 @@ public class SqlImportSource implements ImportSource{
     		this.rs = this.stmt.executeQuery(this.viewSql);
     		this.hasNext = this.rs.next();
 		} catch (SQLException e) {
-			log.error("Exception while creating RDBMS resultset import source", e);
+			annotationManager.annotateResource(resource, "Exception while creating RDBMS resultset import source"+e.toString());
 			this.hasNext = false;
 			throw new ImportSourceException("Cant init sql result set", e);
 		}
@@ -168,7 +167,7 @@ public class SqlImportSource implements ImportSource{
 		    		}
 		    	}
 			} catch (SQLException e) {
-				log.error("Exception while retrieving RDBMS source record", e);
+//				annotationManager.annotateResource(resource, "Exception while retrieving RDBMS source record"+e.toString());
 				hasNext = false;
 				row=null;
 			}
@@ -181,11 +180,11 @@ public class SqlImportSource implements ImportSource{
 					maxRecords--;					
 					if (maxRecords < 0){
 						hasNext=false;
-						log.info("MaxRecords reached. Stop iterating through ImportSource");
+//						annotationManager.annotateResource(resource, "MaxRecords reached. Stop iterating through ImportSource");
 					}
 				}
 			} catch (SQLException e2) {
-				log.error("Exception while iterating RDBMS source", e2);
+//				annotationManager.annotateResource(resource, "Exception while iterating RDBMS source"+e2.toString());
 				hasNext = false;
 			}
 		}

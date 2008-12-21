@@ -17,33 +17,22 @@
 package org.gbif.provider.datasource.impl;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
-import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.SourceBase;
+import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.SourceFile;
-import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TermMappingManager;
-import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +43,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class FileImportSource implements ImportSource{
-	private static I18nLog log = I18nLogFactory.getLog(FileImportSource.class);
-
 	@Autowired
 	private TermMappingManager termMappingManager;
+	@Autowired
+	private AnnotationManager annotationManager;
 	
 	private TabFileReader reader;
 	private String[] currentLine;
@@ -150,7 +139,7 @@ public class FileImportSource implements ImportSource{
 		    		}
 		    	}
 			} catch (Exception e) {
-				log.error("Exception while retrieving FILE source record", e);
+				//annotationManager.annotateResource(resourceId, "Exception while retrieving FILE source record: "+e.toString());
 				row=null;
 			}
 			

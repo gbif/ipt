@@ -45,7 +45,7 @@ public class ChecklistUploadTest extends ContextAwareTestBase{
 	@Test
 	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testUpload() throws Exception {
-		uploadTask.init(Constants.TEST_CHECKLIST_RESOURCE_ID, Constants.TEST_USER_ID);		
+		uploadTask.init(Constants.TEST_CHECKLIST_RESOURCE_ID);		
 		UploadEvent event = uploadTask.call();
 		System.out.println(event);
 	}

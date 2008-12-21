@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
@@ -29,6 +30,11 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 	public void setResource(Resource resource) {
 		this.resource = resource;
 	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
+	}
+
 	@ManyToOne(optional = true)
 	public Taxon getTaxon() {
 		return taxon;

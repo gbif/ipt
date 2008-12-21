@@ -83,6 +83,10 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	public void setResource(DataResource resource) {
 		this.resource = resource;
 	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
+	}
 	
 	@ManyToOne
 	public Extension getExtension() {

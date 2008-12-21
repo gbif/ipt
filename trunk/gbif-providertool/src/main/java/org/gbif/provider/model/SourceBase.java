@@ -35,6 +35,10 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject{
 	public void setResource(DataResource resource) {
 		this.resource = resource;
 	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
+	}
 	
 	@Column(length=128)
 	public String getName() {

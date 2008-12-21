@@ -13,17 +13,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.logging.service.LogEventManager;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
@@ -64,7 +63,7 @@ public class CacheManagerImpl implements CacheManager{
 	@Autowired
 	private OccStatManager occStatManager;
 	@Autowired
-	private LogEventManager logEventManager;
+	private AnnotationManager annotationManager;
 
 
     private final Map<Long, Future> futures = new ConcurrentHashMap<Long, Future>();
@@ -127,7 +126,7 @@ public class CacheManagerImpl implements CacheManager{
 		
 		// remove core record related upload artifacts like taxa & regions
 		regionManager.removeAll(res);
-		logEventManager.removeByGroup(resourceId.intValue());
+		annotationManager.removeAll(res);
 
 		// remove generated files
 		File dump = cfg.getDumpArchiveFile(resourceId);
@@ -191,7 +190,7 @@ public class CacheManagerImpl implements CacheManager{
 		return status;
 	}
 
-	public Future runUpload(Long resourceId, Long userId) {
+	public Future runUpload(Long resourceId) {
 		DataResource res = dataResourceManager.get(resourceId);
 		// create task
 		Task<UploadEvent> task;
@@ -200,7 +199,7 @@ public class CacheManagerImpl implements CacheManager{
 		}else{
 			task = newChecklistUploadTask();
 		}
-		task.init(resourceId, userId);
+		task.init(resourceId);
 		// submit
 		return submitUpload(task);
 	}
