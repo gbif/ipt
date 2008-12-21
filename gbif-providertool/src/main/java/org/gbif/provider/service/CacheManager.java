@@ -31,11 +31,10 @@ public interface CacheManager {
 	/**
 	 * Submit a new upload job (incl postprocessing) to the executor service. Throws an exception in case this resource has already a scheduled or running upload job
 	 * @param maxRecords stop the upload after this maximum amount of record has been uploaded. Mainly for testing.
-	 * @param userId the user id that submitted this task
 	 * @param resource
 	 * @return
 	 */
-	Future runUpload(Long resourceId, Long userId);
+	Future runUpload(Long resourceId);
 
 	/**
 	 * @param resourceId

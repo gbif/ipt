@@ -42,7 +42,7 @@ public class ImportAction extends BaseDataResourceAction implements Preparable{
 
 	public String upload(){
 		// run task in different thread
-		cacheManager.runUpload(resource_id, getCurrentUser().getId());			
+		cacheManager.runUpload(resource_id);			
         saveMessage(getText("upload.added"));
 		return SUCCESS;
 	}

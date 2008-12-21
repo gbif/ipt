@@ -12,22 +12,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKey;
 import org.hibernate.validator.NotNull;
 
 @Entity
-public class Annotation implements BaseObject{
+public class Annotation implements ResourceRelatedObject{
 	private Long id;
 	@NotNull
 	private String guid;
-	private Integer probability;
+	@NotNull
+	private Resource resource;
+	@NotNull
+	private String type;
 	private String note;
+	private Integer probability;
 	private Map<ExtensionProperty, String> proposal = new HashMap<ExtensionProperty, String>();
-	private Date created = new Date();
+	private boolean removeDuringImport = false;
 	private String creator;
+	private Date created = new Date();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,12 +44,33 @@ public class Annotation implements BaseObject{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@Column(length=128)
 	@org.hibernate.annotations.Index(name="annotation_guid")
 	public String getGuid() {
 		return guid;
 	}
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+	
+	@ManyToOne
+	public Resource getResource() {
+		return resource;
+	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
+	}
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
+	
+	@Column(length=32)
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	public Integer getProbability() {
 		return probability;
@@ -66,6 +94,14 @@ public class Annotation implements BaseObject{
 	public void setProposal(Map<ExtensionProperty, String> proposal) {
 		this.proposal = proposal;
 	}
+	
+	public boolean isRemoveDuringImport() {
+		return removeDuringImport;
+	}
+	public void setRemoveDuringImport(boolean removeDuringImport) {
+		this.removeDuringImport = removeDuringImport;
+	}
+	
 	public Date getCreated() {
 		return created;
 	}

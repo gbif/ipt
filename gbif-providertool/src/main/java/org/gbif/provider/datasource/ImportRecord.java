@@ -1,25 +1,10 @@
 package org.gbif.provider.datasource;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.hibernate.validator.NotNull;
 
 
 /**
@@ -28,8 +13,6 @@ import org.hibernate.validator.NotNull;
  *
  */
 public class ImportRecord  {
-	private static I18nLog logdb = I18nLogFactory.getLog(ImportRecord.class);
-
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 	private Extension extension;
 	private Long resourceId;

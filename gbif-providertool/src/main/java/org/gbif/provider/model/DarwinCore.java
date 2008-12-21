@@ -18,10 +18,7 @@ package org.gbif.provider.model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -41,15 +38,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
-import org.gbif.provider.datasource.ImportRecord;
-import org.gbif.provider.model.dto.ExtensionRecord;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.TabFileWriter;
 import org.hibernate.validator.NotNull;
 
 
@@ -70,11 +60,6 @@ import org.hibernate.validator.NotNull;
 		@org.hibernate.annotations.Index(name="longitude", columnNames = { "lon" }) 
 		})
 public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
-	private static I18nLog logdb = I18nLogFactory.getLog(DarwinCore.class);
-	public static final Long GEO_EXTENSION_ID = 3l;
-	public static final ExtensionProperty LATITUDE_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/DecimalLatitude");
-	public static final ExtensionProperty LONGITUDE_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/DecimalLongitude");
-	public static final ExtensionProperty GEODATUM_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/GeodeticDatum");
 
 	// for core record
 	private Long id;
@@ -155,47 +140,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		return dwc;
 	}
 	
-	public boolean updateWithGeoExtension(ExtensionRecord extRec){
-		String geodatum = null;
-		Point loc = new Point();
-		// tmp raw value
-		for (ExtensionProperty prop : extRec){
-			String val = StringUtils.trimToNull(extRec.getPropertyValue(prop));
-			// check string coordinates
-			if(prop.equals(LATITUDE_PROP)){
-				if (val !=null){
-					try {
-						loc.setLatitude(Double.valueOf(val));
-					} catch (NumberFormatException e) {
-						logdb.warn("Couldnt transform value '{0}' for property DecimalLatitude into Float value", val, e);
-					} catch (IllegalArgumentException e) {
-						logdb.warn("Latitude value '{0}' is out of allowed range", val, e);
-					}
-				}
-			}
-			else if(prop.equals(LONGITUDE_PROP)){
-				if (val !=null){
-					try {
-						loc.setLongitude(Double.valueOf(val));
-					} catch (NumberFormatException e) {
-						logdb.warn("Couldnt transform value '{0}' for property DecimalLongitude into Float value", val, e);
-					} catch (IllegalArgumentException e) {
-						logdb.warn("Longitude value '{0}' is out of allowed range", val, e);
-					}
-				}
-			}
-			else if(prop.equals(GEODATUM_PROP)){
-				geodatum=extRec.getPropertyValue(prop);
-			}
-		}
-		if (loc.isValid()){
-			setLocation(loc);
-			return true;
-		}
-		return false;
-	}
-			
-
 	
 
 	// CORE RECORD
@@ -261,9 +205,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public OccurrenceResource getResource() {
 		return resource;
 	}
-
 	public void setResource(OccurrenceResource resource) {
 		this.resource = resource;
+	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
 	}
 	
 

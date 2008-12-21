@@ -18,18 +18,10 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.gbif.logging.log.I18nLog;
-import org.gbif.logging.log.I18nLogFactory;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.eml.Eml;
-import org.gbif.provider.model.eml.TaxonKeyword;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <T>
  */
 public class GenericResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements GenericResourceManager<T> {
-	private static I18nLog logdb = I18nLogFactory.getLog(GenericResourceManagerHibernate.class);
 	@Autowired
 	protected AppConfig cfg;
 

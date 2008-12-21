@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -52,6 +53,10 @@ public class UploadEvent implements ResourceRelatedObject{
 	}
 	public void setResource(Resource resource) {
 		this.resource = resource;
+	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
 	}
 	
 	public Date getExecutionDate() {

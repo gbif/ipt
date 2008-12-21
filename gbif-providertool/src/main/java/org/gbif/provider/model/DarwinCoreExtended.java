@@ -27,6 +27,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -103,6 +104,10 @@ public class DarwinCoreExtended implements ResourceRelatedObject{
 	}
 	public void setResource(OccurrenceResource resource) {
 		this.resource = resource;
+	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
 	}
 
 	@Lob

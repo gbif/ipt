@@ -34,6 +34,8 @@ import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.voc.AnnotationType;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.CoreRecordFactory;
 import org.gbif.provider.service.CoreRecordManager;
@@ -133,7 +135,7 @@ import org.springframework.transaction.annotation.Transactional;
 			} catch (InterruptedException e) {
 				// thread was interrupted. Try to exit nicely by removing all potentially corrupt data.
 				prepare();
-				logdb.fatal("log.uploadCanceled", e);
+				annotationManager.annotateResource(resource, "Upload task was interrupted/canceled. Partially existing upload was removed");
 				throw e;
 			}
 			
@@ -150,7 +152,7 @@ import org.springframework.transaction.annotation.Transactional;
 			
 			// init postprocessors
 			for (RecordPostProcessor<T, ?, R> pp : postProcessors){
-				pp.init(getResourceId(), getUserId());
+				pp.init(getResourceId());
 				pp.prepare();
 			}
 
@@ -253,7 +255,7 @@ import org.springframework.transaction.annotation.Transactional;
 						T record = (T) coreRecordFactory.build(resource, irec);
 						if (record == null){
 							currentErroneous.addAndGet(1);
-							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentErroneous.get()), getTitle()});
+							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
 						try {
@@ -263,7 +265,7 @@ import org.springframework.transaction.annotation.Transactional;
 							// check if localID was unique. All old records should have deleted flag=true
 							// so if deleted is false, the same localID was inserted before already!
 							if (oldRecord != null && !oldRecord.isDeleted()){
-								logdb.warn("uploadManager.duplicateLocalId", irec.getLocalId());
+								annotationManager.badCoreRecord(resource, irec.getLocalId(), "Duplicate local ID");
 							}
 							// assign managed properties
 							updateCoreProperties(record, oldRecord);
@@ -288,11 +290,10 @@ import org.springframework.transaction.annotation.Transactional;
 						} catch (InterruptedException e) {
 							throw e;
 						} catch (ObjectNotFoundException e2){
-							logdb.warn("log.unknownLocalId", new String[]{irec.getLocalId().toString(), getTitle()});
+							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown local ID: "+e2.toString());
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
-							e.printStackTrace();
-							logdb.warn("log.uploadRecord", new String[]{irec.getLocalId().toString(), getTitle()}, e);
+							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown error: "+e.toString());
 						}
 						
 						// clear session cache once in a while...
@@ -310,10 +311,10 @@ import org.springframework.transaction.annotation.Transactional;
 				}
 
 			} catch (IOException e) {
-				logdb.error("log.fileError", e);
+				annotationManager.annotateResource(resource, "Couldn't open tab file. Import aborted: "+e.toString());
 				throw new InterruptedException();
 			} catch (ImportSourceException e) {
-				logdb.error("log.sourceError", e);
+				annotationManager.annotateResource(resource, "Couldn't open import source. Import aborted: "+e.toString());
 				throw new InterruptedException();
 			}
 
@@ -411,14 +412,13 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 						if (rec == null || rec.getLocalId()==null){
 							currentErroneous.addAndGet(1);
-							logdb.warn("log.nullRecord", new String[]{String.valueOf(currentProcessed.get()), getTitle()});
+							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
 						Long coreId = idMap.get(rec.getLocalId());
 						rec.setId(coreId);
 						if (coreId == null){
-							String[] paras = {rec.getLocalId(), extensionName, getResourceId().toString()};
-							logdb.warn("uploadManager.unknownLocalId", paras);
+							annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown local ID");
 						}else{
 							// TODO: check if record has changed
 							try {
@@ -428,7 +428,7 @@ import org.springframework.transaction.annotation.Transactional;
 							} catch (Exception e) {
 								e.printStackTrace();
 								currentErroneous.addAndGet(1);
-								logdb.warn("log.uploadRecord", new String[]{rec.getLocalId().toString(), getTitle()}, e);
+								annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown error: "+e.toString());
 							}
 						}
 					}
@@ -440,7 +440,7 @@ import org.springframework.transaction.annotation.Transactional;
 				log.error("Couldnt open tab file. Upload aborted", e);
 				throw e;
 			} catch (ImportSourceException e) {
-				logdb.error("log.sourceExtensionError", extensionName, e);
+				annotationManager.annotateResource(resource, "Couldn't open import source for extension %s. Extension skipped: "+e.toString());
 				throw e;
 			} catch (Exception e){
 				e.printStackTrace();
