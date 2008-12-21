@@ -3,18 +3,12 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-    <!--appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender"-->
-    <appender name="CONSOLE" class="org.gbif.provider.log.I18nConsoleAppender">
-        <!-- use a comma separated list for the basenames -->
-        <param name="i18nBasenames" value="ApplicationResources"/>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"
                 value="%p %t-%c{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
-
-
-    <appender name="I18NDATABASE" class="org.gbif.logging.log.I18nDatabaseAppender"/>
     
     <logger name="net.sf.ehcache">
         <level value="ERROR"/>
@@ -95,10 +89,7 @@
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
         <level value="DEBUG" />
-        <appender-ref ref="I18NDATABASE" />
-    </logger>
-    <logger name="org.gbif.metadata">
-        <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE" />
     </logger>
 
     <root>

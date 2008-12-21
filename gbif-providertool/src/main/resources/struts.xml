@@ -708,24 +708,6 @@
         </action>
         
 
-        <!-- LogEvents -->
-        <action name="logEvents" class="org.gbif.logging.webapp.action.LogEventAction" method="list">
-            <result>/WEB-INF/pages/logging/logEventList.jsp</result>
-        </action>
-        
-        <action name="editLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="edit">
-            <result>/WEB-INF/pages/logEventForm.jsp</result>
-            <result name="error">/WEB-INF/pages/logging/logEventList.jsp</result>
-        </action>
-        
-        <action name="saveLogEvent" class="org.gbif.logging.webapp.action.LogEventAction" method="save">
-            <result name="input">/WEB-INF/pages/logging/logEventForm.jsp</result>
-            <result name="cancel" type="redirect-action">logEvents</result>
-            <result name="delete" type="redirect-action">logEvents</result>
-            <result name="success" type="redirect-action">logEvents</result>
-        </action>
-        
-
         <!-- EXTENSIONS -->
         <action name="extensions" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="list">
             <result type="freemarker">/WEB-INF/pages/admin/extensionList.ftl</result>
@@ -756,8 +738,5 @@
         </action>
         
     </package>
-
-    
-    <include file="struts-logging.xml"/>
     
 </struts>
