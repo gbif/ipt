@@ -1,6 +1,9 @@
 package org.gbif.provider.task;
 
-	import java.util.HashMap;
+	import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,9 +17,13 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.dto.DwcTaxon;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
+import org.gbif.provider.service.RegionManager;
+import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.CacheMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -37,11 +44,29 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		private BBox bbox;
 		// not stored in resource
 		private Map<Region, Map<Taxon, OccStatByRegionAndTaxon>> occByRegionAndTaxon;
+		private CacheMap<String, Taxon> taxonCache = new CacheMap<String, Taxon>(1000);
+		private static final List<Rank> dwcRanks; 
+		  static  
+		  {  
+		    List<Rank> ranks = new ArrayList<Rank>();
+		    ranks .add( Rank.Kingdom );  
+		    ranks .add( Rank.Phylum );  
+		    ranks .add( Rank.Class );  
+		    ranks .add( Rank.Order );  
+		    ranks .add( Rank.Family );  
+		    ranks .add( Rank.Genus );  
+		    ranks .add( Rank.Species );  
+		    ranks .add( Rank.InfraSpecies );  
+		    dwcRanks = Collections.unmodifiableList(ranks);  
+		  }  
+		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
 		
 		@Autowired
-		private TransformationUtils wgs84Util;
-		@Autowired
 		private OccStatManager occStatManager;
+		@Autowired
+		private TaxonManager taxonManager;
+		@Autowired
+		private RegionManager regionManager;
 
 		
 		@Autowired
@@ -51,8 +76,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 
 		@Override
-		public void prepare() {
-			super.prepare();
+		protected void prepareHandler(OccurrenceResource resource) {
 			recWithCoordinates=0;
 			recWithCountry=0;
 			recWithAltitude=0;
@@ -67,7 +91,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		
 		@Override
 		protected void recordHandler(DarwinCore dwc){
-			// create derived data
+			// extract taxon
+			extractTaxon(dwc);
+			// extract region
+			extractRegion(dwc);
+			
 			
 			// stats
 			if(StringUtils.trimToNull(dwc.getCountry())!=null){
@@ -107,8 +135,76 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		
 		
 
+		private Region extractRegion(DarwinCore dwc) {
+			Region region = null;
+			dwc.setRegion(region);
+			return region;			
+		}
+
+
+		private Taxon extractTaxon(DarwinCore dwc) {
+			Taxon taxon=null;
+			String path = dwc.getTaxonomyPath();
+			if (taxonCache.containsKey(path)){
+				// taxon exists already. use persistent one for dwc
+				taxon = taxonCache.get(path);
+			}else{
+				// cache might be overflown. Look into db before we create a new redundant taxon
+				//FIXME: check db
+				
+				if (taxon == null){
+					// try to "insert" the entire taxonomic hierarchy starting with kingdom
+					Taxon parent = null;
+					Rank lastUsedRank = null;
+					String currPathPrefix="";
+					int numDelimiter = dwcRanks.size()-1;
+					for (Rank rank : dwcRanks){
+						String currSciName = StringUtils.trimToEmpty(dwc.getHigherTaxon(rank));
+						currPathPrefix += currSciName + "|";
+						numDelimiter -= 1;
+						if (currSciName.length()>0){
+							// this rank does exist
+							lastUsedRank = rank;
+							String currMpath = currPathPrefix + StringUtils.repeat("|", numDelimiter)+currSciName; 
+							if (taxonCache.containsKey(currMpath)){
+								// use existing taxon as parent
+								parent = taxonCache.get(currMpath); 
+							}else{
+								// non existing taxon. create new one
+								Taxon newParent = Taxon.newInstance(resource);
+								// link into hierarchy if this is not a root taxon
+								newParent.setParent(parent);
+								newParent.setMpath(currMpath);
+								newParent.setScientificName(currSciName);
+								newParent.setRank(rank.toString());
+								newParent.setDwcRank(rank);
+								newParent = taxonManager.save(newParent);
+								taxonCache.put(currMpath, newParent);				
+								parent = newParent; 
+							}
+						}
+					}
+					taxon = Taxon.newInstance(resource);
+					// link into hierarchy if this is not a root taxon
+					taxon.setParent(parent);
+					taxon.setMpath(path);
+					taxon.setScientificName(dwc.getScientificName());
+					taxon.setRank(dwc.getInfraspecificRank());
+					// cant figure out rank of terminal taxon
+					taxon.setDwcRank(Rank.TerminalTaxon); 
+					taxon = taxonManager.save(taxon);
+					taxonCache.put(path, taxon);				
+					parent = taxon; 
+				}
+			}
+			
+			dwc.setTaxon(taxon);
+			return taxon;			
+		}
+
+
 		@Override
-		protected void finalHandler(OccurrenceResource resource){
+		protected void closeHandler(OccurrenceResource resource){
 			// occByRegionAndTaxon
 			int occStatCount=0;
 			for (Map<Taxon, OccStatByRegionAndTaxon> taxMap : occByRegionAndTaxon.values()){

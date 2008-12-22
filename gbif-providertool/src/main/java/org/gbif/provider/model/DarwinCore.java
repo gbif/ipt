@@ -38,8 +38,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.model.voc.Rank;
 import org.hibernate.validator.NotNull;
 
 
@@ -166,7 +168,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.localId = localId;
 	}	
 
-	@Column(length=128)
+	@Column(length=128, unique=true)
 	@org.hibernate.annotations.Index(name="guid")
 	public String getGuid() {
 		return guid;
@@ -656,8 +658,23 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 	
 	@Transient
+	public String getHigherTaxon(Rank rank){
+		String propName;
+		if (rank==Rank.Species){
+			propName = "SpecificEpithet";
+		}else if (rank==Rank.InfraSpecies){
+			propName = "InfraspecificEpithet";
+		}else{
+			propName = StringUtils.capitalise(rank.columnName);			
+		}
+		return getPropertyValue(propName);
+	}
+	@Transient
 	public String getPropertyValue(ExtensionProperty property){
-		String propName = property.getName();
+		return getPropertyValue(property.getName());
+	}
+	@Transient
+	private String getPropertyValue(String propName){
 		if (propName.equals("Class")){
 			propName = "Classs";
 		}
@@ -790,8 +807,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
         result = 31 * result + (getGenus() != null ? getGenus().hashCode() : 0);
         result = 31 * result + (getSpecificEpithet() != null ? getSpecificEpithet().hashCode() : 0);
         result = 31 * result + (getInfraspecificRank() != null ? getInfraspecificRank().hashCode() : 0);
-        result = 31 * result + (getSpecificEpithet() != null ? getSpecificEpithet().hashCode() : 0);
-        result = 31 * result + (getInfraspecificRank() != null ? getInfraspecificRank().hashCode() : 0);
         result = 31 * result + (getInfraspecificEpithet() != null ? getInfraspecificEpithet().hashCode() : 0);
         result = 31 * result + (getAuthorYearOfScientificName() != null ? getAuthorYearOfScientificName().hashCode() : 0);
         result = 31 * result + (getNomenclaturalCode() != null ? getNomenclaturalCode().hashCode() : 0);
@@ -809,5 +824,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				.append(this.localId, myClass.localId)
 				.append(this.guid,myClass.guid)
 				.toComparison();
+	}
+	
+	@Transient
+	public String getTaxonomyPath() {
+		return String.format("%s|%s|%s|%s|%s|%s|%s|%s", StringUtils.trimToEmpty(getKingdom()), StringUtils.trimToEmpty(getPhylum()), StringUtils.trimToEmpty(getClasss()), StringUtils.trimToEmpty(getOrder()), StringUtils.trimToEmpty(getFamily()), StringUtils.trimToEmpty(getGenus()), StringUtils.trimToEmpty(getSpecificEpithet()), StringUtils.trimToEmpty(getInfraspecificEpithet()));
+	}
+	@Transient
+	public String getGeographyPath() {
+		return String.format("%s|%s|%s|%s|%s|%s|%s|%s", StringUtils.trimToEmpty(getContinent()), StringUtils.trimToEmpty(getWaterBody()), StringUtils.trimToEmpty(getIslandGroup()), StringUtils.trimToEmpty(getIsland()), StringUtils.trimToEmpty(getCountry()), StringUtils.trimToEmpty(getStateProvince()), StringUtils.trimToEmpty(getCounty()), StringUtils.trimToEmpty(getLocality()));
 	}
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +41,7 @@ import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.CoreRecordFactory;
 import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
@@ -69,16 +71,14 @@ import org.springframework.transaction.annotation.Transactional;
 	 */
 	public abstract class ImportTask<T extends CoreRecord, R extends DataResource> extends TaskBase<UploadEvent, R>{
 		private Map<String, Long> idMap = new HashMap<String, Long>();
-		private List<File> dumpFiles = new ArrayList<File>();
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
 		private Integer recordsUploaded;
-		private Integer recordsDeleted;
 		private Integer recordsChanged;
 		private Integer recordsAdded;
 		private Integer recordsErroneous;
 		// upload status
-		private String currentExtension;
+		protected String currentActivity;
 		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
 		private R resource;
@@ -89,6 +89,8 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		private CacheManager cacheManager;
 		@Autowired
+		private DataArchiveManager dataArchiveManager;
+		@Autowired
 		private CoreRecordFactory coreRecordFactory;
 		private CoreRecordManager<T> coreRecordManager;
 		@Autowired
@@ -98,13 +100,11 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		@Qualifier("viewMappingManager")
 		private GenericManager<ViewMappingBase> viewMappingManager;
-		private RecordPostProcessor<T, ?, R>[] postProcessors;
 
 		
-		public ImportTask(CoreRecordManager<T> coreRecordManager, GenericResourceManager<R> resourceManager, RecordPostProcessor<T, ?, R> ... postProcessors){
+		public ImportTask(CoreRecordManager<T> coreRecordManager, GenericResourceManager<R> resourceManager){
 			super(resourceManager);
 			this.coreRecordManager = coreRecordManager;
-			this.postProcessors=postProcessors;
 		}
 		
 		public UploadEvent call() throws Exception{
@@ -113,16 +113,14 @@ import org.springframework.transaction.annotation.Transactional;
 				// prepare upload, removing previous records, calling prepare of helper tasks
 				prepare();
 				
-				// run import of core into db, create taxa and regions & dump file in one go!
-				File coreFile = uploadCore();
-				dumpFiles.add(coreFile);
+				// run import of core into db, calling a subclass handler per record and finally at the end
+				uploadCore();
 				
 				// upload further extensions one by one
 				for (ViewExtensionMapping vm : resource.getExtensionMappings()){
 					// run import into db & dump file
 					try {
-						File extFile = uploadExtension(vm);
-						dumpFiles.add(extFile);
+						uploadExtension(vm);
 					} catch (ImportSourceException e) {
 						// dont do nothing. Error is logged and core is uploaded. Skip this extension
 					} catch (IOException e) {
@@ -143,26 +141,23 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 		
 
-		protected void prepare() {
+		private void prepare() {
+			// prepare this instance
+			currentActivity="Preparing import";
+			currentProcessed = new AtomicInteger(0);
+			currentErroneous = new AtomicInteger(0);
+
 			resource= loadResource();
+			
+			// call subclass handler first, might need to remove dependend records before removing the core records
+			prepareHandler(resource);
 			
 			// remove all previous upload artifacts
 			coreRecordManager.removeAll(resource);
 			cacheManager.prepareUpload(getResourceId());
-			
-			// init postprocessors
-			for (RecordPostProcessor<T, ?, R> pp : postProcessors){
-				pp.init(getResourceId());
-				pp.prepare();
-			}
 
-			// prepare this instance
-			currentProcessed = new AtomicInteger(0);
-			currentErroneous = new AtomicInteger(0);
-			
 			recordsUploaded = 0;
 			recordsErroneous = null;
-			recordsDeleted = 0;
 			recordsChanged = 0;
 			recordsAdded = 0;
 
@@ -172,23 +167,42 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setJobSourceType(taskTypeId());
 			event.setExecutionDate(new Date());
 			event.setResource(resource);
+			
 		}
 		
 		
 		private void close() throws IOException {
 			log.info(String.format("Closing upload for resource %s", getTitle() ));					
-			// close postprocessors
-			for (RecordPostProcessor<T, ?, R> pp : postProcessors){
-				pp.close(resource);
-			}
-			finalHandler(resource);
-			resourceManager.save(resource);
-			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.",recordsUploaded, recordsDeleted, recordsAdded, recordsChanged, recordsErroneous));
+			currentProcessed.set(0);
+			currentErroneous.set(0);
 
-			// zip all files into single archive
-			File archive = cfg.getDumpArchiveFile(getResourceId());
-			archive.createNewFile();
-			ZipUtil.zipFiles(dumpFiles, archive);						
+			//
+			// resource stats
+			//
+			currentActivity = "Generating resource statistics";
+			// update resource and upload event statistics
+			event.setResource(resource);			
+			event.setRecordsAdded(recordsAdded);
+			event.setRecordsChanged(recordsChanged);
+			event.setRecordsDeleted(resource.getRecTotal()+recordsAdded-recordsUploaded);
+			event.setRecordsUploaded(recordsUploaded);		
+			event.setRecordsErroneous(recordsErroneous);
+			event = uploadEventManager.save(event);			
+			// update resource properties
+			resource.setLastUpload(event);
+			resource.setRecTotal(recordsUploaded);
+			
+			// call subclass handler for specific postprocessing
+			closeHandler(resource);
+			resourceManager.save(resource);
+			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
+
+			
+			//
+			// create data archive
+			//
+			currentActivity = "Creating data archive";
+			File archive = dataArchiveManager.createArchive(resource);
 			log.info("Data archive created at "+archive.getAbsolutePath());
 		}
 
@@ -198,40 +212,16 @@ import org.springframework.transaction.annotation.Transactional;
 			viewMappingManager.save(view);
 		}
 
-		/** Hook for doing final processing for the entire resource, e.g. setting statistics gathered via the record hook 
-		 * @param resource
-		 */
-		protected void finalHandler(R resource){
-			// update resource and upload event statistics
-			recordsDeleted = resource.getRecTotal()+recordsAdded-recordsUploaded;
-			// store event
-			event.setResource(resource);			
-			event.setRecordsAdded(recordsAdded);
-			event.setRecordsChanged(recordsChanged);
-			event.setRecordsDeleted(recordsDeleted);
-			event.setRecordsUploaded(recordsUploaded);		
-			event.setRecordsErroneous(recordsErroneous);
-			// save upload event
-			event = uploadEventManager.save(event);
-			
-			// update resource properties
-			resource.setLastUpload(event);
-			resource.setRecTotal(recordsUploaded);
-		}
-
-		
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
 		private File uploadCore() throws InterruptedException {
 			log.info("Starting upload of core records for resource "+ getTitle());					
-			ImportSource source;
-			File out = null;
-			currentExtension = resource.getCoreMapping().getExtension().getName();
+			currentActivity="Uploading "+resource.getCoreMapping().getExtension().getName();
 			currentProcessed.set(0);
 			currentErroneous.set(0);
+
+			ImportSource source;
+			File out = null;
 			try {
-				// create new tab file
-				TabFileWriter writer = getTabFileWriter(resource.getCoreMapping());
-				out = writer.getFile();
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
 				source = this.getImportSource();
 				
@@ -270,25 +260,13 @@ import org.springframework.transaction.annotation.Transactional;
 							// assign managed properties
 							updateCoreProperties(record, oldRecord);
 							
-							// run postprocessors
-							for (RecordPostProcessor<T, ?, R> pp : postProcessors){
-								pp.processRecord(record);
-							}
-							
 							// save core record
 							record = persistRecord(record, oldRecord);
-							// write record to tab file
-							writer.write(record);
 							
-							// set stats per record. Saving of final stats must be done in the close() section
-							// gather stats by postprocessors
-							for (RecordPostProcessor<T, ?, R> pp : postProcessors){
-								pp.statsPerRecord(record);
-							}
+							// set stats per record. Saving of final resource stats is done in the close() section
+							recordsUploaded++;
 							recordHandler(record);
 
-						} catch (InterruptedException e) {
-							throw e;
 						} catch (ObjectNotFoundException e2){
 							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown local ID: "+e2.toString());
 						} catch (Exception e) {
@@ -306,13 +284,8 @@ import org.springframework.transaction.annotation.Transactional;
 					// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension uploads
 					recordsErroneous = currentErroneous.get(); 
 					source.close();
-					// flush and close writer/file				
-					writer.close();
 				}
 
-			} catch (IOException e) {
-				annotationManager.annotateResource(resource, "Couldn't open tab file. Import aborted: "+e.toString());
-				throw new InterruptedException();
 			} catch (ImportSourceException e) {
 				annotationManager.annotateResource(resource, "Couldn't open import source. Import aborted: "+e.toString());
 				throw new InterruptedException();
@@ -321,14 +294,6 @@ import org.springframework.transaction.annotation.Transactional;
 			return out;
 		}
 
-
-		/** Hook for working with a single record provided for subclasses 
-		 * @param record
-		 */
-		protected void recordHandler(T record){
-			// count all uploaded record (added, modified or no changes)
-			recordsUploaded++;
-		}
 
 		private T persistRecord(T record, T oldRecord) {
 			// check if new record version is different from old one
@@ -391,18 +356,15 @@ import org.springframework.transaction.annotation.Transactional;
 			// keep track of records for each extension and then store the totals in the viewMapping.
 			// once extension is uploaded this counter will be reset by the next extension.
 			// used to feed status()
-			currentExtension = extensionName;
+			currentActivity="Uploading "+extensionName;
 			currentProcessed.set(0);
 			currentErroneous.set(0);
 
 			try {
-				// create new tab file
-				TabFileWriter writer = getTabFileWriter(vm);
 				//  prepare import source
 				ImportSource source = this.getImportSource(vm.getExtension());
 
 				try{
-					out = writer.getFile();
 					// Do we need a
 					for (ImportRecord rec : source){
 						currentProcessed.addAndGet(1);
@@ -424,7 +386,6 @@ import org.springframework.transaction.annotation.Transactional;
 							try {
 								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 								extensionRecordManager.insertExtensionRecord(extRec);
-								writer.write(extRec);
 							} catch (Exception e) {
 								e.printStackTrace();
 								currentErroneous.addAndGet(1);
@@ -433,12 +394,8 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 					}
 				} finally {
-					writer.close();
 					setFinalExtensionStats(extension);
 				}
-			} catch (IOException e) {
-				log.error("Couldnt open tab file. Upload aborted", e);
-				throw e;
 			} catch (ImportSourceException e) {
 				annotationManager.annotateResource(resource, "Couldn't open import source for extension %s. Extension skipped: "+e.toString());
 				throw e;
@@ -449,21 +406,7 @@ import org.springframework.transaction.annotation.Transactional;
 			return out;
 		}
 		
-		private TabFileWriter getTabFileWriter(ViewMappingBase view) throws IOException{
-			// create new file, overwriting existing one
-			File file = cfg.getDumpFile(getResourceId(), view.getExtension());
-			// remove previously existing file
-			if (file.exists()){
-				file.delete();
-			}
-			file.createNewFile();
-			
-			if (view instanceof ViewCoreMapping){
-				return new TabFileWriter(file, (ViewCoreMapping) view);
-			}else{
-				return new TabFileWriter(file, view);				
-			}
-		}
+
 
 		private ImportSource getImportSource() throws ImportSourceException{
 			return getImportSource(null);
@@ -495,23 +438,40 @@ import org.springframework.transaction.annotation.Transactional;
 
 		
 		
-		
 		public synchronized String status() {
 			String coreInfo = "";
+			String recordStatus ="";
+			if (currentProcessed.get() > 0){
+				// core uploaded already
+				recordStatus = String.format(". %s records processed", currentProcessed.get());
+			}
 			if (recordsUploaded != null){
 				// core uploaded already
-				coreInfo = String.format(", %s occurrences", recordsUploaded);
+				coreInfo = String.format(". %s core records in total", recordsUploaded);
 			}
 			if (currentProcessed!=null){
-				// get postprocessor stats
-				String ppStats="";
-				for (RecordPostProcessor<T, ?, R> pp : postProcessors){
-					ppStats += pp.status();
-				}
-				return String.format("Uploading %s: %s records with %s%s", currentExtension, currentProcessed.get(), ppStats, coreInfo);
+				return String.format("%s%s%s", currentActivity, recordStatus, coreInfo);
 			}else{
 				return "Waiting for upload to start.";
 			}
 		}
+
+		
+		
+		/** Hook for doing initial preperations before processing the resource, e.g. clearing statistics or removing old files 
+		 * @param resource
+		 */
+		abstract protected void prepareHandler(R resource);
+
+		/** Hook for working with a single record provided for subclasses 
+		 * @param record
+		 */
+		abstract protected void recordHandler(T record);
+
+		/** Hook for doing final processing for the entire resource, e.g. setting statistics gathered via the record hook 
+		 * @param resource
+		 */
+		abstract protected void closeHandler(R resource);
+
 
 	}

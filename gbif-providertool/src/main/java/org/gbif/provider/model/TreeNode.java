@@ -16,10 +16,12 @@ public interface TreeNode<T extends TreeNode, E extends Enum> extends ResourceRe
 	public E getType();
 	public Long getLft();
 	public Long getRgt();
+	public String getMpath();
 	
 	public void setLabel(String label);
 	public void setParent(T parent);
 	public void setType(E t);
 	public void setLft(Long lft);
 	public void setRgt(Long rgt);
+	public void setMpath(String mpath);
 }
