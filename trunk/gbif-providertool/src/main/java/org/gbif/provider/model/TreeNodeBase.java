@@ -18,6 +18,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 	private Long lft;
 	private Long rgt;
 	private E type;
+	private String mpath;
 	
 	@Transient
 	public Long getId() {
@@ -65,6 +66,14 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 	}
 	public void setRgt(Long rgt) {
 		this.rgt = rgt;
+	}
+	
+	@Transient
+	public String getMpath() {
+		return mpath;
+	}
+	public void setMpath(String mpath) {
+		this.mpath = mpath;
 	}
 	
 	@Transient

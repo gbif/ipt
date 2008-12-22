@@ -76,7 +76,12 @@ import org.hibernate.annotations.CollectionOfElements;
 		public Long getRgt() {
 			return super.getRgt();
 		}
-		
+
+		@Override
+		public String getMpath() {
+			return super.getMpath();
+		}
+
 		public BBox getBbox() {
 			if (bbox==null){
 				bbox = new BBox();

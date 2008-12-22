@@ -23,7 +23,6 @@ import org.hibernate.validator.NotNull;
 @Entity
 public class Annotation implements ResourceRelatedObject{
 	private Long id;
-	@NotNull
 	private String guid;
 	@NotNull
 	private Resource resource;

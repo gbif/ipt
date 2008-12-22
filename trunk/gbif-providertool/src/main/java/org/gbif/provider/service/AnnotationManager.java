@@ -25,7 +25,11 @@ public interface AnnotationManager extends GenericResourceRelatedManager<Annotat
 	
 	public Annotation badDataType(CoreRecord record, String property, String dataType, String value);
 	public Annotation badReference(CoreRecord record, String property, String id, String note);
+	
+	// annotations linked only to resource with guid=null
 	public Annotation badCoreRecord(Resource resource, String id, String note);
 	public Annotation badExtensionRecord(Resource resource, Extension extension, String localId, String note);
+
+	// annotations for the whole resource will result in guid=null
 	public Annotation annotateResource(Resource resource, String note);
 }

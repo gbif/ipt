@@ -1,6 +1,8 @@
 package org.gbif.provider.task;
 
-	import org.gbif.provider.model.ChecklistResource;
+	import java.io.File;
+
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -37,8 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 		@Override
-		public void prepare() {
-			super.prepare();
+		protected void prepareHandler(ChecklistResource resource) {
 			resource = loadResource();
 		}
 		
@@ -56,22 +57,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 				rankCache.put(record.getRank(), dwcRank);
 			}
 			record.setDwcRank(dwcRank);				
-			super.recordHandler(record);
 		}
 
 
 		@Override
-		protected void finalHandler(ChecklistResource resource) {
+		protected void closeHandler(ChecklistResource resource) {
 			// lookup parentID, basionymID and acceptedID
+			currentActivity = "Processing parent taxa";
 			taxonManager.lookupParentTaxa(getResourceId());
+
+			currentActivity = "Processing accepted taxa";
 			taxonManager.lookupAcceptedTaxa(getResourceId());
+
+			currentActivity = "Processing basionyms";
 			taxonManager.lookupBasionymTaxa(getResourceId());
+			
 			// create nested set indices
+			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
 			taxonManager.setResourceStats(resource);
-			super.finalHandler(resource);
+
+			currentActivity = "Creating TCS data archive";
+			writeTcsArchive();
 		}
 
+		private File writeTcsArchive(){
+			//FIXME: implement TCS archive dumping
+			return null;
+		}
 
 		public int taskTypeId() {
 			return TASK_TYPE_ID;

@@ -42,6 +42,7 @@ import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.validator.NotNull;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -57,6 +58,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public static final String ALIAS = "meta";
 	
 	private Long id;
+	@NotNull
 	protected String guid = UUID.randomUUID().toString();
 	// resource metadata
 	protected ResourceMetadata meta = new ResourceMetadata();
@@ -77,7 +79,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.id = id;
 	}
 	
-	@Column(length=128)
+	@Column(length=128, unique=true)
 	public String getGuid() {
 		return guid;
 	}

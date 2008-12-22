@@ -102,7 +102,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.localId = localId;
 		}
 
-		@Column(length=128)
+		@Column(length=128, unique=true)
 		@org.hibernate.annotations.Index(name="tax_guid")
 		public String getGuid() {
 			return guid;
@@ -185,6 +185,11 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		@Override
 		public Long getRgt() {
 			return super.getRgt();
+		}
+
+		@Override
+		public String getMpath() {
+			return super.getMpath();
 		}
 
 		public BBox getBbox() {

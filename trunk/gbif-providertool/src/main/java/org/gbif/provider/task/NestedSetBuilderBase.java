@@ -22,8 +22,7 @@ import org.gbif.provider.service.TreeNodeManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class NestedSetBuilderBase<CR extends CoreRecord, T extends TreeNode<T, ?>> 
-						extends TaskBase<Set<T>, OccurrenceResource> 
-						implements RecordPostProcessor<CR, Set<T>, OccurrenceResource>{
+						extends TaskBase<Set<T>, OccurrenceResource> {
 	@Autowired
 	// doesnt belong into a generic nested set / tree node class, I know.
 	// but as all this is probably changing anyway I leave it here as a quick patch
