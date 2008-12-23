@@ -154,47 +154,55 @@ import org.springframework.beans.factory.annotation.Qualifier;
 				
 				if (taxon == null){
 					// try to "insert" the entire taxonomic hierarchy starting with kingdom
-					Taxon parent = null;
-					Rank lastUsedRank = null;
+					Taxon higherTaxon = null;
 					String currPathPrefix="";
 					int numDelimiter = dwcRanks.size()-1;
 					for (Rank rank : dwcRanks){
-						String currSciName = StringUtils.trimToEmpty(dwc.getHigherTaxon(rank));
+						String currSciName = dwc.getHigherTaxon(rank);
 						currPathPrefix += currSciName + "|";
 						numDelimiter -= 1;
 						if (currSciName.length()>0){
 							// this rank does exist
-							lastUsedRank = rank;
 							String currMpath = currPathPrefix + StringUtils.repeat("|", numDelimiter)+currSciName; 
 							if (taxonCache.containsKey(currMpath)){
 								// use existing taxon as parent
-								parent = taxonCache.get(currMpath); 
+								higherTaxon = taxonCache.get(currMpath); 
 							}else{
 								// non existing taxon. create new one
-								Taxon newParent = Taxon.newInstance(resource);
+								Taxon newHigherTaxon = Taxon.newInstance(resource);
 								// link into hierarchy if this is not a root taxon
-								newParent.setParent(parent);
-								newParent.setMpath(currMpath);
-								newParent.setScientificName(currSciName);
-								newParent.setRank(rank.toString());
-								newParent.setDwcRank(rank);
-								newParent = taxonManager.save(newParent);
-								taxonCache.put(currMpath, newParent);				
-								parent = newParent; 
+								newHigherTaxon.setParent(higherTaxon);
+								newHigherTaxon.setMpath(currMpath);
+								newHigherTaxon.setScientificName(currSciName);
+								newHigherTaxon.setRank(rank.toString());
+								newHigherTaxon.setDwcRank(rank);
+								taxonManager.save(higherTaxon);
+								taxonCache.put(higherTaxon.getMpath(), higherTaxon);				
+								higherTaxon = newHigherTaxon; 
 							}
 						}
 					}
+					// now create the real thing based on ScientificName
 					taxon = Taxon.newInstance(resource);
-					// link into hierarchy if this is not a root taxon
-					taxon.setParent(parent);
 					taxon.setMpath(path);
 					taxon.setScientificName(dwc.getScientificName());
 					taxon.setRank(dwc.getInfraspecificRank());
-					// cant figure out rank of terminal taxon
-					taxon.setDwcRank(Rank.TerminalTaxon); 
+					// we have no idea what rank this is.
+					//taxon.setDwcRank(Rank.TerminalTaxon); 
+					// make sure its not the same as the lowest higher taxon
+					String lastSciName = higherTaxon.getScientificName() + " " + dwc.getAuthorYearOfScientificName();
+					if (lastSciName.equalsIgnoreCase(dwc.getScientificName())){
+						// lowest highest taxon seems to be the same as the scientific name
+						// dont save higher taxon but use the scientific name based one.
+						taxon.setParent(higherTaxon.getParent());
+					}else{
+						taxonManager.save(higherTaxon);
+						taxonCache.put(higherTaxon.getMpath(), higherTaxon);				
+						taxon.setParent(higherTaxon);						
+					}
+					// link into hierarchy if this is not a root taxon
 					taxon = taxonManager.save(taxon);
-					taxonCache.put(path, taxon);				
-					parent = taxon; 
+					taxonCache.put(taxon.getMpath(), taxon);				
 				}
 			}
 			
