@@ -1,17 +1,12 @@
 package org.gbif.provider.model;
 
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.model.dto.DwcTaxon;
-import org.gbif.provider.task.TaxonomyBuilder;
-
-import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class TaxonTest {
 	private OccurrenceResource resource;

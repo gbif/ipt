@@ -3,6 +3,7 @@ package org.gbif.provider.service;
 import java.util.List;
 
 import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
@@ -14,6 +15,7 @@ public interface TaxonManager extends CoreRecordManager<Taxon>, TreeNodeManager<
 	public void lookupBasionymTaxa(Long resourceId);
 	public void lookupParentTaxa(Long resourceId);	
 	public void buildNestedSet(Long resourceId);
+	public DataResource setResourceStats(DataResource resource);
 	public ChecklistResource setResourceStats(ChecklistResource resource);
 	
 	

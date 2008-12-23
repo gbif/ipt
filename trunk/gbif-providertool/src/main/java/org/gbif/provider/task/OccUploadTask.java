@@ -3,29 +3,28 @@ package org.gbif.provider.task;
 	import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.geo.TransformationUtils;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.dto.DwcTaxon;
+import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.service.impl.DarwinCoreManagerHibernate;
 import org.gbif.provider.util.CacheMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 	/**
 	 * Tha main task responsible for uploading raw data into the cache and doing simple preprocessing while iterating through the ImportSource.
@@ -36,35 +35,43 @@ import org.springframework.beans.factory.annotation.Qualifier;
 	public class OccUploadTask extends ImportTask<DarwinCore, OccurrenceResource> {
 		public static final int TASK_TYPE_ID = 1;
 		// resource stats
-		private OccurrenceResource resource;
+		private OccurrenceResource occResource;
 		private int recWithCoordinates;
 		private int recWithCountry;
 		private int recWithAltitude;
 		private int recWithDate;
 		private BBox bbox;
 		// not stored in resource
+		private int numRegions;
+		private int numTaxa;
 		private Map<Region, Map<Taxon, OccStatByRegionAndTaxon>> occByRegionAndTaxon;
-		private CacheMap<String, Taxon> taxonCache = new CacheMap<String, Taxon>(1000);
-		private static final List<Rank> dwcRanks; 
+		private CacheMap<String, Taxon> taxonCache = new CacheMap<String, Taxon>(2500);
+		private LinkedList<Taxon> newTaxa = new LinkedList<Taxon>();
+		private static final List<Rank> higherRanks; 
 		  static  
 		  {  
-		    List<Rank> ranks = new ArrayList<Rank>();
-		    ranks .add( Rank.Kingdom );  
-		    ranks .add( Rank.Phylum );  
-		    ranks .add( Rank.Class );  
-		    ranks .add( Rank.Order );  
-		    ranks .add( Rank.Family );  
-		    ranks .add( Rank.Genus );  
-		    dwcRanks = Collections.unmodifiableList(ranks);  
+		    List<Rank> ranks = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
+		    Collections.reverse(ranks);
+		    higherRanks = Collections.unmodifiableList(ranks);  
 		  }  
 		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
-		
+		private LinkedList<Region> newRegions = new LinkedList<Region>();
+		private static final List<RegionType> higherGeography; 
+		  static  
+		  {  
+		    List<RegionType> regionTypes = new ArrayList<RegionType>(RegionType.DARWIN_CORE_REGIONS);
+		    regionTypes.add(RegionType.Locality);
+		    Collections.reverse(regionTypes);
+		    higherGeography = Collections.unmodifiableList(regionTypes);  
+		  }  		  
 		@Autowired
 		private OccStatManager occStatManager;
 		@Autowired
 		private TaxonManager taxonManager;
 		@Autowired
 		private RegionManager regionManager;
+		@Autowired
+		private DarwinCoreManager darwinCoreManager;
 
 		
 		@Autowired
@@ -83,7 +90,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 			bbox=new BBox();
 			occByRegionAndTaxon = new HashMap<Region, Map<Taxon, OccStatByRegionAndTaxon>>();
 			
-			resource = loadResource();
+			this.occResource = loadResource();
 		}
 		
 		
@@ -119,7 +126,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 			}
 			if (!taxMap.containsKey(tax)){
 				stat = new OccStatByRegionAndTaxon();
-				stat.setResource(resource);
+				stat.setResource(occResource);
 				stat.setRegion(reg);
 				stat.setTaxon(tax);
 				stat.setNumOcc(1);
@@ -133,103 +140,209 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		
 		
 
-		private Region extractRegion(DarwinCore dwc) {
-			Region region = null;
-			dwc.setRegion(region);
-			return region;			
-		}
-
-
+		//
+		// TAXA
+		//
 		private Taxon extractTaxon(DarwinCore dwc) {
-			Taxon taxon=null;
 			String path = dwc.getTaxonomyPath();
-			if (taxonCache.containsKey(path)){
-				// taxon exists already. use persistent one for dwc
-				taxon = taxonCache.get(path);
-			}else{
-				// cache might be overflown. Look into db before we create a new redundant taxon
-				//FIXME: check db
-				
-				if (taxon == null){
-					// try to "insert" the entire higher taxonomic hierarchy starting with kingdom until genus
-					Taxon higherTaxon = null;
-					String currPathPrefix="";
-					int numDelimiter = dwcRanks.size()-1;
-					for (Rank rank : dwcRanks){
-						String currSciName = dwc.getHigherTaxon(rank);
-						currPathPrefix += currSciName + "|";
-						numDelimiter -= 1;
-						if (currSciName.length()>0){
-							// this rank does exist
-							String currMpath = currPathPrefix + StringUtils.repeat("|", numDelimiter)+currSciName; 
-							if (taxonCache.containsKey(currMpath)){
-								// use existing taxon as parent
-								higherTaxon = taxonCache.get(currMpath); 
-							}else{
-								// non existing taxon. create new one
-								Taxon newHigherTaxon = Taxon.newInstance(resource);
-								// link into hierarchy if this is not a root taxon
-								newHigherTaxon.setParent(higherTaxon);
-								newHigherTaxon.setMpath(currMpath);
-								newHigherTaxon.setScientificName(currSciName);
-								newHigherTaxon.setRank(rank.toString());
-								newHigherTaxon.setDwcRank(rank);
-								taxonManager.save(higherTaxon);
-								taxonCache.put(higherTaxon.getMpath(), higherTaxon);				
-								higherTaxon = newHigherTaxon; 
-							}
+			Taxon taxon=findPersistentTaxon(path);
+			if (taxon == null){
+				// taxon doesnt exist yet. create it based on ScientificName
+				taxon = Taxon.newInstance(occResource);
+				taxon.setMpath(path);
+				taxon.setScientificName(dwc.getScientificName());
+				taxon.setNomenclaturalCode(dwc.getNomenclaturalCode());
+				if (dwc.getInfraspecificRank()!=null){
+					taxon.setRank(dwc.getInfraspecificRank());
+				}
+
+				// need to link the new taxon into the taxonomic hierarchy
+				// try to find lowest persistent higher taxon 
+				// create new higher taxa as we go up and havent found a persistent one yet
+				Taxon parent = null;
+				newTaxa.clear();
+				boolean persistentParentFound = false;
+				// first see if infraspecific epitheton exists. 
+				// This means there also is a species which we will use as a higher taxon too
+				if (dwc.getInfraspecificEpithet()!=null){
+					parent = findPersistentTaxon(dwc.getTaxonomyPath(Rank.Species));
+					if (parent==null){
+						// cant find species. create new taxon and go further up the ranks
+						parent = buildTaxon(dwc, Rank.Species);
+						// we cant assign a parent yet, therefor put it on the new taxon stack 
+						// and save it later once we reach a persistent taxon or the kingdom
+						newTaxa.add(parent);
+					}else{
+						persistentParentFound=true;
+					}
+					taxon.setParent(parent);
+				}
+				if (!persistentParentFound){
+					for (Rank rank : higherRanks){
+						if (dwc.getHigherTaxonName(rank)==null){
+							continue;
+						}
+						parent = findPersistentTaxon(dwc.getTaxonomyPath(rank));
+						if (parent!=null){
+							persistentParentFound=true;
+						}else{
+							parent = buildTaxon(dwc, rank);
+							newTaxa.add(parent);
+						}
+						if (taxon.getParent()==null){
+							taxon.setParent(parent);
+						}
+						if (persistentParentFound){
+							break;
 						}
 					}
-					// if infraspecific epitheton exists, terminal taxon (=ScientificName) must be below species.
-					if (StringUtils.trimToNull(dwc.getInfraspecificEpithet())!=null){
-						// save lowest higher taxon and create new species
-						taxonManager.save(higherTaxon);
-						taxonCache.put(higherTaxon.getMpath(), higherTaxon);
-						
-						Taxon newHigherTaxon = Taxon.newInstance(resource);
-						newHigherTaxon.setScientificName(dwc.getGenus() +" "+ dwc.getSpecificEpithet());
-						newHigherTaxon.setDwcRank(Rank.Species);
-						newHigherTaxon.setRank(Rank.Species.toString());
-						newHigherTaxon.setParent(higherTaxon);
-						newHigherTaxon.setMpath("");
-						higherTaxon = newHigherTaxon; 
-					}					
-					// the lowest higher taxon is still not saved.
-					// ScientificName could also be a super specific rank.
-					// in that case drop the lowest higher taxon and just create the scientificName based one
-					// lets create the real thing based on ScientificName first
-					taxon = Taxon.newInstance(resource);
-					taxon.setMpath(path);
-					taxon.setScientificName(dwc.getScientificName());
-					if (dwc.getInfraspecificRank()!=null){
-						taxon.setRank(dwc.getInfraspecificRank());
-					}
-					// we have no idea what rank this is.
-					//taxon.setDwcRank(Rank.TerminalTaxon); 
-					// make sure its not the same as the lowest higher taxon
-					String lastSciName = higherTaxon.getScientificName() + " " + dwc.getAuthorYearOfScientificName();
-					if (lastSciName.equalsIgnoreCase(dwc.getScientificName())){
-						// lowest highest taxon seems to be the same as the scientific name
-						// dont save higher taxon but use the scientific name based one.
-						taxon.setParent(higherTaxon.getParent());
-					}else{
-						taxonManager.save(higherTaxon);
-						taxonCache.put(higherTaxon.getMpath(), higherTaxon);				
-						taxon.setParent(higherTaxon);						
-					}
-					taxon = taxonManager.save(taxon);
-					taxonCache.put(taxon.getMpath(), taxon);				
 				}
+				// save new taxa
+				if (!persistentParentFound){
+					// no persistent taxon found in entire hierarchy.
+					// use highest taxon as a new taxonomy root
+					parent = newTaxa.removeLast();
+					saveTaxon(parent);
+				}
+				// save all other new taxa if there are any
+				Taxon newTaxon;
+				while(!newTaxa.isEmpty()){
+					newTaxon = newTaxa.removeLast();
+					newTaxon.setParent(parent);
+					parent = saveTaxon(newTaxon);
+				}
+				
+				// finally save the real taxon linked to the darwin core record
+				saveTaxon(taxon);
 			}
 			
 			dwc.setTaxon(taxon);
 			return taxon;			
 		}
 
+		private Taxon findPersistentTaxon(String mpath){
+			if (taxonCache.containsKey(mpath)){
+				return taxonCache.get(mpath);
+			}else{
+				// cache is limited, so we need to check the db too to make sure it doesnt exist
+				return taxonManager.getByMaterializedPath(getResourceId(), mpath);
+			}
+		}
+		private Taxon buildTaxon(DarwinCore dwc, Rank rank){
+			Taxon taxon = Taxon.newInstance(occResource);
+			taxon.setMpath(dwc.getTaxonomyPath(rank));
+			taxon.setScientificName(dwc.getHigherTaxonName(rank));
+			taxon.setNomenclaturalCode(dwc.getNomenclaturalCode());
+			taxon.setRank(rank.toString());
+			taxon.setDwcRank(rank);
+			return taxon;
+		}
+		private Taxon saveTaxon(Taxon taxon){
+			taxonManager.save(taxon);
+			taxonCache.put(taxon.getMpath(), taxon);
+			numTaxa++;
+			return taxon;
+		}
+
+
+		//
+		// REGIONS
+		//
+		private Region extractRegion(DarwinCore dwc) {			
+			Region region = null;
+			boolean persistentParentFound=false;
+			newRegions.clear();
+			for (RegionType regionType : higherGeography){
+				if (dwc.getHigherGeographyName(regionType)==null){
+					continue;
+				}
+				region = findPersistentRegion(dwc.getGeographyPath(regionType));
+				if (region!=null){
+					persistentParentFound=true;
+					break;
+				}else{
+					region = buildRegion(dwc, regionType);
+					newRegions.add(region);
+				}
+			}
+
+			// save new taxa
+			if (!persistentParentFound){
+				// no persistent region found in entire hierarchy.
+				// use highest region as a new geography root region
+				region = newRegions.removeLast();
+				saveRegion(region);
+			}
+			// save all other new regions if there are any
+			Region newRegion;
+			while(!newRegions.isEmpty()){
+				newRegion = newRegions.removeLast();
+				newRegion.setParent(region);
+				region = saveRegion(newRegion);
+			}
+				
+			dwc.setRegion(region);
+			return region;			
+		}
+
+		private Region findPersistentRegion(String mpath){
+			if (regionCache.containsKey(mpath)){
+				return regionCache.get(mpath);
+			}else{
+				// cache is limited, so we need to check the db too to make sure it doesnt exist
+				return regionManager.getByMaterializedPath(getResourceId(), mpath);
+			}
+		}
+		private Region buildRegion(DarwinCore dwc, RegionType regionType){
+			Region region = Region.newInstance(occResource);
+			region.setMpath(dwc.getGeographyPath(regionType));
+			region.setLabel(dwc.getHigherGeographyName(regionType));
+			region.setType(regionType);
+			return region;
+		}
+		private Region saveRegion(Region region){
+			regionManager.save(region);
+			regionCache.put(region.getMpath(), region);
+			numRegions++;
+			return region;
+		}
+		
+		
+		
+		@Override
+		protected void extensionRecordHandler(ExtensionRecord extRec) {
+			// see if darwin core record is affected, e.g. geo extension => coordinates
+			if (extRec.getExtension().getId().equals(DarwinCoreManagerHibernate.GEO_EXTENSION_ID)){
+				// this is the geo extension!
+				DarwinCore dwc = darwinCoreManager.get(extRec.getCoreId());
+				if (darwinCoreManager.updateWithGeoExtension(dwc, extRec)){
+					// update bbox
+					bbox.expandBox(dwc.getLocation());
+					// potentially transform coordinates
+					String geodatum=extRec.getPropertyValue(DarwinCoreManagerHibernate.GEODATUM_PROP);
+					// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
+					darwinCoreManager.save(dwc);
+					// increase stats counter
+					if (dwc.getLocation().isValid()){
+						//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
+						// might need to do a count via SQL after upload is done ...
+						recWithCoordinates++;
+						// update Taxon bbox stats
+						if (dwc.getTaxon()!=null){
+							dwc.getTaxon().expandBox(dwc.getLocation());			
+						}
+						if (dwc.getRegion()!=null){
+							dwc.getRegion().expandBox(dwc.getLocation());			
+						}
+					}
+				}
+			}
+		}
 
 		@Override
 		protected void closeHandler(OccurrenceResource resource){
 			// occByRegionAndTaxon
+			currentActivity = "Inserting count statistics by region and taxon";
 			int occStatCount=0;
 			for (Map<Taxon, OccStatByRegionAndTaxon> taxMap : occByRegionAndTaxon.values()){
 				for (OccStatByRegionAndTaxon stat : taxMap.values()){
@@ -243,6 +356,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 			}
 			log.debug(occStatCount + " occurrence stats by region & taxon inserted");
 			
+			// create nested set indices
+			currentActivity = "Creating taxonomy index";
+			taxonManager.buildNestedSet(getResourceId());
+			taxonManager.setResourceStats(resource);
+
 			// update resource properties
 			resource.setRecWithCoordinates(recWithCoordinates);
 			resource.setRecWithCountry(recWithCountry);
@@ -252,48 +370,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		}
 
 
-		private void uploadExtension(ViewExtensionMapping vm) {
-//			// see if darwin core record is affected, e.g. geo extension => coordinates
-//			if (vm.getExtension().getId().equals(DarwinCore.GEO_EXTENSION_ID)){
-//				// this is the geo extension!
-//				DarwinCore dwc = darwinCoreManager.get(coreId);
-//				if (dwc.updateWithGeoExtension(extRec)){
-//					// update bbox
-//					bbox.expandBox(dwc.getLocation());
-//					// potentially transform coordinates
-//					String geodatum=extRec.getPropertyValue(DarwinCore.GEODATUM_PROP);
-//					// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
-//					if (false && geodatum!=null && dwc.getLocation()!=null){
-//						// FIXME: keep hasmap of used datums and their transformer. 
-//						// Its expensive to create those
-//						// Wgs84Transformer t = wgs84Util.getWgs84Transformer(geodatum);
-//						try {
-//							wgs84Util.transformIntoWGS84(dwc.getLocation(), geodatum);
-//						} catch (FactoryException e) {
-//							log.debug("Can't recognise geodatic datum "+geodatum);
-//						} catch (TransformException e) {
-//							log.warn("Can't transform coordinates with geodatic datum "+geodatum);
-//						}											 
-//					}
-//					darwinCoreManager.save(dwc);
-//					// increase stats counter
-//					if (dwc.getLocation().isValid()){
-//						//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
-//						// might need to do a count via SQL after upload is done ...
-//						recWithCoordinates++;
-//						// update Taxon bbox stats
-//						if (dwc.getTaxon()!=null){
-//							dwc.getTaxon().expandBox(dwc.getLocation());			
-//						}
-//						if (dwc.getRegion()!=null){
-//							dwc.getRegion().expandBox(dwc.getLocation());			
-//						}
-//					}
-//				}
-//			}
+		@Override
+		protected String statusHandler() {
+			return String.format("%s taxa, %s regions created", numTaxa, numRegions);
 		}
-		
-		
+
+
 		public int taskTypeId() {
 			return TASK_TYPE_ID;
 		}

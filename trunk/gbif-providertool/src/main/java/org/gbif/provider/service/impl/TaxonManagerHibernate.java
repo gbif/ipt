@@ -63,6 +63,10 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		treeNodeSupport.buildNestedSet(resourceId, getSession());
 	}
 
+	public Taxon getByMaterializedPath(Long resourceId, String mpath) {
+		return treeNodeSupport.getByMaterializedPath(resourceId, mpath, getSession());
+	}
+
 	
 	public void lookupAcceptedTaxa(Long resourceId) {
 		Connection cn = getConnection();
@@ -109,7 +113,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         return cnt.intValue();
 	}
 	
-	public ChecklistResource setResourceStats(ChecklistResource resource){
+	public DataResource setResourceStats(DataResource resource){
 		Long resourceId = resource.getId();
 		resource.setNumClasses(countByRank(resourceId, Rank.Class));
 		resource.setNumFamilies(countByRank(resourceId, Rank.Family));
@@ -119,6 +123,12 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		resource.setNumPhyla(countByRank(resourceId, Rank.Phylum));
 		resource.setNumTaxa(count(resourceId));
 		resource.setNumTerminalTaxa(countTerminalNodes(resourceId));
+		return resource;
+	}
+	
+	public ChecklistResource setResourceStats(ChecklistResource resource){
+		Long resourceId = resource.getId();
+		setResourceStats( (DataResource) resource);
 		int cnt = ((Long) query("select count(tax) from Taxon tax WHERE tax.accepted=false and tax.resource.id = :resourceId")
 					.setLong("resourceId", resourceId)
 					.iterate().next()).intValue();
@@ -170,6 +180,5 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         	.list();
         return StatsUtils.getDataMap(data);
 	}
-
 
 }

@@ -69,5 +69,8 @@ public enum Rank {
 		}
 		return null;
 	}
-	  
+	 
+	public String toString(){
+		return name();
+	}
 }

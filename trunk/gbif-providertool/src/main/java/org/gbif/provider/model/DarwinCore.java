@@ -42,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
 import org.hibernate.validator.NotNull;
 
 
@@ -658,24 +659,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 	
 	@Transient
-	public String getHigherTaxon(Rank rank){
-		if (rank==Rank.Species){
-			if (getSpecificEpithet()!=null){
-				return StringUtils.trimToNull(String.format("%s %s", getGenus(), getSpecificEpithet()));
-			}else{
-				return null;
-			}
-		}else if (rank==Rank.InfraSpecies){
-			if (getInfraspecificEpithet()!=null){
-				return StringUtils.trimToNull(String.format("%s %s %s %s", getGenus(), getSpecificEpithet(), getInfraspecificRank(), getInfraspecificEpithet()));				
-			}else{
-				return null;
-			}
-		}else{
-			return getPropertyValue(StringUtils.capitalise(rank.columnName));
-		}
-	}
-	@Transient
 	public String getPropertyValue(ExtensionProperty property){
 		return getPropertyValue(property.getName());
 	}
@@ -833,11 +816,92 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	
 	@Transient
+	public String getHigherTaxonName(Rank rank){
+		if (rank==Rank.Species){
+			if (getSpecificEpithet()!=null){
+				return StringUtils.trimToNull(String.format("%s %s", getGenus(), getSpecificEpithet()));
+			}else{
+				return null;
+			}
+		}else if (rank==Rank.InfraSpecies){
+			if (getInfraspecificEpithet()!=null){
+				return StringUtils.trimToNull(String.format("%s %s %s %s", getGenus(), getSpecificEpithet(), getInfraspecificRank(), getInfraspecificEpithet()));				
+			}else{
+				return null;
+			}
+		}else{
+			return StringUtils.trimToNull(getPropertyValue(StringUtils.capitalise(rank.columnName)));
+		}
+	}
+	/** 9 rank strings joined by | pipe symbol, starting with kingdom, ending in Genus, SpeciesEpi, InfraSpeciesEpi and finally ScientificName
+	 * @return
+	 */
+	@Transient
 	public String getTaxonomyPath() {
-		return String.format("%s|%s|%s|%s|%s|%s|%s|%s", StringUtils.trimToEmpty(getKingdom()), StringUtils.trimToEmpty(getPhylum()), StringUtils.trimToEmpty(getClasss()), StringUtils.trimToEmpty(getOrder()), StringUtils.trimToEmpty(getFamily()), StringUtils.trimToEmpty(getGenus()), StringUtils.trimToEmpty(getSpecificEpithet()), StringUtils.trimToEmpty(getInfraspecificEpithet()));
+		return getTaxonomyPath(Rank.InfraSpecies)+"|"+getScientificName();
+	}
+	@Transient
+	public String getTaxonomyPath(Rank rank) {
+		String path = StringUtils.trimToEmpty(getKingdom());
+		if (rank.compareTo(Rank.Phylum) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getPhylum());
+		}
+		if (rank.compareTo(Rank.Class) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getClasss());
+		}
+		if (rank.compareTo(Rank.Order) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getOrder());
+		}
+		if (rank.compareTo(Rank.Family) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getFamily());
+		}
+		if (rank.compareTo(Rank.Genus) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getGenus());
+		}
+		if (rank.compareTo(Rank.Species) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getSpecificEpithet());
+		}
+		if (rank.compareTo(Rank.InfraSpecies) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getInfraspecificEpithet());
+		}
+		return path;
+	}
+	
+	@Transient
+	public String getHigherGeographyName(RegionType regionType){
+		return StringUtils.trimToNull(getPropertyValue(StringUtils.capitalise(regionType.columnName)));
 	}
 	@Transient
 	public String getGeographyPath() {
-		return String.format("%s|%s|%s|%s|%s|%s|%s|%s", StringUtils.trimToEmpty(getContinent()), StringUtils.trimToEmpty(getWaterBody()), StringUtils.trimToEmpty(getIslandGroup()), StringUtils.trimToEmpty(getIsland()), StringUtils.trimToEmpty(getCountry()), StringUtils.trimToEmpty(getStateProvince()), StringUtils.trimToEmpty(getCounty()), StringUtils.trimToEmpty(getLocality()));
+		return getGeographyPath(RegionType.Locality);
+	}
+	@Transient
+	public String getGeographyPath(RegionType regionType) {
+		String path = StringUtils.trimToEmpty(getKingdom());
+		if (regionType.compareTo(RegionType.Continent) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getContinent());
+		}
+		if (regionType.compareTo(RegionType.Waterbody) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getWaterBody());
+		}
+		if (regionType.compareTo(RegionType.IslandGroup) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getIslandGroup());
+		}
+		if (regionType.compareTo(RegionType.Island) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getIsland());
+		}
+		if (regionType.compareTo(RegionType.Country) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getCountry());
+		}
+		if (regionType.compareTo(RegionType.State) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getStateProvince());
+		}
+		if (regionType.compareTo(RegionType.County) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getCounty());
+		}
+		if (regionType.compareTo(RegionType.Locality) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getLocality());
+		}		
+		return path;
 	}
 }
