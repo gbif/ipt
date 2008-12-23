@@ -659,15 +659,21 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	
 	@Transient
 	public String getHigherTaxon(Rank rank){
-		String propName;
 		if (rank==Rank.Species){
-			propName = "SpecificEpithet";
+			if (getSpecificEpithet()!=null){
+				return StringUtils.trimToNull(String.format("%s %s", getGenus(), getSpecificEpithet()));
+			}else{
+				return null;
+			}
 		}else if (rank==Rank.InfraSpecies){
-			propName = "InfraspecificEpithet";
+			if (getInfraspecificEpithet()!=null){
+				return StringUtils.trimToNull(String.format("%s %s %s %s", getGenus(), getSpecificEpithet(), getInfraspecificRank(), getInfraspecificEpithet()));				
+			}else{
+				return null;
+			}
 		}else{
-			propName = StringUtils.capitalise(rank.columnName);			
+			return getPropertyValue(StringUtils.capitalise(rank.columnName));
 		}
-		return getPropertyValue(propName);
 	}
 	@Transient
 	public String getPropertyValue(ExtensionProperty property){
