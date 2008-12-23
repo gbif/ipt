@@ -30,10 +30,9 @@ public class DataArchiveManagerImpl implements DataArchiveManager{
 		
 		// zip archive
 		File archive = cfg.getDumpArchiveFile(resource.getId());
-		archive.createNewFile();
-		ZipUtil.zipFiles(archiveFiles, archive);
-		
-		return archive;
+//		archive.createNewFile();
+//		ZipUtil.zipFiles(archiveFiles, archive);
+		return archive;		
 	}
 	
 	private File dumpFile(Resource resource){

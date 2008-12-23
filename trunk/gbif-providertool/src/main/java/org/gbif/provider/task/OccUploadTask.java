@@ -55,8 +55,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 		    ranks .add( Rank.Order );  
 		    ranks .add( Rank.Family );  
 		    ranks .add( Rank.Genus );  
-		    ranks .add( Rank.Species );  
-		    ranks .add( Rank.InfraSpecies );  
 		    dwcRanks = Collections.unmodifiableList(ranks);  
 		  }  
 		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
@@ -153,7 +151,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 				//FIXME: check db
 				
 				if (taxon == null){
-					// try to "insert" the entire taxonomic hierarchy starting with kingdom
+					// try to "insert" the entire higher taxonomic hierarchy starting with kingdom until genus
 					Taxon higherTaxon = null;
 					String currPathPrefix="";
 					int numDelimiter = dwcRanks.size()-1;
@@ -182,11 +180,30 @@ import org.springframework.beans.factory.annotation.Qualifier;
 							}
 						}
 					}
-					// now create the real thing based on ScientificName
+					// if infraspecific epitheton exists, terminal taxon (=ScientificName) must be below species.
+					if (StringUtils.trimToNull(dwc.getInfraspecificEpithet())!=null){
+						// save lowest higher taxon and create new species
+						taxonManager.save(higherTaxon);
+						taxonCache.put(higherTaxon.getMpath(), higherTaxon);
+						
+						Taxon newHigherTaxon = Taxon.newInstance(resource);
+						newHigherTaxon.setScientificName(dwc.getGenus() +" "+ dwc.getSpecificEpithet());
+						newHigherTaxon.setDwcRank(Rank.Species);
+						newHigherTaxon.setRank(Rank.Species.toString());
+						newHigherTaxon.setParent(higherTaxon);
+						newHigherTaxon.setMpath("");
+						higherTaxon = newHigherTaxon; 
+					}					
+					// the lowest higher taxon is still not saved.
+					// ScientificName could also be a super specific rank.
+					// in that case drop the lowest higher taxon and just create the scientificName based one
+					// lets create the real thing based on ScientificName first
 					taxon = Taxon.newInstance(resource);
 					taxon.setMpath(path);
 					taxon.setScientificName(dwc.getScientificName());
-					taxon.setRank(dwc.getInfraspecificRank());
+					if (dwc.getInfraspecificRank()!=null){
+						taxon.setRank(dwc.getInfraspecificRank());
+					}
 					// we have no idea what rank this is.
 					//taxon.setDwcRank(Rank.TerminalTaxon); 
 					// make sure its not the same as the lowest higher taxon
@@ -200,7 +217,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 						taxonCache.put(higherTaxon.getMpath(), higherTaxon);				
 						taxon.setParent(higherTaxon);						
 					}
-					// link into hierarchy if this is not a root taxon
 					taxon = taxonManager.save(taxon);
 					taxonCache.put(taxon.getMpath(), taxon);				
 				}
