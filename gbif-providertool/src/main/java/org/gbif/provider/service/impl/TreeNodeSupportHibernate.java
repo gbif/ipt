@@ -86,14 +86,14 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 	}
 	
 	public int countTerminalNodes(Long resourceId, Session session, String filter) {
-        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId %s", persistentClass.getSimpleName(), getWhereString(filter)))
+        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId and e.lft+1=e.rgt %s", persistentClass.getSimpleName(), getWhereString(filter)))
         .setLong("resourceId", resourceId)
         .iterate().next() ).intValue();
 	}
 
 	public void buildNestedSet(Long resourceId, Session session){
 		List<T> rootNodes = this.getRoots(resourceId, session, null);
-		log.info("Building nested set for trees: "+rootNodes.toString());
+		log.info(String.format("Building nested set for %s isolated trees", rootNodes.size()));
 		Long idx = 1l;
 		for (T node : rootNodes){
 			idx = crawlChildren(resourceId, node, idx, session);
@@ -116,6 +116,14 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 		idx++;
 		treeNodeManager.save(node);
 		return idx;
+	}
+
+
+	public T getByMaterializedPath(Long resourceId, String mpath, Session session) {
+		return (T) session.createQuery(String.format("select e from %s e WHERE e.resource.id = :resourceId and e.mpath=:mpath", persistentClass.getName()))
+    	.setLong("resourceId", resourceId)
+    	.setString("mpath", mpath)
+    	.uniqueResult();
 	}
 
 }

@@ -6,6 +6,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.TaxonManager;
@@ -22,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 	public class ChecklistUploadTask extends ImportTask<Taxon, ChecklistResource> {
 		public static final int TASK_TYPE_ID = 7;
 		// resource stats
-		private ChecklistResource resource;
+		private ChecklistResource taxResource;
 		private ChecklistResourceManager checklistResourceManager;
 		@Autowired
 		private ThesaurusManager thesaurusManager;
@@ -40,7 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		@Override
 		protected void prepareHandler(ChecklistResource resource) {
-			resource = loadResource();
+			this.taxResource = loadResource();
 		}
 		
 		
@@ -57,6 +58,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 				rankCache.put(record.getRank(), dwcRank);
 			}
 			record.setDwcRank(dwcRank);				
+		}
+
+
+		@Override
+		protected void extensionRecordHandler(ExtensionRecord extRec) {
+			// TODO Auto-generated method stub
+			
 		}
 
 
@@ -88,6 +96,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		public int taskTypeId() {
 			return TASK_TYPE_ID;
+		}
+
+
+		@Override
+		protected String statusHandler() {
+			return "";
 		}
 
 	}

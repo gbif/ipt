@@ -2,13 +2,9 @@ package org.gbif.provider.task;
 
 	import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,42 +13,22 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.ImportSourceFactory;
-import org.gbif.provider.geo.TransformationUtils;
-import org.gbif.provider.geo.TransformationUtils.Wgs84Transformer;
-import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccStatByRegionAndTaxon;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Region;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.model.dto.DwcTaxon;
 import org.gbif.provider.model.dto.ExtensionRecord;
-import org.gbif.provider.model.voc.AnnotationType;
-import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.CoreRecordFactory;
 import org.gbif.provider.service.CoreRecordManager;
-import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.util.TabFileWriter;
-import org.gbif.provider.util.ZipUtil;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Session;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
 		private R resource;
+		private Date lastLogDate;
 
 		
 		@Autowired
@@ -107,20 +84,31 @@ import org.springframework.transaction.annotation.Transactional;
 			this.coreRecordManager = coreRecordManager;
 		}
 		
-		public UploadEvent call() throws Exception{
+		public final UploadEvent call() throws Exception{
 			
 			try {
+				lastLogDate = new Date();
+
 				// prepare upload, removing previous records, calling prepare of helper tasks
 				prepare();
+				Date now = new Date();
+				log.info(String.format("Import preparation took %s ms", (now.getTime()-lastLogDate.getTime())));
+				lastLogDate = now;
 				
 				// run import of core into db, calling a subclass handler per record and finally at the end
 				uploadCore();
+				now = new Date();
+				log.info(String.format("Import core took %s ms", (now.getTime()-lastLogDate.getTime())));
+				lastLogDate = now;
 				
 				// upload further extensions one by one
 				for (ViewExtensionMapping vm : resource.getExtensionMappings()){
 					// run import into db & dump file
 					try {
 						uploadExtension(vm);
+						now = new Date();
+						log.info(String.format("Import extension %s took %s ms", vm.getExtension().getName(), (now.getTime()-lastLogDate.getTime())));
+						lastLogDate = now;
 					} catch (ImportSourceException e) {
 						// dont do nothing. Error is logged and core is uploaded. Skip this extension
 					} catch (IOException e) {
@@ -129,6 +117,9 @@ import org.springframework.transaction.annotation.Transactional;
 				}
 				
 				close();
+				now = new Date();
+				log.info(String.format("Import closing took %s ms", (now.getTime()-lastLogDate.getTime())));
+				lastLogDate = now;
 				
 			} catch (InterruptedException e) {
 				// thread was interrupted. Try to exit nicely by removing all potentially corrupt data.
@@ -385,6 +376,7 @@ import org.springframework.transaction.annotation.Transactional;
 							// TODO: check if record has changed
 							try {
 								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
+								extensionRecordHandler(extRec);
 								extensionRecordManager.insertExtensionRecord(extRec);
 							} catch (Exception e) {
 								e.printStackTrace();
@@ -438,7 +430,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 		
 		
-		public synchronized String status() {
+		public final synchronized String status() {
+			String subclassInfo = StringUtils.trimToEmpty(statusHandler());
+			if (subclassInfo.length()>0){
+				subclassInfo = ". "+subclassInfo;
+			}
 			String coreInfo = "";
 			String recordStatus ="";
 			if (currentProcessed.get() > 0){
@@ -450,12 +446,16 @@ import org.springframework.transaction.annotation.Transactional;
 				coreInfo = String.format(". %s core records in total", recordsUploaded);
 			}
 			if (currentProcessed!=null){
-				return String.format("%s%s%s", currentActivity, recordStatus, coreInfo);
+				return String.format("%s%s%s%s", currentActivity, recordStatus, subclassInfo, coreInfo);
 			}else{
 				return "Waiting for upload to start.";
 			}
 		}
 
+		/** Hook for doing initial preperations before processing the resource, e.g. clearing statistics or removing old files 
+		 * @param resource
+		 */
+		abstract protected String statusHandler();
 		
 		
 		/** Hook for doing initial preperations before processing the resource, e.g. clearing statistics or removing old files 
@@ -467,6 +467,7 @@ import org.springframework.transaction.annotation.Transactional;
 		 * @param record
 		 */
 		abstract protected void recordHandler(T record);
+		abstract protected void extensionRecordHandler(ExtensionRecord extRec);
 
 		/** Hook for doing final processing for the entire resource, e.g. setting statistics gathered via the record hook 
 		 * @param resource

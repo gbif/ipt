@@ -94,16 +94,6 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 		return super.removeAll(resource);
 	}
 
-//	@Override
-//	public void remove(DarwinCore obj) {
-//		DarwinCoreLocation loc = obj.getLoc();
-//		DarwinCoreTaxonomy tax = obj.getTax();
-//		universalRemove(loc);
-//		universalRemove(tax);
-//		super.remove(obj);
-//		
-//	}
-
 	public boolean updateWithGeoExtension(DarwinCore dwc, ExtensionRecord extRec){
 		String geodatum = null;
 		Point loc = new Point();

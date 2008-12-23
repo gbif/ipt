@@ -153,8 +153,6 @@
     </bean>
     <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
     <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
-    <bean id="taxonomyBuilder" scope="prototype" class="org.gbif.provider.task.TaxonomyBuilder"/>
-    <bean id="geographyBuilder" scope="prototype" class="org.gbif.provider.task.GeographyBuilder"/>
     
 
 </beans>

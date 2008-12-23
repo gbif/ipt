@@ -83,7 +83,6 @@
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
         <level value="DEBUG" />
-        <appender-ref ref="CONSOLE" />
     </logger>
     
     <root>

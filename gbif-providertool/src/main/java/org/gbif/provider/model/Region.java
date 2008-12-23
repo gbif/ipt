@@ -2,6 +2,7 @@ package org.gbif.provider.model;
 
 	import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +30,11 @@ import org.hibernate.annotations.CollectionOfElements;
 		private BBox bbox = new BBox();
 		private int occTotal;
 		
+		public static Region newInstance(DataResource resource){
+			Region region = new Region();
+			region.resource=resource;
+			return region;
+		}
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)

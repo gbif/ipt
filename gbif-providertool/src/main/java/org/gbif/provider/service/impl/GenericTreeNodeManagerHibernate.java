@@ -54,4 +54,10 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
         .iterate().next() ).intValue();
 	}
 
+
+
+	public T getByMaterializedPath(Long resourceId, String mpath) {
+		return treeNodeSupport.getByMaterializedPath(resourceId, mpath, getSession());
+	}
+
 }

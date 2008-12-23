@@ -3,6 +3,7 @@ package org.gbif.provider.service;
 import java.util.List;
 
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.TreeNode;
 
@@ -12,5 +13,5 @@ public interface TreeNodeManager<T extends TreeNode> extends GenericResourceRela
 	public List<T> getParents(Long resourceId, Long nodeId);
 	public List<T> getChildren(Long resourceId, Long parentId);
 	public int countTerminalNodes(Long resourceId);
-
+	T getByMaterializedPath(Long resourceId, String mpath);
 }
