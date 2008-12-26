@@ -90,6 +90,8 @@ public class FileImportSource implements ImportSource{
     	}
     }
     
+	
+	
 	protected void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
     	ViewMappingBase extView = (ViewMappingBase) view;
     	init(resource, extView);
@@ -117,6 +119,7 @@ public class FileImportSource implements ImportSource{
 			try {
 				row = new ImportRecord(resourceId, getCurrentValue(coreIdColumn));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
+				//
 				if (guidColumn != null){
 					row.setGuid(getCurrentValue(guidColumn));					
 				}
