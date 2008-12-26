@@ -15,16 +15,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class TermMapping implements BaseObject, Comparable {
 	private Long id;
-	private SourceBase source;
-	private SourceColumn column = new SourceColumn();
+	private Transformation transformation;
 	private String term;
 	private String targetTerm;
 	
 	public TermMapping(){
 	}
-	public TermMapping(SourceBase source, SourceColumn column, String term){
-		this.source=source;
-		this.column=column;
+	public TermMapping(Transformation transformation, String term){
+		this.transformation=transformation;
 		this.term=term;
 	}
 	
@@ -38,18 +36,11 @@ public class TermMapping implements BaseObject, Comparable {
 	}
 
 	@ManyToOne(optional=false)
-	public SourceBase getSource() {
-		return source;
+	public Transformation getTransformation() {
+		return transformation;
 	}
-	public void setSource(SourceBase source) {
-		this.source = source;
-	}
-	
-	public SourceColumn getColumn() {
-		return column;
-	}
-	public void setColumn(SourceColumn column) {
-		this.column = column;
+	public void setTransformation(Transformation transformation) {
+		this.transformation = transformation;
 	}
 	
 	public String getTerm() {
@@ -71,11 +62,10 @@ public class TermMapping implements BaseObject, Comparable {
 	 */
 	public int compareTo(Object object) {
 		TermMapping myClass = (TermMapping) object;
-		return new CompareToBuilder()
-				.append(this.source, myClass.source)
-				.append(this.column,myClass.column)
-				.append(this.term, myClass.term)
-				.toComparison();
+		return new CompareToBuilder().append(this.transformation,
+				myClass.transformation).append(this.term, myClass.term).append(
+				this.targetTerm, myClass.targetTerm)
+				.append(this.id, myClass.id).toComparison();
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -85,23 +75,24 @@ public class TermMapping implements BaseObject, Comparable {
 			return false;
 		}
 		TermMapping rhs = (TermMapping) object;
-		return new EqualsBuilder().append(this.term, rhs.term).append(
-				this.targetTerm, rhs.targetTerm).append(this.column, rhs.column)
-				.append(this.source, rhs.source).append(this.id, rhs.id)
+		return new EqualsBuilder().append(this.transformation,
+				rhs.transformation).append(this.term, rhs.term).append(
+				this.targetTerm, rhs.targetTerm).append(this.id, rhs.id)
 				.isEquals();
 	}
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(1938480675, -864001347).append(this.term)
-				.append(this.targetTerm).append(this.column).append(this.source)
+		return new HashCodeBuilder(1318785267, 1875601279).append(
+				this.transformation).append(this.term).append(this.targetTerm)
 				.append(this.id).toHashCode();
 	}
-
-
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
-		return String.format("%s --> %s", term, targetTerm);
+		return new ToStringBuilder(this).append("term",this.term).append("targetTerm", this.targetTerm).toString();
 	}
 
 	

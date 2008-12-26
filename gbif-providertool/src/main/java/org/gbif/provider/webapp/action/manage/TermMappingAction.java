@@ -33,6 +33,7 @@ import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.model.Transformation;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.ExtensionManager;
@@ -63,26 +64,36 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
     private ThesaurusManager thesaurusManager;
 	@Autowired
 	private TermMappingManager termMappingManager;
+	@Autowired
+	@Qualifier("transformationManager")
+	private GenericManager<Transformation> transformationManager;
 	
 	// persistent stuff
+	private Long tid;
 	private Long pmid;
     private PropertyMapping propMapping;
+    private Transformation transformation;
     private List<TermMapping> termMappings;
-    private Map<String, String> concepts;
-	// temp stuff
+    // target terms
     private ThesaurusVocabulary voc;
+    private Map<String, String> concepts;
+	// term source
     private SourceBase source;
+    private String column;
 
     
 	@Override
 	public void prepare(){
 		super.prepare();
+        if (tid != null) {
+        	transformation = transformationManager.get(tid);
+        	termMappings = termMappingManager.getTermMappings(tid);
+        }
         if (pmid != null) {
     		// get existing property mapping
         	propMapping = propertyMappingManager.get(pmid);
         	voc = propMapping.getProperty().getVocabulary();
         	source = propMapping.getViewMapping().getSource();
-        	termMappings = termMappingManager.getTermMappings(source.getId(), propMapping.getColumn().getColumnName());
         	concepts = thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false);
 		}
 	}
@@ -109,7 +120,7 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 			}
 			// now add the remaining terms as new TermMappings
 			for (String t : terms){
-				TermMapping tm = new TermMapping(source, propMapping.getColumn(), t);
+				TermMapping tm = new TermMapping(transformation, t);
 				// try to come up with some automatic default mapping
 				if (concepts.containsKey(t)){
 					tm.setTargetTerm(t);
@@ -183,5 +194,25 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 	public SourceBase getSource() {
 		return source;
 	}
-		
+
+	public String getColumn() {
+		return column;
+	}
+
+	public Long getTid() {
+		return tid;
+	}
+
+	public void setTid(Long tid) {
+		this.tid = tid;
+	}
+
+	public Transformation getTransformation() {
+		return transformation;
+	}
+
+	public void setTransformation(Transformation transformation) {
+		this.transformation = transformation;
+	}
+	
 }

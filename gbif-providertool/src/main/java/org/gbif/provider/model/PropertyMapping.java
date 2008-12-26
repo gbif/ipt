@@ -45,7 +45,8 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	private Long id;	
 	private ViewMappingBase viewMapping;
 	private ExtensionProperty property;
-	private SourceColumn column = new SourceColumn();
+	private String column;
+	private Transformation termTransformation;
 	private String value;
 	
 	public static PropertyMapping newInstance(){
@@ -83,11 +84,25 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 		this.property = property;
 	}
 	
-    @AttributeOverride(name="columnName", column = @Column(name="column_name") )
-	public SourceColumn getColumn() {
+	@ManyToOne
+    public Transformation getTermTransformation() {
+		return termTransformation;
+	}
+	public void setTermTransformation(Transformation termTransformation) {
+		this.termTransformation = termTransformation;
+	}
+	@Transient
+    public Long getTermTransformationId() {
+		if (termTransformation==null){
+			return null;
+		}
+		return termTransformation.getId();
+	}
+	
+	public String getColumn() {
 		return column;
 	}
-	public void setColumn(SourceColumn column) {
+	public void setColumn(String column) {
 		this.column = column;
 	}
 
@@ -111,7 +126,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	 */
 	@Transient
 	public boolean isEmpty(){
-		if ((column == null || column.getColumnName() == null) && (getValue() == null)){
+		if (StringUtils.trimToNull(column) == null && getValue()==null){
 			return true;
 		}
 		return false;
@@ -156,7 +171,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return String.format("%s=>%s", property==null ? "null" : property.getName(), value==null ? (column==null ? "null" : column.getColumnName()) : "#"+value);
+		return String.format("%s=>%s", property==null ? "null" : property.getName(), value==null ? (column==null ? "null" : column) : "#"+value);
 	}
 
 

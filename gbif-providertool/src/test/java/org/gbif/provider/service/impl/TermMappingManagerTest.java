@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.SourceInspectionManager;
@@ -47,17 +46,12 @@ public class TermMappingManagerTest extends ResourceTestBase {
 	
 	@Test
 	public void testTermMappings(){
-		SourceColumn sc = new SourceColumn();
-		sc.setColumnName("TaxonomicStatus");
-		List<TermMapping> terms = termMappingManager.getTermMappings(7l, sc.getColumnName());
+		List<TermMapping> terms = termMappingManager.getTermMappings(7l);
 	}	
 	
 	@Test
 	public void testGetMappingMap(){
-		SourceColumn sc = new SourceColumn();
-		sc.setColumnName("Rank");
-		Map<String, String> terms = termMappingManager.getMappingMap(7l, sc.getColumnName());
-		System.out.println(terms);
+		Map<String, String> terms = termMappingManager.getMappingMap(7l);
 	}	
 	
 }

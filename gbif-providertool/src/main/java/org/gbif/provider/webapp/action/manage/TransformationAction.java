@@ -19,7 +19,10 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
+import org.gbif.provider.model.Transformation;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.GenericResourceRelatedManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.GenericManager;
@@ -35,16 +38,8 @@ import com.opensymphony.xwork2.Preparable;
 
 public class TransformationAction extends BaseDataResourceAction implements Preparable{
 	private static final long serialVersionUID = -3698914322584074200L;
-	private final Map<String, String> transformationTypes = new HashMap<String, String>()   
-    {  
-        {  
-            put("union", "Union of columns");
-            put("hierarchy", "Hierarchy normalisation");
-            put("lookup", "ID lookup");
-            put("vocabulary", "Vocabulary translation");  
-            put("sql", "SQL view");  
-        }  
-    };  	
+	private final Map<Integer, String> transformationTypes = TransformationType.htmlSelectMap;
+	private List<Transformation> transformations;
 	
     @Override
 	public void prepare() {
@@ -59,7 +54,7 @@ public class TransformationAction extends BaseDataResourceAction implements Prep
         return SUCCESS;
     }
 
-	public Map<String, String> getTransformationTypes() {
+	public Map<Integer, String> getTransformationTypes() {
 		return transformationTypes;
 	}
 

@@ -63,7 +63,7 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	private DataResource resource;
 	private Extension extension;
 	private SourceBase source;
-	private SourceColumn coreIdColumn = new SourceColumn();
+	private String coreIdColumn;
 	private Map<Long, PropertyMapping> propertyMappings = new HashMap<Long, PropertyMapping>();
 	private int recTotal = 0;
 	
@@ -110,14 +110,11 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	 * Acts as the primary key for the core mapping or the foreign key for extension mappings
 	 * @return
 	 */
-	@Embedded
-	@AttributeOverrides( {
-        @AttributeOverride(name="columnName", column = @Column(name="localid_col", length=64))
-	} )
-	public SourceColumn getCoreIdColumn() {
+	@Column(length=128, name="localid_col")
+	public String getCoreIdColumn() {
 		return coreIdColumn;
 	}
-	public void setCoreIdColumn(SourceColumn coreIdColumn) {
+	public void setCoreIdColumn(String coreIdColumn) {
 		this.coreIdColumn = coreIdColumn;
 	}
 
