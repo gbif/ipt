@@ -18,7 +18,6 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -26,22 +25,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.LineIterator;
 import org.gbif.provider.model.SourceBase;
-import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.MalformedTabFileException;
@@ -152,14 +143,14 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 	    return tableNames;
 	}
 
-	public Set<String> getDistinctValues(SourceBase source, SourceColumn column) throws Exception {
+	public Set<String> getDistinctValues(SourceBase source, String column) throws Exception {
 		if (source==null || column == null){
 			throw new NullPointerException("source and column can't be null");
 		}
 		// first check if column exists
 		List<String> header = getHeader(source);
-		if (!header.contains(column.getColumnName())){
-			throw new IllegalArgumentException(String.format("Source column %s does not exist in source %s", column.getColumnName(), source.getName()));
+		if (!header.contains(column)){
+			throw new IllegalArgumentException(String.format("Source column %s does not exist in source %s", column, source.getName()));
 		}
 		// column exists. Now iterate through entire source and store distinct terms in memory (uuuh)
 		Set<String> terms = new HashSet<String>();
@@ -171,7 +162,7 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		return terms;
 	}
 	
-	private Iterator<Object> iterSourceColumn(SourceBase source, SourceColumn column) throws Exception{
+	private Iterator<Object> iterSourceColumn(SourceBase source, String column) throws Exception{
 		if (source == null || column == null){
 			throw new NullPointerException("source and column can't be null");
 		}
@@ -185,8 +176,8 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		}
 	}
 	
-	private Iterator<Object> getSourceColumnIterator(SourceFile source, SourceColumn column) throws IOException, MalformedTabFileException{
-		return new FileIterator(getSourceFile(source), column.getColumnName());
+	private Iterator<Object> getSourceColumnIterator(SourceFile source, String column) throws IOException, MalformedTabFileException{
+		return new FileIterator(getSourceFile(source), column);
 	}
 	private class FileIterator implements Iterator<Object>{
 		private TabFileReader reader;
@@ -212,7 +203,7 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		}
 	}
 	
-	private Iterator<Object> getSourceColumnIterator(SourceSql source, SourceColumn column) throws SQLException{
+	private Iterator<Object> getSourceColumnIterator(SourceSql source, String column) throws SQLException{
 		return new SqlIterator(source, column);		
 	}
 	private class SqlIterator implements Iterator<Object>{
@@ -220,11 +211,11 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		private ResultSet rs;
 		private String column;
 		private boolean hasNext;
-		public SqlIterator(SourceSql source, SourceColumn column) throws SQLException{
+		public SqlIterator(SourceSql source, String column) throws SQLException{
 			this.stmt = getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			this.stmt.setFetchSize(100);
 			this.rs = stmt.executeQuery(source.getSql());
-			this.column = column.getColumnName();
+			this.column = column;
     		this.hasNext = rs.next();
 		}
 		public boolean hasNext() {

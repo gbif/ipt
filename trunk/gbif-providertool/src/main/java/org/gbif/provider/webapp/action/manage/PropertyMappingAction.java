@@ -142,7 +142,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 					m = p.matcher(col);
 					String colName = m.replaceAll("");
 					if (propName.equalsIgnoreCase(colName)){
-						pm.getColumn().setColumnName(col);
+						pm.setColumn(col);
 						autoCount++;
 						break;
 					}
@@ -167,7 +167,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         // update property mapping values
         for (PropertyMapping pm : mappings){
         	if (pm !=null && pm.getColumn() !=null){
-        		String key = StringUtils.trimToEmpty(pm.getColumn().getColumnName());
+        		String key = StringUtils.trimToEmpty(pm.getColumn());
         	}
         	// save non-empty property mappings
         	if (!pm.isEmpty()){

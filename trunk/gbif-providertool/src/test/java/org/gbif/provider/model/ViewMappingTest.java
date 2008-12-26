@@ -16,17 +16,17 @@ public class ViewMappingTest {
 		r.setTitle("Berlin Moss");
 		SourceSql src = new SourceSql("Specimens", "Select * from specimen limit 100");
 		vm1 = new ViewExtensionMapping();
-		vm1.getCoreIdColumn().setColumnName("specimen_id");
+		vm1.setCoreIdColumn("specimen_id");
 		vm1.setSource(src);
 		vm1.setResource(r);
 		
 		vm2 = new ViewExtensionMapping();
-		vm2.getCoreIdColumn().setColumnName("specimen_id");
+		vm2.setCoreIdColumn("specimen_id");
 		vm2.setSource(src);
 		vm2.setResource(r);
 		
 		vm3 = new ViewExtensionMapping();
-		vm3.getCoreIdColumn().setColumnName("field_number");
+		vm3.setCoreIdColumn("field_number");
 		vm3.setSource(src);
 		vm3.setResource(r);
 	}

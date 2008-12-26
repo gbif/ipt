@@ -16,16 +16,10 @@
 
 package org.gbif.provider.service;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
 import org.gbif.provider.model.SourceBase;
-import org.gbif.provider.model.SourceColumn;
-import org.gbif.provider.model.ViewMappingBase;
 
 public interface SourceInspectionManager {
 	/**
@@ -47,5 +41,5 @@ public interface SourceInspectionManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public Set<String> getDistinctValues(SourceBase source, SourceColumn column) throws Exception;
+	public Set<String> getDistinctValues(SourceBase source, String column) throws Exception;
 }

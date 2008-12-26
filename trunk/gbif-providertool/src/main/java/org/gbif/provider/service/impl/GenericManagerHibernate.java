@@ -1,6 +1,5 @@
 package org.gbif.provider.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,18 +8,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.BaseObject;
 import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.service.GenericManager;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,31 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 	 *
 	 * @param <T> a type variable
 	 */
-	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
-	public class GenericManagerHibernate<T extends BaseObject>  implements GenericManager<T> { //extends HibernateDaoSupport
+	public class GenericManagerHibernate<T extends BaseObject> extends BaseManager implements GenericManager<T> { //extends HibernateDaoSupport
 		public static int MAX_SEARCH_RESULTS = 50;
-		@Autowired
-		private SessionFactory sessionFactory;		
-
-		protected Session getSession(){
-			return SessionFactoryUtils.getSession(sessionFactory, false);
-		}
-		protected Connection getConnection() {
-			Session s = getSession();
-			Connection cn = s.connection();
-			return cn;
-		}
-//		private Connection getConnection() throws SQLException {
-//			Session s = SessionFactoryUtils.getSession(sessionFactory, false);
-//			Connection cn = s.connection();
-//			return cn;
-//		}
-		
-	    /**
-	     * Log variable for all child classes. Uses LogFactory.getLog(getClass()) from Commons Logging
-	     */
-	    protected final Log log = LogFactory.getLog(getClass());
-	    protected Class<T> persistentClass;
+		protected Class<T> persistentClass;
 
 	    /**
 	     * Constructor that takes in a class to see which type of entity to persist
@@ -74,10 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 	        this.persistentClass = persistentClass;
 	    }
 
-	    protected Query query(String hql) {
-	        return getSession().createQuery(hql);
-	    }
-	    
 	    /**
 	     * {@inheritDoc}
 	     */
@@ -158,10 +124,6 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		
-		public void flush() {
-			getSession().flush();
-		}
-
 		public void debugSession() {
 			log.debug(getSession());
 		}

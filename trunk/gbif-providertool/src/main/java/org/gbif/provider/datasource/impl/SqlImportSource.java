@@ -32,7 +32,6 @@ import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
-import org.gbif.provider.model.SourceColumn;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewCoreMapping;
 import org.gbif.provider.model.ViewMappingBase;
@@ -61,9 +60,9 @@ public class SqlImportSource implements ImportSource{
 	private Integer maxRecords;
 	
 	private Collection<PropertyMapping> properties;
-	private SourceColumn coreIdColumn;
-	private SourceColumn guidColumn;
-	private SourceColumn linkColumn;
+	private String coreIdColumn;
+	private String guidColumn;
+	private String linkColumn;
 	private Long resourceId;
 	// key=header column name, value=term mapping map
 	private Map<String, Map<String, String>> vocMap = new HashMap<String, Map<String, String>>();
@@ -105,9 +104,9 @@ public class SqlImportSource implements ImportSource{
 		}
 		// see if term mappings exist and keep them in vocMap in that case
 		for (PropertyMapping pm : this.properties){
-			Map<String, String> tmap = termMappingManager.getMappingMap(src.getId(), pm.getColumn().getColumnName());
+			Map<String, String> tmap = termMappingManager.getMappingMap(pm.getTermTransformationId());
 			if (!tmap.isEmpty()){
-				vocMap.put(pm.getColumn().getColumnName(), tmap);
+				vocMap.put(pm.getColumn(), tmap);
 			}
     	}
 
@@ -143,17 +142,17 @@ public class SqlImportSource implements ImportSource{
 		ImportRecord row = null;
 		if (hasNext){
 			try {
-				row = new ImportRecord(resourceId, rs.getString(coreIdColumn.getColumnName()));
+				row = new ImportRecord(resourceId, rs.getString(coreIdColumn));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
 				if (guidColumn != null){
-					row.setGuid(rs.getString(guidColumn.getColumnName()));					
+					row.setGuid(rs.getString(guidColumn));					
 				}
 				if (linkColumn != null){
-					row.setLink(rs.getString(linkColumn.getColumnName()));
+					row.setLink(rs.getString(linkColumn));
 				}
 		    	for (PropertyMapping pm : properties){
-		    		if (pm.getColumn() != null && pm.getColumn().getColumnName() != null && !pm.getColumn().getColumnName().startsWith("#")){
-		    			String column = pm.getColumn().getColumnName();
+		    		if (pm.getColumn() != null && pm.getColumn() != null && !pm.getColumn().startsWith("#")){
+		    			String column = pm.getColumn();
 	    				String val = rs.getString(column);
 	    				// lookup value in term mapping map
 	    				if (vocMap.containsKey(column)){

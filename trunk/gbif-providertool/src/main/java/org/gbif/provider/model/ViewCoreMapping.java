@@ -17,8 +17,8 @@ import org.gbif.provider.util.TabFileWriter;
 @Entity
 @DiscriminatorValue("CORE")
 public class ViewCoreMapping extends ViewMappingBase {
-	private SourceColumn guidColumn = new SourceColumn ();
-	private SourceColumn linkColumn = new SourceColumn ();
+	private String guidColumn;
+	private String linkColumn;
 	
 	@Override
 	@Transient
@@ -26,25 +26,19 @@ public class ViewCoreMapping extends ViewMappingBase {
 		return true;
 	}
 	
-	@Embedded
-	@AttributeOverrides({
-        @AttributeOverride(name="columnName", column = @Column(name="guid_col", length=64) )
-	})
-	public SourceColumn getGuidColumn() {
+	@Column(length=128, name="guid_col")
+	public String getGuidColumn() {
 		return guidColumn;
 	}
-	public void setGuidColumn(SourceColumn guidColumn) {
+	public void setGuidColumn(String guidColumn) {
 		this.guidColumn = guidColumn;
 	}
 	
-	@Embedded
-	@AttributeOverrides( {
-        @AttributeOverride(name="columnName", column = @Column(name="link_col", length=64) )
-	} )
-	public SourceColumn getLinkColumn() {
+	@Column(length=128, name="link_col")
+	public String getLinkColumn() {
 		return linkColumn;
 	}
-	public void setLinkColumn(SourceColumn linkColumn) {
+	public void setLinkColumn(String linkColumn) {
 		this.linkColumn = linkColumn;
 	}
 

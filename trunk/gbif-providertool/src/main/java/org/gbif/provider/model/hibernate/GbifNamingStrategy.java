@@ -64,7 +64,7 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy implements IptNam
 			} else if (ext.getType()==ExtensionType.Checklist){
 				prefix = "tax_";
 			} else{
-				prefix = "ext_";
+				prefix = "";
 			}
 			// replace all whitespace
 			String extensionName = StringUtils.deleteWhitespace(ext.getName());
