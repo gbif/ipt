@@ -27,13 +27,16 @@ import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.model.Transformation;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.provider.service.TransformationManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,6 +59,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     private GenericManager<PropertyMapping> propertyMappingManager;
 	@Autowired
     private ThesaurusManager thesaurusManager;
+	@Autowired
+    private TransformationManager transformationManager;
 	
 	// persistent stuff
 	private Long mid;
@@ -63,8 +68,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	private Long sid;
 	private ViewMappingBase view;
     private List<PropertyMapping> mappings;
-	// for term mapping forwarding only
-	private Long pmid;
+	// transformationID for term mapping forwarding only
+	private Long tid;
 	private Integer mappings_idx;
 	// temp stuff
     private List<String> sourceColumns;
@@ -186,9 +191,27 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	public String termMapping() throws Exception{
 		save();
 		if (mappings_idx!= null){
-			pmid = mappings.get(mappings_idx).getId();
+			PropertyMapping pm = mappings.get(mappings_idx);
+			mid = pm.getViewMapping().getId();
+			tid = pm.getTermTransformationId();
+			if (tid==null){
+				// create new transformation
+				Transformation trans = new Transformation();
+				trans.setType(TransformationType.Vocabulary);
+				trans.setResource(resource);
+				trans.setSource(pm.getViewMapping().getSource());
+				trans.setColumn(pm.getColumn());
+				if (pm.getProperty().getVocabulary() != null){
+					trans.setVoc(pm.getProperty().getVocabulary());
+				}
+				transformationManager.save(trans);
+				tid = trans.getId();
+				pm.setTermTransformation(trans);
+				propertyMappingManager.save(pm);
+			}
+			return "terms";
 		}
-		return "terms";
+		return ERROR;
 	}
 	
 	public String delete(){
@@ -254,8 +277,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 		this.mappings_idx = mappings_idx;
 	}
 
-	public Long getPmid() {
-		return pmid;
+	public Long getTid() {
+		return tid;
 	}
 
 }

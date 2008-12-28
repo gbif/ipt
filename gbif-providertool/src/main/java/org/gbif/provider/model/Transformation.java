@@ -8,20 +8,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.voc.TransformationType;
+import org.gbif.provider.model.voc.Vocabulary;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.apache.commons.lang.builder.CompareToBuilder;
 
 @Entity
 public class Transformation implements Comparable, ResourceRelatedObject{
 	private Long id;
 	private DataResource resource;
-	private String title;
 	private TransformationType type;
 	private SourceBase source;
 	private String column;
+	private ThesaurusVocabulary voc;
+	private List<PropertyMapping> propertyMappings;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,13 +49,6 @@ public class Transformation implements Comparable, ResourceRelatedObject{
 		return resource.getId();
 	}
 
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
 	public TransformationType getType() {
 		return type;
 	}
@@ -80,17 +78,32 @@ public class Transformation implements Comparable, ResourceRelatedObject{
 		this.column = StringUtils.join(columns,'|');
 	}
 	
+	@OneToMany(mappedBy="termTransformation")
+	public List<PropertyMapping> getPropertyMappings() {
+		return propertyMappings;
+	}
+	public void setPropertyMappings(List<PropertyMapping> propertyMappings) {
+		this.propertyMappings = propertyMappings;
+	}
+	
+	@ManyToOne
+	public ThesaurusVocabulary getVoc() {
+		return voc;
+	}
+	public void setVoc(ThesaurusVocabulary voc) {
+		this.voc = voc;
+	}
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */
 	public int compareTo(Object object) {
 		Transformation myClass = (Transformation) object;
 		return new CompareToBuilder()
-			.append(this.resource,myClass.resource)
-			.append(this.type, myClass.type)
-			.append(this.source, myClass.source)
-			.append(this.title, myClass.title)
-			.append(this.column, myClass.column)
+		.append(this.resource,myClass.resource)
+		.append(this.type, myClass.type)
+		.append(this.voc, myClass.voc)
+		.append(this.column, myClass.column)
+		.append(this.id, myClass.id)
 				.toComparison();
 	}
 	

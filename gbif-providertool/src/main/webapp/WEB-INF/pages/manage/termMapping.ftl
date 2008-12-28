@@ -1,10 +1,6 @@
-<#assign view=propMapping.viewMapping>
-<#assign source=view.source>
-<#assign column=propMapping.column.columnName>
-
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
-    <meta name="resource" content="${view.resource.title}"/>
+    <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="manage_resource"/>
     <meta name="heading" content="Term Mappings for ${voc.title}"/>
 </head>
@@ -17,14 +13,18 @@
 	<#else>
 		<p>Rescan source for new terms:</p>
 	</#if>
-    <@s.hidden key="pmid"/>
+    <@s.hidden key="tid"/>
+    <@s.hidden key="mid"/>
+    <@s.hidden key="origin"/>
     <@s.hidden key="resource_id"/>
     <@s.submit cssClass="button" key="button.scan" theme="simple"/>
 </@s.form>
 
 
 <@s.form action="saveTerMapping" method="post">
-    <@s.hidden key="pmid"/>
+    <@s.hidden key="tid"/>
+    <@s.hidden key="mid"/>
+    <@s.hidden key="origin"/>
     <@s.hidden key="resource_id"/>
 
 	<table>

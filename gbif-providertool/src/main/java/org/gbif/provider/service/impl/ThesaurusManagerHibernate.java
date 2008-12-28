@@ -110,14 +110,15 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 			.list();  
 		for (Object[] row : rows){
 			// does language specific term exist?
+			String ident = ((String)row[0]).toLowerCase();
 			if (row[1]!=null){
-				map.put((String) row[0], (String) row[1]);
+				map.put(ident, (String) row[1]);
 			}else if (row[2]!=null){
 				// does english version exist?
-				map.put((String) row[0], (String) row[2]);
+				map.put(ident, (String) row[2]);
 			}else{
 				// otherwise use the code/identifier itself
-				map.put((String) row[0], (String) row[0]);
+				map.put(ident, (String) row[0]);
 			}
 		}
 		return map;

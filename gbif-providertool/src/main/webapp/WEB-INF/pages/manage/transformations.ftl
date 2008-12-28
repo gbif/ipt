@@ -1,10 +1,16 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
+    <meta name="heading" content="Data Transformations"/>    
     <meta name="submenu" content="manage_resource"/>    
-</head>
+<script>
+function sorry(){
+	alert('Sorry, you cannot add arbitrary transformations for now. Please add term translations during the property mapping step.');
+	return false;
+};
+</script>	
 
-<h1>Missing Feature</h1>
+</head>
 
 <div class="separator"></div>
 
@@ -17,39 +23,26 @@ Otherwise you can always configure you own set of transformations.
 
 <fieldset>
 <legend>Your Transformation Views</legend>
-	<i>(could also be visualised with graphviz)</i>
+	<#list transformations as t>
 	<div class="newline">
 	  <@s.form action="transformations" method="post">
+	    <@s.hidden name="resource_id" value="${resource_id}"/>
+	    <@s.hidden name="tid" value="${t.id}"/>
 		<div class="left">
-			<strong>1) common names</strong>
-			<span>union of 3 columns from <i>specimen</i></span>
+			<strong>${t.type!}</strong>
+			<span>based on column <i>${t.column!}</i> from source <i>${(t.source.name)!"?"}</i></span>
 		</div>
 		<div class="right">
 			<div class="left">
-				<@s.submit cssClass="button right" key="button.delete" onclick="return confirmDelete('transformation')" />
+				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete('transformation')" />
 			</div>
 			<div class="left">
-				<@s.submit cssClass="button right" key="button.edit" />
+				<@s.submit cssClass="button right" key="button.edit" action="terMapping"/>
 			</div>
 		</div>
 	  </@s.form>
 	</div>
-	<div class="newline">
-	  <@s.form action="transformations" method="post">
-		<div class="left">
-			<strong>2) taxonomy</strong>
-			<span>acceptedID added to <i>taxon</i></span>
-		</div>
-		<div class="right">
-			<div class="left">
-				<@s.submit cssClass="button right" key="button.delete" onclick="return confirmDelete('transformation')" />
-			</div>
-			<div class="left">
-				<@s.submit cssClass="button right" key="button.edit" />
-			</div>
-		</div>
-	  </@s.form>
-	</div>
+	</#list>
 	
 	<div class="break">
 	  <@s.form action="transformations" method="post">
@@ -60,7 +53,7 @@ Otherwise you can always configure you own set of transformations.
 		<div class="right">
 			<li class="wwgrp">
 				<div class="wwlbl">&nbsp;</div>
-				<@s.submit cssClass="button right" key="button.add"/>
+				<@s.submit cssClass="button right" key="button.add" onclick="return sorry()"/>
 			</li>
 		</div>
 	  </div>
@@ -81,6 +74,7 @@ $('transformationType').observe('change', updateImage);
 
 
 
+<#if (transformations?size<1)>
 <fieldset>
 <legend>Common formats</legend>
 	<p>Only visible if no transformation has yet been configured...</p>
@@ -101,7 +95,7 @@ $('transformationType').observe('change', updateImage);
 		<h3>...</h3>
 	</div>
 </fieldset>
-
+</#if>
 
 <div class="break">
 <@s.form action="mappings" method="get">
