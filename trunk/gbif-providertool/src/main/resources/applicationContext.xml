@@ -92,9 +92,7 @@
         <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
     </bean>    
     
-    <bean id="transformationManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
-        <constructor-arg value="org.gbif.provider.model.Transformation"/>
-    </bean>    
+    <bean id="transformationManager" class="org.gbif.provider.service.impl.TransformationManagerHibernate" parent="abstractManager"/>        
 
     <bean id="termMappingManager" class="org.gbif.provider.service.impl.TermMappingManagerHibernate" parent="abstractManager"/>        
 

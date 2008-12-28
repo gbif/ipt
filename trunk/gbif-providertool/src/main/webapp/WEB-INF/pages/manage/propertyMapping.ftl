@@ -17,7 +17,7 @@ function sourcePreview(){
 };
 
 
-function confirmTermMapping(idx){
+function confirmTermMapping(idx, tid){
 	//alert(idx);	
 	//alert( $("mappings_idx").value );
 	$("mappings_idx").value = idx;
@@ -104,7 +104,7 @@ function confirmTermMapping(idx){
 		</div>
 		<div class="overhang">
 			<div class="left">
-				<@s.select id="sourceColumn_${m_index}" key="mappings[${m_index}].column.columnName" list="sourceColumns"
+				<@s.select id="sourceColumn_${m_index}" key="mappings[${m_index}].column" list="sourceColumns"
 					required="${m.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 			</div>
 			<div class="left">

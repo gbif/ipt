@@ -36,12 +36,14 @@ import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.Transformation;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.TermMappingManager;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.provider.service.TransformationManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,27 +53,16 @@ import com.opensymphony.xwork2.Preparable;
 public class TermMappingAction extends BaseDataResourceAction implements Preparable{
 	private static final long serialVersionUID = 14321432161l;
 	@Autowired
-    private SourceInspectionManager sourceInspectionManager;
-	@Autowired
-    private SourceManager sourceManager;
-	@Autowired
-	@Qualifier("viewMappingManager")
-    private GenericManager<ViewMappingBase> viewMappingManager;
-	@Autowired
-	@Qualifier("propertyMappingManager")
-    private GenericManager<PropertyMapping> propertyMappingManager;
-	@Autowired
-    private ThesaurusManager thesaurusManager;
+	private TransformationManager transformationManager;
 	@Autowired
 	private TermMappingManager termMappingManager;
 	@Autowired
-	@Qualifier("transformationManager")
-	private GenericManager<Transformation> transformationManager;
+    private ThesaurusManager thesaurusManager;
+	@Autowired
+    private SourceInspectionManager sourceInspectionManager;
 	
 	// persistent stuff
 	private Long tid;
-	private Long pmid;
-    private PropertyMapping propMapping;
     private Transformation transformation;
     private List<TermMapping> termMappings;
     // target terms
@@ -80,6 +71,9 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 	// term source
     private SourceBase source;
     private String column;
+    // original actions for save&cancel
+    private String origin = "transformations";
+    private Long mid;
 
     
 	@Override
@@ -88,23 +82,24 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
         if (tid != null) {
         	transformation = transformationManager.get(tid);
         	termMappings = termMappingManager.getTermMappings(tid);
-        }
-        if (pmid != null) {
     		// get existing property mapping
-        	propMapping = propertyMappingManager.get(pmid);
-        	voc = propMapping.getProperty().getVocabulary();
-        	source = propMapping.getViewMapping().getSource();
+        	voc = transformation.getVoc();
         	concepts = thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false);
+        	source = transformation.getSource();
+        	column = transformation.getColumn();
 		}
 	}
 
 	public String execute(){
+        if (mid!=null){
+        	origin = "propMapping";
+        }
 		return SUCCESS;
 	}
 
 	public String scanSource(){
 		try {
-			List<String> terms = new ArrayList<String>(sourceInspectionManager.getDistinctValues(source, propMapping.getColumn()));
+			List<String> terms = new ArrayList<String>(sourceInspectionManager.getDistinctValues(source, column));
 			// first cross check existing mappings with the new list of terms
 			Iterator<TermMapping> itr = termMappings.iterator();
 			while (itr.hasNext()){
@@ -122,8 +117,8 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 			for (String t : terms){
 				TermMapping tm = new TermMapping(transformation, t);
 				// try to come up with some automatic default mapping
-				if (concepts.containsKey(t)){
-					tm.setTargetTerm(t);
+				if (concepts.containsKey(t.toLowerCase())){
+					tm.setTargetTerm(t.toLowerCase());
 				}else{
 					// or consult thesaurus to find matching concept
 					ThesaurusConcept tc = thesaurusManager.getConcept(voc.getUri(), t);
@@ -157,22 +152,6 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 	
 	public String delete(){
         return SUCCESS;
-	}
-
-	public Long getPmid() {
-		return pmid;
-	}
-
-	public void setPmid(Long pmid) {
-		this.pmid = pmid;
-	}
-
-	public Long getMid() {
-		return propMapping.getViewMapping().getId();
-	}
-
-	public PropertyMapping getPropMapping() {
-		return propMapping;
 	}
 
 	public Map<String, String> getConcepts() {
@@ -213,6 +192,18 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
 
 	public void setTransformation(Transformation transformation) {
 		this.transformation = transformation;
+	}
+
+	public String getOrigin() {
+		return origin;
+	}
+
+	public Long getMid() {
+		return mid;
+	}
+
+	public void setMid(Long mid) {
+		this.mid = mid;
 	}
 	
 }

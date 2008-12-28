@@ -25,7 +25,6 @@
 
 <fieldset>
 <legend>Your Existing Mappings</legend>
-	<i>(could also be visualised with graphviz)</i>
 	<div>
 	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>
