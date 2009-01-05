@@ -44,22 +44,23 @@ public class TaxonManagerTest extends ContextAwareTestBase{
 	protected ChecklistResourceManager checklistResourceManager;
 
 	@Test
+	public void testBuildNestedSet(){
+		taxonManager.buildNestedSet(Constants.TEST_OCC_RESOURCE_ID);		
+		taxonManager.buildNestedSet(Constants.TEST_CHECKLIST_RESOURCE_ID);		
+	}
+	@Test
 	public void testRoots(){
 		List<Taxon> rootTaxa = taxonManager.getRoots(Constants.TEST_OCC_RESOURCE_ID);
-		// FIXME: add good assertion once the test resource default-data.xml includes taxa...
+//		System.out.println(rootTaxa);
+//		System.out.println(rootTaxa.size());
 		assertTrue(rootTaxa.size()==1);
-		System.out.println(rootTaxa);
-		System.out.println(rootTaxa.size());
 		
 		rootTaxa = taxonManager.getRoots(Constants.TEST_CHECKLIST_RESOURCE_ID);
-		System.out.println(rootTaxa);
-		System.out.println(rootTaxa.size());
-		if (!rootTaxa.isEmpty()){
-			Taxon t = rootTaxa.get(0);
-			System.out.println(String.format("%s  [%s-%s]",t.getScientificName(), t.getLft(), t.getRgt()));
-			List<StatsCount> stats = taxonManager.getRankStats(t.getId());
-			System.out.println(stats);
-		}
+//		System.out.println(rootTaxa);
+//		System.out.println(rootTaxa.size());
+		assertTrue(rootTaxa.size()==1);
+		Taxon t = rootTaxa.get(0);
+		assertTrue(t.getLft()==1 && t.getRgt()==12);
 	}	
 
 	@Test
