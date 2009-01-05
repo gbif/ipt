@@ -6,6 +6,7 @@ import java.util.Map;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.model.voc.Rank;
 
 public interface ThesaurusManager extends GenericManager<ThesaurusTerm>{
 	/** Get vocabulary by its URI
@@ -26,10 +27,20 @@ public interface ThesaurusManager extends GenericManager<ThesaurusTerm>{
 	
 	
 	/**get concept by ID
-	 * @param id cocneptid
+	 * @param id conceptid
 	 * @return
 	 */
 	public ThesaurusConcept getConcept(Long id);
+	/** try to get concept by its globally unique URI.
+	 * @param uri
+	 * @return
+	 */
+	public ThesaurusConcept getConcept(String uri);
+	/** try to get concept by a Rank enumeration.
+	 * @param rank
+	 * @return
+	 */
+	public ThesaurusConcept getConcept(Rank rank);
 	/** try to get concept by the vocabularyURI it belongs to and a term in any language.
 	 * If no term matches, returns null. If multiple concepts match, one is selected arbitrarily
 	 * @param vocabularyUri

@@ -47,10 +47,10 @@ public enum Rank {
 		    COMMON_RANKS = Collections.unmodifiableList(ranks);  
 		  }  
 	public String columnName;	
-	public String identifier;	
+	public String uri;	
 	private Rank (String colName, String identifier){
 		columnName=colName;
-		this.identifier=identifier;
+		this.uri=identifier;
 	}
 
 	public static Rank getByInt(int i){
@@ -61,9 +61,9 @@ public enum Rank {
 		}
 		return null;
 	}
-	public static Rank getByIdentifier(String identifier){
+	public static Rank getByUri(String identifier){
 		for (Rank r : Rank.values()){
-			if (r.identifier.equalsIgnoreCase(identifier)){
+			if (r.uri.equalsIgnoreCase(identifier)){
 				return r;
 			}
 		}

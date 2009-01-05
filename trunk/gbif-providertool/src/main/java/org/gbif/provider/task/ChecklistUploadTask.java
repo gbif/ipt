@@ -47,12 +47,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 		
 		@Override
 		protected void recordHandler(Taxon record) {
-			Rank dwcRank = rankCache.get(record.getRank()); 
-			if (dwcRank==null){
+			Rank dwcRank = null; 
+			if (rankCache.containsKey(record.getRank())){
+				dwcRank = rankCache.get(record.getRank());
+			}else{
 				// query thesaurus to find a matching rank
 				ThesaurusConcept rank = thesaurusManager.getConcept(Rank.URI, record.getRank());
 				if (rank != null){
-					dwcRank = Rank.getByIdentifier(rank.getIdentifier());
+					dwcRank = Rank.getByUri(rank.getUri());
 				}
 				// also keep NULL ranks in cache
 				rankCache.put(record.getRank(), dwcRank);
