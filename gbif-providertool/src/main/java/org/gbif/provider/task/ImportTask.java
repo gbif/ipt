@@ -251,12 +251,14 @@ import org.springframework.transaction.annotation.Transactional;
 							// assign managed properties
 							updateCoreProperties(record, oldRecord);
 							
+							// allow specific actions per record
+							recordHandler(record);
+
 							// save core record
 							record = persistRecord(record, oldRecord);
 							
 							// set stats per record. Saving of final resource stats is done in the close() section
 							recordsUploaded++;
-							recordHandler(record);
 
 						} catch (ObjectNotFoundException e2){
 							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown local ID: "+e2.toString());

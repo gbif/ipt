@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="resourceOverview.title"/></title>
     <meta name="resource" content="<s:property value="resource.title"/>"/>
-    <meta name="submenu" content="manage"/>
+    <meta name="submenu" content="manage_resource"/>
 	<s:head theme="ajax" debug="false"/>
 </head>
 
