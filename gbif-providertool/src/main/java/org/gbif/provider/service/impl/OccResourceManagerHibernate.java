@@ -273,9 +273,9 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 		return gpb.generatePieChartUrl(width, height, titleText, data);
 	}
 
-	public OccurrenceResource setResourceStats(Long resourceId) {
+	public OccurrenceResource setResourceStats(OccurrenceResource resource) {
 		log.debug("Setting occurrence resource stats");
-		OccurrenceResource resource = this.get(resourceId);
+		Long resourceId = resource.getId();
 		super.setResourceStats(resource);
 		// save stats
 		return this.save(resource);
