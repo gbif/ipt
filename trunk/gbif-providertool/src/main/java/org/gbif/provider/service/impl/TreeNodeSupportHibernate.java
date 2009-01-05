@@ -50,7 +50,7 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 	 * @return
 	 */
 	public List<T> getRoots(Long resourceId, Session session, String filter) {
-        return session.createQuery(String.format("from %s n where n.parent is null and n.rgt - n.lft > 1 and n.resource.id = :resourceId %s  order by n.lft", persistentClass.getName(), getWhereString(filter)))
+        return session.createQuery(String.format("from %s n where n.parent is null and n.resource.id = :resourceId %s  order by n.lft", persistentClass.getName(), getWhereString(filter)))
         .setLong("resourceId", resourceId)
 		.list();
 	}
