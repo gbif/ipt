@@ -100,19 +100,19 @@
 	<table class="lefthead">
 		<tr>
 			<td>Common Names</td>
-			<td>...</td>
+			<td>${numCommonNames}</td>
 		</tr>
 		<tr>
 			<td>Common Name Languages</td>
-			<td>...</td>
+			<td>${numCommonNameLanguages}</td>
 		</tr>
 		<tr>
 			<td>Distributions</td>
-			<td>...</td>
+			<td>${numDistributions}</td>
 		</tr>
 		<tr>
 			<td>Distribution Regions</td>
-			<td>...</td>
+			<td>${numDistributionRegions}</td>
 		</tr>
 	</table>
 </div>

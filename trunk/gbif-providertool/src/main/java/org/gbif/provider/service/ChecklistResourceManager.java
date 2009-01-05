@@ -26,5 +26,5 @@ public interface ChecklistResourceManager extends GenericResourceManager<Checkli
 	List<StatsCount> taxByStatus(Long resource_id, StatusType type);
 	String taxByStatusPieUrl(List<StatsCount> data, StatusType type, int width,	int height, boolean title);
 	
-	ChecklistResource setResourceStats(Long resourceId);
+	ChecklistResource setResourceStats(ChecklistResource resource);
 }
