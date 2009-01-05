@@ -11,6 +11,8 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.dto.CommonName;
+import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
@@ -49,6 +51,8 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     private Taxon taxon;
     private List<Taxon> taxa;
     private List<Taxon> synonyms;
+    private List<CommonName> commonNames;
+    private List<Distribution> distributions;
     private List<StatsCount> stats;
     // occurrences only
     private List<DarwinCore> occurrences;
@@ -85,6 +89,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	        		json = new HashMap<Object, Object>();
 	        		return "json";
 	        	}
+			}else{
+				commonNames = extensionRecordManager.getCommonNames(taxon.getCoreId());
+				distributions = extensionRecordManager.getDistributions(taxon.getCoreId());
 			}
     	}
 		return SUCCESS;
@@ -206,6 +213,12 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	}
 	public List<Extension> getExtensions() {
 		return extensions;
+	}
+	public List<CommonName> getCommonNames() {
+		return commonNames;
+	}
+	public List<Distribution> getDistributions() {
+		return distributions;
 	}
 	
 }

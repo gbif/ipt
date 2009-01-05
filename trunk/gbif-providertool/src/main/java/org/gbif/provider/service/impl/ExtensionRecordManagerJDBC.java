@@ -29,10 +29,14 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ViewExtensionMapping;
+import org.gbif.provider.model.dto.CommonName;
+import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
+import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.util.Constants;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +50,8 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 	private SessionFactory sessionFactory;		
 	@Autowired
 	private IptNamingStrategy namingStrategy;
+	@Autowired
+	private ExtensionManager extensionManager;
 
 	private Connection getConnection() {
 		Session s = getSession();
@@ -160,5 +166,37 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 			log.error(String.format("Couldn't execute count SQL per JDBC: %s", sql), e);
 		}
 		return count;
+	}
+	public List<CommonName> getCommonNames(Long taxonId) {
+		List<CommonName> cnames = new ArrayList<CommonName>();
+		String sql = String.format("SELECT name, language, region FROM TAX_COMMON_NAMES where coreid=%s", taxonId);
+		Connection cn = getConnection();
+		try {
+			Statement st = cn.createStatement();			
+			ResultSet result = st.executeQuery(sql); 
+			// create extension records from JDBC resultset
+			while (result.next()){
+				cnames.add(new CommonName(result.getString("name"), result.getString("language"), result.getString("region")));
+			}
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't read common names"), e);
+		}
+		return cnames;
+	}
+	public List<Distribution> getDistributions(Long taxonId) {
+		List<Distribution> distributions = new ArrayList<Distribution>();
+		String sql = String.format("SELECT region, status FROM TAX_Description where coreid=%s", taxonId);
+		Connection cn = getConnection();
+		try {
+			Statement st = cn.createStatement();			
+			ResultSet result = st.executeQuery(sql); 
+			// create extension records from JDBC resultset
+			while (result.next()){
+				distributions.add(new Distribution(result.getString("region"), result.getString("status")));
+			}
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't read common names"), e);
+		}
+		return distributions;
 	}
 }
