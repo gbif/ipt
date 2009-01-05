@@ -14,7 +14,7 @@ public class TermMappingManagerHibernate extends GenericManagerHibernate<TermMap
 	}
 
 	public List<TermMapping> getTermMappings(Long transformationId) {
-        return query("select tm from TermMapping tm WHERE tm.transformation.id=:transformationId")
+        return query("select tm from TermMapping tm WHERE tm.transformation.id=:transformationId ORDER by tm.term")
         .setLong("transformationId", transformationId)
 		.list();
 	}

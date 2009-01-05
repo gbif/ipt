@@ -2,8 +2,8 @@
 
 <head>
     <title><s:text name="taxon.title"/></title>
-    <meta name="resource" content="<s:property value="taxon.resource.title"/>"/>
-    <meta name="submenu" content="manage"/>
+    <meta name="resource" content="<s:property value="resource.title"/>"/>
+    <meta name="submenu" content="tax"/>
     <meta name="heading" content="<s:property value="title"/>"/>
 </head>
 	
