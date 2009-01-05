@@ -31,10 +31,11 @@
 			  <td>${taxon.taxonomicStatus!}</td>
 			</tr>
 			<tr>
-			<#if taxon.accepted>
+			<#if taxon.getParent()??>
 			  <th><@s.text name="taxon.parent"/></th>
 			  <td><#if taxon.getParent()??><a href="taxDetail.html?resource_id=${resource_id}&id=${taxon.getParent().id?c}">${(taxon.getParent().scientificName)!}</a></#if></td>
-			<#else>
+			</#if>
+			<#if taxon.getAcceptedTaxon()??>
 			  <th><@s.text name="taxon.accepted"/></th>
 			  <td><#if taxon.getAcceptedTaxon()??><a href="taxDetail.html?resource_id=${resource_id}&id=${taxon.getAcceptedTaxon().id?c}">${(taxon.getAcceptedTaxon().scientificName)!}</a></#if></td>
 			</#if>
@@ -55,7 +56,7 @@
 	</fieldset>
 </div>
 
-<#if taxon.accepted>
+<#if (synonyms?size>0)>
 <div id="synonymy">
 	<fieldset>
 		<legend><@s.text name="taxon.synonymy"/></legend>
@@ -72,22 +73,38 @@
 </div>
 </#if>
 
-<div id="typification">
+<#if (commonNames?size>0)>
+<div id="commonNames">
 	<fieldset>
-		<legend><@s.text name="taxon.typification"/></legend>
+		<legend><@s.text name="taxon.commonNames"/></legend>
 		<table>
+			<#list commonNames as cn>	
+			<tr>
+			  <td>${cn.name!}</td>
+			  <td>${cn.lang!}</td>
+			  <td>${cn.region!}</td>
+			</tr>
+			</#list>
 		</table>
 	</fieldset>
 </div>
+</#if>
 
+<#if (distributions?size>0)>
 <div id="distribution">
 	<fieldset>
 		<legend><@s.text name="taxon.distribution"/></legend>
 		<table>
+			<#list distributions as d>	
+			<tr>
+			  <td>${d.region!}</td>
+			  <td>${d.status!}</td>
+			</tr>
+			</#list>
 		</table>
 	</fieldset>
 </div>
-
+</#if>
 
 <#if (stats?size>0)>
 <div id="stats">
