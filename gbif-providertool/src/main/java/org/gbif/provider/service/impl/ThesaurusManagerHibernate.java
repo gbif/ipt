@@ -7,10 +7,14 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.RestrictionDocument.Restriction;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.ThesaurusManager;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.impl.CriteriaImpl;
 
 public class ThesaurusManagerHibernate extends GenericManagerHibernate<ThesaurusTerm> implements ThesaurusManager{
 	public ThesaurusManagerHibernate() {
@@ -21,6 +25,14 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 		return (ThesaurusConcept) getSession().createQuery("from ThesaurusConcept   where id = :id")
     	.setParameter("id", id)
     	.uniqueResult();
+	}
+	public ThesaurusConcept getConcept(String uri) {
+		return (ThesaurusConcept) getSession().createQuery("select c from ThesaurusConcept c  where c.uri=:uri")
+    	.setString("term", uri)
+    	.uniqueResult();
+	}
+	public ThesaurusConcept getConcept(Rank rank) {
+		return getConcept(rank.uri);
 	}
 	public ThesaurusConcept getConcept(String vocabularyUri, String term) {
 		List<ThesaurusConcept> concepts = getConcepts(vocabularyUri, term);

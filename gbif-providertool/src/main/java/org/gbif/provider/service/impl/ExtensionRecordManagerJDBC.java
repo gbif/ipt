@@ -62,8 +62,10 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		String cols = "coreid, resource_fk";
 		String vals = String.format("%s, %s", rec.getCoreId(), rec.getResourceId());
 		for (ExtensionProperty p : rec){
-			cols += String.format(",%s", namingStrategy.propertyToColumnName(p.getName()));
-			vals += String.format(",'%s'", rec.getPropertyValue(p));
+			if (rec.getPropertyValue(p)!=null){
+				cols += String.format(",%s", namingStrategy.propertyToColumnName(p.getName()));
+				vals += String.format(",'%s'", rec.getPropertyValue(p));
+			}
 		}
 		String sql = String.format("insert into %s (%s) VALUES (%s)", table, cols, vals);
 		Connection cn = getConnection();
