@@ -14,6 +14,7 @@ import org.gbif.provider.model.voc.RegionType;
 import com.googlecode.gchartjava.GeographicalArea;
 
 public interface OccResourceManager extends GenericResourceManager<OccurrenceResource>{
+	public OccurrenceResource setResourceStats(Long resourceId);
 	// DATA
 	public List<StatsCount> taxaByRegion(Long resourceId, RegionType region);
 	public List<StatsCount> occByRegion(Long resourceId, RegionType region, Long taxonIdFilter);

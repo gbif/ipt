@@ -15,10 +15,11 @@ public interface TaxonManager extends CoreRecordManager<Taxon>, TreeNodeManager<
 	public void lookupBasionymTaxa(Long resourceId);
 	public void lookupParentTaxa(Long resourceId);	
 	public void buildNestedSet(Long resourceId);
-	public DataResource setResourceStats(DataResource resource);
-	public ChecklistResource setResourceStats(ChecklistResource resource);
-	
-	
+	// stats counting
+	public int countByRank(Long resourceId, Rank rank);
+	public int countSynonyms(Long resourceId);
+	public int countAccepted(Long resourceId);
+
 	/** count all accepted taxa grouped by rank
 	 * @param taxonId
 	 * @return

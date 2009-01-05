@@ -38,4 +38,6 @@ public interface ExtensionRecordManager {
 	 * @param resourceId
 	 */
 	public int removeAll(Extension extension, Long resourceId);
+	public int count(Extension extension, Long resourceId);
+	public int countDistinct(ExtensionProperty property, Long resourceId);
 }

@@ -1,50 +1,30 @@
 package org.gbif.provider.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.OccStatByRegionAndTaxon;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Taxon;
+import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.model.voc.StatusType;
-import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.ChecklistResourceManager;
-import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.RegionManager;
-import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.GChartBuilder;
+import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.ExtensionPropertyManager;
+import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.StatsUtils;
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.googlecode.gchartjava.GeographicalArea;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 public class ChecklistResourceManagerHibernate extends DataResourceManagerHibernate<ChecklistResource> implements ChecklistResourceManager{
-
+	@Autowired
+	private ExtensionRecordManager extensionRecordManager;
+	@Autowired
+	private ExtensionManager extensionManager;
+	@Autowired
+	private ExtensionPropertyManager extensionPropertyManager;
+	
 	public ChecklistResourceManagerHibernate() {
 		super(ChecklistResource.class);
 	}
@@ -135,4 +115,26 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 		data=limitDataForChart(data);
 		return gpb.generatePieChartUrl(width, height, titleText, data);
 	}
+
+	public ChecklistResource setResourceStats(Long resourceId) {
+		log.debug("Setting checklist resource stats");
+		ChecklistResource resource = this.get(resourceId);
+		super.setResourceStats(resource);
+		// checklist specific
+		for (ViewExtensionMapping em : resource.getExtensionMappings()){
+			if (em.getExtension().getId()==Constants.COMMON_NAME_EXTENSION_ID){
+				resource.setNumCommonNames(extensionRecordManager.count(em.getExtension(), resourceId));
+				ExtensionProperty property = extensionPropertyManager.get(Constants.COMMON_NAME_LANGUAGE_PROPERTY_ID);
+				resource.setNumCommonNameLanguages(extensionRecordManager.countDistinct(property, resourceId));				
+			}
+			if (em.getExtension().getId()==Constants.DISTRIBUTION_EXTENSION_ID){
+				resource.setNumDistributions(extensionRecordManager.count(em.getExtension(), resourceId));
+				ExtensionProperty property = extensionPropertyManager.get(Constants.DISTRIBUTION_REGION_PROPERTY_ID);
+				resource.setNumDistributionRegions(extensionRecordManager.countDistinct(property, resourceId));
+			}
+		}
+		// save stats
+		return this.save(resource);
+	}
+
 }

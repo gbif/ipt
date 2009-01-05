@@ -98,6 +98,8 @@
 
     <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
     
+    <bean id="extensionPropertyManager" class="org.gbif.provider.service.impl.ExtensionPropertyManagerHibernate" parent="abstractManager"/>        
+
     <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        
 
     <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        

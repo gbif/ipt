@@ -269,8 +269,10 @@ import org.springframework.transaction.annotation.Transactional;
 						
 						// clear session cache once in a while...
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0){
-							log.debug(status());
 							coreRecordManager.flush();
+						}
+						if (currentProcessed.get() > 0 && currentProcessed.get() % 1000 == 0){
+							log.debug(status());
 						}
 					}
 				} finally {
@@ -385,6 +387,10 @@ import org.springframework.transaction.annotation.Transactional;
 								currentErroneous.addAndGet(1);
 								annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown error: "+e.toString());
 							}
+						}
+						// debug status
+						if (currentProcessed.get() > 0 && currentProcessed.get() % 1000 == 0){
+							log.debug(status());
 						}
 					}
 				} finally {

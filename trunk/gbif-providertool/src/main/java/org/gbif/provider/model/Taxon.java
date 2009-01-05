@@ -287,18 +287,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.basionym = basionym;
 		}
 
-		@org.hibernate.annotations.Index(name="tax_accepted")
-		public boolean isAccepted(){
-			if ((StringUtils.trimToNull(acceptedTaxonID)!=null && !acceptedTaxonID.equals(localId)) || acceptedTaxon != null){
-				return false;
-			}
-			return true;
-		}
-		public void setAccepted(boolean accepted){
-			// dont do anything... we just keep the property persistent to do quick queries
-		}
-		
-		
 		/**
 		 * Count a single occurrence record
 		 * @param region

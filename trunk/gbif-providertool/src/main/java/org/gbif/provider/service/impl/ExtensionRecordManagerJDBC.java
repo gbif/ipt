@@ -135,4 +135,30 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		
 		return records;
 	}
+	public int count(Extension extension, Long resourceId) {
+		String table = namingStrategy.extensionTableName(extension);
+		String sql = String.format("select count(*) from %s where resource_fk=%s", table, resourceId);
+		return executeCount(sql);
+	}
+	public int countDistinct(ExtensionProperty property, Long resourceId) {
+		String table = namingStrategy.extensionTableName(property.getExtension());
+		String column = namingStrategy.columnName(property.getName());
+		String sql = String.format("select count(distinct %s) from %s where resource_fk=%s", column, table, resourceId);
+		return executeCount(sql);
+	}
+	private int executeCount(String sql){
+		Connection cn = getConnection();
+		int count = 0;
+		try {
+			Statement st = cn.createStatement();			
+			ResultSet result = st.executeQuery(sql);
+			// create extension records from JDBC resultset
+			while (result.next()){
+				count = result.getInt(1);
+		    }
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't execute count SQL per JDBC: %s", sql), e);
+		}
+		return count;
+	}
 }
