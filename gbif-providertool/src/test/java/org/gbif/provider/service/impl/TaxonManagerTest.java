@@ -63,13 +63,6 @@ public class TaxonManagerTest extends ContextAwareTestBase{
 	}	
 
 	@Test
-	public void testStats(){
-		ChecklistResource res = checklistResourceManager.get(Constants.TEST_CHECKLIST_RESOURCE_ID);
-		taxonManager.setResourceStats(res);
-		assertTrue(res.getNumTaxa()==42);
-	}	
-
-	@Test
 	public void testLookup(){
 		taxonManager.lookupParentTaxa(Constants.TEST_CHECKLIST_RESOURCE_ID);
 		taxonManager.lookupAcceptedTaxa(Constants.TEST_CHECKLIST_RESOURCE_ID);

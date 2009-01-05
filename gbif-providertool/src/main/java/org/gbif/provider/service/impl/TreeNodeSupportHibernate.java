@@ -50,7 +50,7 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 	 * @return
 	 */
 	public List<T> getRoots(Long resourceId, Session session, String filter) {
-        return session.createQuery(String.format("from %s node where node.parent=null and node.resource.id = :resourceId %s  order by lft", persistentClass.getName(), getWhereString(filter)))
+        return session.createQuery(String.format("from %s n where n.parent is null and n.rgt - n.lft > 1 and n.resource.id = :resourceId %s  order by n.lft", persistentClass.getName(), getWhereString(filter)))
         .setLong("resourceId", resourceId)
 		.list();
 	}
@@ -86,7 +86,7 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
 	}
 	
 	public int countTerminalNodes(Long resourceId, Session session, String filter) {
-        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId and e.lft+1=e.rgt %s", persistentClass.getSimpleName(), getWhereString(filter)))
+        return ((Long) session.createQuery(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId and e.lft+1=e.rgt and parent is not null %s", persistentClass.getSimpleName(), getWhereString(filter)))
         .setLong("resourceId", resourceId)
         .iterate().next() ).intValue();
 	}

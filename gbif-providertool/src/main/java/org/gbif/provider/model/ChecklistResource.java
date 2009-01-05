@@ -35,8 +35,11 @@ import org.gbif.provider.util.Constants;
 public class ChecklistResource extends DataResource {
 	public static final String ALIAS = "tax";
 	public static final Long CORE_EXTENSION_ID = 7L;
-	private int numSynonyms;
-
+	private int numCommonNames;
+	private int numCommonNameLanguages;
+	private int numDistributions;
+	private int numDistributionRegions;
+	
 	public static ChecklistResource newInstance(Extension core){
 		ChecklistResource resource =  new ChecklistResource();
 		// ensure that core mapping exists
@@ -47,19 +50,45 @@ public class ChecklistResource extends DataResource {
 		return resource;
 	}
 	
+	public int getNumCommonNames() {
+		return numCommonNames;
+	}
+
+	public void setNumCommonNames(int numCommonNames) {
+		this.numCommonNames = numCommonNames;
+	}
+
+	public int getNumCommonNameLanguages() {
+		return numCommonNameLanguages;
+	}
+
+	public void setNumCommonNameLanguages(int numCommonNameLanguages) {
+		this.numCommonNameLanguages = numCommonNameLanguages;
+	}
+
+	public int getNumDistributions() {
+		return numDistributions;
+	}
+
+	public void setNumDistributions(int numDistributions) {
+		this.numDistributions = numDistributions;
+	}
+
+	public int getNumDistributionRegions() {
+		return numDistributionRegions;
+	}
+
+	public void setNumDistributionRegions(int numDistributionRegions) {
+		this.numDistributionRegions = numDistributionRegions;
+	}
+
 	@Override
 	public void resetStats() {
-		numSynonyms=0;
+		numCommonNameLanguages=0;
+		numCommonNames=0;
+		numDistributionRegions=0;
+		numDistributions=0;
 		super.resetStats();
-	}
-
-	@Transient
-	public int getNumSynonyms() {
-		return numSynonyms;
-	}
-
-	public void setNumSynonyms(int numSynonyms) {
-		this.numSynonyms = numSynonyms;
 	}
 
 	public String toString() {

@@ -25,11 +25,14 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.DatasourceRegistry;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.dto.StatsCount;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DataResourceManagerHibernate<T extends DataResource> extends GenericResourceManagerHibernate<T> implements GenericResourceManager<T> {
 	private static final int MAX_CHART_DATA = 20;
 	protected static GChartBuilder gpb = new GChartBuilder();
+	@Autowired
+	private TaxonManager taxonManager;
 
 	public DataResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
@@ -112,5 +117,19 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		}
 		return data;
 	}
-	
+
+	protected void setResourceStats(DataResource resource) {
+		Long resourceId = resource.getId();
+		resource.setNumClasses(taxonManager.countByRank(resourceId, Rank.Class));
+		resource.setNumFamilies(taxonManager.countByRank(resourceId, Rank.Family));
+		resource.setNumGenera(taxonManager.countByRank(resourceId, Rank.Genus));
+		resource.setNumKingdoms(taxonManager.countByRank(resourceId, Rank.Kingdom));
+		resource.setNumOrders(taxonManager.countByRank(resourceId, Rank.Order));
+		resource.setNumPhyla(taxonManager.countByRank(resourceId, Rank.Phylum));
+		resource.setNumSpecies(taxonManager.countByRank(resourceId, Rank.Species));
+		resource.setNumTaxa(taxonManager.count(resourceId));
+		resource.setNumTerminalTaxa(taxonManager.countTerminalNodes(resourceId));
+		resource.setNumAccepted(taxonManager.countAccepted(resourceId));
+		resource.setNumSynonyms(taxonManager.countSynonyms(resourceId));
+	}
 }

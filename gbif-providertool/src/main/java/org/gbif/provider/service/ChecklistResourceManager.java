@@ -17,7 +17,7 @@ import com.googlecode.gchartjava.GeographicalArea;
 
 public interface ChecklistResourceManager extends GenericResourceManager<ChecklistResource>{
 
-	List<StatsCount> taxByTaxon(Long resource_id, Rank rnk);
+	List<StatsCount> taxByTaxon(Long resourceId, Rank rnk);
 	String taxByTaxonPieUrl(List<StatsCount> data, Rank rnk, int width, int height, boolean title);
 
 	List<StatsCount> taxByRank(Long resource_id);
@@ -25,5 +25,6 @@ public interface ChecklistResourceManager extends GenericResourceManager<Checkli
 
 	List<StatsCount> taxByStatus(Long resource_id, StatusType type);
 	String taxByStatusPieUrl(List<StatsCount> data, StatusType type, int width,	int height, boolean title);
-
+	
+	ChecklistResource setResourceStats(Long resourceId);
 }

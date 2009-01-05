@@ -60,7 +60,7 @@
 		</tr>
 		<tr>
 			<td>Accepted Taxa</td>
-			<td>${numTaxa-numSynonyms}</td>
+			<td>${numAccepted}</td>
 		</tr>
 		<tr>
 			<td>Synonyms</td>
@@ -87,6 +87,10 @@
 		<tr>
 			<td><@s.text name="occResource.numGenera"/></td>
 			<td>${numGenera}</td>
+		</tr>
+		<tr>
+			<td><@s.text name="occResource.numSpecies"/></td>
+			<td>${numSpecies}</td>
 		</tr>
 	</table>
 </div>

@@ -68,16 +68,23 @@ public abstract class DataResource extends Resource {
 	private ViewCoreMapping coreMapping;
 	// extension mappings, not including the core mapping
 	private Map<Long, ViewExtensionMapping> extensionMappings = new HashMap<Long, ViewExtensionMapping>();
+	//
 	// transient properties
+	//
 	private DataSource datasource;
+	// counts by interpreted rank
+	private int numSpecies;
 	private int numGenera;
 	private int numFamilies;
 	private int numOrders;
 	private int numClasses;
 	private int numPhyla;
 	private int numKingdoms;
+	// other counts
 	private int numTaxa;
 	private int numTerminalTaxa;
+	private int numAccepted;
+	private int numSynonyms;
 
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -278,6 +285,7 @@ public abstract class DataResource extends Resource {
 	 * Reset all cached stats, log events etc, so that it looks as if the resource was just created (doesnt change the created timestamp though)
 	 */
 	public void resetStats(){
+		numSpecies=0;
 		numGenera=0;
 		numFamilies=0;
 		numOrders=0;
@@ -287,9 +295,18 @@ public abstract class DataResource extends Resource {
 
 		numTaxa=0;
 		numTerminalTaxa=0;
+		numAccepted=0;
+		numSynonyms=0;
 
 		lastUpload=null;
 		setRecTotal(0);
+	}
+	
+	public int getNumSpecies() {
+		return numSpecies;
+	}
+	public void setNumSpecies(int numSpecies) {
+		this.numSpecies = numSpecies;
 	}
 	public int getNumGenera() {
 		return numGenera;
@@ -338,5 +355,18 @@ public abstract class DataResource extends Resource {
 	}
 	public void setNumTerminalTaxa(int numTerminalTaxa) {
 		this.numTerminalTaxa = numTerminalTaxa;
+	}	
+	public int getNumAccepted() {
+		return numAccepted;
 	}
+	public void setNumAccepted(int numAccepted) {
+		this.numAccepted = numAccepted;
+	}
+	public int getNumSynonyms() {
+		return numSynonyms;
+	}
+	public void setNumSynonyms(int numSynonyms) {
+		this.numSynonyms = numSynonyms;
+	}	
+	
 }

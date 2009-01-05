@@ -17,6 +17,7 @@ import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.OccStatManager;
@@ -72,11 +73,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 		private RegionManager regionManager;
 		@Autowired
 		private DarwinCoreManager darwinCoreManager;
+		private OccResourceManager occResourceManager;
 
 		
 		@Autowired
 		private OccUploadTask(DarwinCoreManager dwcManager, OccResourceManager resourceManager) {
 			super(dwcManager, resourceManager);
+			this.occResourceManager = resourceManager;
 		}
 
 
@@ -359,7 +362,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 			// create nested set indices
 			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
-			taxonManager.setResourceStats(resource);
+			occResourceManager.setResourceStats(getResourceId());
 
 			// update resource properties
 			resource.setRecWithCoordinates(recWithCoordinates);
