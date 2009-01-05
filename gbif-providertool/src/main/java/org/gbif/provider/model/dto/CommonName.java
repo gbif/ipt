@@ -3,14 +3,38 @@ package org.gbif.provider.model.dto;
 import org.apache.commons.lang.builder.CompareToBuilder;
 
 public class CommonName implements Comparable {
-	public String name;
-	public String lang;
-	public String region;
+	private String name;
+	private String lang;
+	private String region;
 
 	public CommonName(String name, String lang, String region) {
 		super();
 		this.name = name;
 		this.lang = lang;
+		this.region = region;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
 		this.region = region;
 	}
 
