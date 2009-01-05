@@ -3,12 +3,28 @@ package org.gbif.provider.model.dto;
 import org.apache.commons.lang.builder.CompareToBuilder;
 
 public class Distribution implements Comparable {
-	public String region;
-	public String status;
+	private String region;
+	private String status;
 	
 	public Distribution(String region, String status) {
 		super();
 		this.region = region;
+		this.status = status;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

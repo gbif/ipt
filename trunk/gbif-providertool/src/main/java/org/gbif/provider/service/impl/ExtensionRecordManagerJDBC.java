@@ -179,7 +179,7 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 				cnames.add(new CommonName(result.getString("name"), result.getString("language"), result.getString("region")));
 			}
 		} catch (SQLException e) {
-			log.error(String.format("Couldn't read common names"), e);
+			log.warn("Couldn't read common names");
 		}
 		return cnames;
 	}
@@ -195,7 +195,7 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 				distributions.add(new Distribution(result.getString("region"), result.getString("status")));
 			}
 		} catch (SQLException e) {
-			log.error(String.format("Couldn't read common names"), e);
+			log.warn("Couldn't read distributions");
 		}
 		return distributions;
 	}
