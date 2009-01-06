@@ -29,11 +29,11 @@
 		  </s:url>
 		  <td><a href="<s:property value="occRegionUrl" escape="false"/>"><s:property value="%{parent}"/></a></td>
 		</tr>
-		<!-- 
 		<tr>
 		  <th><s:text name="region.occTotal"/></th>
 		  <td><s:property value="%{occTotal}"/></td>
 		</tr>
+		<!-- 
 		<tr>
 		  <th>Number of Taxa</th>
 		  <td><s:property value="%{occTotal}"/></td>

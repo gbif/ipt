@@ -31,6 +31,7 @@ public class OccStatManagerHibernate extends GenericResourceRelatedManagerHibern
 		for (Object[] row : counts){
 			Region r = (Region) row[0];
 			r.setOccTotal(((Long)row[1]).intValue());
+			this.universalSave(r);
 		}
 		// per taxon
 		counts = getSession().createQuery("select r, count(s) from OccStatByRegionAndTaxon s join s.taxon r  WHERE s.resource=:resource  GROUP BY r")
@@ -40,6 +41,7 @@ public class OccStatManagerHibernate extends GenericResourceRelatedManagerHibern
 		for (Object[] row : counts){
 			Taxon t = (Taxon) row[0];
 			t.setOccTotal(((Long)row[1]).intValue());
+			this.universalSave(t);
 		}
 	}
 
