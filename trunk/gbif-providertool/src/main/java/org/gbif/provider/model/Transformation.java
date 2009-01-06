@@ -1,22 +1,20 @@
 package org.gbif.provider.model;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.model.voc.TransformationType;
-import org.gbif.provider.model.voc.Vocabulary;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.gbif.provider.model.voc.TransformationType;
 
 @Entity
 public class Transformation implements Comparable, ResourceRelatedObject{
@@ -27,6 +25,7 @@ public class Transformation implements Comparable, ResourceRelatedObject{
 	private String column;
 	private ThesaurusVocabulary voc;
 	private List<PropertyMapping> propertyMappings;
+	private Set<TermMapping> termMappings;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -92,6 +91,14 @@ public class Transformation implements Comparable, ResourceRelatedObject{
 	}
 	public void setVoc(ThesaurusVocabulary voc) {
 		this.voc = voc;
+	}
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="transformation")
+	public Set<TermMapping> getTermMappings() {
+		return termMappings;
+	}
+	public void setTermMappings(Set<TermMapping> termMappings) {
+		this.termMappings = termMappings;
 	}
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)

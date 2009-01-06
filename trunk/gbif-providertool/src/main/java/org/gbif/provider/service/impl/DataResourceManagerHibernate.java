@@ -33,6 +33,7 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.service.TransformationManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,8 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	protected static GChartBuilder gpb = new GChartBuilder();
 	@Autowired
 	private TaxonManager taxonManager;
+	@Autowired
+	private TransformationManager transformationManager;
 
 	public DataResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
@@ -66,6 +69,8 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		if (obj!=null){
 			Long resourceId = obj.getId();
 			cacheManager.clear(resourceId);
+			// remove transformations
+			transformationManager.removeAll(obj);
 			// update registry
 			if (registry.containsKey(resourceId)){
 				registry.removeDatasource(resourceId);
@@ -120,13 +125,13 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 
 	protected void setResourceStats(DataResource resource) {
 		Long resourceId = resource.getId();
-		resource.setNumClasses(taxonManager.countByRank(resourceId, Rank.Class));
-		resource.setNumFamilies(taxonManager.countByRank(resourceId, Rank.Family));
-		resource.setNumGenera(taxonManager.countByRank(resourceId, Rank.Genus));
-		resource.setNumKingdoms(taxonManager.countByRank(resourceId, Rank.Kingdom));
-		resource.setNumOrders(taxonManager.countByRank(resourceId, Rank.Order));
-		resource.setNumPhyla(taxonManager.countByRank(resourceId, Rank.Phylum));
-		resource.setNumSpecies(taxonManager.countByRank(resourceId, Rank.Species));
+		resource.setNumClasses(taxonManager.countByType(resourceId, Rank.Class));
+		resource.setNumFamilies(taxonManager.countByType(resourceId, Rank.Family));
+		resource.setNumGenera(taxonManager.countByType(resourceId, Rank.Genus));
+		resource.setNumKingdoms(taxonManager.countByType(resourceId, Rank.Kingdom));
+		resource.setNumOrders(taxonManager.countByType(resourceId, Rank.Order));
+		resource.setNumPhyla(taxonManager.countByType(resourceId, Rank.Phylum));
+		resource.setNumSpecies(taxonManager.countByType(resourceId, Rank.Species));
 		resource.setNumTaxa(taxonManager.count(resourceId));
 		resource.setNumTerminalTaxa(taxonManager.countTerminalNodes(resourceId));
 		resource.setNumAccepted(taxonManager.countAccepted(resourceId));

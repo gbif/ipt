@@ -13,7 +13,7 @@
 
 <#assign rec=taxon>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
-
+	
 
 <div id="basics">
 	<fieldset>
@@ -59,7 +59,7 @@
 <#if (synonyms?size>0)>
 <div id="synonymy">
 	<fieldset>
-		<legend><@s.text name="taxon.synonymy"/></legend>
+		<h2><@s.text name="taxon.synonymy"/></h2>
 		<table>
 			<#list synonyms as s>	
 			<tr>
@@ -76,7 +76,7 @@
 <#if (commonNames?size>0)>
 <div id="commonNames">
 	<fieldset>
-		<legend><@s.text name="taxon.commonNames"/></legend>
+		<h2><@s.text name="taxon.commonNames"/></h2>
 		<table>
 			<#list commonNames as cn>	
 			<tr>
@@ -93,7 +93,7 @@
 <#if (distributions?size>0)>
 <div id="distribution">
 	<fieldset>
-		<legend><@s.text name="taxon.distribution"/></legend>
+		<h2><@s.text name="taxon.distribution"/></h2>
 		<table>
 			<#list distributions as d>	
 			<tr>
@@ -109,7 +109,7 @@
 <#if (stats?size>0)>
 <div id="stats">
 	<fieldset>
-		<legend><@s.text name="taxon.statistics"/></legend>
+		<h2><@s.text name="taxon.statistics"/></h2>
 		<p>Number of accepted taxa included:</p>
 		<table>
 			<#list stats as s>	
@@ -123,5 +123,25 @@
 
 </div>
 </#if>
+
+<#list extensions as ext>
+<fieldset>
+	<h2>${ext.name}</h2>	
+	<table>	
+	<#list extWrapper.getExtensionRecords(ext) as eRec>
+		<#list eRec.properties as p>
+		 <tr>
+			<th>${p.name}</th>
+			<td>${eRec.getPropertyValue(p)}</td>
+		 </tr>
+		</#list>
+		 <tr>
+			<th>&nbsp;</th>
+			<td>&nbsp;</td>
+		 </tr>
+	</#list>
+	</table>
+</fieldset>
+</#list>
 
 </@s.form>

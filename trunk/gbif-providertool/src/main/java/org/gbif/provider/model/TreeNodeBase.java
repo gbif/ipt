@@ -1,16 +1,16 @@
 package org.gbif.provider.model;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.gbif.provider.model.voc.Rank;
-
+@MappedSuperclass
 public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> implements BaseObject, TreeNode<T, E>, Comparable<T>{
 	private Long id;
 	private T parent;
@@ -20,7 +20,8 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 	private E type;
 	private String mpath;
 	
-	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
@@ -28,7 +29,7 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.id = id;
 	}
 
-	@Transient
+	@ManyToOne(optional = true)
 	public T getParent() {
 		return parent;
 	}
@@ -36,7 +37,6 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.parent = parent;
 	}
 	
-	@Transient
 	public String getLabel() {
 		return label;
 	}
@@ -44,7 +44,6 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.label = label;
 	}
 
-	@Transient
 	public E getType() {
 		return type;
 	}
@@ -52,7 +51,6 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		type = t;
 	}
 
-	@Transient
 	public Long getLft() {
 		return lft;
 	}
@@ -60,7 +58,6 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.lft = lft;
 	}
 
-	@Transient
 	public Long getRgt() {
 		return rgt;
 	}
@@ -68,7 +65,6 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 		this.rgt = rgt;
 	}
 	
-	@Transient
 	public String getMpath() {
 		return mpath;
 	}

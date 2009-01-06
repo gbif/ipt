@@ -19,8 +19,8 @@ public class ChecklistResourceManagerHibernateTest extends ContextAwareTestBase{
 
 	@Test
 	public void testStats(){
-		resourceManager.setResourceStats(Constants.TEST_CHECKLIST_RESOURCE_ID);
 		ChecklistResource res = resourceManager.get(Constants.TEST_CHECKLIST_RESOURCE_ID);
+		resourceManager.setResourceStats(res);
 		assertTrue(res.getNumTaxa()==42);
 		assertTrue(res.getNumGenera()==2);
 	}	

@@ -10,13 +10,11 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
 
-public interface TaxonManager extends CoreRecordManager<Taxon>, TreeNodeManager<Taxon>{	
+public interface TaxonManager extends CoreRecordManager<Taxon>, TreeNodeManager<Taxon, Rank>{	
 	public void lookupAcceptedTaxa(Long resourceId);
 	public void lookupBasionymTaxa(Long resourceId);
 	public void lookupParentTaxa(Long resourceId);	
-	public void buildNestedSet(Long resourceId);
 	// stats counting
-	public int countByRank(Long resourceId, Rank rank);
 	public int countSynonyms(Long resourceId);
 	public int countAccepted(Long resourceId);
 

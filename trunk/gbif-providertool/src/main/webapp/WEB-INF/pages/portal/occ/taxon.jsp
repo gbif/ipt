@@ -10,46 +10,27 @@
 <h2><s:property value="taxon.scientificName"/></h2>  
 
 <s:form>
-	<fieldset>
-	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="taxon.details"/>)</a></legend>
-	<table id="details" style="display:none">
-		<tr>
-		  <th><s:text name="taxon.scientificName"/></th>
-		  <td><s:property value="%{taxon.scientificName}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.name"/></th>
-		  <td><s:property value="%{taxon.name}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.rank"/></th>
-		  <td><s:property value="%{taxon.rank}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.code"/></th>
-		  <td><s:property value="%{taxon.nomenclaturalCode}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.parent"/></th>
-		  <td><s:property value="%{taxon.parent}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.occTotal"/></th>
-		  <td><s:property value="%{taxon.occTotal}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.bbox"/></th>
-		  <td><s:property value="%{taxon.bbox}"/></td>
-		</tr>
-		<tr>
-		  <th><s:text name="taxon.notes"/></th>
-		  <td><s:property value="%{taxon.notes}"/></td>
-		</tr>
-	</table>
-	</fieldset>
-</s:form>
 
-<br/>
+<table>	
+ <tr>
+	<th>GUID</th>	
+	<td><a href="<s:property value="%{cfg.getDetailUrl(taxon)}"/>"><s:property value="%{taxon.guid}"/></a></td>
+ </tr>
+ <tr>
+	<th>Data</th>
+	<td><a href="<s:property value="%{cfg.getDetailUrl(taxon,'xml')}"/>">XML</a></td>
+ </tr>
+ <tr>
+	<th>Related</th>
+	<s:url id="taxDetailUrl" action="taxDetail" namespace="/" includeParams="none">
+		<s:param name="resource_id" value="%{resource_id}"/>
+		<s:param name="id" value="%{taxon.id}"/>
+	</s:url>
+	<td><a href="<s:property value="taxDetailUrl" escape="false"/>">Taxon Details</a></td>
+ </tr>
+</table>
+
+</s:form>
 
 <div id="loc-countries" class="stats map">
 	<label><s:text name="stats.occByCountry"/></label>	

@@ -7,7 +7,7 @@
 	<dwc:TaxonomicStatus>${taxon.taxonomicStatus!}</dwc:TaxonomicStatus>
 	<dwc:NomenclaturalStatus>${taxon.nomenclaturalStatus!}</dwc:NomenclaturalStatus>
 	<dwc:NomenclaturalCode>${taxon.code!}</dwc:NomenclaturalCode>
-	<#if taxon.accepted>
+	<#if taxon.getParent()??>
 	<dwc:HigherTaxon>${(taxon.getParent().guid)!}</dwc:HigherTaxon>
 	<#else>
 	<dwc:AcceptedTaxon>

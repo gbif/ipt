@@ -44,7 +44,9 @@ import java.net.URLEncoder;
 public class OccResourceManagerHibernate extends DataResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
 
 	@Autowired
-	protected GeoserverUtils geoTools;
+	private GeoserverUtils geoTools;
+	@Autowired
+	private RegionManager regionManager;
 	
 	public OccResourceManagerHibernate() {
 		super(OccurrenceResource.class);
@@ -244,13 +246,13 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 		List<Object[]> occBySth;
 		if (rank== null || rank.equals(Rank.TerminalTaxon)){
 			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.id, t.scientificName, t.occTotal   from Taxon t   where t.resource.id=:resourceId");		
+			hql = String.format("select t.id, t.label, t.occTotal   from Taxon t   where t.resource.id=:resourceId");		
 	        occBySth = getSession().createQuery(hql)
 	        	.setParameter("resourceId", resourceId)
 	        	.list();
 		}else{
 			// only select certain rank
-			hql = String.format("select t.id, t.scientificName, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.label, sum(t2.occTotal)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.type=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 			occBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("rank", rank)
@@ -274,9 +276,13 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	}
 
 	public OccurrenceResource setResourceStats(OccurrenceResource resource) {
-		log.debug("Setting occurrence resource stats");
+		log.debug("Building occurrence resource stats");
 		Long resourceId = resource.getId();
 		super.setResourceStats(resource);
+		// count occurrence specific stats
+		resource.setNumCountries(regionManager.countByType(resourceId, RegionType.Country));
+		resource.setNumRegions(regionManager.count(resourceId));
+		resource.setNumTerminalRegions(regionManager.countTerminalNodes(resourceId));
 		// save stats
 		return this.save(resource);
 	}

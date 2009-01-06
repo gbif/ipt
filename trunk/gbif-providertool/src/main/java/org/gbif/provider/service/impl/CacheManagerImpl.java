@@ -94,11 +94,6 @@ public class CacheManagerImpl implements CacheManager{
 
 	
 	
-	public void cleanupResources() {
-		// FIXME: needs implementation
-		log.error("NOT IMPLEMENTED YET");
-	}
-
 	@Transactional(readOnly=false)
 	public void prepareUpload(Long resourceId) {
 		DataResource res = dataResourceManager.get(resourceId);

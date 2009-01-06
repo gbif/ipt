@@ -12,8 +12,7 @@
 
 <s:form>
 	<fieldset>
-	<legend><a onclick="Effect.toggle('details', 'blind', { duration: 0.3 }); return false;">(<s:text name="region.details"/>)</a></legend>
-	<table id="details" style="display:none">
+	<table id="details">
 		<tr>
 		  <th><s:text name="region.label"/></th>
 		  <td><s:property value="%{label}"/></td>
@@ -24,16 +23,22 @@
 		</tr>
 		<tr>
 		  <th><s:text name="region.parent"/></th>
-		  <td><s:property value="%{parent}"/></td>
+		  <s:url id="occRegionUrl" action="occRegion" namespace="/" includeParams="none">
+			<s:param name="resource_id" value="%{resource_id}"/>
+			<s:param name="id" value="%{region.parent.id}"/>
+		  </s:url>
+		  <td><a href="<s:property value="occRegionUrl" escape="false"/>"><s:property value="%{parent}"/></a></td>
 		</tr>
+		<!-- 
 		<tr>
 		  <th><s:text name="region.occTotal"/></th>
 		  <td><s:property value="%{occTotal}"/></td>
 		</tr>
 		<tr>
-		  <th><s:text name="taxon.bbox"/></th>
-		  <td><s:property value="%{region.bbox}"/></td>
+		  <th>Number of Taxa</th>
+		  <td><s:property value="%{occTotal}"/></td>
 		</tr>
+		 -->
 	</table>
 	</fieldset>
 </s:form>

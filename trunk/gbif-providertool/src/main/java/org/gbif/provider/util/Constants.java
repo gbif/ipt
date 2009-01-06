@@ -52,5 +52,8 @@ public class Constants {
     }
     public static synchronized DateFormat DATETIME_ISO_FORMAT(){
     	return datetime_iso_format;
-    }    
+    }
+    public static String IndexName(Class klas, String suffix){
+    	return klas.getSimpleName() + suffix;
+    }
 }

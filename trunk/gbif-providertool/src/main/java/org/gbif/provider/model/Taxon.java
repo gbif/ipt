@@ -7,28 +7,34 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.voc.Rank;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.NotNull;
 
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
-) 
+@Table(
+		uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
+)
+@org.hibernate.annotations.Table(
+		appliesTo="Taxon",
+		indexes={
+				@Index(name="tax_label", columnNames={"label"} ),
+				@Index(name="tax_lft", columnNames={"lft"} ),
+				@Index(name="tax_rgt", columnNames={"rgt"} )
+		}
+)
 public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
@@ -69,12 +75,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			return tax;
 		}
 		
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		@Override
-		public Long getId() {
-			return super.getId();
-		}
 		@Transient
 		public Long getCoreId() {
 			return super.getId();
@@ -133,16 +133,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.modified = modified;
 		}
 
-		@ManyToOne(optional = true)
-		@Override
-		public Taxon getParent() {
-			return super.getParent();
-		}
-		@Override
-		public void setParent(Taxon parent) {
-			super.setParent(parent);
-		}
-				
 		@Column(length=128)
 		public String getRank() {
 			return rank;
@@ -151,6 +141,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.rank = rank;
 		}
 		
+		@Transient
 		public Rank getDwcRank() {
 			return super.getType();
 		}
@@ -158,7 +149,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			super.setType(dwcRank);
 		}
 		
-		@org.hibernate.annotations.Index(name="tax_sciname")
+		@Transient
 		public String getScientificName() {
 			return getLabel();
 		}
@@ -173,23 +164,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 
 		public void setNomenclaturalCode(String nomenclaturalCode) {
 			this.nomenclaturalCode = nomenclaturalCode;
-		}
-
-		@org.hibernate.annotations.Index(name="tax_lft")
-		@Override
-		public Long getLft() {
-			return super.getLft();
-		}
-		
-		@org.hibernate.annotations.Index(name="tax_rgt")
-		@Override
-		public Long getRgt() {
-			return super.getRgt();
-		}
-
-		@Override
-		public String getMpath() {
-			return super.getMpath();
 		}
 
 		public BBox getBbox() {
@@ -212,9 +186,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.occTotal = occTotal;
 		}
 
-		
-		
-		
 		
 		@Column(length=32)
 		public String getTaxonomicParentID() {
