@@ -13,10 +13,12 @@
 	<th>Data</th>
 	<td><a href="${cfg.getDetailUrl(rec,'xml')}">XML</a></td>
  </tr>
+ <!--
  <#if resourceType=="occ">
 	 <tr>
 		<th>Related</th>
 		<td><a href="/occTaxon.html?resource_id=${resource_id?c}&id=${rec.id?c}">Taxon Occurrences</a></td>
 	 </tr>
  </#if>
+  -->
 </table>

@@ -30,7 +30,7 @@ public class TermMappingManagerTest extends ResourceTestBase {
 	@Test
 	@Transactional(propagation=Propagation.REQUIRED)
 	public void testDistinctTerms(){
-		setup();
+		setupOccResource();
 		ExtensionProperty prop = extensionManager.getProperty(Constants.SCIENTIFIC_NAME_QUALNAME);
 		try {
 			Set<String> terms = sourceInspectionManager.getDistinctValues(resource.getCoreMapping().getSource(), resource.getCoreMapping().getMappedProperty(prop).getColumn());

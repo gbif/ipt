@@ -16,7 +16,7 @@ public class DataArchiveManagerImplTest extends ResourceTestBase{
 	
 	@Test
 	public void testArchiving(){
-		this.setup();
+		this.setupOccResource();
 		try {
 			dataArchiveManager.createArchive(resource);
 		} catch (IOException e) {

@@ -26,7 +26,7 @@ public class NamespaceRegistryTest extends ResourceTestBase {
 
 	@Test
 	public void testAddResource() {
-		setup();
+		setupOccResource();
 		NamespaceRegistry nsr = new NamespaceRegistry(resource);
 		System.out.println(nsr.xmlnsDef());
 	}

@@ -24,6 +24,7 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.OccResourceManager;
+import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;

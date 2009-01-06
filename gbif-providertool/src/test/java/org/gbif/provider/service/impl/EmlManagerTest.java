@@ -21,7 +21,7 @@ public class EmlManagerTest extends ResourceTestBase{
 
 	@Test
 	public void testSaveResource() {
-		setup();
+		setupOccResource();
 
 		Eml eml = new Eml();
 		eml.setResource(resource);
@@ -38,7 +38,7 @@ public class EmlManagerTest extends ResourceTestBase{
 	
 	@Test
 	public void testLoadResource() {
-		setup();
+		setupOccResource();
 
 		Eml eml = emlManager.load(resource);
 		eml.addKeyword("Italia");
