@@ -20,6 +20,7 @@
 	<th>Data</th>
 	<td><a href="<s:property value="%{cfg.getDetailUrl(taxon,'xml')}"/>">XML</a></td>
  </tr>
+ <!-- 
  <tr>
 	<th>Related</th>
 	<s:url id="taxDetailUrl" action="taxDetail" namespace="/" includeParams="none">
@@ -28,6 +29,7 @@
 	</s:url>
 	<td><a href="<s:property value="taxDetailUrl" escape="false"/>">Taxon Details</a></td>
  </tr>
+  -->
 </table>
 
 </s:form>

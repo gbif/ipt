@@ -85,12 +85,8 @@ public abstract class ResourceStatsBaseAction<T extends Resource> extends BaseRe
 
 	public void prepare() {
 		area = GeographicalArea.WORLD.toString();
-		if (resource_id != null) {
-			resource = resourceManager.get(resource_id);
-		}
+		super.prepare();
 	}
-
-	
 	
 	
 	// HELPER

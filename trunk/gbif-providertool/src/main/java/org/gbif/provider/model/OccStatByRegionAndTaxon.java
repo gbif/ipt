@@ -15,6 +15,16 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 	private Region region;
 	private int numOcc;
 	
+	public OccStatByRegionAndTaxon(){
+		super();
+	}
+	public OccStatByRegionAndTaxon(Resource resource, Taxon taxon, Region region, Long numOcc) {
+		super();
+		this.resource = resource;
+		this.taxon = taxon;
+		this.region = region;
+		this.numOcc = numOcc.intValue();
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {

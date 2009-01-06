@@ -129,7 +129,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     	if (id!=null && resource_id!=null){
     		taxon=taxonManager.get(id);
     		occurrences = darwinCoreManager.getByTaxon(id, resource_id, true);
-			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
+    		if (taxon!=null){
+    			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
+    		}
     	}
 		return SUCCESS;
     }

@@ -61,9 +61,7 @@ public class TaxResourceStatsAction extends ResourceStatsBaseAction<ChecklistRes
 
 	public String statsByTaxon() {
 		recordAction="taxDetail";
-		List<Rank> ranks = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
-		ranks.add(Rank.TerminalTaxon);
-		types = ranks.toArray(new Object[1]);
+		types = Rank.COMMON_RANKS.toArray(new Object[1]);
 
 		if (!useCachedImage(ImageType.ChartByTaxon)){
 			Rank rnk = Rank.getByInt(type);

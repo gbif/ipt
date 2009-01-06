@@ -44,7 +44,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getRoots(Long resourceId) {
-		return treeNodeSupport.getRoots(resourceId, getSession(), "n.rgt - n.lft > 1");
+		return treeNodeSupport.getRoots(resourceId, getSession(), "n.acceptedTaxon is not null"); // "n.rgt - n.lft > 1"
 	}
 
 	@Override

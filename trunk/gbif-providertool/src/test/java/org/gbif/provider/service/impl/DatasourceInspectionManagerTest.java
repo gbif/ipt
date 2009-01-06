@@ -20,7 +20,7 @@ public class DatasourceInspectionManagerTest extends ResourceTestBase{
 
 	@Test
 	public void testGetHeader() throws Exception {
-		setup();
+		setupOccResource();
 		List<String> headers = datasourceInspectionManager.getHeader(resource.getCoreMapping().getSource());
 		System.out.println(headers);
 	}

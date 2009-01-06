@@ -3,7 +3,7 @@
 <head>
     <title><s:text name="occResourceOverview.title"/> Statistics</title>
     <meta name="resource" content="<s:property value="%{resource.title}"/>"/>
-    <meta name="submenu" content="occ"/>
+    <meta name="submenu" content="<s:property value="%{resourceType}"/>"/>
 </head>
 
 

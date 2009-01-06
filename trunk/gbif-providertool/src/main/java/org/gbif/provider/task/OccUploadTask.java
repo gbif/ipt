@@ -45,9 +45,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 		// not stored in resource
 		private int numRegions;
 		private int numTaxa;
-		private Map<Region, Map<Taxon, OccStatByRegionAndTaxon>> occByRegionAndTaxon;
 		private CacheMap<String, Taxon> taxonCache = new CacheMap<String, Taxon>(2500);
 		private LinkedList<Taxon> newTaxa = new LinkedList<Taxon>();
+		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
+		private LinkedList<Region> newRegions = new LinkedList<Region>();
 		private static final List<Rank> higherRanks; 
 		  static  
 		  {  
@@ -55,8 +56,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 		    Collections.reverse(ranks);
 		    higherRanks = Collections.unmodifiableList(ranks);  
 		  }  
-		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
-		private LinkedList<Region> newRegions = new LinkedList<Region>();
 		private static final List<RegionType> higherGeography; 
 		  static  
 		  {  
@@ -91,7 +90,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 			recWithDate=0;
 
 			bbox=new BBox();
-			occByRegionAndTaxon = new HashMap<Region, Map<Taxon, OccStatByRegionAndTaxon>>();
 			
 			this.occResource = loadResource();
 		}
@@ -115,33 +113,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 			if(dwc.getMinimumElevationInMetersAsInteger()!=null){
 				recWithAltitude++;
 			}
-			
-			// counts per taxon & region
-			Region reg = dwc.getRegion();
-			Taxon tax = dwc.getTaxon();
-			OccStatByRegionAndTaxon stat;
-			Map<Taxon, OccStatByRegionAndTaxon> taxMap;
-			if (!occByRegionAndTaxon.containsKey(reg)){
-				taxMap = new HashMap<Taxon, OccStatByRegionAndTaxon>();
-				occByRegionAndTaxon.put(reg, taxMap);
-			}else{
-				taxMap = occByRegionAndTaxon.get(reg);				
-			}
-			if (!taxMap.containsKey(tax)){
-				stat = new OccStatByRegionAndTaxon();
-				stat.setResource(occResource);
-				stat.setRegion(reg);
-				stat.setTaxon(tax);
-				stat.setNumOcc(1);
-				taxMap.put(tax, stat);
-			}else{
-				stat = taxMap.get(tax);
-				stat.incrementNumOcc();
-			}
-			
 		}
-		
-		
 
 		//
 		// TAXA
@@ -344,21 +316,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		@Override
 		protected void closeHandler(OccurrenceResource resource){
-			// occByRegionAndTaxon
-			currentActivity = "Inserting count statistics by region and taxon";
-			int occStatCount=0;
-			for (Map<Taxon, OccStatByRegionAndTaxon> taxMap : occByRegionAndTaxon.values()){
-				for (OccStatByRegionAndTaxon stat : taxMap.values()){
-					try {
-						occStatManager.save(stat);
-						occStatCount++;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-			log.debug(occStatCount + " occurrence stats by region & taxon inserted");
-			
 			// create nested set indices
 			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
@@ -368,8 +325,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 			// build resource stats
 			currentActivity = "Building resource stats";
-			occResourceManager.setResourceStats(resource);
-
+			occResourceManager.setResourceStats(resource);			
+			currentActivity = "Inserting occurrence statistics by region and taxon";
+			occStatManager.updateRegionAndTaxonStats(resource);
+			
 			// update resource properties
 			resource.setRecWithCoordinates(recWithCoordinates);
 			resource.setRecWithCountry(recWithCountry);
