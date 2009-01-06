@@ -1,17 +1,20 @@
 #summary Screenshots of IPT
 
+A brief selection of screenshots hosted at Flickr. To view many more screenshots with descriptions please look at Flickr directly:
+http://www.flickr.com/photos/7791445@N05/sets/72157612191702665/
+
+
 = Public Portal =
-=== Portal ===
+== Occurrence Resources ==
+[http://farm4.static.flickr.com/3088/3173412425_978d55d4c2.jpg?v=0 hallo]
+
+== Checklist Resources ==
+== Metadata Resources ==
+
 http://code.google.com/images/code_sm.png
 
 = Manger UI =
-=== IPT manage sources ===
 http://code.google.com/images/code_sm.png
 
 = Admin UI =
-=== IPT admin thesaurus vocabulary ===
 http://www.flickr.com/photos/7791445@N05/3174329058/
-
-
-= WebServices =
-=== XML record details ===
