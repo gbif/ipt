@@ -85,6 +85,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 			// create nested set indices
 			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
+
+			currentActivity = "Building resource stats";
 			checklistResourceManager.setResourceStats(resource);
 
 			currentActivity = "Creating TCS data archive";

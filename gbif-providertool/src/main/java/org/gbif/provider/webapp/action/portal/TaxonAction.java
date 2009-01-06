@@ -23,6 +23,7 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
@@ -70,6 +71,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     		taxon=taxonManager.get(id);
     	}else if (guid!=null){
     		taxon=taxonManager.get(guid);
+    		id=taxon.getId();
     	}
 	}
 	public String execute(){
@@ -77,19 +79,25 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     	if (taxon!=null){
 			stats = taxonManager.getRankStats(taxon.getId());
 			synonyms = taxonManager.getSynonyms(taxon.getId());
+			extWrapper = extensionRecordManager.getExtensionRecords(taxon.getResource(), taxon.getCoreId());
 			if (format != null){
-	    		extWrapper = extensionRecordManager.getExtensionRecords(taxon.getResource(), taxon.getCoreId());
 	    		extensions = extWrapper.getExtensions();
-	        	if (format!=null && format.equalsIgnoreCase("xml")){
+	        	if (format.equalsIgnoreCase("xml")){
 	        		nsr = new NamespaceRegistry(taxon.getResource());
 	        		return "xml";
 	        	}
-	        	else if (format!=null && format.equalsIgnoreCase("json")){
+	        	else if (format.equalsIgnoreCase("json")){
 	        		//TODO: create map to serialise into JSON
 	        		json = new HashMap<Object, Object>();
 	        		return "json";
 	        	}
 			}else{
+	    		extensions = new ArrayList<Extension>();
+	    		for (Extension e:extWrapper.getExtensions()){
+	    			if (!e.getId().equals(Constants.COMMON_NAME_EXTENSION_ID) && !e.getId().equals(Constants.DISTRIBUTION_EXTENSION_ID)){
+	    				extensions.add(e);
+	    			}
+	    		}
 				commonNames = extensionRecordManager.getCommonNames(taxon.getCoreId());
 				distributions = extensionRecordManager.getDistributions(taxon.getCoreId());
 			}

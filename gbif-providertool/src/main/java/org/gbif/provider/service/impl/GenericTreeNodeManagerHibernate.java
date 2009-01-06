@@ -15,12 +15,12 @@ import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends GenericResourceRelatedManagerHibernate<T> implements TreeNodeManager<T> {
-	private TreeNodeSupportHibernate<T> treeNodeSupport;
+public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,E>, E extends Enum> extends GenericResourceRelatedManagerHibernate<T> implements TreeNodeManager<T,E> {
+	private TreeNodeSupportHibernate<T,E> treeNodeSupport;
 	
 	public GenericTreeNodeManagerHibernate(final Class<T> persistentClass) {
 	        super(persistentClass);
-	        treeNodeSupport = new TreeNodeSupportHibernate<T>(persistentClass, this);
+	        treeNodeSupport = new TreeNodeSupportHibernate<T,E>(persistentClass, this);
     }
 
 	
@@ -49,12 +49,21 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,?>> extends Ge
 	}
 
 	public int countTerminalNodes(Long resourceId) {
-        return ((Integer) query(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
-        .setLong("resourceId", resourceId)
-        .iterate().next() ).intValue();
+		return treeNodeSupport.countTerminalNodes(resourceId, getSession(), null);
 	}
 
+	public int countByType(Long resourceId, E type) {
+		return treeNodeSupport.countByType(resourceId, type, getSession());
+	}
 
+	public int countTreeNodes(Long resourceId) {
+		return treeNodeSupport.countTreeNodes(resourceId, getSession());
+	}
+
+	
+	public void buildNestedSet(Long resourceId) {
+		treeNodeSupport.buildNestedSet(resourceId, getSession());
+	}
 
 	public T getByMaterializedPath(Long resourceId, String mpath) {
 		return treeNodeSupport.getByMaterializedPath(resourceId, mpath, getSession());

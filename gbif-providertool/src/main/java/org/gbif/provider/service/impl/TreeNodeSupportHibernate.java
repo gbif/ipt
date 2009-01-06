@@ -8,16 +8,17 @@ import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.TreeNode;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.TreeNodeManager;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
+public class TreeNodeSupportHibernate<T extends TreeNode<T,E>, E extends Enum>{
 	private final Class persistentClass;
-	private TreeNodeManager<T> treeNodeManager; 
+	private TreeNodeManager<T,E> treeNodeManager; 
     protected final Log log = LogFactory.getLog(getClass());
 	
-	public TreeNodeSupportHibernate(final Class<T> persistentClass, TreeNodeManager<T> treeNodeManager) {
+	public TreeNodeSupportHibernate(final Class<T> persistentClass, TreeNodeManager<T,E> treeNodeManager) {
         this.persistentClass=persistentClass;
         this.treeNodeManager = treeNodeManager;
 	}
@@ -124,6 +125,19 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,?>>{
     	.setLong("resourceId", resourceId)
     	.setString("mpath", mpath)
     	.uniqueResult();
+	}
+
+	public int countTreeNodes(Long resourceId, Session session) {
+		return ((Long) session.createQuery(String.format("select count(n) from %s n WHERE (n.parent is not null OR n.rgt-n.lft>1) AND n.resource.id = :resourceId", persistentClass.getName()))
+			.setLong("resourceId", resourceId)
+			.iterate().next()).intValue();
+	}
+	
+	public int countByType(Long resourceId, E type, Session session){
+		return ((Long) session.createQuery(String.format("select count(n) from %s n WHERE n.type = :type and n.resource.id = :resourceId", persistentClass.getName()))
+        	.setLong("resourceId", resourceId)
+        	.setParameter("type", type)
+        	.iterate().next()).intValue();
 	}
 
 }

@@ -34,14 +34,14 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 		List<Object[]> taxBySth;
 		if (rank== null || rank.equals(Rank.TerminalTaxon)){
 			// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-			hql = String.format("select t.id, t.scientificName, 1   from Taxon t   where t.resource.id=:resourceId and t.dwcRank=:rank");		
+			hql = String.format("select t.id, t.label, 1   from Taxon t   where t.resource.id=:resourceId and t.type=:rank");		
 	        taxBySth = getSession().createQuery(hql)
 	        	.setParameter("resourceId", resourceId)
 				.setParameter("rank", Rank.TerminalTaxon)
 	        	.list();
 		}else{
 			// only select certain rank
-			hql = String.format("select t.id, t.scientificName, count(t2)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.dwcRank=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
+			hql = String.format("select t.id, t.label, count(t2)   from Taxon t, Taxon t2   where t.resource.id=:resourceId and t2.resource.id=:resourceId  and t.type=:rank  and t2.lft>=t.lft and t2.rgt<=t.rgt  group by t");		
 			taxBySth = getSession().createQuery(hql)
 				.setParameter("resourceId", resourceId)
 				.setParameter("rank", rank)

@@ -22,11 +22,11 @@ import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
 public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> implements TaxonManager {
-	private TreeNodeSupportHibernate<Taxon> treeNodeSupport;
+	private TreeNodeSupportHibernate<Taxon, Rank> treeNodeSupport;
 
 	public TaxonManagerHibernate() {
 		super(Taxon.class);
-        treeNodeSupport = new TreeNodeSupportHibernate<Taxon>(Taxon.class, this);
+        treeNodeSupport = new TreeNodeSupportHibernate<Taxon, Rank>(Taxon.class, this);
 	}
 
 	
@@ -104,12 +104,17 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		}
 	}
 	
-	public int countByRank(Long resourceId, Rank rank){
-		Long cnt = (Long) query("select count(tax) from Taxon tax WHERE tax.dwcRank = :rank and tax.resource.id = :resourceId")
-        	.setLong("resourceId", resourceId)
-        	.setParameter("rank", rank)
-        	.iterate().next();
-        return cnt.intValue();
+	public int countTreeNodes(Long resourceId) {
+		return treeNodeSupport.countTreeNodes(resourceId, getSession());
+	}
+
+	public int countByType(Long resourceId, Rank rank){
+		return treeNodeSupport.countByType(resourceId, rank, getSession());
+//		Long cnt = (Long) query("select count(tax) from Taxon tax WHERE tax.type = :rank and tax.resource.id = :resourceId")
+//        	.setLong("resourceId", resourceId)
+//        	.setParameter("rank", rank)
+//        	.iterate().next();
+//        return cnt.intValue();
 	}
 	public int countSynonyms(Long resourceId) {
 		return ((Long) query("select count(tax) from Taxon tax WHERE tax.acceptedTaxon is not null and tax.resource.id = :resourceId")
@@ -117,20 +122,18 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 				.iterate().next()).intValue();
 	}
 	public int countAccepted(Long resourceId) {
-		return ((Long) query("select count(tax) from Taxon tax WHERE (tax.parent is not null OR tax.rgt-tax.lft>1) AND tax.resource.id = :resourceId")
-				.setLong("resourceId", resourceId)
-				.iterate().next()).intValue();
+		return countTreeNodes(resourceId);
 	}
 
 	
 	public List<Taxon> getByRank(Long resourceId, Long taxonId, String rank){
 		Query query;
 		if (taxonId==null){
-			query = query("from Taxon WHERE rank = :rank and resource.id = :resourceId order by scientificName")
+			query = query("from Taxon WHERE rank = :rank and resource.id = :resourceId order by label")
 		        	.setLong("resourceId", resourceId)
 		        	.setString("rank", rank);
 		}else{
-			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.rank = :rank   order by t.scientificName")
+			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.rank = :rank   order by t.label")
 		        	.setLong("taxonId", taxonId)
 		        	.setString("rank", rank);
 		}
@@ -140,11 +143,11 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	public List<Taxon> getByStatus(Long resourceId, Long taxonId, StatusType st, String category) {
 		Query query;
 		if (taxonId==null){
-			query = query(String.format("from Taxon WHERE %s = :category and resource.id = :resourceId order by scientificName", st.columnName))
+			query = query(String.format("from Taxon WHERE %s = :category and resource.id = :resourceId order by label", st.columnName))
 		        	.setLong("resourceId", resourceId)
 		        	.setString("category", category);
 		}else{
-			query = query(String.format("select t from Taxon, Taxon root WHERE root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.%s=:category   order by t.scientificName", st.columnName))
+			query = query(String.format("select t from Taxon, Taxon root WHERE root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.%s=:category   order by t.label", st.columnName))
 		        	.setLong("taxonId", taxonId)
 		        	.setString("category", category);
 		}
@@ -152,7 +155,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getSynonyms(Long taxonId) {
-		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by s.scientificName")
+		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by s.label")
     	.setLong("taxonId", taxonId)
     	.list();
 	}
@@ -161,7 +164,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	public List<StatsCount> getRankStats(Long taxonId) {
 		String hql = "";
 		List<Object[]> data;
-		hql = "select t.rank, count(t)   from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt   group by t.rank, t.dwcRank  order by t.dwcRank, t.rank";		
+		hql = "select t.rank, count(t)   from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt   group by t.rank, t.type  order by t.type, t.rank";		
         data = getSession().createQuery(hql)
         	.setLong("taxonId", taxonId)
         	.list();

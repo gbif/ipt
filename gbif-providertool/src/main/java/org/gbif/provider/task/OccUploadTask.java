@@ -362,6 +362,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 			// create nested set indices
 			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
+			
+			currentActivity = "Creating region index";
+			regionManager.buildNestedSet(getResourceId());
+
+			// build resource stats
+			currentActivity = "Building resource stats";
 			occResourceManager.setResourceStats(resource);
 
 			// update resource properties

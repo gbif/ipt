@@ -47,10 +47,10 @@ public class OccurrenceResource extends DataResource {
 	private int recWithCountry;
 	private int recWithAltitude;
 	private int recWithDate;
-	private int numCountries;
 	// distinct number of Region entities
 	private int numRegions;
 	private int numTerminalRegions;
+	private int numCountries;
 	
 	public static OccurrenceResource newInstance(){
 		OccurrenceResource resource =  new OccurrenceResource();
