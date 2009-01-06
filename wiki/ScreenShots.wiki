@@ -1,8 +1,17 @@
 #summary Screenshots of IPT
 
-=== Details ===
+= Public Portal =
+=== Portal ===
 http://code.google.com/images/code_sm.png
-=== Details ===
+
+= Manger UI =
+=== IPT manage sources ===
 http://code.google.com/images/code_sm.png
-=== Details ===
-http://code.google.com/images/code_sm.png
+
+= Admin UI =
+=== IPT admin thesaurus vocabulary ===
+http://www.flickr.com/photos/7791445@N05/3174329058/
+
+
+= WebServices =
+=== XML record details ===
