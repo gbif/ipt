@@ -63,6 +63,9 @@ public class TaxResourceAction extends BaseChecklistResourceAction implements Pr
 	
 		
 	public String execute() {
+		if (resource==null){
+			return RESOURCE404;
+		}
 		return SUCCESS;
 	}
 

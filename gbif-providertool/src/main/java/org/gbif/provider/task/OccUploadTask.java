@@ -291,24 +291,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 				// this is the geo extension!
 				DarwinCore dwc = darwinCoreManager.get(extRec.getCoreId());
 				if (darwinCoreManager.updateWithGeoExtension(dwc, extRec)){
-					// update bbox
+					// update bbox for resource
 					bbox.expandBox(dwc.getLocation());
 					// potentially transform coordinates
-					String geodatum=extRec.getPropertyValue(DarwinCoreManagerHibernate.GEODATUM_PROP);
 					// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
+					//String geodatum=extRec.getPropertyValue(DarwinCoreManagerHibernate.GEODATUM_PROP);
 					darwinCoreManager.save(dwc);
 					// increase stats counter
 					if (dwc.getLocation().isValid()){
 						//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
 						// might need to do a count via SQL after upload is done ...
 						recWithCoordinates++;
-						// update Taxon bbox stats
-						if (dwc.getTaxon()!=null){
-							dwc.getTaxon().expandBox(dwc.getLocation());			
-						}
-						if (dwc.getRegion()!=null){
-							dwc.getRegion().expandBox(dwc.getLocation());			
-						}
 					}
 				}
 			}

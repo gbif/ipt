@@ -21,9 +21,13 @@
 	<td><a href="<s:property value="%{cfg.getDetailUrl(taxon,'xml')}"/>">XML</a></td>
  </tr>
  <tr>
-	<th>occTotal</th>
+	<th><s:text name="region.occTotal"/></th>
 	<td><s:property value="%{taxon.occTotal}"/></td>
  </tr>
+<tr>
+  <th>BBox</th>
+  <td><s:property value="%{taxon.bbox}"/></td>
+</tr>
  <!-- 
  <tr>
 	<th>Related</th>

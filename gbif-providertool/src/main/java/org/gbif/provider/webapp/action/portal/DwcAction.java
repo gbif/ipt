@@ -26,7 +26,7 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	private ExtensionRecordManager extensionRecordManager;
     private Long taxon_id;
     private Long region_id;
-    private String guid;
+    private Long id;
     private DarwinCore dwc;
     private ExtensionRecordsWrapper extWrapper;
     private List<Extension> extensions;
@@ -36,28 +36,38 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	@Autowired
 	private AppConfig cfg;
 	 
-    public String execute(){
-    	if (guid!=null){
+	private void setRequestedRecord(){
+    	if (id!=null){
+    		dwc=darwinCoreManager.get(id);
+    	}else if (guid!=null){
     		dwc=darwinCoreManager.get(guid);
-    		if (dwc !=null){
-    			region_id = dwc.getRegion().getId();
-    			taxon_id = dwc.getTaxon().getId();
-        		extWrapper = extensionRecordManager.getExtensionRecords(dwc.getResource(), dwc.getCoreId());
-        		extensions = extWrapper.getExtensions();
-            	if (format!=null && format.equalsIgnoreCase("xml")){
-            		nsr = new NamespaceRegistry(dwc.getResource());
-            		return "xml";
-            	}
-            	else if (format!=null && format.equalsIgnoreCase("json")){
-            		//TODO: create map to serialise into JSON
-            		json = new HashMap<Object, Object>();
-            		return "json";
-            	}
-    		}else{
-    			extensions = new ArrayList<Extension>();
+    		if (dwc!=null){
+        		id=dwc.getId();
     		}
     	}
-		return SUCCESS;
+	}
+	
+	public String execute(){
+		setRequestedRecord();
+		if (dwc !=null){
+			region_id = dwc.getRegion().getId();
+			taxon_id = dwc.getTaxon().getId();
+    		extWrapper = extensionRecordManager.getExtensionRecords(dwc.getResource(), dwc.getCoreId());
+    		extensions = extWrapper.getExtensions();
+        	if (format!=null && format.equalsIgnoreCase("xml")){
+        		nsr = new NamespaceRegistry(dwc.getResource());
+        		return "xml";
+        	}
+        	else if (format!=null && format.equalsIgnoreCase("json")){
+        		//TODO: create map to serialise into JSON
+        		json = new HashMap<Object, Object>();
+        		return "json";
+        	}
+    		return SUCCESS;
+		}else{
+			extensions = new ArrayList<Extension>();
+			return RECORD404;
+		}
     }
     
 

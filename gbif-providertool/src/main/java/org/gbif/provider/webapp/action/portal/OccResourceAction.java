@@ -74,6 +74,9 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	
 		
 	public String execute() {
+		if (resource==null){
+			return RESOURCE404;
+		}
 		return SUCCESS;
 	}
 

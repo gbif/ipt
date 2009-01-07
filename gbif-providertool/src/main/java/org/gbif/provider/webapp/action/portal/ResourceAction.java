@@ -35,8 +35,9 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	public String execute(){
 		if (resource!=null){
 			eml = emlManager.load(resource);
+			return SUCCESS;
 		}		
-		return SUCCESS;
+		return RESOURCE404;
 	}
 	
 	public String forward(){

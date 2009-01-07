@@ -33,6 +33,10 @@
 		  <th><s:text name="region.occTotal"/></th>
 		  <td><s:property value="%{occTotal}"/></td>
 		</tr>
+		<tr>
+		  <th>BBox</th>
+		  <td><s:property value="%{bbox}"/></td>
+		</tr>
 		<!-- 
 		<tr>
 		  <th>Number of Taxa</th>
