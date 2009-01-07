@@ -14,6 +14,7 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 	private Taxon taxon;
 	private Region region;
 	private int numOcc;
+	private BBox bbox = new BBox();
 	
 	public OccStatByRegionAndTaxon(){
 		super();
@@ -24,6 +25,15 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 		this.taxon = taxon;
 		this.region = region;
 		this.numOcc = numOcc.intValue();
+	}
+	public OccStatByRegionAndTaxon(Resource resource, Taxon taxon, Region region, Long numOcc, Double maxY, Double maxX, Double minY, Double minX) {
+		// latitude=y, longitude=x
+		super();
+		this.resource = resource;
+		this.taxon = taxon;
+		this.region = region;
+		this.numOcc = numOcc.intValue();
+		this.bbox = new BBox(maxX, maxY, minX, minY);
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -68,5 +78,10 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 	public void incrementNumOcc() {
 		this.numOcc++;
 	}
-	
+	public BBox getBbox() {
+		return bbox;
+	}
+	public void setBbox(BBox bbox) {
+		this.bbox = bbox;
+	}	
 }

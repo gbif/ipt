@@ -32,16 +32,24 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     	if (id!=null){
     		region=regionManager.get(id);
 			// geoserver map link
-			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
+    		if (region!=null){
+    			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
+    		}else{
+        		return RECORD404;
+    		}
     	}
 		return SUCCESS;
     }
     
     public String occurrences(){
-    	if (id!=null && resource_id!=null){
+    	if (resource_id!=null && id!=null){
     		region=regionManager.get(id);
     		occurrences = darwinCoreManager.getByRegion(id, resource_id, true);
-			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
+    		if (region!=null){
+    			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
+    		}else{
+        		return RECORD404;
+    		}
     	}
 		return SUCCESS;
     }

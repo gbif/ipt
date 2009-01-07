@@ -19,6 +19,8 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
     public static final String OCCURRENCE = OccurrenceResource.ALIAS;
     public static final String CHECKLIST = ChecklistResource.ALIAS;
     public static final String METADATA = Resource.ALIAS;
+    public static final String RECORD404 = "record404";
+    public static final String RESOURCE404 = "resource404";
 	@Autowired
 	protected AppConfig cfg;
 	

@@ -32,15 +32,16 @@
 </s:url>
 
 <div id="stats-table">
-	<display:table name="data" uid="rec" class="table" requestURI="" id="dataList" export="true" pagesize="50">
+	<display:table name="data" class="table" requestURI="" id="dataList" export="true" pagesize="50">
 	    <display:column property="label" sortable="true" titleKey="stats.category"/>
-	    <s:if test="%{recordAction.length() > 0}">	    
-		    <s:if test="%{rec.id > 0}">	    
-		    	<display:column property="count" sortable="true" titleKey="stats.count" href="${recordUrl}" media="html" paramId="id" paramProperty="id"/>
-			</s:if>
-			<s:else>
-		    	<display:column property="count" sortable="true" titleKey="stats.count" href="${recordUrl}" media="html" paramId="category" paramProperty="label"/>
-			</s:else>
+    	<display:column property="id" titleKey="stats.count"/>
+	    <s:if test="%{recordAction.length() > 0}">
+		  <s:if test="#attr.dataList.id > 0">
+	    	<display:column property="count" sortable="true" titleKey="stats.count" href="${recordUrl}" media="html" paramId="id" paramProperty="id"/>
+		  </s:if>
+		  <s:else>
+	    	<display:column property="count" sortable="true" titleKey="stats.count" href="${recordUrl}" media="html" paramId="category" paramProperty="label"/>
+		  </s:else>
 		</s:if>
 		<s:else>
 	    	<display:column property="count" sortable="true" titleKey="stats.count"/>

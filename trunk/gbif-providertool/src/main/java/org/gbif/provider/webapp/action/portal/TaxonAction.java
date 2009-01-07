@@ -42,7 +42,6 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	private ExtensionRecordManager extensionRecordManager;
 	// parameters
     private Long id;
-    private String guid;
     private String action;
     private int type;
     private String category;
@@ -71,7 +70,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     		taxon=taxonManager.get(id);
     	}else if (guid!=null){
     		taxon=taxonManager.get(guid);
-    		id=taxon.getId();
+    		if (taxon!=null){
+        		id=taxon.getId();
+    		}
     	}
 	}
 	public String execute(){
@@ -101,8 +102,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 				commonNames = extensionRecordManager.getCommonNames(taxon.getCoreId());
 				distributions = extensionRecordManager.getDistributions(taxon.getCoreId());
 			}
+			return SUCCESS;
     	}
-		return SUCCESS;
+		return RECORD404;
     }
     
     public String listByRank(){
@@ -170,10 +172,6 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 
 	public List<Taxon> getTaxa() {
 		return taxa;
-	}
-
-	public void setGuid(String guid) {
-		this.guid = guid;
 	}
 
 	public String getCategory() {
