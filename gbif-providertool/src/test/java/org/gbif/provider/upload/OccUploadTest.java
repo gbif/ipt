@@ -19,7 +19,7 @@ public class OccUploadTest extends ContextAwareTestBase{
 	@Test
 	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testUpload() throws Exception {
-		uploadTask.init(Constants.TEST_OCC_RESOURCE_ID);		
+		uploadTask.init(2l);//Constants.TEST_OCC_RESOURCE_ID);		
 		UploadEvent event = uploadTask.call();
 		System.out.println(event);
 	}
