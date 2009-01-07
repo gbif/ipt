@@ -143,6 +143,10 @@ public class CacheManagerImpl implements CacheManager{
 		prepareUpload(resourceId);
 		DataResource res = dataResourceManager.get(resourceId);
 		if (res != null){
+			// remove lastUpload reference			
+			res.setLastUpload(null);
+			dataResourceManager.save(res);
+			uploadEventManager.flush();
 			uploadEventManager.removeAll(res);
 			darwinCoreManager.removeAll(res);
 			taxonManager.removeAll(res);

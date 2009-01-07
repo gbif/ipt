@@ -24,10 +24,6 @@
 	<th><s:text name="region.occTotal"/></th>
 	<td><s:property value="%{taxon.occTotal}"/></td>
  </tr>
-<tr>
-  <th>BBox</th>
-  <td><s:property value="%{taxon.bbox}"/></td>
-</tr>
  <!-- 
  <tr>
 	<th>Related</th>

@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -43,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class FileImportSource implements ImportSource{
+	protected final Log log = LogFactory.getLog(getClass());
 	@Autowired
 	private TermMappingManager termMappingManager;
 	@Autowired
@@ -110,7 +114,11 @@ public class FileImportSource implements ImportSource{
 	}
 
 	private String getCurrentValue(String columnName){
-		return currentLine[headerMap.get(columnName)];
+		if (headerMap.containsKey(columnName)){
+			return currentLine[headerMap.get(columnName)];
+		}else{
+			return null;
+		}
 	}
 	public ImportRecord next() {
 		ImportRecord row = null;
@@ -127,7 +135,7 @@ public class FileImportSource implements ImportSource{
 					row.setLink(getCurrentValue(linkColumn));
 				}
 		    	for (PropertyMapping pm : properties){
-		    		if (pm.getColumn() != null && pm.getColumn() != null){
+		    		if (StringUtils.trimToNull(pm.getColumn()) != null){
 		    			String column = pm.getColumn();
 	    				String val = getCurrentValue(column);
 	    				// lookup value in term mapping map
@@ -137,12 +145,12 @@ public class FileImportSource implements ImportSource{
 	    					}
 		    			}
 						row.setPropertyValue(pm.getProperty(), val);
-		    		}else if (pm.getValue() != null){
+		    		}else if (StringUtils.trimToNull(pm.getValue()) != null){
 						row.setPropertyValue(pm.getProperty(), pm.getValue());
 		    		}
 		    	}
 			} catch (Exception e) {
-				//annotationManager.annotateResource(resourceId, "Exception while retrieving FILE source record: "+e.toString());
+				log.warn("FileImportSource empty row because of error",e);
 				row=null;
 			}
 			

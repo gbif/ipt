@@ -117,19 +117,30 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String delete() {
-		resourceManager.remove(resource);
-		saveMessage(getText("resource.deleted"));
+		if (resource != null && resourceType!=null) {
+			// remove resource with appropiate manager
+			if (resourceType.equalsIgnoreCase(OCCURRENCE)){
+				occResourceManager.remove((OccurrenceResource)resource);
+			}else if (resourceType.equalsIgnoreCase(CHECKLIST)){
+				checklistResourceManager.remove((ChecklistResource)resource);
+			}else{
+				resourceManager.remove(resource);
+			}
+			saveMessage(getText("resource.deleted"));
+			// update recently viewed resources in session
+			Object previousQueue = session.get(Constants.RECENT_RESOURCES);
+			if (previousQueue != null && previousQueue instanceof Queue){
+				Queue<LabelValue> queue = (Queue) previousQueue;
+				LabelValue res = new LabelValue(resource.getTitle(), resource_id.toString());
+				// remove entry from queue if it existed before
+				queue.remove(res);
+				// save back to session
+				session.put(Constants.RECENT_RESOURCES, queue);
+			}		
+		}else{
+			saveMessage("Can't identify resource to be deleted");			
+		}
 
-		// update recently viewed resources in session
-		Object previousQueue = session.get(Constants.RECENT_RESOURCES);
-		if (previousQueue != null && previousQueue instanceof Queue){
-			Queue<LabelValue> queue = (Queue) previousQueue;
-			LabelValue res = new LabelValue(resource.getTitle(), resource_id.toString());
-			// remove entry from queue if it existed before
-			queue.remove(res);
-			// save back to session
-			session.put(Constants.RECENT_RESOURCES, queue);
-		}		
 		return "delete";
 	}
 
