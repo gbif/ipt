@@ -1,5 +1,13 @@
 <#include "/WEB-INF/pages/tapir/header.ftl">  
+<#assign core=resource.coreMapping>
+<#assign declareNamespace=false>
 <#escape x as x?xml>
-<search/>
+<search>
+ <records>
+   <#list records as rec>
+	<#include "/WEB-INF/pages/tapir/model/dwc.ftl">  
+   </#list>
+ </records>
+</search>
 </#escape>
 <#include "/WEB-INF/pages/tapir/footer.ftl">  

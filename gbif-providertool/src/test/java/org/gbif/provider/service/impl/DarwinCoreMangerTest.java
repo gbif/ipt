@@ -132,4 +132,10 @@ public class DarwinCoreMangerTest extends ContextAwareTestBase{
 //		assertTrue(dwcs.size()>0);
 	}
 	
+	@Test
+	public void testGetLatest(){
+		List<DarwinCore> dwcs = darwinCoreManager.getLatest(Constants.TEST_OCC_RESOURCE_ID, 0, 25);
+		dwcs = darwinCoreManager.getLatest(Constants.TEST_OCC_RESOURCE_ID, 1, 12);
+	}
+	
 }

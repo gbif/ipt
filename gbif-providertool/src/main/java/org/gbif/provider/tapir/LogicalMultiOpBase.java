@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-public abstract class LogicalMultiOpBase extends BooleanOpBase {
-	private List<BooleanOpBase> operands;
+public abstract class LogicalMultiOpBase extends LogicalOperator {
+	private List<LogicalOperator> operands;
 
-	public List<BooleanOpBase> getOperands() {
+	public List<LogicalOperator> getOperands() {
 		return operands;
 	}
 
-	public void addOperand(BooleanOpBase operand) {
+	public void addOperand(LogicalOperator operand) {
 		this.operands.add(operand);
 	}
 	

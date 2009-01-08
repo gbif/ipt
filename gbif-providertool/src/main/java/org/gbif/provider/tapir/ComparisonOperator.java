@@ -2,7 +2,7 @@ package org.gbif.provider.tapir;
 
 import org.gbif.provider.model.ExtensionProperty;
 
-public abstract class ComparisonOpBase extends BooleanOpBase{
+public abstract class ComparisonOperator extends LogicalOperator implements BooleanOperator{
 	private ExtensionProperty property;
 	private String value;
 	

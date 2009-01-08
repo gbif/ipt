@@ -50,4 +50,7 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
      * @return the updated object
      */
     T save(T object);	
+
+	List<T> getLatest(Long resourceId, int startPage, int pageSize);
+
 }

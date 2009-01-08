@@ -7,4 +7,14 @@ public class And extends LogicalMultiOpBase {
 		return "and";
 	}
 
+	public boolean evaluate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String toSQL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
