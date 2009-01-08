@@ -48,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 	        return ( (Long) query(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
 	        .setLong("resourceId", resourceId)
 	        .iterate().next() ).intValue();
-		}	
+		}
 
 	}
 	

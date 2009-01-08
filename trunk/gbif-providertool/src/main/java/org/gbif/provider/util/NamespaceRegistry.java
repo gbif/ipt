@@ -15,8 +15,12 @@ public class NamespaceRegistry {
 	private Map<String, String> ns2prefix = new HashMap<String, String>();
 	public NamespaceRegistry(DataResource resource) {
 		this.addResource(resource);
+	}	
+	public NamespaceRegistry(String ... nss) {
+		for (String ns : nss){
+			this.add(ns);
+		}
 	}
-	
 	public NamespaceRegistry() {
 		super();
 	}
@@ -73,11 +77,20 @@ public class NamespaceRegistry {
 		else if (ns.equalsIgnoreCase("http://purl.org/dc/elements/1.1/")){
 			prefix="dc";
 		}
+		else if (ns.equalsIgnoreCase("http://purl.org/dc/terms/")){
+			prefix="dct";
+		}
 		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/tapir/1.0")){
 			prefix="tapir";
 		}
 		else if (ns.equalsIgnoreCase("http://www.w3.org/2001/XMLSchema")){
 			prefix="xsd";
+		}
+		else if (ns.equalsIgnoreCase("http://www.w3.org/2003/01/geo/wgs84_pos#")){
+			prefix="geo";
+		}
+		else if (ns.equalsIgnoreCase("http://www.w3.org/2001/vcard-rdf/3.0#")){
+			prefix="vcard";
 		}
 		return prefix;
 	}
@@ -145,4 +158,5 @@ public class NamespaceRegistry {
 		}
 		return xmlns;
 	}
+	
 }

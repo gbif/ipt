@@ -21,6 +21,8 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.tapir.Diagnostic;
+import org.gbif.provider.tapir.Filter;
+import org.gbif.provider.tapir.ParseException;
 import org.gbif.provider.tapir.Severity;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
@@ -35,28 +37,43 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	private static final String METADATA = "metadata";
 	private static final String SEARCH = "search";
 	private static final String INVENTORY = "inventory";
+	private static final String MODEL_LOCATION = "http://rs.tdwg.org/tapir/cs/dwc/dwcstar.xml";
+	private static final String MODEL_ALIAS = "dwc";
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired
 	private EmlManager emlManager;
-	// request
-    private String op;
     // just in case of fatal errors
     private String error="unknown fatal error";
+    // request parameters
+    private String op;
+    private Boolean count;
+    private Integer start;
+    private Integer limit;
+    private String template;
+    private String concept;
+    private String tagname;
+    private String filter;
+    private Boolean envelope=true;
+    private String model;
+    private String orderby;
+    private Boolean descend=false;
+    // parsed stuff
+    private Filter pFilter;
     // TAPIR envelope data
     private Date now = new Date();
     private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
     // for all request types with resource
-    private NamespaceRegistry nsr;
+    private NamespaceRegistry nsr = new NamespaceRegistry("http://www.gbif.org/ipt");
 	// CAPABILITIES only
     private Map<String, Set<ExtensionProperty>> conceptSchemas;
 	// METADATA only
     private Eml eml;    
+    // SEARCH & INVENTORY only
+    private List<?> records;
     // SEARCH only
-    private List<DarwinCore> records;
     private ExtensionRecordsWrapper extWrapper;
     private List<Extension> extensions;
-    // INVENTORY only
     
 	public String execute(){
 	    if (op!=null && op.startsWith("p")){
@@ -78,6 +95,13 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     		return metadata();
     	}
     }
+	private void addMetaNamespaces(){
+		nsr.add("http://purl.org/dc/elements/1.1/");
+		nsr.add("http://rs.tdwg.org/dwc/terms/");
+		nsr.add("http://purl.org/dc/terms/");
+		nsr.add("http://www.w3.org/2003/01/geo/wgs84_pos#");
+		nsr.add("http://www.w3.org/2001/vcard-rdf/3.0#");
+	}
 
 	private String ping() {
 		return PING;
@@ -97,18 +121,55 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	}
 
 	private String metadata() {
+		addMetaNamespaces();
 		eml = emlManager.load(resource);
 		return METADATA;
 
 	}
 
 	private String search() {
-		return SEARCH;
+		// check requested model
+		if (template!=null){
+			addFatal("Templates are not supported");
+			return ERROR;
+		}else if (model!=null){
+			if (model.equalsIgnoreCase(MODEL_LOCATION) || model.equalsIgnoreCase(MODEL_ALIAS)){
+				try {
+					parseFilter();
+					doSearch();
+				} catch (ParseException e) {
+					addError(e.getTapirMessage());
+					return ERROR;
+				}
+				return SEARCH;
+			}
+			addFatal("The requested output model is not supported");
+		}else{
+			addFatal("Illegal request. No template or output model has been specified");
+		}
+		return ERROR;
+	}
+
+	private void parseFilter() throws ParseException{
+		pFilter = new Filter(filter);
+	}
+
+	private void doSearch() {
+		records=darwinCoreManager.getLatest(resource_id,0,8);
+	}
+	private void doInventory() {
+		records=new ArrayList<Map<String, Object>>();
 	}
 
 	private String inventory() {
+		try {
+			parseFilter();
+			doInventory();
+		} catch (ParseException e) {
+			addError(e.getTapirMessage());
+			return ERROR;
+		}
 		return INVENTORY;
-
 	}
 
 
@@ -117,7 +178,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		if (resource_id != null) {
 			resource = occResourceManager.get(resource_id);
 			if (resource != null){
-				nsr = new NamespaceRegistry(resource);
+				nsr.addResource(resource);
 				return true;
 			}
 		}
@@ -130,6 +191,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		diagnostics.add(new Diagnostic(Severity.FATAL, new Date(), message));
 	}
 	private void addError(String message){
+		error = message;
 		diagnostics.add(new Diagnostic(Severity.ERROR, new Date(), message));
 	}
 	private void addWarning(String message){
@@ -142,6 +204,12 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	
 	
 	
+	
+	
+	
+	
+	
+	
 	public String getOp() {
 		return op;
 	}
@@ -150,7 +218,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		this.op = op;
 	}
 
-	public List<DarwinCore> getRecords() {
+	public List<?> getRecords() {
 		return records;
 	}
 
@@ -188,6 +256,100 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 
 	public Eml getEml() {
 		return eml;
+	}
+    public String getModelLocation(){
+    	return MODEL_LOCATION;
+    }
+    public String getModelAlias(){
+    	return MODEL_ALIAS;
+    }
+
+	public Boolean getCount() {
+		return count;
+	}
+
+	public void setCount(Boolean count) {
+		this.count = count;
+	}
+
+	public Integer getStart() {
+		return start;
+	}
+
+	public void setStart(Integer start) {
+		this.start = start;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public String getConcept() {
+		return concept;
+	}
+
+	public void setConcept(String concept) {
+		this.concept = concept;
+	}
+
+	public String getTagname() {
+		return tagname;
+	}
+
+	public void setTagname(String tagname) {
+		this.tagname = tagname;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	public Boolean getEnvelope() {
+		return envelope;
+	}
+
+	public void setEnvelope(Boolean envelope) {
+		this.envelope = envelope;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getOrderby() {
+		return orderby;
+	}
+
+	public void setOrderby(String orderby) {
+		this.orderby = orderby;
+	}
+
+	public Boolean getDescend() {
+		return descend;
+	}
+
+	public void setDescend(Boolean descend) {
+		this.descend = descend;
 	}
     
 }

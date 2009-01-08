@@ -21,6 +21,7 @@ import java.util.List;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.util.H2Utils;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
@@ -110,5 +111,13 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	public List<T> search(final Long resourceId, final String q) {
 	     return null;
 	}
+
+	public List<T> getLatest(Long resourceId, int startPage, int pageSize) {
+        return query(String.format("from %s e WHERE e.resource.id = :resourceId ORDER BY e.modified, e.id", persistentClass.getSimpleName()))
+        .setLong("resourceId", resourceId)
+        .setFirstResult(H2Utils.offset(startPage, pageSize))
+        .setMaxResults(pageSize)
+		.list();
+	}	
 
 }

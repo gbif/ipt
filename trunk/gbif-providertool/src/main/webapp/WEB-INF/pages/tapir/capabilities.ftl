@@ -11,7 +11,7 @@
    <search>
      <outputModels>
        <knownOutputModels>
-         <outputModel alias="dwc" location="http://rs.tdwg.org/tapir/cs/dwc/dwcstar.xml"/>
+         <outputModel alias="${modelAlias}" location="${modelLocation}"/>
        </knownOutputModels>
      </outputModels>
    </search>
