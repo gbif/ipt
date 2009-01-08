@@ -14,15 +14,18 @@ import org.gbif.provider.model.ViewMappingBase;
 public class NamespaceRegistry {
 	private Map<String, String> ns2prefix = new HashMap<String, String>();
 	public NamespaceRegistry(DataResource resource) {
+		this();
 		this.addResource(resource);
 	}	
 	public NamespaceRegistry(String ... nss) {
+		this();
 		for (String ns : nss){
 			this.add(ns);
 		}
 	}
 	public NamespaceRegistry() {
 		super();
+		add("http://www.gbif.org/ipt");
 	}
 
 	public boolean containsNs(String ns) {

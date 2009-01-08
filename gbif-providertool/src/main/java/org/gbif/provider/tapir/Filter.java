@@ -4,7 +4,7 @@ public class Filter {
 	private LogicalOperator root;
 
 	public Filter(String filter) throws ParseException{
-		if (filter.startsWith("kacke")){
+		if (filter != null && filter.startsWith("kacke")){
 			throw new ParseException("Filter invalid");
 		}
 	}
