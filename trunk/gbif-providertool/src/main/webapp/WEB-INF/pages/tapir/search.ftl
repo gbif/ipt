@@ -4,7 +4,7 @@
 <#escape x as x?xml>
 <search>
  <records>
-   <#list records as rec>
+   <#list records as dwc>
 	<#include "/WEB-INF/pages/tapir/model/dwc.ftl">  
    </#list>
  </records>

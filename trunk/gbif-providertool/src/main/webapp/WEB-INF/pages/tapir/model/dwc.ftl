@@ -1,11 +1,11 @@
-<record guid="${dwc.guid}" xmlns="http://ipt.gbif.org" <#if declareNamespace>${nsr.xmlnsDef()}</#if>>
+<record guid="${dwc.guid}" <#if declareNamespace==true>${nsr.xmlnsDef()}</#if>>
 <#list core.extension.properties as p>
 <#if core.hasMappedProperty(p)>
   <${nsr.tagnameQualified(p)}>${(dwc.getPropertyValue(p)!"")?xml}</${nsr.tagnameQualified(p)}>
 </#if>
 </#list>
 <#-- loop through each extension-->
-<#list extensions as ext>
+<#list extWrapper.getExtensions() as ext>
   <extension name="${ext.name}" xmlns:x="${ext.name}">
   <#list extWrapper.getExtensionRecords(ext) as eRec>
 	<xrecord>

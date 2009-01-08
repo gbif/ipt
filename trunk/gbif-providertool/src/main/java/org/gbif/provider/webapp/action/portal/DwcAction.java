@@ -53,7 +53,6 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 			region_id = dwc.getRegion().getId();
 			taxon_id = dwc.getTaxon().getId();
     		extWrapper = extensionRecordManager.getExtensionRecords(dwc.getResource(), dwc.getCoreId());
-    		extensions = extWrapper.getExtensions();
         	if (format!=null && format.equalsIgnoreCase("xml")){
         		nsr = new NamespaceRegistry(dwc.getResource());
         		return "xml";
@@ -65,7 +64,6 @@ public class DwcAction extends BaseOccurrenceResourceAction {
         	}
     		return SUCCESS;
 		}else{
-			extensions = new ArrayList<Extension>();
 			return RECORD404;
 		}
     }
@@ -89,10 +87,6 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 		return extWrapper;
 	}
 
-	public List<Extension> getExtensions() {
-		return extensions;
-	}
-
 	public String getFormat() {
 		return format;
 	}
@@ -100,22 +94,13 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 		this.format = format;
 	}
 
-
-
-
 	public Long getTaxon_id() {
 		return taxon_id;
 	}
 
-
-
-
 	public Long getRegion_id() {
 		return region_id;
 	}
-
-
-
 
 	public NamespaceRegistry getNsr() {
 		return nsr;

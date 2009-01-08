@@ -64,7 +64,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     private Date now = new Date();
     private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
     // for all request types with resource
-    private NamespaceRegistry nsr = new NamespaceRegistry("http://www.gbif.org/ipt");
+    private NamespaceRegistry nsr = new NamespaceRegistry();
 	// CAPABILITIES only
     private Map<String, Set<ExtensionProperty>> conceptSchemas;
 	// METADATA only
@@ -73,7 +73,6 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     private List<?> records;
     // SEARCH only
     private ExtensionRecordsWrapper extWrapper;
-    private List<Extension> extensions;
     
 	public String execute(){
 	    if (op!=null && op.startsWith("p")){
@@ -82,16 +81,19 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	    if (!loadResource()){
 			return ERROR;
 	    }
-    	if (op!=null && op.startsWith("c")){
-    		return capabilities();
-    	}else if (op!=null && op.startsWith("m")){
+    	if (op==null){
+    		addInfo("No TAPIR operation requested. Default to metadata");
     		return metadata();
-    	}else if (op!=null && op.startsWith("i")){
+    	}else if (op.startsWith("c")){
+    		return capabilities();
+    	}else if (op.startsWith("m")){
+    		return metadata();
+    	}else if (op.startsWith("i")){
     		return inventory();
-    	}else if (op!=null && op.startsWith("s")){
+    	}else if (op.startsWith("s")){
     		return search();
     	}else{
-    		addInfo("No TAPIR operation requested. Default to metadata");
+    		addInfo("Unknown TAPIR operation requested. Default to metadata");
     		return metadata();
     	}
     }
@@ -156,6 +158,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 
 	private void doSearch() {
 		records=darwinCoreManager.getLatest(resource_id,0,8);
+		extWrapper = new ExtensionRecordsWrapper(((DarwinCore)records.get(0)).getCoreId());
 	}
 	private void doInventory() {
 		records=new ArrayList<Map<String, Object>>();
@@ -232,10 +235,6 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 
 	public ExtensionRecordsWrapper getExtWrapper() {
 		return extWrapper;
-	}
-
-	public List<Extension> getExtensions() {
-		return extensions;
 	}
 
 	public NamespaceRegistry getNsr() {
