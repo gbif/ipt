@@ -126,6 +126,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		return false;
 	}
 	private void addFatal(String message){
+		error = message;
 		diagnostics.add(new Diagnostic(Severity.FATAL, new Date(), message));
 	}
 	private void addError(String message){

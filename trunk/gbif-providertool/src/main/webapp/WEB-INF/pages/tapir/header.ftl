@@ -7,5 +7,7 @@
 	  xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
 	  xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
     <header>
-        <source accesspoint="http://accesspoint_url" sendtime="${now?datetime?string(xmlDateFormat)}"></source>
+        <source accesspoint="${cfg.getTapirEndpoint(resource_id)}" sendtime="${now?datetime?string(xmlDateFormat)}">
+          <software name="GBIF Integrated Publishing Toolkit" version="<@s.text name="webapp.version"/>"/>
+        </source>
     </header>

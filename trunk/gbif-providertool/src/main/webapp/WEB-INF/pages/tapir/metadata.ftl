@@ -36,8 +36,8 @@
           </vcard:VCARD>
         </hasContact>
         <geo:Point>
-          <geo:lat>${cfg.meta.location.latitude}</geo:lat>
-          <geo:long>${cfg.meta.location.longitude}</geo:long>
+          <geo:lat>${cfg.location.latitude}</geo:lat>
+          <geo:long>${cfg.location.longitude}</geo:long>
         </geo:Point>
       </entity>
     </relatedEntity>
