@@ -1,23 +1,15 @@
-<#assign page=JspTaglibs["http://www.opensymphony.com/sitemesh/page"]>
-<@page.applyDecorator name="tapir" title="ping">
-<@page.param name="tapir.content">
+<#include "/WEB-INF/pages/tapir/header.ftl">  
 <#escape x as x?xml>
 <metadata>
     <dc:title>${resource.title}</dc:title>
     <dc:type>http://purl.org/dc/dcmitype/Service</dc:type>
     <accesspoint>${cfg.getTapirEndpoint(resource_id)}</accesspoint>
     <dc:description>${resource.description}</dc:description>
-    <dc:language>en</dc:language>
-    <!--
-    <dc:subject>dragonflies dragonfly observation specimen arthropoda insecta odonata</dc:subject>
-    <dct:bibliographicCitation>Global Dragonflies Database</dct:bibliographicCitation>
-    <dc:rights>Creative Commons License</dc:rights>
-    -->
-    <dct:modified>${resource.modified?datetime?string.medium}</dct:modified>
-    <dct:created>2006-01-01T00:00:00+01:00</dct:created>
-    <!--
-    <indexingPreferences startTime="01:30:00Z" maxDuration="PT1H" frequency="P1M" />
-    -->
+    <dc:language>${eml.language!}</dc:language>
+    <dc:subject><#list eml.keywords as k>${k} </#list></dc:subject>
+    <dc:rights>${eml.intellectualRights!}</dc:rights>
+    <dct:modified>${resource.modified?datetime?string(xmlDateFormat)}</dct:modified>
+    <dct:created>${resource.created?datetime?string(xmlDateFormat)}</dct:created>
     <relatedEntity>
       <role>data supplier</role>
       <entity>
@@ -29,12 +21,6 @@
             <vcard:EMAIL>${resource.meta.contactEmail}</vcard:EMAIL>
           </vcard:VCARD>
         </hasContact>
-        <!--
-        <geo:Point>
-          <geo:lat>45.256</geo:lat>
-          <geo:long>-71.92</geo:long>
-        </geo:Point>
-        -->
       </entity>
     </relatedEntity>
     <relatedEntity>
@@ -49,6 +35,10 @@
             <vcard:EMAIL>${cfg.contactEmail}</vcard:EMAIL>
           </vcard:VCARD>
         </hasContact>
+        <geo:Point>
+          <geo:lat>${cfg.meta.location.latitude}</geo:lat>
+          <geo:long>${cfg.meta.location.longitude}</geo:long>
+        </geo:Point>
       </entity>
     </relatedEntity>
     <custom>
@@ -56,5 +46,4 @@
     </custom>
   </metadata>
 </#escape>
-</@page.param>
-</@page.applyDecorator>  
+<#include "/WEB-INF/pages/tapir/footer.ftl">  

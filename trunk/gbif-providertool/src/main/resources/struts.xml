@@ -451,8 +451,16 @@
                 <param name="location">/WEB-INF/pages/tapir/capabilities.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
+            <result type="freemarker" name="inventory">
+                <param name="location">/WEB-INF/pages/tapir/inventory.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
             <result type="freemarker" name="search">
                 <param name="location">/WEB-INF/pages/tapir/search.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result type="freemarker" name="error">
+                <param name="location">/WEB-INF/pages/tapir/error.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
         </action>
