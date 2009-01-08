@@ -51,6 +51,10 @@
     </rule>
     <!-- tapir -->
     <rule>
+        <from>^/tapir/(\d+)$</from>
+        <to type="forward">/tapir/service.xml?resource_id=$1&amp;op=m</to>
+    </rule>
+    <rule>
         <from>^/tapir/(\d+)/?(.*)$</from>
         <to type="forward">/tapir/service.xml?resource_id=$1&amp;$2</to>
     </rule>

@@ -16,6 +16,7 @@
         <pattern>/h2/*</pattern>
         <pattern>/cache/*</pattern>
         <pattern>/data/*</pattern>
+        <pattern>/tapir/*</pattern>
         <pattern>/eml/*</pattern>
         <pattern>*/ajax/*</pattern>        
     </excludes> 
@@ -28,8 +29,4 @@
         <pattern>/index.*</pattern> 
     </decorator>
 
-    <decorator name="tapir" page="tapir.jsp">
-        <pattern>/tapir/*</pattern>
-    </decorator>
-    
 </decorators>

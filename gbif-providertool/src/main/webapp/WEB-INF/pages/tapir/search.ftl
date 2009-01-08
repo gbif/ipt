@@ -1,6 +1,5 @@
-<#assign page=JspTaglibs["http://www.opensymphony.com/sitemesh/page"]>
-<@page.applyDecorator name="tapir" title="ping">
-<@page.param name="tapir.content">
+<#include "/WEB-INF/pages/tapir/header.ftl">  
+<#escape x as x?xml>
 <search/>
-</@page.param>
-</@page.applyDecorator>
+</#escape>
+<#include "/WEB-INF/pages/tapir/footer.ftl">  
