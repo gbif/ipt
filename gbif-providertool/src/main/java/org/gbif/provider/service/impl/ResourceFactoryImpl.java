@@ -4,6 +4,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceFactory;
 
@@ -18,13 +19,13 @@ public class ResourceFactoryImpl implements ResourceFactory{
 	
 	public OccurrenceResource newOccurrenceResourceInstance(){
 		OccurrenceResource resource =  OccurrenceResource.newInstance();
-		Extension core = extensionManager.get(OccurrenceResource.CORE_EXTENSION_ID);
+		Extension core = extensionManager.get(ExtensionType.Occurrence.extensionID);
 		resource.getCoreMapping().setExtension(core);
 		return resource;
 	}
 	
 	public ChecklistResource newChecklistResourceInstance(){
-		Extension core = extensionManager.get(ChecklistResource.CORE_EXTENSION_ID);
+		Extension core = extensionManager.get(ExtensionType.Checklist.extensionID);
 		ChecklistResource resource =  ChecklistResource.newInstance(core);
 		return resource;
 	}

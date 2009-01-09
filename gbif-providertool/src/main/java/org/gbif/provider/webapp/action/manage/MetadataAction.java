@@ -18,6 +18,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
@@ -84,9 +85,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String list(){
-		if (resourceType!=null && resourceType.equalsIgnoreCase(OccurrenceResource.ALIAS)){
+		if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Occurrence.alias)){
 			resources = occResourceManager.getResourcesByUser(getCurrentUser().getId());
-		}else if (resourceType!=null && resourceType.equalsIgnoreCase(ChecklistResource.ALIAS)){
+		}else if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Checklist.alias)){
 			resources = checklistResourceManager.getResourcesByUser(getCurrentUser().getId());
 		}else{
 			resources = resourceManager.getResourcesByUser(getCurrentUser().getId());

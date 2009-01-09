@@ -9,7 +9,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
@@ -20,8 +23,10 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.tapir.Diagnostic;
@@ -43,19 +48,25 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	private static final String INVENTORY = "inventory";
 	private static final String MODEL_LOCATION = "http://rs.tdwg.org/tapir/cs/dwc/dwcstar.xml";
 	private static final String MODEL_ALIAS = "dwc";
+	//
+	private static final Pattern conceptAliasPattern = Pattern.compile( "^p([0-9]+)$" );
+
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
 	private EmlManager emlManager;
+	@Autowired
+	private ExtensionPropertyManager extensionPropertyManager;
+	
     // just in case of fatal errors
     private String error="unknown fatal error";
     // request parameters
-    private String op;
-    private Boolean count;
-    private Integer start;
-    private Integer limit;
+    private String op="m";
+    private Boolean count=false;
+    private Integer start=0;
+    private Integer limit=100;
     private String template;
     private String concept;
     private String tagname;
@@ -76,21 +87,18 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	// METADATA only
     private Eml eml;    
     // INVENTORY only
-    private List<LinkedHashMap<String, Object>> values;
+    private List<Map<ExtensionProperty, Object>> values;
     // SEARCH only
     private List<ExtendedRecord> records;
     
 	public String execute(){
-	    if (op!=null && op.startsWith("p")){
+	    if (op.startsWith("p")){
 	    	return ping();
     	}
 	    if (!loadResource()){
 			return ERROR;
 	    }
-    	if (op==null){
-    		addInfo("No TAPIR operation requested. Default to metadata");
-    		return metadata();
-    	}else if (op.startsWith("c")){
+    	if (op.startsWith("c")){
     		return capabilities();
     	}else if (op.startsWith("m")){
     		return metadata();
@@ -135,6 +143,9 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 
 	}
 
+	//
+	// INVENTORY
+	//
 	private String search() {
 		// check requested model
 		if (template!=null){
@@ -158,20 +169,16 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		return ERROR;
 	}
 
-	private void parseFilter() throws ParseException{
-		pFilter = new Filter(filter);
-	}
 
 	private void doSearch() {
 		//FIXME: do proper core search
 		List<DarwinCore> coreRecords = darwinCoreManager.getLatest(resource_id,0,8);
 		records = extensionRecordManager.extendCoreRecords(resource, coreRecords.toArray(new CoreRecord[coreRecords.size()]));
 	}
-	private void doInventory() {
-		//FIXME: do proper inventory search
-		values=new ArrayList<LinkedHashMap<String, Object>>();
-	}
 
+	//
+	// INVENTORY
+	//
 	private String inventory() {
 		try {
 			parseFilter();
@@ -182,9 +189,30 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		}
 		return INVENTORY;
 	}
+	private void doInventory() {
+		concept = StringUtils.trimToNull(concept);
+		if (concept==null){
+			values = new ArrayList<Map<ExtensionProperty, Object>>();
+			addError("At least one concept is required for an inventory");
+			return;
+		}
+		ExtensionProperty p;
+		Matcher m = conceptAliasPattern.matcher(concept);
+		if(m.find()){
+			p = extensionPropertyManager.get(Long.decode(m.group(1)));
+		}else{
+			p = extensionPropertyManager.getByQualName(concept, ExtensionType.Occurrence);			
+		}
+		List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
+		properties.add(p);
+		values = extensionRecordManager.getDistinct(properties, resource_id, start, limit);
+	}
 
 
 	
+	//
+	// HELPER
+	//
 	private boolean loadResource() {
 		if (resource_id != null) {
 			resource = occResourceManager.get(resource_id);
@@ -197,6 +225,10 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		addFatal("Resource unknown");
 		return false;
 	}
+	private void parseFilter() throws ParseException{
+		pFilter = new Filter(filter);
+	}
+
 	private void addFatal(String message){
 		error = message;
 		diagnostics.add(new Diagnostic(Severity.FATAL, new Date(), message));
@@ -350,11 +382,11 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public void setDescend(Boolean descend) {
 		this.descend = descend;
 	}
-	public List<LinkedHashMap<String, Object>> getValues() {
-		return values;
-	}
 	public List<ExtendedRecord> getRecords() {
 		return records;
+	}
+	public List<Map<ExtensionProperty, Object>> getValues() {
+		return values;
 	}
     
 }

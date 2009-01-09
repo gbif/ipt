@@ -40,7 +40,7 @@ import org.hibernate.validator.NotNull;
  * @author markus
  *
  */
-@Entity
+//@Entity
 @Table(name="dwcore_ext") 
 public class DarwinCoreExtended implements ResourceRelatedObject{
 	private Long id;

@@ -53,12 +53,12 @@ import org.hibernate.validator.NotNull;
  * @author markus
  *
  */
-@Entity
+//@Entity
 @Table(name="dwcore"
 	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 ) 
 
-@org.hibernate.annotations.Table(appliesTo = "tableName", indexes = { 	
+@org.hibernate.annotations.Table(appliesTo = "dwcore2", indexes = { 	
 		@org.hibernate.annotations.Index(name="latitude", columnNames = { "lat" }), 
 		@org.hibernate.annotations.Index(name="longitude", columnNames = { "lon" }) 
 		})
@@ -224,7 +224,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
     	// shouldnt be the case, but to prevend NPE create assure there is always the ext component
     	if (ext==null){
     		ext = new DarwinCoreExtended();
-    		ext.setDwc(this);    		
+    		//ext.setDwc(this);    		
     	}
 		return ext;
 	}

@@ -33,8 +33,6 @@ import org.gbif.provider.util.Constants;
  */
 @Entity
 public class ChecklistResource extends DataResource {
-	public static final String ALIAS = "tax";
-	public static final Long CORE_EXTENSION_ID = 7L;
 	private int numCommonNames;
 	private int numCommonNameLanguages;
 	private int numDistributions;
