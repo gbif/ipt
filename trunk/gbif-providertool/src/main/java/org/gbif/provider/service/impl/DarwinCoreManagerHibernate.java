@@ -6,7 +6,6 @@ import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.DarwinCoreExtended;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Point;
 import org.gbif.provider.model.Resource;
@@ -90,7 +89,6 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 
 	@Override
 	public int removeAll(Resource resource) {
-		removeAll(resource, DarwinCoreExtended.class);
 		return super.removeAll(resource);
 	}
 

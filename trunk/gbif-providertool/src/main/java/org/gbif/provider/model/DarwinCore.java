@@ -53,8 +53,8 @@ import org.hibernate.validator.NotNull;
  * @author markus
  *
  */
-//@Entity
-@Table(name="dwcore"
+@Entity
+@Table(name="dwcore2"
 	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 ) 
 
@@ -74,8 +74,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private Date modified;
 	@NotNull
 	private OccurrenceResource resource;
-	@NotNull
-	private DarwinCoreExtended ext;
 
 	// DarinCore derived fields. calculated from raw Strings
 	private Point location;
@@ -95,6 +93,33 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	// Identification Elements
 	private String scientificName;
 	private String identificationQualifer;
+	// Taxonomic Elements apart from ScientificName
+	private String specificEpithet;
+	private String infraspecificRank;
+	private String infraspecificEpithet;
+	private String authorYearOfScientificName;
+	private String nomenclaturalCode;
+	private String higherTaxon;
+	private String kingdom;
+	private String phylum;
+	private String classs;
+	private String order;
+	private String family;
+	private String genus;
+	// Locality Elements
+	private String higherGeography;
+	private String continent;
+	private String waterBody;
+	private String islandGroup;
+	private String island;
+	private String country;
+	private String stateProvince;
+	private String county;
+	private String locality;
+	private String minimumElevationInMeters;
+	private String maximumElevationInMeters;
+	private String minimumDepthInMeters;
+	private String maximumDepthInMeters;
 	// Collecting Event Elements	
 	private String collector;
 	private String earliestDateCollected;
@@ -115,11 +140,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	
 	public static DarwinCore newInstance(OccurrenceResource resource){
 		DarwinCore dwc = new DarwinCore();
-		dwc.ext = new DarwinCoreExtended();
-		dwc.ext.setDwc(dwc);
 		dwc.location= new Point();
 		dwc.resource=resource;
-		dwc.ext.setResource(resource);		
 		return dwc;
 	}
 	public static DarwinCore newMock(OccurrenceResource resource){
@@ -218,21 +240,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	
 
 	// OTHER	
-	// optional = false breaks hibernate IdGeneration somehow... buuh
-    @OneToOne(mappedBy="dwc", fetch = FetchType.LAZY, cascade=CascadeType.ALL) 
-	public DarwinCoreExtended getExt() {
-    	// shouldnt be the case, but to prevend NPE create assure there is always the ext component
-    	if (ext==null){
-    		ext = new DarwinCoreExtended();
-    		//ext.setDwc(this);    		
-    	}
-		return ext;
-	}
-	public void setExt(DarwinCoreExtended ext) {
-		this.ext = ext;
-	}
-	
-	
 	@ManyToOne(optional = true)
 	public Taxon getTaxon() {
 		return taxon;
@@ -471,193 +478,192 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}	
 
 	
-	
-	//
-	// Forwarding properties
-	//
-	
-	// LOCATION FORWARDING
-	@Transient
+	// LOCATION
+	@Lob
 	public String getHigherGeography() {
-		return getExt().getHigherGeography();
+		return higherGeography;
 	}
 	public void setHigherGeography(String higherGeography) {
-		getExt().setHigherGeography(higherGeography);
+		this.higherGeography = higherGeography;
 	}
-	@Transient
+	@Column(length = 64)
 	public String getContinent() {
-		return getExt().getContinent();
+		return continent;
 	}
 	public void setContinent(String continent) {
-		getExt().setContinent(continent);
+		this.continent = continent;
 	}
-	@Transient
+	@Column(length = 255)
 	public String getWaterBody() {
-		return getExt().getWaterBody();
+		return waterBody;
 	}
 	public void setWaterBody(String waterBody) {
-		getExt().setWaterBody(waterBody);
+		this.waterBody = waterBody;
 	}
-	@Transient
+	@Column(length = 255)
 	public String getIslandGroup() {
-		return getExt().getIslandGroup();
+		return islandGroup;
 	}
 	public void setIslandGroup(String islandGroup) {
-		getExt().setIslandGroup(islandGroup);
+		this.islandGroup = islandGroup;
 	}
-	@Transient
+	@Column(length = 255)
 	public String getIsland() {
-		return getExt().getIsland();
+		return island;
 	}
 	public void setIsland(String island) {
-		getExt().setIsland(island);
+		this.island = island;
 	}
-	@Transient
+	@Column(length = 128)
 	public String getCountry() {
-		return getExt().getCountry();
+		return country;
 	}
 	public void setCountry(String country) {
-		getExt().setCountry(country);
+		this.country = country;
 	}
-	@Transient
+	@Column(length = 128)
 	public String getStateProvince() {
-		return getExt().getStateProvince();
+		return stateProvince;
 	}
 	public void setStateProvince(String stateProvince) {
-		getExt().setStateProvince(stateProvince);
+		this.stateProvince = stateProvince;
 	}
-	@Transient
+	@Column(length = 255)
 	public String getCounty() {
-		return getExt().getCounty();
+		return county;
 	}
 	public void setCounty(String county) {
-		getExt().setCounty(county);
+		this.county = county;
 	}
-	@Transient
+	@Lob
 	public String getLocality() {
-		return ext.getLocality();
+		return locality;
 	}
 	public void setLocality(String locality) {
-		getExt().setLocality(locality);
+		this.locality = locality;
 	}
-	@Transient
+
+	@Column(length = 64)
 	public String getMinimumElevationInMeters() {
-		return getExt().getMinimumElevationInMeters();
+		return minimumElevationInMeters;
 	}
 	public void setMinimumElevationInMeters(String minimumElevationInMeters) {
-		getExt().setMinimumElevationInMeters(minimumElevationInMeters);
+		this.minimumElevationInMeters = minimumElevationInMeters;
 	}
-	@Transient
+	@Column(length = 32)
 	public String getMaximumElevationInMeters() {
-		return getExt().getMaximumElevationInMeters();
+		return maximumElevationInMeters;
 	}
 	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
-		getExt().setMaximumElevationInMeters(maximumElevationInMeters);
+		this.maximumElevationInMeters = maximumElevationInMeters;
 	}
-	@Transient
+	@Column(length = 64)
 	public String getMinimumDepthInMeters() {
-		return getExt().getMinimumDepthInMeters();
+		return minimumDepthInMeters;
 	}
 	public void setMinimumDepthInMeters(String minimumDepthInMeters) {
-		getExt().setMinimumDepthInMeters(minimumDepthInMeters);
+		this.minimumDepthInMeters = minimumDepthInMeters;
 	}
-	@Transient
+	@Column(length = 32)
 	public String getMaximumDepthInMeters() {
-		return getExt().getMaximumDepthInMeters();
+		return maximumDepthInMeters;
 	}
 	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
-		getExt().setMaximumDepthInMeters(maximumDepthInMeters);
+		this.maximumDepthInMeters = maximumDepthInMeters;
 	}
 
-
-	// TAXONOMY FORWARDING
 	
-	@Transient
+	// TAXONOMY
+	
+	@Lob
 	public String getHigherTaxon() {
-		return getExt().getHigherTaxon();
+		return higherTaxon;
 	}
 	public void setHigherTaxon(String higherTaxon) {
-		getExt().setHigherTaxon(higherTaxon);
+		this.higherTaxon = higherTaxon;
 	}
-	@Transient
+	@Column(length=64)
 	public String getKingdom() {
-		return getExt().getKingdom();
+		return kingdom;
 	}
 	public void setKingdom(String kingdom) {
-		getExt().setKingdom(kingdom);
+		this.kingdom = kingdom;
 	}
-	@Transient
+	@Column(length=64)
 	public String getPhylum() {
-		return getExt().getPhylum();
+		return phylum;
 	}
 	public void setPhylum(String phylum) {
-		getExt().setPhylum(phylum);
+		this.phylum = phylum;
 	}
-	@Transient
+	@Column(length=64)
 	public String getClasss() {
-		return getExt().getClasss();
+		return classs;
 	}
 	public void setClasss(String classs) {
-		getExt().setClasss(classs);
+		this.classs = classs;
 	}
-	@Transient
+	
+	@Column(length=128, name="orderrr")
 	public String getOrder() {
-		return getExt().getOrder();
+		return order;
 	}
 	public void setOrder(String order) {
-		getExt().setOrder(order);
-	}
-	@Transient
-	public String getFamily() {
-		return getExt().getFamily();
-	}
-	public void setFamily(String family) {
-		getExt().setFamily(family);
-	}
-	@Transient
-	public String getGenus() {
-		return getExt().getGenus();
-	}
-	public void setGenus(String genus) {
-		getExt().setGenus(genus);
-	}
-	@Transient
-	public String getSpecificEpithet() {
-		return getExt().getSpecificEpithet();
-	}
-	public void setSpecificEpithet(String specificEpithet) {
-		getExt().setSpecificEpithet(specificEpithet);
-	}
-	@Transient
-	public String getInfraspecificRank() {
-		return getExt().getInfraspecificRank();
-	}
-	public void setInfraspecificRank(String infraspecificRank) {
-		getExt().setInfraspecificRank(infraspecificRank);
-	}
-	@Transient
-	public String getInfraspecificEpithet() {
-		return getExt().getInfraspecificEpithet();
-	}
-	public void setInfraspecificEpithet(String infraspecificEpithet) {
-		getExt().setInfraspecificEpithet(infraspecificEpithet);
-	}
-	@Transient
-	public String getAuthorYearOfScientificName() {
-		return getExt().getAuthorYearOfScientificName();
-	}
-	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
-		getExt().setAuthorYearOfScientificName(authorYearOfScientificName);
-	}
-	@Transient
-	public String getNomenclaturalCode() {
-		return getExt().getNomenclaturalCode();
-	}
-	public void setNomenclaturalCode(String nomenclaturalCode) {
-		getExt().setNomenclaturalCode(nomenclaturalCode);
+		this.order = order;
 	}
 
-	
+	@Column(length=128)
+	public String getFamily() {
+		return family;
+	}
+	public void setFamily(String family) {
+		this.family = family;
+	}
+	@Column(length=64)
+	@org.hibernate.annotations.Index(name="genus")
+	public String getGenus() {
+		return genus;
+	}
+	public void setGenus(String genus) {
+		this.genus = genus;
+	}
+	@Column(length=128)
+	public String getSpecificEpithet() {
+		return specificEpithet;
+	}
+	public void setSpecificEpithet(String specificEpithet) {
+		this.specificEpithet = specificEpithet;
+	}
+	@Column(length=128)
+	public String getInfraspecificRank() {
+		return infraspecificRank;
+	}
+	public void setInfraspecificRank(String infraspecificRank) {
+		this.infraspecificRank = infraspecificRank;
+	}
+	@Column(length=128)
+	public String getInfraspecificEpithet() {
+		return infraspecificEpithet;
+	}
+	public void setInfraspecificEpithet(String infraspecificEpithet) {
+		this.infraspecificEpithet = infraspecificEpithet;
+	}
+	@Column(length=128)
+	public String getAuthorYearOfScientificName() {
+		return authorYearOfScientificName;
+	}
+	public void setAuthorYearOfScientificName(String authorYearOfScientificName) {
+		this.authorYearOfScientificName = authorYearOfScientificName;
+	}
+	@Column(length=64)
+	public String getNomenclaturalCode() {
+		return nomenclaturalCode;
+	}
+	public void setNomenclaturalCode(String nomenclaturalCode) {
+		this.nomenclaturalCode = nomenclaturalCode;
+	}		
+
+
 	@Transient
 	public String getPropertyValue(ExtensionProperty property){
 		return getPropertyValue(property.getName());
