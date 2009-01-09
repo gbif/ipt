@@ -5,20 +5,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.tapir.Diagnostic;
 import org.gbif.provider.tapir.Filter;
@@ -41,6 +45,8 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	private static final String MODEL_ALIAS = "dwc";
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
+	@Autowired
+	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
 	private EmlManager emlManager;
     // just in case of fatal errors
@@ -69,10 +75,10 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     private Map<String, Set<ExtensionProperty>> conceptSchemas;
 	// METADATA only
     private Eml eml;    
-    // SEARCH & INVENTORY only
-    private List<?> records;
+    // INVENTORY only
+    private List<LinkedHashMap<String, Object>> values;
     // SEARCH only
-    private ExtensionRecordsWrapper extWrapper;
+    private List<ExtendedRecord> records;
     
 	public String execute(){
 	    if (op!=null && op.startsWith("p")){
@@ -157,11 +163,13 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	}
 
 	private void doSearch() {
-		records=darwinCoreManager.getLatest(resource_id,0,8);
-		extWrapper = new ExtensionRecordsWrapper(((DarwinCore)records.get(0)).getCoreId());
+		//FIXME: do proper core search
+		List<DarwinCore> coreRecords = darwinCoreManager.getLatest(resource_id,0,8);
+		records = extensionRecordManager.extendCoreRecords(resource, coreRecords.toArray(new CoreRecord[coreRecords.size()]));
 	}
 	private void doInventory() {
-		records=new ArrayList<Map<String, Object>>();
+		//FIXME: do proper inventory search
+		values=new ArrayList<LinkedHashMap<String, Object>>();
 	}
 
 	private String inventory() {
@@ -221,20 +229,12 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		this.op = op;
 	}
 
-	public List<?> getRecords() {
-		return records;
-	}
-
 	public OccurrenceResource getResource() {
 		return resource;
 	}
 
 	public Date getNow() {
 		return now;
-	}
-
-	public ExtensionRecordsWrapper getExtWrapper() {
-		return extWrapper;
 	}
 
 	public NamespaceRegistry getNsr() {
@@ -349,6 +349,12 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 
 	public void setDescend(Boolean descend) {
 		this.descend = descend;
+	}
+	public List<LinkedHashMap<String, Object>> getValues() {
+		return values;
+	}
+	public List<ExtendedRecord> getRecords() {
+		return records;
 	}
     
 }
