@@ -7,6 +7,7 @@ import org.appfuse.model.User;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
@@ -16,9 +17,9 @@ import org.springframework.security.userdetails.UserDetails;
 
 
 public class BaseAction extends org.appfuse.webapp.action.BaseAction {
-    public static final String OCCURRENCE = OccurrenceResource.ALIAS;
-    public static final String CHECKLIST = ChecklistResource.ALIAS;
-    public static final String METADATA = Resource.ALIAS;
+    public static final String OCCURRENCE = ExtensionType.Occurrence.alias;
+    public static final String CHECKLIST = ExtensionType.Checklist.alias;
+    public static final String METADATA = ExtensionType.Metadata.alias;
     public static final String RECORD404 = "record404";
     public static final String RESOURCE404 = "resource404";
 	@Autowired

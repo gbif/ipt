@@ -37,9 +37,6 @@ import org.hibernate.annotations.MapKey;
  */
 @Entity
 public class OccurrenceResource extends DataResource {
-	public static final String ALIAS = "occ";
-	public static final Long CORE_EXTENSION_ID = 1l;
-	
 	private BBox bbox = new BBox();
 	private Integer featureHash;
 	// cached statistics

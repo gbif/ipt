@@ -3,10 +3,13 @@ package org.gbif.provider.service.impl;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
@@ -36,4 +39,18 @@ public class ExtensionRecordManagerTest extends ResourceTestBase{
 		List<Extension> extensions = records.get(0).getExtensions();
 		assertTrue(records.get(0).getExtensionRecords(extensions.get(0)).size()>0);
 	}
+
+	@Test
+	public void testDistinctValues(){
+		this.setupOccResource();
+		for (ViewMappingBase view : resource.getAllMappings()){
+			List<Map<ExtensionProperty, Object>> values = extensionRecordManager.getDistinct(view.getMappedProperties().subList(1, 3), Constants.TEST_OCC_RESOURCE_ID, 0, 100);
+			for (Map<ExtensionProperty, Object> row : values){
+				System.out.println(row.get(row.keySet().toArray()[0])); 
+			}
+			System.out.println(values);
+			assertTrue(values.size() > 0);
+		}
+	}
+
 }

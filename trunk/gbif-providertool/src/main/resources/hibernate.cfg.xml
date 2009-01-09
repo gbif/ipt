@@ -21,6 +21,8 @@
         <mapping class="org.gbif.provider.model.ChecklistResource"/>
         <mapping class="org.gbif.provider.model.CoreRecord"/>
         <mapping class="org.gbif.provider.model.DarwinCore"/>
+        <!-- 
+        -->
         <mapping class="org.gbif.provider.model.DarwinCoreExtended"/>
         <mapping class="org.gbif.provider.model.DataResource"/>
         <mapping class="org.gbif.provider.model.Extension"/>

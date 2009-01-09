@@ -55,8 +55,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 public class Resource implements BaseObject, Comparable<Resource>, Timestampable{
-	public static final String ALIAS = "meta";
-	
 	private Long id;
 	@NotNull
 	protected String guid = UUID.randomUUID().toString();

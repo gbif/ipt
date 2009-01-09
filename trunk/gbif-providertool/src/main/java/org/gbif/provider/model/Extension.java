@@ -104,6 +104,11 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		this.type = type;
 	}
 	
+	@Transient
+	public boolean isCore() {
+		return type==null;
+	}
+
 	public boolean isInstalled() {
 		return installed;
 	}
