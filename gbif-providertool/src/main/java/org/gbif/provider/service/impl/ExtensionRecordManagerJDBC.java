@@ -21,16 +21,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.dto.CommonName;
 import org.gbif.provider.model.dto.Distribution;
+import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
@@ -104,43 +115,6 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		return count;
 	}
 	
-	
-	public ExtensionRecordsWrapper getExtensionRecords(DataResource resource, Long coreid) {
-		ExtensionRecordsWrapper wrapper = new ExtensionRecordsWrapper(coreid);
-		for (ViewExtensionMapping view : resource.getExtensionMappings()){
-			wrapper.addExtensionRecords(getExtensionRecords(view.getExtension(), coreid, resource.getId()));
-		}
-		return wrapper;
-	}
-	
-	
-	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreId, Long resourceId) {
-		List<ExtensionRecord> records = new ArrayList<ExtensionRecord>();
-		String table = namingStrategy.extensionTableName(extension);
-		String sql = String.format("select * from %s where coreid=%s and resource_fk=%s", table, coreId, resourceId);
-		Connection cn = getConnection();
-		try {
-			Statement st = cn.createStatement();			
-			ResultSet result = st.executeQuery(sql); 
-			// create extension records from JDBC resultset
-			while (result.next()){
-				ExtensionRecord rec = new ExtensionRecord(coreId, resourceId);
-				for (ExtensionProperty p : extension.getProperties()){
-					String value = result.getString(namingStrategy.propertyToColumnName(p.getName()));
-					if (value!=null){
-						rec.setPropertyValue(p, value);
-					}
-				}
-				if (!rec.isEmpty()){
-					records.add(rec);
-				}
-			}
-		} catch (SQLException e) {
-			log.error(String.format("Couldn't read extension records for extension=%s", extension), e);
-		}
-		
-		return records;
-	}
 	public int count(Extension extension, Long resourceId) {
 		String table = namingStrategy.extensionTableName(extension);
 		String sql = String.format("select count(*) from %s where resource_fk=%s", table, resourceId);
@@ -199,4 +173,86 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		}
 		return distributions;
 	}
+
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreId, Long resourceId) {
+		List<ExtensionRecord> records = new ArrayList<ExtensionRecord>();
+		String table = namingStrategy.extensionTableName(extension);
+		String sql = String.format("select * from %s where coreid=%s and resource_fk=%s", table, coreId, resourceId);
+		Connection cn = getConnection();
+		try {
+			Statement st = cn.createStatement();			
+			ResultSet result = st.executeQuery(sql); 
+			// create extension records from JDBC resultset
+			while (result.next()){
+				ExtensionRecord rec = new ExtensionRecord(coreId, resourceId);
+				for (ExtensionProperty p : extension.getProperties()){
+					String value = result.getString(namingStrategy.propertyToColumnName(p.getName()));
+					if (value!=null){
+						rec.setPropertyValue(p, value);
+					}
+				}
+				if (!rec.isEmpty()){
+					records.add(rec);
+				}
+			}
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't read extension records for extension=%s", extension), e);
+		}
+		
+		return records;
+	}
+
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, Set<Long> coreIds, Long resourceId) {
+		return getExtensionRecords(extension, extension.getProperties(), coreIds, resourceId);
+	}
+	public List<ExtensionRecord> getExtensionRecords(Extension extension, List<ExtensionProperty> properties, Set<Long> coreIds, Long resourceId) {
+		List<ExtensionRecord> records = new ArrayList<ExtensionRecord>();
+		String table = namingStrategy.extensionTableName(extension);
+		String sql = String.format("select * from %s where coreid in (%s) and resource_fk=%s", table, StringUtils.join(coreIds,","), resourceId);
+		Connection cn = getConnection();
+		try {
+			Statement st = cn.createStatement();			
+			ResultSet result = st.executeQuery(sql); 
+			// create extension records from JDBC resultset
+			while (result.next()){
+				ExtensionRecord rec = new ExtensionRecord(result.getLong("coreid"), resourceId);
+				for (ExtensionProperty p : extension.getProperties()){
+					String value = result.getString(namingStrategy.propertyToColumnName(p.getName()));
+					if (value!=null){
+						rec.setPropertyValue(p, value);
+					}
+				}
+				if (!rec.isEmpty()){
+					records.add(rec);
+				}
+			}
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't read extension records for extension=%s", extension), e);
+		}
+		
+		return records;
+	}
+
+	public ExtensionRecordsWrapper getExtensionRecords(DataResource resource, Long coreid) {
+		ExtensionRecordsWrapper wrapper = new ExtensionRecordsWrapper(coreid);
+		for (ViewExtensionMapping view : resource.getExtensionMappings()){
+			wrapper.addExtensionRecords(getExtensionRecords(view.getExtension(), coreid, resource.getId()));
+		}
+		return wrapper;
+	}
+
+	public List<ExtendedRecord> extendCoreRecords(DataResource resource, CoreRecord[] coreRecords) {
+		LinkedHashMap<Long, ExtendedRecord> extendedRecords = new LinkedHashMap<Long, ExtendedRecord>();
+		for (CoreRecord core : coreRecords){
+			extendedRecords.put(core.getCoreId(), new ExtendedRecord(core));
+		}
+		for (ViewExtensionMapping view : resource.getExtensionMappings()){
+			List<ExtensionRecord> extensionRecords = getExtensionRecords(view.getExtension(), view.getMappedProperties(), extendedRecords.keySet(), resource.getId());
+			for (ExtensionRecord erec : extensionRecords){
+				extendedRecords.get(erec.getCoreId()).addExtensionRecord(erec);
+			}
+		}
+		return new ArrayList<ExtendedRecord>(extendedRecords.values());
+	}
+
 }

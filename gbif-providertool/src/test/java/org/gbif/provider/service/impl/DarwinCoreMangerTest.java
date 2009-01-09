@@ -26,13 +26,14 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
+import org.gbif.provider.util.ResourceTestBase;
 import org.hibernate.PropertyValueException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.AssertThrows;
 
 
-public class DarwinCoreMangerTest extends ContextAwareTestBase{
+public class DarwinCoreMangerTest extends ResourceTestBase{
 	@Autowired
 	protected DarwinCoreManager darwinCoreManager;
 	@Autowired

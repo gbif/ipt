@@ -5,6 +5,9 @@ import java.util.List;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceRelatedObject;
 import org.gbif.provider.service.GenericResourceRelatedManager;
+import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,13 +41,13 @@ import org.springframework.transaction.annotation.Transactional;
 			return count;
 		}
 
-		public List<T> getAll(Long resourceId) {
+		public List<T> getAll(final Long resourceId) {
 	        return query(String.format("from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
 			        .setLong("resourceId", resourceId)
 	        		.list();
 		}
 
-		public int count(Long resourceId) {
+	    public int count(Long resourceId) {
 	        return ( (Long) query(String.format("select count(e) from %s e WHERE e.resource.id = :resourceId", persistentClass.getSimpleName()))
 	        .setLong("resourceId", resourceId)
 	        .iterate().next() ).intValue();

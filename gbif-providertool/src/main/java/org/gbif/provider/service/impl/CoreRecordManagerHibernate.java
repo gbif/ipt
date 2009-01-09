@@ -42,19 +42,6 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 		super(persistentClass);
 	}
 
-    public List<T> getAll(final Long resourceId) {
-        Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId", persistentClass.getName()))
-						.setParameter("resourceId", resourceId);
-		return query.list();
-    }
-    
-    public ScrollableResults scrollResource(final Long resourceId) {
-        Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId", persistentClass.getName()))
-						.setParameter("resourceId", resourceId);
-        return query.scroll(ScrollMode.FORWARD_ONLY);
-    }      
-
-    
     public T findByLocalId(final String localId, final Long resourceId) {
     	T result = null;
     	try{
@@ -108,16 +95,37 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	}
 
 
+	@Override
+	public List<T> getAll(final Long resourceId) {
+        return query(String.format("from %s e WHERE deleted=false and e.resource.id = :resourceId", persistentClass.getSimpleName()))
+		        .setLong("resourceId", resourceId)
+        		.list();
+	}
+
+	@Override
+    public int count(Long resourceId) {
+        return ( (Long) query(String.format("select count(e) from %s e WHERE deleted=false and e.resource.id = :resourceId", persistentClass.getSimpleName()))
+        .setLong("resourceId", resourceId)
+        .iterate().next() ).intValue();
+	}
+
+
 	public List<T> search(final Long resourceId, final String q) {
 	     return null;
 	}
 
 	public List<T> getLatest(Long resourceId, int startPage, int pageSize) {
-        return query(String.format("from %s e WHERE e.resource.id = :resourceId ORDER BY e.modified, e.id", persistentClass.getSimpleName()))
+        return query(String.format("from %s e WHERE deleted=false and e.resource.id = :resourceId ORDER BY e.modified, e.id", persistentClass.getSimpleName()))
         .setLong("resourceId", resourceId)
         .setFirstResult(H2Utils.offset(startPage, pageSize))
         .setMaxResults(pageSize)
 		.list();
 	}	
+	
+    public ScrollableResults scrollResource(final Long resourceId) {
+        Query query = getSession().createQuery(String.format("select core FROM %s core WHERE deleted=false and core.resource.id = :resourceId", persistentClass.getName()))
+						.setParameter("resourceId", resourceId);
+        return query.scroll(ScrollMode.FORWARD_ONLY);
+    }      
 
 }
