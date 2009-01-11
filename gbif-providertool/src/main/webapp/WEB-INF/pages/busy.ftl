@@ -1,5 +1,3 @@
-<%@ include file="/common/taglibs.jsp"%>
-
 <head>
     <title>Resource busy</title>
     <meta name="menu" content="MainMenu"/>
