@@ -22,6 +22,7 @@ import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
+import org.gbif.provider.model.dto.ValueListCount;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.DarwinCoreManager;
@@ -87,11 +88,14 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	// METADATA only
     private Eml eml;    
     // INVENTORY only
-    private List<Map<ExtensionProperty, Object>> values;
+    private List<ExtensionProperty> properties;
+    private List<ValueListCount> values;
     // SEARCH only
     private List<ExtendedRecord> records;
-    
-	public String execute(){
+    // SUMMARY
+    private Integer totalMatched;
+
+    public String execute(){
 	    if (op.startsWith("p")){
 	    	return ping();
     	}
@@ -125,13 +129,12 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 
 	private String capabilities() {
 		conceptSchemas = new HashMap<String, Set<ExtensionProperty>>();
-		for (String ns : nsr.knownNamespaces()){
-			conceptSchemas.put(ns, new HashSet<ExtensionProperty>());
-		}
-		for (ViewMappingBase vm : resource.getAllMappings()){
-			for (ExtensionProperty prop : vm.getMappedProperties()){				
-				conceptSchemas.get(prop.getNamespace()).add(prop);
+		for (ExtensionProperty prop : resource.getCoreMapping().getMappedProperties()){
+			String ns = prop.getNamespace();
+			if (!conceptSchemas.containsKey(ns)){
+				conceptSchemas.put(ns, new HashSet<ExtensionProperty>());
 			}
+			conceptSchemas.get(ns).add(prop);
 		}
 		return CAPABILITIES;
 	}
@@ -180,6 +183,8 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	// INVENTORY
 	//
 	private String inventory() {
+		properties = new ArrayList<ExtensionProperty>();
+		values = new ArrayList<ValueListCount>();
 		try {
 			parseFilter();
 			doInventory();
@@ -192,7 +197,6 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	private void doInventory() {
 		concept = StringUtils.trimToNull(concept);
 		if (concept==null){
-			values = new ArrayList<Map<ExtensionProperty, Object>>();
 			addError("At least one concept is required for an inventory");
 			return;
 		}
@@ -203,9 +207,8 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		}else{
 			p = extensionPropertyManager.getByQualName(concept, ExtensionType.Occurrence);			
 		}
-		List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
 		properties.add(p);
-		values = extensionRecordManager.getDistinct(properties, null, resource_id, start, limit);
+		values = darwinCoreManager.inventory(resource_id, properties, null, start, limit);
 	}
 
 
@@ -385,8 +388,14 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public List<ExtendedRecord> getRecords() {
 		return records;
 	}
-	public List<Map<ExtensionProperty, Object>> getValues() {
+	public List<ValueListCount> getValues() {
 		return values;
+	}
+	public List<ExtensionProperty> getProperties() {
+		return properties;
+	}
+	public Integer getTotalMatched() {
+		return totalMatched;
 	}
     
 }

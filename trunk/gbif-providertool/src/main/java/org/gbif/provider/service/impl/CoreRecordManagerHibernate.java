@@ -16,9 +16,11 @@
 
 package org.gbif.provider.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
@@ -136,11 +138,35 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 
     // TAPIR related inventory
     public List<ValueListCount> inventory(Long resourceId, List<ExtensionProperty> properties, Filter filter, int start, int limit) {
-		return null;
+    	String selectHQL = buildSelect(properties);
+    	String filterHQL = filter.toHQL();
+    	filterHQL = "";
+    	String hql = String.format("select new ValueListCount(count(*), %s) from %s e WHERE deleted=false and e.resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
+        return query(hql)
+        .setLong("resourceId", resourceId)
+        .setFirstResult(start)
+        .setMaxResults(limit)
+		.list();
 	}
+    private String buildSelect(List<ExtensionProperty> properties){
+    	List<String> props = new ArrayList<String>();
+    	for (ExtensionProperty prop : properties){
+    		if (!prop.getExtension().isCore()){
+    			throw new IllegalArgumentException("Only core properties are accepted");
+    		}
+    		props.add(prop.getName());
+    	}
+    	return StringUtils.join(props, ",");
+    }
+    
     // TAPIR related search
 	public List<T> search(Long resourceId, Filter filter, int start, int limit) {
-		return null;
+    	String filterHQL = "";
+        return query(String.format("from %s e WHERE deleted=false and e.resource.id = :resourceId %s ORDER BY e.id", persistentClass.getSimpleName(), filterHQL))
+        .setLong("resourceId", resourceId)
+        .setFirstResult(start)
+        .setMaxResults(limit)
+		.list();
 	}
 
 }
