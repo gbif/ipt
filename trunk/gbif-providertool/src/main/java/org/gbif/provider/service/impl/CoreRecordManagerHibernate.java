@@ -17,10 +17,14 @@
 package org.gbif.provider.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.dto.ValueListCount;
 import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.tapir.Filter;
 import org.gbif.provider.util.H2Utils;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
@@ -127,5 +131,16 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 						.setParameter("resourceId", resourceId);
         return query.scroll(ScrollMode.FORWARD_ONLY);
     }      
+
+    
+
+    // TAPIR related inventory
+    public List<ValueListCount> inventory(Long resourceId, List<ExtensionProperty> properties, Filter filter, int start, int limit) {
+		return null;
+	}
+    // TAPIR related search
+	public List<T> search(Long resourceId, Filter filter, int start, int limit) {
+		return null;
+	}
 
 }

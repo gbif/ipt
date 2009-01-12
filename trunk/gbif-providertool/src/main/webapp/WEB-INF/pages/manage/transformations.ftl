@@ -58,7 +58,7 @@ Otherwise you can always configure you own set of transformations.
 		</div>
 	  </div>
 	  <div>
-	 	<img id="transformationTypeImage" src="<@s.url value="/images/transformations/hierarchy.png"/>" width="400" height="75" alt="links to help page"/>
+	 	<img id="transformationTypeImage" src="<@s.url value="/images/transformations/2.png"/>" width="400" height="75" alt="links to help page"/>
 	  </div>		
 	  </@s.form>
 	</div>

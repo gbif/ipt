@@ -40,17 +40,4 @@ public class ExtensionRecordManagerTest extends ResourceTestBase{
 		assertTrue(records.get(0).getExtensionRecords(extensions.get(0)).size()>0);
 	}
 
-	@Test
-	public void testDistinctValues(){
-		this.setupOccResource();
-		for (ViewMappingBase view : resource.getAllMappings()){
-			List<Map<ExtensionProperty, Object>> values = extensionRecordManager.getDistinct(view.getMappedProperties().subList(1, 3), Constants.TEST_OCC_RESOURCE_ID, 0, 100);
-			for (Map<ExtensionProperty, Object> row : values){
-				System.out.println(row.get(row.keySet().toArray()[0])); 
-			}
-			System.out.println(values);
-			assertTrue(values.size() > 0);
-		}
-	}
-
 }
