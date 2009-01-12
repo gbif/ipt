@@ -9,30 +9,8 @@
 
 <@s.form>
 
-<table>	
- <tr>
-	<th>GUID</th>	
-	<td><a href="${cfg.getDetailUrl(taxon)}">${taxon.guid}</a></td>
- </tr>
- <tr>
-	<th>Data</th>
-	<td><a href="${cfg.getDetailUrl(taxon,'xml')}">XML</a></td>
- </tr>
- <tr>
-	<th><@s.text name="region.occTotal"/></th>
-	<td>${taxon.occTotal}</td>
- </tr>
- <!-- 
- <tr>
-	<th>Related</th>
-	<@s.url id="taxDetailUrl" action="taxDetail" namespace="/" includeParams="none">
-		<@s.param name="resource_id" value="%{resource_id}"/>
-		<@s.param name="id" value="%{taxon.id}"/>
-	</@s.url>
-	<td><a href="<@s.property value="taxDetailUrl" escape="false"/>">Taxon Details</a></td>
- </tr>
-  -->
-</table>
+<#assign rec=taxon>
+<#include "/WEB-INF/pages/inc/coreDetails.ftl">  
 
 </@s.form>
 

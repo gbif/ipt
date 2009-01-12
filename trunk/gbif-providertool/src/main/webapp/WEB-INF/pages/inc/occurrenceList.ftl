@@ -5,8 +5,8 @@
     <@display.column property="catalogNumber" sortable=true href="occDetail.html?resource_id=${resource_id?c}" media="html" paramId="guid" paramProperty="guid" titleKey="dwc.catalogNumber"/>
     <@display.column property="collectionCode" sortable=true titleKey="dwc.collectionCode"/>
 	<@display.column property="taxon" sortable=true titleKey="dwc.taxon"/>    
-    <@display.column property="country" sortable=true maxLength="50" titleKey="dwc.country"/>
-	<@display.column property="region" sortable=true maxLength="50" titleKey="dwc.region"/>    
+    <@display.column property="country" sortable=true maxLength=50 titleKey="dwc.country"/>
+	<@display.column property="region" sortable=true maxLength=50 titleKey="dwc.region"/>    
 	<@display.column property="earliestDateCollected" sortable=true titleKey="dwc.earliestDateCollected" />    
     
     <@display.setProperty name="paging.banner.item_name"><@s.text name="dwcList.occurrence"/></@display.setProperty>
