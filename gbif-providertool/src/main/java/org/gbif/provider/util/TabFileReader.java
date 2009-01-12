@@ -1,24 +1,17 @@
 package org.gbif.provider.util;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.DarwinCore;
 
 
 
@@ -34,6 +27,7 @@ public class TabFileReader implements Iterator<String[]>{
 	private LineIterator it;
 	private final File file;
 	private String[] header;
+	private static Pattern tabPattern = Pattern.compile("\t");
 	
 	public TabFileReader(File file) throws IOException, MalformedTabFileException{
 		this.it = FileUtils.lineIterator(file, "UTF-8");
@@ -41,7 +35,7 @@ public class TabFileReader implements Iterator<String[]>{
 		// read header
 		if (it.hasNext()){
 		    String line = it.nextLine();
-			header = line.split("\t");
+			header = tabPattern.split(line);
 		}else{
 			throw new MalformedTabFileException();
 		}
@@ -66,7 +60,7 @@ public class TabFileReader implements Iterator<String[]>{
 
 	public String[] next() {
 	    String line = it.nextLine();
-		String[] columns = line.split("\t");
+	    String[] columns = tabPattern.split(line);
 		if (columns.length > header.length){
 			List<String> cl = Arrays.asList(columns);
 			cl.subList(0, header.length-1);
