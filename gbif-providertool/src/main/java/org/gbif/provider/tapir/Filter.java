@@ -17,8 +17,8 @@ public class Filter {
 		this.root = root;
 	}
 	
-	public String toSQL(){
-		return root.toSQL();
+	public String toHQL(){
+		return root.toHQL();
 	}
 	public String toString(){
 		return root.toString();

@@ -12,7 +12,7 @@ public class GreaterThan extends ComparisonOperator {
 		return false;
 	}
 
-	public String toSQL() {
+	public String toHQL() {
 		// TODO Auto-generated method stub
 		return null;
 	}

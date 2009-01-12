@@ -12,7 +12,7 @@ public class And extends LogicalMultiOpBase {
 		return false;
 	}
 
-	public String toSQL() {
+	public String toHQL() {
 		// TODO Auto-generated method stub
 		return null;
 	}
