@@ -31,5 +31,7 @@ public enum ExtensionType {
 		this.id=id;
 		this.resourceClass=resourceClass;
 		this.tableName=tableName;
+		this.alias=alias;
+		this.extensionID=extensionID;
 	}
 }

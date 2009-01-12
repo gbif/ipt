@@ -61,17 +61,17 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	
 	private File dumpOccCore(ViewCoreMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
+		String sql = String.format("CALL CSVWRITE('%s', 'SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s order by id')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, sql);
 	}
 	private File dumpTaxCore(ViewCoreMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT * FROM taxon where resource_fk=%s')", file.getAbsolutePath(), view.getResourceId());			
+		String sql = String.format("CALL CSVWRITE('%s', 'SELECT id %s FROM taxon where resource_fk=%s order by id')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, sql);
 	}
 	private File dumpExtension(ViewExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT coreid %s FROM %s where resource_fk=%s')", file.getAbsolutePath(), buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
+		String sql = String.format("CALL CSVWRITE('%s', 'SELECT coreid %s FROM %s where resource_fk=%s order by coreid')", file.getAbsolutePath(), buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
 		return dumpFile(file, sql);
 	}
 	private String buildPropertySelect(ViewMappingBase view){
