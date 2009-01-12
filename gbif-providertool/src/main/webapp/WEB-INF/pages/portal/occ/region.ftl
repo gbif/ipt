@@ -28,12 +28,12 @@
 		</tr>
 		<tr>
 		  <th><@s.text name="region.occTotal"/></th>
-		  <td>${region.occTotal}</td>
+		  <td>${region.occTotal!0}</td>
 		</tr>
 		<!-- 
 		<tr>
 		  <th>Number of Taxa</th>
-		  <td>${occTotal}</td>
+		  <td>0</td>
 		</tr>
 		 -->
 	</table>
