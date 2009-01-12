@@ -18,7 +18,7 @@ public class GbifNamingStrategyTest extends ContextAwareTestBase {
 
 	@Test
 	public void testForeignKeyColumnName() {
-		System.out.println(namingStrategy.foreignKeyColumnName("resource.bbox.latitude", "DarwinCore", "dwcore", "id"));
+		System.out.println(namingStrategy.foreignKeyColumnName("resource.bbox.latitude", "DarwinCore", "Darwin_Core", "id"));
 	}
 
 	@Test

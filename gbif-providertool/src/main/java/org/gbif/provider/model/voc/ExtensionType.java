@@ -9,7 +9,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 
 public enum ExtensionType {
-	Occurrence(1l, OccurrenceResource.class, "dwcore", "occ", 1l),
+	Occurrence(1l, OccurrenceResource.class, "Darwin_Core", "occ", 1l),
 	Checklist(7l, ChecklistResource.class, "Taxon", "tax", 7l),	
 	Metadata(null, Resource.class, "Resource", "meta", null);	
 

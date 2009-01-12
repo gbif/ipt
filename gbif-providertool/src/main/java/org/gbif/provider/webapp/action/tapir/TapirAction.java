@@ -205,7 +205,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		}
 		List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
 		properties.add(p);
-		values = extensionRecordManager.getDistinct(properties, resource_id, start, limit);
+		values = extensionRecordManager.getDistinct(properties, null, resource_id, start, limit);
 	}
 
 

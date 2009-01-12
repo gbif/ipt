@@ -61,7 +61,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	
 	private File dumpOccCore(ViewCoreMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT dc.id %s FROM dwcore dc join dwcore_ext dce on dc.id=dce.id where dc.resource_fk=%s')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
+		String sql = String.format("CALL CSVWRITE('%s', 'SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, sql);
 	}
 	private File dumpTaxCore(ViewCoreMapping view) throws IOException, SQLException{
