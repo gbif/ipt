@@ -48,6 +48,7 @@ import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.tapir.Filter;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.H2Utils;
 import org.hibernate.Session;
@@ -161,10 +162,12 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		}
 		return values;
 	}
-	public List<Map<ExtensionProperty, Object>> getDistinct(List<ExtensionProperty> properties, Long resourceId, int start, int limit) {
+	public List<Map<ExtensionProperty, Object>> getDistinct(List<ExtensionProperty> properties, Filter filter, Long resourceId, int start, int limit) {
 		Map<Extension, String> extension2Alias = new HashMap<Extension, String>();
 		// build sql
-		String from = buildFromSql(properties, extension2Alias);
+		List<ExtensionProperty> fromProperties = new ArrayList<ExtensionProperty>(properties);
+		String where = buildWhereSql(filter, fromProperties, extension2Alias);
+		String from = buildFromSql(fromProperties, extension2Alias);
 		String columns = buildSelectSql(properties, extension2Alias);		
 		String sql = String.format("select distinct %s from %s where c.resource_fk=%s order by %s limit %s offset %s", columns, from, resourceId, columns, limit, start);
 		// execute query
@@ -189,6 +192,12 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		return values;
 	}
 	
+	private String buildWhereSql(Filter filter,
+			List<ExtensionProperty> fromProperties,
+			Map<Extension, String> extension2Alias) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	private String buildFromSql(List<ExtensionProperty> properties, Map<Extension, String> extension2Alias) {
 		ExtensionType type = properties.get(0).getExtension().getType();
 		if (type==null){

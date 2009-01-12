@@ -54,11 +54,11 @@ import org.hibernate.validator.NotNull;
  *
  */
 @Entity
-@Table(name="dwcore2"
+@Table(name="Darwin_Core"
 	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 ) 
 
-@org.hibernate.annotations.Table(appliesTo = "dwcore2", indexes = { 	
+@org.hibernate.annotations.Table(appliesTo = "Darwin_Core", indexes = { 	
 		@org.hibernate.annotations.Index(name="latitude", columnNames = { "lat" }), 
 		@org.hibernate.annotations.Index(name="longitude", columnNames = { "lon" }) 
 		})

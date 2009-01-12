@@ -31,6 +31,7 @@ import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
+import org.gbif.provider.tapir.Filter;
 
 public interface ExtensionRecordManager {
 	public ExtensionRecordsWrapper getExtensionRecords(DataResource resource, Long coreid);
@@ -53,7 +54,7 @@ public interface ExtensionRecordManager {
 	 * @param limit number of maximum records to be returned
 	 * @return
 	 */
-	public List<Map<ExtensionProperty, Object>> getDistinct(List<ExtensionProperty> properties, Long resourceId, int start, int limit);
+	public List<Map<ExtensionProperty, Object>> getDistinct(List<ExtensionProperty> properties, Filter filter, Long resourceId, int start, int limit);
 
 	public List<CommonName> getCommonNames(Long taxonId);
 	public List<Distribution> getDistributions(Long taxonId);
