@@ -210,7 +210,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 			return;
 		}
 		// multiple concepts provided?
-		List<String> concepts = splitMultiParameters(concept);
+		List<String> concepts = splitMultiValueParameter(concept);
 		for (String c : concepts){
 			ExtensionProperty p;
 			Matcher m = conceptAliasPattern.matcher(c);
