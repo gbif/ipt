@@ -441,13 +441,9 @@
     
     <!-- TAPIR Actions -->
     <package name="tapir" namespace="/tapir" extends="default-freemarker">
+        <default-interceptor-ref name="portalStack" />
         
-        <!-- all resources! has to be changed once checklists are added -->
         <action name="service" class="org.gbif.provider.webapp.action.tapir.TapirAction">
-            <interceptor-ref name="portalStack">
-                <param name="alias.aliases">#{ 'operation':'op', 'cnt':'count', 's':'start', 'l':'limit', 't':'template', 'c':'concept', 'n':'tagname', 'f':'filter', 'e':'envelope', 'm':'model', 'p':'partial', 'o':'orderby', 'd':'descend' }</param>
-            </interceptor-ref>
-
             <result name="ping">
                 <param name="location">/WEB-INF/pages/tapir/ping.ftl</param>                
                 <param name="contentType">text/xml</param>
