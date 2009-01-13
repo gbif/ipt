@@ -31,6 +31,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -94,6 +95,11 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Transient
+	public String getHQLName() {
+		return StringUtils.uncapitalize(name);
 	}
 
 	@Column(length=128)

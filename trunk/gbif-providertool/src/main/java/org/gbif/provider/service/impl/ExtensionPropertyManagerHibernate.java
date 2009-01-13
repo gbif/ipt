@@ -18,4 +18,11 @@ public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<E
 		.uniqueResult();
 	}
 
+	public ExtensionProperty getByName(String name, ExtensionType type) {
+		return (ExtensionProperty) getSession().createQuery("FROM ExtensionProperty p WHERE p.name=:name and p.type is null and p.extension.id=:coreId) ")
+		.setParameter("name", name)
+		.setLong("coreId", type.extensionID)
+		.uniqueResult();
+	}
+
 }

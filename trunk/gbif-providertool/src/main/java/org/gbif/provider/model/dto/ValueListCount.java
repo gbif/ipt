@@ -11,23 +11,23 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.gbif.provider.model.ExtensionProperty;
 
 public class ValueListCount {
-	private String[] values;
+	private List<Object> values;
 	private Long count;
 	
-	public ValueListCount(String ... values) {
+	public ValueListCount(List<Object> values) {
 		super();
 		this.values = values;
 	}
-	public ValueListCount(Long count, String ... values) {
+	public ValueListCount(Long count, List<Object> values) {
 		super();
 		this.values = values;
 		this.count = count;
 	}
 	
-	public String[] getValues() {
+	public List<Object> getValues() {
 		return values;
 	}
-	public void setValues(String[] values) {
+	public void setValues(List<Object> values) {
 		this.values = values;
 	}
 	public Long getCount() {

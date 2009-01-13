@@ -17,9 +17,11 @@
 package org.gbif.provider.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
@@ -138,17 +140,23 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 
     // TAPIR related inventory
     public List<ValueListCount> inventory(Long resourceId, List<ExtensionProperty> properties, Filter filter, int start, int limit) {
+    	List<ValueListCount> values = new ArrayList<ValueListCount>();
     	String selectHQL = buildSelect(properties);
     	String filterHQL = "";
     	if (filter !=null){
     		filterHQL = filter.toHQL();
     	}
-    	String hql = String.format("select new org.gbif.provider.model.dto.ValueListCount(count(*), %s) from %s e WHERE deleted=false and e.resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
-        return query(hql)
-        .setLong("resourceId", resourceId)
-        .setFirstResult(start)
-        .setMaxResults(limit)
-		.list();
+    	//FIXME: loop through results and instantiate ValueListCount manually
+    	String hql = String.format("select new List(count(*), %s) from %s WHERE deleted=false and resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
+        List<List<Object>> rows = query(hql)
+	        .setLong("resourceId", resourceId)
+	        .setFirstResult(start)
+	        .setMaxResults(limit)
+			.list();
+        for (List<Object> row : rows){
+        	values.add(new ValueListCount((Long)row.get(0), row.subList(1, row.size())));
+        }
+        return values;
 	}
     private String buildSelect(List<ExtensionProperty> properties){
     	List<String> props = new ArrayList<String>();
@@ -156,7 +164,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     		if (!prop.getExtension().isCore()){
     			throw new IllegalArgumentException("Only core properties are accepted");
     		}
-    		props.add(prop.getName());
+    		props.add(prop.getHQLName());
     	}
     	return StringUtils.join(props, ",");
     }
