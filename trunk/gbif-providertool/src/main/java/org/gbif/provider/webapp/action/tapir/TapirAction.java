@@ -1,6 +1,8 @@
 package org.gbif.provider.webapp.action.tapir;
 
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -163,6 +165,9 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 				} catch (ParseException e) {
 					addError(e.getTapirMessage());
 					return ERROR;
+				} catch (Exception e) {
+					addError("Unknown search error", e);
+					return ERROR;
 				}
 				return SEARCH;
 			}
@@ -192,6 +197,9 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		} catch (ParseException e) {
 			addError(e.getTapirMessage());
 			return ERROR;
+		} catch (Exception e) {
+			addError("Unknown inventory error", e);
+			return ERROR;
 		}
 		return INVENTORY;
 	}
@@ -201,15 +209,33 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 			addError("At least one concept is required for an inventory");
 			return;
 		}
-		ExtensionProperty p;
-		Matcher m = conceptAliasPattern.matcher(concept);
-		if(m.find()){
-			p = extensionPropertyManager.get(Long.decode(m.group(1)));
-		}else{
-			p = extensionPropertyManager.getByQualName(concept, ExtensionType.Occurrence);			
+		// multiple concepts provided?
+		List<String> concepts = splitMultiParameters(concept);
+		for (String c : concepts){
+			ExtensionProperty p;
+			Matcher m = conceptAliasPattern.matcher(c);
+			if(m.find()){
+				p = extensionPropertyManager.get(Long.decode(m.group(1)));
+			}else{
+				p = extensionPropertyManager.getByQualName(c, ExtensionType.Occurrence);			
+			}
+			if (p!=null){
+				properties.add(p);
+			}else{
+				addWarning(String.format("Concept %s unknown", c));
+			}
 		}
-		properties.add(p);
-		values = darwinCoreManager.inventory(resource_id, properties, null, start, limit);
+		// get data
+		if (properties.isEmpty()){
+			addError("No known concepts requested to do inventory");
+		}else{
+			try {
+				values = darwinCoreManager.inventory(resource_id, properties, null, start, limit);
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
 	}
 
 
@@ -240,6 +266,13 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	private void addError(String message){
 		error = message;
 		diagnostics.add(new Diagnostic(Severity.ERROR, new Date(), message));
+	}
+	private void addError(String message, Exception e){
+		error = message;
+		diagnostics.add(new Diagnostic(Severity.ERROR, new Date(), message));
+		StringWriter sw = new StringWriter();
+		e.printStackTrace(new PrintWriter(sw));
+		diagnostics.add(new Diagnostic(Severity.DEBUG, new Date(), sw.toString()));
 	}
 	private void addWarning(String message){
 		diagnostics.add(new Diagnostic(Severity.WARN, new Date(), message));

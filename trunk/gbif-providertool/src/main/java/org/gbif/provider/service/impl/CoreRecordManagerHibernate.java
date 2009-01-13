@@ -139,9 +139,11 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     // TAPIR related inventory
     public List<ValueListCount> inventory(Long resourceId, List<ExtensionProperty> properties, Filter filter, int start, int limit) {
     	String selectHQL = buildSelect(properties);
-    	String filterHQL = filter.toHQL();
-    	filterHQL = "";
-    	String hql = String.format("select new ValueListCount(count(*), %s) from %s e WHERE deleted=false and e.resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
+    	String filterHQL = "";
+    	if (filter !=null){
+    		filterHQL = filter.toHQL();
+    	}
+    	String hql = String.format("select new org.gbif.provider.model.dto.ValueListCount(count(*), %s) from %s e WHERE deleted=false and e.resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
         return query(hql)
         .setLong("resourceId", resourceId)
         .setFirstResult(start)

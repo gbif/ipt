@@ -1,8 +1,15 @@
 package org.gbif.provider.webapp.action;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.appfuse.model.User;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
@@ -58,6 +65,10 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 			map.put(key, getText(i18Key));
 		}
 		return map;
+	}
+	protected List<String> splitMultiParameters(String value){
+		String[] paras = StringUtils.split(value, ", ");
+		return Arrays.asList(paras);
 	}
 	
 }
