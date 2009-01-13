@@ -1,25 +1,11 @@
 package org.gbif.provider.webapp.action.portal;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.gbif.provider.model.Annotation;
-import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.service.AnnotationManager;
-import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.NamespaceRegistry;
-import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AnnotationAction extends org.gbif.provider.webapp.action.BaseResourceAction<Resource>{

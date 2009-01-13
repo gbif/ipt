@@ -16,24 +16,19 @@
 
 package org.gbif.provider.service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.gbif.provider.model.CoreRecord;
-import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.dto.CommonName;
 import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
-import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
-import org.gbif.provider.tapir.Filter;
 
 public interface ExtensionRecordManager {
+	public ExtendedRecord extendCoreRecord(DataResource resource, CoreRecord coreRecord);
 	public List<ExtendedRecord> extendCoreRecords(DataResource resource, CoreRecord[] coreRecords);
 	public List<CommonName> getCommonNames(Long taxonId);
 	public List<Distribution> getDistributions(Long taxonId);
@@ -46,11 +41,4 @@ public interface ExtensionRecordManager {
 	public int removeAll(Extension extension, Long resourceId);
 	public int count(Extension extension, Long resourceId);
 	public int countDistinct(ExtensionProperty property, Long resourceId);
-	
-	
-	
-	
-	// DEPRECATED. REMOVE???
-	public ExtensionRecordsWrapper getExtensionRecords(DataResource resource, Long coreid);
-	public List<ExtensionRecord> getExtensionRecords(Extension extension, Long coreid, Long resourceId);
 }
