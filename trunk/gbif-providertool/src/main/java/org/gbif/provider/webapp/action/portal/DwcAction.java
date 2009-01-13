@@ -1,19 +1,13 @@
 package org.gbif.provider.webapp.action.portal;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
+import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
@@ -28,8 +22,7 @@ public class DwcAction extends BaseOccurrenceResourceAction {
     private Long region_id;
     private Long id;
     private DarwinCore dwc;
-    private ExtensionRecordsWrapper extWrapper;
-    private List<Extension> extensions;
+    private ExtendedRecord rec;
     private String format;
     private NamespaceRegistry nsr;
     private Map<Object, Object> json;
@@ -52,7 +45,7 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 		if (dwc !=null){
 			region_id = dwc.getRegion().getId();
 			taxon_id = dwc.getTaxon().getId();
-    		extWrapper = extensionRecordManager.getExtensionRecords(dwc.getResource(), dwc.getCoreId());
+    		rec = extensionRecordManager.extendCoreRecord(dwc.getResource(), dwc);
         	if (format!=null && format.equalsIgnoreCase("xml")){
         		nsr = new NamespaceRegistry(dwc.getResource());
         		return "xml";
@@ -83,10 +76,6 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 		return dwc;
 	}
 
-	public ExtensionRecordsWrapper getExtWrapper() {
-		return extWrapper;
-	}
-
 	public String getFormat() {
 		return format;
 	}
@@ -108,4 +97,9 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	public DarwinCore getRecord(){
 		return dwc;
 	}
+
+	public ExtendedRecord getRec() {
+		return rec;
+	}
+	
 }

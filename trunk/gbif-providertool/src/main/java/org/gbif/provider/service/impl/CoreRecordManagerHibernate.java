@@ -172,7 +172,10 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     // TAPIR related search
 	public List<T> search(Long resourceId, Filter filter, int start, int limit) {
     	String filterHQL = "";
-        return query(String.format("from %s e WHERE deleted=false and e.resource.id = :resourceId %s ORDER BY e.id", persistentClass.getSimpleName(), filterHQL))
+    	if (filter !=null){
+    		filterHQL = filter.toHQL();
+    	}
+        return query(String.format("from %s WHERE deleted=false and resource.id = :resourceId %s ORDER BY id", persistentClass.getSimpleName(), filterHQL))
         .setLong("resourceId", resourceId)
         .setFirstResult(start)
         .setMaxResults(limit)

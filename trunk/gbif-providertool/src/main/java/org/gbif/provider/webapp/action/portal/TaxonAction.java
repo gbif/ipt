@@ -9,24 +9,18 @@ import java.util.Map;
 import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.CommonName;
 import org.gbif.provider.model.dto.Distribution;
-import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
+import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.model.voc.StatusType;
-import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
-import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -62,8 +56,8 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     // xml/json serialisation only
     private Map<Object, Object> json;
     private NamespaceRegistry nsr;
-    private ExtensionRecordsWrapper extWrapper;
-    private List<Extension> extensions;
+    private ExtendedRecord rec;
+	private List<Extension> extensions;
 	
 	private void setRequestedTaxon(){
     	if (id!=null){
@@ -80,9 +74,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     	if (taxon!=null){
 			stats = taxonManager.getRankStats(taxon.getId());
 			synonyms = taxonManager.getSynonyms(taxon.getId());
-			extWrapper = extensionRecordManager.getExtensionRecords(taxon.getResource(), taxon.getCoreId());
+			rec = extensionRecordManager.extendCoreRecord(taxon.getResource(), taxon);
 			if (format != null){
-	    		extensions = extWrapper.getExtensions();
+	    		extensions = rec.getExtensions();
 	        	if (format.equalsIgnoreCase("xml")){
 	        		nsr = new NamespaceRegistry(taxon.getResource());
 	        		return "xml";
@@ -94,7 +88,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	        	}
 			}else{
 	    		extensions = new ArrayList<Extension>();
-	    		for (Extension e:extWrapper.getExtensions()){
+	    		for (Extension e:rec.getExtensions()){
 	    			if (!e.getId().equals(Constants.COMMON_NAME_EXTENSION_ID) && !e.getId().equals(Constants.DISTRIBUTION_EXTENSION_ID)){
 	    				extensions.add(e);
 	    			}
@@ -216,8 +210,8 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	public NamespaceRegistry getNsr() {
 		return nsr;
 	}
-	public ExtensionRecordsWrapper getExtWrapper() {
-		return extWrapper;
+	public ExtendedRecord getRec() {
+		return rec;
 	}
 	public List<Extension> getExtensions() {
 		return extensions;

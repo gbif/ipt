@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,13 +16,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtendedRecord;
-import org.gbif.provider.model.dto.ExtensionRecordsWrapper;
 import org.gbif.provider.model.dto.ValueListCount;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.ExtensionType;
@@ -31,7 +26,6 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.tapir.Diagnostic;
 import org.gbif.provider.tapir.Filter;
 import org.gbif.provider.tapir.ParseException;
@@ -39,8 +33,6 @@ import org.gbif.provider.tapir.Severity;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Preparable;
 
 public class TapirAction extends BaseOccurrenceResourceAction{
 	private static final String ERROR = "error";
@@ -457,5 +449,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public Integer getTotalMatched() {
 		return totalMatched;
 	}
-    
+	public boolean getDeclareNamespace(){
+		return false;
+	}
 }
