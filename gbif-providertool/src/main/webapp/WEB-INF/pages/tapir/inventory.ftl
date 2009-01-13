@@ -5,7 +5,7 @@
  <#list properties as p>
   <concept id="${p.qualName}"/>
  </#list>
- <concepts>
+ </concepts>
  <#list values as vl>
   <record count="${vl.count!-1}">
   <#list vl.values as v>
@@ -13,7 +13,7 @@
   </#list>
   </record>
  </#list>
- <summary start="${start}" <#if (limit=values?size)> next="${start+limit+1}"</#if> totalReturned="${values?size}" totalMatched="${totalMatched}"/>
+ <summary start="${start}" <#if (limit=values?size)> next="${start+limit+1}"</#if> totalReturned="${values?size}" totalMatched="${totalMatched!-1}"/>
 </inventory>
 </#escape>
 <#include "/WEB-INF/pages/tapir/footer.ftl">  

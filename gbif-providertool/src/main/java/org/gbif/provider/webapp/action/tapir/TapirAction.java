@@ -64,6 +64,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     // just in case of fatal errors
     private String error="unknown fatal error";
     // request parameters
+    // aliases: 'operation':'op', 'cnt':'count', 's':'start', 'l':'limit', 't':'template', 'c':'concept', 'n':'tagname', 'f':'filter', 'e':'envelope', 'm':'model', 'p':'partial', 'o':'orderby', 'd':'descend'
     private String op="m";
     private Boolean count=false;
     private Integer start=0;
@@ -263,6 +264,9 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public void setOp(String op) {
 		this.op = op;
 	}
+	public void setOperation(String op) {
+		this.op = op;
+	}
 
 	public OccurrenceResource getResource() {
 		return resource;
@@ -301,32 +305,40 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public Boolean getCount() {
 		return count;
 	}
-
 	public void setCount(Boolean count) {
+		this.count = count;
+	}
+	public void setCnt(Boolean count) {
 		this.count = count;
 	}
 
 	public Integer getStart() {
 		return start;
 	}
-
 	public void setStart(Integer start) {
+		this.start = start;
+	}
+	public void setS(Integer start) {
 		this.start = start;
 	}
 
 	public Integer getLimit() {
 		return limit;
 	}
-
 	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+	public void setL(Integer limit) {
 		this.limit = limit;
 	}
 
 	public String getTemplate() {
 		return template;
 	}
-
 	public void setTemplate(String template) {
+		this.template = template;
+	}
+	public void setT(String template) {
 		this.template = template;
 	}
 
@@ -337,54 +349,70 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public void setConcept(String concept) {
 		this.concept = concept;
 	}
+	public void setC(String concept) {
+		this.concept = concept;
+	}
 
 	public String getTagname() {
 		return tagname;
 	}
-
 	public void setTagname(String tagname) {
+		this.tagname = tagname;
+	}
+	public void setN(String tagname) {
 		this.tagname = tagname;
 	}
 
 	public String getFilter() {
 		return filter;
 	}
-
 	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+	public void setF(String filter) {
 		this.filter = filter;
 	}
 
 	public Boolean getEnvelope() {
 		return envelope;
 	}
-
 	public void setEnvelope(Boolean envelope) {
+		this.envelope = envelope;
+	}
+	public void setE(Boolean envelope) {
 		this.envelope = envelope;
 	}
 
 	public String getModel() {
 		return model;
 	}
-
 	public void setModel(String model) {
+		this.model = model;
+	}
+	public void setM(String model) {
 		this.model = model;
 	}
 
 	public String getOrderby() {
 		return orderby;
 	}
-
 	public void setOrderby(String orderby) {
+		this.orderby = orderby;
+	}
+	public void setO(String orderby) {
 		this.orderby = orderby;
 	}
 
 	public Boolean getDescend() {
 		return descend;
 	}
-
 	public void setDescend(Boolean descend) {
 		this.descend = descend;
 	}
+	public void setD(Boolean descend) {
+		this.descend = descend;
+	}
+
 	public List<ExtendedRecord> getRecords() {
 		return records;
 	}
