@@ -18,7 +18,8 @@ public class Filter {
 	}
 	
 	public String toHQL(){
-		return root.toHQL();
+		//String hql = root.toHQL();
+		return "";
 	}
 	public String toString(){
 		return root.toString();

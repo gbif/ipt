@@ -216,8 +216,12 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 			Matcher m = conceptAliasPattern.matcher(c);
 			if(m.find()){
 				p = extensionPropertyManager.get(Long.decode(m.group(1)));
-			}else{
-				p = extensionPropertyManager.getByQualName(c, ExtensionType.Occurrence);			
+			}else{				
+				p = extensionPropertyManager.getByQualName(c, ExtensionType.Occurrence);
+				if (p==null){
+					// still not found. Try to find by name only
+					p = extensionPropertyManager.getByName(c, ExtensionType.Occurrence);
+				}
 			}
 			if (p!=null){
 				properties.add(p);
@@ -229,12 +233,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		if (properties.isEmpty()){
 			addError("No known concepts requested to do inventory");
 		}else{
-			try {
-				values = darwinCoreManager.inventory(resource_id, properties, null, start, limit);
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
+			values = darwinCoreManager.inventory(resource_id, properties, pFilter, start, limit);
 		}
 	}
 
