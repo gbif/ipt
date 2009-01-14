@@ -11,7 +11,9 @@
  </#if>
  <tr>
 	<th>Data</th>
-	<td><a href="${cfg.getDetailUrl(rec,'xml')}">XML</a></td>
+	<td><a href="${cfg.getDetailUrl(rec,'xml')}">XML</a> 
+		<#if resourceType="tax"><a href="${cfg.getDetailUrl(rec,'rdf')}">RDF</a></#if>
+	</td>
  </tr>
  <#if rec.occTotal??>
   <tr>

@@ -70,6 +70,14 @@ public enum Rank {
 		return null;
 	}
 	 
+	public String getColumnName() {
+		return columnName;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
 	public String toString(){
 		return name();
 	}

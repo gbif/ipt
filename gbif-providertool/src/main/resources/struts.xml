@@ -429,6 +429,10 @@
                 <param name="location">/WEB-INF/pages/portal/tax/xmlDetail.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
+            <result name="rdf" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/tax/rdfDetail.ftl</param>                
+                <param name="contentType">text/rdf</param>
+            </result>
             <result name="json" type="freemarker">
                 <param name="location">/WEB-INF/pages/portal/tax/xmlDetail.ftl</param>                
                 <param name="contentType">text/json</param>
