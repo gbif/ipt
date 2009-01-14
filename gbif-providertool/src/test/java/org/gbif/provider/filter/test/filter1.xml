@@ -1,0 +1,12 @@
+<filter>
+	<and>
+		<greaterThanOrEquals> 
+			<concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
+			<parameter name="lower"/> 
+		</greaterThanOrEquals> 
+		<lessThanOrEquals> 
+			<concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
+			<parameter name="upper"/> 
+		</lessThanOrEquals> 
+	</and> 
+</filter>

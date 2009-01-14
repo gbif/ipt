@@ -9,4 +9,8 @@ public abstract class LogicalOperator implements BooleanOperator {
 	// needed due to the Digester based parsing
 	public void addOperand(LogicalOperator operand) {
 	}
+	
+	public String toHQL() {
+		return null;
+	}
 }
