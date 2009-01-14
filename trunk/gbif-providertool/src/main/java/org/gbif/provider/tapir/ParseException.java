@@ -7,5 +7,8 @@ public class ParseException extends TapirException {
 	public ParseException(String message) {
 		super(message);
 	}
+	public ParseException(String message, Exception e) {
+		super(message, e);
+	}
 
 }
