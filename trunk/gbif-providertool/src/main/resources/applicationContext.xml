@@ -135,6 +135,9 @@
     </bean>
     <bean id="coreRecordFactory" class="org.gbif.provider.service.impl.CoreRecordFactoryImpl"/>        
     
+	<!-- FULL TEXT SEARCHING -->
+	<bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene" />
+	
     
     <!-- IMPORT SOURCE -->
     <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
@@ -155,8 +158,12 @@
         <!-- max number of concurrent processing threads. Default is 2x max concurrent uploads -->
         <constructor-arg value="2"/>
     </bean>
-    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
-    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
+	
+	<!-- All tasks are non-singleton (prototype) -->
+	<bean abstract="true" name="baseImportTask" scope="prototype">
+		<property name="fullTextSearchManager" ref="fullTextSearchManager"/>
+	</bean>
+    <bean id="occUploadTask" parent="baseImportTask" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="checklistUploadTask" parent="baseImportTask" class="org.gbif.provider.task.ChecklistUploadTask" />
     
-
 </beans>
