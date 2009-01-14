@@ -1,19 +1,30 @@
 package org.gbif.provider.tapir;
 
-public class Filter {
-	private LogicalOperator root;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-	public Filter(String filter) throws ParseException{
-		if (filter != null && filter.startsWith("kacke")){
-			throw new ParseException("Filter invalid");
-		}
+public class Filter {
+	protected Log log = LogFactory.getLog(this.getClass());
+	private BooleanOperator root;
+
+	public Filter() {
 	}
 
-	public LogicalOperator getRoot() {
+	public BooleanOperator getRoot() {
 		return root;
 	}
 
-	public void setRoot(LogicalOperator root) {
+	/**
+	 * Will only set the root if it currently null
+	 */
+	public void setRootIfNull(BooleanOperator root) {
+		if (this.root==null && root!=null) {
+			log.debug("Setting root to: " + root.getClass());
+			this.root = root;
+		}
+	}
+	
+	public void setRoot(BooleanOperator root) {
 		this.root = root;
 	}
 	
@@ -23,5 +34,9 @@ public class Filter {
 	}
 	public String toString(){
 		return root.toString();
+	}
+	
+	// needed due to the Digester based parsing
+	public void addOperand(LogicalOperator operand) {
 	}
 }

@@ -1,14 +1,14 @@
 package org.gbif.provider.tapir;
 
-public class GreaterThan extends ComparisonOperator {
+public class LessThanOrEquals extends ComparisonOperator {
 
-	public GreaterThan() {
+	public LessThanOrEquals() {
 		log.debug("Creating " + this.getClass().getSimpleName());
 	}
 	
 	@Override
 	protected String getOperatorSymbol() {
-		return ">";
+		return "<=";
 	}
 
 	public boolean evaluate() {
@@ -16,9 +16,8 @@ public class GreaterThan extends ComparisonOperator {
 		return false;
 	}
 
-	public String toHQL() {
+	public String toSQL() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
