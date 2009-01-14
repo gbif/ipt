@@ -1,11 +1,12 @@
 package org.gbif.provider.tapir;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 public abstract class LogicalMultiOpBase extends LogicalOperator {
-	private List<LogicalOperator> operands;
+	private List<LogicalOperator> operands = new LinkedList<LogicalOperator>();
 
 	public List<LogicalOperator> getOperands() {
 		return operands;
@@ -17,7 +18,7 @@ public abstract class LogicalMultiOpBase extends LogicalOperator {
 	
 	protected abstract String getOperatorSymbol();
 
-	public String toString(){
-		return StringUtils.join(operands, getOperatorSymbol());
+	public String toString() {
+		return StringUtils.join(operands, " " + getOperatorSymbol() + " ");
 	}
 }
