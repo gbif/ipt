@@ -2,12 +2,14 @@ package org.gbif.provider.task;
 
 	import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
@@ -25,6 +27,7 @@ import org.gbif.provider.service.CoreRecordFactory;
 import org.gbif.provider.service.CoreRecordManager;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.UploadEventManager;
@@ -59,8 +62,10 @@ import org.springframework.transaction.annotation.Transactional;
 		private AtomicInteger currentErroneous;
 		private R resource;
 		private Date lastLogDate;
-
 		
+		// managers
+		@Autowired
+		private FullTextSearchManager fullTextSearchManager;
 		@Autowired
 		private ImportSourceFactory importSourceFactory;
 		@Autowired
@@ -195,6 +200,11 @@ import org.springframework.transaction.annotation.Transactional;
 			currentActivity = "Creating data archive";
 			File archive = dataArchiveManager.createArchive(resource);
 			log.info("Data archive created at "+archive.getAbsolutePath());
+			
+			//
+			// build the full text indexes
+			//
+			fullTextSearchManager.buildDataResourceIndexes(resource);
 		}
 
 		private void setFinalExtensionStats(Extension ext){
@@ -481,6 +491,5 @@ import org.springframework.transaction.annotation.Transactional;
 		 * @param resource
 		 */
 		abstract protected void closeHandler(R resource);
-
 
 	}
