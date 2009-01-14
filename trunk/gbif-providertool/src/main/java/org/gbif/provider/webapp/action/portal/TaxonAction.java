@@ -57,7 +57,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     private Map<Object, Object> json;
     private NamespaceRegistry nsr;
     private ExtendedRecord rec;
-	private List<Extension> extensions;
+	private List<Extension> extensions = new ArrayList<Extension>();
 	
 	private void setRequestedTaxon(){
     	if (id!=null){
@@ -76,18 +76,21 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 			synonyms = taxonManager.getSynonyms(taxon.getId());
 			rec = extensionRecordManager.extendCoreRecord(taxon.getResource(), taxon);
 			if (format != null){
-	    		extensions = rec.getExtensions();
 	        	if (format.equalsIgnoreCase("xml")){
 	        		nsr = new NamespaceRegistry(taxon.getResource());
 	        		return "xml";
+	        	}
+	        	else if (format.equalsIgnoreCase("rdf")){
+	        		return "rdf";
 	        	}
 	        	else if (format.equalsIgnoreCase("json")){
 	        		//TODO: create map to serialise into JSON
 	        		json = new HashMap<Object, Object>();
 	        		return "json";
+	        	}else{
+	        		return format;
 	        	}
 			}else{
-	    		extensions = new ArrayList<Extension>();
 	    		for (Extension e:rec.getExtensions()){
 	    			if (!e.getId().equals(Constants.COMMON_NAME_EXTENSION_ID) && !e.getId().equals(Constants.DISTRIBUTION_EXTENSION_ID)){
 	    				extensions.add(e);
