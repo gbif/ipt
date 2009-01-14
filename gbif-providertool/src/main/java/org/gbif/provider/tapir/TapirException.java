@@ -8,6 +8,11 @@ public abstract class TapirException extends Exception{
 		this.message = message;
 	}
 
+	public TapirException(String message, Exception e) {
+		super(e);
+		this.message = message;
+	}
+
 	public String getTapirMessage(){
 		return message;
 	}
