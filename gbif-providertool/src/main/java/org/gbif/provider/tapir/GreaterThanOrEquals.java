@@ -1,6 +1,6 @@
 package org.gbif.provider.tapir;
 
-public class GreaterThanOrEquals extends ComparisonOperator {
+public class GreaterThanOrEquals extends ComparisonBinaryOperator {
 
 	public GreaterThanOrEquals() {
 		log.debug("Creating " + this.getClass().getSimpleName());
@@ -9,16 +9,6 @@ public class GreaterThanOrEquals extends ComparisonOperator {
 	@Override
 	protected String getOperatorSymbol() {
 		return ">=";
-	}
-
-	public boolean evaluate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String toSQL() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -1,6 +1,6 @@
 package org.gbif.provider.tapir;
 
-public class And extends LogicalMultiOpBase {
+public class And extends LogicalMultiOperator {
 	public And() {
 		log.debug("Creating " + this.getClass().getSimpleName());
 	}
