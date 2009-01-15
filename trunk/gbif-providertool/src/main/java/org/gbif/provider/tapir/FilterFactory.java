@@ -57,7 +57,7 @@ public class FilterFactory {
 	protected static void addSimpleOperator(Digester digester, String path, Class<?> operator) {
 		digester.addObjectCreate(path, operator);
 		digester.addSetRoot(path, "setRoot");
-		digester.addSetNext(path, "addOperand", LogicalOperator.class.getName());
+		digester.addSetNext(path, "addOperand", BooleanOperator.class.getName());
 		
 	}
 

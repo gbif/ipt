@@ -2,22 +2,22 @@ package org.gbif.provider.tapir;
 
 
 public class Not extends LogicalOperator {
-	private LogicalOperator op;
+	private BooleanOperator op;
 	
 	public Not() {
 		log.debug("Creating " + this.getClass().getSimpleName());	
 	}
 	
-	public LogicalOperator getOp() {
+	public BooleanOperator getOp() {
 		return op;
 	}
 
-	public void setOp(LogicalOperator op) {
+	public void setOp(BooleanOperator op) {
 		this.op = op;
 	}
 	
 	@Override
-	public void addOperand(LogicalOperator operand) {
+	public void addOperand(BooleanOperator operand) {
 		setOp(operand);
 	}
 

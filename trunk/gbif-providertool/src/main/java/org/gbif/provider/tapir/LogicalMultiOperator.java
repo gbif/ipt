@@ -13,7 +13,7 @@ public abstract class LogicalMultiOperator extends LogicalOperator {
 		return operands;
 	}
 
-	public void addOperand(LogicalOperator operand) {
+	public void addOperand(BooleanOperator operand) {
 		this.operands.add(operand);
 	}
 	
