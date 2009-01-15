@@ -1,0 +1,7 @@
+<in>
+  <concept id="http://example.net/concept/basisOfRecord" />
+  <values>
+    <literal value="specimen" />
+    <literal value="observation" />
+  </values>
+</in>

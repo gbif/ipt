@@ -53,12 +53,12 @@ public class FilterFactoryTest {
 				BufferedReader br = new BufferedReader(fr);
 				String expected = br.readLine();
 				
-				log.debug("Parsed: " + filter.toString());
+				log.debug("Received: " + filter.toString());
 				log.debug("Expected: " + expected);
 				
 				// can't decide how restrictive to be...
 				//assertEquals(expected.replaceAll(" ", "").toUpperCase(), filter.toString().replaceAll(" ", "").toUpperCase());
-				assertEquals(expected, filter.toString());
+				assertEquals(expected.trim(), filter.toString());
 				log.debug("Input[" + i + "] parsed successfully");
 				
 				br.close();

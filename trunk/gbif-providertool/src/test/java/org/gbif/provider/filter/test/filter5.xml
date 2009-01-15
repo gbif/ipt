@@ -1,0 +1,7 @@
+<filter>
+	<not>
+		<isNull>
+		   <concept id="http://doering.org/rock/n/roll/star" />
+		</isNull>
+	</not>
+</filter>

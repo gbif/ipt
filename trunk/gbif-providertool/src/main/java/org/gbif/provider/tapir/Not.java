@@ -1,16 +1,24 @@
 package org.gbif.provider.tapir;
 
-import org.apache.commons.lang.StringUtils;
 
 public class Not extends LogicalOperator {
 	private LogicalOperator op;
-
+	
+	public Not() {
+		log.debug("Creating " + this.getClass().getSimpleName());	
+	}
+	
 	public LogicalOperator getOp() {
 		return op;
 	}
 
 	public void setOp(LogicalOperator op) {
 		this.op = op;
+	}
+	
+	@Override
+	public void addOperand(LogicalOperator operand) {
+		setOp(operand);
 	}
 
 	public String toString(){
