@@ -1,4 +1,4 @@
-package org.gbif.provider.filter;
+package org.gbif.provider.tapir.filter;
 
 import static org.junit.Assert.fail;
 
@@ -21,7 +21,7 @@ public class FilterFactoryTest {
 	@Test
 	public void testBuild() {
 		
-		File testDir = new File(this.getClass().getResource("/org/gbif/provider/filter/test").getFile());
+		File testDir = new File(this.getClass().getResource("/org/gbif/provider/tapir/filter/test").getFile());
 		
 		File[] input = testDir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
