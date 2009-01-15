@@ -5,6 +5,10 @@ import org.gbif.provider.model.ExtensionProperty;
 public class IsNull extends LogicalOperator implements BooleanOperator {
 	private ExtensionProperty property;
 	
+	public IsNull() {
+		log.debug("Creating " + this.getClass().getSimpleName());
+	}
+	
 	public ExtensionProperty getProperty() {
 		return property;
 	}

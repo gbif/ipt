@@ -27,17 +27,19 @@ public class FilterFactory {
 		
 		digester.addObjectCreate("*/or", Or.class);
 		digester.addSetRoot("*/or", "setRoot");
-		
-		addSimpleBooleanOperator(digester, "*/greaterThanOrEquals", GreaterThanOrEquals.class);
-		addSimpleBooleanOperator(digester, "*/lessThanOrEquals", LessThanOrEquals.class);
-		addSimpleBooleanOperator(digester, "*/greaterThan", GreaterThan.class);
-		addSimpleBooleanOperator(digester, "*/lessThan", LessThan.class);
-		addSimpleBooleanOperator(digester, "*/equals", Equals.class);
-		addSimpleBooleanOperator(digester, "*/like", Like.class);
-		addSimpleBooleanOperator(digester, "*/isNull", IsNull.class);
-		
-		// TODO handle IN
-		
+				
+		digester.addObjectCreate("*/in", In.class);
+		digester.addSetRoot("*/in", "setRoot");
+				
+		addSimpleOperator(digester, "*/greaterThanOrEquals", GreaterThanOrEquals.class);
+		addSimpleOperator(digester, "*/lessThanOrEquals", LessThanOrEquals.class);
+		addSimpleOperator(digester, "*/greaterThan", GreaterThan.class);
+		addSimpleOperator(digester, "*/lessThan", LessThan.class);
+		addSimpleOperator(digester, "*/equals", Equals.class);
+		addSimpleOperator(digester, "*/like", Like.class);
+		addSimpleOperator(digester, "*/isNull", IsNull.class);
+		addSimpleOperator(digester, "*/not", Not.class);
+				
 		digester.addCallMethod("*/concept", "setProperty", 1);
 		digester.addCallParam("*/concept", 0, "id");
 		
@@ -52,7 +54,7 @@ public class FilterFactory {
 		return filter;
 	}
 	
-	protected static void addSimpleBooleanOperator(Digester digester, String path, Class<?> operator) {
+	protected static void addSimpleOperator(Digester digester, String path, Class<?> operator) {
 		digester.addObjectCreate(path, operator);
 		digester.addSetRoot(path, "setRoot");
 		digester.addSetNext(path, "addOperand", LogicalOperator.class.getName());
