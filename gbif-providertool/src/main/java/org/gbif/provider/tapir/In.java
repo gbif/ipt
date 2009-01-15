@@ -21,6 +21,9 @@ public class In extends ComparisonOperator{
 	public void setValue(String value) {
 		literals.add("'" + value + "'");
 	}	
+	public void addValue(String value) {
+		literals.add("'" + value + "'");
+	}	
 	
 	public String toHQL() {
 		return String.format("%s %s (%s)", property.getHQLName(), getOperatorSymbol(), StringUtils.join(literals, ","));

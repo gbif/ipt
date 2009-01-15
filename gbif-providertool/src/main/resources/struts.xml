@@ -238,6 +238,9 @@
             <result>/WEB-INF/pages/portal/occ/dwcDetail.ftl</result>
         </action>
         
+        <action name="occSearch" class="org.gbif.provider.webapp.action.portal.DwcAction" method="search">
+            <result>/WEB-INF/pages/portal/occ/dwcSearch.ftl</result>
+        </action>
         
         <!-- checklist actions -->
         <action name="taxResources" class="org.gbif.provider.webapp.action.portal.TaxResourceAction" method="list">

@@ -37,6 +37,9 @@ public class QuoteTokenizer extends StringTokenizer{
 				throw new NoSuchElementException("Quoted string not closed");
 			}
 		}
+		while(token.equals(" ")){
+			token = nextToken();
+		}
 		return token; 
 	}
 
