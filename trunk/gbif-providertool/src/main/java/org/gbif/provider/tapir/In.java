@@ -7,22 +7,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.ExtensionProperty;
+import org.opengis.filter.capability.ComparisonOperators;
 
-public class In implements BooleanOperator {
-	protected Log log = LogFactory.getLog(this.getClass());
+public class In extends ComparisonOperator{
 	private List<String> literals = new LinkedList<String>();
-	private ExtensionProperty property;
-	
-	public ExtensionProperty getProperty() {
-		return property;
-	}
-	public void setProperty(ExtensionProperty property) {
-		log.debug("Setting property to: " + property.getQualName());
-		property.setName(property.getQualName());
-		this.property = property;
-	}
-	public void setProperty(String propertyAsString) {
-		setProperty(new ExtensionProperty(propertyAsString));
+	public In() {
+		log.debug("Creating " + this.getClass().getSimpleName());
 	}
 
 	/**
@@ -32,26 +22,14 @@ public class In implements BooleanOperator {
 		literals.add("'" + value + "'");
 	}	
 	
+	public String toHQL() {
+		return String.format("%s %s (%s)", property.getHQLName(), getOperatorSymbol(), StringUtils.join(literals, ","));
+	}
 	public String toString() {
-		return String.format("%s %s (%s)", getProperty().getName(), getOperatorSymbol(), StringUtils.join(literals, ","));
+		return String.format("%s %s (%s)", property.getName(), getOperatorSymbol(), StringUtils.join(literals, ","));
 	}
 
-	public In() {
-		log.debug("Creating " + this.getClass().getSimpleName());
-	}
-	
 	protected String getOperatorSymbol() {
 		return "in";
 	}
-
-	public boolean evaluate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String toHQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

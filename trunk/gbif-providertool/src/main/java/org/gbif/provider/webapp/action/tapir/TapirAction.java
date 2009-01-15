@@ -247,7 +247,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		return false;
 	}
 	private void parseFilter() throws ParseException{
-		pFilter = new Filter(filter);
+		pFilter = new Filter();
 	}
 
 	private void addFatal(String message){

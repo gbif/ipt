@@ -1,6 +1,6 @@
 package org.gbif.provider.tapir;
 
-public class Like extends ComparisonOperator {
+public class Like extends ComparisonBinaryOperator {
 
 	public Like() {
 		log.debug("Creating " + this.getClass().getSimpleName());
@@ -9,15 +9,5 @@ public class Like extends ComparisonOperator {
 	@Override
 	protected String getOperatorSymbol() {
 		return "like";
-	}
-
-	public boolean evaluate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String toSQL() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

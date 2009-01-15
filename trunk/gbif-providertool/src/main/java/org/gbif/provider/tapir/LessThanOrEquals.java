@@ -1,6 +1,6 @@
 package org.gbif.provider.tapir;
 
-public class LessThanOrEquals extends ComparisonOperator {
+public class LessThanOrEquals extends ComparisonBinaryOperator {
 
 	public LessThanOrEquals() {
 		log.debug("Creating " + this.getClass().getSimpleName());
@@ -9,15 +9,5 @@ public class LessThanOrEquals extends ComparisonOperator {
 	@Override
 	protected String getOperatorSymbol() {
 		return "<=";
-	}
-
-	public boolean evaluate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String toSQL() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

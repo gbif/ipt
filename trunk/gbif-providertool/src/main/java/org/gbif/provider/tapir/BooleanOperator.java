@@ -1,7 +1,10 @@
 package org.gbif.provider.tapir;
 
-public interface BooleanOperator {
-	public String toString();
-	public String toHQL();
-	public boolean evaluate();
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public abstract class BooleanOperator {
+	protected Log log = LogFactory.getLog(this.getClass());
+	
+	public abstract String toHQL();
 }

@@ -1,4 +1,4 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.util;
 
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;

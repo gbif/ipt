@@ -3,14 +3,9 @@ package org.gbif.provider.tapir;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class LogicalOperator implements BooleanOperator {
-	protected Log log = LogFactory.getLog(this.getClass());
+public abstract class LogicalOperator extends BooleanOperator {
 	
 	// needed due to the Digester based parsing
-	public void addOperand(LogicalOperator operand) {
-	}
+	public abstract void addOperand(LogicalOperator operand);
 	
-	public String toHQL() {
-		return null;
-	}
 }
