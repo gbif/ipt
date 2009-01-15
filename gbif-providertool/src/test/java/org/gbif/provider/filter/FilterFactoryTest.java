@@ -57,8 +57,8 @@ public class FilterFactoryTest {
 				log.debug("Expected: " + expected);
 				
 				// can't decide how restrictive to be...
-				//assertEquals(expected.replaceAll(" ", "").toUpperCase(), filter.toString().replaceAll(" ", "").toUpperCase());
-				assertEquals(expected.trim(), filter.toString());
+				assertEquals(expected.replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)", "").toUpperCase(), filter.toString().replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)", "").toUpperCase());
+				//assertEquals(expected.trim(), filter.toString());
 				log.debug("Input[" + i + "] parsed successfully");
 				
 				br.close();
