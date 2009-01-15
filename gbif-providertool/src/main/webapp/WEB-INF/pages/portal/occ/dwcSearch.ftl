@@ -5,6 +5,6 @@
 </head>
 	
 
-<h2>Search: ${q}</h2>  
+<h2>Your Search: ${q}</h2>  
 
 <#include "/WEB-INF/pages/inc/occurrenceList.ftl">  
