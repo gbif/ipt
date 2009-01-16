@@ -36,10 +36,17 @@ public class Filter implements Iterable<BooleanOperator>{
 	}
 	
 	public String toHQL(){
+		if (root==null){
+			return "";
+		}
 		return root.toHQL();
 	}
 	public String toString(){
-		return root.toString();
+		String rot = "NULL";
+		if (root!=null){
+			rot=root.toString();
+		}
+		return "Filter: " + rot;
 	}
 	
 	// needed due to the Digester based parsing
@@ -47,11 +54,16 @@ public class Filter implements Iterable<BooleanOperator>{
 	}
 
 	class FilterIterator implements Iterator<BooleanOperator>{
-		private Iterator<BooleanOperator> iter;
+		private Iterator<BooleanOperator> iter=null;
 		public FilterIterator(){
-			iter=root.iterator();
+			if (root!=null){
+				iter=root.iterator();
+			}
 		}
 		public boolean hasNext() {
+			if (iter==null){
+				return false;
+			}
 			return iter.hasNext();
 		}
 		public BooleanOperator next() {
