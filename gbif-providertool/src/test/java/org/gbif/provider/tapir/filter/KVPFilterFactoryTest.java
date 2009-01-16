@@ -31,6 +31,17 @@ public class KVPFilterFactoryTest {
 			}});		
 
 		KVPFilterFactory fh = new KVPFilterFactory();
+		try{
+			log.debug("Parse empty string and NULL");
+			Filter f = fh.parse("");
+			log.debug(f.toHQL());
+
+			f = fh.parse(null);							
+			log.debug(f.toHQL());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			fail(e.getMessage());
+		}
 		for (int i=0; i<input.length; i++) {
 			try {
 				log.debug("\n\nStarting parsing of filter " + input[i].getName());

@@ -5,14 +5,16 @@ import java.util.StringTokenizer;
 
 import javax.mail.MethodNotSupportedException;
 
+import org.apache.commons.lang.StringUtils;
+
 public class QuoteTokenizer extends StringTokenizer{
 	private boolean quoted = false;
 	
 	public QuoteTokenizer(String str) {
-		super(str, " \"", true);
+		this(str, " ");
 	}
 	public QuoteTokenizer(String str, String delim) {
-		super(str, "\""+delim, true);
+		super(StringUtils.trimToEmpty(str), "\""+delim, true);
 	}
 
 	@Override
