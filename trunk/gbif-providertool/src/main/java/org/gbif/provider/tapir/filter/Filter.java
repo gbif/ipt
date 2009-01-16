@@ -1,4 +1,4 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
 import java.util.NoSuchElementException;
 import java.util.Stack;

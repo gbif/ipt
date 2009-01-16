@@ -1,13 +1,13 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
-public class Like extends ComparisonBinaryOperator {
-
-	public Like() {
+public class Or extends LogicalMultiOperator {
+	public Or() {
 		log.debug("Creating " + this.getClass().getSimpleName());
 	}
 	
 	@Override
 	protected String getOperatorSymbol() {
-		return "like";
+		return "or";
 	}
+
 }

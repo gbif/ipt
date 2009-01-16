@@ -7,7 +7,7 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.dto.ValueListCount;
-import org.gbif.provider.tapir.Filter;
+import org.gbif.provider.tapir.filter.Filter;
 import org.hibernate.ScrollableResults;
 
 public interface CoreRecordManager<T extends CoreRecord> extends GenericResourceRelatedManager<T>{

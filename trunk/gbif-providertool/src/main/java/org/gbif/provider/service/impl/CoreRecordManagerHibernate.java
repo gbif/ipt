@@ -28,7 +28,7 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.dto.ValueListCount;
 import org.gbif.provider.service.CoreRecordManager;
-import org.gbif.provider.tapir.Filter;
+import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.util.H2Utils;
 import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
