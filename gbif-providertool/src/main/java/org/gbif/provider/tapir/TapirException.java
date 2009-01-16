@@ -4,12 +4,12 @@ public abstract class TapirException extends Exception{
 	private String message;
 	
 	public TapirException(String message) {
-		super();
+		super(message);
 		this.message = message;
 	}
 
 	public TapirException(String message, Exception e) {
-		super(e);
+		super(message, e);
 		this.message = message;
 	}
 

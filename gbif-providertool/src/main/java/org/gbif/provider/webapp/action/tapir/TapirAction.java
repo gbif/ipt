@@ -27,9 +27,10 @@ import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.tapir.Diagnostic;
-import org.gbif.provider.tapir.Filter;
 import org.gbif.provider.tapir.ParseException;
 import org.gbif.provider.tapir.Severity;
+import org.gbif.provider.tapir.filter.Filter;
+import org.gbif.provider.tapir.filter.KVPFilterFactory;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -247,7 +248,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		return false;
 	}
 	private void parseFilter() throws ParseException{
-		pFilter = new Filter();
+		pFilter = new KVPFilterFactory().parse(filter);
 	}
 
 	private void addFatal(String message){

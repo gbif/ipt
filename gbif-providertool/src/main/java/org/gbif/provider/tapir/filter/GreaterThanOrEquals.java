@@ -1,4 +1,4 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
 public class GreaterThanOrEquals extends ComparisonBinaryOperator {
 

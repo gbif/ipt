@@ -1,4 +1,4 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

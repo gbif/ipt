@@ -12,13 +12,10 @@ import java.io.FilenameFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.tapir.Filter;
-import org.gbif.provider.tapir.FilterFactory;
-import org.gbif.provider.tapir.FilterHandler;
 import org.junit.Before;
 import org.junit.Test;
 
-public class FilterHandlerTest {
+public class KVPFilterFactoryTest {
 	Log log = LogFactory.getLog(this.getClass());
 
 	@Test
@@ -33,15 +30,16 @@ public class FilterHandlerTest {
 					return false;
 			}});		
 
-		FilterHandler fh = new FilterHandler();
+		KVPFilterFactory fh = new KVPFilterFactory();
 		for (int i=0; i<input.length; i++) {
 			try {
-				log.debug("Starting parsing of input[" + i + "]");
+				log.debug("\n\nStarting parsing of input[" + i + "]");
 				
 				FileReader fr = new FileReader(input[i]);
 				BufferedReader br = new BufferedReader(fr);
 				String filterString = br.readLine();
-				fh.parse(filterString);				
+				log.debug(filterString);
+				Filter f = fh.parse(filterString);				
 				
 				//assertEquals(expected.trim(), filter.toString());
 				log.debug("Input[" + i + "] parsed successfully");								

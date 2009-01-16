@@ -10,8 +10,6 @@ import java.io.FilenameFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.tapir.Filter;
-import org.gbif.provider.tapir.FilterFactory;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

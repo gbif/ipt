@@ -1,4 +1,4 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
 public abstract class ComparisonBinaryOperator extends ComparisonOperator{
 	protected String value;

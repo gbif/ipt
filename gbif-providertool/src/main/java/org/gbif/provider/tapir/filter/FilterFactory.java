@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
 import java.io.IOException;
 import java.io.InputStream;

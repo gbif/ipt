@@ -1,20 +1,17 @@
-package org.gbif.provider.tapir;
+package org.gbif.provider.tapir.filter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.tapir.ParseException;
 import org.gbif.provider.util.QuoteTokenizer;
 
-public class FilterHandler{
+public class KVPFilterFactory{
 	protected Log log = LogFactory.getLog(this.getClass());
 	private static final Map<String, Class> UNARY_LOP; 
 	  static  {  
@@ -55,10 +52,9 @@ public class FilterHandler{
 		  }
     // instance vars 
 	private QuoteTokenizer tokenizer;
-	private Stack<LogicalOperator> LOPstack = new Stack<LogicalOperator>();
-	private Stack<ComparisonOperator> COPstack = new Stack<ComparisonOperator>();
-	private Stack<String> tokenStack = new Stack<String>();
 	private LinkedList<String> queuedTokens = new LinkedList<String>();
+	private BooleanBlock root;
+//	private LinkedList<BooleanOperator> atoms = new LinkedList<BooleanOperator>();
 	// wrapper for the tokenizer
 	private boolean hasMoreTokens(){
 		if (queuedTokens.size()>0){
@@ -70,15 +66,33 @@ public class FilterHandler{
 		String tok;
 		if (queuedTokens.isEmpty()){
 			tok = tokenizer.nextToken();
-			System.out.println("NEW TOKEN from tokenizer: '"+tok+"'");
+			System.out.println("  new token from tokenizer: '"+tok+"'");
 		}else{
 			tok = queuedTokens.poll();
-			System.out.println("NEW TOKEN from queue: '"+tok+"'");
+			System.out.println("  new token from queue: '"+tok+"'");
 		}
 		return tok;
 	}
-	public void parse(String filter) throws ParseException{
+	public Filter parse(String filter) throws ParseException{
 		tokenizer = new QuoteTokenizer(filter," ()");
+		root = new BooleanBlock();
+		queuedTokens.clear();
+		log.debug("Preprocessing filter string into COP Atoms...");
+		resolveAtoms();
+		
+		log.debug("Resolve boolean blocks...");
+		Filter f = new Filter();
+		f.setRoot(root.resolve());
+		log.debug("Final filter: "+f.toString());
+		return f;
+	}
+	/** Resolves literals, comparison operators and tries to interpret LOP operator precedence by inserting brackets when not existing
+	 * @return List of COPs or string based tokens (,),LOP strings
+	 * @throws ParseException
+	 */
+	private void resolveAtoms() throws ParseException{
+		BooleanBlock curr = root;
+		String lastToken = null;
 		try{
 			while (hasMoreTokens()) {
 				String token;
@@ -90,31 +104,28 @@ public class FilterHandler{
 				String t = token.toLowerCase();
 				if (token.equals(" ")){
 				}else if (token.equals("(")){
-					System.out.println("Opening brackets");
+					curr = curr.openBlock();
 				}else if (token.equals(")")){
-					System.out.println("Closing brackets");
+					curr = curr.getParent();
 				}else if (UNARY_LOP.containsKey(t)){
-					try {
-						LogicalOperator lop = (LogicalOperator) UNARY_LOP.get(t).newInstance();
-						LOPstack.add(lop);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					curr.addAtom(new Not());
 				}else if (BINARY_LOPS.containsKey(t)){
-					LogicalOperator lop = (LogicalOperator) BINARY_LOPS.get(t).newInstance();
-					LOPstack.add(lop);
+					LogicalMultiOperator lop = (LogicalMultiOperator) BINARY_LOPS.get(t).newInstance();
+					curr.addAtom(lop);
 				}else if (UNARY_COP.containsKey(t)){
 					ComparisonOperator cop = (ComparisonOperator) UNARY_COP.get(t).newInstance();
 					cop.setProperty(getConcept(nextToken()));
-					COPstack.add(cop);
+					curr.addAtom(cop);
 				}else if (BINARY_COPS.containsKey(t)){
 					ComparisonBinaryOperator cop = (ComparisonBinaryOperator) BINARY_COPS.get(t).newInstance();
-					cop.setProperty(getConcept(tokenStack.pop()));
+					cop.setProperty(getConcept(lastToken));
+					lastToken=null;
 					cop.setValue(getLiteral(nextToken()));
-					COPstack.add(cop);
+					curr.addAtom(cop);
 				}else if (UNBOUND_COP.containsKey(t)){
 					In cop = new In();
-					cop.setProperty(getConcept(tokenStack.pop()));
+					cop.setProperty(getConcept(lastToken));
+					lastToken=null;
 					// the next thing is ugly but works fine... sorry, no time
 					String tok=null;
 					try{
@@ -127,41 +138,23 @@ public class FilterHandler{
 						// put the last token back on the queue, it hasnt been properly processed yet
 						queuedTokens.add(tok);
 					}
-					COPstack.add(cop);					
-				}else if (token.equals(")")){
-					System.out.println("Closing brackets");
-				}else if (token.equals(")")){
-					System.out.println("Closing brackets");
+					curr.addAtom(cop);
+				}else if(lastToken==null){
+					lastToken=token;
 				}else{
-					System.out.println("Queuing token: "+token);
-					queuedTokens.add(token);
+					// we shouldn't be here...
+					throw new ParseException("Unknown filter token: "+token);
 				}
 			} 
+		} catch (ParseException e) {
+			throw e;
 		} catch (Exception e) {
 			log.error("Filter parsing error.", e);
 		}
-		System.out.println(LOPstack);
-		System.out.println(COPstack);
-		System.out.println(tokenStack);
-		System.out.println(queuedTokens);
 	}
 	
-	private ComparisonOperator createCOP(String op, String concept, String ... values) {
-		ComparisonOperator cop = null;
-		if (UNARY_COP.containsKey(op)){
-			try {
-				cop = (ComparisonOperator) UNARY_COP.get(op).newInstance();
-				
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		return cop;
-		
-	}
-	private boolean isReserved(String token){
+	
+	private boolean isReserved(Object token){
 		if (UNARY_COP.containsKey(token) || BINARY_COPS.containsKey(token) || UNARY_LOP.containsKey(token) || BINARY_LOPS.containsKey(token) || UNBOUND_COP.containsKey(token)){
 			return true;
 		}
@@ -173,10 +166,16 @@ public class FilterHandler{
 		}
 		throw new ParseException("Literal expected, but found "+token);
 	}
-	private String getConcept(String token) throws ParseException{
+	private String getConcept(Object token) throws ParseException{
 		if (isReserved(token)){
 			throw new ParseException("Reserved word found instead of concept: "+token);
 		}
-		return token;
+		if (!(token instanceof String)){
+			throw new ParseException("Concept must be created from a string, but found: "+token.toString());
+		}
+		if (token.equals("(") || token.equals(")")){
+			throw new ParseException("Brackets found instead of concept");
+		}
+		return (String) token;
 	}
 }
