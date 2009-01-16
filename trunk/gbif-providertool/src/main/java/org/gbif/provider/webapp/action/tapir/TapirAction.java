@@ -249,6 +249,7 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	}
 	private void parseFilter() throws ParseException{
 		pFilter = new KVPFilterFactory().parse(filter);
+		extensionPropertyManager.lookupFilterProperties(pFilter, ExtensionType.Occurrence);
 	}
 
 	private void addFatal(String message){

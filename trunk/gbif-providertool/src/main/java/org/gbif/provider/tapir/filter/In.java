@@ -29,7 +29,7 @@ public class In extends ComparisonOperator{
 		return String.format("%s %s (%s)", property.getHQLName(), getOperatorSymbol(), StringUtils.join(literals, ","));
 	}
 	public String toString() {
-		return String.format("%s %s (%s)", property.getName(), getOperatorSymbol(), StringUtils.join(literals, ","));
+		return String.format("%s %s (%s)", property.getQualName(), getOperatorSymbol(), StringUtils.join(literals, ","));
 	}
 
 	protected String getOperatorSymbol() {

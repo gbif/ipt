@@ -43,6 +43,10 @@ public class KVPFilterFactoryTest {
 				
 				//assertEquals(expected.trim(), filter.toString());
 				log.debug("Input[" + i + "] parsed successfully");								
+				log.debug("HQL: "+f.toHQL());
+				for (BooleanOperator op : f){
+					System.out.println(op);
+				}
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 				fail(e.getMessage());

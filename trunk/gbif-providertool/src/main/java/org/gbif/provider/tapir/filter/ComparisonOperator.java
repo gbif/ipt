@@ -1,6 +1,10 @@
 package org.gbif.provider.tapir.filter;
 
+import java.util.Iterator;
+
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.tapir.filter.Filter.FilterIterator;
+import org.gbif.provider.util.RecursiveIterator;
 
 public abstract class ComparisonOperator extends BooleanOperator {
 	protected ExtensionProperty property;	
@@ -19,4 +23,7 @@ public abstract class ComparisonOperator extends BooleanOperator {
 	
 	protected abstract String getOperatorSymbol();
 
+	public Iterator<BooleanOperator> iterator() {
+		return new RecursiveIterator<BooleanOperator>(this);
+	}
 }
