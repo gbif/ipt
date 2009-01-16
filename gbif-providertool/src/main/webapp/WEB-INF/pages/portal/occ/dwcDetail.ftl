@@ -14,8 +14,10 @@
 
 <@s.form>
 
+<#assign recExtended=rec>
 <#assign rec=dwc>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
+<#assign rec=recExtended>
 
 
 <#assign core=dwc.resource.coreMapping>
@@ -56,11 +58,11 @@
 	</table>
 </fieldset>
 
-<#list extensions as ext>
+<#list rec.getExtensions() as ext>
 <fieldset>
 	<h2>${ext.name}</h2>	
 	<table>	
-	<#list extWrapper.getExtensionRecords(ext) as eRec>
+	<#list rec.getExtensionRecords(ext) as eRec>
 		<#list eRec.properties as p>
 		 <tr>
 			<th>${p.name}</th>
