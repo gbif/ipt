@@ -33,7 +33,7 @@ public class KVPFilterFactoryTest {
 		KVPFilterFactory fh = new KVPFilterFactory();
 		for (int i=0; i<input.length; i++) {
 			try {
-				log.debug("\n\nStarting parsing of input[" + i + "]");
+				log.debug("\n\nStarting parsing of filter " + input[i].getName());
 				
 				FileReader fr = new FileReader(input[i]);
 				BufferedReader br = new BufferedReader(fr);
