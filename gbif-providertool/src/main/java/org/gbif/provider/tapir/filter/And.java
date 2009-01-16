@@ -9,15 +9,4 @@ public class And extends LogicalMultiOperator {
 	protected String getOperatorSymbol() {
 		return "and";
 	}
-
-	public boolean evaluate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String toHQL() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -1,5 +1,9 @@
 package org.gbif.provider.tapir.filter;
 
+import java.util.Iterator;
+
+import org.gbif.provider.util.RecursiveIterator;
+
 
 public class Not extends LogicalOperator {
 	private BooleanOperator op;
@@ -24,14 +28,16 @@ public class Not extends LogicalOperator {
 	public String toString(){
 		return String.format("not (%s)", op);
 	}
-
-	public boolean evaluate() {
-		// TODO Auto-generated method stub
-		return false;
+	public String toStringRecursive(){
+		return toString();
 	}
 
 	public String toHQL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "("+ op.toHQL() +")";
 	}
+	
+	public Iterator<BooleanOperator> iterator() {
+		return new RecursiveIterator<BooleanOperator>(this, op.iterator());
+	}
+
 }

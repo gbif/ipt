@@ -15,6 +15,6 @@ public class IsNull extends ComparisonOperator {
 		return String.format("%s %s", property.getHQLName(), getOperatorSymbol());
 	}
 	public String toString(){
-		return String.format("%s %s", property.getName(), getOperatorSymbol());
+		return String.format("%s %s", property.getQualName(), getOperatorSymbol());
 	}
 }

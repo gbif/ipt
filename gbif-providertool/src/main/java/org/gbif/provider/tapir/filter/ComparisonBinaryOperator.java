@@ -13,7 +13,7 @@ public abstract class ComparisonBinaryOperator extends ComparisonOperator{
 		return String.format("%s %s '%s'", property.getHQLName(), getOperatorSymbol(), value);
 	}
 	public String toString(){
-		return String.format("%s %s '%s'", property.getName(), getOperatorSymbol(), value);
+		return String.format("%s %s '%s'", property.getQualName(), getOperatorSymbol(), value);
 	}
 
 }
