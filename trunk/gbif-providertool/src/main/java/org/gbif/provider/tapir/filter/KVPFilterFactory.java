@@ -66,10 +66,8 @@ public class KVPFilterFactory{
 		String tok;
 		if (queuedTokens.isEmpty()){
 			tok = tokenizer.nextToken();
-			System.out.println("  new token from tokenizer: '"+tok+"'");
 		}else{
 			tok = queuedTokens.poll();
-			System.out.println("  new token from queue: '"+tok+"'");
 		}
 		return tok;
 	}
@@ -129,7 +127,7 @@ public class KVPFilterFactory{
 					// the next thing is ugly but works fine... sorry, no time
 					String tok=null;
 					try{
-						while (true){
+						while (hasMoreTokens()){
 							tok=nextToken();
 							cop.setValue(getLiteral(tok));							
 						}

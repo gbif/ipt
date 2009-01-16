@@ -1,0 +1,1 @@
+isnull country@dwc2 and not (not isnull country@dwc2 or FullScientificName@abcd206 like "Abies*")
