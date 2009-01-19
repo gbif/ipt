@@ -38,6 +38,7 @@ import org.gbif.provider.tapir.Severity;
 import org.gbif.provider.tapir.TapirOperation;
 import org.gbif.provider.tapir.Template;
 import org.gbif.provider.tapir.TemplateFactory;
+import org.gbif.provider.tapir.Utils;
 import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.tapir.filter.KVPFilterFactory;
 import org.gbif.provider.util.NamespaceRegistry;
@@ -81,7 +82,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
     private boolean envelope=true;
     private String model;
     private String orderby;
-    private boolean descend=false;
+    private String descend;
     // parsed stuff
     private Filter pFilter;
     // TAPIR envelope data
@@ -160,6 +161,8 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 			addError("Template URL is not valid: "+template);
 		} catch (ParseException e) {
 			addError("Template parse exception", e);
+		} catch (Exception e) {
+			addError("Unknown template exception", e);
 		}		
 	}
 	
@@ -210,6 +213,9 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 				} catch (ParseException e) {
 					addError(e.getTapirMessage());
 					return ERROR;
+				} catch (IllegalArgumentException e) {
+					addError("Request with illegal arguments submitted", e);
+					return ERROR;
 				} catch (Exception e) {
 					addError("Unknown search error", e);
 					return ERROR;
@@ -225,8 +231,21 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 
 
 	private void doSearch() {
-		//FIXME: do proper core search
-		List<DarwinCore> coreRecords = darwinCoreManager.getLatest(resource_id,0,8);
+		// parse orderby
+		List<String> concepts = splitMultiValueParameter(orderby);
+		List<String> descending = splitMultiValueParameter(descend);
+		int i = 0;
+		for (String c : concepts){
+			ExtensionProperty p = getProperty(c);
+			Boolean desc=false;
+			if (!descending.isEmpty() && descending.size()>i){
+				desc  = Utils.isTrue(descending.get(i));
+			}
+			orderByProperties.put(p,desc);
+		}
+		
+		// search
+		List<DarwinCore> coreRecords = darwinCoreManager.search(resource_id,pFilter,start,limit);
 		records = extensionRecordManager.extendCoreRecords(resource, coreRecords.toArray(new CoreRecord[coreRecords.size()]));
 	}
 
@@ -259,16 +278,12 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		int i = 0;
 		for (String c : concepts){
 			ExtensionProperty p = getProperty(c);
-			if (p!=null){
-				log.debug("Found inventory concept "+c);
-				String tag = "value";
-				if (!tagnames.isEmpty() && tagnames.size()>i){
-					tag  = tagnames.get(i);
-				}
-				inventoryProperties.put(p, tag);
-			}else{
-				addWarning(String.format("Concept %s unknown", c));
+			log.debug("Found inventory concept "+c);
+			String tag = "value";
+			if (!tagnames.isEmpty() && tagnames.size()>i){
+				tag  = tagnames.get(i);
 			}
+			inventoryProperties.put(p, tag);
 			i++;
 		}
 		// get data
@@ -296,6 +311,10 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		addFatal("Resource unknown");
 		return false;
 	}
+	/**Looks up an occurrence property for a given Concept string, looking up qualified names before aliases.
+	 * @param c
+	 * @return guaranteed to return an instance and never null
+	 */
 	private ExtensionProperty getProperty(String c) {
 		ExtensionProperty p=null;
 		Matcher m = conceptAliasPattern.matcher(c);
@@ -307,6 +326,9 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 				// still not found. Try to find by name only
 				p = extensionPropertyManager.getByName(c, ExtensionType.Occurrence);
 			}
+		}
+		if (p==null){
+			throw new IllegalArgumentException("Requested concept unknown: "+c);
 		}
 		return p;
 	}
@@ -493,13 +515,13 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		this.orderby = orderby;
 	}
 
-	public boolean getDescend() {
+	public String getDescend() {
 		return descend;
 	}
-	public void setDescend(boolean descend) {
+	public void setDescend(String descend) {
 		this.descend = descend;
 	}
-	public void setD(boolean descend) {
+	public void setD(String descend) {
 		this.descend = descend;
 	}
 
