@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.Map;
 
 public class TemplateFactory {
-	public static Template buildTemplate(URL templateURL, Map<String, String> requestParameters){
+	public static Template buildTemplate(URL templateURL, Map<String, String> requestParameters) throws ParseException{
 		return null;
 	}
 }
