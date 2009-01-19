@@ -146,6 +146,10 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     	String filterHQL = "";
     	if (filter !=null){
     		filterHQL = filter.toHQL();
+    		if (StringUtils.trimToNull(filterHQL)!=null){
+    			filterHQL = " and "+filterHQL;
+    			log.debug("Using HQL filter: "+filterHQL);
+    		}
     	}
     	//FIXME: loop through results and instantiate ValueListCount manually
     	String hql = String.format("select new List(count(*), %s) from %s WHERE deleted=false and resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
@@ -175,6 +179,10 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     	String filterHQL = "";
     	if (filter !=null){
     		filterHQL = filter.toHQL();
+    		if (StringUtils.trimToNull(filterHQL)!=null){
+    			filterHQL = " and "+filterHQL;
+    			log.debug("Using HQL filter: "+filterHQL);
+    		}
     	}
         return query(String.format("from %s WHERE deleted=false and resource.id = :resourceId %s ORDER BY id", persistentClass.getSimpleName(), filterHQL))
         .setLong("resourceId", resourceId)
