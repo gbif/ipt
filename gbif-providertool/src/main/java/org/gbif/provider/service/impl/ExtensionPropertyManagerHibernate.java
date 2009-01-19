@@ -6,6 +6,8 @@ import java.util.Set;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionPropertyManager;
+import org.gbif.provider.tapir.ParseException;
+import org.gbif.provider.tapir.TapirException;
 import org.gbif.provider.tapir.filter.BooleanOperator;
 import org.gbif.provider.tapir.filter.ComparisonOperator;
 import org.gbif.provider.tapir.filter.Filter;
@@ -31,13 +33,22 @@ public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<E
 		.uniqueResult();
 	}
 
-	public Set<ExtensionProperty> lookupFilterProperties(Filter filter, ExtensionType type) {
+	public Set<ExtensionProperty> lookupFilterProperties(Filter filter, ExtensionType type) throws ParseException{
 		Set<ExtensionProperty> props = new HashSet<ExtensionProperty>();
 		for (BooleanOperator op : filter){
 			if (ComparisonOperator.class.isAssignableFrom(op.getClass())){
 				ComparisonOperator cop = (ComparisonOperator)op;
 				ExtensionProperty prop = cop.getProperty();
+				// try to lookup by qualname
 				ExtensionProperty persistentProp = this.getByQualName(prop.getQualName(), type);
+				if (persistentProp==null){
+					// nothing found? then try via alias name
+					persistentProp = this.getByName(prop.getName(), type);
+				}				
+				if (persistentProp==null){
+					// still nothing found? cant deal with this filter then. throw exception
+					throw new ParseException("Filter contains the unknown concept "+prop.getQualName());
+				}				
 				cop.setProperty(persistentProp);
 				props.add(persistentProp);
 			}

@@ -14,7 +14,9 @@ public abstract class ComparisonOperator extends BooleanOperator {
 	}
 	public void setProperty(ExtensionProperty property) {
 		log.debug("Setting property to: " + property.getQualName());
-		property.setName(property.getQualName());
+		if (property.getName()==null){
+			property.setName(property.getQualName());
+		}
 		this.property = property;
 	}
 	public void setProperty(String propertyAsString) {

@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.voc.ExtensionType;
+import org.gbif.provider.tapir.ParseException;
+import org.gbif.provider.tapir.TapirException;
 import org.gbif.provider.tapir.filter.Filter;
 
 public interface ExtensionPropertyManager extends GenericManager<ExtensionProperty>{
@@ -34,6 +36,7 @@ public interface ExtensionPropertyManager extends GenericManager<ExtensionProper
 	 * @param filter the filter to iterate through. Properties will be replaced in this object
 	 * @param type the type of (core) extension to narrow down qualified name to extension property "homonyms"
 	 * @return
+	 * @throws ParseException 
 	 */
-	public Set<ExtensionProperty> lookupFilterProperties(Filter filter, ExtensionType type);
+	public Set<ExtensionProperty> lookupFilterProperties(Filter filter, ExtensionType type) throws ParseException;
 }
