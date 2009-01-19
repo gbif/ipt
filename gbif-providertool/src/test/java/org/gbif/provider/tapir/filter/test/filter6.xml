@@ -11,7 +11,7 @@
     <not>
       <equals> 
         <concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
-        <parameter name="tim"/> 
+        <literal value="tim"/> 
       </equals> 
     </not>
   </and> 
