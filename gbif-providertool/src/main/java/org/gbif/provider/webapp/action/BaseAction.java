@@ -67,6 +67,9 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 		return map;
 	}
 	protected List<String> splitMultiValueParameter(String value){
+		if (value==null){
+			return new ArrayList<String>();
+		}
 		String[] paras = StringUtils.split(value, ", ");
 		return Arrays.asList(paras);
 	}
