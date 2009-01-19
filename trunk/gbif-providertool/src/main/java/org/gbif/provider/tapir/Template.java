@@ -1,5 +1,6 @@
 package org.gbif.provider.tapir;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +13,10 @@ public class Template {
 	private Filter filter;
 	// key   = inventoryTemplate/concepts/concept/@id
 	// value = inventoryTemplate/concepts/concept/@tagName
-	private Map<String, String> concepts;
+	private LinkedHashMap<String, String> concepts;
 	// key   = searchTemplate/orderBy/concept/@id
 	// value = searchTemplate/orderBy/concept/@descend
-	private Map<String, Boolean> orderBy;
+	private LinkedHashMap<String, Boolean> orderBy;
 	// only for searches
 	// searchTemplate/externalOutputModel/@location
 	private String model;
@@ -39,16 +40,16 @@ public class Template {
 	public void setOperation(TapirOperation operation) {
 		this.operation = operation;
 	}
-	public Map<String, String> getConcepts() {
+	public LinkedHashMap<String, String> getConcepts() {
 		return concepts;
 	}
-	public void setConcepts(Map<String, String> concepts) {
+	public void setConcepts(LinkedHashMap<String, String> concepts) {
 		this.concepts = concepts;
 	}
-	public Map<String, Boolean> getOrderBy() {
+	public LinkedHashMap<String, Boolean> getOrderBy() {
 		return orderBy;
 	}
-	public void setOrderBy(Map<String, Boolean> orderBy) {
+	public void setOrderBy(LinkedHashMap<String, Boolean> orderBy) {
 		this.orderBy = orderBy;
 	}
 	
