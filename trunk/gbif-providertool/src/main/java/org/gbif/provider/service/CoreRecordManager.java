@@ -57,6 +57,8 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
 	List<T> getLatest(Long resourceId, int startPage, int pageSize);
 
 	public List<ValueListCount> inventory(Long resourceId, List<ExtensionProperty> properties, Filter filter, int start, int limit);
+	public int inventoryCount(Long resourceId, List<ExtensionProperty> properties, Filter filter);
 	public List<T> search(Long resourceId, Filter filter, int start, int limit);
+	public int searchCount(Long resourceId, Filter filter);
 
 }

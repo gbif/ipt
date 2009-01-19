@@ -21,7 +21,7 @@
   </#list>
   </record>
  </#list>
- <summary start="${start}" <#if (limit=values?size)> next="${start+limit+1}"</#if> totalReturned="${values?size}"<#if totalMatched??> totalMatched="${totalMatched}"</#if>/>
+ <summary start="${start?c}" <#if (next>0)> next="${next?c}"</#if> totalReturned="${values?size?c}"<#if totalMatched??> totalMatched="${totalMatched?c}"</#if>/>
 </#escape>
 </inventory>
 <#if envelope>

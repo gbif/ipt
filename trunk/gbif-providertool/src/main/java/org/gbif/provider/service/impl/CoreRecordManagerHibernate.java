@@ -143,15 +143,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     public List<ValueListCount> inventory(Long resourceId, List<ExtensionProperty> properties, Filter filter, int start, int limit) {
     	List<ValueListCount> values = new ArrayList<ValueListCount>();
     	String selectHQL = buildSelect(properties);
-    	String filterHQL = "";
-    	if (filter !=null){
-    		filterHQL = filter.toHQL();
-    		if (StringUtils.trimToNull(filterHQL)!=null){
-    			filterHQL = " and "+filterHQL;
-    			log.debug("Using HQL filter: "+filterHQL);
-    		}
-    	}
-    	//FIXME: loop through results and instantiate ValueListCount manually
+    	String filterHQL = buildHqlFilter(filter);
     	String hql = String.format("select new List(count(*), %s) from %s WHERE deleted=false and resource.id = :resourceId %s group by %s  ORDER BY %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL, selectHQL);
         List<List<Object>> rows = query(hql)
 	        .setLong("resourceId", resourceId)
@@ -163,6 +155,15 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
         }
         return values;
 	}
+
+	public int inventoryCount(Long resourceId, List<ExtensionProperty> properties, Filter filter) {
+    	String selectHQL = buildSelect(properties);
+    	String filterHQL = buildHqlFilter(filter);
+        return ((Long) query(String.format("select count(%s) from %s WHERE deleted=false and resource.id = :resourceId %s group by %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL))
+        	.setLong("resourceId", resourceId)
+	        .iterate().next() ).intValue();
+	}
+    
     private String buildSelect(List<ExtensionProperty> properties){
     	List<String> props = new ArrayList<String>();
     	for (ExtensionProperty prop : properties){
@@ -176,14 +177,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
     
     // TAPIR related search
 	public List<T> search(Long resourceId, Filter filter, int start, int limit) {
-    	String filterHQL = "";
-    	if (filter !=null){
-    		filterHQL = filter.toHQL();
-    		if (StringUtils.trimToNull(filterHQL)!=null){
-    			filterHQL = " and "+filterHQL;
-    			log.debug("Using HQL filter: "+filterHQL);
-    		}
-    	}
+    	String filterHQL = buildHqlFilter(filter);
         return query(String.format("from %s WHERE deleted=false and resource.id = :resourceId %s ORDER BY id", persistentClass.getSimpleName(), filterHQL))
         .setLong("resourceId", resourceId)
         .setFirstResult(start)
@@ -191,4 +185,22 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 		.list();
 	}
 
+	public int searchCount(Long resourceId, Filter filter) {
+    	String filterHQL = buildHqlFilter(filter);
+        return ((Long) query(String.format("select count(*) from %s WHERE deleted=false and resource.id = :resourceId %s", persistentClass.getSimpleName(), filterHQL))
+        	.setLong("resourceId", resourceId)
+	        .iterate().next() ).intValue();
+	}
+
+	private String buildHqlFilter(Filter f){
+    	String filterHQL = "";
+    	if (f !=null){
+    		filterHQL = f.toHQL();
+    		if (StringUtils.trimToNull(filterHQL)!=null){
+    			filterHQL = " and "+filterHQL;
+    			log.debug("Using HQL filter: "+filterHQL);
+    		}
+    	}
+    	return filterHQL;
+	}
 }

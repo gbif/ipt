@@ -14,7 +14,7 @@
 	<#include "/WEB-INF/pages/tapir/model/dwc.ftl">  
    </#list>
  </records>
- <summary start="${start}" <#if (limit=records?size)> next="${start+limit+1}"</#if> totalReturned="${records?size}"<#if totalMatched??> totalMatched="${totalMatched}"</#if>/>
+ <summary start="${start?c}" <#if (next>0)> next="${next?c}"</#if> totalReturned="${records?size?c}"<#if totalMatched??> totalMatched="${totalMatched?c}"</#if>/>
 </#escape>
 </search>
 <#if envelope>
