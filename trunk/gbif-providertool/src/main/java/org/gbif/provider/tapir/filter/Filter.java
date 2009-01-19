@@ -50,7 +50,7 @@ public class Filter implements Iterable<BooleanOperator>{
 	}
 	
 	// needed due to the Digester based parsing
-	public void addOperand(LogicalOperator operand) {
+	public void addOperand(BooleanOperator operand) {
 	}
 
 	class FilterIterator implements Iterator<BooleanOperator>{

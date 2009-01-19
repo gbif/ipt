@@ -1,1 +1,1 @@
-http://wixner.org/friend/count is null
+Filter: http://wixner.org/friend/count is null

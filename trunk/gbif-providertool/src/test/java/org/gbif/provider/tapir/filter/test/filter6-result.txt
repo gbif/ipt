@@ -1,1 +1,1 @@
-http://rs.tdwg.org/dwc/dwcore/ScientificName >= 'lower' and http://rs.tdwg.org/dwc/dwcore/ScientificName <= 'upper' and not (http://rs.tdwg.org/dwc/dwcore/ScientificName = 'tim')
+Filter: AND: http://rs.tdwg.org/dwc/dwcore/ScientificName >= 'lower' and http://rs.tdwg.org/dwc/dwcore/ScientificName <= 'upper' and not (http://rs.tdwg.org/dwc/dwcore/ScientificName = 'tim')
