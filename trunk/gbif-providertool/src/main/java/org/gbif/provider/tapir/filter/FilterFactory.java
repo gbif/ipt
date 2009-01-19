@@ -5,6 +5,8 @@ package org.gbif.provider.tapir.filter;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
@@ -16,6 +18,11 @@ import org.xml.sax.SAXException;
  */
 public class FilterFactory {
 	public static Filter build(InputStream xml) throws IOException, SAXException {
+		return build(xml, new HashMap<String, String[]>());
+	}
+	
+	
+	public static Filter build(InputStream xml, Map<String, String[]> params) throws IOException, SAXException {
 		Digester digester = new Digester();
 		Filter filter = new Filter();
 		
@@ -43,8 +50,10 @@ public class FilterFactory {
 		digester.addCallMethod("*/concept", "setProperty", 1);
 		digester.addCallParam("*/concept", 0, "id");
 		
-		digester.addCallMethod("*/parameter", "setValue", 1);
-		digester.addCallParam("*/parameter", 0, "name");
+		
+		digester.addCallMethod("*/parameter", "setValue", 2, new Class[]{Map.class, String.class});
+		digester.addObjectParam("*/parameter", 0, params);
+		digester.addCallParam("*/parameter", 1, "name");
 		
 		digester.addCallMethod("*/literal", "setValue", 1);
 		digester.addCallParam("*/literal", 0, "value");

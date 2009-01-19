@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +48,10 @@ public class FilterFactoryTest {
 				log.debug("Starting parsing of input[" + i + "]");
 				
 				FileInputStream inputFIS = new FileInputStream(input[i]);
-				Filter filter = FilterFactory.build(inputFIS);
+				Map<String, String[]> params = new HashMap<String, String[]>();
+				params.put("lower", new String[]{"Aus"});
+				params.put("upper", new String[]{"Bus"});
+				Filter filter = FilterFactory.build(inputFIS, params);
 				FileReader fr = new FileReader(output[i]);
 				BufferedReader br = new BufferedReader(fr);
 				String expected = br.readLine();
