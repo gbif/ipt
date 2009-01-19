@@ -18,6 +18,7 @@ package org.gbif.provider.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 
 
 	public List<T> search(final Long resourceId, final String q) {
-	     return null;
+	     return new LinkedList<T>();
 	}
 
 	public List<T> getLatest(Long resourceId, int startPage, int pageSize) {

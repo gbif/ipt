@@ -16,15 +16,9 @@
 
 package org.gbif.provider.webapp.action;
 
-import org.appfuse.model.User;
-import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
 
 public class BaseOccurrenceResourceAction extends BaseResourceAction<OccurrenceResource>{
     protected OccResourceManager occResourceManager;

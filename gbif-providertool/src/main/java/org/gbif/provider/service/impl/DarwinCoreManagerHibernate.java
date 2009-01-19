@@ -1,10 +1,25 @@
 package org.gbif.provider.service.impl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.EntityExistsException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TopDocCollector;
+import org.apache.lucene.search.WildcardQuery;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Point;
@@ -13,6 +28,9 @@ import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DarwinCoreManager;
+import org.gbif.provider.service.FullTextSearchManager;
+import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.CSVReader;
 import org.hibernate.Query;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +45,9 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 	
 	@Autowired
 	private AnnotationManager annotationManager;
+	
+	@Autowired
+	protected FullTextSearchManager fullTextSearchManager;	
 	
 	public DarwinCoreManagerHibernate() {
 		super(DarwinCore.class);
@@ -130,5 +151,17 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public List<DarwinCore> search(Long resourceId, String q) {
+		List<Long> ids = fullTextSearchManager.search(resourceId, q);
+		List<DarwinCore> results = new LinkedList<DarwinCore>();
+	    for (Long id : ids) {
+			DarwinCore dwc = get(id);
+			log.debug("Adding record[" + id+ "] to results.  DwC.GUID[" + dwc.getGuid() + "]");
+		    results.add(dwc);
+	    }		    
+	    return results;
 	}
 }

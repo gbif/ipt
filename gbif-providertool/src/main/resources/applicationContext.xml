@@ -160,10 +160,7 @@
     </bean>
 	
 	<!-- All tasks are non-singleton (prototype) -->
-	<bean abstract="true" name="baseImportTask" scope="prototype">
-		<property name="fullTextSearchManager" ref="fullTextSearchManager"/>
-	</bean>
-    <bean id="occUploadTask" parent="baseImportTask" class="org.gbif.provider.task.OccUploadTask" />
-    <bean id="checklistUploadTask" parent="baseImportTask" class="org.gbif.provider.task.ChecklistUploadTask" />
+    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
     
 </beans>
