@@ -1,1 +1,1 @@
-http://rs.tdwg.org/dwc/dwcore/ScientificName >= 'lower'
+Filter: http://rs.tdwg.org/dwc/dwcore/ScientificName >= 'lower'
