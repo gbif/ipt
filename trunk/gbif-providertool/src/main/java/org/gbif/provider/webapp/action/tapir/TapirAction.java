@@ -75,6 +75,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
     private boolean count=false;
     private int start=0;
     private int limit=100;
+    private int next=-1;
     private String template;
     private String concept;
     private String tagname;
@@ -129,7 +130,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 			} catch (ParseException e) {
 				addError(e.getTapirMessage());
 			} catch (IllegalArgumentException e) {
-				addError("Invalid request with illegal arguments submitted", e);
+				//addError("Invalid request with illegal arguments submitted", e);
 			} catch (Exception e) {
 				addError("Unknown error", e);
 			}
@@ -220,6 +221,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 			if (model.equalsIgnoreCase(MODEL_LOCATION) || model.equalsIgnoreCase(MODEL_ALIAS)){
 				parseFilter();
 				doSearch();
+				setNext();			
 				return SEARCH;
 			}
 			addFatal("The requested output model is not supported");
@@ -260,6 +262,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		values = new ArrayList<ValueListCount>();
 		parseFilter();
 		doInventory();
+		setNext();			
 		return INVENTORY;
 	}
 	private void doInventory() {
@@ -446,11 +449,18 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		this.limit = limit;
 	}
 
-	public int getNext() {
-		if (limit==records.size()){
-			return start+limit;
+	public void setNext() {
+		next = start+limit;
+		if (count){
+			if(totalMatched<=next){
+				next = -1;				
+			}
+		}else if (limit>records.size()){
+			next = -1;
 		}
-		return -1;
+	}
+	public int getNext() {
+		return next;
 	}
 
 	public String getTemplate() {
