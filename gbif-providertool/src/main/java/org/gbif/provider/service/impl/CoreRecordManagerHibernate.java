@@ -159,9 +159,11 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	public int inventoryCount(Long resourceId, List<ExtensionProperty> properties, Filter filter) {
     	String selectHQL = buildSelect(properties);
     	String filterHQL = buildHqlFilter(filter);
-        return ((Long) query(String.format("select count(%s) from %s WHERE deleted=false and resource.id = :resourceId %s group by %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL))
+    	//FIXME: no idea how to count this through hibernate...	
+    	List<List<Object>> rows = query(String.format("select new List(%s) from %s WHERE deleted=false and resource.id = :resourceId %s group by %s", selectHQL, persistentClass.getSimpleName(), filterHQL, selectHQL))
         	.setLong("resourceId", resourceId)
-	        .iterate().next() ).intValue();
+	        .list();
+        return rows.size();
 	}
     
     private String buildSelect(List<ExtensionProperty> properties){
