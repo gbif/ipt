@@ -1,6 +1,7 @@
 package org.gbif.provider.tapir;
 
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.tapir.filter.Filter;
 
@@ -9,10 +10,12 @@ public class Template {
 	private TapirOperation operation;
 	// */filter
 	private Filter filter;
-	// inventoryTemplate/concepts
-	//  or
-	// searchTemplate/orderBy/concept
-	private List<String> concepts;
+	// key   = inventoryTemplate/concepts/concept/@id
+	// value = inventoryTemplate/concepts/concept/@tagName
+	private Map<String, String> concepts;
+	// key   = searchTemplate/orderBy/concept/@id
+	// value = searchTemplate/orderBy/concept/@descend
+	private Map<String, Boolean> orderBy;
 	// only for searches
 	// searchTemplate/externalOutputModel/@location
 	private String model;
@@ -36,10 +39,17 @@ public class Template {
 	public void setOperation(TapirOperation operation) {
 		this.operation = operation;
 	}
-	public List<String> getConcepts() {
+	public Map<String, String> getConcepts() {
 		return concepts;
 	}
-	public void setConcepts(List<String> concepts) {
+	public void setConcepts(Map<String, String> concepts) {
 		this.concepts = concepts;
 	}
+	public Map<String, Boolean> getOrderBy() {
+		return orderBy;
+	}
+	public void setOrderBy(Map<String, Boolean> orderBy) {
+		this.orderBy = orderBy;
+	}
+	
 }
