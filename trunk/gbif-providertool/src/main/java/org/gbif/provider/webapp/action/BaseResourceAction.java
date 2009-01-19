@@ -22,20 +22,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
-import org.appfuse.model.User;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
 
 public class BaseResourceAction<T extends Resource> extends BaseAction implements SessionAware{
 	private static final long serialVersionUID = 1643640896L;

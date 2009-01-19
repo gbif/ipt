@@ -65,7 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
 		
 		// managers
 		@Autowired
-		private FullTextSearchManager fullTextSearchManager;
+		protected FullTextSearchManager fullTextSearchManager;
 		@Autowired
 		private ImportSourceFactory importSourceFactory;
 		@Autowired

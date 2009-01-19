@@ -2,6 +2,7 @@ package org.gbif.provider.webapp.action.portal;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.model.DarwinCore;
@@ -24,8 +25,10 @@ public class DwcAction extends BaseOccurrenceResourceAction {
     private DarwinCore dwc;
     private ExtendedRecord rec;
     private String format;
+    private String q;
     private NamespaceRegistry nsr;
     private Map<Object, Object> json;
+    private List<DarwinCore> occurrences;
 	@Autowired
 	private AppConfig cfg;
 	 
@@ -61,7 +64,11 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 		}
     }
     
-
+	public String search() {
+		super.prepare();
+		occurrences = darwinCoreManager.search(resource_id, q);
+		return SUCCESS;
+	}
 
 
 	public String getGuid() {
@@ -101,5 +108,20 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	public ExtendedRecord getRec() {
 		return rec;
 	}
-	
+
+	public String getQ() {
+		return q;
+	}
+
+	public void setQ(String q) {
+		this.q = q;
+	}
+
+	public List<DarwinCore> getOccurrences() {
+		return occurrences;
+	}
+
+	public void setOccurrences(List<DarwinCore> occurrences) {
+		this.occurrences = occurrences;
+	}
 }
