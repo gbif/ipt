@@ -417,11 +417,11 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	public boolean getCount() {
 		return count;
 	}
-	public void setCount(boolean count) {
-		this.count = count;
+	public void setCount(String count) {
+		this.count = Utils.isTrue(count);
 	}
-	public void setCnt(boolean count) {
-		this.count = count;
+	public void setCnt(String count) {
+		this.count = Utils.isTrue(count);
 	}
 
 	public int getStart() {
@@ -488,11 +488,11 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	public boolean getEnvelope() {
 		return envelope;
 	}
-	public void setEnvelope(boolean envelope) {
-		this.envelope = envelope;
+	public void setEnvelope(String envelope) {
+		this.envelope = Utils.isTrue(envelope);
 	}
-	public void setE(boolean envelope) {
-		this.envelope = envelope;
+	public void setE(String envelope) {
+		this.envelope = Utils.isTrue(envelope);
 	}
 
 	public String getModel() {

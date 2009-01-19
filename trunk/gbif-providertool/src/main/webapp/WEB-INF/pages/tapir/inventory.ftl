@@ -1,8 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <#if envelope>
-<#include "/WEB-INF/pages/tapir/header.ftl">  
+ <#include "/WEB-INF/pages/tapir/header.ftl">  
+ <inventory>
+<#else>
+ <inventory ${nsr.xmlnsDef()}>  
 </#if>
 <#escape x as x?xml>
-<inventory>
  <concepts>
  <#assign properties = inventoryProperties?keys>
  <#assign tags = inventoryProperties?values>
@@ -17,9 +21,9 @@
   </#list>
   </record>
  </#list>
- <summary start="${start}" <#if (limit=values?size)> next="${start+limit+1}"</#if> totalReturned="${values?size}" totalMatched="${totalMatched!-1}"/>
-</inventory>
+ <summary start="${start}" <#if (limit=values?size)> next="${start+limit+1}"</#if> totalReturned="${values?size}"<#if totalMatched??> totalMatched="${totalMatched}"</#if>/>
 </#escape>
+</inventory>
 <#if envelope>
-<#include "/WEB-INF/pages/tapir/footer.ftl">  
+ <#include "/WEB-INF/pages/tapir/footer.ftl">  
 </#if>
