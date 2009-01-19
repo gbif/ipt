@@ -18,14 +18,14 @@ public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<E
 
 	public ExtensionProperty getByQualName(String qName, ExtensionType type) {
 		// FROM ExtensionProperty p WHERE p.qualName=:qName and (p.type=:type or (p.type is null and p.extension.id=:coreId))
-		return (ExtensionProperty) getSession().createQuery("FROM ExtensionProperty p WHERE p.qualName=:qName and p.extension.type is null and p.extension.id=:coreId) ")
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.qualName=:qName and e.type is null and e.id=:coreId) ")
 		.setParameter("qName", qName)
 		.setLong("coreId", type.extensionID)
 		.uniqueResult();
 	}
 
 	public ExtensionProperty getByName(String name, ExtensionType type) {
-		return (ExtensionProperty) getSession().createQuery("FROM ExtensionProperty p WHERE p.name=:name and p.type is null and p.extension.id=:coreId) ")
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and e.type is null and e.id=:coreId) ")
 		.setParameter("name", name)
 		.setLong("coreId", type.extensionID)
 		.uniqueResult();

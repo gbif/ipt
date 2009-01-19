@@ -1,4 +1,6 @@
+<#if envelope>
 <#include "/WEB-INF/pages/tapir/header.ftl">  
+</#if>
 <#assign core=resource.coreMapping>
 <#assign declareNamespace=false>
 <#escape x as x?xml>
@@ -10,4 +12,6 @@
  </records>
 </search>
 </#escape>
+<#if envelope>
 <#include "/WEB-INF/pages/tapir/footer.ftl">  
+</#if>
