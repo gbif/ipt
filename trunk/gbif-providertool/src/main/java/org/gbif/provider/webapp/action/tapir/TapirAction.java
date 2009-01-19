@@ -3,17 +3,23 @@ package org.gbif.provider.webapp.action.tapir;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.ExtensionProperty;
@@ -29,13 +35,16 @@ import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.tapir.Diagnostic;
 import org.gbif.provider.tapir.ParseException;
 import org.gbif.provider.tapir.Severity;
+import org.gbif.provider.tapir.TapirOperation;
+import org.gbif.provider.tapir.Template;
+import org.gbif.provider.tapir.TemplateFactory;
 import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.tapir.filter.KVPFilterFactory;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TapirAction extends BaseOccurrenceResourceAction{
+public class TapirAction extends BaseOccurrenceResourceAction implements ServletRequestAware{
 	private static final String ERROR = "error";
 	private static final String PING = "ping";
 	private static final String CAPABILITIES = "capabilities";
@@ -58,20 +67,21 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	
     // just in case of fatal errors
     private String error="unknown fatal error";
+	private HttpServletRequest request;
     // request parameters
     // aliases: 'operation':'op', 'cnt':'count', 's':'start', 'l':'limit', 't':'template', 'c':'concept', 'n':'tagname', 'f':'filter', 'e':'envelope', 'm':'model', 'p':'partial', 'o':'orderby', 'd':'descend'
     private String op="m";
-    private Boolean count=false;
-    private Integer start=0;
-    private Integer limit=100;
+    private boolean count=false;
+    private int start=0;
+    private int limit=100;
     private String template;
     private String concept;
     private String tagname;
     private String filter;
-    private Boolean envelope=true;
+    private boolean envelope=true;
     private String model;
     private String orderby;
-    private Boolean descend=false;
+    private boolean descend=false;
     // parsed stuff
     private Filter pFilter;
     // TAPIR envelope data
@@ -84,9 +94,10 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	// METADATA only
     private Eml eml;    
     // INVENTORY only
-    private List<ExtensionProperty> properties;
+    private LinkedHashMap<ExtensionProperty, String> inventoryProperties = new LinkedHashMap<ExtensionProperty, String>(); // value=tagname
     private List<ValueListCount> values;
     // SEARCH only
+    private LinkedHashMap<ExtensionProperty, Boolean> orderByProperties = new LinkedHashMap<ExtensionProperty, Boolean>(); // value=descend
     private List<ExtendedRecord> records;
     // SUMMARY
     private Integer totalMatched;
@@ -98,7 +109,12 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	    if (!loadResource()){
 			return ERROR;
 	    }
-    	if (op.startsWith("c")){
+	    // template overwrites request and sets defaults.
+		if (StringUtils.trimToNull(template)!=null){
+			readTemplate();
+		}
+		// process operation
+		if (op.startsWith("c")){
     		return capabilities();
     	}else if (op.startsWith("m")){
     		return metadata();
@@ -111,6 +127,42 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     		return metadata();
     	}
     }
+    
+	private void readTemplate() {
+		try {
+			Template tmpl = TemplateFactory.buildTemplate(new URL(template), request.getParameterMap());
+			if (tmpl.getOperation().equals(TapirOperation.search)){
+				op="s";
+				pFilter=tmpl.getFilter();
+				Map<String,Boolean> orby = tmpl.getOrderBy();
+				if (!orby.isEmpty()){
+					orderByProperties.clear();
+					for (String c : orby.keySet()){
+						ExtensionProperty p = getProperty(c);
+						orderByProperties.put(p,orby.get(c));
+					}
+				}
+			}else if (tmpl.getOperation().equals(TapirOperation.inventory)){
+				op="i";
+				pFilter=tmpl.getFilter();
+				Map<String,String> invProps = tmpl.getConcepts();
+				if (!invProps.isEmpty()){
+					inventoryProperties.clear();
+					for (String c : invProps.keySet()){
+						ExtensionProperty p = getProperty(c);
+						inventoryProperties.put(p,invProps.get(c));
+					}
+				}
+			}else{
+				addError("Template defines neither a search nor an inventory");
+			}
+		} catch (MalformedURLException e) {
+			addError("Template URL is not valid: "+template);
+		} catch (ParseException e) {
+			addError("Template parse exception", e);
+		}		
+	}
+	
 	private void addMetaNamespaces(){
 		nsr.add("http://purl.org/dc/elements/1.1/");
 		nsr.add("http://rs.tdwg.org/dwc/terms/");
@@ -182,7 +234,6 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	// INVENTORY
 	//
 	private String inventory() {
-		properties = new ArrayList<ExtensionProperty>();
 		values = new ArrayList<ValueListCount>();
 		try {
 			parseFilter();
@@ -204,29 +255,27 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		}
 		// multiple concepts provided?
 		List<String> concepts = splitMultiValueParameter(concept);
+		List<String> tagnames = splitMultiValueParameter(tagname);
+		int i = 0;
 		for (String c : concepts){
-			ExtensionProperty p;
-			Matcher m = conceptAliasPattern.matcher(c);
-			if(m.find()){
-				p = extensionPropertyManager.get(Long.decode(m.group(1)));
-			}else{				
-				p = extensionPropertyManager.getByQualName(c, ExtensionType.Occurrence);
-				if (p==null){
-					// still not found. Try to find by name only
-					p = extensionPropertyManager.getByName(c, ExtensionType.Occurrence);
-				}
-			}
+			ExtensionProperty p = getProperty(c);
 			if (p!=null){
-				properties.add(p);
+				log.debug("Found inventory concept "+c);
+				String tag = "value";
+				if (!tagnames.isEmpty() && tagnames.size()>i){
+					tag  = tagnames.get(i);
+				}
+				inventoryProperties.put(p, tag);
 			}else{
 				addWarning(String.format("Concept %s unknown", c));
 			}
+			i++;
 		}
 		// get data
-		if (properties.isEmpty()){
+		if (inventoryProperties.isEmpty()){
 			addError("No known concepts requested to do inventory");
 		}else{
-			values = darwinCoreManager.inventory(resource_id, properties, pFilter, start, limit);
+			values = darwinCoreManager.inventory(resource_id, new ArrayList<ExtensionProperty>(inventoryProperties.keySet()), pFilter, start, limit);
 		}
 	}
 
@@ -247,8 +296,23 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		addFatal("Resource unknown");
 		return false;
 	}
+	private ExtensionProperty getProperty(String c) {
+		ExtensionProperty p=null;
+		Matcher m = conceptAliasPattern.matcher(c);
+		if(m.find()){
+			p = extensionPropertyManager.get(Long.decode(m.group(1)));
+		}else{				
+			p = extensionPropertyManager.getByQualName(c, ExtensionType.Occurrence);
+			if (p==null){
+				// still not found. Try to find by name only
+				p = extensionPropertyManager.getByName(c, ExtensionType.Occurrence);
+			}
+		}
+		return p;
+	}
 	private void parseFilter() throws ParseException{
 		pFilter = new KVPFilterFactory().parse(filter);
+		log.debug("Filter created: "+pFilter.toString());
 		extensionPropertyManager.lookupFilterProperties(pFilter, ExtensionType.Occurrence);
 	}
 
@@ -328,33 +392,33 @@ public class TapirAction extends BaseOccurrenceResourceAction{
     	return MODEL_ALIAS;
     }
 
-	public Boolean getCount() {
+	public boolean getCount() {
 		return count;
 	}
-	public void setCount(Boolean count) {
+	public void setCount(boolean count) {
 		this.count = count;
 	}
-	public void setCnt(Boolean count) {
+	public void setCnt(boolean count) {
 		this.count = count;
 	}
 
-	public Integer getStart() {
+	public int getStart() {
 		return start;
 	}
-	public void setStart(Integer start) {
+	public void setStart(int start) {
 		this.start = start;
 	}
-	public void setS(Integer start) {
+	public void setS(int start) {
 		this.start = start;
 	}
 
-	public Integer getLimit() {
+	public int getLimit() {
 		return limit;
 	}
-	public void setLimit(Integer limit) {
+	public void setLimit(int limit) {
 		this.limit = limit;
 	}
-	public void setL(Integer limit) {
+	public void setL(int limit) {
 		this.limit = limit;
 	}
 
@@ -399,13 +463,13 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		this.filter = filter;
 	}
 
-	public Boolean getEnvelope() {
+	public boolean getEnvelope() {
 		return envelope;
 	}
-	public void setEnvelope(Boolean envelope) {
+	public void setEnvelope(boolean envelope) {
 		this.envelope = envelope;
 	}
-	public void setE(Boolean envelope) {
+	public void setE(boolean envelope) {
 		this.envelope = envelope;
 	}
 
@@ -429,13 +493,13 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 		this.orderby = orderby;
 	}
 
-	public Boolean getDescend() {
+	public boolean getDescend() {
 		return descend;
 	}
-	public void setDescend(Boolean descend) {
+	public void setDescend(boolean descend) {
 		this.descend = descend;
 	}
-	public void setD(Boolean descend) {
+	public void setD(boolean descend) {
 		this.descend = descend;
 	}
 
@@ -445,13 +509,17 @@ public class TapirAction extends BaseOccurrenceResourceAction{
 	public List<ValueListCount> getValues() {
 		return values;
 	}
-	public List<ExtensionProperty> getProperties() {
-		return properties;
-	}
 	public Integer getTotalMatched() {
 		return totalMatched;
 	}
 	public boolean getDeclareNamespace(){
 		return false;
 	}
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;	
+	}
+	public LinkedHashMap<ExtensionProperty, String> getInventoryProperties() {
+		return inventoryProperties;
+	}
+	
 }

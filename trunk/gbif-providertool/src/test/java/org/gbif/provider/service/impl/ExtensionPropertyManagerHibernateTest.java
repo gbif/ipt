@@ -1,6 +1,7 @@
 package org.gbif.provider.service.impl;
 
 
+import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.tapir.filter.Filter;
@@ -24,6 +25,15 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase{
 		extensionPropertyManager.lookupFilterProperties(f, ExtensionType.Occurrence);
 		System.out.println(f);
 		
+	}
+
+	@Test
+	public void testFindProperty() throws Exception {
+		ExtensionProperty p = extensionPropertyManager.getByQualName("http://rs.tdwg.org/dwc/dwcore/ScientificName", ExtensionType.Occurrence);
+		assertTrue(p!=null);
+		
+		p = extensionPropertyManager.getByName("ScientificName", ExtensionType.Occurrence);
+		assertTrue(p!=null);
 	}
 
 }
