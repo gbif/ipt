@@ -1,4 +1,8 @@
-<#include "/WEB-INF/pages/tapir/header.ftl">  
+<?xml version='1.0' encoding='utf-8'?>
+<#include "/WEB-INF/pages/inc/globalVars.ftl">  
+<#if envelope>
+ <#include "/WEB-INF/pages/tapir/header.ftl">  
+</#if>
 <#escape x as x?xml>
 <capabilities>
  <operations>
@@ -63,4 +67,6 @@
  </settings>
 </capabilities>
 </#escape>
-<#include "/WEB-INF/pages/tapir/footer.ftl">  
+<#if envelope>
+ <#include "/WEB-INF/pages/tapir/footer.ftl">  
+</#if>
