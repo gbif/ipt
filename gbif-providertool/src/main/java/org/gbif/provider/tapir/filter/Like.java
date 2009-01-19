@@ -7,6 +7,15 @@ public class Like extends ComparisonBinaryOperator {
 	}
 	
 	@Override
+	public void setValue(String value) {
+		if (value!=null){
+			// replace TAPIR wildcard with H2 wildcard
+			value = value.replace("*", "%");
+		}
+		super.setValue(value);
+	}
+
+	@Override
 	protected String getOperatorSymbol() {
 		return "like";
 	}
