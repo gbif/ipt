@@ -119,10 +119,21 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
     		return capabilities();
     	}else if (op.startsWith("m")){
     		return metadata();
-    	}else if (op.startsWith("i")){
-    		return inventory();
-    	}else if (op.startsWith("s")){
-    		return search();
+    	}else if (op.startsWith("i") || op.startsWith("s")){
+			try {
+				if (op.startsWith("i")){
+		    		return inventory();
+				}else{
+		    		return search();
+				}
+			} catch (ParseException e) {
+				addError(e.getTapirMessage());
+			} catch (IllegalArgumentException e) {
+				addError("Invalid request with illegal arguments submitted", e);
+			} catch (Exception e) {
+				addError("Unknown error", e);
+			}
+			return ERROR;
     	}else{
     		addInfo("Unknown TAPIR operation requested. Default to metadata");
     		return metadata();
@@ -200,26 +211,15 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	//
 	// INVENTORY
 	//
-	private String search() {
+	private String search() throws ParseException {
 		// check requested model
 		if (template!=null){
 			addFatal("Templates are not supported");
 			return ERROR;
 		}else if (model!=null){
 			if (model.equalsIgnoreCase(MODEL_LOCATION) || model.equalsIgnoreCase(MODEL_ALIAS)){
-				try {
-					parseFilter();
-					doSearch();
-				} catch (ParseException e) {
-					addError(e.getTapirMessage());
-					return ERROR;
-				} catch (IllegalArgumentException e) {
-					addError("Request with illegal arguments submitted", e);
-					return ERROR;
-				} catch (Exception e) {
-					addError("Unknown search error", e);
-					return ERROR;
-				}
+				parseFilter();
+				doSearch();
 				return SEARCH;
 			}
 			addFatal("The requested output model is not supported");
@@ -247,30 +247,26 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		// search
 		List<DarwinCore> coreRecords = darwinCoreManager.search(resource_id,pFilter,start,limit);
 		records = extensionRecordManager.extendCoreRecords(resource, coreRecords.toArray(new CoreRecord[coreRecords.size()]));
+		if (count){
+			totalMatched=darwinCoreManager.searchCount(resource_id, pFilter);
+			log.debug(totalMatched+" matched records found in total");
+		}
 	}
 
 	//
 	// INVENTORY
 	//
-	private String inventory() {
+	private String inventory() throws ParseException {
 		values = new ArrayList<ValueListCount>();
-		try {
-			parseFilter();
-			doInventory();
-		} catch (ParseException e) {
-			addError(e.getTapirMessage());
-			return ERROR;
-		} catch (Exception e) {
-			addError("Unknown inventory error", e);
-			return ERROR;
-		}
+		parseFilter();
+		doInventory();
 		return INVENTORY;
 	}
 	private void doInventory() {
 		concept = StringUtils.trimToNull(concept);
 		if (concept==null){
 			addError("At least one concept is required for an inventory");
-			return;
+			throw new IllegalArgumentException();
 		}
 		// multiple concepts provided?
 		List<String> concepts = splitMultiValueParameter(concept);
@@ -289,8 +285,14 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		// get data
 		if (inventoryProperties.isEmpty()){
 			addError("No known concepts requested to do inventory");
+			throw new IllegalArgumentException();
 		}else{
-			values = darwinCoreManager.inventory(resource_id, new ArrayList<ExtensionProperty>(inventoryProperties.keySet()), pFilter, start, limit);
+			List<ExtensionProperty> props = new ArrayList<ExtensionProperty>(inventoryProperties.keySet());
+			values = darwinCoreManager.inventory(resource_id, props, pFilter, start, limit);
+			if (count){
+				totalMatched=darwinCoreManager.inventoryCount(resource_id, props, pFilter);
+				log.debug(totalMatched+" matched records found in total");
+			}
 		}
 	}
 
@@ -442,6 +444,13 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	}
 	public void setL(int limit) {
 		this.limit = limit;
+	}
+
+	public int getNext() {
+		if (limit==records.size()){
+			return start+limit;
+		}
+		return -1;
 	}
 
 	public String getTemplate() {
