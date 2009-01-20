@@ -242,10 +242,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	//
 	private String search() throws ParseException {
 		// check requested model
-		if (template!=null){
-			addFatal("Templates are not supported");
-			return ERROR;
-		}else if (model!=null){
+		if (model!=null){
 			if (model.equalsIgnoreCase(MODEL_LOCATION) || model.equalsIgnoreCase(MODEL_ALIAS)){
 				parseFilter();
 				doSearch();
