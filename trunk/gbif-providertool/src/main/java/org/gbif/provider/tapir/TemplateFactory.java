@@ -119,11 +119,11 @@ public class TemplateFactory {
 		} finally {
 			try {
 				br.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 			}
 			try {
 				is.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 			}
 		}
 	}
