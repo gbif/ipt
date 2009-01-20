@@ -52,6 +52,11 @@ import org.springframework.transaction.annotation.Transactional;
 	        		.list();
 	    }
 
+	    public List<Long> getAllIds() {
+	        return query(String.format("select id from %s", persistentClass.getName()))
+    		.list();
+		}
+
 	    public List<T> getTop(int maxResults) {
 	        return query(String.format("from %s", persistentClass.getName()))
 	        		.setMaxResults(maxResults)

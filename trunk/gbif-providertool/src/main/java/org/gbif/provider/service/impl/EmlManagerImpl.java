@@ -1,5 +1,6 @@
 package org.gbif.provider.service.impl;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +28,7 @@ import org.gbif.provider.model.eml.GeoKeyword;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.XmlFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -79,7 +83,7 @@ public class EmlManagerImpl implements EmlManager{
 		// now persist EML file (resource must have ID now)
 		try {
     		File emlFile = cfg.getEmlFile(res.getId());
-	    	FileWriter writer = new FileWriter(emlFile);
+    		Writer writer = XmlFileUtils.startNewUtf8XmlFile(emlFile);
 	        xstream.toXML(eml, writer);
 	    	writer.close();
 	     }catch(IOException ex){

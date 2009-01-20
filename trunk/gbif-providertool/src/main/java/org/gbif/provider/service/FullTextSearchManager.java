@@ -31,4 +31,10 @@ public interface FullTextSearchManager {
 	 * @return List of core entity IDs
 	 */
 	public List<Long> search(Long resourceId, String q);
+	
+	/** search all resource metadata across all resources
+	 * @param q unparsed query string
+	 * @return list of resourceIds matching
+	 */
+	public List<Long> search(String q);
 }

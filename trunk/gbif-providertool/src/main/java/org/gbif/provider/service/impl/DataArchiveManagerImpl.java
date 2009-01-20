@@ -24,6 +24,10 @@ import org.gbif.provider.util.ZipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DataArchiveManagerImpl extends BaseManager implements DataArchiveManager{
+	// H2 supports tab file dumps out of the box
+	// Apart from the default CSV, it allows to override delimiters so pure tab files can be created like this:
+	// CALL CSVWRITE('/Users/markus/Desktop/test.txt', 'select id, label from taxon order by label', 'utf8', '	', '')
+	private static final String CSVWRITE = "CALL CSVWRITE('%s', '%s', 'utf8')";
 	@Autowired
 	protected AppConfig cfg;
 	@Autowired
@@ -58,23 +62,23 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		return archive;		
 	}
 	
+	
 	private File dumpOccCore(ViewCoreMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s order by id')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
-		return dumpFile(file, sql);
+		String select = String.format("SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());			
+		return dumpFile(file, select);
 	}
 	private File dumpTaxCore(ViewCoreMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
 		String select = String.format("SELECT id %s FROM taxon where resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());
 		//FIXME: hacking the dump with a hardcoded select. Not too bad, but well...
 		select = String.format("select t.ID ,t.NOMENCLATURAL_CODE ,t.LABEL ,t.RANK ,t.LOCAL_ID ,t.GUID ,t.LINK ,t.NOTES ,t.TAXONOMIC_STATUS ,t.NOMENCLATURAL_STATUS ,t.NOMENCLATURAL_REFERENCE , t.accepted_taxon_id, acc.label acceptedTaxon, t.taxonomic_parent_id,  p.label parentTaxon   from taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id   where t.resource_fk=%s order by id", view.getResourceId());		 
-		String sql = String.format("CALL CSVWRITE('%s', '%s')", file.getAbsolutePath(), select);
-		return dumpFile(file, sql);
+		return dumpFile(file, select);
 	}
 	private File dumpExtension(ViewExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT coreid %s FROM %s where resource_fk=%s order by coreid')", file.getAbsolutePath(), buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
-		return dumpFile(file, sql);
+		String select = String.format("SELECT coreid %s FROM %s where resource_fk=%s order by coreid", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
+		return dumpFile(file, select);
 	}
 	private String buildPropertySelect(ViewMappingBase view){
 		String select = "";
@@ -90,14 +94,14 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}
 		return select;
 	}
-	private File dumpFile(File file, String sql) throws IOException, SQLException{
+	private File dumpFile(File file, String select) throws IOException, SQLException{
 		if (file.exists()){
 			file.delete();
 		}
 		file.createNewFile();
 		log.debug("Created archive file "+file.getAbsolutePath());
+		String sql = String.format(CSVWRITE, file.getAbsolutePath(), select);
 		log.debug(sql);
-		// CALL CSVWRITE('test.csv', 'SELECT * FROM TEST');
 		getConnection().prepareStatement(sql).execute();
 		return file;
 	}
