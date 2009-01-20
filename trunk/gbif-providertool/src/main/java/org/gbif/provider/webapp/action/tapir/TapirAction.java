@@ -145,6 +145,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	private void readTemplate() {
 		try {
 			Template tmpl = TemplateFactory.buildTemplate(new URL(template), getSimpleParameterMap());
+			addInfo("Read TAPIR template "+template);
 			if (tmpl.getOperation().equals(TapirOperation.search)){
 				op="s";
 				model=tmpl.getModel();
