@@ -65,7 +65,10 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	}
 	private File dumpTaxCore(ViewCoreMapping view) throws IOException, SQLException{
 		File file = cfg.getDumpFile(view.getResourceId(), view.getExtension());
-		String sql = String.format("CALL CSVWRITE('%s', 'SELECT id %s FROM taxon where resource_fk=%s order by id')", file.getAbsolutePath(), buildPropertySelect(view), view.getResourceId());			
+		String select = String.format("SELECT id %s FROM taxon where resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());
+		//FIXME: hacking the dump with a hardcoded select. Not too bad, but well...
+		select = String.format("select t.ID ,t.NOMENCLATURAL_CODE ,t.LABEL ,t.RANK ,t.LOCAL_ID ,t.GUID ,t.LINK ,t.NOTES ,t.TAXONOMIC_STATUS ,t.NOMENCLATURAL_STATUS ,t.NOMENCLATURAL_REFERENCE , t.accepted_taxon_id, acc.label acceptedTaxon, t.taxonomic_parent_id,  p.label parentTaxon   from taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id   where t.resource_fk=%s order by id", view.getResourceId());		 
+		String sql = String.format("CALL CSVWRITE('%s', '%s')", file.getAbsolutePath(), select);
 		return dumpFile(file, sql);
 	}
 	private File dumpExtension(ViewExtensionMapping view) throws IOException, SQLException{

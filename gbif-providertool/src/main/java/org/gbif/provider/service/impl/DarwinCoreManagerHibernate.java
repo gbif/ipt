@@ -45,10 +45,7 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 	
 	@Autowired
 	private AnnotationManager annotationManager;
-	
-	@Autowired
-	protected FullTextSearchManager fullTextSearchManager;	
-	
+		
 	public DarwinCoreManagerHibernate() {
 		super(DarwinCore.class);
 	}
@@ -153,15 +150,4 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 		return false;
 	}
 	
-	@Override
-	public List<DarwinCore> search(Long resourceId, String q) {
-		List<Long> ids = fullTextSearchManager.search(resourceId, q);
-		List<DarwinCore> results = new LinkedList<DarwinCore>();
-	    for (Long id : ids) {
-			DarwinCore dwc = get(id);
-			log.debug("Adding record[" + id+ "] to results.  DwC.GUID[" + dwc.getGuid() + "]");
-		    results.add(dwc);
-	    }		    
-	    return results;
-	}
 }
