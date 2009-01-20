@@ -35,7 +35,7 @@ public class ZipUtil {
 				 //out.setMethod(ZipOutputStream.DEFLATED);
 				 byte data[] = new byte[BUFFER];
 				 for (File f : files) {
-				    System.out.println("Adding: "+f);
+					log.debug("Adding file "+f+" to archive");
 				    FileInputStream fi = new FileInputStream(f);
 				    origin = new BufferedInputStream(fi, BUFFER);
 				    ZipEntry entry = new ZipEntry(f.getName());

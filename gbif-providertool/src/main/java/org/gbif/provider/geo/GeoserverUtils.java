@@ -23,6 +23,7 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 public class GeoserverUtils {
+	private static final String FEATURE_TYPE_TEMPLATE = "/WEB-INF/pages/featureTypeInfo.ftl";
 	protected final Log log = LogFactory.getLog(GeoserverUtils.class);
 	@Autowired
 	private AppConfig cfg;
@@ -31,14 +32,11 @@ public class GeoserverUtils {
 	
 	public String buildFeatureTypeDescriptor(OccurrenceResource resource){
 		try {
-			System.out.println(freemarker.getSettings());
-			return FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate("featureTypeInfo.ftl"), resource);
+			return FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(FEATURE_TYPE_TEMPLATE), resource);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Freemarker IO template error", e);
 		} catch (TemplateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Freemarker template exception", e);
 		}
 		return null;
 	}

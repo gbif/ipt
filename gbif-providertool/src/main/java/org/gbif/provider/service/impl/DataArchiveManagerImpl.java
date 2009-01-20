@@ -54,7 +54,6 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}
 		// zip archive
 		File archive = cfg.getDumpArchiveFile(resource.getId());
-		archive.createNewFile();
 		ZipUtil.zipFiles(archiveFiles, archive);
 		return archive;		
 	}
@@ -94,10 +93,9 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}
 		file.createNewFile();
 		log.debug("Created archive file "+file.getAbsolutePath());
-		System.out.println(sql);
+		log.debug(sql);
 		// CALL CSVWRITE('test.csv', 'SELECT * FROM TEST');
 		getConnection().prepareStatement(sql).execute();
-		//annotationManager.annotateResource(resource, "Couldn't open tab file. Import aborted: "+e.toString());
 		return file;
 	}
 
