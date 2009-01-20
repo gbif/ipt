@@ -38,7 +38,7 @@
 				</tr>
 				<tr>
 					<th>TCS</th>
-					<td><a href="${cfg.getTcsEndpoint(resource_id)}">${cfg.getTcsEndpoint(resource_id)}</a></td>
+					<td><a href="${cfg.getTcsArchiveUrl(resource_id)}">${cfg.getTcsArchiveUrl(resource_id)}</a></td>
 				</tr>
 			</table>
 		</div>

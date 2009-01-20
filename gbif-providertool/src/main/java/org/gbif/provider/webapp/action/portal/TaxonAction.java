@@ -40,6 +40,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     private int type;
     private String category;
     private String format;
+    private String q;
     // results
     private String title;
     private Taxon taxon;
@@ -104,6 +105,12 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 		return RECORD404;
     }
     
+	public String search(){
+		super.prepare();
+		taxa = taxonManager.search(resource_id, q);
+		return SUCCESS;
+	}
+	
     public String listByRank(){
     	title = category;
     	setRequestedTaxon();
@@ -224,6 +231,12 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	}
 	public List<Distribution> getDistributions() {
 		return distributions;
+	}
+	public void setQ(String q) {
+		this.q = q;
+	}
+	public String getQ() {
+		return q;
 	}
 	
 }
