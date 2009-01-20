@@ -1,6 +1,5 @@
 package org.gbif.provider.tapir.filter;
 
-import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +13,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 public class FilterFactoryTest {
 	Log log = LogFactory.getLog(this.getClass());
@@ -48,9 +49,12 @@ public class FilterFactoryTest {
 				log.debug("Starting parsing of input[" + i + "]");
 				
 				FileInputStream inputFIS = new FileInputStream(input[i]);
-				Map<String, String[]> params = new HashMap<String, String[]>();
-				params.put("lower", new String[]{"Aus"});
-				params.put("upper", new String[]{"Bus"});
+				//Map<String, String[]> params = new HashMap<String, String[]>();
+				//params.put("lower", new String[]{"Aus"});
+				//params.put("upper", new String[]{"Bus"});
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("lower", "Aus");
+				params.put("upper", "Bus");
 				Filter filter = FilterFactory.build(inputFIS, params);
 				FileReader fr = new FileReader(output[i]);
 				BufferedReader br = new BufferedReader(fr);

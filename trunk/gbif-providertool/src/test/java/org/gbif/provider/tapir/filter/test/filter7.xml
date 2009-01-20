@@ -1,7 +1,11 @@
-<in>
-  <concept id="http://example.net/concept/basisOfRecord" />
-  <values>
-    <literal value="specimen" />
-    <literal value="observation" />
-  </values>
-</in>
+<template>
+	<filter>
+		<in>
+		  <concept id="http://example.net/concept/basisOfRecord" />
+		  <values>
+			<literal value="specimen" />
+			<literal value="observation" />
+		  </values>
+		</in>
+	</filter>
+</template>

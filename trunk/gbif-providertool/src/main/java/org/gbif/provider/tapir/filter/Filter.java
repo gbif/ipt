@@ -1,14 +1,9 @@
 package org.gbif.provider.tapir.filter;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Stack;
-import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.tapir.filter.BooleanBlock.BlockIterator;
-import org.gbif.provider.util.QuoteTokenizer;
 
 public class Filter implements Iterable<BooleanOperator>{
 	protected Log log = LogFactory.getLog(this.getClass());
