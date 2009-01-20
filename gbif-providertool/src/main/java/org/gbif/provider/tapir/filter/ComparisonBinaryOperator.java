@@ -10,6 +10,7 @@ public abstract class ComparisonBinaryOperator extends ComparisonOperator{
 		return value;
 	}
 	public void setValue(String value) {
+		log.debug("Setting value to: " + value);
 		this.value = value;
 	}
 	/**
@@ -18,13 +19,10 @@ public abstract class ComparisonBinaryOperator extends ComparisonOperator{
 	 * @param key For the map
 	 * @throws ParseException 
 	 */
-public void setValue(Map params, String key) throws ParseException {
-		String[] values = (String[])params.get(key);
-		if (values!=null && values.length==1) {
-			setValue(values[0]);
-		} else if (values!=null && values.length>1) {
-			log.info("Using the first value for the filter from the options[" + values + "]");
-			setValue(values[0]);
+	public void setValue(Map params, String key) throws ParseException {
+		String value = (String)params.get(key);
+		if (value!=null) {
+			setValue(value);
 		} else {
 			log.warn("No values in the parameters[" + params + "] for the key[" + key + "]");
 			throw new ParseException("ERROR: No values for key[" + key + "]");
