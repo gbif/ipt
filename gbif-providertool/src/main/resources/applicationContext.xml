@@ -36,7 +36,7 @@
     <!-- Parsing freemarker templates other than struts2 -->
     <bean id="freemarkerCfg" class="freemarker.template.Configuration">
         <property name="defaultEncoding" value="utf8"/>
-        <property name="directoryForTemplateLoading" value="${webappDir}/WEB-INF/pages"></property>
+        <property name="directoryForTemplateLoading" value="${webappDir}"></property>
     </bean>
     
     

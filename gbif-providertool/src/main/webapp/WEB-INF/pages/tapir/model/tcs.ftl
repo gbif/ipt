@@ -1,13 +1,18 @@
+<#include "/WEB-INF/pages/inc/globalVars.ftl">  
+<#escape x as x?xml>
 <tn:TaxonName rdf:about="#tn-${t.guid}">
     <#if t.nomenclaturalCode??>
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#${t.nomenclaturalCode}"/>
     </#if>                         
-    <dc:title>${t.scientificName}</dc:title>
+    <dc:title>${t.scientificName!}</dc:title>
+    <dct:modified>${t.modified?datetime?string(xmlDateFormat)}</dct:modified>
     <#if t.dwcRank??>
     <tn:rank rdf:resource="${t.dwcRank.uri}"/>
     </#if>                         
+    <#if t.rank??>
     <tn:rankString>${t.rank}</tn:rankString>
-    <tn:nameComplete>${t.scientificName}</tn:nameComplete>
+    </#if>                         
+    <tn:nameComplete>${t.scientificName!}</tn:nameComplete>
     <#if t.nomenclaturalReference??>
     <tcom:publishedIn>${t.nomenclaturalReference}</tcom:publishedIn>    
     </#if>                         
@@ -28,11 +33,13 @@
 <tc:TaxonConcept rdf:about="#tc-${t.guid}">
     <tc:accordingToString>${t.resource.title}</tc:accordingToString>
     <tc:hasName rdf:resource="#tn-${t.guid}"/>
-    <tc:nameString>${t.scientificName}</tc:nameString>
+    <tc:nameString>${t.scientificName!}</tc:nameString>
     <#if t.dwcRank??>
     <tn:rank rdf:resource="${t.dwcRank.uri}" />
     </#if>                         
+    <#if t.rank??>
     <tc:rankString>${t.rank}</tc:rankString>
+    </#if>                         
     <#if t.parent??>
         <tc:hasRelationship>
             <tc:Relationship>
@@ -52,6 +59,5 @@
         </tc:hasRelationship>
     </#if>                         
 </tc:TaxonConcept>
-<#escape x as x?xml>
 </#escape>
 

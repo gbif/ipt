@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -18,6 +19,11 @@ public class ZipUtil {
 	protected static final Log log = LogFactory.getLog(ZipUtil.class);
 	static final int BUFFER = 2048;
 
+	public static void zipFile(File file, File zipFile) throws IOException {
+		Set<File> files = new HashSet<File>();
+		files.add(file);
+		zipFiles(files, zipFile);
+	}
 	public static void zipFiles(Set<File> files, File zipFile) throws IOException {
 		if (files.isEmpty()){
 			log.warn("no files to zip.");

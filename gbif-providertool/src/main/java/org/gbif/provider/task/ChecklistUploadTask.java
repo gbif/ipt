@@ -1,6 +1,7 @@
 package org.gbif.provider.task;
 
 	import java.io.File;
+import java.io.IOException;
 
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Taxon;
@@ -11,7 +12,9 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.CacheMap;
+import org.hibernate.ScrollableResults;
 import org.springframework.beans.factory.annotation.Autowired;
 
 	/**
@@ -90,13 +93,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 			checklistResourceManager.setResourceStats(resource);
 
 			currentActivity = "Creating TCS data archive";
-			writeTcsArchive();
+			try {
+				File tcs = checklistResourceManager.writeTcsArchive(getResourceId());
+			} catch (IOException e) {
+				log.error("Couldnt write TCS archive", e);
+				this.annotationManager.annotateResource(resource, "Could not write TCS archive. IOException");
+			}
 		}
 
-		private File writeTcsArchive(){
-			//FIXME: implement TCS archive dumping
-			return null;
-		}
 
 		public int taskTypeId() {
 			return TASK_TYPE_ID;

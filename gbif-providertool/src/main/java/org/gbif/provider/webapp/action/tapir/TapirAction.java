@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,6 +55,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	private static final String INVENTORY = "inventory";
 	private static final String MODEL_LOCATION = "http://rs.tdwg.org/tapir/cs/dwc/dwcstar.xml";
 	private static final String MODEL_ALIAS = "dwc";
+	private static final Set<String> RESERVED_PARAMETERS = new HashSet<String>(Arrays.asList(new String[]{"operation","op","cnt","count","s","start","l","limit","t","template","c","concept","n","tagname","f","filter","e","envelope","m","model","p","partial","o","orderby","d","descend"}));
 	//
 	private static final Pattern conceptAliasPattern = Pattern.compile( "^p([0-9]+)$" );
 
@@ -69,8 +71,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
     // just in case of fatal errors
     private String error="unknown fatal error";
 	private HttpServletRequest request;
-    // request parameters
-    // aliases: 'operation':'op', 'cnt':'count', 's':'start', 'l':'limit', 't':'template', 'c':'concept', 'n':'tagname', 'f':'filter', 'e':'envelope', 'm':'model', 'p':'partial', 'o':'orderby', 'd':'descend'
+    // request parameters. For aliases different setters are used. See RESERVED_PARAMETERS for all
     private String op="m";
     private boolean count=false;
     private int start=0;
@@ -143,9 +144,10 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
     
 	private void readTemplate() {
 		try {
-			Template tmpl = TemplateFactory.buildTemplate(new URL(template), request.getParameterMap());
+			Template tmpl = TemplateFactory.buildTemplate(new URL(template), getSimpleParameterMap());
 			if (tmpl.getOperation().equals(TapirOperation.search)){
 				op="s";
+				model=tmpl.getModel();
 				pFilter=tmpl.getFilter();
 				Map<String,Boolean> orby = tmpl.getOrderBy();
 				if (!orby.isEmpty()){
@@ -178,6 +180,31 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		}		
 	}
 	
+	private Map<String, String> getSimpleParameterMap() {
+		Map<String, String[]> mapIn = request.getParameterMap();
+		Map<String, String> map = new HashMap<String, String>();
+		Set<String> reserved = new HashSet<String>();
+		for (String k : mapIn.keySet()){
+			if (RESERVED_PARAMETERS.contains(k)){
+				reserved.add(k);
+				continue;
+			}
+			String[] values = mapIn.get(k);
+			if (values.length==0){
+				addInfo(String.format("Request parameter %s is empty",k));
+			}else{
+				map.put(k, values[0]);
+				if(values.length>1){
+					addWarning(String.format("Request parameter %s contained multiple values. Only first one has been used",k));
+				}
+			}
+		}
+		if (reserved.size()>0){
+			addInfo("Ignore reserved TAPIR parameters: "+StringUtils.join(reserved, ", "));
+		}
+		return map;
+	}
+
 	private void addMetaNamespaces(){
 		nsr.add("http://purl.org/dc/elements/1.1/");
 		nsr.add("http://rs.tdwg.org/dwc/terms/");
