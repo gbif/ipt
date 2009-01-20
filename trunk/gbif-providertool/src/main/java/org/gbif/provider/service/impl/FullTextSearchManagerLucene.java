@@ -101,7 +101,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			doc.add(new Field("data", sb.toString(), Field.Store.NO, Field.Index.ANALYZED));
 			writer.addDocument(doc);
 			
-			if (log.isDebugEnabled() && count%100==0) {
+			if (log.isDebugEnabled() && count%1000==0) {
 				log.debug("Indexed[" + count + "], last id[" + id+ "], last data[" + sb.toString() + "]");
 			}
 			count++;

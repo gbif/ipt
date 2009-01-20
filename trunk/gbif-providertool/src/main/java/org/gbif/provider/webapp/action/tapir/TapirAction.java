@@ -362,7 +362,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		}
 		return p;
 	}
-	private void parseFilter() throws ParseException{
+	private void parseFilter() throws ParseException, IllegalArgumentException{
 		pFilter = new KVPFilterFactory().parse(filter);
 		log.debug("Filter created: "+pFilter.toString());
 		extensionPropertyManager.lookupFilterProperties(pFilter, ExtensionType.Occurrence);
