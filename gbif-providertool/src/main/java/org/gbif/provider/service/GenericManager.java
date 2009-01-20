@@ -5,6 +5,7 @@ import java.util.List;
 
 
 public interface GenericManager<T>{
+    List<Long> getAllIds();
     List<T> getAll();
     List<T> getTop(int maxResults);
 	/**

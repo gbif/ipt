@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -28,11 +31,15 @@ import org.apache.lucene.search.TopDocCollector;
 import org.apache.lucene.search.WildcardQuery;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.FullTextSearchManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.CSVReader;
+import org.gbif.provider.util.XmlContentHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * A Lucene based version of the full text manager
@@ -42,6 +49,11 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	protected final Log log = LogFactory.getLog(getClass());
 	@Autowired
 	protected AppConfig cfg;
+
+	@Autowired
+	@Qualifier("resourceManager") 
+	private GenericResourceManager<Resource> resourceManager;
+	
 	protected String indexDirectoryName = "lucene";
 	
 	/**
@@ -51,7 +63,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		IndexWriter writer = null;
 		try {
 			// this is just a quick test
-			File indexDir = cfg.getResourceDataFile(resource.getId(), indexDirectoryName);
+			File indexDir = getResourceIndexDirectory(resource.getId());
 			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
 			
 			// IGNORE the header row
@@ -108,6 +120,14 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		}
 	}
 	
+	private void buildIndex(IndexWriter writer, Long resourceId, String text) throws CorruptIndexException, IOException {
+		Document doc = new Document();
+		Field id = new Field("id", resourceId.toString(), Field.Store.YES, Field.Index.NOT_ANALYZED);
+		doc.add(id);
+		doc.add(new Field("data", text, Field.Store.NO, Field.Index.ANALYZED));
+		writer.addDocument(doc);
+	}
+
 	/**
 	 * Does the seaching
 	 * 
@@ -119,7 +139,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	 * @return List of IDs for core records
 	 */
 	public List<Long> search(Long resourceId, String q) {
-		File indexDir = cfg.getResourceDataFile(resourceId, indexDirectoryName);
+		File indexDir = getResourceIndexDirectory(resourceId);
 		IndexReader reader = null;
 		Searcher searcher = null;
 		List<Long> results = new LinkedList<Long>();
@@ -166,10 +186,90 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	 * @see org.gbif.provider.service.FullTextSearchManager#buildResourceIndexes()
 	 */
 	public void buildResourceIndexes() {
-		// TODO Auto-generated method stub
+		IndexWriter writer = null;
+		try {
+			// this is just a quick test
+			File indexDir = getResourceIndexDirectory();
+			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
+			
+			// go through all resources and analyze the metadata xml files
+			// to avoid indexing xml tags, use an über simple SAX parser that just extracts all element & attribute content
+			XmlContentHandler handler = new XmlContentHandler(); 
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+		    SAXParser saxParser = factory.newSAXParser();
+		    
+		    List<Long> resourceIDs = resourceManager.getAllIds();
+		    for (Long rid : resourceIDs){
+		    	File eml = cfg.getEmlFile(rid);
+				log.info("Building resource metadata text index for resource[" + rid + "]");
+			    saxParser.parse(eml, handler);
+				buildIndex(writer, rid, handler.getContent());
+		    }
+			writer.optimize();
+			
+		} catch (Exception e) {
+			log.error("Error building index: " + e.getMessage(), e);
+		} finally {
+			try {
+				writer.close();
+			} catch (Exception e) {
+				log.error("Error closing index writer: " + e.getMessage(), e);
+				e.printStackTrace();
+			}
+		}
+	}
+	public List<Long> search(String q) {
+		File indexDir = getResourceIndexDirectory();
+		IndexReader reader = null;
+		Searcher searcher = null;
+		List<Long> results = new LinkedList<Long>();
+		try {
+			reader = IndexReader.open(indexDir);
+			searcher = new IndexSearcher(reader);
+
+			// do a term query
+			Term term = new Term("data", q);
+			Query query = new WildcardQuery(term);
+			
+			TopDocCollector collector = new TopDocCollector(10);
+		    searcher.search(query, collector);
+		    ScoreDoc[] hits = collector.topDocs().scoreDocs;
+		    int numTotalHits = collector.getTotalHits();
+			log.debug("Search term[" + q + "] found[" + numTotalHits + "] records");
+		    
+		    for (ScoreDoc scoreDoc : hits) {
+		    	Document doc = searcher.doc(scoreDoc.doc);
+				String id = doc.get("id");
+			    results.add(Long.parseLong(id));
+		    }		    
+		    
+		    
+		} catch (Exception e) {
+			log.error("Error with FullTextSearch[" + e.getMessage()+"] - returning empty results rather than passing error to user", e);
+			
+		} finally {
+			try {
+				searcher.close();
+			} catch (IOException e) {
+				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
+			}
+			try {
+				reader.close();
+			} catch (IOException e) {
+				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
+			}
+		}
+		return results;
 	}
 
+	private File getResourceIndexDirectory(){
+		return new File(cfg.getDataDir(), indexDirectoryName);
+	}
+	private File getResourceIndexDirectory(Long resourceId){
+		return cfg.getResourceDataFile(resourceId, indexDirectoryName);
+	}
 	public void setIndexDirectoryName(String indexDirectoryName) {
 		this.indexDirectoryName = indexDirectoryName;
 	}
+
 }
