@@ -1,1 +1,1 @@
-Filter: http://example.net/concept/commonName like '*thrush'
+Filter: http://example.net/concept/commonName like '%thrush'
