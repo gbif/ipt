@@ -249,7 +249,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 				setNext();			
 				return SEARCH;
 			}
-			addFatal("The requested output model is not supported");
+			addFatal("The requested output model is not supported: "+model);
 		}else{
 			addFatal("Illegal request. No template or output model has been specified");
 		}
