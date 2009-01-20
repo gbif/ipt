@@ -186,6 +186,12 @@ public class AppConfig{
 		return String.format("%s/data.zip", getResourceDataUrl(resourceId));
     }
 
+    // OTHER ARCHIVES
+    public File getTcsArchiveFile(Long resourceId){
+		File file = new File(getResourceDataDir(resourceId), "tcsArchive.zip");
+		return file;    	
+    }
+    
     // SERVICE ENDPOINTS
 	public String getTapirEndpoint(Long resourceId){
 		String base = getBaseUrl();

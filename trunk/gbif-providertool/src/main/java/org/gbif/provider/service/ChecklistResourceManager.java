@@ -1,5 +1,7 @@
 package org.gbif.provider.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,4 +29,6 @@ public interface ChecklistResourceManager extends GenericResourceManager<Checkli
 	String taxByStatusPieUrl(List<StatsCount> data, StatusType type, int width,	int height, boolean title);
 	
 	ChecklistResource setResourceStats(ChecklistResource resource);
+	public File writeTcsArchive(Long resourceId) throws IOException;
+
 }

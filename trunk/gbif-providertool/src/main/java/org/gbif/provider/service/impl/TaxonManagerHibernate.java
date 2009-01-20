@@ -1,5 +1,6 @@
 package org.gbif.provider.service.impl;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,6 +16,7 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.StatsUtils;
 import org.hibernate.Query;
 import org.hibernate.ScrollableResults;
@@ -170,5 +172,4 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         	.list();
         return StatsUtils.getDataMap(data);
 	}
-
 }

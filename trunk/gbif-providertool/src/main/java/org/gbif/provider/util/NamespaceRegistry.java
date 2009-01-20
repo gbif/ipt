@@ -95,6 +95,12 @@ public class NamespaceRegistry {
 		else if (ns.equalsIgnoreCase("http://www.w3.org/2001/vcard-rdf/3.0#")){
 			prefix="vcard";
 		}
+		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/ontology/voc/TaxonName#")){
+			prefix="tn";
+		}
+		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/ontology/voc/TaxonConcept#")){
+			prefix="tc";
+		}
 		return prefix;
 	}
 	public void add(String ns) {

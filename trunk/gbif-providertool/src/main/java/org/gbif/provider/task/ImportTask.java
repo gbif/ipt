@@ -108,17 +108,11 @@ import org.springframework.transaction.annotation.Transactional;
 				
 				// upload further extensions one by one
 				for (ViewExtensionMapping vm : resource.getExtensionMappings()){
-					// run import into db & dump file
-					try {
-						uploadExtension(vm);
-						now = new Date();
-						log.info(String.format("Import extension %s took %s ms", vm.getExtension().getName(), (now.getTime()-lastLogDate.getTime())));
-						lastLogDate = now;
-					} catch (ImportSourceException e) {
-						// dont do nothing. Error is logged and core is uploaded. Skip this extension
-					} catch (IOException e) {
-						// dont do nothing. Error is logged and core is uploaded. Skip this extension
-					}
+					// run import into db
+					uploadExtension(vm);
+					now = new Date();
+					log.info(String.format("Import extension %s took %s ms", vm.getExtension().getName(), (now.getTime()-lastLogDate.getTime())));
+					lastLogDate = now;
 				}
 				
 				close();
@@ -167,7 +161,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 		
 		
-		private void close() throws IOException {
+		private void close() {
 			log.info(String.format("Closing upload for resource %s", getTitle() ));					
 			currentProcessed.set(0);
 			currentErroneous.set(0);
@@ -198,8 +192,13 @@ import org.springframework.transaction.annotation.Transactional;
 			// create data archive
 			//
 			currentActivity = "Creating data archive";
-			File archive = dataArchiveManager.createArchive(resource);
-			log.info("Data archive created at "+archive.getAbsolutePath());
+			try {
+				File archive = dataArchiveManager.createArchive(resource);
+				log.info("DarwinCore archive created at "+archive.getAbsolutePath());
+			} catch (IOException e) {
+				log.error("Could not write DarwinCore archive", e);
+				this.annotationManager.annotateResource(resource, "Could not write DarwinCore archive. IOException");
+			}
 			
 			//
 			// build the full text indexes
@@ -353,7 +352,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
-		private File uploadExtension(ViewExtensionMapping vm) throws InterruptedException, ImportSourceException, IOException {
+		private File uploadExtension(ViewExtensionMapping vm) throws InterruptedException {
 			String extensionName = vm.getExtension().getName();
 			Extension extension = vm.getExtension();
 			log.info(String.format("Starting upload of %s extension for resource %s", extensionName, getTitle() ));					
@@ -407,10 +406,11 @@ import org.springframework.transaction.annotation.Transactional;
 					setFinalExtensionStats(extension);
 				}
 			} catch (ImportSourceException e) {
-				annotationManager.annotateResource(resource, "Couldn't open import source for extension %s. Extension skipped: "+e.toString());
-				throw e;
+				annotationManager.annotateResource(resource, String.format("Couldn't open import source for extension %s. Extension skipped", extensionName));
+				log.error("Couldn't open import source for extension "+extensionName, e);
 			} catch (Exception e){
-				e.printStackTrace();
+				annotationManager.annotateResource(resource, String.format("Unknown error uploading extension %s. Extension skipped", extensionName));
+				log.error("Unknown error uploading extension "+extensionName, e);
 			}
 			
 			return out;
