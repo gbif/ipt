@@ -51,7 +51,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		IndexWriter writer = null;
 		try {
 			// this is just a quick test
-			String indexDir = AppConfig.getResourceDataDir(resource.getId()).getAbsolutePath()+indexDirectoryName;
+			File indexDir = cfg.getResourceDataFile(resource.getId(), indexDirectoryName);
 			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
 			
 			// IGNORE the header row
@@ -119,7 +119,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	 * @return List of IDs for core records
 	 */
 	public List<Long> search(Long resourceId, String q) {
-		String indexDir = AppConfig.getResourceDataDir(resourceId).getAbsolutePath()+indexDirectoryName;
+		File indexDir = cfg.getResourceDataFile(resourceId, indexDirectoryName);
 		IndexReader reader = null;
 		Searcher searcher = null;
 		List<Long> results = new LinkedList<Long>();
