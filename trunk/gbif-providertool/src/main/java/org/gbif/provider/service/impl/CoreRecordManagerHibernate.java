@@ -25,10 +25,12 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.dto.ValueListCount;
 import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.util.H2Utils;
 import org.hibernate.NonUniqueResultException;
@@ -36,6 +38,7 @@ import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -47,6 +50,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=true)
 public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericResourceRelatedManagerHibernate<T> implements CoreRecordManager<T> {
+	@Autowired
+	protected FullTextSearchManager fullTextSearchManager;	
+
 	public CoreRecordManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
 	}
@@ -120,7 +126,14 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 
 
 	public List<T> search(final Long resourceId, final String q) {
-	     return new LinkedList<T>();
+		List<Long> ids = fullTextSearchManager.search(resourceId, q);
+		List<T> results = new LinkedList<T>();
+	    for (Long id : ids) {
+			T coreObj = get(id);
+			log.debug("Adding record[" + id+ "] to results. GUID[" + coreObj.getGuid() + "]");
+		    results.add(coreObj);
+	    }		    
+	    return results;
 	}
 
 	public List<T> getLatest(Long resourceId, int startPage, int pageSize) {
