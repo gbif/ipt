@@ -246,7 +246,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 			if (model.equalsIgnoreCase(MODEL_LOCATION) || model.equalsIgnoreCase(MODEL_ALIAS)){
 				parseFilter();
 				doSearch();
-				setNext();			
+				setNextRecord();			
 				return SEARCH;
 			}
 			addFatal("The requested output model is not supported: "+model);
@@ -287,7 +287,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		values = new ArrayList<ValueListCount>();
 		parseFilter();
 		doInventory();
-		setNext();			
+		setNextValue();			
 		return INVENTORY;
 	}
 	private void doInventory() {
@@ -474,14 +474,28 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		this.limit = limit;
 	}
 
-	public void setNext() {
-		next = start+limit;
+	private void setNextRecord() {
+		next = start+limit;			
 		if (count){
 			if(totalMatched<=next){
 				next = -1;				
 			}
-		}else if (limit>records.size()){
-			next = -1;
+		}else{
+			if (records==null || limit>records.size()){
+				next = -1;			
+			}
+		}
+	}
+	private void setNextValue() {
+		next = start+limit;			
+		if (count){
+			if(totalMatched<=next){
+				next = -1;				
+			}
+		}else{
+			if (values==null || limit>values.size()){
+				next = -1;			
+			}
 		}
 	}
 	public int getNext() {
