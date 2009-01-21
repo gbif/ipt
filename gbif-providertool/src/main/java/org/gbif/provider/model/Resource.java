@@ -58,11 +58,14 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	private Long id;
 	@NotNull
 	protected String guid = UUID.randomUUID().toString();
+	protected String uddiID;
 	// resource metadata
 	protected ResourceMetadata meta = new ResourceMetadata();
 	// persistent EML properties so we can search & aggregate on them easily
+	protected int emlVersion = 0;
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
+	protected boolean published = false;
 	// resource meta-metadata
 	protected User creator;
 	protected Date created;
@@ -85,6 +88,22 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.guid = guid;
 	}
 
+	@Transient
+	public String getUddiID() {
+		return uddiID;
+	}
+	public void setUddiID(String uddiID) {
+		this.uddiID = uddiID;
+	}
+	
+	@Transient
+	public boolean isPublished() {
+		return published;
+	}
+	public void setPublished(boolean published) {
+		this.published = published;
+	}
+	
 	public Date getModified() {
 		return modified;
 	}
@@ -113,6 +132,17 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+	
+	@Transient
+	public int getEmlVersion() {
+		return emlVersion;
+	}
+	public void setEmlVersion(int emlVersion) {
+		this.emlVersion = emlVersion;
+	}
+	public void increaseEmlVersion() {
+		this.emlVersion += 1;
 	}
 	
 	@CollectionOfElements(fetch=FetchType.EAGER)

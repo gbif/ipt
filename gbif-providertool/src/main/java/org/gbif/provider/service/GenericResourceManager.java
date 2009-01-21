@@ -28,6 +28,11 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 * @return
 	 */
 	public List<T> getResourcesByUser(Long userId);
+	
+	/** retrieve all resource IDs that have been published already
+	 * @return list of resourceIDs
+	 */
+	public List<Long> getPublishedResourceIDs();
 
 	/**
 	 * Get resource by GUID

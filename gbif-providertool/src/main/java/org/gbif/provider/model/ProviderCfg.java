@@ -14,6 +14,8 @@ import org.apache.commons.lang.StringUtils;
 @Entity
 public class ProviderCfg {
 	private Long id;
+	private String uddiID;
+	private String uddiSharedKey;
 	private ResourceMetadata meta = new ResourceMetadata();
 	private String descriptionImage;
 	private String baseUrl;
@@ -23,13 +25,28 @@ public class ProviderCfg {
 	private String geoserverUser;
 	private String geoserverPass;
 	
-	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Transient
+	public String getUddiID() {
+		return uddiID;
+	}
+	public void setUddiID(String uddiID) {
+		this.uddiID = uddiID;
+	}
+
+	@Transient
+	public String getUddiSharedKey() {
+		return uddiSharedKey;
+	}
+	public void setUddiSharedKey(String uddiSharedKey) {
+		this.uddiSharedKey = uddiSharedKey;
 	}
 	
 	public ResourceMetadata getMeta() {
