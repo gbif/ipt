@@ -1,11 +1,12 @@
+Ôªø<?xml version="1.0" encoding="UTF-8"?>
 <org.gbif.provider.model.eml.Eml>
   <resourceCreator>
     <firstName>Markus</firstName>
-    <lastName>Döring</lastName>
+    <lastName>D√∂ring</lastName>
     <organisation></organisation>
     <position></position>
     <address>
-      <address>Wiener Straße 20</address>
+      <address>Wiener Stra√üe 20</address>
       <city>Berlin</city>
       <province></province>
       <country>Germany</country>
@@ -30,7 +31,7 @@ http://creativecommons.org/licenses/by/3.0/legalcode&#xd;
     <string>Toroslar</string>
   </keywords>
   <geographicCoverage>
-    <description>Sites located mainly in the southern turkish Toroslar mountains and a few in the north eastern Kaçkar mountains.</description>
+    <description>Sites located mainly in the southern turkish Toroslar mountains and a few in the north eastern Ka√ßkar mountains.</description>
     <boundingCoordinates>
       <max>
         <longitude>43.88341514435831</longitude>
@@ -73,10 +74,10 @@ http://creativecommons.org/licenses/by/3.0/legalcode&#xd;
     <title>PonTaurus</title>
     <__abstract></__abstract>
     <funding>no funding</funding>
-    <studyAreaDescription>Subalpine belt of the Turkish Toroslar and Kaçkar mountains</studyAreaDescription>
+    <studyAreaDescription>Subalpine belt of the Turkish Toroslar and Ka√ßkar mountains</studyAreaDescription>
     <designDescription></designDescription>
     <personnelOriginator>
-      <organisation>Freie Universität Berlin</organisation>
+      <organisation>Freie Universit√§t Berlin</organisation>
       <address/>
       <role>ORIGINATOR</role>
     </personnelOriginator>

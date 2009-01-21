@@ -16,8 +16,26 @@ public class FullTextSearchManagerLuceneTest extends ResourceTestBase{
 	@Test
 	public void setResourceMetadata() throws Exception {
 		fullTextSearchManager.buildResourceIndexes();
-		List<Long> resourceIDs = fullTextSearchManager.search("Toroslar");
-		assertTrue(resourceIDs.size()==1);
+		List<Long> resourceIDs = fullTextSearchManager.search("subalpi*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("Subalpine*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("belt*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("belt");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("mountains*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("Toros*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("Sites loc*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("Frei*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("frei*");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("Sites*");
+		assertTrue(resourceIDs.size()>=1);
 	}
 
 }

@@ -193,16 +193,16 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
 			
 			// go through all resources and analyze the metadata xml files
-			// to avoid indexing xml tags, use an über simple SAX parser that just extracts all element & attribute content
-			XmlContentHandler handler = new XmlContentHandler(); 
+			// to avoid indexing xml tags, use an uber simple SAX parser that just extracts all element & attribute content
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 		    SAXParser saxParser = factory.newSAXParser();
 		    
 		    List<Long> resourceIDs = resourceManager.getAllIds();
 		    for (Long rid : resourceIDs){
-		    	File eml = cfg.getEmlFile(rid);
-				log.info("Building resource metadata text index for resource[" + rid + "]");
+				XmlContentHandler handler = new XmlContentHandler(); 
 			    try {
+			    	File eml = cfg.getEmlFile(rid);
+					log.info("Building resource metadata text index for resource[" + rid + "]");
 					saxParser.parse(eml, handler);
 				} catch (Exception e) {
 					log.error("Error indexing metadata for resource "+rid, e);
@@ -223,6 +223,11 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		}
 	}
 	public List<Long> search(String q) {
+		// Lucene indexes on lower case it seems
+		q = q.toLowerCase();
+		if (!q.endsWith("*")) {
+			q = q + "*";
+		}
 		File indexDir = getResourceIndexDirectory();
 		IndexReader reader = null;
 		Searcher searcher = null;
