@@ -292,7 +292,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	}
 	private void doInventory() {
 		concept = StringUtils.trimToNull(concept);
-		if (concept==null){
+		if (inventoryProperties.isEmpty() && concept==null){
 			addError("At least one concept is required for an inventory");
 			throw new IllegalArgumentException();
 		}

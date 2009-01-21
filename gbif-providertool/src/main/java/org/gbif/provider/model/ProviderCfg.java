@@ -33,7 +33,7 @@ public class ProviderCfg {
 		this.id = id;
 	}
 
-	@Transient
+	@Column(length=64)
 	public String getUddiID() {
 		return uddiID;
 	}
@@ -41,7 +41,7 @@ public class ProviderCfg {
 		this.uddiID = uddiID;
 	}
 
-	@Transient
+	@Column(length=128)
 	public String getUddiSharedKey() {
 		return uddiSharedKey;
 	}
