@@ -202,7 +202,11 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		    for (Long rid : resourceIDs){
 		    	File eml = cfg.getEmlFile(rid);
 				log.info("Building resource metadata text index for resource[" + rid + "]");
-			    saxParser.parse(eml, handler);
+			    try {
+					saxParser.parse(eml, handler);
+				} catch (Exception e) {
+					log.error("Error indexing metadata for resource "+rid, e);
+				}
 				buildIndex(writer, rid, handler.getContent());
 		    }
 			writer.optimize();

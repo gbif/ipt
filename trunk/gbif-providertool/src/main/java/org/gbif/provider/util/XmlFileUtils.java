@@ -17,7 +17,7 @@ public class XmlFileUtils {
 	}
 	public static Writer startNewUtf8XmlFile(File file) throws IOException{
 		Writer writer=startNewUtf8File(file);
-		writer.write("<?xml version='1.0' encoding='utf-8'?>");
+		writer.write("<?xml version='1.0' encoding='utf-8'?>\n");
 		return writer;
 	}
 }

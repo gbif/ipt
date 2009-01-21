@@ -51,6 +51,11 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
     		.setParameter("userId", userId).list();
 	}
 	
+	public List<Long> getPublishedResourceIDs() {
+        return query(String.format("select id from %s where published=true", persistentClass.getName()))
+		.list();
+	}
+
 	@Override
     public List<T> getTop(int maxResults) {
         return getSession().createQuery(String.format("from %s order by modified desc", persistentClass.getName()))
@@ -77,6 +82,5 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 			super.remove(obj);
 		}
 	}
-
 
 }
