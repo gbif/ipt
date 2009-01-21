@@ -88,7 +88,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.guid = guid;
 	}
 
-	@Transient
+	@Column(length=64, unique=true)
 	public String getUddiID() {
 		return uddiID;
 	}
@@ -96,7 +96,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.uddiID = uddiID;
 	}
 	
-	@Transient
 	public boolean isPublished() {
 		return published;
 	}
@@ -134,7 +133,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.created = created;
 	}
 	
-	@Transient
 	public int getEmlVersion() {
 		return emlVersion;
 	}

@@ -52,7 +52,9 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 public class Extension implements BaseObject, Comparable<Extension> {
 	private Long id;	
+	private String title;
 	private String name;
+	private String namespace;
 	private boolean installed;
 	private ExtensionType type;
 	private String link;
@@ -66,7 +68,23 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		this.id = id;
 	}
 
-	@Column(length=128, unique=true)
+	@Column(length=128)
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	@Column(length=128)
+	public String getNamespace() {
+		return namespace;
+	}
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+	
+	@Column(length=64)
 	public String getName() {
 		return name;
 	}
