@@ -1,13 +1,7 @@
 package org.gbif.provider.util;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import javax.xml.stream.events.Attribute;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -39,7 +33,16 @@ public class XmlContentHandler extends DefaultHandler{
 		content += " ";
 	}
 
+	// strips redundant whitespace
 	public String getContent() {
-		return content;
+		String[] words = content.split("\\s");
+		StringBuffer sb = new StringBuffer();
+		for (String w : words) {
+			if (w != null && w.trim().length()>0) {
+				sb.append(w);
+				System.out.println(w);
+			}
+		}
+		return sb.toString().trim();
 	}
 }
