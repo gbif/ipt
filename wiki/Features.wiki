@@ -1,3 +1,5 @@
+#summary Brief summary of IPT features
+
 ===General===
  * Serve 3 types of data: taxon occurrences, taxon checklists  and general resource metadata 
  * manages multiple datasources 
