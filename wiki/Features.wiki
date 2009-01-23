@@ -1,0 +1,105 @@
+===General===
+ * Serve 3 types of data: taxon occurrences, taxon checklists  and general resource metadata 
+ * manages multiple datasources 
+    * each datasource has a metadata description 
+ * use embedded cache database to serve data & webapp 
+ * upload options 
+    * upload from RDBMS. Enter SQL statement or select tables/views 
+    * upload tab file(s) 
+ * manage dateLastModified 
+    * when uploading new data (in particular new re-imported versions) into the index db compare existing and new records and determine if the record has changed. Store this date_last_updated per record so it can be used for incremental harvesting! 
+ * manage UUIDs 
+    * reuse existing UUIDs in master db or create new one for all records, datasets & provider. Link them to stable local IDs if possible 
+ * Only hosting of data initially 
+    * only metadata can be edited 
+    * no forms for editing taxon occurrences or checklists 
+    * data quality improvements do not change data, but only list problems and suggest changes if possible 
+ * Keep technical installation metadata: techincal contact 
+ * Access control 
+    * user management 
+    * admin user has access to all 
+    * other users can manage their datasets only 
+ * Data validation 
+    * supports external validation services that can annotate records and datasets
+
+
+===Resource Metadata===
+ * store metadata info for 
+    * each TaxonOccurrence and checklist datasource 
+    * any other resource, no matter if online or only physically existing
+ 
+ * Datamodel 
+    * simplified EML basically extending Dublin Core with details about taxonomic, spatial and temporal context
+    * archive previous versions as EML files
+
+ * Interfaces 
+    * URL to EML document 
+    * pagable RSS feed
+    * same metadata information (or subset) available for Occurrence+Checklist services available via WFS and TAPIR
+ 
+ * Web application 
+    * form wizard for metadata record 
+    * page through all resources as  
+       * alphabetical list 
+       * keywords
+    * find resource metadata via full text search 
+    * find resources via bounding box map search
+ 
+ * auto-generation
+    * automatic creation/update of metadata record from occurrence or checklist data items (spatial+taxonomic coverage) 
+
+
+===Taxon Occurrences===
+ * Datamodel 
+    * DwC and extension tables. "Star" schema, also see Local Index File proposal 
+       * extensions can be added from central update site only 
+       * default extensions: 
+          * identifications 
+          * multimedia 
+          * GUIDs 
+          * timeseries/tracking of individuals 
+    * keeps URL to full record if provided outside of this tool 
+ 
+ * Web Application 
+    * per record details page incl map 
+    * browsing by taxonomy, geography, record basis, institution and collection 
+    * full text searching 
+    * distribution maps for taxa, regions or entire dataset
+ 
+ 
+ * Interfaces 
+    * Darwin Core archive (text file dump of entire dataset)
+    * URL based record resolution 
+       * each record has a unique URL that resolves into a simple default XML serialisation 
+    * WFS/WMS services based on darwincore GML application schema 
+    * TAPIR intermediate with 1 fixed darwin core output model incl star schema extensions
+
+ 
+===Taxonomic Checklists===
+ * Datamodel 
+    * DwC Taxon, i.e. a simplified TCS with taxonomic hierarchy, synonyms, nomenclatural notes 
+    * keeps URL to full taxon if provided outside of this tool 
+    * star scheme extensions to taxon possible for working with different species infos for example 
+       * extensions translate into DwC extension classes
+ 
+ * Web Application 
+    * taxon details page 
+    * browse taxonomy 
+    * full text searching 
+ 
+ * Interfaces 
+    * Darwin Core archive (text file dump of entire dataset)
+    * single TCS-RDF document 
+    * URL based taxon resolution 
+       * each taxon has a unique URL that resolves into a simple default XML serialisation 
+
+
+= Planned =
+    * allow comments on record and entire dataset. support pingback (allows remote annotations on blogs, gbif portal, etc.) 
+    * RSS feed for records within resource
+
+===Taxon Occurrences===
+ * Data validation 
+    * validation of data and creation of download tab file for updating original datasource 
+    * validation of names, countries, record basis, etc via local files or central GBIF services 
+    * geomancer for georeferencing 
