@@ -22,6 +22,7 @@ public abstract class ResourceTestBase extends TransactionalTestBase {
 	protected OccurrenceResource getResourceMock(){
 		OccurrenceResource res = resourceFactory.newOccurrenceResourceInstance();
 		res.setTitle("FooBar");
+		res.setId(1973l);
 		return res;
 	}
 }

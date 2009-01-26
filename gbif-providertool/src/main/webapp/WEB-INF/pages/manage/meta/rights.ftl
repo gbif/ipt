@@ -13,6 +13,7 @@
 	<@s.textarea key="eml.purpose" required="false" cssClass="text xlarge slim"/>
 	<@s.textarea key="eml.maintenance" required="false" cssClass="text xlarge slim"/>
 	<@s.textarea key="eml.intellectualRights" required="false" cssClass="text xlarge slim"/>
+	<p>Considering using a <a href="http://creativecommons.org/license/">Creative Commons</a> license?</p>
 </fieldset>
 
 

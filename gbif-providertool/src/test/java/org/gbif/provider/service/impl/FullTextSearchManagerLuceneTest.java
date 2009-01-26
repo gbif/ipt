@@ -15,7 +15,7 @@ public class FullTextSearchManagerLuceneTest extends ResourceTestBase{
 
 	@Test
 	public void setResourceMetadata() throws Exception {
-		fullTextSearchManager.buildResourceIndexes();
+		fullTextSearchManager.buildResourceIndex();
 		List<Long> resourceIDs = fullTextSearchManager.search("subalpi*");
 		assertTrue(resourceIDs.size()>=1);
 		resourceIDs = fullTextSearchManager.search("Subalpine*");

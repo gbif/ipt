@@ -45,7 +45,7 @@
     </rule>
     <!-- eml -->
     <rule>
-        <from>^/data/eml-(.+).xml$</from>
+        <from>^/data/(.+)/eml.xml$</from>
         <to type="forward">/data/eml.xml?guid=$1</to>
     </rule>
     <!-- rss -->

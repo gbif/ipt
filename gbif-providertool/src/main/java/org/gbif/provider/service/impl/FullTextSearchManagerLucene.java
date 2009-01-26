@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -23,12 +24,8 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.TopDocCollector;
-import org.apache.lucene.search.WildcardQuery;
+import org.apache.lucene.search.*;
+import org.apache.lucene.store.LockObtainFailedException;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
@@ -40,6 +37,7 @@ import org.gbif.provider.util.CSVReader;
 import org.gbif.provider.util.XmlContentHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.xml.sax.SAXException;
 
 /**
  * A Lucene based version of the full text manager
@@ -47,6 +45,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	protected final Log log = LogFactory.getLog(getClass());
+	private static final String FIELD_ID ="id";
+	private static final String FIELD_DATA ="data";
+	private static final String FIELD_ACCESS ="acl";
+	private static final String PUBLIC_ACCESS ="public";
+	private IndexWriter writer;
+	private IndexReader reader;
+	private Searcher searcher;
+	private XmlContentHandler handler = new XmlContentHandler(); 
+    private SAXParser saxParser;
 	@Autowired
 	protected AppConfig cfg;
 
@@ -56,10 +63,51 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	
 	protected String indexDirectoryName = "lucene";
 	
+	
+	public void init() {
+		File indexDir = new File(cfg.getDataDir(), indexDirectoryName);
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		try {
+			saxParser=factory.newSAXParser();
+		} catch (ParserConfigurationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SAXException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
+			reader = IndexReader.open(indexDir);
+			searcher = new IndexSearcher(reader);
+		} catch (CorruptIndexException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LockObtainFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void destroy() {
+		try {
+			searcher.close();
+		} catch (IOException e) {
+			log.error("Error closing Lucene searcher: " + e.getMessage(), e);
+		}
+		try {
+			reader.close();
+		} catch (IOException e) {
+			log.error("Error closing Lucene reader: " + e.getMessage(), e);
+		}
+	}
+
 	/**
-	 * @see org.gbif.provider.service.FullTextSearchManager#buildDataResourceIndexes(org.gbif.provider.model.DataResource)
+	 * @see org.gbif.provider.service.FullTextSearchManager#buildDataResourceIndex(org.gbif.provider.model.DataResource)
 	 */
-	public void buildDataResourceIndexes(DataResource resource) {
+	public void buildDataResourceIndex(DataResource resource) {
 		IndexWriter writer = null;
 		try {
 			// this is just a quick test
@@ -108,9 +156,9 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			}
 			
 			Document doc = new Document();
-			Field id = new Field("id", line[0], Field.Store.YES, Field.Index.NOT_ANALYZED);
+			Field id = new Field(FIELD_ID, line[0], Field.Store.YES, Field.Index.NOT_ANALYZED);
 			doc.add(id);
-			doc.add(new Field("data", sb.toString(), Field.Store.NO, Field.Index.ANALYZED));
+			doc.add(new Field(FIELD_DATA, sb.toString(), Field.Store.NO, Field.Index.ANALYZED));
 			writer.addDocument(doc);
 			
 			if (log.isDebugEnabled() && count%1000==0) {
@@ -120,19 +168,36 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		}
 	}
 	
-	private void buildIndex(IndexWriter writer, Long resourceId, String text) throws CorruptIndexException, IOException {
-		Document doc = new Document();
-		Field id = new Field("id", resourceId.toString(), Field.Store.YES, Field.Index.NOT_ANALYZED);
-		doc.add(id);
-		doc.add(new Field("data", text, Field.Store.NO, Field.Index.ANALYZED));
-		writer.addDocument(doc);
+	public void buildResourceIndex(Long resourceId){
+		Resource resource = resourceManager.get(resourceId);
+		if (resource==null){
+			throw new IllegalArgumentException("Resource "+resourceId+" doesn't exist");
+		}
+	    try {
+	    	File eml = cfg.getEmlFile(resourceId);
+			log.info("Building resource metadata text index for resource[" + resourceId + "]");
+			saxParser.parse(eml, handler);
+			// if resource was indexed before remove the existing index document
+			Query query = new TermQuery(new Term(FIELD_ID, resourceId.toString()));
+			writer.deleteDocuments(query);
+			// create new index document
+			Document doc = new Document();
+			doc.add(new Field(FIELD_ID, resourceId.toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.add(new Field(FIELD_DATA, handler.getContent(), Field.Store.NO, Field.Index.ANALYZED));
+			// store publication status
+			String acl = resource.getCreator().getId().toString(); 
+			if (resource.isPublished()){
+				acl += " "+PUBLIC_ACCESS;
+			}
+			doc.add(new Field(FIELD_ACCESS, acl, Field.Store.NO, Field.Index.ANALYZED));
+			writer.addDocument(doc);
+		} catch (Exception e) {
+			log.error("Error indexing metadata for resource "+resourceId, e);
+		}
 	}
 
 	/**
 	 * Does the seaching
-	 * 
-	 * Note: this could be sped up if the searcher is cached, and not opened and closed on each query
-	 * This would be done much the same as the DB datasource per resource that must exist
 	 * 
 	 * @param resourceId To search within
 	 * @param q The query
@@ -148,8 +213,10 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			searcher = new IndexSearcher(reader);
 
 			// do a term query
-			Term term = new Term("data", q);
-			Query query = new WildcardQuery(term);
+			Term term = normalizeQueryString(q);
+			BooleanQuery query = new BooleanQuery();
+			query.add(new WildcardQuery(term),  BooleanClause.Occur.MUST);
+			query.add(new TermQuery(new Term(FIELD_ACCESS, PUBLIC_ACCESS)),  BooleanClause.Occur.MUST);
 			
 			TopDocCollector collector = new TopDocCollector(10);
 		    searcher.search(query, collector);
@@ -159,10 +226,9 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		    
 		    for (ScoreDoc scoreDoc : hits) {
 		    	Document doc = searcher.doc(scoreDoc.doc);
-				String id = doc.get("id");
+				String id = doc.get(FIELD_ID);
 			    results.add(Long.parseLong(id));
-		    }		    
-		    
+		    }		    		    
 		    
 		} catch (Exception e) {
 			log.error("Error with FullTextSearch[" + e.getMessage()+"] - returning empty results rather than passing error to user", e);
@@ -183,31 +249,16 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	}	
 	
 	/**
-	 * @see org.gbif.provider.service.FullTextSearchManager#buildResourceIndexes()
+	 * @see org.gbif.provider.service.FullTextSearchManager#buildResourceIndex()
 	 */
-	public void buildResourceIndexes() {
-		IndexWriter writer = null;
+	public void buildResourceIndex() {
 		try {
-			// this is just a quick test
-			File indexDir = getResourceIndexDirectory();
-			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
-			
 			// go through all resources and analyze the metadata xml files
 			// to avoid indexing xml tags, use an uber simple SAX parser that just extracts all element & attribute content
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-		    SAXParser saxParser = factory.newSAXParser();
 		    
 		    List<Long> resourceIDs = resourceManager.getAllIds();
 		    for (Long rid : resourceIDs){
-				XmlContentHandler handler = new XmlContentHandler(); 
-			    try {
-			    	File eml = cfg.getEmlFile(rid);
-					log.info("Building resource metadata text index for resource[" + rid + "]");
-					saxParser.parse(eml, handler);
-				} catch (Exception e) {
-					log.error("Error indexing metadata for resource "+rid, e);
-				}
-				buildIndex(writer, rid, handler.getContent());
+				buildResourceIndex(rid);
 		    }
 			writer.optimize();
 			
@@ -222,23 +273,16 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			}
 		}
 	}
-	public List<Long> search(String q) {
-		// Lucene indexes on lower case it seems
-		q = q.toLowerCase();
-		if (!q.endsWith("*")) {
-			q = q + "*";
-		}
-		File indexDir = getResourceIndexDirectory();
-		IndexReader reader = null;
-		Searcher searcher = null;
+	public List<Long> search(String q, Long userId) {
 		List<Long> results = new LinkedList<Long>();
 		try {
-			reader = IndexReader.open(indexDir);
-			searcher = new IndexSearcher(reader);
-
 			// do a term query
-			Term term = new Term("data", q);
-			Query query = new WildcardQuery(term);
+			BooleanQuery query = new BooleanQuery();
+			query.add(new WildcardQuery(normalizeQueryString(q)),  BooleanClause.Occur.MUST);
+			// match only public or user owned documents
+			query.add(new TermQuery(new Term(FIELD_ACCESS, PUBLIC_ACCESS)),  BooleanClause.Occur.SHOULD);
+			query.add(new TermQuery(new Term(FIELD_ACCESS, userId.toString())),  BooleanClause.Occur.SHOULD);
+			query.setMinimumNumberShouldMatch(1);
 			
 			TopDocCollector collector = new TopDocCollector(10);
 		    searcher.search(query, collector);
@@ -248,32 +292,55 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		    
 		    for (ScoreDoc scoreDoc : hits) {
 		    	Document doc = searcher.doc(scoreDoc.doc);
-				String id = doc.get("id");
+				String id = doc.get(FIELD_ID);
 			    results.add(Long.parseLong(id));
 		    }		    
+		    		    
+		} catch (Exception e) {
+			log.error("Error with FullTextSearch[" + e.getMessage()+"] - returning empty results rather than passing error to user", e);
+		}
+		return results;	}
+
+	/* (non-Javadoc)
+	 * Does the seaching across all published resources
+	 * @see org.gbif.provider.service.FullTextSearchManager#search(java.lang.String)
+	 */
+	public List<Long> search(String q) {
+		List<Long> results = new LinkedList<Long>();
+		try {
+			// do a term query
+			BooleanQuery query = new BooleanQuery();
+			query.add(new WildcardQuery(normalizeQueryString(q)),  BooleanClause.Occur.MUST);
+			// match only public documents
+			query.add(new TermQuery(new Term(FIELD_ACCESS, PUBLIC_ACCESS)),  BooleanClause.Occur.MUST);
+			
+			TopDocCollector collector = new TopDocCollector(10);
+		    searcher.search(query, collector);
+		    ScoreDoc[] hits = collector.topDocs().scoreDocs;
+		    int numTotalHits = collector.getTotalHits();
+			log.debug("Search term[" + q + "] found[" + numTotalHits + "] records");
 		    
-		    
+		    for (ScoreDoc scoreDoc : hits) {
+		    	Document doc = searcher.doc(scoreDoc.doc);
+				String id = doc.get(FIELD_ID);
+			    results.add(Long.parseLong(id));
+		    }		    
+		    		    
 		} catch (Exception e) {
 			log.error("Error with FullTextSearch[" + e.getMessage()+"] - returning empty results rather than passing error to user", e);
 			
-		} finally {
-			try {
-				searcher.close();
-			} catch (IOException e) {
-				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
-			}
-			try {
-				reader.close();
-			} catch (IOException e) {
-				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
-			}
 		}
 		return results;
 	}
-
-	private File getResourceIndexDirectory(){
-		return new File(cfg.getDataDir(), indexDirectoryName);
+	private Term normalizeQueryString(String q){
+		// Lucene indexes on lower case it seems
+		q = q.toLowerCase();
+		if (!q.endsWith("*")) {
+			q = q + "*";
+		}
+		return new Term(FIELD_DATA, q);
 	}
+
 	private File getResourceIndexDirectory(Long resourceId){
 		return cfg.getResourceDataFile(resourceId, indexDirectoryName);
 	}

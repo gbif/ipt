@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <#escape x as x?xml>
 <eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.0.1" 
     xmlns:v="eml://ecoinformatics.org/view-2.0.1" 
@@ -16,9 +15,9 @@
     xmlns:txt="eml://ecoinformatics.org/text-2.0.1" 
     xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    packageId="${resource.guid}-${resource.modified?string("HHmmss")}" system="GBIF-IPT" scope="system">
+    packageId="${eml.getResource().guid}-${eml.getEmlVersion()}" system="GBIF-IPT" scope="system">
     <dataset>
-        <alternateIdentifier>${resource.guid}</alternateIdentifier>
+        <alternateIdentifier>${eml.getResource().guid}</alternateIdentifier>
         <title>${eml.title}</title>
         <creator>
             <individualName>
@@ -35,7 +34,7 @@
             </address>
             <phone>${eml.getResourceCreator().phone!}</phone>
             <electronicMailAddress>${eml.getResourceCreator().email!}</electronicMailAddress>
-            <onlineUrl>${resource.link!}</onlineUrl>
+            <onlineUrl>${eml.getResource().link!}</onlineUrl>
         </creator>
         <pubDate>${eml.pubDate?date?string("yyyy-MM-dd")}</pubDate>
         <language>${eml.language!}</language>
@@ -93,9 +92,9 @@
         </coverage>
         <contact>
             <individualName>
-                <surName>${resource.contactName!}</surName>
+                <surName>${eml.getResource().contactName!}</surName>
             </individualName>
-            <electronicMailAddress>${resource.contactEmail!}</electronicMailAddress>
+            <electronicMailAddress>${eml.getResource().contactEmail!}</electronicMailAddress>
         </contact>
         <methods>
             <#if eml.methods??>

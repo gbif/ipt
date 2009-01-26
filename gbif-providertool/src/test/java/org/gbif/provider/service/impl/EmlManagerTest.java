@@ -2,6 +2,8 @@ package org.gbif.provider.service.impl;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
@@ -50,6 +52,17 @@ public class EmlManagerTest extends ResourceTestBase{
 		eml.geographicCoverage().setDescription("ick weiss auch nicht welche Ecke der Welt das sein soll...");
 		
 		emlManager.save(eml);
+	}
+
+	@Test
+	public void testPublishResource() {
+		setupOccResource();
+		try {
+			emlManager.publishNewEmlVersion(resource);
+		} catch (IOException e) {
+			fail();
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -61,8 +61,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected String uddiID;
 	// resource metadata
 	protected ResourceMetadata meta = new ResourceMetadata();
-	// persistent EML properties so we can search & aggregate on them easily
-	protected int emlVersion = 0;
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
 	protected boolean published = false;
@@ -131,16 +129,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	public void setCreated(Date created) {
 		this.created = created;
-	}
-	
-	public int getEmlVersion() {
-		return emlVersion;
-	}
-	public void setEmlVersion(int emlVersion) {
-		this.emlVersion = emlVersion;
-	}
-	public void increaseEmlVersion() {
-		this.emlVersion += 1;
 	}
 	
 	@CollectionOfElements(fetch=FetchType.EAGER)
@@ -231,7 +219,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	/**
 	 * updates persistent EML properties on resource based on EML values
 	 */
-	public void updateWithEml(Eml eml){
+	public void updateWithMetadata(Eml eml){
 		// keywords
 		Set<String> keys = new HashSet<String>();
 		keys.addAll(eml.getKeywords());

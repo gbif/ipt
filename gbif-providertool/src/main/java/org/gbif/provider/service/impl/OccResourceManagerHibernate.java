@@ -56,35 +56,35 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	
 	
 	
-	/* Co-manage geoserver FeatureType for this resource, removing existing featuretype in geoservers datadir
-	 * (non-Javadoc)
-	 * @see org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate#remove(java.lang.Long)
+	/* (non-Javadoc)
+	 * Also writes/updates the geoserver featuretype
+	 * @see org.gbif.provider.service.impl.GenericResourceManagerHibernate#publish(java.lang.Long)
 	 */
 	@Override
-	public void remove(Long id) {
-		// TODO Auto-generated method stub
-		super.remove(id);
-	}
-
-	/* Co-manage geoserver FeatureType for this resource, potentially adding new featuretype in geoservers datadir
-	 *  (non-Javadoc)
-	 * @see org.gbif.provider.service.impl.DatasourceBasedResourceManagerHibernate#save(org.gbif.provider.model.DatasourceBasedResource)
-	 */
-	@Override
-	public OccurrenceResource save(OccurrenceResource resource) {
-		if (resource.getId()==null){
-			// ID needed to build featuretypeinfo. So save first if resource is not persistent yet
-			resource = super.save(resource);			
-		}
+	public void publish(Long resourceId) {
+		OccurrenceResource resource = get(resourceId);			
 		try {
 			geoTools.updateFeatureType(resource);
 		} catch (IOException e) {
-			log.error("Cant write new Geoserver FeatureTypeInfo for resource "+resource.getId());
+			log.error("Can't write new Geoserver FeatureTypeInfo for resource "+resource.getId());
 		}
-		return super.save(resource);		
+		super.publish(resourceId);
 	}
-	
 
+	/* (non-Javadoc)
+	 * Also removes the geoserver featuretype in case of occurrence resources
+	 * @see org.gbif.provider.service.impl.GenericResourceManagerHibernate#unPublish(java.lang.Long)
+	 */
+	@Override
+	public void unPublish(Long resourceId) {
+		OccurrenceResource resource = get(resourceId);			
+		try {
+			geoTools.removeFeatureType(resource);
+		} catch (IOException e) {
+			log.error("Can't remove Geoserver FeatureTypeInfo for resource "+resource.getId());
+		}
+		super.unPublish(resourceId);
+	}
 	
 	
 	

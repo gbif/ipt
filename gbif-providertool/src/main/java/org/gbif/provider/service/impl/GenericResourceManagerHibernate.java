@@ -22,6 +22,9 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GenericResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements GenericResourceManager<T> {
 	@Autowired
 	protected AppConfig cfg;
+	@Autowired
+	private FullTextSearchManager fullTextSearchManager;
+	@Autowired
+	private EmlManager emlManager;
 
 	public GenericResourceManagerHibernate(final Class<T> persistentClass) {
 		super(persistentClass);
@@ -68,6 +75,8 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		// first remove all associated core records, taxa and regions
 		if (obj!=null){
 			Long resourceId = obj.getId();
+			// unpublish resource first
+			this.unPublish(resourceId);
 			if (resourceId != null){
 				// remove data dir
 				File dataDir = cfg.getResourceDataDir(resourceId);
@@ -83,4 +92,38 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		}
 	}
 
+	public void publish(Long resourceId) {
+		T resource = get(resourceId);
+		resource.setPublished(true);
+		Eml metadata;
+		try {
+			metadata = emlManager.publishNewEmlVersion(resource);
+			resource.updateWithMetadata(metadata);
+			register(resource);
+			save(resource);
+			fullTextSearchManager.buildResourceIndex(resourceId);
+		} catch (IOException e) {
+			log.error(String.format("Can't publish resource %s. IOException", resourceId), e);
+			resource.setPublished(false);
+			save(resource);
+		}
+	}
+
+	public void unPublish(Long resourceId) {
+		T resource = get(resourceId);
+		resource.setPublished(false);
+		unregister(resource);
+		save(resource);
+		fullTextSearchManager.buildResourceIndex(resourceId);
+	}
+	
+	
+	private void register(Resource resource){
+		// FIXME: implement		
+		log.warn("Automatic registration with GBIF hasn't been implemented yet");
+	}
+	private void unregister(Resource resource){
+		// FIXME: implement		
+		log.warn("Automatic (un)registration with GBIF hasn't been implemented yet");
+	}
 }
