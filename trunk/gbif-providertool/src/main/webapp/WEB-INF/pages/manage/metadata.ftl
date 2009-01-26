@@ -33,7 +33,7 @@
 			  <div class="wwctrl">
 				<@s.submit cssClass="button" name="publish" method="publish" key="button.publish" theme="simple"/>
 			  </div>
-			</li>
+			</li>	
 	 	</div>
  	</div>
     <div class="newline">
@@ -48,7 +48,6 @@
         </div>
     </div>
 	<@s.textarea key="resource.description" cssClass="text xlarge"/>
-	<@s.textarea key="resource.keywords" label="" cssClass="text xlarge"/>
 	
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>

@@ -507,7 +507,8 @@
             <result>/WEB-INF/pages/manage/metadata.ftl</result>
         </action>        
         <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/metadata.ftl</result>
+            <result>/WEB-INF/pages/manage/metadata.ftl</result>
+            <result name="input">/WEB-INF/pages/manage/metadata.ftl</result>
             <result name="occ" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -532,7 +533,7 @@
         </action>
         <action name="uploadSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="upload">
             <result>/WEB-INF/pages/manage/sources.ftl</result>
-            <result name="input"  type="freemarker">/WEB-INF/pages/manage/sources.ftl</result>
+            <result name="input">/WEB-INF/pages/manage/sources.ftl</result>
             <result name="error" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -542,7 +543,7 @@
             <result>/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
         </action>
         <action name="saveSource" class="org.gbif.provider.webapp.action.manage.SourceAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
+            <result name="input">/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -560,7 +561,7 @@
             <result>/WEB-INF/pages/manage/connectionForm.ftl</result>
         </action>
         <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/connectionForm.ftl</result>
+            <result name="input">/WEB-INF/pages/manage/connectionForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
@@ -582,7 +583,7 @@
             <result>/WEB-INF/pages/manage/propertyMapping.ftl</result>
         </action>
         <action name="savePropertyMapping" class="org.gbif.provider.webapp.action.manage.PropertyMappingAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/manage/propertyMapping.ftl</result>
+            <result name="input">/WEB-INF/pages/manage/propertyMapping.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">mappings</param>
                 <param name="resource_id">${resource_id}</param>

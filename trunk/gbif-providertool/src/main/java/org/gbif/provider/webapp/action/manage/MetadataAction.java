@@ -6,12 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
 import org.gbif.provider.model.ChecklistResource;
@@ -249,4 +251,5 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
 	}
+
 }
