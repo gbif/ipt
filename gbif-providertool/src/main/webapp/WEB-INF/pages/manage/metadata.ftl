@@ -24,7 +24,16 @@
 			<@s.textfield key="resource.title" required="true" cssClass="text large"/>
 	 	</div>
 		<div class="left">
-		 	<@s.select key="resource.type" required="true" emptyOption="false" list="resourceTypes" cssClass="text medium"/>
+			<#assign status=!resource.isPublished()/>
+			<@s.textfield key="resource.status" required="${status?string}" cssClass="text small" disabled="true"/>
+	 	</div>
+		<div class="left">
+			<li class="wwgrp">
+			  <div class="wwlbl"> &nbsp; </div> 
+			  <div class="wwctrl">
+				<@s.submit cssClass="button" name="publish" method="publish" key="button.publish" theme="simple"/>
+			  </div>
+			</li>
 	 	</div>
  	</div>
     <div class="newline">
@@ -38,8 +47,9 @@
 		    <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false"/>
         </div>
     </div>
-	<@s.textfield key="resource.link" required="false" cssClass="text xlarge"/>
 	<@s.textarea key="resource.description" cssClass="text xlarge"/>
+	<@s.textarea key="resource.keywords" label="" cssClass="text xlarge"/>
+	
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
 	<#if resource.id??>

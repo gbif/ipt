@@ -17,9 +17,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:dc="http://purl.org/dc/terms/" 
     packageId="${eml.getResource().guid}/eml-${eml.getEmlVersion()}.xml" system="GBIF-IPT" scope="system">
-    <#if (eml.getEmlVersion()>0)>
-    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
-    </#if>
     <dataset>
         <alternateIdentifier>${eml.getResource().guid}</alternateIdentifier>
         <title>${eml.title}</title>
@@ -158,5 +155,10 @@
             </#if>
         </project>
     </dataset>
+    <additionalMetadata>
+	    <#if (eml.getEmlVersion()>1)>
+	    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
+	    </#if>
+    </additionalMetadata>
 </eml:eml>
 </#escape>

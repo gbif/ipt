@@ -159,7 +159,7 @@ public class AppConfig{
 	}
 
 	public String getEmlUrl(String guid) {
-		return String.format("%s/data/eml-%s.xml", baseURL, guid);
+		return String.format("%s/data/%s/eml.xml", baseURL, guid);
 	}
 
 	// CORE RECORDS
