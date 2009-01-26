@@ -40,6 +40,7 @@ import org.appfuse.model.User;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.hibernate.Timestampable;
+import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.validator.NotNull;
@@ -63,7 +64,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected ResourceMetadata meta = new ResourceMetadata();
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
-	protected boolean published = false;
+	protected PublicationStatus status;
 	// resource meta-metadata
 	protected User creator;
 	protected Date created;
@@ -94,11 +95,11 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.uddiID = uddiID;
 	}
 	
-	public boolean isPublished() {
-		return published;
+	public PublicationStatus getStatus() {
+		return status;
 	}
-	public void setPublished(boolean published) {
-		this.published = published;
+	public void setStatus(PublicationStatus status) {
+		this.status = status;
 	}
 	
 	public Date getModified() {
@@ -276,6 +277,14 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 				.append("id", this.id).append("title", this.getTitle()).append(
 						"link", this.getLink()).append("modifier", this.modifier)
 				.append("guid", this.guid).toString();
+	}
+	
+	@Transient
+	public boolean isPublished() {
+		if (status==null){
+			return false;
+		}
+		return status.compareTo(PublicationStatus.dirty) >= 0;
 	}
 
 }

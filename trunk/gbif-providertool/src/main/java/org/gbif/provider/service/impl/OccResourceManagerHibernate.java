@@ -61,14 +61,14 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	 * @see org.gbif.provider.service.impl.GenericResourceManagerHibernate#publish(java.lang.Long)
 	 */
 	@Override
-	public void publish(Long resourceId) {
+	public OccurrenceResource publish(Long resourceId) {
 		OccurrenceResource resource = get(resourceId);			
 		try {
 			geoTools.updateFeatureType(resource);
 		} catch (IOException e) {
 			log.error("Can't write new Geoserver FeatureTypeInfo for resource "+resource.getId());
 		}
-		super.publish(resourceId);
+		return super.publish(resourceId);
 	}
 
 	/* (non-Javadoc)

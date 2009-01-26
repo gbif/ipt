@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
@@ -59,7 +60,8 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	}
 	
 	public List<Long> getPublishedResourceIDs() {
-        return query(String.format("select id from %s where published=true", persistentClass.getName()))
+        return query(String.format("select id from %s where status>=:status", persistentClass.getName()))
+        .setParameter("status", PublicationStatus.dirty)
 		.list();
 	}
 
@@ -92,26 +94,29 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		}
 	}
 
-	public void publish(Long resourceId) {
+	public T publish(Long resourceId) {
 		T resource = get(resourceId);
-		resource.setPublished(true);
+		// in case sth goes wrong
 		Eml metadata;
 		try {
 			metadata = emlManager.publishNewEmlVersion(resource);
 			resource.updateWithMetadata(metadata);
+			// the resource is really published and the EML reflects the state of the resource
+			resource.setStatus(PublicationStatus.published);
 			register(resource);
 			save(resource);
 			fullTextSearchManager.buildResourceIndex(resourceId);
 		} catch (IOException e) {
 			log.error(String.format("Can't publish resource %s. IOException", resourceId), e);
-			resource.setPublished(false);
+			resource.setStatus(PublicationStatus.draft);
 			save(resource);
 		}
+		return resource;
 	}
 
 	public void unPublish(Long resourceId) {
 		T resource = get(resourceId);
-		resource.setPublished(false);
+		resource.setStatus(PublicationStatus.draft);
 		unregister(resource);
 		save(resource);
 		fullTextSearchManager.buildResourceIndex(resourceId);

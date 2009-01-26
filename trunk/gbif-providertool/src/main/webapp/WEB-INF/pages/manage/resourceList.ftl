@@ -7,7 +7,7 @@
     <meta name="submenu" content="manage"/>
 </head>
 
-<#include "/WEB-INF/pages/inc/resourceList.ftl">  
+<#include "/WEB-INF/pages/inc/resourceManagerList.ftl">  
 
 <script type="text/javascript">
     highlightTableRows("resourceList");

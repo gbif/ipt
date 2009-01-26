@@ -15,7 +15,7 @@
 
 <s:if test="resourceType!=null">
 <div id="currentResourceClass">
-	<s:text name="resourceClass.%{resourceType}"/>
+	<s:text name="resourceClass.%{resourceType}"/><s:if test="!resource.isPublished()">*</s:if>
 </div>
 </s:if>
 

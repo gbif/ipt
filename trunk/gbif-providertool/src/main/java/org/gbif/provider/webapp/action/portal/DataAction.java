@@ -16,13 +16,14 @@ import org.gbif.provider.model.Taxon;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.gbif.provider.util.Constants.DEFAULT_LOGO;
 
 
-public class DataAction extends BaseResourceAction {
+public class DataAction extends BaseMetadataResourceAction {
 	private InputStream inputStream;
 	@Autowired
 	private AppConfig cfg;

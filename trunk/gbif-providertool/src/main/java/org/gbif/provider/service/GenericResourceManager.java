@@ -39,7 +39,7 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 * Also tries to write/update the geoserver entry and lucene index (which doesnt happen through simple saves)
 	 * @param resourceId
 	 */
-	public void publish(Long resourceId);
+	public Resource publish(Long resourceId);
 	
 	/** Unpublishes a resource, i.e. removes the GBIF registry entry
 	 * and flag the resource object & lucene index entry 

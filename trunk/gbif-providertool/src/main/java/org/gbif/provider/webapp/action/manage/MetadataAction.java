@@ -117,6 +117,11 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		return resourceType;
 	}
 
+	public String publish() {
+		resourceManager.publish(resource_id);
+		return SUCCESS;
+	}
+	
 	public String delete() {
 		if (resource != null && resourceType!=null) {
 			// remove resource with appropiate manager
