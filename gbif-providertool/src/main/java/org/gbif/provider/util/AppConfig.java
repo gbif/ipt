@@ -143,7 +143,7 @@ public class AppConfig{
 	}
 
 	public static File getMetadataFile(Long resourceId) {
-		return getResourceDataFile(resourceId, "metadata/meta.xml");
+		return getResourceDataFile(resourceId, "metadata/metadata.xml");
 	}
 
 	public static File getEmlFile(Long resourceId, int version) {
