@@ -34,6 +34,22 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 */
 	public List<Long> getPublishedResourceIDs();
 
+	/** Publishes a resource, creating a new EML document version
+	 * and registering the resource with GBIF if not already registered. 
+	 * Also tries to write/update the geoserver entry and lucene index (which doesnt happen through simple saves)
+	 * @param resourceId
+	 */
+	public void publish(Long resourceId);
+	
+	/** Unpublishes a resource, i.e. removes the GBIF registry entry
+	 * and flag the resource object & lucene index entry 
+	 * so it doesnt show up in the public portal / searches anymore.
+	 * Also removes the geoserver entry in case of occurrence resources
+	 *  
+	 * leaves all archived EML documents, but doesnt advertise them anymore. 
+	 * @param resourceId
+	 */
+	public void unPublish(Long resourceId);
 	/**
 	 * Get resource by GUID
 	 * @param guid of resource to be returned

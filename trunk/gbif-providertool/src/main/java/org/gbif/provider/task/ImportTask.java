@@ -203,7 +203,7 @@ import org.springframework.transaction.annotation.Transactional;
 			//
 			// build the full text indexes
 			//
-			fullTextSearchManager.buildDataResourceIndexes(resource);
+			fullTextSearchManager.buildDataResourceIndex(resource);
 		}
 
 		private void setFinalExtensionStats(Extension ext){

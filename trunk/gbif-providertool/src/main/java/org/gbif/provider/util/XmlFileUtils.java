@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import org.apache.commons.io.FileUtils;
+
 public class XmlFileUtils {
 	public static Writer startNewUtf8File(File file) throws IOException{
 		Writer writer=null;
+		FileUtils.touch(file);
 		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file,false),"UTF8"));
 		return writer;
 	}

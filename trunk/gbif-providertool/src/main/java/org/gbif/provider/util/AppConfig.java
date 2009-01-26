@@ -142,9 +142,20 @@ public class AppConfig{
 		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
 	}
 
-	public static File getEmlFile(Long resourceId) {
-		File eml = new File(getResourceDataDir(resourceId), "eml.xml");
+	public static File getMetadataFile(Long resourceId) {
+		return getResourceDataFile(resourceId, "metadata/meta.xml");
+	}
+
+	public static File getEmlFile(Long resourceId, int version) {
+		String ver = "";
+		if (version>0){
+			ver = "-"+version;
+		}
+		File eml = new File(getResourceDataDir(resourceId), String.format("metadata/eml%s.xml",ver));
 		return eml;    	
+	}
+	public static File getEmlFile(Long resourceId) {
+		return getEmlFile(resourceId, 0);    	
 	}
 
 	public String getEmlUrl(String guid) {

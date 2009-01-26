@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -16,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.XmlFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -41,6 +43,26 @@ public class GeoserverUtils {
 		return null;
 	}
 	
+	public void removeFeatureType(OccurrenceResource resource) throws IOException{
+		if (cfg.getGeoserverDataDirFile() == null || !cfg.getGeoserverDataDirFile().exists()){
+			log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
+			throw new IOException("Geoserver datadir configured wrongly");
+		}
+		File ftDir = new File(cfg.getGeoserverDataDirFile(), String.format("featureTypes/ipt_resource%s", resource.getId()));
+		if (ftDir.exists()){
+			FileUtils.deleteDirectory(ftDir);
+			log.info("Removed geoserver feature type for resource "+resource.getId());
+		}
+		try {
+			this.reloadCatalog();
+		} catch (IOException e) {
+			log.error("Cannot reload geoserver catalog. Geoserver not running or URL & login credentials not set correctly?");
+			throw new IOException("Cannot reload geoserver catalog");
+		}
+		// remember new feature hashcode
+		resource.setFeatureHash(0);			
+	}
+	
 	public void updateFeatureType(OccurrenceResource resource) throws IOException{
 		// create new featuretype description
 		String featureTypeInfo = this.buildFeatureTypeDescriptor(resource);
@@ -58,11 +80,9 @@ public class GeoserverUtils {
 				FileUtils.forceMkdir(fti.getParentFile());
 			}
 			fti.createNewFile();
-			FileWriter fstream = new FileWriter(fti);
-	        BufferedWriter out = new BufferedWriter(fstream);
+			Writer out = XmlFileUtils.startNewUtf8XmlFile(fti);
 	        out.write(featureTypeInfo);
 	        out.close();
-	        fstream.close();
 			try {
 				this.reloadCatalog();
 			} catch (IOException e) {

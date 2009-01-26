@@ -22,6 +22,7 @@ public class Eml implements Serializable{
 	private static final long serialVersionUID = 770733523572837495L;
 	private transient Resource resource;
 	// serialised data
+	private int emlVersion = 0;
 	private Agent resourceCreator = new Agent();
 	private Date pubDate;
 	private String language="en";
@@ -62,6 +63,18 @@ public class Eml implements Serializable{
 	public String getGuid() {
 		return resource.getGuid();
 	}
+
+	public int getEmlVersion() {
+		return emlVersion;
+	}
+	public void setEmlVersion(int emlVersion) {
+		this.emlVersion = emlVersion;
+	}
+	public int increaseEmlVersion() {
+		this.emlVersion += 1;
+		return this.emlVersion;
+	}
+
 
 	public String getAbstract() {
 		return resource.getDescription();

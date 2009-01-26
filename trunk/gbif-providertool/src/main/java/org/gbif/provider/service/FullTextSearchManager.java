@@ -3,8 +3,10 @@
  */
 package org.gbif.provider.service;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.lucene.index.CorruptIndexException;
 import org.gbif.provider.model.DataResource;
 
 /**
@@ -18,12 +20,17 @@ public interface FullTextSearchManager {
 	 * sources
 	 * @param resource to build
 	 */
-	public void buildDataResourceIndexes(DataResource resource);
+	public void buildDataResourceIndex(DataResource resource);
 	
 	/**
-	 * Builds the single index spanning all resources (e.g. metadata only)
+	 * (Re)builds the whole metadata index spanning all resources (e.g. metadata only)
 	 */
-	public void buildResourceIndexes();
+	public void buildResourceIndex();
+
+	/** (Re)builds the metadata index for a single resource 
+	 * @param resourceId
+	 */
+	public void buildResourceIndex(Long resourceId);
 	
 	/**
 	 * @param resourceId To search within
@@ -32,9 +39,15 @@ public interface FullTextSearchManager {
 	 */
 	public List<Long> search(Long resourceId, String q);
 	
-	/** search all resource metadata across all resources
+	/** do full text search on metadata of all published resources
 	 * @param q unparsed query string
 	 * @return list of resourceIds matching
 	 */
 	public List<Long> search(String q);
+	
+	/** do full text search on metadata of all resources accessible to a given user
+	 * @param q unparsed query string
+	 * @return list of resourceIds matching
+	 */
+	public List<Long> search(String q, Long userId);
 }
