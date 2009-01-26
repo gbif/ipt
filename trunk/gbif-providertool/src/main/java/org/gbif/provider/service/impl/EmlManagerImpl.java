@@ -43,7 +43,7 @@ import freemarker.template.TemplateException;
 
 public class EmlManagerImpl implements EmlManager{
     protected static final Log log = LogFactory.getLog(EmlManagerImpl.class);
-	private static final String EML_TEMPLATE = "/WEB-INF/pages/portal/meta/eml.ftl";
+	private static final String EML_TEMPLATE = "/WEB-INF/pages/eml.ftl";
 
     @Autowired
 	public AppConfig cfg;
