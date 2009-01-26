@@ -14,8 +14,12 @@
     xmlns:rp="eml://ecoinformatics.org/party-2.0.1" 
     xmlns:txt="eml://ecoinformatics.org/text-2.0.1" 
     xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    packageId="${eml.getResource().guid}-${eml.getEmlVersion()}" system="GBIF-IPT" scope="system">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dc="http://purl.org/dc/terms/" 
+    packageId="${eml.getResource().guid}/eml-${eml.getEmlVersion()}.xml" system="GBIF-IPT" scope="system">
+    <#if (eml.getEmlVersion()>0)>
+    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
+    </#if>
     <dataset>
         <alternateIdentifier>${eml.getResource().guid}</alternateIdentifier>
         <title>${eml.title}</title>

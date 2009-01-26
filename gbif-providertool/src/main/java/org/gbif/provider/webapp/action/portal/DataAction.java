@@ -26,6 +26,7 @@ public class DataAction extends BaseResourceAction {
 	private InputStream inputStream;
 	@Autowired
 	private AppConfig cfg;
+	private Integer version=0;
 	
     public String execute() throws FileNotFoundException{
     	if (resource_id != null){
@@ -50,8 +51,27 @@ public class DataAction extends BaseResourceAction {
     	return ERROR;
     }
     
-	public InputStream getInputStream(){
+    public String eml() throws FileNotFoundException{
+    	if (resource_id == null){
+        	prepare();
+        	resource_id=resource.getId();
+    	}
+		File eml = null;
+		if (version>0){
+			eml=cfg.getEmlFile(resource_id, version);
+		}else{
+			eml=cfg.getEmlFile(resource_id);
+		}
+		inputStream = new FileInputStream(eml);
+		return SUCCESS;
+    }
+    
+    public InputStream getInputStream(){
 		return inputStream;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
    
 }

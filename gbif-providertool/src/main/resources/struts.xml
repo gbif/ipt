@@ -369,7 +369,6 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-
         <action name="logo" class="org.gbif.provider.webapp.action.portal.DataAction" method="logo">
             <result name="success" type="stream">
                 <param name="contentType">image/jpeg</param>
@@ -378,7 +377,15 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-
+        <action name="eml" class="org.gbif.provider.webapp.action.portal.DataAction" method="eml">
+            <result name="success" type="stream">
+                <param name="contentType">text/xml</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="eml.xml"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        
         <action name="rss" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
             <result name="success" type="freemarker">
                 <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
@@ -405,12 +412,6 @@
                 <param name="resource_id">${resource_id}</param>
                 <param name="format">${format}</param>
             </result>            
-        </action>
-        <action name="eml" class="org.gbif.provider.webapp.action.portal.ResourceAction">
-            <result>
-                <param name="location">/WEB-INF/pages/portal/meta/eml.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
         </action>
         <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
             <result>
@@ -682,7 +683,7 @@
         </action>
         
         <action name="view" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
-            <result name="success">/WEB-INF/pages/meta/eml.ftl</result>
+            <result name="success">/WEB-INF/eml.ftl</result>
         </action>      
 
         <action name="*Form" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
