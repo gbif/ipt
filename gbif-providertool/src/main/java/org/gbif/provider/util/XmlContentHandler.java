@@ -40,7 +40,6 @@ public class XmlContentHandler extends DefaultHandler{
 		for (String w : words) {
 			if (w != null && w.trim().length()>0) {
 				sb.append(w);
-				System.out.println(w);
 			}
 		}
 		return sb.toString().trim();
