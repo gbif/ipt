@@ -15,7 +15,9 @@
 
 <s:if test="resourceType!=null">
 <div id="currentResourceClass">
+	<s:property value="%{resource.isDirty()}"/>
 	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
+	<s:property value="%{resource.isPublished()}"/>
 </div>
 </s:if>
 

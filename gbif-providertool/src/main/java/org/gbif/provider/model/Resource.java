@@ -293,7 +293,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	@Transient
 	public boolean isDirty() {
-		return !isPublished();
+		if (status==null){
+			return true;
+		}
+		return status.compareTo(PublicationStatus.published) < 0;
 	}
 
 }

@@ -106,6 +106,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 			resource.setStatus(PublicationStatus.draft);
 			save(resource);
 		}
+		flush();
 		return resource;
 	}
 

@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +27,14 @@ public class ResourceKeywordManagerJDBC extends BaseManagerJDBC implements Resou
 			maxCnt=1.0;
 		}
 		sql = String.format("SELECT keywords_element, count(*)*%s FROM resource_keywords join resource res on resource_fk=res.id WHERE res.status>=2 GROUP BY keywords_element order by 2 desc limit 20", 9.0/maxCnt);
-		log.debug(sql);
-		return executeMap(sql);
+		Map<String, Integer> map = executeMap(sql);
+		Map<String, Integer> sortedmap = new LinkedHashMap<String, Integer>();
+		List<String> keys = new ArrayList<String>(map.keySet());
+		Collections.sort(keys);
+		for (String k : keys){
+			sortedmap.put(k, map.get(k));
+		}
+		return sortedmap;
 	}
 	
 	public List<String> getKeywords(String prefix) {
