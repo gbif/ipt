@@ -16,7 +16,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 public class BaseManagerJDBC {
 	protected final Log log = LogFactory.getLog(getClass());
 	
@@ -89,7 +92,10 @@ public class BaseManagerJDBC {
 			ResultSet result = st.executeQuery(sql);
 			// create extension records from JDBC resultset
 			while (result.next()){
-				map.put(result.getString(1), result.getInt(2));
+				String key = result.getString(1);
+				if (key!=null){
+					map.put(key, result.getInt(2));
+				}
 		    }
 		} catch (SQLException e) {
 			log.error(String.format("Couldn't execute count SQL per JDBC: %s", sql), e);
