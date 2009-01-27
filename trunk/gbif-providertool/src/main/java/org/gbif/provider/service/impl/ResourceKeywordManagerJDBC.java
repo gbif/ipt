@@ -26,7 +26,7 @@ public class ResourceKeywordManagerJDBC extends BaseManagerJDBC implements Resou
 		if (maxCnt<1.0){
 			maxCnt=1.0;
 		}
-		sql = String.format("SELECT keywords_element, count(*)*%s FROM resource_keywords join resource res on resource_fk=res.id WHERE res.status>=2 GROUP BY keywords_element order by 2 desc limit 20", 9.0/maxCnt);
+		sql = String.format("SELECT keywords_element, count(*)*%s FROM resource_keywords join resource res on resource_fk=res.id WHERE res.status>=2 GROUP BY keywords_element order by 2 desc limit 50", 9.0/maxCnt);
 		Map<String, Integer> map = executeMap(sql);
 		List<String> keys = new ArrayList<String>(map.keySet());
 		Collections.sort(keys);
