@@ -57,11 +57,6 @@ import org.springframework.transaction.annotation.Transactional;
     		.list();
 		}
 
-	    public List<T> getTop(int maxResults) {
-	        return query(String.format("from %s", persistentClass.getName()))
-	        		.setMaxResults(maxResults)
-	        		.list();
-	    }
 	    /**
 	     * {@inheritDoc}
 	     */

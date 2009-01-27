@@ -44,12 +44,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	private OccResourceManager occResourceManager;
 	@Autowired
 	protected ResourceFactory resourceFactory;
-	@Autowired
-	private CacheManager cacheManager;
-	protected List<?> resources;
-	protected Map<String, String> occurrenceResourceTypes = new HashMap<String, String>();
-	protected Map<String, String> checklistResourceTypes = new HashMap<String, String>();
-	protected Map<String, String> otherResourceTypes = new HashMap<String, String>();
+	protected List<? extends Resource> resources;
 	// file/logo upload
 	protected File file;
 	protected String fileContentType;
@@ -87,6 +82,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String list(){
+		resource=null;
 		if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Occurrence.alias)){
 			resources = occResourceManager.getResourcesByUser(getCurrentUser().getId());
 		}else if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Checklist.alias)){
@@ -122,6 +118,25 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 
 	public String publish() {
 		resourceManager.publish(resource_id);
+		return SUCCESS;
+	}
+	
+	public String publishAll() {
+		list();
+		for (Resource res : resources){
+			if (resource.isDirty()){
+				resourceManager.publish(resource.getId());
+				this.addActionMessage("Published: "+res.getTitle());
+			}
+		}
+		return SUCCESS;
+	}
+	public String republish() {
+		List<Long> publishedIDs = resourceManager.getPublishedResourceIDs();
+		for (Long rid : publishedIDs){
+			resourceManager.publish(rid);
+		}
+		this.addActionMessage("Republished "+publishedIDs.size()+" resources");
 		return SUCCESS;
 	}
 	
@@ -220,35 +235,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
         return fileFileName;
     }
 
-
-	public Map<String, String> getResourceTypes(){
-		if (resource != null){
-			if (resource instanceof OccurrenceResource){
-				return occurrenceResourceTypes;
-			}else if (resource instanceof ChecklistResource){
-				return checklistResourceTypes;
-			}
-		}
-		// if not those 2, return any resource type
-		Map<String, String> allTypes = new HashMap<String, String>();
-		allTypes.putAll(checklistResourceTypes);
-		allTypes.putAll(occurrenceResourceTypes);
-		allTypes.putAll(otherResourceTypes);
-		return allTypes;
-	}
-
-	
-	public void setChecklistResourceTypes(Map<String, String> checklistResourceTypes) {
-		this.checklistResourceTypes = translateI18nMap(checklistResourceTypes);
-	}
-	public void setOccurrenceResourceTypes(Map<String, String> occurrenceResourceTypes) {
-		this.occurrenceResourceTypes = translateI18nMap(occurrenceResourceTypes);
-	}
-	public void setOtherResourceTypes(Map<String, String> otherResourceTypes) {
-		this.otherResourceTypes = translateI18nMap(otherResourceTypes);
-	}
-	
-	
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
 	}

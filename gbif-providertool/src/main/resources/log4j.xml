@@ -33,7 +33,7 @@
         <level value="WARN"/>
     </logger>
     <logger name="org.hibernate.SQL">
-        <level value="INFO"/>
+        <level value="WARN"/>
     </logger>
     
 

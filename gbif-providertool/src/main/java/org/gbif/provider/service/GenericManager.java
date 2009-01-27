@@ -7,7 +7,6 @@ import java.util.List;
 public interface GenericManager<T>{
     List<Long> getAllIds();
     List<T> getAll();
-    List<T> getTop(int maxResults);
 	/**
 	 * Gets all records without duplicates.
 	 * @See GenericDao.getAllDistinct()

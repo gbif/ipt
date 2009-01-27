@@ -2,6 +2,13 @@
     <title>EML - <@s.text name="eml.geographicCoverage"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="submenu" content="eml"/>
+	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"/>  
+	<script type="text/javascript" src="/scripts/map.js"/>  
+	<script type="text/javascript">  
+	document.observe("dom:loaded", function() {
+		loadMap();
+	});
+	</script>
 </head>
 
 <@s.form id="emlForm" action="geocoverage" method="post" validate="false">
@@ -29,8 +36,6 @@
 	<div class="newline" />
 	<@s.textarea key="eml.geographicCoverage.description" required="false" cssClass="text xlarge"/>
 </fieldset>
-
-	<#include "/WEB-INF/pages/inc/openLayersBBoxScript.ftl">  
 
 	<div class="break" />
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>

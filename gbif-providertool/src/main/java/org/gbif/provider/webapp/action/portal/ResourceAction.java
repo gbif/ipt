@@ -40,6 +40,10 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
     // for searching
 	private String keyword;
 	private String q;
+	private Double bbox_top;
+	private Double bbox_bottom;
+	private Double bbox_left;
+	private Double bbox_right;
 	
 	public String execute(){
 		if (resource!=null){
@@ -61,6 +65,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String list(){
+		resource=null;
 		resources = resourceManager.getLatest(0, 500);
 		alphabet=keywordManager.getAlphabet();
 		if (alphabet.isEmpty()){
@@ -81,8 +86,14 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 		if (q!=null){
 			resources = resourceManager.search(q);
 		}else{
-			resources = resourceManager.getResourcesByKeyword(keyword);
+			resources = resourceManager.searchByKeyword(keyword);
 		}
+		tagcloud=keywordManager.getCloud();
+		return SUCCESS;
+	}
+	
+	public String geoSearch() {
+		resources = resourceManager.searchByBBox(bbox_top,bbox_bottom,bbox_left,bbox_right);
 		tagcloud=keywordManager.getCloud();
 		return SUCCESS;
 	}
@@ -135,6 +146,22 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public void setQ(String q) {
 		this.q = q;
+	}
+
+	public void setBbox_top(Double bbox_top) {
+		this.bbox_top = bbox_top;
+	}
+
+	public void setBbox_bottom(Double bbox_bottom) {
+		this.bbox_bottom = bbox_bottom;
+	}
+
+	public void setBbox_left(Double bbox_left) {
+		this.bbox_left = bbox_left;
+	}
+
+	public void setBbox_right(Double bbox_right) {
+		this.bbox_right = bbox_right;
 	}
 		
 }

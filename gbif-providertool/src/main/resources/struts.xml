@@ -209,10 +209,22 @@
         </action>
         
         
-        <!-- occurrence actions -->
-        <action name="occResources" class="org.gbif.provider.webapp.action.portal.OccResourceAction" method="list">
-            <result>/WEB-INF/pages/portal/occ/resourceList.ftl</result>
+        <!-- metadata actions -->
+        <action name="resources" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="list">
+            <result>/WEB-INF/pages/portal/meta/resourceList.ftl</result>
         </action>
+        <action name="metaResource" class="org.gbif.provider.webapp.action.portal.ResourceAction">
+            <result>/WEB-INF/pages/portal/meta/resource.ftl</result>
+        </action>
+        <action name="metaSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="search">
+            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
+        </action>
+        <action name="geoSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="geoSearch">
+            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
+        </action>
+        
+        
+        <!-- occurrence actions -->
         <action name="occResource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
             <result>/WEB-INF/pages/portal/occ/index.ftl</result>
         </action>
@@ -239,9 +251,6 @@
         </action>
         
         <!-- checklist actions -->
-        <action name="taxResources" class="org.gbif.provider.webapp.action.portal.TaxResourceAction" method="list">
-            <result>/WEB-INF/pages/portal/tax/resourceList.ftl</result>
-        </action>
         <action name="taxResource" class="org.gbif.provider.webapp.action.portal.TaxResourceAction">
             <result>/WEB-INF/pages/portal/tax/index.ftl</result>
         </action>
@@ -263,17 +272,6 @@
         <action name="taxListBy*" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="listBy{1}">
             <param name="action">{1}</param>
             <result >/WEB-INF/pages/portal/tax/taxonList.ftl</result>
-        </action>
-        
-        <!-- metadata actions -->
-        <action name="resources" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="list">
-            <result>/WEB-INF/pages/portal/meta/index.ftl</result>
-        </action>
-        <action name="metaResource" class="org.gbif.provider.webapp.action.portal.ResourceAction">
-            <result>/WEB-INF/pages/missing.ftl</result>
-        </action>
-        <action name="metaSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="search">
-            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
         </action>
         
     </package>
@@ -506,6 +504,9 @@
         <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
             <result>/WEB-INF/pages/manage/resourceList.ftl</result>
         </action>
+        <action name="publish" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publishAll">
+            <result>/WEB-INF/pages/manage/resourceList.ftl</result>
+        </action>
         <action name="resource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
             <result>/WEB-INF/pages/manage/metadata.ftl</result>
         </action>        
@@ -686,10 +687,6 @@
             </result>
         </action>
         
-        <action name="view" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
-            <result name="success">/WEB-INF/eml.ftl</result>
-        </action>      
-
         <action name="*Form" class="org.gbif.provider.webapp.action.manage.EmlEditorAction">
             <result type="freemarker">/WEB-INF/pages/manage/meta/{1}.ftl</result>
             <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/{1}.ftl</result>

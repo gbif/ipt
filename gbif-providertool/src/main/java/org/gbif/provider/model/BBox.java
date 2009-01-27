@@ -55,7 +55,7 @@ public class BBox implements Serializable{
 		return max;
 	}
 	
-	private void setMax(Point max) {
+	public void setMax(Point max) {
 		if (max==null){
 			this.max=null;
 		}else{
@@ -68,7 +68,7 @@ public class BBox implements Serializable{
 		return min;
 	}
 	
-	private void setMin(Point min) {
+	public void setMin(Point min) {
 		if (min==null){
 			this.min=null;
 		}else{
