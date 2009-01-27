@@ -61,7 +61,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 		if (next==null){
 			return INPUT;
 		}
+		resource.setDirty();
 		emlManager.save(eml);
+		resourceManager.save(resource);
 		return SUCCESS;
 	}
 	

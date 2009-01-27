@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
@@ -37,33 +35,15 @@ import org.gbif.provider.model.dto.CommonName;
 import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
-import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionRecordManager;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true)
-public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {	
-    protected static final Log log = LogFactory.getLog(ExtensionRecordManagerJDBC.class);
+public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements ExtensionRecordManager {	
     @Autowired
-	private SessionFactory sessionFactory;		
-	@Autowired
-	private IptNamingStrategy namingStrategy;
-	@Autowired
 	private ExtensionManager extensionManager;
-
-	private Connection getConnection() {
-		Session s = getSession();
-		Connection cn = s.connection();
-		return cn;
-	}
-	private Session getSession() {
-		return SessionFactoryUtils.getSession(sessionFactory, false);
-	}
 
 	@Transactional(readOnly=false)
 	public void insertExtensionRecord(ExtensionRecord rec) {
@@ -118,24 +98,6 @@ public class ExtensionRecordManagerJDBC implements ExtensionRecordManager {
 		String sql = String.format("select count(distinct %s) from %s where resource_fk=%s", column, table, resourceId);
 		return executeCount(sql);
 	}
-	private int executeCount(String sql){
-		Connection cn = getConnection();
-		int count = 0;
-		try {
-			Statement st = cn.createStatement();			
-			ResultSet result = st.executeQuery(sql);
-			// create extension records from JDBC resultset
-			while (result.next()){
-				count = result.getInt(1);
-		    }
-		} catch (SQLException e) {
-			log.error(String.format("Couldn't execute count SQL per JDBC: %s", sql), e);
-		}
-		return count;
-	}
-	
-	
-	
 	public List<CommonName> getCommonNames(Long taxonId) {
 		List<CommonName> cnames = new ArrayList<CommonName>();
 		String sql = String.format("SELECT name, language, region FROM TAX_COMMON_NAMES where coreid=%s", taxonId);

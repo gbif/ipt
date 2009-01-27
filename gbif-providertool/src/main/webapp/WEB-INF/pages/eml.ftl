@@ -53,7 +53,7 @@
         <coverage>
             <geographicCoverage>
                 <geographicDescription>${eml.getGeographicCoverage().description!}</geographicDescription>
-	            <#if eml.getGeographicCoverage().boundingCoordinates??>
+	            <#if (eml.getGeographicCoverage().boundingCoordinates.min)??>
                 <boundingCoordinates>
                     <westBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.min.longitude!}</westBoundingCoordinate>
                     <eastBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.max.longitude!}</eastBoundingCoordinate>

@@ -86,6 +86,8 @@
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
 
+    <bean id="resourceKeywordManager" class="org.gbif.provider.service.impl.ResourceKeywordManagerJDBC" />
+
     <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
     
     <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerHibernate" parent="abstractManager"/>        

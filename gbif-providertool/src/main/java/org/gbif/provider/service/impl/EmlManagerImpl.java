@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.Date;
@@ -63,7 +64,7 @@ public class EmlManagerImpl implements EmlManager{
     		// load existing data. This is a persistent resource
     		File metadataFile = cfg.getMetadataFile(resource.getId());
 			try {
-				FileReader reader = new FileReader(metadataFile);
+				Reader reader = XmlFileUtils.getUtf8Reader(metadataFile);
 				metadata = (Eml) xstream.fromXML(reader);
 			} catch (FileNotFoundException e) {
 				log.error(String.format("EML Metadata file not found for resource %s", resource.getId()));
@@ -115,6 +116,9 @@ public class EmlManagerImpl implements EmlManager{
 	        // also create archived fixed version
 			File versionedEmlFile = cfg.getEmlFile(resource.getId(), version);
 			FileUtils.copyFile(currEmlFile, versionedEmlFile);
+			// persist EML with new version
+			save(metadata);
+			log.info("Published new EML version "+metadata.getEmlVersion());
 		} catch (TemplateException e) {
 			log.error("Freemarker template exception", e);
 			throw new IOException("Freemarker template exception");

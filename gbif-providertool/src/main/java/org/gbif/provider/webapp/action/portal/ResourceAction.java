@@ -17,6 +17,7 @@ import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.ResourceKeywordManager;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,23 @@ import com.opensymphony.xwork2.Preparable;
 public class ResourceAction extends BaseMetadataResourceAction implements Preparable{
 	@Autowired
 	private EmlManager emlManager;
+	@Autowired
+	private ResourceKeywordManager keywordManager;
 	private Eml eml;
 	private String format;
     private List<Resource> resources;
-		
+    // for meta portal
+    private List<String> alphabet;
+    private List<String> keywords;
+    private Map<String, Integer> tagcloud;
+    // for searching
+	private String keyword;
+	private String q;
 	
 	public String execute(){
 		if (resource!=null){
 			eml = emlManager.load(resource);
+			tagcloud=keywordManager.getCloud();
 			return SUCCESS;
 		}		
 		return RESOURCE404;
@@ -50,12 +60,32 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 		}
 	}
 
-	public String rss(){
-		resources = resourceManager.getAll();
+	public String list(){
+		resources = resourceManager.getLatest(0, 500);
+		alphabet=keywordManager.getAlphabet();
+		if (alphabet.isEmpty()){
+			keywords = new ArrayList();
+		}else{
+			keywords = keywordManager.getKeywords(alphabet.get(0));
+		}
+		tagcloud=keywordManager.getCloud();
 		return SUCCESS;
 	}
 
-	
+	public String rss(){
+		resources = resourceManager.getLatest(0, 25);
+		return SUCCESS;
+	}
+
+	public String search() {
+		if (q!=null){
+			resources = resourceManager.search(q);
+		}else{
+			resources = resourceManager.getResourcesByKeyword(keyword);
+		}
+		tagcloud=keywordManager.getCloud();
+		return SUCCESS;
+	}
 	
 	
 	
@@ -77,6 +107,34 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public List<Resource> getResources() {
 		return resources;
+	}
+
+	public Map<String, Integer> getTagcloud() {
+		return tagcloud;
+	}
+
+	public List<String> getAlphabet() {
+		return alphabet;
+	}
+
+	public List<String> getKeywords() {
+		return keywords;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public String getQ() {
+		return q;
+	}
+
+	public void setQ(String q) {
+		this.q = q;
 	}
 		
 }
