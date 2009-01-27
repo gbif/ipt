@@ -22,57 +22,6 @@ h2        {clear: both;}
 </head>
 
 
-<h2>Latest EML documents</h2>	
-
-<#if (resources?size==0)>
-	<p>The repository is still empty.</p>
-<#else>
-	<table class="layout">	
-	 <tr>
-		<th>Title</th>
-		<th>Last Modified</th>
-		<th>Originator</th>
-	 </tr>
-	 <#list resources as m>
-	 <tr>
-		<td><a href="metaResource.html?resource_id=${m.id?c}">${m.title!""}</a></td>
-		<td>${m.modified?date}</td>
-		<td>${m.creator.lastName!(m.creator.firstName!(m.creator.username!))}</td>
-	 </tr>
-	 </#list>
-	</table>
-</#if>
-
-
-<#assign alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']>
-<div id="titleindex">
-  <h2>Title Index</h2>
-  <ul class="indexmenu">
-    <#list alphabet as c>
-  	<li>${c}</li>
-  	</#list>
-  </ul>
-  <div id="tags">
-	<ol class="col two">
-		<li>Cambodia</li>
-		<li>Cameroon</li>
-		<li>Canada</li>
-		<li>Cape Verde</li>
-		<li>Cayman Islands</li>
-		<li>Central African Republic</li>
-		<li>Chad</li>
-		<li>Chile</li>
-		<li>China</li>
-		<li>Christmas Island</li>
-		<li>Cocos (Keeling) Islands</li>
-		<li>Colombia</li>
-	</ol>
-  </div> 
-</div>
-
-&nbsp;
-<br/>
-
 <div id="geosearch">
   <h2>Geospatial Search</h2>	
   <div id="map"></div>
@@ -144,41 +93,38 @@ h2        {clear: both;}
 </div>
 
 
+<h2>All Resources</h2>	
+
+<#include "/WEB-INF/pages/inc/resourceList.ftl">  
+
+
 <div id="tagindex">
+<script>
+function updateKeywords(c){
+	var url = '/ajax/keywords.html';
+	var params = { prefix: c }; 
+	var target = 'keywords';	
+	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+};
+</script>
+
   <h2>Keyword Index</h2>	
   <ul class="indexmenu">
-    <#list alphabet as c>
-  	<li>${c}</li>
+	<#assign fullAlphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']>
+    <#list fullAlphabet as c>
+     <#if alphabet?seq_contains(c)>
+    	<li><a href="Javascript:updateKeywords('${c}')">${c}</a></li>
+     <#else>
+    	<li>${c}</li>
+     </#if>
   	</#list>
   </ul>
-  <div id="tags">
-	<ol class="col four">
-		<li>Cambodia</li>
-		<li>Cameroon</li>
-		<li>Canada</li>
-		<li>Cape Verde</li>
-		<li>Cayman Islands</li>
-		<li>Central African Republic</li>
-		<li>Chad</li>
-		<li>Chile</li>
-		<li>China</li>
-		<li>Christmas Island</li>
-		<li>Cocos (Keeling) Islands</li>
-		<li>Colombia</li>
-		<li>Comoros</li>
-		<li>Congo</li>
-		<li>Congo</li>
-		<li>Cook Islands</li>
-		<li>Costa Rica</li>
-		<li>Côte d'Ivoire</li>
-		<li>Croatia</li>
-		<li>Cuba</li>
-		<li>Cyprus</li>
-		<li>Czech Republic</li>
-	</ol>
+  <div id="keywords">
+	<#include "/WEB-INF/pages/ajax/keywords.ftl">  
   </div> 
 </div>
 
-&nbsp;
-<br/>
-<br/>
+
+<br class="clearfix" />
+
+

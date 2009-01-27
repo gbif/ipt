@@ -18,6 +18,7 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -28,6 +29,7 @@ import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.H2Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -131,4 +133,29 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		// FIXME: implement		
 		log.warn("Automatic (un)registration with GBIF hasn't been implemented yet");
 	}
+
+	public List<T> getLatest(int startPage, int pageSize) {
+        return query(String.format("from %s res ORDER BY res.modified, res.id", persistentClass.getSimpleName()))
+        .setFirstResult(H2Utils.offset(startPage, pageSize))
+        .setMaxResults(pageSize)
+		.list();
+	}
+
+	public List<T> getResourcesByKeyword(String keyword) {
+        return query(String.format("select res from %s res join res.keywords as k where k=:keyword", persistentClass.getName()))
+        .setParameter("keyword", keyword)
+		.list();
+	}
+
+	public List<T> search(String q) {
+		List<Long> ids = fullTextSearchManager.search(q);
+		List<T> results = new LinkedList<T>();
+	    for (Long id : ids) {
+			T res = get(id);
+			log.debug("Adding record[" + id+ "] to results. GUID[" + res.getGuid() + "]");
+		    results.add(res);
+	    }		    
+	    return results;
+	}	
+
 }

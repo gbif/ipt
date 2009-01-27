@@ -28,11 +28,15 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 * @return
 	 */
 	public List<T> getResourcesByUser(Long userId);
-	
+	public List<T> getResourcesByKeyword(String keyword);
+	public List<T> search(String q);
+
 	/** retrieve all resource IDs that have been published already
 	 * @return list of resourceIDs
 	 */
 	public List<Long> getPublishedResourceIDs();
+	
+	List<T> getLatest(int startPage, int pageSize);
 
 	/** Publishes a resource, creating a new EML document version
 	 * and registering the resource with GBIF if not already registered. 

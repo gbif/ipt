@@ -101,6 +101,11 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public void setStatus(PublicationStatus status) {
 		this.status = status;
 	}
+	public void setDirty() {
+		if (status.equals(PublicationStatus.published)){
+			this.status = PublicationStatus.dirty;
+		}
+	}
 	
 	public Date getModified() {
 		return modified;

@@ -81,22 +81,7 @@
 	                	<h1>Metadata Repo</h1>
 			        	<%@ include file="/common/submenu_search.jsp" %>
 			        	<%@ include file="/common/submenu_recent.jsp" %>
-						<div id="tagcloud">
-							<label>Keyword Cloud</label>
-							<div class="tagCloud">
-						      <a rel="tag" class="tag cloud2" href="">river</a>
-						      <a rel="tag" class="tag cloud5" href="">mountain</a>
-						      <a rel="tag" class="tag cloud3" href="">tree</a>
-						      <a rel="tag" class="tag cloud9" href="">monitoring</a>
-						      <a rel="tag" class="tag cloud2" href="">berlin</a>
-						      <a rel="tag" class="tag cloud0" href="">seaweed</a>
-						      <a rel="tag" class="tag cloud6" href="">birds</a>
-						      <a rel="tag" class="tag cloud1" href="">longterm monitoring</a>
-						      <a rel="tag" class="tag cloud0" href="">monsune</a>
-						      <a rel="tag" class="tag cloud4" href="">impact study</a>
-						      <a rel="tag" class="tag cloud1" href="">turkish</a>
-							</div>
-  						</div>		
+			        	<%@ include file="/common/tagcloud.jsp" %>
 					</c:when>			
 							
 			        <c:otherwise>

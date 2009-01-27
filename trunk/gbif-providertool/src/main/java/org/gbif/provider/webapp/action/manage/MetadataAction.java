@@ -106,6 +106,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		}
 
 		boolean isNew = (resource.getId() == null);
+		resource.setDirty();
 		resource = resourceManager.save(resource);
 		String key = (isNew) ? "resource.added" : "resource.updated";
 		saveMessage(getText(key));

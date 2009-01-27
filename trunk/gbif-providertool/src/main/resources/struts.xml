@@ -266,13 +266,13 @@
         </action>
         
         <!-- metadata actions -->
-        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
+        <action name="resources" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="list">
             <result>/WEB-INF/pages/portal/meta/index.ftl</result>
         </action>
-        <action name="metaResource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
+        <action name="metaResource" class="org.gbif.provider.webapp.action.portal.ResourceAction">
             <result>/WEB-INF/pages/missing.ftl</result>
         </action>
-        <action name="metaSearch" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="search">
+        <action name="metaSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="search">
             <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
         </action>
         
@@ -341,6 +341,9 @@
         </action>
         <action name="uploadPreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
             <result>/WEB-INF/pages/ajax/preview.ftl</result>
+        </action>
+        <action name="keywords" class="org.gbif.provider.webapp.action.portal.KeywordAction">
+            <result>/WEB-INF/pages/ajax/keywords.ftl</result>
         </action>
         
     </package>
