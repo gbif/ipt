@@ -21,30 +21,28 @@ import java.util.List;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.PublicationStatus;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
+import org.gbif.provider.util.ResourceTestBase;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 
-public class ResourceManagerTest extends ContextAwareTestBase{
+public class ResourceManagerTest extends ResourceTestBase{
+	@Autowired
+	@Qualifier("resourceManager")
 	protected GenericResourceManager<Resource> resourceManager;
-	protected GenericResourceManager<OccurrenceResource> occResourceManager;
-	protected GenericResourceManager<ChecklistResource> checklistResourceManager;
-
-	public void setResourceManager(GenericResourceManager<Resource> resourceManager) {
-		this.resourceManager = resourceManager;
-	}
-
-	public void setOccResourceManager(GenericResourceManager<OccurrenceResource> occResourceManager) {
-		this.occResourceManager = occResourceManager;
-	}
-
-	public void setChecklistResourceManager(
-			GenericResourceManager<ChecklistResource> checklistResourceManager) {
-		this.checklistResourceManager = checklistResourceManager;
-	}
+	@Autowired
+	protected OccResourceManager occResourceManager;
+	@Autowired
+	protected ChecklistResourceManager checklistResourceManager;
 
 
 
@@ -70,4 +68,19 @@ public class ResourceManagerTest extends ContextAwareTestBase{
 			logger.debug(e.getMessage());
 		}
 	}
+	
+	@Test
+	public void testSaveResource(){
+		setupOccResource();
+		resource.setStatus(PublicationStatus.published);
+		Long id = resource.getId();
+		resourceManager.save(resource);		
+		Resource resu = resourceManager.get(id);
+		assertEquals(resu.getStatus(), PublicationStatus.published);
+
+		resource.setStatus(PublicationStatus.dirty);
+		resourceManager.save(resource);		
+		resu = resourceManager.get(id);
+		assertEquals(resu.getStatus(), PublicationStatus.dirty);
+}
 }
