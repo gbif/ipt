@@ -66,13 +66,6 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
         .setParameter("status", PublicationStatus.dirty)
 		.list();
 	}
-
-	@Override
-    public List<T> getTop(int maxResults) {
-        return getSession().createQuery(String.format("from %s order by modified desc", persistentClass.getName()))
-        		.setMaxResults(maxResults)
-        		.list();
-    }
 	
 	@Override
 	public void remove(T obj) {
@@ -135,14 +128,16 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	}
 
 	public List<T> getLatest(int startPage, int pageSize) {
-        return query(String.format("from %s res ORDER BY res.modified, res.id", persistentClass.getSimpleName()))
+        return query(String.format("from %s res where res.status>=:status ORDER BY res.modified, res.id", persistentClass.getSimpleName()))
+        .setParameter("status", PublicationStatus.dirty)
         .setFirstResult(H2Utils.offset(startPage, pageSize))
         .setMaxResults(pageSize)
 		.list();
 	}
 
-	public List<T> getResourcesByKeyword(String keyword) {
-        return query(String.format("select res from %s res join res.keywords as k where k=:keyword", persistentClass.getName()))
+	public List<T> searchByKeyword(String keyword) {
+        return query(String.format("select res from %s res join res.keywords as k where res.status>=:status and k=:keyword", persistentClass.getName()))
+        .setParameter("status", PublicationStatus.dirty)
         .setParameter("keyword", keyword)
 		.list();
 	}
@@ -156,6 +151,12 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		    results.add(res);
 	    }		    
 	    return results;
+	}
+
+	public List<T> searchByBBox(double bbox_top, double bbox_bottom,double bbox_left, double bbox_right) {
+		List<T> results = new LinkedList<T>();
+		//FIXME: implement EML BBox search
+		return results;
 	}	
 
 }

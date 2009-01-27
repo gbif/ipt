@@ -2,7 +2,9 @@ package org.gbif.provider.model.voc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
@@ -21,6 +23,17 @@ public enum ExtensionType {
 		}
 		return null;
 	}
+	
+    public static final Map<String, String> htmlSelectMap;
+	static
+	{
+		Map<String, String> map = new HashMap<String, String>();
+		for (ExtensionType et : ExtensionType.values()){
+			map.put(et.alias, "resourceType."+et.alias);
+		}
+		htmlSelectMap = Collections.unmodifiableMap(map);  			
+	}
+	
 	public Long id;	
 	public Class resourceClass;	
 	public String tableName;	

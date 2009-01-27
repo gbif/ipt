@@ -102,7 +102,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.status = status;
 	}
 	public void setDirty() {
-		if (status.equals(PublicationStatus.published)){
+		if (status!=null && status.equals(PublicationStatus.published)){
 			this.status = PublicationStatus.dirty;
 		}
 	}
@@ -290,6 +290,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 			return false;
 		}
 		return status.compareTo(PublicationStatus.dirty) >= 0;
+	}
+	@Transient
+	public boolean isDirty() {
+		return !isPublished();
 	}
 
 }

@@ -84,7 +84,7 @@ public class AppConfig{
 	
 	// RESOURCE BASICS
 	public String getResourceUrl(String guid) {
-		return String.format("%s/resource.html?guid=%s", baseURL, guid);
+		return String.format("%s/resource/%s/", baseURL, guid);
 	}
 
 	public static File getResourceCacheDir(Long resourceId) {

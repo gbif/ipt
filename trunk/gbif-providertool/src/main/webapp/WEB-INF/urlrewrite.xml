@@ -16,6 +16,12 @@
 
     <!-- PROVIDERTOOL RULES -->
     
+    <!-- resource -->
+    <rule>
+        <from>^/resource/(\d+)/$</from>
+        <to type="forward">/resource.html?guid=$1</to>
+    </rule>
+
     <!-- data dir -->
     <rule>
         <from>^/data/(\d+)/data.zip$</from>

@@ -7,8 +7,11 @@
     <meta name="submenu" content="manage"/>
 </head>
 
+<#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
+
 <#include "/WEB-INF/pages/inc/resourceManagerList.ftl">  
 
-<script type="text/javascript">
-    highlightTableRows("resourceList");
-</script>
+<@s.form id="publishingForm" action="publish" method="post">
+	<@s.submit cssClass="button right" key="button.publishAll" />
+	<@s.submit cssClass="button right" method="republish" key="button.republishAll" />
+</@s.form>

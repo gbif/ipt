@@ -1,9 +1,6 @@
+var map, wmsLayer, satelliteLayer, polygonControl, polyOptions, boundingBox;
 
-<script src="http://openlayers.org/dev/OpenLayers.js"></script>
-<script type="text/javascript">
-  
-  var map, wmsLayer, satelliteLayer, polygonControl, polyOptions, boundingBox;
-
+function loadMap() {
 	map = new OpenLayers.Map('map');
           
     wmsLayer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
@@ -15,7 +12,7 @@
     
     //add the polygon layer
     var polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer");
-    
+
     if ($('bbox_left').value!="" && $('bbox_bottom').value!="" && $('bbox_right').value !=null && $('bbox_top').value!=null){
 	    var bounds = new OpenLayers.Bounds($('bbox_left').value, $('bbox_bottom').value, $('bbox_right').value, $('bbox_top').value);
 	    boundingBox = new OpenLayers.Feature.Vector(bounds.toGeometry());
@@ -52,13 +49,12 @@
     polygonControl.handler.setOptions({irregular: true});
     map.addControl(polygonControl);
     polygonControl.activate();
+}
 
-	function clearBounds(){
-		$('bbox_top').value = "";
-		$('bbox_bottom').value = "";
-		$('bbox_left').value = "";
-		$('bbox_right').value = "";
-		polygonLayer.destroyFeatures();
-	}
-
-</script>
+function clearBounds(){
+	$('bbox_top').value = "";
+	$('bbox_bottom').value = "";
+	$('bbox_left').value = "";
+	$('bbox_right').value = "";
+	polygonLayer.destroyFeatures();
+}

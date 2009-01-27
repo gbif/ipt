@@ -28,8 +28,9 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 * @return
 	 */
 	public List<T> getResourcesByUser(Long userId);
-	public List<T> getResourcesByKeyword(String keyword);
 	public List<T> search(String q);
+	public List<T> searchByKeyword(String keyword);
+	public List<T> searchByBBox(double bbox_top,double bbox_bottom,double bbox_left,double bbox_right);	
 
 	/** retrieve all resource IDs that have been published already
 	 * @return list of resourceIDs

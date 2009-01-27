@@ -79,6 +79,7 @@
 			        
 			        <c:when test='${currentSubMenu == "meta"}'>
 	                	<h1>Metadata Repo</h1>
+	                	
 			        	<%@ include file="/common/submenu_search.jsp" %>
 			        	<%@ include file="/common/submenu_recent.jsp" %>
 			        	<%@ include file="/common/tagcloud.jsp" %>

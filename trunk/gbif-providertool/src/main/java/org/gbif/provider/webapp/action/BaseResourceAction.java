@@ -16,6 +16,7 @@
 
 package org.gbif.provider.webapp.action;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -25,6 +26,7 @@ import org.appfuse.model.LabelValue;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.Constants;
 
@@ -37,7 +39,8 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 	protected T resource;
 	protected Map session;
 	protected String resourceType;
-
+	private Map<String, String> resourceTypes = translateI18nMap(new HashMap<String, String>(ExtensionType.htmlSelectMap));
+	
 	public void prepare() {
 		if (resource_id != null) {
 			resource = resourceManager.get(resource_id);
@@ -119,6 +122,10 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 	}
 	public void setResourceType(String resourceType) {
 		this.resourceType = resourceType;
+	}
+
+	public Map<String, String> getResourceTypes() {
+		return resourceTypes;
 	}
 
 }

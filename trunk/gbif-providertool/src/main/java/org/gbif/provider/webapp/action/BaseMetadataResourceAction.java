@@ -30,7 +30,6 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
 public class BaseMetadataResourceAction extends BaseResourceAction<Resource>{
-
     public BaseMetadataResourceAction(){
     	super();
     	resourceType=METADATA;
