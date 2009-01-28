@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <org.gbif.provider.model.eml.Eml>
-  <emlVersion>9</emlVersion>
+  <emlVersion>1</emlVersion>
   <resourceCreator>
     <lastName>David</lastName>
     <address/>
     <email>dremsen@mailinator.com</email>
     <role>ORIGINATOR</role>
   </resourceCreator>
-  <pubDate>2009-01-28 15:28:23.737 CET</pubDate>
+  <pubDate>2009-01-28 23:21:11.302 CET</pubDate>
   <language>en</language>
   <keywords/>
   <geographicCoverage>
