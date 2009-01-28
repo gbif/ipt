@@ -387,6 +387,12 @@
             </result>
         </action>
         
+        <action name="atom" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
+            <result name="success" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/atom.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
         <action name="rss" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
             <result name="success" type="freemarker">
                 <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                

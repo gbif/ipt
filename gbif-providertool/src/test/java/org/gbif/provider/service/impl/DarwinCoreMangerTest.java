@@ -135,8 +135,8 @@ public class DarwinCoreMangerTest extends ResourceTestBase{
 	
 	@Test
 	public void testGetLatest(){
-		List<DarwinCore> dwcs = darwinCoreManager.getLatest(Constants.TEST_OCC_RESOURCE_ID, 0, 25);
-		dwcs = darwinCoreManager.getLatest(Constants.TEST_OCC_RESOURCE_ID, 1, 12);
+		List<DarwinCore> dwcs = darwinCoreManager.latest(Constants.TEST_OCC_RESOURCE_ID, 0, 25);
+		dwcs = darwinCoreManager.latest(Constants.TEST_OCC_RESOURCE_ID, 1, 12);
 	}
 	
 }

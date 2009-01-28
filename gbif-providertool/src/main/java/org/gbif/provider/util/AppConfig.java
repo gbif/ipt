@@ -80,6 +80,12 @@ public class AppConfig{
 			return null;
 		}
 	}
+	public String getAtomFeedURL() {
+		return getAtomFeedURL(1);
+	}
+	public String getAtomFeedURL(Integer page) {
+		return String.format("%s/data/atom.xml?page=%s", baseURL, page);
+	}
 
 	
 	// RESOURCE BASICS
@@ -221,91 +227,47 @@ public class AppConfig{
 	
 	
 	// CFG DELEGATE METHODS
+	public Long getId() {
+		return cfg.getId();
+	}
+	public String getUddiID() {
+		return cfg.getUddiID();
+	}
+	public String getUddiSharedKey() {
+		return cfg.getUddiSharedKey();
+	}
 	public String getBaseUrl() {
 		return cfg.getBaseUrl();
 	}
-
 	public String getContactEmail() {
 		return cfg.getMeta().getContactEmail();
 	}
-
 	public String getContactName() {
 		return cfg.getMeta().getContactName();
 	}
-
 	public String getDescription() {
 		return cfg.getMeta().getDescription();
 	}
-
 	public String getDescriptionImage() {
 		return cfg.getDescriptionImage();
 	}
-
 	public String getGeoserverUrl() {
 		return cfg.getGeoserverUrl();
 	}
-
 	public String getLink() {
 		return cfg.getMeta().getLink();
 	}
-
 	public String getTitle() {
 		return cfg.getMeta().getTitle();
 	}
-
 	public Point getLocation() {
 		return cfg.getMeta().getLocation();
 	}
-
-	public void setBaseUrl(String baseUrl) {
-		cfg.setBaseUrl(trimUrl(baseUrl));
-		baseURL=getBaseUrl();
-	}
-
-	public void setContactEmail(String contactEmail) {
-		cfg.getMeta().setContactEmail(contactEmail);
-	}
-
-	public void setContactName(String contactName) {
-		cfg.getMeta().setContactName(contactName);
-	}
-
-	public void setDescription(String description) {
-		cfg.getMeta().setDescription(description);
-	}
-
-	public void setDescriptionImage(String descriptionImage) {
-		cfg.setDescriptionImage(descriptionImage);
-	}
-
-	public void setGeoserverUrl(String geoserverUrl) {
-		cfg.setGeoserverUrl(trimUrl(geoserverUrl));
-	}
-
-	public void setLink(String link) {
-		cfg.getMeta().setLink(link);
-	}
-
-	public void setTitle(String title) {
-		cfg.getMeta().setTitle(title);
-	}
-
-	public void setLocation(Point location) {
-		cfg.getMeta().setLocation(location);
-	}
-	
-	
-	public String getGoogleMapsApiKey() {
-		return cfg.getGoogleMapsApiKey();
-	}
-	public void setGoogleMapsApiKey(String googleMapsApiKey) {
-		cfg.setGoogleMapsApiKey(googleMapsApiKey);
-	}
-
-
-	
 	public String getGeoserverDataDir() {
 		return cfg.getGeoserverDataDir();
+	}
+	public String getGoogleMapsApiKey() {
+		return cfg.getGoogleMapsApiKey();
 	}
 	public File getGeoserverDataDirFile() {
 		if (StringUtils.trimToNull(cfg.getGeoserverDataDir())!=null){
@@ -313,26 +275,65 @@ public class AppConfig{
 		}
 		return null;
 	}
-
 	public String getGeoserverPass() {
 		return cfg.getGeoserverPass();
 	}
-
 	public String getGeoserverUser() {
 		return cfg.getGeoserverUser();
 	}
+
 	
+	
+
+	public void setBaseUrl(String baseUrl) {
+		cfg.setBaseUrl(trimUrl(baseUrl));
+		baseURL=getBaseUrl();
+	}
+	public void setUddiID(String uddiID) {
+		cfg.setUddiID(uddiID);
+	}
+	public void setUddiSharedKey(String uddiSharedKey) {
+		cfg.setUddiSharedKey(uddiSharedKey);
+	}
+	public void setContactEmail(String contactEmail) {
+		cfg.getMeta().setContactEmail(contactEmail);
+	}
+	public void setContactName(String contactName) {
+		cfg.getMeta().setContactName(contactName);
+	}
+	public void setDescription(String description) {
+		cfg.getMeta().setDescription(description);
+	}
+	public void setDescriptionImage(String descriptionImage) {
+		cfg.setDescriptionImage(descriptionImage);
+	}
+	public void setGeoserverUrl(String geoserverUrl) {
+		cfg.setGeoserverUrl(trimUrl(geoserverUrl));
+	}
+	public void setLink(String link) {
+		cfg.getMeta().setLink(link);
+	}
+	public void setTitle(String title) {
+		cfg.getMeta().setTitle(title);
+	}
+	public void setLocation(Point location) {
+		cfg.getMeta().setLocation(location);
+	}
+	public void setGoogleMapsApiKey(String googleMapsApiKey) {
+		cfg.setGoogleMapsApiKey(googleMapsApiKey);
+	}
 	public void setGeoserverDataDir(String geoserverDataDir) {
 		cfg.setGeoserverDataDir(geoserverDataDir);
 	}
-
 	public void setGeoserverPass(String geoserverPass) {
 		cfg.setGeoserverPass(geoserverPass);
 	}
-
 	public void setGeoserverUser(String geoserverUser) {
 		cfg.setGeoserverUser(geoserverUser);
 	}
+
+
+	
 
 	// MANAGER "DELEGATE" METHODS
 	public void load() {
@@ -353,8 +354,5 @@ public class AppConfig{
 		}
 		return url;
 	}
-
-
-
 
 }

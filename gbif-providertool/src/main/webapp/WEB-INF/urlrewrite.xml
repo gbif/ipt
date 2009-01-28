@@ -18,10 +18,14 @@
     
     <!-- resource -->
     <rule>
-        <from>^/resource/(\d+)/$</from>
+        <from>^/resource/(.+)/$</from>
         <to type="forward">/resource.html?guid=$1</to>
     </rule>
-
+    <rule>
+        <from>^/resource/(\d+)/$</from>
+        <to type="forward">/resource.html?resource_id=$1</to>
+    </rule>
+    
     <!-- data dir -->
     <rule>
         <from>^/data/(\d+)/data.zip$</from>
@@ -50,22 +54,17 @@
         <to type="forward">/data/eml.xml?guid=$1</to>
     </rule>
     <rule>
-        <from>^/data/(\d+)/eml-(\d+).xml$</from>
-        <to type="forward">/data/eml.xml?resource_id=$1&amp;version=$2</to>
-    </rule>
-    <rule>
         <from>^/data/(.+)/eml-(\d+).xml$</from>
         <to type="forward">/data/eml.xml?guid=$1&amp;version=$2</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/eml-(\d+).xml$</from>
+        <to type="forward">/data/eml.xml?resource_id=$1&amp;version=$2</to>
     </rule>
     <!-- images -->
     <rule>
         <from>^/data/(\d+)/logo.jpg$</from>
         <to type="forward">/data/logo.do?resource_id=$1</to>
-    </rule>
-    <!-- rss -->
-    <rule>
-        <from>^/data/(\d+)/rss.xml$</from>
-        <to type="forward">/data/rss.xml?resource_id=$1</to>
     </rule>
     <!-- tapir -->
     <rule>

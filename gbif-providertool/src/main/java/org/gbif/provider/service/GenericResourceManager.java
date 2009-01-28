@@ -37,7 +37,12 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 */
 	public List<Long> getPublishedResourceIDs();
 	
-	List<T> getLatest(int startPage, int pageSize);
+	/** get latest modified resources
+	 * @param startPage starting page, first page = 1
+	 * @param pageSize
+	 * @return
+	 */
+	List<T> latest(int startPage, int pageSize);
 
 	/** Publishes a resource, creating a new EML document version
 	 * and registering the resource with GBIF if not already registered. 
