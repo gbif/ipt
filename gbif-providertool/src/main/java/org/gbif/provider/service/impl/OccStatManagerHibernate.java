@@ -18,7 +18,7 @@ public class OccStatManagerHibernate extends GenericResourceRelatedManagerHibern
 
 	public void updateRegionAndTaxonStats(OccurrenceResource resource) {		
 		this.removeAll(resource);
-		List<OccStatByRegionAndTaxon> stats = getSession().createQuery("select new OccStatByRegionAndTaxon(res, t, r, count(d), max(d.location.latitude), max(d.location.longitude), min(d.location.latitude), min(d.location.longitude)) from DarwinCore d join d.taxon t join d.resource as res join d.region r WHERE d.resource=:resource  GROUP BY res, t, r")
+		List<OccStatByRegionAndTaxon> stats = getSession().createQuery("select new OccStatByRegionAndTaxon(res, t, r, count(d), min(d.location.latitude), min(d.location.longitude), max(d.location.latitude), max(d.location.longitude)) from DarwinCore d join d.taxon t join d.resource as res join d.region r WHERE d.resource=:resource  GROUP BY res, t, r")
 			.setEntity("resource", resource)
 			.list();
 		log.debug(String.format("Created %s new RegionAndTaxon occurrence stats for resource %s", stats.size(), resource.getId()));
