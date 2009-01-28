@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='utf-8'?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.0.1" 
+    xmlns:v="eml://ecoinformatics.org/view-2.0.1" 
+    xmlns:sp="eml://ecoinformatics.org/storedProcedure-2.0.1" 
+    xmlns:sv="eml://ecoinformatics.org/spatialVector-2.0.1" 
+    xmlns:md="eml://ecoinformatics.org/methods-2.0.1" 
+    xmlns:sr="eml://ecoinformatics.org/spatialRaster-2.0.1" 
+    xmlns:proj="eml://ecoinformatics.org/project-2.0.1" 
+    xmlns:dat="eml://ecoinformatics.org/dataTable-2.0.1" 
+    xmlns:ent="eml://ecoinformatics.org/entity-2.0.1" 
+    xmlns:acc="eml://ecoinformatics.org/access-2.0.1" 
+    xmlns:d="eml://ecoinformatics.org/dataset-2.0.1" 
+    xmlns:res="eml://ecoinformatics.org/resource-2.0.1" 
+    xmlns:rp="eml://ecoinformatics.org/party-2.0.1" 
+    xmlns:txt="eml://ecoinformatics.org/text-2.0.1" 
+    xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dc="http://purl.org/dc/terms/" 
+    packageId="79df229e-2d76-474f-a0b8-b576cf1786cd/eml-1.xml" system="GBIF-IPT" scope="system">
+    <dataset>
+        <alternateIdentifier>79df229e-2d76-474f-a0b8-b576cf1786cd</alternateIdentifier>
+        <title>Pontaurus</title>
+        <creator>
+            <individualName>
+                <givenName>Markus</givenName>
+                <surName>Döring</surName>
+            </individualName>
+            <organizationName></organizationName>
+            <positionName></positionName>
+            <address>
+                <city>Berlin</city>
+                <administrativeArea></administrativeArea>
+                <postalCode>10999</postalCode>
+                <country>Germany</country>
+            </address>
+            <phone>+49 (30) 1234 5678</phone>
+            <electronicMailAddress>markus@mailinator.com</electronicMailAddress>
+            <onlineUrl></onlineUrl>
+        </creator>
+        <pubDate>2009-01-27</pubDate>
+        <language>en</language>
+        <abstract>
+            <para>Plant specimens gathered in the Toroslar mountain range of southern Turkey and the Pontic mountain range in north eastern torkey in 1999. The collection mainly covers grass vegetation plots of the subalpine level. It was collected together with many more observation records for vegetational studies applying phytosociological analysis. The resulting thesis was released in the public domain and is available at http://www.archive.org/details/VegetationskundlicheUntersuchungenInDerHochgebirgsregionDerBolkar</para>
+        </abstract>
+        <keywordSet>
+            <keyword>Vegetation</keyword>
+            <keyword>Phytosociology</keyword>
+            <keyword>Grass</keyword>
+            <keyword>Thorncussion</keyword>
+            <keyword>Turkey</keyword>
+            <keyword>Toroslar</keyword>
+        </keywordSet>
+        <intellectualRights>
+            <para>Creative Commons Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/legalcode
+</para>
+        </intellectualRights>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription>Sites located mainly in the southern turkish Toroslar mountains and a few in the north eastern Kaçkar mountains.</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>24.372</westBoundingCoordinate>
+                    <eastBoundingCoordinate>43.883</eastBoundingCoordinate>
+                    <northBoundingCoordinate>42.208</northBoundingCoordinate>
+                    <southBoundingCoordinate>35.353</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+            <temporalCoverage>
+                <rangeOfDates>
+                    <beginDate><calendarDate>1999-06-18</calendarDate></beginDate>
+                    <endDate><calendarDate>1999-08-22</calendarDate></endDate>
+                </rangeOfDates>
+            </temporalCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage>Higher plants mainly from the subalpine belt. Thorncushion formations made up mainly from species of the genus Astragalus are dominant as well as grass formations, often dominated by Festuca</generalTaxonomicCoverage>
+                <taxonomicClassification>
+                    <taxonRankName>kingdom</taxonRankName>
+                    <taxonRankValue>Plantae</taxonRankValue>
+                    <commonName>Plants</commonName>
+                </taxonomicClassification>
+                
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Plantae</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Astragalus</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Poaceae</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Festuca</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+        </coverage>
+        <contact>
+            <individualName>
+                <surName>Markus Döring</surName>
+            </individualName>
+            <electronicMailAddress>markus@mailinator.com</electronicMailAddress>
+        </contact>
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Braun Blanquet based plot surveys. phytosociological vegetation analysis and classification.</para>
+                </description>
+            </methodStep>
+            <sampling>
+				<studyExtent><description><para></para></description></studyExtent>
+                <samplingDescription><para>Braun Blanquet mean covers for plants on selected plots between 1x1 and 10x10 meters.</para></samplingDescription>
+            </sampling>
+            <qualityControl>
+                <description><para></para></description>
+            </qualityControl>            
+        </methods>
+        <project>
+            <title>PonTaurus</title>
+            <personnel>
+                <organizationName>Freie Universität Berlin</organizationName>
+                <role></role>
+            </personnel>
+            <abstract>
+                <para></para>
+            </abstract>
+            <funding>
+                <para>no funding</para>
+            </funding>
+            <studyAreaDescription>
+                <coverage>
+                    <geographicCoverage>
+                        <geographicDescription>Subalpine belt of the Turkish Toroslar and Kaçkar mountains</geographicDescription>
+                        <boundingCoordinates>
+                            <westBoundingCoordinate></westBoundingCoordinate>
+                            <eastBoundingCoordinate></eastBoundingCoordinate>
+                            <northBoundingCoordinate></northBoundingCoordinate>
+                            <southBoundingCoordinate></southBoundingCoordinate>
+                        </boundingCoordinates>
+                    </geographicCoverage>
+                </coverage>
+            </studyAreaDescription>            
+            <designDescription><description><para></para></description></designDescription>
+        </project>
+    </dataset>
+    <additionalMetadata>
+    </additionalMetadata>
+</eml:eml>
