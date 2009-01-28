@@ -35,7 +35,7 @@ public class Dao extends JdbcDaoSupport {
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "select dwc.guid as guid, taxon_fk, region_fk, scientific_name, r.label as locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from dwcore dwc join region r on dwc.region_fk=r.id ";
+		String select = "select dwc.guid as guid, taxon_fk, region_fk, scientific_name, r.label as locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from DARWIN_CORE dwc join region r on dwc.region_fk=r.id ";
 		
 		// join optional tables
 		if (taxonId != null){
@@ -71,7 +71,7 @@ public class Dao extends JdbcDaoSupport {
 			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, 
 			List<Object> params) {
-		StringBuffer where = new StringBuffer(" where dwc.resource_fk = ? ");
+		StringBuffer where = new StringBuffer(" where dwc.resource_fk = ? and dwc.deleted=false");
 		params.add(resourceId);
 		// dynamic filter
 		if (guid != null) {
