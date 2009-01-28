@@ -118,7 +118,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String publish() {
-		resourceManager.publish(resource_id);
+		Resource res = resourceManager.publish(resource_id);
 		return SUCCESS;
 	}
 	
@@ -127,7 +127,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		for (Resource res : resources){
 			if (res.isDirty()){
 				resourceManager.publish(res.getId());
-				this.addActionMessage("Published: "+res.getTitle());
+				saveMessage("Published "+res.getTitle());
 			}
 		}
 		return SUCCESS;
@@ -141,7 +141,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 				resourceManager.publish(res.getId());
 			}
 		}
-		this.addActionMessage("Republished "+i+" resources");
+		saveMessage("Republished "+i+" modified resources");
 		return SUCCESS;
 	}
 	
