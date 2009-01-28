@@ -26,14 +26,26 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 		this.region = region;
 		this.numOcc = numOcc.intValue();
 	}
-	public OccStatByRegionAndTaxon(Resource resource, Taxon taxon, Region region, Long numOcc, Point min, Point max) {
+	/**
+	 * Used by OccStatManager in HQL...
+	 * @param resource
+	 * @param taxon
+	 * @param region
+	 * @param numOcc
+	 * @param minY
+	 * @param minX
+	 * @param maxY
+	 * @param maxX
+	 */
+	public OccStatByRegionAndTaxon(Resource resource, Taxon taxon, Region region, Long numOcc, double minY,double minX, double maxY,double maxX) {
+		// new OccStatByRegionAndTaxon(res, t, r, count(d), min(d.location.latitude), min(d.location.longitude), max(d.location.latitude), max(d.location.longitude))
 		// latitude=y, longitude=x
 		super();
 		this.resource = resource;
 		this.taxon = taxon;
 		this.region = region;
 		this.numOcc = numOcc.intValue();
-		this.bbox = new BBox(min, max);
+		this.bbox = new BBox(minY,minX, maxY,maxX);
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
