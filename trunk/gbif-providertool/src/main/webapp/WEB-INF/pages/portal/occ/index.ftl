@@ -18,6 +18,9 @@
 			<li>
 				<a onclick="Effect.toggle('services', 'blind', { duration: 0.3 }); return false;">(<@s.text name="dataResource.services"/>)</a>
 			</li>
+			<li>
+				<a href="metaResource.html?resource_id=${resource_id}">Full Metadata</a>
+			</li>
 		</ul>
 		<div id="services" style="display:none">
 			<table class="lefthead">

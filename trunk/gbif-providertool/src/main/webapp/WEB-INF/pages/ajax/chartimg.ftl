@@ -1,4 +1,4 @@
-<@s.url id="ResourceStatsUrl" action="%{resourceClass}ResourceStatsBy%{action}" includeParams="none">
+<@s.url id="ResourceStatsUrl" action="%{resourceClass}ResourceStatsBy%{action}" namespace="/" includeParams="none">
 	<@s.param name="resource_id" value="%{resource_id}"/>
 	<@s.param name="filter" value="%{id}"/>
 	<@s.param name="type" value="%{type}"/>
