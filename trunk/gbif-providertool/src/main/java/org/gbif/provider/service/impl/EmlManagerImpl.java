@@ -118,7 +118,7 @@ public class EmlManagerImpl implements EmlManager{
 			FileUtils.copyFile(currEmlFile, versionedEmlFile);
 			// persist EML with new version
 			save(metadata);
-			log.info("Published new EML version "+metadata.getEmlVersion());
+			log.info("Published new EML version "+metadata.getEmlVersion()+" for resource "+resource.getTitle());
 		} catch (TemplateException e) {
 			log.error("Freemarker template exception", e);
 			throw new IOException("Freemarker template exception");

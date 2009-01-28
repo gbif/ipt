@@ -26,7 +26,7 @@ public class OccStatManagerHibernate extends GenericResourceRelatedManagerHibern
 		this.flush();
 		// also update region.numOcc and Taxon.numOcc
 		// per region
-		List<Object[]> counts = getSession().createQuery("select r, sum(s.numOcc), max(s.bbox.max.longitude), max(s.bbox.max.latitude), min(s.bbox.min.longitude), min(s.bbox.min.latitude)  from OccStatByRegionAndTaxon s join s.region r  WHERE s.resource=:resource  GROUP BY r")
+		List<Object[]> counts = getSession().createQuery("select r, sum(s.numOcc), min(s.bbox.min.latitude), min(s.bbox.min.longitude), max(s.bbox.max.latitude), max(s.bbox.max.longitude)  from OccStatByRegionAndTaxon s join s.region r  WHERE s.resource=:resource  GROUP BY r")
 		.setEntity("resource", resource)
 		.list();
 		log.debug(String.format("Updating %s Region occurrence counts for resource %s", counts.size(), resource.getId()));
@@ -34,11 +34,12 @@ public class OccStatManagerHibernate extends GenericResourceRelatedManagerHibern
 			Region r = (Region) row[0];
 			r.setOccTotal(((Long)row[1]).intValue());
 			// y=latitude, x=longitude
+			// BBox: Double minY, Double minX,   Double maxY, Double maxX
 			r.setBbox(new BBox((Double)row[2], (Double)row[3], (Double)row[4], (Double)row[5]));
 			this.universalSave(r);
 		}
 		// per taxon
-		counts = getSession().createQuery("select r, sum(s.numOcc), max(s.bbox.max.longitude), max(s.bbox.max.latitude), min(s.bbox.min.longitude), min(s.bbox.min.latitude)  from OccStatByRegionAndTaxon s join s.taxon r  WHERE s.resource=:resource  GROUP BY r")
+		counts = getSession().createQuery("select r, sum(s.numOcc), min(s.bbox.min.latitude), min(s.bbox.min.longitude), max(s.bbox.max.latitude), max(s.bbox.max.longitude)  from OccStatByRegionAndTaxon s join s.taxon r  WHERE s.resource=:resource  GROUP BY r")
 		.setEntity("resource", resource)
 		.list();
 		log.debug(String.format("Updating %s Taxon occurrence counts for resource %s", counts.size(), resource.getId()));

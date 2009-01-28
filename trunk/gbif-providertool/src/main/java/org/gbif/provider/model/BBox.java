@@ -19,6 +19,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Embeddable
 public class BBox implements Serializable{
+	// x = east/west=longitude, -180/180
+	// y = north/south = latitude, -90/90
 	@AttributeOverrides( {
         @AttributeOverride(name="latitude", column = @Column(name="max_lat") ),
         @AttributeOverride(name="longitude", column = @Column(name="max_long") )
@@ -32,7 +34,7 @@ public class BBox implements Serializable{
 
 
 	public static BBox NewWorldInstance() {
-		BBox world = new BBox(new Point(90.0,180.0), new Point(-90.0,-180.0));
+		BBox world = new BBox(new Point(-90.0,-180.0), new Point(90.0,180.0));
 		return world;
 	}
 
@@ -40,15 +42,15 @@ public class BBox implements Serializable{
 	public BBox() {
 		super();
 	}
-	public BBox(Point max, Point min) {
+	public BBox(Point min, Point max) {
 		super();
 		setMax(max);
 		setMin(min);
 	}
-	public BBox(Double maxX, Double maxY, Double minX, Double minY) {
+	public BBox(Double minY, Double minX, Double maxY, Double maxX) {
 		super();
-		setMax(new Point(maxX, maxY));
-		setMin(new Point(minX, minY));
+		setMax(new Point(maxY, maxX));
+		setMin(new Point(minY, minX));
 	}
 	
 	public Point getMax() {
@@ -77,6 +79,32 @@ public class BBox implements Serializable{
 		}
 	}
 	
+	/** Returns the Point of the bbox centre
+	 * @return
+	 */
+	@Transient
+	public Point centre() {
+		if (max==null || min==null){
+			return null;
+		}
+		return new Point(min.getLatitude()+height()/2.0, min.getLongitude()+width()/2.0);
+	}
+	
+	@Transient
+	public double width() {
+		if (max==null || min==null){
+			return 0.0;
+		}
+		return max.getX()-min.getX();
+	}
+	@Transient
+	public double height() {
+		if (max==null || min==null){
+			return 0.0;
+		}
+		return max.getY()-min.getY();
+	}
+
 	/**
 	 * Expands bounding box boundaries to fit this coordinate into the box
 	 * @param latitude
@@ -215,15 +243,33 @@ public class BBox implements Serializable{
 		}
 		return false;
 	}
+	public boolean overlaps(BBox bbox){
+		if (bbox == null || !bbox.isValid()){
+			throw new IllegalArgumentException();
+		}
+		Point c1 = this.centre();
+		Point c2 = bbox.centre();
+		// if distance of centre points is smaller than sum of width/2 and height/2 for the 2 boxes we overlap!
+		if (c1.distanceX(c2)<(this.width()/2.0+bbox.width()/2.0) && (c1.distanceY(c2)<(this.height()/2.0+bbox.height()/2.0))){
+			return true;
+		}
+		return false;
+	}
 	
 	/**format used in WMS for bboxes: minX(longitude), minY(latitude), maxX, maxY
 	 * @return
 	 */
-	public String toWMSString(){
+	public String toStringWMS(){
+		// minX,minY,maxX,maxY
 		return String.format("%s,%s,%s,%s", min.getLongitude(), min.getLatitude(), max.getLongitude(), max.getLatitude());
 	}
 	public String toString(){
+		// minY,minX maxY,maxX
 		return String.format("%s %s", min, max);
+	}
+	public String toStringShort(int decimals){
+		// minY,minX maxY,maxX
+		return String.format("%s %s", min.toStringShort(decimals), max.toStringShort(decimals));
 	}
 	/**
 	 * @see java.lang.Object#equals(Object)

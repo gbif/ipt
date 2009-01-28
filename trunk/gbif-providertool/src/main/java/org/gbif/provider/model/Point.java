@@ -94,6 +94,19 @@ public class Point implements Serializable{
 	}
 
 	@Transient
+	public double distanceX(Point p) {
+		return Math.abs(getX()-p.getX());
+	}
+	@Transient
+	public double distanceY(Point p) {
+		return Math.abs(getY()-p.getY());
+	}
+	@Transient
+	public double distance(Point p) {
+		return Math.sqrt(getX()*getX()+getY()*getY());
+	}
+
+	@Transient
 	public boolean isValid(){
 		if (latitude != null && longitude!=null){
 			return true;
@@ -102,6 +115,9 @@ public class Point implements Serializable{
 	}
 	public String toString(){
 		return String.format("%s,%s", latitude, longitude);
+	}
+	public String toStringShort(int decimals){
+		return String.format("%."+decimals+"f,%."+decimals+"f", latitude, longitude);
 	}
 	
 	/**

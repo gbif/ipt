@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.gbif.provider.model.BBox;
+import org.gbif.provider.model.Point;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.PublicationStatus;
@@ -154,10 +156,20 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	    return results;
 	}
 
-	public List<T> searchByBBox(double bbox_top, double bbox_bottom,double bbox_left, double bbox_right) {
-		List<T> results = new LinkedList<T>();
-		//FIXME: implement EML BBox search
-		return results;
+	public List<T> searchByBBox(BBox box) {
+		// res.geoCoverage.max.longitude
+		String boxHqlLat = "(:boxMinY <= res.geoCoverage.min.latitude and :boxMaxY >= res.geoCoverage.max.latitude) or (:boxMinY between res.geoCoverage.min.latitude and res.geoCoverage.max.latitude) or (:boxMaxY between res.geoCoverage.min.latitude and res.geoCoverage.max.latitude)";
+		String boxHqlLon = "(:boxMinX <= res.geoCoverage.min.longitude and :boxMaxX >= res.geoCoverage.max.longitude) or (:boxMinX between res.geoCoverage.min.longitude and res.geoCoverage.max.longitude) or (:boxMaxX between res.geoCoverage.min.longitude and res.geoCoverage.max.longitude)";
+		String hql = String.format("select res from %s res where res.status>=:status and (%s) and (%s)", persistentClass.getName(), boxHqlLat, boxHqlLon);
+		log.debug(hql);
+		log.debug("search box: "+box);
+        return query(hql)
+        .setParameter("status", PublicationStatus.dirty)
+        .setDouble("boxMinX", box.getMin().getLongitude())
+        .setDouble("boxMaxX", box.getMax().getLongitude())
+        .setDouble("boxMinY", box.getMin().getLatitude())
+        .setDouble("boxMaxY", box.getMax().getLatitude())
+		.list();
 	}	
 
 }
