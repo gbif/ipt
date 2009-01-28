@@ -44,7 +44,6 @@ public class Eml implements Serializable{
 	private String purpose;
 	private String maintenance;
 	
-	
 	public Eml(){
 		super();
 		this.pubDate = new Date();
@@ -140,7 +139,7 @@ public class Eml implements Serializable{
 	public List<TaxonKeyword> getTaxonomicClassification() {
 		return taxonomicClassification;
 	}
-
+	
 	public void setTaxonomicClassification(
 			List<TaxonKeyword> taxonomicClassification) {
 		this.taxonomicClassification = taxonomicClassification;
