@@ -15,6 +15,10 @@ import java.util.Set;
 /**
  * This class represents the basic "user" object in AppFuse that allows for authentication
  * and user management.  It implements Acegi Security's UserDetails interface.
+ * 
+ * 
+ * @See http://www.appfuse.org/display/APF/AppFuse+Core+Classes
+ *
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  *         Updated by Dan Kibler (dan@getrolling.com)
