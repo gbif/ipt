@@ -26,11 +26,16 @@ public class OccUploadTest extends ContextAwareTestBase{
 		uploadTask.init(Constants.TEST_OCC_RESOURCE_ID);		
 		UploadEvent event = uploadTask.call();
 		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
-		System.out.println(res.getBbox());
-		System.out.println(res.getNumTaxa());
-		System.out.println(res.getNumFamilies());
-		System.out.println(res.getNumCountries());
-		System.out.println(event);
+		assertEquals(894, res.getNumTaxa());
+		assertEquals(45, res.getNumFamilies());
+		assertEquals(1, res.getNumCountries());
+		assertEquals("36.538,26.850 38.106,35.152", res.getBbox().toStringShort(3));
+
+//		assertEquals(1533, event.getRecordsAdded());
+//		assertEquals(0, event.getRecordsChanged());
+		assertEquals(1533, event.getRecordsDeleted());
+		assertEquals(1533, event.getRecordsUploaded());
+		assertEquals(0, event.getRecordsErroneous());
 	}
 
 }

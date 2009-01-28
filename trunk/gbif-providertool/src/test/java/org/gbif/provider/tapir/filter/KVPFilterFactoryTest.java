@@ -20,7 +20,7 @@ public class KVPFilterFactoryTest {
 
 	@Test
 	public void testFilters() throws Exception {
-		File testDir = new File(this.getClass().getResource("/org/gbif/provider/tapir/filter/test").getFile());
+		File testDir = new File(this.getClass().getResource("/tapir/filter").getFile());
 		
 		File[] input = testDir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
