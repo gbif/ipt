@@ -1,5 +1,7 @@
 /* @override http://localhost:8080/styles/simplicity/providertool.css */
 
+/* @override http://localhost:8080/styles/simplicity/providertool.css */
+
 /* PROVIDERTOOL customising simplicity */
 
 /* @group general */
@@ -139,8 +141,7 @@ div#header .right {
 
 /* @end */
 
-/* @group menus */
-
+/* @group lists */
 
 ul.actionmenu {
 	list-style-type: none;
