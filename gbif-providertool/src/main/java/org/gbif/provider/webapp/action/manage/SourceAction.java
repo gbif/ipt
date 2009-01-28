@@ -206,7 +206,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
             getFieldErrors().clear();
             if ("".equals(fileFileName) || file == null) {
                 super.addFieldError("file", getText("errors.requiredField", new String[] {getText("uploadForm.file")}));
-            } else if (file.length() > 2097152) {
+            } else if (file.length() > 104857600) {
                 addActionError(getText("maxLengthExceeded"));
             }
         }

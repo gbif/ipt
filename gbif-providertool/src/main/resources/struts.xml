@@ -8,7 +8,10 @@
     <constant name="struts.action.extension" value="html,xml,do"/>
     <constant name="struts.objectFactory" value="spring"/>
     <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
-    <constant name="struts.multipart.maxSize" value="2097152"/>
+    <!-- See the 2 references of fileUpload interceptor below and make sure it is also set to the  
+		 same value as this mulitpart in BOTH -->
+	<constant name="struts.multipart.maxSize" value="104857600"/>
+													 
     <constant name="struts.ui.theme" value="css_xhtml"/>
     <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
     <constant name="struts.enable.SlashesInActionNames" value="true"/>
@@ -30,7 +33,7 @@
             <!-- Interceptor to select the external routing datasource -->
             <interceptor name="datasource-selector" class="datasourceInterceptor"/>
             <interceptor name="resource-watcher" class="resourceInterceptor"/>
-            
+
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
@@ -44,7 +47,10 @@
                 <interceptor-ref name="profiling"/>
                 <interceptor-ref name="scoped-model-driven"/>
                 <interceptor-ref name="model-driven"/>
-                <interceptor-ref name="fileUpload"/>
+				<!-- set to 100 meg -->
+                <interceptor-ref name="fileUpload">
+					<param name="maximumSize">104857600</param>
+				</interceptor-ref>
                 <interceptor-ref name="checkbox"/>
                 <interceptor-ref name="static-params"/>
                 <interceptor-ref name="params">
@@ -59,7 +65,10 @@
                 </interceptor-ref>
             </interceptor-stack>
             <interceptor-stack name="fileUploadStack">
-                <interceptor-ref name="fileUpload"/>
+				<!-- set to 100 meg -->
+                <interceptor-ref name="fileUpload">
+					<param name="maximumSize">104857600</param>
+				</interceptor-ref>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
             <interceptor-stack name="resourceStack">
@@ -127,13 +136,12 @@
             <result name="success">/</result>
         </action>
 
-        <!-- <action name="uploadFile" class="org.appfuse.webapp.action.FileUploadAction">
+        <!--action name="uploadFile" class="org.appfuse.webapp.action.FileUploadAction">
             <interceptor-ref name="fileUploadStack"/>
             <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
             <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
             <result name="cancel" type="redirect-action">index</result>
-        </action>
-        -->
+        </action-->
         
         <!-- Application Home -->
         <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
@@ -146,6 +154,8 @@
     <result-types>
         <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult" default="true"/>
     </result-types>
+		
+		<default-interceptor-ref name="defaultStack"/>
     </package>
     
 

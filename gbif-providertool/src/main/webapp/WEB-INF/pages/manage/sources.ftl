@@ -11,13 +11,6 @@ Readily supported formats can be <a href="">found here</a>.
 If your data does not exactly match those formats you have the option to configure simple transformations and adjustments in the next configuration step.
 </p>
 
-
-<div class="break">
-	<p>
-	File data sources are tab delimited files with a maximum of 2MB currently (limit will be removed in final version).
-	To upload a new file version of an existing source, simple upload a file with the same name as the existing one.
-	</p>
-</div>
 <fieldset>
 <legend><@s.text name="sources.filesources"/></legend>
 	<@s.iterator value="fileSources" status="stat">
