@@ -16,7 +16,7 @@
     xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:dc="http://purl.org/dc/terms/" 
-    packageId="4c297d33-c2b2-4bfb-8e14-b050472f12e2/eml-9.xml" system="GBIF-IPT" scope="system">
+    packageId="4c297d33-c2b2-4bfb-8e14-b050472f12e2/eml-1.xml" system="GBIF-IPT" scope="system">
     <dataset>
         <alternateIdentifier>4c297d33-c2b2-4bfb-8e14-b050472f12e2</alternateIdentifier>
         <title>Euro+Med</title>
@@ -140,6 +140,5 @@
         </project>
     </dataset>
     <additionalMetadata>
-	    <dc:replaces>4c297d33-c2b2-4bfb-8e14-b050472f12e2/eml-8.xml</dc:replaces>
     </additionalMetadata>
 </eml:eml>

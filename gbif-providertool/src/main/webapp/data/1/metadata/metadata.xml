@@ -1,5 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <org.gbif.provider.model.eml.Eml>
+  <emlVersion>1</emlVersion>
   <resourceCreator>
     <firstName>Markus</firstName>
     <lastName>Döring</lastName>
@@ -17,7 +18,7 @@
     <role>ORIGINATOR</role>
     <homepage></homepage>
   </resourceCreator>
-  <pubDate>2008-12-11 11:20:59.9 CET</pubDate>
+  <pubDate>2009-01-28 23:21:11.99 CET</pubDate>
   <language>en</language>
   <intellectualRights>Creative Commons Attribution 3.0&#xd;
 http://creativecommons.org/licenses/by/3.0/legalcode&#xd;

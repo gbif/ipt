@@ -16,7 +16,7 @@
     xmlns:doc="eml://ecoinformatics.org/documentation-2.0.1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:dc="http://purl.org/dc/terms/" 
-    packageId="79df229e-2d76-474f-a0b8-b576cf1786cd/eml-8.xml" system="GBIF-IPT" scope="system">
+    packageId="79df229e-2d76-474f-a0b8-b576cf1786cd/eml-1.xml" system="GBIF-IPT" scope="system">
     <dataset>
         <alternateIdentifier>79df229e-2d76-474f-a0b8-b576cf1786cd</alternateIdentifier>
         <title>Pontaurus</title>
@@ -150,6 +150,5 @@ http://creativecommons.org/licenses/by/3.0/legalcode
         </project>
     </dataset>
     <additionalMetadata>
-	    <dc:replaces>79df229e-2d76-474f-a0b8-b576cf1786cd/eml-7.xml</dc:replaces>
     </additionalMetadata>
 </eml:eml>
