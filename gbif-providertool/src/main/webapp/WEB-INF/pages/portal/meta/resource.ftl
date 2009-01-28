@@ -46,18 +46,18 @@
 	<fieldset>
 		<h2>Resource Creator</h2>
 		<table>
-			<@trow label="eml.resourceCreator.firstName" val=eml.resourceCreator.firstName!/>  
-			<@trow label="eml.resourceCreator.lastName" val=eml.resourceCreator.lastName!/>  
-			<@trow label="eml.resourceCreator.organisation" val=eml.resourceCreator.organisation!/>  
-			<@trow label="eml.resourceCreator.position" val=eml.resourceCreator.position!/>  
-			<@trow label="eml.resourceCreator.phone" val=eml.resourceCreator.phone!/>  
-			<@trow label="eml.resourceCreator.email" val=eml.resourceCreator.email!/>  
-			<@trow label="agent.address.homepage" val=eml.resourceCreator.homepage!/>  
-			<@trow label="agent.address.address" val=eml.resourceCreator.address.address!/>  
-			<@trow label="agent.address.postalCode" val=eml.resourceCreator.address.postalCode!/>  
-			<@trow label="agent.address.city" val=eml.resourceCreator.address.city!/>  
-			<@trow label="agent.address.province" val=eml.resourceCreator.address.province!/>  
-			<@trow label="agent.address.country" val=eml.resourceCreator.address.country!/>  
+			<@trow label="eml.resourceCreator.firstName" val=eml.resourceCreator().firstName!/>  
+			<@trow label="eml.resourceCreator.lastName" val=eml.resourceCreator().lastName!/>  
+			<@trow label="eml.resourceCreator.organisation" val=eml.resourceCreator().organisation!/>  
+			<@trow label="eml.resourceCreator.position" val=eml.resourceCreator().position!/>  
+			<@trow label="eml.resourceCreator.phone" val=eml.resourceCreator().phone!/>  
+			<@trow label="eml.resourceCreator.email" val=eml.resourceCreator().email!/>  
+			<@trow label="agent.address.homepage" val=eml.resourceCreator().homepage!/>  
+			<@trow label="agent.address.address" val=eml.getResourceCreator().address.address!/>
+			<@trow label="agent.address.postalCode" val=eml.getResourceCreator().address.postalCode!/>  
+			<@trow label="agent.address.city" val=eml.getResourceCreator().address.city!/>  
+			<@trow label="agent.address.province" val=eml.getResourceCreator().address.province!/>  
+			<@trow label="agent.address.country" val=eml.getResourceCreator().address.country!/>
 		</table>
 	</fieldset>
 </div>
@@ -71,9 +71,9 @@
 			  <th><@s.text name="eml.taxonomicClassification"/></th>
 			  <td><#list eml.taxonomicClassification as tk>${tk.scientificName!tk.commonName!} </#list></td>
 			 </tr>
-			<@trow label="eml.lowestCommonTaxon.scientificName" val=eml.lowestCommonTaxon.scientificName!/>  
-			<@trow label="eml.lowestCommonTaxon.commonName" val=eml.lowestCommonTaxon.commonName!/>  
-			<@trow label="eml.lowestCommonTaxon.rank" val=eml.lowestCommonTaxon.rank!/>
+			<@trow label="eml.lowestCommonTaxon.scientificName" val=eml.getLowestCommonTaxon().scientificName!/>  
+			<@trow label="eml.lowestCommonTaxon.commonName" val=eml.getLowestCommonTaxon().commonName!/>  
+			<@trow label="eml.lowestCommonTaxon.rank" val=eml.getLowestCommonTaxon().rank!/>
 		</table>
 	</fieldset>
 </div>
@@ -82,8 +82,8 @@
 	<fieldset>
 		<h2>Spatial Coverage</h2>
 		<table>
-			<@trow label="eml.geographicCoverage.boundingCoordinates" val=eml.geographicCoverage.boundingCoordinates!/>  
-			<@trow label="eml.geographicCoverage.description" val=eml.geographicCoverage.description!/>  
+			<@trow label="eml.geographicCoverage.boundingCoordinates" val=eml.getGeographicCoverage().boundingCoordinates.toStringShort(3)!/>  
+			<@trow label="eml.geographicCoverage.description" val=eml.getGeographicCoverage().description!/>  
 		</table>
 	</fieldset>
 </div>
@@ -92,9 +92,11 @@
 	<fieldset>
 		<h2>Temporal Coverage</h2>
 		<table>
-			<@trow label="eml.temporalCoverage.start" val=eml.temporalCoverage.start!/>  
-			<@trow label="eml.temporalCoverage.end" val=eml.temporalCoverage.end!/>  
-			<@trow label="eml.temporalCoverage.single" val=eml.temporalCoverage.single!/>  
+			<@trow label="eml.temporalCoverage.start" val=(eml.getTemporalCoverage().start?date?string)!/>  
+			<@trow label="eml.temporalCoverage.end" val=(eml.getTemporalCoverage().end?date?string)!/>
+			<#if eml.getTemporalCoverage().single??>  
+			<@trow label="eml.temporalCoverage.single" val=eml.getTemporalCoverage().single?date?string!/>
+			</#if>  
 		</table>
 	</fieldset>
 </div>
@@ -115,12 +117,12 @@
 	<fieldset>
 		<h2>Project</h2>
 		<table>
-			<@trow label="eml.researchProject.title" val=eml.researchProject.title!/>  
-			<@trow label="eml.personnelOriginator.organisation" val=eml.researchProject.personnelOriginator.organisation!/>  
-			<@trow label="eml.researchProject.abstract" val=eml.researchProject.abstract!/>  
-			<@trow label="eml.researchProject.funding" val=eml.researchProject.funding!/>  
-			<@trow label="eml.researchProject.studyAreaDescription" val=eml.researchProject.studyAreaDescription!/>  
-			<@trow label="eml.researchProject.designDescription" val=eml.researchProject.designDescription!/>  
+			<@trow label="eml.researchProject.title" val=eml.getResearchProject().title!/>  
+			<@trow label="eml.personnelOriginator.organisation" val=eml.getResearchProject().personnelOriginator.organisation!/>  
+			<@trow label="eml.researchProject.abstract" val=eml.getResearchProject().abstract!/>  
+			<@trow label="eml.researchProject.funding" val=eml.getResearchProject().funding!/>  
+			<@trow label="eml.researchProject.studyAreaDescription" val=eml.getResearchProject().studyAreaDescription!/>  
+			<@trow label="eml.researchProject.designDescription" val=eml.getResearchProject().designDescription!/>  
 		</table>
 	</fieldset>
 </div>
