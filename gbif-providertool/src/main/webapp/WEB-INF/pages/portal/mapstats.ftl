@@ -78,7 +78,7 @@
 <div id="stats-table">
 	<@display.table name="data" class="table" requestURI="" id="dataList" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.country"/>
-	    <#if (recordAction.length()>0)>	    
+	    <#if recordAction??>	    
 	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}" media="html" paramId="id" paramProperty="id"/>
 		<#else>
 	    	<@display.column property="count" sortable=true titleKey="stats.count" />

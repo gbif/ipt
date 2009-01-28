@@ -2,7 +2,45 @@
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="occ"/>
-	<@s.head theme="ajax" debug="false"/>
+	
+	<script>
+	function updateByRegion(){
+		var url = '/ajax/occResourceStatsByRegion.html';
+		var params = { resource_id: ${resource_id}, type: $F("regionClass") }; 
+		var target = 'imgByRegion';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	function updateByCountry(){
+		var url = '/ajax/occResourceStatsByCountry.html';
+		var params = { resource_id: ${resource_id}, type: $F("countryClass") }; 
+		var target = 'imgByCountry';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	function updateByTaxon(){
+		var url = '/ajax/occResourceStatsByTaxon.html';
+		var params = { resource_id: ${resource_id}, type: $F("rank") }; 
+		var target = 'imgByTaxon';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	function updateByHost(){
+		var url = '/ajax/occResourceStatsByHost.html';
+		var params = { resource_id: ${resource_id}, type: $F("hostType") }; 
+		var target = 'imgByHost';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	
+	document.observe("dom:loaded", function() {
+		updateByRegion();
+		updateByCountry();
+		updateByTaxon();
+		updateByHost();
+		$('regionClass').observe('change', updateByRegion);
+		$('countryClass').observe('change', updateByCountry);
+		$('rank').observe('change', updateByTaxon);
+		$('hostType').observe('change', updateByHost);
+	});
+	</script>
+	
 </head>
 	
   
@@ -128,22 +166,8 @@
 	<@s.form id="countryClassForm">
 		<@s.select id="countryClass" name="country" list="countryClasses" value="1" theme="simple"/>
 	</@s.form>
-	<@s.url id="imgByCountryUrl" action="occResourceStatsByCountry" namespace="/ajax" includeParams="get"/>
-	<div id="imgByCountry">
-		<@s.action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true">
-			<@s.param name="type" value="1"/>
-		</@s.action>
-	</div>
+	<div id="imgByCountry"></div>
 </div>
-<script>
-function updateByCountry(){
-	var url = '<@s.property value="imgByCountryUrl"/>';
-	var params = { type: $F("countryClass") }; 
-	var target = 'imgByCountry';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-$('countryClass').observe('change', updateByCountry);
-</script>	
 
 <div id="loc-geoserver" class="stats map stat-right">
 	<label><@s.text name="stats.occPointMap"/></label>	
@@ -159,42 +183,16 @@ $('countryClass').observe('change', updateByCountry);
 	<@s.form id="regionClassForm">
 		<@s.select id="regionClass" name="region" list="regionClasses" value="4" theme="simple"/>
 	</@s.form>
-	<@s.url id="imgByRegionUrl" action="occResourceStatsByRegion" namespace="/ajax" includeParams="get"/>
-	<div id="imgByRegion">
-		<@s.action name="occResourceStatsByRegion" namespace="/ajax" executeResult="true">
-			<@s.param name="type" value="4"/>
-		</@s.action>
-	</div>
+	<div id="imgByRegion"></div>
 </div>
-<script>
-function updateByRegion(){
-	var url = '<@s.property value="imgByRegionUrl"/>';
-	var params = { type: $F("regionClass") }; 
-	var target = 'imgByRegion';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-$('regionClass').observe('change', updateByRegion);
-</script>	
 
 <div id="tax-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.byTaxon"/></label>
 	<@s.form id="rankForm">
 		<@s.select id="rank" list="ranks" value="rank" theme="simple"/>
 	</@s.form>
-	<@s.url id="imgByTaxonUrl" action="occResourceStatsByTaxon" namespace="/ajax" includeParams="get"/>
-	<div id="imgByTaxon">
-		<@s.action name="occResourceStatsByTaxon" namespace="/ajax" executeResult="true"/>
-	</div>
+	<div id="imgByTaxon"></div>
 </div>
-<script>
-function updateByTaxon(){
-	var url = '<@s.property value="imgByTaxonUrl"/>';
-	var params = { type: $F("rank") }; 
-	var target = 'imgByTaxon';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-$('rank').observe('change', updateByTaxon);
-</script>
 
 
 <br class="clearfix" />
@@ -212,20 +210,8 @@ $('rank').observe('change', updateByTaxon);
 	<@s.form id="hostForm">
 		<@s.select id="hostType" list="hostTypes" theme="simple"/>
 	</@s.form>
-	<@s.url id="imgByHostUrl" action="occResourceStatsByHost" namespace="/ajax" includeParams="get"/>
-	<div id="imgByHost">
-		<@s.action name="occResourceStatsByHost" namespace="/ajax" executeResult="true"/>
-	</div>
+	<div id="imgByHost"></div>
 </div>
-<script>
-function updateByHost(){
-	var url = '<@s.property value="imgByHostUrl"/>';
-	var params = { type: $F("hostType") }; 
-	var target = 'imgByHost';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-$('hostType').observe('change', updateByHost);
-</script>	
 
 
 <br class="clearfix" />

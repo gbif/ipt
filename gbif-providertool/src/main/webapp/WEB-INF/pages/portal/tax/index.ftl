@@ -2,6 +2,33 @@
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="tax"/>
+	<script>
+	function updateByTaxon(){
+		var url = '/ajax/taxResourceStatsByTaxon.html';
+		var params = { resource_id: ${resource_id}, type: $F("rank") }; 
+		var target = 'imgByTaxon';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	function updateByStatus(){
+		var url = '/ajax/taxResourceStatsByStatus.html';
+		var params = { resource_id: ${resource_id}, type: $F("statusClass") }; 
+		var target = 'imgByStatus';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	function updateByRank(){
+		var url = '/ajax/taxResourceStatsByRank.html';
+		var params = { resource_id: ${resource_id}}; 
+		var target = 'imgByRank';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
+	document.observe("dom:loaded", function() {
+		updateByTaxon();
+		updateByStatus();
+		updateByRank();
+		$('rank').observe('change', updateByTaxon);
+		$('statusClass').observe('change', updateByStatus);
+	});
+	</script>
 </head>
 	
   
@@ -132,22 +159,9 @@
 	<@s.form id="rankForm">
 		<@s.select id="rank" list="ranks" value="rank" theme="simple"/>
 	</@s.form>
-	<@s.url id="imgByTaxonUrl" action="taxResourceStatsByTaxon" namespace="/ajax" includeParams="get"/>
 	<div id="imgByTaxon">
 	</div>
 </div>
-
-<script>
-function updateByTaxon(){
-	var url = '${imgByTaxonUrl}';
-	var params = { type: $F("rank") }; 
-	var target = 'imgByTaxon';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-$('rank').observe('change', updateByTaxon);
-updateByTaxon();
-</script>
-
 
 
 <div id="status-pie" class="stats chart stat-right">
@@ -155,39 +169,18 @@ updateByTaxon();
 	<@s.form id="statusClassForm">
 		<@s.select id="statusClass" name="status" list="statusClasses" value="1" theme="simple"/>
 	</@s.form>
-	<@s.url id="imgByStatusUrl" action="taxResourceStatsByStatus" namespace="/ajax" includeParams="get"/>
 	<div id="imgByStatus">
 	</div>
 </div>
-<script>
-function updateByStatus(){
-	var url = '${imgByStatusUrl}';
-	var params = { type: $F("statusClass") }; 
-	var target = 'imgByStatus';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-$('statusClass').observe('change', updateByStatus);
-updateByStatus();
-</script>	
+
 
 <br class="clearfix" />
 
 
 <div id="rank-pie" class="stats chart">
 	<label><@s.text name="stats.byRank"/></label>
-	<@s.url id="imgByRankUrl" action="taxResourceStatsByRank" namespace="/ajax" includeParams="get"/>
 	<div id="imgByRank"></div>
 </div>
 
-<script>
-function updateByRank(){
-	var url = '${imgByRankUrl}';
-	var target = 'imgByRank';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get'});
-};
-updateByRank();
-</script>
-
 
 <br class="clearfix" />
-

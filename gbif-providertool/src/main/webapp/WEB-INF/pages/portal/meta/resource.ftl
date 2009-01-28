@@ -15,7 +15,7 @@
 
 
 <img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
-<h2>${resource.title}</h2>	
+<h1>${resource.title}</h1>	
 
 <@s.form>
 
@@ -32,7 +32,7 @@
 
 <div id="basics">
 	<fieldset>
-		<h2>${resource.title!}</h2>
+		<h2>Basics</h2>
 		<table>	
 			<@trow label="resource.title" val=resource.title!/>  
 			<@trow label="resource.status" val=resource.status!/>  

@@ -24,15 +24,14 @@
 </div>
 
 <div id="stats-table">
-	<@display.table name="data" class="table" requestURI="" id="dataList" export=true pagesize=50>
+	<@display.table name="data" class="table" id="drow" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.category"/>
 	    <#if recordAction??>
-		  <@s.if test="#attr.dataList.id > 0">
+		  <#if drow.id??>
 	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}&type=${type}" media="html" paramId="id" paramProperty="id"/>
-		  </@s.if>
-		  <@s.else>
+	      <#else>
 	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}&type=${type}" media="html" paramId="category" paramProperty="label"/>
-		  </@s.else>
+		  </#if>
 		<#else>
 	    	<@display.column property="count" sortable=true titleKey="stats.count"/>
 		</#if>
