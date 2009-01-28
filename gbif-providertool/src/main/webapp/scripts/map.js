@@ -1,14 +1,10 @@
-var map, wmsLayer, satelliteLayer, polygonControl, polyOptions, boundingBox;
+var map, polygonControl, polyOptions, boundingBox;
 
 function loadMap() {
 	map = new OpenLayers.Map('map');
           
-    wmsLayer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
-            "http://labs.metacarta.com/wms/vmap0",
-            {layers: 'basic'} );
-            
-	satelliteLayer = new OpenLayers.Layer.WMS( "Satellite",
-              "http://labs.metacarta.com/wms-c/Basic.py?", {layers: 'satellite', format: 'image/png' } );            
+	var gbif = new OpenLayers.Layer.WMS( "background",
+               "http://geoserver.gbif.org/wms?", {layers: "gbif:countries", version: "1.0.0", format: "image/png", bgcolor:"0x7391AD"} );
     
     //add the polygon layer
     var polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer");
@@ -19,8 +15,7 @@ function loadMap() {
 	    polygonLayer.addFeatures(boundingBox);        
     }
     
-    map.addLayers([wmsLayer, satelliteLayer, polygonLayer]);
-    map.addControl( new OpenLayers.Control.LayerSwitcher() );
+    map.addLayers([gbif, polygonLayer]);
     map.addControl( new OpenLayers.Control.MousePosition() );
     
     map.zoomToMaxExtent();

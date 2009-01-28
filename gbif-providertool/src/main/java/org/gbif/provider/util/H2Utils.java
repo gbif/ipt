@@ -1,5 +1,12 @@
 package org.gbif.provider.util;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+
+import org.gbif.provider.model.BBox;
+import org.gbif.provider.model.Point;
+
 public class H2Utils {
 	public static int offset(int startPage, int pageSize){
 		if (startPage<1){
@@ -10,4 +17,5 @@ public class H2Utils {
 		}
 		return (startPage-1)*pageSize;
 	}
+
 }

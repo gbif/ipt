@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
@@ -43,6 +44,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
     // for searching
 	private String keyword;
 	private String q;
+	private BBox bbox;
 	private Double bbox_top;
 	private Double bbox_bottom;
 	private Double bbox_left;
@@ -97,7 +99,8 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	}
 	
 	public String geoSearch() {
-		resources = resourceManager.searchByBBox(bbox_top,bbox_bottom,bbox_left,bbox_right);
+		bbox = new BBox(bbox_bottom, bbox_left, bbox_top, bbox_right);
+		resources = resourceManager.searchByBBox(bbox);
 		tagcloud=keywordManager.getCloud();
 		return SUCCESS;
 	}
@@ -178,6 +181,10 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public Date getNow() {
 		return now;
+	}
+
+	public BBox getBbox() {
+		return bbox;
 	}
 		
 }

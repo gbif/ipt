@@ -1,7 +1,7 @@
 <head>
     <title>EML - <@s.text name="eml.temporalCoverage"/></title>
     <meta name="resource" content="${eml.title!}"/>
-    <meta name="submenu" content="eml"/>
+    <meta name="submenu" content="manage_resource"/>
     
 <script type="text/javascript">
 	function toggleSingleDate(checkbox){

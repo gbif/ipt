@@ -55,7 +55,7 @@ public class MapUtil {
 		}
 		// produce entire WMS URL
 		try {
-			return String.format("%s/wms?bbox=%s&styles=&request=GetMap&layers=gbif:countries,gbif:resource%s&width=%s&height=%s&srs=EPSG:4326&bgcolor=0x7391AD&Format=image/jpeg&filter=()(%s)", cfg.getGeoserverUrl(), bbox.toWMSString(), resourceId, width, height, URLEncoder.encode(filter, Constants.ENCODING));
+			return String.format("%s/wms?bbox=%s&styles=&request=GetMap&layers=gbif:countries,gbif:resource%s&width=%s&height=%s&srs=EPSG:4326&bgcolor=0x7391AD&Format=image/jpeg&filter=()(%s)", cfg.getGeoserverUrl(), bbox.toStringWMS(), resourceId, width, height, URLEncoder.encode(filter, Constants.ENCODING));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;

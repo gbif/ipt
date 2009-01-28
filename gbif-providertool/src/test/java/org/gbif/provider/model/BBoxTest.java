@@ -18,7 +18,7 @@ public class BBoxTest {
 		p2 = new Point(31.243, -13.9883);
 		p3 = new Point(41.1, -3.9);
 		p4 = new Point(41.1, -33.9);
-		bbox = new BBox(p1, p2);
+		bbox = new BBox(p2, p1);
 	}
 
 	@Test

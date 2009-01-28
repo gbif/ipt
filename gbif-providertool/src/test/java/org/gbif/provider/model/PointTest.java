@@ -10,10 +10,11 @@ public class PointTest {
 	@Test
 	public void rangeLimit(){
 		Point p1 = new Point(54.0, 123.0);
-		Point p2 = new Point(31.243, -13.9883);
+		Point p2 = new Point(31.24332, -13.9883321);
+		p2.toStringShort(3);
 		assertFalse(p1.equals(p2));
-		p1.setLatitude(31.243);
-		p1.setLongitude(-13.9883);
+		p1.setLatitude(31.24332);
+		p1.setLongitude(-13.9883321);
 		assertTrue(p1.equals(p2));
 		
 		p1.setLatitude(null);

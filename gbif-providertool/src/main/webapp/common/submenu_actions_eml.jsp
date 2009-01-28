@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <div id="actions">
 	<s:if test="resource.id>0">
-	<label>Editing Stages</label>
+	<label>Resource Metadata</label>
 	<ul class="plain">								
 		<li><a href="<s:url action="resource" namespace="/manage"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="eml.basic"/> </a></li>
 		<li><a href="<s:url action="creatorForm" namespace="/manage/meta"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="eml.resourceCreator"/> </a></li>

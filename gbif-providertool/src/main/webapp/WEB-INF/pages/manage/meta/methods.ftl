@@ -1,7 +1,7 @@
 <head>
     <title>EML - <@s.text name="eml.methods"/></title>
     <meta name="resource" content="${eml.title!}"/>
-    <meta name="submenu" content="eml"/>
+    <meta name="submenu" content="manage_resource"/>
 </head>
 
 <@s.form id="emlForm" action="methods" method="get" validate="false">

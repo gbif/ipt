@@ -18,6 +18,7 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 
@@ -30,7 +31,7 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	public List<T> getResourcesByUser(Long userId);
 	public List<T> search(String q);
 	public List<T> searchByKeyword(String keyword);
-	public List<T> searchByBBox(double bbox_top,double bbox_bottom,double bbox_left,double bbox_right);	
+	public List<T> searchByBBox(BBox bbox);	
 
 	/** retrieve all resource IDs that have been published already
 	 * @return list of resourceIDs

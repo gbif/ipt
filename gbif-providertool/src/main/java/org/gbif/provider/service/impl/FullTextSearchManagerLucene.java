@@ -49,8 +49,8 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	private static final String FIELD_DATA ="data";
 	private static final String FIELD_ACCESS ="acl";
 	private static final String PUBLIC_ACCESS ="public";
+	private File indexDir;
 	private IndexWriter writer;
-	private IndexReader reader;
 	private Searcher searcher;
 	private XmlContentHandler handler = new XmlContentHandler(); 
     private SAXParser saxParser;
@@ -64,26 +64,38 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	protected String indexDirectoryName = "lucene";
 	
 	
+	private void openWriter() throws CorruptIndexException, LockObtainFailedException, IOException{
+		if (writer==null){
+			if (searcher!=null){
+				searcher.close();
+				searcher=null;
+			}
+			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
+		}
+	}
+	private void openSearcher() throws CorruptIndexException, IOException {
+		if (searcher==null){
+			if (writer!=null){
+				writer.optimize();
+				writer.close();
+				writer=null;
+			}
+			searcher = new IndexSearcher(IndexReader.open(indexDir));
+		}
+	}
 	public void init() {
-		File indexDir = new File(cfg.getDataDir(), indexDirectoryName);
-		SAXParserFactory factory = SAXParserFactory.newInstance();
+		indexDir = new File(cfg.getDataDir(), indexDirectoryName);
+		SAXParserFactory factory = SAXParserFactory.newInstance();		 
 		try {
 			saxParser=factory.newSAXParser();
+			openSearcher();
 		} catch (ParserConfigurationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (SAXException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		try {
-			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
-			reader = IndexReader.open(indexDir);
-			searcher = new IndexSearcher(reader);
 		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (LockObtainFailedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -92,15 +104,19 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		}
 	}
 	public void destroy() {
-		try {
-			searcher.close();
-		} catch (IOException e) {
-			log.error("Error closing Lucene searcher: " + e.getMessage(), e);
+		if (searcher!=null){
+			try {
+				searcher.close();
+			} catch (IOException e) {
+				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
+			}
 		}
-		try {
-			reader.close();
-		} catch (IOException e) {
-			log.error("Error closing Lucene reader: " + e.getMessage(), e);
+		if (writer!=null){
+			try {
+				writer.close();
+			} catch (IOException e) {
+				log.error("Error closing Lucene writer: " + e.getMessage(), e);
+			}
 		}
 	}
 
@@ -177,6 +193,8 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	    	File eml = cfg.getEmlFile(resourceId);
 			log.info("Building resource metadata text index for resource[" + resourceId + "]");
 			saxParser.parse(eml, handler);
+			// make sure lucene writer is open. Reuse existing one if kept open
+	    	openWriter();
 			// if resource was indexed before remove the existing index document
 			Query query = new TermQuery(new Term(FIELD_ID, resourceId.toString()));
 			writer.deleteDocuments(query);
@@ -193,6 +211,15 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			writer.addDocument(doc);
 		} catch (Exception e) {
 			log.error("Error indexing metadata for resource "+resourceId, e);
+		} finally {
+			try {
+				writer.commit();
+				writer.optimize();
+			} catch (CorruptIndexException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -215,11 +242,12 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			// do a term query
 			Term term = normalizeQueryString(q);
 			BooleanQuery query = new BooleanQuery();
-			query.add(new WildcardQuery(term),  BooleanClause.Occur.MUST);
+			Query wild = new WildcardQuery(term); 
+			query.add(wild,  BooleanClause.Occur.MUST);
 			query.add(new TermQuery(new Term(FIELD_ACCESS, PUBLIC_ACCESS)),  BooleanClause.Occur.MUST);
 			
 			TopDocCollector collector = new TopDocCollector(10);
-		    searcher.search(query, collector);
+		    searcher.search(wild, collector);
 		    ScoreDoc[] hits = collector.topDocs().scoreDocs;
 		    int numTotalHits = collector.getTotalHits();
 			log.debug("Search term[" + q + "] found[" + numTotalHits + "] records");
@@ -252,30 +280,18 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	 * @see org.gbif.provider.service.FullTextSearchManager#buildResourceIndex()
 	 */
 	public void buildResourceIndex() {
-		try {
-			// go through all resources and analyze the metadata xml files
-			// to avoid indexing xml tags, use an uber simple SAX parser that just extracts all element & attribute content
-		    
-		    List<Long> resourceIDs = resourceManager.getAllIds();
-		    for (Long rid : resourceIDs){
-				buildResourceIndex(rid);
-		    }
-			writer.optimize();
-			
-		} catch (Exception e) {
-			log.error("Error building index: " + e.getMessage(), e);
-		} finally {
-			try {
-				writer.close();
-			} catch (Exception e) {
-				log.error("Error closing index writer: " + e.getMessage(), e);
-				e.printStackTrace();
-			}
-		}
+		// go through all resources and analyze the metadata xml files
+		// to avoid indexing xml tags, use an uber simple SAX parser that just extracts all element & attribute content	    
+	    List<Long> resourceIDs = resourceManager.getAllIds();
+	    for (Long rid : resourceIDs){
+			buildResourceIndex(rid);
+	    }
 	}
 	public List<Long> search(String q, Long userId) {
 		List<Long> results = new LinkedList<Long>();
 		try {
+			// make sure lucene searcher is open. Reuse existing one if kept open
+	    	openSearcher();
 			// do a term query
 			BooleanQuery query = new BooleanQuery();
 			query.add(new WildcardQuery(normalizeQueryString(q)),  BooleanClause.Occur.MUST);
@@ -308,14 +324,17 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	public List<Long> search(String q) {
 		List<Long> results = new LinkedList<Long>();
 		try {
+			// make sure lucene searcher is open. Reuse existing one if kept open
+	    	openSearcher();
 			// do a term query
 			BooleanQuery query = new BooleanQuery();
-			query.add(new WildcardQuery(normalizeQueryString(q)),  BooleanClause.Occur.MUST);
+			Query wild = new WildcardQuery(normalizeQueryString(q));
+			query.add(wild,  BooleanClause.Occur.MUST);
 			// match only public documents
 			query.add(new TermQuery(new Term(FIELD_ACCESS, PUBLIC_ACCESS)),  BooleanClause.Occur.MUST);
 			
 			TopDocCollector collector = new TopDocCollector(10);
-		    searcher.search(query, collector);
+		    searcher.search(wild, collector);
 		    ScoreDoc[] hits = collector.topDocs().scoreDocs;
 		    int numTotalHits = collector.getTotalHits();
 			log.debug("Search term[" + q + "] found[" + numTotalHits + "] records");
@@ -335,9 +354,9 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	private Term normalizeQueryString(String q){
 		// Lucene indexes on lower case it seems
 		q = q.toLowerCase();
-		if (!q.endsWith("*")) {
-			q = q + "*";
-		}
+//		if (!q.endsWith("*")) {
+//			q = q + "*";
+//		}
 		return new Term(FIELD_DATA, q);
 	}
 

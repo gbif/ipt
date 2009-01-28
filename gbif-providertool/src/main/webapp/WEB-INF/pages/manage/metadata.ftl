@@ -1,11 +1,7 @@
 <head>
     <title><@s.text name="dataResource.metadata"/></title>
     <meta name="resource" content="${resource.title!}"/>
-    <#if resource.isDataResource()>
-    	<meta name="submenu" content="manage_resource"/>    
-    <#else>
-	    <meta name="submenu" content="eml"/>
-    </#if>
+	<meta name="submenu" content="manage_resource"/>    
 </head>
 
 <p>Please describe the dataset you want to publish as a whole</p>
@@ -60,7 +56,7 @@
   </fieldset>
 </@s.form>
 	
-	<!--
+	<#--
 	<#if !resource.title??>
 		<hr/>
 		<@s.form id="resourceFormEml" action="importEml" enctype="multipart/form-data" method="post">
@@ -69,8 +65,6 @@
 		</@s.form>
 	</#if>
 	-->
-	
-  
 
 <script type="text/javascript">
     Form.focusFirstElement($("resourceForm"));
@@ -78,6 +72,6 @@
 
 <#if resource.modified??>
 <p>
-	<@s.text name="dataResource.lastModified"/> ${resource.modified} <#if resource.modifier??>by ${resource.modifier.getFullName()}</#if>
+	<@s.text name="dataResource.lastModified"/> ${resource.modified?datetime?string} <#if resource.modifier??>by ${resource.modifier.getFullName()}</#if>
 </p>
 </#if>

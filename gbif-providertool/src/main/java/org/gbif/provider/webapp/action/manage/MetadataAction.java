@@ -21,6 +21,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.ExtensionType;
+import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
@@ -132,11 +133,15 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		return SUCCESS;
 	}
 	public String republish() {
-		List<Long> publishedIDs = resourceManager.getPublishedResourceIDs();
-		for (Long rid : publishedIDs){
-			resourceManager.publish(rid);
+		list();
+		int i=0;
+		for (Resource res : resources){
+			if (res.getStatus().equals(PublicationStatus.dirty)){
+				i++;
+				resourceManager.publish(res.getId());
+			}
 		}
-		this.addActionMessage("Republished "+publishedIDs.size()+" resources");
+		this.addActionMessage("Republished "+i+" resources");
 		return SUCCESS;
 	}
 	
