@@ -128,7 +128,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		log.warn("Automatic (un)registration with GBIF hasn't been implemented yet");
 	}
 
-	public List<T> getLatest(int startPage, int pageSize) {
+	public List<T> latest(int startPage, int pageSize) {
         return query(String.format("from %s res where res.status>=:status ORDER BY res.modified, res.id", persistentClass.getSimpleName()))
         .setParameter("status", PublicationStatus.dirty)
         .setFirstResult(H2Utils.offset(startPage, pageSize))

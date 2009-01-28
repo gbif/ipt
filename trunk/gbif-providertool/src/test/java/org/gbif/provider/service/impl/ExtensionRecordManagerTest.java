@@ -32,7 +32,7 @@ public class ExtensionRecordManagerTest extends ResourceTestBase{
 	@Test
 	public void testExtendedRecord(){
 		this.setupOccResource();
-		List<DarwinCore> dwcs = darwinCoreManager.getLatest(Constants.TEST_OCC_RESOURCE_ID, 0, 5);
+		List<DarwinCore> dwcs = darwinCoreManager.latest(Constants.TEST_OCC_RESOURCE_ID, 0, 5);
 		assertTrue(dwcs.size()==5);
 		List<ExtendedRecord> records = extensionRecordManager.extendCoreRecords(resource, dwcs.toArray(new CoreRecord[dwcs.size()]));
 		assertTrue(records.size()==5);

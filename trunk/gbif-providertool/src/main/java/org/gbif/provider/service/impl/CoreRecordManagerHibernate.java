@@ -136,7 +136,7 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 	    return results;
 	}
 
-	public List<T> getLatest(Long resourceId, int startPage, int pageSize) {
+	public List<T> latest(Long resourceId, int startPage, int pageSize) {
         return query(String.format("from %s e WHERE deleted=false and e.resource.id = :resourceId ORDER BY e.modified, e.id", persistentClass.getSimpleName()))
         .setLong("resourceId", resourceId)
         .setFirstResult(H2Utils.offset(startPage, pageSize))

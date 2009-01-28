@@ -2,6 +2,7 @@ package org.gbif.provider.webapp.action.portal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	private Eml eml;
 	private String format;
     private List<Resource> resources;
+    // for feed
+    private Date now = new Date();
     // for meta portal
     private List<String> alphabet;
     private List<String> keywords;
@@ -44,6 +47,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	private Double bbox_bottom;
 	private Double bbox_left;
 	private Double bbox_right;
+	private Integer page=1;
 	
 	public String execute(){
 		if (resource!=null){
@@ -66,7 +70,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public String list(){
 		resource=null;
-		resources = resourceManager.getLatest(0, 500);
+		resources = resourceManager.latest(page, 500);
 		alphabet=keywordManager.getAlphabet();
 		if (alphabet.isEmpty()){
 			keywords = new ArrayList();
@@ -78,7 +82,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String rss(){
-		resources = resourceManager.getLatest(0, 25);
+		resources = resourceManager.latest(page, 25);
 		return SUCCESS;
 	}
 
@@ -162,6 +166,18 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public void setBbox_right(Double bbox_right) {
 		this.bbox_right = bbox_right;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Date getNow() {
+		return now;
 	}
 		
 }
