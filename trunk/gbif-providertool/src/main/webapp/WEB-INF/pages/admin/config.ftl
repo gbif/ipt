@@ -1,9 +1,8 @@
 <head>
     <title><@s.text name='config.heading'/></title>
     <meta name="menu" content="MainMenu"/>
+    <meta name="heading" content="<@s.text name='config.heading'/>"/>
 </head>
-
-<h1><@s.text name='config.heading'/></h1>
 
 <@s.form id="providerCfg" action="saveConfig" method="post">
 
