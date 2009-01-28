@@ -29,7 +29,7 @@ public class OccUploadTest extends ContextAwareTestBase{
 		assertEquals(894, res.getNumTaxa());
 		assertEquals(45, res.getNumFamilies());
 		assertEquals(1, res.getNumCountries());
-		assertEquals("36.538,26.850 38.106,35.152", res.getBbox().toStringShort(3));
+		assertEquals("36.538,26.851 38.107,35.152", res.getBbox().toStringShort(3));
 
 //		assertEquals(1533, event.getRecordsAdded());
 //		assertEquals(0, event.getRecordsChanged());
