@@ -37,5 +37,14 @@ public class FullTextSearchManagerLuceneTest extends ResourceTestBase{
 		resourceIDs = fullTextSearchManager.search("Sites*");
 		assertTrue(resourceIDs.size()>=1);
 	}
+	
+	@Test
+	public void testFullTextMetadata() throws Exception {
+		fullTextSearchManager.buildResourceIndex();
+		List<Long> resourceIDs = fullTextSearchManager.search("Pontaurus");
+		assertTrue(resourceIDs.size()>=1);
+		resourceIDs = fullTextSearchManager.search("Berlin");
+		assertTrue(resourceIDs.size()>=1);
+	}
 
 }
