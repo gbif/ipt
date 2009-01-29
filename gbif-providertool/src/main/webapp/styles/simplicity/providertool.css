@@ -1,7 +1,5 @@
 /* @override http://localhost:8080/styles/simplicity/providertool.css */
 
-/* @override http://localhost:8080/styles/simplicity/providertool.css */
-
 /* PROVIDERTOOL customising simplicity */
 
 /* @group general */
@@ -16,7 +14,6 @@ h2 {
 	background: url(/images/mandatory.gif) no-repeat;
 	padding-left: 20px;
 }
-
 .accepted {
 	font-style: bold;
 }
@@ -137,6 +134,19 @@ div#header .right {
         float: right;
 }
 
+div#jsalert {
+	float: left;
+	width: 300px;
+	font-style: italic;
+	color: gray;
+	padding: 10px 0 0;
+	margin: 0;
+}
+div#jsalert h2 {
+	font-style: bold italic;
+	color: red;
+	margin: 0;
+}
 
 
 /* @end */
@@ -345,3 +355,5 @@ div.googlemap {
 .cloud8 { font-size: 1.4em; }
 .cloud9 { font-size: 1.5em; }
 /* @end */
+
+
