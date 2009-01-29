@@ -68,7 +68,8 @@ a singleton that is injected into most other spring beans.
 To run IPT' geoservices we have developed a small plugin for geoserver that allows it to access the IPT cache. We provide a geoserver version that comes bundled with the plugin, but you shuld also be able to install the pluging in your own geoserver installation. It requires GeoTools 2.5.1 which comes with geoserver 1.6.x. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
 
 == Install plugin in existing geoserver ==
-Add the following 2 jars into your geoserver lib directory which is at {{{geoserver/WEB-INF/lib}}}:
+This step can be skipped if you use the geoserver WAR that we provide for the IPT. In case you wanna use your own,
+add the following 2 jars into your geoserver lib directory which is at {{{geoserver/WEB-INF/lib}}}:
  * h2-1.1.104.jar [http://code.google.com/p/h2database/downloads/detail?name=h2-2008-11-28.zip&can=2 download]
  * gt2-ipt-1.4.jar [http://gbif-providertoolkit.googlecode.com/files/gt2-ipt-1.4.jar download]
 
@@ -76,4 +77,3 @@ Add the following 2 jars into your geoserver lib directory which is at {{{geoser
 You need to let geoserver know where your IPT data directory is, that's all you need to do. By default it assumes it lives within the IPT webapp next to geoservers, but you should make sure that this is correct.
 
 Go to the {{{Feature Data Set Configuration}}} (Menu: Config/Data/Datastores), select IPT and edit the {{{datadir}}} so it points to your data directory. Then save and apply the configuration (upper corner left).
-
