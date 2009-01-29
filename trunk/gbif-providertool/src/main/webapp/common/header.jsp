@@ -9,6 +9,15 @@
     <p><s:text name="webapp.tagline"/></p>
 </div>
 
+<noscript>
+<!-- test for javascript -->
+<div id="jsalert">
+ <h2>You seem to have JavaScript disabled</h2>
+ <p>This site is making extensive use of JavaScript so it is advised that you enable JavaScript. 
+ If you're running the NoScript Mozilla extenstion you need to add ipt.gbif.org in the list of trusted domains.</p>
+</div>
+</noscript>
+
 <div id="logo" class="right">
 	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
 </div>
@@ -24,13 +33,4 @@
 <hr />
 
 <%-- Put constants into request scope --%>
-<appfuse:constants scope="request"/>
-
-
-<!-- test for javascript -->
-<noscript>
- <p class="reminder">You seem to have JavaScript disabled<br/>
- This site is making extensive use of JavaScript so it is advised that you enable JavaScript. 
- If you're running the NoScript Mozilla extenstion you need to add ipt.gbif.org in the list of trusted domains.
- </p>
-</noscript>	    
+<appfuse:constants scope="request"/> 
