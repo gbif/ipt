@@ -4,7 +4,7 @@
 	<groupId>org.gbif.provider</groupId>
 	<artifactId>gt2-ipt</artifactId>
 	<packaging>jar</packaging>
-	<version>1.4</version>
+	<version>1.0beta</version>
 	<name>IPT Geoserver Datasource</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
