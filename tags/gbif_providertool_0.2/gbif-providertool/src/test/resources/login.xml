@@ -1,6 +1,0 @@
-<invoke description="get Login Page" url="/login.jsp"/>
-<verifytitle description="we should see the login title" text=".*${login.title}.*" regex="true"/>
-<setinputfield description="set user name" name="j_username" value="maria"/>
-<setinputfield description="set password" name="j_password" value="maria"/>
-<clickbutton label="${button.login}" description="Click the submit button"/>
-<verifytitle description="Home Page follows if login ok" text=".*${home.title}.*" regex="true"/>
