@@ -93,7 +93,7 @@
 			<td>${numAccepted}</td>
 		</tr>
 		<tr>
-			<td>Synonyms</td>
+			<td>Other Names</td>
 			<td>${numSynonyms}</td>
 		</tr>
 	</table>
@@ -155,7 +155,7 @@
 
 
 <div id="tax-pie" class="stats chart">
-	<label><@s.text name="stats.byTaxon"/></label>
+	<label><@s.text name="stats.byName"/></label>
 	<@s.form id="rankForm">
 		<@s.select id="rank" list="ranks" value="rank" theme="simple"/>
 	</@s.form>

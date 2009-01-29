@@ -61,6 +61,11 @@
 	<fieldset>
 		<h2><@s.text name="taxon.synonymy"/></h2>
 		<table>
+			<tr>
+			  <th>Scientific Name</th>
+			  <th>Taxonomic Status</th>
+			  <th>Nomenclatural Status</th>
+			</tr>
 			<#list synonyms as s>	
 			<tr>
 			  <td><a href="taxDetail.html?resource_id=${resource_id}&id=${s.id?c}">${s.scientificName}</a></td>
@@ -78,6 +83,11 @@
 	<fieldset>
 		<h2><@s.text name="taxon.commonNames"/></h2>
 		<table>
+			<tr>
+			  <th>Common Name</th>
+			  <th>Language</th>
+			  <th>Region</th>
+			</tr>
 			<#list commonNames as cn>	
 			<tr>
 			  <td>${cn.name!}</td>
@@ -95,6 +105,10 @@
 	<fieldset>
 		<h2><@s.text name="taxon.distribution"/></h2>
 		<table>
+			<tr>
+			  <th>Region</th>
+			  <th>Status</th>
+			</tr>
 			<#list distributions as d>	
 			<tr>
 			  <td>${d.region!}</td>

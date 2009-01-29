@@ -23,6 +23,7 @@ import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
@@ -38,11 +39,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.opensymphony.xwork2.Preparable;
 
 public class MetadataAction extends BaseMetadataResourceAction implements Preparable{
-	@Autowired
-	@Qualifier("checklistResourceManager")
-	private GenericResourceManager<ChecklistResource> checklistResourceManager;
-	@Autowired
-	private OccResourceManager occResourceManager;
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	protected List<? extends Resource> resources;

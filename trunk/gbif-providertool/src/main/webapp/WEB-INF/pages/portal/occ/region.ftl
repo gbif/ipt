@@ -18,6 +18,7 @@
 		  <th><@s.text name="region.type"/></th>
 		  <td>${region.type}</td>
 		</tr>
+		<#if region.parent??>
 		<tr>
 		  <th><@s.text name="region.parent"/></th>
 		  <@s.url id="occRegionUrl" action="occRegion" namespace="/" includeParams="none">
@@ -26,6 +27,7 @@
 		  </@s.url>
 		  <td><a href="${occRegionUrl}">${region.parent}</a></td>
 		</tr>
+		</#if>
 		<tr>
 		  <th><@s.text name="region.occTotal"/></th>
 		  <td>${region.occTotal!0}</td>

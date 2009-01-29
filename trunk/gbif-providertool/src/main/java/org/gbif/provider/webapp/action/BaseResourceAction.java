@@ -27,11 +27,22 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ExtensionType;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class BaseResourceAction<T extends Resource> extends BaseAction implements SessionAware{
 	private static final long serialVersionUID = 1643640896L;
+	@Autowired
+	protected ChecklistResourceManager checklistResourceManager;
+	@Autowired
+	protected OccResourceManager occResourceManager;
+    @Autowired
+    @Qualifier("resourceManager")
+    protected GenericResourceManager<Resource> metaResourceManager;
 	
     protected GenericResourceManager<T> resourceManager;
 	protected Long resource_id;
@@ -65,6 +76,16 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 		}else{
 			return null;
 		}
+	}
+	
+	protected GenericResourceManager<? extends Resource> getResourceTypeMatchingManager(){
+		if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Occurrence.alias)){
+			return occResourceManager;
+		}else if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Checklist.alias)){
+			return checklistResourceManager;
+		}else{
+			return metaResourceManager;
+		}		
 	}
 		
 	protected void updateRecentResouces(){

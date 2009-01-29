@@ -35,9 +35,9 @@ public class BaseMetadataResourceAction extends BaseResourceAction<Resource>{
     	resourceType=METADATA;
     }
 
-    @Autowired
-	public void setResourceManager(@Qualifier("resourceManager") GenericResourceManager<Resource> resourceManager) {
-		this.resourceManager = resourceManager;
+    @Override
+	public void prepare() {
+		resourceManager=metaResourceManager;
+		super.prepare();
 	}
-	
 }

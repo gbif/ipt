@@ -21,18 +21,15 @@ import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseOccurrenceResourceAction extends BaseResourceAction<OccurrenceResource>{
-    protected OccResourceManager occResourceManager;
-
     public BaseOccurrenceResourceAction(){
     	super();
     	resourceType=OCCURRENCE;
     }
-    
-	@Autowired
-	public void setOccResourceManager(OccResourceManager occResourceManager) {
-		this.resourceManager = occResourceManager;
-		this.occResourceManager = occResourceManager;
-	}
-	
 
+	@Override
+	public void prepare() {
+		resourceManager=occResourceManager;
+		super.prepare();
+	}
+    
 }
