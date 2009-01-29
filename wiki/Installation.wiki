@@ -63,3 +63,7 @@ Settings to be configured include:
 === Developer details ===
 The IPT settings are stored in the database through the class ProviderCfg which is embedded in AppConfig,
 a singleton that is injected into most other spring beans.
+
+= Geoserver =
+To run IPT' geoservices we have developed a small plugin for geoserver that allows it to access the IPT cache. We provide a geoserver version that comes bundled with the plugin, but you shuld also be able to install the pluging in your own geoserver installation. It requires GeoTools 2.5.1 which comes with geoserver 1.6.x. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
+
