@@ -3,7 +3,7 @@
 The default installation of the IPT is using the compiled WAR archives available in the download section.
 Alternatively you can build the IPT from source.
 
-= Install WAR =
+= Install IPT =
 In most application servers like Tomcat it is enough to simply drop the war into the webapp directory.
 You might need to restart the server. Consult your application server manual how to deploy war archives.
 In case you dont have any application server you can download Tomcat from here:
