@@ -1,4 +1,4 @@
-#summary User manual based on version 0.5
+#summary User manual based on version 1.0beta
 
 The IPT is designed to be used by multiple users and resources.
 We therefore work with 3 different roles, an anonymous or known user, a manager or an admin.
@@ -8,14 +8,18 @@ The top menu reflects those roles/sections too with a primary menu shown for eac
 = Portal =
 The portal is meant to publish the resources on the web and is in large parts accessible to the public without any login.
 The only exception are annotations to data, which can only be done if you have a registered login.
-== Resources ==
+== Metadata Repository ==
 == Occurrence Resources ==
 == Checklist Resources ==
 
 = Managing Resources =
-== Resources ==
-== Occurrence Resources ==
-== Checklist Resources ==
+== Metadata ==
+== Data Resources ==
+=== Data Sources ===
+=== Transformations ===
+=== Property Mappings ===
+=== Cache Upload ===
+The IPT has been tested with up to 1 million records. Larger datasets are not guaranteed to work, but might do. It is important for large datasets that your admin has assigned a lot of memory to the IPT and its hosting application server. We use 1GB of main memory for our tests. A file based occurrence source with 100.000 records can take up to 20 minutes to upload into the cache, so please be patient. It is something you don't do every day and doesn't need your attention.
 
 = Administration of IPT =
 == Settings ==
