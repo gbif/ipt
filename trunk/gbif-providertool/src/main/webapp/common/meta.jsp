@@ -31,4 +31,4 @@
           </c:when>        
 	      <c:when test='${currentSubMenu == "manage" || currentSubMenu == "manage_resource"}'>
           </c:when>        
-	    </c:choose>        
+	    </c:choose>
