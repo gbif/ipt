@@ -263,12 +263,16 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			
 		} finally {
 			try {
-				searcher.close();
+				if (searcher!=null){
+					searcher.close();
+				}
 			} catch (IOException e) {
 				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
 			}
 			try {
-				reader.close();
+				if (reader!=null){
+					reader.close();
+				}
 			} catch (IOException e) {
 				log.error("Error closing Lucene searcher: " + e.getMessage(), e);
 			}

@@ -17,8 +17,10 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.ResourceKeywordManager;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.provider.webapp.action.BaseResourceAction;
@@ -34,7 +36,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	private ResourceKeywordManager keywordManager;
 	private Eml eml;
 	private String format;
-    private List<Resource> resources;
+    private List<? extends Resource> resources;
     // for feed
     private Date now = new Date();
     // for meta portal
@@ -72,7 +74,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public String list(){
 		resource=null;
-		resources = resourceManager.latest(page, 500);
+		resources = getResourceTypeMatchingManager().latest(page, 500);
 		alphabet=keywordManager.getAlphabet();
 		if (alphabet.isEmpty()){
 			keywords = new ArrayList();
@@ -90,9 +92,9 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 
 	public String search() {
 		if (q!=null){
-			resources = resourceManager.search(q);
+			resources = getResourceTypeMatchingManager().search(q);
 		}else{
-			resources = resourceManager.searchByKeyword(keyword);
+			resources = getResourceTypeMatchingManager().searchByKeyword(keyword);
 		}
 		tagcloud=keywordManager.getCloud();
 		return SUCCESS;
@@ -100,7 +102,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	
 	public String geoSearch() {
 		bbox = new BBox(bbox_bottom, bbox_left, bbox_top, bbox_right);
-		resources = resourceManager.searchByBBox(bbox);
+		resources = getResourceTypeMatchingManager().searchByBBox(bbox);
 		tagcloud=keywordManager.getCloud();
 		return SUCCESS;
 	}
@@ -123,7 +125,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 		this.eml = eml;
 	}
 
-	public List<Resource> getResources() {
+	public List<? extends Resource> getResources() {
 		return resources;
 	}
 

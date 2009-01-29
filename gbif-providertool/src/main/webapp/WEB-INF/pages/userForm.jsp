@@ -109,6 +109,11 @@
         <s:hidden name="user.accountLocked" value="%{user.accountLocked}"/>
         <s:hidden name="user.credentialsExpired" value="%{user.credentialsExpired}"/>
     </li>
+    <li><p>
+	If you want to manage your own resources/datasets, you will need Manager rights.<br/>
+	You can request those rights from the administrator <i><s:property value="%{iptCfg.contactName}"/> &lt;<s:property value="%{iptCfg.contactEmail}"/>&gt;</i>
+	</p>
+    </li>
     </c:otherwise>
 </c:choose>
     <li class="buttonBar bottom">

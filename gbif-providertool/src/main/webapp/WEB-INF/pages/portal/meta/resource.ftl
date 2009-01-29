@@ -52,7 +52,7 @@
 			<@trow label="eml.resourceCreator.position" val=eml.resourceCreator().position!/>  
 			<@trow label="eml.resourceCreator.phone" val=eml.resourceCreator().phone!/>  
 			<@trow label="eml.resourceCreator.email" val=eml.resourceCreator().email!/>  
-			<@trow label="agent.address.homepage" val=eml.resourceCreator().homepage!/>  
+			<@trow label="agent.homepage" val=eml.resourceCreator().homepage!/>  
 			<@trow label="agent.address.address" val=eml.getResourceCreator().address.address!/>
 			<@trow label="agent.address.postalCode" val=eml.getResourceCreator().address.postalCode!/>  
 			<@trow label="agent.address.city" val=eml.getResourceCreator().address.city!/>  
@@ -118,7 +118,7 @@
 		<h2>Project</h2>
 		<table>
 			<@trow label="eml.researchProject.title" val=eml.getResearchProject().title!/>  
-			<@trow label="eml.personnelOriginator.organisation" val=eml.getResearchProject().personnelOriginator.organisation!/>  
+			<@trow label="eml.researchProject.personnelOriginator.organisation" val=eml.getResearchProject().personnelOriginator.organisation!/>  
 			<@trow label="eml.researchProject.abstract" val=eml.getResearchProject().abstract!/>  
 			<@trow label="eml.researchProject.funding" val=eml.getResearchProject().funding!/>  
 			<@trow label="eml.researchProject.studyAreaDescription" val=eml.getResearchProject().studyAreaDescription!/>  

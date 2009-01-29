@@ -50,7 +50,7 @@
 			<@s.textfield key="eml.resourceCreator.address.province" label="%{getText('agent.address.province')}" required="false" cssClass="text xhalf"/>
 		</div>
 		<div class="left">
-			<@s.textfield key="eml.resourceCreator.address.country" label="%{getText('agent.address.country')}" required="true" cssClass="text xhalf"/>
+			<@s.select key="eml.resourceCreator.address.country" list="isoCountryI18nCodeMap" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
 </fieldset>

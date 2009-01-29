@@ -109,7 +109,7 @@
         </global-exception-mappings>
 
 
-        <action name="signup" class="signupAction">
+        <action name="signup" class="org.gbif.provider.webapp.action.SignupAction">
             <result name="cancel" type="redirect">/</result>
             <result name="input">/WEB-INF/pages/signup.jsp</result>
             <result name="success" type="chain">saveSignup</result>
@@ -120,7 +120,7 @@
             <result name="success" type="redirect-action">index</result>
         </action>
 
-        <action name="editProfile" class="userAction" method="edit">
+        <action name="editProfile" class="org.gbif.provider.webapp.action.UserAction" method="edit">
             <result name="input">/WEB-INF/pages/userForm.jsp</result>
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="error">/WEB-INF/pages/index.jsp</result>

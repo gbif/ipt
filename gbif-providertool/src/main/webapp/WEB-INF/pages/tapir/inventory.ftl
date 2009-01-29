@@ -17,7 +17,7 @@
  <#list values as vl>
   <record count="${vl.count!-1}">
   <#list vl.values as v>
-   <${tags[v_index]}>${v}</${tags[v_index]}>
+   <${tags[v_index]}<#if v??>>${v}<#else> xsi:nil="true"></#if></${tags[v_index]}>
   </#list>
   </record>
  </#list>

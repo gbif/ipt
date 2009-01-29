@@ -31,17 +31,15 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
 public class BaseChecklistResourceAction extends BaseResourceAction<ChecklistResource>{
-	protected ChecklistResourceManager checklistResourceManager;
-	
     public BaseChecklistResourceAction(){
     	super();
     	resourceType=CHECKLIST;
     }
-    
-    @Autowired
-	public void setChecklistResourceManager(ChecklistResourceManager checklistResourceManager) {
-		this.resourceManager = checklistResourceManager;
-		this.checklistResourceManager = checklistResourceManager;
+
+    @Override
+	public void prepare() {
+		resourceManager=checklistResourceManager;
+		super.prepare();
 	}
-	
+    
 }
