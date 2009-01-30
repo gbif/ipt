@@ -10,7 +10,7 @@ The default installation of the IPT is using the compiled ipt.war and a geoserve
 
 -----
 = Application Server =
-The IPT should run in any compliant java  application server using Java 1.5. We have tested it with Jetty and Tomcat, which we recommend for the installation. The IPT requires quite some memory, as it also runs a full database. So make sure your application server has enough memory available and potentially increase the memory to 1 gig or more (Tomcat on [http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/ OSX], [http://wiki.apache.org/tomcat/FAQ/Memory general]). In Tomcat you can find hints
+The IPT should run in any compliant java  application server using Java 1.5. We have tested it with Jetty and Tomcat, which we recommend for the installation. The IPT requires quite some memory, as it also runs a full database. So make sure your application server has enough memory available and potentially increase the memory to 1 gig or more (Tomcat on [http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/ OSX], [http://wiki.apache.org/tomcat/FAQ/Memory general]). 
 
 -----
 = IPT =
