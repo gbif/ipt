@@ -16,7 +16,7 @@
 	}
 	</style>
 	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"/>  
-	<script type="text/javascript" src="/scripts/map.js"/>  
+	<script type="text/javascript" src="<@s.url value='/scripts/map.js'/>"/>  
 	<script type="text/javascript">  
 	document.observe("dom:loaded", function() {
 		loadMap();
@@ -33,7 +33,7 @@
 <div id="tagindex">
 <script>
 function updateKeywords(c){
-	var url = '/ajax/keywords.html';
+	var url = '<@s.url value="/ajax/keywords.html"/>';
 	var params = { prefix: c }; 
 	var target = 'keywords';	
 	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});

@@ -4,19 +4,19 @@
     <meta name="submenu" content="tax"/>
 	<script>
 	function updateByTaxon(){
-		var url = '/ajax/taxResourceStatsByTaxon.html';
+		var url = '<@s.url value="/ajax/taxResourceStatsByTaxon.html"/>';
 		var params = { resource_id: ${resource_id}, type: $F("rank") }; 
 		var target = 'imgByTaxon';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 	};
 	function updateByStatus(){
-		var url = '/ajax/taxResourceStatsByStatus.html';
+		var url = '<@s.url value="/ajax/taxResourceStatsByStatus.html"/>';
 		var params = { resource_id: ${resource_id}, type: $F("statusClass") }; 
 		var target = 'imgByStatus';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 	};
 	function updateByRank(){
-		var url = '/ajax/taxResourceStatsByRank.html';
+		var url = '<@s.url value="/ajax/taxResourceStatsByRank.html"/>';
 		var params = { resource_id: ${resource_id}}; 
 		var target = 'imgByRank';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});

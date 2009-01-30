@@ -5,25 +5,25 @@
 	
 	<script>
 	function updateByRegion(){
-		var url = '/ajax/occResourceStatsByRegion.html';
+		var url = '<@s.url value="/ajax/occResourceStatsByRegion.html"/>';
 		var params = { resource_id: ${resource_id}, type: $F("regionClass") }; 
 		var target = 'imgByRegion';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 	};
 	function updateByCountry(){
-		var url = '/ajax/occResourceStatsByCountry.html';
+		var url = '<@s.url value="/ajax/occResourceStatsByCountry.html"/>';
 		var params = { resource_id: ${resource_id}, type: $F("countryClass") }; 
 		var target = 'imgByCountry';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 	};
 	function updateByTaxon(){
-		var url = '/ajax/occResourceStatsByTaxon.html';
+		var url = '<@s.url value="/ajax/occResourceStatsByTaxon.html"/>';
 		var params = { resource_id: ${resource_id}, type: $F("rank") }; 
 		var target = 'imgByTaxon';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
 	};
 	function updateByHost(){
-		var url = '/ajax/occResourceStatsByHost.html';
+		var url = '<@s.url value="/ajax/occResourceStatsByHost.html"/>';
 		var params = { resource_id: ${resource_id}, type: $F("hostType") }; 
 		var target = 'imgByHost';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
