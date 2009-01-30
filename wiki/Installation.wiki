@@ -1,12 +1,18 @@
 #summary Installation and build instructions based on IPT version 1.0beta
 
+The IPT consists of 2 webapplications that run separately in a Java 1.5 container.
 The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section (we are still waiting for Google to allow us to host larger files. So for now GBIF hosts the [http://kiwaia.gbif.org/ipt/IPT-1.0beta_geoserver.zip geoserver archive]). Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
 
+ * [#ApplicationServer Install Application Server]
  * [#IPT Install IPT]
  * [#Geoserver Install Geoserver]
 
------
 
+-----
+= ApplicationServer =
+The IPT should run in any compliant java  application server using Java 1.5. We have tested it with Jetty and Tomcat, which we recommend for the installation. The IPT requires quite some memory, as it also runs a full database. So make sure your application server has enough memory available and potentially increase the memory to 1 gig or more ([Tomcat on [http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/ OSX], [http://wiki.apache.org/tomcat/FAQ/Memory general]). In Tomcat you can find hints
+
+-----
 = IPT =
 In most application servers like Tomcat it is enough to simply drop the war into the webapp directory.
 You might need to restart the server. Consult your application server manual how to deploy war archives.
@@ -14,6 +20,7 @@ In case you dont have any application server you can download Tomcat from here:
 http://www.apache.org/tomcat
 
 In the rest of this document we are going to refer to the IPT directory inside Tomcats webapps folder simply as {{{%IPT}}}
+
 
 === IPT settings ===
 Nearly all configuration is done through the admin webinterface and stored in IPTs cache database. There is one exception to this and that is where the IPT database is actually located!
