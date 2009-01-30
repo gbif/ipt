@@ -1,7 +1,6 @@
 #summary Installation and build instructions based on IPT version 1.0beta
 
-The default installation of the IPT is using the compiled WAR archives available in the download section.
-Alternatively you can build the IPT from source.
+The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section. Alternatively you can [SourceBuild] build the IPT from source which is not covered here.
 
 = Install IPT =
 In most application servers like Tomcat it is enough to simply drop the war into the webapp directory.
@@ -9,15 +8,62 @@ You might need to restart the server. Consult your application server manual how
 In case you dont have any application server you can download Tomcat from here:
 http://www.apache.org/tomcat
 
-= Build from source =
+In the rest of this document we are going to refer to the IPT directory inside Tomcats webapps folder simply as {{{%IPT}}}
+
+== IPT settings ==
+Nearly all configuration is done through the [UserManual admin webinterface] and stored in IPTs cache database. There is one exception to this and that is where the IPT database is actually located!
+
+The default data directory of the IPT is inside the applications webapp and comes with 2 sample resources preconfigured. If you want to keep your data somewhere different (for easier backup for example), you can change one line in {{{%IPT/WEB-INF/classes/ipt.properties}}}:
+{{{
+dataDir=/wherever/you/want/data
+}}}
+
+This change requires a restart of the IPT of course (restarting or reloading tomcat)
+You should now be able to see the IPT in your browser. For a default tomcat installation this would be:
+
+http://localhost:8080/ipt-1.0beta/
+
+=== Web-based configuration ===
+As you might have noticed a lot of images are broken. To fix this, you need to configure some basic settings in the web admin interface, especially the base URL of your server. Go to:
+
+http://localhost:8080/ipt-1.0beta/admin/settings.html
+
+Login as the admin (default is user=admin, password=admin).
+And then update all settings you can find on this page:
+ * metadata
+   * xxx
+   * yyy
+ * server
+   * xxx
+   * yyy
+ * geoserver
+   * xxx
+   * yyy
+
+-----
+
+= Geoserver =
+To run IPT' geoservices we have developed a small plugin for geoserver that allows it to access the IPT cache. We provide a geoserver version that comes bundled with the plugin, but you shuld also be able to install the pluging in your own geoserver installation. It requires GeoTools 2.5.1 which comes with geoserver 1.6.x. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
+
+== Install plugin in existing geoserver ==
+This step can be skipped if you use the geoserver WAR that we provide for the IPT. In case you wanna use your own,
+add the following 2 jars into your geoserver lib directory which is at {{{geoserver/WEB-INF/lib}}}:
+ * h2-1.1.104.jar [http://code.google.com/p/h2database/downloads/detail?name=h2-2008-11-28.zip&can=2 download]
+ * gt2-ipt-1.4.jar [http://gbif-providertoolkit.googlecode.com/files/gt2-ipt-1.4.jar download]
+
+== Configure Geoserver ==
+You need to let geoserver know where your IPT data directory is, that's all you need to do. By default it assumes it lives within the IPT webapp next to geoservers, but you should make sure that this is correct.
+
+Go to the {{{Feature Data Set Configuration}}} (Menu: Config/Data/Datastores), select IPT and edit the {{{datadir}}} so it points to your data directory. Then save and apply the configuration (upper corner left).
+
+
+
+-----
+
+= Building IPT from source =
 The build process is using Maven and by default the IPT should run with a single command after you have checked out the sourcecode.
 Most parameters are kept as variable definitions at the bottom of the Maven pom.xml file which can be found in the root folder of the project.
 
-== ipt.properties ==
-In order to load from the database though we need the absolute path to the H2 database files first, so the IPT dataDir can be configured in the ipt.properties. 
-If not existing the default will be the data dir inside the webapp root folder.
-
-http://yourdomain/ipt/h2
 
 === Developer details ===
 Values are propagated like this
@@ -51,29 +97,7 @@ The following maven command builds the war archive which then can be found in th
 mvn -P prod install
 
 
----
-
-= IPT settings =
-IPT settings are stored in the H2 database (table provider_cfg) and can be configured through the admin webinterface of the IPT.
-Settings to be configured include:
-- provider metadata
-- geoserver location and login
-- GoogleMaps key
-
-=== Developer details ===
+=== IPT settings and H2 ===
 The IPT settings are stored in the database through the class ProviderCfg which is embedded in AppConfig,
 a singleton that is injected into most other spring beans.
 
-= Geoserver =
-To run IPT' geoservices we have developed a small plugin for geoserver that allows it to access the IPT cache. We provide a geoserver version that comes bundled with the plugin, but you shuld also be able to install the pluging in your own geoserver installation. It requires GeoTools 2.5.1 which comes with geoserver 1.6.x. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
-
-== Install plugin in existing geoserver ==
-This step can be skipped if you use the geoserver WAR that we provide for the IPT. In case you wanna use your own,
-add the following 2 jars into your geoserver lib directory which is at {{{geoserver/WEB-INF/lib}}}:
- * h2-1.1.104.jar [http://code.google.com/p/h2database/downloads/detail?name=h2-2008-11-28.zip&can=2 download]
- * gt2-ipt-1.4.jar [http://gbif-providertoolkit.googlecode.com/files/gt2-ipt-1.4.jar download]
-
-== Configure Geoserver ==
-You need to let geoserver know where your IPT data directory is, that's all you need to do. By default it assumes it lives within the IPT webapp next to geoservers, but you should make sure that this is correct.
-
-Go to the {{{Feature Data Set Configuration}}} (Menu: Config/Data/Datastores), select IPT and edit the {{{datadir}}} so it points to your data directory. Then save and apply the configuration (upper corner left).
