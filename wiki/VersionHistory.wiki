@@ -1,7 +1,17 @@
 #summary Version history of releases
 
-=== IPT 0.6-SNAPSHOT ===
- * TAPIR intermediate support for a fixed DarwinCore output model (to be settled on for release next week)
+=== IPT 1.0-SNAPSHOT ===
+
+=== IPT 1.0 beta ===
+ * Metadata portal
+   * fulltext search across all resource metadata
+   * geospatial bounding box search with map
+   * keyword cloud and alphabetical index
+   * visualise all metadata as EML and also as single HTML page
+ * bug fixes
+   * fixed absolute links to use s:url
+   * warn users without javascript
+ * TAPIR intermediate support for a fixed DarwinCore output model
    * filters for searches & inventories on all core properties
    * multiple property inventories supported
    * KVP requests only (no xml)
