@@ -2,7 +2,12 @@
 
 The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section. Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
 
-= Install IPT =
+ * [#IPT Install IPT]
+ * [#Geoserver Install Geoserver]
+
+-----
+
+= IPT =
 In most application servers like Tomcat it is enough to simply drop the war into the webapp directory.
 You might need to restart the server. Consult your application server manual how to deploy war archives.
 In case you dont have any application server you can download Tomcat from here:
