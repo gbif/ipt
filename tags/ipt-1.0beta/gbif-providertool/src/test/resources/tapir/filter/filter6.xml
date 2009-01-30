@@ -1,0 +1,20 @@
+<template>
+	<filter>
+	  <and>
+		<greaterThanOrEquals> 
+		  <concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
+		  <parameter name="lower"/> 
+		</greaterThanOrEquals> 
+		<lessThanOrEquals> 
+		  <concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
+		  <parameter name="upper"/> 
+		</lessThanOrEquals> 
+		<not>
+		  <equals> 
+			<concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
+			<literal value="tim"/> 
+		  </equals> 
+		</not>
+	  </and> 
+	</filter>
+</template>
