@@ -1,6 +1,6 @@
 #summary Installation and build instructions based on IPT version 1.0beta
 
-The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section. Alternatively you can [SourceBuild] build the IPT from source which is not covered here.
+The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section. Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
 
 = Install IPT =
 In most application servers like Tomcat it is enough to simply drop the war into the webapp directory.
@@ -100,4 +100,3 @@ mvn -P prod install
 === IPT settings and H2 ===
 The IPT settings are stored in the database through the class ProviderCfg which is embedded in AppConfig,
 a singleton that is injected into most other spring beans.
-
