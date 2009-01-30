@@ -28,7 +28,7 @@ As you might have noticed a lot of images are broken. To fix this, you need to c
 
 http://localhost:8080/ipt-1.0beta/admin/settings.html
 
-Login as the admin (default is user=admin, password=admin) and update all settings you can find on this page, described in detail at UserManual#Settings
+Login as the admin (default is user=admin, password=admin) and update all settings you can find on this page, described in detail at [UserManual#Settings]
 
 
 -----
