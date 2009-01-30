@@ -15,7 +15,7 @@ http://www.apache.org/tomcat
 
 In the rest of this document we are going to refer to the IPT directory inside Tomcats webapps folder simply as {{{%IPT}}}
 
-== IPT settings ==
+=== IPT settings ===
 Nearly all configuration is done through the admin webinterface and stored in IPTs cache database. There is one exception to this and that is where the IPT database is actually located!
 
 The default data directory of the IPT is inside the applications webapp and comes with 2 sample resources preconfigured. If you want to keep your data somewhere different (for easier backup for example), you can change one line in {{{%IPT/WEB-INF/classes/ipt.properties}}}:
