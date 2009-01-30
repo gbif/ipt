@@ -26,6 +26,16 @@ The IPT has been tested with up to 1 million records. Larger datasets are not gu
 
 = Administration of IPT =
 == Settings ==
+ * metadata
+   * xxx
+   * yyy
+ * server
+   * xxx
+   * yyy
+ * geoserver
+   * xxx
+   * yyy
+
 == Extensions ==
 == Thesaurus ==
 == Users ==
