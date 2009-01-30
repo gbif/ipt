@@ -19,13 +19,13 @@
 	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
 </div>
 
+<noscript>
 <!-- test for javascript -->
 <div id="jsalert">
  <h2>You seem to have JavaScript disabled</h2>
  <p>This site is making extensive use of JavaScript so it is advised that you enable JavaScript. 
  If you're running the NoScript Mozilla extenstion you need to add ipt.gbif.org in the list of trusted domains.</p>
 </div>
-<noscript>
 </noscript>
 
 <hr />

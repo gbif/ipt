@@ -191,7 +191,8 @@
                 <version>2.0.2</version>
                 <configuration>
                     <dependentWarExcludes>
-                        WEB-INF/lib/*, **/jdbc.properties, **/application.properties, **/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**
+                        WEB-INF/lib/*, **/jdbc.properties, **/application.properties, **/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**,
+                        admin/**
                     </dependentWarExcludes>
                     <!-- 
                     <webResources>
