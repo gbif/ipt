@@ -1,0 +1,12 @@
+#Getting started using the IPT within 10 minutes
+
+= Introduction =
+
+This is a very rough guide to get started serving data through the IPT.  You will be guided through uploading and configuring sample Occurrence data, to illustrate the resource description authoring, and the data configuration process.  It should take no more than 10 minutes to complete this tutorial.
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
