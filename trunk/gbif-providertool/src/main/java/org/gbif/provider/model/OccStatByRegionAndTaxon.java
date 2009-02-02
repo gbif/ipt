@@ -37,7 +37,7 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject{
 	 * @param maxY
 	 * @param maxX
 	 */
-	public OccStatByRegionAndTaxon(Resource resource, Taxon taxon, Region region, Long numOcc, double minY,double minX, double maxY,double maxX) {
+	public OccStatByRegionAndTaxon(Resource resource, Taxon taxon, Region region, Long numOcc, Double minY,Double minX, Double maxY,Double maxX) {
 		// new OccStatByRegionAndTaxon(res, t, r, count(d), min(d.location.latitude), min(d.location.longitude), max(d.location.latitude), max(d.location.longitude))
 		// latitude=y, longitude=x
 		super();
