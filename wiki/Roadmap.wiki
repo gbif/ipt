@@ -5,16 +5,14 @@ Estimated releases can vary considerably and are shown mainly to give an idea of
 
 === IPT 1.0 ===
 scheduled for 1.3.2009
- * basic TAPIR support for occurrence data
+ * adapt cache data model to new darwin core
+ * central website for downloading & defining data extensions
+ * annotations & validations
 
 === IPT 1.1 ===
 not scheduled
- * adapt cache data model to new darwin core
  * advanced mapping/transformations
 
 === IPT 2.0 ===
 not scheduled
  * new CoreRecord type Site allows to share hierarchical site definitions incl polygon based shapes
-
-== Test ==
-hallo Frank

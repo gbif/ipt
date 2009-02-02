@@ -1,5 +1,11 @@
 #summary Brief summary of IPT features
 
+ * #Current_Features
+ * #Planned_Features
+ * #Key_Technologies
+
+-----
+=Current Features=
 ===General===
  * Serve 3 types of data: taxon occurrences, taxon checklists  and general resource metadata 
  * manages multiple datasources 
@@ -96,7 +102,8 @@
        * each taxon has a unique URL that resolves into a simple default XML serialisation 
 
 
-= Planned =
+------
+= Planned Features =
     * allow comments on record and entire dataset. support pingback (allows remote annotations on blogs, gbif portal, etc.) 
     * RSS feed for records within resource
 
@@ -105,3 +112,13 @@
     * validation of data and creation of download tab file for updating original datasource 
     * validation of names, countries, record basis, etc via local files or central GBIF services 
     * geomancer for georeferencing 
+
+-----
+= Key Technologies =
+ * Appfuse2 [http://appfuse.org/display/APF/AppFuse+QuickStart#AppFuseQuickStart-create Struts 2 Basic archetype]
+   * planned to move to pure struts2, spring, hibernate & freemarker implementation, removing many of the appfuse overhead (which sped up initial development though)
+ * 2 tier architecture with merged DAO/Service layer
+ * Geoserver with custom [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/GT2-gbif-providertool/ datasource module] for WFS and maps 
+ * statistic charts via google chart API using http://code.google.com/p/gchartjava/
+ * Cache DB as embedded H2 database (optionally also external mysql database) 
+ * Lucene for full text search

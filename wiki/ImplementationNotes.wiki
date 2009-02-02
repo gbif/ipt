@@ -5,9 +5,9 @@
  * Geoserver with custom [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/GT2-gbif-providertool/ datasource module] for WFS and maps 
  * statistic charts via google chart API using http://code.google.com/p/gchartjava/
  * Cache DB as embedded H2 database (optionally also external mysql database) 
+ * lucene for full text search
 
 === Planned ===
- * solr / lucene for full text search ???
  * use pingback instead of trackback which is easier to spam: alternatives, pingback vs trackback 
 
 == Metadata ==
