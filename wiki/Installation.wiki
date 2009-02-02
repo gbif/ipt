@@ -68,13 +68,32 @@ Thats all.
 -----
 
 = Building IPT from source =
-*this documentation is not complete!!!*
+The build process is using Maven and by default the IPT should run with a single command after you have checked out the sourcecode. Most parameters are kept as variable definitions at the bottom of the Maven pom.xml file which can be found in the root folder of the project.
 
-The build process is using Maven and by default the IPT should run with a single command after you have checked out the sourcecode.
-Most parameters are kept as variable definitions at the bottom of the Maven pom.xml file which can be found in the root folder of the project.
+== Run IPT via Jetty ==
+Maven can run the IPT in a local java webserver called Jetty.
+This is useful for testing and getting the software to run quickly, but is not recommended for production.
+To start the IPT via the jetty server simply run the following maven command from the projects root folder:
+
+{{{
+mvn -P prod
+}}}
+
+You should then be able to access the IPT at:
+http://localhost:8080
+
+
+== Build WAR and deploy it to Tomcat ==
+The following maven command builds the war archive which then can be found in the target folder:
+{{{
+mvn -P prod install
+}}}
+
+Please follow the regular IPT installation guide for further instructions.
 
 
 === Developer details ===
+==== POM.xml ====
 Values are propagated like this
 
 pom.xml 
@@ -90,22 +109,6 @@ The problem with this is that the WebCtxPropertyResolver needs to be created bef
 But to resolve the webapp dir (and in turn the default datadir) we need a servlet context. Which is fine in production, but for tests we need a mock.
 Which unfortunately doesnt get created and therefore injected before this bean is created. Buh.
 
-
-== Run IPT via Jetty ==
-Maven can run the IPT in a local java webserver called Jetty.
-This is useful for testing and getting the software to run quickly, but is not recommended for production.
-To start the IPT via the jetty server simply run the following maven command from the projects root folder:
-mvn -P prod
-
-You should then be able to access the IPT at:
-http://localhost:8080
-
-
-== Build WAR and deploy it to Tomcat ==
-The following maven command builds the war archive which then can be found in the target folder:
-mvn -P prod install
-
-
-=== IPT settings and H2 ===
+==== IPT settings and H2 ====
 The IPT settings are stored in the database through the class ProviderCfg which is embedded in AppConfig,
 a singleton that is injected into most other spring beans.
