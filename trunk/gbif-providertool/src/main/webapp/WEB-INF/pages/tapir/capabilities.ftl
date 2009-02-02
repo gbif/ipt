@@ -54,7 +54,7 @@
  </requests>
  <concepts>
  <#list conceptSchemas?keys as ns>
-  <schema namespace="${ns}">
+  <schema namespace="${ns}" location="http://darwincore.googlecode.com/svn/trunk/xsd/tdwg_dwcterms.xsd">
   <#list conceptSchemas[ns] as c>
    <mappedConcept id="${c.qualName}" alias="${c.name}" searchable="true" datatype="http://www.w3.org/2001/XMLSchema#string"/>
   </#list>

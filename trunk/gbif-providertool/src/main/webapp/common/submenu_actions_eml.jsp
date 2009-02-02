@@ -1,6 +1,5 @@
 <%@ include file="/common/taglibs.jsp"%>
 <div id="actions">
-	<s:if test="resource.id>0">
 	<label>Resource Metadata</label>
 	<ul class="plain">								
 		<li><a href="<s:url action="resource" namespace="/manage"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="eml.basic"/> </a></li>
@@ -12,5 +11,4 @@
 		<li><a href="<s:url action="projectForm" namespace="/manage/meta"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="eml.researchProject"/> </a></li>
 		<li><a href="<s:url action="methodsForm" namespace="/manage/meta"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="eml.methods"/> </a></li>
 	</ul>
-	</s:if>
 </div>
