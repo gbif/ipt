@@ -2,6 +2,10 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +39,7 @@ import org.springframework.core.task.TaskRejectedException;
 import org.springframework.transaction.annotation.Transactional;
 
 
-public class CacheManagerImpl implements CacheManager{
+public class CacheManagerImpl extends BaseManagerJDBC implements CacheManager{
 	protected final Log log = LogFactory.getLog(getClass());
 
 	@Autowired
@@ -211,6 +215,17 @@ public class CacheManagerImpl implements CacheManager{
 			log.warn("No task running for resource "+resourceId);
 		}
 		
+	}
+
+	public void analyze() {
+		Connection cn = getConnection();
+		String sql ="analyze";
+		try {
+			Statement st = cn.createStatement();			
+			st.execute(sql);
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't execute analyze SQL per JDBC: %s", sql), e);
+		}
 	}
 
 	

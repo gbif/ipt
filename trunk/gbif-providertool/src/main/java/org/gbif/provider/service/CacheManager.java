@@ -61,5 +61,9 @@ public interface CacheManager {
 	 * @param resource
 	 */	
 	void clear(Long resourceId);
-	
+
+	/**Analyze cache database, updating statistics to speed up selects
+	 * 
+	 */
+	void analyze();
 }
