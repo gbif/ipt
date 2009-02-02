@@ -15,3 +15,6 @@ not scheduled
 === IPT 2.0 ===
 not scheduled
  * new CoreRecord type Site allows to share hierarchical site definitions incl polygon based shapes
+
+== Test ==
+hallo Frank
