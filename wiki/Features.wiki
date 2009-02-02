@@ -1,8 +1,8 @@
 #summary Brief summary of IPT features
 
- * #Current_Features
- * #Planned_Features
- * #Key_Technologies
+ * [#Current_Features Current Features]
+ * [#Planned_Features Planned Features]
+ * [#Key_Technologies Key Technologies]
 
 -----
 =Current Features=
