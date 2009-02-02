@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class MetadataAction extends BaseResourceAction<Resource> implements Preparable{
+public class MetadataAction extends BaseMetadataResourceAction implements Preparable{
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	protected List<? extends Resource> resources;
@@ -61,7 +61,6 @@ public class MetadataAction extends BaseResourceAction<Resource> implements Prep
     
     
 	public void prepare() {
-		resourceManager=metaResourceManager;
 		super.prepare();
 		if (resource == null && resourceType!=null) {
 			// create new empty resource
@@ -95,7 +94,14 @@ public class MetadataAction extends BaseResourceAction<Resource> implements Prep
 
 		boolean isNew = (resource.getId() == null);
 		resource.setDirty();
-		resource = resourceManager.save(resource);
+		resource = resourceManager.save(resource);								
+//		if (resourceType.equalsIgnoreCase(OCCURRENCE)){
+//			resource = occResourceManager.save((OccurrenceResource)resource);				
+//		}else if (resourceType.equalsIgnoreCase(CHECKLIST)){
+//			resource = checklistResourceManager.save((ChecklistResource)resource);				
+//		}else{
+//			resource = metaResourceManager.save(resource);								
+//		}
 		String key = (isNew) ? "resource.added" : "resource.updated";
 		saveMessage(getText(key));
 		if (isNew){

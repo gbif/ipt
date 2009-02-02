@@ -185,8 +185,11 @@ import org.springframework.transaction.annotation.Transactional;
 			// call subclass handler for specific postprocessing
 			closeHandler(resource);
 			resourceManager.save(resource);
+			resourceManager.flush();
 			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
 
+			// update cache db statistics
+			cacheManager.analyze();
 			
 			//
 			// create data archive

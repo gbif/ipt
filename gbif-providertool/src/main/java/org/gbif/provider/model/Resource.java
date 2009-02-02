@@ -193,7 +193,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	@Transient
 	public String getType() {
-		return meta.getType();
+		// not used anymore.
+		// keep it as metaprofile might change soon 
+		// simply show class for now
+		return getClass().getSimpleName();
 	}
 	
 
@@ -213,7 +216,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		meta.setTitle(title);
 	}
 	public void setType(String type) {
-		meta.setType(type);
+//		meta.setType(type);
 	}
 	
 

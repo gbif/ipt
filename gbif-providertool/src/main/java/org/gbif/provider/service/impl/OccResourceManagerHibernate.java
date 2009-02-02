@@ -284,8 +284,10 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 		resource.setNumCountries(regionManager.countByType(resourceId, RegionType.Country));
 		resource.setNumRegions(regionManager.count(resourceId));
 		resource.setNumTerminalRegions(regionManager.countTerminalNodes(resourceId));
+		resource = this.save(resource);
+		this.flush();
 		// save stats
-		return this.save(resource);
+		return resource;
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.gbif.provider.upload;
 
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.OccResourceManager;
@@ -23,9 +24,17 @@ public class OccUploadTest extends ContextAwareTestBase{
 	@Test
 	@Transactional(readOnly=true, propagation=Propagation.REQUIRED)
 	public void testUpload() throws Exception {
+		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
+		res.setNumTaxa(0);
+		res.setNumFamilies(0);
+		res.setNumCountries(0);
+		res.setBbox(new BBox());
+		occResourceManager.save(res);
+		occResourceManager.flush();
+		res=null;
 		uploadTask.init(Constants.TEST_OCC_RESOURCE_ID);		
 		UploadEvent event = uploadTask.call();
-		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
+		res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 		assertEquals(894, res.getNumTaxa());
 		assertEquals(45, res.getNumFamilies());
 		assertEquals(1, res.getNumCountries());
