@@ -84,7 +84,7 @@ public class AppConfig{
 		return getAtomFeedURL(1);
 	}
 	public String getAtomFeedURL(Integer page) {
-		return String.format("%s/data/atom.xml?page=%s", baseURL, page);
+		return String.format("%s/atom.xml?page=%s", baseURL, page);
 	}
 
 	
@@ -136,7 +136,7 @@ public class AppConfig{
 		return getResourceDataFile(resourceId, String.format("sources/%s",filename));
 	}
 	public String getResourceDataUrl(Long resourceId) {
-		return String.format("%s/data/%s", baseURL, resourceId);
+		return String.format("%s/%s", baseURL, resourceId);
 	}	
 
 	public static File getResourceLogoFile(Long resourceId) {
@@ -165,7 +165,7 @@ public class AppConfig{
 	}
 
 	public String getEmlUrl(String guid) {
-		return String.format("%s/data/%s/eml.xml", baseURL, guid);
+		return String.format("%s/%s/eml.xml", baseURL, guid);
 	}
 
 	// CORE RECORDS
@@ -200,7 +200,7 @@ public class AppConfig{
     }
 
     public String getDumpArchiveUrl(Long resourceId){
-		return String.format("%s/data.zip", getResourceDataUrl(resourceId));
+		return String.format("%s/archive-dwc.zip", getResourceDataUrl(resourceId));
     }
 
     // TCS ARCHIVE
@@ -209,7 +209,7 @@ public class AppConfig{
 		return file;    	
     }
 	public String getTcsArchiveUrl(Long resourceId){
-		return String.format("%s/tcsArchive.zip", getResourceDataUrl(resourceId));
+		return String.format("%s/archive-tcs.zip", getResourceDataUrl(resourceId));
 	}
     
     // SERVICE ENDPOINTS

@@ -28,10 +28,16 @@ public class DataAction extends BaseMetadataResourceAction {
 	@Autowired
 	private AppConfig cfg;
 	private Integer version=0;
+	private String format;
 	
     public String execute() throws FileNotFoundException{
     	if (resource_id != null){
-    		File data = cfg.getDumpArchiveFile(resource_id);
+    		File data = null;
+    		if (format.equalsIgnoreCase("tcs")){
+        		data = cfg.getTcsArchiveFile(resource_id);    			
+    		}else{
+        		data = cfg.getDumpArchiveFile(resource_id);
+    		}
     		inputStream = new FileInputStream(data);
     		return SUCCESS;
     	}
@@ -74,5 +80,9 @@ public class DataAction extends BaseMetadataResourceAction {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-   
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	
 }

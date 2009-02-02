@@ -26,46 +26,51 @@
         <to type="forward">/resource.html?resource_id=$1</to>
     </rule>
     
-    <!-- data dir -->
+    <!-- data archives -->
     <rule>
-        <from>^/data/(\d+)/data.zip$</from>
-        <to type="forward">/data/data.do?resource_id=$1</to>
+        <from>^/(\d+)/archive-(.+).zip$</from>
+        <to type="forward">/archive.do?resource_id=$1&amp;format=$2</to>
+    </rule>
+    <rule>
+        <from>^/(\d+)/archive.zip$</from>
+        <to type="forward">/archive.do?resource_id=$1</to>
     </rule>
     <!-- details -->
     <rule>
-        <from>^/data/(\d+)/(.+)/detail.html$</from>
+        <from>^/(\d+)/(.+)/detail.html$</from>
         <to type="forward">/detail.html?resource_id=$1&amp;guid=$2</to>
     </rule>
     <rule>
-        <from>^/data/(\d+)/(.+)/detail.xml$</from>
-        <to type="forward">/data/detail.xml?resource_id=$1&amp;guid=$2&amp;format=xml</to>
+        <from>^/(\d+)/(.+)/detail.xml$</from>
+        <to type="forward">/detail.xml?resource_id=$1&amp;guid=$2&amp;format=xml</to>
     </rule>
     <rule>
-        <from>^/data/(\d+)/(.+)/detail.rdf$</from>
-        <to type="forward">/data/detail.xml?resource_id=$1&amp;guid=$2&amp;format=rdf</to>
+        <from>^/(\d+)/(.+)/detail.rdf$</from>
+        <to type="forward">/detail.xml?resource_id=$1&amp;guid=$2&amp;format=rdf</to>
     </rule>
     <rule>
-        <from>^/data/(\d+)/(.+)/detail.json$</from>
-        <to type="forward">/data/detail.do?resource_id=$1&amp;guid=$2&amp;format=json</to>
+        <from>^/(\d+)/(.+)/detail.json$</from>
+        <to type="forward">/detail.do?resource_id=$1&amp;guid=$2&amp;format=json</to>
     </rule>
     <!-- eml -->
     <rule>
-        <from>^/data/(.+)/eml.xml$</from>
-        <to type="forward">/data/eml.xml?guid=$1</to>
+        <from>^/(.+)/eml.xml$</from>
+        <to type="forward">/eml.xml?guid=$1</to>
     </rule>
     <rule>
-        <from>^/data/(.+)/eml-(\d+).xml$</from>
-        <to type="forward">/data/eml.xml?guid=$1&amp;version=$2</to>
+        <from>^/(.+)/eml-(\d+).xml$</from>
+        <to type="forward">/eml.xml?guid=$1&amp;version=$2</to>
     </rule>
     <rule>
-        <from>^/data/(\d+)/eml-(\d+).xml$</from>
-        <to type="forward">/data/eml.xml?resource_id=$1&amp;version=$2</to>
+        <from>^/(\d+)/eml-(\d+).xml$</from>
+        <to type="forward">/eml.xml?resource_id=$1&amp;version=$2</to>
     </rule>
     <!-- images -->
     <rule>
-        <from>^/data/(\d+)/logo.jpg$</from>
-        <to type="forward">/data/logo.do?resource_id=$1</to>
+        <from>^/(\d+)/logo.jpg$</from>
+        <to type="forward">/logo.do?resource_id=$1</to>
     </rule>
+    
     <!-- tapir -->
     <rule>
         <from>^/tapir/(\d+)/?$</from>
