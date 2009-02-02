@@ -40,9 +40,11 @@
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
 		                </s:a>
-			        	<%@ include file="/common/submenu_actions_eml.jsp" %>
-			        	<s:if test="resourceType in {'occ','tax'}">
-			        	<%@ include file="/common/submenu_actions_manage.jsp" %>
+	                	<s:if test="resource.id>0">	                
+				        	<%@ include file="/common/submenu_actions_eml.jsp" %>
+				        	<s:if test="resourceType in {'occ','tax'}">
+				        	<%@ include file="/common/submenu_actions_manage.jsp" %>
+				        	</s:if>
 			        	</s:if>
 			        	<%@ include file="/common/submenu_recent.jsp" %>						
 			        </c:when>
