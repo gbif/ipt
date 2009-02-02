@@ -68,7 +68,7 @@ Thats all.
 -----
 
 = Building IPT from source =
-__this documentation is not complete!!!__
+*this documentation is not complete!!!*
 
 The build process is using Maven and by default the IPT should run with a single command after you have checked out the sourcecode.
 Most parameters are kept as variable definitions at the bottom of the Maven pom.xml file which can be found in the root folder of the project.
