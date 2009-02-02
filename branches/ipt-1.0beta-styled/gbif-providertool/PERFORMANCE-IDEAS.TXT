@@ -1,4 +1,0 @@
- * put coordinates properties into main darwin core: reduces update for every dwc record with coordinates
- * occ by region & taxon stats can be calculated in H2 instead of keeping objects in memory
-  
- ? extension upload seems twice as slow as core. why?

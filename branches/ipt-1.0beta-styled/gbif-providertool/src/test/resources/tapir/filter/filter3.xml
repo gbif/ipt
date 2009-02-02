@@ -1,8 +1,0 @@
-<template>
-	<filter>
-		<like>
-		  <concept id="http://example.net/concept/commonName" />
-		  <literal value="*thrush" />
-		</like>
-	</filter>
-</template>
