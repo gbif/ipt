@@ -19,7 +19,7 @@ public class TemplateFactoryTest {
 	@Test
 	public void testSearch() {
 		try {
-			URL templateUrl = TemplateFactoryTest.class.getResource("/org/gbif/provider/tapir/searchTemplate.xml");
+			URL templateUrl = TemplateFactoryTest.class.getResource("/tapir/searchTemplate.xml");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("sciname", "Markus doeringus var. robertsonino");
 			Template template = TemplateFactory.buildTemplate(templateUrl, params);
@@ -46,7 +46,7 @@ public class TemplateFactoryTest {
 	@Test
 	public void testInventory() {
 		try {
-			URL templateUrl = TemplateFactoryTest.class.getResource("/org/gbif/provider/tapir/inventoryTemplate.xml");
+			URL templateUrl = TemplateFactoryTest.class.getResource("/tapir/inventoryTemplate.xml");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("land", "DE");
 			params.put("name", "Markus doeringus var. robertsonino");
@@ -79,7 +79,7 @@ public class TemplateFactoryTest {
 	// so operation should be search, but model location NULL:
 	public void testSearch2() {
 		try {
-			URL templateUrl = TemplateFactoryTest.class.getResource("/org/gbif/provider/tapir/searchTemplate2.xml");
+			URL templateUrl = TemplateFactoryTest.class.getResource("/tapir/searchTemplate2.xml");
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("sciname", "Markus doeringus var. robertsonino");
 			Template template = TemplateFactory.buildTemplate(templateUrl, params);

@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class MetadataAction extends BaseMetadataResourceAction implements Preparable{
+public class MetadataAction extends BaseResourceAction<Resource> implements Preparable{
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	protected List<? extends Resource> resources;
@@ -61,6 +61,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     
     
 	public void prepare() {
+		resourceManager=metaResourceManager;
 		super.prepare();
 		if (resource == null && resourceType!=null) {
 			// create new empty resource
@@ -80,13 +81,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 
 	public String list(){
 		resource=null;
-		if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Occurrence.alias)){
-			resources = occResourceManager.getResourcesByUser(getCurrentUser().getId());
-		}else if (resourceType!=null && resourceType.equalsIgnoreCase(ExtensionType.Checklist.alias)){
-			resources = checklistResourceManager.getResourcesByUser(getCurrentUser().getId());
-		}else{
-			resources = resourceManager.getResourcesByUser(getCurrentUser().getId());
-		}
+		resources = getResourceTypeMatchingManager().getResourcesByUser(getCurrentUser().getId());
 		return SUCCESS;
 	}
 	
@@ -114,7 +109,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String publish() {
-		Resource res = resourceManager.publish(resource_id);
+		Resource res = getResourceTypeMatchingManager().publish(resource_id);
 		return SUCCESS;
 	}
 	
@@ -122,7 +117,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		list();
 		for (Resource res : resources){
 			if (res.isDirty()){
-				resourceManager.publish(res.getId());
+				getResourceTypeMatchingManager().publish(res.getId());
 				saveMessage("Published "+res.getTitle());
 			}
 		}
@@ -134,7 +129,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		for (Resource res : resources){
 			if (res.getStatus().equals(PublicationStatus.dirty)){
 				i++;
-				resourceManager.publish(res.getId());
+				getResourceTypeMatchingManager().publish(res.getId());
 			}
 		}
 		saveMessage("Republished "+i+" modified resources");
@@ -144,13 +139,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public String delete() {
 		if (resource != null && resourceType!=null) {
 			// remove resource with appropiate manager
-			if (resourceType.equalsIgnoreCase(OCCURRENCE)){
-				occResourceManager.remove((OccurrenceResource)resource);
-			}else if (resourceType.equalsIgnoreCase(CHECKLIST)){
-				checklistResourceManager.remove((ChecklistResource)resource);
-			}else{
-				resourceManager.remove(resource);
-			}
+			getResourceTypeMatchingManager().remove(resource.getId());
 			saveMessage(getText("resource.deleted"));
 			// update recently viewed resources in session
 			Object previousQueue = session.get(Constants.RECENT_RESOURCES);

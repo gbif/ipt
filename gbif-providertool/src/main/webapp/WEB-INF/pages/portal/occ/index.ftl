@@ -75,7 +75,7 @@
 					<td><a href="${cfg.getEmlUrl(resource.guid)}">${cfg.getEmlUrl(resource.guid)}</a></td>
 				</tr>
 				<tr>
-					<th><@s.text name="dataResource.tabfile"/></th>
+					<th><@s.text name="dataResource.archive"/></th>
 					<td><a href="${cfg.getDumpArchiveUrl(resource_id)}">${cfg.getDumpArchiveUrl(resource_id)}</a></td>
 				</tr>
 				<tr>
