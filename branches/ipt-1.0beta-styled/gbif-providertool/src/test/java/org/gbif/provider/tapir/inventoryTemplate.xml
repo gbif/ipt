@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inventoryTemplate xmlns="http://rs.tdwg.org/tapir/1.0"
+ xmlns:ns3="http://purl.org/dc/elements/1.1/"
+ xmlns:ns4="http://www.w3.org/2003/01/geo/wgs84_pos#"
+ xmlns:ns5="http://www.w3.org/2001/vcard-rdf/3.0#"
+ xmlns:ns6="http://purl.org/dc/dcmitype/"
+ xmlns:dc="http://purl.org/dc/terms/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://rs.tdwg.org/tapir/1.0 http://rs.tdwg.org/tapir/1.0/schema/tapir.xsd">
+        <label>test inventory template</label>
+        <documentation>documentation0</documentation>
+            <concepts>
+                <concept tagName="name" id="http://rs.tdwg.org/dwc/terms/scientificName"/>
+                <concept tagName="land" id="http://rs.tdwg.org/dwc/terms/country"/>
+                <concept tagName="sammler" id="http://rs.tdwg.org/dwc/terms/collector"/>
+            </concepts>
+            <filter>
+                <and>
+                    <equals>
+                        <concept id="http://rs.tdwg.org/dwc/terms/country"/>
+                        <parameter name="land"/>
+                    </equals>
+                    <like>
+                        <concept id="http://rs.tdwg.org/dwc/terms/scientificName"/>
+                        <parameter name="name"/>
+                    </like>
+                    <like>
+                        <concept id="http://rs.tdwg.org/dwc/terms/collector"/>
+                        <parameter name="sammler"/>
+                    </like>
+                </and>
+            </filter>
+</inventoryTemplate>

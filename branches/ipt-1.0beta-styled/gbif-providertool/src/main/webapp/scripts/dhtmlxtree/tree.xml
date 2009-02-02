@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<tree id="0">
+    <item text="Plantae" id="1" child="1" im0="my_cmp.gif" im1="my_cmp.gif" im2="my_cmp.gif" call="true" select="yes">
+        <userdata name="system">true</userdata>
+        <item text="Asterales" id="11" child="0"  im0="flop.gif" im1="flop.gif" im2="flop.gif"/>
+        <item text="Pinales" id="12" child="0"  im0="drv.gif" im1="drv.gif" im2="drv.gif"/>
+    </item>
+    <item text="Animaliae" id="4" child="0" im0="recyc.gif" im1="recyc.gif" im2="recyc.gif"/>
+</tree>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.0//EN"
+    "http://tuckey.org/res/dtds/urlrewrite3.0.dtd">
+
+<urlrewrite use-query-string="false">
+    <rule>
+        <from>^/admin/user/(.*).html$</from>
+        <to type="forward">/admin/editUser.html\?id=$1&amp;from=list</to>
+    </rule>
+
+    <!-- Override default validation.js from WebWork -->
+    <rule>
+        <from>^/struts/css_xhtml/validation.js$</from>
+        <to type="forward">/template/css_xhtml/validation.js</to>
+    </rule>
+
+    <!-- PROVIDERTOOL RULES -->
+    
+    <!-- resource -->
+    <rule>
+        <from>^/resource/(.+)/$</from>
+        <to type="forward">/resource.html?guid=$1</to>
+    </rule>
+    <rule>
+        <from>^/resource/(\d+)/$</from>
+        <to type="forward">/resource.html?resource_id=$1</to>
+    </rule>
+    
+    <!-- data dir -->
+    <rule>
+        <from>^/data/(\d+)/data.zip$</from>
+        <to type="forward">/data/data.do?resource_id=$1</to>
+    </rule>
+    <!-- details -->
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.html$</from>
+        <to type="forward">/detail.html?resource_id=$1&amp;guid=$2</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.xml$</from>
+        <to type="forward">/data/detail.xml?resource_id=$1&amp;guid=$2&amp;format=xml</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.rdf$</from>
+        <to type="forward">/data/detail.xml?resource_id=$1&amp;guid=$2&amp;format=rdf</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/(.+)/detail.json$</from>
+        <to type="forward">/data/detail.do?resource_id=$1&amp;guid=$2&amp;format=json</to>
+    </rule>
+    <!-- eml -->
+    <rule>
+        <from>^/data/(.+)/eml.xml$</from>
+        <to type="forward">/data/eml.xml?guid=$1</to>
+    </rule>
+    <rule>
+        <from>^/data/(.+)/eml-(\d+).xml$</from>
+        <to type="forward">/data/eml.xml?guid=$1&amp;version=$2</to>
+    </rule>
+    <rule>
+        <from>^/data/(\d+)/eml-(\d+).xml$</from>
+        <to type="forward">/data/eml.xml?resource_id=$1&amp;version=$2</to>
+    </rule>
+    <!-- images -->
+    <rule>
+        <from>^/data/(\d+)/logo.jpg$</from>
+        <to type="forward">/data/logo.do?resource_id=$1</to>
+    </rule>
+    <!-- tapir -->
+    <rule>
+        <from>^/tapir/(\d+)/?$</from>
+        <to type="forward">/tapir/service.xml?resource_id=$1</to>
+    </rule>
+</urlrewrite>
+
