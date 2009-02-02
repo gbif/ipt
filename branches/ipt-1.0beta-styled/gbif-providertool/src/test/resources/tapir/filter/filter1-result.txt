@@ -1,1 +1,0 @@
-Filter: AND: http://rs.tdwg.org/dwc/dwcore/ScientificName >= 'Aus' and http://rs.tdwg.org/dwc/dwcore/ScientificName <= 'Bus'

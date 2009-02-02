@@ -1,1 +1,0 @@
-Filter: not (http://doering.org/rock/n/roll/star is null)
