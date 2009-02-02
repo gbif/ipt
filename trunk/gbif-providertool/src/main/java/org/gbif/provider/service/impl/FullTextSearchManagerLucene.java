@@ -134,7 +134,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			File data = cfg.getDumpFile(resource.getId(), resource.getCoreMapping().getExtension());
 			log.info("Building core mapping text index for resource[" + resource.getId() + "]");
 			buildIndex(writer, data);
-			for (ViewMappingBase view : resource.getAllMappings()) {
+			for (ViewMappingBase view : resource.getExtensionMappings()) {
 				log.info("Building extension[" + view.getExtension().getName() + "] index for resource[" + resource.getId() + "]");
 				File extensionFile = cfg.getDumpFile(resource.getId(),view.getExtension());
 				buildIndex(writer, extensionFile);
