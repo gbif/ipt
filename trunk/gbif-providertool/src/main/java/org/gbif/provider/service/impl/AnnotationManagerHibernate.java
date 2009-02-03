@@ -46,6 +46,9 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 		anno.setNote(note);
 		anno.setType(type);
 		save(anno);
+		if (log.isDebugEnabled()){
+			log.debug(anno);
+		}
 		return anno;
 	}
 

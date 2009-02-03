@@ -82,7 +82,7 @@
     
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
-        <level value="DEBUG" />
+        <level value="INFO" />
     </logger>
     
     <root>

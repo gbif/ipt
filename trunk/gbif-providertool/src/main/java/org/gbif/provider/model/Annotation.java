@@ -114,5 +114,7 @@ public class Annotation implements ResourceRelatedObject{
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
-	
+	public String toString(){
+		return String.format("%s [%s] %s - %s", this.note, this.type, this.creator, this.created);
+	}
 }
