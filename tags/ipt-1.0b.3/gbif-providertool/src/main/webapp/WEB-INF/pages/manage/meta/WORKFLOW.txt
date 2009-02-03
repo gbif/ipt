@@ -1,7 +1,0 @@
-creator
-geocoverage
-taxcoverage
-tempcoverage (+other keywords)
-rights
-project
-methods
