@@ -8,7 +8,8 @@
 <h1>Upload in Progress</h1>
 <p class="reminder">This resource is currently being updated and not available. Please wait until the upload is finished or cancel it.</p>
 
-<@s.div id="status" theme="ajax" href="/ajax/resourceStatus.html?resource_id=${Parameters.resource_id}" updateFreq="3000" showLoadingText="false" 
+<@s.url id="statusUrl" value="/ajax/resourceStatus.html?resource_id=${Parameters.resource_id}"/>
+<@s.div id="status" theme="ajax" href="%{statusUrl}" updateFreq="3000" showLoadingText="false" 
 	startTimerListenTopics="/startTimer" stopTimerListenTopics="/stopTimer" executeScripts="true"
 	errorText="Unable to retrieve resource status" >
 </@s.div>
