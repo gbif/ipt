@@ -19,16 +19,16 @@ public class AppConfigTest extends ContextAwareTestBase{
 
 	@Test
 	public void testPropertiesLoaded() {
-		assertEquals("http://localhost:8080", cfg.getBaseUrl());
+		assertEquals("http://localhost:8080/ipt", cfg.getBaseUrl());
 	}
 
 	@Test
 	public void testSetAppBaseUrl() {
-		cfg.setBaseUrl("http://localhost:8080/");
-		assertEquals("http://localhost:8080", cfg.getBaseUrl());
+		cfg.setBaseUrl("http://localhost:8080/ipt/");
+		assertEquals("http://localhost:8080/ipt", cfg.getBaseUrl());
 		
-		cfg.setBaseUrl(" http://localhost:8080  ");
-		assertEquals("http://localhost:8080", cfg.getBaseUrl());
+		cfg.setBaseUrl(" http://localhost:8080/ipt  ");
+		assertEquals("http://localhost:8080/ipt", cfg.getBaseUrl());
 	}
 	
 
