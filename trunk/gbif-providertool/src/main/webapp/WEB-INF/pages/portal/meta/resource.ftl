@@ -82,7 +82,7 @@
 	<fieldset>
 		<h2>Spatial Coverage</h2>
 		<table>
-			<@trow label="eml.geographicCoverage.boundingCoordinates" val=eml.getGeographicCoverage().boundingCoordinates.toStringShort(3)!/>  
+			<@trow label="eml.geographicCoverage.boundingCoordinates" val=(eml.getGeographicCoverage().boundingCoordinates.toStringShort(3))!/>  
 			<@trow label="eml.geographicCoverage.description" val=eml.getGeographicCoverage().description!/>  
 		</table>
 	</fieldset>
