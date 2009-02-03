@@ -4,7 +4,7 @@ We try our best to keep scheduled releases.
 Estimated releases can vary considerably and are shown mainly to give an idea of what is coming next.
 
 === IPT 1.0 ===
-scheduled for 1.3.2009
+scheduled for 1.4.2009
  * adapt cache data model to new [http://128.32.146.144/darwincore/terms/index.htm darwin core terms]
  * central website for downloading & defining data extensions
  * annotations & validations
