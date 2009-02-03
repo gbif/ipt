@@ -27,7 +27,7 @@
 	<@display.table name="data" class="table" id="drow" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.category"/>
 	    <#if recordAction??>
-		  <#if drow.id??>
+		  <#if (drow.id)??>
 	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}&type=${type}" media="html" paramId="id" paramProperty="id"/>
 	      <#else>
 	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}&type=${type}" media="html" paramId="category" paramProperty="label"/>

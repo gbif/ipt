@@ -77,7 +77,7 @@ public abstract class ResourceStatsBaseAction<T extends Resource> extends BaseRe
 	protected String area;
 	protected String chartUrl;
 	// the last part of the action name as matched with the struts.xml expression. Used to link further
-	protected String action="";
+	protected String statsBy="";
 	protected String resourceClass="occ";
 	protected String recordAction;
 	protected Long filter;
@@ -155,13 +155,13 @@ public abstract class ResourceStatsBaseAction<T extends Resource> extends BaseRe
 		this.area = area;
 	}
 
-	public String getAction() {
-		return action;
+	public String getStatsBy() {
+		return statsBy;
+	}
+	public void setStatsBy(String statsBy) {
+		this.statsBy = statsBy;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
-	}
 
 	public int getType() {
 		return type;
