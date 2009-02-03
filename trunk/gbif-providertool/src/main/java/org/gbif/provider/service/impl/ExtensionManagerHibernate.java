@@ -80,7 +80,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			// add columns
 			for (ExtensionProperty prop : extension.getProperties()){
 				if (prop!=null && prop.getName()!=null && prop.getColumnLength()>0){
-					if (prop.getColumnLength()>256){
+					if (prop.getColumnLength()>256 || prop.getColumnLength()<0){
 						// use LOB instead of varchar
 						ddl = String.format("ALTER TABLE %s ADD %s clob",table, namingStrategy.propertyToColumnName(prop.getName()));
 					}else{
