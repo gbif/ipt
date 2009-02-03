@@ -282,7 +282,7 @@
         <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
             <param name="zoom">true</param>
             <param name="title">true</param>
-            <param name="action">{1}</param>
+            <param name="statsBy">{1}</param>
             <param name="resourceClass">occ</param>
             <result name="pie">/WEB-INF/pages/portal/stats.ftl</result>
             <result name="map">/WEB-INF/pages/portal/mapstats.ftl</result>
@@ -351,14 +351,14 @@
     <!-- undecorated AJAX calls needed by the portal -->
     <package name="ajax" namespace="/ajax" extends="default-freemarker">
         <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
-            <param name="action">{1}</param>
+            <param name="statsBy">{1}</param>
             <param name="resourceClass">occ</param>
             <result name="pie">/WEB-INF/pages/ajax/chartimg.ftl</result>
             <result name="map">/WEB-INF/pages/ajax/chartimg.ftl</result>
             <result name="chart">/WEB-INF/pages/ajax/chartimg.ftl</result>
         </action>
         <action name="taxResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.TaxResourceStatsAction" method="statsBy{1}">
-            <param name="action">{1}</param>
+            <param name="statsBy">{1}</param>
             <param name="resourceClass">tax</param>
             <result name="pie">/WEB-INF/pages/ajax/chartimg.ftl</result>
             <result name="map">/WEB-INF/pages/ajax/chartimg.ftl</result>

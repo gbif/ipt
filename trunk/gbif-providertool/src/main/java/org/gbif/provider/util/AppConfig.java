@@ -264,6 +264,11 @@ public class AppConfig{
 		return cfg.getMeta().getLocation();
 	}
 	public String getGeoserverDataDir() {
+		// default is geoserver/data in the same webapps folder
+		if (StringUtils.trimToNull(cfg.getGeoserverDataDir())==null){
+			File webappDir = new File(getDataDir()).getParentFile().getParentFile();
+			return new File(webappDir, "geoserver/data").getAbsolutePath();
+		}
 		return cfg.getGeoserverDataDir();
 	}
 	public String getGoogleMapsApiKey() {
