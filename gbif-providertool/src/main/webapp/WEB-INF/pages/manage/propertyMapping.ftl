@@ -49,14 +49,14 @@ function confirmTermMapping(idx, tid){
 	    <@s.hidden key="resource_id"/>
         <@s.hidden id="mappings_idx" name="mappings_idx" value=""/>
 
-	 	<@s.select key="view.coreIdColumn.columnName" required="true"
+	 	<@s.select key="view.coreIdColumn" required="true"
 			headerKey="Select local identifier for core record" emptyOption="false" 
 			list="columnOptions" />
 			
 		<#if view.isCore()>
-		 	<@s.select key="view.guidColumn.columnName" required="false" emptyOption="true" 
+		 	<@s.select key="view.guidColumn" required="false" emptyOption="true" 
 				list="columnOptions" />
-		 	<@s.select key="view.linkColumn.columnName" required="false" emptyOption="true" 
+		 	<@s.select key="view.linkColumn" required="false" emptyOption="true" 
 				list="columnOptions" />
 	 	</#if>
 	 	

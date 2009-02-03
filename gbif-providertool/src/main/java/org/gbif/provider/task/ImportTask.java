@@ -111,7 +111,7 @@ import org.springframework.transaction.annotation.Transactional;
 					// run import into db
 					uploadExtension(vm);
 					now = new Date();
-					log.info(String.format("Import extension %s took %s ms", vm.getExtension().getName(), (now.getTime()-lastLogDate.getTime())));
+					log.info(String.format("Importing %s records of extension %s took %s ms", vm.getRecTotal(), vm.getExtension().getName(), (now.getTime()-lastLogDate.getTime())));
 					lastLogDate = now;
 				}
 				
@@ -371,6 +371,7 @@ import org.springframework.transaction.annotation.Transactional;
 				//  prepare import source
 				ImportSource source = this.getImportSource(vm.getExtension());
 
+				// catch any errors after we opened the source to close it properly and set the extension statistics at least
 				try{
 					// Do we need a
 					for (ImportRecord rec : source){
@@ -400,22 +401,23 @@ import org.springframework.transaction.annotation.Transactional;
 								annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown error: "+e.toString());
 							}
 						}
+
 						// debug status
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 1000 == 0){
 							log.debug(status());
 						}
 					}
+				} catch (Exception e){
+					annotationManager.annotateResource(resource, String.format("Unknown error uploading extension %s. Extension skipped", extensionName));
+					log.error("Unknown error uploading extension "+extensionName, e);
 				} finally {
 					setFinalExtensionStats(extension);
 				}
+			// outer catch/try for import soruce only
 			} catch (ImportSourceException e) {
 				annotationManager.annotateResource(resource, String.format("Couldn't open import source for extension %s. Extension skipped", extensionName));
 				log.error("Couldn't open import source for extension "+extensionName, e);
-			} catch (Exception e){
-				annotationManager.annotateResource(resource, String.format("Unknown error uploading extension %s. Extension skipped", extensionName));
-				log.error("Unknown error uploading extension "+extensionName, e);
 			}
-			
 			return out;
 		}
 		

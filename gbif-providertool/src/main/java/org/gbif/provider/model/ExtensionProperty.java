@@ -113,7 +113,8 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 
 	/**
 	 * The length of the database column to be generated when the extension
-	 * property is installed
+	 * property is installed. Also used to trim incoming data before SQL insert is generated.
+	 * For LOB columns use -1 or any negative value
 	 * 
 	 * @return
 	 */
