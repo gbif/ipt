@@ -1,7 +1,7 @@
 #summary Installation and build instructions based on IPT version 1.0beta
 
 The IPT consists of 2 webapplications that run separately in a Java 1.5 container.
-The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section (we are still waiting for Google to allow us to host larger files. So for now GBIF hosts the [http://kiwaia.gbif.org/ipt/IPT-1.0beta_geoserver.zip geoserver archive]). Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
+The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section (we are still waiting for Google to allow us to host larger files. So for now GBIF hosts the [ftp://ftp.gbif.org/projects/ipt/downloads/IPT-1.0beta_geoserver.zip geoserver archive]). Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
 
  * [#Application_Server Install Application Server]
  * [#IPT Install IPT]
