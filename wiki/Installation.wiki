@@ -1,7 +1,7 @@
 #summary Installation and build instructions based on IPT version 1.0beta
 
 The IPT consists of 2 webapplications that run separately in a Java 1.5 container.
-The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section (we are still waiting for Google to allow us to host larger files. So for now GBIF hosts the [ftp://ftp.gbif.org/projects/ipt/downloads/IPT-1.0beta_geoserver.zip geoserver archive]). Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
+The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section. Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
 
  * [#Application_Server Install Application Server]
  * [#IPT Install IPT]
@@ -45,7 +45,7 @@ Login as the admin (default is user=admin, password=admin) and update all settin
 -----
 
 = Geoserver =
-To run IPT' geoservices we have developed a small plugin for [http://geoserver.org Geoserver] that allows it to access the IPT cache. We provide a [ftp://ftp.gbif.org/projects/ipt/downloads/IPT-1.0beta_geoserver.zip geoserver archive] that comes bundled with the plugin, but you should also be able to install the plugin in your own geoserver installation. It was build for [http://geoserver.org/display/GEOS/GeoServer+1.7.0 geoserver 1.7.0] but should also work with later versions. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
+To run IPT' geoservices we have developed a small plugin for [http://geoserver.org Geoserver] that allows it to access the IPT cache. We provide a [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=geoserver+zip&colspec=Filename+Summary+Uploaded+Size+DownloadCount geoserver archive] that comes bundled with the plugin, but you should also be able to install the plugin in your own geoserver installation. It was build for [http://geoserver.org/display/GEOS/GeoServer+1.7.0 geoserver 1.7.0] but should also work with later versions. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
 
 To install the prepared IPT geoserver in your application server, please download the zipped archive and uncompress it straight in Tomcats webapps folder. A Tomcat restart might be needed. You should now be able to access geoserver at:
 {{{http://localhost:8080/geoserver/}}}
@@ -54,7 +54,7 @@ To install the prepared IPT geoserver in your application server, please downloa
 This step is only necessary if you havent use the geoserver archive that we provide for the IPT. In case you wanna use your existing geoserver installation,
 add the following 2 jars into your geoserver lib directory which is at {{{geoserver/WEB-INF/lib}}}:
  * h2-1.1.104.jar [http://code.google.com/p/h2database/downloads/detail?name=h2-2008-11-28.zip&can=2 download]
- * gt2-ipt-1.4.jar [http://gbif-providertoolkit.googlecode.com/files/gt2-ipt-1.4.jar download]
+ * gt2-ipt-1.0beta.jar [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=geoserver+plugin&colspec=Filename+Summary+Uploaded+Size+DownloadCount download]
 
 == Configure Geoserver ==
 The only configuration that geoserver needs to be aware of, it where your IPTs data directory is located. By default geoserver tries to find the IPT data directory in Tomcat/webapps/ipt/data. If you have a different directory, please adjust this setting as follows:
