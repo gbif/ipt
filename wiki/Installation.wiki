@@ -14,7 +14,7 @@ The IPT should run in any compliant java  application server using Java 1.5. We 
 
 -----
 = IPT =
-In most application servers like Tomcat it is enough to simply drop the ipt.war file into the webapp directory of your application server. You might need to restart the server. Consult your application server manual how to deploy war archives in detail.
+In most application servers like Tomcat it is enough to simply drop the [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=3&q=ipt+war&colspec=Filename+Summary+Uploaded+Size+DownloadCount ipt.war] file into the webapp directory of your application server. You might need to restart the server. Consult your application server manual how to deploy war archives in detail.
 In case you don't have any application server we recommend Tomcat which you can download from here:
 http://www.apache.org/tomcat
 
