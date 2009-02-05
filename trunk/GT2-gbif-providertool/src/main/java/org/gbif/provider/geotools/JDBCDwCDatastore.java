@@ -14,6 +14,7 @@
  ***************************************************************************/
 package org.gbif.provider.geotools;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.geotools.filter.Filters;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.h2.jdbcx.JdbcDataSource;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.springframework.util.StringUtils;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -103,7 +105,16 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 			Class.forName("org.h2.Driver");
 		} catch (ClassNotFoundException e) {
 		}
-        String url = String.format("jdbc:h2:%s/db/ipt;auto_server=true", params.get("datadir"));
+		String dataDir = params.get("datadir");
+		if (dataDir==null || StringUtils.trimWhitespace(dataDir).equals("")){
+			// default IPT data dir is webapps/ipt/data
+			dataDir="webapps/ipt/data";
+			
+		}
+        log.debug("Using dataDir: " + dataDir);
+		// convert relative paths into absolute ones...
+		File d = new File(dataDir);		
+        String url = String.format("jdbc:h2:%s/db/ipt;auto_server=true", d.getAbsolutePath());
         String user = "sa"; // params.get("user")
         String pass = "";  // params.get("password") 
         log.debug("Using JDBC URL: " + url);
