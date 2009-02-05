@@ -39,17 +39,13 @@ public class AppConfig{
 	private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir) {
 		super();
 		AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
-		log.info("IPT_DATA_DIR: "+dataDIR);
-		
 		AppConfig.webappDIR = new File(webappDir);
-		log.info("IPT_WEBAPP_DIR: "+webappDIR.getAbsolutePath());
 
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
 		setBaseUrl(cfg.getBaseUrl());
-		log.info("IPT_BASE_URL: "+baseURL);
-		log.info("GEOSERVER_URL: "+cfg.getGeoserverUrl());
-		log.info("GEOSERVER_DATA_DIR: "+cfg.getGeoserverDataDir());
+		
+		log.info(String.format("\n--------------------\nIPT_DATA_DIR: %s\nIPT_WEBAPP_DIR: %s\nIPT_BASE_URL: %s\nIPT_GEOSERVER_URL: %s\nIPT_GEOSERVER_DATA_DIR: %s\n--------------------\n", dataDIR,webappDIR.getAbsolutePath(),baseURL,cfg.getGeoserverUrl(),cfg.getGeoserverDataDir()));
 	}
 
 	
