@@ -26,7 +26,6 @@
     </decorator>
 
     <decorator name="fullsize" page="fullsize.jsp">
-        <pattern>/index.*</pattern> 
     </decorator>
 
 </decorators>
