@@ -21,6 +21,11 @@
 	<th>EML</th>
 	<td><a href="${cfg.getEmlUrl(resource.guid)}">EML</a></td>
  </tr>
+ <tr>
+	<th>Annotations</th>
+	<td><a href="annotations.html?resource_id=${resource_id}">Annotations</a></td>
+ </tr>
+ 
 </table>
 
 <div id="basics">

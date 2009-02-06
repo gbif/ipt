@@ -59,6 +59,9 @@
 			<li>
 				<a href="metaResource.html?resource_id=${resource_id}">Full Metadata</a>
 			</li>
+			<li>
+				<a href="annotations.html?resource_id=${resource_id}">Annotations</a>
+			</li>
 		</ul>
 		<div id="services" style="display:none">
 			<table class="lefthead">
