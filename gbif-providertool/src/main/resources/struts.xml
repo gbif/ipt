@@ -249,10 +249,10 @@
         
         
         <!-- annotations -->
-        <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction">
-            <result>/WEB-INF/pages/portal/annotation.ftl</result>
-        </action>
         <action name="annotations" class="org.gbif.provider.webapp.action.portal.AnnotationAction" method="list">
+            <result>/WEB-INF/pages/portal/annotationList.ftl</result>
+        </action>
+        <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction">
             <result>/WEB-INF/pages/portal/annotationList.ftl</result>
         </action>
         
@@ -423,8 +423,8 @@
         <action name="keywords" class="org.gbif.provider.webapp.action.portal.KeywordAction">
             <result>/WEB-INF/pages/ajax/keywords.ftl</result>
         </action>
-        <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction">
-            <result>/WEB-INF/pages/portal/annotation.ftl</result>
+        <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction" method="show">
+            <result>/WEB-INF/pages/ajax/annotation.ftl</result>
         </action>
         
     </package>

@@ -1,5 +1,6 @@
 /* @override http://localhost:8080/styles/simplicity/providertool.css */
 
+
 /* PROVIDERTOOL customising simplicity */
 
 /* @group general */
@@ -332,6 +333,21 @@ div.googlemap {
   background: #eee;
   border: 1px solid #555;
   text-align: left
+}
+
+#annotation div{
+	background-color: #fefeed;
+	position: fixed;
+	top: 20px;
+	right: 25px;
+	width: 400px;
+	padding: 10px 10px 0;
+	opacity: 0.9;
+	border-style: solid;
+	border-width: 1px;
+	z-index: 5;
+	overflow: auto;
+	margin: 0;
 }
 
 /* @end */
