@@ -336,18 +336,20 @@ div.googlemap {
 }
 
 #annotation div{
-	background-color: #fefeed;
 	position: fixed;
-	margin: 10px 0px;
-	width: 400px;
-	padding: 10px 10px 0;
+	top: 20px;
+	right: 25px;
+	width: 500px;
+	background-color: #fefeed;
 	opacity: 0.9;
+	margin: 0;
+	padding: 10px;
 	border-style: solid;
 	border-width: 1px;
 	z-index: 5;
-	overflow: auto;
-	margin: 0;
 }
+
+
 #annotations{
 	padding: 15;
 	border-width: 1px;
@@ -357,6 +359,7 @@ div.googlemap {
 	border-bottom-style: dotted;
 	padding-top: 10px;
 }
+
 .annotation{
 	padding: 15;
 }

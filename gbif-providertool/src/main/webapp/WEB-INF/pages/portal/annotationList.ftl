@@ -34,7 +34,6 @@
 
 <br class="break"/>
 
-<div id="annotations">
 <@display.table name="annotations" id="anno" class="table" export=false pagesize=25>
     <@display.column property="type" sortable=true title='${struts.getText("annotation.type")}'/>
     <#if anno??>
@@ -46,7 +45,6 @@
     <@display.setProperty name="paging.banner.item_name"><@s.text name="annotation.annotation"/></@display.setProperty>
     <@display.setProperty name="paging.banner.items_name"><@s.text name="annotation.annotations"/></@display.setProperty>
 </@display.table>
-</div>
 
 <div id="annotation">
 	<!-- empty for AJAX call -->
