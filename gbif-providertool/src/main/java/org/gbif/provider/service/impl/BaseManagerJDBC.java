@@ -9,36 +9,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true, propagation=Propagation.REQUIRED)
-public class BaseManagerJDBC {
+public class BaseManagerJDBC extends JdbcDaoSupport{
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Autowired
-	private SessionFactory sessionFactory;
-	@Autowired
 	protected IptNamingStrategy namingStrategy;
-
-	protected Connection getConnection() {
-		Session s = getSession();
-		Connection cn = s.connection();
-		return cn;
-	}
-
-	private Session getSession() {
-		return SessionFactoryUtils.getSession(sessionFactory, false);
-	}
 
 	protected int executeCount(String sql) {
 		Connection cn = getConnection();

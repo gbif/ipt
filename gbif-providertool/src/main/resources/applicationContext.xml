@@ -74,6 +74,9 @@
     <bean id="abstractManager" abstract="true">
         <!--property name="sessionFactory" ref="sessionFactory"/-->
     </bean>
+    <bean id="abstractJDBCManager" abstract="true">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
     
     <bean id="annotationManager" class="org.gbif.provider.service.impl.AnnotationManagerHibernate" parent="abstractManager"/>
 
@@ -86,7 +89,7 @@
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
 
-    <bean id="resourceKeywordManager" class="org.gbif.provider.service.impl.ResourceKeywordManagerJDBC" />
+    <bean id="resourceKeywordManager" class="org.gbif.provider.service.impl.ResourceKeywordManagerJDBC" parent="abstractJDBCManager"/>
 
     <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
     
@@ -119,7 +122,7 @@
     <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
 
     <!-- cache / import manager -->
-    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC" />
+    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
 
     <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl">        
         <property name="dataSource" ref="externalResourceRoutingDatasource"/>
@@ -129,7 +132,7 @@
     
     <bean id="dataArchiveManager" class="org.gbif.provider.service.impl.DataArchiveManagerImpl" parent="abstractManager"/>
 
-    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerImpl" parent="abstractManager" lazy-init="true">
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerJDBC"  parent="abstractJDBCManager" lazy-init="true">
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
         <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
     </bean>
