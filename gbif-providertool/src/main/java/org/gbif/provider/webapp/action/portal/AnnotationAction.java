@@ -7,14 +7,19 @@ import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.AnnotationManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
+import org.gbif.provider.webapp.action.BaseResourceAction;
 
-public class AnnotationAction extends org.gbif.provider.webapp.action.BaseResourceAction<Resource>{
+import com.opensymphony.xwork2.Preparable;
+
+public class AnnotationAction extends BaseMetadataResourceAction{
 	@Autowired
 	private AnnotationManager annotationManager;
-    private Long id;
-    private String guid;
     private List<Annotation> annotations;
     private Annotation annotation;
+    // request parameters
+    private Long id;
+    private Boolean human;
 	 
     public String execute(){
     	if (id !=null){
@@ -30,7 +35,11 @@ public class AnnotationAction extends org.gbif.provider.webapp.action.BaseResour
     }
     public String list(){
     	if (resource !=null){
-    		annotations=annotationManager.getAll(resource_id);
+    		if (human){
+        		annotations=annotationManager.getAllHuman(resource_id);
+    		}else{
+        		annotations=annotationManager.getAll(resource_id);
+    		}
     	}
 		return SUCCESS;
     }
@@ -45,20 +54,15 @@ public class AnnotationAction extends org.gbif.provider.webapp.action.BaseResour
 		this.id = id;
 	}
 
-	public String getGuid() {
-		return guid;
-	}
-
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
-
 	public List<Annotation> getAnnotations() {
 		return annotations;
 	}
 
 	public Annotation getAnnotation() {
 		return annotation;
+	}
+	public void setHuman(Boolean human) {
+		this.human = human;
 	}
 
 }

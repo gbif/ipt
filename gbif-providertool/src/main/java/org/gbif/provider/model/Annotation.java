@@ -32,6 +32,7 @@ public class Annotation implements ResourceRelatedObject{
 	private Integer probability;
 	private Map<ExtensionProperty, String> proposal = new HashMap<ExtensionProperty, String>();
 	private boolean removeDuringImport = false;
+	private boolean human = false;
 	private String creator;
 	private Date created = new Date();
 	
@@ -43,6 +44,9 @@ public class Annotation implements ResourceRelatedObject{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	/**The GUID of the annotated record
+	 * @return
+	 */
 	@Column(length=128)
 	@org.hibernate.annotations.Index(name="annotation_guid")
 	public String getGuid() {
@@ -114,7 +118,18 @@ public class Annotation implements ResourceRelatedObject{
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
+	
+	/**if its a human annotation as opposed to machine generated
+	 * @return
+	 */
+	public boolean isHuman() {
+		return human;
+	}
+	public void setHuman(boolean human) {
+		this.human = human;
+	}
 	public String toString(){
 		return String.format("%s [%s] %s - %s", this.note, this.type, this.creator, this.created);
 	}
+	
 }

@@ -14,6 +14,7 @@ public interface AnnotationManager extends GenericResourceRelatedManager<Annotat
 	public List<Annotation> getByType(Long resourceId, String type);
 	public List<Annotation> getByActor(Long resourceId, String actor);
 	public List<Annotation> getByLatest(Long resourceId, Date earliestDate);
+	public List<Annotation> getAllHuman(Long resourceId);
 
 	public Annotation annotate(Resource resource, String guid, String type, String actor, boolean removeDuringImport, String note);
 	public Annotation annotate(CoreRecord record, String type, String actor, boolean removeDuringImport, String note);
