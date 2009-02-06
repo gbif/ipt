@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Transient;
 
@@ -11,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
@@ -29,12 +31,12 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 	@Autowired
 	private AnnotationManager annotationManager;
 
-	public CoreRecord build(DataResource resource, ImportRecord rec) {
+	public CoreRecord build(DataResource resource, ImportRecord rec, Set<Annotation> annotations) {
 		if (resource instanceof OccurrenceResource){
-			return build((OccurrenceResource) resource, rec);
+			return build((OccurrenceResource) resource, rec, annotations);
 		}
 		if (resource instanceof ChecklistResource){
-			return build((ChecklistResource) resource, rec);
+			return build((ChecklistResource) resource, rec, annotations);
 		}
 		return null;
 	}
@@ -77,7 +79,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		return target;
 	}
 
-	public DarwinCore build(OccurrenceResource resource, ImportRecord rec) {
+	public DarwinCore build(OccurrenceResource resource, ImportRecord rec, Set<Annotation> annotations) {
 		if (rec==null){
 			return null;
 		}
@@ -90,7 +92,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
 			if (val!=null && val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
 				val = val.substring(0, prop.getColumnLength());
-				annotationManager.annotate(dwc, AnnotationType.TrimmedData, String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength()));
+				annotations.add(annotationManager.annotate(dwc, AnnotationType.TrimmedData, String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength())));
 			}
 			String propName = prop.getName();
 			// first try the properties which we try to convert to other data types
@@ -102,7 +104,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						typedVal = Integer.valueOf(val);
 						dwc.setMinimumElevationInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						annotationManager.badDataType(dwc, "MinimumElevationInMeters", "Integer", val);
+						annotations.add(annotationManager.badDataType(dwc, "MinimumElevationInMeters", "Integer", val));
 					}
 				}
 			}else if(propName.equals("MaximumElevationInMeters")){
@@ -113,7 +115,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						typedVal = Integer.valueOf(val);
 						dwc.setMaximumElevationInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						annotationManager.badDataType(dwc, "MaximumElevationInMeters", "Integer", val);
+						annotations.add(annotationManager.badDataType(dwc, "MaximumElevationInMeters", "Integer", val));
 					}
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
@@ -124,7 +126,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						typedVal = Integer.valueOf(val);
 						dwc.setMinimumDepthInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						annotationManager.badDataType(dwc, "MinimumDepthInMeters", "Integer", val);
+						annotations.add(annotationManager.badDataType(dwc, "MinimumDepthInMeters", "Integer", val));
 					}
 				}
 			}else if(propName.equals("MaximumDepthInMeters")){
@@ -135,7 +137,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						typedVal = Integer.valueOf(val);
 						dwc.setMaximumDepthInMetersAsInteger(typedVal);
 					} catch (NumberFormatException e) {
-						annotationManager.badDataType(dwc, "MaximumDepthInMeters", "Integer", val);
+						annotations.add(annotationManager.badDataType(dwc, "MaximumDepthInMeters", "Integer", val));
 					}
 				}
 			}else if(propName.equals("EarliestDateCollected")){
@@ -146,7 +148,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						typedVal = Constants.DATE_ISO_FORMAT().parse(val);
 						dwc.setDateCollected(typedVal);
 					} catch (ParseException e) {
-						annotationManager.badDataType(dwc, "EarliestDateCollected", "Integer", val);
+						annotations.add(annotationManager.badDataType(dwc, "EarliestDateCollected", "Integer", val));
 					}
 				}				
 			}else if(propName.equals("Class")){
@@ -162,7 +164,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		return dwc;
 	}
 
-	public Taxon build(ChecklistResource resource, ImportRecord rec) {
+	public Taxon build(ChecklistResource resource, ImportRecord rec, Set<Annotation> annotations) {
 		if (rec==null){
 			return null;
 		}
@@ -176,7 +178,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
 			if (val!=null && val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
 				val = val.substring(0, prop.getColumnLength());
-				annotationManager.annotate(tax, AnnotationType.TrimmedData, String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength()));
+				annotations.add(annotationManager.annotate(tax, AnnotationType.TrimmedData, String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength())));
 			}
 			if (!tax.setPropertyValue(prop, val)){
 				String propName = prop.getName();

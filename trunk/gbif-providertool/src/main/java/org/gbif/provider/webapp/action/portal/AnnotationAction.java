@@ -1,10 +1,14 @@
 package org.gbif.provider.webapp.action.portal;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.AnnotationType;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.AnnotationManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
@@ -17,29 +21,33 @@ public class AnnotationAction extends BaseMetadataResourceAction{
 	private AnnotationManager annotationManager;
     private List<Annotation> annotations;
     private Annotation annotation;
+	private Map<String, String> annotationTypes = translateI18nMap(new HashMap<String, String>(AnnotationType.htmlSelectMap));
     // request parameters
     private Long id;
-    private Boolean human;
+    private String annotationType;
 	 
     public String execute(){
-    	if (id !=null){
-    		annotation=annotationManager.get(id);
-    	}
-		return SUCCESS;
-    }
-    public String record(){
+    	prepare();
     	if (resource_id !=null && guid!= null){
     		annotations=annotationManager.getByRecord(resource_id, guid);
     	}
 		return SUCCESS;
     }
     public String list(){
+    	prepare();
     	if (resource !=null){
-    		if (human){
-        		annotations=annotationManager.getAllHuman(resource_id);
+    		if (annotationType!=null){
+        		annotations=annotationManager.getByType(resource_id, annotationType.toString());
     		}else{
         		annotations=annotationManager.getAll(resource_id);
     		}
+    	}
+		return SUCCESS;
+    }
+
+    public String show(){
+    	if (id !=null){
+    		annotation=annotationManager.get(id);
     	}
 		return SUCCESS;
     }
@@ -61,8 +69,14 @@ public class AnnotationAction extends BaseMetadataResourceAction{
 	public Annotation getAnnotation() {
 		return annotation;
 	}
-	public void setHuman(Boolean human) {
-		this.human = human;
+	public String getAnnotationType() {
+		return annotationType;
+	}
+	public void setAnnotationType(String annotationType) {
+		this.annotationType = annotationType;
+	}
+	public Map<String, String> getAnnotationTypes() {
+		return annotationTypes;
 	}
 
 }

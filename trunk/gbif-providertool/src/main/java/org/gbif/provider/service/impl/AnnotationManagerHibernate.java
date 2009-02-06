@@ -123,12 +123,6 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 		.list();
 	}
 
-	public List<Annotation> getAllHuman(Long resourceId) {
-        return query("select a from Annotation a where a.resource.id=:resourceId and a.human=true")
-        .setLong("resourceId", resourceId)
-		.list();
-	}
-
 	@Override
 	public int removeAll(Resource resource) {
 		Session session = getSession();

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -15,6 +17,7 @@ import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.ImportSourceFactory;
+import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
@@ -62,6 +65,8 @@ import org.springframework.transaction.annotation.Transactional;
 		private AtomicInteger currentErroneous;
 		private R resource;
 		private Date lastLogDate;
+		// transient annotations
+		private Set<Annotation> annotations = new HashSet<Annotation>();
 		
 		// managers
 		@Autowired
@@ -233,6 +238,7 @@ import org.springframework.transaction.annotation.Transactional;
 				try{
 					// go through source records one by one
 					for (ImportRecord irec : source){
+						// keep all annotations for a single record til the end so we can add the correct record GUID to them
 						if (irec == null){
 							continue;
 						}
@@ -245,7 +251,7 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
-						T record = (T) coreRecordFactory.build(resource, irec);
+						T record = (T) coreRecordFactory.build(resource, irec, annotations);
 						if (record == null){
 							currentErroneous.addAndGet(1);
 							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
@@ -268,6 +274,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 							// save core record
 							record = persistRecord(record, oldRecord);
+							
+							// persist record annotations with good GUID
+							for (Annotation anno : annotations){
+								anno.setGuid(record.getGuid());
+								annotationManager.save(anno);
+							}
+							annotations.clear();
 							
 							// set stats per record. Saving of final resource stats is done in the close() section
 							recordsUploaded++;
