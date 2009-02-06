@@ -7,6 +7,5 @@
 		<li><a href="<s:url action="mappings" namespace="/manage"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.mappings"/> </a></li>
 		<li><a href="<s:url action="cache" namespace="/manage"><s:param name="resource_id" value="%{resource_id}" /></s:url>"> <s:text name="dataResource.cache"/> </a></li>
 		<li><a href="<s:url action="validation" namespace="/manage"><s:param name="resource_id" value="%{resource_id}" /></s:url>"></a><s:text name="dataResource.validation"/></li>
-		<li><a href="<s:url action="annotations" namespace="/"><s:param name="resource_id" value="%{resource_id}" /></s:url>"><s:text name="dataResource.annotations"/></a></li>
 	</ul>
 </div>
