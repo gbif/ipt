@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.AnnotationType;
@@ -36,7 +37,7 @@ public class AnnotationAction extends BaseMetadataResourceAction{
     public String list(){
     	prepare();
     	if (resource !=null){
-    		if (annotationType!=null){
+    		if (StringUtils.trimToNull(annotationType)!=null){
         		annotations=annotationManager.getByType(resource_id, annotationType.toString());
     		}else{
         		annotations=annotationManager.getAll(resource_id);

@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 	public class ChecklistUploadTask extends ImportTask<Taxon, ChecklistResource> {
 		public static final int TASK_TYPE_ID = 7;
 		// resource stats
-		private ChecklistResource taxResource;
 		private ChecklistResourceManager checklistResourceManager;
 		@Autowired
 		private ThesaurusManager thesaurusManager;
@@ -42,12 +41,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 		}
 
 
+		
 		@Override
 		protected void prepareHandler(ChecklistResource resource) {
-			this.taxResource = loadResource();
+			// nothing to do
 		}
-		
-		
+
 		@Override
 		protected void recordHandler(Taxon record) {
 			Rank dwcRank = null; 
@@ -68,8 +67,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		@Override
 		protected void extensionRecordHandler(ExtensionRecord extRec) {
-			// TODO Auto-generated method stub
-			
+			// nothing to do
 		}
 
 

@@ -161,7 +161,8 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 			}
 		}
 		// save stats
-		return this.save(resource);
+//		this.save(resource);
+		return resource;
 	}
 
 	public File writeTcsArchive(Long resourceId) throws IOException{
