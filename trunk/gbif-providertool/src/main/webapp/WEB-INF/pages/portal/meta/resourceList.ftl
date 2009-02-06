@@ -21,6 +21,13 @@
 	document.observe("dom:loaded", function() {
 		loadMap();
 	});
+	
+	function updateKeywords(c){
+		var url = '<@s.url value="/ajax/keywords.html"/>';
+		var params = { prefix: c }; 
+		var target = 'keywords';	
+		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+	};
 	</script>
 </head>
 
@@ -31,14 +38,6 @@
 
 
 <div id="tagindex">
-<script>
-function updateKeywords(c){
-	var url = '<@s.url value="/ajax/keywords.html"/>';
-	var params = { prefix: c }; 
-	var target = 'keywords';	
-	var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-};
-</script>
 
   <h2>Keyword Index</h2>	
   <ul class="indexmenu">

@@ -1,12 +1,5 @@
 <#include "/WEB-INF/pages/inc/tableMacros.ftl">  
 
-<head>
-    <title><@s.text name="resource.title"/></title>
-    <meta name="resource" content="${resource.title}"/>
-    <meta name="submenu" content="meta"/>
-</head>
-	
-		
 <img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 <h1>${resource.title}</h1>	
 

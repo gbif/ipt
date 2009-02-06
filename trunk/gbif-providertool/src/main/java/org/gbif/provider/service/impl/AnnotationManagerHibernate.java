@@ -96,23 +96,37 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 	
 	
 	public List<Annotation> getByActor(Long resourceId, String actor) {
-		// TODO Auto-generated method stub
-		return null;
+        return query("select a from Annotation a where a.resource.id=:resourceId and a.actor=:actor")
+        .setLong("resourceId", resourceId)
+        .setString("actor", actor)
+		.list();
 	}
 
 	public List<Annotation> getByLatest(Long resourceId, Date earliestDate) {
-		// TODO Auto-generated method stub
-		return null;
+        return query("select a from Annotation a where a.resource.id=:resourceId and a.created>=:date")
+        .setLong("resourceId", resourceId)
+        .setDate("date", earliestDate)
+		.list();
 	}
 
 	public List<Annotation> getByRecord(Long resourceId, String guid) {
-		// TODO Auto-generated method stub
-		return null;
+        return query("select a from Annotation a where a.resource.id=:resourceId and a.guid=:guid")
+        .setLong("resourceId", resourceId)
+        .setString("guid", guid)
+		.list();
 	}
 
 	public List<Annotation> getByType(Long resourceId, String type) {
-		// TODO Auto-generated method stub
-		return null;
+        return query("select a from Annotation a where a.resource.id=:resourceId and a.type=:type")
+        .setLong("resourceId", resourceId)
+        .setString("type", type)
+		.list();
+	}
+
+	public List<Annotation> getAllHuman(Long resourceId) {
+        return query("select a from Annotation a where a.resource.id=:resourceId and a.human=true")
+        .setLong("resourceId", resourceId)
+		.list();
 	}
 
 	@Override

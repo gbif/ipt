@@ -1,12 +1,19 @@
-<#include "/WEB-INF/pages/inc/tableMacros.ftl">  
-
 <head>
-    <title><@s.text name="resource.title"/></title>
+    <title>Resource Annotation</title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="meta"/>
 </head>
 	
 		
+	
+<#macro trow label val>
+ <tr>
+  <th><@s.text name="${label}"/></th>
+  <td>${val!}</td>
+ </tr>
+</#macro>  
+
+
 <img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 <h1>${resource.title}</h1>	
 
