@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.dto.ExtendedRecord;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.util.AppConfig;
@@ -19,6 +21,8 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
+	@Autowired
+	private AnnotationManager annotationManager;
     private Long taxon_id;
     private Long region_id;
     private Long id;
@@ -29,6 +33,7 @@ public class DwcAction extends BaseOccurrenceResourceAction {
     private NamespaceRegistry nsr;
     private Map<Object, Object> json;
     private List<DarwinCore> occurrences;
+    private List<Annotation> annotations;
 	@Autowired
 	private AppConfig cfg;
 	 
@@ -58,6 +63,9 @@ public class DwcAction extends BaseOccurrenceResourceAction {
         		json = new HashMap<Object, Object>();
         		return "json";
         	}
+        	// find annotations
+        	annotations = annotationManager.getByRecord(resource_id, dwc.getGuid());
+        	
     		return SUCCESS;
 		}else{
 			return RECORD404;
@@ -124,4 +132,9 @@ public class DwcAction extends BaseOccurrenceResourceAction {
 	public void setOccurrences(List<DarwinCore> occurrences) {
 		this.occurrences = occurrences;
 	}
+
+	public List<Annotation> getAnnotations() {
+		return annotations;
+	}
+	
 }

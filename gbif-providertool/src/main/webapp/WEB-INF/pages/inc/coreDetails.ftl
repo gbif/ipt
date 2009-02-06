@@ -21,5 +21,27 @@
 	<td>${rec.occTotal}</td>
  </tr>
  </#if>
- 
+ <tr>
+	<th>Annotations</th>
+	<td>
+	  <#if annotations??>
+		<a href="Javascript:Effect.toggle('annotations', 'blind', { duration: 0.3 }); return false;">${annotations?size} notes</a> 
+	  <#else>
+		None 
+	  </#if>
+	</td>
+ </tr> 
 </table>
+
+
+<#if annotations??>
+<div id="annotations" style="display:none">
+<#list annotations as annotation>
+  <div class="annotation" id="annotation-${annotation.id}">
+	<h3>${annotation.type}</h3>
+	<span>${annotation.creator}, ${annotation.created?datetime?string}</span>
+	<p>${annotation.note}</p>
+  </div>
+</#list>
+</div>
+</#if>

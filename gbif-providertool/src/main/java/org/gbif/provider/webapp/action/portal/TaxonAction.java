@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.geo.MapUtil;
+import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Taxon;
@@ -15,6 +16,7 @@ import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.StatusType;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
@@ -34,6 +36,8 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
+	@Autowired
+	private AnnotationManager annotationManager;
 	// parameters
     private Long id;
     private String action;
@@ -49,6 +53,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     private List<CommonName> commonNames;
     private List<Distribution> distributions;
     private List<StatsCount> stats;
+    private List<Annotation> annotations;
     // occurrences only
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
@@ -100,7 +105,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 				commonNames = extensionRecordManager.getCommonNames(taxon.getCoreId());
 				distributions = extensionRecordManager.getDistributions(taxon.getCoreId());
 			}
-			return SUCCESS;
+        	// find annotations
+        	annotations = annotationManager.getByRecord(resource_id, taxon.getGuid());
+        	return SUCCESS;
     	}
 		return RECORD404;
     }
@@ -237,6 +244,9 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	}
 	public String getQ() {
 		return q;
+	}
+	public List<Annotation> getAnnotations() {
+		return annotations;
 	}
 	
 }

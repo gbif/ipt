@@ -1,7 +1,6 @@
 <div id="annotation-${annotation.id}">
 	<h3>${annotation.type}</h3>
 	<p>${annotation.note}</p>
-	<p>${resource_id}: guid=${annotation.guid!"???"}</p>
 	<ul class="indexmenu">	
 		<li>${annotation.creator}</li>
 		<li>${annotation.created?datetime?string}</li>

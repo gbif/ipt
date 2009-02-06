@@ -338,8 +338,7 @@ div.googlemap {
 #annotation div{
 	background-color: #fefeed;
 	position: fixed;
-	top: 20px;
-	right: 25px;
+	margin: 10px 0px;
 	width: 400px;
 	padding: 10px 10px 0;
 	opacity: 0.9;
@@ -348,6 +347,25 @@ div.googlemap {
 	z-index: 5;
 	overflow: auto;
 	margin: 0;
+}
+#annotations{
+	padding: 15;
+	border-width: 1px;
+	margin-top: 10px;
+	border-top-style: dotted;
+	margin-bottom: 10px;
+	border-bottom-style: dotted;
+	padding-top: 10px;
+}
+.annotation{
+	padding: 15;
+}
+.annotation h3{
+	display: inline;
+}
+.annotation span{
+	font-size:0.9em;
+	margin-left: 10px;
 }
 
 /* @end */
