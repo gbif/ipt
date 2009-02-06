@@ -39,7 +39,7 @@ import org.springframework.core.task.TaskRejectedException;
 import org.springframework.transaction.annotation.Transactional;
 
 
-public class CacheManagerImpl extends BaseManagerJDBC implements CacheManager{
+public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 	protected final Log log = LogFactory.getLog(getClass());
 
 	@Autowired
