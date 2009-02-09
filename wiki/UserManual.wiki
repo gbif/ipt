@@ -21,6 +21,14 @@ The only exception are annotations to data, which can only be done if you have a
 === Data Sources ===
 === Transformations ===
 === Property Mappings ===
+==== Basic mappings ====
+*LocalID*: The ID used in your source data to identify a core record
+*GUID*: Optional globally unique identifier for your record, e.g. a LSID, UUID or any URI
+*Link*: A link to the full record details, preferrably in a human readable manner, e.g. an html page. The link can be constructed using the optional link template. The template must contain the placeholder <ID> which gets replaced by the value taken from the link column. A template could be for example: {{{http://mydataset.org/record/<ID>}}}
+
+==== Extension mappings ====
+A list of extension properties that you can assign either a dynamic value based on a column from your source data, or a fixed value. If its a controlled vocabulary that you map against, you can define a transformation for each distinct value in the source to a value used in the vocabulary.
+
 === Cache Upload ===
 The IPT has been tested with up to 1 million records. Larger datasets are not guaranteed to work, but might do. It is important for large datasets that your admin has assigned a lot of memory to the IPT and its hosting application server. We use 1GB of main memory for our tests. A file based occurrence source with 100.000 records may take up to 30 minutes to upload into the cache, so please be patient. It is something you don't do every day and doesn't need your attention.
 
