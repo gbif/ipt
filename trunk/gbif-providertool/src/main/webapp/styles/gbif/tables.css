@@ -1,0 +1,157 @@
+#resourceList{
+	background-color: white;
+	width: 100%;
+	border-collapse: collapse;
+	border-style: none;
+	margin-bottom: 4px;
+}
+
+#resourceList thead{
+	background-color: #dfeae2;
+	height: 30px;
+}
+
+#resourceList thead tr th{
+	background-color: #dfeae2;
+	height: 30px;
+	padding-top: 8px;
+	padding-left: 10px;
+}
+
+#resourceList thead tr th a{
+	color: #666;
+}
+
+#resourceList tr.even td {
+	background: #f2f2f2 !important;
+	height: 30px;
+	color: #777777;
+	padding-left: 10px;	
+}
+
+#resourceList tr.odd td {
+	border-style: none;
+	background: #FFF !important;
+	height: 30px;
+	color: #777777;
+	padding-left: 10px;
+}
+
+#resourceList tr.odd td a, 
+#resourceList tr.even td a{
+	color: #777777;
+	/* color: #007d24; */
+}
+
+#users{
+	width: 100%;
+}
+
+
+/*
+.table {
+	border-collapse: collapse;
+	border: none;
+	color: #000;
+	background-color: red;
+	background: #fff;
+	width: 100%;
+}
+
+.table caption {
+	padding: 0 0.6em 0.8em;
+	font-size: 1.3em;
+	font-weight: bold;
+	text-align: left;
+	color: #000;
+	background: transparent;
+}
+
+.table th table, .table th table td {
+	width: 100%;
+	border: 0px;
+}
+.contribTable th {
+	padding: 0px !important;
+	background: #d7e9f5;
+}
+.contribTable th .tableHeaderTable {
+	margin: 0px !important;
+}
+	.table td, .table th, .tableHeaderTable td {
+	border: 1px solid #e0e0e0;
+	padding: 0.5em;
+	}
+
+.tableHeaderTable td {
+	border: 0px;
+	text-align: left;
+	font-size: 1em;
+	font-weight: bold;
+	background: #dfeae2;
+}
+	.tableHeaderTable td a {
+	text-decoration: none !important;
+	}
+	.table tfoot th, tfoot td {
+	border: 1px solid #e0e0e0;
+	text-align: left;
+	font-size: 1em;
+	background: #e8e8cf;
+	}
+	.table tfoot th {
+	font-weight: bold;
+	}
+	.table tbody td a {
+	background: transparent;
+	text-decoration: underline;
+	}
+	.table tbody td a:hover {
+	background: transparent;
+	text-decoration: underline;
+	}
+	.table tbody th a {
+	background: transparent;
+	text-decoration: underline;
+	font-weight: bold;
+	}
+	.table tbody th, .table tbody td {
+	text-align: left;
+	}
+	.table tfoot td {
+	border: 1px solid #996;
+	}
+*/
+
+/* table header */
+
+/*#resourceList.table thead{
+	background-color: dfeae2;
+	border: 0px solid;
+}
+
+.table tbody tr:hover, .table tr.over, .contribTable tr:hover {
+	background: #dfeae2 !important; 
+}
+
+
+.table tr.even {
+	border: 0px;
+	background: #e2e2e2 !important;
+}
+
+.table tr.odd {
+	border: 0px;
+	background: #FFF !important;
+}
+*/
+
+
+/*
+	.contribTable tr.even {
+	background: #fff !important;
+	}
+	.contribTable tr.odd {
+	background: #e2e2e2 !important;
+	}
+*/
