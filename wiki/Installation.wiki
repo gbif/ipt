@@ -32,7 +32,7 @@ dataDir=/wherever/you/want/data
 This change requires a restart of the IPT of course (restarting or reloading tomcat)
 You should now be able to see the IPT in your browser. For a default tomcat installation this would be:
 
-{{{http://localhost:8080/ipt-1.0beta/}}}
+{{{http://localhost:8080/ipt/}}}
 
 === Web-based configuration ===
 As you might have noticed a lot of images are broken. To fix this, you need to configure some basic settings in the web admin interface, especially the base URL of your server. Go to:
