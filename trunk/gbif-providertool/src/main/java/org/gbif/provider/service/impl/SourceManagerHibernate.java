@@ -32,7 +32,7 @@ public class SourceManagerHibernate extends	GenericResourceRelatedManagerHiberna
 		// also remove all ViewMappings that are based on this source
 		List<ViewMappingBase> views = viewMappingManager.getAll(obj.getResource().getId());
 		for (ViewMappingBase vm : views){
-			if (vm.getSource().equals(obj)){
+			if (vm!=null && vm.getSource().equals(obj)){
 				// view mapping uses this source, so also delete it!
 				viewMappingManager.remove(vm);
 			}
