@@ -17,7 +17,7 @@
     <!-- Define the default CSS Theme -->
     <context-param>
         <param-name>csstheme</param-name>
-        <param-value>simplicity</param-value>
+        <param-value>gbif</param-value>
     </context-param>
     <!-- Define the basename for a resource bundle for I18N -->
     <context-param>
