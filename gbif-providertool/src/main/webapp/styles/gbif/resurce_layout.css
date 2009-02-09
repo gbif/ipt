@@ -1,0 +1,61 @@
+ol{
+	text-indent: 3px;
+}
+
+ol li{
+	line-height: 20px;
+}
+
+div#loc-stats{
+	width: 230px;
+	margin-top: 15px;
+}
+
+div#tax-stats{
+	width: 190px;
+	margin-top: 15px;
+}
+
+div#temp-stats{
+	width: 210px;
+	margin-top: 15px;	
+}
+
+div#loc-countries{
+	width: 300px;	
+}
+
+div#loc-geoserver{
+	width: 200px;	
+}
+/* @end */
+
+
+#occResource{
+	background-color: #d6e9dc;
+	margin-left: -8px;
+	margin-top: -15px;
+	margin-bottom: 10px;
+}
+
+
+#occResource fieldSet{
+	border-style: none;
+}
+
+#occResource fieldSet legend{
+	margin-top: 15px;
+	font-size: 24px;
+	font-weight: normal;
+}
+
+#occResource fieldSet #metadata{
+	margin-top: 15px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+#occResource fieldSet #metadata #wwgrp_occResource_dataResource_cache{
+	padding-left: 0px;
+	padding-top: 10px;
+}

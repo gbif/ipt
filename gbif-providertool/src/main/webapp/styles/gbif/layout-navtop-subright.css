@@ -1,0 +1,107 @@
+
+@import url(nav-horizontal.css); 
+
+div#logo{
+	position: absolute;
+	top: 58px;
+	float: left;
+}
+
+div#content {
+    position: relative;
+    width: 900px;
+    padding: 0;
+    text-align: left;
+    background-color: #FFF;
+}
+
+div#nav {
+    position: absolute;
+    top: -30px;
+    left: 0px;
+    width: 100%;
+    text-align: left;
+}
+
+div#main {
+    display: inline;
+    text-align: left;
+    float: left;
+    width: 640px;
+}
+
+
+div#sub {
+    float: right;
+    width: 220px;
+    display: inline;
+}
+div#sub ul#local {
+    padding: 0;
+    margin: 0;
+    margin-left: 10px;
+}
+
+div#footer {
+	height: 50px;
+	width: 100%;
+	background-color: #f2f2f2;
+    color: #444;
+    text-align: center;
+    font-size: 13px;
+    clear: both;
+}
+
+div#footer div#divider {
+        margin: 0 0 15px 0;
+        border-top: 2px solid #666666;
+}
+
+/*
+A CSS Framework by Mike Stenhouse of Content with Style */
+
+/* @import url(nav-horizontal.css); */
+ 
+/* NAV BAR AT THE TOP AND TWO COLUMNS OF CONTENT
+    div#content {
+        position: relative;
+
+        width: 900px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 0;
+        text-align: left;
+        background-color: #FFF;
+
+    }
+
+    div#main {
+        float: left;
+        width: 700px;
+        display: inline;
+        text-align: left;
+        background-color: #FFF;
+		margin-left: 0px;
+    }
+    div#sub {
+        float: right;
+        width: 174px;
+        display: inline;
+    }
+        div#sub ul#local {
+            padding: 0;
+            margin: 0;
+            margin-left: 10px;
+        }
+    div#nav {
+        position: absolute;
+        top: -25px;
+        left: 0px;
+        width: 100%;
+
+        text-align: left;
+    }
+/* END CONTENT
+*/
