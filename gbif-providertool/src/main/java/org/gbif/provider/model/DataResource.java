@@ -63,7 +63,6 @@ public abstract class DataResource extends Resource {
 	private String jdbcUrl = "jdbc:mysql://localhost/YOUR_DATABASE";
 	private String jdbcUser;
 	private String jdbcPassword;
-	private Set<SourceBase> sources;
 	private UploadEvent lastUpload;
 	private ViewCoreMapping coreMapping;
 	// extension mappings, not including the core mapping
@@ -198,14 +197,6 @@ public abstract class DataResource extends Resource {
 	public void setJdbcPassword(String jdbcPassword) {
 		this.jdbcPassword = jdbcPassword;
 	}
-	
-//	@OneToMany(cascade=CascadeType.ALL, mappedBy="resource")
-//	public Set<SourceBase> getSources() {
-//		return sources;
-//	}
-//	public void setSources(Set<SourceBase> sources) {
-//		this.sources = sources;
-//	}
     
 	@Transient
 	public DataSource getDatasource() {
