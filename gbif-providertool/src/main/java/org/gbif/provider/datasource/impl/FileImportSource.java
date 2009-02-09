@@ -33,6 +33,7 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewCoreMapping;
+import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TermMappingManager;
@@ -63,9 +64,21 @@ public class FileImportSource implements ImportSource{
 	private String coreIdColumn;
 	private String guidColumn;
 	private String linkColumn;
+	private String linkTemplate;
 	private Long resourceId;
 
-	protected void init(DataResource resource, ViewMappingBase view) throws ImportSourceException{
+	public void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
+    	ViewMappingBase extView = (ViewMappingBase) view;
+    	init(resource, extView);
+    	this.guidColumn = view.getGuidColumn();
+    	this.linkColumn = view.getLinkColumn();
+    	this.linkTemplate = view.getLinkTemplate();
+    }
+	public void init(DataResource resource, ViewExtensionMapping view) throws ImportSourceException{
+    	ViewMappingBase extView = (ViewMappingBase) view;
+    	init(resource, extView);
+    }
+	private void init(DataResource resource, ViewMappingBase view) throws ImportSourceException{
 		if (!(view.getSource() instanceof SourceFile)){
 			throw new IllegalArgumentException("View needs to have a source of type SourceFile");
 		}
@@ -93,15 +106,7 @@ public class FileImportSource implements ImportSource{
 			}
     	}
     }
-    
-	
-	
-	protected void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
-    	ViewMappingBase extView = (ViewMappingBase) view;
-    	init(resource, extView);
-    	this.guidColumn = view.getGuidColumn();
-    	this.linkColumn = view.getLinkColumn();
-    }
+
     
     
     
@@ -132,7 +137,11 @@ public class FileImportSource implements ImportSource{
 					row.setGuid(getCurrentValue(guidColumn));					
 				}
 				if (linkColumn != null){
-					row.setLink(getCurrentValue(linkColumn));
+					if (linkTemplate.contains(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER)){
+						row.setLink( linkTemplate.replace(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER, getCurrentValue(linkColumn)) );
+					}else{
+						row.setLink(getCurrentValue(linkColumn));
+					}
 				}
 		    	for (PropertyMapping pm : properties){
 		    		if (StringUtils.trimToNull(pm.getColumn()) != null){

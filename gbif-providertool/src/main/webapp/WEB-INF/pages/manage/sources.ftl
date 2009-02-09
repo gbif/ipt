@@ -2,6 +2,17 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="submenu" content="manage_resource"/>    
+    <script>
+		function confirmDelete() {   
+		    var msg = "Are you sure you want to delete this source? \n All associated property mappings will be lost too. If you want to upload a newer version of the file, simply upload a file with the exact same filename again.";
+		    ans = confirm(msg);
+		    if (ans) {
+		        return true;
+		    } else {
+		        return false;
+		    }
+		}
+    </script>
 </head>
 
 
@@ -29,7 +40,7 @@ If your data does not exactly match those formats you have the option to configu
 				</span>
 			</div>
 			<div class="right">
-				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete('file source')" theme="simple"/>
+				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete()" theme="simple"/>
 			</div>
 		</div>
 	</@s.form>

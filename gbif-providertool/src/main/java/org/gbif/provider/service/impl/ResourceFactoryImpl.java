@@ -26,7 +26,8 @@ public class ResourceFactoryImpl implements ResourceFactory{
 	
 	public ChecklistResource newChecklistResourceInstance(){
 		Extension core = extensionManager.get(ExtensionType.Checklist.extensionID);
-		ChecklistResource resource =  ChecklistResource.newInstance(core);
+		ChecklistResource resource =  ChecklistResource.newInstance();
+		resource.getCoreMapping().setExtension(core);
 		return resource;
 	}
 

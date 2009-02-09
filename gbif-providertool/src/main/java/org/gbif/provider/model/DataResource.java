@@ -86,6 +86,18 @@ public abstract class DataResource extends Resource {
 	private int numAccepted;
 	private int numSynonyms;
 
+	public void resetCoreMapping(){
+		// keep extension if core mappings existed already
+		Extension ext = null;
+		if (getCoreMapping()!=null){
+			ext = getCoreMapping().getExtension();
+		}
+		// ensure that core mapping exists
+		ViewCoreMapping coreVM = new ViewCoreMapping();
+		coreVM.setResource(this);
+		coreVM.setExtension(ext);
+		this.setCoreMapping(coreVM);
+	}
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="last_upload_event_fk", nullable=true) 
@@ -187,13 +199,13 @@ public abstract class DataResource extends Resource {
 		this.jdbcPassword = jdbcPassword;
 	}
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="resource")
-	public Set<SourceBase> getSources() {
-		return sources;
-	}
-	public void setSources(Set<SourceBase> sources) {
-		this.sources = sources;
-	}
+//	@OneToMany(cascade=CascadeType.ALL, mappedBy="resource")
+//	public Set<SourceBase> getSources() {
+//		return sources;
+//	}
+//	public void setSources(Set<SourceBase> sources) {
+//		this.sources = sources;
+//	}
     
 	@Transient
 	public DataSource getDatasource() {

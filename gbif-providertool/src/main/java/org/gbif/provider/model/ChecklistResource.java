@@ -38,13 +38,9 @@ public class ChecklistResource extends DataResource {
 	private int numDistributions;
 	private int numDistributionRegions;
 	
-	public static ChecklistResource newInstance(Extension core){
+	public static ChecklistResource newInstance(){
 		ChecklistResource resource =  new ChecklistResource();
-		// ensure that core mapping exists
-		ViewCoreMapping coreVM = new ViewCoreMapping();
-		coreVM.setExtension(core);
-		coreVM.setResource(resource);
-		resource.setCoreMapping(coreVM);
+		resource.resetCoreMapping();
 		return resource;
 	}
 	

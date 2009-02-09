@@ -280,5 +280,4 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	public Long getTid() {
 		return tid;
 	}
-
 }
