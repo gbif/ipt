@@ -23,7 +23,9 @@ The only exception are annotations to data, which can only be done if you have a
 === Property Mappings ===
 ==== Basic mappings ====
 *LocalID*: The ID used in your source data to identify a core record
+
 *GUID*: Optional globally unique identifier for your record, e.g. a LSID, UUID or any URI
+
 *Link*: A link to the full record details, preferrably in a human readable manner, e.g. an html page. The link can be constructed using the optional link template. The template must contain the placeholder <ID> which gets replaced by the value taken from the link column. A template could be for example: {{{http://mydataset.org/record/<ID>}}}
 
 ==== Extension mappings ====
