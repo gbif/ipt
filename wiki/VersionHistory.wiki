@@ -1,6 +1,7 @@
 #summary Version history of releases
 
 === IPT 1.0b4 ===
+ * show resource and record annotations
  * allow source link templates that take an ID parameter
  * Fixed bugs:
    * Issue59 fixed delete source bug
