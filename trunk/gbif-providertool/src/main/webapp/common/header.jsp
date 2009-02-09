@@ -5,14 +5,19 @@
 </c:if>
 
 <div id="branding">
+<%--
     <h1><a href="<c:url value='/'/>"><fmt:message key="webapp.name"/></a></h1>
     <p><s:text name="webapp.tagline"/></p>
+--%>
+	<img src="<c:url value='/images/copyHeader.jpg'/>"/>
 </div>
 
 <s:if test="resourceType!=null">
+<%--
 <div id="currentResourceClass">
 	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
 </div>
+--%>
 </s:if>
 
 <div id="logo">
