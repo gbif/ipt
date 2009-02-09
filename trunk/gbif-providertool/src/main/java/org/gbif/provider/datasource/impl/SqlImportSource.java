@@ -34,6 +34,7 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.ViewCoreMapping;
+import org.gbif.provider.model.ViewExtensionMapping;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TermMappingManager;
@@ -63,12 +64,22 @@ public class SqlImportSource implements ImportSource{
 	private String coreIdColumn;
 	private String guidColumn;
 	private String linkColumn;
+	private String linkTemplate;
 	private Long resourceId;
 	// key=header column name, value=term mapping map
 	private Map<String, Map<String, String>> vocMap = new HashMap<String, Map<String, String>>();
 
 
-	protected void init(DataResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
+	public void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
+    	init(resource, view, null);
+    	this.guidColumn = view.getGuidColumn();
+    	this.linkColumn = view.getLinkColumn();
+    	this.linkTemplate = view.getLinkTemplate();
+    }
+	public void init(DataResource resource, ViewExtensionMapping view) throws ImportSourceException{
+		init(resource, view, null);
+    }
+	private void init(DataResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
 		if (!(view.getSource() instanceof SourceSql)){
 			throw new IllegalArgumentException("View needs to have a source of type SourceSql ");
 		}
@@ -112,22 +123,6 @@ public class SqlImportSource implements ImportSource{
 
     }
     
-	protected void init(DataResource resource, ViewMappingBase view) throws ImportSourceException{
-		init(resource, view, null);
-    }
-    
-	protected void init(DataResource resource, ViewCoreMapping view, Integer maxRecords) throws ImportSourceException{
-    	ViewMappingBase extView = (ViewMappingBase) view;
-    	init(resource, extView, maxRecords);
-    	this.guidColumn = view.getGuidColumn();
-    	this.linkColumn = view.getLinkColumn();
-    }
-	protected void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
-		init(resource, view, null);
-    }
-    
-	
-	
 	
 	
 	public Iterator<ImportRecord> iterator() {
@@ -148,7 +143,11 @@ public class SqlImportSource implements ImportSource{
 					row.setGuid(rs.getString(guidColumn));					
 				}
 				if (linkColumn != null){
-					row.setLink(rs.getString(linkColumn));
+					if (linkTemplate.contains(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER)){
+						row.setLink( linkTemplate.replace(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER, rs.getString(linkColumn)) );
+					}else{
+						row.setLink(rs.getString(linkColumn));
+					}
 				}
 		    	for (PropertyMapping pm : properties){
 		    		if (pm.getColumn() != null && pm.getColumn() != null && !pm.getColumn().startsWith("#")){

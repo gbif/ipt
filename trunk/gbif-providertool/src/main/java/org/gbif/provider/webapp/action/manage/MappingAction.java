@@ -75,31 +75,18 @@ public class MappingAction extends BaseDataResourceAction implements Preparable{
 		return SUCCESS;
 	}
 	
-//  public String delete() {
-//	dataResource.removeExtensionMapping(view);
-//	viewMappingManager.remove(view.getId());
-//    saveMessage(getText("view.deleted"));
-//    return CANCEL;
-//}
-
+	
 	
 	public List<Extension> getExtensions() {
 		return extensions;
 	}
-
-
 	public List<SourceBase> getSources() {
 		return sources;
 	}
-
-
 	public List<ViewExtensionMapping> getExtMappings() {
 		return extMappings;
 	}
-
-
 	public ViewCoreMapping getCoreMapping() {
 		return coreMapping;
-	}
-	
+	}	
 }

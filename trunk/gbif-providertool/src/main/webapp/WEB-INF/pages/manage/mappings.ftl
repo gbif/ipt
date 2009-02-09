@@ -10,8 +10,8 @@
 </head>
 
 <#-- See if sources exist -->
-<#if (resource.sources?size<1)>
-	<p class="reminder">There are no source views configured.<br/>
+<#if (sources?size<1)>
+	<p class="reminder">There are no data sources configured.<br/>
 		Please <a href="<@s.url action="sources"/>">define at least one source</a> first.
 	</p>
 <#else>

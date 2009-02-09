@@ -2,35 +2,32 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${view.resource.title}"/>
     <meta name="submenu" content="manage_resource"/>
-	<@s.head theme="ajax" debug="false"/>
-
-<script>
-var previewLoaded=0;
-function sourcePreview(){
-	if (previewLoaded<1){
-		var url = '<@s.url action="sourcePreview" namespace="/ajax"/>';
-		var params = { sid: ${view.source.id} }; 
-		var target = 'sourcepreview';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-		previewLoaded=1;
-	}
-};
-
-
-function confirmTermMapping(idx, tid){
-	//alert(idx);	
-	//alert( $("mappings_idx").value );
-	$("mappings_idx").value = idx;
-	//alert( $("mappings_idx").value );
-	//alert( $('sourceColumn_'+idx).value );
-	if($('sourceColumn_'+idx).value==""){
-		alert('You need to select a source column first');
-		return false;
-	}
-	return true;
-};
-</script>	
-
+	<script>
+	var previewLoaded=0;
+	function sourcePreview(){
+		if (previewLoaded<1){
+			var url = '<@s.url action="sourcePreview" namespace="/ajax"/>';
+			var params = { sid: ${view.source.id} }; 
+			var target = 'sourcepreview';	
+			var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+			previewLoaded=1;
+		}
+	};
+	
+	
+	function confirmTermMapping(idx, tid){
+		//alert(idx);	
+		//alert( $("mappings_idx").value );
+		$("mappings_idx").value = idx;
+		//alert( $("mappings_idx").value );
+		//alert( $('sourceColumn_'+idx).value );
+		if($('sourceColumn_'+idx).value==""){
+			alert('You need to select a source column first');
+			return false;
+		}
+		return true;
+	};
+	</script>	
 </head>
 
 <h2>Mappings for <i>${view.source.name}</i> to ${view.extension.name}</h2>
@@ -50,14 +47,12 @@ function confirmTermMapping(idx, tid){
         <@s.hidden id="mappings_idx" name="mappings_idx" value=""/>
 
 	 	<@s.select key="view.coreIdColumn" required="true"
-			headerKey="Select local identifier for core record" emptyOption="false" 
-			list="columnOptions" />
+			headerKey="Select local identifier for core record" emptyOption="false" list="columnOptions" />
 			
 		<#if view.isCore()>
-		 	<@s.select key="view.guidColumn" required="false" emptyOption="true" 
-				list="columnOptions" />
-		 	<@s.select key="view.linkColumn" required="false" emptyOption="true" 
-				list="columnOptions" />
+		 	<@s.select key="view.guidColumn" emptyOption="true" list="columnOptions" />
+	 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
+        	<@s.textfield key="view.linkTemplate" cssClass="large"/>  
 	 	</#if>
 	 	
 	 	<br/>

@@ -231,7 +231,7 @@ import org.springframework.transaction.annotation.Transactional;
 			File out = null;
 			try {
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
-				source = this.getImportSource();
+				source = importSourceFactory.newInstance(resource, resource.getCoreMapping());
 				
 				// make sure in the finally section that source & writer is closed and upload event is created properly.
 				// for individual record exception there is another inner try/catch
@@ -382,7 +382,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 			try {
 				//  prepare import source
-				ImportSource source = this.getImportSource(vm.getExtension());
+				ImportSource source = importSourceFactory.newInstance(resource, vm);
 
 				// catch any errors after we opened the source to close it properly and set the extension statistics at least
 				try{
@@ -433,37 +433,6 @@ import org.springframework.transaction.annotation.Transactional;
 			}
 			return out;
 		}
-		
-
-
-		private ImportSource getImportSource() throws ImportSourceException{
-			return getImportSource(null);
-		}
-
-		private ImportSource getImportSource(Extension extension) throws ImportSourceException{
-			ViewMappingBase vm = null;
-			ImportSource source; 
-
-			if (extension == null){
-				vm = resource.getCoreMapping();				
-			}else{
-				vm = resource.getExtensionMapping(extension);				
-			}
-			
-			if (vm == null){
-				String extName="";
-				if (extension != null){
-					extName="extension "+extension.getName();
-				}else{
-					extName="core extension";
-				}
-				throw new ImportSourceException("No mapping exists for "+extName);
-			}			
-			
-			source = importSourceFactory.newInstance(resource, vm);
-			return source;
-		}
-
 		
 		
 		public final synchronized String status() {

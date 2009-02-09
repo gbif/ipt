@@ -17,8 +17,10 @@ import org.gbif.provider.util.TabFileWriter;
 @Entity
 @DiscriminatorValue("CORE")
 public class ViewCoreMapping extends ViewMappingBase {
+	public static final String TEMPLATE_ID_PLACEHOLDER = "<ID>";
 	private String guidColumn;
 	private String linkColumn;
+	private String linkTemplate;
 	
 	@Override
 	@Transient
@@ -40,6 +42,13 @@ public class ViewCoreMapping extends ViewMappingBase {
 	}
 	public void setLinkColumn(String linkColumn) {
 		this.linkColumn = linkColumn;
+	}
+
+	public String getLinkTemplate() {
+		return linkTemplate;
+	}
+	public void setLinkTemplate(String linkTemplate) {
+		this.linkTemplate = linkTemplate;
 	}
 
 }
