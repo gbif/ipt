@@ -1,5 +1,6 @@
 <head>
     <title>${vocabulary.title} Vocabulary</title>
+	<meta name="decorator" content="fullsize"/>    
     <meta name="heading" content="${vocabulary.title} Vocabulary"/>
     <meta name="menu" content="MainMenu"/>
 </head>

@@ -21,6 +21,6 @@
 <#include "/WEB-INF/pages/inc/dataResourceList.ftl">  
 
 <@s.url id="metaRepoUrl" action="resources"/>
-<p>
+<p class="tableMoreLink">
 You can find additional resource descriptions in the <a href="${metaRepoUrl}">local metadata repository</a>.
 </p>

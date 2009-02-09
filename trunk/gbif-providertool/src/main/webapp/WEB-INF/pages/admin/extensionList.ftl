@@ -1,5 +1,6 @@
 <head>
     <title><@s.text name="occResourceList.title"/></title>
+    <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="<@s.text name='extensionList.heading'/>"/>
     <meta name="menu" content="MainMenu"/>
 </head>
