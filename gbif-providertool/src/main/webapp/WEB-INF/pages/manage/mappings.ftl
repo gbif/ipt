@@ -2,11 +2,6 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="manage_resource"/>
-    <script>
-    	function copySQL(sql){
-    		$('mappingSourceSql').value=sql;
-    	}
-    </script>
 </head>
 
 <#-- See if sources exist -->

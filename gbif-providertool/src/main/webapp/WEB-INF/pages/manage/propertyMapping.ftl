@@ -51,19 +51,22 @@
 			
 		<#if view.isCore()>
 		 	<@s.select key="view.guidColumn" emptyOption="true" list="columnOptions" />
-	 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
-        	<@s.textfield key="view.linkTemplate" cssClass="large"/>  
+		 	<div>
+		 	<div class="left"/>
+		 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
+        	</div>  
+		 	<div class="left"/>
+    	    	<@s.textfield key="view.linkTemplate" cssClass="large"/>
+        	</div>  
+        	</div>  
 	 	</#if>
 	 	
-	 	<br/>
-	 	
-	    <li class="buttonBar bottom">
-	        <@s.submit cssClass="button" key="button.save" theme="simple"/>
-		    <#if (view.id)??>
-		        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
-		    </#if>
-	        <@s.submit cssClass="button" method="cancel" key="button.done" theme="simple"/>
-	    </li>
+		<div class="break" />
+        <@s.submit cssClass="button" key="button.save" theme="simple"/>
+	    <#if (view.id)??>
+	        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
+	    </#if>
+        <@s.submit cssClass="button" method="cancel" key="button.done" theme="simple"/>
 	    
 	 	<br/>
 		<ul class="actionmenu">
