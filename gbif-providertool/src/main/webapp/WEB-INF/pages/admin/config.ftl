@@ -1,6 +1,7 @@
 <head>
     <title><@s.text name='config.heading'/></title>
     <meta name="menu" content="MainMenu"/>
+    <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="<@s.text name='config.heading'/>"/>
 </head>
 

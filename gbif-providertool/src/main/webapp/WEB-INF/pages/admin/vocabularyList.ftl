@@ -1,5 +1,6 @@
 <head>
     <title>Thesaurus vocabularies</title>
+	<meta name="decorator" content="fullsize"/>    
     <meta name="heading" content="Thesaurus vocabularies"/>
     <meta name="menu" content="MainMenu"/>
 </head>

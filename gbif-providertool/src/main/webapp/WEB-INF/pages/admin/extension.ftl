@@ -1,5 +1,6 @@
 <head>
     <title>${extension.name} Extension/></title>
+    <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="${extension.name} Extension"/>
 </head>
 
