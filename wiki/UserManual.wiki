@@ -26,7 +26,7 @@ The only exception are annotations to data, which can only be done if you have a
 
 *GUID*: Optional globally unique identifier for your record, e.g. a LSID, UUID or any URI
 
-*Link*: A link to the full record details, preferrably in a human readable manner, e.g. an html page. The link can be constructed using the optional link template. The template must contain the placeholder <ID> which gets replaced by the value taken from the link column. A template could be for example: {{{http://mydataset.org/record/<ID>}}}
+*Link*: A link to the full record details, preferrably in a human readable manner, e.g. an html page. The link can be constructed using the optional link template. The template must contain the placeholder `<ID>` which gets replaced by the value taken from the link column. A template could be for example: {{{http://mydataset.org/record/<ID>}}}
 
 ==== Extension mappings ====
 A list of extension properties that you can assign either a dynamic value based on a column from your source data, or a fixed value. If its a controlled vocabulary that you map against, you can define a transformation for each distinct value in the source to a value used in the vocabulary.
