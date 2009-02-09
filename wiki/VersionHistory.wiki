@@ -1,6 +1,11 @@
 #summary Version history of releases
 
-=== IPT 1.0-SNAPSHOT ===
+=== IPT 1.0b4 ===
+ * allow source link templates that take an ID parameter
+ * Fixed bugs:
+   * Issue59 fixed delete source bug
+   * Issue61, Issue57 
+
 
 === IPT 1.0 beta ===
 files: [http://gbif-providertoolkit.googlecode.com/files/ipt-1.0beta.war ipt.war] [http://kiwaia.gbif.org/ipt/IPT-1.0beta_geoserver.zip geoserver.zip]
