@@ -129,6 +129,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 					}
 				}				
 			}else if(propName.equalsIgnoreCase("DecimalLatitude")){
+				dwc.setDecimalLatitude(val);
 				if (val !=null){
 					try {
 						loc.setLatitude(Double.valueOf(val));
@@ -139,6 +140,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 					}
 				}
 			}else if(propName.equalsIgnoreCase("DecimalLongitude")){
+				dwc.setDecimalLongitude(val);
 				if (val !=null){
 					try {
 						loc.setLongitude(Double.valueOf(val));
