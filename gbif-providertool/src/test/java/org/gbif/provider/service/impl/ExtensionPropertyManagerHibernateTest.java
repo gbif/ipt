@@ -6,6 +6,7 @@ import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.tapir.filter.Like;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase{
 	public void testPropertyReplace() throws Exception {
 		Filter f = new Filter();
 		Like like = new Like();
-		like.setProperty("http://rs.tdwg.org/dwc/dwcore/ScientificName");
+		like.setProperty(Constants.SCIENTIFIC_NAME_QUALNAME);
 		like.setValue("Abies*");
 		f.setRoot(like);
 		extensionPropertyManager.lookupFilterProperties(f, ExtensionType.Occurrence);
@@ -29,7 +30,7 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase{
 
 	@Test
 	public void testFindProperty() throws Exception {
-		ExtensionProperty p = extensionPropertyManager.getByQualName("http://rs.tdwg.org/dwc/dwcore/ScientificName", ExtensionType.Occurrence);
+		ExtensionProperty p = extensionPropertyManager.getByQualName(Constants.SCIENTIFIC_NAME_QUALNAME, ExtensionType.Occurrence);
 		assertTrue(p!=null);
 		
 		p = extensionPropertyManager.getByName("ScientificName", ExtensionType.Occurrence);

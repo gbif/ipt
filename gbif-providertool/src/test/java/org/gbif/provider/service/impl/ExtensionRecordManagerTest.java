@@ -9,10 +9,12 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.gbif.provider.util.ResourceTestBase;
@@ -27,17 +29,19 @@ public class ExtensionRecordManagerTest extends ResourceTestBase{
 	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
 	protected DarwinCoreManager darwinCoreManager;
+	@Autowired
+	protected TaxonManager taxonManager;
 	
 	
 	@Test
 	public void testExtendedRecord(){
-		this.setupOccResource();
-		List<DarwinCore> dwcs = darwinCoreManager.latest(Constants.TEST_OCC_RESOURCE_ID, 1, 5);
-		assertTrue(dwcs.size()==5);
-		List<ExtendedRecord> records = extensionRecordManager.extendCoreRecords(resource, dwcs.toArray(new CoreRecord[dwcs.size()]));
-		assertTrue(records.size()==5);
-		List<Extension> extensions = records.get(0).getExtensions();
-		assertTrue(records.get(0).getExtensionRecords(extensions.get(0)).size()>0);
+		this.setupTaxResource();
+		List<Taxon> taxa = taxonManager.latest(Constants.TEST_CHECKLIST_RESOURCE_ID, 1, 10);
+		assertTrue(taxa.size()==10);
+		List<ExtendedRecord> records = extensionRecordManager.extendCoreRecords(resource, taxa.toArray(new CoreRecord[taxa.size()]));
+		assertTrue(records.size()==10);
+		List<Extension> extensions = records.get(6).getExtensions();
+		assertTrue(records.get(6).getExtensionRecords(extensions.get(0)).size()>0);
 	}
 
 }

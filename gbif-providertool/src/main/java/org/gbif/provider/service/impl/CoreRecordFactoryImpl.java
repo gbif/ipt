@@ -98,7 +98,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 			}
 			String propName = prop.getName();
 			// first try the properties which we try to persist converted as other data types
-			if(propName.equals("MinimumElevationInMeters")){
+			if(propName.equalsIgnoreCase("MinimumElevationInMeters")){
 				dwc.setMinimumElevationInMeters(val);
 				if (val !=null){
 					try {
@@ -108,7 +108,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						annotations.add(annotationManager.badDataType(dwc, "MinimumElevationInMeters", "Double", val));
 					}
 				}
-			}else if(propName.equals("MinimumDepthInMeters")){
+			}else if(propName.equalsIgnoreCase("MinimumDepthInMeters")){
 				dwc.setMinimumDepthInMeters(val);
 				if (val !=null){
 					try {
@@ -118,7 +118,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						annotations.add(annotationManager.badDataType(dwc, "MinimumDepthInMeters", "Double", val));
 					}
 				}
-			}else if(propName.equals("EarliestDateCollected")){
+			}else if(propName.equalsIgnoreCase("EarliestDateCollected")){
 				dwc.setEarliestDateCollected(val);
 				if (val !=null){
 					try {						
@@ -128,7 +128,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						annotations.add(annotationManager.badDataType(dwc, "EarliestDateCollected", "Integer", val));
 					}
 				}				
-			}else if(prop.equals("DecimalLatitude")){
+			}else if(propName.equalsIgnoreCase("DecimalLatitude")){
 				if (val !=null){
 					try {
 						loc.setLatitude(Double.valueOf(val));
@@ -138,7 +138,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						annotationManager.annotate(dwc, AnnotationType.WrongDatatype, String.format("Latitude value '%s' is out of allowed range", val));
 					}
 				}
-			}else if(prop.equals("DecimalLongitude")){
+			}else if(propName.equalsIgnoreCase("DecimalLongitude")){
 				if (val !=null){
 					try {
 						loc.setLongitude(Double.valueOf(val));
@@ -148,7 +148,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 						annotationManager.annotate(dwc, AnnotationType.WrongDatatype, String.format("Longitude value '%s' is out of allowed range", val));
 					}
 				}
-			}else if(propName.equals("Class")){
+			}else if(propName.equalsIgnoreCase("Class")){
 				// stupid case. property is called Classs because Class is a reserved word in java...
 				dwc.setClasss(val);
 			}else{

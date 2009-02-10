@@ -98,9 +98,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 		@Override
 		protected void recordHandler(DarwinCore dwc){
 			// extract taxon
-			extractTaxon(dwc);
+			try{
+				extractTaxon(dwc);
+			} catch (Exception e) {
+				annotationManager.badCoreRecord(occResource, dwc.getLocalId(), "Error extracting taxon: "+e.toString());
+			}
+
 			// extract region
-			extractRegion(dwc);
+			try{
+				extractRegion(dwc);
+			} catch (Exception e) {
+				annotationManager.badCoreRecord(occResource, dwc.getLocalId(), "Error extracting region: "+e.toString());
+			}
 			// potentially transform coordinates
 			// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
 			//			dwc.getGeodeticDatum();			
