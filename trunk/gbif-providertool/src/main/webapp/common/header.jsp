@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
-<c:if test="${pageContext.request.locale.language != 'en'}">
+<%-- <c:if test="${pageContext.request.locale.language != 'en'}"> --%>
     <div id="switchLocale"><a href="<c:url value='/?locale=en'/>"><fmt:message key="webapp.name"/> in English</a></div>
-</c:if>
+<%-- </c:if> --%>
 
 <div id="branding">
 <%--
@@ -13,15 +13,15 @@
 </div>
 
 <s:if test="resourceType!=null">
-<%--
-<div id="currentResourceClass">
-	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
-</div>
---%>
+
 </s:if>
 
 <div id="logo">
 	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
+</div>
+
+<div id="currentResourceClass">
+	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
 </div>
 
 <noscript>
