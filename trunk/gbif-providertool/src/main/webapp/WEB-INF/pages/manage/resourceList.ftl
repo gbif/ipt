@@ -7,6 +7,10 @@
     <meta name="submenu" content="manage"/>
 </head>
 
+<style>
+	h1{ margin-bottom: -5px;}
+</style>
+
 <#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
 
 <#include "/WEB-INF/pages/inc/resourceManagerList.ftl">  
