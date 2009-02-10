@@ -38,10 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true)
 public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<DarwinCore> implements DarwinCoreManager  {
-	public static final Long GEO_EXTENSION_ID = 3l;
-	public static final ExtensionProperty LATITUDE_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/DecimalLatitude");
-	public static final ExtensionProperty LONGITUDE_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/DecimalLongitude");
-	public static final ExtensionProperty GEODATUM_PROP= new ExtensionProperty("http://rs.tdwg.org/dwc/geospatial/GeodeticDatum");
 	
 	@Autowired
 	private AnnotationManager annotationManager;
@@ -108,46 +104,6 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 	@Override
 	public int removeAll(Resource resource) {
 		return super.removeAll(resource);
-	}
-
-	public boolean updateWithGeoExtension(DarwinCore dwc, ExtensionRecord extRec){
-		String geodatum = null;
-		Point loc = new Point();
-		// tmp raw value
-		for (ExtensionProperty prop : extRec){
-			String val = StringUtils.trimToNull(extRec.getPropertyValue(prop));
-			// check string coordinates
-			if(prop.equals(LATITUDE_PROP)){
-				if (val !=null){
-					try {
-						loc.setLatitude(Double.valueOf(val));
-					} catch (NumberFormatException e) {
-						annotationManager.badDataType(dwc, "DecimalLatitude", "Float", val);
-					} catch (IllegalArgumentException e) {
-						annotationManager.annotate(dwc, AnnotationType.WrongDatatype, String.format("Latitude value '%s' is out of allowed range", val));
-					}
-				}
-			}
-			else if(prop.equals(LONGITUDE_PROP)){
-				if (val !=null){
-					try {
-						loc.setLongitude(Double.valueOf(val));
-					} catch (NumberFormatException e) {
-						annotationManager.badDataType(dwc, "DecimalLongitude", "Float", val);
-					} catch (IllegalArgumentException e) {
-						annotationManager.annotate(dwc, AnnotationType.WrongDatatype, String.format("Longitude value '%s' is out of allowed range", val));
-					}
-				}
-			}
-			else if(prop.equals(GEODATUM_PROP)){
-				geodatum=extRec.getPropertyValue(prop);
-			}
-		}
-		if (loc.isValid()){
-			dwc.setLocation(loc);
-			return true;
-		}
-		return false;
 	}
 	
 }
