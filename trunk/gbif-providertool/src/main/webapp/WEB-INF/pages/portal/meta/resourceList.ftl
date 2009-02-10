@@ -6,11 +6,13 @@
 	h2        {clear: both;}
 	.col         {width: 100%;  margin: 1em 0; padding: 0; counter-reset: ol;}
 	.col      li {float: left;  margin: 0;     padding: 0; list-style-type: none; width: 18em;  margin-right: 2.5%;}
-	.col.two  li {width: 47.5%; margin-right: 2.5%;}
+	.col.two  li {width: 47.5%; margin-right: 2.5%	;}
 	.col.four li {width: 22.5%; margin-right: 2.5%;}
+	
+	h1{margin-bottom: -5px;}
 
 	#map {
-	    width: 512px;
+	    width: 700px;
 	    height: 256px;
 	    border: 1px solid #ccc;
 	}

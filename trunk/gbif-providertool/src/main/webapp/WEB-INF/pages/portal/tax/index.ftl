@@ -33,8 +33,9 @@
 	
   
 <@s.form>
+<h1 class="h1tax"><@s.text name="resource.description"/></h1>
 <fieldset>
-	<legend><@s.text name="resource.description"/></legend>
+	<legend><!--<@s.text name="resource.description"/>--></legend>
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span><@s.property value="resource.description"/></span>

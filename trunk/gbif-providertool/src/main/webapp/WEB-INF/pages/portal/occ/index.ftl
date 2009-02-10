@@ -1,4 +1,4 @@
-<head>
+	<head>
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="occ"/>
@@ -45,8 +45,9 @@
 	
   
 <@s.form>
+<h1 class="h1occ"><@s.text name="resource.description"/></h1>
 <fieldset>
-	<legend><@s.text name="resource.description"/></legend>
+	<legend><!--<@s.text name="resource.description"/>--></legend>
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span>${resource.description}</span>
