@@ -4,10 +4,13 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+
+<h1 class="modifiedh1"><@s.text name="eml.resourceCreator"/></h1>
 <@s.form id="emlForm" action="creator" method="post" validate="false">
-	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
 <fieldset>
-	<legend><@s.text name="eml.resourceCreator"/></legend>
+	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
+	<!--was here-->
+	<!--<legend><@s.text name="eml.resourceCreator"/></legend>-->
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="geocoverage"/>
 

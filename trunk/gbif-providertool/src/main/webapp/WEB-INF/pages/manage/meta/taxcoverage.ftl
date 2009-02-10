@@ -4,9 +4,10 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+<h1 class="modifiedh1"><@s.text name="eml.taxonomicMetadata"/></h1>
 <@s.form id="emlForm" action="taxcoverage" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.taxonomicMetadata"/></legend>
+	<legend><!--<@s.text name="eml.taxonomicMetadata"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="tempcoverage"/>
 
@@ -14,8 +15,9 @@
 	<@s.textarea key="taxonomicClassification" label="%{getText('eml.taxonomicClassification')}" cssClass="text xlarge slim"/>
 </fieldset>
 
+<h1 class="modifiedh1Secondary"><@s.text name="eml.lowestCommonTaxon"/></h1>
 <fieldset>
-	<legend><@s.text name="eml.lowestCommonTaxon"/></legend>
+	<legend><!--<@s.text name="eml.lowestCommonTaxon"/>--></legend>
 	<div>
 		<div class="left">
 			<@s.textfield key="eml.lowestCommonTaxon.scientificName" label="%{getText('taxonKeyword.scientificName')}" required="true" cssClass="text large" />

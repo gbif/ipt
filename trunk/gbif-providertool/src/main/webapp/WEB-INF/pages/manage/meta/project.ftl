@@ -4,9 +4,10 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+<h1 class="modifiedh1"><@s.text name="eml.researchProject"/></h1>
 <@s.form id="emlForm" action="project" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.researchProject"/></legend>
+	<legend><!--<@s.text name="eml.researchProject"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="methods"/>
 

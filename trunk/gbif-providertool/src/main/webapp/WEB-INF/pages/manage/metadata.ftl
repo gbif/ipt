@@ -4,11 +4,13 @@
 	<meta name="submenu" content="manage_resource"/>    
 </head>
 
+
+<h1 class="modifiedh1">Basic Metadata</h1>
 <p>Please describe the dataset you want to publish as a whole</p>
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   <fieldset>
-    <legend><@s.text name="resource.metadata"/></legend>
+    <!--<legend><@s.text name="resource.metadata"/></legend>-->
     <@s.hidden name="resource_id" value="${(resource.id)!}"/>
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
     <@s.hidden name="guid" value="${(resource.guid)!}"/>

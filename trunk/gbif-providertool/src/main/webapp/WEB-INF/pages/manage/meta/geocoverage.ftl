@@ -11,13 +11,14 @@
 	</script>
 </head>
 
+<h1 class="modifiedh1"><@s.text name="eml.geographicCoverage"/></h1>
 <@s.form id="emlForm" action="geocoverage" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.geographicCoverage"/></legend>
+	<legend><!--<@s.text name="eml.geographicCoverage"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
 
-	<div id="map" style="width:512px; height:256px; border:1px solid #ccc;"></div>
+	<div id="map" style="width:680px; height:256px; border:1px solid #ccc;"></div>
 	<div>
 		<div class="left">
 			<@s.textfield id="bbox_left" key="eml.geographicCoverage.boundingCoordinates.min.longitude" label="%{getText('bbox.min.longitude')}" cssClass="text small" />

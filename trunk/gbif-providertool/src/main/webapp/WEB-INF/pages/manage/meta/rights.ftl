@@ -4,9 +4,10 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+<h1 class="modifiedh1"><@s.text name="eml.intellectualRights"/></h1>
 <@s.form id="emlForm" action="rights" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.intellectualRights"/></legend>
+	<legend><!--<@s.text name="eml.intellectualRights"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="project"/>
 
