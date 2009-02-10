@@ -4,8 +4,13 @@
     <meta name="submenu" content="occ"/>
 </head>
 	
+<style>
+	.modifiedh1{
+		margin-top:-13px;
+	}
+</style>
 
-<h2>${taxon.scientificName}</h2>  
+<h1 class="modifiedh1">${taxon.scientificName}</h1>  
 
 <@s.form>
 

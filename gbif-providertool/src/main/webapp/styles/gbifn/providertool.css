@@ -132,17 +132,17 @@ div#jsalert h2 {
 }
 
 #currentResourceClass {
-	background-color: #D7E9F5;
+	background-color: #AAAAAA;
 	color: #ffffff;
 	text-align: center;
-	position: relative;
-	width: 90px;
-	float: right;
-	z-index: 4;
-	padding: 2px;
+ 	position: relative;
+ 	height: 28px;
+	width: 130px;
+ 	float: right;
+	z-index: 5;
 	clear: both;
-	top: 23px;
-	left: -40px;
+	top: 8px;
+	padding-top: 12px;
 }
 
 /* @end */
@@ -405,14 +405,29 @@ div.googlemap {
 }
 
 
-#publishingForm{
-	margin-top: 0px;
+#taxDetail ul fieldset{
+	background-color: #dcf3d9;
+	border-style: none;
+	margin-bottom: 10px;
 }
 
-div#switchLocale{
-	position: relative;
-	right: 2px;
+#taxDetail ul fieldset h2{
+	font-size: 20px;
+	line-height: normal;
+	margin-top: 5px;
+}
+
+.taxDetailImg{
+	float: right;
 	text-align: right;
+	padding-left: 15px;
+	padding-bottom: 15px;
+	margin-top: -8px;
+}
+
+
+#publishingForm{
+	margin-top: 0px;
 }
 
 /* @group tag cloud */

@@ -4,7 +4,12 @@
     <meta name="submenu" content="tax"/>
 </head>
 	
+<style>
+	.modifiedh1{
+		margin-top:-13px;
+	}
+</style>
 
-<h2>Your Search: ${q}</h2>  
+<h1 class="modifiedh1">Your Search: ${q}</h1>  
 
 <#include "/WEB-INF/pages/inc/taxonList.ftl">  

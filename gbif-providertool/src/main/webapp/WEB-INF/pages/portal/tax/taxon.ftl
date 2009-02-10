@@ -5,9 +5,14 @@
     <!-- meta name="heading" content="${taxon.scientificName}"/ -->
 </head>
 	
+<style>
+	.modifiedh1{
+		margin-top:-13px;
+	}
+</style>	
 
-<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
-<h2>${taxon.scientificName}</h2>	
+<img class="taxDetailImg" src="${cfg.getResourceLogoUrl(resource_id)}" />
+<h1 class="modifiedh1">${taxon.scientificName}</h1>	
 
 <@s.form>
 

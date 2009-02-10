@@ -34,10 +34,10 @@
       		float: left;
       		width: 150px;
       	}
-        div#switchLocale {
-            position: absolute;
-            right: 10px;
-        }
+		div#switchLocale{
+			width: 940px;
+			text-align: right;
+		}
         div#branding {
             float: right;
             width: 500px;
