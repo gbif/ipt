@@ -28,15 +28,15 @@ public class Constants {
      * The name of the Administrator role, as specified in web.xml
      */
     public static final String MANAGER_ROLE = "ROLE_MANAGER";
-    public static final Long TEST_OCC_RESOURCE_ID = 1L;
-    public static final Long TEST_CHECKLIST_RESOURCE_ID = 7L;
+    public static final Long TEST_OCC_RESOURCE_ID = 9L;
+    public static final Long TEST_CHECKLIST_RESOURCE_ID = 10L;
     public static final Long TEST_USER_ID = 1L;
     // hacky, but needed for resource managers to calculate stats via setResourceStats
     public static final Long COMMON_NAME_EXTENSION_ID = 8L;
     public static final Long COMMON_NAME_LANGUAGE_PROPERTY_ID = 424L;
     public static final Long DISTRIBUTION_EXTENSION_ID = 11L;
     public static final Long DISTRIBUTION_REGION_PROPERTY_ID = 435L;
-    public static final String SCIENTIFIC_NAME_QUALNAME = "http://rs.tdwg.org/dwc/dwcore/ScientificName";
+    public static final String SCIENTIFIC_NAME_QUALNAME = "http://rs.tdwg.org/dwc/terms/ScientificName";
     public static final String RECENT_RESOURCES = "recentResources";
     public static final String DEFAULT_LOGO = "images/resource-logo.gif";
     public static final String ENCODING = "UTF-8";    

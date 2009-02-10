@@ -6,7 +6,7 @@ import java.util.List;
 
 public enum RegionType {
 	Continent("continent"),
-	Waterbody("waterBody"),
+	Waterbody("waterbody"),
 	IslandGroup("islandGroup"),
 	Island("island"),
 	Country("country"),
