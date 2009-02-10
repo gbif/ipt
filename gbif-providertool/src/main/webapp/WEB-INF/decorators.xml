@@ -21,11 +21,13 @@
         <pattern>*/ajax/*</pattern>        
     </excludes> 
 
+    <decorator name="fullsize" page="fullsize.jsp">
+        <pattern>/admin/*</pattern>
+    </decorator>
+
     <decorator name="default" page="default.jsp">
         <pattern>/*</pattern>
     </decorator>
 
-    <decorator name="fullsize" page="fullsize.jsp">
-    </decorator>
 
 </decorators>
