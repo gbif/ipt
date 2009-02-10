@@ -7,905 +7,878 @@
  xmlns:tn="http://rs.tdwg.org/ontology/voc/TaxonName#"
  xmlns:tc="http://rs.tdwg.org/ontology/voc/TaxonConcept#"
  xmlns:tcom="http://rs.tdwg.org/ontology/voc/Common#">
-<tn:TaxonName rdf:about="#tn-2f56bfb5-8d6e-4747-b791-b40ea91880ce">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Compositae Giseke</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Family"/>
-    <tn:rankString>Family</tn:rankString>
-    <tn:nameComplete>Compositae Giseke</tn:nameComplete>
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-2f56bfb5-8d6e-4747-b791-b40ea91880ce">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-2f56bfb5-8d6e-4747-b791-b40ea91880ce"/>
-    <tc:nameString>Compositae Giseke</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Family" />
-    <tc:rankString>Family</tc:rankString>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-6895b951-b5df-4a04-8e81-c9a7a6af9cf1">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula macroptera (Rouy) H. J. Coste</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula macroptera (Rouy) H. J. Coste</tn:nameComplete>
-    <tcom:publishedIn>Fl. Descr. France 3: 721. 1906</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-6895b951-b5df-4a04-8e81-c9a7a6af9cf1">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-6895b951-b5df-4a04-8e81-c9a7a6af9cf1"/>
-    <tc:nameString>Calendula macroptera (Rouy) H. J. Coste</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-6895b951-b5df-4a04-8e81-c9a7a6af9cf1"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-f4d0e8bf-4654-4178-adac-c471d7559f6f">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis subsp. bicolor (Raf.) Nyman</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
-    <tn:rankString>Subspecies</tn:rankString>
-    <tn:nameComplete>Calendula arvensis subsp. bicolor (Raf.) Nyman</tn:nameComplete>
-    <tcom:publishedIn>Consp. Fl. Eur.: 398. 1879</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-f4d0e8bf-4654-4178-adac-c471d7559f6f">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-f4d0e8bf-4654-4178-adac-c471d7559f6f"/>
-    <tc:nameString>Calendula arvensis subsp. bicolor (Raf.) Nyman</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
-    <tc:rankString>Subspecies</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-f4d0e8bf-4654-4178-adac-c471d7559f6f"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-74b5454e-fc0b-4d5a-93e2-5314927d902f">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>&quot;Calendula tripterocarpa sec. Tutin, T. G., Heywood, V. H., Burges, N. A., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>&quot;Calendula tripterocarpa sec. Tutin, T. G., Heywood, V. H., Burges, N. A., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.&quot;</tn:nameComplete>
-    <tcom:publishedIn>&quot;Flora europaea 4 [Tutin, T. G., Heywood, V. H., Burges, N. A., Moore, D. M., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.] Cambridge University Press Cambridge 1976.&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-74b5454e-fc0b-4d5a-93e2-5314927d902f">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-74b5454e-fc0b-4d5a-93e2-5314927d902f"/>
-    <tc:nameString>&quot;Calendula tripterocarpa sec. Tutin, T. G., Heywood, V. H., Burges, N. A., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.&quot;</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-74b5454e-fc0b-4d5a-93e2-5314927d902f"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-b9cb2ca1-ef2c-49b1-b142-d8bca40c669b">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>&quot;Calendula tripterocarpa sec. Jeanmonod, D. &amp; Burdet, H. M.&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>&quot;Calendula tripterocarpa sec. Jeanmonod, D. &amp; Burdet, H. M.&quot;</tn:nameComplete>
-    <tcom:publishedIn>&quot;Compl�ments au prodrome de la flore corse. Annexe 3 [Gamisans, J. &amp; Jeanmonod, D.] Gen�ve 1993.&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-b9cb2ca1-ef2c-49b1-b142-d8bca40c669b">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-b9cb2ca1-ef2c-49b1-b142-d8bca40c669b"/>
-    <tc:nameString>&quot;Calendula tripterocarpa sec. Jeanmonod, D. &amp; Burdet, H. M.&quot;</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-b9cb2ca1-ef2c-49b1-b142-d8bca40c669b"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-fdaadb53-22e8-4146-a85f-441ed0be4362">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula sancta subsp. crista-galli (Viv.) Gallego &amp; Talavera</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
-    <tn:rankString>Subspecies</tn:rankString>
-    <tn:nameComplete>Calendula sancta subsp. crista-galli (Viv.) Gallego &amp; Talavera</tn:nameComplete>
-    <tcom:publishedIn>in Lagascalia 11: 103. 1983</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-fdaadb53-22e8-4146-a85f-441ed0be4362">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-fdaadb53-22e8-4146-a85f-441ed0be4362"/>
-    <tc:nameString>Calendula sancta subsp. crista-galli (Viv.) Gallego &amp; Talavera</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
-    <tc:rankString>Subspecies</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-fdaadb53-22e8-4146-a85f-441ed0be4362"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-43c1e18d-4776-4e89-991d-41e1ff9fa3a9">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula officinalis var. hydruntina Fiori</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Variety"/>
-    <tn:rankString>Variety</tn:rankString>
-    <tn:nameComplete>Calendula officinalis var. hydruntina Fiori</tn:nameComplete>
-    <tcom:publishedIn>&quot;in Fiori &amp; Paoletti, Fl. Italia 3: 298. 1904&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-43c1e18d-4776-4e89-991d-41e1ff9fa3a9">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-43c1e18d-4776-4e89-991d-41e1ff9fa3a9"/>
-    <tc:nameString>Calendula officinalis var. hydruntina Fiori</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Variety" />
-    <tc:rankString>Variety</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-43c1e18d-4776-4e89-991d-41e1ff9fa3a9"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-810c951b-bf84-4814-895c-a04a3724923f">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula persica subsp. gracilis</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>Calendula persica subsp. gracilis</tn:nameComplete>
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-810c951b-bf84-4814-895c-a04a3724923f">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-810c951b-bf84-4814-895c-a04a3724923f"/>
-    <tc:nameString>Calendula persica subsp. gracilis</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-810c951b-bf84-4814-895c-a04a3724923f"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-3106b5b1-7e78-4511-8806-ea671e32f103">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>&quot;Calendula tripterocarpa sec. Pignatti, S.&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>&quot;Calendula tripterocarpa sec. Pignatti, S.&quot;</tn:nameComplete>
-    <tcom:publishedIn>Flora d&apos;Italia 3 Bologna 1982.</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-3106b5b1-7e78-4511-8806-ea671e32f103">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-3106b5b1-7e78-4511-8806-ea671e32f103"/>
-    <tc:nameString>&quot;Calendula tripterocarpa sec. Pignatti, S.&quot;</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-3106b5b1-7e78-4511-8806-ea671e32f103"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-66ff64b9-2ab9-4e2f-b1f6-3b0f31c43963">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis subsp. macroptera Rouy</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
-    <tn:rankString>Subspecies</tn:rankString>
-    <tn:nameComplete>Calendula arvensis subsp. macroptera Rouy</tn:nameComplete>
-    <tcom:publishedIn>Fl. France 8: 355. 1903</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-66ff64b9-2ab9-4e2f-b1f6-3b0f31c43963">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-66ff64b9-2ab9-4e2f-b1f6-3b0f31c43963"/>
-    <tc:nameString>Calendula arvensis subsp. macroptera Rouy</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
-    <tc:rankString>Subspecies</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-66ff64b9-2ab9-4e2f-b1f6-3b0f31c43963"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-a5d3ea36-74e0-4b30-bdea-2b37cadab1d6">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula gracilis DC.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula gracilis DC.</tn:nameComplete>
-    <tcom:publishedIn>Prodr. 6: 453. 1838</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-a5d3ea36-74e0-4b30-bdea-2b37cadab1d6">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-a5d3ea36-74e0-4b30-bdea-2b37cadab1d6"/>
-    <tc:nameString>Calendula gracilis DC.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-a5d3ea36-74e0-4b30-bdea-2b37cadab1d6"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-4753cbba-3e26-45fe-b784-88cc6d937f75">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula malacitana Boiss. &amp; Reut.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula malacitana Boiss. &amp; Reut.</tn:nameComplete>
-    <tcom:publishedIn>Pugill. Pl. Afr. Bor. Hispan.: 61. 1852</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-4753cbba-3e26-45fe-b784-88cc6d937f75">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-4753cbba-3e26-45fe-b784-88cc6d937f75"/>
-    <tc:nameString>Calendula malacitana Boiss. &amp; Reut.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-4753cbba-3e26-45fe-b784-88cc6d937f75"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-894be0ef-f40f-48bb-bbd1-ce476ae86a93">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula parviflora Raf. [non Thunb. 1800]</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula parviflora Raf. [non Thunb. 1800]</tn:nameComplete>
-    <tcom:publishedIn>Caratt. Nuov. Gen.: 83. 1810</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-894be0ef-f40f-48bb-bbd1-ce476ae86a93">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-894be0ef-f40f-48bb-bbd1-ce476ae86a93"/>
-    <tc:nameString>Calendula parviflora Raf. [non Thunb. 1800]</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-894be0ef-f40f-48bb-bbd1-ce476ae86a93"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-9d62a707-23fc-42ca-ba45-65d83ed96fdf">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>&quot;Calendula tripterocarpa&quot;&quot; sec. Duvigneaud, J. (1979)&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>&quot;Calendula tripterocarpa&quot;&quot; sec. Duvigneaud, J. (1979)&quot;</tn:nameComplete>
-    <tcom:publishedIn>&quot;Catalogue provisoire de la flore des Bal�ares [ed. 2] - Soc. �change Pl. Vasc. Eur. Occid. M�dit. 17, Suppl.: 1-43.&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-9d62a707-23fc-42ca-ba45-65d83ed96fdf">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-9d62a707-23fc-42ca-ba45-65d83ed96fdf"/>
-    <tc:nameString>&quot;Calendula tripterocarpa&quot;&quot; sec. Duvigneaud, J. (1979)&quot;</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-9d62a707-23fc-42ca-ba45-65d83ed96fdf"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-138087b9-d280-4531-9300-648318056667">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula micrantha Tineo &amp; Guss.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula micrantha Tineo &amp; Guss.</tn:nameComplete>
-    <tcom:publishedIn>&quot;n Gussone, Fl. Sicul. Syn. 2: 874. 1845&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-138087b9-d280-4531-9300-648318056667">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-138087b9-d280-4531-9300-648318056667"/>
-    <tc:nameString>Calendula micrantha Tineo &amp; Guss.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-138087b9-d280-4531-9300-648318056667"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-28071002-377a-4d1d-bf41-0b5d8b7bd1d4">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Caltha arvensis Vaill.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Caltha arvensis Vaill.</tn:nameComplete>
-    <tcom:publishedIn>in K�nigl. Akad. Wiss. Paris Phys. Abh. 5: 558. 1754</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-28071002-377a-4d1d-bf41-0b5d8b7bd1d4">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-28071002-377a-4d1d-bf41-0b5d8b7bd1d4"/>
-    <tc:nameString>Caltha arvensis Vaill.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-28071002-377a-4d1d-bf41-0b5d8b7bd1d4"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-e2944fdb-95b8-46a8-9e76-943944cf4070">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula sancta L.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula sancta L.</tn:nameComplete>
-    <tcom:publishedIn>&quot;Sp. Pl., ed. 2: 1304. 1763&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-e2944fdb-95b8-46a8-9e76-943944cf4070">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-e2944fdb-95b8-46a8-9e76-943944cf4070"/>
-    <tc:nameString>Calendula sancta L.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-e2944fdb-95b8-46a8-9e76-943944cf4070"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-03816475-31e7-4f61-b0e2-74c084ce27d7">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula sinuata Boiss. &amp; Gaill.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula sinuata Boiss. &amp; Gaill.</tn:nameComplete>
-    <tcom:publishedIn>&quot;in Boissier, Diagn. Pl. Orient., ser. 2, 6: 109. 1859&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-03816475-31e7-4f61-b0e2-74c084ce27d7">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-03816475-31e7-4f61-b0e2-74c084ce27d7"/>
-    <tc:nameString>Calendula sinuata Boiss. &amp; Gaill.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-03816475-31e7-4f61-b0e2-74c084ce27d7"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-f35f4f2e-9ec6-4716-9648-b9467870471e">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula sublanata Rchb. f.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula sublanata Rchb. f.</tn:nameComplete>
-    <tcom:publishedIn>&quot;in Reichenbach, Icon. Fl. Germ. Helv. 15: 99. 1853&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-f35f4f2e-9ec6-4716-9648-b9467870471e">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-f35f4f2e-9ec6-4716-9648-b9467870471e"/>
-    <tc:nameString>Calendula sublanata Rchb. f.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-f35f4f2e-9ec6-4716-9648-b9467870471e"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-6bf29a22-84d6-4c6f-82ac-195c3549e12a">
+<tn:TaxonName rdf:about="#tn-da29bb60-8c09-4ba8-8547-4b78eb565bc3">
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
     <dc:title>Calendula arvensis subsp. sublanata (Rchb. f.) Nyman</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
     <tn:rankString>Subspecies</tn:rankString>
     <tn:nameComplete>Calendula arvensis subsp. sublanata (Rchb. f.) Nyman</tn:nameComplete>
     <tcom:publishedIn>Consp. Fl. Eur.: 398. 1879</tcom:publishedIn>    
 </tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-6bf29a22-84d6-4c6f-82ac-195c3549e12a">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-6bf29a22-84d6-4c6f-82ac-195c3549e12a"/>
+<tc:TaxonConcept rdf:about="#tc-da29bb60-8c09-4ba8-8547-4b78eb565bc3">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-da29bb60-8c09-4ba8-8547-4b78eb565bc3"/>
     <tc:nameString>Calendula arvensis subsp. sublanata (Rchb. f.) Nyman</tc:nameString>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
     <tc:rankString>Subspecies</tc:rankString>
         <tc:hasRelationship>
             <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-6bf29a22-84d6-4c6f-82ac-195c3549e12a"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
+                <tc:fromTaxon rdf:resource="#tc-da29bb60-8c09-4ba8-8547-4b78eb565bc3"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
 </tc:TaxonConcept>
 
-<tn:TaxonName rdf:about="#tn-965da24e-4d30-4612-b3b4-6e4f6b618082">
+<tn:TaxonName rdf:about="#tn-d5dc4c5a-c0f7-4ee6-a63e-798d72c2db24">
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula L.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"/>
-    <tn:rankString>Genus</tn:rankString>
-    <tn:nameComplete>Calendula L.</tn:nameComplete>
-    <tcom:publishedIn>Sp. Pl.: 921. 1753</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-965da24e-4d30-4612-b3b4-6e4f6b618082">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-965da24e-4d30-4612-b3b4-6e4f6b618082"/>
-    <tc:nameString>Calendula L.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus" />
-    <tc:rankString>Genus</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-965da24e-4d30-4612-b3b4-6e4f6b618082"/>
-                <tc:toTaxon rdf:resource="#tc-90d45201-8212-4160-bd9d-26d7e0aaa722"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsChildTaxonOf"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-a2f14ccc-c277-42dd-8235-3ae72ee33621">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis (Vaill.) L.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
+    <dc:title>Calendula macroptera (Rouy) H. J. Coste</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
     <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula arvensis (Vaill.) L.</tn:nameComplete>
-    <tcom:publishedIn>&quot;Sp. Pl., ed. 2: 1303. 1763&quot;</tcom:publishedIn>    
+    <tn:nameComplete>Calendula macroptera (Rouy) H. J. Coste</tn:nameComplete>
+    <tcom:publishedIn>Fl. Descr. France 3: 721. 1906</tcom:publishedIn>    
 </tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-    <tc:nameString>Calendula arvensis (Vaill.) L.</tc:nameString>
+<tc:TaxonConcept rdf:about="#tc-d5dc4c5a-c0f7-4ee6-a63e-798d72c2db24">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-d5dc4c5a-c0f7-4ee6-a63e-798d72c2db24"/>
+    <tc:nameString>Calendula macroptera (Rouy) H. J. Coste</tc:nameString>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
     <tc:rankString>Species</tc:rankString>
         <tc:hasRelationship>
             <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:toTaxon rdf:resource="#tc-965da24e-4d30-4612-b3b4-6e4f6b618082"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsChildTaxonOf"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-90d45201-8212-4160-bd9d-26d7e0aaa722">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendulaceae Cass</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>Tribus</tn:rankString>
-    <tn:nameComplete>Calendulaceae Cass</tn:nameComplete>
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-90d45201-8212-4160-bd9d-26d7e0aaa722">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-90d45201-8212-4160-bd9d-26d7e0aaa722"/>
-    <tc:nameString>Calendulaceae Cass</tc:nameString>
-    <tc:rankString>Tribus</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-90d45201-8212-4160-bd9d-26d7e0aaa722"/>
-                <tc:toTaxon rdf:resource="#tc-2f56bfb5-8d6e-4747-b791-b40ea91880ce"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsChildTaxonOf"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-2e2bb8d9-536c-4e43-b5e4-80efd1c4a2da">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula crista-galli Viv.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula crista-galli Viv.</tn:nameComplete>
-    <tcom:publishedIn>Fl. Libyc. Spec.: 59. 1824</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-2e2bb8d9-536c-4e43-b5e4-80efd1c4a2da">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-2e2bb8d9-536c-4e43-b5e4-80efd1c4a2da"/>
-    <tc:nameString>Calendula crista-galli Viv.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-2e2bb8d9-536c-4e43-b5e4-80efd1c4a2da"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
+                <tc:fromTaxon rdf:resource="#tc-d5dc4c5a-c0f7-4ee6-a63e-798d72c2db24"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
 </tc:TaxonConcept>
 
-<tn:TaxonName rdf:about="#tn-dbcf38a5-78f4-4d64-943d-096dae67ef40">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Tripterus Less.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"/>
-    <tn:rankString>Genus</tn:rankString>
-    <tn:nameComplete>Tripterus Less.</tn:nameComplete>
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-dbcf38a5-78f4-4d64-943d-096dae67ef40">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-dbcf38a5-78f4-4d64-943d-096dae67ef40"/>
-    <tc:nameString>Tripterus Less.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus" />
-    <tc:rankString>Genus</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-dbcf38a5-78f4-4d64-943d-096dae67ef40"/>
-                <tc:toTaxon rdf:resource="#tc-90d45201-8212-4160-bd9d-26d7e0aaa722"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsChildTaxonOf"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-3929b8da-737a-476b-96b9-cc34eee4a5f6">
+<tn:TaxonName rdf:about="#tn-47a6759b-bdc0-4457-9550-62d29f3c51d8">
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
     <dc:title>Calendula bicolor Raf.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
     <tn:rankString>Species</tn:rankString>
     <tn:nameComplete>Calendula bicolor Raf.</tn:nameComplete>
     <tcom:publishedIn>Caratt. Nuov. Gen.: 82. 1810</tcom:publishedIn>    
 </tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-3929b8da-737a-476b-96b9-cc34eee4a5f6">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-3929b8da-737a-476b-96b9-cc34eee4a5f6"/>
+<tc:TaxonConcept rdf:about="#tc-47a6759b-bdc0-4457-9550-62d29f3c51d8">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-47a6759b-bdc0-4457-9550-62d29f3c51d8"/>
     <tc:nameString>Calendula bicolor Raf.</tc:nameString>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
     <tc:rankString>Species</tc:rankString>
         <tc:hasRelationship>
             <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-3929b8da-737a-476b-96b9-cc34eee4a5f6"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
+                <tc:fromTaxon rdf:resource="#tc-47a6759b-bdc0-4457-9550-62d29f3c51d8"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
 </tc:TaxonConcept>
 
-<tn:TaxonName rdf:about="#tn-fd7b43b5-3a9c-4617-8002-135f69fdb446">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula aegyptiaca Pers.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula aegyptiaca Pers.</tn:nameComplete>
-    <tcom:publishedIn>Syn. Pl. 2: 492. 1807</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-fd7b43b5-3a9c-4617-8002-135f69fdb446">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-fd7b43b5-3a9c-4617-8002-135f69fdb446"/>
-    <tc:nameString>Calendula aegyptiaca Pers.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-fd7b43b5-3a9c-4617-8002-135f69fdb446"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-981f57ad-8715-4479-b676-a6934f3d4b97">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis subsp. micrantha (Tineo &amp; Guss.) Arcang.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
-    <tn:rankString>Subspecies</tn:rankString>
-    <tn:nameComplete>Calendula arvensis subsp. micrantha (Tineo &amp; Guss.) Arcang.</tn:nameComplete>
-    <tcom:publishedIn>&quot;Comp. Fl. Ital., ed. 2: 695. 1894&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-981f57ad-8715-4479-b676-a6934f3d4b97">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-981f57ad-8715-4479-b676-a6934f3d4b97"/>
-    <tc:nameString>Calendula arvensis subsp. micrantha (Tineo &amp; Guss.) Arcang.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
-    <tc:rankString>Subspecies</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-981f57ad-8715-4479-b676-a6934f3d4b97"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-4c35d7e7-f4b1-4cb5-bcfe-36da0f717317">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>&quot;Calendula stellata sec. Willkomm, M&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>&quot;Calendula stellata sec. Willkomm, M&quot;</tn:nameComplete>
-    <tcom:publishedIn>Supplementum prodromi florae hispanicae 2 Stuttgart 1893.</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-4c35d7e7-f4b1-4cb5-bcfe-36da0f717317">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-4c35d7e7-f4b1-4cb5-bcfe-36da0f717317"/>
-    <tc:nameString>&quot;Calendula stellata sec. Willkomm, M&quot;</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-4c35d7e7-f4b1-4cb5-bcfe-36da0f717317"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-c007019b-3038-48a9-ad72-285a8479a322">
+<tn:TaxonName rdf:about="#tn-69db96f2-0061-499f-864b-a64108792e72">
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
     <dc:title>&quot;Calendula tripterocarpa sec. Gamisans, J.&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
     <tn:rankString>NULL</tn:rankString>
     <tn:nameComplete>&quot;Calendula tripterocarpa sec. Gamisans, J.&quot;</tn:nameComplete>
     <tcom:publishedIn>Catalogue des plantes vasculaires de la Corse Ajaccio 1985</tcom:publishedIn>    
 </tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-c007019b-3038-48a9-ad72-285a8479a322">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-c007019b-3038-48a9-ad72-285a8479a322"/>
+<tc:TaxonConcept rdf:about="#tc-69db96f2-0061-499f-864b-a64108792e72">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-69db96f2-0061-499f-864b-a64108792e72"/>
     <tc:nameString>&quot;Calendula tripterocarpa sec. Gamisans, J.&quot;</tc:nameString>
     <tc:rankString>NULL</tc:rankString>
         <tc:hasRelationship>
             <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-c007019b-3038-48a9-ad72-285a8479a322"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
+                <tc:fromTaxon rdf:resource="#tc-69db96f2-0061-499f-864b-a64108792e72"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
 </tc:TaxonConcept>
 
-<tn:TaxonName rdf:about="#tn-33b9fd19-a467-4db1-9a22-1e5961ae26e0">
+<tn:TaxonName rdf:about="#tn-182c2098-6eb5-4502-b771-5a26b978fc70">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula gracilis DC.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula gracilis DC.</tn:nameComplete>
+    <tcom:publishedIn>Prodr. 6: 453. 1838</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-182c2098-6eb5-4502-b771-5a26b978fc70">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-182c2098-6eb5-4502-b771-5a26b978fc70"/>
+    <tc:nameString>Calendula gracilis DC.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-182c2098-6eb5-4502-b771-5a26b978fc70"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-1eafffca-50bc-4476-9d86-e34c7cc67cad">
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
     <dc:title>&quot;Calendula stellata sec. Willkomm, M. &amp; Lange J.&quot;</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
     <tn:rankString>NULL</tn:rankString>
     <tn:nameComplete>&quot;Calendula stellata sec. Willkomm, M. &amp; Lange J.&quot;</tn:nameComplete>
     <tcom:publishedIn>Prodromus florae hispanicae 2 Stuttgart 1865-1870.</tcom:publishedIn>    
 </tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-33b9fd19-a467-4db1-9a22-1e5961ae26e0">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-33b9fd19-a467-4db1-9a22-1e5961ae26e0"/>
+<tc:TaxonConcept rdf:about="#tc-1eafffca-50bc-4476-9d86-e34c7cc67cad">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-1eafffca-50bc-4476-9d86-e34c7cc67cad"/>
     <tc:nameString>&quot;Calendula stellata sec. Willkomm, M. &amp; Lange J.&quot;</tc:nameString>
     <tc:rankString>NULL</tc:rankString>
         <tc:hasRelationship>
             <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-33b9fd19-a467-4db1-9a22-1e5961ae26e0"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
+                <tc:fromTaxon rdf:resource="#tc-1eafffca-50bc-4476-9d86-e34c7cc67cad"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
 </tc:TaxonConcept>
 
-<tn:TaxonName rdf:about="#tn-637e8aaf-2cd7-42e8-9323-8f799890b917">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula persica C. A. Mey.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula persica C. A. Mey.</tn:nameComplete>
-    <tcom:publishedIn>Verz. Pfl. Casp. Meer.: 72. 1831</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-637e8aaf-2cd7-42e8-9323-8f799890b917">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-637e8aaf-2cd7-42e8-9323-8f799890b917"/>
-    <tc:nameString>Calendula persica C. A. Mey.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-637e8aaf-2cd7-42e8-9323-8f799890b917"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-1ed95628-d75d-4bca-83f2-ab55def08342">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis subsp. communis</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rankString>NULL</tn:rankString>
-    <tn:nameComplete>Calendula arvensis subsp. communis</tn:nameComplete>
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-1ed95628-d75d-4bca-83f2-ab55def08342">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-1ed95628-d75d-4bca-83f2-ab55def08342"/>
-    <tc:nameString>Calendula arvensis subsp. communis</tc:nameString>
-    <tc:rankString>NULL</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-1ed95628-d75d-4bca-83f2-ab55def08342"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-34d7fdf7-875f-4899-8b09-2af702e5cb14">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis subsp. hydruntina (Fiori) Lanza</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
-    <tn:rankString>Subspecies</tn:rankString>
-    <tn:nameComplete>Calendula arvensis subsp. hydruntina (Fiori) Lanza</tn:nameComplete>
-    <tcom:publishedIn>in Atti Reale Accad. Sci. Lett. Belle Arti Palermo 11: 113. 1919</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-34d7fdf7-875f-4899-8b09-2af702e5cb14">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-34d7fdf7-875f-4899-8b09-2af702e5cb14"/>
-    <tc:nameString>Calendula arvensis subsp. hydruntina (Fiori) Lanza</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
-    <tc:rankString>Subspecies</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-34d7fdf7-875f-4899-8b09-2af702e5cb14"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-9c86b5f3-49aa-476e-8b1a-be66fffb7b4c">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Osteospermum vaillantii (Decne.) Norl.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Osteospermum vaillantii (Decne.) Norl.</tn:nameComplete>
-    <tcom:publishedIn>Stud. Calend.: 305. 1943</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-9c86b5f3-49aa-476e-8b1a-be66fffb7b4c">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-9c86b5f3-49aa-476e-8b1a-be66fffb7b4c"/>
-    <tc:nameString>Osteospermum vaillantii (Decne.) Norl.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-9c86b5f3-49aa-476e-8b1a-be66fffb7b4c"/>
-                <tc:toTaxon rdf:resource="#tc-adac522b-17f5-401d-aa52-1804ce596d24"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-bbc8b0c5-81eb-4135-93ed-672dd82240a4">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula alata Rech. f.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Calendula alata Rech. f.</tn:nameComplete>
-    <tcom:publishedIn>Fl. Iran. 164: 104. 1989</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-bbc8b0c5-81eb-4135-93ed-672dd82240a4">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-bbc8b0c5-81eb-4135-93ed-672dd82240a4"/>
-    <tc:nameString>Calendula alata Rech. f.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-bbc8b0c5-81eb-4135-93ed-672dd82240a4"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-adac522b-17f5-401d-aa52-1804ce596d24">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Tripterus vaillantii Decne.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
-    <tn:rankString>Species</tn:rankString>
-    <tn:nameComplete>Tripterus vaillantii Decne.</tn:nameComplete>
-    <tcom:publishedIn>&quot;in Ann. Sci. Nat., Bot., ser. 2, 2: 260. 1834&quot;</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-adac522b-17f5-401d-aa52-1804ce596d24">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-adac522b-17f5-401d-aa52-1804ce596d24"/>
-    <tc:nameString>Tripterus vaillantii Decne.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
-    <tc:rankString>Species</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-adac522b-17f5-401d-aa52-1804ce596d24"/>
-                <tc:toTaxon rdf:resource="#tc-dbcf38a5-78f4-4d64-943d-096dae67ef40"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsChildTaxonOf"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-4c963174-eccf-4945-a8eb-2653eaf72008">
-    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
-    <dc:title>Calendula arvensis subsp. malacitana (Boiss. &amp; Reut.) Cout.</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
-    <tn:rankString>Subspecies</tn:rankString>
-    <tn:nameComplete>Calendula arvensis subsp. malacitana (Boiss. &amp; Reut.) Cout.</tn:nameComplete>
-    <tcom:publishedIn>Fl. Portugal: 642. 1913</tcom:publishedIn>    
-</tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-4c963174-eccf-4945-a8eb-2653eaf72008">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-4c963174-eccf-4945-a8eb-2653eaf72008"/>
-    <tc:nameString>Calendula arvensis subsp. malacitana (Boiss. &amp; Reut.) Cout.</tc:nameString>
-    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
-    <tc:rankString>Subspecies</tc:rankString>
-        <tc:hasRelationship>
-            <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-4c963174-eccf-4945-a8eb-2653eaf72008"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
-                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
-            </tc:Relationship>
-        </tc:hasRelationship>
-</tc:TaxonConcept>
-
-<tn:TaxonName rdf:about="#tn-921cb5c2-40f8-4424-b928-9ce8ed399c05">
+<tn:TaxonName rdf:about="#tn-8413e2a5-1480-494d-87fa-41fdaead6477">
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
     <dc:title>Calendula officinalis subsp. arvensis (Vaill.) Fiori</dc:title>
-    <dct:modified>2009-02-10T06:22:06Z</dct:modified>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
     <tn:rankString>Subspecies</tn:rankString>
     <tn:nameComplete>Calendula officinalis subsp. arvensis (Vaill.) Fiori</tn:nameComplete>
     <tcom:publishedIn>&quot;in Fiori &amp; Paoletti, Fl. Italia 3: 297. 1904&quot;</tcom:publishedIn>    
 </tn:TaxonName>        
-<tc:TaxonConcept rdf:about="#tc-921cb5c2-40f8-4424-b928-9ce8ed399c05">
-    <tc:accordingToString>Euro+Med Cichoriaea</tc:accordingToString>
-    <tc:hasName rdf:resource="#tn-921cb5c2-40f8-4424-b928-9ce8ed399c05"/>
+<tc:TaxonConcept rdf:about="#tc-8413e2a5-1480-494d-87fa-41fdaead6477">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-8413e2a5-1480-494d-87fa-41fdaead6477"/>
     <tc:nameString>Calendula officinalis subsp. arvensis (Vaill.) Fiori</tc:nameString>
     <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
     <tc:rankString>Subspecies</tc:rankString>
         <tc:hasRelationship>
             <tc:Relationship>
-                <tc:fromTaxon rdf:resource="#tc-921cb5c2-40f8-4424-b928-9ce8ed399c05"/>
-                <tc:toTaxon rdf:resource="#tc-a2f14ccc-c277-42dd-8235-3ae72ee33621"/>
+                <tc:fromTaxon rdf:resource="#tc-8413e2a5-1480-494d-87fa-41fdaead6477"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-901b5766-ae82-4744-ad32-d7ece42deeef">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>&quot;Calendula tripterocarpa sec. Pignatti, S.&quot;</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>&quot;Calendula tripterocarpa sec. Pignatti, S.&quot;</tn:nameComplete>
+    <tcom:publishedIn>Flora d&apos;Italia 3 Bologna 1982.</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-901b5766-ae82-4744-ad32-d7ece42deeef">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-901b5766-ae82-4744-ad32-d7ece42deeef"/>
+    <tc:nameString>&quot;Calendula tripterocarpa sec. Pignatti, S.&quot;</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-901b5766-ae82-4744-ad32-d7ece42deeef"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-264d521f-7a29-48b2-bab9-e1b8b81f898e">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula malacitana Boiss. &amp; Reut.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula malacitana Boiss. &amp; Reut.</tn:nameComplete>
+    <tcom:publishedIn>Pugill. Pl. Afr. Bor. Hispan.: 61. 1852</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-264d521f-7a29-48b2-bab9-e1b8b81f898e">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-264d521f-7a29-48b2-bab9-e1b8b81f898e"/>
+    <tc:nameString>Calendula malacitana Boiss. &amp; Reut.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-264d521f-7a29-48b2-bab9-e1b8b81f898e"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-0be4e8f2-7cfe-4bea-8426-049afb4ce3f3">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula crista-galli Viv.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula crista-galli Viv.</tn:nameComplete>
+    <tcom:publishedIn>Fl. Libyc. Spec.: 59. 1824</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-0be4e8f2-7cfe-4bea-8426-049afb4ce3f3">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-0be4e8f2-7cfe-4bea-8426-049afb4ce3f3"/>
+    <tc:nameString>Calendula crista-galli Viv.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-0be4e8f2-7cfe-4bea-8426-049afb4ce3f3"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-fe2e8e19-7283-423f-a1bb-59d4ca6a3749">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula ceratosperma Viv.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula ceratosperma Viv.</tn:nameComplete>
+    <tcom:publishedIn>Fl. Libyc. Spec.: 59. 1824</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-fe2e8e19-7283-423f-a1bb-59d4ca6a3749">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-fe2e8e19-7283-423f-a1bb-59d4ca6a3749"/>
+    <tc:nameString>Calendula ceratosperma Viv.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-fe2e8e19-7283-423f-a1bb-59d4ca6a3749"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-e86ae835-c8a6-4b7e-9091-cce982cb74e8">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. aegyptiaca (Pers.) Hayek</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. aegyptiaca (Pers.) Hayek</tn:nameComplete>
+    <tcom:publishedIn>in Repert. Spec. Nov. Regni Veg. Beih. 30(2): 685. 1931</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-e86ae835-c8a6-4b7e-9091-cce982cb74e8">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-e86ae835-c8a6-4b7e-9091-cce982cb74e8"/>
+    <tc:nameString>Calendula arvensis subsp. aegyptiaca (Pers.) Hayek</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-e86ae835-c8a6-4b7e-9091-cce982cb74e8"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-a6971300-5cda-44fc-951a-d29934811919">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>&quot;Calendula stellata sec. Willkomm, M&quot;</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>&quot;Calendula stellata sec. Willkomm, M&quot;</tn:nameComplete>
+    <tcom:publishedIn>Supplementum prodromi florae hispanicae 2 Stuttgart 1893.</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-a6971300-5cda-44fc-951a-d29934811919">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-a6971300-5cda-44fc-951a-d29934811919"/>
+    <tc:nameString>&quot;Calendula stellata sec. Willkomm, M&quot;</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-a6971300-5cda-44fc-951a-d29934811919"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-61f1d7b0-8af9-4201-9ebf-ced3047aee2b">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula L.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"/>
+    <tn:rankString>Genus</tn:rankString>
+    <tn:nameComplete>Calendula L.</tn:nameComplete>
+    <tcom:publishedIn>Sp. Pl.: 921. 1753</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-61f1d7b0-8af9-4201-9ebf-ced3047aee2b">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-61f1d7b0-8af9-4201-9ebf-ced3047aee2b"/>
+    <tc:nameString>Calendula L.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus" />
+    <tc:rankString>Genus</tc:rankString>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-52a5ea8a-2d5f-4d37-9f77-4ec0b61a0853">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Tripterus vaillantii Decne.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Tripterus vaillantii Decne.</tn:nameComplete>
+    <tcom:publishedIn>&quot;in Ann. Sci. Nat., Bot., ser. 2, 2: 260. 1834&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-52a5ea8a-2d5f-4d37-9f77-4ec0b61a0853">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-52a5ea8a-2d5f-4d37-9f77-4ec0b61a0853"/>
+    <tc:nameString>Tripterus vaillantii Decne.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-801cb82a-3663-4010-a10a-5bc94e7d9d9c">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. micrantha (Tineo &amp; Guss.) Arcang.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. micrantha (Tineo &amp; Guss.) Arcang.</tn:nameComplete>
+    <tcom:publishedIn>&quot;Comp. Fl. Ital., ed. 2: 695. 1894&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-801cb82a-3663-4010-a10a-5bc94e7d9d9c">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-801cb82a-3663-4010-a10a-5bc94e7d9d9c"/>
+    <tc:nameString>Calendula arvensis subsp. micrantha (Tineo &amp; Guss.) Arcang.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-801cb82a-3663-4010-a10a-5bc94e7d9d9c"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-bd9dedcf-6065-4d72-a1d6-5ea1e6053c38">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendulaceae Cass</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>Tribus</tn:rankString>
+    <tn:nameComplete>Calendulaceae Cass</tn:nameComplete>
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-bd9dedcf-6065-4d72-a1d6-5ea1e6053c38">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-bd9dedcf-6065-4d72-a1d6-5ea1e6053c38"/>
+    <tc:nameString>Calendulaceae Cass</tc:nameString>
+    <tc:rankString>Tribus</tc:rankString>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-58204bf2-0537-42a5-9e71-c1dffe3c853f">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula parviflora Raf. [non Thunb. 1800]</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula parviflora Raf. [non Thunb. 1800]</tn:nameComplete>
+    <tcom:publishedIn>Caratt. Nuov. Gen.: 83. 1810</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-58204bf2-0537-42a5-9e71-c1dffe3c853f">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-58204bf2-0537-42a5-9e71-c1dffe3c853f"/>
+    <tc:nameString>Calendula parviflora Raf. [non Thunb. 1800]</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-58204bf2-0537-42a5-9e71-c1dffe3c853f"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-189eeaa9-0c7a-4120-8720-5328913776cb">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula persica C. A. Mey.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula persica C. A. Mey.</tn:nameComplete>
+    <tcom:publishedIn>Verz. Pfl. Casp. Meer.: 72. 1831</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-189eeaa9-0c7a-4120-8720-5328913776cb">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-189eeaa9-0c7a-4120-8720-5328913776cb"/>
+    <tc:nameString>Calendula persica C. A. Mey.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-189eeaa9-0c7a-4120-8720-5328913776cb"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-ae52dd46-ec5c-4a35-be1a-4f599cc60d4b">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula aegyptiaca Pers.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula aegyptiaca Pers.</tn:nameComplete>
+    <tcom:publishedIn>Syn. Pl. 2: 492. 1807</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-ae52dd46-ec5c-4a35-be1a-4f599cc60d4b">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-ae52dd46-ec5c-4a35-be1a-4f599cc60d4b"/>
+    <tc:nameString>Calendula aegyptiaca Pers.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-ae52dd46-ec5c-4a35-be1a-4f599cc60d4b"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-a30e9c31-0454-4d94-9829-303132a1932a">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>&quot;Calendula tripterocarpa sec. Tutin, T. G., Heywood, V. H., Burges, N. A., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.&quot;</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>&quot;Calendula tripterocarpa sec. Tutin, T. G., Heywood, V. H., Burges, N. A., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.&quot;</tn:nameComplete>
+    <tcom:publishedIn>&quot;Flora europaea 4 [Tutin, T. G., Heywood, V. H., Burges, N. A., Moore, D. M., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.] Cambridge University Press Cambridge 1976.&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-a30e9c31-0454-4d94-9829-303132a1932a">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-a30e9c31-0454-4d94-9829-303132a1932a"/>
+    <tc:nameString>&quot;Calendula tripterocarpa sec. Tutin, T. G., Heywood, V. H., Burges, N. A., Valentine, D. H., Walters, S. M. &amp; Webb, D. A.&quot;</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-a30e9c31-0454-4d94-9829-303132a1932a"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-a24ba527-ef87-4a7e-9ace-9923b01e1c98">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula echinata DC.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula echinata DC.</tn:nameComplete>
+    <tcom:publishedIn>Prodr. 6: 453. 1838</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-a24ba527-ef87-4a7e-9ace-9923b01e1c98">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-a24ba527-ef87-4a7e-9ace-9923b01e1c98"/>
+    <tc:nameString>Calendula echinata DC.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-a24ba527-ef87-4a7e-9ace-9923b01e1c98"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-f18adb08-b889-41e1-bbda-4047063c76c2">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Tripterus Less.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"/>
+    <tn:rankString>Genus</tn:rankString>
+    <tn:nameComplete>Tripterus Less.</tn:nameComplete>
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-f18adb08-b889-41e1-bbda-4047063c76c2">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-f18adb08-b889-41e1-bbda-4047063c76c2"/>
+    <tc:nameString>Tripterus Less.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus" />
+    <tc:rankString>Genus</tc:rankString>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-2e68b748-5643-4c6e-a7a2-6938405c9769">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis (Vaill.) L.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula arvensis (Vaill.) L.</tn:nameComplete>
+    <tcom:publishedIn>&quot;Sp. Pl., ed. 2: 1303. 1763&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+    <tc:nameString>Calendula arvensis (Vaill.) L.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-6858e498-e73b-4d49-979a-6059f9028d40">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula persica subsp. gracilis</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>Calendula persica subsp. gracilis</tn:nameComplete>
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-6858e498-e73b-4d49-979a-6059f9028d40">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-6858e498-e73b-4d49-979a-6059f9028d40"/>
+    <tc:nameString>Calendula persica subsp. gracilis</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-6858e498-e73b-4d49-979a-6059f9028d40"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-524dec72-1006-4d52-8bdd-62265b5af3aa">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula sancta subsp. crista-galli (Viv.) Gallego &amp; Talavera</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula sancta subsp. crista-galli (Viv.) Gallego &amp; Talavera</tn:nameComplete>
+    <tcom:publishedIn>in Lagascalia 11: 103. 1983</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-524dec72-1006-4d52-8bdd-62265b5af3aa">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-524dec72-1006-4d52-8bdd-62265b5af3aa"/>
+    <tc:nameString>Calendula sancta subsp. crista-galli (Viv.) Gallego &amp; Talavera</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-524dec72-1006-4d52-8bdd-62265b5af3aa"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-c8e87f20-868c-4a48-86f6-c7f1533bff59">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. communis</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. communis</tn:nameComplete>
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-c8e87f20-868c-4a48-86f6-c7f1533bff59">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-c8e87f20-868c-4a48-86f6-c7f1533bff59"/>
+    <tc:nameString>Calendula arvensis subsp. communis</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-c8e87f20-868c-4a48-86f6-c7f1533bff59"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-55a5798c-f391-4a23-aeb6-4af974fad672">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula officinalis var. hydruntina Fiori</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Variety"/>
+    <tn:rankString>Variety</tn:rankString>
+    <tn:nameComplete>Calendula officinalis var. hydruntina Fiori</tn:nameComplete>
+    <tcom:publishedIn>&quot;in Fiori &amp; Paoletti, Fl. Italia 3: 298. 1904&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-55a5798c-f391-4a23-aeb6-4af974fad672">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-55a5798c-f391-4a23-aeb6-4af974fad672"/>
+    <tc:nameString>Calendula officinalis var. hydruntina Fiori</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Variety" />
+    <tc:rankString>Variety</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-55a5798c-f391-4a23-aeb6-4af974fad672"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-32ecbd0c-a485-4ef6-9727-b921261fdb0a">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Osteospermum vaillantii (Decne.) Norl.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Osteospermum vaillantii (Decne.) Norl.</tn:nameComplete>
+    <tcom:publishedIn>Stud. Calend.: 305. 1943</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-32ecbd0c-a485-4ef6-9727-b921261fdb0a">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-32ecbd0c-a485-4ef6-9727-b921261fdb0a"/>
+    <tc:nameString>Osteospermum vaillantii (Decne.) Norl.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-32ecbd0c-a485-4ef6-9727-b921261fdb0a"/>
+                <tc:toTaxon rdf:resource="#tc-52a5ea8a-2d5f-4d37-9f77-4ec0b61a0853"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-1ffc582e-027f-41ac-ae75-8bb4c673b5b0">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula micrantha Tineo &amp; Guss.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula micrantha Tineo &amp; Guss.</tn:nameComplete>
+    <tcom:publishedIn>&quot;n Gussone, Fl. Sicul. Syn. 2: 874. 1845&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-1ffc582e-027f-41ac-ae75-8bb4c673b5b0">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-1ffc582e-027f-41ac-ae75-8bb4c673b5b0"/>
+    <tc:nameString>Calendula micrantha Tineo &amp; Guss.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-1ffc582e-027f-41ac-ae75-8bb4c673b5b0"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-337a37c8-3ded-4925-86a0-33b52008fd1a">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. bicolor (Raf.) Nyman</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. bicolor (Raf.) Nyman</tn:nameComplete>
+    <tcom:publishedIn>Consp. Fl. Eur.: 398. 1879</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-337a37c8-3ded-4925-86a0-33b52008fd1a">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-337a37c8-3ded-4925-86a0-33b52008fd1a"/>
+    <tc:nameString>Calendula arvensis subsp. bicolor (Raf.) Nyman</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-337a37c8-3ded-4925-86a0-33b52008fd1a"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-d571ace4-2493-420c-afcd-d605a168f4a1">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. macroptera Rouy</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. macroptera Rouy</tn:nameComplete>
+    <tcom:publishedIn>Fl. France 8: 355. 1903</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-d571ace4-2493-420c-afcd-d605a168f4a1">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-d571ace4-2493-420c-afcd-d605a168f4a1"/>
+    <tc:nameString>Calendula arvensis subsp. macroptera Rouy</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-d571ace4-2493-420c-afcd-d605a168f4a1"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-237a727d-88ef-4ffb-a119-0fb93db2c4c2">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula sublanata Rchb. f.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula sublanata Rchb. f.</tn:nameComplete>
+    <tcom:publishedIn>&quot;in Reichenbach, Icon. Fl. Germ. Helv. 15: 99. 1853&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-237a727d-88ef-4ffb-a119-0fb93db2c4c2">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-237a727d-88ef-4ffb-a119-0fb93db2c4c2"/>
+    <tc:nameString>Calendula sublanata Rchb. f.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-237a727d-88ef-4ffb-a119-0fb93db2c4c2"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-381fcf12-466b-416f-b158-c0acc76df8fb">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula alata Rech. f.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula alata Rech. f.</tn:nameComplete>
+    <tcom:publishedIn>Fl. Iran. 164: 104. 1989</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-381fcf12-466b-416f-b158-c0acc76df8fb">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-381fcf12-466b-416f-b158-c0acc76df8fb"/>
+    <tc:nameString>Calendula alata Rech. f.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-381fcf12-466b-416f-b158-c0acc76df8fb"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-f9900fe3-09ad-4955-b3ca-e278246078c1">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. hydruntina (Fiori) Lanza</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. hydruntina (Fiori) Lanza</tn:nameComplete>
+    <tcom:publishedIn>in Atti Reale Accad. Sci. Lett. Belle Arti Palermo 11: 113. 1919</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-f9900fe3-09ad-4955-b3ca-e278246078c1">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-f9900fe3-09ad-4955-b3ca-e278246078c1"/>
+    <tc:nameString>Calendula arvensis subsp. hydruntina (Fiori) Lanza</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-f9900fe3-09ad-4955-b3ca-e278246078c1"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-1c68186f-2498-491c-8c73-989ea7f33302">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>&quot;Calendula tripterocarpa&quot;&quot; sec. Duvigneaud, J. (1979)&quot;</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>&quot;Calendula tripterocarpa&quot;&quot; sec. Duvigneaud, J. (1979)&quot;</tn:nameComplete>
+    <tcom:publishedIn>&quot;Catalogue provisoire de la flore des Bal�ares [ed. 2] - Soc. �change Pl. Vasc. Eur. Occid. M�dit. 17, Suppl.: 1-43.&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-1c68186f-2498-491c-8c73-989ea7f33302">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-1c68186f-2498-491c-8c73-989ea7f33302"/>
+    <tc:nameString>&quot;Calendula tripterocarpa&quot;&quot; sec. Duvigneaud, J. (1979)&quot;</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-1c68186f-2498-491c-8c73-989ea7f33302"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-dbccc04e-d6eb-4482-9b12-0f7d797c17e7">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula arvensis subsp. malacitana (Boiss. &amp; Reut.) Cout.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"/>
+    <tn:rankString>Subspecies</tn:rankString>
+    <tn:nameComplete>Calendula arvensis subsp. malacitana (Boiss. &amp; Reut.) Cout.</tn:nameComplete>
+    <tcom:publishedIn>Fl. Portugal: 642. 1913</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-dbccc04e-d6eb-4482-9b12-0f7d797c17e7">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-dbccc04e-d6eb-4482-9b12-0f7d797c17e7"/>
+    <tc:nameString>Calendula arvensis subsp. malacitana (Boiss. &amp; Reut.) Cout.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies" />
+    <tc:rankString>Subspecies</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-dbccc04e-d6eb-4482-9b12-0f7d797c17e7"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-069d6712-f7bd-48e5-ad0a-01f7d453ea4b">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>&quot;Calendula tripterocarpa sec. Jeanmonod, D. &amp; Burdet, H. M.&quot;</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rankString>NULL</tn:rankString>
+    <tn:nameComplete>&quot;Calendula tripterocarpa sec. Jeanmonod, D. &amp; Burdet, H. M.&quot;</tn:nameComplete>
+    <tcom:publishedIn>&quot;Compl�ments au prodrome de la flore corse. Annexe 3 [Gamisans, J. &amp; Jeanmonod, D.] Gen�ve 1993.&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-069d6712-f7bd-48e5-ad0a-01f7d453ea4b">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-069d6712-f7bd-48e5-ad0a-01f7d453ea4b"/>
+    <tc:nameString>&quot;Calendula tripterocarpa sec. Jeanmonod, D. &amp; Burdet, H. M.&quot;</tc:nameString>
+    <tc:rankString>NULL</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-069d6712-f7bd-48e5-ad0a-01f7d453ea4b"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
+                <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
+            </tc:Relationship>
+        </tc:hasRelationship>
+</tc:TaxonConcept>
+
+<tn:TaxonName rdf:about="#tn-4615f71a-35d3-4bba-9070-e7a87f8cc254">
+    <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#icbn"/>
+    <dc:title>Calendula sinuata Boiss. &amp; Gaill.</dc:title>
+    <dct:modified>2009-02-10T08:14:44Z</dct:modified>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"/>
+    <tn:rankString>Species</tn:rankString>
+    <tn:nameComplete>Calendula sinuata Boiss. &amp; Gaill.</tn:nameComplete>
+    <tcom:publishedIn>&quot;in Boissier, Diagn. Pl. Orient., ser. 2, 6: 109. 1859&quot;</tcom:publishedIn>    
+</tn:TaxonName>        
+<tc:TaxonConcept rdf:about="#tc-4615f71a-35d3-4bba-9070-e7a87f8cc254">
+    <tc:accordingToString>Euro+Med Calendula</tc:accordingToString>
+    <tc:hasName rdf:resource="#tn-4615f71a-35d3-4bba-9070-e7a87f8cc254"/>
+    <tc:nameString>Calendula sinuata Boiss. &amp; Gaill.</tc:nameString>
+    <tn:rank rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonRank#Species" />
+    <tc:rankString>Species</tc:rankString>
+        <tc:hasRelationship>
+            <tc:Relationship>
+                <tc:fromTaxon rdf:resource="#tc-4615f71a-35d3-4bba-9070-e7a87f8cc254"/>
+                <tc:toTaxon rdf:resource="#tc-2e68b748-5643-4c6e-a7a2-6938405c9769"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
