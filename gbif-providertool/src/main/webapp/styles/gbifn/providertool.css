@@ -417,6 +417,37 @@ div.googlemap {
 	margin-top: 5px;
 }
 
+#loginForm fieldset{
+	background-color: #FFF;
+	text-align: center;
+	border-style: none;
+	margin-left: -15px;
+	margin-bottom: 10px;
+	padding-bottom: 15px;
+	width: 400px;
+}
+
+#loginForm fieldset p{
+	font-size: 12px;
+	margin-left: -3px;
+	margin-bottom: 20px;
+}
+
+#loginForm fieldset ul{
+	margin-bottom: 10px;
+}
+
+body#login{
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+
+.bottomText{
+	padding-top: 0px;
+	margin-top: -20px;
+	line-height: 50px;
+}
+
 .taxDetailImg{
 	float: right;
 	text-align: right;
@@ -425,10 +456,68 @@ div.googlemap {
 	margin-top: -8px;
 }
 
-
 #publishingForm{
 	margin-top: 0px;
 }
+
+
+
+#resourceForm fieldset{
+	background-color: #dcf3d9;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-right: 0px;
+}
+
+#resourceForm fieldset .right{
+	margin-right: 15px;
+	margin-top: 3px;
+}
+
+#emlForm fieldset{
+	background-color: #dcf3d9;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 10px;
+	padding-bottom: 30px;
+	padding-top: 15px;
+	padding-right: 0px;
+}
+
+#main fieldset{
+	background-color: #dcf3d9;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 10px;
+	padding-bottom: 30px;
+	padding-top: 15px;
+	padding-right: 10px;
+}
+
+#emlForm fieldset li{
+	font-size: 13px;
+}
+
+#emlForm fieldset .right{
+	margin-right: 15px;
+	margin-top: 3px;
+}
+
+.modifiedh1{
+	margin-top: -13px;
+	margin-bottom: 0px;
+}
+
+.modifiedh1Secondary{
+	margin-top: 20px;
+}
+.explanatiop{
+	margin-top: -7px;
+}
+
 
 /* @group tag cloud */
 .tagCloud{ padding-top: 5px; }

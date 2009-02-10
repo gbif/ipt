@@ -6,11 +6,18 @@
     <meta name="menu" content="Login"/>
     <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/layout-1col.css'/>" />
 </head>
+
+<style>
+	#main{
+		margin-bottom 20px;
+	}
+</style>
+
 <body id="login"/>
 
 <form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
     onsubmit="saveUsername(this);return validateForm(this)">
-<fieldset style="padding-bottom: 0">
+<fieldset>
 <ul>
 <c:if test="${param.error != null}">
     <li class="error">

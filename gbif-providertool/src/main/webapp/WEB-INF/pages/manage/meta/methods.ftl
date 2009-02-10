@@ -4,9 +4,10 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+<h1 class="modifiedh1"><@s.text name="eml.methods"/></h1>
 <@s.form id="emlForm" action="methods" method="get" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.methods"/></legend>
+	<legend><!--<@s.text name="eml.methods"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id}"/>
 
 	<@s.textarea key="eml.methods" required="false" cssClass="text xlarge slim"/>

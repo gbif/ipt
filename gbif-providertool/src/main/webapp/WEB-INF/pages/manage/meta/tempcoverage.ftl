@@ -16,9 +16,10 @@
 
 </head>
 
+<h1 class="modifiedh1"><@s.text name="eml.temporalCoverage"/></h1>
 <@s.form id="emlForm" action="tempcoverage" method="post" validate="false">
 <fieldset>
-	<legend><@s.text name="eml.temporalCoverage"/></legend>
+	<legend><!--<@s.text name="eml.temporalCoverage"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="rights"/>
 
@@ -29,14 +30,15 @@
 		<div class="left" id="endDateDiv">
 			<@s.textfield id="endDate" key="eml.temporalCoverage.end" required="true" cssClass="text medium" />
 		</div>
-		<div class="left">
+		<div class="left" style="widht: 100px">
 			<@s.checkbox key="eml.temporalCoverage.single" value="false" onclick="javascript:toggleSingleDate(this);" />
 		</div>
 	</div>
 </fieldset>
 
+<h1 class="modifiedh1Secondary"><@s.text name="eml.keywords"/></h1>
 <fieldset>
-	<legend><@s.text name="eml.keywords"/></legend>
+	<legend><!--<@s.text name="eml.keywords"/>--></legend>
 	<@s.textarea key="keywords" label="" required="false" cssClass="text xlarge"/>
 </fieldset>
 
