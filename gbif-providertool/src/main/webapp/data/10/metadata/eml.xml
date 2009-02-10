@@ -23,7 +23,7 @@
         <creator>
             <individualName>
                 <givenName></givenName>
-                <surName>Tim Robertson</surName>
+                <surName>David</surName>
             </individualName>
             <organizationName></organizationName>
             <positionName></positionName>
@@ -34,13 +34,13 @@
                 <country></country>
             </address>
             <phone></phone>
-            <electronicMailAddress>tim@mailinator.com</electronicMailAddress>
+            <electronicMailAddress>dremsen@mailinator.com</electronicMailAddress>
             <onlineUrl></onlineUrl>
         </creator>
         <pubDate>2009-02-10</pubDate>
         <language>en</language>
         <abstract>
-            <para>super simple extract</para>
+            <para>Very simple extract from the Euro+Med Cichorieae project</para>
         </abstract>
         <keywordSet>
         </keywordSet>
@@ -50,15 +50,81 @@
         <coverage>
             <geographicCoverage>
                 <geographicDescription></geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-23.906</westBoundingCoordinate>
+                    <eastBoundingCoordinate>34.453</eastBoundingCoordinate>
+                    <northBoundingCoordinate>74.531</northBoundingCoordinate>
+                    <southBoundingCoordinate>27.422</southBoundingCoordinate>
+                </boundingCoordinates>
             </geographicCoverage>
             <taxonomicCoverage>
                 <generalTaxonomicCoverage></generalTaxonomicCoverage>
                 <taxonomicClassification>
-                    <taxonRankName></taxonRankName>
-                    <taxonRankValue></taxonRankValue>
-                    <commonName></commonName>
+                    <taxonRankName>kingdom</taxonRankName>
+                    <taxonRankValue>Asteraceae</taxonRankValue>
+                    <commonName>Plants</commonName>
                 </taxonomicClassification>
                 
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Festuca</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Astragalus</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Faba</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Hieracium</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Compositae</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Cerastium</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Fagaceae</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Polygonaceae</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Liliophyta</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Magnoliophyta</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Papaver</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
+                <taxonomicClassification>
+                    <taxonRankName></taxonRankName>
+                    <taxonRankValue>Poaceae</taxonRankValue>
+                    <commonName></commonName>
+                </taxonomicClassification>
             </taxonomicCoverage>
         </coverage>
         <contact>
