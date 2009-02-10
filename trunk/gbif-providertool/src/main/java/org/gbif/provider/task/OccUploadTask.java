@@ -101,16 +101,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 			extractTaxon(dwc);
 			// extract region
 			extractRegion(dwc);
+			// potentially transform coordinates
+			// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
+			//			dwc.getGeodeticDatum();			
 			
-			
-			// stats
+			// STATISTICS
+			// increase stats counter
+			if (dwc.getLocation().isValid()){
+				// update bbox for resource
+				bbox.expandBox(dwc.getLocation());
+				//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
+				// might need to do a count via SQL after upload is done ...
+				recWithCoordinates++;
+			}
 			if(StringUtils.trimToNull(dwc.getCountry())!=null){
 				recWithCountry++;
 			}
-			if(dwc.getDateCollected()!=null){
+			if(dwc.getCollected()!=null){
 				recWithDate++;
 			}
-			if(dwc.getMinimumElevationInMetersAsInteger()!=null){
+			if(dwc.getElevation()!=null){
 				recWithAltitude++;
 			}
 		}
@@ -127,8 +137,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 				taxon.setMpath(path);
 				taxon.setScientificName(dwc.getScientificName());
 				taxon.setNomenclaturalCode(dwc.getNomenclaturalCode());
-				if (dwc.getInfraspecificRank()!=null){
-					taxon.setRank(dwc.getInfraspecificRank());
+				if (dwc.getTaxonRank()!=null){
+					taxon.setRank(dwc.getTaxonRank());
 				}
 
 				// need to link the new taxon into the taxonomic hierarchy
@@ -286,25 +296,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 		
 		@Override
 		protected void extensionRecordHandler(ExtensionRecord extRec) {
-			// see if darwin core record is affected, e.g. geo extension => coordinates
-			if (extRec.getExtension().getId().equals(DarwinCoreManagerHibernate.GEO_EXTENSION_ID)){
-				// this is the geo extension!
-				DarwinCore dwc = darwinCoreManager.get(extRec.getCoreId());
-				if (darwinCoreManager.updateWithGeoExtension(dwc, extRec)){
-					// update bbox for resource
-					bbox.expandBox(dwc.getLocation());
-					// potentially transform coordinates
-					// FIXME: dont transform coordinates for now as I have no idea how to get the SpatialReferenceID from the datum alone... 
-					//String geodatum=extRec.getPropertyValue(DarwinCoreManagerHibernate.GEODATUM_PROP);
-					darwinCoreManager.save(dwc);
-					// increase stats counter
-					if (dwc.getLocation().isValid()){
-						//FIXME: when multiple extension records for the same dwcore record exist this counter will count all instead of just one!!!
-						// might need to do a count via SQL after upload is done ...
-						recWithCoordinates++;
-					}
-				}
-			}
 		}
 
 		@Override

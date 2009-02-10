@@ -19,6 +19,7 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Point;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.service.AnnotationManager;
@@ -88,6 +89,7 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 		dwc.setLink(rec.getLink());
 		dwc.setLocalId(rec.getLocalId());
 		dwc.setDeleted(false);
+		Point loc = new Point();
 		for (ExtensionProperty prop : rec.getProperties().keySet()){
 			String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
 			if (val!=null && val.length() > prop.getColumnLength() && prop.getColumnLength() > 0){
@@ -95,62 +97,57 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 				annotations.add(annotationManager.annotate(dwc, AnnotationType.TrimmedData, String.format("Exceeding data for property %s [%s] cut off", prop.getName(), prop.getColumnLength())));
 			}
 			String propName = prop.getName();
-			// first try the properties which we try to convert to other data types
+			// first try the properties which we try to persist converted as other data types
 			if(propName.equals("MinimumElevationInMeters")){
 				dwc.setMinimumElevationInMeters(val);
-				Integer typedVal = null;
 				if (val !=null){
 					try {
-						typedVal = Integer.valueOf(val);
-						dwc.setMinimumElevationInMetersAsInteger(typedVal);
+						Double typedVal = Double.valueOf(val);
+						dwc.setElevation(typedVal);
 					} catch (NumberFormatException e) {
-						annotations.add(annotationManager.badDataType(dwc, "MinimumElevationInMeters", "Integer", val));
-					}
-				}
-			}else if(propName.equals("MaximumElevationInMeters")){
-				dwc.setMaximumElevationInMeters(val);
-				Integer typedVal = null;
-				if (val !=null){
-					try {
-						typedVal = Integer.valueOf(val);
-						dwc.setMaximumElevationInMetersAsInteger(typedVal);
-					} catch (NumberFormatException e) {
-						annotations.add(annotationManager.badDataType(dwc, "MaximumElevationInMeters", "Integer", val));
+						annotations.add(annotationManager.badDataType(dwc, "MinimumElevationInMeters", "Double", val));
 					}
 				}
 			}else if(propName.equals("MinimumDepthInMeters")){
 				dwc.setMinimumDepthInMeters(val);
-				Integer typedVal = null;
 				if (val !=null){
 					try {
-						typedVal = Integer.valueOf(val);
-						dwc.setMinimumDepthInMetersAsInteger(typedVal);
+						Double typedVal = Double.valueOf(val);
+						dwc.setDepth(typedVal);
 					} catch (NumberFormatException e) {
-						annotations.add(annotationManager.badDataType(dwc, "MinimumDepthInMeters", "Integer", val));
-					}
-				}
-			}else if(propName.equals("MaximumDepthInMeters")){
-				dwc.setMaximumDepthInMeters(val);
-				Integer typedVal = null;
-				if (val !=null){
-					try {
-						typedVal = Integer.valueOf(val);
-						dwc.setMaximumDepthInMetersAsInteger(typedVal);
-					} catch (NumberFormatException e) {
-						annotations.add(annotationManager.badDataType(dwc, "MaximumDepthInMeters", "Integer", val));
+						annotations.add(annotationManager.badDataType(dwc, "MinimumDepthInMeters", "Double", val));
 					}
 				}
 			}else if(propName.equals("EarliestDateCollected")){
 				dwc.setEarliestDateCollected(val);
-				Date typedVal;
 				if (val !=null){
 					try {						
-						typedVal = Constants.DATE_ISO_FORMAT().parse(val);
-						dwc.setDateCollected(typedVal);
+						Date typedVal = Constants.DATE_ISO_FORMAT().parse(val);
+						dwc.setCollected(typedVal);
 					} catch (ParseException e) {
 						annotations.add(annotationManager.badDataType(dwc, "EarliestDateCollected", "Integer", val));
 					}
 				}				
+			}else if(prop.equals("DecimalLatitude")){
+				if (val !=null){
+					try {
+						loc.setLatitude(Double.valueOf(val));
+					} catch (NumberFormatException e) {
+						annotationManager.badDataType(dwc, "DecimalLatitude", "Double", val);
+					} catch (IllegalArgumentException e) {
+						annotationManager.annotate(dwc, AnnotationType.WrongDatatype, String.format("Latitude value '%s' is out of allowed range", val));
+					}
+				}
+			}else if(prop.equals("DecimalLongitude")){
+				if (val !=null){
+					try {
+						loc.setLongitude(Double.valueOf(val));
+					} catch (NumberFormatException e) {
+						annotationManager.badDataType(dwc, "DecimalLongitude", "Double", val);
+					} catch (IllegalArgumentException e) {
+						annotationManager.annotate(dwc, AnnotationType.WrongDatatype, String.format("Longitude value '%s' is out of allowed range", val));
+					}
+				}
 			}else if(propName.equals("Class")){
 				// stupid case. property is called Classs because Class is a reserved word in java...
 				dwc.setClasss(val);
@@ -160,6 +157,49 @@ public class CoreRecordFactoryImpl implements CoreRecordFactory {
 					log.warn("Can't set unknown property DarwinCore."+propName);
 				}
 			}
+			
+			
+			// now just check types and potentially annotate
+			if (val !=null){
+				for (String p : DarwinCore.INTEGER_PROPERTIES){
+					if(propName.equalsIgnoreCase(p)){
+						Integer typedVal = null;
+						try {
+							typedVal = Integer.valueOf(val);
+						} catch (NumberFormatException e) {
+							annotations.add(annotationManager.badDataType(dwc, p, "Integer", val));
+						}
+					}
+				}
+				for (String p : DarwinCore.DOUBLE_PROPERTIES){
+					if(propName.equalsIgnoreCase(p)){
+						Double typedVal = null;
+						try {
+							typedVal = Double.valueOf(val);
+						} catch (NumberFormatException e) {
+							annotations.add(annotationManager.badDataType(dwc, p, "Double", val));
+						}
+					}
+				}
+				for (String p : DarwinCore.DATE_PROPERTIES){
+					if(propName.equalsIgnoreCase(p)){
+						try {
+							Date typedVal = Constants.DATE_ISO_FORMAT().parse(val);
+						} catch (ParseException e) {
+							annotations.add(annotationManager.badDataType(dwc, p, "ISO Date", val));
+						}
+					}
+				}
+				for (String p : DarwinCore.TOKEN_PROPERTIES){
+					if(propName.equalsIgnoreCase(p) && StringUtils.trimToEmpty(val).contains(" ")){
+						annotations.add(annotationManager.badDataType(dwc, p, "Monominal", val));
+					}
+				}
+			}
+		}
+		// persist only valid localities
+		if (loc.isValid()){
+			dwc.setLocation(loc);
 		}
 		return dwc;
 	}
