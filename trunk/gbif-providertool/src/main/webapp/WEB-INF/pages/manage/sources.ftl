@@ -22,8 +22,9 @@ Readily supported formats can be <a href="">found here</a>.
 If your data does not exactly match those formats you have the option to configure simple transformations and adjustments in the next configuration step.
 </p>
 
-<fieldset>
-<legend><@s.text name="sources.filesources"/></legend>
+<h2 class="modifiedh2"><@s.text name="sources.filesources"/></h2>
+<fieldset class="noBottomMargin">
+<legend><!--<@s.text name="sources.filesources"/>--></legend>
 	<@s.iterator value="fileSources" status="stat">
 	<@s.form action="saveSource" method="post">
 	  <@s.hidden key="resource_id"/>
@@ -46,7 +47,7 @@ If your data does not exactly match those formats you have the option to configu
 	</@s.form>
 	</@s.iterator>
 	
-	<div class="break">
+	<div class="break2">
 	  <@s.form action="uploadSource" enctype="multipart/form-data" method="post">
 		<@s.hidden key="resource_id"/>
 		<div class="left">
@@ -69,8 +70,9 @@ If your data does not exactly match those formats you have the option to configu
 	The IPT can pull data from those databases when updating the internal cache.
 </p>
 </div>
+<h2 class="modifiedh2"><@s.text name="sources.sqlsources"/></h2>
 <fieldset>
-<legend><@s.text name="sources.sqlsources"/></legend>
+<legend><!--<@s.text name="sources.sqlsources"/>--></legend>
 	<div>
 		<@s.form action="editConnection" method="get">
 		  <@s.hidden key="resource_id"/>

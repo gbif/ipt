@@ -105,3 +105,8 @@ td {
 	text-align: right;
 	margin-top: -10px;	
 }
+
+.table th.sorted{
+	background-color: #9ab9a3;
+	color: #333333;
+}

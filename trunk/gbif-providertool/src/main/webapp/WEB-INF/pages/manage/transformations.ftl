@@ -12,17 +12,18 @@ function sorry(){
 
 </head>
 
-<div class="separator"></div>
+<!--<div class="separator"></div>-->
 
-<p>
+<p class="explanatiop">
 Transformations will allow you to adjust your data according to certain patterns found frequently in data structures before it gets imported into the IPT cache.
 Each transformation results in a new view on your source data that can be used later on to define the final mappings to the IPT data model.<br/>
 Common data formats are preconfigured, so if you happen to have your data in these formats select the matching preconfiguration.
 Otherwise you can always configure you own set of transformations. 
 </p>
 
+<h2 class="modifiedh2">Your Transformation Views</h2>
 <fieldset>
-<legend>Your Transformation Views</legend>
+<legend><!--Your Transformation Views--></legend>
 	<#list transformations as t>
 	<div class="newline">
 	  <@s.form action="transformations" method="post">
@@ -75,24 +76,25 @@ $('transformationType').observe('change', updateImage);
 
 
 <#if (transformations?size<1)>
+<h2 class="modifiedh2">Common formats</h2>
 <fieldset>
-<legend>Common formats</legend>
+<legend><!--Common formats--></legend>
 	<p>Only visible if no transformation has yet been configured...</p>
 	<p>If your data matches one of the following formats, select the mathing one to load a set of preconfigured transformations.
 		You will need to configure each of them in the next steps.
 	</p>
-	<div class="break">
-		<h3>Denormalised with explicit hierarchy</h3>
+	<div class="break2">
+		<h2 class="modifiedh2">Denormalised with explicit hierarchy</h2>
 		<p>Denormalised checklist with explicit taxonomic hierarchy in several columns</p>
-		<img src="<@s.url value='/images/transformations/denorm_explicit.png'/>"/>
+		<img class="transformationImage" src="<@s.url value='/images/transformations/denorm_explicit.png'/>"/>
 	</div>
-	<div class="break">
-		<h3>Denormalised with implied hierarchy</h3>
+	<div class="minibreak">
+		<h2 class="modifiedh2">Denormalised with implied hierarchy</h2>
 		<p>Denormalised checklist with implied taxonomic hierarchy hidden in sequence of records</p>
-		<img src="<@s.url value='/images/transformations/denorm_implied.png'/>"/>
+		<img class="transformationImage" src="<@s.url value='/images/transformations/denorm_implied.png'/>"/>
 	</div>
 	<div class="break">
-		<h3>...</h3>
+		<h2 class="modifiedh2">...</h2>
 	</div>
 </fieldset>
 </#if>

@@ -18,13 +18,13 @@
 </head>
 
 
+<h1 class="modifiedh1"><@s.text name="dataResource.cache"/></h1>
+<p>The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
+based on the transformations and mappings you have configured. 
+Depending upon the amount of data this process may take a long time during which this resource is blocked. 
+</p>
 <fieldset>
-  <legend><@s.text name="dataResource.cache"/></legend>
-  <p>The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
-   based on the transformations and mappings you have configured. 
-   Depending upon the amount of data this process may take a long time during which this resource is blocked. 
-  </p>
-
+  <legend><!--<@s.text name="dataResource.cache"/>--></legend>
 <div>
   <@s.form id="banane">
 	<table>
@@ -59,7 +59,7 @@
   </@s.form>
 </div>
 
-<div class="newline">
+<div>
 <#if resource.hasMinimalMapping()>
 	<@s.form action="runImport" method="post" >
 	  <@s.hidden key="resource_id" />
