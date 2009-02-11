@@ -61,7 +61,8 @@
             <xs:attribute ref="dc:source" use="required"><xs:annotation><xs:documentation>The source where the term originated from</xs:documentation></xs:annotation></xs:attribute>
             <xs:attribute ref="dc:relation" use="optional"><xs:annotation><xs:documentation>Link to further documentation or definition of the terms meaning</xs:documentation></xs:annotation></xs:attribute>
             <xs:attribute ref="dc:created" use="required"/>
-            <xs:attribute ref="dc:modified" use="required"/>  
+            <xs:attribute ref="dc:modified" use="required"/>
+            <xs:anyAttribute processContents="lax"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
