@@ -362,7 +362,7 @@ div.googlemap {
 }
 
 #occResource ul fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-bottom: 30px;
 }
@@ -383,7 +383,7 @@ div.googlemap {
 }
 
 #taxResource ul fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-bottom: 30px;
 }
@@ -400,7 +400,7 @@ div.googlemap {
 
 
 #metaResource ul fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-bottom: 10px;
 }
@@ -413,7 +413,7 @@ div.googlemap {
 
 
 #taxDetail ul fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-bottom: 10px;
 }
@@ -470,7 +470,7 @@ body#login{
 
 
 #resourceForm fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-left: -5px;
 	margin-bottom: 10px;
@@ -485,7 +485,7 @@ body#login{
 }
 
 #emlForm fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-left: -5px;
 	margin-bottom: 10px;
@@ -495,7 +495,7 @@ body#login{
 }
 
 #main fieldset{
-	background-color: #dcf3d9;
+	background-color: #ededed;
 	border-style: none;
 	margin-left: -5px;
 	margin-bottom: 10px;
