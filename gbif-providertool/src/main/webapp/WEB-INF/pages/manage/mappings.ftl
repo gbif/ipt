@@ -4,6 +4,8 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+<h1 class="modifiedh1">Property Mappings</h1>
+
 <#-- See if sources exist -->
 <#if (sources?size<1)>
 	<p class="reminder">There are no data sources configured.<br/>
@@ -18,8 +20,9 @@
 </#if>
 			
 
+<h2 class="modifiedh2">Your Existing Mappings</h2>
 <fieldset>
-<legend>Your Existing Mappings</legend>
+<legend><!--Your Existing Mappings--></legend>
 	<div>
 	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>
@@ -44,7 +47,7 @@
 	</#if>
 	  </@s.form>
 	</div>
-	<div class="break"></div>
+	<!--<div class="break"></div>-->
 	
 	<@s.iterator value="extMappings" status="stat">
 	<div class="newline">
@@ -64,8 +67,9 @@
 </fieldset>
 
 <#if (extensions?size>0)>
+<h2 class="modifiedh2">Add New Mapping</h2>
 <fieldset>
-<legend>Add New Mapping</legend>
+<legend><!--Add New Mapping--></legend>
 	<div>
 	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>

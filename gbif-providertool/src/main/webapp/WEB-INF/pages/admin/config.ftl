@@ -7,8 +7,9 @@
 
 <@s.form id="providerCfg" action="saveConfig" method="post">
 
-  <fieldset>
-    <legend><@s.text name="config.metadata"/></legend>
+<h2 class="modifiedh2"><@s.text name="config.metadata"/></h2>
+<fieldset>
+    <legend><!--<@s.text name="config.metadata"/>--></legend>
 	<@s.textfield key="config.title" required="true" cssClass="text xlarge"/>
     <div class="googlemap">
 		<#if (config.location)?? && cfg.googleMapsApiKey??>
@@ -34,29 +35,25 @@
 	<@s.textarea key="config.description" cssClass="text xlarge"/>
   </fieldset>
 
-<br/>
-<br/>
-
+<h2 class="modifiedh2"><@s.text name="config.settings"/></h2>
   <fieldset>
-    <legend><@s.text name="config.settings"/></legend>
+    <legend><!--<@s.text name="config.settings"/>--></legend>
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>
 
-<br/>
-<br/>
-
-  <fieldset>
-    <legend><@s.text name="config.geoserver"/></legend>
+<h2 class="modifiedh2"><@s.text name="config.geoserver"/></h2>
+<fieldset>
+    <legend><!--<@s.text name="config.geoserver"/>--></legend>
 	<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.geoserverDataDir" required="true" cssClass="text xlarge"/>
     <div>
         <div class="left">
 			<@s.textfield key="config.geoserverUser" required="true" cssClass="text xlarge"/>
         </div>
-        <div>
+        <div class="left">
 			<@s.textfield key="config.geoserverPass" required="true" cssClass="text xlarge"/>
         </div>
     </div>
