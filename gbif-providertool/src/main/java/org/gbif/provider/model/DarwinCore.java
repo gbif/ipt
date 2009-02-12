@@ -274,7 +274,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 
 	@Column(length=64)
-	@org.hibernate.annotations.Index(name="source_local_id")
+	@org.hibernate.annotations.Index(name="dwc_local_id")
 	public String getLocalId() {
 		return localId;
 	}
@@ -732,7 +732,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	// SETTER/GETTER of regular dwc terms
 	//
 	// DUBLIN CORE
-	@org.hibernate.annotations.Index(name="record_basis")
 	@Column(length=64)
 	public String getLanguage() {
 		return language;
@@ -766,6 +765,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	
 	// SAMPLE
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="idx_dwc_institution_code")
 	public String getInstitutionCode() {
 		return institutionCode;
 	}
@@ -773,6 +773,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.institutionCode = institutionCode;
 	}
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="idx_dwc_collection_code")
 	public String getCollectionCode() {
 		return collectionCode;
 	}
@@ -787,6 +788,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.collectionID = collectionID;
 	}
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="idx_dwc_basis_of_record")
 	public String getBasisOfRecord() {
 		return basisOfRecord;
 	}
@@ -827,6 +829,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.sampleRemarks = sampleRemarks;
 	}
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="idx_dwc_catalog_number")
 	public String getCatalogNumber() {
 		return catalogNumber;
 	}
@@ -1136,6 +1139,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		this.island = island;
 	}
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="idx_dwc_country")
 	public String getCountry() {
 		return country;
 	}
@@ -1423,6 +1427,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public void setTaxonID(String taxonID) {
 		this.taxonID = taxonID;
 	}
+	@org.hibernate.annotations.Index(name="idx_dwc_scientific_name")
 	public String getScientificName() {
 		return scientificName;
 	}

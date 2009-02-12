@@ -166,7 +166,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 	}
 
 	public File writeTcsArchive(Long resourceId) throws IOException{
-		File archive = cfg.getTcsArchiveFile(resourceId);
+		File archive = cfg.getArchiveTcsFile(resourceId);
 		File tcs = cfg.getResourceDataFile(resourceId, TCS_ARCHIVE_FILENAME);
 		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tcs,false),"UTF8"));
 		// taxa=List<Taxon>
@@ -189,7 +189,9 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 			batch++;
 			data.put("header", header);			
 			List<Taxon> taxa = new ArrayList<Taxon>(); 
+			footer=true;
 			while(results.next() && i<batchSize){
+				footer=false;
 				Taxon taxon = (Taxon) results.get(0);
 				taxa.add(taxon);
 				if (results.isLast()){

@@ -3,75 +3,89 @@
     "http://tuckey.org/res/dtds/urlrewrite3.0.dtd">
 
 <urlrewrite use-query-string="false">
+    <!-- AppFuse -->
     <rule>
         <from>^/admin/user/(.*).html$</from>
         <to type="forward">/admin/editUser.html\?id=$1&amp;from=list</to>
     </rule>
-
     <!-- Override default validation.js from WebWork -->
     <rule>
         <from>^/struts/css_xhtml/validation.js$</from>
         <to type="forward">/template/css_xhtml/validation.js</to>
     </rule>
 
-    <!-- PROVIDERTOOL RULES -->
-    
-    <!-- resource -->
+
+
+    <!--
+        RESOURCE URLs valid for all resources
+        UUIDs should contain 36 characters. Test for at least 36 here.
+    -->
+    <!-- http://localhost/resource/91/ -->
     <rule>
-        <from>^/resource/(.+)/$</from>
-        <to type="forward">/resource.html?guid=$1</to>
-    </rule>
-    <rule>
-        <from>^/resource/(\d+)/$</from>
+        <from>^/resource/(\d+)/?$</from>
         <to type="forward">/resource.html?resource_id=$1</to>
     </rule>
-    
-    <!-- data archives -->
+    <!-- http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f -->
     <rule>
-        <from>^/(\d+)/archive-(.+).zip$</from>
-        <to type="forward">/archive.do?resource_id=$1&amp;format=$2</to>
+        <from>^/resource/([0-9abcdef-]{32,})/?$</from>
+        <to type="forward">/resource.html?guid=$1</to>
     </rule>
+    <!-- http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f/v7/eml -->
     <rule>
-        <from>^/(\d+)/archive.zip$</from>
-        <to type="forward">/archive.do?resource_id=$1</to>
-    </rule>
-    <!-- details -->
-    <rule>
-        <from>^/(\d+)/(.+)/detail.html$</from>
-        <to type="forward">/detail.html?resource_id=$1&amp;guid=$2</to>
-    </rule>
-    <rule>
-        <from>^/(\d+)/(.+)/detail.xml$</from>
-        <to type="forward">/detail.xml?resource_id=$1&amp;guid=$2&amp;format=xml</to>
-    </rule>
-    <rule>
-        <from>^/(\d+)/(.+)/detail.rdf$</from>
-        <to type="forward">/detail.xml?resource_id=$1&amp;guid=$2&amp;format=rdf</to>
-    </rule>
-    <rule>
-        <from>^/(\d+)/(.+)/detail.json$</from>
-        <to type="forward">/detail.do?resource_id=$1&amp;guid=$2&amp;format=json</to>
-    </rule>
-    <!-- eml -->
-    <rule>
-        <from>^/(.+)/eml.xml$</from>
-        <to type="forward">/eml.xml?guid=$1</to>
-    </rule>
-    <rule>
-        <from>^/(.+)/eml-(\d+).xml$</from>
+        <from>^/resource/([0-9abcdef-]{32,})/v(\d+)/eml$</from>
         <to type="forward">/eml.xml?guid=$1&amp;version=$2</to>
     </rule>
+    <!-- http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f/eml -->
     <rule>
-        <from>^/(\d+)/eml-(\d+).xml$</from>
-        <to type="forward">/eml.xml?resource_id=$1&amp;version=$2</to>
+        <from>^/resource/([0-9abcdef-]{32,})/eml$</from>
+        <to type="forward">/eml.xml?guid=$1</to>
     </rule>
-    <!-- images -->
+    <!-- http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f/archive-dwc.zip -->
+    <rule>
+        <from>^/resource/([0-9abcdef-]{32,})/archive-([a-z]{3}).zip$</from>
+        <to type="forward">/archive.do?guid=$1&amp;format=$2</to>
+    </rule>
+    
+    <!-- 
+        DETAILS
+        GUID speaks for itself, no resourceId required to find the thing
+    -->
+    <!-- 
+        http://localhost:8080/occ/91c20216-1d89-4201-87cc-143e1655f44f 
+        http://localhost:8080/occDetail.html?guid=91c20216-1d89-4201-87cc-143e1655f44f 
+    -->
+    <rule>
+        <from>^/(tax|occ)/([0-9abcdef-]{30,})/?$</from>
+        <to type="forward">/$1Detail.html?guid=$2</to>
+    </rule>
+    <!-- 
+        http://localhost:8080/occ/91c20216-1d89-4201-87cc-143e1655f44f/json 
+        http://localhost:8080/occDetail.html?guid=91c20216-1d89-4201-87cc-143e1655f44f&format=json 
+    -->
+    <rule>
+        <from>^/(tax|occ)/([0-9abcdef-]{30,})/([a-z]+)/?$</from>
+        <to type="forward">/$1Detail.html?guid=$2&amp;format=$3</to>
+    </rule>
+    <!-- 
+        http://localhost:8080/tax/912/xml 
+        http://localhost:8080/taxDetail.html?id=912&format=xml 
+    -->
+    <rule>
+        <from>^/(tax|occ)/(\d+)/([a-z]+)?$</from>
+        <to type="forward">/$1Detail.html?id=$2&amp;format=$3</to>
+    </rule>
+    
+    <!-- 
+        IMAGES
+    -->
     <rule>
         <from>^/(\d+)/logo.jpg$</from>
         <to type="forward">/logo.do?resource_id=$1</to>
     </rule>
     
-    <!-- tapir -->
+    <!-- 
+        TAPIR
+    -->
     <rule>
         <from>^/tapir/(\d+)/?$</from>
         <to type="forward">/tapir/service.xml?resource_id=$1</to>

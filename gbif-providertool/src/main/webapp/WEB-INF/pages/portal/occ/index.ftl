@@ -79,7 +79,7 @@
 				</tr>
 				<tr>
 					<th><@s.text name="dataResource.archive"/></th>
-					<td><a href="${cfg.getDumpArchiveUrl(resource_id)}">${cfg.getDumpArchiveUrl(resource_id)}</a></td>
+					<td><a href="${cfg.getArchiveUrl(resource.guid)}">${cfg.getArchiveUrl(resource.guid)}</a></td>
 				</tr>
 				<tr>
 					<th><@s.text name="dataResource.tapir"/></th>

@@ -176,6 +176,17 @@
             <result>/WEB-INF/pages/about/about.ftl</result>
         </action>
         
+        <!-- single pages -->
+        <action name="about" class="org.gbif.provider.webapp.action.IndexAction">
+            <result>/WEB-INF/pages/about/about.ftl</result>
+        </action>
+
+
+        <!-- actions for all resources -->
+        <action name="busy">
+            <result>/WEB-INF/pages/busy.ftl</result>
+            <result name="resource-busy">/WEB-INF/pages/busy.ftl</result>
+        </action>
         <!-- forwarding actions for all resource types. Allows easy linking without knowing the type of resource -->        
         <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
@@ -191,35 +202,13 @@
                 <param name="resource_id">${resource.id}</param>
             </result>
         </action>
-        <!-- this action determines if the details of an occurrence, taxon or metadata are requested and forwards to specific actions -->
-        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
-            <result name="occ" type="redirect-action">
-                <param name="actionName">occDetail</param>
-                <param name="resource_id">${resource_id}</param>
-                <param name="guid">${guid}</param>
-                <param name="format">${format}</param>
+        <action name="eml" class="org.gbif.provider.webapp.action.portal.DataAction" method="eml">
+            <result name="success" type="stream">
+                <param name="contentType">text/xml</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="eml.xml"</param>
+                <param name="bufferSize">1024</param>
             </result>
-            <result name="tax" type="redirect-action">
-                <param name="actionName">taxDetail</param>
-                <param name="resource_id">${resource_id}</param>
-                <param name="guid">${guid}</param>
-                <param name="format">${format}</param>
-            </result>
-            <result name="meta" type="redirect-action">
-                <param name="actionName">metaResource</param>
-                <param name="resource_id">${resource_id}</param>
-                <param name="format">${format}</param>
-            </result>            
-        </action>
-
-        
-        <!-- other actions for all resources -->
-        <action name="busy">
-            <result>/WEB-INF/pages/busy.ftl</result>
-            <result name="resource-busy">/WEB-INF/pages/busy.ftl</result>
-        </action>
-        <action name="about" class="org.gbif.provider.webapp.action.IndexAction">
-            <result>/WEB-INF/pages/about/about.ftl</result>
         </action>
         <action name="archive" class="org.gbif.provider.webapp.action.portal.DataAction">
             <result name="success" type="stream">
@@ -234,14 +223,6 @@
                 <param name="contentType">image/jpeg</param>
                 <param name="inputName">inputStream</param>
                 <param name="contentDisposition">filename="logo.jpg"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
-        <action name="eml" class="org.gbif.provider.webapp.action.portal.DataAction" method="eml">
-            <result name="success" type="stream">
-                <param name="contentType">text/xml</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="eml.xml"</param>
                 <param name="bufferSize">1024</param>
             </result>
         </action>

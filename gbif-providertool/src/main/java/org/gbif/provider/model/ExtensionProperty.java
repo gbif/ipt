@@ -46,6 +46,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private String name;
 	private String namespace;
 	private String qualName;
+	private String group;
 	private int columnLength;
 	private String link;
 	private boolean required;
@@ -80,6 +81,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	}
 
 	@Column(length=255)
+	@org.hibernate.annotations.Index(name="idx_extension_property_qname")
 	public String getQualName() {
 		return qualName;
 	}
@@ -111,6 +113,14 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.namespace = namespace;
 	}
 
+	@Column(length=64, name="groupp")
+	@org.hibernate.annotations.Index(name="idx_extension_property_group")
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
 	/**
 	 * The length of the database column to be generated when the extension
 	 * property is installed. Also used to trim incoming data before SQL insert is generated.

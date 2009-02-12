@@ -18,6 +18,7 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Point;
 import org.gbif.provider.model.ProviderCfg;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
+import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -85,8 +86,11 @@ public class AppConfig{
 
 	
 	// RESOURCE BASICS
-	public String getResourceUrl(String guid) {
-		return String.format("%s/resource/%s/", baseURL, guid);
+	public URL getResourceUrl(String guid) {
+		return getWebappURL(String.format("resource/%s/", guid));
+	}
+	public URL getResourceUrl(Long resourceId) {
+		return getWebappURL(String.format("resource/%s/", resourceId));
 	}
 
 	public static File getResourceCacheDir(Long resourceId) {
@@ -100,15 +104,13 @@ public class AppConfig{
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
-		File f = new File(getResourceCacheDir(resourceId), relPath);
-		return f;
+		return new File(getResourceCacheDir(resourceId), relPath);
 	}
 	public URL getResourceCacheUrl(Long resourceId, String relPath) {
 		if (relPath.startsWith("/")) {
 			relPath = relPath.substring(1);
 		}
-		URL url = getWebappURL(String.format("cache/%s/%s",resourceId, relPath));
-		return url;
+		return getWebappURL(String.format("cache/%s/%s",resourceId, relPath));
 	}
 	
 	public static File getResourceDataDir(Long resourceId) {
@@ -131,17 +133,13 @@ public class AppConfig{
 	public static File getResourceSourceFile(Long resourceId, String filename) {
 		return getResourceDataFile(resourceId, String.format("sources/%s",filename));
 	}
-	public String getResourceDataUrl(Long resourceId) {
-		return String.format("%s/%s", baseURL, resourceId);
-	}	
-
 	public static File getResourceLogoFile(Long resourceId) {
 		File file = new File(getResourceDataDir(resourceId), "logo.jpg");
 		return file;    	
 	}
 
 	public String getResourceLogoUrl(Long resourceId) {
-		return String.format("%s/logo.jpg", getResourceDataUrl(resourceId));
+		return String.format("%s/logo.jpg", getResourceUrl(resourceId));
 	}
 
 	public static File getMetadataFile(Long resourceId) {
@@ -161,18 +159,23 @@ public class AppConfig{
 	}
 
 	public String getEmlUrl(String guid) {
-		return String.format("%s/%s/eml.xml", baseURL, guid);
+		return String.format("%seml", getResourceUrl(guid));
+	}
+	public String getEmlUrl(String guid, int version) {
+		return String.format("%sv%s/eml", getResourceUrl(guid), version);
 	}
 
 	// CORE RECORDS
     public String getDetailUrl(CoreRecord core){
-    	return getDetailUrl(core, "html");
+    	return getDetailUrl(core, null);
     }
     public String getDetailUrl(CoreRecord core, String format){
-    	if (core.getResource()==null){
-    		throw new IllegalArgumentException("Core records needs a resource");
+    	ExtensionType type = ExtensionType.byCoreClass(core.getClass());
+    	if (type==null){
+    		throw new IllegalArgumentException("Core record class unknown");
     	}
-    	return String.format("%s/%s/detail.%s", getResourceDataUrl(core.getResource().getId()), core.getGuid(), format);
+    	format = format==null ? "":"/"+format;
+    	return String.format("%s/%s/%s%s", getBaseUrl(), type.alias, core.getGuid(), format);
     }
 
     // SOURCE/UPLOAD FILES
@@ -184,28 +187,24 @@ public class AppConfig{
 		return f;
 	}    
 
-    // DUMP FILES
-    public File getDumpFile(Long resourceId, Extension extension) throws IOException{    	
-		File file = new File(getResourceDataDir(resourceId), String.format("data-%s.txt", namingStrategy.extensionTableName(extension)));
-		return file;
+    // ARCHIVES
+    public File getArchiveFile(Long resourceId, Extension extension) throws IOException{    	
+		return new File(getResourceDataDir(resourceId), String.format("archive/%s.txt", namingStrategy.extensionTableName(extension)));
 	}    
 
-    public File getDumpArchiveFile(Long resourceId){
-		File file = new File(getResourceDataDir(resourceId), "data.zip");
-		return file;    	
+    public File getArchiveFile(Long resourceId){
+		return new File(getResourceDataDir(resourceId), "archive-dwc.zip");
     }
 
-    public String getDumpArchiveUrl(Long resourceId){
-		return String.format("%s/archive-dwc.zip", getResourceDataUrl(resourceId));
+    public String getArchiveUrl(String guid){
+		return String.format("%sarchive-dwc.zip", getResourceUrl(guid));
     }
 
-    // TCS ARCHIVE
-    public File getTcsArchiveFile(Long resourceId){
-		File file = new File(getResourceDataDir(resourceId), "tcsArchive.zip");
-		return file;    	
+    public File getArchiveTcsFile(Long resourceId){
+		return new File(getResourceDataDir(resourceId), "archive-tcs.zip");
     }
-	public String getTcsArchiveUrl(Long resourceId){
-		return String.format("%s/archive-tcs.zip", getResourceDataUrl(resourceId));
+	public String getArchiveTcsUrl(String guid){
+		return String.format("%sarchive-tcs.zip", getResourceUrl(guid));
 	}
     
     // SERVICE ENDPOINTS

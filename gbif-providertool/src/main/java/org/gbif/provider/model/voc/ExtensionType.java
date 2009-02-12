@@ -7,17 +7,27 @@ import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.Taxon;
 
 public enum ExtensionType {
-	Occurrence(1l, OccurrenceResource.class, "Darwin_Core", "occ", 1l),
-	Checklist(7l, ChecklistResource.class, "Taxon", "tax", 7l),	
-	Metadata(null, Resource.class, "Resource", "meta", null);	
+	Occurrence(1l, OccurrenceResource.class, DarwinCore.class, "Darwin_Core", "occ", 1l),
+	Checklist(7l, ChecklistResource.class, Taxon.class, "Taxon", "tax", 7l),	
+	Metadata(null, Resource.class, Resource.class, "Resource", "meta", null);	
 
 	public static ExtensionType byResourceClass(Class resourceClass){
 		for (ExtensionType et : ExtensionType.values()){
-			if (et.resourceClass.equals(resourceClass)){
+			if (et.resourceClass.isAssignableFrom(resourceClass)){
+				return et;
+			}
+		}
+		return null;
+	}
+	public static ExtensionType byCoreClass(Class coreClass){
+		for (ExtensionType et : ExtensionType.values()){
+			if (et.coreClass.isAssignableFrom(coreClass)){
 				return et;
 			}
 		}
@@ -36,13 +46,15 @@ public enum ExtensionType {
 	
 	public Long id;	
 	public Class resourceClass;	
+	public Class coreClass;	
 	public String tableName;	
 	public String alias;	
 	public Long extensionID;
 	
-	private ExtensionType (Long id, Class resourceClass, String tableName, String alias, Long extensionID){
+	private ExtensionType (Long id, Class resourceClass, Class coreClass, String tableName, String alias, Long extensionID){
 		this.id=id;
 		this.resourceClass=resourceClass;
+		this.coreClass=coreClass;
 		this.tableName=tableName;
 		this.alias=alias;
 		this.extensionID=extensionID;

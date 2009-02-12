@@ -46,6 +46,10 @@ public class DwcAction extends BaseOccurrenceResourceAction {
         		id=dwc.getId();
     		}
     	}
+    	if(resource==null){
+    		resource=dwc.getResource();
+    		updateResourceType();
+    	}
 	}
 	
 	public String execute(){
@@ -64,12 +68,11 @@ public class DwcAction extends BaseOccurrenceResourceAction {
         		return "json";
         	}
         	// find annotations
-        	annotations = annotationManager.getByRecord(resource_id, dwc.getGuid());
+        	annotations = annotationManager.getByRecord(dwc.getResourceId(), dwc.getGuid());
         	
     		return SUCCESS;
-		}else{
-			return RECORD404;
 		}
+		return RECORD404;
     }
     
 	public String search() {

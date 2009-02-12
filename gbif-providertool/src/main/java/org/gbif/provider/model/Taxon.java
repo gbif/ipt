@@ -94,7 +94,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 
 		
 		@Column(length=64)
-		@org.hibernate.annotations.Index(name="tax_source_local_id")
+		@org.hibernate.annotations.Index(name="tax_local_id")
 		public String getLocalId() {
 			return localId;
 		}
