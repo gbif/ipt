@@ -4,7 +4,9 @@
 	div#navContainer{
 		background-color: #ededed;
 		width: 940px;
-		height: 40px;
+		height: 42px;
+		padding-top: 6px;
+		margin-left: -10px;				
 	}
 	
     div#nav {
@@ -28,10 +30,12 @@
         list-style: none;
     }
     div#nav li {
+		background: transparent url(/images/bkgButton_up.gif) no-repeat;
+		width: 144px;
         float: left;
         display: inline;
         list-style: none;
-        margin: 0;
+        margin-left: 5px;
         padding: 0;
         font-size: 12px;;
         line-height: 1em;
@@ -49,6 +53,7 @@
     div#nav a:link,
     div#nav a:active,
     div#nav a:visited {
+    	background: transparent;
         display: inline-block;
         /* hide from ie/mac \*/
         display: block;
@@ -57,13 +62,15 @@
         text-decoration: none;
         margin: 0;
         padding: 5px 15px 5px 15px;
-        padding-top: 14px;
-		color: #666666;
-		height: 20px;
+        padding-top: 12px;
+		color: #FFF;
+		height: 26px;
+		width: 114px;
     }
     div#nav a:hover {
         text-decoration: none;
-        background-color: #019f2e;
+        width: 114px;
+ 		background: transparent url(/images/bkgButton.gif) no-repeat;
     }
     div#nav a.current {
         display: inline-block;
@@ -71,7 +78,6 @@
         display: block;
         /* end hide */
         color: #FFF;
-        background: #019f2e;        
         font-size: 12px !important;
     }
     div#nav a.current,
@@ -79,7 +85,8 @@
     div#nav a.current:active,
     div#nav a.current:visited,
     div#nav a.current:hover {
-       background-color: #019f2e;       
+/*        background-color: #019f2e; */
+ 		background: transparent url(/images/bkgButton.gif) no-repeat; 
     }
 
     div#nav .pad {
@@ -98,6 +105,7 @@
             position: relative;
             list-style: none;
             height: 40px;
+
         }
             ul#primary-nav li a {
                 display: block;
@@ -118,23 +126,25 @@
                 position: absolute;
                 display: none;
                 left: 0px; /* Set 1px less than menu width */
-                top: 35px;
+                top: 33px;
             }
                 ul#primary-nav ul li {
-                    border: 1px solid silver;
+                    border: 1px solid #03b034;
+                    background-color: #03b034;
                     border-bottom: 0;
                     font-size: 1em;
-                    height: 39px;
+                    height: 30px;
+                    width: 107px;
                 }
                     ul#primary-nav ul li ul {
                         margin-left: 149px;
                         margin-top: -23px;
+	                    background-color: #03b034;                        
                     }
                     ul#primary-nav ul li.last {
-                        border-bottom: 1px solid silver;
-                        border-right: 1px solid silver;
+	                    background-color: #03b034;                          
                     }
-                        ul#primary-nav li ul li a { padding: 3px 5px; text-align: left; width: 149px; } /* Sub Menu Styles */
+                        ul#primary-nav li ul li a {padding-bottom: 5px;} /* Sub Menu Styles */
                         ul#primary-nav li:hover ul ul,
                         ul#primary-nav li:hover ul ul ul,
                         ul#primary-nav li.over ul ul,
@@ -144,9 +154,24 @@
                         ul#primary-nav li li li:hover ul,
                         ul#primary-nav li.over ul,
                         ul#primary-nav li li.over ul,
-                        ul#primary-nav li li li.over ul { display: block; } /* The magic */
-                        ul#primary-nav li.menubar { background: transparent url(../../images/arrow.gif) right center no-repeat; }
+                        ul#primary-nav li li li.over ul {background-color: #03b034; display: block; } /* The magic */
+                        ul#primary-nav li.menubar { background: transparent url(/images/bkgButton_up.gif) no-repeat; }
                         ul#primary-nav li:hover,
-                        ul#primary-nav li.over { background-color: #FFF; }
-                        ul#primary-nav li a:hover { color: #FFF; }
+                        ul#primary-nav li.over { background: transparent url(/images/bkgButton.gif) no-repeat; }
+                        
+                        ul#primary-nav li.menubar ul li a,
+                        ul#primary-nav li.menubar ul li a:active,
+                        ul#primary-nav li.menubar ul lia:visited{
+                        	background-image: none;
+	                        background-color: #03b034;
+	                        color: #FFFFFF;
+							text-align: center;
+							width: 114px;
+							font-size: 12px;
+							margin-left: -6px;
+                        }
+                        ul#primary-nav li.menubar ul li a:hover{
+	                        color: #555555;
+                        }
+
 /* END DROP DOWN MENUS */

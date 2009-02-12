@@ -2,7 +2,7 @@
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="occ"/>
-	
+    
 	<script>
 	function updateByRegion(){
 		var url = '<@s.url value="/ajax/occResourceStatsByRegion.html"/>';
@@ -43,7 +43,6 @@
 	
 </head>
 	
-  
 <@s.form>
 <h1 class="h1occ"><@s.text name="resource.description"/></h1>
 <fieldset>
