@@ -39,11 +39,11 @@
 			<tr>
 			<#if taxon.getParent()??>
 			  <th><@s.text name="taxon.parent"/></th>
-			  <td><#if taxon.getParent()??><a href="taxDetail.html?resource_id=${resource_id}&id=${taxon.getParent().id?c}">${(taxon.getParent().scientificName)!}</a></#if></td>
+			  <td><#if taxon.getParent()??><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&id=${taxon.getParent().id?c}"/>'>${(taxon.getParent().scientificName)!}</a></#if></td>
 			</#if>
 			<#if taxon.getAcceptedTaxon()??>
 			  <th><@s.text name="taxon.accepted"/></th>
-			  <td><#if taxon.getAcceptedTaxon()??><a href="taxDetail.html?resource_id=${resource_id}&id=${taxon.getAcceptedTaxon().id?c}">${(taxon.getAcceptedTaxon().scientificName)!}</a></#if></td>
+			  <td><#if taxon.getAcceptedTaxon()??><a href="<@s.url value='/taxDetail.html?resource_id=${resource_id}&id=${taxon.getAcceptedTaxon().id?c}'/>">${(taxon.getAcceptedTaxon().scientificName)!}</a></#if></td>
 			</#if>
 			</tr>
 			<tr>
@@ -72,11 +72,11 @@
 			  <th>Taxonomic Status</th>
 			  <th>Nomenclatural Status</th>
 			</tr>
-			<#list synonyms as s>	
+			<#list synonyms as syn>	
 			<tr>
-			  <td><a href="taxDetail.html?resource_id=${resource_id}&id=${s.id?c}">${s.scientificName}</a></td>
-			  <td>${s.taxonomicStatus!}</td>
-			  <td>${s.nomenclaturalStatus!}</td>
+			  <td><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&id=${syn.id?c}"/>'>${syn.scientificName}</a></td>
+			  <td>${syn.taxonomicStatus!}</td>
+			  <td>${syn.nomenclaturalStatus!}</td>
 			</tr>
 			</#list>
 		</table>
@@ -132,10 +132,10 @@
 		<h2><@s.text name="taxon.statistics"/></h2>
 		<p>Number of accepted taxa included:</p>
 		<table>
-			<#list stats as s>	
+			<#list stats as st>	
 			<tr>
-			  <th>${s.label}</th>
-			  <td><a href="taxListByRank.html?resource_id=${resource_id?c}&category=${s.label}&id=${taxon.id?c}">#${s.count}</a></td>
+			  <th>${st.label}</th>
+			  <td><a href="<@s.url value='/taxListByRank.html?resource_id=${resource_id?c}&category=${st.label}&id=${taxon.id?c}'/>">#${st.count}</a></td>
 			</tr>
 			</#list>
 		</table>
