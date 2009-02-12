@@ -35,7 +35,7 @@ public class ImageCacheAction extends BaseOccurrenceResourceAction implements Se
 //    	imageCacheManager
     	if (resource_id != null){
     		OccurrenceResource res = occResourceManager.get(resource_id);
-    		File data = cfg.getDumpArchiveFile(res.getId());
+    		File data = cfg.getArchiveFile(res.getId());
     		inputStream = new FileInputStream(data);
     		return SUCCESS;
     	}

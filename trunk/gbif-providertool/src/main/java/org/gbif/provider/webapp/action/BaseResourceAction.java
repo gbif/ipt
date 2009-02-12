@@ -62,19 +62,20 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 			// update recently viewed resources in session
 			updateRecentResouces();
 			// if resource instance exists this defines the resourceType we are dealing with
-			resourceType = deriveResourceType();
+			updateResourceType();
 		}
 	}
 
-	protected String deriveResourceType(){
-		if (resource instanceof OccurrenceResource){
-			return OCCURRENCE;
-		}else if (resource instanceof ChecklistResource){
-			return CHECKLIST;
-		}else if (resource instanceof Resource){
-			return METADATA;
-		}else{
-			return null;
+	protected void updateResourceType(){
+		if (resource!=null){
+			resource_id=resource.getId();
+			if (resource instanceof OccurrenceResource){
+				resourceType = OCCURRENCE;
+			}else if (resource instanceof ChecklistResource){
+				resourceType =CHECKLIST;
+			}else if (resource instanceof Resource){
+				resourceType = METADATA;
+			}
 		}
 	}
 	

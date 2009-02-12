@@ -74,6 +74,10 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
         		id=taxon.getId();
     		}
     	}
+    	if(resource==null){
+    		resource=taxon.getResource();
+    		updateResourceType();
+    	}
 	}
 	public String execute(){
 		setRequestedTaxon();
@@ -106,7 +110,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 				distributions = extensionRecordManager.getDistributions(taxon.getCoreId());
 			}
         	// find annotations
-        	annotations = annotationManager.getByRecord(resource_id, taxon.getGuid());
+        	annotations = annotationManager.getByRecord(taxon.getResourceId(), taxon.getGuid());
         	return SUCCESS;
     	}
 		return RECORD404;

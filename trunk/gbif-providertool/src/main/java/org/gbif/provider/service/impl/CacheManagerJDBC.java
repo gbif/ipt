@@ -128,7 +128,7 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 		annotationManager.removeAll(res);
 
 		// remove generated files
-		File dump = cfg.getDumpArchiveFile(resourceId);
+		File dump = cfg.getArchiveFile(resourceId);
 		dump.delete();
 		log.debug("Removed data archive");
 		
