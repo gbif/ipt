@@ -1,0 +1,23 @@
+div#main h1{
+	color: #03b035;
+}
+
+div#resourceListContainer{
+
+}
+
+.horizontal_dotted_line_large{
+	border-bottom: 1px dotted #666666;
+	width: 712px;
+	margin-left: -7px;
+	margin-top: -5px;
+	margin-bottom: 20px;
+}
+
+.horizontal_dotted_line_small{
+	border-bottom: 1px dotted #666666;
+	width: 215px;
+	margin-left: -7px;
+	margin-top: -5px;
+	margin-bottom: 20px;
+}

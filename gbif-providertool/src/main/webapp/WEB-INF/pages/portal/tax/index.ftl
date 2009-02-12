@@ -2,6 +2,8 @@
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="submenu" content="tax"/>
+    <script type="text/javascript" src="/scripts/rounded.js"/>  
+    
 	<script>
 	function updateByTaxon(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByTaxon.html"/>';
@@ -29,11 +31,12 @@
 		$('statusClass').observe('change', updateByStatus);
 	});
 	</script>
+	
 </head>
 	
-  
 <@s.form>
 <h1 class="h1tax"><@s.text name="resource.description"/></h1>
+<div class="rounded" style="margin-bottom:30px">
 <fieldset>
 	<legend><!--<@s.text name="resource.description"/>--></legend>
 	<div id="metadata">
@@ -77,6 +80,7 @@
 			</table>
 		</div>
 	</div>
+</div>
 </@s.form>
 
 <@s.push value="resource">
@@ -188,3 +192,7 @@
 
 
 <br class="clearfix" />
+
+<!--<script type="text/javascript">
+	Rounded('rounded', 6, 6);
+</script> -->

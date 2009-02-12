@@ -139,17 +139,18 @@ div#jsalert h2 {
 }
 
 #currentResourceClass {
-	background-color: #AAAAAA;
+	background: transparent url(/images/bkgClassResource.gif) no-repeat;
 	color: #ffffff;
 	text-align: center;
  	position: relative;
- 	height: 28px;
-	width: 130px;
+ 	height: 35px;
+	width: 144px;
  	float: right;
 	z-index: 5;
 	clear: both;
-	top: 8px;
+	top: 16px;
 	padding-top: 12px;
+	margin-right: -2px;
 }
 
 /* @end */
@@ -307,7 +308,7 @@ div.chart form, div.map form {
 .rightCombo{
 	float: right;
 	text-align: right;
-	padding-top: 8px;
+	padding-top: 15px;
 	height: 30px;
 }
 
@@ -385,7 +386,9 @@ div.googlemap {
 #taxResource ul fieldset{
 	background-color: #ededed;
 	border-style: none;
-	margin-bottom: 30px;
+	margin-bottom: 0px;
+	margin-left: 5px;
+	padding-bottom: 10px;
 }
 
 #taxResource ul fieldset div#metadata{
@@ -568,3 +571,7 @@ fieldset .noBottomMargin{
 /* @end */
 
 
+.rounded{
+	background-color: #ededed;
+	margin-left: -10px;
+}

@@ -10,6 +10,44 @@
         text-align: left;
     }
 
+ /* HEADER */
+        div#header {
+            text-align: left;
+            height: 79px; /* needed by IE 7 */
+            width: 940px;
+            margin-bottom: 90px;
+            padding-left: 10px;
+            padding-bottom: 0px;
+            vertical-align: bottom;
+        }
+      	div#logo{
+      		float: left;
+      		width: 150px;
+      	}
+		div#switchLocale{
+			width: 940px;
+			text-align: right;
+		}
+        div#branding {
+            float: right;
+            width: 500px;
+            margin: auto;
+            text-align: right;
+			vertical-align: bottom;
+			padding-top: 35px;
+        }
+        div#branding img{
+        	vertical-align: bottom;
+        }
+        div#search {
+            float: right;
+            width: 49%;
+            margin: 0;
+            padding: 10px 15px 0 0;
+            text-align: right;
+        }
+    /* END HEADER */
+
 
     div#main {
         float: left;
@@ -18,9 +56,9 @@
     }
     div#sub {
         float: right;
-        width: 200px;
+        width: 210px;
         display: inline;
-        margin-right: 0px;
+        margin-right: -10px;
         margin-bottom: 30px;
     }
         div#sub ul#local {
@@ -30,15 +68,25 @@
         }
     div#nav {
         position: absolute;
-        top: -25px;
-        left: 0px;
+        top: -15px;
         width: 100%;
-
+        left: 7px;
         text-align: left;
     }
     
+	div#navContainer{
+		background-color: #ededed;
+		width: 960px;
+		height: 42px;
+		padding-top: 6px;
+		margin-left: -10px;				
+	}    
+    
     div#recentlyViewedResources label{
     	margin-bottom: -7px;
+    }
+    div#fullsearch{
+    	padding-top: 13px;
     }
     
     div#fullsearch label{

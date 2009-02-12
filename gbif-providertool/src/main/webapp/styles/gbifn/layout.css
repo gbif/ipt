@@ -26,7 +26,7 @@
             height: 79px; /* needed by IE 7 */
             width: 940px;
             margin-bottom: 90px;
-            padding-left: 10px;
+            padding-left: 0px;
             padding-bottom: 0px;
             vertical-align: bottom;
         }
@@ -60,6 +60,12 @@
     
     /* CONTENT */
         div#content {
+            position: relative;
+	        width: 925px;
+	        margin: 0 auto 20px auto;
+	        padding: 0;
+	        text-align: left;
+        
         }
             body#error #content {
                 margin-top: 20px;
@@ -67,7 +73,12 @@
         /* MAIN */
             div#main {
                 padding-left: 15px;
-                margin-bottom: 15px;
+                padding-top: 18px;
+                padding-right: 15px;
+                background-color: #FFF;
+				margin-bottom: 15px;                
+                margin-top: -15px;
+                margin-left: -3px;
             }
             div#main form ul li {
                 list-style-type: none;
@@ -79,6 +90,9 @@
         /* END MAIN */
         
         /* SUB */
+            div#sub h1 {
+                padding-top: 3px;
+            }
             div#sub h2 {
                 margin-bottom: 5px;
             }
