@@ -144,7 +144,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	
 	public List<StatsCount> occByDateColected(Long resourceId) {
 		// get data from db
-        List<Object[]> occBySth = getSession().createQuery("select year(dwc.dateCollected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.dateCollected)")
+        List<Object[]> occBySth = getSession().createQuery("select year(dwc.collected), count(dwc)   from DarwinCore dwc   where dwc.resource.id = :resourceId   group by year(dwc.collected)")
 						    	.setParameter("resourceId", resourceId)
 						    	.list();
         return StatsUtils.getDataMap(occBySth);
