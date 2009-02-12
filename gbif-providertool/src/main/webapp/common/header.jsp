@@ -12,17 +12,15 @@
 	<img src="<c:url value='/images/copyHeader.jpg'/>"/>
 </div>
 
-<s:if test="resourceType!=null">
-
-</s:if>
-
 <div id="logo">
 	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
 </div>
 
+<s:if test="resourceType!=null">
 <div id="currentResourceClass">
 	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
 </div>
+</s:if>
 
 <noscript>
 <!-- test for javascript -->
