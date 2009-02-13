@@ -2,12 +2,12 @@
     <title>EML - <@s.text name="eml.geographicCoverage"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="submenu" content="manage_resource"/>
-	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"/>  
-	<script type="text/javascript" src="/scripts/map.js"/>  
+	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>  
+	<script type="text/javascript" src="/scripts/map.js"></script>
 	<script type="text/javascript">  
-	document.observe("dom:loaded", function() {
+	 $(document).ready(function(){
 		loadMap();
-	});
+	 });
 	</script>
 </head>
 

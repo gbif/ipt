@@ -33,17 +33,22 @@
 		<ul class="plain">
 		<#list extension.properties as p>
 			<li>
-			  	<#if p.link??>
-					<a class="info" href="${p.link}" target="_blank">${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}</span></a>
+				<#if p??>
+				  	<#if p.link??>
+						<a class="info" href="${p.link}" target="_blank">
+				  	<#else>
+						<a class="info">
+				  	</#if>
+					${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}<br/><strong>Group: </strong>${p.group!}</span></a>
+				  	
+				    <#if p.vocabulary??>
+				    	<span class="info">
+				    		--&gt; <a href="vocabulary.html?id=${p.vocabulary.id?c}">vocabulary</a>
+						</span>
+					</#if>
 			  	<#else>
-					<a class="info">${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}</span></a>
+			  	 NULL property
 			  	</#if>
-			  	
-			    <#if p.vocabulary??>
-			    	<span class="info">
-			    		--&gt; <a href="vocabulary.html?id=${p.vocabulary.id?c}">vocabulary</a>
-					</span>
-				</#if>
 			</li>
 		</#list>
 		</ul>

@@ -1,3 +1,14 @@
+/* IPT functions */
+function ajaxHtmlUpdate(url, target, params) {
+	$.get(url, params, function(data) { 
+		$(target).html(data);
+	});
+}
+function listenToChange(selector, handler) {
+	$(selector).change(function(e){handler()});
+}		
+
+/* APPFUSE */
 /* This function is used to change the style class of an element */
 function swapClass(obj, newStyle) {
     obj.className = newStyle;

@@ -17,19 +17,18 @@
 	    border: 1px solid #ccc;
 	}
 	</style>
-	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"/>  
-	<script type="text/javascript" src="<@s.url value='/scripts/map.js'/>"/>  
+	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>  
+	<script type="text/javascript" src="<@s.url value='/scripts/map.js'/>"></script>  
 	<script type="text/javascript">  
-	document.observe("dom:loaded", function() {
+	 $(document).ready(function(){
 		loadMap();
+		
+		// update keywords
+		$("#tagindex ul li a").click(function(e){
+			e.preventDefault(); 
+			ajaxHtmlUpdate("<@s.url value="/ajax/keywords.html"/>", "#keywords", { prefix:$(this).html() });
+		});
 	});
-	
-	function updateKeywords(c){
-		var url = '<@s.url value="/ajax/keywords.html"/>';
-		var params = { prefix: c }; 
-		var target = 'keywords';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
-	};
 	</script>
 </head>
 
@@ -46,7 +45,7 @@
 	<#assign fullAlphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']>
     <#list fullAlphabet as c>
      <#if alphabet?seq_contains(c)>
-    	<li><a href="Javascript:updateKeywords('${c}')">${c}</a></li>
+    	<li><a>${c}</a></li>
      <#else>
     	<li>${c}</li>
      </#if>

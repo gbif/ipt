@@ -6,10 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <%@ include file="/common/meta.jsp" %>
-        <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/layout-1col.css'/>" />
-        <script type="text/javascript" src="<c:url value='/scripts/prototype.js'/>"></script>
-        <script type="text/javascript" src="<c:url value='/scripts/scriptaculous.js'/>"></script>
-        <script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>
+		<!-- the 1 column layout -->
+		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/layout-1col.css'/>" />
         <decorator:head/>
     </head>
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/><decorator:getProperty property="body.onload" writeEntireProperty="true"/> >

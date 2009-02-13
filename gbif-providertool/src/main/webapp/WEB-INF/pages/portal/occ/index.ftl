@@ -6,38 +6,38 @@
 	<script>
 	function updateByRegion(){
 		var url = '<@s.url value="/ajax/occResourceStatsByRegion.html"/>';
-		var params = { resource_id: ${resource_id}, type: $F("regionClass") }; 
-		var target = 'imgByRegion';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id}, type: $("#regionClass").val() }; 
+		var target = '#imgByRegion';	
+		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByCountry(){
 		var url = '<@s.url value="/ajax/occResourceStatsByCountry.html"/>';
-		var params = { resource_id: ${resource_id}, type: $F("countryClass") }; 
-		var target = 'imgByCountry';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id}, type: $("#countryClass").val() }; 
+		var target = '#imgByCountry';	
+		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByTaxon(){
 		var url = '<@s.url value="/ajax/occResourceStatsByTaxon.html"/>';
-		var params = { resource_id: ${resource_id}, type: $F("rank") }; 
-		var target = 'imgByTaxon';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id}, type: $("#rank").val() }; 
+		var target = '#imgByTaxon';	
+		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByHost(){
 		var url = '<@s.url value="/ajax/occResourceStatsByHost.html"/>';
-		var params = { resource_id: ${resource_id}, type: $F("hostType") }; 
-		var target = 'imgByHost';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id}, type: $("#hostType").val() }; 
+		var target = '#imgByHost';	
+		ajaxHtmlUpdate(url, target, params);
 	};
 	
-	document.observe("dom:loaded", function() {
+	$(document).ready(function(){
 		updateByRegion();
 		updateByCountry();
 		updateByTaxon();
 		updateByHost();
-		$('regionClass').observe('change', updateByRegion);
-		$('countryClass').observe('change', updateByCountry);
-		$('rank').observe('change', updateByTaxon);
-		$('hostType').observe('change', updateByHost);
+		listenToChange("#regionClass", updateByRegion);
+		listenToChange("#countryClass", updateByCountry);
+		listenToChange("#rank", updateByTaxon);
+		listenToChange("#hostType", updateByHost);
 	});
 	</script>
 	
