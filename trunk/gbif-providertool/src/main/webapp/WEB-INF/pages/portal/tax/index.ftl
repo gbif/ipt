@@ -27,6 +27,10 @@
 		updateByRank();
 		listenToChange("#rank", updateByTaxon);
 		listenToChange("#statusClass", updateByStatus);
+		
+	    $("#showWebservices").click(function () {
+	      $("#services").slideToggle("normal");
+	    });
 	});
 	</script>
 	
@@ -44,7 +48,7 @@
 		<@s.label key="dataResource.cache" value="${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}"/>
 		<ul class="minimenu">
 			<li>
-				<a onclick="Effect.toggle('services', 'blind', { duration: 0.3 }); return false;"><@s.text name="dataResource.services"/></a>
+				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
 			</li>
 			<li>
 				<a href="metaResource.html?resource_id=${resource_id}">Full Metadata</a>
@@ -190,7 +194,3 @@
 
 
 <br class="clearfix" />
-
-<!--<script type="text/javascript">
-	Rounded('rounded', 6, 6);
-</script> -->

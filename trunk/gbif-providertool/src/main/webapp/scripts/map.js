@@ -9,8 +9,8 @@ function loadMap() {
     //add the polygon layer
     var polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer");
 
-    if ($('#bbox_left').value!="" && $('#bbox_bottom').value!="" && $('#bbox_right').value !=null && $('#bbox_top').value!=null){
-	    var bounds = new OpenLayers.Bounds($('#bbox_left').value, $('#bbox_bottom').value, $('#bbox_right').value, $('#bbox_top').value);
+    if ($('#bbox_left').val()!="" && $('#bbox_bottom').val()!="" && $('#bbox_right').val() !=null && $('#bbox_top').val()!=null){
+	    var bounds = new OpenLayers.Bounds($('#bbox_left').val(), $('#bbox_bottom').val(), $('#bbox_right').val(), $('#bbox_top').val());
 	    boundingBox = new OpenLayers.Feature.Vector(bounds.toGeometry());
 	    polygonLayer.addFeatures(boundingBox);        
     }
@@ -34,10 +34,10 @@ function loadMap() {
 		}
 		//removes features
 		boundingBox = geometry;
-		$('#bbox_top').value = geometry.geometry.getBounds().top;
-		$('#bbox_bottom').value = geometry.geometry.getBounds().bottom;
-		$('#bbox_left').value = geometry.geometry.getBounds().left;
-		$('#bbox_right').value = geometry.geometry.getBounds().right;
+		$('#bbox_top').val(geometry.geometry.getBounds().top);
+		$('#bbox_bottom').val(geometry.geometry.getBounds().bottom);
+		$('#bbox_left').val(geometry.geometry.getBounds().left);
+		$('#bbox_right').val(geometry.geometry.getBounds().right);
 	};
 
     polygonControl.handler.setOptions({snapAngle: parseFloat(0)});
@@ -47,9 +47,9 @@ function loadMap() {
 }
 
 function clearBounds(){
-	$('#bbox_top').value = "";
-	$('#bbox_bottom').value = "";
-	$('#bbox_left').value = "";
-	$('#bbox_right').value = "";
+	$('#bbox_top').val("");
+	$('#bbox_bottom').val("");
+	$('#bbox_left').val("");
+	$('#bbox_right').val("");
 	polygonLayer.destroyFeatures();
 }

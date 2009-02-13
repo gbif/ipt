@@ -42,7 +42,7 @@
 	<@s.textarea key="keywords" label="" required="false" cssClass="text xlarge"/>
 </fieldset>
 
-	<div class="break" />
+	<div class="break"></div>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </@s.form>

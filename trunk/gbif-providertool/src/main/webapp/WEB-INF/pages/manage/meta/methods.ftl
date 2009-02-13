@@ -15,7 +15,7 @@
 	<@s.textarea key="eml.qualityControl" required="false" cssClass="text xlarge slim"/>
 </fieldset>
 	
-	<div class="break" />
+	<div class="break"></div>
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.done" name="next" theme="simple"/>
 </@s.form>

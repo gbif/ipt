@@ -61,7 +61,7 @@
         	</div>  
 	 	</#if>
 	 	
-		<div class="break" />
+		<div class="break"></div>
         <@s.submit cssClass="button" key="button.save" theme="simple"/>
 	    <#if (view.id)??>
 	        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
