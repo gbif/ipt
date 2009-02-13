@@ -9,7 +9,7 @@ ${status}
 		<@s.hidden key="resource_id"/>
 		<@s.submit cssClass="button" key="button.done"/>
 	</@s.form>
-	<script type="text/javascript">    dojo.event.topic.publish("/stopTimer");  </script>
+	<script type="text/javascript">    dojo.event.topic.publish("/stopTimer"); // jquery:http://stackoverflow.com/questions/220767/auto-refreshing-div-with-jquery </script>
 </#if>
 
 

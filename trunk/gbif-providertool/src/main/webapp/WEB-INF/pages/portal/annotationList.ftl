@@ -9,17 +9,13 @@
 		function showAnnotation(id){
 			var url = '<@s.url value="/ajax/annotation.html"/>';
 			var params = { resource_id:${resource_id}, id: id }; 
-			var target = 'annotation';	
-			var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+			var target = '#annotation';	
+			ajaxHtmlUpdate(url, target, params);
 			return false;
 		};
 
-		function updateAnnotations(){
-			$('annotationTypeForm').submit();
-		};
-
-		document.observe("dom:loaded", function() {
-			$('annotationType').observe('change', updateAnnotations);
+		$(document).ready(function(){
+			listenToChange("#annotationType", $('#annotationTypeForm').submit);
 		});
 	</script>
 </head>

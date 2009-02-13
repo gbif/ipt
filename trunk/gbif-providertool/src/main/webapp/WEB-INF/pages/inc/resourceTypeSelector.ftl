@@ -5,10 +5,11 @@
 </div>
 
 <script>
-function updateResources(){
-	$('resourceForm').submit();
-};
-$('resourceType').observe('change', updateResources);
+$(document).ready(function(){
+	$("#resourceType").change(function(e) {
+		$("#resourceForm").submit();
+	});
+});
 </script>	
 
 <br class="break"/>

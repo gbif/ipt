@@ -1,34 +1,32 @@
 <head>
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
-    <meta name="submenu" content="tax"/>
-    <script type="text/javascript" src="/scripts/rounded.js"/>  
-    
+    <meta name="submenu" content="tax"/>    
 	<script>
 	function updateByTaxon(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByTaxon.html"/>';
-		var params = { resource_id: ${resource_id}, type: $F("rank") }; 
-		var target = 'imgByTaxon';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id}, type: $("#rank").val() }; 
+		var target = '#imgByTaxon';	
+		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByStatus(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByStatus.html"/>';
-		var params = { resource_id: ${resource_id}, type: $F("statusClass") }; 
-		var target = 'imgByStatus';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id}, type: $("#statusClass").val() }; 
+		var target = '#imgByStatus';	
+		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByRank(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByRank.html"/>';
-		var params = { resource_id: ${resource_id}}; 
-		var target = 'imgByRank';	
-		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+		var params = { resource_id: ${resource_id} }; 
+		var target = '#imgByRank';	
+		ajaxHtmlUpdate(url, target, params);
 	};
-	document.observe("dom:loaded", function() {
+	$(document).ready(function(){
 		updateByTaxon();
 		updateByStatus();
 		updateByRank();
-		$('rank').observe('change', updateByTaxon);
-		$('statusClass').observe('change', updateByStatus);
+		listenToChange("#rank", updateByTaxon);
+		listenToChange("#statusClass", updateByStatus);
 	});
 	</script>
 	
