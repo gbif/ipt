@@ -204,6 +204,7 @@ function deleteCookie(name,path,domain) {
 
 // This function is for stripping leading and trailing spaces
 String.prototype.trim = function () {
+	// jQuery.trim
     return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");
 };
 
@@ -256,37 +257,24 @@ function confirmDelete(obj) {
 }
 
 function highlightTableRows(tableId) {
-    var previousClass = null;
-    var table = document.getElementById(tableId); 
-    var startRow = 0;
-    // workaround for Tapestry not using thead
-    if (!table.getElementsByTagName("thead")[0]) {
-	    startRow = 1;
-    }
-    var tbody = table.getElementsByTagName("tbody")[0];
-    var rows = tbody.getElementsByTagName("tr");
-    // add event handlers so rows light up and are clickable
-    for (i=startRow; i < rows.length; i++) {
-        rows[i].onmouseover = function() { previousClass=this.className;this.className+=' over' };
-        rows[i].onmouseout = function() { this.className=previousClass };
-        rows[i].onclick = function() {
-            var cell = this.getElementsByTagName("td")[0];
-            var link = cell.getElementsByTagName("a")[0];
-            if (link.onclick) {
-                call = link.getAttribute("onclick");
-                if (call.indexOf("return ") == 0) {
-                    call = call.substring(7);
-                } 
-                // this will not work for links with onclick handlers that return false
-                eval(call);
-            } else {
-                location.href = link.getAttribute("href");
-            }
-            this.style.cursor="wait";
-            return false;
-        }
-    }
+    $("#"+tableId+" tr").mouseover(function(){
+    	$(this).addClass("over");
+    }).mouseout(function(){
+    	$(this).removeClass("over");
+    }).click(function(){
+    	var anchors = $("a", this);
+    	if (anchors.length > 0) {
+			anchor = $(anchors.get(0));
+			var link = anchor.attr("href");
+			if (link) {
+				window.location.href = link;
+			}else{
+	    		anchor.click();
+			}
+    	}
+    });
 }
+
 
 function highlightFormElements() {
     // add input box highlighting
@@ -327,20 +315,20 @@ function radio(clicked){
     clicked.parentNode.parentNode.className="over";
 }
 
-window.onload = function() {
+$(document).ready(function(){
     highlightFormElements();
-    if ($('successMessages')) {
-        new Effect.Highlight('successMessages');
+    if ($('#successMessages')) {
+        new Effect.Highlight('#successMessages');
         // causes webtest exception on OS X : http://lists.canoo.com/pipermail/webtest/2006q1/005214.html
         // window.setTimeout("Effect.DropOut('successMessages')", 3000);
     }
-    if ($('errorMessages')) {
-        new Effect.Highlight('errorMessages');
+    if ($('#errorMessages')) {
+        new Effect.Highlight('#errorMessages');
     }
     
     /* Initialize menus for IE */
-    if ($("primary-nav")) {
-        var navItems = $("primary-nav").getElementsByTagName("li");
+    if ($("#primary-nav")) {
+        var navItems = $("#primary-nav li");
     
         for (var i=0; i<navItems.length; i++) {
             if (navItems[i].className == "menubar") {
@@ -349,7 +337,7 @@ window.onload = function() {
             }
         }
     }
-}
+});
 
 // Show the document's title on the status bar
 window.defaultStatus=document.title;

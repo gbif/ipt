@@ -11,11 +11,21 @@
 			var params = { resource_id:${resource_id}, id: id }; 
 			var target = '#annotation';	
 			ajaxHtmlUpdate(url, target, params);
-			return false;
 		};
+		
+		function updateAnnotations(){
+			$('#annotationTypeForm').submit();
+		}
 
 		$(document).ready(function(){
-			listenToChange("#annotationType", $('#annotationTypeForm').submit);
+			listenToChange("#annotationType", updateAnnotations);
+
+			$(".annotationLink").click(function (e) {
+				e.preventDefault();
+				showAnnotation(this.name);
+		    });
+
+		    highlightTableRows("anno");    
 		});
 	</script>
 </head>
@@ -33,7 +43,7 @@
 <@display.table name="annotations" id="anno" class="table" export=false pagesize=25>
     <@display.column property="type" sortable=true title='${struts.getText("annotation.type")}'/>
     <#if anno??>
-    <@display.column value="<a href='Javascript:showAnnotation(${anno.id})'>${anno.note?substring(0.50)}</a>" sortable=true title='${struts.getText("annotation.note")}'/>
+    <@display.column value="<a class='annotationLink' name='${anno.id}'>${anno.note?substring(0.50)}</a>" sortable=true title='${struts.getText("annotation.note")}'/>
     </#if>
 	<@display.column property="creator" sortable=true title='${struts.getText("annotation.creator")}' />    
 	<@display.column property="created" sortable=true title='${struts.getText("annotation.created")}' format="{0,date,${datePattern}}"/>    
@@ -45,8 +55,4 @@
 <div id="annotation">
 	<!-- empty for AJAX call -->
 </div>
-
-<script type="text/javascript">
-    highlightTableRows("anno");
-</script>
 
