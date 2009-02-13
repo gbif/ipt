@@ -7,7 +7,14 @@ function ajaxHtmlUpdate(url, target, params) {
 function listenToChange(selector, handler) {
 	$(selector).change(function(e){handler()});
 }		
-
+function isEmpty(selector) {
+	if( jQuery.trim($(selector).val())==""){
+		return true;
+	}else{
+		return false;
+	}
+}
+      
 /* APPFUSE */
 /* This function is used to change the style class of an element */
 function swapClass(obj, newStyle) {

@@ -28,6 +28,9 @@
             </div><!-- end main -->
 
             <div id="sub">
+            	
+            	<decorator:getProperty property="page.contextmenu" />
+            	
 			    <c:choose>
 			        <c:when test='${currentSubMenu == "manage"}'>
 			        	<%@ include file="/common/submenu_actions_new.jsp" %>

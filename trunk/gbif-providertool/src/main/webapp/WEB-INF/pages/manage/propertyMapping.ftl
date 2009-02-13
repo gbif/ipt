@@ -2,34 +2,91 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${view.resource.title}"/>
     <meta name="submenu" content="manage_resource"/>
+	<script type="text/javascript" src="/scripts/jquery/ui.core.min.js"></script>
+	<script type="text/javascript" src="/scripts/jquery/ui.accordion.min.js"></script>
+	<link type="text/css" href="/scripts/css/demos.css" rel="stylesheet" />
 	<script>
 	var previewLoaded=0;
 	function sourcePreview(){
 		if (previewLoaded<1){
 			var url = '<@s.url action="sourcePreview" namespace="/ajax"/>';
 			var params = { sid: ${view.source.id} }; 
-			var target = 'sourcepreview';	
-			var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
+			var target = '#sourcepreview';	
+			ajaxHtmlUpdate(url, target, params);
 			previewLoaded=1;
 		}
 	};
 	
 	
 	function confirmTermMapping(idx, tid){
-		//alert(idx);	
-		//alert( $("mappings_idx").value );
-		$("mappings_idx").value = idx;
-		//alert( $("mappings_idx").value );
-		//alert( $('sourceColumn_'+idx).value );
-		if($('sourceColumn_'+idx).value==""){
+		$("#mappings_idx").val(idx);
+		if(isEmpty('#sourceColumn_'+idx)){
 			alert('You need to select a source column first');
 			return false;
 		}
 		return true;
 	};
+	
+
+	$(document).ready(function(){
+	    $("#sourceViewLink").click(function () {
+	    	$("#uploadpreview").hide();
+	      	$("#sourcepreview").slideToggle("normal");
+	      	sourcePreview();
+	    });
+	    $("#previewLink").click(function () {
+	      	$("#sourcepreview").hide();
+	    	$("#uploadpreview").slideToggle("normal");
+	      	sourcePreview();
+	    });
+
+		$("#accordion").accordion({
+			header: "h2"
+		});
+
+	});
 	</script>	
 </head>
 
+<content tag="contextmenu">
+<div id="availableConcepts">
+<label>Available Concepts</label>
+  <div id="accordion">
+	<div>
+		<h2><a href="#">Sample</a></h2>
+		<div>
+			<ul>
+				<li>List item one</li>
+				<li>List item two</li>
+				<li>List item three</li>
+			</ul>
+		</div>
+	</div>
+	<div>
+		<h2><a href="#">Taxon</a></h2>
+		<div>
+			<ul>
+				<li>List item one</li>
+				<li>List item two</li>
+				<li>List item three</li>
+			</ul>
+		</div>
+	</div>
+	<div>
+		<h2><a href="#">Location</a></h2>
+		<div>
+			<ul>
+				<li>List item one</li>
+				<li>List item two</li>
+				<li>List item three</li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</div>
+</content>
+
+<body>
 <h2>Mappings for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 
 <#if !columnOptions??>
@@ -70,22 +127,20 @@
 	    
 	 	<br/>
 		<ul class="actionmenu">
-			<li><a onclick="Element.hide('uploadpreview'); Effect.toggle('sourcepreview', 'blind', { duration: 0.3 }); sourcePreview(); return false;">view source</a></li>
-			<li>
-				<@s.a targets="uploadpreview" theme="ajax" formid="mappingForm" form="mappingForm" onclick="Element.hide('sourcepreview'); Effect.toggle('uploadpreview', 'blind', { duration: 0.3 }); return false;">preview mapping</@s.a>
-			</li>		
+			<li id="sourceViewLink"><a>view source</a></li>
+			<li id="previewLink"><a>preview mapping</a></li>		
 		</ul>
 	
 	<div id="sourcepreview" style="display:none">
 		Retrieving source data ...
 	</div>	
 	<div id="uploadpreview" style="display:none">
-		Retrieving mapping preview ...<br/>
+		Retrieving mapping preview ...<br/><br/>
 		<p class="reminder">Not implemented yet, sorry!</p>
 	</div>
 
 
-	<div class="break"/>
+	<div class="break"></div>	
 	
 	<fieldset>
 	<legend>Property Mappings</legend>
@@ -121,7 +176,7 @@
     </#list>
 	</fieldset>
  
-	<div class="break"/>
+	<div class="break"></div>
     <@s.submit cssClass="button" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
  
@@ -132,3 +187,4 @@
 </@s.url>
 
 </#if>
+</body>
