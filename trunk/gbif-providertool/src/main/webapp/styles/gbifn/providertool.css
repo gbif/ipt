@@ -27,6 +27,12 @@ div.break {
 	clear: both;
 	padding-top: 15px;
 }
+div.breakRight {
+	clear: both;
+	text-align: right;
+	padding-right: 10px;
+	padding-top: 15px;
+}
 div.break2 {
 	clear: both;
 	padding-top: 0px;
@@ -61,10 +67,14 @@ form .xlargeFull{
     width: 880px;
 }
 form .xlarge{
-    width: 669px;
+    width: 676px;
 }
 form textarea.xlarge{
     height: 20em;
+    width: 676px;
+}
+form input.xlarge{
+    width: 670px;
 }
 form textarea.slim{
     height: 8em;
@@ -81,6 +91,11 @@ form .xhalf{
 
 .fullsize {
 	width: 100%;
+}
+
+.modifiedCombo .small{
+	width: 131px;
+	padding-left: 4	px;
 }
 
 table.topheader td {
@@ -223,9 +238,10 @@ ul.indexmenu li{
 #sub label {
 	display: block;
 	margin-top: 20px;
-	font-variant: normal;
-	font-weight: bold;
 	font-style: italic;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;	
 }
 
 /* @end */
@@ -278,7 +294,7 @@ div.chart{
 div.chart form, div.map form {
 	padding-right: 16px;
 	position: relative;
-	top: -28px;
+	top: -37px;
 	margin-bottom: -34px;
 	text-align: right;
 }
@@ -308,7 +324,7 @@ div.chart form, div.map form {
 .rightCombo{
 	float: right;
 	text-align: right;
-	padding-top: 15px;
+	padding-top: 7px;
 	height: 30px;
 }
 
@@ -357,15 +373,14 @@ div.googlemap {
 
 /* @end */
 
-.h1occ{
-	margin-bottom: 13px;
-	margin-top: -15px;
-}
 
 #occResource ul fieldset{
 	background-color: #ededed;
 	border-style: none;
+	padding-bottom: 10px;
 	margin-bottom: 30px;
+
+	
 }
 
 #occResource ul fieldset div#metadata{
@@ -384,7 +399,7 @@ div.googlemap {
 }
 
 #taxResource ul fieldset{
-	background-color: #ededed;
+	background-color: #FFF;
 	border-style: none;
 	margin-bottom: 0px;
 	margin-left: 5px;
@@ -396,16 +411,28 @@ div.googlemap {
 	line-height: normal;
 }
 
+#taxResource ul fieldset div#metadata li{
+	text-indent: -5px;
+}
+
 #taxResource fieldSet #metadata #wwgrp_occResource_dataResource_cache{
-	padding-left: 0px;
+	padding-left: -5px;
 	padding-top: 10px;
 }
 
 
 #metaResource ul fieldset{
-	background-color: #ededed;
+	background-color: #FFF;
 	border-style: none;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-left: 7px;
+}
+
+
+#metaResource ul fieldset table{
+	margin-bottom: 0px;
+	font-size: 12px;
 }
 
 #metaResource ul fieldset h2{
@@ -413,6 +440,7 @@ div.googlemap {
 	line-height: normal;
 	margin-top: 5px;
 }
+
 
 
 #taxDetail ul fieldset{
@@ -466,19 +494,28 @@ body#login{
 	margin-top: -8px;
 }
 
+
+#main fieldset{
+	background-color: #FFFFFF;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	padding-top: 15px;
+	padding-right: 10px;
+}
+
 #publishingForm{
 	margin-top: 0px;
 }
 
-
-
 #resourceForm fieldset{
-	background-color: #ededed;
+	background-color: #FFFFFF;
 	border-style: none;
 	margin-left: -5px;
 	margin-bottom: 10px;
 	padding-bottom: 10px;
-	padding-top: 15px;
+	padding-top: 0px;
 	padding-right: 0px;
 }
 
@@ -488,23 +525,13 @@ body#login{
 }
 
 #emlForm fieldset{
-	background-color: #ededed;
+	background-color: #FFFFFF;
 	border-style: none;
 	margin-left: -5px;
-	margin-bottom: 10px;
-	padding-bottom: 30px;
-	padding-top: 15px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	padding-top: 0px;
 	padding-right: 0px;
-}
-
-#main fieldset{
-	background-color: #ededed;
-	border-style: none;
-	margin-left: -5px;
-	margin-bottom: 10px;
-	padding-bottom: 30px;
-	padding-top: 15px;
-	padding-right: 10px;
 }
 
 #emlForm fieldset li{
@@ -516,6 +543,16 @@ body#login{
 	margin-top: 3px;
 }
 
+#geoForm fieldset{
+	background-color: #FFFFFF;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	padding-top: 10px;
+	padding-right: 0px;
+}
+
 #providerCfg fieldset{
 	border-style: none;
 }
@@ -523,6 +560,8 @@ body#login{
 fieldset .noBottomMargin{
 	margin-bottom: 0px;
 	padding-bottom: 0px;
+	padding-top: -10px;
+	margin-top: -10px;
 }
 
 .modifiedh1{
@@ -570,6 +609,12 @@ fieldset .noBottomMargin{
 .cloud9 { font-size: 1.5em; }
 /* @end */
 
+.annotationRight{
+	padding-top: 9px;
+	padding-right: 12px;
+	float: right;
+	width: 130px;
+}
 
 .rounded{
 	background-color: #ededed;

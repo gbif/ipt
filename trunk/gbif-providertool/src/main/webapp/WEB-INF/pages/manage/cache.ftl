@@ -18,8 +18,9 @@
 </head>
 
 
-<h1 class="modifiedh1"><@s.text name="dataResource.cache"/></h1>
-<p>The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
+<h1><@s.text name="dataResource.cache"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<p class="explMt">The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
 based on the transformations and mappings you have configured. 
 Depending upon the amount of data this process may take a long time during which this resource is blocked. 
 </p>
@@ -82,8 +83,10 @@ Depending upon the amount of data this process may take a long time during which
 
 <div class="break">
 <@s.form action="validation" method="get">
-  <@s.hidden key="resource_id"/>
-  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+	<@s.hidden key="resource_id"/>
+	<div class="breakRight">
+	  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+	</div>
 </@s.form>
 </div>
 -->

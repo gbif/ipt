@@ -33,9 +33,8 @@
 </head>
 
 
+<div class="horizontal_dotted_line_large_foo"></div>
 <#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
-
-<div class="horizontal_dotted_line_large"></div>
 <#include "/WEB-INF/pages/inc/resourceList.ftl">  
 
 <div id="tagindex">

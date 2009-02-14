@@ -33,6 +33,8 @@
             	
 			    <c:choose>
 			        <c:when test='${currentSubMenu == "manage"}'>
+			        	<h1>Manage menu</h1>
+			        	<div class="horizontal_dotted_line_small_foo"></div>
 			        	<%@ include file="/common/submenu_actions_new.jsp" %>
 			        	<%@ include file="/common/submenu_recent.jsp" %>						
 			        </c:when>
@@ -40,6 +42,7 @@
 			        <c:when test='${currentSubMenu == "manage_resource"}'>
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
+			        	<div class="horizontal_dotted_line_small_foo"></div>
 		                </s:a>
 	                	<s:if test="resource.id>0">	                
 				        	<%@ include file="/common/submenu_actions_eml.jsp" %>

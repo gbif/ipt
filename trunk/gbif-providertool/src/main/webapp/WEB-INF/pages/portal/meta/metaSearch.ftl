@@ -3,13 +3,7 @@
     <meta name="submenu" content="meta"/>
 </head>
 
-<style>
-	.modifiedh1{
-		margin-top:-13px;
-	}
-</style>
-
-<h1 class="modifiedh1">Your Search: ${q!keyword!bbox.toStringShort(3)}</h1>  
-
+<h1>Your Search: ${q!keyword!bbox.toStringShort(3)}</h1>  
+<div class="horizontal_dotted_line_large_foo"></div>
 
 <#include "/WEB-INF/pages/inc/resourceList.ftl">  

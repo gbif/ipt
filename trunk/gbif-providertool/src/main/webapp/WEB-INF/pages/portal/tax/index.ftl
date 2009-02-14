@@ -38,6 +38,7 @@
 	
 <@s.form>
 <h1 class="h1tax"><@s.text name="resource.description"/></h1>
+<div class="horizontal_dotted_line_large"></div>
 <div class="rounded" style="margin-bottom:30px">
 <fieldset>
 	<legend><!--<@s.text name="resource.description"/>--></legend>
@@ -159,13 +160,11 @@
 
 </@s.push>
 
-
-
 <br class="clearfix" />
-
 
 <div id="tax-pie" class="stats chart">
 	<label><@s.text name="stats.byName"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="rankForm">
 		<@s.select id="rank" list="ranks" value="rank" theme="simple"/>
 	</@s.form>
@@ -176,6 +175,7 @@
 
 <div id="status-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.byStatus"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="statusClassForm">
 		<@s.select id="statusClass" name="status" list="statusClasses" value="1" theme="simple"/>
 	</@s.form>
@@ -189,8 +189,13 @@
 
 <div id="rank-pie" class="stats chart">
 	<label><@s.text name="stats.byRank"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByRank"></div>
 </div>
 
 
 <br class="clearfix" />
+
+<!--<script type="text/javascript">
+	Rounded('rounded', 6, 6);
+</script> -->

@@ -84,6 +84,7 @@
     
     div#recentlyViewedResources label{
     	margin-bottom: -7px;
+		font-style: normal;    	
     }
     div#fullsearch{
     	padding-top: 13px;
@@ -91,6 +92,7 @@
     
     div#fullsearch label{
     	margin-bottom: 7px;
+		font-style: normal;
     }
     
 /* END CONTENT */

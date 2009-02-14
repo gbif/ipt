@@ -5,7 +5,8 @@
 </head>
 
 
-<h1 class="modifiedh1"><@s.text name="eml.resourceCreator"/></h1>
+<h1 ><@s.text name="eml.resourceCreator"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>
 <@s.form id="emlForm" action="creator" method="post" validate="false">
 <fieldset>
 	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
@@ -57,8 +58,9 @@
 		</div>
 	</div>
 </fieldset>
-
-	<div class="break"></div>
+	<div class="breakRight"></div>
+	<div class="breakRight">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+ 	</div>
 </@s.form>

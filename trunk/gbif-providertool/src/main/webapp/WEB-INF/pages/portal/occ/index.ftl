@@ -49,6 +49,7 @@
 	
 <@s.form>
 <h1 class="h1occ"><@s.text name="resource.description"/></h1>
+<div class="horizontal_dotted_line_large"></div>
 <fieldset>
 	<legend><!--<@s.text name="resource.description"/>--></legend>
 	<div id="metadata">
@@ -164,12 +165,11 @@
 	</table>
 </div>
 
-
 <br class="clearfix" />
-
 
 <div id="loc-countries" class="stats map">
 	<label><@s.text name="stats.occByCountry"/></label>	
+	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="countryClassForm">
 		<@s.select id="countryClass" name="country" list="countryClasses" value="1" theme="simple"/>
 	</@s.form>
@@ -178,6 +178,7 @@
 
 <div id="loc-geoserver" class="stats map stat-right">
 	<label><@s.text name="stats.occPointMap"/></label>	
+	<div class="horizontal_dotted_line_graph"></div>	
 	<img width="${width}" height="${height}" src="${geoserverMapUrl}" />
 </div>
 
@@ -187,6 +188,7 @@
 
 <div id="loc-pie" class="stats chart">
 	<label><@s.text name="stats.occByRegion"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="regionClassForm">
 		<@s.select id="regionClass" name="region" list="regionClasses" value="4" theme="simple"/>
 	</@s.form>
@@ -195,6 +197,7 @@
 
 <div id="tax-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.byTaxon"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="rankForm">
 		<@s.select id="rank" list="ranks" value="rank" theme="simple"/>
 	</@s.form>
@@ -207,6 +210,7 @@
 
 <div id="recordbasis-pie" class="stats chart">
 	<label><@s.text name="stats.occByBasisOfRecord"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByBasisOfRecord">
 		<@s.action name="occResourceStatsByBasisOfRecord" namespace="/ajax" executeResult="true"/>
 	</div>
@@ -214,6 +218,7 @@
 
 <div id="host-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.occByHost"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="hostForm">
 		<@s.select id="hostType" list="hostTypes" theme="simple"/>
 	</@s.form>
@@ -226,6 +231,7 @@
 
 <div id="time-pie" class="stats chart">
 	<label><@s.text name="stats.occByDateColected"/></label>
+	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByDateColected">
 		<@s.action name="occResourceStatsByDateColected" namespace="/ajax" executeResult="true"/>
 	</div>

@@ -8,7 +8,8 @@
 	
 		
 <img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
-<h1>${resource.title}</h1>	
+<h1 class="h1meta">${resource.title}</h1>	
+<div class="horizontal_dotted_line_large"></div>
 
 <@s.form>
 
@@ -38,6 +39,7 @@
 			<@trow label="resource.description" val=resource.description!/>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>	
 </div>
 
 <div>
@@ -58,6 +60,7 @@
 			<@trow label="agent.address.country" val=eml.getResourceCreator().address.country!/>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>	
 </div>
 
 <div>
@@ -74,6 +77,7 @@
 			<@trow label="eml.lowestCommonTaxon.rank" val=eml.getLowestCommonTaxon().rank!/>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
 
 <div>
@@ -84,6 +88,7 @@
 			<@trow label="eml.geographicCoverage.description" val=eml.getGeographicCoverage().description!/>  
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
 
 <div>
@@ -97,6 +102,7 @@
 			</#if>  
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
 
 <div>
@@ -109,6 +115,7 @@
 			 </tr>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
 
 <div>
@@ -123,6 +130,7 @@
 			<@trow label="eml.researchProject.designDescription" val=eml.getResearchProject().designDescription!/>  
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
 
 <div>
@@ -134,6 +142,7 @@
 			<@trow label="eml.qualityControl" val=eml.qualityControl!/>  
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
 
 <div>
