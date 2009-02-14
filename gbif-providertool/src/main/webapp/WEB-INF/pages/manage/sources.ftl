@@ -15,14 +15,16 @@
     </script>
 </head>
 
-<h1 class="modifiedh1">Source Data</h1>
-<p>Please upload your data as tab files or define a SQL view to pull it from a database.
+<h1>Source Data</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<p class="explMt">Please upload your data as tab files or define a SQL view to pull it from a database.
 You can define as many sources as you like, but there needs to be at least one.
 Readily supported formats can be <a href="">found here</a>. 
 If your data does not exactly match those formats you have the option to configure simple transformations and adjustments in the next configuration step.
 </p>
 
-<h2 class="modifiedh2"><@s.text name="sources.filesources"/></h2>
+<h2><@s.text name="sources.filesources"/></h2>
+<div class="horizontal_dotted_line_large_soft"></div>
 <fieldset class="noBottomMargin">
 <legend><!--<@s.text name="sources.filesources"/>--></legend>
 	<@s.iterator value="fileSources" status="stat">
@@ -70,7 +72,8 @@ If your data does not exactly match those formats you have the option to configu
 	The IPT can pull data from those databases when updating the internal cache.
 </p>
 </div>
-<h2 class="modifiedh2"><@s.text name="sources.sqlsources"/></h2>
+<h2><@s.text name="sources.sqlsources"/></h2>
+<div class="horizontal_dotted_line_large_soft"></div>
 <fieldset>
 <legend><!--<@s.text name="sources.sqlsources"/>--></legend>
 	<div>
@@ -127,6 +130,8 @@ If your data does not exactly match those formats you have the option to configu
 <div class="break">
 <@s.form action="transformations" method="get">
   <@s.hidden key="resource_id"/>
-  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+  <div class="breakRight">
+	  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+  </div>
 </@s.form>
 </div>

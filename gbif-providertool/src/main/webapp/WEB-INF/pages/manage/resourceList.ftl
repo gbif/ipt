@@ -7,10 +7,11 @@
     <meta name="submenu" content="manage"/>
 </head>
 
-<style>
+<!--<style>
 	h1{ margin-bottom: -5px;}
-</style>
+</style>-->
 
+<div class="horizontal_dotted_line_large_foo"></div>
 <#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
 
 <#include "/WEB-INF/pages/inc/resourceManagerList.ftl">  

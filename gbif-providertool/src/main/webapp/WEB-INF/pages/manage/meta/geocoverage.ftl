@@ -11,8 +11,9 @@
 	</script>
 </head>
 
-<h1 class="modifiedh1"><@s.text name="eml.geographicCoverage"/></h1>
-<@s.form id="emlForm" action="geocoverage" method="post" validate="false">
+<h1><@s.text name="eml.geographicCoverage"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 <fieldset>
 	<legend><!--<@s.text name="eml.geographicCoverage"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
@@ -38,7 +39,8 @@
 	<@s.textarea key="eml.geographicCoverage.description" required="false" cssClass="text xlarge"/>
 </fieldset>
 
-	<div class="break"></div>
+	<div class="break">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+	</div>
 </@s.form>

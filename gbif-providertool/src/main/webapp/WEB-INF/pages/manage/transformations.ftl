@@ -13,15 +13,16 @@ function sorry(){
 </head>
 
 <!--<div class="separator"></div>-->
-
-<p class="explanatiop">
+<div class="horizontal_dotted_line_large_foo"></div>
+<p class="explMt">
 Transformations will allow you to adjust your data according to certain patterns found frequently in data structures before it gets imported into the IPT cache.
 Each transformation results in a new view on your source data that can be used later on to define the final mappings to the IPT data model.<br/>
 Common data formats are preconfigured, so if you happen to have your data in these formats select the matching preconfiguration.
 Otherwise you can always configure you own set of transformations. 
 </p>
 
-<h2 class="modifiedh2">Your Transformation Views</h2>
+<h2>Your Transformation Views</h2>
+<div class="horizontal_dotted_line_large_soft"></div>
 <fieldset>
 <legend><!--Your Transformation Views--></legend>
 	<#list transformations as t>
@@ -76,7 +77,8 @@ $('transformationType').observe('change', updateImage);
 
 
 <#if (transformations?size<1)>
-<h2 class="modifiedh2">Common formats</h2>
+<h2>Common formats</h2>
+<div class="horizontal_dotted_line_large_soft"></div>
 <fieldset>
 <legend><!--Common formats--></legend>
 	<p>Only visible if no transformation has yet been configured...</p>
@@ -101,7 +103,9 @@ $('transformationType').observe('change', updateImage);
 
 <div class="break">
 <@s.form action="mappings" method="get">
-  <@s.hidden key="resource_id"/>
-  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+	<@s.hidden key="resource_id"/>
+	<div class="breakRight">  
+		<@s.submit cssClass="button" key="button.next" theme="simple"/>
+	</div>
 </@s.form>
 </div>

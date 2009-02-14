@@ -4,12 +4,8 @@
     <meta name="submenu" content="occ"/>
 </head>
 	
-<style>
-	.modifiedh1{
-		margin-top:-13px;
-	}
-</style>
 
-<h1 class="modifiedh1">Your Search: ${q}</h1>  
+<h1>Your Search: ${q}</h1>  
+<div class="horizontal_dotted_line_large_foo"></div>
 
 <#include "/WEB-INF/pages/inc/occurrenceList.ftl">  

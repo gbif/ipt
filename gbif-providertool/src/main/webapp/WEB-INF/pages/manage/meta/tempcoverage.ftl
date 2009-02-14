@@ -16,7 +16,8 @@
 
 </head>
 
-<h1 class="modifiedh1"><@s.text name="eml.temporalCoverage"/></h1>
+<h1><@s.text name="eml.temporalCoverage"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>
 <@s.form id="emlForm" action="tempcoverage" method="post" validate="false">
 <fieldset>
 	<legend><!--<@s.text name="eml.temporalCoverage"/>--></legend>
@@ -35,14 +36,20 @@
 		</div>
 	</div>
 </fieldset>
+<div class="breakRight">
+    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
+    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+</div>
 
 <h1 class="modifiedh1Secondary"><@s.text name="eml.keywords"/></h1>
-<fieldset>
+<div class="horizontal_dotted_line_large_foo"></div>
+<fieldset style="padding-top:13px;">
 	<legend><!--<@s.text name="eml.keywords"/>--></legend>
 	<@s.textarea key="keywords" label="" required="false" cssClass="text xlarge"/>
 </fieldset>
 
-	<div class="break"></div>
+	<div class="breakRight">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+	</div>    
 </@s.form>

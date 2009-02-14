@@ -5,8 +5,9 @@
 </head>
 
 
-<h1 class="modifiedh1">Basic Metadata</h1>
-<p>Please describe the dataset you want to publish as a whole</p>
+<h1>Basic Metadata</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<p class="explMt">Please describe the dataset you want to publish as a whole</p>
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   <fieldset>
@@ -46,15 +47,15 @@
         </div>
     </div>
 	<@s.textarea key="resource.description" cssClass="text xlarge"/>
-	
+	<div class="breakRight" />
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
 	<#if resource.id??>
 	    <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>
 	</#if>
-	<#if resource.title?? && resource.isDataResource()>
+<!--<#if resource.title?? && resource.isDataResource()>
 	    <span class="right"><a href="/manage/meta/creatorForm.html?resource_id=${resource.id}">More Metadata ...</a></span>
-	</#if>
+	</#if>-->
   </fieldset>
 </@s.form>
 	

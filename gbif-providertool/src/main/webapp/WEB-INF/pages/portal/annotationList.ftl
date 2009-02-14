@@ -31,7 +31,9 @@
 </head>
 
 
-<div class="right">
+
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="annotationRight">
 <@s.form id="annotationTypeForm" method="get">
 	<@s.hidden name="resource_id" value="${resource_id}"/>
 	<@s.select id="annotationType" name="annotationType" value="annotationType" list="annotationTypes" emptyOption="true" style="display: inline" theme="simple"/>

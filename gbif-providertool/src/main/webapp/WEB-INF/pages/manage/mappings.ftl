@@ -4,15 +4,15 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
-<h1 class="modifiedh1">Property Mappings</h1>
-
+<h1>Property Mappings</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
 <#-- See if sources exist -->
 <#if (sources?size<1)>
 	<p class="reminder">There are no data sources configured.<br/>
 		Please <a href="<@s.url action="sources"/>">define at least one source</a> first.
 	</p>
 <#else>
-	<p>
+	<p class="explMt">
 		Data in the IPT is organised along the <a href="">star schema</a>. 
 		There is a core, fixed table that you need to map your data to.
 		And there are a number of extension tables that you can optionally configure and the IPT administrator can define. 
@@ -20,7 +20,8 @@
 </#if>
 			
 
-<h2 class="modifiedh2">Your Existing Mappings</h2>
+<h2>Your Existing Mappings</h2>
+<div class="horizontal_dotted_line_large_soft"></div>
 <fieldset>
 <legend><!--Your Existing Mappings--></legend>
 	<div>
@@ -93,7 +94,9 @@
 
 <div class="break">
 <@s.form action="cache" method="get">
-  <@s.hidden key="resource_id"/>
-  <@s.submit cssClass="button" key="button.next" theme="simple"/>
+	<@s.hidden key="resource_id"/>
+	<div class="breakRight">
+		<@s.submit cssClass="button" key="button.next" theme="simple"/>
+	</div>
 </@s.form>
 </div>
