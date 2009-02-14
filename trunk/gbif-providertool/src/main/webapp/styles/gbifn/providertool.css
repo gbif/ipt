@@ -399,7 +399,7 @@ div.googlemap {
 }
 
 #taxResource ul fieldset{
-	background-color: #FFF;
+	background-color: transparent;
 	border-style: none;
 	margin-bottom: 0px;
 	margin-left: 5px;
@@ -427,6 +427,7 @@ div.googlemap {
 	margin-bottom: 0px;
 	padding-top: 0px;
 	padding-left: 7px;
+	padding-bottom: 20px;
 }
 
 
