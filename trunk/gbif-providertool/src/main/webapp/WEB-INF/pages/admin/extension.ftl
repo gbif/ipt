@@ -4,7 +4,8 @@
     <meta name="heading" content="${extension.name} Extension"/>
 </head>
 
-<table>	
+<div class="horizontal_dotted_line_xlarge"></div>
+<table class="extensionTable">	
  <tr>
 	<th><@s.text name='extension.name'/></th>
 	<td>${extension.name}</td>
@@ -15,7 +16,7 @@
  </tr>
  <tr>
 	<th><@s.text name='extension.link'/></th>
-	<td><#if extension.link??><a href="${extension.link}" target="_blank">${extension.link}</a></#if></td>
+	<td><#if extension.link??><img src="/images/assets/info_on.png"/><a href="${e.link}" target="_blank"> view info</a><#else><img src="/images/assets/info_off.png"/> unaviable</#if></td>
  </tr>
 <#if extension.type??> 
  <tr>
@@ -24,7 +25,7 @@
  </tr>
  <tr>
 	<th>Installed</th>
-	<td>${extension.installed?string}</td>
+	<td><#if extension.installed==true><img src="/images/assets/checktrue.png"/> yes<#else><img src="/images/assets/checkfalse.png"/> no</#if></td>
  </tr>
 </#if>
  <tr>

@@ -31,7 +31,7 @@
 		<div class="left" id="endDateDiv">
 			<@s.textfield id="endDate" key="eml.temporalCoverage.end" required="true" cssClass="text medium" />
 		</div>
-		<div class="left" style="widht: 100px">
+		<div class="left">
 			<@s.checkbox key="eml.temporalCoverage.single" value="false" onclick="javascript:toggleSingleDate(this);" />
 		</div>
 	</div>

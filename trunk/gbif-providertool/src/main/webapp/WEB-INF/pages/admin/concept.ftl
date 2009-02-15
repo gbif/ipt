@@ -4,6 +4,7 @@
     <meta name="menu" content="MainMenu"/>
 </head>
 
+<div class="horizontal_dotted_line_xlarge"></div>
 <table>	
  <tr>
 	<th><@s.text name="concept.identifier"/></th>

@@ -42,7 +42,7 @@
 			        <c:when test='${currentSubMenu == "manage_resource"}'>
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
-			        	<div class="horizontal_dotted_line_small_foo"></div>
+				        	<div class="horizontal_dotted_line_small_foo"></div>
 		                </s:a>
 	                	<s:if test="resource.id>0">	                
 				        	<%@ include file="/common/submenu_actions_eml.jsp" %>

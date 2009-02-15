@@ -14,7 +14,6 @@
 </style>
 
 <body id="login"/>
-
 <form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
     onsubmit="saveUsername(this);return validateForm(this)">
 <fieldset>
