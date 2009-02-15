@@ -62,6 +62,10 @@ div.overhang {
 	margin-left: 50px;
 }
 
+textarea{
+	font-size: 12px;
+	font-family: Arial, Helvetica;
+}
 
 form .xlargeFull{
     width: 880px;
@@ -71,7 +75,7 @@ form .xlarge{
 }
 form textarea.xlarge{
     height: 20em;
-    width: 676px;
+    width: 676px;	
 }
 form input.xlarge{
     width: 670px;
@@ -420,7 +424,6 @@ div.googlemap {
 	padding-top: 10px;
 }
 
-
 #metaResource ul fieldset{
 	background-color: #FFF;
 	border-style: none;
@@ -493,6 +496,10 @@ body#login{
 	padding-left: 15px;
 	padding-bottom: 15px;
 	margin-top: -8px;
+}
+
+#mainfull h1{
+	color: #077a2d;
 }
 
 

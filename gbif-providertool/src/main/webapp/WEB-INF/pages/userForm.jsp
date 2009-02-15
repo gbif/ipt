@@ -7,8 +7,9 @@
     <script type="text/javascript" src="<c:url value='/scripts/selectbox.js'/>"></script>
 </head>
 
+<div class="horizontal_dotted_line_xlarge_foo"></div>
 <div id="content" class="clearfix">
-	<div id="main">
+	<div id="mainUser">
 		<s:form name="userForm" action="saveUser" method="post" validate="true">
 		    <li style="display: none">
 		        <s:hidden key="user.id"/>
@@ -62,6 +63,7 @@
 		    <li>
 		        <fieldset>
 		            <legend><fmt:message key="userProfile.accountSettings"/></legend>
+<%-- 		            <div class="horizontal_dotted_line_graph"></div> --%>
 		            <s:checkbox key="user.enabled" id="user.enabled" fieldValue="true" theme="simple"/>
 		            <label for="user.enabled" class="choice"><fmt:message key="user.enabled"/></label>
 		
@@ -78,6 +80,7 @@
 		    <li>
 		        <fieldset>
 		            <legend><fmt:message key="userProfile.assignRoles"/></legend>
+					<%-- <div class="horizontal_dotted_line_graph"></div> --%>
 		            <table class="pickList">
 		                <tr>
 		                    <th class="pickLabel">

@@ -110,3 +110,20 @@ td {
 	background-color: #9ab9a3;
 	color: #333333;
 }
+
+.extensionListTable{
+	width: 100%;
+}
+
+.extensionListTable tr{
+	height: 16px;
+	vertical-align: middle;
+}
+
+.extensionTable th{
+	padding-right: 20px;
+}
+
+.vocabularyListTable{
+	width: 100%;
+}

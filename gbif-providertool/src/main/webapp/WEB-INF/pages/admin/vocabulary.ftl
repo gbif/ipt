@@ -5,7 +5,8 @@
     <meta name="menu" content="MainMenu"/>
 </head>
 
-<table class="layout">
+<div class="horizontal_dotted_line_xlarge"></div>
+<table class="vocabularyListTable">
 	<tr>
 		<th><@s.text name="concept.identifier"/></th>
 		<th><@s.text name="concept.uri"/></th>
