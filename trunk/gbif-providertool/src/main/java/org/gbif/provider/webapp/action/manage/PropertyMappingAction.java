@@ -37,6 +37,7 @@ import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.service.TransformationManager;
+import org.gbif.provider.util.MapUtils;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,8 +67,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	private Long mid;
 	private Long eid;
 	private Long sid;
+	// persistent stuff
 	private ViewMappingBase view;
-    private List<PropertyMapping> mappings;
+    private Map<String, List<PropertyMapping>> mappings = new HashMap<String, List<PropertyMapping>>();
+    private Map<Long, PropertyMapping> mappingsByID = new HashMap<Long, PropertyMapping>();
 	// transformationID for term mapping forwarding only
 	private Long tid;
 	private Integer mappings_idx;
@@ -105,30 +108,35 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			log.debug("Cant read datasource column headers", e);
 		}
         // prepare list of property mappings to create form with and to be filled by params interceptor
-		mappings = new ArrayList<PropertyMapping>();
         int filledMappings = 0;
     	for (ExtensionProperty prop : view.getExtension().getProperties()){
         	if (prop == null){
         		continue;
         	}
+        	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup(); 
+        	if (!mappings.containsKey(group)){
+        		mappings.put(group, new ArrayList<PropertyMapping>());        		
+        	}
+        	List<PropertyMapping> mplist = mappings.get(group); 
     		// is this property mapped already?
+        	PropertyMapping propMap;
     		if (view.hasMappedProperty(prop)){
     			// add existing mapping
-            	mappings.add(view.getMappedProperty(prop));
+    			propMap=view.getMappedProperty(prop);
+    			mplist.add(propMap);
             	filledMappings++;
     		}else{
     			// create new empty one. Remember to link them to the ViewMapping before they get saved
-        		PropertyMapping propMap = PropertyMapping.newInstance(prop);
-            	mappings.add(propMap);
+        		propMap = PropertyMapping.newInstance(prop);
+    			mplist.add(propMap);
     		}
-    		
+        	mappingsByID.put(propMap.getId(), propMap);
     		// create vocabulary drop downs
     		if (prop.getVocabulary()!=null){
     			ThesaurusVocabulary voc = prop.getVocabulary();
     			vocs.put(prop.getId(), thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false));
     		}
     	}
-		log.debug(mappings.size() + " mappings prepared with "+filledMappings+" existing ones");
         
 		// if this mapping is still empty try to automap
 		if (view.getMappedProperties().size()<1){
@@ -136,20 +144,22 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			Pattern p = Pattern.compile("[\\s_-]");
 			Matcher m = null;
 			int autoCount = 0;
-			for (PropertyMapping pm : mappings){
-				if (!pm.isEmpty()){
-					// they should all be empty, but just in case...
-					continue;
-				}
-				m = p.matcher(pm.getProperty().getName());
-				String propName = m.replaceAll("");
-				for (String col : sourceColumns){
-					m = p.matcher(col);
-					String colName = m.replaceAll("");
-					if (propName.equalsIgnoreCase(colName)){
-						pm.setColumn(col);
-						autoCount++;
-						break;
+			for (String group : mappings.keySet()){
+				for (PropertyMapping pm : mappings.get(group)){
+					if (!pm.isEmpty()){
+						// they should all be empty, but just in case...
+						continue;
+					}
+					m = p.matcher(pm.getProperty().getName());
+					String propName = m.replaceAll("");
+					for (String col : sourceColumns){
+						m = p.matcher(col);
+						String colName = m.replaceAll("");
+						if (propName.equalsIgnoreCase(colName)){
+							pm.setColumn(col);
+							autoCount++;
+							break;
+						}
 					}
 				}
 			}
@@ -170,18 +180,20 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
             return delete();
         }
         // update property mapping values
-        for (PropertyMapping pm : mappings){
-        	if (pm !=null && pm.getColumn() !=null){
-        		String key = StringUtils.trimToEmpty(pm.getColumn());
-        	}
-        	// save non-empty property mappings
-        	if (!pm.isEmpty()){
-        		view.addPropertyMapping(pm);
-        	// and remove empty ones that are still persistent
-        	}else if(pm.getId()!=null){
-        		view.removePropertyMapping(pm);
-        		propertyMappingManager.remove(pm);
-        	}
+		for (String group : mappings.keySet()){
+			for (PropertyMapping pm : mappings.get(group)){
+	        	if (pm !=null && pm.getColumn() !=null){
+	        		String key = StringUtils.trimToEmpty(pm.getColumn());
+	        	}
+	        	// save non-empty property mappings
+	        	if (!pm.isEmpty()){
+	        		view.addPropertyMapping(pm);
+	        	// and remove empty ones that are still persistent
+	        	}else if(pm.getId()!=null){
+	        		view.removePropertyMapping(pm);
+	        		propertyMappingManager.remove(pm);
+	        	}
+			}
         }
         // cascade-save view mapping
         view = viewMappingManager.save(view);
@@ -191,7 +203,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	public String termMapping() throws Exception{
 		save();
 		if (mappings_idx!= null){
-			PropertyMapping pm = mappings.get(mappings_idx);
+			PropertyMapping pm = mappingsByID.get(mappings_idx);
 			mid = pm.getViewMapping().getId();
 			tid = pm.getTermTransformationId();
 			if (tid==null){
@@ -222,10 +234,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	
 	
 
-	public List<PropertyMapping> getMappings() {
+	public Map<String, List<PropertyMapping>> getMappings() {
 		return mappings;
 	}
-	public void setMappings(List<PropertyMapping> mappings) {
+	public void setMappings(Map<String, List<PropertyMapping>> mappings) {
 		this.mappings = mappings;
 	}
 
@@ -280,4 +292,5 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	public Long getTid() {
 		return tid;
 	}
+	
 }

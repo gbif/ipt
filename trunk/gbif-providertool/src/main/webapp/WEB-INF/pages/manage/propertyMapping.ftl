@@ -4,7 +4,6 @@
     <meta name="submenu" content="manage_resource"/>
 	<script type="text/javascript" src="/scripts/jquery/ui.core.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery/ui.accordion.min.js"></script>
-	<link type="text/css" href="/scripts/css/demos.css" rel="stylesheet" />
 	<script>
 	var previewLoaded=0;
 	function sourcePreview(){
@@ -41,53 +40,17 @@
 	    });
 
 		$("#accordion").accordion({
-			header: "h2"
+			header: "h3"
 		});
 
 	});
 	</script>	
 </head>
 
-<content tag="contextmenu">
-<div id="availableConcepts">
-<label>Available Concepts</label>
-  <div id="accordion">
-	<div>
-		<h2><a href="#">Sample</a></h2>
-		<div>
-			<ul>
-				<li>List item one</li>
-				<li>List item two</li>
-				<li>List item three</li>
-			</ul>
-		</div>
-	</div>
-	<div>
-		<h2><a href="#">Taxon</a></h2>
-		<div>
-			<ul>
-				<li>List item one</li>
-				<li>List item two</li>
-				<li>List item three</li>
-			</ul>
-		</div>
-	</div>
-	<div>
-		<h2><a href="#">Location</a></h2>
-		<div>
-			<ul>
-				<li>List item one</li>
-				<li>List item two</li>
-				<li>List item three</li>
-			</ul>
-		</div>
-	</div>
-  </div>
-</div>
-</content>
 
 <body>
-<h2>Mappings for <i>${view.source.name}</i> to ${view.extension.name}</h2>
+<h1>Property Mappings</h1>
+<h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 
 <#if !columnOptions??>
 	<#-- import source doesnt work -->
@@ -142,39 +105,45 @@
 
 	<div class="break"></div>	
 	
-	<fieldset>
-	<legend>Property Mappings</legend>
+	<h2>Property Mappings</h2>
 	<p>For a single property that you want to map, select a column from your source or enter a fixed value into the text field.
 	   If the property has a vocabulary associated you can also select a term from the dropdown
 	</p>
-    <#list mappings as m> 
-	  <div class="minibreak">
+	
+	<div id="accordion">
+  	<#list mappings?keys as group>
+		<h3><a href="#">${group}</a></h3>
 		<div>
-			<strong>${m.property.name}</strong>
-			<#if m.property.link??>
-				<a href="${m.property.link}" target="_blank">(about)</a>
-			</#if>
-		</div>
-		<div class="overhang">
-			<div class="left">
-				<@s.select id="sourceColumn_${m_index}" key="mappings[${m_index}].column" list="sourceColumns"
-					required="${m.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
-			</div>
-			<div class="left">
-				<#if (m.property.vocabulary??)>
-				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${m_index}')"/>
-				    or select a static value:
-					<@s.select key="mappings[${m_index}].value"
-						list="vocs[${m.property.id}]" 
-						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
-				<#else>
-			        <@s.textfield  name="mappings[${m_index}].value" value="${m.value!}" cssClass="large" theme="simple"/>  
+		<#list mappings[group] as mp>
+		  <div class="minibreak">
+			<div>
+				<strong>${mp.property.name}</strong>
+				<#if mp.property.link??>
+					<a href="${mp.property.link}" target="_blank">(about)</a>
 				</#if>
 			</div>
-		</div>
-	  </div>
-    </#list>
-	</fieldset>
+			<div class="overhang">
+				<div class="left">
+					<@s.select key="mappings.${group}[${mp_index}].column" list="sourceColumns"
+						required="${mp.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
+				</div>
+				<div class="left">
+					<#if (mp.property.vocabulary??)>
+					    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.id}')"/>
+					    or select a static value:
+						<@s.select key="mappings.${group}[${mp_index}].value"
+							list="vocs[${mp.property.id}]" 
+							style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
+					<#else>
+				        <@s.textfield  name="mappings.${group}[${mp_index}].value" value="${mp.value!}" cssClass="large" theme="simple"/>  
+					</#if>
+				</div>
+			</div>
+		  </div> <#-- minibreak per mapping -->
+		</#list>
+	    </div> <#-- whole group -->
+	</#list>
+	</div> <#-- accordion -->
  
 	<div class="break"></div>
     <@s.submit cssClass="button" key="button.save" theme="simple"/>
