@@ -35,6 +35,7 @@
 	<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
 	<@s.textarea key="config.description" cssClass="text xlarge"/>
   </fieldset>
+<div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
 
 <h2 class="modifiedh2"><@s.text name="config.settings"/></h2>
   <fieldset>
@@ -44,6 +45,7 @@
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>
+<div class="horizontal_dotted_line_xlarge_soft_foo"></div>  
 
 <h2 class="modifiedh2"><@s.text name="config.geoserver"/></h2>
 <fieldset>

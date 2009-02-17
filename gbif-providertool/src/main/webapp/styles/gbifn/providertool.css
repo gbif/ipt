@@ -134,11 +134,11 @@ table.layout tr th {
 
 /*
 #logo {
-	top: 15px;
-	position: relative;
-	left: 360px;
+	padding-left: 0px;
+	padding-bottom: 10px;
 }
 */
+
 
 div#jsalert {
 	float: none;
@@ -179,16 +179,23 @@ div#jsalert h2 {
 ul.actionmenu {
 	list-style-type: none;
     padding: 0;
+    margin-top: -35px;
 }
-a.actionbutton, ul.actionmenu li{
-	float: none;
+
+ul.actionmenu li{
+	float: left;
 	list-style-type: none;
 	display: inline;
-	border: 1px solid #c1c6d0;
+    margin: 0;
     padding: 0;
-	padding-right: 10px;
-	padding-left: 10px;
-	margin: 0 2px;
+	background: url(/images/assets/bkgButt0_up.gif) no-repeat;
+	text-align: center;
+	width: 110px;
+	margin-right: 6px;
+}
+
+ul.actionmenu li:hover{
+	background: url(/images/assets/bkgButt0_over.gif) no-repeat;
 }
 
 ul.actionmenu form {
@@ -213,9 +220,26 @@ ul.minimenu li{
 	display: inline;
     margin: 0;
     padding: 0;
-	padding-left: 10px;
+	background: url(/images/assets/bkgButt_up.gif) no-repeat;
+	text-align: center;
+	width: 110px;
+	padding-left: 6px;
 }
 
+ul.minimenu li:hover{
+	background: url(/images/assets/bkgButt_over.gif) no-repeat;
+}
+
+ul.minimenu li.last{
+	width: 175px;
+	padding-left: 2px;
+	background: url(/images/assets/bkgButtXlarge_up.gif) no-repeat;
+}
+
+ul.minimenu li.last:hover{
+	width: 175px;
+	background: url(/images/assets/bkgButtXlarge_over.gif) no-repeat;
+}
 
 ul.indexmenu {
 	list-style-type: none;

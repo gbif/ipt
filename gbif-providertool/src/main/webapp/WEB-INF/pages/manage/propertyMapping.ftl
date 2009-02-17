@@ -50,6 +50,7 @@
 
 <body>
 <h1>Property Mappings</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
 <h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 
 <#if !columnOptions??>
@@ -81,23 +82,25 @@
         	</div>  
 	 	</#if>
 	 	
-		<div class="break"></div>
-        <@s.submit cssClass="button" key="button.save" theme="simple"/>
-	    <#if (view.id)??>
-	        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
-	    </#if>
-        <@s.submit cssClass="button" method="cancel" key="button.done" theme="simple"/>
+		<div class="breakRight">
+	        <@s.submit cssClass="button" key="button.save" theme="simple"/>
+		    <#if (view.id)??>
+		        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
+		    </#if>
+	        <@s.submit cssClass="button" method="cancel" key="button.done" theme="simple"/>	        
+		</div>	        
 	    
 	 	<br/>
 		<ul class="actionmenu">
 			<li id="sourceViewLink"><a>view source</a></li>
 			<li id="previewLink"><a>preview mapping</a></li>		
 		</ul>
-	
-	<div id="sourcepreview" style="display:none">
+
+	<div class="break"></div>
+	<div id="sourcepreview" style="display:none; clear:both;">
 		Retrieving source data ...
 	</div>	
-	<div id="uploadpreview" style="display:none">
+	<div id="uploadpreview" style="display:none; clear:both;">
 		Retrieving mapping preview ...<br/><br/>
 		<p class="reminder">Not implemented yet, sorry!</p>
 	</div>
@@ -112,7 +115,7 @@
 	
 	<div id="accordion">
   	<#list mappings?keys as group>
-		<h3><a href="#">${group}</a></h3>
+		<h3 class="accordionHeader"><a href="#">${group}</a></h3>
 		<div>
 		<#list mappings[group] as mp>
 		  <div class="minibreak">

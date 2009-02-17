@@ -58,7 +58,7 @@
 		
 		<@s.label key="dataResource.cache" value="%{resource.lastUpload.recordsUploaded} total records uploaded %{resource.lastUpload.executionDate}"/>
 		<ul class="minimenu">
-			<li>
+			<li class="last">
 				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
 			</li>
 			<li>
