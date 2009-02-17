@@ -54,6 +54,23 @@ div#resourceListContainer{
 	margin-bottom: 20px;
 }
 
+
+.horizontal_dotted_line_xlarge_soft{
+	border-bottom: 1px dotted #b0b0a0;
+	width: 100%;
+	margin-left: -7px;
+	margin-top: -5px;
+	margin-bottom: 20px;
+}
+
+.horizontal_dotted_line_xlarge_soft_foo{
+	border-bottom: 1px dotted #b0b0a0;
+	width: 100%;
+	margin-left: -7px;
+	margin-top: 15px;
+	margin-bottom: 20px;
+}
+
 .horizontal_dotted_line_xlarge_foo{
 	border-bottom: 1px dotted #666666;
 	width: 940px;
@@ -163,4 +180,11 @@ table.pickList td button{
 
 #moveRight1{
 	margin-top: 10px;
+}
+
+h3.accordionHeader{
+	color: #666;
+	font-size: 1.8em;
+	height: 32px;
+	border-bottom: 1px dotted #999999;
 }

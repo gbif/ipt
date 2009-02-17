@@ -13,7 +13,7 @@
 </div>
 
 <div id="logo">
-	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.gif'/>" /></a>
+	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.jpg'/>" /></a>
 </div>
 
 <s:if test="resourceType!=null">

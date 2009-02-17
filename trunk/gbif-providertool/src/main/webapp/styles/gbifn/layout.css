@@ -32,7 +32,10 @@
         }
       	div#logo{
       		float: left;
-      		width: 150px;
+      		width: 280px;
+      		padding-left: 0px;
+      		margin-left: -10px;
+      		margin-top: -6px;
       	}
 		div#switchLocale{
 			width: 940px;
