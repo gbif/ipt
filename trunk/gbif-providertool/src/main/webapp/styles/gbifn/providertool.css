@@ -483,6 +483,10 @@ div.googlemap {
 	margin-top: 5px;
 }
 
+#loginForm{
+	width: 401px;
+}
+
 #loginForm fieldset{
 	background-color: #FFF;
 	text-align: center;
@@ -509,9 +513,11 @@ body#login{
 }
 
 .bottomText{
+	text-align: center;
 	padding-top: 0px;
 	margin-top: -20px;
 	line-height: 50px;
+	width: 940px;
 }
 
 .taxDetailImg{

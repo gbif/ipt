@@ -3,17 +3,18 @@
 <head>
     <title><fmt:message key="login.title"/></title>
     <meta name="heading" content="<fmt:message key='login.heading'/>"/>
-    <meta name="menu" content="Login"/>
-    <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/layout-1col.css'/>" />
+    <meta name="menu" content="Login"/> 
 </head>
 
 <style>
 	#main{
-		margin-bottom 20px;
 	}
 </style>
 
-<body id="login"/>
+<body id="login">
+<div id="mainfull"> 
+<div class="horizontal_dotted_line_xlarge_foo"></div>
+<div style="float: left;">
 <form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
     onsubmit="saveUsername(this);return validateForm(this)">
 <fieldset>
@@ -48,15 +49,24 @@
     <li>
         <input type="submit" class="button" name="login" value="<fmt:message key='button.login'/>" tabindex="4" />
         <p>
-            <fmt:message key="login.signup">
-                <fmt:param><c:url value="/signup.html"/></fmt:param>
-            </fmt:message>
+            <fmt:message key="login.passwordHint"/></p>
         </p>
     </li>
 </ul>
 </fieldset>
 </form>
+</div>
+<div style="float: right; width: 450px; border-left: #999999 1px dotted; padding-left: 30px; margin-top: 14px;">
+	<a href="/signup.html"><img src="/images/private.jpg" style="margin-bottom: 4px;" /></a>
+	<br />
+    <fmt:message key="login.signup">
+        <fmt:param><c:url value="/signup.html"/></fmt:param>
+    </fmt:message>
+</div>
+<div class="break" style="clear: both;"></div>
+</div>
 
 <%@ include file="/scripts/login.js"%>
-
-<p class="bottomText" ><fmt:message key="login.passwordHint"/></p>
+<%-- <div class="horizontal_dotted_line_xlarge_soft"></div> --%>
+<%-- <p class="bottomText" ><fmt:message key="login.passwordHint"/></p> --%>
+</body>

@@ -2,7 +2,7 @@
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <head>
     <title>${cfg.title}</title>
-    <meta name="menu" content="MainMenu"/>
+    <!--<meta name="menu" content="MainMenu"/>-->
     <meta name="submenu" content="metadata"/>
     <meta name="decorator" content="fullsize"/>
 </head>
@@ -16,7 +16,7 @@
 </div>
 
 <h3>Hosted resources</h3>
-
+<div class="horizontal_dotted_line_xlarge_soft"></div>
 
 <#include "/WEB-INF/pages/inc/dataResourceList.ftl">  
 
