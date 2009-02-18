@@ -86,6 +86,9 @@
             padding-bottom: 0;
         }
 
+	div#mainfull{
+		width: 920px;
+	}
     div#local {
         display: none;
     }
