@@ -102,10 +102,9 @@
                 <!-- <hr/> -->
             </div><!-- end nav -->
         </div>
-
-        <div id="footer" class="clearfix">
-            <jsp:include page="/common/footer.jsp"/>
-        </div>
-    </div>
+	    <div id="footer" class="clearfix">
+	        <jsp:include page="/common/footer.jsp"/>
+	    </div>        
+    </div>    
 </body>
 </html>

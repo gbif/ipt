@@ -15,7 +15,7 @@
         padding-top: 15px;
         padding-right: 25px;
         padding-left: 10px;
-        padding-bottom: 40px;
+/*         padding-bottom: 40px; */
         text-align: center;
         background-color: #FFF;
     }
@@ -116,20 +116,30 @@
     /* FOOTER */
         div#footer {
             color: #444;
-            padding-left: 6px;
-			width: 940px;
+			margin-top: 40px;
+            padding-top: 30px;
+			width: 975px;
+			margin-left: -10px;
+			margin-right: -11px;
             text-align: center;
             clear: both;
+            background-color: #e6e6e6;
+            height: 80px;
+            margin-bottom: 0px;
         }
 
             div#footer div#divider {
+/*
             		margin-bottom: 20px;
                     border-top: 1px solid #ccc;
+*/
             }
 
             div#footer div#divider div {
+/*
                     margin: 1px 0 0 0;
                     border-top: 6px solid #ebf5fc;
+*/
             }
 
             div#footer .left {
