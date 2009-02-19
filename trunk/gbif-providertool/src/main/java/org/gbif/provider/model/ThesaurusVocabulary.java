@@ -22,6 +22,7 @@ public class ThesaurusVocabulary implements Comparable {
 	private Long id;
 	private String uri;
 	private String title;
+	private String link;
 	private List<ThesaurusConcept> concepts;
 	private Date modified;
 	
@@ -46,6 +47,13 @@ public class ThesaurusVocabulary implements Comparable {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
 	}
 	
 	@OneToMany(mappedBy="vocabulary",fetch=FetchType.LAZY)

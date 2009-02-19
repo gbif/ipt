@@ -6,6 +6,11 @@
 </head>
 
 <div class="horizontal_dotted_line_xlarge"></div>
+
+<p>To participate in the discussion and definition of this vocabulary please visit:<br/>
+${vocabulary.link!"<em>not available</em>"}
+</p>
+
 <table class="vocabularyListTable">
 	<tr>
 		<th><@s.text name="concept.identifier"/></th>
