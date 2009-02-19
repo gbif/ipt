@@ -23,16 +23,19 @@
             <div id="main">
                 <%@ include file="/common/messages.jsp" %>
                 
-                <h1><decorator:getProperty property="meta.heading"/></h1>
+                
+                <c:if test='${currentHeading != "" }'>
+	                <h1><decorator:getProperty property="meta.heading"/></h1>
+					<div class="horizontal_dotted_line_large_foo"></div>
+                </c:if>
                 <decorator:body/>
             </div><!-- end main -->
 
             <div id="sub">
             	
-            	<decorator:getProperty property="page.contextmenu" />
-            	
 			    <c:choose>
 			        <c:when test='${currentSubMenu == "manage"}'>
+		            	<decorator:getProperty property="page.contextmenu" />
 			        	<h1>Manage menu</h1>
 			        	<div class="horizontal_dotted_line_small_foo"></div>
 			        	<%@ include file="/common/submenu_actions_new.jsp" %>
@@ -44,6 +47,7 @@
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
 				        	<div class="horizontal_dotted_line_small_foo"></div>
 		                </s:a>
+		            	<decorator:getProperty property="page.contextmenu" />
 	                	<s:if test="resource.id>0">	                
 				        	<%@ include file="/common/submenu_actions_eml.jsp" %>
 				        	<s:if test="resourceType in {'occ','tax'}">
@@ -57,6 +61,7 @@
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
 		                </s:a>
+		            	<decorator:getProperty property="page.contextmenu" />
 			        	<%@ include file="/common/submenu_search.jsp" %>
 						<div id="taxnav">
 							<label>Navigate Taxonomy</label>
@@ -72,6 +77,7 @@
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
 		                </s:a>
+		            	<decorator:getProperty property="page.contextmenu" />
 			        	<%@ include file="/common/submenu_search.jsp" %>
 						<div id="taxnav">
 							<label>Navigate Taxonomy</label>
@@ -80,6 +86,7 @@
 					</c:when>
 			        
 			        <c:when test='${currentSubMenu == "meta"}'>
+		            	<decorator:getProperty property="page.contextmenu" />
 	                	<h1>Metadata Repo</h1>
 	                	
 			        	<%@ include file="/common/submenu_search.jsp" %>
@@ -89,6 +96,7 @@
 							
 			        <c:otherwise>
 			            <!-- NO SUBMENU -->
+		            	<decorator:getProperty property="page.contextmenu" />
 					</c:otherwise>
 			    </c:choose>
 			    			    

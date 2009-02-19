@@ -1,9 +1,7 @@
 package org.gbif.provider.service.impl;
 
 import java.util.List;
-import java.util.Set;
 
-import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.ViewMappingBase;

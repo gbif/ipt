@@ -2,6 +2,8 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${view.resource.title}"/>
     <meta name="submenu" content="manage_resource"/>
+    <meta name="heading" content="Property Mappings"/>
+    
 	<script type="text/javascript" src="/scripts/jquery/ui.core.min.js"></script>
 	<script type="text/javascript" src="/scripts/jquery/ui.accordion.min.js"></script>
 	<script>
@@ -26,7 +28,25 @@
 		return true;
 	};
 	
-
+	function addProperty(newPropAnchor){
+		var newPropForm = $("#propertyFormTemplate").clone();
+		
+    	var name = newPropAnchor.text();
+		$("strong",newPropForm).text(name);
+		
+    	var id = $(newPropAnchor).attr("id").substring(2);
+    	var newPropIds = $("#newProperties").val() +" "+id;
+    	$("#newProperties").val(newPropIds);
+		$("select",newPropForm).attr("name", "view.propertyMappings["+id+"].column");
+		$("input",newPropForm).attr("name", "view.propertyMappings["+id+"].value");
+		
+    	var link = "http://www.google.ru";
+		$("a",newPropForm).attr("href",link);
+		$("#mappings").prepend(newPropForm);
+		$("p").effect("highlight", {}, 1000);
+		$("#mappings input").effect("highlight", {}, 1000);
+	}
+	
 	$(document).ready(function(){
 	    $("#sourceViewLink").click(function () {
 	    	$("#uploadpreview").hide();
@@ -38,19 +58,44 @@
 	    	$("#uploadpreview").slideToggle("normal");
 	      	sourcePreview();
 	    });
+	    $("a.propLink").click(function () {
+	      	addProperty($(this));
+	      	$(this).parent().remove();
+	    });
 
 		$("#accordion").accordion({
-			header: "h3"
+			header: "label",
+			autoHeight: false
 		});
 
 	});
+	
 	</script>	
 </head>
 
+<content tag="contextmenu">
+  <div id="availableProperties">
+	<label>Available Properties</label>
+	<div id="accordion">
+  	<#list availProperties?keys as group>
+		<label><a href="#">${group}</a></label>
+		<ul>
+		<#list availProperties[group] as p>
+		  <li>
+			<a class="propLink" id="ap${p.id}">${p.name}</a>
+			<#if p.link??>
+				<a href="${p.link}" target="_blank">(about)</a>
+			</#if>
+		  </li>
+		</#list>
+	    </ul> <#-- group -->
+	</#list>
+	</div> <#-- accordion -->
+  </div>
+</content>
 
 <body>
-<h1>Property Mappings</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+
 <h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 
 <#if !columnOptions??>
@@ -66,6 +111,8 @@
         <@s.hidden key="eid"/>
 	    <@s.hidden key="resource_id"/>
         <@s.hidden id="mappings_idx" name="mappings_idx" value=""/>
+        <@s.hidden id="newProperties" name="newProperties" value=""/>
+        
 
 	 	<@s.select key="view.coreIdColumn" required="true"
 			headerKey="Select local identifier for core record" emptyOption="false" list="columnOptions" />
@@ -110,43 +157,39 @@
 	
 	<h2>Property Mappings</h2>
 	<p>For a single property that you want to map, select a column from your source or enter a fixed value into the text field.
-	   If the property has a vocabulary associated you can also select a term from the dropdown
+	   If the property has a vocabulary associated you can also select a term from the dropdown.<br/>
+	   To add more properties please select them from the available properties on the right hand side.
 	</p>
 	
-	<div id="accordion">
-  	<#list mappings?keys as group>
-		<h3 class="accordionHeader"><a href="#">${group}</a></h3>
+	<div id="mappings">
+  	<#list view.getPropertyMappingsSorted() as mp>
+	  <div class="minibreak">
 		<div>
-		<#list mappings[group] as mp>
-		  <div class="minibreak">
-			<div>
-				<strong>${mp.property.name}</strong>
-				<#if mp.property.link??>
-					<a href="${mp.property.link}" target="_blank">(about)</a>
+			<strong>${mp.property.name}</strong>
+			<#if mp.property.link??>
+				<a href="${mp.property.link}" target="_blank">(about)</a>
+			</#if>
+		</div>
+		<div class="overhang">
+			<div class="left">
+				<@s.select key="view.propertyMappings[${mp.property.id}].column" list="sourceColumns"
+					required="${mp.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
+			</div>
+			<div class="left">
+				<#if (mp.property.vocabulary??)>
+				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.id}')"/>
+				    or select a static value:
+					<@s.select key="view.propertyMappings[${mp.property.id}].value"
+						list="vocs[${mp.property.id}]" 
+						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
+				<#else>
+			        <@s.textfield  name="view.propertyMappings[${mp.property.id}].value" value="${mp.value!}" cssClass="large" theme="simple"/>  
 				</#if>
 			</div>
-			<div class="overhang">
-				<div class="left">
-					<@s.select key="mappings.${group}[${mp_index}].column" list="sourceColumns"
-						required="${mp.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
-				</div>
-				<div class="left">
-					<#if (mp.property.vocabulary??)>
-					    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.id}')"/>
-					    or select a static value:
-						<@s.select key="mappings.${group}[${mp_index}].value"
-							list="vocs[${mp.property.id}]" 
-							style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
-					<#else>
-				        <@s.textfield  name="mappings.${group}[${mp_index}].value" value="${mp.value!}" cssClass="large" theme="simple"/>  
-					</#if>
-				</div>
-			</div>
-		  </div> <#-- minibreak per mapping -->
-		</#list>
-	    </div> <#-- whole group -->
+		</div>
+	  </div> <#-- minibreak per mapping -->
 	</#list>
-	</div> <#-- accordion -->
+	</div>
  
 	<div class="break"></div>
     <@s.submit cssClass="button" key="button.save" theme="simple"/>
@@ -159,4 +202,23 @@
 </@s.url>
 
 </#if>
+
+<#-- property form template -->
+<div id="propertyFormTemplate">
+<div class="minibreak" style="display:hide">
+<div>
+	<strong></strong>
+	<a href="#" target="_blank">(about)</a>
+</div>
+<div class="overhang">
+	<div class="left">
+		<@s.select name="" list="sourceColumns" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
+	</div>
+	<div class="left">
+        <@s.textfield  name="" value="" cssClass="large" theme="simple"/>  
+	</div>
+</div>
+</div>
+</div> <#-- property form template -->
+
 </body>
