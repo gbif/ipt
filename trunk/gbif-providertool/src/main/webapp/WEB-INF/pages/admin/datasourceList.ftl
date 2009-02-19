@@ -3,7 +3,7 @@
 <head>
     <title><@s.text name="datasourceList.title"/></title>
     <meta name="heading" content="<@s.text name='datasourceList.heading'/>"/>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="AdminMenu"/>
 </head>
 
 <@display.table name="activeDatasources" class="table" requestURI="" id="activeDatasources" export=false pagesize=25>

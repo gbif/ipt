@@ -2,7 +2,7 @@
     <title>${vocabulary.title} Vocabulary</title>
 	<meta name="decorator" content="fullsize"/>    
     <meta name="heading" content="${vocabulary.title} Vocabulary"/>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="AdminMenu"/>
 </head>
 
 <div class="horizontal_dotted_line_xlarge"></div>

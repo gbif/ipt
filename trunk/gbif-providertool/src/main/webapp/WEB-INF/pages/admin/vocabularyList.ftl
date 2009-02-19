@@ -2,7 +2,7 @@
     <title>Thesaurus vocabularies</title>
 	<meta name="decorator" content="fullsize"/>    
     <meta name="heading" content="Thesaurus vocabularies"/>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="AdminMenu"/>
 </head>
 
 <div class="horizontal_dotted_line_xlarge"></div>

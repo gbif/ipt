@@ -3,6 +3,7 @@
 <head>
     <title>Resource Annotations</title>
     <meta name="resource" content="${resource.title}"/>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="${resourceType}"/>
     <meta name="heading" content="Resource Annotations"/>
 	<script type="text/javascript">  

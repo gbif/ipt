@@ -1,7 +1,7 @@
 <head>
     <title>${concept.vocabulary.title} Vocabulary</title>
     <meta name="heading" content="${concept.identifier}"/>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="AdminMenu"/>
 </head>
 
 <div class="horizontal_dotted_line_xlarge"></div>

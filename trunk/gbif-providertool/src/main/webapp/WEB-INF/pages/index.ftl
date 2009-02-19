@@ -3,6 +3,7 @@
 <head>
     <title>${cfg.title}</title>
     <!--<meta name="menu" content="MainMenu"/>-->
+    <meta name="menu" content="AboutMenu"/>
     <meta name="submenu" content="metadata"/>
     <meta name="decorator" content="fullsize"/>
 </head>

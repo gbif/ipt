@@ -1,6 +1,7 @@
 <head>
     <title>EML - <@s.text name="eml.temporalCoverage"/></title>
     <meta name="resource" content="${eml.title!}"/>
+    <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
     
 <script type="text/javascript">

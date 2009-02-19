@@ -3,6 +3,7 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/> Statistics</title>
     <meta name="resource" content="${resource.title}"/>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="${resourceType}"/>
 </head>
 

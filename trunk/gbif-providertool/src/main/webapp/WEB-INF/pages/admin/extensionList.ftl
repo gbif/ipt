@@ -2,7 +2,7 @@
     <title><@s.text name="occResourceList.title"/></title>
     <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="<@s.text name='extensionList.heading'/>"/>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="AdminMenu"/>
 </head>
 <div class="horizontal_dotted_line_xlarge"></div>
 <table class="extensionListTable">

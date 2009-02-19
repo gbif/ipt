@@ -1,6 +1,7 @@
 <head>
     <title><@s.text name="region.title"/></title>
     <meta name="resource" content="${region.resource.title}"/>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
 </head>
 	

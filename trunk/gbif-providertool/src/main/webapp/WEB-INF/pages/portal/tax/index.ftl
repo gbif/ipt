@@ -1,6 +1,7 @@
 <head>
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>    
 	<script>
 	function updateByTaxon(){

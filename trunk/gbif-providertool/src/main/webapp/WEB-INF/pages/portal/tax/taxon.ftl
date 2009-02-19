@@ -1,6 +1,7 @@
 <head>
     <title><@s.text name="taxon.title"/></title>
     <meta name="resource" content="${taxon.resource.title}"/>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>
     <!-- meta name="heading" content="${taxon.scientificName}"/ -->
 </head>

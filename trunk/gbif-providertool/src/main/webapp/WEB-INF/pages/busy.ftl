@@ -1,6 +1,6 @@
 <head>
     <title>Resource busy</title>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="ExplorerMenu"/>
 </head>
 
 <h1>Resource busy</h1>

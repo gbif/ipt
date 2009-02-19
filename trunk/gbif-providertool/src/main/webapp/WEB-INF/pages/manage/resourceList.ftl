@@ -3,7 +3,7 @@
 <head>
     <title><@s.text name="occResourceList.title"/></title>
     <meta name="heading" content="<@s.text name='resourceClass.${resourceType}'/>"/>
-    <meta name="menu" content="MainMenu"/>
+    <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage"/>
 </head>
 
