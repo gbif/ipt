@@ -14,6 +14,7 @@
             <xs:element ref="concept" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute ref="dc:URI" use="required"/>
+        <xs:attribute ref="dc:title" use="required"/>
         <xs:attribute ref="dc:description" use="optional">
             <xs:annotation><xs:documentation>A URL acting as documentation for the entire vocabulary</xs:documentation></xs:annotation>
         </xs:attribute>
