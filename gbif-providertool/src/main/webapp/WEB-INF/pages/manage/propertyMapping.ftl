@@ -4,8 +4,9 @@
     <meta name="submenu" content="manage_resource"/>
     <meta name="heading" content="Property Mappings"/>
     
-	<script type="text/javascript" src="/scripts/jquery/ui.core.min.js"></script>
-	<script type="text/javascript" src="/scripts/jquery/ui.accordion.min.js"></script>
+	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.core.min.js'/>"></script>
+	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.accordion.min.js'/>"></script>
+	<script type="text/javascript" src="<@s.url value='/scripts/jquery/effects.shake.min.js'/>"></script>
 	<script>
 	var previewLoaded=0;
 	function sourcePreview(){
@@ -40,11 +41,15 @@
 		$("select",newPropForm).attr("name", "view.propertyMappings["+id+"].column");
 		$("input",newPropForm).attr("name", "view.propertyMappings["+id+"].value");
 		
-    	var link = "http://www.google.ru";
-		$("a",newPropForm).attr("href",link);
+    	var link = $("a.propDocLink", newPropAnchor.parent());
+    	if(link.length>0){
+			$("a",newPropForm).attr("href", link.attr("href"));
+    	}else{
+			$("a",newPropForm).hide();
+    	}
+		
 		$("#mappings").prepend(newPropForm);
-		$("p").effect("highlight", {}, 1000);
-		$("#mappings input").effect("highlight", {}, 1000);
+		$("div.propertyForm:first").effect("highlight", {}, 1000);
 	}
 	
 	$(document).ready(function(){
@@ -67,11 +72,10 @@
 			header: "label",
 			autoHeight: false
 		});
-
 	});
 	
 	</script>	
-</head>
+  </head>
 
 <content tag="contextmenu">
   <div id="availableProperties">
@@ -84,7 +88,7 @@
 		  <li>
 			<a class="propLink" id="ap${p.id}">${p.name}</a>
 			<#if p.link??>
-				<a href="${p.link}" target="_blank">(about)</a>
+				<a class="propDocLink" href="${p.link}" target="_blank">(about)</a>
 			</#if>
 		  </li>
 		</#list>
@@ -95,6 +99,7 @@
 </content>
 
 <body>
+  <div class="sucker"></div>
 
 <h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 
@@ -163,7 +168,7 @@
 	
 	<div id="mappings">
   	<#list view.getPropertyMappingsSorted() as mp>
-	  <div class="minibreak">
+	  <div class="minibreak propertyForm">
 		<div>
 			<strong>${mp.property.name}</strong>
 			<#if mp.property.link??>
@@ -205,7 +210,7 @@
 
 <#-- property form template -->
 <div id="propertyFormTemplate">
-<div class="minibreak" style="display:hide">
+<div class="minibreak propertyForm" style="display:hide">
 <div>
 	<strong></strong>
 	<a href="#" target="_blank">(about)</a>
