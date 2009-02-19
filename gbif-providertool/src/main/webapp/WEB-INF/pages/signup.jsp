@@ -2,6 +2,7 @@
 
 <head>
     <title><fmt:message key="signup.title"/></title>
+    <meta name="menu" content="UserMenu"/>
     <meta name="heading" content="<fmt:message key='signup.heading'/>"/>
 </head>
 

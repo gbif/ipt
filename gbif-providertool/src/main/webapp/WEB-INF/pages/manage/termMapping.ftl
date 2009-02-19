@@ -1,6 +1,7 @@
 <head>
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="${resource.title}"/>
+    <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
     <meta name="heading" content="Term Mappings for ${voc.title}"/>
 </head>

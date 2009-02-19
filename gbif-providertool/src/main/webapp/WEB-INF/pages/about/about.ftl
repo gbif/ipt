@@ -1,6 +1,6 @@
 <head>
     <title>About <@s.text name='provider.title'/></title>
-    <meta name="menu" content="About"/>
+    <meta name="menu" content="AboutMenu"/>
     <meta name="decorator" content="fullsize"/>
 </head>
 

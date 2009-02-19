@@ -1,6 +1,7 @@
 <head>
     <title><@s.text name="search.title"/></title>
     <meta name="resource" content="${resource.title}"/>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>
 </head>
 	

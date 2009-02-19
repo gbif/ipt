@@ -2,6 +2,7 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="heading" content="Data Transformations"/>    
+    <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>    
 <script>
 function sorry(){

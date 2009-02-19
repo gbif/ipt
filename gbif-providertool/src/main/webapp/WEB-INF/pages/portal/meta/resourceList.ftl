@@ -1,5 +1,6 @@
 <head>
     <title>Metadata Repository</title>
+    <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="meta"/>
     <meta name="heading" content="<@s.text name='resourceClass.${resourceType}'/>"/>
 	<style>
