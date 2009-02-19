@@ -1,31 +1,31 @@
+* { padding:0; margin:0; }
 
 /* SITE SPECIFIC LAYOUT */
     body {
-        margin-top: 20px;
-        margin-bottom: 30px;
+        padding-top: 20px;
+        padding-bottom: 30px;
         margin-left: auto;
         margin-right: auto;
-		padding: 0;
         background: #cccccc;
         text-align: center;
     }
+
     div#page {
         width: 940px;
         margin: 0 auto;
         padding-top: 15px;
-        padding-right: 25px;
-        padding-left: 10px;
-/*         padding-bottom: 40px; */
+        padding-right: 5px;
+        padding-left: 5px;
         text-align: center;
         background-color: #FFF;
     }
+
     
     /* HEADER */
         div#header {
             text-align: left;
-            height: 79px; /* needed by IE 7 */
-            width: 940px;
-            margin-bottom: 90px;
+            height: 100px; /* needed by IE 7 */
+            width: 930px;
             padding-left: 0px;
             padding-bottom: 0px;
             vertical-align: bottom;
@@ -33,12 +33,15 @@
       	div#logo{
       		float: left;
       		width: 280px;
-      		padding-left: 0px;
-      		margin-left: -10px;
-      		margin-top: -6px;
+      		margin: 0px;
       	}
+      	div#logo img{
+	      	border-style: none;
+      		margin-left: 10px;
+      	}      	
 		div#switchLocale{
-			width: 940px;
+			width: 930px;
+			height: 25px;
 			text-align: right;
 		}
         div#branding {
@@ -62,14 +65,13 @@
     /* END HEADER */
     
     /* CONTENT */
-        div#content {
-            position: relative;
-	        width: 925px;
-	        margin: 0 auto 20px auto;
-	        padding: 0;
+	    div#content {
+	        position: relative;
+	        width: 920px;
+			padding-left: 10px;
+			padding-right: 10px;
 	        text-align: left;
-        
-        }
+	    }
             body#error #content {
                 margin-top: 20px;
             }
@@ -88,7 +90,7 @@
                 margin-left: 0;
 			}
 			div#mainfull{
-				width: 940px;
+				width: 910px;
 			}
         /* END MAIN */
         
@@ -118,9 +120,7 @@
             color: #444;
 			margin-top: 40px;
             padding-top: 30px;
-			width: 975px;
-			margin-left: -10px;
-			margin-right: -11px;
+			width: 940px;
             text-align: center;
             clear: both;
             background-color: #e6e6e6;
@@ -129,25 +129,25 @@
         }
 
             div#footer div#divider {
-/*
-            		margin-bottom: 20px;
-                    border-top: 1px solid #ccc;
-*/
+				/*
+        		margin-bottom: 20px;
+                border-top: 1px solid #ccc;
+				*/
             }
 
             div#footer div#divider div {
-/*
-                    margin: 1px 0 0 0;
-                    border-top: 6px solid #ebf5fc;
-*/
+				/*
+                margin: 1px 0 0 0;
+                border-top: 6px solid #ebf5fc;
+				*/
             }
 
             div#footer .left {
-                    float: left;
+                float: left;
             }
 
             div#footer .right {
-                    float: right;
+                float: right;
             }
     /* END FOOTER */
 /* END LAYOUT */
