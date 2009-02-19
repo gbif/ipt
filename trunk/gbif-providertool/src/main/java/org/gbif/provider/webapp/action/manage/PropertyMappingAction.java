@@ -185,7 +185,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
             return delete();
         }
         // remove empty property mappings
-        Collection<PropertyMapping> persistentProps = view.getPropertyMappings().values();
+        List<PropertyMapping> persistentProps = new ArrayList<PropertyMapping>(view.getPropertyMappings().values());
 		for (PropertyMapping pm : persistentProps){
         	if (pm !=null && pm.getColumn() !=null){
         		String key = StringUtils.trimToEmpty(pm.getColumn());
