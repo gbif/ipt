@@ -1,16 +1,15 @@
+* { padding:0; margin:0; }
 
 /* NAV */
-
-	div#navContainer{
-		background-color: #ededed;
-		width: 940px;
-		height: 42px;
-		padding-top: 6px;
-		margin-left: -10px;				
-	}
 	
     div#nav {
-        font-size: 11px;
+        position: absolute;
+        top: -60px;
+        width: 920px;
+        text-align: left;       
+        font-size: 12px;
+        height: 100px;
+        vertical-align: baseline;
     }
     * html div#nav {
         /* hide ie/mac \*/
@@ -18,18 +17,25 @@
         /* end hide */
     }
     div#nav div.wrapper {
-        position: absolute;
-        left: 0;
-        bottom: 0;
+		clear: both;
     }
-    div#nav ul {
+    
+	div#navContainer{
+		background-color: #ededed;
+		width: 920px;
+		height: 42px;
+		padding-top: 6px;
+        vertical-align: baseline;		
+	}
+	
+    div#navContainer ul {
         width: auto;
         margin: 0;
         padding: 0;
         line-height: 1em;
         list-style: none;
     }
-    div#nav li {
+    div#navContainer li {
 		background: transparent url(/images/bkgButton_up.gif) no-repeat;
 		width: 144px;
         float: left;
@@ -116,10 +122,34 @@
                 white-space: nowrap;
             }
         /* Fix IE. Hide from IE Mac \*/
-        * html ul#primary-nav li { float: left; height: 1%; }
-            * html ul#primary-nav li a { height: 1%; }
-            * html ul#primary-nav ul { width: 149px; }
-            * html ul#primary-nav ul li { width: 149px; }
+        * html ul#primary-nav li { 
+        	float: left; 
+        	height: 1%;
+        	padding-left: 0px;
+        	padding-right: 0px;        	
+        }
+        * html ul#primary-nav li a { 
+        	height: 1%; 
+        	background-image: none; 
+        	background-color: #03b034;
+        	padding-left: 0px;
+        	padding-right: 0px;
+        }
+        * html ul#primary-nav li.menubar ul li a:hover { 
+            background-image: none; 
+            background-color: #03b034;
+        }
+		* html ul#primary-nav ul { 
+			width: 144px; 
+			background-image: none; 
+			background-color: #03b034;
+			
+		}
+        * html ul#primary-nav ul li { 
+        	width: 144px; 
+        	background-image: none; 
+        	background-color: #03b034;        	        	
+        }     
         /* End */
 
             ul#primary-nav ul {
@@ -137,41 +167,72 @@
                     width: 107px;
                 }
                     ul#primary-nav ul li ul {
-                        margin-left: 149px;
                         margin-top: -23px;
 	                    background-color: #03b034;                        
+		                text-indent: 0px;	                    
                     }
                     ul#primary-nav ul li.last {
 	                    background-color: #03b034;                          
                     }
-                        ul#primary-nav li ul li a {padding-bottom: 5px;} /* Sub Menu Styles */
-                        ul#primary-nav li:hover ul ul,
-                        ul#primary-nav li:hover ul ul ul,
-                        ul#primary-nav li.over ul ul,
-                        ul#primary-nav li.over ul ul ul { display: none; } /* Hide sub-menus initially */
-                        ul#primary-nav li:hover ul,
-                        ul#primary-nav li li:hover ul,
-                        ul#primary-nav li li li:hover ul,
-                        ul#primary-nav li.over ul,
-                        ul#primary-nav li li.over ul,
-                        ul#primary-nav li li li.over ul {background-color: #03b034; display: block; } /* The magic */
-                        ul#primary-nav li.menubar { background: transparent url(/images/bkgButton_up.gif) no-repeat; }
-                        ul#primary-nav li:hover,
-                        ul#primary-nav li.over { background: transparent url(/images/bkgButton.gif) no-repeat; }
-                        
-                        ul#primary-nav li.menubar ul li a,
-                        ul#primary-nav li.menubar ul li a:active,
-                        ul#primary-nav li.menubar ul lia:visited{
-                        	background-image: none;
-	                        background-color: #03b034;
-	                        color: #FFFFFF;
-							text-align: center;
-							width: 114px;
-							font-size: 12px;
-							margin-left: -6px;
-                        }
-                        ul#primary-nav li.menubar ul li a:hover{
-	                        color: #555555;
-                        }
+                    ul#primary-nav li.menubar ul li{
+                    	background-image: none;
+                    	padding-left: 0px;
+                    	padding-right: 0px;
+                    	margin-left: 0px;
+                    	margin-right: 0px; 
+                        width: 140px;
+                    }
+                    ul#primary-nav li ul li a {padding-bottom: 5px;} /* Sub Menu Styles */
+                    ul#primary-nav li:hover ul ul,
+                    ul#primary-nav li:hover ul ul ul,
+                    ul#primary-nav li.over ul ul,
+                    ul#primary-nav li.over ul ul ul { display: none; } /* Hide sub-menus initially */
+                    ul#primary-nav li:hover ul,
+                    ul#primary-nav li li:hover ul,
+                    ul#primary-nav li li li:hover ul,
+                    ul#primary-nav li.over ul,
+                    ul#primary-nav li li.over ul,
+                    ul#primary-nav li li li.over ul {
+                    	background-color: #03b034; 
+                    	display: block; 
+						width: 142px;
+						font-size: 12px;
+                    	padding-left: 0px;
+                    	padding-right: 0px;
+                    	margin-left: 0px;
+                    	margin-right: 0px;
+                    } /* The magic */
+                    ul#primary-nav li.menubar { 
+                    	background: transparent url(/images/bkgButton_up.gif) no-repeat; 
+                    }
+                    ul#primary-nav li:hover,
+                    ul#primary-nav li.over { 
+                    	background: transparent url(/images/bkgButton.gif) no-repeat; 
+						width: 144px;
+						font-size: 12px;
+                    	padding-left: 0px;
+                    	padding-right: 0px;
+                    	margin-left: 5px;
+                    	margin-right: 0px;
+                    }
+                    
+                    ul#primary-nav li.menubar ul li a,
+                    ul#primary-nav li.menubar ul li a:active,
+                    ul#primary-nav li.menubar ul li a:visited{
+                    	background-image: none;
+                        background-color: #03b034;
+                        color: #FFFFFF;
+						text-align: center;
+						width: 142px;
+						font-size: 12px;
+                    	padding-left: 0px;
+                    	padding-right: 0px;
+                    	margin-left: 0px;
+                    	margin-right: 0px;
+                    }
+                    ul#primary-nav li.menubar ul li a:hover{
+                        color: #555555;
+						text-align: center;                        
+                    }
 
 /* END DROP DOWN MENUS */
