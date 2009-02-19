@@ -28,6 +28,10 @@
 	                <h1><decorator:getProperty property="meta.heading"/></h1>
 					<div class="horizontal_dotted_line_large_foo"></div>
                 </c:if>
+                <c:if test='${currentHeading2 != "" }'>
+	                <h1><decorator:getProperty property="meta.heading2"/></h1>
+					<div class="horizontal_dotted_line_large_foo"></div>
+                </c:if>
                 <decorator:body/>
             </div><!-- end main -->
 

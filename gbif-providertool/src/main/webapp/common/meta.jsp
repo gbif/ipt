@@ -3,7 +3,7 @@
 <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 <c:set var="currentResourceTitle" scope="request"><decorator:getProperty property="meta.resource"/></c:set>
 <c:set var="currentHeading" scope="request"><decorator:getProperty property="meta.heading"/></c:set>
-<c:set var="currentHeadingStyle" scope="request"><decorator:getProperty property="meta.headingstyle"/></c:set>
+<c:set var="currentHeading2" scope="request"><decorator:getProperty property="meta.heading2"/></c:set>
 <c:set var="taxTreeAction">taxDetail</c:set>
         <title><decorator:title/> | <s:text name="webapp.name"/></title>
         <!-- HTTP 1.1 -->
