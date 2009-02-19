@@ -322,15 +322,17 @@ function radio(clicked){
     clicked.parentNode.parentNode.className="over";
 }
 
+
+// Show the document's title on the status bar
+window.defaultStatus=document.title;
+
 $(document).ready(function(){
     highlightFormElements();
-    if ($('#successMessages')) {
-        new Effect.Highlight('#successMessages');
-        // causes webtest exception on OS X : http://lists.canoo.com/pipermail/webtest/2006q1/005214.html
-        // window.setTimeout("Effect.DropOut('successMessages')", 3000);
+    if ($('#successMessages').length > 0) {	
+		$("#successMessages").effect("highlight", {}, 1000);
     }
-    if ($('#errorMessages')) {
-        new Effect.Highlight('#errorMessages');
+    if ($('#errorMessages').length > 0) {
+		$("#errorMessages").effect("highlight", {}, 1000);
     }
     
     /* Initialize menus for IE */
@@ -345,7 +347,3 @@ $(document).ready(function(){
         }
     }
 });
-
-// Show the document's title on the status bar
-window.defaultStatus=document.title;
-

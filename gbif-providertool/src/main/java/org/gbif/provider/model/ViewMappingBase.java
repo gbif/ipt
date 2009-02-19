@@ -18,6 +18,7 @@ package org.gbif.provider.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,6 +138,17 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 		propertyMappings.remove(propertyMapping.getProperty().getId());
 	}
 		
+	@Transient
+	public PropertyMapping getPropertyMapping(Long propertyId) {
+		return propertyMappings.get(propertyId);
+	}
+	@Transient
+	public List<PropertyMapping> getPropertyMappingsSorted() {
+		List<PropertyMapping> pms = new ArrayList<PropertyMapping>(propertyMappings.values());
+		Collections.sort(pms);
+		return pms;
+	}
+	
 	@ManyToOne
 	public SourceBase getSource() {
 		return source;

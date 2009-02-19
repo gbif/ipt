@@ -17,13 +17,16 @@
 package org.gbif.provider.webapp.action.manage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.lucene.analysis.Tokenizer;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -69,11 +72,12 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	private Long sid;
 	// persistent stuff
 	private ViewMappingBase view;
-    private Map<String, List<PropertyMapping>> mappings = new HashMap<String, List<PropertyMapping>>();
-    private Map<Long, PropertyMapping> mappingsByID = new HashMap<Long, PropertyMapping>();
 	// transformationID for term mapping forwarding only
 	private Long tid;
-	private Integer mappings_idx;
+	private Long mappings_idx;
+	private String newProperties=""; // space delimited list of property IDs just added for mapping
+    private Map<String, List<ExtensionProperty>> availProperties = new HashMap<String, List<ExtensionProperty>>();
+	
 	// temp stuff
     private List<String> sourceColumns;
 	private Map<Long, Map<String,String>> vocs = new HashMap<Long, Map<String,String>>();	
@@ -108,55 +112,55 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			log.debug("Cant read datasource column headers", e);
 		}
         // prepare list of property mappings to create form with and to be filled by params interceptor
-        int filledMappings = 0;
+        // parse list of newly mapped properties
+        List<String> newIdList =  Arrays.asList(StringUtils.split(newProperties, " "));
     	for (ExtensionProperty prop : view.getExtension().getProperties()){
         	if (prop == null){
         		continue;
         	}
-        	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup(); 
-        	if (!mappings.containsKey(group)){
-        		mappings.put(group, new ArrayList<PropertyMapping>());        		
-        	}
-        	List<PropertyMapping> mplist = mappings.get(group); 
+        	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup();
     		// is this property mapped already?
-        	PropertyMapping propMap;
-    		if (view.hasMappedProperty(prop)){
-    			// add existing mapping
-    			propMap=view.getMappedProperty(prop);
-    			mplist.add(propMap);
-            	filledMappings++;
-    		}else{
-    			// create new empty one. Remember to link them to the ViewMapping before they get saved
-        		propMap = PropertyMapping.newInstance(prop);
-    			mplist.add(propMap);
+    		if (!view.hasMappedProperty(prop)){
+    			// no, not yet. was it just added?
+    			if (newIdList.contains(prop.getId().toString())){
+    				PropertyMapping pMap = new PropertyMapping();
+    				pMap.setProperty(prop);
+    				view.addPropertyMapping(pMap);
+    			}else{
+        			// no, so add to available properties
+                	if (!availProperties.containsKey(group)){
+                		availProperties.put(group, new ArrayList<ExtensionProperty>());        		
+                	}
+            		availProperties.get(group).add(prop);
+    			}
     		}
-        	mappingsByID.put(propMap.getId(), propMap);
-    		// create vocabulary drop downs
+    		// create vocabulary drop downs if needed
     		if (prop.getVocabulary()!=null){
     			ThesaurusVocabulary voc = prop.getVocabulary();
     			vocs.put(prop.getId(), thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false));
     		}
-    	}
-        
+    	}        
+	}
+	
+    private void automap(){
 		// if this mapping is still empty try to automap
 		if (view.getMappedProperties().size()<1){
 			// regex pattern to normalise property names
 			Pattern p = Pattern.compile("[\\s_-]");
 			Matcher m = null;
 			int autoCount = 0;
-			for (String group : mappings.keySet()){
-				for (PropertyMapping pm : mappings.get(group)){
-					if (!pm.isEmpty()){
-						// they should all be empty, but just in case...
-						continue;
-					}
-					m = p.matcher(pm.getProperty().getName());
+			for (String group : availProperties.keySet()){
+				for (ExtensionProperty prop : availProperties.get(group)){
+					m = p.matcher(prop.getName());
 					String propName = m.replaceAll("");
 					for (String col : sourceColumns){
 						m = p.matcher(col);
 						String colName = m.replaceAll("");
 						if (propName.equalsIgnoreCase(colName)){
+		    				PropertyMapping pm = new PropertyMapping();
+		    				pm.setProperty(prop);
 							pm.setColumn(col);
+		    				view.addPropertyMapping(pm);
 							autoCount++;
 							break;
 						}
@@ -165,8 +169,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			}
 			log.info("Automapping of columns found "+autoCount+" matching properties");
 	        saveMessage("Automapping of columns found "+autoCount+" matching properties");
-		}
-	}
+		}    	
+    }
 
 	public String execute(){
 		return SUCCESS;
@@ -179,22 +183,17 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         if (delete!= null) {
             return delete();
         }
-        // update property mapping values
-		for (String group : mappings.keySet()){
-			for (PropertyMapping pm : mappings.get(group)){
-	        	if (pm !=null && pm.getColumn() !=null){
-	        		String key = StringUtils.trimToEmpty(pm.getColumn());
-	        	}
-	        	// save non-empty property mappings
-	        	if (!pm.isEmpty()){
-	        		view.addPropertyMapping(pm);
-	        	// and remove empty ones that are still persistent
-	        	}else if(pm.getId()!=null){
-	        		view.removePropertyMapping(pm);
-	        		propertyMappingManager.remove(pm);
-	        	}
-			}
-        }
+        // remove empty property mappings
+		for (PropertyMapping pm : view.getPropertyMappings().values()){
+        	if (pm !=null && pm.getColumn() !=null){
+        		String key = StringUtils.trimToEmpty(pm.getColumn());
+        	}
+        	// and remove empty ones that are still persistent
+        	if (pm.isEmpty()){
+        		view.removePropertyMapping(pm);
+        		propertyMappingManager.remove(pm);
+        	}
+		}
         // cascade-save view mapping
         view = viewMappingManager.save(view);
         return SUCCESS;
@@ -203,7 +202,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	public String termMapping() throws Exception{
 		save();
 		if (mappings_idx!= null){
-			PropertyMapping pm = mappingsByID.get(mappings_idx);
+			PropertyMapping pm = view.getPropertyMapping(mappings_idx);
 			mid = pm.getViewMapping().getId();
 			tid = pm.getTermTransformationId();
 			if (tid==null){
@@ -234,13 +233,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	
 	
 
-	public Map<String, List<PropertyMapping>> getMappings() {
-		return mappings;
-	}
-	public void setMappings(Map<String, List<PropertyMapping>> mappings) {
-		this.mappings = mappings;
-	}
 
+	
 	public Long getMid() {
 		return mid;
 	}
@@ -285,12 +279,24 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 		return vocs;
 	}
 
-	public void setMappings_idx(Integer mappings_idx) {
+	public void setMappings_idx(Long mappings_idx) {
 		this.mappings_idx = mappings_idx;
 	}
 
 	public Long getTid() {
 		return tid;
+	}
+
+	public String getNewProperties() {
+		return newProperties;
+	}
+
+	public void setNewProperties(String newProperties) {
+		this.newProperties = newProperties.trim();
+	}
+
+	public Map<String, List<ExtensionProperty>> getAvailProperties() {
+		return availProperties;
 	}
 	
 }

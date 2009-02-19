@@ -2,6 +2,8 @@
 <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
 <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 <c:set var="currentResourceTitle" scope="request"><decorator:getProperty property="meta.resource"/></c:set>
+<c:set var="currentHeading" scope="request"><decorator:getProperty property="meta.heading"/></c:set>
+<c:set var="currentHeadingStyle" scope="request"><decorator:getProperty property="meta.headingstyle"/></c:set>
 <c:set var="taxTreeAction">taxDetail</c:set>
         <title><decorator:title/> | <s:text name="webapp.name"/></title>
         <!-- HTTP 1.1 -->
@@ -14,8 +16,8 @@
         <link rel="icon" href="<c:url value="/images/favicon.ico"/>"/>
 		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/theme.css'/>" />
 		<link rel="stylesheet" type="text/css" media="print" href="<c:url value='/styles/${appConfig["csstheme"]}/print.css'/>" />
-		<script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/jquery-1.3.min.js'/>"></script>
+		<script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>
 		
 	    <c:choose>
 	      <c:when test='${currentSubMenu == "meta"}'>
