@@ -18,6 +18,7 @@ package org.gbif.provider.webapp.action.manage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,12 +185,13 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
             return delete();
         }
         // remove empty property mappings
-		for (PropertyMapping pm : view.getPropertyMappings().values()){
+        Collection<PropertyMapping> persistentProps = view.getPropertyMappings().values();
+		for (PropertyMapping pm : persistentProps){
         	if (pm !=null && pm.getColumn() !=null){
         		String key = StringUtils.trimToEmpty(pm.getColumn());
         	}
         	// and remove empty ones that are still persistent
-        	if (pm.isEmpty()){
+        	if (pm.isEmpty() && pm.getId()!=null){
         		view.removePropertyMapping(pm);
         		propertyMappingManager.remove(pm);
         	}
