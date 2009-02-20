@@ -1,21 +1,30 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <div id="taxonTreeBox"></div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#taxonTreeBox").treeview({
+			url: "<c:url value='/ajax/taxonSubTree.html'/>?resource_id=<s:property value="resource_id"/>"
+		})
+	});
+	</script>
 <script>
-	var resourceId = <s:property value="resource_id"/>;
-	var taxJustOpened = 1;
-	
-	taxtree=new dhtmlXTreeObject($('taxonTreeBox'),"100%","100%",0);
-	taxtree.setImagePath("<c:url value='/scripts/dhtmlxtree/imgs/'/>");
-	taxtree.enableCheckBoxes(false);
-	taxtree.enableDragAndDrop(false);
-	taxtree.enableTreeImages(false);
-	taxtree.enableHighlighting(true);
-	taxtree.enableTreeLines(true);
-	taxtree.attachEvent("onClick",onTaxNodeSelect); //set function object to call on node select
-	taxtree.attachEvent("onOpenStart",onTaxNodeOpen); // onOpenStart 
-	taxtree.setXMLAutoLoading("<c:url value='/ajax/taxonSubTree.html'/>?resource_id=<s:property value="resource_id"/>");
-	taxtree.loadXML("<c:url value='/ajax/taxonTree.html'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="taxon_id"/>"); //load root level from xml
+	function blablabla(){
+		var resourceId = <s:property value="resource_id"/>;
+		var taxJustOpened = 1;
+		
+		taxtree=new dhtmlXTreeObject($('#taxonTreeBox'),"100%","100%",0);
+		taxtree.setImagePath("<c:url value='/scripts/dhtmlxtree/imgs/'/>");
+		taxtree.enableCheckBoxes(false);
+		taxtree.enableDragAndDrop(false);
+		taxtree.enableTreeImages(false);
+		taxtree.enableHighlighting(true);
+		taxtree.enableTreeLines(true);
+		taxtree.attachEvent("onClick",onTaxNodeSelect); //set function object to call on node select
+		taxtree.attachEvent("onOpenStart",onTaxNodeOpen); // onOpenStart 
+		taxtree.setXMLAutoLoading("<c:url value='/ajax/taxonSubTree.html'/>?resource_id=<s:property value="resource_id"/>");
+		taxtree.loadXML("<c:url value='/ajax/taxonTree.html'/>?resource_id=<s:property value="resource_id"/>&id=<s:property value="taxon_id"/>"); //load root level from xml
+	};
 
 	function onTaxNodeSelect(nodeId){
 		if (taxJustOpened>0){
