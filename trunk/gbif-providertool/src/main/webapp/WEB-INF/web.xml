@@ -202,15 +202,6 @@
     </listener>
     
     <servlet>
-        <servlet-name>dwr-invoker</servlet-name>
-        <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </servlet>
-    
-    <servlet>
         <servlet-name>JspSupportServlet</servlet-name>
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -228,11 +219,6 @@
         <servlet-name>H2Console</servlet-name> 
         <url-pattern>/h2/*</url-pattern> 
     </servlet-mapping>     
-    
-    <servlet-mapping>
-        <servlet-name>dwr-invoker</servlet-name>
-        <url-pattern>/dwr/*</url-pattern>
-    </servlet-mapping>
     
     
     

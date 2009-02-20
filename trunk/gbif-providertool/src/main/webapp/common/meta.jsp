@@ -30,10 +30,10 @@
 	        <c:if test='${currentSubMenu == "occ"}'>
 				<c:set var="taxTreeAction">occTaxon</c:set>
 			</c:if>			
-			<link rel="STYLESHEET" type="text/css" href="<c:url value='/scripts/jquery-treeview/jquery.treeview.css'/>">
+			<link rel="STYLESHEET" type="text/css" href="<c:url value='/scripts/dynatree/skin/ui.dynatree.css'/>">
+			<script  src="<c:url value='/scripts/jquery/ui.core.min.js'/>"></script>
 			<script  src="<c:url value='/scripts/jquery.cookie.js'/>"></script>
-			<script  src="<c:url value='/scripts/jquery-treeview/jquery.treeview.js'/>"></script>
-			<script  src="<c:url value='/scripts/jquery-treeview/jquery.treeview.async.js'/>"></script>
+			<script  src="<c:url value='/scripts/dynatree/jquery.dynatree.min.js'/>"></script>
           </c:when>        
 	      <c:when test='${currentSubMenu == "tax"}'>
           </c:when>        
