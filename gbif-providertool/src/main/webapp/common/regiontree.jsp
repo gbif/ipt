@@ -5,7 +5,7 @@
 	var resourceId = <s:property value="resource_id"/>;
 	var regionJustOpened = 1;
 	
-	regiontree=new dhtmlXTreeObject($('regionTreeBox'),"100%","100%",0);
+	regiontree=new dhtmlXTreeObject($('#regionTreeBox'),"100%","100%",0);
 	regiontree.setImagePath("<c:url value='/scripts/dhtmlxtree/imgs/'/>");
 	regiontree.enableCheckBoxes(false);
 	regiontree.enableDragAndDrop(false);
