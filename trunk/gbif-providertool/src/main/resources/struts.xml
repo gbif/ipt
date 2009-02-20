@@ -361,7 +361,7 @@
         </action>
         <action name="taxonTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
             <result>
-                <param name="location">/WEB-INF/pages/ajax/treejRecursive.ftl</param>                
+                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
                 <param name="contentType">text/json</param>
             </result>
         </action>
@@ -373,7 +373,7 @@
         </action>
         <action name="regionTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
             <result>
-                <param name="location">/WEB-INF/pages/ajax/treejRecursive.ftl</param>                
+                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
                 <param name="contentType">text/json</param>
             </result>
         </action>
