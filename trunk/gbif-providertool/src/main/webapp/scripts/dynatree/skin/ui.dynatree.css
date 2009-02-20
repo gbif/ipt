@@ -9,7 +9,7 @@ div.ui-dynatree-container
 	padding: 3px;
 	
 	background-color: white; 
-	border: 1px dotted gray;
+	border: 0px dotted gray;
 }
 
 /* Style, when control is disabled */
@@ -186,10 +186,9 @@ span.ui-dynatree-document a,
 span.ui-dynatree-folder a
 {
 	display: inline-block; /* Better alignment, when title contains <br> */  
-/*	vertical-align: top;*/
-	padding-left: 3px;
+	/*	vertical-align: top;*/
+	padding-left: 0px;  /* 3 is better when icon is used */
 	padding-right: 3px; /* Otherwise italic font will be outside bounds */
-	/*	line-height: 16px; /* should be the same as img height, in case 16 px */
 }
 span.ui-dynatree-folder a
 {
