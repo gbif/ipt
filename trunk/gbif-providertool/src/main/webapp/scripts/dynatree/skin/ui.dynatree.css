@@ -85,11 +85,11 @@ span.ui-dynatree-expander
 }
 .ui-dynatree-lazy span.ui-dynatree-expander
 {
-	background-image: url("ltD_nes.gif");
+	background-image: url("ltP_nes.gif");
 }
 .ui-dynatree-lazy.ui-dynatree-lastsib span.ui-dynatree-expander
 {
-	background-image: url("ltD_ne.gif");
+	background-image: url("ltP_ne.gif");
 }
 .ui-dynatree-expanded span.ui-dynatree-expander
 {
