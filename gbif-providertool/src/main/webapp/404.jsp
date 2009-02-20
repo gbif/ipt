@@ -9,7 +9,7 @@
 
 <p>
     <s:text name="404.message">
-        <s:param><s:url action="/home"/></s:param>
+        <s:param><s:url action="/index"/></s:param>
     </s:text>
 </p>
 <p style="text-align: center; margin-top: 20px">

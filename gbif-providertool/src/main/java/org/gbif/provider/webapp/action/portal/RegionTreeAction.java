@@ -13,34 +13,36 @@ public class RegionTreeAction extends BaseOccurrenceResourceAction {
 	@Autowired
 	private RegionManager regionManager;
     private Long id;
+    private Long focus;
     private String parents="";
     private List<Region> nodes;
 	private String treeType="region";
 	 
     public String execute(){
-    	if (id!=null && id>0l){
-    		// open tree up to the id. 
-    		// To do this first find all parent nodes
-    		parents=StringUtils.join(regionManager.getParentIds(resource_id, id), ".");
-    		// start always with the root node, i.e. 0
-    		id=0l;
-    		return rootNodes();
-    	}else{
-    		return rootNodes();
+    	if (id!=null){
+    		if(focus==null){
+	    		// initial tree request with selected tree node
+	    		// return entire tree up to the id. 
+	    		// To do this first find all parent nodes. 
+	    		// Rendering of nodes will do a recursion depending on parent string
+    			focus=id;
+	    		parents=StringUtils.join(regionManager.getParentIds(resource_id, id), ".");
+        	}else{
+	    		// parents already set. this is a recursive call already
+	    		return subNodes();
+        	}
     	}
+		return rootNodes();
     }
     
     public String subNodes(){
 		nodes = regionManager.getChildren(resource_id, id);
     	return SUCCESS;
     }
-    
-    public String rootNodes(){
+	private String rootNodes(){
 		nodes = regionManager.getRoots(resource_id);
     	return SUCCESS;
     }
-    
-
     
 	public Long getId() {
 		return id;
@@ -65,6 +67,12 @@ public class RegionTreeAction extends BaseOccurrenceResourceAction {
     public String getTreeType() {
 		return treeType;
 	}
-    
-    
+
+	public Long getFocus() {
+		return focus;
+	}
+
+	public void setFocus(Long focus) {
+		this.focus = focus;
+	}
 }

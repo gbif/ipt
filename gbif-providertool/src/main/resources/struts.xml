@@ -19,7 +19,7 @@
     <!-- by default dont append existing parameters -->
     <constant name="struts.url.includeParams" value="none" />
     
-    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.devMode" value="true"/>
     
     <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
 
@@ -361,38 +361,26 @@
         </action>
         <action name="taxonTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
             <result>
-                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
-                <param name="contentType">text/xml</param>
+                <param name="location">/WEB-INF/pages/ajax/treejRecursive.ftl</param>                
+                <param name="contentType">text/json</param>
             </result>
         </action>
         <action name="taxonSubTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
             <result>
-                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-        </action>
-        <action name="taxonTreeItems" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
-            <result>
-                <param name="location">/WEB-INF/pages/ajax/treeItems.ftl</param>                
-                <param name="contentType">text/xml</param>
+                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
+                <param name="contentType">text/json</param>
             </result>
         </action>
         <action name="regionTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
             <result>
-                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
-                <param name="contentType">text/xml</param>
+                <param name="location">/WEB-INF/pages/ajax/treejRecursive.ftl</param>                
+                <param name="contentType">text/json</param>
             </result>
         </action>
         <action name="regionSubTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
             <result>
-                <param name="location">/WEB-INF/pages/ajax/tree.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-        </action>
-        <action name="regionTreeItems" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
-            <result>
-                <param name="location">/WEB-INF/pages/ajax/treeItems.ftl</param>                
-                <param name="contentType">text/xml</param>
+                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
+                <param name="contentType">text/json</param>
             </result>
         </action>
         <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
