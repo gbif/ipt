@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <div id="recentlyViewedResources">
 	<s:if test="#session.recentResources">
-	<label>Recent Resources</label>
+	<label class="submenulabel">Recent Resources</label>
 	<ul class="plain">
 		<s:iterator value="#session.recentResources" status="resstatus">
 			<s:url id="recentLink" action="resource" includeParams="none">

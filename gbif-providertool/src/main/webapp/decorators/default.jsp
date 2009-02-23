@@ -18,13 +18,11 @@
         <div id="header" class="clearfix">
             <jsp:include page="/common/header.jsp"/>
         </div>
-        <div style="height: 65px; clear: both"></div>
+        <div style="height: 65px; clear: both"><%-- spacer --%></div>
 
         <div id="content" class="clearfix">
             <div id="main">
                 <%@ include file="/common/messages.jsp" %>
-                
-                
                 <c:if test='${currentHeading != "" }'>
 	                <h1><decorator:getProperty property="meta.heading"/></h1>
 					<div class="horizontal_dotted_line_large_foo"></div>
@@ -66,6 +64,7 @@
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
 		                </s:a>
+		                <div class="horizontal_dotted_line_small_foo"></div>		                
 		            	<decorator:getProperty property="page.contextmenu" />
 			        	<%@ include file="/common/submenu_search.jsp" %>
 						<div id="taxnav">
@@ -82,6 +81,7 @@
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
 		                </s:a>
+		                <div class="horizontal_dotted_line_small_foo"></div>
 		            	<decorator:getProperty property="page.contextmenu" />
 			        	<%@ include file="/common/submenu_search.jsp" %>
 						<div id="taxnav">
@@ -93,7 +93,7 @@
 			        <c:when test='${currentSubMenu == "meta"}'>
 		            	<decorator:getProperty property="page.contextmenu" />
 	                	<h1>Metadata Repo</h1>
-	                	
+	                	<div class="horizontal_dotted_line_small_foo"></div>
 			        	<%@ include file="/common/submenu_search.jsp" %>
 			        	<%@ include file="/common/submenu_recent.jsp" %>
 			        	<%@ include file="/common/tagcloud.jsp" %>

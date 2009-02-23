@@ -7,56 +7,54 @@
 </head>
 
 <style>
-	#main{
-	}
 </style>
 
 <body id="login">
-<div id="mainfull"> 
-<div class="horizontal_dotted_line_xlarge_foo"></div>
+<div id="mainfull" style=" margin-top: 15px; margin-bottom: 0px;"> 
+<%-- <div class="horizontal_dotted_line_xlarge_foo"></div> --%>
 <div style="float: left;">
-<form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
-    onsubmit="saveUsername(this);return validateForm(this)">
-<fieldset>
-<ul>
-<c:if test="${param.error != null}">
-    <li class="error">
-        <img src="${ctx}/images/iconWarning.gif" alt="<fmt:message key='icon.warning'/>" class="icon"/>
-        <fmt:message key="errors.password.mismatch"/>
-        <%--${sessionScope.SPRING_SECURITY_LAST_EXCEPTION_KEY.message}--%>
-    </li>
-</c:if>
-    <li>
-       <label for="j_username" class="required desc">
-            <fmt:message key="label.username"/> <span class="req">*</span>
-        </label>
-        <input type="text" class="text medium" name="j_username" id="j_username" tabindex="1" />
-    </li>
-
-    <li>
-        <label for="j_password" class="required desc">
-            <fmt:message key="label.password"/> <span class="req">*</span>
-        </label>
-        <input type="password" class="text medium" name="j_password" id="j_password" tabindex="2" />
-    </li>
-
-<c:if test="${appConfig['rememberMeEnabled']}">
-    <li>
-        <input type="checkbox" class="checkbox" name="_spring_security_remember_me" id="rememberMe" tabindex="3"/>
-        <label for="rememberMe" class="choice"><fmt:message key="login.rememberMe"/></label>
-    </li>
-</c:if>
-    <li>
-        <input type="submit" class="button" name="login" value="<fmt:message key='button.login'/>" tabindex="4" />
-        <p>
-            <fmt:message key="login.passwordHint"/></p>
-        </p>
-    </li>
-</ul>
-</fieldset>
-</form>
+	<form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
+	    onsubmit="saveUsername(this);return validateForm(this)">
+	<fieldset>
+	<ul>
+	<c:if test="${param.error != null}">
+	    <li class="error">
+	        <img src="${ctx}/images/iconWarning.gif" alt="<fmt:message key='icon.warning'/>" class="icon"/>
+	        <fmt:message key="errors.password.mismatch"/>
+	        <%--${sessionScope.SPRING_SECURITY_LAST_EXCEPTION_KEY.message}--%>
+	    </li>
+	</c:if>
+	    <li>
+	       <label for="j_username" class="required desc">
+	            <fmt:message key="label.username"/> <span class="req">*</span>
+	        </label>
+	        <input type="text" class="text medium" name="j_username" id="j_username" tabindex="1" />
+	    </li>
+	
+	    <li>
+	        <label for="j_password" class="required desc">
+	            <fmt:message key="label.password"/> <span class="req">*</span>
+	        </label>
+	        <input type="password" class="text medium" name="j_password" id="j_password" tabindex="2" />
+	    </li>
+	
+	<c:if test="${appConfig['rememberMeEnabled']}">
+	    <li>
+	        <input type="checkbox" class="checkbox" name="_spring_security_remember_me" id="rememberMe" tabindex="3"/>
+	        <label for="rememberMe" class="choice"><fmt:message key="login.rememberMe"/></label>
+	    </li>
+	</c:if>
+	    <li>
+	        <input type="submit" class="button" name="login" value="<fmt:message key='button.login'/>" tabindex="4" />
+	        <p style="padding-left: 3px;">
+	            <fmt:message key="login.passwordHint"/></p>
+	        </p>
+	    </li>
+	</ul>
+	</fieldset>
+	</form>
 </div>
-<div style="float: right; width: 450px; border-left: #999999 1px dotted; padding-left: 30px; margin-top: 14px;">
+<div style="float: right; width: 420px; border-left: #999999 1px dotted; padding-left: 30px; height: 200px; text-align: center;" >
 	<a href="/signup.html"><img src="/images/private.jpg" style="margin-bottom: 4px;" /></a>
 	<br />
     <fmt:message key="login.signup">
@@ -67,6 +65,4 @@
 </div>
 
 <%@ include file="/scripts/login.js"%>
-<%-- <div class="horizontal_dotted_line_xlarge_soft"></div> --%>
-<%-- <p class="bottomText" ><fmt:message key="login.passwordHint"/></p> --%>
 </body>

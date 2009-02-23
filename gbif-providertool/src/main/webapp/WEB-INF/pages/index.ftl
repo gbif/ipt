@@ -18,7 +18,7 @@
 
 <h3>Hosted resources</h3>
 <div class="horizontal_dotted_line_xlarge_soft"></div>
-
+<div style="height: 56px; clear: both"></div>
 <#include "/WEB-INF/pages/inc/dataResourceList.ftl">  
 
 <@s.url id="metaRepoUrl" action="resources"/>

@@ -4,7 +4,8 @@
     <meta name="heading" content="<@s.text name='extensionList.heading'/>"/>
     <meta name="menu" content="AdminMenu"/>
 </head>
-<div class="horizontal_dotted_line_xlarge"></div>
+
+<!--<div class="horizontal_dotted_line_xlarge"></div>-->
 <table class="extensionListTable">
 	<tr>
 		<th><@s.text name="extension.name"/></th>

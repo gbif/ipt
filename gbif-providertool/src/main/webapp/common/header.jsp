@@ -17,9 +17,11 @@
 </div>
 
 <s:if test="resourceType!=null">
+<%--
 <div id="currentResourceClass">
 	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
 </div>
+--%>
 </s:if>
 
 <noscript>
