@@ -7,7 +7,7 @@
 
 
 <h1>Basic Metadata</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <p class="explMt">Please describe the dataset you want to publish as a whole</p>
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">

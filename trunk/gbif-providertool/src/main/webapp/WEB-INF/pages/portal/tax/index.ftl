@@ -38,11 +38,9 @@
 </head>
 	
 <@s.form>
-<h1 class="h1tax"><@s.text name="resource.description"/></h1>
+<h1 style="margin-bottom: 13px;"><@s.text name="resource.description"/></h1>
 <div class="horizontal_dotted_line_large"></div>
-<div class="rounded" style="margin-bottom:30px">
 <fieldset>
-	<legend><!--<@s.text name="resource.description"/>--></legend>
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span><@s.property value="resource.description"/></span>
@@ -84,7 +82,6 @@
 			</table>
 		</div>
 	</div>
-</div>
 </@s.form>
 
 <@s.push value="resource">

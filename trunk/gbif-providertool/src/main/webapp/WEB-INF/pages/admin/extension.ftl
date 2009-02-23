@@ -5,7 +5,7 @@
     <meta name="heading" content="${extension.name} Extension"/>
 </head>
 
-<div class="horizontal_dotted_line_xlarge"></div>
+<!--<div class="horizontal_dotted_line_xlarge"></div>-->
 <table class="extensionTable">	
  <tr>
 	<th><@s.text name='extension.name'/></th>

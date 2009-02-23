@@ -104,7 +104,7 @@
             
             div#sub ul li {
                 list-style-type: none;
-                padding-bottom: 10px;
+                padding-bottom: 6px;
             }
                 div#sub p.line {
                     border-top: 1px dotted #ccc;

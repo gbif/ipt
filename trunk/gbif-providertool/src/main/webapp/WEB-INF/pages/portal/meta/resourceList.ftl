@@ -69,7 +69,7 @@
 	<input type="hidden" id="bbox_bottom" name="bbox_bottom" value="" />
 	<input type="hidden" id="bbox_left" name="bbox_left" value="" />
 	<input type="hidden" id="bbox_right" name="bbox_right" value="" />
+	<div class="break"></div>
     <@s.submit cssClass="button" key="button.search" theme="simple"/>
   </@s.form>
-
 </div>

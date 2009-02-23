@@ -39,10 +39,11 @@ div#resourceListContainer{
 
 .horizontal_dotted_line_large{
 	border-bottom: 1px dotted #666666;
-	width: 712px;
+	width: 700px;
 	margin-left: -7px;
 	margin-top: -5px;
 	margin-bottom: 20px;
+	line-height: 1px;	
 }
 
 
@@ -52,6 +53,7 @@ div#resourceListContainer{
 	margin-left: -7px;
 	margin-top: -5px;
 	margin-bottom: 20px;
+	line-height: 1px;
 }
 
 
@@ -61,6 +63,7 @@ div#resourceListContainer{
 	margin-left: -7px;
 	margin-top: -5px;
 	margin-bottom: 20px;
+	line-height: 1px;	
 }
 
 .horizontal_dotted_line_xlarge_soft_foo{
@@ -69,6 +72,7 @@ div#resourceListContainer{
 	margin-left: -7px;
 	margin-top: 15px;
 	margin-bottom: 20px;
+	line-height: 1px;	
 }
 
 .horizontal_dotted_line_xlarge_foo{
@@ -77,39 +81,44 @@ div#resourceListContainer{
 	margin-left: -7px;
 	margin-top: 8px;
 	margin-bottom: 0px;
+	line-height: 1px;	
 }
 
 
 .horizontal_dotted_line_large_foo{
 	border-bottom: 1px dotted #666666;
-	width: 712px;
+	width: 700px;
 	margin-left: -7px;
 	margin-top: 8px;
 	margin-bottom: 0px;
+	line-height: 1px;	
 }
 
 .horizontal_dotted_line_large_soft{
 	border-bottom: 1px dotted #b0b0a0;
-	width: 712px;
+	width: 700px;
 	margin-left: -7px;
 	margin-top: -5px;
 	margin-bottom: 20px;
+	line-height: 1px;	
 }
 
 .horizontal_dotted_line_small{
 	border-bottom: 1px dotted #666666;
-	width: 215px;
+	width: 185px;
 	margin-left: -7px;
 	margin-top: -5px;
 	margin-bottom: 20px;
+	line-height: 1px;	
 }
 
 .horizontal_dotted_line_small_foo{
 	border-bottom: 1px dotted #666666;
-	width: 215px;
+	width: 185px;
 	margin-left: -7px;
 	margin-top: 8px;
 	margin-bottom: 0px;
+	line-height: 1px;	
 }
 
 
@@ -120,6 +129,7 @@ div#resourceListContainer{
 	margin-top: 10px;
 	margin-bottom: 10px;
 	clear: both;
+	line-height: 1px;	
 }
 
 input.button, button{
@@ -130,7 +140,7 @@ input.button, button{
 	padding-bottom: 0pt;
 	padding-left: 0pt;
 	margin-top: 0px;
-	margin-left: 5px;
+	margin-left: 0px;
 }
 
 #publishingForm input.button, button{
@@ -154,6 +164,10 @@ span.pagelinks{
 	padding-left: 0pt;
 	text-align: right;
 	width: 100%;
+}
+
+.submenulabel{
+	margin-bottom: 10px;
 }
 
 div.exportlinks{
@@ -187,4 +201,16 @@ h3.accordionHeader{
 	font-size: 1.8em;
 	height: 32px;
 	border-bottom: 1px dotted #999999;
+}
+
+span.pagebanner{
+	margin-top: -56px;
+}
+
+div.break79{
+	height: 79px;
+}
+
+div.break10{
+	height: 10px;
 }

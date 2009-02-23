@@ -14,7 +14,7 @@ function sorry(){
 </head>
 
 <!--<div class="separator"></div>-->
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <p class="explMt">
 Transformations will allow you to adjust your data according to certain patterns found frequently in data structures before it gets imported into the IPT cache.
 Each transformation results in a new view on your source data that can be used later on to define the final mappings to the IPT data model.<br/>

@@ -17,7 +17,7 @@
 </head>
 
 <h1>Source Data</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <p class="explMt">Please upload your data as tab files or define a SQL view to pull it from a database.
 You can define as many sources as you like, but there needs to be at least one.
 Readily supported formats can be <a href="">found here</a>. 

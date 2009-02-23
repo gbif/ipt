@@ -6,7 +6,7 @@
 </head>
 
 <h1><@s.text name="eml.intellectualRights"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <@s.form id="emlForm" action="rights" method="post" validate="false">
 <fieldset>
 	<legend><!--<@s.text name="eml.intellectualRights"/>--></legend>

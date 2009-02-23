@@ -31,8 +31,8 @@
 	</ul>
 			
 </div>
-
-<div id="stats-table">
+<div class="break79"></div>
+<div id="stats-big-table">
 	<@display.table name="data" class="table" requestURI="" id="dataList" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.country"/>
 	    <#if recordAction??>	    

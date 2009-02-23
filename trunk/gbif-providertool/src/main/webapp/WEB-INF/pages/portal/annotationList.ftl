@@ -30,10 +30,13 @@
 		});
 	</script>
 </head>
+<style>
+	span.pagebanner{
+		margin-top: 0px;
+	}
+</style>
 
-
-
-<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
 <div class="annotationRight">
 <@s.form id="annotationTypeForm" method="get">
 	<@s.hidden name="resource_id" value="${resource_id}"/>

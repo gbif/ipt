@@ -4,7 +4,7 @@
     <meta name="menu" content="AdminMenu"/>
 </head>
 
-<div class="horizontal_dotted_line_xlarge"></div>
+<!--<div class="horizontal_dotted_line_xlarge"></div>-->
 <table>	
  <tr>
 	<th><@s.text name="concept.identifier"/></th>

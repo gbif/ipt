@@ -6,7 +6,7 @@
 </head>
 
 <h1><@s.text name="eml.methods"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <@s.form id="emlForm" action="methods" method="get" validate="false">
 <fieldset>
 	<legend><!--<@s.text name="eml.methods"/>--></legend>

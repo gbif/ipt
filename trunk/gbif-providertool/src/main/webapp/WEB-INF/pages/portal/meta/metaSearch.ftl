@@ -6,5 +6,5 @@
 
 <h1>Your Search: ${q!keyword!bbox.toStringShort(3)}</h1>  
 <div class="horizontal_dotted_line_large_foo"></div>
-
+<div class="break79"></div>
 <#include "/WEB-INF/pages/inc/resourceList.ftl">  

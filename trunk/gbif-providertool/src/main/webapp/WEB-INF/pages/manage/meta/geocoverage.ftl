@@ -13,7 +13,7 @@
 </head>
 
 <h1><@s.text name="eml.geographicCoverage"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 <fieldset>
 	<legend><!--<@s.text name="eml.geographicCoverage"/>--></legend>
