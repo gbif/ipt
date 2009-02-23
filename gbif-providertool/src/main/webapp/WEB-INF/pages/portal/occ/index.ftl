@@ -54,8 +54,10 @@
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span>${resource.description}</span>
-		
-		<@s.label key="dataResource.cache" value="%{resource.lastUpload.recordsUploaded} total records uploaded %{resource.lastUpload.executionDate}"/>
+		<p>
+		<label><@s.text name="dataResource.cache"/></label>
+		${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}
+		</p>
 		<ul class="minimenu">
 			<li class="last">
 				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
