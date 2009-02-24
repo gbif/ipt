@@ -8,10 +8,6 @@
         </Menu>
         <Menu name="ManagerMenu" title="menu.manager" page="/manage/resources.html?resourceType=meta" roles="ROLE_ADMIN,ROLE_MANAGER">
         </Menu> 
-        <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER,ROLE_MANAGER">
-            <Item name="EditProfile" title="menu.user.edit" page="/editProfile.html"/>
-            <Item name="Logout" title="user.logout" page="/logout.jsp"/>            
-        </Menu>
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/users.html">
             <Item name="ProviderCfg" title="menu.admin.config" page="/admin/config.html"/>
             <Item name="Extensions" title="menu.admin.extensions" page="/admin/extensions.html"/>
