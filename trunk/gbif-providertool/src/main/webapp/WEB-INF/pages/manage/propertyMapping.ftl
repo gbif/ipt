@@ -210,8 +210,8 @@
 </#if>
 
 <#-- property form template -->
-<div id="propertyFormTemplate">
-<div class="minibreak propertyForm" style="display:hide">
+<div id="propertyFormTemplate" style="display:none">
+<div class="minibreak propertyForm">
 <div>
 	<strong></strong>
 	<a href="#" target="_blank">(about)</a>

@@ -31,6 +31,7 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
     public static final String RESOURCE404 = "resource404";
 	@Autowired
 	protected AppConfig cfg;
+	private List<String> supportedLocales = new ArrayList<String>();
 	
 	public User getCurrentUser(){
 		final SecurityContext secureContext = (SecurityContext) SecurityContextHolder.getContext();
@@ -73,5 +74,12 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 		String[] paras = StringUtils.split(value, ", ");
 		return Arrays.asList(paras);
 	}
-	
+
+	public List<String> getSupportedLocales() {
+		return supportedLocales;
+	}
+
+	public void setSupportedLocales(List<String> supportedLocales) {
+		this.supportedLocales = supportedLocales;
+	}
 }

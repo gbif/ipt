@@ -1,17 +1,30 @@
 <%@ include file="/common/taglibs.jsp"%>
 
-<%-- <c:if test="${pageContext.request.locale.language != 'en'}"> --%>
-    <div id="switchLocale"><a href="<c:url value='/?locale=en'/>"><fmt:message key="webapp.name"/> in English</a></div>
-<%-- </c:if> --%>
-
-<div id="branding">
-<%--
-    <h1><a href="<c:url value='/'/>"><fmt:message key="webapp.name"/></a></h1>
-    <p><s:text name="webapp.tagline"/></p>
---%>
-	<img src="<c:url value='/images/copyHeader.jpg'/>"/>
+<div id="topmenu" class="right">
+ <ul class="sepmenu">
+  <c:if test="${pageContext.request.remoteUser != null}">
+  	<li><s:text name="user.status"/> ${pageContext.request.remoteUser}</li>
+  </c:if>
+  <s:url id="localeFlag" value="/images/flags/flag_%{localeLanguage}.gif"/>
+  	<li><a id="locale" href="#"><img src='<s:property value="%{localeFlag}"/>'/></a></li>
+ </ul>
+</div>
+<div id="switchLocale" style="display:none" class="right">
+  <ul class="plain">  
+	<li><a href="<c:url value='/?locale=en'/>"><img src="<c:url value='/images/flags/flag_en.gif'/>"/></a></li>
+	<li><a href="<c:url value='/?locale=es'/>"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
+	<li><a href="<c:url value='/?locale=de'/>"><img src="<c:url value='/images/flags/flag_de.gif'/>"/></a></li>
+	<li><a href="<c:url value='/?locale=fr'/>"><img src="<c:url value='/images/flags/flag_fr.gif'/>"/></a></li>
+  </ul>
+	
 </div>
 
+<!-- 
+<div id="branding">
+	<img src="<c:url value='/images/copyHeader.jpg'/>"/>
+</div>
+ -->
+ 
 <div id="logo">
 	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.jpg'/>" /></a>
 </div>

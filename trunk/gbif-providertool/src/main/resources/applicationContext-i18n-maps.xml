@@ -536,5 +536,12 @@
 	</util:map>	
 	<util:map id="otherResourceTypes">
 	</util:map>	
+
+	<util:list id="supportedLocales">
+		<value>en</value>
+		<value>de</value>
+		<value>es</value>
+		<value>fr</value>
+	</util:list>	
 	
 </beans>

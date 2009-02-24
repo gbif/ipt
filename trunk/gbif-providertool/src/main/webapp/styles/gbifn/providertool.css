@@ -253,6 +253,20 @@ ul.indexmenu li{
 }
 
 
+ul.sepmenu{
+    list-style: none;
+	padding-bottom: 2px;
+}
+ul.sepmenu li{
+	list-style-type: none;
+	display: inline;
+    margin: 0;
+	padding: 0px 6px;
+}
+ul.sepmenu li ~ li{
+	border-left: 1px solid #999999;
+}
+
 
 #taxnav, #locnav {
 	float: left;
