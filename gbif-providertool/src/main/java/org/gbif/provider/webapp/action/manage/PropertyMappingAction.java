@@ -106,14 +106,17 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         	log.warn("No view mapping could be loaded or created");
         }
         // generate basic column mapping options
-    	automap();
 		try {
 	        sourceColumns = sourceInspectionManager.getHeader(view.getSource());
 		} catch (Exception e) {
 			sourceColumns = new ArrayList<String>();
 			log.debug("Cant read datasource column headers", e);
 		}
-        // prepare list of property mappings to create form with and to be filled by params interceptor
+
+    	// try to automap columns in case there aint no mapping yet
+		automap();
+    	
+    	// prepare list of property mappings to create form with and to be filled by params interceptor
         // parse list of newly mapped properties
         List<String> newIdList =  Arrays.asList(StringUtils.split(newProperties, " "));
     	for (ExtensionProperty prop : view.getExtension().getProperties()){

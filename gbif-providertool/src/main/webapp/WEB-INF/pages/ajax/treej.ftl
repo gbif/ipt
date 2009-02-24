@@ -7,8 +7,7 @@
         icon: false,
         title: "${limit(n.label)}",
         tooltip: "${n.label}",
-        pia: ${focus?c},
-      <#if focus==n.id>
+      <#if (focus!0)==n.id>
         focus: true,
         activate: true,
       </#if>

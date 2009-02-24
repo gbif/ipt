@@ -3,7 +3,8 @@
 <div id="topmenu" class="right">
  <ul class="sepmenu">
   <c:if test="${pageContext.request.remoteUser != null}">
-  	<li><s:text name="user.status"/> ${pageContext.request.remoteUser}</li>
+  	<li><s:text name="user.status"/> <a href='<s:url value="/editProfile.html"/>'>${pageContext.request.remoteUser}</a></li>
+  	<li><a href='<s:url value="/logout.jsp"/>'><s:text name="user.logout"/></a></li>
   </c:if>
   <s:url id="localeFlag" value="/images/flags/flag_%{localeLanguage}.gif"/>
   	<li><a id="locale" href="#"><img src='<s:property value="%{localeFlag}"/>'/></a></li>
