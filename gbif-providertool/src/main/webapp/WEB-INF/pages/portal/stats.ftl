@@ -8,6 +8,10 @@
 </head>
 
 
+<h1>Chart Statistics</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break20"></div>
+
 <div id="stats-chart">
 	<img src="${chartUrl}" width="${width}" height="${height}" />
 </div>
@@ -23,7 +27,7 @@
 	</ul>
 	</#if>
 </div>
-
+<div class="break79"></div>
 <div id="stats-table">
 	<@display.table name="data" class="table" id="drow" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.category"/>
