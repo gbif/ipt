@@ -58,7 +58,6 @@
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute ref="dc:issued" use="required"/>
-            <xs:attribute ref="dc:type" use="required"><xs:annotation><xs:documentation>The vocabulary the term belongs to. Ideally this is a URI pointing to an ontology class for the vocabulary</xs:documentation></xs:annotation></xs:attribute>
             <xs:anyAttribute processContents="lax"/>
         </xs:complexType>
     </xs:element>
