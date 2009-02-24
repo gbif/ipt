@@ -6,7 +6,8 @@
 </head>
 	
 
-<h2>${region.label}</h2>  
+<h1>${region.label}</h1>  
+<div class="horizontal_dotted_line_large_foo"></div>
 
 <@s.form>
 	<fieldset>
@@ -43,13 +44,15 @@
 	</fieldset>
 </@s.form>
 
-<br/>
-
 <div id="loc-geoserver" class="stats map">
 	<label><@s.text name="stats.occPointMap"/></label>
 	<img src="${geoserverMapUrl}" width="${width}" height="${height}" />
 </div>
 
-<br class="clearfix" />
+<div class="break79"></div>
+<div class="break79"></div>
+<div class="break79"></div>
+<div class="break20"></div>
+<div class="break10"></div>
 
 <#include "/WEB-INF/pages/inc/occurrenceList.ftl">  

@@ -5,13 +5,9 @@
     <meta name="submenu" content="occ"/>
 </head>
 	
-<style>
-	.modifiedh1{
-		margin-top:-13px;
-	}
-</style>
-
-<h1 class="modifiedh1">${taxon.scientificName}</h1>  
+<h1>${taxon.scientificName}</h1>  
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break20"></div>
 
 <@s.form>
 
@@ -34,7 +30,8 @@
 	<img src="${geoserverMapUrl}" width="${width}" height="${height}" />
 </div>
 
-			
-<br class="clearfix" />
+<div class="break20"></div>			
+<div class="break79"></div>
+
 
 <#include "/WEB-INF/pages/inc/occurrenceList.ftl">  

@@ -16,6 +16,9 @@
 	</script>
 </head>
 
+<h1>Map Statistics</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break20"></div>
 
 <div id="stats-map">
 	<img src="${chartUrl}" />

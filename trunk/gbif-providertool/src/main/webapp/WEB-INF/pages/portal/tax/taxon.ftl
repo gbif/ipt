@@ -7,13 +7,10 @@
 </head>
 	
 <style>
-	.modifiedh1{
-		margin-top:-13px;
-	}
 </style>	
 
 <img class="taxDetailImg" src="${cfg.getResourceLogoUrl(resource_id)}" />
-<h1 class="modifiedh1">${taxon.scientificName}</h1>	
+<h1>${taxon.scientificName}</h1>	
 
 <@s.form>
 
