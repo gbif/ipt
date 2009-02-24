@@ -32,7 +32,7 @@
 	
 	function addProperty(newPropAnchor){
 		var newPropForm = $("#propertyFormTemplate").clone();
-		
+		newPropForm.show();
     	var name = newPropAnchor.text();
 		$("strong",newPropForm).text(name);
 		
@@ -54,6 +54,7 @@
 	}
 	
 	$(document).ready(function(){
+		$("#propertyFormTemplate").hide(0);
 	    $("#sourceViewLink").click(function () {
 	    	$("#uploadpreview").hide();
 	      	$("#sourcepreview").slideToggle("normal");
@@ -210,7 +211,7 @@
 </#if>
 
 <#-- property form template -->
-<div id="propertyFormTemplate" style="display:none">
+<div id="propertyFormTemplate">
 <div class="minibreak propertyForm">
 <div>
 	<strong></strong>
