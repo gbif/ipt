@@ -335,6 +335,11 @@ $(document).ready(function(){
 		$("#errorMessages").effect("highlight", {}, 1000);
     }
     
+    // language selector
+    $("#locale").click(function () {
+      $("#switchLocale").slideToggle("normal");
+    });
+    
     /* Initialize menus for IE */
     if ($("#primary-nav")) {
         var navItems = $("#primary-nav li");

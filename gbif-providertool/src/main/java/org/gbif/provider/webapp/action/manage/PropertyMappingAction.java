@@ -106,6 +106,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         	log.warn("No view mapping could be loaded or created");
         }
         // generate basic column mapping options
+    	automap();
 		try {
 	        sourceColumns = sourceInspectionManager.getHeader(view.getSource());
 		} catch (Exception e) {
