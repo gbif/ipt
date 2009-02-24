@@ -154,21 +154,19 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			Pattern p = Pattern.compile("[\\s_-]");
 			Matcher m = null;
 			int autoCount = 0;
-			for (String group : availProperties.keySet()){
-				for (ExtensionProperty prop : availProperties.get(group)){
-					m = p.matcher(prop.getName());
-					String propName = m.replaceAll("");
-					for (String col : sourceColumns){
-						m = p.matcher(col);
-						String colName = m.replaceAll("");
-						if (propName.equalsIgnoreCase(colName)){
-		    				PropertyMapping pm = new PropertyMapping();
-		    				pm.setProperty(prop);
-							pm.setColumn(col);
-		    				view.addPropertyMapping(pm);
-							autoCount++;
-							break;
-						}
+	    	for (ExtensionProperty prop : view.getExtension().getProperties()){
+				m = p.matcher(prop.getName());
+				String propName = m.replaceAll("");
+				for (String col : sourceColumns){
+					m = p.matcher(col);
+					String colName = m.replaceAll("");
+					if (propName.equalsIgnoreCase(colName)){
+	    				PropertyMapping pm = new PropertyMapping();
+	    				pm.setProperty(prop);
+						pm.setColumn(col);
+	    				view.addPropertyMapping(pm);
+						autoCount++;
+						break;
 					}
 				}
 			}

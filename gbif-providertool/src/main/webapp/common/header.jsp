@@ -6,8 +6,10 @@
   	<li><s:text name="user.status"/> <a href='<s:url value="/editProfile.html"/>'>${pageContext.request.remoteUser}</a></li>
   	<li><a href='<s:url value="/logout.jsp"/>'><s:text name="user.logout"/></a></li>
   </c:if>
-  <s:url id="localeFlag" value="/images/flags/flag_%{localeLanguage}.gif"/>
+  <s:if test="%{localeLanguage != null}">
+    <s:url id="localeFlag" value="/images/flags/flag_%{localeLanguage}.gif"/>
   	<li><a id="locale" href="#"><img src='<s:property value="%{localeFlag}"/>'/></a></li>
+  </s:if>
  </ul>
 </div>
 <div id="switchLocale" style="display:none" class="right">
@@ -27,7 +29,7 @@
  -->
  
 <div id="logo">
-	<a href="http://data.gbif.org/"><img src="<c:url value='/images/logo.jpg'/>" /></a>
+	<a href="<c:url value='/index.html'/>"><img src="<c:url value='/images/logo.jpg'/>" /></a>
 </div>
 
 <s:if test="resourceType!=null">

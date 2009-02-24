@@ -51,6 +51,7 @@
 				        	<div class="horizontal_dotted_line_small_foo"></div>
 		                </s:a>
 		            	<decorator:getProperty property="page.contextmenu" />
+			        	<%@ include file="/common/submenu_actions_publish.jsp" %>
 	                	<s:if test="resource.id>0">	                
 				        	<%@ include file="/common/submenu_actions_eml.jsp" %>
 				        	<s:if test="resourceType in {'occ','tax'}">
