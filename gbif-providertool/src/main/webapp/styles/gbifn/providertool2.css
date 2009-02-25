@@ -38,6 +38,34 @@ div#resourceListContainer{
 	margin-bottom: 0px;
 }
 
+#topmenu{
+	padding-top: 0px;
+	margin-top: -4px;
+	margin-left: -2px;
+}
+
+#flagContainer{
+	position: absolute;
+	top: 30px;
+	text-align: left;
+	padding-right:0px;
+	border: 1px solid silver;
+	background-image: url('/images/assets/bkgFlagSelector.gif');
+	height: 11px;
+	width: 25px;
+}
+
+.comboFoo{
+	width: 30px;
+}
+
+#switchLocale{
+	position: absolute;
+	top: 43px;
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
 .horizontal_dotted_line_large{
 	border-bottom: 1px dotted #666666;
 	width: 700px;
