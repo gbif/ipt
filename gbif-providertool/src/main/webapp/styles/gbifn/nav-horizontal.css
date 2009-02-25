@@ -36,7 +36,7 @@
         list-style: none;
     }
     div#navContainer li {
-		background: transparent url(/images/bkgButton_up.gif) no-repeat;
+		background: transparent url(../../images/bkgButton_up.gif) no-repeat;
 		width: 144px;
         float: left;
         display: inline;
@@ -76,7 +76,7 @@
     div#nav a:hover {
         text-decoration: none;
         width: 114px;
- 		background: transparent url(/images/bkgButton.gif) no-repeat;
+ 		background: transparent url(../../images/bkgButton.gif) no-repeat;
     }
     div#nav a.current {
         display: inline-block;
@@ -92,7 +92,7 @@
     div#nav a.current:visited,
     div#nav a.current:hover {
 /*        background-color: #019f2e; */
- 		background: transparent url(/images/bkgButton.gif) no-repeat; 
+ 		background: transparent url(../../images/bkgButton.gif) no-repeat; 
     }
 
     div#nav .pad {
@@ -203,11 +203,11 @@
                     	margin-right: 0px;
                     } /* The magic */
                     ul#primary-nav li.menubar { 
-                    	background: transparent url(/images/bkgButton_up.gif) no-repeat; 
+                    	background: transparent url(../../images/bkgButton_up.gif) no-repeat; 
                     }
                     ul#primary-nav li:hover,
                     ul#primary-nav li.over { 
-                    	background: transparent url(/images/bkgButton.gif) no-repeat; 
+                    	background: transparent url(../../images/bkgButton.gif) no-repeat; 
 						width: 144px;
 						font-size: 12px;
                     	padding-left: 0px;

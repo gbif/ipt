@@ -55,7 +55,7 @@
 	</form>
 </div>
 <div style="float: right; width: 420px; border-left: #999999 1px dotted; padding-left: 30px; height: 200px; text-align: center;" >
-	<a href="/signup.html"><img src="/images/private.jpg" style="margin-bottom: 4px;" /></a>
+	<a href="<@s.url value='/signup.html'/>"><img src="<s:url value='/images/private.jpg'/>" style="margin-bottom: 4px;" /></a>
 	<br />
     <fmt:message key="login.signup">
         <fmt:param><c:url value="/signup.html"/></fmt:param>

@@ -10,7 +10,7 @@ h2 {
 .reminder {
 	font-style: italic;
 	color: gray;
-	background: url(/images/mandatory.gif) no-repeat;
+	background: url(../../images/mandatory.gif) no-repeat;
 	padding-left: 20px;
 }
 .accepted {
@@ -153,7 +153,7 @@ div#jsalert h2 {
 }
 
 #currentResourceClass {
-	background: transparent url(/images/bkgClassResource.gif) no-repeat;
+	background: transparent url(../../images/bkgClassResource.gif) no-repeat;
 	color: #ffffff;
 	text-align: center;
  	position: relative;
@@ -184,7 +184,7 @@ a.actionbutton, ul.actionmenu li {
 	padding-right: 10px;
 	padding-left: 10px;
 	margin: 0 0px;
-	background: url(/images/assets/bkgButt0_up.gif) no-repeat;
+	background: url(../../images/assets/bkgButt0_up.gif) no-repeat;
 	border: none;
 
 }
@@ -236,25 +236,25 @@ ul.minimenu li{
 	display: inline;
     margin: 0;
     padding: 0;
-	background: url(/images/assets/bkgButt_up.gif) no-repeat;
+	background: url(../../images/assets/bkgButt_up.gif) no-repeat;
 	text-align: center;
 	width: 110px;
 	padding-left: 6px;
 }
 
 ul.minimenu li:hover{
-	background: url(/images/assets/bkgButt_over.gif) no-repeat;
+	background: url(../../images/assets/bkgButt_over.gif) no-repeat;
 }
 
 ul.minimenu li.last{
 	width: 175px;
 	padding-left: 2px;
-	background: url(/images/assets/bkgButtXlarge_up.gif) no-repeat;
+	background: url(../../images/assets/bkgButtXlarge_up.gif) no-repeat;
 }
 
 ul.minimenu li.last:hover{
 	width: 175px;
-	background: url(/images/assets/bkgButtXlarge_over.gif) no-repeat;
+	background: url(../../images/assets/bkgButtXlarge_over.gif) no-repeat;
 }
 
 ul.indexmenu {
