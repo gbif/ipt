@@ -175,7 +175,7 @@ ul.actionmenu {
 	list-style-type: none;
     padding: 0;
 }
-a.actionbutton, ul.actionmenu li{
+a.actionbutton, ul.actionmenu li {
 	float: none;
 	list-style-type: none;
 	display: inline;
@@ -186,11 +186,11 @@ a.actionbutton, ul.actionmenu li{
 	margin: 0 0px;
 	background: url(/images/assets/bkgButt0_up.gif) no-repeat;
 	border: none;
-	border-left: 1px solid silver;
+
 }
 
-ul.actionmenu li.first{
-	border: none;
+ul.actionmenu li ~ li{
+	border-left: 1px solid silver;
 }
 
 ul.actionmenu form {
