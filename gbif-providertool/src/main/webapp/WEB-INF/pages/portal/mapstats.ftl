@@ -24,8 +24,8 @@
 	<img src="${chartUrl}" />
 </div>
 
-<div id="stats-menu">
-	<ul class="actionmenu">
+<div id="stats-menu" style="text-align:center;">
+	<ul class="actionmenu" style="text-align:center;">
 	  <#list ["World","Africa","Asia","Europe","Middle East","South America","USA"] as area>
 		<li>
 			<a href="#" onclick="updateMap('${area?lower_case?replace(" ","_")}');return false">${area}</a>
