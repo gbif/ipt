@@ -3,6 +3,7 @@
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
+	<meta name="heading" content="<@s.text name='eml.temporalCoverage'/>"/>        
     
 <script type="text/javascript">
 	function toggleSingleDate(checkbox){
@@ -17,8 +18,8 @@
 
 </head>
 
-<h1><@s.text name="eml.temporalCoverage"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1><@s.text name="eml.temporalCoverage"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <@s.form id="emlForm" action="tempcoverage" method="post" validate="false">
 <fieldset>

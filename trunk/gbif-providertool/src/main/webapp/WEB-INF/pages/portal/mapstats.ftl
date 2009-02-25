@@ -6,6 +6,7 @@
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
+	<meta name="heading" content="<@s.text name='mapStats.heading'/>"/>          
 	<script>
 	function updateMap(area){
 		var params = {resource_id:${resource_id}, zoom:'true', area:area }; 
@@ -16,8 +17,8 @@
 	</script>
 </head>
 
-<h1>Map Statistics</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1>Map Statistics</h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break20"></div>
 
 <div id="stats-map">

@@ -2,11 +2,12 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
-    <meta name="submenu" content="manage_resource"/>    
+    <meta name="submenu" content="manage_resource"/>
+	<meta name="heading" content="<@s.text name='sqlSettings.intellectualRights'/>"/>              
 </head>
 
-<h1>SQL Settings</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1>SQL Settings</h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 
 <@s.form id="sqlSourceForm" action="saveSource" method="post">

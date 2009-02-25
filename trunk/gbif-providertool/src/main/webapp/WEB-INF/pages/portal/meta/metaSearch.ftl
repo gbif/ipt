@@ -2,6 +2,7 @@
     <title><@s.text name="search.title"/></title>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="meta"/>
+    
 </head>
 
 <h1>Your Search: ${q!keyword!bbox.toStringShort(3)}</h1>  

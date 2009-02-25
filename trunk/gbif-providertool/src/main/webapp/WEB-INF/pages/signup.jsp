@@ -7,7 +7,7 @@
 </head>
 
 <body id="signup"/>
-<div class="horizontal_dotted_line_xlarge_foo"></div>
+
 <s:form name="signupForm" action="signup" method="post" validate="true">
 	<p>Please fill out this form to register as a new user with limited rights. <br/>
 	If you want to manage your own resources/datasets, you will need Manager rights.
