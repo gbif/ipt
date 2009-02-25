@@ -57,8 +57,9 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			}
 		}
 		String sql = String.format("insert into %s (%s) VALUES (%s)", table, cols, vals);
-		Connection cn = getConnection();
+		Connection cn = null;
 		try {
+			cn=getConnection();
 			Statement st = cn.createStatement();
 			st.execute(sql);
 		} catch (SQLException e) {
@@ -67,6 +68,14 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			}else{
 				log.error(String.format("Couldn't insert record for extension %s", rec.getExtension().getName()), e);
 			}
+		} finally {
+			if (cn!=null){
+				try {
+					cn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -74,15 +83,24 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 	public int removeAll(Extension extension, Long resourceId) {
 		String table = namingStrategy.extensionTableName(extension);
 		String sql = String.format("delete from %s where resource_fk=%s", table, resourceId);
-		Connection cn = getConnection();
+		Connection cn = null;
 		int count = 0;
 		try {
+			cn=getConnection();
 			Statement st = cn.createStatement();			
 			count = st.executeUpdate(sql);
 			log.debug(String.format("Removed %s records for extension %s", count, extension.getName()));
 		} catch (SQLException e) {
 			log.error(String.format("Couldn't rmove all records for extension %s", extension.getName()));
 			e.printStackTrace();
+		} finally {
+			if (cn!=null){
+				try {
+					cn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return count;
 	}
@@ -101,8 +119,9 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 	public List<CommonName> getCommonNames(Long taxonId) {
 		List<CommonName> cnames = new ArrayList<CommonName>();
 		String sql = String.format("SELECT name, language, region FROM TAX_COMMON_NAMES where coreid=%s", taxonId);
-		Connection cn = getConnection();
+		Connection cn = null;
 		try {
+			cn =  getConnection();
 			Statement st = cn.createStatement();			
 			ResultSet result = st.executeQuery(sql); 
 			// create extension records from JDBC resultset
@@ -111,14 +130,23 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			}
 		} catch (SQLException e) {
 			log.warn("Couldn't read common names");
+		} finally {
+			if (cn!=null){
+				try {
+					cn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return cnames;
 	}
 	public List<Distribution> getDistributions(Long taxonId) {
 		List<Distribution> distributions = new ArrayList<Distribution>();
 		String sql = String.format("SELECT region, status FROM TAX_Description where coreid=%s", taxonId);
-		Connection cn = getConnection();
+		Connection cn = null;
 		try {
+			cn = getConnection();
 			Statement st = cn.createStatement();			
 			ResultSet result = st.executeQuery(sql); 
 			// create extension records from JDBC resultset
@@ -127,6 +155,14 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			}
 		} catch (SQLException e) {
 			log.warn("Couldn't read distributions");
+		} finally {
+			if (cn!=null){
+				try {
+					cn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return distributions;
 	}
@@ -144,8 +180,9 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 	}
 	private List<ExtensionRecord> queryExtensionRecords(Long resourceId, String sql, List<ExtensionProperty> properties) {
 		List<ExtensionRecord> records = new ArrayList<ExtensionRecord>();
-		Connection cn = getConnection();
+		Connection cn = null;
 		try {
+			cn = getConnection();
 			Statement st = cn.createStatement();			
 			ResultSet result = st.executeQuery(sql); 
 			// create extension records from JDBC resultset
@@ -163,6 +200,14 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			}
 		} catch (SQLException e) {
 			log.error(String.format("Couldn't read extension records for sql: %s", sql), e);
+		} finally {
+			if (cn!=null){
+				try {
+					cn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return records;
 	}

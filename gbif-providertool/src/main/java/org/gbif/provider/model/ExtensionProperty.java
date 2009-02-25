@@ -61,16 +61,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	 */
 	public ExtensionProperty(String qualName) {
 		super();
-		if (qualName.lastIndexOf("#")>0){
-			this.name=qualName.substring(qualName.lastIndexOf("#")+1);
-			this.namespace=qualName.substring(0, qualName.lastIndexOf("#"));
-		}else if (qualName.lastIndexOf("/")>0){
-			this.name=qualName.substring(qualName.lastIndexOf("/")+1);
-			this.namespace=qualName.substring(0, qualName.lastIndexOf("/"));
-		}else if (qualName.lastIndexOf("@")>0){
-			this.name=qualName.substring(0, qualName.lastIndexOf("@"));
-			this.namespace=qualName.substring(qualName.lastIndexOf("@")+1);
-		}
+		setQualName(qualName);
 	}
 
 	@Id
@@ -99,6 +90,18 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 			return (this.namespace + this.name);
 		}else{
 			return (this.namespace + "/" + this.name);
+		}
+	}
+	public void setQualName(String qualName) {
+		if (qualName.lastIndexOf("#")>0){
+			this.name=qualName.substring(qualName.lastIndexOf("#")+1);
+			this.namespace=qualName.substring(0, qualName.lastIndexOf("#"));
+		}else if (qualName.lastIndexOf("/")>0){
+			this.name=qualName.substring(qualName.lastIndexOf("/")+1);
+			this.namespace=qualName.substring(0, qualName.lastIndexOf("/"));
+		}else if (qualName.lastIndexOf("@")>0){
+			this.name=qualName.substring(0, qualName.lastIndexOf("@"));
+			this.namespace=qualName.substring(qualName.lastIndexOf("@")+1);
 		}
 	}
 
@@ -149,6 +152,14 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	public void setColumnLength(int columnLength) {
 		this.columnLength = columnLength;
 	}
+	// required for SAX parser
+	public void setColumnLength(String columnLength) {
+		try {
+			this.columnLength = Integer.parseInt(columnLength);
+		} catch (NumberFormatException e) {
+			// swallow stupidity
+		}
+	}
 
 	@Column(length=255)
 	public String getLink() {
@@ -166,7 +177,21 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	public void setRequired(boolean required) {
 		this.required = required;
 	}
-
+	// required by SAX parser
+	public void setRequired(String required) {
+		if ("TRUE".equalsIgnoreCase(required)
+				|| "T".equalsIgnoreCase(required)
+				|| "1".equalsIgnoreCase(required)) {
+			this.required = true;
+		} else if ("FALSE".equalsIgnoreCase(required)
+				|| "F".equalsIgnoreCase(required)
+				|| "0".equalsIgnoreCase(required)) {
+			this.required = false;
+		}
+		
+		// or we just don't change if not understood
+	}
+	
 	@ManyToOne(optional = true)
 	public ThesaurusVocabulary getVocabulary() {
 		return vocabulary;

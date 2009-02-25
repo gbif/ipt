@@ -737,8 +737,13 @@
                 <param name="actionName">extensions</param>
             </result>
         </action>
+        <action name="synchroniseExtensions" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="synchroniseAll">
+            <result type="redirect-action">
+                <param name="actionName">extensions</param>
+            </result>
+        </action>
 
-        <!-- EXTENSIONS -->
+        <!-- VOCABULARIES -->
         <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
             <result type="freemarker">/WEB-INF/pages/admin/vocabularyList.ftl</result>
         </action>

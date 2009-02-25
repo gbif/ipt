@@ -55,7 +55,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			throw new IllegalArgumentException("Extension needs to define properties");
 		}
 
-		Connection cn;
+		Connection cn = null;
 		try {
 			cn = getConnection();
 			// create table basics
@@ -104,6 +104,14 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			extension.setInstalled(false);
 			save(extension);
 			e.printStackTrace();
+		} finally {
+			if (cn!=null){
+				try {
+					cn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -114,7 +122,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		}
 		String table = namingStrategy.extensionTableName(extension);
 
-		Connection cn;
+		Connection cn = null;
 		Statement st = null;
 		try {
 			cn = getConnection();
@@ -130,6 +138,13 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			if (st!=null){
 				try {
 					st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (cn!=null){
+				try {
+					cn.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -170,6 +185,11 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
     	.uniqueResult();
         
         return (ExtensionProperty) obj;
+	}
+
+	public void synchroniseExtensionsWithRepository() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

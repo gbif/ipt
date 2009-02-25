@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.ExtendedBaseRules;
 import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.commons.logging.Log;
@@ -71,11 +70,8 @@ public class FilterFactory {
 	}
 	
 	protected static void addOperator(Digester digester, String path, Class<?> operator) {
-		
 		digester.addObjectCreate(path, operator);
 		digester.addSetRoot(path, "setRoot");
 		digester.addSetNext(path, "addOperand", BooleanOperator.class.getName());
-		
 	}
-
 }
