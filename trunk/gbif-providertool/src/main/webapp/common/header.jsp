@@ -19,7 +19,7 @@
 	</ul>
 </div>
 <div id="switchLocale" style="display:none" class="right">
-  <ul class="plain">  
+  <ul class="plain_m">  
 	<li><a href="<c:url value='/?locale=en'/>"><img src="<c:url value='/images/flags/flag_en.gif'/>"/></a></li>
 	<li><a href="<c:url value='/?locale=es'/>"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
 	<li><a href="<c:url value='/?locale=de'/>"><img src="<c:url value='/images/flags/flag_de.gif'/>"/></a></li>

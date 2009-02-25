@@ -2,13 +2,18 @@
 
 <div id="publish">
   <s:if test="resource.isDirty()">
+	<div class="dirtyContainer">
 	<s:form id="publishForm" action="saveResource" enctype="multipart/form-data" method="post">
 	    <s:hidden name="resource_id" value="%{resource.id}"/>
 	    <s:hidden name="resourceType" value="%{resourceType}"/>
-		<s:submit cssClass="button" name="publish" method="publish" key="button.publish" theme="simple"/>
+		<s:text name="dirty.dirty"/>
+		<s:submit cssClass="publishButton" name="publish" method="publish" key="button.publish" theme="simple"/>
 	</s:form>
+	</div>
   </s:if>
   <s:else>
-	<p><s:property value="resource.status"/></p>
+  	<div class="cleanContainer">
+		<p><s:text name="dirty.clean"/><s:property value="resource.status"/></p>
+	</div>
   </s:else>
 </div>
