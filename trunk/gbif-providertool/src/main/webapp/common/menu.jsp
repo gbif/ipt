@@ -12,8 +12,11 @@
 </div>
 </menu:useMenuDisplayer>
 <div id="fullsearch">
-	<s:form action="%{resourceType}Search" namespace="/" name="search" theme="simple" method="get">
-		<s:hidden name="resource_id" value="%{resource_id}" />
-		<s:textfield name="q" theme="simple"/>
-	</s:form>
+	<div class="searchBox">
+		<s:form action="%{resourceType}Search" namespace="/" name="search" theme="simple" method="get">
+			<s:hidden name="resource_id" value="%{resource_id}" />
+			<p class="titleSearch">Search</p>
+			<s:textfield name="q" theme="simple" cssClass="searchInput"/>
+		</s:form>
+	</div>
 </div>
