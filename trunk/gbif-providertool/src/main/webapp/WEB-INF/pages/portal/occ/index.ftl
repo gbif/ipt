@@ -54,7 +54,7 @@
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span>${resource.description}</span>
-		<p>
+		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
 		${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}
 		</p>
@@ -69,7 +69,7 @@
 				<a href="annotations.html?resource_id=${resource_id}">Annotations</a>
 			</li>
 		</ul>
-		<div class="break30"></div>
+		<div class="break35"></div>
 		<div id="services" style="display:none">
 			<table class="lefthead">
 				<tr>
