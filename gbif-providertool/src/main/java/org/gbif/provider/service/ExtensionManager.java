@@ -25,7 +25,8 @@ public interface ExtensionManager extends GenericManager<Extension>{
 	 * @param type
 	 * @return
 	 */
-	public List<Extension> getAllInstalled(ExtensionType type);
+	public List<Extension> getInstalledExtensions();
+	public Extension getCore();
 	public ExtensionProperty getProperty(String qualname);
 	
 	/**

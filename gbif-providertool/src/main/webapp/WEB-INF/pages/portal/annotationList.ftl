@@ -7,11 +7,12 @@
     <meta name="submenu" content="${resourceType}"/>
     <meta name="heading" content="Resource Annotations"/>
 	<script type="text/javascript">  
-		function showAnnotation(id){
+		function showAnnotation(anchor){
 			var url = '<@s.url value="/ajax/annotation.html"/>';
-			var params = { resource_id:${resource_id}, id: id }; 
-			var target = '#annotation';	
-			ajaxHtmlUpdate(url, target, params);
+			var params = { resource_id:${resource_id}, id: anchor.name }; 
+			$.get(url, params, function(data) { 
+				$(anchor).parent().parent().after("<tr class='odd anno'><td colspan='4'>"+data+"</td></tr>");
+			});
 		};
 		
 		function updateAnnotations(){
@@ -21,20 +22,22 @@
 		$(document).ready(function(){
 			listenToChange("#annotationType", updateAnnotations);
 
-			$(".annotationLink").click(function (e) {
+			$("a.annotationLink").click(function (e) {
 				e.preventDefault();
-				showAnnotation(this.name);
+				showAnnotation(this);
 		    });
-
-		    highlightTableRows("anno");    
 		});
 	</script>
-</head>
 <style>
 	span.pagebanner{
 		margin-top: 0px;
 	}
+	.annotation{
+	    padding: 10px;
+	}
 </style>
+</head>
+
 
 <div class="break10"></div>
 <div class="annotationRight">
@@ -57,8 +60,3 @@
     <@display.setProperty name="paging.banner.item_name"><@s.text name="annotation.annotation"/></@display.setProperty>
     <@display.setProperty name="paging.banner.items_name"><@s.text name="annotation.annotations"/></@display.setProperty>
 </@display.table>
-
-<div id="annotation">
-	<!-- empty for AJAX call -->
-</div>
-

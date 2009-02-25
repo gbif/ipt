@@ -22,17 +22,15 @@ public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<E
 	public ExtensionProperty getCorePropertyByQualName(String qName) {
 		// use ExtensionProperty to parse qualname intp pieces for querying 
 		ExtensionProperty prop = new ExtensionProperty(qName);
-		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and p.namespace=:namespace and e.id=:coreId) ")
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and p.namespace=:namespace and e.core=true) ")
 		.setParameter("name", prop.getName())
 		.setParameter("namespace", prop.getNamespace())
-		.setLong("coreId", Constants.DARWIN_CORE_EXTENSION_ID)
 		.uniqueResult();
 	}
 
 	public ExtensionProperty getCorePropertyByName(String name) {
-		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and e.id=:coreId) ")
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and e.core=true) ")
 		.setParameter("name", name)
-		.setLong("coreId", Constants.DARWIN_CORE_EXTENSION_ID)
 		.uniqueResult();
 	}
 
