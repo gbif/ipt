@@ -61,7 +61,7 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy implements IptNam
 			// replace all whitespace
 			String extensionName = StringUtils.deleteWhitespace(ext.getName());
 			// use Hibernate NamingStrategy now for the rest...
-			return tableName(extensionName);
+			return "dwc_" + tableName(extensionName);
 		}else{
 			return null;
 		}

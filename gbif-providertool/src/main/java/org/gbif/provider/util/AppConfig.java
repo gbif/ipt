@@ -189,7 +189,7 @@ public class AppConfig{
 
     // ARCHIVES
     public File getArchiveFile(Long resourceId, Extension extension) throws IOException{    	
-		return new File(getResourceDataDir(resourceId), String.format("archive/%s.txt", namingStrategy.extensionTableName(extension)));
+		return new File(getResourceDataDir(resourceId), String.format("archive/%s.txt", extension.getName()));
 	}    
 
     public File getArchiveDescriptor(Long resourceId){
