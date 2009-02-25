@@ -53,11 +53,11 @@ import org.hibernate.annotations.IndexColumn;
 public class Extension implements BaseObject, Comparable<Extension> {
 	private Long id;	
 	private String title;
-	private String name;
+	private String name; // table & file naming. no whitespace allowed
 	private String namespace;
+	private String type; // rowType
+	private String link; // to documentation
 	private boolean installed;
-	private ExtensionType type;
-	private String link;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
@@ -89,7 +89,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.replaceAll("\\s", "_");
 	}
 	
 	@Column(length=255)
@@ -115,10 +115,10 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		properties.add(property);
 	}
 	
-	public ExtensionType getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(ExtensionType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	

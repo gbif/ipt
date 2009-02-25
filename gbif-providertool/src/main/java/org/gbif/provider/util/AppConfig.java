@@ -192,6 +192,10 @@ public class AppConfig{
 		return new File(getResourceDataDir(resourceId), String.format("archive/%s.txt", namingStrategy.extensionTableName(extension)));
 	}    
 
+    public File getArchiveDescriptor(Long resourceId){
+		return new File(getResourceDataDir(resourceId), "archive/descriptor.xml");
+    }
+
     public File getArchiveFile(Long resourceId){
 		return new File(getResourceDataDir(resourceId), "archive-dwc.zip");
     }

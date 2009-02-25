@@ -9,7 +9,8 @@ public enum Vocabulary {
 	Country("http://iso.org/iso3166"),
 	NomenclaturalStatus("http://rs.tdwg.org/ontology/voc/NomenclaturalStatus"),
 	DarwinCoreTypes("http://rs.tdwg.org/dwc/dwctype/"),
-	TaxonomicStatus("http://rs.tdwg.org/ontology/voc/TaxonomicStatus");	
+	TaxonomicStatus("http://rs.tdwg.org/ontology/voc/TaxonomicStatus"),	
+	ResourceType("http://rs.gbif.org/gbrds/resourceType");
 	
 	public String uri;
 	

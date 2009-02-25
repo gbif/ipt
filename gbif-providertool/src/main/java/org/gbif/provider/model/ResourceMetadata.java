@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @Embeddable
 public class ResourceMetadata{
+	protected String type;
 	protected String link;
 	protected String title;
 	protected String description;
@@ -40,6 +41,15 @@ public class ResourceMetadata{
 	protected String contactEmail;
 	protected Point location;
 
+	
+	@Column(length=64)
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	public String getLink() {
 		return link;
 	}

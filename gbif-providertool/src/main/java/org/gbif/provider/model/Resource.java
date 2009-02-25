@@ -65,6 +65,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
 	protected PublicationStatus status;
+	protected String type;
 	// resource meta-metadata
 	protected User creator;
 	protected Date created;
@@ -193,10 +194,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	@Transient
 	public String getType() {
-		// not used anymore.
-		// keep it as metaprofile might change soon 
-		// simply show class for now
-		return getClass().getSimpleName();
+		return getMeta().getType();
 	}
 	
 
@@ -216,7 +214,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		meta.setTitle(title);
 	}
 	public void setType(String type) {
-//		meta.setType(type);
+		meta.setType(type);
 	}
 	
 
