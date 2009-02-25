@@ -337,7 +337,7 @@ $(document).ready(function(){
     
     // language selector
     $("#flagContainer").click(function () {
-      $("#switchLocale").slideToggle("normal");
+      $("#switchLocale").slideToggle("fast");
     });
     
     /* Initialize menus for IE */

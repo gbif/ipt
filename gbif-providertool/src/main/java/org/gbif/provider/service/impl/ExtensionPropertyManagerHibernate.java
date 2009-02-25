@@ -11,6 +11,7 @@ import org.gbif.provider.tapir.TapirException;
 import org.gbif.provider.tapir.filter.BooleanOperator;
 import org.gbif.provider.tapir.filter.ComparisonOperator;
 import org.gbif.provider.tapir.filter.Filter;
+import org.gbif.provider.util.Constants;
 
 public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<ExtensionProperty> implements ExtensionPropertyManager{
 
@@ -18,32 +19,34 @@ public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<E
 		super(ExtensionProperty.class);
 	}
 
-	public ExtensionProperty getByQualName(String qName, ExtensionType type) {
-		// FROM ExtensionProperty p WHERE p.qualName=:qName and (p.type=:type or (p.type is null and p.extension.id=:coreId))
-		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.qualName=:qName and e.type is null and e.id=:coreId) ")
-		.setParameter("qName", qName)
-		.setLong("coreId", type.extensionID)
+	public ExtensionProperty getCorePropertyByQualName(String qName) {
+		// use ExtensionProperty to parse qualname intp pieces for querying 
+		ExtensionProperty prop = new ExtensionProperty(qName);
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and p.namespace=:namespace and e.id=:coreId) ")
+		.setParameter("name", prop.getName())
+		.setParameter("namespace", prop.getNamespace())
+		.setLong("coreId", Constants.DARWIN_CORE_EXTENSION_ID)
 		.uniqueResult();
 	}
 
-	public ExtensionProperty getByName(String name, ExtensionType type) {
-		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and e.type is null and e.id=:coreId) ")
+	public ExtensionProperty getCorePropertyByName(String name) {
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and e.id=:coreId) ")
 		.setParameter("name", name)
-		.setLong("coreId", type.extensionID)
+		.setLong("coreId", Constants.DARWIN_CORE_EXTENSION_ID)
 		.uniqueResult();
 	}
 
-	public Set<ExtensionProperty> lookupFilterProperties(Filter filter, ExtensionType type) throws ParseException{
+	public Set<ExtensionProperty> lookupFilterCoreProperties(Filter filter) throws ParseException{
 		Set<ExtensionProperty> props = new HashSet<ExtensionProperty>();
 		for (BooleanOperator op : filter){
 			if (ComparisonOperator.class.isAssignableFrom(op.getClass())){
 				ComparisonOperator cop = (ComparisonOperator)op;
 				ExtensionProperty prop = cop.getProperty();
 				// try to lookup by qualname
-				ExtensionProperty persistentProp = this.getByQualName(prop.getQualName(), type);
+				ExtensionProperty persistentProp = this.getCorePropertyByQualName(prop.getQualName());
 				if (persistentProp==null){
 					// nothing found? then try via alias name
-					persistentProp = this.getByName(prop.getName(), type);
+					persistentProp = this.getCorePropertyByName(prop.getName());
 				}				
 				if (persistentProp==null){
 					// still nothing found? cant deal with this filter then. throw exception

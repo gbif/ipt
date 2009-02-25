@@ -23,17 +23,17 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase{
 		like.setProperty(Constants.SCIENTIFIC_NAME_QUALNAME);
 		like.setValue("Abies*");
 		f.setRoot(like);
-		extensionPropertyManager.lookupFilterProperties(f, ExtensionType.Occurrence);
+		extensionPropertyManager.lookupFilterCoreProperties(f);
 		System.out.println(f);
 		
 	}
 
 	@Test
 	public void testFindProperty() throws Exception {
-		ExtensionProperty p = extensionPropertyManager.getByQualName(Constants.SCIENTIFIC_NAME_QUALNAME, ExtensionType.Occurrence);
+		ExtensionProperty p = extensionPropertyManager.getCorePropertyByQualName(Constants.SCIENTIFIC_NAME_QUALNAME);
 		assertTrue(p!=null);
 		
-		p = extensionPropertyManager.getByName("ScientificName", ExtensionType.Occurrence);
+		p = extensionPropertyManager.getCorePropertyByName("ScientificName");
 		assertTrue(p!=null);
 	}
 

@@ -77,25 +77,29 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		
 		// zip archive
 		File archive = cfg.getArchiveFile(resource.getId());
-		Set<File> files= archiveFiles.keySet();
+		Set<File> files= new HashSet(archiveFiles.keySet());
 		files.add(descriptor);
 		files.add(cfg.getEmlFile(resource.getId()));
 		ZipUtil.zipFiles(files, archive);
 		return archive;		
 	}
 	
-	private File writeDescriptor(Resource resource, Map<File, ViewMappingBase> archiveFiles){
+	private File writeDescriptor(DataResource resource, Map<File, ViewMappingBase> archiveFiles){
 		Map<String, ViewMappingBase> fileMap = new HashMap<String, ViewMappingBase>();
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("cfg", cfg);
+		data.put("resource", resource);
 		for (File f : archiveFiles.keySet()){
-			fileMap.put(f.getName(), archiveFiles.get(f));
+			if (archiveFiles.get(f).isCore()){
+				data.put("coreView", archiveFiles.get(f));
+				data.put("coreFilename", f.getName());
+			}else{
+				fileMap.put(f.getName(), archiveFiles.get(f));
+			}
 		}
+		data.put("fileMap", fileMap);
 		File descriptor = cfg.getArchiveDescriptor(resource.getId());
 		try {
-			// overwrite current EML file
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("cfg", cfg);
-			data.put("fileMap", fileMap);
-			data.put("resource", resource);
 			String page = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(DESCRIPTOR_TEMPLATE), data);
 			Writer out = XmlFileUtils.startNewUtf8XmlFile(descriptor);
 	        out.write(page);

@@ -351,10 +351,10 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		if(m.find()){
 			p = extensionPropertyManager.get(Long.decode(m.group(1)));
 		}else{				
-			p = extensionPropertyManager.getByQualName(c, ExtensionType.Occurrence);
+			p = extensionPropertyManager.getCorePropertyByQualName(c);
 			if (p==null){
 				// still not found. Try to find by name only
-				p = extensionPropertyManager.getByName(c, ExtensionType.Occurrence);
+				p = extensionPropertyManager.getCorePropertyByName(c);
 			}
 		}
 		if (p==null){
@@ -369,7 +369,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		}else{
 			log.debug("Filter existing already. Dont read filter request parameter");
 		}
-		extensionPropertyManager.lookupFilterProperties(pFilter, ExtensionType.Occurrence);
+		extensionPropertyManager.lookupFilterCoreProperties(pFilter);
 	}
 
 	private void addFatal(String message){
