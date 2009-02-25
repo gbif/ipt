@@ -1,5 +1,6 @@
 <%@ include file="/common/taglibs.jsp"%>
 
+<s:if test="resource.id>0">
 <div id="publish">
   <s:if test="resource.isDirty()">
 	<div class="dirtyContainer">
@@ -17,3 +18,4 @@
 	</div>
   </s:else>
 </div>
+</s:if>
