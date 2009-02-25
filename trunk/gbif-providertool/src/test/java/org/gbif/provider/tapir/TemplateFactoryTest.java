@@ -24,17 +24,17 @@ public class TemplateFactoryTest {
 			params.put("sciname", "Markus doeringus var. robertsonino");
 			Template template = TemplateFactory.buildTemplate(templateUrl, params);
 
-			String expected = "Filter: not (AND: http://rs.tdwg.org/dwc/terms/country is null and http://rs.tdwg.org/dwc/terms/scientificName like 'Markus doeringus var. robertsonino')";
+			String expected = "Filter: not (AND: http://rs.tdwg.org/dwc/terms/Country is null and http://rs.tdwg.org/dwc/terms/ScientificName like 'Markus doeringus var. robertsonino')";
 			log.debug("Expected: " + expected);
 			log.debug("Received: " + template.getFilter().toString());
 			assertEquals(expected, template.getFilter().toString());
 			
 			assertEquals(TapirOperation.search, template.getOperation());
 			assertEquals(2, template.getOrderBy().size());
-			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/family"));
-			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/scientificName"));
-			assertEquals(true, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/family"));
-			assertEquals(false, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/scientificName"));
+			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/Family"));
+			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/ScientificName"));
+			assertEquals(true, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/Family"));
+			assertEquals(false, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/ScientificName"));
 			
 			assertEquals("http://rs.tdwg.org/tapir/cs/dwc/dwcstar.xml", template.getModel());
 		} catch (Exception e) {
@@ -53,19 +53,19 @@ public class TemplateFactoryTest {
 			params.put("sammler", "Dave Martin");
 			Template template = TemplateFactory.buildTemplate(templateUrl, params);
 
-			String expected = "Filter: AND: http://rs.tdwg.org/dwc/terms/country = 'DE' and http://rs.tdwg.org/dwc/terms/scientificName like 'Markus doeringus var. robertsonino' and http://rs.tdwg.org/dwc/terms/collector like 'Dave Martin'";
+			String expected = "Filter: AND: http://rs.tdwg.org/dwc/terms/Country = 'DE' and http://rs.tdwg.org/dwc/terms/ScientificName like 'Markus doeringus var. robertsonino' and http://rs.tdwg.org/dwc/terms/Collector like 'Dave Martin'";
 			log.debug("Expected: " + expected);
 			log.debug("Received: " + template.getFilter().toString());
 			assertEquals(expected, template.getFilter().toString());
 			
 			assertEquals(TapirOperation.inventory, template.getOperation());
 			assertEquals(3, template.getConcepts().size());
-			assertTrue(template.getConcepts().keySet().contains("http://rs.tdwg.org/dwc/terms/country"));
-			assertTrue(template.getConcepts().keySet().contains("http://rs.tdwg.org/dwc/terms/scientificName"));
-			assertTrue(template.getConcepts().keySet().contains("http://rs.tdwg.org/dwc/terms/collector"));
-			assertEquals("land", template.getConcepts().get("http://rs.tdwg.org/dwc/terms/country"));
-			assertEquals("name", template.getConcepts().get("http://rs.tdwg.org/dwc/terms/scientificName"));
-			assertEquals("sammler", template.getConcepts().get("http://rs.tdwg.org/dwc/terms/collector"));
+			assertTrue(template.getConcepts().keySet().contains("http://rs.tdwg.org/dwc/terms/Country"));
+			assertTrue(template.getConcepts().keySet().contains("http://rs.tdwg.org/dwc/terms/ScientificName"));
+			assertTrue(template.getConcepts().keySet().contains("http://rs.tdwg.org/dwc/terms/Collector"));
+			assertEquals("land", template.getConcepts().get("http://rs.tdwg.org/dwc/terms/Country"));
+			assertEquals("name", template.getConcepts().get("http://rs.tdwg.org/dwc/terms/ScientificName"));
+			assertEquals("sammler", template.getConcepts().get("http://rs.tdwg.org/dwc/terms/Collector"));
 			
 			assertNull(template.getModel());
 		} catch (Exception e) {
@@ -84,17 +84,17 @@ public class TemplateFactoryTest {
 			params.put("sciname", "Markus doeringus var. robertsonino");
 			Template template = TemplateFactory.buildTemplate(templateUrl, params);
 
-			String expected = "Filter: not (AND: http://rs.tdwg.org/dwc/terms/country is null and http://rs.tdwg.org/dwc/terms/scientificName like 'Markus doeringus var. robertsonino')";
+			String expected = "Filter: not (AND: http://rs.tdwg.org/dwc/terms/Country is null and http://rs.tdwg.org/dwc/terms/ScientificName like 'Markus doeringus var. robertsonino')";
 			log.debug("Expected: " + expected);
 			log.debug("Received: " + template.getFilter().toString());
 			assertEquals(expected, template.getFilter().toString());
 			
 			assertEquals(TapirOperation.search, template.getOperation());
 			assertEquals(2, template.getOrderBy().size());
-			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/family"));
-			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/scientificName"));
-			assertEquals(true, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/family"));
-			assertEquals(false, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/scientificName"));
+			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/Family"));
+			assertTrue(template.getOrderBy().keySet().contains("http://rs.tdwg.org/dwc/terms/ScientificName"));
+			assertEquals(true, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/Family"));
+			assertEquals(false, template.getOrderBy().get("http://rs.tdwg.org/dwc/terms/ScientificName"));
 			
 			assertNull(template.getModel());
 		} catch (Exception e) {

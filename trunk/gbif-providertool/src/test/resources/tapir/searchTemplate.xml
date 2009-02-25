@@ -14,17 +14,17 @@
                 <tapir:not>
                     <tapir:and>
                         <tapir:isNull>
-                            <tapir:concept id="http://rs.tdwg.org/dwc/terms/country"/>
+                            <tapir:concept id="http://rs.tdwg.org/dwc/terms/Country"/>
                         </tapir:isNull>
                         <tapir:like>
-                            <tapir:concept id="http://rs.tdwg.org/dwc/terms/scientificName"/>
+                            <tapir:concept id="http://rs.tdwg.org/dwc/terms/ScientificName"/>
                             <tapir:parameter name="sciname"/>
                         </tapir:like>
                     </tapir:and>
                 </tapir:not>
             </tapir:filter>
             <tapir:orderBy>
-                <tapir:concept descend="true" id="http://rs.tdwg.org/dwc/terms/family"/>
-                <tapir:concept descend="false" id="http://rs.tdwg.org/dwc/terms/scientificName"/>
+                <tapir:concept descend="true" id="http://rs.tdwg.org/dwc/terms/Family"/>
+                <tapir:concept descend="false" id="http://rs.tdwg.org/dwc/terms/ScientificName"/>
             </tapir:orderBy>
 </tapir:searchTemplate>
