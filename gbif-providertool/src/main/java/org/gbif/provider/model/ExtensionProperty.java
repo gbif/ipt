@@ -62,13 +62,14 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	public ExtensionProperty(String qualName) {
 		super();
 		if (qualName.lastIndexOf("#")>0){
-			this.name=qualName.substring(qualName.lastIndexOf("#"));
+			this.name=qualName.substring(qualName.lastIndexOf("#")+1);
 			this.namespace=qualName.substring(0, qualName.lastIndexOf("#"));
 		}else if (qualName.lastIndexOf("/")>0){
-			this.name=qualName.substring(qualName.lastIndexOf("/"));
+			this.name=qualName.substring(qualName.lastIndexOf("/")+1);
 			this.namespace=qualName.substring(0, qualName.lastIndexOf("/"));
-		}else{
-			throw new IllegalArgumentException("Can't parse qualified name into name and namespace");
+		}else if (qualName.lastIndexOf("@")>0){
+			this.name=qualName.substring(0, qualName.lastIndexOf("@"));
+			this.namespace=qualName.substring(qualName.lastIndexOf("@")+1);
 		}
 	}
 
@@ -94,7 +95,11 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 
 	@Transient
 	public String getQualName() {
-		return (this.namespace + "/" + this.name).replaceAll("//", "/").replaceAll("#/", "#");
+		if (namespace.endsWith("/") || namespace.endsWith("#")){
+			return (this.namespace + this.name);
+		}else{
+			return (this.namespace + "/" + this.name);
+		}
 	}
 
 	@Column(length=64)

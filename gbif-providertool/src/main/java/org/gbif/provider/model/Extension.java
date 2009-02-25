@@ -92,7 +92,11 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	}
 	@Transient
 	public String getRowType() {
-		return (this.namespace + "/" + this.name).replaceAll("//", "/").replaceAll("#/", "#");
+		if (namespace.endsWith("/") || namespace.endsWith("#")){
+			return (this.namespace + this.name);
+		}else{
+			return (this.namespace + "/" + this.name);
+		}
 	}
 	
 	@Column(length=255)

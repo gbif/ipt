@@ -10,22 +10,22 @@
         <label>test inventory template</label>
         <documentation>documentation0</documentation>
             <concepts>
-                <concept tagName="name" id="http://rs.tdwg.org/dwc/terms/scientificName"/>
-                <concept tagName="land" id="http://rs.tdwg.org/dwc/terms/country"/>
-                <concept tagName="sammler" id="http://rs.tdwg.org/dwc/terms/collector"/>
+                <concept tagName="name" id="http://rs.tdwg.org/dwc/terms/ScientificName"/>
+                <concept tagName="land" id="http://rs.tdwg.org/dwc/terms/Country"/>
+                <concept tagName="sammler" id="http://rs.tdwg.org/dwc/terms/Collector"/>
             </concepts>
             <filter>
                 <and>
                     <equals>
-                        <concept id="http://rs.tdwg.org/dwc/terms/country"/>
+                        <concept id="http://rs.tdwg.org/dwc/terms/Country"/>
                         <parameter name="land"/>
                     </equals>
                     <like>
-                        <concept id="http://rs.tdwg.org/dwc/terms/scientificName"/>
+                        <concept id="http://rs.tdwg.org/dwc/terms/ScientificName"/>
                         <parameter name="name"/>
                     </like>
                     <like>
-                        <concept id="http://rs.tdwg.org/dwc/terms/collector"/>
+                        <concept id="http://rs.tdwg.org/dwc/terms/Collector"/>
                         <parameter name="sammler"/>
                     </like>
                 </and>
