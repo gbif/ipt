@@ -174,23 +174,23 @@ div#jsalert h2 {
 ul.actionmenu {
 	list-style-type: none;
     padding: 0;
-    margin-top: -35px;
 }
-
-ul.actionmenu li{
-	float: left;
+a.actionbutton, ul.actionmenu li{
+	float: none;
 	list-style-type: none;
 	display: inline;
-    margin: 0;
+	border: 1px solid #c1c6d0;
     padding: 0;
+	padding-right: 10px;
+	padding-left: 10px;
+	margin: 0 0px;
 	background: url(/images/assets/bkgButt0_up.gif) no-repeat;
-	text-align: center;
-	width: 110px;
-	margin-right: 6px;
+	border: none;
+	border-left: 1px solid silver;
 }
 
-ul.actionmenu li:hover{
-	background: url(/images/assets/bkgButt0_over.gif) no-repeat;
+ul.actionmenu li.first{
+	border: none;
 }
 
 ul.actionmenu form {
@@ -388,26 +388,18 @@ div.chart form, div.map form {
 	margin: auto;
 }
 
-#stats-menu{
-	text-align: right;
-}
-
 #stats-menu ul.actionmenu{
-	text-align: right;
-	float: right;
+	text-align: center;
 	padding-top: 0px;
+	margin: auto;
 	margin-top: 25px;
 	height: 30px;
-	padding-left: 10px;
-	width: 429px;
-	padding-right: 0px;
-	margin-right: 0px;
 }
 
 #stats-menu ul.actionmenu li{
 	background-image: none;
-	width: auto;
-	margin-left: 10px;
+	text-align: center;
+	width: 65px;
 }
 #stats-map {
 	height: 225px; 
