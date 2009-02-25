@@ -13,7 +13,7 @@
   </s:if>
   <s:else>
   	<div class="cleanContainer">
-		<p><s:text name="dirty.clean"/><s:property value="resource.status"/></p>
+		<p><s:text name="dirty.clean"/></p>
 	</div>
   </s:else>
 </div>

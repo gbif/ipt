@@ -1,4 +1,4 @@
-<div class="annotation" id="annotation-${annotation.id}">
+<div id="annotation-${annotation.id}">
 	<h3>${annotation.type}</h3>
 	<p>${annotation.note}</p>
 	<ul class="indexmenu">	
