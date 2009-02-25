@@ -45,7 +45,6 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private Extension extension;
 	private String name;
 	private String namespace;
-	private String qualName;
 	private String group;
 	private int columnLength;
 	private String link;
@@ -55,9 +54,22 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	public ExtensionProperty() {
 		super();
 	}
+	/**
+	 * Construct a new property with a single qualified name.
+	 * Parses out the name and sets the namespace to end with a slash or #
+	 * @param qualName
+	 */
 	public ExtensionProperty(String qualName) {
 		super();
-		this.qualName = qualName;
+		if (qualName.lastIndexOf("#")>0){
+			this.name=qualName.substring(qualName.lastIndexOf("#"));
+			this.namespace=qualName.substring(0, qualName.lastIndexOf("#"));
+		}else if (qualName.lastIndexOf("/")>0){
+			this.name=qualName.substring(qualName.lastIndexOf("/"));
+			this.namespace=qualName.substring(0, qualName.lastIndexOf("/"));
+		}else{
+			throw new IllegalArgumentException("Can't parse qualified name into name and namespace");
+		}
 	}
 
 	@Id
@@ -80,17 +92,13 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		this.extension = extension;
 	}
 
-	@Column(length=255)
-	@org.hibernate.annotations.Index(name="idx_extension_property_qname")
+	@Transient
 	public String getQualName() {
-		return qualName;
-	}
-
-	public void setQualName(String qualName) {
-		this.qualName = qualName;
+		return (this.namespace + "/" + this.name).replaceAll("//", "/").replaceAll("#/", "#");
 	}
 
 	@Column(length=64)
+	@org.hibernate.annotations.Index(name="idx_extension_property_name")
 	public String getName() {
 		return name;
 	}
@@ -105,6 +113,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	}
 
 	@Column(length=128)
+	@org.hibernate.annotations.Index(name="idx_extension_property_ns")
 	public String getNamespace() {
 		return namespace;
 	}
@@ -178,12 +187,15 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	 * Just compare the unique qualified names to see if extension properties are equal
 	 * @see java.lang.Object#equals(Object)
 	 */
-	public boolean equals(Object o) {
-		if (!(o instanceof ExtensionProperty)) {
+	public boolean equals(Object object) {
+		if (!(object instanceof ExtensionProperty)) {
 			return false;
 		}
-		ExtensionProperty prop = (ExtensionProperty) o;
-		return (this.qualName == null ? prop.qualName == null : qualName.equals(prop.qualName));
+		ExtensionProperty rhs = (ExtensionProperty) object;
+		return new EqualsBuilder()
+				.append(this.namespace, rhs.namespace)
+				.append(this.name, rhs.name)
+				.isEquals();
 	}
 
 	/**
@@ -192,7 +204,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	public int hashCode() {
         int result = 17;
         result = (id != null ? id.hashCode() : 0);
-        result = 31 * result + (qualName != null ? qualName.hashCode() : 0);
+        result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + columnLength;
         result = 31 * result + (required ? 1 : 0);

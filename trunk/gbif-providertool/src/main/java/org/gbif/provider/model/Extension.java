@@ -90,6 +90,10 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	public void setName(String name) {
 		this.name = name.replaceAll("\\s", "_");
 	}
+	@Transient
+	public String getRowType() {
+		return (this.namespace + "/" + this.name).replaceAll("//", "/").replaceAll("#/", "#");
+	}
 	
 	@Column(length=255)
 	public String getLink() {
@@ -115,11 +119,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	}
 	
 	@Transient
-	public String getType() {
-		return (this.namespace + "/" + this.name).replaceAll("//", "/");
-	}
-	
-	@Transient
 	public boolean isCore() {
 		return name.equalsIgnoreCase("DarwinCore");
 	}
@@ -140,7 +139,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		Extension rhs = (Extension) object;
 		return new EqualsBuilder()
 				.append(this.link, rhs.link)
-				.append(this.name, rhs.name)
 				.append(this.id, rhs.id).isEquals();
 	}
 	/**
@@ -150,6 +148,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
         int result = 17;
         result = (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
         return result;
 	}
