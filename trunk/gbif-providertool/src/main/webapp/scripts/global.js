@@ -336,7 +336,7 @@ $(document).ready(function(){
     }
     
     // language selector
-    $("#locale").click(function () {
+    $("#flagContainer").click(function () {
       $("#switchLocale").slideToggle("normal");
     });
     
