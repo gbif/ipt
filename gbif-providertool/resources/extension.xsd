@@ -25,6 +25,7 @@
             <xs:attribute name="title" type="xs:string"/>
             <xs:attribute name="name" type="xs:string" use="required"/>
             <xs:attribute name="namespace" type="xs:string" use="required"/>
+			<xs:attribute name="qualName" type="xs:string" use="required"/>
 			<xs:attribute ref="dc:description" use="optional">
 				<xs:annotation><xs:documentation>A URL acting as documentation for the entire vocabulary</xs:documentation></xs:annotation>
 			</xs:attribute>
