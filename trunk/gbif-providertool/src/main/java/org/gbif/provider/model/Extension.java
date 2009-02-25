@@ -55,7 +55,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	private String title;
 	private String name; // table & file naming. no whitespace allowed
 	private String namespace;
-	private String type; // rowType
 	private String link; // to documentation
 	private boolean installed;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
@@ -115,16 +114,14 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		properties.add(property);
 	}
 	
+	@Transient
 	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
+		return (this.namespace + "/" + this.name).replaceAll("//", "/");
 	}
 	
 	@Transient
 	public boolean isCore() {
-		return type==null;
+		return name.equalsIgnoreCase("DarwinCore");
 	}
 
 	public boolean isInstalled() {
@@ -144,7 +141,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		return new EqualsBuilder()
 				.append(this.link, rhs.link)
 				.append(this.name, rhs.name)
-				.append(this.type, rhs.type)
 				.append(this.id, rhs.id).isEquals();
 	}
 	/**
@@ -155,7 +151,6 @@ public class Extension implements BaseObject, Comparable<Extension> {
         result = (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
 	}
 	/**
