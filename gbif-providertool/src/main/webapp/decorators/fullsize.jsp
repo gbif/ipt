@@ -21,7 +21,10 @@
             <div id="mainfull">
                 <%@ include file="/common/messages.jsp" %>
                 
-                <h1><decorator:getProperty property="meta.heading"/></h1>
+                <c:if test='${currentHeading != "" }'>
+	                <h1><decorator:getProperty property="meta.heading"/></h1>
+					<div class="horizontal_dotted_line_xlarge_soft_foo"></div>
+                </c:if>
 
                 <decorator:body/>
             </div><!-- end mainfull -->
