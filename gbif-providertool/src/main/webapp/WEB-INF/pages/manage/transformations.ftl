@@ -13,8 +13,6 @@ function sorry(){
 
 </head>
 
-<!--<div class="separator"></div>-->
-<!--<div class="horizontal_dotted_line_large_foo"></div>-->
 <p class="explMt">
 Transformations will allow you to adjust your data according to certain patterns found frequently in data structures before it gets imported into the IPT cache.
 Each transformation results in a new view on your source data that can be used later on to define the final mappings to the IPT data model.<br/>
@@ -23,9 +21,8 @@ Otherwise you can always configure you own set of transformations.
 </p>
 
 <h2>Your Transformation Views</h2>
-<div class="horizontal_dotted_line_large_soft"></div>
+<div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
-<legend><!--Your Transformation Views--></legend>
 	<#list transformations as t>
 	<div class="newline">
 	  <@s.form action="transformations" method="post">
@@ -79,9 +76,8 @@ $('transformationType').observe('change', updateImage);
 
 <#if (transformations?size<1)>
 <h2>Common formats</h2>
-<div class="horizontal_dotted_line_large_soft"></div>
+<div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
-<legend><!--Common formats--></legend>
 	<p>Only visible if no transformation has yet been configured...</p>
 	<p>If your data matches one of the following formats, select the mathing one to load a set of preconfigured transformations.
 		You will need to configure each of them in the next steps.

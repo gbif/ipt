@@ -5,10 +5,10 @@
     <meta name="heading" content="<@s.text name='config.heading'/>"/>
 </head>
 
-<!--<div class="horizontal_dotted_line_xlarge"></div>-->
+<div class="horizontal_dotted_line_xlarge"></div>
 <@s.form id="providerCfg" action="saveConfig" method="post">
 
-<h2 class="modifiedh2"><@s.text name="config.metadata"/></h2>
+<h2><@s.text name="config.metadata"/></h2>
 <fieldset>
     <legend><!--<@s.text name="config.metadata"/>--></legend>
 	<@s.textfield key="config.title" required="true" cssClass="text xlarge"/>
@@ -61,8 +61,7 @@
         </div>
     </div>
   </fieldset>
+<@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
+<@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
 
-
-    <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-    <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
 </@s.form>

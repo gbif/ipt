@@ -7,8 +7,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/selectbox.js'/>"></script>
 </head>
 
-<div class="horizontal_dotted_line_xlarge_foo"></div>
-<div id="content" class="clearfix">
+<div id="content" class="clearfix" style="padding-left:0px;">
 	<div id="mainUser">
 		<s:form name="userForm" action="saveUser" method="post" validate="true">
 		    <li style="display: none">

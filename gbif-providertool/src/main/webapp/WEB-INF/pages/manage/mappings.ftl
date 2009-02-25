@@ -6,7 +6,8 @@
 </head>
 
 <h1>Property Mappings</h1>
-<!--<div class="horizontal_dotted_line_large_foo"></div>-->
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
 <#-- See if sources exist -->
 <#if (sources?size<1)>
 	<p class="reminder">There are no data sources configured.<br/>
@@ -22,9 +23,8 @@
 			
 
 <h2>Your Existing Mappings</h2>
-<div class="horizontal_dotted_line_large_soft"></div>
+<div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
-<legend><!--Your Existing Mappings--></legend>
 	<div>
 	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>

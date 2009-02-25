@@ -8,18 +8,7 @@
 </head>
 
 <div class="horizontal_dotted_line_xlarge"></div>
-<div class="breakRight" style="margin-top: 0px; padding-top: 0px; margin-bottom: 0px;">
-	<c:set var="buttons">
-	    <input type="button" style="margin-right: 5px"
-	        onclick="location.href='<c:url value="/admin/editUser.html?method=Add&from=list"/>'"
-	        value="<fmt:message key="button.add"/>"/>
-	    
-	    <input type="button" onclick="location.href='<c:url value="/mainMenu.html"/>'"
-	        value="<fmt:message key="button.done"/>"/>
-	</c:set>
-	<c:out value="${buttons}" escapeXml="false" />
-</div>	
-
+<div class="break55"></div>
 <display:table name="users" cellspacing="0" cellpadding="0" requestURI="" 
     defaultsort="1" id="users" pagesize="25" class="table" export="true">
     <display:column property="username" escapeXml="true" sortable="true" titleKey="user.username" style="width: 25%"
@@ -39,9 +28,17 @@
     <display:setProperty name="export.csv.filename" value="User List.csv"/>
     <display:setProperty name="export.pdf.filename" value="User List.pdf"/>
 </display:table>
-<div class="breakRight" style="margin-top: 0px; padding-top: 0px; margin-bottom: 0px;">
+<div>
+	<c:set var="buttons">
+	    <input type="button" style="margin-right: 5px"
+	        onclick="location.href='<c:url value="/admin/editUser.html?method=Add&from=list"/>'"
+	        value="<fmt:message key="button.add"/>"/>
+	    
+	    <input type="button" onclick="location.href='<c:url value="/mainMenu.html"/>'"
+	        value="<fmt:message key="button.done"/>"/>
+	</c:set>
 	<c:out value="${buttons}" escapeXml="false" />
-</div>
+</div>	
 
 <script type="text/javascript">
     highlightTableRows("users");

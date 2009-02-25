@@ -7,7 +7,8 @@
 
 
 <h1 ><@s.text name="eml.resourceCreator"/></h1>
-<!--<div class="horizontal_dotted_line_large_foo"></div>-->
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
 <@s.form id="emlForm" action="creator" method="post" validate="false">
 <fieldset>
 	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>

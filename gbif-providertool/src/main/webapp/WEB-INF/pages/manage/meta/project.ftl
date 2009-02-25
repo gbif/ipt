@@ -6,10 +6,10 @@
 </head>
 
 <h1><@s.text name="eml.researchProject"/></h1>
-<!--<div class="horizontal_dotted_line_large_foo"></div>-->
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
 <@s.form id="emlForm" action="project" method="post" validate="false">
 <fieldset>
-	<legend><!--<@s.text name="eml.researchProject"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="methods"/>
 
@@ -22,7 +22,7 @@
 </fieldset>
 
 
-	<div class="breakRight">
+	<div class="breakRightButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
  	</div>

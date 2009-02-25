@@ -20,13 +20,13 @@
 
 
 <h1><@s.text name="dataResource.cache"/></h1>
-<!--<div class="horizontal_dotted_line_large_foo"></div>-->
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
 <p class="explMt">The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
 based on the transformations and mappings you have configured. 
 Depending upon the amount of data this process may take a long time during which this resource is blocked. 
 </p>
-<fieldset>
-  <legend><!--<@s.text name="dataResource.cache"/>--></legend>
+<fieldset style="padding-top:0px;">
 <div>
   <@s.form id="banane">
 	<table>

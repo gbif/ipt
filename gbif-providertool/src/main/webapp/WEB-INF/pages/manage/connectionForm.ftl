@@ -5,6 +5,10 @@
     <meta name="submenu" content="manage_resource"/>
 </head>
 
+<h1>SQL Settings</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
+
 <@s.form id="occResourceForm" action="saveConnection" method="post" validate="true">
     <li style="display: none">
         <@s.hidden name="resource_id" value="%{resource.id}"/>

@@ -5,6 +5,10 @@
     <meta name="submenu" content="manage_resource"/>    
 </head>
 
+<h1>SQL Settings</h1>
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
+
 <@s.form id="sqlSourceForm" action="saveSource" method="post">
   <@s.hidden key="resource_id"/>
   <@s.hidden key="sid"/>
