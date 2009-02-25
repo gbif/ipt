@@ -15,10 +15,9 @@
                         <xs:attribute name="group" type="xs:string" use="optional"/>
                         <xs:attribute name="columnLength" type="xs:positiveInteger" default="128"/>
 						<xs:attribute ref="dc:description" use="optional">
-							<xs:annotation><xs:documentation>A URL acting as documentation for the entire vocabulary</xs:documentation></xs:annotation>
+							<xs:annotation><xs:documentation>A URL acting as documentation for the property</xs:documentation></xs:annotation>
 						</xs:attribute>
                         <xs:attribute name="thesaurus" type="xs:anyURI"/>
-						
                         <xs:attribute name="required" type="xs:boolean" default="false"/>
                     </xs:complexType>
                 </xs:element>
@@ -26,15 +25,9 @@
             <xs:attribute name="title" type="xs:string"/>
             <xs:attribute name="name" type="xs:string" use="required"/>
             <xs:attribute name="namespace" type="xs:string" use="required"/>
-            <xs:attribute name="type" use="required">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="Sample"/>
-                        <xs:enumeration value="Taxon"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:attribute>
-            <xs:attribute name="link" type="xs:string"/>
+			<xs:attribute ref="dc:description" use="optional">
+				<xs:annotation><xs:documentation>A URL acting as documentation for the entire vocabulary</xs:documentation></xs:annotation>
+			</xs:attribute>
         </xs:complexType>
     </xs:element>
 </xs:schema>
