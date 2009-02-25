@@ -3,10 +3,11 @@
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
+	<meta name="heading" content="<@s.text name='sqlSettings.heading'/>"/>    
 </head>
 
-<h1>SQL Settings</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1>SQL Settings</h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 
 <@s.form id="occResourceForm" action="saveConnection" method="post" validate="true">

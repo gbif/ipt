@@ -3,6 +3,7 @@
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
+	<meta name="heading" content="<@s.text name='dataResource.cache'/>"/>    
     
     <script>
 		function confirmReset() {   
@@ -19,8 +20,8 @@
 </head>
 
 
-<h1><@s.text name="dataResource.cache"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1><@s.text name="dataResource.cache"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <p class="explMt">The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
 based on the transformations and mappings you have configured. 

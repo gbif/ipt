@@ -2,7 +2,8 @@
     <title><@s.text name="occResourceOverview.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
-    <meta name="submenu" content="manage_resource"/>    
+    <meta name="submenu" content="manage_resource"/>
+	<meta name="heading" content="<@s.text name='sources.heading'/>"/>
     <script>
 		function confirmDelete() {   
 		    var msg = "Are you sure you want to delete this source? \n All associated property mappings will be lost too. If you want to upload a newer version of the file, simply upload a file with the exact same filename again.";
@@ -16,8 +17,8 @@
     </script>
 </head>
 
-<h1>Source Data</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1>Source Data</h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <p class="explMt">Please upload your data as tab files or define a SQL view to pull it from a database.
 You can define as many sources as you like, but there needs to be at least one.

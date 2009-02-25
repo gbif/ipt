@@ -3,6 +3,7 @@
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
+	<meta name="heading" content="<@s.text name='eml.geographicCoverage'/>"/>    
 	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>  
 	<script type="text/javascript" src="/scripts/map.js"></script>
 	<script type="text/javascript">  
@@ -12,8 +13,8 @@
 	</script>
 </head>
 
-<h1><@s.text name="eml.geographicCoverage"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>
+<!--<h1><@s.text name="eml.geographicCoverage"/></h1>
+<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 <fieldset>

@@ -11,7 +11,6 @@
 
 <body id="login">
 <div id="mainfull" style=" margin-top: 15px; margin-bottom: 0px;"> 
-<%-- <div class="horizontal_dotted_line_xlarge_foo"></div> --%>
 <div style="float: left;">
 	<form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
 	    onsubmit="saveUsername(this);return validateForm(this)">
