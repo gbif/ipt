@@ -71,14 +71,14 @@ form .xlargeFull{
     width: 880px;
 }
 form .xlarge{
-    width: 676px;
+    width: 686px;
 }
 form textarea.xlarge{
     height: 20em;
-    width: 676px;	
+    width: 686px;	
 }
 form input.xlarge{
-    width: 670px;
+    width: 681px;
 }
 form textarea.slim{
     height: 8em;
@@ -275,6 +275,7 @@ ul.sepmenu li ~ li{
 #sub label {
 	display: block;
 	margin-top: 20px;
+	margin-bottom: 10px;
 	font-style: italic;
 	text-decoration: none;
 	font-style: normal;

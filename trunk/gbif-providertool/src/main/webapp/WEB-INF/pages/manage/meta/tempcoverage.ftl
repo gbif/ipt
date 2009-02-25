@@ -18,10 +18,10 @@
 </head>
 
 <h1><@s.text name="eml.temporalCoverage"/></h1>
-<!--<div class="horizontal_dotted_line_large_foo"></div>-->
+<div class="horizontal_dotted_line_large_foo"></div>
+<div class="break10"></div>
 <@s.form id="emlForm" action="tempcoverage" method="post" validate="false">
 <fieldset>
-	<legend><!--<@s.text name="eml.temporalCoverage"/>--></legend>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="rights"/>
 
@@ -37,7 +37,7 @@
 		</div>
 	</div>
 </fieldset>
-<div class="breakRight">
+<div class="breakRightButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </div>
@@ -45,11 +45,10 @@
 <h1 class="modifiedh1Secondary"><@s.text name="eml.keywords"/></h1>
 <div class="horizontal_dotted_line_large_foo"></div>
 <fieldset style="padding-top:13px;">
-	<legend><!--<@s.text name="eml.keywords"/>--></legend>
 	<@s.textarea key="keywords" label="" required="false" cssClass="text xlarge"/>
 </fieldset>
 
-	<div class="breakRight">
+	<div class="breakRightButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 	</div>    

@@ -18,7 +18,7 @@
         <div id="header" class="clearfix">
             <jsp:include page="/common/header.jsp"/>
         </div>
-        <div style="height: 65px; clear: both"><%-- spacer --%></div>
+        <div style="height: 55px; clear: both"><%-- spacer --%></div>
 
         <div id="content" class="clearfix">
             <div id="main">
