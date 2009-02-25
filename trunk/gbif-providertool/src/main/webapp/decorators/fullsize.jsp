@@ -23,7 +23,7 @@
                 
                 <c:if test='${currentHeading != "" }'>
 	                <h1><decorator:getProperty property="meta.heading"/></h1>
-					<div class="horizontal_dotted_line_xlarge_foo"></div>
+					<div class="horizontal_dotted_line_xlarge"></div>
                 </c:if>
 
                 <decorator:body/>

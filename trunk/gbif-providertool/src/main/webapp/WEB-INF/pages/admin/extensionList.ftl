@@ -5,8 +5,6 @@
     <meta name="menu" content="AdminMenu"/>
 </head>
 
-<div class="horizontal_dotted_line_xlarge"></div>
-
 <p>
 	<@s.text name="extension.explaination.1"/> 
 	<@s.text name="extension.explaination.2"/> 

@@ -2,7 +2,6 @@
 
 <head>
     <title><fmt:message key="login.title"/></title>
-    <meta name="heading" content="<fmt:message key='login.heading'/>"/>
     <meta name="menu" content="Login"/> 
 </head>
 
@@ -10,6 +9,8 @@
 </style>
 
 <body id="login">
+<h1><fmt:message key='login.heading'/></h1>
+<div class="horizontal_dotted_line_xlarge_foo"></div>
 <div id="mainfull" style=" margin-top: 15px; margin-bottom: 0px;"> 
 <div style="float: left;">
 	<form method="post" id="loginForm" action="<c:url value='/j_security_check'/>"
