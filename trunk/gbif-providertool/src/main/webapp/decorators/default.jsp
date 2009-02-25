@@ -67,7 +67,6 @@
 		                </s:a>
 		                <div class="horizontal_dotted_line_small_foo"></div>		                
 		            	<decorator:getProperty property="page.contextmenu" />
-			        	<%@ include file="/common/submenu_search.jsp" %>
 						<div id="taxnav">
 							<label>Navigate Taxonomy</label>
                				 <%@ include file="/common/taxontree.jsp" %>
@@ -84,7 +83,6 @@
 		                </s:a>
 		                <div class="horizontal_dotted_line_small_foo"></div>
 		            	<decorator:getProperty property="page.contextmenu" />
-			        	<%@ include file="/common/submenu_search.jsp" %>
 						<div id="taxnav">
 							<label>Navigate Taxonomy</label>
                				 <%@ include file="/common/taxontree.jsp" %>
@@ -95,7 +93,6 @@
 		            	<decorator:getProperty property="page.contextmenu" />
 	                	<h1>Metadata Repo</h1>
 	                	<div class="horizontal_dotted_line_small_foo"></div>
-			        	<%@ include file="/common/submenu_search.jsp" %>
 			        	<%@ include file="/common/submenu_recent.jsp" %>
 			        	<%@ include file="/common/tagcloud.jsp" %>
 					</c:when>			
