@@ -7,7 +7,7 @@
 </head>
 
 <@display.table name="activeDatasources" class="table" requestURI="" id="activeDatasources" export=false pagesize=25>
-    <@display.column property="id" sortable=true href="/manage/occ/resource.html" media="html"
+    <@display.column property="id" sortable=true href="/manage/resource.html" media="html"
         paramId="resource_id" paramProperty="id" titleKey="resource.id"/>
     <@display.column property="title" sortable=true titleKey="resource.title"/>
     <@display.column property="hasDbConnection" sortable=true titleKey="occResource.hasDbConnection"/>

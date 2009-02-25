@@ -5,7 +5,7 @@
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='eml.geographicCoverage'/>"/>    
 	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>  
-	<script type="text/javascript" src="/scripts/map.js"></script>
+	<script type="text/javascript" src="<@s.url value='/scripts/map.js'/>"></script>
 	<script type="text/javascript">  
 	 $(document).ready(function(){
 		loadMap();

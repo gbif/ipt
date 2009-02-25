@@ -23,8 +23,8 @@
 		
 	    <c:choose>
 	      <c:when test='${currentSubMenu == "meta"}'>
-			<link href="/data/atom.xml" rel="alternate" type="application/atom+xml" title="RSS Atom Feed for all resources" />
-			<link href="/data/rss.xml" rel="alternate" type="application/rss+xml" title="RSS 2.0 Feed for all resources" />
+			<link href="<s:url value='/data/atom.xml'/>" rel="alternate" type="application/atom+xml" title="RSS Atom Feed for all resources" />
+			<link href="<s:url value='/data/rss.xml'/>" rel="alternate" type="application/rss+xml" title="RSS 2.0 Feed for all resources" />
           </c:when>        
           <c:when test='${currentSubMenu == "occ" || currentSubMenu == "tax"}'>
 	        <c:if test='${currentSubMenu == "occ"}'>
