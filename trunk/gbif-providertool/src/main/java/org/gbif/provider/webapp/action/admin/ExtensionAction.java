@@ -59,6 +59,11 @@ public class ExtensionAction extends BaseAction {
 		tableName=namingStrategy.extensionTableName(extension);
 		return SUCCESS;
 	}
+	
+	public String synchroniseAll() {
+		extensionManager.synchroniseExtensionsWithRepository();
+		return SUCCESS;
+	}
 
 	
 	
