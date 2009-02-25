@@ -26,6 +26,7 @@ import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.util.UploadChartBuilder;
 import org.hibernate.Session;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -77,6 +78,7 @@ public class UploadEventManagerHibernate extends GenericResourceRelatedManagerHi
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public UploadEvent save(UploadEvent object) {
 		return super.save(object);
 	}

@@ -61,6 +61,7 @@ public class GenericTreeNodeManagerHibernate<T extends TreeNode<T,E>, E extends 
 	}
 
 	
+	@Transactional(readOnly=false)
 	public void buildNestedSet(Long resourceId) {
 		treeNodeSupport.buildNestedSet(resourceId, getSession());
 	}

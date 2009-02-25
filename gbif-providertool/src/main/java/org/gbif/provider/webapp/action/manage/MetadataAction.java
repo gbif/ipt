@@ -150,6 +150,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		if (resource != null && resourceType!=null) {
 			// remove resource with appropiate manager
 			getResourceTypeMatchingManager().remove(resource.getId());
+			log.debug("Resource deleted");
 			saveMessage(getText("resource.deleted"));
 			// update recently viewed resources in session
 			Object previousQueue = session.get(Constants.RECENT_RESOURCES);
