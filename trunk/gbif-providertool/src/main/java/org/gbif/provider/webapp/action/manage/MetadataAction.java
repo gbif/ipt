@@ -22,12 +22,15 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.model.voc.PublicationStatus;
+import org.gbif.provider.model.voc.ResourceType;
+import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseAction;
@@ -57,11 +60,13 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
             put("org.hsqldb.jdbcDriver", "HSQL");  
             put("org.apache.derby.jdbc.ClientDriver", "Derby");  
         }  
-    };  	
+    };
+	private Map<String, String> resourceTypeMap;
     
     
 	public void prepare() {
 		super.prepare();
+		resourceTypeMap = translateI18nMap(ResourceType.htmlSelectMap);
 		if (resource == null && resourceType!=null) {
 			// create new empty resource
 			if (resourceType.equalsIgnoreCase(OCCURRENCE)){
@@ -233,6 +238,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 
 	public Map<String, String> getJdbcDriverClasses() {
 		return jdbcDriverClasses;
+	}
+
+	public Map<String, String> getResourceTypeMap() {
+		return resourceTypeMap;
 	}
 
 }
