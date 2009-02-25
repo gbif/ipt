@@ -126,8 +126,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup();
     		// is this property mapped already?
     		if (!view.hasMappedProperty(prop)){
-    			// no, not yet. was it just added?
-    			if (newIdList.contains(prop.getId().toString())){
+    			// no, not yet. was it just added or is it required?
+    			if (newIdList.contains(prop.getId().toString()) || prop.isRequired()){
     				PropertyMapping pMap = new PropertyMapping();
     				pMap.setProperty(prop);
     				view.addPropertyMapping(pMap);
