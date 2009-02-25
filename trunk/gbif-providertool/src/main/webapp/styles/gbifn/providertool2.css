@@ -41,7 +41,7 @@ div#resourceListContainer{
 #topmenu{
 	padding-top: 0px;
 	margin-top: -4px;
-	margin-right: -8px;
+	margin-right: -12px;
 }
 
 #flagContainer{
@@ -295,6 +295,17 @@ div.usersButtons{
 .publishButton{
 	margin-left: 2px;
 	width: 80px;
+}
+
+
+div.error, span.error, li.error, div.message{
+	background:#feffe6 none repeat scroll 0 0;
+	border:1px solid #ffe1ac;
+	margin:10px auto;
+	padding:3px;
+	text-align:left;
+	color: #666666;
+	vertical-align:bottom;
 }
 
 div.break79{
