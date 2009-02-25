@@ -45,6 +45,11 @@
         <from>^/resource/([0-9abcdef-]{32,})/archive-([a-z]{3}).zip$</from>
         <to type="forward">/archive.do?guid=$1&amp;format=$2</to>
     </rule>
+    <!-- Resource logo http://localhost/resource/91/logo.jpg-->
+    <rule>
+        <from>^/resource/(\d+)/logo.jpg$</from>
+        <to type="forward">/logo.do?resource_id=$1</to>
+    </rule>
     
     <!-- 
         DETAILS
@@ -75,13 +80,6 @@
         <to type="forward">/$1Detail.html?id=$2&amp;format=$3</to>
     </rule>
     
-    <!-- 
-        IMAGES
-    -->
-    <rule>
-        <from>^/(\d+)/logo.jpg$</from>
-        <to type="forward">/logo.do?resource_id=$1</to>
-    </rule>
     
     <!-- 
         TAPIR

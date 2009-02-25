@@ -3,11 +3,10 @@
     <meta name="resource" content="${resource.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
 	<meta name="submenu" content="manage_resource"/>    
+	<meta name="heading" content="Basic Metadata"/>    
 </head>
 
 
-<h1>Basic Metadata</h1>
-<div class="horizontal_dotted_line_large_foo"></div>
 <p class="explMt">Please describe the dataset you want to publish as a whole</p>
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
@@ -24,16 +23,7 @@
 			<@s.textfield key="resource.title" required="true" cssClass="text large"/>
 	 	</div>
 		<div class="left">
-			<#assign status=!resource.isPublished()/>
-			<@s.textfield key="resource.status" required="${status?string}" cssClass="text small" disabled="true"/>
-	 	</div>
-		<div class="left">
-			<li class="wwgrp">
-			  <div class="wwlbl"> &nbsp; </div> 
-			  <div class="wwctrl">
-				<@s.submit cssClass="button" name="publish" method="publish" key="button.publish" theme="simple"/>
-			  </div>
-			</li>	
+			<@s.select key="resource.type" list="resourceTypeMap" required="true" cssClass="text medium"/>
 	 	</div>
  	</div>
     <div class="newline">
