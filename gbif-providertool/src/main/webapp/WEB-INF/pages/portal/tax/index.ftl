@@ -61,6 +61,7 @@
 				<a href="annotations.html?resource_id=${resource_id}">Annotations</a>
 			</li>
 		</ul>
+		<div class="break30"></div>
 		<div id="services" style="display:none">
 			<table class="lefthead">
 				<tr>
