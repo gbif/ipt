@@ -193,7 +193,7 @@ public class AppConfig{
 	}    
 
     public File getArchiveDescriptor(Long resourceId){
-		return new File(getResourceDataDir(resourceId), "archive/descriptor.xml");
+		return new File(getResourceDataDir(resourceId), "archive/meta.xml");
     }
 
     public File getArchiveFile(Long resourceId){

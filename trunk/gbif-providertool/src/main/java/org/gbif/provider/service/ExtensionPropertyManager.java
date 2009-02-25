@@ -18,7 +18,7 @@ public interface ExtensionPropertyManager extends GenericManager<ExtensionProper
 	 * @return
 	 */
 
-	public ExtensionProperty getByQualName(String qName, ExtensionType type);
+	public ExtensionProperty getCorePropertyByQualName(String qName);
 
 	/** Get a single ExtensionProeprty by its simple name.
 	 * As there might be more than one core extension using the same name, 
@@ -29,7 +29,7 @@ public interface ExtensionPropertyManager extends GenericManager<ExtensionProper
 	 * @param type
 	 * @return
 	 */
-	public ExtensionProperty getByName(String name, ExtensionType type);
+	public ExtensionProperty getCorePropertyByName(String name);
 	
 	/**Iterates through all ComparisonOperators and replaces the existing ExtensionProperties
 	 * with persistent properties looked up by their qualified name and the type of resource
@@ -38,5 +38,5 @@ public interface ExtensionPropertyManager extends GenericManager<ExtensionProper
 	 * @return
 	 * @throws ParseException 
 	 */
-	public Set<ExtensionProperty> lookupFilterProperties(Filter filter, ExtensionType type) throws ParseException;
+	public Set<ExtensionProperty> lookupFilterCoreProperties(Filter filter) throws ParseException;
 }

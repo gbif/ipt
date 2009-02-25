@@ -187,6 +187,19 @@
             <result>/WEB-INF/pages/busy.ftl</result>
             <result name="resource-busy">/WEB-INF/pages/busy.ftl</result>
         </action>
+        <action name="search" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="search">
+            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
+            <result name="occ" type="redirect-action">
+                <param name="actionName">occSearch</param>
+                <param name="q">${q}</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">taxSearch</param>
+                <param name="q">${q}</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>
         <!-- forwarding actions for all resource types. Allows easy linking without knowing the type of resource -->        
         <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
@@ -241,9 +254,6 @@
         <!-- metadata actions -->
         <action name="metaResource" class="org.gbif.provider.webapp.action.portal.ResourceAction">
             <result>/WEB-INF/pages/portal/meta/resource.ftl</result>
-        </action>
-        <action name="metaSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="search">
-            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
         </action>
         <action name="geoSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="geoSearch">
             <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>

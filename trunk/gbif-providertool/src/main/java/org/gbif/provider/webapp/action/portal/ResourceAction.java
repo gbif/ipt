@@ -91,6 +91,11 @@ public class ResourceAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String search() {
+		// check if a single resource is being searched.
+		if (resource!=null){
+			// forward in this case to different search
+			return forward();
+		}
 		if (q!=null){
 			resources = getResourceTypeMatchingManager().search(q);
 		}else{

@@ -31,7 +31,9 @@ public class Constants {
     public static final Long TEST_OCC_RESOURCE_ID = 9L;
     public static final Long TEST_CHECKLIST_RESOURCE_ID = 10L;
     public static final Long TEST_USER_ID = 1L;
+	public static final Long TEST_TAXON_ID = 666l;
     // hacky, but needed for resource managers to calculate stats via setResourceStats
+    public static final Long DARWIN_CORE_EXTENSION_ID = 1L;
     public static final Long COMMON_NAME_EXTENSION_ID = 8L;
     public static final Long COMMON_NAME_LANGUAGE_PROPERTY_ID = 424L;
     public static final Long DISTRIBUTION_EXTENSION_ID = 11L;
@@ -45,7 +47,6 @@ public class Constants {
     private static final DateFormat date_iso_format = new SimpleDateFormat("yyyy-MM-dd");
     // 2001-07-04T12:08:56.235-0700
     public static final DateFormat datetime_iso_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-	public static final Long TEST_TAXON_ID = 666l;
     
     public static synchronized DateFormat DATE_ISO_FORMAT(){
     	return date_iso_format;
