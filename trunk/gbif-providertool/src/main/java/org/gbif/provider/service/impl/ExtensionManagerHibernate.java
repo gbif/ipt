@@ -54,6 +54,9 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		if (extension.getProperties().size()==0){
 			throw new IllegalArgumentException("Extension needs to define properties");
 		}
+		if (extension.isCore()){
+			throw new IllegalArgumentException("Extension cannot define be the core itself");
+		}
 
 		Connection cn = null;
 		try {
@@ -172,10 +175,15 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Extension> getAllInstalled(ExtensionType type) {
-        return getSession().createQuery(String.format("from Extension where installed=true and type=:type"))
-        	.setParameter("type", type)
+	public List<Extension> getInstalledExtensions() {
+        return getSession().createQuery(String.format("from Extension where installed=true and core=false"))
         	.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Extension getCore() {
+        return (Extension) getSession().createQuery(String.format("from Extension where core=true"))
+        	.uniqueResult();
 	}
 
 	public ExtensionProperty getProperty(String qualname) {

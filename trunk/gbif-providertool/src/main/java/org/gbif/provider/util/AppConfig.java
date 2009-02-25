@@ -139,7 +139,7 @@ public class AppConfig{
 	}
 
 	public String getResourceLogoUrl(Long resourceId) {
-		return String.format("%s/logo.jpg", getResourceUrl(resourceId));
+		return String.format("%slogo.jpg", getResourceUrl(resourceId));
 	}
 
 	public static File getMetadataFile(Long resourceId) {

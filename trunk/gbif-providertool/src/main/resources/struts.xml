@@ -215,6 +215,18 @@
                 <param name="resource_id">${resource.id}</param>
             </result>
         </action>
+        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
+            <result name="occ" type="redirect-action">
+                <param name="actionName">occDetail</param>
+                <param name="resource_id">${resource.id}</param>
+                <param name="guid">${guid}</param>
+            </result>
+            <result name="tax" type="redirect-action">
+                <param name="actionName">taxDetail</param>
+                <param name="resource_id">${resource.id}</param>
+                <param name="guid">${guid}</param>
+            </result>
+        </action>
         <action name="eml" class="org.gbif.provider.webapp.action.portal.DataAction" method="eml">
             <result name="success" type="stream">
                 <param name="contentType">text/xml</param>

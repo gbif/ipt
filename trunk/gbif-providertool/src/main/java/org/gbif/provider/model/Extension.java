@@ -58,6 +58,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	private String link; // to documentation
 	private boolean installed;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
+	private boolean core=false;
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -122,9 +123,11 @@ public class Extension implements BaseObject, Comparable<Extension> {
 		properties.add(property);
 	}
 	
-	@Transient
 	public boolean isCore() {
-		return name.equalsIgnoreCase("DarwinCore");
+		return this.core;
+	}
+	public void setCore(boolean core) {
+		this.core = core;
 	}
 
 	public boolean isInstalled() {
