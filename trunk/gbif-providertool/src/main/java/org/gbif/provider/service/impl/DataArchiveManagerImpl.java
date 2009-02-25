@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,23 +79,28 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		File archive = cfg.getArchiveFile(resource.getId());
 		Set<File> files= archiveFiles.keySet();
 		files.add(descriptor);
+		files.add(cfg.getEmlFile(resource.getId()));
 		ZipUtil.zipFiles(files, archive);
 		return archive;		
 	}
 	
 	private File writeDescriptor(Resource resource, Map<File, ViewMappingBase> archiveFiles){
+		Map<String, ViewMappingBase> fileMap = new HashMap<String, ViewMappingBase>();
+		for (File f : archiveFiles.keySet()){
+			fileMap.put(f.getName(), archiveFiles.get(f));
+		}
 		File descriptor = cfg.getArchiveDescriptor(resource.getId());
 		try {
 			// overwrite current EML file
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("cfg", cfg);
-			data.put("fileMap", archiveFiles);
+			data.put("fileMap", fileMap);
 			data.put("resource", resource);
 			String page = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(DESCRIPTOR_TEMPLATE), data);
 			Writer out = XmlFileUtils.startNewUtf8XmlFile(descriptor);
 	        out.write(page);
 	        out.close();
-			log.info("Created DarwinCore archive descriptor with "+archiveFiles.size()+" files for resource "+resource.getTitle());
+			log.info("Created DarwinCore archive descriptor with "+fileMap.size()+" files for resource "+resource.getTitle());
 		} catch (TemplateException e) {
 			log.error("Freemarker template exception", e);
 		} catch (IOException e) {
