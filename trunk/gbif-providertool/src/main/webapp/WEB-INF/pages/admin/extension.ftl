@@ -3,9 +3,27 @@
     <meta name="decorator" content="fullsize"/>
     <meta name="menu" content="AdminMenu"/>
     <meta name="heading" content="${extension.name} Extension"/>
+	<script type="text/javascript">  
+		$(document).ready(function(){
+			$("table.propertyInfo").hide();			
+			$("table.propertyInfo").click(function (e) {
+				$(this).slideToggle("fast");				
+		    });
+			$("a.property").click(function (e) {
+				$("table.propertyInfo", $(this).parent()).slideToggle("fast");				
+		    });
+		});
+	</script>
+	<style>
+		.propertyInfo{
+		 	margin-top: 5px;
+		 	padding: 8px;
+			background-color: #eee;
+			border: 1px solid #333;
+		}
+	</style>
 </head>
 
-<div class="horizontal_dotted_line_xlarge"></div>
 <table class="extensionTable">	
  <tr>
 	<th><@s.text name='extension.name'/></th>
@@ -17,18 +35,12 @@
  </tr>
  <tr>
 	<th><@s.text name='extension.link'/></th>
-	<td><#if extension.link??><img src="/images/assets/bullet_blue.png"/><a href="${e.link}" target="_blank"> view info</a><#else><img src="/images/assets/bullet_grey.png"/> unaviable</#if></td>
+	<td><#if extension.link??><img src="/images/assets/bullet_blue.png"/><a href="${extension.link}" target="_blank"> view info</a><#else><img src="/images/assets/bullet_grey.png"/> unaviable</#if></td>
  </tr>
-<#if extension.type??> 
- <tr>
-	<th><@s.text name='extension.type'/></th>
-	<td>${extension.type!"core"}</td>
- </tr>
- <tr>
+  <tr>
 	<th>Installed</th>
 	<td><#if extension.installed==true><img src="/images/assets/bullet_green.png"/> yes<#else><img src="/images/assets/bullet_delete.png"/> no</#if></td>
  </tr>
-</#if>
  <tr>
 	<th><@s.text name='extension.properties'/></th>
 	<td>
@@ -36,18 +48,37 @@
 		<#list extension.properties as p>
 			<li>
 				<#if p??>
+				<a class="property">${p.name}</a>
+				<table class="propertyInfo">
+					<tr>
+						<th>Qualified Name:</th>
+						<td>${p.qualName!}</td>
+					</tr>
+					<tr>
+						<th>Namespace:</th>
+						<td>${p.namespace!}</td>
+					</tr>
+					<tr>
+						<th>Group:</th>
+						<td>${p.group!}</td>
+					</tr>
+					<tr>
+						<th>Name:</th>
+						<td>${p.name!}</td>
+					</tr>
 				  	<#if p.link??>
-						<a class="info" href="${p.link}" target="_blank">
-				  	<#else>
-						<a class="info">
-				  	</#if>
-					${p.name}<span><strong>Qualified Name: </strong>${p.qualName!}<br/><strong>Namespace: </strong>${p.namespace!}<br/><strong>Group: </strong>${p.group!}</span></a>
-				  	
-				    <#if p.vocabulary??>
-				    	<span class="info">
-				    		--&gt; <a href="vocabulary.html?id=${p.vocabulary.id?c}">vocabulary</a>
-						</span>
+					<tr>
+						<th>Documentation</th>
+						<td><a href="${p.link}" target="_blank">${p.link}</a></td>
+					</tr>
 					</#if>
+				    <#if p.vocabulary??>
+					<tr>
+						<th>Vocabulary</th>
+						<td><a href="vocabulary.html?id=${p.vocabulary.id?c}">${p.vocabulary.title}</a></td>
+					</tr>
+					</#if>
+				</table>
 			  	<#else>
 			  	 NULL property
 			  	</#if>
@@ -61,10 +92,10 @@
 <@s.form action="extensionDetail">
     <@s.hidden name="id" value="${extension.id}"/>
 	<@s.submit action="extensions" cssClass="button" key="button.done" theme="simple"/>
-	<#if extension.installed && extension.type??>
+	<#if extension.installed && !extension.core>
 		<@s.submit action="delExtension" cssClass="button" key="button.remove" theme="simple" onclick="return confirmDelete('extension')"/>
 	<#else>
-		<#if extension.type??>
+		<#if !extension.core>
 			<@s.submit action="addExtension" cssClass="button" key="button.install" theme="simple"/>
 		</#if>
 	</#if>

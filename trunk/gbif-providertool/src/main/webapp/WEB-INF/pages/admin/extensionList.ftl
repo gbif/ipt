@@ -19,7 +19,6 @@
 <table class="extensionListTable">
 	<tr>
 		<th><@s.text name="extension.name"/></th>
-		<th><@s.text name="extension.type"/></th>
 		<th><@s.text name="extension.properties"/></th>
 		<th><@s.text name="extension.install"/></th>
 		<th><@s.text name="extension.link"/></th>
@@ -27,7 +26,6 @@
 <#list extensions as e>
 	<tr>
 		<td><a href="extension.html?id=${e.id?c}">${e.name}</a></td>
-		<td>${e.type!""}</td>
 		<td>${e.properties?size}</td>
 		<td><#if e.installed==true><img src="/images/assets/bullet_green.png"/> yes<#else><img src="/images/assets/bullet_delete.png"/> no</#if></td>
 		<td><#if e.link??><img src="/images/assets/bullet_blue.png"/><a href="${e.link}" target="_blank"> view info</a><#else><img src="/images/assets/bullet_grey.png"/><@s.text name="extension.unavailable"/></#if></td>
