@@ -70,11 +70,11 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			}
 		} finally {
 			if (cn!=null){
-				try {
-					cn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					cn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 	}
@@ -95,11 +95,11 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			e.printStackTrace();
 		} finally {
 			if (cn!=null){
-				try {
-					cn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					cn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return count;
@@ -132,11 +132,11 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			log.warn("Couldn't read common names");
 		} finally {
 			if (cn!=null){
-				try {
-					cn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					cn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return cnames;
@@ -157,11 +157,11 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			log.warn("Couldn't read distributions");
 		} finally {
 			if (cn!=null){
-				try {
-					cn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					cn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return distributions;
@@ -202,11 +202,11 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			log.error(String.format("Couldn't read extension records for sql: %s", sql), e);
 		} finally {
 			if (cn!=null){
-				try {
-					cn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+//				try {
+//					cn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return records;

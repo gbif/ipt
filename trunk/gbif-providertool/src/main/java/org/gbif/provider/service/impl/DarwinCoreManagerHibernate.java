@@ -102,6 +102,7 @@ public class DarwinCoreManagerHibernate extends CoreRecordManagerHibernate<Darwi
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public int removeAll(Resource resource) {
 		return super.removeAll(resource);
 	}

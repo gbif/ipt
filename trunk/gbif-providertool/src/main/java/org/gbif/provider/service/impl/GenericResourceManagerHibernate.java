@@ -33,6 +33,7 @@ import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -70,6 +71,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	}
 	
 	@Override
+	@Transactional(readOnly=false)
 	public void remove(T obj) {
 		// first remove all associated core records, taxa and regions
 		if (obj!=null){
@@ -91,6 +93,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		}
 	}
 
+	@Transactional(readOnly=false)
 	public T publish(Long resourceId) {
 		T resource = get(resourceId);
 		// in case sth goes wrong
@@ -112,6 +115,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		return resource;
 	}
 
+	@Transactional(readOnly=false)
 	public void unPublish(Long resourceId) {
 		T resource = get(resourceId);
 		resource.setStatus(PublicationStatus.draft);

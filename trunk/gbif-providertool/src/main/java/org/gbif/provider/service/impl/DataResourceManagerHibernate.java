@@ -32,11 +32,14 @@ import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TransformationManager;
+import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Generic manager for all datasource based resources that need to be registered with the routing datasource.
@@ -52,6 +55,10 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	private TaxonManager taxonManager;
 	@Autowired
 	private TransformationManager transformationManager;
+	@Autowired
+	private ViewMappingManager mappingManager;
+	@Autowired
+    private SourceManager sourceManager;
 
 	public DataResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
@@ -64,13 +71,20 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 
 
 	@Override
+	@Transactional(readOnly=false)
 	public void remove(T obj) {
 		// first remove all associated core records, taxa and regions
 		if (obj!=null){
 			Long resourceId = obj.getId();
+			log.debug("Trying to remove data resource "+resourceId);
 			cacheManager.clear(resourceId);
 			// remove transformations
 			transformationManager.removeAll(obj);
+			// remove mappings
+			mappingManager.removeAll(obj);
+			// remove source file entities
+			System.out.println("remove sourceManager");
+			sourceManager.removeAll(obj);
 			// update registry
 			if (registry.containsKey(resourceId)){
 				registry.removeDatasource(resourceId);
@@ -81,6 +95,7 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public T save(T resource) {
 		// call the real thing first to get a resourceId assigned
 		T persistentResource = super.save(resource);

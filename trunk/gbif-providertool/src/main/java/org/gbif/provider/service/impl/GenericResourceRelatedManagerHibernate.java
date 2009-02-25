@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 	        super(persistentClass);
 	    }
 	    
+		@Transactional(readOnly=false)
 		public int removeAll(Resource resource) {
 			return removeAll(resource, persistentClass);
 		}	

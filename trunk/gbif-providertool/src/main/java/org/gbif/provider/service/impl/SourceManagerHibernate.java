@@ -8,6 +8,7 @@ import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 public class SourceManagerHibernate extends	GenericResourceRelatedManagerHibernate<SourceBase> implements SourceManager{
 	@Autowired
@@ -26,6 +27,7 @@ public class SourceManagerHibernate extends	GenericResourceRelatedManagerHiberna
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void remove(SourceBase obj) {
 		// also remove all ViewMappings that are based on this source
 		List<ViewMappingBase> views = viewMappingManager.getAll(obj.getResource().getId());
