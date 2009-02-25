@@ -7,7 +7,6 @@
     <meta name="menu" content="AdminMenu"/>
 </head>
 
-<div class="horizontal_dotted_line_xlarge"></div>
 <div class="break55"></div>
 <display:table name="users" cellspacing="0" cellpadding="0" requestURI="" 
     defaultsort="1" id="users" pagesize="25" class="table" export="true">
