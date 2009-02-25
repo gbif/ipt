@@ -61,12 +61,11 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
             put("org.apache.derby.jdbc.ClientDriver", "Derby");  
         }  
     };
-	private Map<String, String> resourceTypeMap;
+	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
     
     
 	public void prepare() {
 		super.prepare();
-		resourceTypeMap = translateI18nMap(ResourceType.htmlSelectMap);
 		if (resource == null && resourceType!=null) {
 			// create new empty resource
 			if (resourceType.equalsIgnoreCase(OCCURRENCE)){
