@@ -3,6 +3,11 @@
 
 /* @group general */
 
+h1 {
+	background-color: none;
+	background: transparent;
+}
+
 h2 {
 	margin-top: 20px;
 	background-color: none;
@@ -14,6 +19,10 @@ b{
 	background-color: none;
 	background: transparent;
 	color: #666666;	
+}
+
+p{
+	background: transparent;
 }
 
 .reminder {
@@ -141,7 +150,7 @@ table.layout tr th {
 
 /* @end */
 
-/* @group header */
+/* @grouheader */
 
 
 div#jsalert {
