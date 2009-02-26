@@ -186,7 +186,7 @@
 			</div>
 			<div class="left">
 				<#if (mp.property.vocabulary??)>
-				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.id}')"/>
+				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.property.id}')"/>
 				    or select a static value:
 					<@s.select key="view.propertyMappings[${mp.property.id}].value"
 						list="vocs[${mp.property.id}]" 
