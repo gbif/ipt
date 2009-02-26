@@ -27,9 +27,9 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
 	@Override
 	public int removeAll(Resource resource) {
 		// make sure all existing extension records are removed too!
-		DataResource res = (DataResource) resource;
+		List<ViewMappingBase> views = this.getAll(resource.getId());
 		int i = 0;
-		for (ViewMappingBase vm : res.getExtensionMappings()){
+		for (ViewMappingBase vm : views){
 			remove(vm);
 			i++;
 		}

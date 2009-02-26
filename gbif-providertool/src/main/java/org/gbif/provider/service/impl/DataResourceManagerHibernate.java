@@ -83,10 +83,12 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 			// remove mappings
 			mappingManager.removeAll(obj);
 			// remove source file entities
-			System.out.println("remove sourceManager");
+			log.debug("Removing sourceManager");
 			sourceManager.removeAll(obj);
+			log.debug("SourceManager removed");
 			// update registry
 			if (registry.containsKey(resourceId)){
+				log.debug("Removing " + resourceId + " from registry");
 				registry.removeDatasource(resourceId);
 			}		
 		}
