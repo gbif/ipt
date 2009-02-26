@@ -5,6 +5,9 @@
 
 h2 {
 	margin-top: 20px;
+	background-color: none;
+	background: transparent;
+	color: #666666;
 }
 
 .reminder {
