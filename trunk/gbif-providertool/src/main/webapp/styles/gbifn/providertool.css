@@ -3,6 +3,8 @@
 
 /* @group general */
 
+*{color: #666666;}
+
 h1 {
 	background-color: none;
 	background: transparent;
@@ -16,10 +18,8 @@ h2 {
 }
 
 h3 {
-	margin-top: 20px;
 	background-color: none;
 	background: transparent;
-	color: #666666;
 }
 
 b{
