@@ -10,6 +10,12 @@ h2 {
 	color: #666666;
 }
 
+b{
+	background-color: none;
+	background: transparent;
+	color: #666666;	
+}
+
 .reminder {
 	font-style: italic;
 	color: gray;
