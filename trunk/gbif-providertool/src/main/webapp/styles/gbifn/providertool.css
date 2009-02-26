@@ -15,6 +15,13 @@ h2 {
 	color: #666666;
 }
 
+h3 {
+	margin-top: 20px;
+	background-color: none;
+	background: transparent;
+	color: #666666;
+}
+
 b{
 	background-color: none;
 	background: transparent;
