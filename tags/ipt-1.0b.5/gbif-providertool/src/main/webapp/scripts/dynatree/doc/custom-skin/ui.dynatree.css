@@ -1,0 +1,66 @@
+/* Customized version.
+ *
+ * Some attributes are ugly, but we set them to show that it'sa poosible ;-)
+ */
+
+.ui-dynatree-container
+{
+	font-family: tahoma, arial, helvetica;
+	font-size: smaller;
+
+	font-family: monospace;
+	color: magenta;
+	font-style: italic;
+
+	line-height: 0;
+
+	white-space: nowrap;
+
+	padding: 3;
+	border-width: 3;
+	border-style: inset;
+	border-color: buttonhighlight;
+	background-color: #f0f0f0;
+}
+
+.ui-dynatree-container a,
+.ui-dynatree-container a:visited
+{
+	text-decoration: none;
+	color: black;
+	outline: 0; /* @ Firefox, prevent dotted border after click */
+}
+
+.ui-dynatree-container a:hover
+{
+	text-decoration: underline;
+}
+.ui-dynatree-container a:focus
+{
+	text-decoration: none;
+	border: dashed 1px blue;
+}
+.ui-dynatree-container a:active
+{
+	text-decoration: none;
+	background-color: Gray;
+}
+.ui-dynatree-container img
+{
+	border-width: 0;
+	width: 16;
+	height: 16;
+}
+.tnLevelN
+{
+}
+.ui-dynatree-folder
+{
+	font-weight: bold;
+	color: graytext;
+	vertical-align: middle;
+/*	background-color:#DDDDDD;
+	padding: 0;
+	margin: 0;
+	border-width: 0;*/
+}
