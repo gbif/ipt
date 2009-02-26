@@ -56,7 +56,7 @@
 		<span>${resource.description}</span>
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
-		${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}
+		<label>${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}</label>
 		</p>
 		<ul class="minimenu">
 			<li class="last">
