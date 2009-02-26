@@ -89,6 +89,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 				}
 			}
 			// remove resource entity itself
+			log.info("All aspects of a Resource should be cleaned and now the Resource itself may be deleted");
 			super.remove(obj);
 		}
 	}
@@ -174,6 +175,5 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
         .setDouble("boxMinY", box.getMin().getLatitude())
         .setDouble("boxMaxY", box.getMax().getLatitude())
 		.list();
-	}	
-
+	}
 }
