@@ -338,6 +338,11 @@ div.error, span.error, li.error, div.message{
 	vertical-align:bottom;
 }
 
+#map{
+	border: none;
+	margin-top: 18px;
+}
+
 div.break79{
 	height: 79px;
 }
