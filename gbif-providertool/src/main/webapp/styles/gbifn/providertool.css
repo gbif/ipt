@@ -6,19 +6,16 @@
 *{color: #666666;}
 
 h1 {
-	background-color: none;
 	background: transparent;
 }
 
 h2 {
 	margin-top: 20px;
-	background-color: none;
 	background: transparent;
 	color: #666666;
 }
 
 h3 {
-	background-color: none;
 	background: transparent;
 }
 
@@ -39,7 +36,7 @@ p{
 	padding-left: 20px;
 }
 .accepted {
-	font-style: bold;
+	font-weight: bold;
 }
 
 .synonym {
@@ -124,7 +121,7 @@ form .xhalf{
 
 .modifiedCombo .small{
 	width: 131px;
-	padding-left: 4	px;
+	padding-left: 4px;
 }
 
 table.topheader td {
@@ -159,23 +156,6 @@ table.layout tr th {
 
 /* @grouheader */
 
-
-div#jsalert {
-	float: none;
-	width: 300px;
-	font-style: italic;
-	color: gray;
-	padding: 10px 0 0;
-	margin: 0;
-	position: relative;
-	left: 525px;
-	top: -80px;
-}
-div#jsalert h2 {
-	font-style: bold italic;
-	color: red;
-	margin: 0;
-}
 
 #currentResourceClass {
 	background: transparent url(../../images/bkgClassResource.gif) no-repeat;
@@ -363,7 +343,7 @@ div.stat-table {
 div.stat-table table{
 	margin-top: 10px;
 	line-height: 0.6em;
-	font-size: 0.9 em;
+	font-size: 0.9em;
 }
 div.stat-right{
 	position: relative;
@@ -726,7 +706,6 @@ fieldset .noBottomMargin{
 	margin-top: -7px;
 }
 
-
 #providerCfg_save .button{
 	margin-top: 15px;
 }
@@ -737,7 +716,7 @@ fieldset .noBottomMargin{
 
 .transformationImage{
 	background-color: #FFFFFF;
-	margin-left: 10;
+	margin-left: 10px;
 }
 
 /* @group tag cloud */

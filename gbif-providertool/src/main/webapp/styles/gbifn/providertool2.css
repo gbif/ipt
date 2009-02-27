@@ -297,6 +297,36 @@ div.usersButtons{
 	width: 80px;
 }
 
+div#jsalert{
+	position: absolute;
+	top: 1px;
+	background:#feffe6 none repeat scroll 0 0;
+	border:1px solid #ffe1ac;
+	z-index: 10;
+	width: 98%;
+	left: 0px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+div#jsalert img{
+	text-align: left;
+	float: left;
+	margin-right: 13px;
+	margin-top: 8px;
+}
+
+div#jsalert textColumn{
+	text-align: left;
+	float: right;
+}
+
+div#jsalert h2{
+	color: #ff7e00;
+	margin: 0px;
+	margin-top: 9px;
+}
+
 
 div.error, span.error, li.error, div.message{
 	background:#feffe6 none repeat scroll 0 0;
