@@ -132,10 +132,10 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
         stream.close();
 
         // process file.
+        log.debug("Uploaded file "+fileFileName+" with content-type "+fileContentType);
         // is it a compressed archive?
-        System.out.println(fileContentType);
-        System.out.println(fileFileName);
-        if (false){
+        // check http content type
+        if (fileContentType.endsWith("/zip")){
 			List<File> sourceFiles = ZipUtil.unzipFile(cfg.getResourceSourceFile(resource_id, ""), targetFile);
 			for (File sf : sourceFiles){
 	        	insertSourceFile(sf);
