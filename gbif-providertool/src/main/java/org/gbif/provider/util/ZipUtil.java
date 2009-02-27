@@ -6,10 +6,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.logging.Log;
@@ -19,6 +24,36 @@ public class ZipUtil {
 	protected static final Log log = LogFactory.getLog(ZipUtil.class);
 	static final int BUFFER = 2048;
 
+	public static List<File> unzipFile(File directory, File zipFile) throws IOException {
+	    ZipFile zf = new ZipFile(zipFile);
+	    Enumeration entries = zf.entries();
+	    List<File> files = new ArrayList<File>();
+	    while(entries.hasMoreElements()) {
+	        ZipEntry entry = (ZipEntry)entries.nextElement();
+	        if(entry.isDirectory()) {
+	        	log.warn("ZIP archive contains directories which are being ignored");
+	            continue;
+	        }
+	        File targetFile = new File(directory, entry.getName());
+	        files.add(targetFile);
+	        log.debug("Extracting file: " + entry.getName() + " to: "+targetFile.getAbsolutePath());
+	        copyInputStream(zf.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(targetFile)));
+	    }
+	    zf.close();
+		return files;
+	}
+	private static final void copyInputStream(InputStream in, OutputStream out) throws IOException
+	  {
+	    byte[] buffer = new byte[1024];
+	    int len;
+
+	    while((len = in.read(buffer)) >= 0)
+	      out.write(buffer, 0, len);
+
+	    in.close();
+	    out.close();
+	}
+	  
 	public static void zipFile(File file, File zipFile) throws IOException {
 		Set<File> files = new HashSet<File>();
 		files.add(file);

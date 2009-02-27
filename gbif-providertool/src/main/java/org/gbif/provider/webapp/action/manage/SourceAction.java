@@ -15,6 +15,7 @@ import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
+import org.gbif.provider.util.ZipUtil;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -134,6 +135,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		SourceFile fsource = sourceManager.getSourceByFilename(resource_id, fileFileName);
 		if (fsource==null){
 			// new source
+			ZipUtil.unzipFile(directory, zipFile);
 			fsource = new SourceFile();
 			fsource.setResource(resource);
 			fsource.setFilename(fileFileName);

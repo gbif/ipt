@@ -4,11 +4,23 @@
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='eml.geographicCoverage'/>"/>    
-	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>  
-	<script type="text/javascript" src="<@s.url value='/scripts/map.js'/>"></script>
+	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script type="text/javascript">  
+	 function selectBoundigBox(minx,miny,maxx,maxy){
+		$("#bbox_top").val(maxy);
+		$("#bbox_bottom").val(miny);
+		$("#bbox_left").val(minx);
+		$("#bbox_right").val(maxx);
+	 }
+
 	 $(document).ready(function(){
-		loadMap();
+		var so = new SWFObject("<@s.url value="/scripts/IptResourcesMap.swf"/>", "swf", "690", "300", "9"); 
+		so.addParam("allowFullScreen", "false");
+		so.addVariable("swf", "");
+		var data = "{'title':'${eml.title}','minx':${eml.geographicCoverage().boundingCoordinates.min.x},'maxx':${eml.geographicCoverage().boundingCoordinates.max.x},'miny':${eml.geographicCoverage().boundingCoordinates.min.y},'maxy':${eml.geographicCoverage().boundingCoordinates.max.y}}";
+		so.addVariable("data", data);
+		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
+		so.write("map");
 	 });
 	</script>
 </head>
@@ -16,27 +28,18 @@
 <!--<h1><@s.text name="eml.geographicCoverage"/></h1>
 <div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
+
+<div id="map">
+</div>
+
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 <fieldset>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
-
-	<div id="map" style="width:680px; height:256px; border:1px solid #ccc; margin-left:6px;"></div>
-	<div>
-		<div class="left">
-			<@s.textfield id="bbox_left" key="eml.geographicCoverage.boundingCoordinates.min.longitude" label="%{getText('bbox.min.longitude')}" cssClass="text small" />
-		</div>
-		<div class="left">
-			<@s.textfield id="bbox_bottom" key="eml.geographicCoverage.boundingCoordinates.min.latitude" label="%{getText('bbox.min.latitude')}" cssClass="text small" />
-		</div>
-		<div class="left">
-			<@s.textfield id="bbox_right" key="eml.geographicCoverage.boundingCoordinates.max.longitude" label="%{getText('bbox.max.longitude')}" cssClass="text small" />
-		</div>
-		<div class="left">
-			<@s.textfield id="bbox_top" key="eml.geographicCoverage.boundingCoordinates.max.latitude" label="%{getText('bbox.max.latitude')}" cssClass="text small" />
-		</div>
-	</div>
-	
+	<input type="hidden" id="bbox_left" name="bbox_left" value="eml.geographicCoverage.boundingCoordinates.min.x" />
+	<input type="hidden" id="bbox_right" name="bbox_right" value="eml.geographicCoverage.boundingCoordinates.max.x" />
+	<input type="hidden" id="bbox_bottom" name="bbox_bottom" value="eml.geographicCoverage.boundingCoordinates.min.y" />
+	<input type="hidden" id="bbox_top" name="bbox_top" value="eml.geographicCoverage.boundingCoordinates.max.y" />
 	<div class="newline"></div>
 	<@s.textarea key="eml.geographicCoverage.description" required="false" cssClass="text xlarge"/>
 </fieldset>
