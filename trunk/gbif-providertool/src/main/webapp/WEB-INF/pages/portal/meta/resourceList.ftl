@@ -14,7 +14,7 @@
 	</style>
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script type="text/javascript">
-	 function boundigBoxSearch(minx,miny,maxx,maxy){
+	 function selectBoundigBox(minx,miny,maxx,maxy){
 		$("#bbox_top").val(maxy);
 		$("#bbox_bottom").val(miny);
 		$("#bbox_left").val(minx);
@@ -22,6 +22,7 @@
 	 	geoSearchForm.submit();
 	 }
 	 function goToResource(id){
+	 	alert(id);
 	 	window.location('<@s.url value="/resource.html?resource_id="/>'+id);
 	 }
 	   
@@ -31,20 +32,20 @@
 			e.preventDefault(); 
 			ajaxHtmlUpdate("<@s.url value="/ajax/keywords.html"/>", "#keywords", { prefix:$(this).html() });
 		});
-		var so = new SWFObject("EOLSpeciesMap.swf", "swf", "100%", "100%", "9"); 
-		so.addParam("allowFullScreen", "false");
+		var so = new SWFObject("<@s.url value="/scripts/IptResourcesMap.swf"/>", "swf", "690", "250", "9"); 
+		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
 		var data = "[<#list resources as r>{'id':${r.id},'title':'${r.title}','count':0,'minx':${r.geoCoverage.min.x},'maxx':${r.geoCoverage.max.x},'miny':${r.geoCoverage.min.y},'maxy':${r.geoCoverage.max.y}},</#list>";
 		data = data.substring(0, data.length-1) + "]";
 		so.addVariable("data", data);
+		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
 		so.write("map");
 	});
 	</script>
 </head>
 
 
-<#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
-<#include "/WEB-INF/pages/inc/resourceList.ftl">  
+<div id="map"></div>
 
 <div id="tagindex">
 
@@ -66,18 +67,6 @@
 
 
 <br class="clearfix" />
-<br class="clearfix" />
 
-
-<div id="geosearch">
-  <h2>Geospatial Search</h2>	
-  <div id="map">
-  
-  </div>
-  <@s.form id="geoSearchForm" action="geoSearch">
-	<input type="hidden" id="bbox_top" name="bbox_top" value="" />
-	<input type="hidden" id="bbox_bottom" name="bbox_bottom" value="" />
-	<input type="hidden" id="bbox_left" name="bbox_left" value="" />
-	<input type="hidden" id="bbox_right" name="bbox_right" value="" />
-  </@s.form>
-</div>
+<#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
+<#include "/WEB-INF/pages/inc/resourceList.ftl">  
