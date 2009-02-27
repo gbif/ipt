@@ -34,10 +34,7 @@ public class ZipUtil {
 	        	log.warn("ZIP archive contains directories which are being ignored");
 	            continue;
 	        }
-	        System.out.println("ZIP entry:");
-	        System.out.println(entry.getName());
 	        String fn = new File(entry.getName()).getName();
-	        System.out.println(fn);
 	        if(fn.startsWith(".")) {
 	        	log.warn("ZIP archive contains a hidden file which is being ignored");
 	            continue;
