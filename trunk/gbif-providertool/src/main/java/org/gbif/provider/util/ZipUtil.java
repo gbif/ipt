@@ -34,7 +34,15 @@ public class ZipUtil {
 	        	log.warn("ZIP archive contains directories which are being ignored");
 	            continue;
 	        }
-	        File targetFile = new File(directory, entry.getName());
+	        System.out.println("ZIP entry:");
+	        System.out.println(entry.getName());
+	        String fn = new File(entry.getName()).getName();
+	        System.out.println(fn);
+	        if(fn.startsWith(".")) {
+	        	log.warn("ZIP archive contains a hidden file which is being ignored");
+	            continue;
+	        }
+	        File targetFile = new File(directory, fn);
 	        files.add(targetFile);
 	        log.debug("Extracting file: " + entry.getName() + " to: "+targetFile.getAbsolutePath());
 	        copyInputStream(zf.getInputStream(entry), new BufferedOutputStream(new FileOutputStream(targetFile)));
