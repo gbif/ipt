@@ -253,6 +253,9 @@ public class AppConfig{
 	public String getGeoserverUrl() {
 		return cfg.getGeoserverUrl();
 	}
+	public String getGeoserverCacheUrl(Long resourceId) {
+		return cfg.getGeoserverUrl()+"/gwc/service/gmaps?LAYERS=gbif%3Aresource"+resourceId;
+	}
 	public String getLink() {
 		return cfg.getMeta().getLink();
 	}

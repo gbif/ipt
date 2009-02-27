@@ -4,6 +4,7 @@
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
     
+	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script>
 	function updateByRegion(){
 		var url = '<@s.url value="/ajax/occResourceStatsByRegion.html"/>';
@@ -43,6 +44,15 @@
 	    $("#showWebservices").click(function () {
 	      $("#services").slideToggle("normal");
 	    });
+	    
+		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
+		so.addParam("allowFullScreen", "true");
+		so.addVariable("swf", "");
+		so.addVariable("geowebcache_url", "${cfg.getGeoserverCacheUrl(resource_id)}");
+		so.addVariable("bbox", "${geoserverMapBBox}");
+		so.addVariable("type", "gwc");
+		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
+		so.write("occmap");	    
 	});
 	</script>
 </head>
@@ -180,8 +190,8 @@
 
 <div id="loc-geoserver" class="stats map stat-right">
 	<label><@s.text name="stats.occPointMap"/></label>	
-	<div class="horizontal_dotted_line_graph"></div>	
-	<img width="${width}" height="${height}" src="${geoserverMapUrl}" />
+	<div class="horizontal_dotted_line_graph"></div>
+	<div id="occmap"></div>	
 </div>
 
 

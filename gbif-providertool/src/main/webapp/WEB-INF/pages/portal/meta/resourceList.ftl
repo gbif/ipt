@@ -34,8 +34,12 @@
 		var so = new SWFObject("<@s.url value="/scripts/IptResourcesMap.swf"/>", "swf", "690", "250", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
-		var data = "[<#list resources as r><#if (r.geoCoverage.min.x)??>{'id':${r.id},'title':'${r.title}','count':0,'minx':${r.geoCoverage.min.x},'maxx':${r.geoCoverage.max.x},'miny':${r.geoCoverage.min.y},'maxy':${r.geoCoverage.max.y}},</#if></#list>";
+		var data = '[<#list resources as r><#if (r.geoCoverage.min.x)??>{"id":${r.id?c},"title":"${r.title?js_string}","count":0,"minx":${r.geoCoverage.min.x?c},"maxx":${r.geoCoverage.max.x?c},"miny":${r.geoCoverage.min.y?c},"maxy":${r.geoCoverage.max.y?c}},</#if></#list>';
 		data = data.substring(0, data.length-1) + "]";
+		// hacking the string so that SWFObject passes the whole string to flash.
+		// normal quotations break it, so we use || instead of " and \\|| for \"
+		data = data.replace(/\\"/g, "\\\\||");
+		data = data.replace(/"/g, "||");
 		so.addVariable("data", data);
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
 		so.write("map");

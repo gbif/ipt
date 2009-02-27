@@ -53,14 +53,14 @@ public class Point implements Serializable{
 	}
 
 	@Transient
-	public Double getX() {
+	public Double getY() {
 		return getLatitude();
+	}
+	public void setY(Double y) {
+		setLatitude(y);
 	}
 	public Double getLatitude() {
 		return latitude==null ? null : new Double(latitude);
-	}
-	public void setX(Double x) {
-		setLatitude(x);
 	}
 	public void setLatitude(Double latitude) {
 		if (latitude != null && (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE)){
@@ -72,15 +72,16 @@ public class Point implements Serializable{
 			this.latitude = new Double(latitude);
 		}
 	}
+
 	@Transient
-	public Double getY() {
+	public Double getX() {
 		return getLongitude();
+	}
+	public void setX(Double x) {
+		setLongitude(x);
 	}
 	public Double getLongitude() {
 		return longitude==null ? null : new Double(longitude);
-	}
-	public void setY(Double y) {
-		setLongitude(y);
 	}
 	public void setLongitude(Double longitude) {
 		if (longitude != null && (longitude < MIN_LONGITUDE || longitude > MAX_LONGITUDE)){
