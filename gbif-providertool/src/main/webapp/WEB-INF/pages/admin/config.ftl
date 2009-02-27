@@ -5,7 +5,6 @@
     <meta name="heading" content="<@s.text name='config.heading'/>"/>
 </head>
 
-<div class="horizontal_dotted_line_xlarge"></div>
 <@s.form id="providerCfg" action="saveConfig" method="post">
 
 <h2><@s.text name="config.metadata"/></h2>

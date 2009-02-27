@@ -427,6 +427,13 @@ div.chart form, div.map form {
 	padding-bottom: 15px;
 }
 
+.rightImage{
+	float: right;
+	text-align: right;
+	padding-left: 15px;
+	margin-top: 65px;	
+}
+
 .rightCombo{
 	float: right;
 	text-align: right;
