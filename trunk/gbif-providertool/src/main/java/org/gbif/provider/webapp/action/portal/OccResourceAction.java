@@ -44,6 +44,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 	private Map<Integer, String> ranks = new TreeMap<Integer, String>();
 	private Map<Integer, String> hostTypes = new TreeMap<Integer, String>();
 	public String geoserverMapUrl;
+	public String geoserverMapBBox;
 	public static int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public static int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 
@@ -53,6 +54,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		if (resource != null) {
 			// geoserver map link
 			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, resource.getBbox(), null, null);
+			geoserverMapBBox = resource.getBbox().toStringWMS();
 		}
 		// prepare select lists
 		countryClasses.put(1, "occurrences");
@@ -118,6 +120,10 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 
 	public static int getHeight() {
 		return height;
+	}
+
+	public String getGeoserverMapBBox() {
+		return geoserverMapBBox;
 	}
 
 }

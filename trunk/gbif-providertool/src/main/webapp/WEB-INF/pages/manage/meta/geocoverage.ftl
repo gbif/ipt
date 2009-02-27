@@ -7,14 +7,14 @@
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script type="text/javascript">  
 	 function selectBoundigBox(minx,miny,maxx,maxy){
-		$("#bbox_top").val(maxy);
-		$("#bbox_bottom").val(miny);
-		$("#bbox_left").val(minx);
-		$("#bbox_right").val(maxx);
+		$("#maxy").val(maxy);
+		$("#miny").val(miny);
+		$("#minx").val(minx);
+		$("#maxx").val(maxx);
 	 }
 
 	 $(document).ready(function(){
-		var so = new SWFObject("<@s.url value="/scripts/IptGeoCoverageMap.swf"/>", "swf", "690", "300", "9"); 
+		var so = new SWFObject("<@s.url value="/scripts/IptGeoCoverageMap.swf"/>", "swf", "690", "250", "9"); 
 		so.addParam("allowFullScreen", "false");
 		so.addVariable("swf", "");
 		var data = "<#if (eml.geographicCoverage().boundingCoordinates.min.x)??>{'minx':${eml.geographicCoverage().boundingCoordinates.min.x},'maxx':${eml.geographicCoverage().boundingCoordinates.max.x},'miny':${eml.geographicCoverage().boundingCoordinates.min.y},'maxy':${eml.geographicCoverage().boundingCoordinates.max.y}}</#if>";
@@ -36,10 +36,10 @@
 <fieldset>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
-	<input type="hidden" id="bbox_left" name="bbox_left" value="eml.geographicCoverage.boundingCoordinates.min.x" />
-	<input type="hidden" id="bbox_right" name="bbox_right" value="eml.geographicCoverage.boundingCoordinates.max.x" />
-	<input type="hidden" id="bbox_bottom" name="bbox_bottom" value="eml.geographicCoverage.boundingCoordinates.min.y" />
-	<input type="hidden" id="bbox_top" name="bbox_top" value="eml.geographicCoverage.boundingCoordinates.max.y" />
+	<input type="hidden" id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
+	<input type="hidden" id="maxx" name="eml.geographicCoverage.boundingCoordinates.max.longitude" />
+	<input type="hidden" id="miny" name="eml.geographicCoverage.boundingCoordinates.min.latitude" />
+	<input type="hidden" id="maxy" name="eml.geographicCoverage.boundingCoordinates.max.latitude" />
 	<div class="newline"></div>
 	<@s.textarea key="eml.geographicCoverage.description" required="false" cssClass="text xlarge"/>
 </fieldset>
