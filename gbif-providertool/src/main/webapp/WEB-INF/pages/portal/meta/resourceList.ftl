@@ -11,24 +11,23 @@
 	.col.four li {width: 22.5%; margin-right: 2.5%;}
 	
 	h1{margin-bottom: -5px;}
-
-	#map {
-	    width: 696px;
-	    height: 256px;
-	    border: 1px solid #ccc;
-	}
 	</style>
-	<script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>  
-	<script type="text/javascript" src="<@s.url value='/scripts/map.js'/>"></script>  
+	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script type="text/javascript">  
 	 $(document).ready(function(){
-		loadMap();
-		
 		// update keywords
 		$("#tagindex ul li a").click(function(e){
 			e.preventDefault(); 
 			ajaxHtmlUpdate("<@s.url value="/ajax/keywords.html"/>", "#keywords", { prefix:$(this).html() });
 		});
+		var so = new SWFObject("EOLSpeciesMap.swf", "swf", "100%", "100%", "9"); 
+		so.addParam("allowFullScreen", "false");
+		so.addVariable("swf", "");
+		var data = "[<#list resources as r>{'id':${r.id},'title':'${r.title}','count':0,'minx':${r.geoCoverage.min.x},'maxx':${r.geoCoverage.max.x},'miny':${r.geoCoverage.min.y},'maxy':${r.geoCoverage.max.y}},</#list>";
+		data = data.substring(0, data.length-1) + "]";
+		alert(data);
+		so.addVariable("data", data);
+		so.write("map");
 	});
 	</script>
 </head>
@@ -63,13 +62,12 @@
 <div id="geosearch">
   <h2>Geospatial Search</h2>	
   <div id="map">
+  
   </div>
   <@s.form id="geoSearchForm" action="geoSearch">
 	<input type="hidden" id="bbox_top" name="bbox_top" value="" />
 	<input type="hidden" id="bbox_bottom" name="bbox_bottom" value="" />
 	<input type="hidden" id="bbox_left" name="bbox_left" value="" />
 	<input type="hidden" id="bbox_right" name="bbox_right" value="" />
-	<div class="break"></div>
-    <@s.submit cssClass="button" key="button.search" theme="simple"/>
   </@s.form>
 </div>
