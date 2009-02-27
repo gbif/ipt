@@ -8,7 +8,7 @@
 </head>
 	
 		
-<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
+<img class="rightImage" src="${cfg.getResourceLogoUrl(resource_id)}" />
 <h1 class="h1meta">${resource.title}</h1>	
 <div class="horizontal_dotted_line_large"></div>
 
