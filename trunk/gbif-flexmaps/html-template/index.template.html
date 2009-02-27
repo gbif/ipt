@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title></title>
+
+	<script type="text/javascript" src="swfobject.js" ></script>
+
+
+</head>
+<style>
+body { margin: 0px; overflow:hidden; height:100%; }
+html {height: 100%; overflow: hidden; }
+#example { height: 100%; }
+</style>
+<body>
+
+	<div id="example" />
+	<script type="text/javascript"> 
+    	// <![CDATA[
+    	
+		var so = new SWFObject("${application}.swf", "swf", "100%", "100%", "9"); 
+		so.addParam("allowFullScreen", "true");
+		so.addVariable("swf", "");
+		data = '[]';
+		so.addVariable("data", "[{||id||:10,||title||:||Euro+Med Calendula||,||count||:0,||minx||:-23.90625,||maxx||:34.453125000000014,||miny||:27.421875,||maxy||:74.53125},{||id||:9,||title||:||PonTaurus||,||count||:0,||minx||:26.015625,||maxx||:41.1328125,||miny||:35.453272155938336,||maxy||:41.078272155938336},{||id||:11,||title||:||Harry Belafonte\'s Babies||,||count||:0,||minx||:24.55293239967217,||maxx||:-52.734375,||miny||:-17.281610892203258,||maxy||:1.4344593524475546}]");
+		so.addVariable("api_key", "ldjfljshdf");
+		so.write("example");
+		// ]]>
+	</script>
+
+</body>
+</html>
