@@ -13,7 +13,18 @@
 	h1{margin-bottom: -5px;}
 	</style>
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
-	<script type="text/javascript">  
+	<script type="text/javascript">
+	 function boundigBoxSearch(minx,miny,maxx,maxy){
+		$("#bbox_top").val(maxy);
+		$("#bbox_bottom").val(miny);
+		$("#bbox_left").val(minx);
+		$("#bbox_right").val(maxx);
+	 	geoSearchForm.submit();
+	 }
+	 function goToResource(id){
+	 	window.location('<@s.url value="/resource.html?resource_id="/>'+id);
+	 }
+	   
 	 $(document).ready(function(){
 		// update keywords
 		$("#tagindex ul li a").click(function(e){
@@ -25,7 +36,6 @@
 		so.addVariable("swf", "");
 		var data = "[<#list resources as r>{'id':${r.id},'title':'${r.title}','count':0,'minx':${r.geoCoverage.min.x},'maxx':${r.geoCoverage.max.x},'miny':${r.geoCoverage.min.y},'maxy':${r.geoCoverage.max.y}},</#list>";
 		data = data.substring(0, data.length-1) + "]";
-		alert(data);
 		so.addVariable("data", data);
 		so.write("map");
 	});
