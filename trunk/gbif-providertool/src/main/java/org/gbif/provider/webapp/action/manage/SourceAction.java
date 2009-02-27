@@ -131,35 +131,51 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
         bos.close();
         stream.close();
 
-        // process file. Check if file was uploaded before
-		SourceFile fsource = sourceManager.getSourceByFilename(resource_id, fileFileName);
-		if (fsource==null){
-			// new source
-			ZipUtil.unzipFile(directory, zipFile);
-			fsource = new SourceFile();
-			fsource.setResource(resource);
-			fsource.setFilename(fileFileName);
-		}
-		// set new upload timestamp
-		fsource.setDateUploaded(new Date());
-
-		List<String> headers = sourceInspectionManager.getHeader(fsource);
-		log.info(String.format("Tab file %s uploaded with %s columns", targetFile.getAbsolutePath(), headers .size()));
-		if (headers.size() > 1){
-			// save file in view mapping
-			sourceManager.save(fsource);
-	        saveMessage(getText("sources.sourceFileUploaded", String.valueOf(headers.size())));
-		}else{
-			fsource.setResource(null);
-	        saveMessage(getText("sources.sourceFileBroken", String.valueOf(headers.size())));
-		}
+        // process file.
+        // is it a compressed archive?
+        System.out.println(fileContentType);
+        System.out.println(fileFileName);
+        if (false){
+			List<File> sourceFiles = ZipUtil.unzipFile(cfg.getResourceSourceFile(resource_id, ""), targetFile);
+			for (File sf : sourceFiles){
+	        	insertSourceFile(sf);
+			}
+        }else{
+        	insertSourceFile(targetFile);
+        }
 		
 		// get sources data
 		return list();
     }
 
     
-    
+    private void insertSourceFile(File srcFile){
+		SourceFile fsource = sourceManager.getSourceByFilename(resource_id, srcFile.getName());
+		if (fsource==null){
+			// new source
+			fsource = new SourceFile();
+			fsource.setResource(resource);
+			fsource.setFilename(srcFile.getName());
+		}
+		// set new upload timestamp
+		fsource.setDateUploaded(new Date());
+
+		List<String> headers = null;
+		try {
+			headers = sourceInspectionManager.getHeader(fsource);
+		} catch (Exception e) {
+			log.error("Error inspecting source file "+fsource.getName(), e);
+		}
+		log.info(String.format("Tab file %s uploaded with %s columns", srcFile.getAbsolutePath(), headers .size()));
+		if (headers!=null && headers.size() > 1){
+			// save file in view mapping
+			sourceManager.save(fsource);
+	        saveMessage(getText("sources.sourceFileUploaded", String.valueOf(headers.size())));
+		}else{
+			fsource.setResource(null);
+	        saveMessage(getText("sources.sourceFileBroken", String.valueOf(headers.size())));
+		}    	
+    }
     
 	public String sourcePreview(){
 		if (source == null || source.getId()==null){

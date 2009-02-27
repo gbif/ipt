@@ -17,7 +17,7 @@
 		var so = new SWFObject("<@s.url value="/scripts/IptResourcesMap.swf"/>", "swf", "690", "300", "9"); 
 		so.addParam("allowFullScreen", "false");
 		so.addVariable("swf", "");
-		var data = "{'title':'${eml.title}','minx':${eml.geographicCoverage().boundingCoordinates.min.x},'maxx':${eml.geographicCoverage().boundingCoordinates.max.x},'miny':${eml.geographicCoverage().boundingCoordinates.min.y},'maxy':${eml.geographicCoverage().boundingCoordinates.max.y}}";
+		var data = "{'minx':${eml.geographicCoverage().boundingCoordinates.min.x},'maxx':${eml.geographicCoverage().boundingCoordinates.max.x},'miny':${eml.geographicCoverage().boundingCoordinates.min.y},'maxy':${eml.geographicCoverage().boundingCoordinates.max.y}}";
 		so.addVariable("data", data);
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
 		so.write("map");

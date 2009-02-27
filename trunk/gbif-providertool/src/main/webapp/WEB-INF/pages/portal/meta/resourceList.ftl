@@ -22,8 +22,7 @@
 	 	geoSearchForm.submit();
 	 }
 	 function goToResource(id){
-	 	alert(id);
-	 	window.location('<@s.url value="/resource.html?resource_id="/>'+id);
+	 	document.location = ('<@s.url value="/resource.html?resource_id="/>'+id);
 	 }
 	   
 	 $(document).ready(function(){
