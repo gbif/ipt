@@ -3,14 +3,16 @@
     <meta name="resource" content="${taxon.resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>
-    <!-- meta name="heading" content="${taxon.scientificName}"/ -->
+    <meta name="heading" content="${taxon.scientificName}"/>
 </head>
 	
 <style>
 </style>	
 
+<!--<h1>${taxon.scientificName}</h1>-->
+<!--<div class="horizontal_dotted_line_large"></div>-->
+<div class="break20"></div>
 <img class="taxDetailImg" src="${cfg.getResourceLogoUrl(resource_id)}" />
-<h1>${taxon.scientificName}</h1>	
 
 <@s.form>
 
@@ -18,9 +20,10 @@
 <#assign resource_id=taxon.resource.id>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
 	
-
+<div class="horizontal_dotted_line_large_soft"></div>	
 <div id="basics">
 	<fieldset>
+		<h2>Basics</h2>
 		<table>	
 			<tr>
 			  <th><@s.text name="taxon.code"/></th>
@@ -58,6 +61,7 @@
 			</tr>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>		
 </div>
 
 <#if (synonyms?size>0)>
@@ -79,6 +83,7 @@
 			</#list>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>		
 </div>
 </#if>
 
@@ -101,6 +106,7 @@
 			</#list>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>		
 </div>
 </#if>
 
@@ -121,6 +127,7 @@
 			</#list>
 		</table>
 	</fieldset>
+	<div class="horizontal_dotted_line_large_soft"></div>		
 </div>
 </#if>
 
@@ -138,7 +145,7 @@
 			</#list>
 		</table>
 	</fieldset>
-
+	<div class="horizontal_dotted_line_large_soft"></div>	
 </div>
 </#if>
 
