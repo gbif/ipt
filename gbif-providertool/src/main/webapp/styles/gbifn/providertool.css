@@ -234,6 +234,7 @@ ul.plain_m li {
 ul.minimenu{
     list-style: none;
     padding: 0;
+    margin-top: 40px;
 }
 ul.minimenu li{
 	float: right;
@@ -558,17 +559,30 @@ div.googlemap {
 }
 
 
-
 #taxDetail ul fieldset{
-	background-color: #ededed;
+	background-color: #FFF;
 	border-style: none;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-left: 7px;
+	padding-bottom: 20px;
+}
+
+
+#taxDetail ul fieldset table{
+	margin-bottom: 0px;
+	font-size: 12px;
 }
 
 #taxDetail ul fieldset h2{
 	font-size: 20px;
 	line-height: normal;
 	margin-top: 5px;
+}
+
+#taxDetail ul fieldset p{
+	padding-left: 0px;
+	margin-left: 2px;
 }
 
 #loginForm{
