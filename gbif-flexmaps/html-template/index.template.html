@@ -15,17 +15,18 @@ html {height: 100%; overflow: hidden; }
 </style>
 <body>
 
-	<div id="example" />
+	<div id="occmap" />
 	<script type="text/javascript"> 
     	// <![CDATA[
     	
-		var so = new SWFObject("${application}.swf", "swf", "100%", "100%", "9"); 
+		var so = new SWFObject("IptOccurrenceMap.swf", "swf", "320", "160", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
-		data = '[]';
-		so.addVariable("data", "[{||id||:10,||title||:||Euro+Med Calendula||,||count||:0,||minx||:-23.90625,||maxx||:34.453125000000014,||miny||:27.421875,||maxy||:74.53125},{||id||:9,||title||:||PonTaurus||,||count||:0,||minx||:26.015625,||maxx||:41.1328125,||miny||:35.453272155938336,||maxy||:41.078272155938336},{||id||:11,||title||:||Harry Belafonte\'s Babies||,||count||:0,||minx||:24.55293239967217,||maxx||:-52.734375,||miny||:-17.281610892203258,||maxy||:1.4344593524475546}]");
-		so.addVariable("api_key", "ldjfljshdf");
-		so.write("example");
+		so.addVariable("wms_url", escape("http://localhost:8081/geoserver/wms?request=GetMap&layers=gbif%3Aresource9&srs=EPSG%3A900913&Format=image/png&width=256&height=256&filter=(%3CFilter%3E%3CPropertyIsEqualTo%3E%3CPropertyName%3ETaxonId%3C%2FPropertyName%3E%3CLiteral%3E32126%3C%2FLiteral%3E%3C%2FPropertyIsEqualTo%3E%3C%2FFilter%3E)&background=Transparent"));
+		so.addVariable("bbox", "29.614,36.557,34.568,37.42");
+		so.addVariable("type", "wms");
+		so.addVariable("api_key", "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q");
+		so.write("occmap");
 		// ]]>
 	</script>
 
