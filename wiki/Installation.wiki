@@ -45,7 +45,7 @@ Login as the admin (default is user=admin, password=admin) and update all settin
 -----
 
 = Geoserver =
-To run IPT' geoservices we have developed a small plugin for [http://geoserver.org Geoserver] that allows it to access the IPT cache. We provide a [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=geoserver+zip&colspec=Filename+Summary+Uploaded+Size+DownloadCount geoserver archive] that comes bundled with the plugin, but you should also be able to install the plugin in your own geoserver installation. It was build for [http://geoserver.org/display/GEOS/GeoServer+1.7.0 geoserver 1.7.0] but should also work with later versions. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
+To run IPT' geoservices we have developed a small plugin for [http://geoserver.org Geoserver] that allows it to access the IPT cache. We provide a [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=2&q=geoserver+zip&colspec=Filename+Summary+Uploaded+Size+DownloadCount geoserver archive] that comes bundled with the plugin, but you should also be able to install the plugin in your own geoserver installation. It was build for [http://geoserver.org/display/GEOS/GeoServer+1.7.2 geoserver 1.7.2] but should also work with later versions. The source code is hosted in the [http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/GT2-gbif-providertool SVN] and the plugin is available as a jar in the downloads.
 
 To install the prepared IPT geoserver in your application server, please download the zipped archive and uncompress it straight in Tomcats webapps folder. A Tomcat restart might be needed. You should now be able to access geoserver at:
 {{{http://localhost:8080/geoserver/}}}
@@ -62,7 +62,22 @@ The only configuration that geoserver needs to be aware of, it where your IPTs d
 Log into geoservers config interface as the admin {{{http://localhost:8080/geoserver/config/index.do}}}. The default credentials are user=admin, password=geoserver. 
 Go to the {{{Feature Data Set Configuration}}} (Menu: Config/Data/Datastores), select IPT and edit the {{{datadir}}} so it points to your data directory. Then save and apply the configuration (upper corner left).
 
-Thats all.
+=== Configure GeoWebCache ===
+The IPT makes use of GeoWebCache (GWC), a plugin for geoserver that caches WMS images which increases performance a lot. As with IPT, GWC needs to know the URL for geoserver. By default it assumes you run geoserver under http://localhost:8080/geoserver
+
+If you need to change that, please update geoservers web.xml settings, in particular the following parameter:
+{{{
+<context-param>
+    <param-name>GEOSERVER_WMS_URL</param-name>
+    <param-value>http://EXAMPLE.COM:PORT/PATH/wms?request=GetCapabilities</param-value>
+</context-param>
+}}}
+
+General configuration help for the geoserver bundled version can be found here:
+http://geoserver.org/display/GEOSDOC/5.+GWC+-+GeoWebCache
+
+
+Thats it.
 
 
 -----
