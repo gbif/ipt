@@ -31,8 +31,8 @@
 							new LatLng(bbox[3],bbox[2]));
 				
 				
-				//type=parameters.type;			
-				type="gwc";			
+				type=parameters.type;			
+				//type="gwc";			
 				
 				if(type=="gwc") {
 					geowebcacheUrl = parameters.geowebcache_url;
@@ -50,6 +50,8 @@
 				checkParams();
 				var center:LatLng= requestBbox.getCenter();
 				var zoom:Number = map.getBoundsZoomLevel(requestBbox);
+				if (zoom>12)
+					zoom=12;
 				
 				var topLeft:ControlPosition = new ControlPosition(ControlPosition.ANCHOR_TOP_LEFT,10,10);
 			    var zoomControl:ZoomControl = new ZoomControl(new ZoomControlOptions({hasScrollTrack: false}));
