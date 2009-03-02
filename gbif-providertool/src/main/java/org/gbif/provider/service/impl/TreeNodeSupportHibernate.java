@@ -26,7 +26,7 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T,E>, E extends Enum>{
 	
 	
 	public List<T> getChildren(Long resourceId, Long parentId, Session session) {
-        return session.createQuery(String.format("from %s node where node.parent.id = :parentId and node.resource.id = :resourceId order by lft", persistentClass.getName()))
+        return session.createQuery(String.format("from %s node where node.parent.id = :parentId and node.resource.id = :resourceId order by label", persistentClass.getName()))
         .setLong("resourceId", resourceId)
         .setLong("parentId", parentId)
 		.list();

@@ -24,7 +24,8 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     private Long id;
     private Region region;
     private List<DarwinCore> occurrences;
-	public String geoserverMapUrl;
+    private String geoserverMapUrl;
+	private String geoserverMapBBox;
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	 
@@ -33,7 +34,12 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     		region=regionManager.get(id);
 			// geoserver map link
     		if (region!=null){
-    			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
+    			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, region);
+    			if (region.getBbox()!=null && region.getBbox().isValid()){
+    				geoserverMapBBox = region.getBbox().toStringWMS();
+    			}else{
+    				geoserverMapBBox = resource.getGeoCoverage().toStringWMS();
+    			}
     		}else{
         		return RECORD404;
     		}
@@ -46,7 +52,12 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     		region=regionManager.get(id);
     		occurrences = darwinCoreManager.getByRegion(id, resource_id, true);
     		if (region!=null){
-    			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, region.getBbox(), null, region);
+    			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, region);
+    			if (region.getBbox()!=null && region.getBbox().isValid()){
+    				geoserverMapBBox = region.getBbox().toStringWMS();
+    			}else{
+    				geoserverMapBBox = resource.getGeoCoverage().toStringWMS();
+    			}
     		}else{
         		return RECORD404;
     		}
@@ -72,6 +83,10 @@ public class RegionAction extends BaseOccurrenceResourceAction {
 
 	public String getGeoserverMapUrl() {
 		return geoserverMapUrl;
+	}
+
+	public String getGeoserverMapBBox() {
+		return geoserverMapBBox;
 	}
 
 	public int getWidth() {
