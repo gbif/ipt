@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
@@ -64,6 +65,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 		    Collections.reverse(regionTypes);
 		    higherGeography = Collections.unmodifiableList(regionTypes);  
 		  }  		  
+		@Autowired
+		private GeoserverUtils geoTools;
 		@Autowired
 		private OccStatManager occStatManager;
 		@Autowired
@@ -328,6 +331,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 			resource.setRecWithAltitude(recWithAltitude);
 			resource.setRecWithDate(recWithDate);
 			resource.setBbox(bbox);
+			
+			// reseed geowebcache
+			geoTools.updateGeowebcache(resource);
 		}
 
 
