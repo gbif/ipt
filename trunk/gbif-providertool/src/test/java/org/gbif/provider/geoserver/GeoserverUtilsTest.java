@@ -26,6 +26,7 @@ public class GeoserverUtilsTest extends ResourceTestBase{
 		setupOccResource();
 		resource.setTitle("Walter Ulbrich");
 		String feature = utils.buildFeatureTypeDescriptor((OccurrenceResource)resource);
+		assertTrue(feature!=null);
 		assertTrue(feature.indexOf("Walter Ulbrich")>0);
 	}
 
