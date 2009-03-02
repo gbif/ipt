@@ -8,13 +8,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.XmlFileUtils;
@@ -25,12 +40,16 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 public class GeoserverUtils {
-	private static final String FEATURE_TYPE_TEMPLATE = "/WEB-INF/pages/featureTypeInfo.ftl";
+	private static final String FEATURE_TYPE_TEMPLATE = "/WEB-INF/geoserver/featureTypeInfo.ftl";
+	private static final String SEED_TEMPLATE = "/WEB-INF/geoserver/seed.ftl";
 	protected final Log log = LogFactory.getLog(GeoserverUtils.class);
+	
 	@Autowired
 	private AppConfig cfg;
 	@Autowired
 	private Configuration freemarker;
+	private DefaultHttpClient httpclient = new DefaultHttpClient();
+
 	
 	public String buildFeatureTypeDescriptor(OccurrenceResource resource){
 		try {
@@ -94,60 +113,115 @@ public class GeoserverUtils {
 		}
 	}
 	
+	public void updateGeowebcache(OccurrenceResource resource){
+		// http://localhost:8081/geoserver/gwc/rest/seed/gbif:resource9
+		// http://geoserver.org/display/GEOSDOC/5.+GWC+-+GeoWebCache
+		try {
+			String seedrequest = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(FEATURE_TYPE_TEMPLATE), resource);
+	        httpclient.getCredentialsProvider().setCredentials(
+	                new AuthScope("localhost", -1), 
+	                new UsernamePasswordCredentials(cfg.getGeoserverUser(), cfg.getGeoserverPass()));
+	        log.debug("reload geowebcache");
+	        HttpPost httpost = new HttpPost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()));
+	        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+	        nvps.add(new BasicNameValuePair("reload_configuration", "1"));
+	        HttpEntity body = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
+	        httpost.setEntity(body);        
+	        HttpResponse response = httpclient.execute(httpost);
+	        if (failed(response)){
+	        	log.warn("Failed to seed geowebcache for resource "+resource.getId());
+	        }
+	        consume(response);
+		} catch (IOException e) {
+			log.error("Freemarker IO template error", e);
+		} catch (TemplateException e) {
+			log.error("Freemarker template exception", e);
+		}
+	}
+	
 	public void reloadCatalog() throws IOException{
-		String geoserverBaseUrl = cfg.getGeoserverUrl();
 		String username = cfg.getGeoserverUser();
 		String password = cfg.getGeoserverPass();
-		// do login
-			if (geoserverBaseUrl==null){
-				geoserverBaseUrl="http://localhost:8080/geoserver";
-			}
-			if (username==null){
-				username="sa";
-			}
-			if (password==null){
-				password="";
-			}
-	       URL url=new URL(String.format("%s/admin/loginSubmit.do?username=%s&password=%s&submit=Submit", geoserverBaseUrl, username, password));
-	       URLConnection conn = url.openConnection();
-	       InputStream inStream = conn.getInputStream();
-	       String responseString=new String();
-	       BufferedReader in = new BufferedReader(new InputStreamReader(inStream));
-	       while(in.ready())
-	       {   responseString+= in.readLine();  }
-	       //System.out.println("------------------------------------------------------\nresponseString:"+responseString);
-	       log.debug("Logged into Geoserver as admin");
-	       
-	        // reload
-	       String cookie=conn.getHeaderField("Set-Cookie");
-	       System.out.println("cookie-text:"+cookie);
-	       cookie = cookie.substring(0, cookie.indexOf(";"));
-	       String cookieName = cookie.substring(0, cookie.indexOf("="));
-	       String cookieValue = cookie.substring(cookie.indexOf("=") + 1, cookie.length());
-	       String cookieString=cookieName+"="+cookieValue;
-	       URL url2=new URL(String.format("%s/admin/loadFromXML.do",geoserverBaseUrl));
-	       URLConnection conn2 = url2.openConnection();
-	       conn2.setRequestProperty("Cookie",cookieString);                 // set the Cookie for request
-	       conn2.connect();
-	       inStream = conn2.getInputStream();
-	       in = new BufferedReader(new InputStreamReader(inStream));
-	       responseString=new String();
-	       while(in.ready())
-	       {   responseString+= in.readLine();  }
-	       //System.out.println("------------------------------------------------------\nresponseString:"+responseString);
-	       log.info("Reloaded Geoserver config");
+		String geoserverURL = cfg.getGeoserverUrl();
+		geoserverURL="http://localhost:8081/geoserver";
+		
+        httpclient.getCredentialsProvider().setCredentials(
+                new AuthScope("localhost", -1), 
+                new UsernamePasswordCredentials(username, password));
 
-	        //logout
-	       URL url3=new URL(String.format("%s/admin/logout.do", geoserverBaseUrl));
-	       URLConnection conn3 = url3.openConnection();
-	       conn3.setRequestProperty("Cookie",cookieString);
-	       conn3.connect();
-	       inStream = conn3.getInputStream();
-	       in = new BufferedReader(new InputStreamReader(inStream));
-	       responseString=new String();
-	       while(in.ready())
-	       {   responseString+= in.readLine();  }
-	       //System.out.println("------------------------------------------------------\nresponseString:"+responseString);		
-	       log.debug("Logged out of Geoserver");
+        // LOGIN
+        HttpPost httpost = new HttpPost(geoserverURL+"/admin/loginSubmit.do");
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("username", username));
+        nvps.add(new BasicNameValuePair("password", password));
+
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1));
+
+        HttpResponse response = httpclient.execute(httpost);
+        if (failed(response)){
+        	log.warn("Failed to log into geoserver");
+        }else{
+            log.debug("login to geoserver succeeded");
+        }
+        consume(response);
+
+        // RELOAD
+        HttpGet httpget = new HttpGet(geoserverURL+"/admin/loadFromXML.do");
+        response = httpclient.execute(httpget);
+        if (failed(response)){
+        	log.warn("Failed to reload catalog");
+        }else{
+            log.info("Reloaded geoserver catalog");
+        }
+        consume(response);
+
+        // RELOAD GeoWebCache
+        httpost = new HttpPost(geoserverURL+"/gwc/rest/reload");
+        nvps.clear();
+        nvps.add(new BasicNameValuePair("reload_configuration", "1"));
+        HttpEntity body = new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1);
+        httpost.setEntity(body);        
+        response = httpclient.execute(httpost);
+        consume(response);
+        // do same call again. Sme weird bug in geowebcache requires to try this 2 times - also in the web forms!
+        response = httpclient.execute(httpost);
+        if (failed(response)){
+        	log.warn("Failed to reload geowebcache");
+        }else{
+        	log.info("Reloaded geowebcache");
+        }
+        consume(response);
+
+        // LOGOUT
+        httpget = new HttpGet(geoserverURL+"/admin/logout.do");
+        response = httpclient.execute(httpget);
+        if (failed(response)){
+        	log.warn("Failed to logout of geoserver");
+        }else{
+            log.debug("logged out");
+        }
+        consume(response);
+    }
+	
+	
+	private void consume(HttpResponse response){
+		HttpEntity entity = response.getEntity();
+        if (entity != null) {
+        	try {
+				entity.consumeContent();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 	}
+	private boolean failed(HttpResponse response){
+		if (response.getStatusLine().getStatusCode()==200){
+			return false;
+		}
+		log.warn("Geoserver request failed: "+response.getStatusLine());
+		return true;
+	}
+	
 }

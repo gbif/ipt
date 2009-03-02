@@ -767,5 +767,18 @@
         </action>
         
     </package>
+
+
+
+    <package name="test" namespace="/test" extends="default-freemarker">
+        <global-results>
+          <result name="resource404" type="redirect-action">
+            <param name="actionName">/404</param>
+          </result>
+        </global-results>
+        <action name="geo" class="org.gbif.provider.webapp.action.test.GeoserverAction">
+            <result>/WEB-INF/pages/test/gwc.ftl</result>
+        </action>
+    </package>
     
 </struts>

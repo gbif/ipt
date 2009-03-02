@@ -372,4 +372,8 @@ public abstract class DataResource extends Resource {
 		this.numSynonyms = numSynonyms;
 	}	
 	
+	@Transient
+	public String getLayerName(){
+		return "gbif:resource"+getId();
+	}
 }

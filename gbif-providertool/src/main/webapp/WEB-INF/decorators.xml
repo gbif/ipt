@@ -18,6 +18,7 @@
         <pattern>/data/*</pattern>
         <pattern>/tapir/*</pattern>
         <pattern>/eml/*</pattern>
+        <pattern>/test/*</pattern>
         <pattern>*/ajax/*</pattern>        
     </excludes> 
 

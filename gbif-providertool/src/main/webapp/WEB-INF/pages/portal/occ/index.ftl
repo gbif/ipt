@@ -48,7 +48,7 @@
 		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
-		so.addVariable("geowebcache_url", "${cfg.getGeoserverCacheUrl(resource_id)}");
+		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resource_id)}");
 		so.addVariable("bbox", "${geoserverMapBBox}");
 		so.addVariable("type", "gwc");
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
