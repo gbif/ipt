@@ -3,6 +3,19 @@
     <meta name="resource" content="${region.resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
+	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
+	<script>
+	$(document).ready(function(){
+		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
+		so.addParam("allowFullScreen", "true");
+		so.addVariable("swf", "");
+		so.addVariable("wms_url", "${geoserverMapUrl}");
+		so.addVariable("bbox", "${geoserverMapBBox}");
+		so.addVariable("type", "wms");
+		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
+		so.write("occmap");	    
+	});
+	</script>
 </head>
 	
 
@@ -46,8 +59,9 @@
 
 <div id="loc-geoserver" class="stats map">
 	<label><@s.text name="stats.occPointMap"/></label>
-	<img src="${geoserverMapUrl}" width="${width}" height="${height}" />
+	<div id="occmap"></div>	
 </div>
+
 
 <div class="break79"></div>
 <div class="break79"></div>

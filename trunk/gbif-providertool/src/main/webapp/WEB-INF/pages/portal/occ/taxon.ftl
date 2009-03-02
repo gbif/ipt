@@ -6,10 +6,11 @@
     
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script>
+	$(document).ready(function(){
 		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
-		so.addVariable("url", "${geoserverMapUrl}");
+		so.addVariable("wms_url", "${geoserverMapUrl}");
 		so.addVariable("bbox", "${geoserverMapBBox}");
 		so.addVariable("type", "wms");
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
@@ -41,7 +42,7 @@
 </div>
 <div id="loc-geoserver" class="stats map">
 	<label><@s.text name="stats.occPointMap"/></label>
-	<img src="${geoserverMapUrl}" width="${width}" height="${height}" />
+	<div id="occmap"></div>	
 </div>
 
 <div class="break20"></div>			

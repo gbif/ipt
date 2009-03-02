@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.Annotation;
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Taxon;
@@ -57,6 +58,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     // occurrences only
     private List<DarwinCore> occurrences;
 	public String geoserverMapUrl;
+	public String geoserverMapBBox;
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
     // xml/json serialisation only
@@ -147,7 +149,12 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     		taxon=taxonManager.get(id);
     		occurrences = darwinCoreManager.getByTaxon(id, resource_id, true);
     		if (taxon!=null){
-    			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, taxon.getBbox(), taxon, null);
+    			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, taxon, null);
+    			if (taxon.getBbox()!=null && taxon.getBbox().isValid()){
+    				geoserverMapBBox = taxon.getBbox().toStringWMS();
+    			}else{
+    				geoserverMapBBox = resource.getGeoCoverage().toStringWMS();
+    			}
     		}
     	}
 		return SUCCESS;

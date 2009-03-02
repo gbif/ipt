@@ -53,7 +53,7 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		super.prepare();
 		if (resource != null) {
 			// geoserver map link
-			geoserverMapUrl = mapUtil.getGeoserverMapUrl(resource_id, width, height, resource.getBbox(), null, null);
+			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, null);
 			geoserverMapBBox = resource.getBbox().toStringWMS();
 		}
 		// prepare select lists
