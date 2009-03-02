@@ -119,6 +119,8 @@
 
     <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
 
+    <bean id="hqlTester" class="org.gbif.provider.service.impl.HqlTesterHibernate" parent="abstractManager"/>        
+    
     <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
 
     <!-- cache / import manager -->
