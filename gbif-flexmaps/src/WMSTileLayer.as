@@ -46,6 +46,7 @@ package
 			var loader:Loader = new Loader();
            	
            	var tileUrl:String = wmsUrl +"&BBOX="+bbox;
+           	trace(tileUrl);
             loader.load(new URLRequest(tileUrl));
             return loader;
 			
