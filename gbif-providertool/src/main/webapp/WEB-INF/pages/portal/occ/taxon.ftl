@@ -10,7 +10,7 @@
 		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
-		so.addVariable("wms_url", "${geoserverMapUrl}");
+		so.addVariable("wms_url", escape("${geoserverMapUrl}"));
 		so.addVariable("bbox", "${geoserverMapBBox}");
 		so.addVariable("type", "wms");
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");

@@ -19,17 +19,16 @@ public class MapUtil {
 	private AppConfig cfg;
 	
 	public String getWMSGoogleMapUrl(Long resourceId, Taxon taxon, Region region){
-		// ESPG:900913
+		// ESPG:900913 doesnt work, use 4326 for now :(
 		// tile size=256
-		// background=Transparent
 		String wms="";
 		try {
-			wms = getWMSUrl(resourceId, 256, 256, taxon, region, URLEncoder.encode("EPSG:900913", Constants.ENCODING));
+			wms = getWMSUrl(resourceId, 256, 256, taxon, region, URLEncoder.encode("EPSG:4326", Constants.ENCODING));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return wms+"&background=Transparent";
+		return wms;
 	}
 	public String getWMSUrl(Long resourceId, int width, int height, Taxon taxon, Region region){
 		// uses default WGS84
@@ -62,7 +61,7 @@ public class MapUtil {
 		}
 		// produce entire WMS URL
 		try {
-			return String.format("%s/wms?request=GetMap&layers=%s&srs=%s&Format=image/png&width=%s&height=%s&filter=(%s)", cfg.getGeoserverUrl(), URLEncoder.encode("gbif:resource"+resourceId, Constants.ENCODING), srs, width, height, URLEncoder.encode(filter, Constants.ENCODING));
+			return String.format("%s/wms?request=GetMap&layers=%s&srs=%s&Format=image/png&transparent=true&width=%s&height=%s&filter=(%s)", cfg.getGeoserverUrl(), URLEncoder.encode("gbif:resource"+resourceId, Constants.ENCODING), srs, width, height, URLEncoder.encode(filter, Constants.ENCODING));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
