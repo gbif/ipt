@@ -53,7 +53,7 @@ public abstract class ResourceStatsBaseAction<T extends Resource> extends BaseRe
 	
 	public static int DEFAULT_WIDTH = 320;
 	public static int DEFAULT_HEIGHT = 160;
-	public static int ZOOM_CHART_WIDTH = 700;
+	public static int ZOOM_CHART_WIDTH = 680;
 	public static int ZOOM_CHART_HEIGHT = 400;
 	public static int ZOOM_MAP_WIDTH = 440;
 	public static int ZOOM_MAP_HEIGHT = 220;

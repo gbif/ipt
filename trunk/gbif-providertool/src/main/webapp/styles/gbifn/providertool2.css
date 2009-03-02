@@ -72,7 +72,7 @@ div#resourceListContainer{
 	margin-left: -7px;
 	margin-top: -5px;
 	margin-bottom: 20px;
-	line-height: 1px;	
+	line-height: 1px;
 }
 
 
@@ -189,7 +189,7 @@ input.button, button{
 	padding-right: 2px;
 	padding-bottom: 0pt;
 	padding-left: 0pt;
-	margin-top: -5px;
+	margin-top: 0px;
 	margin-left: 5px;
 }
 

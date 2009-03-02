@@ -7,6 +7,6 @@
 </head>
 	
 
-<br class="clearfix" />
-
+<!--<br class="clearfix" />-->
+<div class="break79"></div>
 <#include "/WEB-INF/pages/inc/taxonList.ftl">  

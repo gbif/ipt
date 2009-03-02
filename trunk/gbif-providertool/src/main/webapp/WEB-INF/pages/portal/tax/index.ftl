@@ -44,7 +44,6 @@
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span><@s.property value="resource.description"/></span>
-
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
 		<label>${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}</label>

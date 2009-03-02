@@ -7,14 +7,14 @@
     <meta name="submenu" content="meta"/>
 </head>
 	
-		
-<img class="rightImage" src="${cfg.getResourceLogoUrl(resource_id)}" />
 <h1 class="h1meta">${resource.title}</h1>	
 <div class="horizontal_dotted_line_large"></div>
 
-<@s.form>
 
-<table>	
+<@s.form>
+<div>
+<img class="rightImage_nm" src="${cfg.getResourceLogoUrl(resource_id)}" />
+<table style="width: 400px;">	
  <tr>
 	<th>GUID</th>
 	<td><a href="${cfg.getResourceUrl(resource.guid)}">${resource.guid}</a></td>
@@ -27,8 +27,8 @@
 	<th>Annotations</th>
 	<td><a href="annotations.html?resource_id=${resource_id}">Annotations</a></td>
  </tr>
- 
 </table>
+</div>
 
 <div id="basics">
 	<fieldset>

@@ -25,7 +25,7 @@
 	<img src="${chartUrl}" />
 </div>
 
-<div id="stats-menu" style="text-align:center;">
+<div id="stats-menu">
 	<ul class="actionmenu" style="text-align:center;">
 	  <#list ["World","Africa","Asia","Europe","Middle East","South America","USA"] as area>
 		<li>
