@@ -11,7 +11,6 @@
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   <fieldset>
-    <!--<legend><@s.text name="resource.metadata"/></legend>-->
     <@s.hidden name="resource_id" value="${(resource.id)!}"/>
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
     <@s.hidden name="guid" value="${(resource.guid)!}"/>

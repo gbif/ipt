@@ -35,11 +35,11 @@
  </tr>
  <tr>
 	<th><@s.text name='extension.link'/></th>
-	<td><#if extension.link??><img src="<@s.url value='/images/assets/bullet_blue.png'/>"/><a href="${extension.link}" target="_blank"> view info</a><#else><img src="<@s.url value='/images/assets/bullet_grey.png'/>"/> unaviable</#if></td>
+	<td><#if extension.link??><img src="<@s.url value='/images/assets/bullet_blue.gif'/>"/><a href="${extension.link}" target="_blank"> view info</a><#else><img src="<@s.url value='/images/assets/bullet_grey.gif'/>"/> unaviable</#if></td>
  </tr>
   <tr>
 	<th>Installed</th>
-	<td><#if extension.installed==true><img src="<@s.url value='/images/assets/bullet_green.png'/>"/> yes<#else><img src="<@s.url value='/images/assets/bullet_delete.png'/>"/> no</#if></td>
+	<td><#if extension.installed==true><img src="<@s.url value='/images/assets/bullet_green.gif'/>"/> yes<#else><img src="<@s.url value='/images/assets/bullet_delete.gif'/>"/> no</#if></td>
  </tr>
  <tr>
 	<th><@s.text name='extension.properties'/></th>

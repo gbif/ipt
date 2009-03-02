@@ -93,11 +93,11 @@ form .xlargeFull{
     width: 880px;
 }
 form .xlarge{
-    width: 686px;
+    width: 681px;
 }
 form textarea.xlarge{
     height: 20em;
-    width: 686px;	
+    width: 681px;	
 }
 form input.xlarge{
     width: 681px;
@@ -108,6 +108,7 @@ form textarea.slim{
 form .xhalf{
     width: 326px;
     float: left;
+    padding-left: 0px;
 }
 
 .tablefile{
@@ -411,6 +412,10 @@ div.chart form, div.map form {
 	height: 225px; 
 }
 
+#stats-chart{
+	height: 410px; 
+}
+
 #loc-stats,
 #tax-stats,
 #temp-stats{
@@ -433,6 +438,14 @@ div.chart form, div.map form {
 	text-align: right;
 	padding-left: 15px;
 	margin-top: 65px;	
+}
+
+
+.rightImage_nm{
+	float: right;
+	text-align: right;
+	padding-left: 15px;
+	margin-top: 5px;	
 }
 
 .rightCombo{
@@ -674,14 +687,20 @@ body#login{
 	background-color: #FFFFFF;
 	border-style: none;
 	margin-left: -5px;
-	margin-bottom: 0px;
-	padding-bottom: 0px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
 	padding-top: 0px;
 	padding-right: 0px;
 }
 
+#emlForm fieldset ul{
+	list-style: none;
+}
+
+
 #emlForm fieldset li{
 	font-size: 13px;
+	list-style: none;
 }
 
 #emlForm fieldset .right{

@@ -28,7 +28,7 @@
 	</#if>
 </div>
 <div class="break79"></div>
-<div id="stats-table">
+<div id="stats-big-table">
 	<@display.table name="data" class="table" id="drow" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.category"/>
 	    <#if recordAction??>

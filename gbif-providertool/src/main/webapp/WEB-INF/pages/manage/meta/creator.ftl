@@ -13,13 +13,13 @@
 <div class="break10"></div>
 <@s.form id="emlForm" action="creator" method="post" validate="false">
 <fieldset>
-	<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
-	<!--was here-->
-	<!--<legend><@s.text name="eml.resourceCreator"/></legend>-->
+	<div>
+		<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
+	</div>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="geocoverage"/>
 
-	<div>
+	<div class="newline">
 		<div class="left">
 			<@s.textfield key="eml.resourceCreator.firstName" label="%{getText('agent.firstName')}" required="true" cssClass="text xhalf" />
 		</div>
@@ -43,8 +43,12 @@
 			<@s.textfield key="eml.resourceCreator.email" label="%{getText('agent.email')}" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
-	<@s.textfield key="eml.resourceCreator.homepage" label="%{getText('agent.homepage')}" required="false" cssClass="text xlarge"/>
-	<@s.textfield key="eml.resourceCreator.address.address" label="%{getText('agent.address.address')}" required="false" cssClass="text xlarge"/>
+	<div>
+		<@s.textfield key="eml.resourceCreator.homepage" label="%{getText('agent.homepage')}" required="false" cssClass="text xlarge"/>
+	</div>
+	<div>	
+		<@s.textfield key="eml.resourceCreator.address.address" label="%{getText('agent.address.address')}" required="false" cssClass="text xlarge"/>
+	</div>	
 	<div>
 		<div class="left">
 			<@s.textfield key="eml.resourceCreator.address.postalCode" label="%{getText('agent.address.postalCode')}" required="false" cssClass="text medium"/>
@@ -61,10 +65,10 @@
 			<@s.select key="eml.resourceCreator.address.country" list="isoCountryI18nCodeMap" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
-</fieldset>
 	<div class="breakRight"></div>
-	<div class="breakRight">
-    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+	<div class="breakRightButtons">
+		<@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
+		<@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
  	</div>
+</fieldset>
 </@s.form>
