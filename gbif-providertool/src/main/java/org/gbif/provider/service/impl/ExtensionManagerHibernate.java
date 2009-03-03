@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Transient;
@@ -24,6 +26,7 @@ import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TreeNodeManager;
+import org.gbif.provider.service.util.ExtensionFactory;
 import org.hibernate.Session;
 import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,8 +199,11 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 	}
 
 	public void synchroniseExtensionsWithRepository() {
-		// TODO Auto-generated method stub
-		
+		Collection<String> urls = new LinkedList<String>();
+		urls.add("http://gbrds.gbif.org/resources/extensions/vernacularName.xml");
+		Collection<Extension> extensions = ExtensionFactory.build(urls);
+		for (Extension e: extensions) {
+			this.save(e);
+		}
 	}
-	
 }
