@@ -27,10 +27,10 @@
 	<@s.hidden name="nextPage" value="rights"/>
 
 	<div>
-		<div class="left">
+		<div class="leftMedium">
 			<@s.textfield id="beginDate" key="eml.temporalCoverage.start" required="true" cssClass="text medium" />
 		</div>
-		<div class="left" id="endDateDiv">
+		<div class="leftMedium" id="endDateDiv">
 			<@s.textfield id="endDate" key="eml.temporalCoverage.end" required="true" cssClass="text medium" />
 		</div>
 		<div class="left">

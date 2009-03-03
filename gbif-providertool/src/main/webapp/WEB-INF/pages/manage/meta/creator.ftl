@@ -20,26 +20,26 @@
 	<@s.hidden name="nextPage" value="geocoverage"/>
 
 	<div class="newline">
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.firstName" label="%{getText('agent.firstName')}" required="true" cssClass="text xhalf" />
 		</div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.lastName" label="%{getText('agent.lastName')}" required="true" cssClass="text xhalf" />
 		</div>
 	</div>
 	<div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.organisation" label="%{getText('agent.organisation')}" required="false" cssClass="text xhalf"/>
 		</div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.position" label="%{getText('agent.position')}" required="false" cssClass="text xhalf"/>
 		</div>
 	</div>
 	<div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.phone" label="%{getText('agent.phone')}" required="false" cssClass="text xhalf"/>
 		</div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.email" label="%{getText('agent.email')}" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
@@ -50,18 +50,18 @@
 		<@s.textfield key="eml.resourceCreator.address.address" label="%{getText('agent.address.address')}" required="false" cssClass="text xlarge"/>
 	</div>	
 	<div>
-		<div class="left">
+		<div class="leftMedium">
 			<@s.textfield key="eml.resourceCreator.address.postalCode" label="%{getText('agent.address.postalCode')}" required="false" cssClass="text medium"/>
 		</div>
-		<div class="left">
+		<div class="leftLarge">
 			<@s.textfield key="eml.resourceCreator.address.city" label="%{getText('agent.address.city')}" required="false" cssClass="text large"/>
 		</div>
 	</div>
 	<div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.textfield key="eml.resourceCreator.address.province" label="%{getText('agent.address.province')}" required="false" cssClass="text xhalf"/>
 		</div>
-		<div class="left">
+		<div class="leftxhalf">
 			<@s.select key="eml.resourceCreator.address.country" list="isoCountryI18nCodeMap" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
