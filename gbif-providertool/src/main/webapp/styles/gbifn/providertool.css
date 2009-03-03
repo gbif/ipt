@@ -1,3 +1,5 @@
+/* @override http://localhost:8080/styles/gbifn/providertool.css */
+
 
 /* PROVIDERTOOL customising simplicity */
 
@@ -74,6 +76,16 @@ div.overhang {
     float: left;
 }
 
+div.block2col {
+	width: 340px;
+	float: left;
+}
+div.block2col input{
+	width: 80px;
+}
+div.block2col ~ div.block2col{
+	margin-left: 10px;
+}
 
 .subentry {
 	display: block;
@@ -101,6 +113,13 @@ form textarea.xlarge{
 }
 form input.xlarge{
     width: 681px;
+}
+form input.block2col{
+    width: 320px;
+}
+form textarea.block2col{
+    height: 20em;
+    width: 320px;
 }
 form textarea.slim{
     height: 8em;
@@ -155,7 +174,7 @@ table.layout tr th {
 
 /* @end */
 
-/* @grouheader */
+/* @group header */
 
 
 #currentResourceClass {
@@ -468,6 +487,32 @@ div#preview td {
 	padding: 5px;
 }
 
+#properties{
+	position: absolute;
+	background-color: white;
+}
+#properties div.propGroup{
+	padding-top: 5px;
+}
+
+#properties ul{
+	list-style-type: none;
+	margin-left: 15px;
+	margin-top: 3px;
+	margin-bottom: 15px;
+}
+#properties label{
+	font-weight: bold;
+}
+#sourcepreview {
+	display:none;
+	clear:both;
+	z-index: 11;
+}
+div.propertyForm div.overhang div {
+	float: left;
+	padding-right: 10px;
+}
 .citation{
 	font-style: italic;
 }

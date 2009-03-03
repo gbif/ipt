@@ -27,7 +27,7 @@
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
 	<div>
-	  <@s.form action="propMapping" method="post">
+	  <@s.form action="propMapping" method="get">
 	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value="${coreMapping.id}"/>
 		<div class="left">
