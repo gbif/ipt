@@ -49,6 +49,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author mdoering
  */
 public class JDBCDwCDatastore extends AbstractDataStore {
+	public static final int MAX_RECORDS = 10000;
 	protected static Log log = LogFactory.getLog(JDBCDwCDatastore.class);
 	
 	/**
@@ -187,7 +188,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 				parsedQuery.getMaxY(), 
 				parsedQuery.getMinX(), 
 				parsedQuery.getMaxX(), 
-				5000); // TODO - pass in in the factory...
+				MAX_RECORDS); // TODO - pass in in the factory...
 		
 		try {
 			log.debug("Found "+records.size() + " DwcRecords");
