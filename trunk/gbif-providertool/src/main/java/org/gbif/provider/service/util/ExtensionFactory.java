@@ -17,7 +17,7 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.xml.sax.SAXException;
 
 /**
- * Building from XML definition 
+ * Building from XML definitions
  * @author tim
  */
 public class ExtensionFactory {
