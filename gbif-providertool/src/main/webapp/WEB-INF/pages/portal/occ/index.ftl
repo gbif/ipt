@@ -54,8 +54,8 @@
 		so.addVariable("type", "wms");
 		<#-- geowebcache doesnt work reliably so far
 		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resource_id)}");
-		-->
 		so.addVariable("type", "gwc");
+		-->
 		so.write("occmap");	    
 	});
 	</script>
