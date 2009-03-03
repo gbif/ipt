@@ -48,8 +48,8 @@
 			        <c:when test='${currentSubMenu == "manage_resource"}'>
 		                <s:a href="%{resourcePortal}">
 		                	<h1 id="resourceName">${currentResourceTitle}</h1>
-				        	<div class="horizontal_dotted_line_small_foo"></div>
 		                </s:a>
+			        	<div class="horizontal_dotted_line_small_foo"></div>		                
 		            	<decorator:getProperty property="page.contextmenu" />
 			        	<%@ include file="/common/submenu_actions_publish.jsp" %>
 	                	<s:if test="resource.id>0">	                
