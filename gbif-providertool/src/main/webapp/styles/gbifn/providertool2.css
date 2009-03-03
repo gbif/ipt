@@ -3,6 +3,11 @@ div#main h1{
 	margin-bottom: 0px;
 }
 
+div#sub h1{
+	color: #077a2d;
+	margin-bottom: 0px;
+}
+
 fieldset{
 	border-style: none;
 	padding-left: 0px;
@@ -343,10 +348,6 @@ div.error, span.error, li.error, div.message{
 	margin-top: 18px;
 }
 
-div.break79{
-	height: 79px;
-}
-
 div.break10{
 	height: 10px;
 }
@@ -362,3 +363,8 @@ div.break35{
 div.break55{
 	height: 55px;
 }
+
+div.break79{
+	height: 79px;
+}
+

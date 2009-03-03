@@ -101,6 +101,7 @@ textarea{
 	font-family: Arial, Helvetica;
 }
 
+
 form .xlargeFull{
     width: 880px;
 }
@@ -125,7 +126,7 @@ form textarea.slim{
     height: 8em;
 }
 form .xhalf{
-    width: 326px;
+    width: 328px;
     float: left;
     padding-left: 0px;
 }
@@ -727,7 +728,7 @@ body#login{
 #resourceForm fieldset{
 	background-color: #FFFFFF;
 	border-style: none;
-	margin-left: -5px;
+	margin-left: 0x;
 	margin-bottom: 10px;
 	padding-bottom: 10px;
 	padding-top: 0px;
