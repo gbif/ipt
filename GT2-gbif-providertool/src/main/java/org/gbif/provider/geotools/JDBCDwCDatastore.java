@@ -112,13 +112,13 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 			dataDir="webapps/ipt/data";
 			
 		}
-        log.debug("Using dataDir: " + dataDir);
+        log.info("Using dataDir: " + dataDir);
 		// convert relative paths into absolute ones...
 		File d = new File(dataDir);		
         String url = String.format("jdbc:h2:%s/db/ipt;auto_server=true", d.getAbsolutePath());
         String user = "sa"; // params.get("user")
         String pass = "";  // params.get("password") 
-        log.debug("Using JDBC URL: " + url);
+        log.info("Using JDBC URL: " + url);
 
 //        // embedded H2 is apparently faster without connection pools. See H2 documentation 
 //        JdbcDataSource ds = new JdbcDataSource();
