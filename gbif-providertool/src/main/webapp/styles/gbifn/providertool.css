@@ -493,6 +493,19 @@ div#preview td {
 }
 #properties div.propGroup{
 	padding-top: 5px;
+	clear: both;
+}
+#properties div.propGroup div {
+	margin: 0;
+	padding: 0;
+	width: 330px;
+}
+#properties div.propGroup img{
+	font-weight: bold;
+	float: left;
+}
+#properties div.propGroup label{
+	font-weight: bold;
 }
 
 #properties ul{
@@ -501,9 +514,7 @@ div#preview td {
 	margin-top: 3px;
 	margin-bottom: 15px;
 }
-#properties label{
-	font-weight: bold;
-}
+
 #sourcepreview {
 	display:none;
 	clear:both;
