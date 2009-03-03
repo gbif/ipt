@@ -60,13 +60,11 @@
 	      	sourcePreview();
 	    });
 	    $("#properties ul").hide(0);
-	    $("#properties div.propGroup").hover(
+	    $("#properties div.propGroup").click(
 	      function () {
-	      	$("ul", this).slideDown("normal");
-	      }, 
-	      function () {
-	      	$("ul", this).slideUp("normal");
-	      }
+	      	$("ul", this).slideToggle("normal");
+	      	$("div div", this).toggle(0);
+	      } 
 	    );
 	    $("a.propLink").click(function () {
 	      	addProperty($(this));
@@ -161,7 +159,11 @@
 	<div id="properties">
   	<#list availProperties?keys as group>
   	  <div class="propGroup">
-	    <label>${group}</label>
+		<div>
+		    <div class="left"><img src="<@s.url value='/images/arrow_right.png'/>" /></div>
+		    <div class="left" style="display:none"><img src="<@s.url value='/images/arrow_down.png'/>" /></div>
+		    <label>${group}</label>
+	    </div>
 	    <ul>
 		<#list availProperties[group] as p>
 		  <li>

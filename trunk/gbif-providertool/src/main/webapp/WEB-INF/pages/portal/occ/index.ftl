@@ -48,10 +48,14 @@
 		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
-		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resource_id)}");
 		so.addVariable("bbox", "${geoserverMapBBox}");
-		so.addVariable("type", "gwc");
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
+		so.addVariable("wms_url", escape("${geoserverMapUrl}"));
+		so.addVariable("type", "wms");
+		<#-- geowebcache doesnt work reliably so far
+		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resource_id)}");
+		-->
+		so.addVariable("type", "gwc");
 		so.write("occmap");	    
 	});
 	</script>
