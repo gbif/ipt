@@ -2,8 +2,16 @@ package org.gbif.provider.service.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.xml.sax.SAXException;
@@ -13,7 +21,48 @@ import org.xml.sax.SAXException;
  * @author tim
  */
 public class ExtensionFactory {
+	protected static Log log = LogFactory.getLog(ExtensionFactory.class);
+	protected static HttpClient httpClient =  new HttpClient(new MultiThreadedHttpConnectionManager());
 	
+	
+	
+	/**
+	 * Builds extensions from the supplied Strings which should be URLs
+	 * @param urls To build extensions from 
+	 * @return The collection of Extensions
+	 */
+	public static Collection<Extension> build(Collection<String> urls) {
+		List<Extension> extensions = new LinkedList<Extension>();
+		
+		for (String urlAsString : urls) {
+			GetMethod method = new GetMethod(urlAsString);
+			method.setFollowRedirects(true);
+ 			try {
+				httpClient.executeMethod(method);
+				InputStream is = method.getResponseBodyAsStream();
+				try {
+					Extension e = build(is);
+					log.info("Successfully parsed extension: " + e.getTitle());
+					extensions.add(e);
+					
+				} catch (SAXException e) {
+					log.error("Unable to parse XML for extension: " + e.getMessage(), e);
+				} finally {
+					is.close();					 
+				}
+			} catch (Exception e) {
+				log.error(e);
+				
+			} finally {
+				 try {
+					method.releaseConnection();
+				} catch (RuntimeException e) {
+				}
+			}
+		}
+		
+		return extensions;
+	}
 	
 	/**
 	 * Builds an extension from the supplied input stream
