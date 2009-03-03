@@ -7,7 +7,6 @@
     
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.core.min.js'/>"></script>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.accordion.min.js'/>"></script>
-	<script type="text/javascript" src="<@s.url value='/scripts/jquery/effects.shake.min.js'/>"></script>
 	<script>
 	var previewLoaded=0;
 	function sourcePreview(){
@@ -55,30 +54,31 @@
 	
 	$(document).ready(function(){
 		$("#propertyFormTemplate").hide(0);
-	    $("#sourceViewLink").click(function () {
-	    	$("#uploadpreview").hide();
+	    $("#mappingForm_button_viewsource").click(function (e) {
+			e.preventDefault(); 
 	      	$("#sourcepreview").slideToggle("normal");
 	      	sourcePreview();
 	    });
-	    $("#previewLink").click(function () {
-	      	$("#sourcepreview").hide();
-	    	$("#uploadpreview").slideToggle("normal");
-	      	sourcePreview();
-	    });
+	    $("#properties ul").hide(0);
+	    $("#properties div.propGroup").hover(
+	      function () {
+	      	$("ul", this).slideDown("normal");
+	      }, 
+	      function () {
+	      	$("ul", this).slideUp("normal");
+	      }
+	    );
 	    $("a.propLink").click(function () {
 	      	addProperty($(this));
 	      	$(this).parent().remove();
 	    });
 
-		$("#accordion").accordion({
-			header: "label",
-			autoHeight: false
-		});
 	});
 	
 	</script>	
   </head>
 
+<#-- 
 <content tag="contextmenu">
   <div id="availableProperties">
 	<label>Available Properties</label>
@@ -94,18 +94,16 @@
 			</#if>
 		  </li>
 		</#list>
-	    </ul> <#-- group -->
+	    </ul>
 	</#list>
-	</div> <#-- accordion -->
+	</div>
   </div>
 </content>
-
+-->
 <body>
 
 
   <div class="sucker"></div>
-
-<h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 
 <#if !columnOptions??>
 	<#-- import source doesnt work -->
@@ -114,6 +112,8 @@
 	</p>
 <#else>
 
+  <div class="block2col">
+	<h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
 	<@s.form id="mappingForm" action="savePropertyMapping" method="post">
         <@s.hidden key="mid"/>
         <@s.hidden key="sid"/>
@@ -128,17 +128,12 @@
 			
 		<#if view.isCore()>
 		 	<@s.select key="view.guidColumn" emptyOption="true" list="columnOptions" />
-		 	<div>
-		 	<div class="left"/>
-		 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
-        	</div>  
-		 	<div class="left"/>
-    	    	<@s.textfield key="view.linkTemplate" cssClass="large"/>
-        	</div>  
-        	</div>  
+	 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
+	    	<@s.textfield key="view.linkTemplate" cssClass="block2col"/>
 	 	</#if>
 	 	
-		<div class="breakRight">
+		<div class="breakLeft">
+	        <@s.submit cssClass="button" key="button.viewsource" theme="simple"/>	        
 	        <@s.submit cssClass="button" key="button.save" theme="simple"/>
 		    <#if (view.id)??>
 		        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
@@ -146,28 +141,53 @@
 	        <@s.submit cssClass="button" method="cancel" key="button.done" theme="simple"/>	        
 		</div>	        
 	    
+	    <#--
 	 	<br/>
 		<ul class="actionmenu">
 			<li id="sourceViewLink"><a>view source</a></li>
 			<li id="previewLink"><a>preview mapping</a></li>		
 		</ul>
-
-	<div class="break"></div>
-	<div id="sourcepreview" style="display:none; clear:both;">
-		Retrieving source data ...
-	</div>	
+		-->
+	<#--
 	<div id="uploadpreview" style="display:none; clear:both;">
 		Retrieving mapping preview ...<br/><br/>
 		<p class="reminder">Not implemented yet, sorry!</p>
 	</div>
+    -->
+  </div>
+
+  <div class="block2col" id="availableProperties">
+	<h2>Available Properties</h2>
+	<div id="properties">
+  	<#list availProperties?keys as group>
+  	  <div class="propGroup">
+	    <label>${group}</label>
+	    <ul>
+		<#list availProperties[group] as p>
+		  <li>
+			<a class="propLink" id="ap${p.id}">${p.name}</a>
+			<#if p.link??>
+				<a class="propDocLink" href="${p.link}" target="_blank">(about)</a>
+			</#if>
+		  </li>
+		</#list>
+	    </ul>
+	  </div>
+	</#list>
+	</div>
+  </div>
 
 
-	<div class="break"></div>	
-	
+  <div class="break"></div>
+  <div id="sourcepreview">
+	Retrieving source data ...
+  </div>	
+
+  <div class="break"></div>	
 	<h2>Property Mappings</h2>
 	<p>For a single property that you want to map, select a column from your source or enter a fixed value into the text field.
 	   If the property has a vocabulary associated you can also select a term from the dropdown.<br/>
-	   To add more properties please select them from the available properties on the right hand side.
+	   To add more properties please select them from the available properties just above (hint: the menu opens when you move the mouse above).
 	</p>
 	
 	<div id="mappings">
@@ -180,11 +200,11 @@
 			</#if>
 		</div>
 		<div class="overhang">
-			<div class="left">
+			<div>
 				<@s.select key="view.propertyMappings[${mp.property.id}].column" list="sourceColumns"
 					required="${mp.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 			</div>
-			<div class="left">
+			<div>
 				<#if (mp.property.vocabulary??)>
 				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.property.id}')"/>
 				    or select a static value:
@@ -204,13 +224,13 @@
     <@s.submit cssClass="button" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
  
-</@s.form> 
+  </@s.form> 
 
-<@s.url id="termMappingUrl" action="terMappingInit">
+  <@s.url id="termMappingUrl" action="terMappingInit">
     <@s.param name="mappings_idx" value="9"/>
-</@s.url>
+  </@s.url>
 
-</#if>
+</#if> <#-- if/else at top testing if source works -->
 
 <#-- property form template -->
 <div id="propertyFormTemplate">

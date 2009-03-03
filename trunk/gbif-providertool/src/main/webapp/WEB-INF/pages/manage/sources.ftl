@@ -131,7 +131,7 @@ If your data does not exactly match those formats you have the option to configu
 
 
 <div class="break">
-<@s.form action="transformations" method="get">
+<@s.form action="mappings" method="get">
   <@s.hidden key="resource_id"/>
   <div class="breakRight">
 	  <@s.submit cssClass="button" key="button.next" theme="simple"/>
