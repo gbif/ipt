@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+    <title>dynatree - tests for version 0.4</title>
+    
+    <!-- Include prototype: -->
+    <!-- 
+    <script src='http://www.prototypejs.org/assets/2008/9/29/prototype-1.6.0.3.js' type='text/javascript'></script>
+    -->
+    
+    <!-- Include the required JavaScript libraries: -->
+    <script src='../jquery/jquery.js' type='text/javascript'></script>
+    <script src='../jquery/ui.core.js' type='text/javascript'></script>
+    <script src='../jquery/jquery.cookie.js' type='text/javascript'></script>
+
+    <link rel='stylesheet' type='text/css' href='../src/skin/ui.dynatree.css'> 
+<!--    <link rel='stylesheet' type='text/css' href='skin-vista/ui.dynatree.css'> -->
+	<script src='../src/jquery.dynatree.js' type='text/javascript'></script>
+
+    <!-- Add code to initialize the tree when the document is loaded: -->
+    <script type='text/javascript'>
+    <!--
+//    $.ui.dynatree.nodedatadefaults["icon"] = false; // Turn off icons by default
+
+	$(function(){
+		$("#tree").dynatree({
+			rootVisible: true,
+			rootCollapsible: false,
+			keyboard: true,
+//			persist: true,
+			clickFolderMode: 1, //3, //2,
+			checkbox: true,
+			selectMode: 3,
+			children: [
+				{title: "Node 1", expand: true, key: "1",
+				 children: [
+					{title: "Node 1.1" },
+					{title: "Node 1.2", isFolder: true, expand: true, key: "12",
+						 children: [
+									{title: "Node 1.2.1<br>Multi-line test" },
+									{title: "Node 1.2.2", key: "122",
+										 children: [
+													{title: "Node 1.2.2.1", activate: true },
+													{title: "Node 1.2.2.2", select: true },
+													{title: "Node 1.2.2.3", focus: true }
+													]
+										 },
+									{title: "Node 1.2.3",
+										children: []
+									}
+									]
+						 },
+					{title: "Node 1.3", select: true },
+					{title: "Node 1.4", isLazy: true }
+					]
+					},
+				{title: "Node 2",
+					children: [
+								{title: "Node 2.1" }
+						] 
+					}
+			],
+
+			onQueryActivate: function(activate, dtnode) {
+				logMsg("onQueryActivate(%o, %o)", activate, dtnode);
+			},
+			onActivate: function(dtnode) {
+				logMsg("onActivate(%o)", dtnode);
+				$("#echoActive").text(dtnode.data.title);
+			},
+			onDeactivate: function(dtnode) {
+				logMsg("onDeactivate(%o)", dtnode);
+				$("#echoActive").text("-");
+			},
+			
+			onQuerySelect: function(select, dtnode) {
+				logMsg("onQuerySelect(%o, %o)", select, dtnode);
+				if( dtnode.isFolder )
+					return false;
+			},
+			onSelect: function(select, dtnode) {
+				logMsg("onSelect(%o, %o)", dtnode);
+				var s = dtnode.tree.getSelectedNodes().join(", ");
+				$("#echoSelected").text(s);
+			},
+			
+			onQueryExpand: function(expand, dtnode) {
+				logMsg("onQueryExpand(%o, %o)", expand, dtnode);
+			},
+			onExpand: function(dtnode) {
+				logMsg("onExpand(%o)", dtnode);
+			},
+			onCollapse: function(dtnode) {
+				logMsg("onCollapse(%o)", dtnode);
+			},
+			
+			onLazyRead: function(dtnode) {
+				logMsg("onLazyRead(%o)", dtnode);
+				var fakeJsonResult = [
+  				    { title: 'Lazy node 1', isLazy: true, select: false },
+  				    { title: 'Simple node 2', select: true }
+  				];
+  				function fakeAjaxResponse() {
+  					return function() {
+  						dtnode.append(fakeJsonResult);
+  						// Remove the 'loading...' status:
+  						dtnode.setLazyNodeStatus(DTNodeStatus_Ok);
+  					};
+  				}
+  				window.setTimeout(fakeAjaxResponse(), 1500);
+			},
+
+			onFocus: function(dtnode) {
+				logMsg("onFocus(%o)", dtnode);
+				$("#echoFocused").text(dtnode.data.title);
+			},
+			onBlur: function(dtnode) {
+				logMsg("onBlur(%o)", dtnode);
+				$("#echoFocused").text("-");
+			},
+			
+			onClick: function(dtnode, event) {
+				logMsg("onClick(%o, %o)", dtnode, event);
+				//return false;
+			},
+			onDblClick: function(dtnode, event) {
+				logMsg("onDblClick(%o, %o)", dtnode, event);
+				dtnode.toggleSelect();
+			},
+			onKeydown: function(dtnode, event) {
+				logMsg("onKeydown(%o, %o)", dtnode, event);
+				switch( event.which ) {
+				case 32: // [space]
+					dtnode.toggleSelect();
+					return false;
+				case 100: // 'd'
+					$("#tree").dynatree("disable");
+					return false;
+				}
+			},
+			onKeypress: function(dtnode, event) {
+				logMsg("onKeypress(%o, %o)", dtnode, event);
+			}
+
+		});
+
+		
+		$("#btnVisit").click(function(){
+			$("#tree").dynatree("getRoot").visit(function(dtnode){
+				logMsg("%o", dtnode);
+			});
+		});
+		$("#btnGetSelected").click(function(){
+			var nodeList = $("#tree").dynatree("getTree").getSelectedNodes(true);
+			logMsg(nodeList)
+		});
+		$("#btnSerialize").click(function(){
+			var dict = $("#tree").dynatree("getTree").toDict();
+			logMsg("Serialized: %o", dict);
+		});
+		$("#btnModify").click(function(){
+			var dtnode= $("#tree").dynatree("getTree").getNodeByKey("1");
+           dtnode.data.title = "New title: " + Date();
+           dtnode.render();           
+		});
+		$("#btnEnable").click(function(){
+			$("#tree").dynatree(this.checked ? "enable" : "disable");
+		});
+		$("#btnBind").click(function(){
+			$("#tree").dynatree(this.checked ? "bind" : "unbind");
+		});
+	});
+
+
+    -->
+    </script>
+</head>
+<body>
+	<P>This file is only temporarily used to reproduce issues.</P>
+	<p style="color: red;">Using doctype HTML 4.01 Strict.</p>
+	<div id="tree">ERROR: Tree could not be loaded (requires JavaScript)!</div>
+
+	<div>Active node: <span id="echoActive">-</span></div>
+	<div>Selected nodes: <span id="echoSelected">-</span></div>
+	<div>Focused node: <span id="echoFocused">-</span></div>
+    <p>
+        <input type="checkbox" id="btnEnable" checked="checked"><label for="btnEnable">Enabled</label>
+    	<br>
+        <input type="checkbox" id="btnBind" checked="checked"><label for="btnBind">Bind events</label>
+    </p>
+    <p>
+        <button id="btnVisit">visit</button>
+        <button id="btnSerialize">serialize</button>
+        <button id="btnModify">Change node title</button>
+        <button id="btnGetSelected">Selected (stopOnParent)</button>
+    </p>
+
+
+	<p><a href="http://dynatree.googlecode.com">jquery.dynatree.js</a></p>
+</body>
+</html>

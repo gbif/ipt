@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
+                        default-lazy-init="true"
+                        default-init-method="init"
+                        default-destroy-method="destroy">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="org.gbif.provider" /> 
+
+    <!-- Enable @Transactional support -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    
+    <!-- APPLICATION CONFIGURATION -->
+    <bean id="providerCfgManager" class="org.gbif.provider.service.impl.ProviderCfgManagerHibernate" parent="abstractManager"/>
+    <bean id="cfg" class="org.gbif.provider.util.AppConfig">        
+        <constructor-arg ref="providerCfgManager"/>
+        <constructor-arg value="${webappDir}"/>
+        <constructor-arg value="${dataDir}"/>
+    </bean>
+    
+    
+    <!-- Utility singletons -->
+    <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
+    <bean id="geoserverUtils" class="org.gbif.provider.geo.GeoserverUtils" />
+    <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
+    
+    <!-- Parsing freemarker templates other than struts2 -->
+    <bean id="freemarkerCfg" class="freemarker.template.Configuration">
+        <property name="defaultEncoding" value="utf8"/>
+        <property name="directoryForTemplateLoading" value="${webappDir}"></property>
+    </bean>
+    
+    
+    
+    <!-- Struts Interceptors -->
+    <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles">
+            <list>
+                <value>ROLE_ADMIN</value>
+                <value>ROLE_MANAGER</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
+    
+    <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor"/>
+    
+    <!-- external datasource routing/registry -->
+    
+    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
+    
+    <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.Long" />            
+        </property>
+    </bean>
+
+
+
+
+    <!--  MANAGER  -->
+    <bean id="abstractManager" abstract="true">
+        <!--property name="sessionFactory" ref="sessionFactory"/-->
+    </bean>
+    <bean id="abstractJDBCManager" abstract="true">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="annotationManager" class="org.gbif.provider.service.impl.AnnotationManagerHibernate" parent="abstractManager"/>
+
+    <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
+    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.ChecklistResourceManagerHibernate" parent="abstractManager"/>            
+    <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DataResourceManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.DataResource"/>
+    </bean>
+    <bean id="resourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.Resource"/>
+    </bean>
+
+    <bean id="resourceKeywordManager" class="org.gbif.provider.service.impl.ResourceKeywordManagerJDBC" parent="abstractJDBCManager"/>
+
+    <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
+    
+    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerHibernate" parent="abstractManager"/>        
+        
+    <bean id="propertyMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
+    </bean>    
+    
+    <bean id="transformationManager" class="org.gbif.provider.service.impl.TransformationManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="termMappingManager" class="org.gbif.provider.service.impl.TermMappingManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="extensionPropertyManager" class="org.gbif.provider.service.impl.ExtensionPropertyManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="occStatManager" class="org.gbif.provider.service.impl.OccStatManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractManager"/>        
+        
+    <bean id="taxonManager" class="org.gbif.provider.service.impl.TaxonManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
+
+    <bean id="hqlTester" class="org.gbif.provider.service.impl.HqlTesterHibernate" parent="abstractManager"/>        
+    
+    <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
+
+    <!-- cache / import manager -->
+    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
+
+    <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl">        
+        <property name="dataSource" ref="externalResourceRoutingDatasource"/>
+    </bean>
+    
+    <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
+    
+    <bean id="dataArchiveManager" class="org.gbif.provider.service.impl.DataArchiveManagerImpl" parent="abstractManager"/>
+
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerJDBC"  parent="abstractJDBCManager" lazy-init="true">
+        <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
+        <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
+    </bean>
+
+    <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
+        <constructor-arg ref="extensionManager"/>
+    </bean>
+    <bean id="coreRecordFactory" class="org.gbif.provider.service.impl.CoreRecordFactoryImpl"/>        
+    
+	<!-- FULL TEXT SEARCHING -->
+	<bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene" />
+	
+    
+    <!-- IMPORT SOURCE -->
+    <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
+        <lookup-method name="newFileImportSource" bean="fileImportSource"/>
+        <lookup-method name="newSqlImportSource" bean="sqlImportSource"/>        
+    </bean>
+    <bean id="fileImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.FileImportSource" />
+    <bean id="sqlImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.SqlImportSource" />
+    
+
+    <!-- TASK EXECUTOR -->
+
+    <bean id="uploadExecutor" factory-method="newSingleThreadExecutor" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent uploads -->
+        <!--constructor-arg value="1"/-->
+    </bean>
+    <bean id="processingExecutor" factory-method="newFixedThreadPool" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent processing threads. Default is 2x max concurrent uploads -->
+        <constructor-arg value="2"/>
+    </bean>
+	
+	<!-- All tasks are non-singleton (prototype) -->
+    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
+    
+</beans>

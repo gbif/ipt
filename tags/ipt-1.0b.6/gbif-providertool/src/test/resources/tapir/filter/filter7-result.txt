@@ -1,0 +1,1 @@
+Filter: http://example.net/concept/basisOfRecord in ('specimen','observation')
