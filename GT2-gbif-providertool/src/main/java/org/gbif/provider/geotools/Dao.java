@@ -3,6 +3,7 @@ package org.gbif.provider.geotools;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,11 +36,14 @@ public class Dao extends JdbcDaoSupport {
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "select dwc.guid as guid, taxon_fk, region_fk, scientific_name, r.label as locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from DARWIN_CORE dwc join region r on dwc.region_fk=r.id ";
-		
-		// join optional tables
+		String select = "select dwc.guid as guid, taxon_fk, region_fk, scientific_name, locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from DARWIN_CORE dwc ";
+		// join optional tables and make sure all included taxa are selected, not only the single TaxonID
 		if (taxonId != null){
-			select += " join taxon t on taxon_fk=t.id ";
+			select += " join taxon td on dwc.taxon_fk=td.id join taxon t on td.lft>=t.lft and td.rgt<=t.rgt";
+		}
+		// join optional tables and make sure all included taxa are selected, not only the single TaxonID
+		if (regionId != null){
+			select += " join region rd on dwc.region_fk=rd.id join region r on rd.lft>=r.lft and rd.rgt<=r.rgt";
 		}
 		// build the where clause
 		List<Object> params = new LinkedList<Object>();
@@ -54,10 +58,10 @@ public class Dao extends JdbcDaoSupport {
 		if (params.size() == 0) {
 			logger.info(select + limit);
 			records = (List<DwcRecord>)
-			getJdbcTemplate().query(select + limit,new RowMapperResultSetExtractor(dwcRowMapper,1000));
+			getJdbcTemplate().query(select + limit,new RowMapperResultSetExtractor(dwcRowMapper, JDBCDwCDatastore.MAX_RECORDS));
 		} else {
 			logger.info(select + where + limit);
-			records = (List<DwcRecord>) getJdbcTemplate().query(select + where + limit, params.toArray(), new RowMapperResultSetExtractor(dwcRowMapper,1000));
+			records = (List<DwcRecord>) getJdbcTemplate().query(select + where + limit, params.toArray(), new RowMapperResultSetExtractor(dwcRowMapper, JDBCDwCDatastore.MAX_RECORDS));
 		}
 		logger.info("SQL parameter: "+ params.toString());
 		logger.info("Records found: "+ records.size());
@@ -79,11 +83,11 @@ public class Dao extends JdbcDaoSupport {
 			params.add(guid);
 		}
 		if (taxonId != null) {
-			where.append(" and taxon_fk = ?");
+			where.append(" and t.id = ?");
 			params.add(taxonId);
 		}
 		if (regionId != null) {
-			where.append(" and region_fk = ?");
+			where.append(" and r.id = ?");
 			params.add(regionId);
 		}
 		if (scientificName != null) {
@@ -91,7 +95,7 @@ public class Dao extends JdbcDaoSupport {
 			params.add(scientificName);
 		}
 		if (locality != null) {
-			where.append(" and r.label = ?");
+			where.append(" and locality = ?");
 			params.add(locality);
 		}
 		if (earliestDateCollected != null) {
