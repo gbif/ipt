@@ -9,36 +9,42 @@
 
 <h2><@s.text name="config.metadata"/></h2>
 <fieldset>
-    <legend><!--<@s.text name="config.metadata"/>--></legend>
-	<@s.textfield key="config.title" required="true" cssClass="text xlarge"/>
+	<div>
+		<@s.textfield key="config.title" required="true" cssClass="text xlarge"/>
+	</div>
     <div class="googlemap">
 		<#if (config.location)?? && cfg.googleMapsApiKey??>
 			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.location.latitude!0},${config.location.longitude!0}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.location.latitude!0},${config.location.longitude!0}&zoom=5&size=95x95&key=${cfg.googleMapsApiKey}" /></a>	
 		</#if>
     </div>
-	<@s.textfield key="config.link" required="true" cssClass="text large"/>
+	<div>
+		<@s.textfield key="config.link" required="true" cssClass="text large"/>
+	</div>
     <div>
-        <div class="left">
+        <div class="leftMedium">
 			<@s.textfield key="config.contactName" required="true" cssClass="text medium"/>
         </div>
-        <div class="left">
+        <div class="leftMedium">
 			<@s.textfield key="config.contactEmail" required="true" cssClass="text medium"/>
         </div>
-        <div class="left">
-			<@s.textfield key="config.location.latitude" required="false" cssClass="text small"/>
+        <div class="leftMedium">
+			<@s.textfield key="config.location.latitude" required="false" cssClass="text medium"/>
         </div>
         <div>
-			<@s.textfield key="config.location.longitude" required="false" cssClass="text small"/>
+			<@s.textfield key="config.location.longitude" required="false" cssClass="text medium"/>
         </div>
     </div>	    
-	<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
-	<@s.textarea key="config.description" cssClass="text xlarge"/>
+	<div>
+		<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
+	</div>
+	<div>
+		<@s.textarea key="config.description" cssClass="text xlarge"/>
+	</div>
   </fieldset>
 <div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
 
 <h2 class="modifiedh2"><@s.text name="config.settings"/></h2>
   <fieldset>
-    <legend><!--<@s.text name="config.settings"/>--></legend>
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
@@ -48,9 +54,12 @@
 
 <h2 class="modifiedh2"><@s.text name="config.geoserver"/></h2>
 <fieldset>
-    <legend><!--<@s.text name="config.geoserver"/>--></legend>
-	<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
-	<@s.textfield key="config.geoserverDataDir" required="true" cssClass="text xlarge"/>
+    <div>
+		<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
+	</div>
+	<div>
+		<@s.textfield key="config.geoserverDataDir" required="true" cssClass="text xlarge"/>
+	</div>	
     <div>
         <div class="left">
 			<@s.textfield key="config.geoserverUser" required="true" cssClass="text xlarge"/>

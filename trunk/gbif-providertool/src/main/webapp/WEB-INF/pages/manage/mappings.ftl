@@ -70,18 +70,18 @@
 </fieldset>
 
 <#if (extensions?size>0)>
-<h2 class="modifiedh2">Add New Mapping</h2>
+<h2>Add New Mapping</h2>
+<div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
-<legend><!--Add New Mapping--></legend>
 	<div>
 	  <@s.form action="propMapping" method="post">
 	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value=""/>
-		<div class="left">
-		 	<@s.select key="mappings.extensions" name="eid" required="false" emptyOption="false" list="extensions" listKey="id" listValue="name"/>
+		<div class="leftMedium">
+		 	<@s.select key="mappings.extensions" name="eid" required="false" emptyOption="false" list="extensions" listKey="id" listValue="name" cssClass="text medium"/>
 		</div>
-		<div class="left">
-		 	<@s.select key="mappings.sources" name="sid" required="false" emptyOption="false" list="sources" listKey="id" listValue="name"/>
+		<div class="leftMedium">
+		 	<@s.select key="mappings.sources" name="sid" required="false" emptyOption="false" list="sources" listKey="id" listValue="name" cssClass="text medium"/>
 		</div>
 		<div class="right">
 			<li class="wwgrp">

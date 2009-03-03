@@ -18,22 +18,22 @@
 		<img class="rightf" src="${cfg.getResourceLogoUrl(resource_id)}" />
 	</#if>
 	<div>
-		<div class="left">
+		<div class="leftLarge">
 			<@s.textfield key="resource.title" required="true" cssClass="text large"/>
 	 	</div>
-		<div class="left">
+		<div class="leftMedium">
 			<@s.select key="resource.type" list="resourceTypeMap" required="true" cssClass="text medium"/>
 	 	</div>
  	</div>
     <div class="newline">
-        <div class="left">
+        <div class="leftMedium">
 			<@s.textfield key="resource.contactName" required="true" cssClass="text medium"/>
         </div>
-        <div class="left">
+        <div class="leftMedium">
 			<@s.textfield key="resource.contactEmail" required="true" cssClass="text medium"/>
         </div>
-        <div>
-		    <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false"/>
+        <div class="leftMedium">
+		    <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false" />
         </div>
     </div>
 	<@s.textarea key="resource.description" cssClass="text xlarge"/>

@@ -7,7 +7,7 @@
     <script type="text/javascript" src="<c:url value='/scripts/selectbox.js'/>"></script>
 </head>
 
-<div id="content" class="clearfix" style="padding-left:0px;">
+<div id="content" class="clearfix"">
 	<div id="mainUser">
 		<s:form name="userForm" action="saveUser" method="post" validate="true">
 		    <li style="display: none">
@@ -120,12 +120,14 @@
 		    </li>
 		    </c:otherwise>
 		</c:choose>
-		    <li class="buttonBar bottom">
-		        <s:submit key="button.save" method="save" onclick="onFormSubmit(this.form)"/>            
+			<li>
+		    <div class="buttonList">
+		        <s:submit key="button.save" method="save" onclick="onFormSubmit(this.form)" cssClass="buttonLeft"/>            
 		        <c:if test="${param.from == 'list' and not empty user.id}">
-		            <s:submit key="button.delete" method="delete" onclick="return confirmDelete('user')"/>
+		            <s:submit key="button.delete" method="delete" onclick="return confirmDelete('user')" cssClass="buttonLeft"/>
 		        </c:if>        
-		        <s:submit key="button.cancel" method="cancel"/>
+		        <s:submit key="button.cancel" method="cancel" cssClass="buttonLeft"/>
+		    </div>
 		    </li>
 		</s:form>
 	</div>

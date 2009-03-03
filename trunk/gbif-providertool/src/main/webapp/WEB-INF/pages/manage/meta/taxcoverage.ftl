@@ -26,10 +26,10 @@
 <fieldset style="padding-top:10px;">
 	<legend><!--<@s.text name="eml.lowestCommonTaxon"/>--></legend>
 	<div>
-		<div class="left">
+		<div class="leftLarge">
 			<@s.textfield key="eml.lowestCommonTaxon.scientificName" label="%{getText('taxonKeyword.scientificName')}" required="true" cssClass="text large" />
 		</div>
-		<div class="left">
+		<div class="leftMedium">
 			<@s.textfield key="eml.lowestCommonTaxon.commonName" label="%{getText('taxonKeyword.commonName')}" required="false" cssClass="text medium" />
 		</div>
 		<div class="modifiedCombo">
