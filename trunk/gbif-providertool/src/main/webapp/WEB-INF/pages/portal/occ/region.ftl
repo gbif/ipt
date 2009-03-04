@@ -48,12 +48,6 @@
 		  <th><@s.text name="region.occTotal"/></th>
 		  <td>${region.occTotal!0}</td>
 		</tr>
-		<!-- 
-		<tr>
-		  <th>Number of Taxa</th>
-		  <td>0</td>
-		</tr>
-		 -->
 	</table>
 	</fieldset>
 </@s.form>
