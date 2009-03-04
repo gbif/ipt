@@ -1,11 +1,13 @@
 package org.gbif.provider.geotools;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
+import org.springframework.util.StringUtils;
 
 /**
  * The simple factory that specifies the connection parameters for the DB
@@ -18,11 +20,17 @@ public class JDBCDwCDataStoreFactory implements DataStoreFactorySpi {
 	 * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
 	 */
 	public boolean canProcess(Map params) {
-		if (params != null 
-				&& params.containsKey("datadir"))
-			return true;
-		else
-			return false;
+		if (params != null && params.containsKey("datadir")){
+			// dont create JDBC connectin, but test if directory exists at least
+			String dataDir = (String) params.get("datadir");
+			if (dataDir!=null){
+				File fd = new File(StringUtils.trimWhitespace(dataDir));
+				if (fd.isDirectory()){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
