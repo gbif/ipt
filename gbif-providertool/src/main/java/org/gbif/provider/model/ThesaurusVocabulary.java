@@ -1,6 +1,7 @@
 package org.gbif.provider.model;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -64,7 +65,13 @@ public class ThesaurusVocabulary implements Comparable {
 	public void setConcepts(List<ThesaurusConcept> concepts) {
 		this.concepts = concepts;
 	}
-	
+	public void addConcept(ThesaurusConcept concept) {
+		if (concepts == null) {
+			concepts = new LinkedList<ThesaurusConcept>();
+		}
+		concept.setVocabulary(this);
+		concepts.add(concept);
+	}	
 	public Date getModified() {
 		return modified;
 	}

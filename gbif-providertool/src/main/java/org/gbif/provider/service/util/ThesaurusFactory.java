@@ -86,9 +86,7 @@ public class ThesaurusFactory {
 		ThesaurusVocabulary tv = new ThesaurusVocabulary();
 		digester.push(tv);
 		
-		
-		// modified is not being set... should it default to now?
-		//digester.setRuleNamespaceURI("http://purl.org/dc/terms/");
+		// build the thesaurus
 		digester.addCallMethod("*/thesaurus", "setTitle", 1);
 		digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "title"));
 		
@@ -97,39 +95,53 @@ public class ThesaurusFactory {
 		
 		digester.addCallMethod("*/thesaurus", "setUri", 1);
 		digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "URI"));
+
+		// modified is not being set... should it default to now?
 		
 		// build the concept
 		digester.addObjectCreate("*/concept", ThesaurusConcept.class);
 		
-		ThesaurusConcept tc = new ThesaurusConcept();
+		digester.addCallMethod("*/concept", "setLink", 1);
+		digester.addRule("*/concept", new CallParamNoNSRule(0, "description"));
+		
+		digester.addCallMethod("*/concept", "setUri", 1);
+		digester.addRule("*/concept", new CallParamNoNSRule(0, "URI"));
+		
+		digester.addCallMethod("*/concept", "setIdentifier", 1);
+		digester.addRule("*/concept", new CallParamNoNSRule(0, "identifier"));
+		
+		digester.addCallMethod("*/concept", "setIssuedXSDDateTime", 1);
+		digester.addRule("*/concept", new CallParamNoNSRule(0, "issued"));
+		
+		// these are not set
 		//tc.setConceptOrder(conceptOrder)
-		//tc.setIdentifier(identifier)
-		//tc.setIssued(issued)
 		//tc.setLink(link)
-		//tc.setTerms(terms)
 		
-		//tc.setUri(uri)
-		//tc.setVocabulary(vocabulary)
+		// build the terms
+		digester.addObjectCreate("*/preferred/term", ThesaurusTerm.class);
 		ThesaurusTerm t = new ThesaurusTerm();
-		
-		
-		
-		digester.addCallMethod("*/property", "setQualName", 1);
-		digester.addCallParam("*/property", 0, "qualName");
 
-		digester.addCallMethod("*/property", "setRequired", 1);
-		digester.addCallParam("*/property", 0, "required");
+		digester.addCallMethod("*/preferred/term", "setCreatedXSDDateTime", 1);
+		digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "created"));
 		
-		digester.addCallMethod("*/property", "setRequired", 1);
-		digester.addCallParam("*/property", 0, "required");
+		digester.addCallMethod("*/preferred/term", "setModifiedXSDDateTime", 1);
+		digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "modified"));
 		
-		digester.addCallMethod("*/property", "setLink", 1);
-		digester.addCallParam("*/property", 0, "description");
+		digester.addCallMethod("*/preferred/term", "setLang", 1);
+		digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "lang"));
 		
-		digester.addCallMethod("*/property", "setColumnLength", 1);
-		digester.addCallParam("*/property", 0, "columnLength");
+		digester.addCallMethod("*/preferred/term", "setPreferred", 1);
+		digester.addObjectParam("*/preferred/term", 0, "true");
 		
-		digester.addSetNext("*/property", "addProperty");
+		digester.addCallMethod("*/preferred/term", "setTitle", 1);
+		digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "title"));
+		
+		// these are not set
+		//t.setRelation(relation)
+		//t.setSource(source)
+		
+		digester.addSetNext("*/preferred/term", "addTerm");
+		digester.addSetNext("*/concept", "addConcept");
 		
 		digester.parse(is);
 		return tv;

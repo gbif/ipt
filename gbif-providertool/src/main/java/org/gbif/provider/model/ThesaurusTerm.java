@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.gbif.provider.util.XMLDateUtils;
 
 @Entity
 public class ThesaurusTerm implements Comparable, BaseObject{
@@ -49,6 +50,17 @@ public class ThesaurusTerm implements Comparable, BaseObject{
 	public void setPreferred(boolean preferred) {
 		this.preferred = preferred;
 	}
+	public void setPreferred(String preferred) {
+		if ("TRUE".equalsIgnoreCase(preferred)
+				|| "YES".equalsIgnoreCase(preferred)
+				|| "Y".equalsIgnoreCase(preferred)
+				|| "T".equalsIgnoreCase(preferred)
+				|| "1".equalsIgnoreCase(preferred)) {
+			this.preferred = true;
+		} else {
+			this.preferred = false;
+		}
+	}
 	
 	@org.hibernate.annotations.Index(name="term_title")
 	public String getTitle() {
@@ -83,14 +95,18 @@ public class ThesaurusTerm implements Comparable, BaseObject{
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+	public void setCreatedXSDDateTime(String created) {
+		setCreated(XMLDateUtils.toDate(created));
+	}
 	public Date getModified() {
 		return modified;
 	}
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
-	
-	
+	public void setModifiedXSDDateTime(String modified) {
+		setModified(XMLDateUtils.toDate(modified));
+	}
 	
 	public String toString(){
 		return String.format("%s [%s]",title, lang);
