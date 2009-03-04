@@ -178,7 +178,6 @@ public class GeoserverUtils {
 		String username = cfg.getGeoserverUser();
 		String password = cfg.getGeoserverPass();
 		String geoserverURL = cfg.getGeoserverUrl();
-		geoserverURL="http://localhost:8081/geoserver";
 		
         httpclient.getCredentialsProvider().setCredentials(
                 new AuthScope("localhost", -1), 
