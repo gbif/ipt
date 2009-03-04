@@ -16,6 +16,7 @@
 
 package org.gbif.provider.webapp.action.admin;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
+import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
@@ -41,7 +43,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class ProviderCfgAction extends BaseAction  {
-	
+	@Autowired
+	private GeoserverUtils geoUtils;
 	public String execute() {
 		
 		return SUCCESS;
@@ -56,7 +59,18 @@ public class ProviderCfgAction extends BaseAction  {
 		return SUCCESS;
 	}
 
-	
+
+	public String updateGeoserver() throws Exception {
+		saveMessage("HALLO geo");
+		try {
+			geoUtils.updateCatalog();
+			saveMessage(getText("config.geoserverUpdated"));
+		} catch (IOException e) {
+			saveMessage(getText("config.geoserverNotUpdated"));
+		}
+		return SUCCESS;
+	}
+
 	public AppConfig getConfig() {
 		return this.cfg;
 	}

@@ -12,7 +12,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -42,6 +44,7 @@ import freemarker.template.TemplateException;
 public class GeoserverUtils {
 	private static final String FEATURE_TYPE_TEMPLATE = "/WEB-INF/geoserver/featureTypeInfo.ftl";
 	private static final String SEED_TEMPLATE = "/WEB-INF/geoserver/seed.ftl";
+	private static final String CATALOG_TEMPLATE = "/WEB-INF/geoserver/catalog.ftl";
 	protected final Log log = LogFactory.getLog(GeoserverUtils.class);
 	
 	@Autowired
@@ -110,6 +113,38 @@ public class GeoserverUtils {
 			}
 			// remember new feature hashcode
 			resource.setFeatureHash(featureTypeInfo.hashCode());				
+		}
+	}
+	
+	public void updateCatalog() throws IOException{
+		if (cfg.getGeoserverDataDirFile() == null || !cfg.getGeoserverDataDirFile().exists()){
+			log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
+			throw new IOException("Geoserver datadir configured wrongly");
+		}
+		// create new catalog file
+		try {
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("cfg", cfg);
+			String catalog = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(CATALOG_TEMPLATE), data);
+			log.info("Updating geoserver catalog");
+			File fti = new File(cfg.getGeoserverDataDirFile(), "catalog.xml");
+			if (fti.exists()){
+				fti.delete();				
+			}
+			fti.createNewFile();
+			Writer out = XmlFileUtils.startNewUtf8XmlFile(fti);
+	        out.write(catalog);
+	        out.close();
+			try {
+				this.reloadCatalog();
+			} catch (IOException e) {
+				log.error("Cannot reload geoserver catalog. Geoserver not running or URL & login credentials not set correctly?");
+				throw new IOException("Cannot reload geoserver catalog");
+			}
+		} catch (IOException e) {
+			log.error("Freemarker IO template error", e);
+		} catch (TemplateException e) {
+			log.error("Freemarker template exception", e);
 		}
 	}
 	
