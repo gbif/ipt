@@ -50,8 +50,8 @@ public class MapUtil {
 		}
 		if (region != null){
 			//filters.add(String.format("<PropertyIsEqualTo><PropertyName>SamplingLocationID</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", region.getId()));
-			filters.add(String.format("<PropertyIsGreaterThanOrEqualTo><PropertyName>SamplingLocationLft</PropertyName><Literal>%s</Literal></PropertyIsGreaterThanOrEqualTo>", taxon.getLft()));
-			filters.add(String.format("<PropertyIsLessThanOrEqualTo><PropertyName>SamplingLocationRgt</PropertyName><Literal>%s</Literal></PropertyIsLessThanOrEqualTo>", taxon.getRgt()));
+			filters.add(String.format("<PropertyIsGreaterThanOrEqualTo><PropertyName>SamplingLocationLft</PropertyName><Literal>%s</Literal></PropertyIsGreaterThanOrEqualTo>", region.getLft()));
+			filters.add(String.format("<PropertyIsLessThanOrEqualTo><PropertyName>SamplingLocationRgt</PropertyName><Literal>%s</Literal></PropertyIsLessThanOrEqualTo>", region.getRgt()));
 		}
 		
 		// produce final filter string

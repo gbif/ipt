@@ -50,7 +50,7 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     public String occurrences(){
     	if (resource_id!=null && id!=null){
     		region=regionManager.get(id);
-    		occurrences = darwinCoreManager.getByRegion(id, resource_id, true);
+    		occurrences = darwinCoreManager.getByRegion(region.getId(), resource_id, true);
     		if (region!=null){
     			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, region);
     			if (region.getBbox()!=null && region.getBbox().isValid()){
