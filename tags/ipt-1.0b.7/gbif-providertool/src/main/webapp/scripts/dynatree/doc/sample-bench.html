@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Dynatree - Example</title>
+
+	<script src='../jquery/jquery.js' type='text/javascript'></script>
+	<script src='../jquery/ui.core.js' type='text/javascript'></script>
+    <script src='../jquery/jquery.cookie.js' type='text/javascript'></script>
+
+	<link href='../src/skin/ui.dynatree.css' rel='stylesheet' type='text/css'>
+	<script src='../src/jquery.dynatree.js' type='text/javascript'></script>
+
+	<link href='sample.css' rel='stylesheet' type='text/css'>
+    <script src='sample.js' type='text/javascript'></script>
+    
+    <!-- Add code to initialize the tree when the document is loaded: -->
+    <script type='text/javascript'>
+    $(function(){
+		$("#tree").dynatree({
+			children: [
+				{title: "Add 100 nodes (flat, force update)...", isFolder: true, isLazy: true, mode: "add100_flat_u" },
+				{title: "Add 100 nodes (flat)...", isFolder: true, isLazy: true, mode: "add100_flat" },
+				{title: "Add 1.000 nodes (flat)...", isFolder: true, isLazy: true, mode: "add1000_flat" },
+				{title: "Add 1.000 nodes (deep)...", isFolder: true, isLazy: true, mode: "add1000_deep" },
+				{title: "Add 10.000 nodes (deep)...", isFolder: true, isLazy: true, mode: "add10000_deep" }
+			],
+			onSelect: function(dtnode) {
+				alert("You selected " + dtnode.data.title);
+			},
+			onLazyRead: function(dtnode) {
+				var tree = dtnode.tree;
+				logMsg("Benchmarking mode='" + dtnode.data.mode + "'...");
+				switch( dtnode.data.mode ) {
+					case "add100_flat_u":
+						addNodes(dtnode, 100, 0, 0, true)
+						break;
+					case "add100_flat":
+						addNodes(dtnode, 100, 0, 0)
+						break;
+					case "add1000_flat":
+						addNodes(dtnode, 1000, 0, 0)
+						break;
+					case "add1000_deep":
+						addNodes(dtnode, 10, 10, 10)
+						break;
+					case "add10000_deep":
+						addNodes(dtnode, 10, 100, 10)
+						break;
+				}
+//				dtnode.setLazyNodeStatus(DTNodeStatus_Ok);
+				logMsg("Benchmarking mode='" + dtnode.data.mode + "' done.");
+				// Return true, to show we're finished
+				return true;
+			}
+		});
+
+		$("#btnClear").click(function(){
+			var root = $("#tree").dynatree("getRoot");
+			for(var i = 0; i<root.aChilds.length; i++)
+				root.aChilds[i].removeChildren();
+		});
+	});
+
+	function addNodes(dtnode, level1, level2, level3, forceUpdate) {
+		if( forceUpdate != true )
+			dtnode.tree.enableUpdate(false);
+		
+		var key;
+		for (var i=0; i<level1; i++) {
+			key = "" + (i+1);
+			var f = dtnode.append({title: "Folder_" + key,
+			                       key: key,
+				                   isFolder: true
+								   });
+			for (var j=0; j<level2; j++) {
+				key = "" + (i+1) + "." + (j+1);
+				var d = f.append({title: "Node_" + key,
+				                  key: key
+							      });
+				for (var k=0; k<level3; k++) {
+					key = "" + (i+1) + "." + (j+1) + "." + (k+1);
+					d.append({title: "Node_" + key,
+					          key: key
+						      });
+				}
+			}
+		}
+		dtnode.tree.enableUpdate(true);
+	}
+
+    </script>
+</head>
+
+<body class="example">
+	<h1>Example: Benchmark</h1>
+	<p class="description">
+		Expand a node to start a benchmark, then check the firebug console. 
+	</p>
+
+	<div id='tree'> </div>
+	<p>
+	enableUpdate(false) is used for speedup.
+	</p>
+	<p>
+        <button id="btnClear">remove children</button>
+	</p>
+	<hr>
+	<p class="sample-links">
+		<a class="hideInsideFS" href="http://dynatree.googlecode.com">jquery.dynatree.js project home</a>
+		&nbsp; <a class="hideOutsideFS" href="#">Link to this page</a>
+		&nbsp; <a class="hideInsideFS" href="samples.html">Example Browser</a>
+	 </p>
+</body>
+</html>
