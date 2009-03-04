@@ -20,33 +20,45 @@ package org.gbif.provider.geotools;
 public class DwcRecord {
 	protected String guid;
 	protected Long taxonId;
+	protected Long taxonLft;
+	protected Long taxonRgt;
 	protected Long regionId;
+	protected Long regionLft;
+	protected Long regionRgt;
 	protected String scientificName;
+	protected String family;
+	protected String typeStatus;
 	protected String locality;
 	protected String institutionCode;
 	protected String collectionCode;
 	protected String catalogNumber;
 	protected String collector;
-	protected String dateCollected;
+	protected String earliestDateCollected;
 	protected String basisOfRecord;
 	protected Double latitude;
 	protected Double longitude;
 	
-	public DwcRecord(String guid, Long taxonId, Long regionId, 
-			String scientificName, String locality,
+	public DwcRecord(String guid, Long taxonId, Long taxonLft, Long taxonRgt, Long regionId, Long regionLft, Long regionRgt, 
+			String scientificName, String locality, String family, String typeStatus,
 			String institutionCode,	String collectionCode, String catalogNumber, String collector,
-			String dateCollected, String basisOfRecord, Double latitude, Double longitude) {
+			String earliestDateCollected, String basisOfRecord, Double latitude, Double longitude) {
 		super();
 		this.guid = guid;
 		this.taxonId = taxonId;
+		this.taxonLft = taxonLft;
+		this.taxonRgt = taxonRgt;
 		this.regionId = regionId;
+		this.regionLft = regionLft;
+		this.regionRgt = regionRgt;
 		this.scientificName = scientificName;
+		this.family = family;
+		this.typeStatus = typeStatus;
 		this.locality = locality;
 		this.institutionCode = institutionCode;
 		this.collectionCode = collectionCode;
 		this.catalogNumber = catalogNumber;
 		this.collector = collector;
-		this.dateCollected = dateCollected;
+		this.earliestDateCollected = earliestDateCollected;
 		this.basisOfRecord = basisOfRecord;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -59,6 +71,21 @@ public class DwcRecord {
 	public void setScientificName(String scientificName) {
 		this.scientificName = scientificName;
 	}
+	
+	public String getFamily() {
+		return family;
+	}
+	public void setFamily(String family) {
+		this.family = family;
+	}
+
+	public String getTypeStatus() {
+		return typeStatus;
+	}
+	public void setTypeStatus(String typeStatus) {
+		this.typeStatus = typeStatus;
+	}
+
 	public String getBasisOfRecord() {
 		return basisOfRecord;
 	}
@@ -86,12 +113,11 @@ public class DwcRecord {
 		this.guid = guid;
 	}
 
-	public String getDateCollected() {
-		return dateCollected;
+	public String getEarliestDateCollected() {
+		return earliestDateCollected;
 	}
-
-	public void setDateCollected(String dateCollected) {
-		this.dateCollected = dateCollected;
+	public void setEarliestDateCollected(String earliestDateCollected) {
+		this.earliestDateCollected = earliestDateCollected;
 	}
 
 	public String getInstitutionCode() {
@@ -130,10 +156,24 @@ public class DwcRecord {
 	public Long getTaxonId() {
 		return taxonId;
 	}
-
-
 	public void setTaxonId(Long taxonId) {
 		this.taxonId = taxonId;
+	}
+
+	public Long getTaxonLft() {
+		return taxonLft;
+	}
+
+	public void setTaxonLft(Long taxonLft) {
+		this.taxonLft = taxonLft;
+	}
+
+	public Long getTaxonRgt() {
+		return taxonRgt;
+	}
+
+	public void setTaxonRgt(Long taxonRgt) {
+		this.taxonRgt = taxonRgt;
 	}
 
 
@@ -141,16 +181,29 @@ public class DwcRecord {
 		return regionId;
 	}
 
-
 	public void setRegionId(Long regionId) {
 		this.regionId = regionId;
 	}
 
+	public Long getRegionLft() {
+		return regionLft;
+	}
+
+	public void setRegionLft(Long regionLft) {
+		this.regionLft = regionLft;
+	}
+
+	public Long getRegionRgt() {
+		return regionRgt;
+	}
+
+	public void setRegionRgt(Long regionRgt) {
+		this.regionRgt = regionRgt;
+	}
 
 	public String getLocality() {
 		return locality;
 	}
-
 
 	public void setLocality(String locality) {
 		this.locality = locality;

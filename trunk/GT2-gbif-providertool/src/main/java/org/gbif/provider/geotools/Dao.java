@@ -31,28 +31,23 @@ public class Dao extends JdbcDaoSupport {
 	 * @return All records that match the query
 	 */
 	@SuppressWarnings("unchecked")
-	public List<DwcRecord> getRecords(Long resourceId, String guid, Long taxonId, Long regionId, String scientificName, String locality, 
+	public List<DwcRecord> getRecords(Long resourceId, String guid, Long taxonId, Long taxonLft, Long taxonRgt, Long regionId, Long regionLft, Long regionRgt, 
+			String scientificName, String locality, String family, String typeStatus,
 			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "select dwc.guid as guid, taxon_fk, region_fk, scientific_name, locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  from DARWIN_CORE dwc ";
-		// join optional tables and make sure all included taxa are selected, not only the single TaxonID
-		if (taxonId != null){
-			select += " join taxon td on dwc.taxon_fk=td.id join taxon t on td.lft>=t.lft and td.rgt<=t.rgt";
-		}
-		// join optional tables and make sure all included taxa are selected, not only the single TaxonID
-		if (regionId != null){
-			select += " join region rd on dwc.region_fk=rd.id join region r on rd.lft>=r.lft and rd.rgt<=r.rgt";
-		}
+		String select = "SELECT dwc.guid as guid, taxon_fk, region_fk, scientific_name, locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  " +
+				" FROM darwin_core dwc  join taxon t on dwc.taxon_fk=t.id  join region r on dwc.region_fk=r.id";
 		// build the where clause
 		List<Object> params = new LinkedList<Object>();
-		String where = buildWhere(resourceId, guid, taxonId, regionId, scientificName, locality, 
+		String where = buildWhere(resourceId, guid, taxonId, taxonLft, taxonRgt, regionId, regionLft, regionRgt, 
+				scientificName, locality, family, typeStatus,
 				institutionCode, collectionCode, catalogNumber, collector, earliestDateCollected, basisOfRecord, 
 				minLatitude, maxLatitude, minLongitude, maxLongitude, params);
 		
 		// and the limit
-		String limit = " limit " + maxResults;
+		String limit = " LIMIT " + maxResults;
 		
 		List<DwcRecord> records = null;
 		if (params.size() == 0) {
@@ -71,7 +66,8 @@ public class Dao extends JdbcDaoSupport {
 	/**
 	 * Builds the where clause
 	 */
-	private String buildWhere(Long resourceId, String guid, Long taxonId, Long regionId, String scientificName, String locality, 
+	private String buildWhere(Long resourceId, String guid, Long taxonId, Long taxonLft, Long taxonRgt, Long regionId, Long regionLft, Long regionRgt, 
+			String scientificName, String locality, String family, String typeStatus, 
 			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, 
 			List<Object> params) {
@@ -83,59 +79,83 @@ public class Dao extends JdbcDaoSupport {
 			params.add(guid);
 		}
 		if (taxonId != null) {
-			where.append(" and t.id = ?");
+			where.append(" and dwc.taxon_fk = ?");
 			params.add(taxonId);
 		}
+		if (taxonLft != null) {
+			where.append(" and t.lft >= ?");
+			params.add(taxonLft);
+		}
+		if (taxonRgt != null) {
+			where.append(" and t.rgt <= ?");
+			params.add(taxonRgt);
+		}
 		if (regionId != null) {
-			where.append(" and r.id = ?");
+			where.append(" and dwc.region_fk = ?");
 			params.add(regionId);
 		}
+		if (regionLft != null) {
+			where.append(" and r.lft >= ?");
+			params.add(regionLft);
+		}
+		if (regionRgt != null) {
+			where.append(" and r.rgt <= ?");
+			params.add(regionRgt);
+		}
 		if (scientificName != null) {
-			where.append(" and scientific_name = ?");
+			where.append(" and dwc.scientific_name = ?");
 			params.add(scientificName);
 		}
+		if (family != null) {
+			where.append(" and dwc.family = ?");
+			params.add(family);
+		}
+		if (typeStatus != null) {
+			where.append(" and dwc.type_status = ?");
+			params.add(typeStatus);
+		}
 		if (locality != null) {
-			where.append(" and locality = ?");
+			where.append(" and dwc.locality = ?");
 			params.add(locality);
 		}
 		if (earliestDateCollected != null) {
-			where.append(" and earliest_date_collected = ?");
+			where.append(" and dwc.earliest_date_collected = ?");
 			params.add(earliestDateCollected);
 		}
 		if (institutionCode != null) {
-			where.append(" and institution_code = ?");
+			where.append(" and dwc.institution_code = ?");
 			params.add(institutionCode);
 		}
 		if (collectionCode != null) {
-			where.append(" and collection_code = ?");
+			where.append(" and dwc.collection_code = ?");
 			params.add(collectionCode);
 		}
 		if (catalogNumber != null) {
-			where.append(" and catalog_number = ?");
+			where.append(" and dwc.catalog_number = ?");
 			params.add(catalogNumber);
 		}
 		if (collector != null) {
-			where.append(" and collector = ?");
+			where.append(" and dwc.collector = ?");
 			params.add(collector);
 		}
 		if (basisOfRecord != null) {
-			where.append(" and basis_of_record = ?");
+			where.append(" and dwc.basis_of_record = ?");
 			params.add(basisOfRecord);
 		}
 		if (minLatitude != null) {
-			where.append(" and lat >= ?");
+			where.append(" and dwc.lat >= ?");
 			params.add(minLatitude);
 		}
 		if (maxLatitude != null) {
-			where.append(" and lat <= ?");
+			where.append(" and dwc.lat <= ?");
 			params.add(maxLatitude);
 		}
 		if (minLongitude != null) {
-			where.append(" and lon >= ?");
+			where.append(" and dwc.lon >= ?");
 			params.add(minLongitude);
 		}
 		if (maxLongitude != null) {
-			where.append(" and lon <= ?");
+			where.append(" and dwc.lon <= ?");
 			params.add(maxLongitude);
 		}
 		return where.toString();
@@ -149,8 +169,14 @@ public class Dao extends JdbcDaoSupport {
 			return new DwcRecord(
 					rs.getString("guid"),
 					rs.getLong("taxon_fk"),
+					rs.getLong("t.lft"),
+					rs.getLong("t.rgt"),
 					rs.getLong("region_fk"),
+					rs.getLong("r.lft"),
+					rs.getLong("r.rgt"),
 					rs.getString("scientific_name"),
+					rs.getString("family"),
+					rs.getString("type_status"),
 					rs.getString("locality"),
 					rs.getString("institution_code"),
 					rs.getString("collection_code"),

@@ -79,16 +79,22 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		b.setNamespaceURI( "http://rs.tdwg.org/dwc/dwcore" );
 
 		//add some properties
-		b.add( "GlobalUniqueIdentifier", String.class );
-		b.add( "TaxonId", Integer.class ); // non dwc attribute
-		b.add( "RegionId", Integer.class ); // non dwc attribute
+		b.add( "SampleID", String.class );
+		b.add( "TaxonId", Integer.class );
+		b.add( "TaxonLft", Integer.class ); // non dwc attribute
+		b.add( "TaxonRgt", Integer.class ); // non dwc attribute
+		b.add( "SamplingLocationID", Integer.class );
+		b.add( "SamplingLocationLft", Integer.class ); // non dwc attribute
+		b.add( "SamplingLocationRgt", Integer.class ); // non dwc attribute
 		b.add( "ScientificName", String.class );
+		b.add( "Family", String.class );
+		b.add( "TypeStatus", String.class );
 		b.add( "Locality", String.class );
 		b.add( "InstitutionCode", String.class );
 		b.add( "CollectionCode", String.class );
 		b.add( "CatalogNumber", String.class );
 		b.add( "Collector", String.class );
-		b.add( "DateCollected", String.class );
+		b.add( "EarliestDateCollected", String.class );
 		b.add( "BasisOfRecord", String.class );
 		//add a geometry property
 		b.setCRS( DefaultGeographicCRS.WGS84 );
@@ -154,8 +160,8 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 	 */
 	@Override
 	protected FeatureReader getFeatureReader(String typeName, Query query) throws IOException {
-		log.info("Layer requested: " + typeName);
-		log.info("Filter supplied: " + query.getFilter());
+		log.debug("Layer requested: " + typeName);
+		log.debug("Filter supplied: " + query.getFilter());
 		// parse out the resourceId from the layer name.
 		// convention is to name layers as resource1, resource2, resource31, etc
 		Long resourceId=null;
@@ -165,7 +171,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 		} catch (NumberFormatException e2) {
 			throw new IOException("Couldnt find resourceId in layer name");
 		}
-		log.info("Found IPT resource " + resourceId);
+		log.debug("Found IPT resource " + resourceId);
 		
 		// parse out the values from the query
 		OGCQueryVisitor parsedQuery = new OGCQueryVisitor();
@@ -175,14 +181,20 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 				resourceId,
 				parsedQuery.getGuid(), 
 				parsedQuery.getTaxonId(), 
+				parsedQuery.getTaxonLft(), 
+				parsedQuery.getTaxonRgt(), 
 				parsedQuery.getRegionId(), 
+				parsedQuery.getRegionLft(), 
+				parsedQuery.getRegionRgt(), 
 				parsedQuery.getScientificName(), 
+				parsedQuery.getFamily(), 
+				parsedQuery.getTypeStatus(), 
 				parsedQuery.getLocality(), 
 				parsedQuery.getInstitutionCode(), 
 				parsedQuery.getCollectionCode(), 
 				parsedQuery.getCatalogNumber(), 
 				parsedQuery.getCollector(), 
-				parsedQuery.getDateCollected(), 
+				parsedQuery.getEarliestDateCollected(), 
 				parsedQuery.getBasisOfRecord(), 
 				parsedQuery.getMinY(), 
 				parsedQuery.getMaxY(), 
