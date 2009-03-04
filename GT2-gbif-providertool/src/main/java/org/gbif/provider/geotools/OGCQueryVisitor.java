@@ -28,32 +28,23 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 	// the features of interest
 	protected String guid;
 	protected Long taxonId;
+	protected Long taxonLft;
+	protected Long taxonRgt;
 	protected Long regionId;
+	protected Long regionLft;
+	protected Long regionRgt;
 	protected String scientificName;
+	protected String family;
+	protected String typeStatus;
 	protected String locality;
 	protected String institutionCode;
 	protected String collectionCode;
 	protected String catalogNumber;
 	protected String collector;
-	protected String dateCollected;
+	protected String earliestDateCollected;
 	protected String basisOfRecord;
 	protected Coordinate[] coords;
 	
-	// sax style capturing toggle
-	// 0 = no capture
-	// 1 = capture guid;
-	// 2 = capture taxonId;
-	// 3 = capture regionId;
-	// 4 = capture scientificName;
-	// 5 = capture locality;
-	// 6 = capture institutionCode;
-	// 7 = capture collectionCode;
-	// 8 = capture catalogNumber;
-	// 9 = capture collector;
-	// 10 = capture dateCollected;
-	// 11 = capture basisOfRecord;
-	// 12 = capture coords
-
 	protected int capture = 0;
 
 	/**
@@ -63,7 +54,6 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 	public void visit(LiteralExpression lit) {
 		if (capture==1){ 
 			guid = lit.getValue().toString();
-			logger.debug("GUID from request: " + guid);
 		}else if (capture==2){
 			String taxonIdAsString = lit.getValue().toString();
 			if (taxonIdAsString!=null && taxonIdAsString.length()>0) {
@@ -73,35 +63,73 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 					logger.warn("Ignoring invalid taxon id from request: " + taxonIdAsString);
 				}
 			}
-		}
-		else if (capture==3){
+		}else if (capture==3){
+			String taxonLftAsString = lit.getValue().toString();
+			if (taxonLftAsString!=null && taxonLftAsString.length()>0) {
+				try {
+					taxonLft = Long.parseLong(taxonLftAsString);
+				} catch (NumberFormatException e) {
+					logger.warn("Ignoring invalid taxon lft from request: " + taxonLftAsString);
+				}
+			}
+		}else if (capture==4){
+			String taxonRgtAsString = lit.getValue().toString();
+			if (taxonRgtAsString!=null && taxonRgtAsString.length()>0) {
+				try {
+					taxonRgt = Long.parseLong(taxonRgtAsString);
+				} catch (NumberFormatException e) {
+					logger.warn("Ignoring invalid taxon rgt from request: " + taxonRgtAsString);
+				}
+			}
+		}else if (capture==5){
 			String regionIdAsString = lit.getValue().toString();
 			if (regionIdAsString!=null && regionIdAsString.length()>0) {
 				try {
 					regionId = Long.parseLong(regionIdAsString);
-					logger.debug("regionId from request: " + regionId);
 				} catch (NumberFormatException e) {
 					logger.warn("Ignoring invalid region id from request: " + regionIdAsString);
 				}
 			}
+		}else if (capture==6){
+			String regionLftAsString = lit.getValue().toString();
+			if (regionLftAsString!=null && regionLftAsString.length()>0) {
+				try {
+					regionLft = Long.parseLong(regionLftAsString);
+				} catch (NumberFormatException e) {
+					logger.warn("Ignoring invalid region lft from request: " + regionLftAsString);
+				}
+			}
+		}else if (capture==7){
+			String regionRgtAsString = lit.getValue().toString();
+			if (regionRgtAsString!=null && regionRgtAsString.length()>0) {
+				try {
+					regionRgt = Long.parseLong(regionRgtAsString);
+				} catch (NumberFormatException e) {
+					logger.warn("Ignoring invalid region rgt from request: " + regionRgtAsString);
+				}
+			}
 		}
-		else if (capture==4)  
-			scientificName = lit.getValue().toString();
-		else if (capture==5)  
-			locality = lit.getValue().toString();
-		else if (capture==6)  
-			institutionCode = lit.getValue().toString();
-		else if (capture==7)  
-			collectionCode = lit.getValue().toString();
 		else if (capture==8)  
-			catalogNumber = lit.getValue().toString();
+			scientificName = lit.getValue().toString();
 		else if (capture==9)  
-			collector = lit.getValue().toString();
+			family = lit.getValue().toString();
 		else if (capture==10)  
-			dateCollected = lit.getValue().toString();
+			typeStatus = lit.getValue().toString();
 		else if (capture==11)  
+			locality = lit.getValue().toString();
+		else if (capture==12)  
+			institutionCode = lit.getValue().toString();
+		else if (capture==13)  
+			collectionCode = lit.getValue().toString();
+		else if (capture==14)  
+			catalogNumber = lit.getValue().toString();
+		else if (capture==15)  
+			collector = lit.getValue().toString();
+		else if (capture==16)  
+			earliestDateCollected = lit.getValue().toString();
+		else if (capture==17)  
 			basisOfRecord = lit.getValue().toString();
-		else if (capture==12) {
+		else if (capture==18) {
 			String geomString = lit.getValue().toString();
 			try {
 				Geometry geom =  new WKTReader().read(geomString);
@@ -121,30 +149,42 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 	
 
 	public void visit(AttributeExpression exp) {
-		if (exp.getAttributePath().equals("GUID")) {
+		if (exp.getAttributePath().equals("SampleID")) {
 			capture=1;
 		} else if (exp.getAttributePath().equals("TaxonId")) {
 			capture=2;
-		} else if (exp.getAttributePath().equals("RegionId")) {
+		} else if (exp.getAttributePath().equals("TaxonLft")) {
 			capture=3;
-		} else if (exp.getAttributePath().equals("ScientificName")) {
+		} else if (exp.getAttributePath().equals("TaxonRgt")) {
 			capture=4;
-		} else if (exp.getAttributePath().equals("Locality")) {
+		} else if (exp.getAttributePath().equals("SamplingLocationID")) {
 			capture=5;
-		} else if (exp.getAttributePath().equals("InstitutionCode")) {
+		} else if (exp.getAttributePath().equals("SamplingLocationLft")) {
 			capture=6;
-		} else if (exp.getAttributePath().equals("CollectionCode")) {
+		} else if (exp.getAttributePath().equals("SamplingLocationRgt")) {
 			capture=7;
-		} else if (exp.getAttributePath().equals("CatalogNumber")) {
+		} else if (exp.getAttributePath().equals("ScientificName")) {
 			capture=8;
-		} else if (exp.getAttributePath().equals("Collector")) {
+		} else if (exp.getAttributePath().equals("Family")) {
 			capture=9;
-		} else if (exp.getAttributePath().equals("DateCollected")) {
+		} else if (exp.getAttributePath().equals("TypeStatus")) {
 			capture=10;
-		} else if (exp.getAttributePath().equals("BasisOfRecord")) {
+		} else if (exp.getAttributePath().equals("Locality")) {
 			capture=11;
-		} else if (exp.getAttributePath().equals("Geom")) {
+		} else if (exp.getAttributePath().equals("InstitutionCode")) {
 			capture=12;
+		} else if (exp.getAttributePath().equals("CollectionCode")) {
+			capture=13;
+		} else if (exp.getAttributePath().equals("CatalogNumber")) {
+			capture=14;
+		} else if (exp.getAttributePath().equals("Collector")) {
+			capture=15;
+		} else if (exp.getAttributePath().equals("EarliestDateCollected")) {
+			capture=16;
+		} else if (exp.getAttributePath().equals("BasisOfRecord")) {
+			capture=17;
+		} else if (exp.getAttributePath().equals("Geom")) {
+			capture=18;
 		} else {
 			capture=0;
 		}
@@ -185,9 +225,40 @@ public class OGCQueryVisitor extends AbstractFilterVisitor {
 		return scientificName;
 	}
 
-	public String getDateCollected() {
-		return dateCollected;
+	public Long getTaxonLft() {
+		return taxonLft;
 	}
+
+
+	public Long getTaxonRgt() {
+		return taxonRgt;
+	}
+
+
+	public Long getRegionLft() {
+		return regionLft;
+	}
+
+
+	public Long getRegionRgt() {
+		return regionRgt;
+	}
+
+
+	public String getFamily() {
+		return family;
+	}
+
+
+	public String getTypeStatus() {
+		return typeStatus;
+	}
+
+
+	public String getEarliestDateCollected() {
+		return earliestDateCollected;
+	}
+
 
 	public String getInstitutionCode() {
 		return institutionCode;

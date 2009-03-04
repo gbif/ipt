@@ -46,24 +46,36 @@ public class DwcRecordFeatureAttributeReader implements AttributeReader {
 		else if (index==1) 
 			return row.getTaxonId();
 		else if (index==2) 
-			return row.getRegionId();
+			return row.getTaxonLft();
 		else if (index==3) 
-			return row.getScientificName();
+			return row.getTaxonRgt();
 		else if (index==4) 
-			return row.getLocality();
+			return row.getRegionId();
 		else if (index==5) 
-			return row.getInstitutionCode();
+			return row.getRegionLft();
 		else if (index==6) 
-			return row.getCollectionCode();
+			return row.getRegionRgt();
 		else if (index==7) 
-			return row.getCatalogNumber();
+			return row.getScientificName();
 		else if (index==8) 
-			return row.getCollector();
+			return row.getFamily();
 		else if (index==9) 
-			return row.getDateCollected();
+			return row.getTypeStatus();
 		else if (index==10) 
+			return row.getLocality();
+		else if (index==11) 
+			return row.getInstitutionCode();
+		else if (index==12) 
+			return row.getCollectionCode();
+		else if (index==13) 
+			return row.getCatalogNumber();
+		else if (index==14) 
+			return row.getCollector();
+		else if (index==15) 
+			return row.getEarliestDateCollected();
+		else if (index==16) 
 			return row.getBasisOfRecord();
-		else if (index==11) {
+		else if (index==17) {
 			Coordinate c= new Coordinate(row.getLongitude(), row.getLatitude());
 			// TODO - 4326 ???
 			return new Point(c, new PrecisionModel(), 4326);
