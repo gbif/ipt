@@ -44,10 +44,14 @@ public class MapUtil {
 		LinkedList<String> filters = new LinkedList<String>();
 		
 		if (taxon != null){
-			filters.add(String.format("<PropertyIsEqualTo><PropertyName>TaxonId</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", taxon.getId()));
+			//filters.add(String.format("<PropertyIsEqualTo><PropertyName>TaxonId</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", taxon.getId()));
+			filters.add(String.format("<PropertyIsGreaterThanOrEqualTo><PropertyName>TaxonLft</PropertyName><Literal>%s</Literal></PropertyIsGreaterThanOrEqualTo>", taxon.getLft()));
+			filters.add(String.format("<PropertyIsLessThanOrEqualTo><PropertyName>TaxonRgt</PropertyName><Literal>%s</Literal></PropertyIsLessThanOrEqualTo>", taxon.getRgt()));
 		}
 		if (region != null){
-			filters.add(String.format("<PropertyIsEqualTo><PropertyName>RegionId</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", region.getId()));
+			//filters.add(String.format("<PropertyIsEqualTo><PropertyName>SamplingLocationID</PropertyName><Literal>%s</Literal></PropertyIsEqualTo>", region.getId()));
+			filters.add(String.format("<PropertyIsGreaterThanOrEqualTo><PropertyName>SamplingLocationLft</PropertyName><Literal>%s</Literal></PropertyIsGreaterThanOrEqualTo>", taxon.getLft()));
+			filters.add(String.format("<PropertyIsLessThanOrEqualTo><PropertyName>SamplingLocationRgt</PropertyName><Literal>%s</Literal></PropertyIsLessThanOrEqualTo>", taxon.getRgt()));
 		}
 		
 		// produce final filter string
