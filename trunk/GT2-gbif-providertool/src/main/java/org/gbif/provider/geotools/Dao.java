@@ -37,7 +37,7 @@ public class Dao extends JdbcDaoSupport {
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "SELECT dwc.guid as guid, taxon_fk, region_fk, scientific_name, locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  " +
+		String select = "SELECT dwc.guid as guid, taxon_fk, t.lft as taxon_lft, t.rgt as taxon_rgt, region_fk, r.lft as region_lft, r.rgt as region_rgt, scientific_name, family, type_status, locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  " +
 				" FROM darwin_core dwc  join taxon t on dwc.taxon_fk=t.id  join region r on dwc.region_fk=r.id";
 		// build the where clause
 		List<Object> params = new LinkedList<Object>();
@@ -169,11 +169,11 @@ public class Dao extends JdbcDaoSupport {
 			return new DwcRecord(
 					rs.getString("guid"),
 					rs.getLong("taxon_fk"),
-					rs.getLong("t.lft"),
-					rs.getLong("t.rgt"),
+					rs.getLong("taxon_lft"),
+					rs.getLong("taxon_rgt"),
 					rs.getLong("region_fk"),
-					rs.getLong("r.lft"),
-					rs.getLong("r.rgt"),
+					rs.getLong("region_lft"),
+					rs.getLong("region_rgt"),
 					rs.getString("scientific_name"),
 					rs.getString("family"),
 					rs.getString("type_status"),
