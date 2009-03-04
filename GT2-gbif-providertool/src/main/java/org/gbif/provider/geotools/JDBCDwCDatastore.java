@@ -76,7 +76,7 @@ public class JDBCDwCDatastore extends AbstractDataStore {
 
 		//set the name
 		b.setName(name);
-		b.setNamespaceURI( "http://rs.tdwg.org/dwc/dwcore" );
+		b.setNamespaceURI( "http://rs.tdwg.org/dwc/terms/" );
 
 		//add some properties
 		b.add( "SampleID", String.class );
