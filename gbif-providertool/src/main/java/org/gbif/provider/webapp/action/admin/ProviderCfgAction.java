@@ -61,7 +61,6 @@ public class ProviderCfgAction extends BaseAction  {
 
 
 	public String updateGeoserver() throws Exception {
-		saveMessage("HALLO geo");
 		try {
 			geoUtils.updateCatalog();
 			saveMessage(getText("config.geoserverUpdated"));
