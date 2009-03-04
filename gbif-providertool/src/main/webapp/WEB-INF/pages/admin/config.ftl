@@ -71,5 +71,7 @@
   </fieldset>
 <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
 <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
-
+<div class="right">
+	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
+</div>
 </@s.form>
