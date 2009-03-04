@@ -1,6 +1,10 @@
 package org.gbif.provider.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,6 +19,9 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.util.XMLDateUtils;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
@@ -26,6 +33,8 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	private ThesaurusVocabulary vocabulary;
 	private Integer conceptOrder;
 	private Date issued;
+		
+	private static Log log = LogFactory.getLog(ThesaurusConcept.class);
 	
 	
 	private Set<ThesaurusTerm> terms;
@@ -35,6 +44,13 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	}
 	public void setTerms(Set<ThesaurusTerm> terms) {
 		this.terms = terms;
+	}
+	public void addTerm(ThesaurusTerm term) {
+		if (terms==null) {
+			terms=new HashSet<ThesaurusTerm>();
+		}
+		term.setConcept(this);
+		terms.add(term);
 	}
 	
 	@Id
@@ -84,6 +100,9 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	public void setIssued(Date issued) {
 		this.issued = issued;
 	}
+	public void setIssuedXSDDateTime(String xmlDateTime) {
+		setIssued(XMLDateUtils.toDate(xmlDateTime));
+	}
 	
 	public Integer getConceptOrder() {
 		return conceptOrder;
@@ -91,9 +110,6 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	public void setConceptOrder(Integer conceptOrder) {
 		this.conceptOrder = conceptOrder;
 	}
-	
-	
-	
 	
 	
 	public String toString(){
