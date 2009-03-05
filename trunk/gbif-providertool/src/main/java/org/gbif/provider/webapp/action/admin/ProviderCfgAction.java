@@ -48,10 +48,15 @@ import com.opensymphony.xwork2.Preparable;
 
 public class ProviderCfgAction extends BaseAction  {
 	private static final String GOOGLE_MAPS_LOCALHOST_KEY = "";
+	private static final String REGISTRY_ORG_URL = "";
+	private static final String REGISTRY_SERVICE_URL = "";
 	@Autowired
 	private RegistryManager registryManager;
 	@Autowired
 	private GeoserverUtils geoUtils;
+	private String organisationKey;
+	
+	
 	public String execute() {		
 		check();
 		return SUCCESS;
@@ -61,6 +66,26 @@ public class ProviderCfgAction extends BaseAction  {
 		if (cancel != null) {
 			return "cancel";
 		}
+		// see if new organisation key was selected
+		if (StringUtils.trimToNull(organisationKey)!=null){
+			if (organisationKey.equalsIgnoreCase("new")){
+				// register a new organisation with GBIF!
+			}else{
+				// a new organisation was selected. Needs full endorsement of GBIF node
+				if (cfg.getIpt().getUddiID()!=null){
+					// never registered IPT before
+					cfg.getOrg().setUddiID(organisationKey);
+					if (registryManager.registerIPT()){
+						saveMessage(getText("register.ipt.success"));
+					}else{
+						saveMessage(getText("register.ipt.problem"));
+					}
+				}else{
+					saveMessage("Migration of registered IPTs to another Organisation is currently not supported!");
+				}
+			}
+		}
+		
 		this.cfg.save();
 		saveMessage(getText("config.updated"));
 		check();
@@ -82,7 +107,7 @@ public class ProviderCfgAction extends BaseAction  {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		File f = new File(cfg.getDataDir());
 		// tests
-		if (StringUtils.trimToNull(cfg.getContactEmail())==null || StringUtils.trimToNull(cfg.getContactName())==null){
+		if (StringUtils.trimToNull(cfg.getIpt().getContactEmail())==null || StringUtils.trimToNull(cfg.getIpt().getContactName())==null){
 			saveMessage(getText("config.check.contact"));
 		}
 		if (!f.isDirectory() || !f.canWrite()){
@@ -101,8 +126,8 @@ public class ProviderCfgAction extends BaseAction  {
 		if (StringUtils.trimToNull(cfg.getGoogleMapsApiKey())==null || StringUtils.trimToEmpty(cfg.getGoogleMapsApiKey()).equalsIgnoreCase(GOOGLE_MAPS_LOCALHOST_KEY)){
 			saveMessage(getText("config.check.googleMapsApiKey"));
 		}
-		if (StringUtils.trimToNull(cfg.getUddiID())==null){
-			saveMessage(getText("config.check.uddiID"));
+		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
+			saveMessage(getText("config.check.org.uddi"));
 		}
 		if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("config.check.orgPassword"));
@@ -124,6 +149,16 @@ public class ProviderCfgAction extends BaseAction  {
 	}
 	public void setConfig(AppConfig cfg) {
 		this.cfg = cfg;
+	}
+	public String getRegistryOrgUrl(){
+		return REGISTRY_ORG_URL;
+	}
+	public String getRegistryServiceUrl(){
+		return REGISTRY_SERVICE_URL;
+	}
+
+	public void setOrganisationKey(String organisationKey) {
+		this.organisationKey = organisationKey;
 	}
 	
 }
