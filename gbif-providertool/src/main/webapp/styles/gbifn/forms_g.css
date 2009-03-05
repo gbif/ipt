@@ -271,6 +271,12 @@ select.select[class]{
     margin-right: 4px;
 }
 
+.leftxlarge{
+    width: 690px;
+    float: left;
+    margin-right: 4px;
+}
+
 
 form .small{
     width: 70px;
