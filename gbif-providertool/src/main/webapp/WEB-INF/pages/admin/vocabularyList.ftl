@@ -5,6 +5,14 @@
     <meta name="menu" content="AdminMenu"/>
 </head>
 
+<p>
+	<@s.text name="thesaurus.explaination.1"/>  
+	<@s.text name="thesaurus.explaination.2"/>   
+	<@s.text name="thesaurus.explaination.3"/> 
+</p>
+<p>
+	<a href="synchroniseThesauri.html"><@s.text name="thesaurus.update"/></a>
+</p>
 <table class="vocabularyListTable">
 	<tr>
 		<th><@s.text name="vocabulary.name"/></th>

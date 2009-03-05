@@ -765,6 +765,11 @@
         <action name="concept" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="concept">
             <result type="freemarker">/WEB-INF/pages/admin/concept.ftl</result>
         </action>
+        <action name="synchroniseThesauri" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="synchroniseAll">
+            <result type="redirect-action">
+                <param name="actionName">vocabularies</param>
+            </result>
+        </action>
         
     </package>
 

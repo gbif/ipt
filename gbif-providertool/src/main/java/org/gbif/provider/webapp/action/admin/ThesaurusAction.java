@@ -57,6 +57,10 @@ public class ThesaurusAction extends BaseAction {
 		return SUCCESS;
 	}
 
+	public String synchroniseAll() {
+		thesaurusManager.synchroniseThesauriWithRepository();
+		return SUCCESS;
+	}	
 	
 	
 	public Long getId() {

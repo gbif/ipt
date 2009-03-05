@@ -84,4 +84,9 @@ public interface ThesaurusManager extends GenericManager<ThesaurusTerm>{
 	 * @return
 	 */
 	public ThesaurusTerm getTerm(String conceptUri, String language);
+	
+	/**
+	 * This will communicate with the central registry of thesauri and update the database tables 
+	 */
+	public void synchroniseThesauriWithRepository();	
 }

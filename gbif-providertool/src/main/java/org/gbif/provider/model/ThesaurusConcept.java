@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,6 +23,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.util.XMLDateUtils;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
@@ -38,7 +40,7 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	
 	
 	private Set<ThesaurusTerm> terms;
-	@OneToMany(mappedBy="concept",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="concept",fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	public Set<ThesaurusTerm> getTerms() {
 		return terms;
 	}
