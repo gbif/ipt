@@ -25,13 +25,17 @@
 		$("#orgLookupQ").result(function(event, data, formatted) {
 			$(".organisationKey").val(data.key);
 		});
+		$(".external").attr("readonly","readonly");
 		$("#newOrg").click(function(e) {
 			e.preventDefault(); 
-			$("#orgMetadataForm").slideUp();
 			$("#organisationKey").val("new");
-			alert("Please make sure you have entered good data");
+			$(".external").removeAttr("readonly");
+			alert("Your data will be registered as a new organisation with GBIF and send to your selected GBIF node for endorsement. Please enter data carefully.");
 		});
-		
+		$("#editOrg").click(function(e) {
+			e.preventDefault(); 
+			$(".external").removeAttr("readonly");
+		});
 	});
 	
 	</script>
@@ -61,57 +65,55 @@
 			<@s.textfield id="orgLookupQ" key="config.orgLookup" value="" cssClass="text large"/>
         </div>
         <div class="right">
-			<input class="button" id="newOrg" key="config.newOrganisation" theme="simple" />
+			<input type="submit" class="button" id="newOrg" value="<@s.text name='config.newOrganisation'/>" theme="simple" />
         </div>	
 	</div>
   <#else>
 		<div class="right">
-			<input class="button" id="editOrg" key="config.editOrganisation" theme="simple" />
+			<input type="submit" class="button" id="editOrg" value="<@s.text name='config.editOrganisation'/>" theme="simple" />
 		</div>
   </#if>
 	
-	<div id="orgMetadataForm" style="clear:both">
-	    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
-	    <div>
-	        <div class="left">
-				<@s.textfield key="config.org.uddi" value="${config.org.uddiID!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
-	        </div>
-	        <div>
-				<@s.textfield key="config.orgPassword" readonly="true" required="true" cssClass="text large"/>
-	        </div>
-		</div>
+    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
+    <div>
+        <div class="left">
+			<@s.textfield key="config.org.uddi" value="${config.org.uddiID!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
+        </div>
+        <div>
+			<@s.textfield key="config.orgPassword" required="true" cssClass="text large"/>
+        </div>
+	</div>
+	<div>
+		<@s.textfield key="config.org.title" required="true" cssClass="text xlarge external"/>
+	</div>
+    <div>
+        <div class="left">
+			<@s.textfield key="config.org.contactName" required="true" cssClass="text large external"/>
+        </div>
+        <div>
+			<@s.textfield key="config.org.contactEmail" required="true" cssClass="text large external"/>
+        </div>
+	</div>
+	<div class="left">    
 		<div>
-			<@s.textfield key="config.org.title" readonly="true" required="true" cssClass="text xlarge"/>
+			<@s.textfield key="config.org.link" required="false" cssClass="text large external"/>
 		</div>
 	    <div>
-	        <div class="left">
-				<@s.textfield key="config.org.contactName" readonly="true" required="true" cssClass="text large"/>
+	        <div class="leftMedium">
+				<@s.textfield key="config.org.location.latitude" required="false" cssClass="text medium external"/>
 	        </div>
 	        <div>
-				<@s.textfield key="config.org.contactEmail" readonly="true" required="true" cssClass="text large"/>
+				<@s.textfield key="config.org.location.longitude" required="false" cssClass="text medium external"/>
 	        </div>
-		</div>
-		<div class="left">    
-			<div>
-				<@s.textfield key="config.org.link" readonly="true" required="true" cssClass="text large"/>
-			</div>
-		    <div>
-		        <div class="leftMedium">
-					<@s.textfield key="config.org.location.latitude" readonly="true" required="false" cssClass="text medium"/>
-		        </div>
-		        <div>
-					<@s.textfield key="config.org.location.longitude" readonly="true" required="false" cssClass="text medium"/>
-		        </div>
-		    </div>	    
-		</div>
-	    <div class="googlemap">
-			<#if (config.org.location)?? && cfg.googleMapsApiKey??>
-				<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.org.location.latitude?c!0},${config.org.location.longitude?c!0}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.org.location.latitude?c!0},${config.org.location.longitude?c!0}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
-			</#if>
-	    </div>
-		<div style="clear:both">
-			<@s.textarea key="config.org.description" readonly="true" cssClass="text xlarge"/>
-		</div>
+	    </div>	    
+	</div>
+    <div class="googlemap">
+		<#if (config.org.location)?? && cfg.googleMapsApiKey??>
+			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.org.location.latitude?c!0},${config.org.location.longitude?c!0}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.org.location.latitude?c!0},${config.org.location.longitude?c!0}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
+		</#if>
+    </div>
+	<div style="clear:both">
+		<@s.textarea key="config.org.description" cssClass="text xlarge external"/>
 	</div>
   </fieldset>
 <div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
