@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,6 +26,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -174,35 +176,53 @@ public class GeoserverUtils {
 		}
 	}
 	
+	public boolean login(String username, String password, String geoserverURL){
+		boolean result=false;
+        
+		httpclient.getCredentialsProvider().setCredentials(
+                new AuthScope("localhost", -1), 
+                new UsernamePasswordCredentials(username, password));
+		
+		HttpPost httpost = new HttpPost(geoserverURL+"/admin/loginSubmit.do");
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("username", username));
+        nvps.add(new BasicNameValuePair("password", password));
+        
+        try {
+			httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1));
+	        HttpResponse response = httpclient.execute(httpost);
+	        if (!failed(response)){
+	        	result = true;
+	        }
+	        consume(response);
+		} catch (UnsupportedEncodingException e) {
+			log.debug(e);
+		} catch (ClientProtocolException e) {
+			log.debug(e);
+		} catch (IOException e) {
+			log.debug(e);
+		}
+        return result;
+	}
+	
 	public void reloadCatalog() throws IOException{
 		String username = cfg.getGeoserverUser();
 		String password = cfg.getGeoserverPass();
 		String geoserverURL = cfg.getGeoserverUrl();
 		
-        httpclient.getCredentialsProvider().setCredentials(
-                new AuthScope("localhost", -1), 
-                new UsernamePasswordCredentials(username, password));
 
         // LOGIN
-        HttpPost httpost = new HttpPost(geoserverURL+"/admin/loginSubmit.do");
-
-        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-        nvps.add(new BasicNameValuePair("username", username));
-        nvps.add(new BasicNameValuePair("password", password));
-
-        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1));
-
-        HttpResponse response = httpclient.execute(httpost);
-        if (failed(response)){
-        	log.warn("Failed to log into geoserver");
-        }else{
+		boolean login = login(username, password, geoserverURL);
+        if (login){
             log.debug("login to geoserver succeeded");
+        }else{
+        	log.warn("Failed to log into geoserver");
         }
-        consume(response);
 
         // RELOAD
         HttpGet httpget = new HttpGet(geoserverURL+"/admin/loadFromXML.do");
-        response = httpclient.execute(httpget);
+        HttpResponse response = httpclient.execute(httpget);
         if (failed(response)){
         	log.warn("Failed to reload catalog");
         }else{
@@ -211,8 +231,8 @@ public class GeoserverUtils {
         consume(response);
 
         // RELOAD GeoWebCache
-        httpost = new HttpPost(geoserverURL+"/gwc/rest/reload");
-        nvps.clear();
+        HttpPost httpost = new HttpPost(geoserverURL+"/gwc/rest/reload");
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair("reload_configuration", "1"));
         HttpEntity body = new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1);
         httpost.setEntity(body);        

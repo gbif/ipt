@@ -59,7 +59,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	private Long id;
 	@NotNull
 	protected String guid = UUID.randomUUID().toString();
-	protected String uddiID;
 	// resource metadata
 	protected ResourceMetadata meta = new ResourceMetadata();
 	protected BBox geoCoverage;
@@ -88,14 +87,14 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		this.guid = guid;
 	}
 
-	@Column(length=64, unique=true)
-	public String getUddiID() {
-		return uddiID;
+	@Column(length=64)
+	public String getType() {
+		return type;
 	}
-	public void setUddiID(String uddiID) {
-		this.uddiID = uddiID;
+	public void setType(String type) {
+		this.type = type;
 	}
-	
+
 	public PublicationStatus getStatus() {
 		return status;
 	}
@@ -192,10 +191,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public String getTitle() {
 		return getMeta().getTitle();
 	}
-	@Transient
-	public String getType() {
-		return getMeta().getType();
-	}
 	
 
 	public void setLink(String link) {
@@ -212,9 +207,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	public void setTitle(String title) {
 		meta.setTitle(title);
-	}
-	public void setType(String type) {
-		meta.setType(type);
 	}
 	
 

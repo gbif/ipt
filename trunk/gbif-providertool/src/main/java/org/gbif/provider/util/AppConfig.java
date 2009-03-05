@@ -17,6 +17,7 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Point;
 import org.gbif.provider.model.ProviderCfg;
+import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ProviderCfgManager;
@@ -49,7 +50,6 @@ public class AppConfig{
 		log.info(String.format("\n--------------------\nIPT_DATA_DIR: %s\nIPT_WEBAPP_DIR: %s\nIPT_BASE_URL: %s\nIPT_GEOSERVER_URL: %s\nIPT_GEOSERVER_DATA_DIR: %s\n--------------------\n", dataDIR,webappDIR.getAbsolutePath(),baseURL,cfg.getGeoserverUrl(),cfg.getGeoserverDataDir()));
 	}
 
-	
 	
 	// OTHER UTILITY METHODS, MOSTLY DEFINING PATHS & URLs
 	
@@ -229,41 +229,28 @@ public class AppConfig{
 	public Long getId() {
 		return cfg.getId();
 	}
-	public String getUddiID() {
-		return cfg.getUddiID();
-	}
-	public String getUddiSharedKey() {
-		return cfg.getUddiSharedKey();
-	}
 	public String getBaseUrl() {
 		return cfg.getBaseUrl();
 	}
-	public String getContactEmail() {
-		return cfg.getMeta().getContactEmail();
+	public String getOrgPassword() {
+		return cfg.getOrgPassword();
 	}
-	public String getContactName() {
-		return cfg.getMeta().getContactName();
+	public ResourceMetadata getOrg() {
+		return cfg.getIptMeta();
 	}
-	public String getDescription() {
-		return cfg.getMeta().getDescription();
+	public ResourceMetadata getIpt() {
+		return cfg.getIptMeta();
 	}
+
 	public String getDescriptionImage() {
 		return cfg.getDescriptionImage();
 	}
+	
 	public String getGeoserverUrl() {
 		return cfg.getGeoserverUrl();
 	}
 	public String getGeoserverWebCacheUrl(Long resourceId) {
 		return cfg.getGeoserverUrl()+"/gwc/service/gmaps?LAYERS=gbif%3Aresource"+resourceId;
-	}
-	public String getLink() {
-		return cfg.getMeta().getLink();
-	}
-	public String getTitle() {
-		return cfg.getMeta().getTitle();
-	}
-	public Point getLocation() {
-		return cfg.getMeta().getLocation();
 	}
 	public String getGeoserverDataDir() {
 		// default is geoserver/data in the same webapps folder
@@ -296,35 +283,14 @@ public class AppConfig{
 		cfg.setBaseUrl(trimUrl(baseUrl));
 		baseURL=getBaseUrl();
 	}
-	public void setUddiID(String uddiID) {
-		cfg.setUddiID(uddiID);
-	}
-	public void setUddiSharedKey(String uddiSharedKey) {
-		cfg.setUddiSharedKey(uddiSharedKey);
-	}
-	public void setContactEmail(String contactEmail) {
-		cfg.getMeta().setContactEmail(contactEmail);
-	}
-	public void setContactName(String contactName) {
-		cfg.getMeta().setContactName(contactName);
-	}
-	public void setDescription(String description) {
-		cfg.getMeta().setDescription(description);
+	public void setOrgPassword(String orgPassword) {
+		cfg.setOrgPassword(orgPassword);
 	}
 	public void setDescriptionImage(String descriptionImage) {
 		cfg.setDescriptionImage(descriptionImage);
 	}
 	public void setGeoserverUrl(String geoserverUrl) {
 		cfg.setGeoserverUrl(trimUrl(geoserverUrl));
-	}
-	public void setLink(String link) {
-		cfg.getMeta().setLink(link);
-	}
-	public void setTitle(String title) {
-		cfg.getMeta().setTitle(title);
-	}
-	public void setLocation(Point location) {
-		cfg.getMeta().setLocation(location);
 	}
 	public void setGoogleMapsApiKey(String googleMapsApiKey) {
 		cfg.setGoogleMapsApiKey(googleMapsApiKey);
@@ -361,5 +327,61 @@ public class AppConfig{
 		}
 		return url;
 	}
+
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// REMOVE AT SOME POINT
+	public String getUddiID() {
+		return cfg.getIptMeta().getUddiID();
+	}
+	public String getContactEmail() {
+		return cfg.getIptMeta().getContactEmail();
+	}
+	public String getContactName() {
+		return cfg.getIptMeta().getContactName();
+	}
+	public String getDescription() {
+		return cfg.getIptMeta().getDescription();
+	}
+	public String getLink() {
+		return cfg.getIptMeta().getLink();
+	}
+	public String getTitle() {
+		return cfg.getIptMeta().getTitle();
+	}
+	public Point getLocation() {
+		return cfg.getIptMeta().getLocation();
+	}
+	
+	public void setUddiID(String uddiID) {
+		cfg.getIptMeta().setUddiID(uddiID);
+	}
+	public void setContactEmail(String contactEmail) {
+		cfg.getIptMeta().setContactEmail(contactEmail);
+	}
+	public void setContactName(String contactName) {
+		cfg.getIptMeta().setContactName(contactName);
+	}
+	public void setDescription(String description) {
+		cfg.getIptMeta().setDescription(description);
+	}
+	public void setLink(String link) {
+		cfg.getIptMeta().setLink(link);
+	}
+	public void setTitle(String title) {
+		cfg.getIptMeta().setTitle(title);
+	}
+	public void setLocation(Point location) {
+		cfg.getIptMeta().setLocation(location);
+	}
+
 }

@@ -14,9 +14,10 @@ import org.apache.commons.lang.StringUtils;
 @Entity
 public class ProviderCfg {
 	private Long id;
-	private String uddiID;
-	private String uddiSharedKey;
-	private ResourceMetadata meta = new ResourceMetadata();
+	private ResourceMetadata org = new ResourceMetadata();
+	private String orgPassword;
+	private String orgNode;
+	private ResourceMetadata ipt = new ResourceMetadata();
 	private String descriptionImage;
 	private String baseUrl;
 	private String googleMapsApiKey;
@@ -33,29 +34,35 @@ public class ProviderCfg {
 		this.id = id;
 	}
 
-	@Column(length=64)
-	public String getUddiID() {
-		return uddiID;
+	@Column(length=128)
+	public String getOrgPassword() {
+		return orgPassword;
 	}
-	public void setUddiID(String uddiID) {
-		this.uddiID = uddiID;
+	public void setOrgPassword(String orgPassword) {
+		this.orgPassword = orgPassword;
 	}
 
 	@Column(length=128)
-	public String getUddiSharedKey() {
-		return uddiSharedKey;
+	public String getOrgNode() {
+		return orgNode;
 	}
-	public void setUddiSharedKey(String uddiSharedKey) {
-		this.uddiSharedKey = uddiSharedKey;
+	public void setOrgNode(String orgNode) {
+		this.orgNode = orgNode;
 	}
-	
-	public ResourceMetadata getMeta() {
-		return meta;
+	public ResourceMetadata getOrgMeta() {
+		return org;
 	}
-	public void setMeta(ResourceMetadata meta) {
-		this.meta = meta;
+	public void setOrgMeta(ResourceMetadata meta) {
+		this.org = meta;
 	}	
-	
+
+	public ResourceMetadata getIptMeta() {
+		return ipt;
+	}
+	public void setIptMeta(ResourceMetadata meta) {
+		this.ipt = meta;
+	}	
+
 	public String getDescriptionImage() {
 		return descriptionImage;
 	}
