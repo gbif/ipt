@@ -44,6 +44,9 @@
 		input[readonly] {
 			background: #eaeaea;
 		}
+		textarea[readonly] {
+			background: #eaeaea;
+		}
 	</style>	    
 </head>
 
@@ -62,6 +65,9 @@
         </div>	
 	</div>
   <#else>
+		<div class="right">
+			<input class="button" id="editOrg" key="config.editOrganisation" theme="simple" />
+		</div>
   </#if>
 	
 	<div id="orgMetadataForm" style="clear:both">
@@ -160,6 +166,9 @@
 
 <h2 class="modifiedh2"><@s.text name="config.geoserver"/></h2>
 <fieldset>
+	<div class="right">
+		<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
+	</div>
     <div>
 		<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
 	</div>
@@ -177,7 +186,4 @@
   </fieldset>
 <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
 <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
-<div class="right">
-	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
-</div>
 </@s.form>
