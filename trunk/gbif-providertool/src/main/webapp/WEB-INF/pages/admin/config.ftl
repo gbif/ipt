@@ -12,32 +12,37 @@
 	<div>
 		<@s.textfield key="config.title" required="true" cssClass="text xlarge"/>
 	</div>
-    <div class="googlemap">
-		<#if (config.location)?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.location.latitude!0},${config.location.longitude!0}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.location.latitude!0},${config.location.longitude!0}&zoom=5&size=95x95&key=${cfg.googleMapsApiKey}" /></a>	
-		</#if>
-    </div>
 	<div>
+		<div class="leftLarge">
 		<@s.textfield key="config.link" required="true" cssClass="text large"/>
-	</div>
-    <div>
-        <div class="leftMedium">
+		</div>
+		<div class="leftMedium">
 			<@s.textfield key="config.contactName" required="true" cssClass="text medium"/>
         </div>
         <div class="leftMedium">
 			<@s.textfield key="config.contactEmail" required="true" cssClass="text medium"/>
         </div>
-        <div class="leftMedium">
-			<@s.textfield key="config.location.latitude" required="false" cssClass="text medium"/>
-        </div>
-        <div>
-			<@s.textfield key="config.location.longitude" required="false" cssClass="text medium"/>
-        </div>
-    </div>	    
-	<div>
+	</div>
+	
+    <div>
+        <div class="break"></div>
+        
+        <div class="googlemap">
+			<#if (config.location)?? && cfg.googleMapsApiKey??>
+			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.location.latitude!0},${config.location.longitude!0}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.location.latitude!0},${config.location.longitude!0}&zoom=5&size=340x100&key=${cfg.googleMapsApiKey}" /></a>	
+			</#if>
+    	</div>
+    </div>
+    <div class="leftLarge">
+		<@s.textfield key="config.location.latitude" required="false" cssClass="text medium"/>
+    </div>
+    <div class="leftLarge">
+		<@s.textfield key="config.location.longitude" required="false" cssClass="text medium"/>
+    </div>
+	<div class="leftxlarge">
 		<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
 	</div>
-	<div>
+	<div class="leftxlarge">
 		<@s.textarea key="config.description" cssClass="text xlarge"/>
 	</div>
   </fieldset>
