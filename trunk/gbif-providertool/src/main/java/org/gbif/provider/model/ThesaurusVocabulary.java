@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -57,7 +56,7 @@ public class ThesaurusVocabulary implements Comparable {
 		this.link = link;
 	}
 	
-	@OneToMany(mappedBy="vocabulary",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="vocabulary",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@IndexColumn(name = "conceptOrder",base=0, nullable=false)
 	public List<ThesaurusConcept> getConcepts() {
 		return concepts;

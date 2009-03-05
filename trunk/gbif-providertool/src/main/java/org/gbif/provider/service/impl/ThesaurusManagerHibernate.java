@@ -1,20 +1,17 @@
 package org.gbif.provider.service.impl;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.RestrictionDocument.Restriction;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.ThesaurusManager;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.impl.CriteriaImpl;
+import org.gbif.provider.service.util.ThesaurusFactory;
 
 public class ThesaurusManagerHibernate extends GenericManagerHibernate<ThesaurusTerm> implements ThesaurusManager{
 	public ThesaurusManagerHibernate() {
@@ -150,5 +147,24 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 		return (ThesaurusVocabulary) getSession().get(ThesaurusVocabulary.class, id);
 	}
 
-
+	public void synchroniseThesauriWithRepository() {
+		Collection<String> urls = new LinkedList<String>();
+		urls.add("http://gbrds.gbif.org/resources/thesauri/lang.xml");
+		
+		Collection<ThesaurusVocabulary> vocabularies = ThesaurusFactory.build(urls);
+		for (ThesaurusVocabulary tv: vocabularies) {
+			getSession().saveOrUpdate(tv);
+			/*
+			if (tv.getConcepts()!=null) {
+				for (ThesaurusConcept tc : tv.getConcepts()) {
+					if (tc.getTerms() != null) {
+						for (ThesaurusTerm tt : tc.getTerms()) {
+							this.save(tt);
+						}
+					}
+				}			
+			}
+			*/
+		}
+	}
 }
