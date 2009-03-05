@@ -5,8 +5,6 @@
     <meta name="submenu" content="manage_resource"/>
     <meta name="heading" content="Property Mappings"/>
     
-	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.core.min.js'/>"></script>
-	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.accordion.min.js'/>"></script>
 	<script>
 	var previewLoaded=0;
 	function sourcePreview(){

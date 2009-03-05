@@ -33,7 +33,7 @@ import org.apache.commons.lang.StringUtils;
  */
 @Embeddable
 public class ResourceMetadata{
-	protected String type;
+	protected String uddiID;
 	protected String link;
 	protected String title;
 	protected String description;
@@ -42,14 +42,14 @@ public class ResourceMetadata{
 	protected Point location;
 
 	
-	@Column(length=64)
-	public String getType() {
-		return type;
+	@Column(length=64, unique=true)
+	public String getUddiID() {
+		return uddiID;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setUddiID(String uddiID) {
+		this.uddiID = uddiID;
 	}
-	
+
 	public String getLink() {
 		return link;
 	}

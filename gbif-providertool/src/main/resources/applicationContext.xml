@@ -123,6 +123,8 @@
     
     <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
 
+    <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
+
     <!-- cache / import manager -->
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
 
