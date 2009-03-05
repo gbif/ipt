@@ -72,7 +72,7 @@ public class ProviderCfgAction extends BaseAction  {
 				// register a new organisation with GBIF!
 			}else{
 				// a new organisation was selected. Needs full endorsement of GBIF node
-				if (cfg.getIpt().getUddiID()!=null){
+				if (cfg.getIpt().getUddiID()==null){
 					// never registered IPT before
 					cfg.getOrg().setUddiID(organisationKey);
 					if (registryManager.registerIPT()){
