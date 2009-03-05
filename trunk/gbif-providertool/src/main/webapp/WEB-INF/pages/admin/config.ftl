@@ -52,17 +52,17 @@
 
 <h2 class="modifiedh2"><@s.text name="config.registry"/></h2>
 <fieldset>
-  <#if config.org.uddiID??>
+  <#if (config.org.uddiID)??>
 	<div>
         <div class="left">
 			<@s.textfield id="orgLookupQ" key="config.orgLookup" value="" cssClass="text large"/>
         </div>
         <div class="right">
-			<input class="button" id="newOrg" key="config.newOrganisation" theme="simple"/>
+			<input class="button" id="newOrg" key="config.newOrganisation" theme="simple" />
         </div>	
 	</div>
   <#else>
-  <#/if>
+  </#if>
 	
 	<div id="orgMetadataForm" style="clear:both">
 	    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
@@ -109,7 +109,6 @@
 	</div>
   </fieldset>
 <div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
-
 
 <h2><@s.text name="config.metadata"/></h2>
 <fieldset>
