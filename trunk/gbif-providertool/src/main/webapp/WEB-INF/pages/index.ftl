@@ -1,7 +1,7 @@
 <#assign display=JspTaglibs["http://displaytag.sf.net"] />
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <head>
-    <title>${cfg.title}</title>
+    <title>${cfg.ipt.title}</title>
     <!--<meta name="menu" content="MainMenu"/>-->
     <meta name="menu" content="AboutMenu"/>
     <meta name="submenu" content="metadata"/>
@@ -9,11 +9,11 @@
 </head>
 
 
-<h1>${cfg.title}</h1>
+<h1>${cfg.ipt.title}</h1>
 
 <div id="about">
 	<img class="right" src="${cfg.getDescriptionImage()}" />
-	${cfg.getDescription()}
+	${cfg.ipt.description}
 </div>
 
 <h3>Hosted resources</h3>

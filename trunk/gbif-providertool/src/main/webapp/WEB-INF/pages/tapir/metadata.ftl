@@ -32,8 +32,8 @@
     <relatedEntity>
       <role>technical host</role>
       <entity>
-        <name>${cfg.title}</name>
-        <description>${cfg.description}</description>
+        <name>${cfg.ipt.title}</name>
+        <description>${cfg.ipt.description}</description>
         <hasContact>
           <role>system administrator</role>
           <vcard:VCARD>
@@ -48,7 +48,7 @@
       </entity>
     </relatedEntity>
     <custom>
-    	<ipt:logoURL>${cfg.getResourceLogoUrl(resource_id)}</ipt:logoURL>
+    	<ipt:logoURL>${cfg.getResourceLogoUrl(resource_id)}</ipt:logoURL>‚‚
     </custom>
   </metadata>
 </#escape>

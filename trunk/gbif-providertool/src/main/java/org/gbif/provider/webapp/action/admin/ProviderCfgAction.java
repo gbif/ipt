@@ -91,7 +91,10 @@ public class ProviderCfgAction extends BaseAction  {
 		check();
 		return SUCCESS;
 	}
-
+	
+	public void register(){
+		saveMessage("Thanks for registering with GBIF. The password for managing your organisation in GBIFs registry will be mailed the contact. Please enter it here to be able to publish data resources to GBIFs registry.");
+	}
 
 	public String updateGeoserver() throws Exception {
 		try {
