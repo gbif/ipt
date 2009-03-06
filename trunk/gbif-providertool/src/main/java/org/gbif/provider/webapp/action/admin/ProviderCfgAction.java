@@ -110,7 +110,13 @@ public class ProviderCfgAction extends BaseAction  {
 		return SUCCESS;
 	}
 
+	private void setOrgIdIfNull(){
+		if (cfg.getOrg().getUddiID()==null){
+			cfg.getOrg().setUddiID(StringUtils.trimToNull(organisationKey));
+		}		
+	}
 	public String registerIpt(){
+		setOrgIdIfNull();
 		if (cfg.getIpt().getUddiID()!=null){
 			saveMessage(getText("register.ipt.already"));
 		}else if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
