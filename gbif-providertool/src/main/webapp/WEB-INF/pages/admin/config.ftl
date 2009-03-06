@@ -7,26 +7,12 @@
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
 	<link rel="stylesheet" type="text/css" href="<@s.url value='/scripts/jquery.autocomplete.css'/>" />
 	<script>
-	var z = '${orgsJSON}';
-	eval('var orgs='+z);
-	function udpateOrg(data){
-		$(".organisationKey").val(data.key);
-		$("#orgTitle").val(data.name);
-		$("#orgName").val(data.primaryContactName);
-		$("#orgEmail").val(data.primaryContactEmail);
-		$("#orgHomepage").val(data.homepageURL);
-		$("#orgLatitude").val("");
-		$("#orgLongitude").val("");
-		$("#orgDescription").val(data.description);
-	}
-	$(document).ready(function(){
-		$(".external").attr("readonly","readonly");
-	  <#if config.org.uddiID??>
-		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);        
-	  	$("#newActions").hide();
-	  </#if>
-					 
-		$('#orgLookupQ').autocomplete(orgs, {
+	var orgs;
+	// first get list of all organisations, then attach automplete event based on this list
+	// could do autocomplete via server call, but gets into problems sometimes. This is how it would be called:
+	// ${config.getBaseUrl()}/ajax/proxy.do?uri=${registryOrgUrl}.json?nix=1
+	function udpateOrgList(data){
+		$('#orgLookupQ').autocomplete(data, {
 			width:340, 
 			minChars:1, 
 			mustMatch:true, 
@@ -38,19 +24,47 @@
 				return row.name;
 			}
 		});
+	}
+	function udpateOrg(data){
+		$(".organisationKey").val(data.key);
+		$("#orgTitle").val(data.name);
+		$("#orgName").val(data.primaryContactName);
+		$("#orgEmail").val(data.primaryContactEmail);
+		$("#orgHomepage").val(data.homepageURL);
+		$("#orgLatitude").val("");
+		$("#orgLongitude").val("");
+		$("#orgDescription").val(data.description);
+	}
+	$(document).ready(function(){
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);        
+		$(".external").attr("readonly","readonly");
+		$("#registerOrg").hide();
+	  <#if config.org.uddiID??>
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);        
+	  </#if>
+	  <#if config.ipt.uddiID??>
+	  	$("#newActions").hide();
+	  </#if>					 
+
 		$("#orgLookupQ").result(function(event, data, formatted) {
 			udpateOrg(data);
 		});
 		$("#newOrg").click(function(e) {
 			e.preventDefault(); 
-			$("#organisationKey").val("");
+			$(".organisationKey").val("");
 			$(".external").val("");
+			$("#registerOrg").show();
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
 			$(".external").removeAttr("readonly");
 		});
 		$("#updateOrg").click(function(e) {
 			e.preventDefault(); 
 			$(".external").removeAttr("readonly");
+		});
+		$("#registerOrg").click(function(e) {
+		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot change this through the IPT but will have to get in touch with GBIF personally.")) {
+				e.preventDefault();
+		    }
 		});
 		$("#registerIpt").click(function(e) {
 		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot change this through the IPT but will have to get in touch with GBIF personally.")) {
@@ -130,8 +144,8 @@
 		<a id="updateOrg" href="#"><@s.text name='config.updateOrganisation'/></a>
 	</div>
   </#if>
-  <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-  <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
+    <@s.submit cssClass="button" id="registerOrg" key="button.registerOrg" method="registerOrg" theme="simple"/>
+
   </fieldset>
   
 <div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
@@ -175,7 +189,9 @@
 	</div>
 	<@s.textfield key="config.ipt.descriptionImage" required="false" cssClass="text xlarge"/>
 	
-    <@s.submit cssClass="button" id="registerIpt" key="button.registerIpt" method="register" theme="simple"/>
+  <#if !config.ipt.uddiID??>
+    <@s.submit cssClass="button" id="registerIpt" key="button.registerIpt" method="registerIpt" theme="simple"/>
+  </#if>
   </fieldset>
 <div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
 

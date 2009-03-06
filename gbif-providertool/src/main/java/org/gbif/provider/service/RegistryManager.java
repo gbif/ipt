@@ -10,8 +10,7 @@ import org.gbif.provider.model.ResourceMetadata;
 
 public interface RegistryManager {
 	public List<URI> listExtensions();
-	public Map<String, ResourceMetadata> findOrganisations(String q);
-	public String findOrganisationsAsJSON(String q);
+	public boolean registerOrg();
 	public boolean registerIPT();
 	public boolean registerResource(Long resourceId);
 }
