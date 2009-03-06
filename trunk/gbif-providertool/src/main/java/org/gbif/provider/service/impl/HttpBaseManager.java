@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import freemarker.template.Configuration;
 
 public class HttpBaseManager {
-
 	protected final Log log = LogFactory.getLog(HttpBaseManager.class);
 	@Autowired
 	protected AppConfig cfg;
@@ -27,8 +26,7 @@ public class HttpBaseManager {
 	    	try {
 				entity.consumeContent();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("http client consume error", e);
 			}
 	    }
 	}

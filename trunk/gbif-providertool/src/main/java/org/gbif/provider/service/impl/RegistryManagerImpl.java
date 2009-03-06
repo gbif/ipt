@@ -5,6 +5,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -28,33 +31,32 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		return null;
 	}
 
+	public boolean registerOrg() {
+		// need to register a new organisation?
+		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())!=null){
+			log.warn("The organisation is already registered");
+			return false;
+		}
+    	PostMethod method = new PostMethod();
+		method.releaseConnection();
+		return true;
+	}
+
 	public boolean registerIPT() {
+		// need to register a new organisation?
+		if (StringUtils.trimToNull(cfg.getIpt().getUddiID())==null){
+			log.warn("This IPT is already registered");
+			return false;
+		}
 		log.warn("IPT service registration not implemented");
+    	PostMethod method = new PostMethod();
+		method.releaseConnection();
 		return false;
 	}
 
 	public boolean registerResource(Long resourceId) {
-		// TODO Auto-generated method stub
+    	PostMethod method = new PostMethod();
+		method.releaseConnection();
 		return false;
 	}
-
-	public String findOrganisationsAsJSON(String q) {
-        HttpGet httpget = new HttpGet(REGISTRY_ORG_URL+".json?q="+q);
-        String json = null;
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        try {
-			json = httpclient.execute(httpget, responseHandler);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return json;
-	}
-
-	public Map<String, ResourceMetadata> findOrganisations(String q) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

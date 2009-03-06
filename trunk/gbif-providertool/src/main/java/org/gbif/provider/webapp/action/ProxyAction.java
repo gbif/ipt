@@ -53,6 +53,7 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.service.impl.GeoserverManagerImpl;
+import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,8 @@ public class ProxyAction extends ActionSupport  {
     private String result = "";
 	private String uri;
 	
-	public String execute() {		
+	public String execute() {
+		log.debug("Proxying "+uri);
         method = new GetMethod(uri);
         method.setFollowRedirects(true);
         try {
@@ -82,7 +84,21 @@ public class ProxyAction extends ActionSupport  {
 //		inputStream = new ByteArrayInputStream(result.getBytes());
 		return SUCCESS;
 	}
-
+	
+	public String organisations(){
+        method = new GetMethod(RegistryManagerImpl.REGISTRY_ORG_URL+".json");
+        method.setFollowRedirects(true);
+        try {
+	        httpClient.executeMethod(method);
+	        inputStream = method.getResponseBodyAsStream();
+    	} catch (HttpException e) {
+			log.warn("Error retrieving registry organisations", e);
+		} catch (IOException e) {
+			log.warn("Error retrieving registry organisations", e);
+		}
+		return SUCCESS;
+	}
+	
 	public void destroy(){
 		method.releaseConnection();
 	}

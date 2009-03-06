@@ -424,6 +424,12 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
+        <action name="organisations" class="org.gbif.provider.webapp.action.ProxyAction" method="organisations">
+            <result type="stream">
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
         
     </package>
 

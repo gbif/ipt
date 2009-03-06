@@ -56,11 +56,9 @@ public class ProviderCfgAction extends BaseAction  {
 	@Autowired
 	private GeoserverManager geoManager;
 	private String organisationKey;
-	private String orgsJSON;
 	
 
 	public String execute() {
-		orgsJSON = registryManager.findOrganisationsAsJSON("");
 		check();
 		return SUCCESS;
 	}
@@ -69,7 +67,6 @@ public class ProviderCfgAction extends BaseAction  {
 		if (cancel != null) {
 			return "cancel";
 		}
-		orgsJSON = registryManager.findOrganisationsAsJSON("");
 		// see if new organisation key was selected
 		if (StringUtils.trimToNull(organisationKey)!=null){
 			if (organisationKey.equalsIgnoreCase("new")){
@@ -96,20 +93,39 @@ public class ProviderCfgAction extends BaseAction  {
 		return SUCCESS;
 	}
 	
-	public String register(){
-		if (cfg.getIpt().getUddiID()!=null){
-			saveMessage("You are already registered with GBIF");
+	public String registerOrg(){
+		if (cfg.getOrg().getUddiID()!=null){
+			saveMessage("The organisation is already registered with GBIF");
 		}else{
-			// register IPT and try to use current orgKey (empty for a new organisation)
+			// register new organisation
 			cfg.getOrg().setUddiID(organisationKey);
+			if (registryManager.registerOrg()){
+				saveMessage(getText("register.org.success"));
+				saveMessage(getText("register.thanks"));
+				this.cfg.save();
+			}else{
+				saveMessage(getText("register.org.problem"));
+			}
+		}
+		return SUCCESS;
+	}
+
+	public String registerIpt(){
+		if (cfg.getIpt().getUddiID()!=null){
+			saveMessage(getText("register.ipt.already"));
+		}else if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
+			saveMessage(getText("register.org.missing"));
+		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
+			saveMessage(getText("register.org.password.missing"));
+		}else{
+			// register IPT with organisation
 			if (registryManager.registerIPT()){
 				saveMessage(getText("register.ipt.success"));
+				this.cfg.save();
 			}else{
 				saveMessage(getText("register.ipt.problem"));
 			}
 		}
-		this.cfg.save();
-		saveMessage("Thanks for registering with GBIF. The password for managing your organisation in GBIFs registry will be mailed the contact. Please enter it here to be able to publish data resources to GBIFs registry.");
 		return SUCCESS;
 	}
 
@@ -159,8 +175,6 @@ public class ProviderCfgAction extends BaseAction  {
 
 		}
 	}
-
-	
 	
 	
 	public AppConfig getConfig() {
@@ -179,9 +193,4 @@ public class ProviderCfgAction extends BaseAction  {
 	public void setOrganisationKey(String organisationKey) {
 		this.organisationKey = organisationKey;
 	}
-
-	public String getOrgsJSON() {
-		return orgsJSON;
-	}
-	
 }
