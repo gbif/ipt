@@ -206,7 +206,6 @@
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
 
     <servlet> 
         <servlet-name>H2Console</servlet-name> 

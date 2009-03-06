@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContextType;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
@@ -45,7 +44,7 @@ import java.net.URLEncoder;
 public class OccResourceManagerHibernate extends DataResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
 
 	@Autowired
-	private GeoserverUtils geoTools;
+	private GeoserverManagerImpl geoTools;
 	@Autowired
 	private RegionManager regionManager;
 	

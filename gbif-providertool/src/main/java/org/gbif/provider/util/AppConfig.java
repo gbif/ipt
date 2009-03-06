@@ -236,10 +236,10 @@ public class AppConfig{
 		return cfg.getOrgPassword();
 	}
 	public ResourceMetadata getOrg() {
-		return cfg.getOrgMeta() ==null? new ResourceMetadata() : cfg.getOrgMeta();
+		return cfg.getOrgMeta();
 	}
 	public ResourceMetadata getIpt() {
-		return cfg.getIptMeta() ==null? new ResourceMetadata() : cfg.getIptMeta();
+		return cfg.getIptMeta();
 	}
 
 	public String getDescriptionImage() {

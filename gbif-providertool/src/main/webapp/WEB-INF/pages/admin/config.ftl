@@ -7,6 +7,8 @@
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
 	<link rel="stylesheet" type="text/css" href="<@s.url value='/scripts/jquery.autocomplete.css'/>" />
 	<script>
+	var z = '${orgsJSON}';
+	eval('var orgs='+z);
 	function udpateOrg(data){
 		$(".organisationKey").val(data.key);
 		$("#orgTitle").val(data.name);
@@ -20,11 +22,11 @@
 	$(document).ready(function(){
 		$(".external").attr("readonly","readonly");
 	  <#if config.org.uddiID??>
-		$.getJSON("${registryOrgUrl}/${config.org.uddiID!-1}",udpateOrg);        
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);        
 	  	$("#newActions").hide();
 	  </#if>
 					 
-		$('#orgLookupQ').autocomplete('${registryOrgUrl}', {
+		$('#orgLookupQ').autocomplete(orgs, {
 			width:340, 
 			minChars:1, 
 			mustMatch:true, 
@@ -41,7 +43,7 @@
 		});
 		$("#newOrg").click(function(e) {
 			e.preventDefault(); 
-			$("#organisationKey").val("new");
+			$("#organisationKey").val("");
 			$(".external").val("");
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
 			$(".external").removeAttr("readonly");
@@ -50,12 +52,8 @@
 			e.preventDefault(); 
 			$(".external").removeAttr("readonly");
 		});
-		$("#changeOrg").click(function(e) {
-			e.preventDefault();
-			$("#newActions").show();
-		});
 		$("#registerIpt").click(function(e) {
-		    if (! confirm("Are you sure you want to register this IPT with GBIF?")) {
+		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot change this through the IPT but will have to get in touch with GBIF personally.")) {
 				e.preventDefault();
 		    }
 		});
@@ -88,7 +86,7 @@
 	
     <div>
         <div class="left">
-			<@s.textfield key="config.org.uddi" value="${config.org.uddiID!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
+			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div>
 			<@s.textfield key="config.orgPassword" required="true" cssClass="text large"/>
@@ -126,9 +124,9 @@
 	<div style="clear:both">
 		<@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
 	</div>
-  <#if config.org.uddiID??>
+  <#if config.ipt.uddiID??>
 	<div>
-		<a id="changeOrg" href="#"><@s.text name='config.changeOrganisation'/></a>
+		<#-- <a id="changeOrg" href="#"><@s.text name='config.changeOrganisation'/></a> -->
 		<a id="updateOrg" href="#"><@s.text name='config.updateOrganisation'/></a>
 	</div>
   </#if>

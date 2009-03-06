@@ -417,6 +417,13 @@
         <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction" method="show">
             <result>/WEB-INF/pages/ajax/annotation.ftl</result>
         </action>
+
+        <action name="proxy" class="org.gbif.provider.webapp.action.ProxyAction">
+            <result type="stream">
+                <param name="inputName">inputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
         
     </package>
 
@@ -773,5 +780,4 @@
         
     </package>
 
-    
 </struts>

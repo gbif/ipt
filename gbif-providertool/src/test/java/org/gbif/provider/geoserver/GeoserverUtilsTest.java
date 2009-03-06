@@ -5,9 +5,10 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.service.impl.GeoserverManagerImpl;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.gbif.provider.util.ResourceTestBase;
 import org.junit.Before;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class GeoserverUtilsTest extends ResourceTestBase{
 	@Autowired
-	private GeoserverUtils utils;
+	private GeoserverManager utils;
 	@Autowired
 	private ResourceFactory resourceFactory;
 	

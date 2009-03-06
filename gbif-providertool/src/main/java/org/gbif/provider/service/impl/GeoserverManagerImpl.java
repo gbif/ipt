@@ -1,4 +1,4 @@
-package org.gbif.provider.geo;
+package org.gbif.provider.service.impl;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,8 +19,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -31,30 +29,19 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.util.XmlFileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
-public class GeoserverUtils {
+public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverManager{
 	private static final String FEATURE_TYPE_TEMPLATE = "/WEB-INF/geoserver/featureTypeInfo.ftl";
 	private static final String SEED_TEMPLATE = "/WEB-INF/geoserver/seed.ftl";
 	private static final String CATALOG_TEMPLATE = "/WEB-INF/geoserver/catalog.ftl";
-	protected final Log log = LogFactory.getLog(GeoserverUtils.class);
-	
-	@Autowired
-	private AppConfig cfg;
-	@Autowired
-	private Configuration freemarker;
-	private DefaultHttpClient httpclient = new DefaultHttpClient();
-
 	
 	public String buildFeatureTypeDescriptor(OccurrenceResource resource){
 		try {
@@ -67,6 +54,9 @@ public class GeoserverUtils {
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GeoserverManager#removeFeatureType(org.gbif.provider.model.OccurrenceResource)
+	 */
 	public void removeFeatureType(OccurrenceResource resource) throws IOException{
 		if (cfg.getGeoserverDataDirFile() == null || !cfg.getGeoserverDataDirFile().exists()){
 			log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
@@ -87,6 +77,9 @@ public class GeoserverUtils {
 		resource.setFeatureHash(0);			
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GeoserverManager#updateFeatureType(org.gbif.provider.model.OccurrenceResource)
+	 */
 	public void updateFeatureType(OccurrenceResource resource) throws IOException{
 		// create new featuretype description
 		String featureTypeInfo = this.buildFeatureTypeDescriptor(resource);
@@ -118,6 +111,9 @@ public class GeoserverUtils {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GeoserverManager#updateCatalog()
+	 */
 	public void updateCatalog() throws IOException{
 		if (cfg.getGeoserverDataDirFile() == null || !cfg.getGeoserverDataDirFile().exists()){
 			log.error("Cannot update geoserver configuration. Geoserver datadir not set correctly!");
@@ -150,6 +146,9 @@ public class GeoserverUtils {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GeoserverManager#updateGeowebcache(org.gbif.provider.model.OccurrenceResource)
+	 */
 	public void updateGeowebcache(OccurrenceResource resource){
 		// http://localhost:8081/geoserver/gwc/rest/seed/gbif:resource9
 		// http://geoserver.org/display/GEOSDOC/5.+GWC+-+GeoWebCache
@@ -176,6 +175,9 @@ public class GeoserverUtils {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GeoserverManager#login(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public boolean login(String username, String password, String geoserverURL){
 		boolean result=false;
         
@@ -206,6 +208,9 @@ public class GeoserverUtils {
         return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.gbif.provider.service.impl.GeoserverManager#reloadCatalog()
+	 */
 	public void reloadCatalog() throws IOException{
 		String username = cfg.getGeoserverUser();
 		String password = cfg.getGeoserverPass();
@@ -257,25 +262,5 @@ public class GeoserverUtils {
         }
         consume(response);
     }
-	
-	
-	private void consume(HttpResponse response){
-		HttpEntity entity = response.getEntity();
-        if (entity != null) {
-        	try {
-				entity.consumeContent();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-	}
-	private boolean failed(HttpResponse response){
-		if (response.getStatusLine().getStatusCode()==200){
-			return false;
-		}
-		log.warn("Geoserver request failed: "+response.getStatusLine());
-		return true;
-	}
 	
 }

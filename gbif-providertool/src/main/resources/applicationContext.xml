@@ -32,7 +32,6 @@
     
     <!-- Utility singletons -->
     <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
-    <bean id="geoserverUtils" class="org.gbif.provider.geo.GeoserverUtils" />
     <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
     
     <!-- Parsing freemarker templates other than struts2 -->
@@ -125,6 +124,8 @@
 
     <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
 
+    <bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
+    
     <!-- cache / import manager -->
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
 

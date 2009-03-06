@@ -50,6 +50,9 @@ public class ProviderCfg {
 		this.orgNode = orgNode;
 	}
 	public ResourceMetadata getOrgMeta() {
+		if (org==null){
+			org = new ResourceMetadata();
+		}
 		return org;
 	}
 	public void setOrgMeta(ResourceMetadata meta) {
@@ -57,6 +60,9 @@ public class ProviderCfg {
 	}	
 
 	public ResourceMetadata getIptMeta() {
+		if (ipt==null){
+			ipt = new ResourceMetadata();
+		}
 		return ipt;
 	}
 	public void setIptMeta(ResourceMetadata meta) {
