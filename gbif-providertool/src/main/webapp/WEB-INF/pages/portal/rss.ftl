@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:ipt="http://ipt.gbif.org/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
 <#escape x as x?xml>
   <channel>
-    <title>${cfg.title}</title>
+    <title>${cfg.ipt.title}</title>
     <link>${cfg.baseUrl!}</link>
-    <description>Resource metadata of ${cfg.title}</description>
+    <description>Resource metadata of ${cfg.ipt.title}</description>
     <language>en-us</language>
     <!-- Tue, 10 Jun 2003 04:00:00 GMT -->
     <pubDate>${resources[0].modified?datetime?string.medium}</pubDate>

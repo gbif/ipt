@@ -4,17 +4,17 @@
     <meta name="decorator" content="fullsize"/>
 </head>
 
-<h1>${cfg.title}</h1>
+<h1>${cfg.ipt.title}</h1>
 
 <div class="separator"></div>
 
 <div id="about">
-<a href="${cfg.link}"><img class="right" src="${cfg.descriptionImage}" /></a>
+<a href="${cfg.ipt.link}"><img class="right" src="${cfg.descriptionImage}" /></a>
 
 <table>
 	<tr>
 		<th>Homepage</th>
-		<td><a href="${cfg.link}">${cfg.link}</a></td>
+		<td><a href="${cfg.ipt.link}">${cfg.ipt.link}</a></td>
 	</tr>
 	<tr>
 		<th>Contact</th>
@@ -23,6 +23,6 @@
 </table>
 
 <span>
-${cfg.description}
+${cfg.ipt.description}
 </span>
 </div>

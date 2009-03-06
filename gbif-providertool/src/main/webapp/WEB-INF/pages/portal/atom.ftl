@@ -4,8 +4,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom" 
 	xmlns:dc="http://purl.org/dc/elements/1.1/" 
 	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
-    <title>${cfg.title!IPT}</title>
-    <subtitle>Resource metadata of ${cfg.title!IPT}</subtitle>
+    <title>${cfg.ipt.title!IPT}</title>
+    <subtitle>Resource metadata of ${cfg.ipt.title!IPT}</subtitle>
     <link rel="self" href="${cfg.getAtomFeedURL()}"/>
     <link rel="alternate" title="IPT Home" type="text/html" href="${cfg.baseUrl!}"/>
 	<link rel="first" href="${cfg.getAtomFeedURL()}"/>
