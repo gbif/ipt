@@ -28,16 +28,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
-import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericManager;
+import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.service.impl.GeoserverManagerImpl;
+import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.webapp.action.BaseAction;
@@ -47,17 +50,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class ProviderCfgAction extends BaseAction  {
-	private static final String GOOGLE_MAPS_LOCALHOST_KEY = "";
-	private static final String REGISTRY_ORG_URL = "";
-	private static final String REGISTRY_SERVICE_URL = "";
+	private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
 	@Autowired
 	private RegistryManager registryManager;
 	@Autowired
-	private GeoserverUtils geoUtils;
+	private GeoserverManager geoManager;
 	private String organisationKey;
+	private String orgsJSON;
 	
-	
-	public String execute() {		
+
+	public String execute() {
+		orgsJSON = registryManager.findOrganisationsAsJSON("");
 		check();
 		return SUCCESS;
 	}
@@ -66,6 +69,7 @@ public class ProviderCfgAction extends BaseAction  {
 		if (cancel != null) {
 			return "cancel";
 		}
+		orgsJSON = registryManager.findOrganisationsAsJSON("");
 		// see if new organisation key was selected
 		if (StringUtils.trimToNull(organisationKey)!=null){
 			if (organisationKey.equalsIgnoreCase("new")){
@@ -92,13 +96,26 @@ public class ProviderCfgAction extends BaseAction  {
 		return SUCCESS;
 	}
 	
-	public void register(){
+	public String register(){
+		if (cfg.getIpt().getUddiID()!=null){
+			saveMessage("You are already registered with GBIF");
+		}else{
+			// register IPT and try to use current orgKey (empty for a new organisation)
+			cfg.getOrg().setUddiID(organisationKey);
+			if (registryManager.registerIPT()){
+				saveMessage(getText("register.ipt.success"));
+			}else{
+				saveMessage(getText("register.ipt.problem"));
+			}
+		}
+		this.cfg.save();
 		saveMessage("Thanks for registering with GBIF. The password for managing your organisation in GBIFs registry will be mailed the contact. Please enter it here to be able to publish data resources to GBIFs registry.");
+		return SUCCESS;
 	}
 
 	public String updateGeoserver() throws Exception {
 		try {
-			geoUtils.updateCatalog();
+			geoManager.updateCatalog();
 			saveMessage(getText("config.geoserverUpdated"));
 		} catch (IOException e) {
 			saveMessage(getText("config.geoserverNotUpdated"));
@@ -123,7 +140,7 @@ public class ProviderCfgAction extends BaseAction  {
 		if (!f.isDirectory() || !f.canWrite()){
 			saveMessage(getText("config.check.geoserverDataDir"));
 		}
-		if (!geoUtils.login(cfg.getGeoserverUser(), cfg.getGeoserverUser(), cfg.getGeoserverUrl())){
+		if (!geoManager.login(cfg.getGeoserverUser(), cfg.getGeoserverUser(), cfg.getGeoserverUrl())){
 			saveMessage(getText("config.check.geoserverLogin"));
 		}
 		if (StringUtils.trimToNull(cfg.getGoogleMapsApiKey())==null || StringUtils.trimToEmpty(cfg.getGoogleMapsApiKey()).equalsIgnoreCase(GOOGLE_MAPS_LOCALHOST_KEY)){
@@ -131,8 +148,7 @@ public class ProviderCfgAction extends BaseAction  {
 		}
 		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
 			saveMessage(getText("config.check.org.uddi"));
-		}
-		if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
+		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("config.check.orgPassword"));
 		}else{
 			// test login credentials at:
@@ -154,14 +170,18 @@ public class ProviderCfgAction extends BaseAction  {
 		this.cfg = cfg;
 	}
 	public String getRegistryOrgUrl(){
-		return REGISTRY_ORG_URL;
+		return RegistryManagerImpl.REGISTRY_ORG_URL;
 	}
 	public String getRegistryServiceUrl(){
-		return REGISTRY_SERVICE_URL;
+		return RegistryManagerImpl.REGISTRY_SERVICE_URL;
 	}
 
 	public void setOrganisationKey(String organisationKey) {
 		this.organisationKey = organisationKey;
+	}
+
+	public String getOrgsJSON() {
+		return orgsJSON;
 	}
 	
 }

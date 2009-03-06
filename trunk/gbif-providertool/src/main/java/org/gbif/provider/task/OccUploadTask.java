@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.geo.GeoserverUtils;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccStatByRegionAndTaxon;
@@ -25,6 +24,7 @@ import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.impl.DarwinCoreManagerHibernate;
+import org.gbif.provider.service.impl.GeoserverManagerImpl;
 import org.gbif.provider.util.CacheMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -66,7 +66,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 		    higherGeography = Collections.unmodifiableList(regionTypes);  
 		  }  		  
 		@Autowired
-		private GeoserverUtils geoTools;
+		private GeoserverManagerImpl geoTools;
 		@Autowired
 		private OccStatManager occStatManager;
 		@Autowired

@@ -538,7 +538,15 @@
             <groupId>org.apache.httpcomponents</groupId>  
             <artifactId>httpmime</artifactId>  
             <version>4.0-beta2</version>  
-        </dependency>          
+        </dependency>
+        
+        <!-- Proxy servlet for doing cross domain AJAX to our registry -->
+        <dependency>  
+            <groupId>com.jsos</groupId>
+            <artifactId>httpproxy</artifactId>
+            <version>1.7</version>
+        </dependency>
+        
     </dependencies>
 
     <reporting>
