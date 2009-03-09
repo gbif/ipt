@@ -18,7 +18,7 @@
 	</tr>
 	<tr>
 		<th>Contact</th>
-		<td>${cfg.contactName} &lt;${cfg.contactEmail}&gt;</td>
+		<td>${cfg.ipt.contactName} &lt;${cfg.ipt.contactEmail}&gt;</td>
 	</tr>
 </table>
 

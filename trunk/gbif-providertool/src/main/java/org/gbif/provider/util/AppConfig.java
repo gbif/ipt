@@ -313,7 +313,13 @@ public class AppConfig{
 	}
 
 
-	
+	public void resetOrg() {
+		cfg.setOrgMeta(new ResourceMetadata());
+	}
+	public void resetIpt() {
+		cfg.setIptMeta(new ResourceMetadata());
+	}
+
 
 	// MANAGER "DELEGATE" METHODS
 	public void load() {

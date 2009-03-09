@@ -1,6 +1,8 @@
 package org.gbif.provider.service.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -37,17 +39,19 @@ public class HttpBaseManager {
 	        );		
 	}
 	
-	protected boolean executeGet(String uri, boolean authenticate){
+	protected String executeGet(String uri, boolean authenticate){
 		NameValuePair[] params = new NameValuePair[0];
 		return executeGet(uri, params, authenticate);
 	}
-	protected boolean executeGet(String uri, NameValuePair[] params, boolean authenticate){
-		boolean success = false;
+	protected String executeGet(String uri, NameValuePair[] params, boolean authenticate){
+		String result = null;
 		GetMethod method = newHttpGet(uri, authenticate);
 		method.setQueryString(params);
 		try {
 	        client.executeMethod(method);
-	        success = succeeded(method);
+	        if(succeeded(method)){
+	        	result = method.getResponseBodyAsString();
+	        }
 		} catch (HttpException e) {
 			log.error("HttpException", e);
 		} catch (IOException e) {
@@ -57,10 +61,10 @@ public class HttpBaseManager {
 				method.releaseConnection();
 			}
 		}
-		return success;
+		return result;
 	}
-	protected boolean executePost(String uri, String content, String contentType, boolean authenticate){
-		boolean success = false;
+	protected String executePost(String uri, String content, String contentType, boolean authenticate){
+		String result = null;
 		PostMethod method = newHttpPost(uri, authenticate);
         RequestEntity body=null;
 		try {
@@ -71,7 +75,9 @@ public class HttpBaseManager {
 		method.setRequestEntity(body);
 		try {
 	        client.executeMethod(method);
-	        success = succeeded(method);
+	        if(succeeded(method)){
+	        	result = method.getResponseBodyAsString();
+	        }
 		} catch (HttpException e) {
 			log.error("HttpException", e);
 		} catch (IOException e) {
@@ -81,15 +87,17 @@ public class HttpBaseManager {
 				method.releaseConnection();
 			}
 		}
-		return success;
+		return result;
 	}
-	protected boolean executePost(String uri, NameValuePair[] params, boolean authenticate){
-		boolean success = false;
+	protected String executePost(String uri, NameValuePair[] params, boolean authenticate){
+		String result = null;
 		PostMethod method = newHttpPost(uri, authenticate);
 		method.setRequestBody(params);
 		try {
 	        client.executeMethod(method);
-	        success = succeeded(method);
+	        if(succeeded(method)){	        	
+	        	result = method.getResponseBodyAsString();
+	        }
 		} catch (HttpException e) {
 			log.error("HttpException", e);
 		} catch (IOException e) {
@@ -99,7 +107,7 @@ public class HttpBaseManager {
 				method.releaseConnection();
 			}
 		}
-		return success;
+		return result;
 	}
 	private GetMethod newHttpGet(String url, boolean authenticate){
 		GetMethod method = new GetMethod(url);
@@ -115,7 +123,11 @@ public class HttpBaseManager {
         return method;
 	}
 
-	private boolean succeeded(HttpMethodBase method) {
+	protected InputStream getStream(String source){
+		return new ByteArrayInputStream(source.getBytes());
+	}
+	
+	protected boolean succeeded(HttpMethodBase method) {
 		
 		if (method.getStatusCode()==200){
 			return true;

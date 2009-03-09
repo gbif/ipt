@@ -12,7 +12,7 @@
 	// could do autocomplete via server call, but gets into problems sometimes. This is how it would be called:
 	// ${config.getBaseUrl()}/ajax/proxy.do?uri=${registryOrgUrl}.json?nix=1
 	function udpateNodeList(data){
-		$('#orgNode').autocomplete(data, {
+		$('#orgNodeName').autocomplete(data, {
 			width:340, 
 			minChars:1, 
 			mustMatch:true, 
@@ -43,6 +43,7 @@
 		$(".organisationKey").val(data.key);
 		$("#orgTitle").val(data.name);
 		$("#orgNode").val(data.endorsingNodeKey);
+		$("#orgNodeName").val(data.endorsingNodeName);
 		$("#orgName").val(data.primaryContactName);
 		$("#orgEmail").val(data.primaryContactEmail);
 		$("#orgHomepage").val(data.homepageURL);
@@ -61,12 +62,16 @@
 			udpateOrg(data);
 		});
 		$("#newOrg").click(function(e) {
-			$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
 			e.preventDefault(); 
 			$(".organisationKey").val("");
 			$(".external").val("");
 			$("#orgTitle").unbind().val("");
 			$("#registerOrg").show();
+			$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
+			$("#orgNodeName").result(function(event, data, formatted) {
+				$("#orgNode").val(data.key);
+				$("#orgNodeName").val(data.name);
+			});
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
 			$(".external").removeAttr("readonly");
 		});
@@ -125,7 +130,8 @@
 			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
-			<@s.textfield id="orgNode" key="config.orgNode" required="true" cssClass="text medium external"/>
+			<@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external"/>
+		    <@s.hidden id="orgNodeKey" key="config.orgNode" value=""/>
         </div>
         <div>
 			<@s.textfield key="config.orgPassword" required="true" cssClass="text medium"/>
