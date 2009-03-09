@@ -19,6 +19,26 @@ The only exception are annotations to data, which can only be done if you have a
 == Metadata ==
 == Data Resources ==
 === Data Sources ===
+==== MySQL ====
+ * ...
+==== PostgreSQL ====
+ * ...
+==== MS Server ====
+ * jdbc:jtds:sqlserver://127.0.0.1:1443/Services
+==== ODBC / MS Access ====
+ * jdbc:odbc:HY_ACCESS
+==== Oracle ====
+ * jdbc:oracle:thin:[user/password]@//[host][:port]/SID
+Examples:
+ * jdbc:oracle:thin:Herong/TopSecret@localhost:1521:XE
+ * jdbc:oracle:thin:Herong/TopSecret@:1521:XE
+ * jdbc:oracle:thin:Herong/TopSecret@//localhost:1521/XE
+ * jdbc:oracle:thin:Herong/TopSecret@//:1521/XE
+ * jdbc:oracle:thin:Herong/TopSecret@//localhost/XE
+ * jdbc:oracle:thin:Herong/TopSecret@///XE
+==== Filemaker 9+ ====
+see http://www.filemaker.com/downloads/pdf/fm9_odbc_jdbc_guide_en.pdf
+
 === Transformations ===
 === Property Mappings ===
 ==== Basic mappings ====
