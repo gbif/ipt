@@ -2,6 +2,7 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -138,8 +139,8 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 			setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
 
 	        // post seed request, which is an xml doc
-	        boolean failed = executePost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()),  seedrequest, "text/xml", true);
-	        if (failed){
+			String result = executePost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()),  seedrequest, "text/xml", true);
+	        if (result==null){
 	        	log.warn("Failed to seed geowebcache for resource "+resource.getId());
 	        }
 		} catch (IOException e) {
@@ -154,14 +155,13 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 	 * @see org.gbif.provider.service.impl.GeoserverManager#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public boolean login(String username, String password, String geoserverURL){
-		boolean result=false;
 		setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
         NameValuePair[] data = {
                 new NameValuePair("username", username),
                 new NameValuePair("password", password)
         };
-        result = executePost(geoserverURL+"/admin/loginSubmit.do",  data, false);       
-        return result;
+        String result = executePost(geoserverURL+"/admin/loginSubmit.do",  data, false);       
+        return result!=null;
 	}
 	
 	/* (non-Javadoc)
@@ -181,8 +181,8 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         }
 
         // RELOAD
-        boolean success = executeGet(geoserverURL+"/admin/loadFromXML.do", false);
-        if (success){
+        String result = executeGet(geoserverURL+"/admin/loadFromXML.do", false);
+        if (result!=null){
             log.info("Reloaded geoserver catalog");
         }else{
         	log.warn("Failed to reload catalog");
@@ -194,16 +194,16 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         };
         executePost(geoserverURL+"/gwc/rest/reload",  data, true);       
         // do same call again. Sme weird bug in geowebcache requires to try this 2 times - also in the web forms!
-        success = executePost(geoserverURL+"/gwc/rest/reload",  data, true);       
-        if (success){
+        result = executePost(geoserverURL+"/gwc/rest/reload",  data, true);       
+        if (result!=null){
         	log.info("Reloaded geowebcache");
         }else{
         	log.warn("Failed to reload geowebcache");
         }
 
         // LOGOUT
-        success = executeGet(geoserverURL+"/admin/logout.do", false);
-        if (success){
+        result = executeGet(geoserverURL+"/admin/logout.do", false);
+        if (result!=null){
             log.debug("logged out");
         }else{
         	log.warn("Failed to logout of geoserver");

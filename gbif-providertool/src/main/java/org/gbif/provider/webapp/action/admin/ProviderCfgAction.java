@@ -46,26 +46,6 @@ public class ProviderCfgAction extends BaseAction  {
 		if (cancel != null) {
 			return "cancel";
 		}
-		// see if new organisation key was selected
-		if (StringUtils.trimToNull(organisationKey)!=null){
-			if (organisationKey.equalsIgnoreCase("new")){
-				// register a new organisation with GBIF!
-			}else{
-				// a new organisation was selected. Needs full endorsement of GBIF node
-				if (cfg.getIpt().getUddiID()==null){
-					// never registered IPT before
-					cfg.getOrg().setUddiID(organisationKey);
-					if (registryManager.registerIPT()){
-						saveMessage(getText("register.ipt.success"));
-					}else{
-						saveMessage(getText("register.ipt.problem"));
-					}
-				}else{
-					saveMessage("Migration of registered IPTs to another Organisation is currently not supported!");
-				}
-			}
-		}
-		
 		this.cfg.save();
 		saveMessage(getText("config.updated"));
 		check();
@@ -74,7 +54,7 @@ public class ProviderCfgAction extends BaseAction  {
 	
 
 	public String registerOrg(){
-		if (cfg.getOrg().getUddiID()!=null){
+		if (isOrgRegistered()){
 			saveMessage("The organisation is already registered with GBIF");
 		}else{
 			// register new organisation
@@ -82,24 +62,23 @@ public class ProviderCfgAction extends BaseAction  {
 			if (registryManager.registerOrg()){
 				saveMessage(getText("register.org.success"));
 				saveMessage(getText("register.thanks"));
-				this.cfg.save();
 			}else{
+				cfg.resetOrg();
+				cfg.setOrgNode(null);
 				saveMessage(getText("register.org.problem"));
 			}
+			this.cfg.save();
 		}
 		return SUCCESS;
 	}
 
-	private void setOrgIdIfNull(){
-		if (cfg.getOrg().getUddiID()==null){
+	public String registerIpt(){
+		if (!isOrgRegistered()){
 			cfg.getOrg().setUddiID(StringUtils.trimToNull(organisationKey));
 		}		
-	}
-	public String registerIpt(){
-		setOrgIdIfNull();
-		if (cfg.getIpt().getUddiID()!=null){
+		if (isIptRegistered()){
 			saveMessage(getText("register.ipt.already"));
-		}else if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
+		}else if (isOrgRegistered()){
 			saveMessage(getText("register.org.missing"));
 		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("register.org.password.missing"));
@@ -161,7 +140,18 @@ public class ProviderCfgAction extends BaseAction  {
 		}
 	}
 	
-	
+	private boolean isOrgRegistered(){
+		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
+			return false;
+		}
+		return true;
+	}
+	private boolean isIptRegistered(){
+		if (StringUtils.trimToNull(cfg.getIpt().getUddiID())==null){
+			return false;
+		}
+		return true;
+	}
 	public AppConfig getConfig() {
 		return this.cfg;
 	}
