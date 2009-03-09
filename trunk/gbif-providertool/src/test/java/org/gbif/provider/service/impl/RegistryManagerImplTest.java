@@ -12,12 +12,8 @@ public class RegistryManagerImplTest extends ContextAwareTestBase{
 	private RegistryManager registryManager;
 	
 	@Test
-	public void testOrgAsJson(){
-		String json = registryManager.findOrganisationsAsJSON("");
-		assertTrue(json!=null && json.length()>100);
-
-//		json = registryManager.findOrganisationsAsJSON("MarkusMaximus");
-//		System.out.println(json);
-//		assertTrue(StringUtils.trimToEmpty(json).replaceAll("\\s", "").equalsIgnoreCase("[]"));
+	public void testLogin(){
+		boolean result = registryManager.testLogin();
+		assertTrue(result);
 	}
 }

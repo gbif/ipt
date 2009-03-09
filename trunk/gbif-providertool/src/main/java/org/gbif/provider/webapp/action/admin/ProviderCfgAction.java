@@ -18,36 +18,14 @@ package org.gbif.provider.webapp.action.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.model.LabelValue;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.ResourceMetadata;
-import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GeoserverManager;
-import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.service.impl.GeoserverManagerImpl;
 import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.Constants;
 import org.gbif.provider.webapp.action.BaseAction;
-import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Preparable;
 
 public class ProviderCfgAction extends BaseAction  {
 	private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
@@ -146,7 +124,6 @@ public class ProviderCfgAction extends BaseAction  {
 	}
 
 	private void check() {
-		DefaultHttpClient httpclient = new DefaultHttpClient();
 		File f = new File(cfg.getDataDir());
 		// tests
 		if (StringUtils.trimToNull(cfg.getIpt().getContactEmail())==null || StringUtils.trimToNull(cfg.getIpt().getContactName())==null){
@@ -175,10 +152,10 @@ public class ProviderCfgAction extends BaseAction  {
 		}else{
 			// test login credentials at:
 			// http://gbrds.gbif.org/registry/organization/4BEC1EC0-04B9-11DE-BBF6-C4393BAE3AC3?op=login
-			// no authorization token = error
-			// auth token is not a valid = 400
-			// auth token is valid = 200 
-
+			if (!registryManager.testLogin()){
+				// authorization error
+				saveMessage(getText("config.check.orgLogin"));
+			}
 		}
 	}
 	
