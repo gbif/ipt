@@ -13,6 +13,7 @@ import org.gbif.provider.service.RegistryManager;
 public class RegistryManagerImpl extends HttpBaseManager implements RegistryManager{
 	public static final String REGISTRY_ORG_URL = "http://gbrds.gbif.org/registry/organization";
 	public static final String REGISTRY_SERVICE_URL = "http://gbrds.gbif.org/registry/service";
+	public static final String REGISTRY_NODE_URL = "http://gbrds.gbif.org/registry/node";
 
 	public List<URI> listExtensions() {
 		// TODO Auto-generated method stub
@@ -35,7 +36,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail())),
                 new NameValuePair("endorsingNodeKey", StringUtils.trimToEmpty(cfg.getOrgNode()))
         };
-        return executePost(REGISTRY_ORG_URL,  data);
+        return executePost(REGISTRY_ORG_URL,  data, true);
 	}
 
 	private void setRegistryCredentials() {
@@ -97,6 +98,6 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
         NameValuePair[] params = {
                 new NameValuePair("op", "login")
         };
-		return executeGet(getOrganisationUri(), params);
+		return executeGet(getOrganisationUri(), params, true);
 	}
 }

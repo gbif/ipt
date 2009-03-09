@@ -11,8 +11,22 @@
 	// first get list of all organisations, then attach automplete event based on this list
 	// could do autocomplete via server call, but gets into problems sometimes. This is how it would be called:
 	// ${config.getBaseUrl()}/ajax/proxy.do?uri=${registryOrgUrl}.json?nix=1
+	function udpateNodeList(data){
+		$('#orgNode').autocomplete(data, {
+			width:340, 
+			minChars:1, 
+			mustMatch:true, 
+			matchContains:true,
+			formatItem: function(row, i, max) {
+				return row.nodeName;
+			},
+			formatResult: function(row) {
+				return row.nodeName;
+			}
+		});
+	}
 	function udpateOrgList(data){
-		$('#orgLookupQ').autocomplete(data, {
+		$('#orgTitle').autocomplete(data, {
 			width:340, 
 			minChars:1, 
 			mustMatch:true, 
@@ -28,6 +42,7 @@
 	function udpateOrg(data){
 		$(".organisationKey").val(data.key);
 		$("#orgTitle").val(data.name);
+		$("#orgNode").val(data.endorsingNodeKey);
 		$("#orgName").val(data.primaryContactName);
 		$("#orgEmail").val(data.primaryContactEmail);
 		$("#orgHomepage").val(data.homepageURL);
@@ -36,33 +51,37 @@
 		$("#orgDescription").val(data.description);
 	}
 	$(document).ready(function(){
-		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);        
-		$(".external").attr("readonly","readonly");
-		$("#registerOrg").hide();
-	  <#if config.org.uddiID??>
-		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);        
-	  </#if>
 	  <#if config.ipt.uddiID??>
-	  	$("#newActions").hide();
-	  </#if>					 
-
-		$("#orgLookupQ").result(function(event, data, formatted) {
+	  	<#-- the IPT is already registered. No way to change the organisation again -->
+		$("#orgTitle").addClass("external");
+	  <#else>
+	  	<#-- the IPT is not registered. Provide autocompletes for node & org selection -->
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);        
+		$("#orgTitle").result(function(event, data, formatted) {
 			udpateOrg(data);
 		});
 		$("#newOrg").click(function(e) {
+			$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
 			e.preventDefault(); 
 			$(".organisationKey").val("");
 			$(".external").val("");
+			$("#orgTitle").unbind().val("");
 			$("#registerOrg").show();
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
 			$(".external").removeAttr("readonly");
 		});
+	  </#if>
+	  <#if config.org.uddiID??>
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);        
+	  </#if>
+		$(".external").attr("readonly","readonly");
+		$("#registerOrg").hide();
 		$("#updateOrg").click(function(e) {
 			e.preventDefault(); 
 			$(".external").removeAttr("readonly");
 		});
 		$("#registerOrg").click(function(e) {
-		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot change this through the IPT but will have to get in touch with GBIF personally.")) {
+		    if (! confirm("Are you sure you want to register this organisation with GBIF?")) {
 				e.preventDefault();
 		    }
 		});
@@ -70,7 +89,7 @@
 		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot change this through the IPT but will have to get in touch with GBIF personally.")) {
 				e.preventDefault();
 		    }
-		});
+		});	
 	});
 	
 	</script>
@@ -92,21 +111,26 @@
 <@s.form id="providerCfg" action="saveConfig" method="post">
 <h2 class="modifiedh2"><@s.text name="config.registry"/></h2>
 <fieldset>
+  <#if config.ipt.uddiID??>
+  <#else>
 	<div id="newActions">
-		<@s.textfield id="orgLookupQ" key="config.orgLookup" value="" cssClass="text large"/>
 		<a id="newOrg" href="#"><@s.text name='config.newOrganisation'/></a>
 	</div>
     <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
+  </#if>					 
 	
+	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge"/>
     <div>
         <div class="left">
 			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
+        <div class="left">
+			<@s.textfield id="orgNode" key="config.orgNode" required="true" cssClass="text medium external"/>
+        </div>
         <div>
-			<@s.textfield key="config.orgPassword" required="true" cssClass="text large"/>
+			<@s.textfield key="config.orgPassword" required="true" cssClass="text medium"/>
         </div>
 	</div>
-	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external"/>
     <div>
         <div class="left">
 			<@s.textfield id="orgName" key="config.org.contactName" required="true" cssClass="text large external"/>
@@ -129,8 +153,8 @@
 	    </div>	    
 	</div>
     <div class="googlemap">
-		<#if (config.org.location)?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${(config.org.location.latitude!0)?c},${(config.org.location.longitude!0)?c}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${(config.org.location.latitude!0)?c},${(config.org.location.longitude!0)?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>
+		<#if (config.org.location)?? && config.org.location.latitude?? && config.org.location.longitude?? && cfg.googleMapsApiKey??>
+			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.org.location.latitude?c},${config.org.location.longitude?c}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.org.location.latitude?c},${config.org.location.longitude?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>
 		<#else>	
 			<img src="<@s.url value='/images/default_image_map.gif'/>"/>
 		</#if>
@@ -140,11 +164,11 @@
 	</div>
   <#if config.ipt.uddiID??>
 	<div>
-		<#-- <a id="changeOrg" href="#"><@s.text name='config.changeOrganisation'/></a> -->
 		<a id="updateOrg" href="#"><@s.text name='config.updateOrganisation'/></a>
 	</div>
-  </#if>
+  <#else>
     <@s.submit cssClass="button" id="registerOrg" key="button.registerOrg" method="registerOrg" theme="simple"/>
+  </#if>
 
   </fieldset>
   
@@ -178,8 +202,8 @@
 	    </div>	    
 	</div>
     <div class="googlemap">
-		<#if (config.ipt.location)?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${(config.ipt.location.latitude!0)?c},${((config.ipt.location.longitude)!0)?c}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${(config.ipt.location.latitude!0)?c},${((config.ipt.location.longitude)!0)?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
+		<#if (config.ipt.location)?? && config.ipt.location.latitude?? && config.ipt.location.longitude?? && cfg.googleMapsApiKey??>
+			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
 		<#else>	
 			<img src="<@s.url value='/images/default_image_map.gif'/>"/>
 		</#if>

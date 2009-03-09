@@ -138,7 +138,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 			setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
 
 	        // post seed request, which is an xml doc
-	        boolean failed = executePost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()),  seedrequest, "text/xml");
+	        boolean failed = executePost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()),  seedrequest, "text/xml", true);
 	        if (failed){
 	        	log.warn("Failed to seed geowebcache for resource "+resource.getId());
 	        }
@@ -160,7 +160,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
                 new NameValuePair("username", username),
                 new NameValuePair("password", password)
         };
-        result = executePost(geoserverURL+"/admin/loginSubmit.do",  data);       
+        result = executePost(geoserverURL+"/admin/loginSubmit.do",  data, false);       
         return result;
 	}
 	
@@ -181,7 +181,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         }
 
         // RELOAD
-        boolean success = executeGet(geoserverURL+"/admin/loadFromXML.do");
+        boolean success = executeGet(geoserverURL+"/admin/loadFromXML.do", false);
         if (success){
             log.info("Reloaded geoserver catalog");
         }else{
@@ -192,9 +192,9 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         NameValuePair[] data = {
                 new NameValuePair("reload_configuration", "1")
         };
-        executePost(geoserverURL+"/gwc/rest/reload",  data);       
+        executePost(geoserverURL+"/gwc/rest/reload",  data, true);       
         // do same call again. Sme weird bug in geowebcache requires to try this 2 times - also in the web forms!
-        success = executePost(geoserverURL+"/gwc/rest/reload",  data);       
+        success = executePost(geoserverURL+"/gwc/rest/reload",  data, true);       
         if (success){
         	log.info("Reloaded geowebcache");
         }else{
@@ -202,7 +202,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         }
 
         // LOGOUT
-        success = executeGet(geoserverURL+"/admin/logout.do");
+        success = executeGet(geoserverURL+"/admin/logout.do", false);
         if (success){
             log.debug("logged out");
         }else{

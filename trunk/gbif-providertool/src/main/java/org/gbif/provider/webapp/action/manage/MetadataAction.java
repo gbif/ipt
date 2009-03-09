@@ -56,7 +56,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
             put("org.postgresql.Driver", "Postgres");
             put("org.h2.Driver", "H2");
             put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
-            put("oracle.jdbc.OracleDriver", "Oracle");  
+            put("oracle.jdbc.OracleDriver", "Oracle");
+            put("sun.jdbc.odbc.JdbcOdbcDriver", "Generic ODBC");
         }  
     };
 	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
