@@ -16,50 +16,18 @@
 
 package org.gbif.provider.webapp.action;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.model.LabelValue;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.ViewMappingBase;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.service.ProviderCfgManager;
-import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.service.UploadEventManager;
-import org.gbif.provider.service.impl.GeoserverManagerImpl;
 import org.gbif.provider.service.impl.RegistryManagerImpl;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
 
 public class ProxyAction extends ActionSupport  {
 	protected static HttpClient httpClient =  new HttpClient(new MultiThreadedHttpConnectionManager());

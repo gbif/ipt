@@ -1,43 +1,125 @@
 package org.gbif.provider.service.impl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import freemarker.template.Configuration;
 
 public class HttpBaseManager {
+	protected static HttpClient client =  new HttpClient(new MultiThreadedHttpConnectionManager());
 	protected final Log log = LogFactory.getLog(HttpBaseManager.class);
 	@Autowired
 	protected AppConfig cfg;
 	@Autowired
 	protected Configuration freemarker;
-	protected DefaultHttpClient httpclient = new DefaultHttpClient();
 
-	protected void consume(HttpResponse response) {
-		HttpEntity entity = response.getEntity();
-	    if (entity != null) {
-	    	try {
-				entity.consumeContent();
-			} catch (IOException e) {
-				log.error("http client consume error", e);
+	protected void setCredentials(AuthScope scope, String username, String password){
+		client.getState().setCredentials(
+	            scope,
+	            new UsernamePasswordCredentials(username, password)
+	        );		
+	}
+	
+	protected boolean executeGet(String uri){
+		NameValuePair[] params = new NameValuePair[0];
+		return executeGet(uri, params);
+	}
+	protected boolean executeGet(String uri, NameValuePair[] params){
+		boolean success = false;
+		GetMethod method = newHttpGet(uri);
+		method.setQueryString(params);
+		try {
+	        client.executeMethod(method);
+	        success = succeeded(method);
+		} catch (HttpException e) {
+			log.error("HttpException", e);
+		} catch (IOException e) {
+			log.error("IOException", e);
+		} finally{
+			if (method!=null){
+				method.releaseConnection();
 			}
-	    }
+		}
+		return success;
+	}
+	protected boolean executePost(String uri, String content, String contentType){
+		boolean success = false;
+		PostMethod method = newHttpPost(uri);
+        RequestEntity body=null;
+		try {
+			body = new StringRequestEntity(content, contentType, "utf-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		method.setRequestEntity(body);
+		try {
+	        client.executeMethod(method);
+	        success = succeeded(method);
+		} catch (HttpException e) {
+			log.error("HttpException", e);
+		} catch (IOException e) {
+			log.error("IOException", e);
+		} finally{
+			if (method!=null){
+				method.releaseConnection();
+			}
+		}
+		return success;
+	}
+	protected boolean executePost(String uri, NameValuePair[] params){
+		boolean success = false;
+		PostMethod method = newHttpPost(uri);
+		method.setRequestBody(params);
+		try {
+	        client.executeMethod(method);
+	        success = succeeded(method);
+		} catch (HttpException e) {
+			log.error("HttpException", e);
+		} catch (IOException e) {
+			log.error("IOException", e);
+		} finally{
+			if (method!=null){
+				method.releaseConnection();
+			}
+		}
+		return success;
+	}
+	private GetMethod newHttpGet(String url){
+		GetMethod method = new GetMethod(url);
+        method.setFollowRedirects(true);
+        return method;
+	}
+	
+	private PostMethod newHttpPost(String url){
+		PostMethod method = new PostMethod(url);
+        method.setFollowRedirects(true);
+        return method;
 	}
 
-	protected boolean failed(HttpResponse response) {
-		if (response.getStatusLine().getStatusCode()==200){
-			return false;
+	private boolean succeeded(HttpMethodBase method) {
+		
+		if (method.getStatusCode()==200){
+			return true;
 		}
-		log.warn("Http request failed: "+response.getStatusLine());
-		log.debug(response.getAllHeaders());
-		return true;
+		log.warn("Http request failed: "+method.getStatusLine());
+		log.debug(method.getResponseHeaders());
+		return false;
 	}
 
 }

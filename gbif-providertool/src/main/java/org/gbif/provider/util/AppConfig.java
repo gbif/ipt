@@ -235,6 +235,10 @@ public class AppConfig{
 	public String getOrgPassword() {
 		return cfg.getOrgPassword();
 	}
+	public String getOrgNode() {
+		return cfg.getOrgNode();
+	}
+	
 	public ResourceMetadata getOrg() {
 		return cfg.getOrgMeta();
 	}
@@ -285,6 +289,9 @@ public class AppConfig{
 	}
 	public void setOrgPassword(String orgPassword) {
 		cfg.setOrgPassword(orgPassword);
+	}
+	public void setOrgNode(String orgNode) {
+		cfg.setOrgNode(orgNode);
 	}
 	public void setDescriptionImage(String descriptionImage) {
 		cfg.setDescriptionImage(descriptionImage);

@@ -1,36 +1,16 @@
 package org.gbif.provider.service.impl;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.util.XmlFileUtils;
@@ -152,22 +132,16 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 	public void updateGeowebcache(OccurrenceResource resource){
 		// http://localhost:8081/geoserver/gwc/rest/seed/gbif:resource9
 		// http://geoserver.org/display/GEOSDOC/5.+GWC+-+GeoWebCache
-		try {
-			String seedrequest = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(FEATURE_TYPE_TEMPLATE), resource);
-	        httpclient.getCredentialsProvider().setCredentials(
-	                new AuthScope("localhost", -1), 
-	                new UsernamePasswordCredentials(cfg.getGeoserverUser(), cfg.getGeoserverPass()));
-	        log.debug("reload geowebcache");
-	        HttpPost httpost = new HttpPost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()));
-	        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-	        nvps.add(new BasicNameValuePair("reload_configuration", "1"));
-	        HttpEntity body = new UrlEncodedFormEntity(nvps, HTTP.UTF_8);
-	        httpost.setEntity(body);        
-	        HttpResponse response = httpclient.execute(httpost);
-	        if (failed(response)){
+        log.debug("Seeding geowebcache for resource "+resource.getId());
+		try{
+			String seedrequest = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(FEATURE_TYPE_TEMPLATE), resource);			
+			setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
+
+	        // post seed request, which is an xml doc
+	        boolean failed = executePost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()),  seedrequest, "text/xml");
+	        if (failed){
 	        	log.warn("Failed to seed geowebcache for resource "+resource.getId());
 	        }
-	        consume(response);
 		} catch (IOException e) {
 			log.error("Freemarker IO template error", e);
 		} catch (TemplateException e) {
@@ -175,36 +149,18 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 		}
 	}
 	
+	
 	/* (non-Javadoc)
 	 * @see org.gbif.provider.service.impl.GeoserverManager#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public boolean login(String username, String password, String geoserverURL){
 		boolean result=false;
-        
-		httpclient.getCredentialsProvider().setCredentials(
-                new AuthScope("localhost", -1), 
-                new UsernamePasswordCredentials(username, password));
-		
-		HttpPost httpost = new HttpPost(geoserverURL+"/admin/loginSubmit.do");
-
-        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-        nvps.add(new BasicNameValuePair("username", username));
-        nvps.add(new BasicNameValuePair("password", password));
-        
-        try {
-			httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1));
-	        HttpResponse response = httpclient.execute(httpost);
-	        if (!failed(response)){
-	        	result = true;
-	        }
-	        consume(response);
-		} catch (UnsupportedEncodingException e) {
-			log.debug(e);
-		} catch (ClientProtocolException e) {
-			log.debug(e);
-		} catch (IOException e) {
-			log.debug(e);
-		}
+		setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
+        NameValuePair[] data = {
+                new NameValuePair("username", username),
+                new NameValuePair("password", password)
+        };
+        result = executePost(geoserverURL+"/admin/loginSubmit.do",  data);       
         return result;
 	}
 	
@@ -214,8 +170,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 	public void reloadCatalog() throws IOException{
 		String username = cfg.getGeoserverUser();
 		String password = cfg.getGeoserverPass();
-		String geoserverURL = cfg.getGeoserverUrl();
-		
+		String geoserverURL = cfg.getGeoserverUrl();		
 
         // LOGIN
 		boolean login = login(username, password, geoserverURL);
@@ -226,41 +181,45 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         }
 
         // RELOAD
-        HttpGet httpget = new HttpGet(geoserverURL+"/admin/loadFromXML.do");
-        HttpResponse response = httpclient.execute(httpget);
-        if (failed(response)){
-        	log.warn("Failed to reload catalog");
-        }else{
+        boolean success = executeGet(geoserverURL+"/admin/loadFromXML.do");
+        if (success){
             log.info("Reloaded geoserver catalog");
+        }else{
+        	log.warn("Failed to reload catalog");
         }
-        consume(response);
 
         // RELOAD GeoWebCache
-        HttpPost httpost = new HttpPost(geoserverURL+"/gwc/rest/reload");
-        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-        nvps.add(new BasicNameValuePair("reload_configuration", "1"));
-        HttpEntity body = new UrlEncodedFormEntity(nvps, HTTP.ISO_8859_1);
-        httpost.setEntity(body);        
-        response = httpclient.execute(httpost);
-        consume(response);
+        NameValuePair[] data = {
+                new NameValuePair("reload_configuration", "1")
+        };
+        executePost(geoserverURL+"/gwc/rest/reload",  data);       
         // do same call again. Sme weird bug in geowebcache requires to try this 2 times - also in the web forms!
-        response = httpclient.execute(httpost);
-        if (failed(response)){
-        	log.warn("Failed to reload geowebcache");
-        }else{
+        success = executePost(geoserverURL+"/gwc/rest/reload",  data);       
+        if (success){
         	log.info("Reloaded geowebcache");
+        }else{
+        	log.warn("Failed to reload geowebcache");
         }
-        consume(response);
 
         // LOGOUT
-        httpget = new HttpGet(geoserverURL+"/admin/logout.do");
-        response = httpclient.execute(httpget);
-        if (failed(response)){
-        	log.warn("Failed to logout of geoserver");
-        }else{
+        success = executeGet(geoserverURL+"/admin/logout.do");
+        if (success){
             log.debug("logged out");
+        }else{
+        	log.warn("Failed to logout of geoserver");
         }
-        consume(response);
     }
 	
+	
+	private AuthScope getGeoserverAuthScope(){
+		try {
+			URI geoURI = new URI(cfg.getGeoserverUrl());
+			String domain = geoURI.getHost();
+			AuthScope scope = new AuthScope(domain, -1);
+			return scope;
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
