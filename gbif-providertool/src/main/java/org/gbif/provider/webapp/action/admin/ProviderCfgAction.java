@@ -18,6 +18,7 @@ package org.gbif.provider.webapp.action.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.service.GeoserverManager;
@@ -35,7 +36,7 @@ public class ProviderCfgAction extends BaseAction  {
 	private GeoserverManager geoManager;
 	private String organisationKey;
 	
-
+	
 	public String execute() {
 		check();
 		return SUCCESS;
@@ -71,6 +72,7 @@ public class ProviderCfgAction extends BaseAction  {
 		return SUCCESS;
 	}
 	
+
 	public String registerOrg(){
 		if (cfg.getOrg().getUddiID()!=null){
 			saveMessage("The organisation is already registered with GBIF");
@@ -172,8 +174,12 @@ public class ProviderCfgAction extends BaseAction  {
 	public String getRegistryServiceUrl(){
 		return RegistryManagerImpl.REGISTRY_SERVICE_URL;
 	}
+	public String getRegistryNodeUrl(){
+		return RegistryManagerImpl.REGISTRY_NODE_URL;
+	}
 
 	public void setOrganisationKey(String organisationKey) {
 		this.organisationKey = organisationKey;
 	}
+
 }

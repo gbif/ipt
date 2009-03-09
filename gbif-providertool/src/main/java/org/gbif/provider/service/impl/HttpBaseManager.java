@@ -14,6 +14,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.util.AppConfig;
@@ -32,17 +33,17 @@ public class HttpBaseManager {
 	protected void setCredentials(AuthScope scope, String username, String password){
 		client.getState().setCredentials(
 	            scope,
-	            new UsernamePasswordCredentials(username, password)
+	            new UsernamePasswordCredentials(StringUtils.trimToEmpty(username), StringUtils.trimToEmpty(password))
 	        );		
 	}
 	
-	protected boolean executeGet(String uri){
+	protected boolean executeGet(String uri, boolean authenticate){
 		NameValuePair[] params = new NameValuePair[0];
-		return executeGet(uri, params);
+		return executeGet(uri, params, authenticate);
 	}
-	protected boolean executeGet(String uri, NameValuePair[] params){
+	protected boolean executeGet(String uri, NameValuePair[] params, boolean authenticate){
 		boolean success = false;
-		GetMethod method = newHttpGet(uri);
+		GetMethod method = newHttpGet(uri, authenticate);
 		method.setQueryString(params);
 		try {
 	        client.executeMethod(method);
@@ -58,9 +59,9 @@ public class HttpBaseManager {
 		}
 		return success;
 	}
-	protected boolean executePost(String uri, String content, String contentType){
+	protected boolean executePost(String uri, String content, String contentType, boolean authenticate){
 		boolean success = false;
-		PostMethod method = newHttpPost(uri);
+		PostMethod method = newHttpPost(uri, authenticate);
         RequestEntity body=null;
 		try {
 			body = new StringRequestEntity(content, contentType, "utf-8");
@@ -82,9 +83,9 @@ public class HttpBaseManager {
 		}
 		return success;
 	}
-	protected boolean executePost(String uri, NameValuePair[] params){
+	protected boolean executePost(String uri, NameValuePair[] params, boolean authenticate){
 		boolean success = false;
-		PostMethod method = newHttpPost(uri);
+		PostMethod method = newHttpPost(uri, authenticate);
 		method.setRequestBody(params);
 		try {
 	        client.executeMethod(method);
@@ -100,15 +101,17 @@ public class HttpBaseManager {
 		}
 		return success;
 	}
-	private GetMethod newHttpGet(String url){
+	private GetMethod newHttpGet(String url, boolean authenticate){
 		GetMethod method = new GetMethod(url);
         method.setFollowRedirects(true);
+		method.setDoAuthentication(authenticate);
         return method;
 	}
 	
-	private PostMethod newHttpPost(String url){
+	private PostMethod newHttpPost(String url, boolean authenticate){
 		PostMethod method = new PostMethod(url);
-        method.setFollowRedirects(true);
+        //method.setFollowRedirects(true);
+		method.setDoAuthentication(authenticate);
         return method;
 	}
 
