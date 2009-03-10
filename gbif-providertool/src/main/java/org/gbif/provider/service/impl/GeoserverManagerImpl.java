@@ -136,7 +136,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
         log.debug("Seeding geowebcache for resource "+resource.getId());
 		try{
 			String seedrequest = FreeMarkerTemplateUtils.processTemplateIntoString(freemarker.getTemplate(FEATURE_TYPE_TEMPLATE), resource);			
-			setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
+			setCredentials(getGeoserverHost(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
 
 	        // post seed request, which is an xml doc
 			String result = executePost(String.format("%s/gwc/rest/seed/%s.xml", cfg.getGeoserverUrl(),resource.getLayerName()),  seedrequest, "text/xml", true);
@@ -155,7 +155,7 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
 	 * @see org.gbif.provider.service.impl.GeoserverManager#login(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public boolean login(String username, String password, String geoserverURL){
-		setCredentials(getGeoserverAuthScope(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
+		setCredentials(getGeoserverHost(), cfg.getGeoserverUser(), cfg.getGeoserverPass());
         NameValuePair[] data = {
                 new NameValuePair("username", username),
                 new NameValuePair("password", password)
@@ -211,12 +211,10 @@ public class GeoserverManagerImpl extends HttpBaseManager implements GeoserverMa
     }
 	
 	
-	private AuthScope getGeoserverAuthScope(){
+	private String getGeoserverHost(){
 		try {
 			URI geoURI = new URI(cfg.getGeoserverUrl());
-			String domain = geoURI.getHost();
-			AuthScope scope = new AuthScope(domain, -1);
-			return scope;
+			return geoURI.getHost();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

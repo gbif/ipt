@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
@@ -33,11 +34,11 @@ public class HttpBaseManager {
 	@Autowired
 	protected Configuration freemarker;
 
-	protected void setCredentials(AuthScope scope, String username, String password){
-		client.getState().setCredentials(
-	            scope,
-	            new UsernamePasswordCredentials(StringUtils.trimToEmpty(username), StringUtils.trimToEmpty(password))
-	        );		
+	protected void setCredentials(String host, String username, String password){
+		AuthScope scope = new AuthScope(host, -1, AuthScope.ANY_REALM); // AuthScope.ANY;
+		client.getState().setCredentials(scope, new UsernamePasswordCredentials(StringUtils.trimToEmpty(username), StringUtils.trimToEmpty(password)));
+		client.getParams().setAuthenticationPreemptive(true);
+		
 	}
 	
 	protected String executeGet(String uri, boolean authenticate){
@@ -125,9 +126,25 @@ public class HttpBaseManager {
 		return new ByteArrayInputStream(source.getBytes());
 	}
 	
+	private void logRequest(HttpMethodBase method){
+		String head="Unknown URI";
+		try {
+			head=method.getURI().toString();
+		} catch (URIException e) {
+			
+		}
+		head += "\nREQUEST";
+		for (Header h : method.getRequestHeaders()){
+			head += h.toString();
+		}
+		head +="\n----------\nREPONSE";
+		for (Header h : method.getRequestHeaders()){
+			head += "\n" + h.toString();
+		}
+		log.info(head);
+	}
 	protected boolean succeeded(HttpMethodBase method) {
-		
-		if (method.getStatusCode()==200){
+		if (method.getStatusCode()>=200 && method.getStatusCode()<300){
 			return true;
 		}
 		try {
@@ -135,7 +152,7 @@ public class HttpBaseManager {
 		} catch (URIException e) {
 			log.warn("Http request to ??? failed: "+method.getStatusLine());
 		}
-		log.info("REQUEST:\n"+method.getRequestHeaders()+"\n----------\nRESPONSE\n"+method.getResponseHeaders());
+		logRequest(method);
 		return false;
 	}
 

@@ -47,7 +47,7 @@ public class ResourceMetadata{
 		return uddiID;
 	}
 	public void setUddiID(String uddiID) {
-		this.uddiID = uddiID;
+		this.uddiID = StringUtils.trimToNull(uddiID);
 	}
 
 	public String getLink() {
@@ -79,7 +79,7 @@ public class ResourceMetadata{
 		return contactName;
 	}
 	public void setContactName(String contactName) {
-		this.contactName = contactName;
+		this.contactName = StringUtils.trimToNull(contactName);
 	}
 
 	@Column(length=64)

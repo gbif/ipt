@@ -117,6 +117,9 @@ public class Point implements Serializable{
 	public String toString(){
 		return String.format("%s,%s", latitude, longitude);
 	}
+	public String toStringSpace(){
+		return String.format("%s %s", latitude, longitude);
+	}
 	public String toStringShort(int decimals){
 		return String.format("%."+decimals+"f,%."+decimals+"f", latitude, longitude);
 	}
