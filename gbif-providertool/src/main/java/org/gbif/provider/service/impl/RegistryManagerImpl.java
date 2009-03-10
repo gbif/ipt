@@ -102,8 +102,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	 * @see org.gbif.provider.service.RegistryManager#registerIPT()
 	 */
 	public boolean registerIPT() {
-		// need to register a new organisation?
-		if (StringUtils.trimToNull(cfg.getIpt().getUddiID())==null){
+		if (StringUtils.trimToNull(cfg.getIpt().getUddiID())!=null){
 			log.warn("This IPT is already registered");
 			return false;
 		}

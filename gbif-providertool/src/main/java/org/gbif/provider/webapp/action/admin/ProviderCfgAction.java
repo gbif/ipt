@@ -72,12 +72,9 @@ public class ProviderCfgAction extends BaseAction  {
 	}
 
 	public String registerIpt(){
-		if (!isOrgRegistered()){
-			cfg.getOrg().setUddiID(StringUtils.trimToNull(organisationKey));
-		}		
 		if (isIptRegistered()){
 			saveMessage(getText("register.ipt.already"));
-		}else if (isOrgRegistered()){
+		}else if (!isOrgRegistered()){
 			saveMessage(getText("register.org.missing"));
 		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("register.org.password.missing"));
