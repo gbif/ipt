@@ -7,16 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.ExtendedBaseRules;
-import org.apache.commons.digester.RegexRules;
-import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -67,6 +62,43 @@ public class ThesaurusFactory {
 		
 		return thesauri;
 	}
+	
+	/**
+	 * @param url To build from
+	 * @return The thesaurus or null on error
+	 */
+	public static ThesaurusVocabulary build(String url) {
+		List<ThesaurusVocabulary> thesauri = new LinkedList<ThesaurusVocabulary>();
+		
+		GetMethod method = new GetMethod(url);
+		method.setFollowRedirects(true);
+		try {
+			httpClient.executeMethod(method);
+			InputStream is = method.getResponseBodyAsStream();
+			try {
+				ThesaurusVocabulary tv = build(is);
+				log.info("Successfully parsed Thesaurus: " + tv.getTitle());
+				return tv;
+				
+			} catch (SAXException e) {
+				log.error("Unable to parse XML for extension: " + e.getMessage(), e);
+			} finally {
+				is.close();					 
+			}
+		} catch (Exception e) {
+			log.error(e);
+			
+		} finally {
+			 try {
+				method.releaseConnection();
+			} catch (RuntimeException e) {
+			}
+		}
+		
+		return null;
+	}
+	
+	
 	
 	/**
 	 * Builds a ThesaurusVocabulary from the supplied input stream

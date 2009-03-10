@@ -2,7 +2,6 @@ package org.gbif.provider.service.impl;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +9,15 @@ import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.service.util.ThesaurusFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ThesaurusManagerHibernate extends GenericManagerHibernate<ThesaurusTerm> implements ThesaurusManager{
+    @Autowired
+	private RegistryManager registryManager;
+	
 	public ThesaurusManagerHibernate() {
 		super(ThesaurusTerm.class);
 	}
@@ -148,23 +152,20 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 	}
 
 	public void synchroniseThesauriWithRepository() {
-		Collection<String> urls = new LinkedList<String>();
-		urls.add("http://gbrds.gbif.org/resources/thesauri/lang.xml");
+		Collection<String> urls = registryManager.listAllThesauri();
 		
 		Collection<ThesaurusVocabulary> vocabularies = ThesaurusFactory.build(urls);
 		for (ThesaurusVocabulary tv: vocabularies) {
 			getSession().saveOrUpdate(tv);
-			/*
-			if (tv.getConcepts()!=null) {
-				for (ThesaurusConcept tc : tv.getConcepts()) {
-					if (tc.getTerms() != null) {
-						for (ThesaurusTerm tt : tc.getTerms()) {
-							this.save(tt);
-						}
-					}
-				}			
-			}
-			*/
 		}
+	}
+	
+	public void synchronise(ThesaurusVocabulary tv) {
+		// delete any existing
+		// and then save
+		int affected = getSession().createQuery("delete from ThesaurusVocabulary where uri=:uri").setString("uri", tv.getUri()).executeUpdate();
+		log.info("Deleting vocabulary[" + tv.getUri() + "] affected " + affected + " rows");
+		getSession().save(tv);
+		log.info("Thesaurus vocabulary saved: " + tv.getId());
 	}
 }

@@ -4,14 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.tapir.ParseException;
-import org.gbif.provider.tapir.TapirException;
 import org.gbif.provider.tapir.filter.BooleanOperator;
 import org.gbif.provider.tapir.filter.ComparisonOperator;
 import org.gbif.provider.tapir.filter.Filter;
-import org.gbif.provider.util.Constants;
 
 public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<ExtensionProperty> implements ExtensionPropertyManager{
 
