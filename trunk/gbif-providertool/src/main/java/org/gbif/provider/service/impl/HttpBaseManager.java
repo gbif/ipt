@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -44,6 +45,7 @@ public class HttpBaseManager {
 		return executeGet(uri, params, authenticate);
 	}
 	protected String executeGet(String uri, NameValuePair[] params, boolean authenticate){
+		log.debug("Getting "+uri);
 		String result = null;
 		GetMethod method = newHttpGet(uri, authenticate);
 		method.setQueryString(params);
@@ -52,10 +54,8 @@ public class HttpBaseManager {
 	        if(succeeded(method)){
 	        	result = method.getResponseBodyAsString();
 	        }
-		} catch (HttpException e) {
-			log.error("HttpException", e);
-		} catch (IOException e) {
-			log.error("IOException", e);
+		} catch (Exception e) {
+			log.warn(uri+": "+ e.toString());
 		} finally{
 			if (method!=null){
 				method.releaseConnection();
@@ -64,6 +64,7 @@ public class HttpBaseManager {
 		return result;
 	}
 	protected String executePost(String uri, String content, String contentType, boolean authenticate){
+		log.debug("Posting to "+uri);
 		String result = null;
 		PostMethod method = newHttpPost(uri, authenticate);
         RequestEntity body=null;
@@ -78,10 +79,8 @@ public class HttpBaseManager {
 	        if(succeeded(method)){
 	        	result = method.getResponseBodyAsString();
 	        }
-		} catch (HttpException e) {
-			log.error("HttpException", e);
-		} catch (IOException e) {
-			log.error("IOException", e);
+		} catch (Exception e) {
+			log.warn(uri+": "+ e.toString());
 		} finally{
 			if (method!=null){
 				method.releaseConnection();
@@ -91,6 +90,7 @@ public class HttpBaseManager {
 	}
 	protected String executePost(String uri, NameValuePair[] params, boolean authenticate){
 		String result = null;
+		log.debug("Posting to "+uri);
 		PostMethod method = newHttpPost(uri, authenticate);
 		method.setRequestBody(params);
 		try {
@@ -98,10 +98,8 @@ public class HttpBaseManager {
 	        if(succeeded(method)){	        	
 	        	result = method.getResponseBodyAsString();
 	        }
-		} catch (HttpException e) {
-			log.error("HttpException", e);
-		} catch (IOException e) {
-			log.error("IOException", e);
+		} catch (Exception e) {
+			log.warn(uri+": "+ e.toString());
 		} finally{
 			if (method!=null){
 				method.releaseConnection();
@@ -132,8 +130,12 @@ public class HttpBaseManager {
 		if (method.getStatusCode()==200){
 			return true;
 		}
-		log.warn("Http request failed: "+method.getStatusLine());
-		log.debug(method.getResponseHeaders());
+		try {
+			log.warn("Http request to "+ method.getURI() +" failed: "+method.getStatusLine());
+		} catch (URIException e) {
+			log.warn("Http request to ??? failed: "+method.getStatusLine());
+		}
+		log.info("REQUEST:\n"+method.getRequestHeaders()+"\n----------\nRESPONSE\n"+method.getResponseHeaders());
 		return false;
 	}
 
