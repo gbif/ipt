@@ -191,6 +191,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public String getTitle() {
 		return getMeta().getTitle();
 	}
+	@Transient
+	public String getUddiID() {
+		return getMeta().getUddiID();
+	}
 	
 
 	public void setLink(String link) {

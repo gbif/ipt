@@ -19,8 +19,11 @@ import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.model.xml.NewRegistryEntryHandler;
 import org.gbif.provider.model.xml.ResourceMetadataHandler;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.XmlContentHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.xml.sax.SAXException;
 
 public class RegistryManagerImpl extends HttpBaseManager implements RegistryManager{
@@ -32,7 +35,6 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	private NewRegistryEntryHandler newRegistryEntryHandler = new NewRegistryEntryHandler();
 	
     private SAXParser saxParser;
-
     
     
 	public RegistryManagerImpl() throws ParserConfigurationException, SAXException {
@@ -70,6 +72,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 				saxParser.parse(getStream(result), newRegistryEntryHandler);
 				cfg.setOrgPassword(newRegistryEntryHandler.password);
 				cfg.getOrg().setUddiID(newRegistryEntryHandler.organisationKey);
+				cfg.save();
 				log.info("A new organisation has been registered with GBIF under node "+ cfg.getOrgNode() +" and with key "+cfg.getOrg().getUddiID());
 	            return true;        	
 			} catch (SAXException e) {
@@ -109,6 +112,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		String key = registerResource(cfg.getIpt());
 		if (key!=null){
 			cfg.getIpt().setUddiID(key);
+			cfg.save();
 			log.info("The IPT has been registered with GBIF as resource "+ cfg.getIpt().getUddiID());
 			// RSS resource feed service
 	    	registerService(key, ServiceType.RSS, cfg.getAtomFeedURL());
@@ -135,6 +139,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
         	System.out.println(result);
 			try {
 				saxParser.parse(getStream(result), newRegistryEntryHandler);
+				meta.setUddiID(newRegistryEntryHandler.resourceKey);
 				log.info("A new resource has been registered with GBIF. Key = "+ newRegistryEntryHandler.resourceKey);
 				return newRegistryEntryHandler.resourceKey;
 			} catch (SAXException e) {
@@ -180,14 +185,18 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	 * @see org.gbif.provider.service.RegistryManager#registerResource(java.lang.Long)
 	 */
 	public boolean registerResource(DataResource resource) {
-		log.info("A new resource has been registered with GBIF with key "+  "");
-    	registerService(cfg.getIpt().getUddiID(), ServiceType.RSS, cfg.getAtomFeedURL());
-    	registerService(cfg.getIpt().getUddiID(), ServiceType.RSS, cfg.getAtomFeedURL());
-    	registerService(cfg.getIpt().getUddiID(), ServiceType.RSS, cfg.getAtomFeedURL());
-    	registerService(cfg.getIpt().getUddiID(), ServiceType.RSS, cfg.getAtomFeedURL());
-    	registerService(cfg.getIpt().getUddiID(), ServiceType.RSS, cfg.getAtomFeedURL());
-    	registerService(cfg.getIpt().getUddiID(), ServiceType.RSS, cfg.getAtomFeedURL());
-		return false;
+		if (registerResource(resource.getMeta())==null){
+			log.error("Failed to register resource "+ resource.getId()+ " with GBIF");
+			return false;
+		}
+		log.info("Resource "+resource.getId()+" has been registered with GBIF. Key = "+ resource.getUddiID());
+    	registerService(cfg.getIpt().getUddiID(), ServiceType.EML, cfg.getEmlUrl(resource.getGuid()));
+    	registerService(cfg.getIpt().getUddiID(), ServiceType.DWC_ARCHIVE, cfg.getArchiveUrl(resource.getGuid()));
+    	registerService(cfg.getIpt().getUddiID(), ServiceType.TAPIR, cfg.getTapirEndpoint(resource.getId()));
+    	registerService(cfg.getIpt().getUddiID(), ServiceType.WFS, cfg.getWfsEndpoint(resource.getId()));
+    	registerService(cfg.getIpt().getUddiID(), ServiceType.WMS, cfg.getWmsEndpoint(resource.getId()));
+    	registerService(cfg.getIpt().getUddiID(), ServiceType.TCS_RDF, cfg.getArchiveTcsUrl(resource.getGuid()));
+		return true;
 	}
 
 	
