@@ -9,10 +9,11 @@
 -->
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ipt.gbif.org/extension/  ../extension.xsd" 
     title="Vernacular Name" name="VernacularName" namespace="http://rs.gbif.org/ecat/class/">
     <property name="vernacularName" namespace="http://rs.gbif.org/ecat/terms/" qualName="http://rs.gbif.org/ecat/terms/vernacularName" required="true"/>
     <property name="language" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/language"/>
-	<property name="languageCode" namespace="http://rs.gbif.org/thesaurus" qualName="languageCode" thesaurus="http://rs.gbif.org/thesaurus/languageCode.xml" columnLength="3"/>
-	<property name="area" namespace="http://rs.gbif.org/thesaurus/" qualName="area" thesaurus="http://rs.gbif.org/thesaurus/area.xml"/>
+	<property name="languageCode" namespace="http://rs.gbif.org/thesaurus" qualName="http://rs.gbif.org/thesaurus/languageCode" thesaurus="http://gbrds.gbif.org/resources/thesauri/lang.xml" columnLength="3"/>
+	<property name="area" namespace="http://rs.gbif.org/thesaurus/" qualName="http://rs.gbif.org/thesaurus/area" thesaurus="http://gbrds.gbif.org/resources/thesauri/area.xml"/>
 	<property name="preferredFlag" namespace="http://rs.gbif.org/ecat/terms/" qualName="http://rs.gbif.org/ecat/terms/preferredFlag" columnLength="1"/>
 </extension>

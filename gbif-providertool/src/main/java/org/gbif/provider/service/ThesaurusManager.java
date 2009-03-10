@@ -89,4 +89,11 @@ public interface ThesaurusManager extends GenericManager<ThesaurusTerm>{
 	 * This will communicate with the central registry of thesauri and update the database tables 
 	 */
 	public void synchroniseThesauriWithRepository();	
+	
+	/**
+	 * Deletes any existing Vocab with the same URI and saves this one
+	 * This might not be the best strategy and a proper synchronise might be more appropriate
+	 * @param tv To save
+	 */
+	public void synchronise(ThesaurusVocabulary tv);
 }

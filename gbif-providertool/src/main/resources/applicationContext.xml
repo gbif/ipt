@@ -124,8 +124,10 @@
 
     <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
 
-    <bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
-    
+	<bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
+
+	<bean id="extensionFactory" class="org.gbif.provider.service.util.ExtensionFactory"/>
+	
     <!-- cache / import manager -->
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
 

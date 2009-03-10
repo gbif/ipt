@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -196,6 +198,18 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
     	registerService(cfg.getIpt().getUddiID(), ServiceType.WMS, cfg.getWmsEndpoint(resource.getId()));
     	registerService(cfg.getIpt().getUddiID(), ServiceType.TCS_RDF, cfg.getArchiveTcsUrl(resource.getGuid()));
 		return true;
+	}
+
+	public Collection<String> listAllExtensions() {
+		Collection<String> urls = new LinkedList<String>();
+		urls.add("http://gbrds.gbif.org/resources/extensions/vernacularName.xml");
+		return urls;
+	}
+
+	public Collection<String> listAllThesauri() {
+		Collection<String> urls = new LinkedList<String>();
+		urls.add("http://gbrds.gbif.org/resources/thesauri/lang.xml");
+		return urls;
 	}
 
 	

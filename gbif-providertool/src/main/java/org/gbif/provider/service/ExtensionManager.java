@@ -30,7 +30,8 @@ public interface ExtensionManager extends GenericManager<Extension>{
 	public ExtensionProperty getProperty(String qualname);
 	
 	/**
-	 * This will communicate with the central registry of extensions and update the database extension tables 
+	 * This will communicate with the central registry of extensions and update the database extension tables
+	 * When a thesaurus is found referenced by an extension, it will be automatically sychronised. 
 	 */
 	public void synchroniseExtensionsWithRepository();
 
