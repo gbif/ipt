@@ -14,6 +14,7 @@
         <meta http-equiv="Expires" content="0"/>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="icon" href="<c:url value="/images/favicon.ico"/>"/>
+		<link href="<s:url value='/atom.xml'/>" rel="alternate" type="application/atom+xml" title="RSS Atom Feed for all resources" />
 		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/theme.css'/>" />
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/jquery-1.3.min.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/effects.core.min.js'/>"></script>
@@ -22,8 +23,6 @@
 		
 	    <c:choose>
 	      <c:when test='${currentSubMenu == "meta"}'>
-			<link href="<s:url value='/data/atom.xml'/>" rel="alternate" type="application/atom+xml" title="RSS Atom Feed for all resources" />
-			<link href="<s:url value='/data/rss.xml'/>" rel="alternate" type="application/rss+xml" title="RSS 2.0 Feed for all resources" />
           </c:when>        
           <c:when test='${currentSubMenu == "occ" || currentSubMenu == "tax"}'>
 	        <c:if test='${currentSubMenu == "occ"}'>

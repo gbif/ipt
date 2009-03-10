@@ -69,12 +69,11 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
         String result = executePost(REGISTRY_ORG_URL,  data, true);
         if (result!=null){
             // read new UDDI ID
-        	System.out.println(result);
+        	log.debug(result);
 			try {
 				saxParser.parse(getStream(result), newRegistryEntryHandler);
 				cfg.setOrgPassword(newRegistryEntryHandler.password);
 				cfg.getOrg().setUddiID(newRegistryEntryHandler.organisationKey);
-				cfg.save();
 				log.info("A new organisation has been registered with GBIF under node "+ cfg.getOrgNode() +" and with key "+cfg.getOrg().getUddiID());
 	            return true;        	
 			} catch (SAXException e) {
@@ -89,9 +88,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	private void setRegistryCredentials() {
 		try {
 			URI geoURI = new URI(REGISTRY_ORG_URL);
-			String domain = geoURI.getHost();
-			AuthScope scope = new AuthScope(domain, -1);
-			setCredentials(scope, cfg.getOrg().getUddiID(), cfg.getOrgPassword());		
+			setCredentials(geoURI.getHost(), cfg.getOrg().getUddiID(), cfg.getOrgPassword());		
 		} catch (URISyntaxException e) {
 			log.error("Exception setting the registry credentials", e);
 		}
@@ -112,15 +109,15 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		// registering IPT resource
 		String key = registerResource(cfg.getIpt());
 		if (key!=null){
-			cfg.getIpt().setUddiID(key);
-			cfg.save();
 			log.info("The IPT has been registered with GBIF as resource "+ cfg.getIpt().getUddiID());
 			// RSS resource feed service
 	    	registerService(key, ServiceType.RSS, cfg.getAtomFeedURL());
 			// IPT EML service
 	    	registerService(key, ServiceType.EML, cfg.getEmlUrl("ipt"));
 	        return true;        	
-		}    	
+		}else{
+			log.warn("Failed to register IPT with GBIF as a new resource");
+		}
         return false;        	
 	}
 
@@ -128,21 +125,24 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		// registering IPT resource
         NameValuePair[] data = {
                 new NameValuePair("organizationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
-                new NameValuePair("name", StringUtils.trimToEmpty(meta.getTitle())),
-                new NameValuePair("description", StringUtils.trimToEmpty(meta.getDescription())),
+                new NameValuePair("resourceName", StringUtils.trimToEmpty(meta.getTitle())), // name
+                new NameValuePair("resourceDescription", StringUtils.trimToEmpty(meta.getDescription())), // description
                 new NameValuePair("homepageURL", StringUtils.trimToEmpty(meta.getLink())),
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(meta.getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(meta.getContactEmail()))
         };
-        String result = executePost(REGISTRY_ORG_URL,  data, true);
+        String result = executePost(REGISTRY_RESOURCE_URL,  data, true);
         if (result!=null){
             // read new UDDI ID
         	System.out.println(result);
+        	log.debug(result);
 			try {
 				saxParser.parse(getStream(result), newRegistryEntryHandler);
 				meta.setUddiID(newRegistryEntryHandler.resourceKey);
-				log.info("A new resource has been registered with GBIF. Key = "+ newRegistryEntryHandler.resourceKey);
-				return newRegistryEntryHandler.resourceKey;
+				if (meta.getUddiID()!=null){
+					log.info("A new resource has been registered with GBIF. Key = "+ meta.getUddiID());
+					return meta.getUddiID();
+				}
 			} catch (SAXException e) {
 				log.error("Error reading GBIF registry response", e);
 			} catch (IOException e) {
@@ -161,6 +161,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
         String result = executePost(REGISTRY_SERVICE_URL,  data, true);
         if (result!=null){
             // read new UDDI ID
+        	log.debug(result);
 			try {
 				saxParser.parse(getStream(result), newRegistryEntryHandler);
 				log.info("A new IPT service has been registered with GBIF. Key = "+ newRegistryEntryHandler.serviceKey);

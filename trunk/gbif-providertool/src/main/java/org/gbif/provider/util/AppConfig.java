@@ -78,10 +78,10 @@ public class AppConfig{
 		}
 	}
 	public String getAtomFeedURL() {
-		return getAtomFeedURL(1);
+		return String.format("%s/atom.xml", baseURL);
 	}
 	public String getAtomFeedURL(Integer page) {
-		return String.format("%s/atom.xml?page=%s", baseURL, page);
+		return String.format("%s?page=%s", getAtomFeedURL(), page);
 	}
 
 	

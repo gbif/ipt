@@ -263,6 +263,13 @@ public class BBox implements Serializable{
 		// minX,minY,maxX,maxY
 		return String.format("%s,%s,%s,%s", min.getLongitude(), min.getLatitude(), max.getLongitude(), max.getLatitude());
 	}
+	/* @See http://georss.org/simple
+	 *  
+	 * @return polygon string which is a space separated list of latitude-longitude pairs
+	 */
+	public String toStringGeoRSS(){
+		return String.format("%s   %s %s   %s   %s %s", min.toStringSpace(),   max.getLongitude(),min.getLatitude(),   max.toStringSpace(),   min.getLongitude(), max.getLatitude());
+	}
 	public String toString(){
 		// minY,minX maxY,maxX
 		return String.format("%s %s", min, max);

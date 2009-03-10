@@ -1,7 +1,7 @@
 <head>
     <title><@s.text name='config.heading'/></title>
     <meta name="menu" content="AdminMenu"/>
-    <meta name="decorator" content="fullsize"/>
+    <meta name="decorator" content="default"/>
     <meta name="heading" content="<@s.text name='config.heading'/>"/>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.core.min.js'/>"></script>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
@@ -43,12 +43,14 @@
 		$(".organisationKey").val(data.key);
 		$("#orgTitle").val(data.name);
 		$("#orgNode").val(data.endorsingNodeKey);
-		$("#orgNodeName").val(data.endorsingNodeName);
+		if (data.endorsingNodeName!=null){
+			$("#orgNodeName").val(data.endorsingNodeName);
+		}else{
+			$("#orgNodeName").val("Being endorsed");
+		}
 		$("#orgName").val(data.primaryContactName);
 		$("#orgEmail").val(data.primaryContactEmail);
 		$("#orgHomepage").val(data.homepageURL);
-		$("#orgLatitude").val("");
-		$("#orgLongitude").val("");
 		$("#orgDescription").val(data.description);
 	}
 	$(document).ready(function(){
@@ -81,9 +83,12 @@
 	  </#if>
 		$(".external").attr("readonly","readonly");
 		$("#registerOrg").hide();
-		$("#updateOrg").click(function(e) {
+		$("#updateOrg").hide();
+		$("#unlockUpdateOrg").click(function(e) {
 			e.preventDefault(); 
 			$(".external").removeAttr("readonly");
+			$("#updateOrg").show();
+			$("#unlockUpdateOrg").hide();
 		});
 		$("#registerOrg").click(function(e) {
 		    if (! confirm("Are you sure you want to register this organisation with GBIF?")) {
@@ -99,8 +104,7 @@
 	
 	</script>
 	<style>
-		div.googlemap {
-			float: left;
+		img#googlemap {
 			padding-top: 15px;
 			padding-left:15px
 		}	
@@ -113,20 +117,25 @@
 	</style>	    
 </head>
 
+
+<content tag="contextmenu">
+  <div id="actions">
+	<label>Configuration</label>
+	<ul class="plain">								
+		<li><a href="<@s.url action='config'/>"> <@s.text name="config.registry"/> </a></li>
+		<li><a href="<@s.url action='config'/>"> <@s.text name="config.metadata"/> </a></li>
+		<li><a href="<@s.url action='config'/>"> <@s.text name="config.settings"/> </a></li>
+	</ul>
+  </div>
+</content>
+
+
 <@s.form id="providerCfg" action="saveConfig" method="post">
 <h2 class="modifiedh2"><@s.text name="config.registry"/></h2>
 <fieldset>
-  <#if config.ipt.uddiID??>
-  <#else>
-	<div id="newActions">
-		<a id="newOrg" href="#"><@s.text name='config.newOrganisation'/></a>
-	</div>
-    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
-  </#if>					 
-	
 	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge"/>
     <div>
-        <div class="left">
+        <div class="leftxhalf">
 			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
@@ -138,42 +147,27 @@
         </div>
 	</div>
     <div>
-        <div class="left">
+        <div class="leftxhalf">
 			<@s.textfield id="orgName" key="config.org.contactName" required="true" cssClass="text large external"/>
         </div>
-        <div>
+        <div  class="leftxhalf">
 			<@s.textfield id="orgEmail" key="config.org.contactEmail" required="true" cssClass="text large external"/>
         </div>
 	</div>
-	<div class="left">    
-		<div>
-			<@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text large external"/>
-		</div>
-	    <div>
-	        <div class="leftMedium">
-				<@s.textfield id="orgLatitude" key="config.org.location.latitude" required="false" cssClass="text medium external"/>
-	        </div>
-	        <div>
-				<@s.textfield id="orgLongitude" key="config.org.location.longitude" required="false" cssClass="text medium external"/>
-	        </div>
-	    </div>	    
+	<@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
+	<@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
+    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
+
+  <#if !(config.ipt.uddiID??)>
+	<div id="newActions">
+		<a id="newOrg" href="#"><@s.text name='config.newOrganisation'/></a>
 	</div>
-    <div class="googlemap">
-		<#if (config.org.location)?? && config.org.location.latitude?? && config.org.location.longitude?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.org.location.latitude?c},${config.org.location.longitude?c}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.org.location.latitude?c},${config.org.location.longitude?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>
-		<#else>	
-			<img src="<@s.url value='/images/default_image_map.gif'/>"/>
-		</#if>
-    </div>
-	<div style="clear:both">
-		<@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
-	</div>
-  <#if config.ipt.uddiID??>
-	<div>
-		<a id="updateOrg" href="#"><@s.text name='config.updateOrganisation'/></a>
-	</div>
+    <@s.submit id="registerOrg" cssClass="button" key="button.registerOrg" method="registerOrg" theme="simple"/>
   <#else>
-    <@s.submit cssClass="button" id="registerOrg" key="button.registerOrg" method="registerOrg" theme="simple"/>
+	<div>
+		<a id="unlockUpdateOrg" href="#"><@s.text name='config.updateOrganisation'/></a>
+	</div>
+    <@s.submit id="updateOrg" cssClass="button" key="button.update" method="updateOrg" theme="simple"/>
   </#if>
 
   </fieldset>
@@ -187,14 +181,15 @@
 	<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge"/>
     <div>
-        <div class="left">
+        <div class="leftxhalf">
 			<@s.textfield key="config.ipt.contactName" required="true" cssClass="text large"/>
         </div>
-        <div>
+        <div class="leftxhalf">
 			<@s.textfield key="config.ipt.contactEmail" required="true" cssClass="text large"/>
         </div>
 	</div>
-	<div class="left">    
+	<div>
+	  <div class="leftxhalf">    
 		<div>
 			<@s.textfield key="config.ipt.link" required="true" cssClass="text large"/>
 		</div>
@@ -206,13 +201,14 @@
 				<@s.textfield key="config.ipt.location.longitude" required="false" cssClass="text medium"/>
 	        </div>
 	    </div>	    
-	</div>
-    <div class="googlemap">
+	  </div>
+      <div class="leftxhalf">
 		<#if (config.ipt.location)?? && config.ipt.location.latitude?? && config.ipt.location.longitude?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&t=h&z=15"><img src="http://maps.google.com/staticmap?center=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
+			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&t=h&z=15"><img id="googlemap" src="http://maps.google.com/staticmap?center=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
 		<#else>	
 			<img src="<@s.url value='/images/default_image_map.gif'/>"/>
 		</#if>
+      </div>
     </div>
 	<div style="clear:both">
 		<@s.textarea key="config.ipt.description" cssClass="text xlarge"/>
@@ -228,9 +224,9 @@
 
 <h2 class="modifiedh2"><@s.text name="config.settings"/></h2>
   <fieldset>
+	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
-	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>
@@ -246,11 +242,11 @@
 		<@s.textfield key="config.geoserverDataDir" required="true" cssClass="text xlarge"/>
 	</div>	
     <div>
-        <div class="left">
-			<@s.textfield key="config.geoserverUser" required="true" cssClass="text xlarge"/>
+        <div class="leftxhalf">
+			<@s.textfield key="config.geoserverUser" required="true" cssClass="text large"/>
         </div>
-        <div class="left">
-			<@s.textfield key="config.geoserverPass" required="true" cssClass="text xlarge"/>
+        <div class="leftxhalf">
+			<@s.textfield key="config.geoserverPass" required="true" cssClass="text large"/>
         </div>
     </div>
   </fieldset>
