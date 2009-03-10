@@ -64,16 +64,16 @@
 		$("#newOrg").click(function(e) {
 			e.preventDefault(); 
 			$(".organisationKey").val("");
-			$(".external").val("");
+			$(".external").val("").removeAttr("readonly");
+			$("#orgPassword").val("").attr("readonly","readonly");
 			$("#orgTitle").unbind().val("");
-			$("#registerOrg").show();
 			$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
 			$("#orgNodeName").result(function(event, data, formatted) {
 				$("#orgNode").val(data.key);
 				$("#orgNodeName").val(data.name);
 			});
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
-			$(".external").removeAttr("readonly");
+			$("#registerOrg").show();
 		});
 	  </#if>
 	  <#if config.org.uddiID??>
@@ -134,7 +134,7 @@
 		    <@s.hidden id="orgNodeKey" key="config.orgNode" value=""/>
         </div>
         <div>
-			<@s.textfield key="config.orgPassword" required="true" cssClass="text medium"/>
+			<@s.textfield id="orgPassword" key="config.orgPassword" required="true" cssClass="text medium"/>
         </div>
 	</div>
     <div>

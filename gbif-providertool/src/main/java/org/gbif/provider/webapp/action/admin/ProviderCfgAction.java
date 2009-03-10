@@ -61,7 +61,6 @@ public class ProviderCfgAction extends BaseAction  {
 			cfg.getOrg().setUddiID(organisationKey);
 			if (registryManager.registerOrg()){
 				saveMessage(getText("register.org.success"));
-				saveMessage(getText("register.thanks"));
 			}else{
 				cfg.resetOrg();
 				cfg.setOrgNode(null);
