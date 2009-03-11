@@ -736,14 +736,14 @@
             <result name="tbd">/WEB-INF/pages/scheduler/jobList.ftl</result>
         </action>
         
-        <action name="configOrg" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
+        <action name="config" class="org.gbif.provider.webapp.action.admin.ConfigAction">
+            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        </action>
+        <action name="configOrg" class="org.gbif.provider.webapp.action.admin.ConfigOrgAction">
             <result type="freemarker">/WEB-INF/pages/admin/configOrg.ftl</result>
         </action>
-        <action name="configIpt" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
+        <action name="configIpt" class="org.gbif.provider.webapp.action.admin.ConfigIptAction">
             <result type="freemarker">/WEB-INF/pages/admin/configIpt.ftl</result>
-        </action>
-        <action name="config" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
-            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>
         
 

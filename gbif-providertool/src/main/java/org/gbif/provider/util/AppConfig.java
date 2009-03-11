@@ -342,59 +342,16 @@ public class AppConfig{
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-//	
-//	
-//	// REMOVE AT SOME POINT
-//	public String getUddiID() {
-//		return cfg.getIptMeta().getUddiID();
-//	}
-//	public String getContactEmail() {
-//		return cfg.getIptMeta().getContactEmail();
-//	}
-//	public String getContactName() {
-//		return cfg.getIptMeta().getContactName();
-//	}
-//	public String getDescription() {
-//		return cfg.getIptMeta().getDescription();
-//	}
-//	public String getLink() {
-//		return cfg.getIptMeta().getLink();
-//	}
-//	public String getTitle() {
-//		return cfg.getIptMeta().getTitle();
-//	}
-//	public Point getLocation() {
-//		return cfg.getIptMeta().getLocation();
-//	}
-//	
-//	public void setUddiID(String uddiID) {
-//		cfg.getIptMeta().setUddiID(uddiID);
-//	}
-//	public void setContactEmail(String contactEmail) {
-//		cfg.getIptMeta().setContactEmail(contactEmail);
-//	}
-//	public void setContactName(String contactName) {
-//		cfg.getIptMeta().setContactName(contactName);
-//	}
-//	public void setDescription(String description) {
-//		cfg.getIptMeta().setDescription(description);
-//	}
-//	public void setLink(String link) {
-//		cfg.getIptMeta().setLink(link);
-//	}
-//	public void setTitle(String title) {
-//		cfg.getIptMeta().setTitle(title);
-//	}
-//	public void setLocation(Point location) {
-//		cfg.getIptMeta().setLocation(location);
-//	}
-
+	public boolean isOrgRegistered(){
+		if (StringUtils.trimToNull(cfg.getOrgMeta().getUddiID())==null){
+			return false;
+		}
+		return true;
+	}
+	public boolean isIptRegistered(){
+		if (StringUtils.trimToNull(cfg.getIptMeta().getUddiID())==null){
+			return false;
+		}
+		return true;
+	}
 }

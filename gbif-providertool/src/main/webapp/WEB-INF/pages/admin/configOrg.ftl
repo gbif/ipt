@@ -7,10 +7,12 @@
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
 	<link rel="stylesheet" type="text/css" href="<@s.url value='/scripts/jquery.autocomplete.css'/>" />
 	<script>
+	<#--
+	  first get list of all organisations, then attach automplete event based on this list
+	  could do autocomplete via server call, but gets into problems sometimes. This is how it would be called:
+	  ${config.getBaseUrl()}/ajax/proxy.do?uri=${registryOrgUrl}.json
+	-->
 	var orgs;
-	// first get list of all organisations, then attach automplete event based on this list
-	// could do autocomplete via server call, but gets into problems sometimes. This is how it would be called:
-	// ${config.getBaseUrl()}/ajax/proxy.do?uri=${registryOrgUrl}.json?nix=1
 	function udpateNodeList(data){
 		$('#orgNodeName').autocomplete(data, {
 			width:340, 
@@ -54,7 +56,7 @@
 		$("#orgDescription").val(data.description);
 	}
 	$(document).ready(function(){
-	  <#if config.ipt.uddiID??>
+	  <#if config.isIptRegistered()>
 	  	<#-- the IPT is already registered. No way to change the organisation again -->
 		$("#orgTitle").addClass("external");
 	  <#else>
@@ -78,61 +80,30 @@
 			$("#registerOrg").show();
 		});
 	  </#if>
-	  <#if config.org.uddiID??>
-		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);        
-	  </#if>
+	  <#if config.isOrgRegistered()>
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);
+	  <#else>        
 		$(".external").attr("readonly","readonly");
-		$("#registerOrg").hide();
-		$("#updateOrg").hide();
-		$("#unlockUpdateOrg").click(function(e) {
-			e.preventDefault(); 
-			$(".external").removeAttr("readonly");
-			$("#updateOrg").show();
-			$("#unlockUpdateOrg").hide();
-		});
-		$("#registerOrg").click(function(e) {
+		$("#registerOrg").hide().click(function(e) {
 		    if (! confirm("Are you sure you want to register this organisation with GBIF?")) {
 				e.preventDefault();
 		    }
 		});
-		$("#registerIpt").click(function(e) {
-		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot change this through the IPT but will have to get in touch with GBIF personally.")) {
-				e.preventDefault();
-		    }
-		});	
+	  </#if>
 	});
 	
 	</script>
-	<style>
-		img#googlemap {
-			padding-top: 15px;
-			padding-left:15px
-		}	
-		input[readonly] {
-			background: #eaeaea;
-		}
-		textarea[readonly] {
-			background: #eaeaea;
-		}
-	</style>	    
 </head>
 
 
-<content tag="contextmenu">
-  <div id="actions">
-	<label>Configuration</label>
-	<ul class="plain">								
-		<li><a href="<@s.url action='config'/>"> <@s.text name="config.registry"/> </a></li>
-		<li><a href="<@s.url action='config'/>"> <@s.text name="config.metadata"/> </a></li>
-		<li><a href="<@s.url action='config'/>"> <@s.text name="config.settings"/> </a></li>
-	</ul>
-  </div>
-</content>
+<#include "/WEB-INF/pages/admin/configMenu.ftl">  
 
 
-<@s.form id="providerCfg" action="saveConfig" method="post">
+
+<@s.form id="providerCfg" method="post">
 <h2 class="modifiedh2"><@s.text name="config.registry"/></h2>
 <fieldset>
+    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
 	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge"/>
     <div>
         <div class="leftxhalf">
@@ -156,100 +127,16 @@
 	</div>
 	<@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
 	<@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
-    <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
 
-  <#if !(config.ipt.uddiID??)>
+  <#if config.isOrgRegistered()>
+    <@s.submit id="updateOrg" cssClass="button" key="button.update" theme="simple"/>
+  <#else>
 	<div id="newActions">
 		<a id="newOrg" href="#"><@s.text name='config.newOrganisation'/></a>
 	</div>
-    <@s.submit id="registerOrg" cssClass="button" key="button.registerOrg" method="registerOrg" theme="simple"/>
-  <#else>
-	<div>
-		<a id="unlockUpdateOrg" href="#"><@s.text name='config.updateOrganisation'/></a>
-	</div>
-    <@s.submit id="updateOrg" cssClass="button" key="button.update" method="updateOrg" theme="simple"/>
+    <@s.submit id="registerOrg" cssClass="button" key="button.registerOrg" theme="simple"/>
   </#if>
 
   </fieldset>
-  
-<div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
 
-
-
-<h2><@s.text name="config.metadata"/></h2>
-<fieldset>
-	<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
-	<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge"/>
-    <div>
-        <div class="leftxhalf">
-			<@s.textfield key="config.ipt.contactName" required="true" cssClass="text large"/>
-        </div>
-        <div class="leftxhalf">
-			<@s.textfield key="config.ipt.contactEmail" required="true" cssClass="text large"/>
-        </div>
-	</div>
-	<div>
-	  <div class="leftxhalf">    
-		<div>
-			<@s.textfield key="config.ipt.link" required="true" cssClass="text large"/>
-		</div>
-	    <div>
-	        <div class="leftMedium">
-				<@s.textfield key="config.ipt.location.latitude" required="false" cssClass="text medium"/>
-	        </div>
-	        <div>
-				<@s.textfield key="config.ipt.location.longitude" required="false" cssClass="text medium"/>
-	        </div>
-	    </div>	    
-	  </div>
-      <div class="leftxhalf">
-		<#if (config.ipt.location)?? && config.ipt.location.latitude?? && config.ipt.location.longitude?? && cfg.googleMapsApiKey??>
-			<a href="http://maps.google.de/maps?f=s&ie=UTF8&ll=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&t=h&z=15"><img id="googlemap" src="http://maps.google.com/staticmap?center=${config.ipt.location.latitude?c},${config.ipt.location.longitude?c}&zoom=5&size=325x95&key=${cfg.googleMapsApiKey}" /></a>	
-		<#else>	
-			<img src="<@s.url value='/images/default_image_map.gif'/>"/>
-		</#if>
-      </div>
-    </div>
-	<div style="clear:both">
-		<@s.textarea key="config.ipt.description" cssClass="text xlarge"/>
-	</div>
-	<@s.textfield key="config.ipt.descriptionImage" required="false" cssClass="text xlarge"/>
-	
-  <#if !config.ipt.uddiID??>
-    <@s.submit cssClass="button" id="registerIpt" key="button.registerIpt" method="registerIpt" theme="simple"/>
-  </#if>
-  </fieldset>
-<div class="horizontal_dotted_line_xlarge_soft_foo" ></div>
-
-
-<h2 class="modifiedh2"><@s.text name="config.settings"/></h2>
-  <fieldset>
-	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
-	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
-	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
-	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
-	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
-  </fieldset>
-<div class="horizontal_dotted_line_xlarge_soft_foo"></div>  
-
-
-<h2 class="modifiedh2"><@s.text name="config.geoserver"/></h2>
-<fieldset>
-    <div>
-		<@s.textfield key="config.geoserverUrl" required="true" cssClass="text xlarge"/>
-	</div>
-	<div>
-		<@s.textfield key="config.geoserverDataDir" required="true" cssClass="text xlarge"/>
-	</div>	
-    <div>
-        <div class="leftxhalf">
-			<@s.textfield key="config.geoserverUser" required="true" cssClass="text large"/>
-        </div>
-        <div class="leftxhalf">
-			<@s.textfield key="config.geoserverPass" required="true" cssClass="text large"/>
-        </div>
-    </div>
-  </fieldset>
-  <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-  <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
 </@s.form>

@@ -99,6 +99,14 @@ textarea{
 }
 
 
+input[readonly] {
+	background: #eaeaea;
+}
+textarea[readonly] {
+	background: #eaeaea;
+}
+
+
 form .xlargeFull{
     width: 880px;
 }
