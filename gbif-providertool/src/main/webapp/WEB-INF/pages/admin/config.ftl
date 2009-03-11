@@ -8,7 +8,6 @@
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
 
 <@s.form id="providerCfg" action="config" method="post">
-<h2 class="modifiedh2"><@s.text name="config.settings"/></h2>
   <fieldset>
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>

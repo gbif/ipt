@@ -83,7 +83,7 @@ public class ConfigOrgAction extends BasePostAction{
 	private void check() {
 		// tests
 		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
-			saveMessage(getText("config.check.org.uddi"));
+			saveMessage(getText("config.check.orgRegistered"));
 		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("config.check.orgPassword"));
 		}else{
