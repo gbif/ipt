@@ -14,7 +14,10 @@
 	-->
 	var orgs;
 	function udpateNodeList(data){
-		$('#orgNodeName').autocomplete(data, {
+	  <#if !config.isOrgRegistered()>
+		$("#orgNodeName").removeAttr("readonly");
+	  </#if>        
+		$("#orgNodeName").autocomplete(data, {
 			width:340, 
 			minChars:1, 
 			mustMatch:true, 
@@ -28,10 +31,10 @@
 		});
 	}
 	function udpateOrgList(data){
-		$('#orgTitle').autocomplete(data, {
+		$("#orgTitle").removeAttr("readonly").autocomplete(data, {
 			width:340, 
 			minChars:1, 
-			mustMatch:true, 
+			mustMatch:false, 
 			matchContains:true,
 			formatItem: function(row, i, max) {
 				return row.name;
@@ -42,10 +45,12 @@
 		});
 	}
 	function udpateOrg(data){
+	  	console.debug("Retrieved current organisation metadata:");
+	  	console.debug(data);
 		$(".organisationKey").val(data.key);
 		$("#orgTitle").val(data.name);
-		$("#orgNode").val(data.endorsingNodeKey);
-		if (data.endorsingNodeName!=null){
+		$("#orgNodeKey").val(data.endorsingNodeKey);
+		if (data.endorsingNodeName.length>0){
 			$("#orgNodeName").val(data.endorsingNodeName);
 		}else{
 			$("#orgNodeName").val("Being endorsed");
@@ -58,34 +63,40 @@
 	$(document).ready(function(){
 	  <#if config.isIptRegistered()>
 	  	<#-- the IPT is already registered. No way to change the organisation again -->
-		$("#orgTitle").addClass("external");
 	  <#else>
 	  	<#-- the IPT is not registered. Provide autocompletes for node & org selection -->
-		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);        
-		$("#orgTitle").result(function(event, data, formatted) {
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);
+		$("#orgTitle").attr("readonly","readonly").result(function(event, data, formatted) {
 			udpateOrg(data);
+			alert("You need to enter your organisations password before you can register anything on behalf of this organisation");
+			$("#registerOrg").hide();
+		});
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
+		$("#orgNodeName").attr("readonly","readonly").result(function(event, data, formatted) {
+		  	console.debug(data);
+			$("#orgNodeKey").val(data.nodeKey);
+			$("#orgNodeName").val(data.nodeName);
 		});
 		$("#newOrg").click(function(e) {
 			e.preventDefault(); 
 			$(".organisationKey").val("");
-			$(".external").val("").removeAttr("readonly");
+			$(".external").val("");
 			$("#orgPassword").val("").attr("readonly","readonly");
-			$("#orgTitle").unbind().val("");
-			$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
-			$("#orgNodeName").result(function(event, data, formatted) {
-				$("#orgNode").val(data.key);
-				$("#orgNodeName").val(data.name);
-			});
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
 			$("#registerOrg").show();
-			$("#newOrg").hide();
 		});
 	  </#if>
 	  <#if config.isOrgRegistered()>
-		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID!}.json'/>", udpateOrg);
+		$.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID}.json'/>", udpateOrg);
 	  <#else>        
-		$(".external").attr("readonly","readonly");
-		$("#registerOrg").hide().click(function(e) {
+	    <#if config.orgNode??>
+		  $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}/${config.orgNode}.json'/>", function(data){
+			$("#orgNodeName").val(data.nodeName);
+		  	console.debug("Retrieved current GBIF node:");
+		  	console.debug(data);
+		  });
+	    </#if>
+		$("#registerOrg").click(function(e) {
 		    if (! confirm("Are you sure you want to register this organisation with GBIF?")) {
 				e.preventDefault();
 		    }
@@ -99,19 +110,19 @@
 
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
 
-
+-${config.orgNode}-
 
 <@s.form id="providerCfg" method="post">
 <fieldset>
     <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
-	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge"/>
+	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external"/>
     <div>
         <div class="leftxhalf">
 			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
 			<@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external"/>
-		    <@s.hidden id="orgNodeKey" key="config.orgNode" value=""/>
+		    <@s.hidden id="orgNodeKey" key="config.orgNode" cssClass="external"/>
         </div>
         <div>
 			<@s.textfield id="orgPassword" key="config.orgPassword" required="true" cssClass="text medium"/>
@@ -133,8 +144,10 @@
     <@s.submit id="updateOrg" cssClass="button" key="button.update" theme="simple"/>
   <#else>
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-    <@s.submit id="registerOrg" cssClass="button" key="button.register" theme="simple"/>
-    <@s.submit id="newOrg" cssClass="button" key="button.new" theme="simple"/>
+    <@s.submit id="registerOrg" cssClass="button" key="button.register" method="register" theme="simple"/>
+    <div class="right">
+    	<a id="newOrg" href="#">Clear form</a>
+    </div>
   </#if>
 
   </fieldset>
