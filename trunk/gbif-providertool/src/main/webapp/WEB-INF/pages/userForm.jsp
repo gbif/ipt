@@ -5,6 +5,31 @@
     <meta name="heading" content="<fmt:message key='userProfile.heading'/>"/>
     <meta name="menu" content="UserMenu"/>
     <script type="text/javascript" src="<c:url value='/scripts/selectbox.js'/>"></script>
+	<script>
+    function passwordChanged(passwordField) {
+        if (passwordField.name == "user.password") {
+            var origPassword = "<s:property value="user.password"/>";
+        } else if (passwordField.name == "user.confirmPassword") {
+            var origPassword = "<s:property value="user.confirmPassword"/>";
+        }
+        
+        if (passwordField.value != origPassword) {
+            createFormElement("input", "hidden",  "encryptPass", "encryptPass",
+                              "true", passwordField.form);
+        }
+    }
+
+	<!-- This is here so we can exclude the selectAll call when roles is hidden -->
+	function onFormSubmit(theForm) {
+	<c:if test="${param.from == 'list'}">
+	    selectAll('userRoles');
+	</c:if>
+	}
+	$(document).ready(function(){
+		$("input:visible:enabled:first").focus();
+	    highlightFormElements();
+	});	
+	</script>
 </head>
 
 <div id="content" class="clearfix"">
@@ -132,28 +157,3 @@
 		</s:form>
 	</div>
 </div>
-
-<script type="text/javascript">
-    Form.focusFirstElement(document.forms["userForm"]);
-    highlightFormElements();
-
-    function passwordChanged(passwordField) {
-        if (passwordField.name == "user.password") {
-            var origPassword = "<s:property value="user.password"/>";
-        } else if (passwordField.name == "user.confirmPassword") {
-            var origPassword = "<s:property value="user.confirmPassword"/>";
-        }
-        
-        if (passwordField.value != origPassword) {
-            createFormElement("input", "hidden",  "encryptPass", "encryptPass",
-                              "true", passwordField.form);
-        }
-    }
-
-<!-- This is here so we can exclude the selectAll call when roles is hidden -->
-function onFormSubmit(theForm) {
-<c:if test="${param.from == 'list'}">
-    selectAll('userRoles');
-</c:if>
-}
-</script>

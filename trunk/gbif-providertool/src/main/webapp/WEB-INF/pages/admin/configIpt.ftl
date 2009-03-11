@@ -2,7 +2,7 @@
     <title><@s.text name='config.heading'/></title>
     <meta name="menu" content="AdminMenu"/>
     <meta name="decorator" content="default"/>
-    <meta name="heading" content="<@s.text name='config.heading'/>"/>
+    <meta name="heading" content="<@s.text name="config.metadata"/>"/>
 	<script>
 	$(document).ready(function(){
 		$("#registerIpt").click(function(e) {
@@ -27,7 +27,6 @@
 
 <@s.form id="providerCfg" method="post">
 
-<h2><@s.text name="config.metadata"/></h2>
 <fieldset>
 	<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge"/>
@@ -70,6 +69,6 @@
   <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
   <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
   <#if !config.ipt.uddiID?? && config.org.uddiID??>
-    <@s.submit cssClass="button" id="registerIpt" key="button.registerIpt" method="register" theme="simple"/>
+    <@s.submit cssClass="button" id="registerIpt" key="button.register" method="register" theme="simple"/>
   </#if>
 </@s.form>

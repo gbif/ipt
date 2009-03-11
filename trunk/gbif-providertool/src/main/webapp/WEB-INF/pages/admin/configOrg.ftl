@@ -2,7 +2,7 @@
     <title><@s.text name='config.heading'/></title>
     <meta name="menu" content="AdminMenu"/>
     <meta name="decorator" content="default"/>
-    <meta name="heading" content="<@s.text name='config.heading'/>"/>
+    <meta name="heading" content="<@s.text name="config.registry"/>"/>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.core.min.js'/>"></script>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
 	<link rel="stylesheet" type="text/css" href="<@s.url value='/scripts/jquery.autocomplete.css'/>" />
@@ -78,6 +78,7 @@
 			});
 			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
 			$("#registerOrg").show();
+			$("#newOrg").hide();
 		});
 	  </#if>
 	  <#if config.isOrgRegistered()>
@@ -101,7 +102,6 @@
 
 
 <@s.form id="providerCfg" method="post">
-<h2 class="modifiedh2"><@s.text name="config.registry"/></h2>
 <fieldset>
     <@s.hidden cssClass="organisationKey" name="organisationKey" value=""/>
 	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge"/>
@@ -128,13 +128,13 @@
 	<@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
 	<@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
 
+  <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
   <#if config.isOrgRegistered()>
     <@s.submit id="updateOrg" cssClass="button" key="button.update" theme="simple"/>
   <#else>
-	<div id="newActions">
-		<a id="newOrg" href="#"><@s.text name='config.newOrganisation'/></a>
-	</div>
-    <@s.submit id="registerOrg" cssClass="button" key="button.registerOrg" theme="simple"/>
+    <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
+    <@s.submit id="registerOrg" cssClass="button" key="button.register" theme="simple"/>
+    <@s.submit id="newOrg" cssClass="button" key="button.new" theme="simple"/>
   </#if>
 
   </fieldset>
