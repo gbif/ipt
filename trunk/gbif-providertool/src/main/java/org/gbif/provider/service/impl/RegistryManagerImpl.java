@@ -222,4 +222,16 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
         };
 		return executeGet(getOrganisationUri(), params, true)!=null;
 	}
+
+
+	public boolean updateIPT() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean updateOrg() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

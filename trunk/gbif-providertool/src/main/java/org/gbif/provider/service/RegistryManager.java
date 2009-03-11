@@ -9,7 +9,9 @@ import org.gbif.provider.model.DataResource;
 public interface RegistryManager {
 	public boolean testLogin();
 	public boolean registerOrg();
+	public boolean updateOrg();
 	public boolean registerIPT();
+	public boolean updateIPT();
 	public boolean registerResource(DataResource resource);
 	
 	/**
