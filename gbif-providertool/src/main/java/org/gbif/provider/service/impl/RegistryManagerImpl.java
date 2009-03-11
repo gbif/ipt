@@ -45,17 +45,13 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		saxParser=factory.newSAXParser();
 	}
 
-	public List<URI> listExtensions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public boolean registerOrg() {
 		// need to register a new organisation?
 		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())!=null){
 			log.warn("The organisation is already registered");
 			return false;
-		}		
+		}
 		setRegistryCredentials();
 		// http://code.google.com/p/gbif-registry/wiki/ExplanationUDDI#CREATE_ORGANIZATION
         NameValuePair[] data = {

@@ -19,12 +19,15 @@ package org.gbif.provider.model;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,6 +36,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -43,6 +47,7 @@ import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.MapKey;
 import org.hibernate.validator.NotNull;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -63,11 +68,12 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected ResourceMetadata meta = new ResourceMetadata();
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
+	protected Map<String, String> services = new HashMap<String, String>();
 	protected PublicationStatus status;
 	protected String type;
 	// resource meta-metadata
 	protected User creator;
-	protected Date created;
+	protected Date created = new Date();
 	protected User modifier;
 	protected Date modified;
 	
@@ -138,7 +144,6 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 	@CollectionOfElements(fetch=FetchType.EAGER)
-	//@JoinColumn(name = "eml_fk", nullable = false)
 	public Set<String> getKeywords() {
 		return keywords;
 	}
@@ -147,6 +152,14 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	 */
 	private void setKeywords(Set<String> keywords) {
 		this.keywords = keywords;
+	}
+	
+	@CollectionOfElements(fetch=FetchType.LAZY)
+	public Map<String, String> getServices() {
+		return services;
+	}
+	public void setServices(Map<String, String> services) {
+		this.services = services;
 	}
 	
 	public BBox getGeoCoverage() {

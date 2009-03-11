@@ -728,7 +728,7 @@
         </action>
 
         <action name="activeDatasources" class="org.gbif.provider.webapp.action.manage.DatasourceRegistryAction" method="list">
-            <result>/WEB-INF/pages/admin/datasourceList.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/admin/datasourceList.ftl</result>
         </action>
         
         <action name="activeTasks">
@@ -736,11 +736,13 @@
             <result name="tbd">/WEB-INF/pages/scheduler/jobList.ftl</result>
         </action>
         
-        <action name="config" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
-            <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        <action name="configOrg" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
+            <result type="freemarker">/WEB-INF/pages/admin/configOrg.ftl</result>
         </action>
-        <action name="saveConfig" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction" method="save">
-            <result name="input" type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
+        <action name="configIpt" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
+            <result type="freemarker">/WEB-INF/pages/admin/configIpt.ftl</result>
+        </action>
+        <action name="config" class="org.gbif.provider.webapp.action.admin.ProviderCfgAction">
             <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>
         
