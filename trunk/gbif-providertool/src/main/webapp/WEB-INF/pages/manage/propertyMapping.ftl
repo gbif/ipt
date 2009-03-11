@@ -50,9 +50,14 @@
 		$("div.propertyForm:first").effect("highlight", {}, 1000);
 	}
 	
+	function loadVocabulary(uri){
+	
+	}
+	
+	
 	$(document).ready(function(){
 		$("#propertyFormTemplate").hide(0);
-	    $("#mappingForm_button_viewsource").click(function (e) {
+	    $("img#viewSource").click(function (e) {
 			e.preventDefault(); 
 	      	$("#sourcepreview").slideToggle("normal");
 	      	sourcePreview();
@@ -74,32 +79,10 @@
 	</script>	
   </head>
 
-<#-- 
-<content tag="contextmenu">
-  <div id="availableProperties">
-	<label>Available Properties</label>
-	<div id="accordion">
-  	<#list availProperties?keys as group>
-		<label><a href="#">${group}</a></label>
-		<ul>
-		<#list availProperties[group] as p>
-		  <li>
-			<a class="propLink" id="ap${p.id}">${p.name}</a>
-			<#if p.link??>
-				<a class="propDocLink" href="${p.link}" target="_blank">(about)</a>
-			</#if>
-		  </li>
-		</#list>
-	    </ul>
-	</#list>
-	</div>
-  </div>
-</content>
--->
 <body>
-
-
+<#--
   <div class="sucker"></div>
+-->
 
 <#if !columnOptions??>
 	<#-- import source doesnt work -->
@@ -109,7 +92,7 @@
 <#else>
 
   <div class="block2col">
-	<h2>for <i>${view.source.name}</i> to ${view.extension.name}</h2>
+	<h2>for <i>${view.source.name}</i><img id="viewSource" src="<@s.url value="/images/glasses.png"/>" /> to ${view.extension.name}</h2>
 	<@s.form id="mappingForm" action="savePropertyMapping" method="post">
         <@s.hidden key="mid"/>
         <@s.hidden key="sid"/>
@@ -129,27 +112,13 @@
 	 	</#if>
 	 	
 		<div class="breakLeft">
-	        <@s.submit cssClass="button" key="button.viewsource" theme="simple"/>	        
 	        <@s.submit cssClass="button" key="button.save" theme="simple"/>
 		    <#if (view.id)??>
 		        <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('mapping')" theme="simple"/>
 		    </#if>
 	        <@s.submit cssClass="button" method="cancel" key="button.done" theme="simple"/>	        
 		</div>	        
-	    
-	    <#--
-	 	<br/>
-		<ul class="actionmenu">
-			<li id="sourceViewLink"><a>view source</a></li>
-			<li id="previewLink"><a>preview mapping</a></li>		
-		</ul>
-		-->
-	<#--
-	<div id="uploadpreview" style="display:none; clear:both;">
-		Retrieving mapping preview ...<br/><br/>
-		<p class="reminder">Not implemented yet, sorry!</p>
-	</div>
-    -->
+
   </div>
 
   <div class="block2col" id="availableProperties">

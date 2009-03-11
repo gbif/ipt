@@ -24,7 +24,7 @@ public class ThesaurusVocabulary implements Comparable {
 	private String title;
 	private String link;
 	private List<ThesaurusConcept> concepts;
-	private Date modified;
+	private Date modified = new Date();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -80,9 +80,6 @@ div.block2col {
 	width: 330px;
 	float: left;
 }
-div.block2col input{
-	width: 80px;
-}
 div.block2col ~ div.block2col{
 	margin-left: 30px;
 }

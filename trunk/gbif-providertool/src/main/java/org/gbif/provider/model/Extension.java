@@ -59,6 +59,7 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	private boolean installed;
 	private List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
 	private boolean core=false;
+	private Date modified = new Date();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -136,6 +137,15 @@ public class Extension implements BaseObject, Comparable<Extension> {
 	public void setInstalled(boolean installed) {
 		this.installed = installed;
 	}
+	
+	
+	public Date getModified() {
+		return modified;
+	}
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
+	
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
