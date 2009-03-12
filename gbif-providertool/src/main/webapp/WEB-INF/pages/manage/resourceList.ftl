@@ -11,7 +11,7 @@
 
 <#include "/WEB-INF/pages/inc/resourceManagerList.ftl">  
 
-<@s.form id="publishingForm" action="publish" method="post" validate="false">
+<@s.form id="publishingForm" action="publishAll" method="post" validate="false">
 	<@s.submit cssClass="button right" key="button.publishAll" />
 	<@s.submit cssClass="button right" method="republish" key="button.republishAll" />
 </@s.form>

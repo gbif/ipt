@@ -17,10 +17,12 @@ public class NewRegistryEntryHandler extends DefaultHandler{
 	public String resourceKey;
 	public String serviceKey;
 	public String password;
+	public String key;
 
 	@Override
 	public void startDocument() throws SAXException {
 		content="";
+		key="";
 		organisationKey="";
 		resourceKey="";
 		serviceKey="";
@@ -43,6 +45,8 @@ public class NewRegistryEntryHandler extends DefaultHandler{
 			
 		} else if (name.equalsIgnoreCase("password")){
 			password=content;
+		} else if (name.equalsIgnoreCase("key")){
+			key=content.replaceAll("\\s", "");
 		} else if (name.equalsIgnoreCase("organizationKey")){
 			organisationKey=content.replaceAll("\\s", "");
 		} else if (name.equalsIgnoreCase("resourceKey")){

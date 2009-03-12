@@ -6,42 +6,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.SessionAware;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.appfuse.model.LabelValue;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.eml.Eml;
-import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ResourceType;
-import org.gbif.provider.model.voc.Vocabulary;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.ChecklistResourceManager;
-import org.gbif.provider.service.EmlManager;
-import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
-import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
-import org.gbif.provider.webapp.action.BaseResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class MetadataAction extends BaseMetadataResourceAction implements Preparable{
+public class MetadataAction extends BaseMetadataResourceAction implements Preparable, ServletRequestAware{
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	protected List<? extends Resource> resources;
@@ -61,6 +46,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
         }  
     };
 	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
+	protected HttpServletRequest request;
     
     
 	public void prepare() {
@@ -118,7 +104,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 
 	public String publish() {
-		Resource res = getResourceTypeMatchingManager().publish(resource_id);
+		// publish only whne POSTed, not with ordinary GET
+		if (request.getMethod().equalsIgnoreCase("post")){
+			Resource res = getResourceTypeMatchingManager().publish(resource_id);
+		}
 		return SUCCESS;
 	}
 	
@@ -242,5 +231,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public Map<String, String> getResourceTypeMap() {
 		return resourceTypeMap;
 	}
-
+	public void setServletRequest(HttpServletRequest request) {
+		this.request=request;
+	}
 }

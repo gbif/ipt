@@ -50,17 +50,15 @@
 		<@s.text name="dataResource.lastModified"/> ${resource.modified?datetime?string} <#if resource.modifier??>by ${resource.modifier.getFullName()}</#if>
 	</div>
 	</#if>  
+	<div class="modifiedDate">
+		<#if resource.isRegistered()>
+			Registered with GBIF as <a href="${resource.registryUrl}">${resource.uddiID}</a>
+		<#else>
+			Not registered with GBIF yet. Please publish to register.
+		</#if>  
+	</div>
 </@s.form>
 	
-	<#--
-	<#if !resource.title??>
-		<hr/>
-		<@s.form id="resourceFormEml" action="importEml" enctype="multipart/form-data" method="post">
-	    	<@s.file name="file" key="resource.selectEmlFile" cssClass="text file" required="false"/>
-		    <@s.submit cssClass="button" key="button.import" theme="simple"/>
-		</@s.form>
-	</#if>
-	-->
 
 <script type="text/javascript">
     Form.focusFirstElement($("resourceForm"));

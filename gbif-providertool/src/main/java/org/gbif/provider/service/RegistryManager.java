@@ -5,14 +5,20 @@ import java.util.Collection;
 import java.util.List;
 
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Resource;
 
 public interface RegistryManager {
 	public boolean testLogin();
-	public boolean registerOrg();
-	public boolean updateOrg();
-	public boolean registerIPT();
-	public boolean updateIPT();
-	public boolean registerResource(DataResource resource);
+	
+	public String registerOrg() throws RegistryException;
+	public void updateOrg() throws RegistryException;
+	
+	public String registerIPT() throws RegistryException;
+	public void updateIPT() throws RegistryException;
+	
+	public String registerResource(Resource resource) throws RegistryException;
+	public void updateResource(Resource resource) throws RegistryException;
+	public void deleteResource(Resource resource) throws RegistryException;
 	
 	/**
 	 * Calls the central registry to receive a list of the Extensions that are available
