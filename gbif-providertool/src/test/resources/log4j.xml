@@ -19,8 +19,13 @@
     </logger>
 
 
-
-  
+    <logger name="httpclient.wire.header">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="org.apache.commons.httpclient">
+        <level value="DEBUG"/>
+    </logger>
+    
     <logger name="org.hibernate">
         <level value="WARN"/>
     </logger>
