@@ -1,34 +1,19 @@
 package org.gbif.provider.service.impl;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.model.User;
-import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
-import org.gbif.provider.model.eml.GeoKeyword;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;

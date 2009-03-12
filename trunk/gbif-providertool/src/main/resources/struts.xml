@@ -377,6 +377,10 @@
             <result name="chart">/WEB-INF/pages/ajax/chartimg.ftl</result>
         </action>
         
+        <action name="publish" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publish">
+            <result>/WEB-INF/pages/ajax/publish.ftl</result>
+        </action>
+
         <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/ajax/status.ftl</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.ftl</result>
@@ -488,7 +492,7 @@
         <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
             <result>/WEB-INF/pages/manage/resourceList.ftl</result>
         </action>
-        <action name="publish" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publishAll">
+        <action name="publishAll" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publishAll">
             <result>/WEB-INF/pages/manage/resourceList.ftl</result>
         </action>
         <action name="resource" class="org.gbif.provider.webapp.action.manage.MetadataAction">

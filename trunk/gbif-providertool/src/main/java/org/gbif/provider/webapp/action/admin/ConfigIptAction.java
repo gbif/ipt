@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.service.GeoserverManager;
+import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
@@ -48,10 +49,17 @@ public class ConfigIptAction extends BasePostAction{
 	public String save(){
 		// check if already registered. If yes, also update GBIF registry
 		if (cfg.isIptRegistered()){
-			registryManager.updateIPT();
+			try {
+				registryManager.updateIPT();
+				saveMessage(getText("registry.updated"));
+			} catch (RegistryException e) {
+				saveMessage(getText("registry.problem"));
+				log.warn(e);
+			}
+		}else{
+			saveMessage(getText("config.updated"));
 		}
 		this.cfg.save();
-		saveMessage(getText("config.updated"));
 		check();
 		return SUCCESS;
 	}
@@ -65,10 +73,11 @@ public class ConfigIptAction extends BasePostAction{
 			saveMessage(getText("register.org.password.missing"));
 		}else{
 			// register IPT with organisation
-			if (registryManager.registerIPT()){
+			try {
+				registryManager.registerIPT();
 				saveMessage(getText("register.ipt.success"));
 				this.cfg.save();
-			}else{
+			} catch (RegistryException e) {
 				saveMessage(getText("register.ipt.problem"));
 			}
 		}

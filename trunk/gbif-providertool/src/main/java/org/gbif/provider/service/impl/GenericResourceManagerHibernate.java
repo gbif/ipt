@@ -30,6 +30,8 @@ import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.RegistryException;
+import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,8 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	private FullTextSearchManager fullTextSearchManager;
 	@Autowired
 	private EmlManager emlManager;
+	@Autowired
+	private RegistryManager registryManager;
 
 	public GenericResourceManagerHibernate(final Class<T> persistentClass) {
 		super(persistentClass);
@@ -104,7 +108,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 			resource.updateWithMetadata(metadata);
 			// the resource is really published and the EML reflects the state of the resource
 			resource.setStatus(PublicationStatus.published);
-			register(resource);
+			updateRegistry(resource);
 			save(resource);
 			fullTextSearchManager.buildResourceIndex(resourceId);
 		} catch (IOException e) {
@@ -119,20 +123,28 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	@Transactional(readOnly=false)
 	public void unPublish(Long resourceId) {
 		T resource = get(resourceId);
-		resource.setStatus(PublicationStatus.draft);
-		unregister(resource);
-		save(resource);
-		fullTextSearchManager.buildResourceIndex(resourceId);
+		try {
+			registryManager.deleteResource(resource);
+			resource.setStatus(PublicationStatus.draft);
+			save(resource);
+			fullTextSearchManager.buildResourceIndex(resourceId);
+		} catch (RegistryException e) {
+			log.warn("Failed to remove resource from registry", e);
+		}
 	}
 	
 	
-	private void register(Resource resource){
-		// FIXME: implement		
-		log.warn("Automatic registration with GBIF hasn't been implemented yet");
-	}
-	private void unregister(Resource resource){
-		// FIXME: implement		
-		log.warn("Automatic (un)registration with GBIF hasn't been implemented yet");
+	private void updateRegistry(Resource resource){
+		try {
+			if (resource.isRegistered()){
+				registryManager.updateResource(resource);
+			}else{
+				registryManager.registerResource(resource);			
+			}
+		} catch (RegistryException e) {
+			resource.setStatus(PublicationStatus.draft);
+			log.warn("Failed to communicate with registry", e);
+		}
 	}
 
 	public List<T> latest(int startPage, int pageSize) {

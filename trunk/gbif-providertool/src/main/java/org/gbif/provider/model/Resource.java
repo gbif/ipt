@@ -45,10 +45,13 @@ import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.model.voc.PublicationStatus;
+import org.gbif.provider.model.voc.ServiceType;
+import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.MapKey;
 import org.hibernate.validator.NotNull;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -68,7 +71,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected ResourceMetadata meta = new ResourceMetadata();
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
-	protected Map<String, String> services = new HashMap<String, String>();
+	protected Map<ServiceType, String> services = new HashMap<ServiceType, String>();
 	protected PublicationStatus status;
 	protected String type;
 	// resource meta-metadata
@@ -155,10 +158,10 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 	@CollectionOfElements(fetch=FetchType.LAZY)
-	public Map<String, String> getServices() {
+	public Map<ServiceType, String> getServices() {
 		return services;
 	}
-	public void setServices(Map<String, String> services) {
+	public void setServices(Map<ServiceType, String> services) {
 		this.services = services;
 	}
 	
@@ -307,6 +310,20 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 			return true;
 		}
 		return status.compareTo(PublicationStatus.published) < 0;
+	}
+	@Transient
+	public boolean isRegistered() {
+		if (StringUtils.trimToNull(getUddiID())==null){
+			return false;
+		}
+		return true;
+	}
+	@Transient
+	public String getRegistryUrl() {
+		if (StringUtils.trimToNull(getUddiID())!=null){
+			return RegistryManagerImpl.REGISTRY_RESOURCE_URL + "/" + getUddiID();
+		}
+		return null;
 	}
 
 }

@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.service.GeoserverManager;
+import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
@@ -51,12 +52,23 @@ public class ConfigOrgAction extends BasePostAction{
 	}
 
 	public String save(){
+		// cannot change the organisation once an IPT has been registered. So test!
+		if (!cfg.isIptRegistered()){
+			cfg.getOrg().setUddiID(organisationKey);
+		}
 		// check if already registered. If yes, also update GBIF registry
 		if (cfg.isOrgRegistered()){
-			registryManager.updateOrg();
+			try {
+				registryManager.updateOrg();
+				saveMessage(getText("registry.updated"));
+			} catch (RegistryException e) {
+				saveMessage(getText("registry.problem"));
+				log.warn(e);
+			}
+		}else{
+			saveMessage(getText("config.updated"));
 		}
 		this.cfg.save();
-		saveMessage(getText("config.updated"));
 		check();
 		return SUCCESS;
 	}
@@ -67,22 +79,22 @@ public class ConfigOrgAction extends BasePostAction{
 			saveMessage("The organisation is already registered with GBIF");
 		}else{
 			// register new organisation
-			cfg.getOrg().setUddiID(organisationKey);
-			if (registryManager.registerOrg()){
+			try {
+				registryManager.registerOrg();
 				saveMessage(getText("register.org.success"));
-			}else{
-				cfg.resetOrg();
+				this.cfg.save();
+			} catch (RegistryException e) {
+				// cfg.resetOrg();
 				cfg.setOrgNode(null);
 				saveMessage(getText("register.org.problem"));
 			}
-			this.cfg.save();
 		}
 		return SUCCESS;
 	}
 
 	private void check() {
 		// tests
-		if (StringUtils.trimToNull(cfg.getOrg().getUddiID())==null){
+		if (!cfg.isOrgRegistered()){
 			saveMessage(getText("config.check.orgRegistered"));
 		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("config.check.orgPassword"));
@@ -111,6 +123,6 @@ public class ConfigOrgAction extends BasePostAction{
 	}
 
 	public void setOrganisationKey(String organisationKey) {
-		this.organisationKey = organisationKey;
+		this.organisationKey = StringUtils.trimToNull(organisationKey);
 	}
 }

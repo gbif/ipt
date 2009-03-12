@@ -12,10 +12,14 @@ import org.apache.commons.httpclient.HttpMethodBase;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.util.EncodingUtil;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import freemarker.template.Configuration;
 
 public class HttpBaseManager {
+	public static final String FORM_URL_ENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+	
 	protected static HttpClient client =  new HttpClient(new MultiThreadedHttpConnectionManager());
 	protected final Log log = LogFactory.getLog(HttpBaseManager.class);
 	@Autowired
@@ -46,7 +52,7 @@ public class HttpBaseManager {
 		return executeGet(uri, params, authenticate);
 	}
 	protected String executeGet(String uri, NameValuePair[] params, boolean authenticate){
-		log.debug("Getting "+uri);
+		log.info("Getting "+uri);
 		String result = null;
 		GetMethod method = newHttpGet(uri, authenticate);
 		method.setQueryString(params);
@@ -65,7 +71,7 @@ public class HttpBaseManager {
 		return result;
 	}
 	protected String executePost(String uri, String content, String contentType, boolean authenticate){
-		log.debug("Posting to "+uri);
+		log.info("Posting to "+uri);
 		String result = null;
 		PostMethod method = newHttpPost(uri, authenticate);
         RequestEntity body=null;
@@ -91,7 +97,7 @@ public class HttpBaseManager {
 	}
 	protected String executePost(String uri, NameValuePair[] params, boolean authenticate){
 		String result = null;
-		log.debug("Posting to "+uri);
+		log.info("Posting to "+uri);
 		PostMethod method = newHttpPost(uri, authenticate);
 		method.setRequestBody(params);
 		try {
@@ -108,6 +114,50 @@ public class HttpBaseManager {
 		}
 		return result;
 	}
+	protected String executePut(String uri, NameValuePair[] params, boolean authenticate){
+		String result = null;
+		log.info("Putting to "+uri);
+		PutMethod method = newHttpPut(uri, authenticate);
+		// this bit is taken from the PostMethod source code 
+		// http://www.docjar.org/html/api/org/apache/commons/httpclient/methods/PostMethod.java.html
+		String content = EncodingUtil.formUrlEncode(params, method.getRequestCharSet());
+		ByteArrayRequestEntity entity = new ByteArrayRequestEntity(EncodingUtil.getAsciiBytes(content), FORM_URL_ENCODED_CONTENT_TYPE);
+		// ... up to here
+		method.setRequestEntity(entity);
+		try {
+	        client.executeMethod(method);
+	        if(succeeded(method)){	        	
+	        	result = method.getResponseBodyAsString();
+	        }
+		} catch (Exception e) {
+			log.warn(uri+": "+ e.toString());
+		} finally{
+			if (method!=null){
+				method.releaseConnection();
+			}
+		}
+		return result;
+	}	
+	
+	protected String executeDelete(String uri, boolean authenticate){
+		String result = null;
+		log.debug("Deleting "+uri);
+		DeleteMethod method = newHttpDelete(uri, authenticate);
+		try {
+	        client.executeMethod(method);
+	        if(succeeded(method)){	        	
+	        	result = method.getResponseBodyAsString();
+	        }
+		} catch (Exception e) {
+			log.warn(uri+": "+ e.toString());
+		} finally{
+			if (method!=null){
+				method.releaseConnection();
+			}
+		}
+		return result;
+	}	
+	
 	private GetMethod newHttpGet(String url, boolean authenticate){
 		GetMethod method = new GetMethod(url);
         method.setFollowRedirects(true);
@@ -121,6 +171,19 @@ public class HttpBaseManager {
 		method.setDoAuthentication(authenticate);
         return method;
 	}
+	
+	private PutMethod newHttpPut(String url, boolean authenticate){
+		PutMethod method = new PutMethod(url);
+        //method.setFollowRedirects(true);
+		method.setDoAuthentication(authenticate);
+        return method;
+	}
+	private DeleteMethod newHttpDelete(String url, boolean authenticate){
+		DeleteMethod method = new DeleteMethod(url);
+        //method.setFollowRedirects(true);
+		method.setDoAuthentication(authenticate);
+        return method;
+	}	
 
 	protected InputStream getStream(String source){
 		return new ByteArrayInputStream(source.getBytes());

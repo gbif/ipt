@@ -15,6 +15,20 @@
         <level value="ERROR"/>
     </logger>
 
+    <!-- for debugging all httpclient communication, especially with registry -->
+    <logger name="httpclient.wire.header">
+        <level value="INFO"/>
+    </logger>
+    <logger name="httpclient.wire.content">
+        <level value="INFO"/>
+    </logger>
+
+
+    <!-- freemarker.template -->
+    <logger name="freemarker">
+        <level value="WARN"/>
+    </logger>
+
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
     <logger name="org.springframework.security">
         <level value="ERROR"/>
@@ -82,11 +96,11 @@
     
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
-        <level value="INFO" />
+        <level value="DEBUG" />
     </logger>
     
     <root>
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
