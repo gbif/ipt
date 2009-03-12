@@ -47,6 +47,8 @@ p{
 	padding-left: 10px;
 }
 
+div.loading{
+}
 div.break {
 	clear: both;
 	padding-top: 15px;
