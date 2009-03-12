@@ -215,7 +215,7 @@ public class HttpBaseManager {
 		} catch (URIException e) {
 			log.warn("Http request to ??? failed: "+method.getStatusLine());
 		}
-		logRequest(method);
+		//logRequest(method);
 		return false;
 	}
 

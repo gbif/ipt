@@ -11,10 +11,6 @@
     </appender>
     
     
-    <logger name="net.sf.ehcache">
-        <level value="ERROR"/>
-    </logger>
-
     <!-- for debugging all httpclient communication, especially with registry -->
     <logger name="httpclient.wire.header">
         <level value="INFO"/>
@@ -27,6 +23,11 @@
     <!-- freemarker.template -->
     <logger name="freemarker">
         <level value="WARN"/>
+    </logger>
+
+    <!-- net.sf.navigator, net.sf.ehcache -->
+    <logger name="net.sf">
+        <level value="ERROR"/>
     </logger>
 
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->

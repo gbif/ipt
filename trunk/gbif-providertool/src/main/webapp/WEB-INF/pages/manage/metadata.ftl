@@ -59,7 +59,3 @@
 	</div>
 </@s.form>
 	
-
-<script type="text/javascript">
-    Form.focusFirstElement($("resourceForm"));
-</script>
