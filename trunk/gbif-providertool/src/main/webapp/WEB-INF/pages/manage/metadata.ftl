@@ -32,11 +32,13 @@
         <div class="leftMedium">
 			<@s.textfield key="resource.contactEmail" required="true" cssClass="text medium"/>
         </div>
-        <div class="leftMedium">
+        <div>
 		    <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false" />
         </div>
     </div>
-	<@s.textarea key="resource.description" cssClass="text xlarge"/>
+    <div>
+		<@s.textarea key="resource.description" cssClass="text xlarge"/>
+    </div>
 	<div class="breakRightButtons">
     	<@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
 	    <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
@@ -50,12 +52,5 @@
 		<@s.text name="dataResource.lastModified"/> ${resource.modified?datetime?string} <#if resource.modifier??>by ${resource.modifier.getFullName()}</#if>
 	</div>
 	</#if>  
-	<div class="modifiedDate">
-		<#if resource.isRegistered()>
-			Registered with GBIF as <a href="${resource.registryUrl}">${resource.uddiID}</a>
-		<#else>
-			Not registered with GBIF yet. Please publish to register.
-		</#if>  
-	</div>
 </@s.form>
 	

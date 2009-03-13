@@ -101,21 +101,21 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	@Transactional(readOnly=false)
 	public T publish(Long resourceId) {
 		T resource = get(resourceId);
+		updateRegistry(resource);
 		// in case sth goes wrong
 		Eml metadata;
 		try {
 			metadata = emlManager.publishNewEmlVersion(resource);
 			resource.updateWithMetadata(metadata);
 			// the resource is really published and the EML reflects the state of the resource
-			resource.setStatus(PublicationStatus.published);
-			updateRegistry(resource);
-			save(resource);
+			resource.setStatus(PublicationStatus.uptodate);
 			fullTextSearchManager.buildResourceIndex(resourceId);
 		} catch (IOException e) {
 			log.error(String.format("Can't publish resource %s. IOException", resourceId), e);
 			resource.setStatus(PublicationStatus.draft);
 			save(resource);
-		}
+		}		
+		save(resource);
 		flush();
 		return resource;
 	}
@@ -123,11 +123,11 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	@Transactional(readOnly=false)
 	public void unPublish(Long resourceId) {
 		T resource = get(resourceId);
+		resource.setStatus(PublicationStatus.draft);
+		save(resource);
+		fullTextSearchManager.buildResourceIndex(resourceId);
 		try {
 			registryManager.deleteResource(resource);
-			resource.setStatus(PublicationStatus.draft);
-			save(resource);
-			fullTextSearchManager.buildResourceIndex(resourceId);
 		} catch (RegistryException e) {
 			log.warn("Failed to remove resource from registry", e);
 		}
@@ -142,7 +142,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 				registryManager.registerResource(resource);			
 			}
 		} catch (RegistryException e) {
-			resource.setStatus(PublicationStatus.draft);
+			resource.setDirty();
 			log.warn("Failed to communicate with registry", e);
 		}
 	}

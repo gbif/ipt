@@ -1,3 +1,5 @@
+/* @override http://localhost:8080/styles/gbifn/providertool2.css */
+
 div#main h1{
 	color: #077a2d;
 	margin-bottom: 0px;
@@ -277,31 +279,44 @@ div.usersButtons{
 	width: 200px;
 }
 
-.dirtyContainer{
-	width: 170px;
-	background-color: #feffe6;
-	border: 1px solid #ffe1ac;
-	height: 30px;
-	padding-left: 10px;
-	padding-top: 10px;	
+#statusContainer{
+	width: 160px;
+	border: 1px solid #ccc;
+	padding: 8px;
+	text-align: center;
 }
-
-.cleanContainer{
-	width: 170px;
-	background-color: #e2f9d7;
-	border: 1px solid #abe490;
-	height: 30px;	
-	padding-left: 10px;
-	padding-top: 14px;
-	font-size: 11px;
-	font-weight: bold;
+#statusContainer div.arrow {
+	float: right;
+	position: relative;
+	bottom: 36px;
 }
-
-.publishButton{
-	margin-left: 2px;
+#statusContainer .publishButton{
 	width: 80px;
+	position: relative;
+	bottom: 12px;
 }
-
+.draft{
+	background-color: #fdd8d6;
+}
+.dirty{
+	background-color: #feffe6;
+}
+.uptodate{
+	background-color: #e2f9d7;
+}
+#registryDetails {
+	width: 300px;
+	border-style: dashed;
+	border-width: 1px;
+	background-color: #efefef;
+	text-align: left;
+}
+#registryDetails th{
+	text-transform: capitalize;
+}
+#registryDetails td{
+	padding-left: 10px;
+}
 div#jsalert{
 	position: absolute;
 	top: 1px;
