@@ -11,18 +11,21 @@ function publishResponse(data){
 		$("div.loading").show();
 		$.post('<s:url value="/ajax/publish.do"/>', params, publishResponse);
 	});
+    $("#statusContainer").click(
+      function () {
+      	$("div.arrow", this).toggle(0);
+      	$("div#registryDetails").slideToggle("normal");
+      } 
+    );
 }
 $(document).ready(function(){
-	//$("div.loading").hide();
 	$.get('<s:url value="/ajax/publish.do"/>', params, publishResponse);
 });
 </script>
-<div class="loading">
+<div class="loading" style="display:none">
   Publishing <img src='<s:url value="/images/ajax-loader.gif"/>'/>
 </div>
 <div id="publish">
-  <div class="cleanContainer">
-	<p><s:text name="dirty.clean"/></p>
-  </div>
+ <p>loading status...</p>
 </div>
 </s:if>

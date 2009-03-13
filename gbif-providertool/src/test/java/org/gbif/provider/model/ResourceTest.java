@@ -24,7 +24,7 @@ public class ResourceTest extends ContextAwareTestBase{
 		resource.setStatus(PublicationStatus.dirty);
 		assertTrue(resource.isPublished());
 		
-		resource.setStatus(PublicationStatus.published);
+		resource.setStatus(PublicationStatus.uptodate);
 		assertTrue(resource.isPublished());		
 	}
 }
