@@ -28,36 +28,35 @@
 	};
 	
 	function addProperty(newPropAnchor){
-		var newPropForm = $("#propertyFormTemplate").clone();
+		var newPropForm = $("div#propertyFormTemplate").clone();
 		newPropForm.show();
     	var name = newPropAnchor.text();
 		$("strong",newPropForm).text(name);
 		
     	var id = $(newPropAnchor).attr("id").substring(2);
+    	var propertyFormId = "propertyForm"+id;
+    	$(newPropForm).attr("id", propertyFormId);
     	var newPropIds = $("#newProperties").val() +" "+id;
     	$("#newProperties").val(newPropIds);
-		$("select",newPropForm).attr("name", "view.propertyMappings["+id+"].column");
-		$("input",newPropForm).attr("name", "view.propertyMappings["+id+"].value");
-		
+		$("select",newPropForm).attr("name", "view.propertyMappings["+id+"].column").attr("id", "sourceColumn_"+id);
     	var link = $("a.propDocLink", newPropAnchor.parent());
     	if(link.length>0){
 			$("a",newPropForm).attr("href", link.attr("href"));
     	}else{
 			$("a",newPropForm).hide();
     	}
-		
+		// add to real list
 		$("#mappings").prepend(newPropForm);
-		$("div.propertyForm:first").effect("highlight", {}, 1000);
-	}
-	
-	function loadVocabulary(uri){
-	
+		$("div#"+propertyFormId).effect("highlight", {}, 1000);
+		// finally load potential vocabulary via ajax
+		var url = '<@s.url value="/ajax/propVocabulary.html"/>';
+		ajaxHtmlUpdate(url, "div#"+propertyFormId+" div.valueMapping", {id:id});
 	}
 	
 	
 	$(document).ready(function(){
 		$("#propertyFormTemplate").hide(0);
-	    $("img#viewSource").click(function (e) {
+	    $("#viewSource").click(function (e) {
 			e.preventDefault(); 
 	      	$("#sourcepreview").slideToggle("normal");
 	      	sourcePreview();
@@ -65,7 +64,7 @@
 	    $("#properties ul").hide(0);
 	    $("#properties div.propGroup").click(
 	      function () {
-	      	$("ul", this).slideToggle("normal");
+	      	$("ul", this).slideToggle("fast");
 	      	$("div div", this).toggle(0);
 	      } 
 	    );
@@ -80,8 +79,8 @@
   </head>
 
 <body>
-<#--
   <div class="sucker"></div>
+<#--
 -->
 
 <#if !columnOptions??>
@@ -91,9 +90,10 @@
 	</p>
 <#else>
 
+<@s.form id="mappingForm" action="savePropertyMapping" method="post">
   <div class="block2col">
-	<h2>for <i>${view.source.name}</i><img id="viewSource" src="<@s.url value="/images/glasses.png"/>" /> to ${view.extension.name}</h2>
-	<@s.form id="mappingForm" action="savePropertyMapping" method="post">
+  	<#-- <img src="<@s.url value="/images/glasses.png"/>" width="20" height="20"/> -->
+	<h2>for <a id="viewSource" href="#"><i>${view.source.name}</i></a> to ${view.extension.name}</h2>
         <@s.hidden key="mid"/>
         <@s.hidden key="sid"/>
         <@s.hidden key="eid"/>
@@ -127,8 +127,8 @@
   	<#list availProperties?keys as group>
   	  <div class="propGroup">
 		<div>
-		    <div class="left"><img src="<@s.url value='/images/arrow_right.png'/>" /></div>
-		    <div class="left" style="display:none"><img src="<@s.url value='/images/arrow_down.png'/>" /></div>
+		    <div class="arrow"><img src="<@s.url value='/images/arrow_right.png'/>" /></div>
+		    <div class="arrow" style="display:none"><img src="<@s.url value='/images/arrow_down.png'/>" /></div>
 		    <label>${group}</label>
 	    </div>
 	    <ul>
@@ -170,7 +170,7 @@
 		</div>
 		<div class="overhang">
 			<div>
-				<@s.select key="view.propertyMappings[${mp.property.id}].column" list="sourceColumns"
+				<@s.select id="sourceColumn_${mp.property.id}" key="view.propertyMappings[${mp.property.id}].column" list="sourceColumns"
 					required="${mp.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 			</div>
 			<div>
@@ -202,7 +202,7 @@
 </#if> <#-- if/else at top testing if source works -->
 
 <#-- property form template -->
-<div id="propertyFormTemplate">
+<div id="propertyFormTemplate" style="display:none">
 <div class="minibreak propertyForm">
 <div>
 	<strong></strong>
@@ -210,10 +210,10 @@
 </div>
 <div class="overhang">
 	<div class="left">
-		<@s.select name="" list="sourceColumns" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
+		<@s.select id="" name="" list="sourceColumns" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 	</div>
-	<div class="left">
-        <@s.textfield  name="" value="" cssClass="large" theme="simple"/>  
+	<div class="left valueMapping">
+		<img src='<@s.url value="/images/ajax-loader.gif"/>'/>
 	</div>
 </div>
 </div>

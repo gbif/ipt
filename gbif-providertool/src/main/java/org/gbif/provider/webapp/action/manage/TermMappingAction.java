@@ -72,7 +72,7 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
     private SourceBase source;
     private String column;
     // original actions for save&cancel
-    private String origin = "transformations";
+    private String origin = "mappings";
     private Long mid;
 
     
@@ -88,12 +88,12 @@ public class TermMappingAction extends BaseDataResourceAction implements Prepara
         	source = transformation.getSource();
         	column = transformation.getColumn();
 		}
-	}
-
-	public String execute(){
         if (mid!=null){
         	origin = "propMapping";
         }
+	}
+
+	public String execute(){
 		return SUCCESS;
 	}
 

@@ -415,6 +415,9 @@
         <action name="uploadPreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
             <result>/WEB-INF/pages/ajax/preview.ftl</result>
         </action>
+        <action name="propVocabulary" class="org.gbif.provider.webapp.action.manage.VocabularyAction">
+            <result>/WEB-INF/pages/ajax/propVocabulary.ftl</result>
+        </action>
         <action name="keywords" class="org.gbif.provider.webapp.action.portal.KeywordAction">
             <result>/WEB-INF/pages/ajax/keywords.ftl</result>
         </action>
