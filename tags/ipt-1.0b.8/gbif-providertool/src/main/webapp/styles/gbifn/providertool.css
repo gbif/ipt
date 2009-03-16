@@ -1,0 +1,860 @@
+/* @override http://localhost:8080/styles/gbifn/providertool.css */
+
+
+/* PROVIDERTOOL customising simplicity */
+
+/* @group general */
+
+*{color: #666666;}
+
+h1 {
+	background: transparent;
+}
+
+h2 {
+	margin-top: 20px;
+	background: transparent;
+	color: #666666;
+}
+
+h3 {
+	background: transparent;
+}
+
+b{
+	background-color: none;
+	background: transparent;
+	color: #666666;	
+}
+
+p{
+	background: transparent;
+}
+
+.reminder {
+	font-style: italic;
+	color: gray;
+	background: url(../../images/mandatory.gif) no-repeat;
+	padding-left: 20px;
+}
+.accepted {
+	font-weight: bold;
+}
+
+.synonym {
+	font-style: italic;
+	color: gray;
+	padding-left: 10px;
+}
+
+div.loading{
+}
+div.break {
+	clear: both;
+	padding-top: 15px;
+}
+div.breakRight {
+	clear: both;
+	text-align: right;
+	padding-right: 10px;
+	padding-top: 15px;
+}
+div.break2 {
+	clear: both;
+	padding-top: 0px;
+}
+div.minibreak {
+	clear: both;
+	padding-top: 15px;
+}
+div.newline {
+	padding-top: 5px;
+	clear: both;
+}
+div.overhang {
+	clear: both;
+	padding-top: 5px;
+	margin-left: 25px;
+    float: left;
+}
+
+div.block2col {
+	width: 330px;
+	float: left;
+}
+div.block2col ~ div.block2col{
+	margin-left: 30px;
+}
+
+.subentry {
+	display: block;
+	color: #8f0000;
+}
+
+.subform {
+	margin-left: 50px;
+}
+
+textarea{
+	font-size: 12px;
+	font-family: Arial, Helvetica;
+}
+
+
+input[readonly] {
+	background: #eaeaea;
+}
+textarea[readonly] {
+	background: #eaeaea;
+}
+
+
+form .xlargeFull{
+    width: 880px;
+}
+form .xlarge{
+    width: 681px;
+}
+form textarea.xlarge{
+    height: 20em;
+    width: 681px;	
+}
+form input.xlarge{
+    width: 680px;
+}
+form input.block2col{
+    width: 320px;
+}
+form textarea.block2col{
+    height: 20em;
+    width: 320px;
+}
+form textarea.slim{
+    height: 8em;
+}
+form .xhalf{
+    width: 328px;
+    float: left;
+    padding-left: 0px;
+}
+
+.tablefile{
+	font-size:1em;
+	line-height:1em;
+}
+
+.fullsize {
+	width: 100%;
+}
+
+.modifiedCombo .small{
+	width: 131px;
+	padding-left: 4px;
+}
+
+table.topheader td {
+	padding-right: 10px;
+}
+table.topheader th{
+	padding-top: 20px;
+}
+table.topheader td {
+	padding-top: 5px;
+}
+
+table.lefthead td {
+	padding-left: 7px;
+	height: 15px;
+	padding-top: 3px;
+}
+table.lefthead th, table.lefthead td {
+
+}
+
+table.layout tr td {
+	padding-right: 10px;
+}
+table.layout tr th {
+	padding-right: 10px;
+}
+
+
+
+/* @end */
+
+/* @group header */
+
+
+#currentResourceClass {
+	background: transparent url(../../images/bkgClassResource.gif) no-repeat;
+	color: #ffffff;
+	text-align: center;
+ 	position: relative;
+ 	height: 35px;
+	width: 144px;
+ 	float: right;
+	z-index: 5;
+	clear: both;
+	top: 16px;
+	padding-top: 12px;
+	margin-right: -2px;
+}
+
+/* @end */
+
+/* @group lists */
+
+ul.actionmenu {
+	list-style-type: none;
+    padding: 0;
+}
+a.actionbutton, ul.actionmenu li {
+	float: none;
+	list-style-type: none;
+	display: inline;
+	border: 1px solid #c1c6d0;
+    padding: 0;
+	padding-right: 10px;
+	padding-left: 10px;
+	margin: 0 0px;
+	background: url(../../images/assets/bkgButt0_up.gif) no-repeat;
+	border: none;
+
+}
+
+ul.actionmenu li ~ li{
+	border-left: 1px solid silver;
+}
+
+ul.actionmenu form {
+	display: inline;
+}
+ul.actionmenu .wwFormTable{
+	position: absolute;
+}
+
+ul.plain {
+    list-style: none;
+    padding: 0;
+}
+
+ul.plain li {
+}
+
+ul.plain_m {
+    list-style: none;
+    padding: 0px;
+    padding-top: 2px;
+    margin-top: 0px;
+    text-indent: 0px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+ul.plain_m li {
+    padding: 0px;
+    padding-right: 11px;
+    text-indent: 0px;
+    height: 13px;
+}
+
+
+ul.minimenu{
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+}
+ul.minimenu li{
+	float: right;
+	list-style-type: none;
+	display: inline;
+    margin: 0;
+    padding: 0;
+	background: url(../../images/assets/bkgButt_up.gif) no-repeat;
+	text-align: center;
+	width: 110px;
+	padding-left: 6px;
+}
+
+ul.minimenu li:hover{
+	background: url(../../images/assets/bkgButt_over.gif) no-repeat;
+}
+
+ul.minimenu li.last{
+	width: 175px;
+	padding-left: 2px;
+	background: url(../../images/assets/bkgButtXlarge_up.gif) no-repeat;
+}
+
+ul.minimenu li.last:hover{
+	width: 175px;
+	background: url(../../images/assets/bkgButtXlarge_over.gif) no-repeat;
+}
+
+ul.indexmenu {
+	list-style-type: none;
+    padding: 0;
+}
+ul.indexmenu li{
+	float: none;
+	list-style-type: none;
+	display: inline;
+	border: 1px solid #c1c6d0;
+    padding: 0;
+	padding-right: 2px;
+	padding-left: 2px;
+	margin: 0 2px;
+	color: #ccc;
+}
+
+#fullsearch{
+	text-align: left;
+	width: 100%;
+	margin-top: -42px;
+}
+
+.searchBox{
+	text-align: right;
+	padding-right: 6px;
+	font-size: 14px;
+	font-weight: bold;	
+}
+
+.searchInput{
+	height: 18px;
+}
+
+ul.sepmenu{
+    list-style: none;
+    margin-top: 0px;
+	padding-bottom: 2px;
+}
+ul.sepmenu li{
+	list-style-type: none;
+	display: inline;
+    margin: 0;
+	padding: 0px 6px;
+}
+ul.sepmenu li ~ li{
+	border-left: 1px solid #999999;
+}
+
+
+#taxnav, #locnav {
+	float: left;
+}
+
+#sub label {
+	display: block;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-style: italic;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;	
+}
+
+/* @end */
+
+
+ 
+
+/* @group charts */
+
+
+div.chart, div.map{
+	width: 340px;
+}
+div.stat-table {
+	width: 230px;
+}
+
+div.stat-table table{
+	margin-top: 10px;
+	line-height: 0.6em;
+	font-size: 0.9em;
+}
+div.stat-right{
+	position: relative;
+	left: 20px;
+}
+div.chart, div.stats{
+	display: block;
+	float: left;
+	margin-bottom: 20px;
+}
+
+div.stats label{
+	font-size: 16px;
+	font-style: italic;
+	margin-bottom: 3px;
+}
+div.stats img{
+	display: block;
+	margin-top: 10px;
+}
+br.clearfix{
+	margin-top: 75px;
+	clear: both;
+}
+
+div.chart{
+	height: 200px;
+}
+div.chart form, div.map form {
+	padding-right: 17px;
+	position: relative;
+	top: -39px;
+	margin-bottom: -34px;
+	text-align: right;
+	padding-top: 0px;
+	margin-top: 0px;
+	line-height: 1px;
+	ruby-position: top;
+}
+.map img{
+	border: 1px solid #000;
+}
+
+
+#stats-chart, #stats-menu, #stats-map {
+	text-align: center; 
+	margin: auto;
+}
+
+#stats-menu ul.actionmenu{
+	text-align: center;
+	padding-top: 0px;
+	margin: auto;
+	margin-top: 25px;
+	height: 30px;
+}
+
+#stats-menu ul.actionmenu li{
+	background-image: none;
+	text-align: center;
+	width: 65px;
+}
+#stats-map {
+	height: 225px; 
+}
+
+#stats-chart{
+	height: 410px; 
+}
+
+#loc-stats,
+#tax-stats,
+#temp-stats{
+	width: 229px;
+}
+
+/* @end */
+
+/* @group other */
+ 
+.left{
+	float: left;
+	text-align: left;
+}
+
+.right{
+	float: right;
+	text-align: right;
+	padding-left: 15px;
+	padding-bottom: 15px;
+}
+
+.rightImage{
+	float: right;
+	text-align: right;
+	padding-left: 15px;
+	margin-top: 65px;	
+}
+
+
+.rightImage_nm{
+	float: right;
+	text-align: right;
+	padding-left: 15px;
+	margin-top: 5px;	
+}
+
+.rightCombo{
+	float: right;
+	text-align: right;
+	padding-top: 0px;
+	margin-top: 20px;
+	height: 30px;
+	padding-left: 10px;
+	width: 102px;
+}
+
+.rightf{
+	float: right;
+	padding-left: 20px;
+	padding-right: 8px;
+}
+
+div#preview td {
+	padding: 5px;
+}
+
+#properties{
+	position: absolute;
+	background-color: white;
+}
+#properties div.propGroup{
+	padding-top: 5px;
+	clear: both;
+}
+#properties div.propGroup div {
+	margin: 0;
+	padding: 0;
+	width: 330px;
+}
+#properties div.propGroup img{
+	font-weight: bold;
+	float: left;
+}
+#properties div.propGroup label{
+	font-weight: bold;
+}
+
+#properties ul{
+	list-style-type: none;
+	margin-left: 15px;
+	margin-top: 3px;
+	margin-bottom: 15px;
+	padding: 0px;
+}
+#properties li{	
+	line-height: 1em;
+	margin: 0px;
+}
+
+#sourcepreview {
+	display:none;
+	clear:both;
+	z-index: 11;
+}
+div.propertyForm div.overhang div {
+	float: left;
+	padding-right: 10px;
+}
+.citation{
+	font-style: italic;
+}
+
+form#saveMappingProperties ul li {
+    list-style-type: none;
+    margin-left: 0;
+	display: inline;
+}
+
+div.googlemap {
+	float: left;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-right: 8px
+}
+
+.info span{
+	display: none;
+	color: #555;
+	padding: 5px;
+}
+.info:hover span{ /*the span will display just on :hover state*/
+  position: absolute;
+  top: 100px;
+  right: 50px;
+  display: block;
+  background: #eee;
+  border: 1px solid #555;
+  text-align: left
+}
+
+/* @end */
+
+
+#occResource ul fieldset{
+	background-color: #ededed;
+	border-style: none;
+	padding-bottom: 10px;
+	margin-bottom: 30px;
+	padding-left: 15px;
+}
+
+#occResource ul fieldset div#metadata{
+	font-size: 13px;
+	line-height: normal;
+}
+
+#occResource fieldSet #metadata #wwgrp_occResource_dataResource_cache{
+	padding-left: 0px;
+	padding-top: 10px;
+}
+
+.h1tax{
+	margin-bottom: 13px;
+	margin-top: -15px;
+}
+
+#taxResource ul fieldset{
+	background-color: #ededed;
+	border-style: none;
+	padding-bottom: 10px;
+	margin-bottom: 30px;
+	padding-left: 15px;
+}
+
+#taxResource ul fieldset div#metadata{
+	font-size: 13px;
+	line-height: normal;
+	margin-left: 0px;
+}
+
+#taxResource ul fieldset div#metadata li{
+	text-indent: 0px;
+}
+
+#taxResource fieldSet #metadata #wwgrp_occResource_dataResource_cache{
+	padding-left: -5px;
+	padding-top: 10px;
+}
+
+#metaResource ul fieldset{
+	background-color: #FFF;
+	border-style: none;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-left: 7px;
+	padding-bottom: 20px;
+}
+
+
+#metaResource ul fieldset table{
+	margin-bottom: 0px;
+	font-size: 12px;
+}
+
+#metaResource ul fieldset h2{
+	font-size: 20px;
+	line-height: normal;
+	margin-top: 5px;
+}
+
+
+#taxDetail ul fieldset{
+	background-color: #FFF;
+	border-style: none;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-left: 7px;
+	padding-bottom: 20px;
+}
+
+
+#taxDetail ul fieldset table{
+	margin-bottom: 0px;
+	font-size: 12px;
+}
+
+#taxDetail ul fieldset h2{
+	font-size: 20px;
+	line-height: normal;
+	margin-top: 5px;
+}
+
+#taxDetail ul fieldset p{
+	padding-left: 0px;
+	margin-left: 2px;
+}
+
+#loginForm{
+	width: 401px;
+	text-align: center;
+}
+
+#loginForm fieldset{
+	background-color: #FFF;
+	text-align: center;
+	border-style: none;
+	margin-left: -15px;
+	margin-bottom: 10px;
+	padding-bottom: 15px;
+	width: 400px;
+}
+
+#loginForm fieldset p{
+	font-size: 12px;
+	margin-left: -3px;
+	margin-bottom: 20px;
+}
+
+#loginForm fieldset ul{
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+#loginForm fieldset ul li{
+	text-align: left;
+}
+
+body#login{
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+
+.bottomText{
+	text-align: center;
+	padding-top: 0px;
+	margin-top: -20px;
+	line-height: 50px;
+	width: 940px;
+}
+
+.taxDetailImg{
+	float: right;
+	text-align: right;
+	padding-left: 15px;
+	padding-bottom: 15px;
+	margin-top: -8px;
+}
+
+#mainfull h1{
+	color: #077a2d;
+}
+
+
+#main fieldset{
+	background-color: #FFFFFF;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	padding-top: 15px;
+	padding-right: 10px;
+}
+
+#publishingForm{
+	margin-top: 0px;
+}
+
+#resourceForm fieldset{
+	background-color: #FFFFFF;
+	border-style: none;
+	margin-left: 0x;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	padding-top: 0px;
+	padding-right: 0px;
+}
+
+#resourceForm fieldset .right{
+	margin-right: 15px;
+	margin-top: 3px;
+}
+
+#emlForm fieldset{
+	background-color: #FFFFFF;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	padding-top: 0px;
+	padding-right: 0px;
+}
+
+#emlForm fieldset ul{
+	list-style: none;
+}
+
+
+#emlForm fieldset li{
+	font-size: 13px;
+	list-style: none;
+}
+
+#emlForm fieldset .right{
+	margin-right: 15px;
+	margin-top: 3px;
+}
+
+#geoForm fieldset{
+	background-color: #FFFFFF;
+	border-style: none;
+	margin-left: -5px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	padding-top: 10px;
+	padding-right: 0px;
+}
+
+#providerCfg fieldset{
+	border-style: none;
+}
+
+fieldset .noBottomMargin{
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	padding-top: -10px;
+	margin-top: -10px;
+}
+
+.modifiedh1{
+	margin-top: -13px;
+	margin-bottom: 0px;
+}
+
+.modifiedh1Secondary{
+	margin-top: 20px;
+}
+
+.modifiedh2{
+	padding-left: 10px;
+}
+
+.explanatiop{
+	margin-top: -7px;
+}
+
+#providerCfg_save .button{
+	margin-top: 15px;
+}
+
+#providerCfg_cancel .button{
+	margin-top: 15px;
+}
+
+.transformationImage{
+	background-color: #FFFFFF;
+	margin-left: 10px;
+}
+
+/* @group tag cloud */
+.tagCloud{ padding-top: 5px; }
+.cloud0 { font-size: 0.6em; }
+.cloud1 { font-size: 0.7em; }
+.cloud2 { font-size: 0.8em; }
+.cloud3 { font-size: 0.9em; }
+.cloud4 { font-size: 1.0em; }
+.cloud5 { font-size: 1.1em; }
+.cloud6 { font-size: 1.2em; }
+.cloud7 { font-size: 1.3em; }
+.cloud8 { font-size: 1.4em; }
+.cloud9 { font-size: 1.5em; }
+/* @end */
+
+.annotationRight{
+	text-align: right;
+	padding-top: 11px;
+	padding-right: 0px;
+	float: right;
+	width: 140px;
+}
+
+.rounded{
+	background-color: #ededed;
+	margin-left: -10px;
+}
