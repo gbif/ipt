@@ -72,6 +72,9 @@ public class MappingAction extends BaseDataResourceAction implements Preparable{
 	}
 
 	public String execute(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		return SUCCESS;
 	}
 	

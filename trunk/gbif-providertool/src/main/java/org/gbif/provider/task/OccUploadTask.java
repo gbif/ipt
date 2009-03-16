@@ -195,7 +195,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 					}
 				}
 				// save new taxa
-				if (!persistentParentFound){
+				if (!persistentParentFound && !newTaxa.isEmpty()){
 					// no persistent taxon found in entire hierarchy.
 					// use highest taxon as a new taxonomy root
 					parent = newTaxa.removeLast();
@@ -264,7 +264,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 			}
 
 			// save new taxa
-			if (!persistentParentFound){
+			if (!persistentParentFound && !newRegions.isEmpty()){
 				// no persistent region found in entire hierarchy.
 				// use highest region as a new geography root region
 				region = newRegions.removeLast();

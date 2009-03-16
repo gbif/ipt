@@ -35,6 +35,9 @@ public class ImportAction extends BaseDataResourceAction implements Preparable{
 	public String execute() {
 		// load resource
 		super.prepare();
+		if (resource==null){
+			return RESOURCE404;
+		}
 		// create GoogleChart string
 		gChartData = uploadEventManager.getGoogleChartData(resource_id, 400, 200);
 		return SUCCESS;
@@ -54,6 +57,9 @@ public class ImportAction extends BaseDataResourceAction implements Preparable{
 
 	public String status(){
 		super.prepare();
+		if (resource==null){
+			return RESOURCE404;
+		}
 		status = cacheManager.getUploadStatus(resource_id);
 		if (busy){
 			return BUSY;

@@ -65,6 +65,7 @@ public class SqlImportSource implements ImportSource{
 	private String guidColumn;
 	private String linkColumn;
 	private String linkTemplate;
+	private DataResource resource;
 	private Long resourceId;
 	// key=header column name, value=term mapping map
 	private Map<String, Map<String, String>> vocMap = new HashMap<String, Map<String, String>>();
@@ -98,6 +99,7 @@ public class SqlImportSource implements ImportSource{
 			throw new ImportSourceException("Cant connect to database", e);
 		}
     	//FIXME: clone mappings
+		this.resource = resource;
     	this.resourceId=resource.getId();
     	this.viewSql=src.getSql();
     	this.properties = view.getPropertyMappings().values();
@@ -165,7 +167,7 @@ public class SqlImportSource implements ImportSource{
 		    		}
 		    	}
 			} catch (SQLException e) {
-//				annotationManager.annotateResource(resource, "Exception while retrieving RDBMS source record"+e.toString());
+				annotationManager.annotateResource(resource, "Exception while retrieving RDBMS source record"+e.toString());
 				hasNext = false;
 				row=null;
 			}
@@ -178,11 +180,11 @@ public class SqlImportSource implements ImportSource{
 					maxRecords--;					
 					if (maxRecords < 0){
 						hasNext=false;
-//						annotationManager.annotateResource(resource, "MaxRecords reached. Stop iterating through ImportSource");
+						annotationManager.annotateResource(resource, "MaxRecords reached. Stop iterating through ImportSource");
 					}
 				}
 			} catch (SQLException e2) {
-//				annotationManager.annotateResource(resource, "Exception while iterating RDBMS source"+e2.toString());
+				annotationManager.annotateResource(resource, "Exception while iterating RDBMS source"+e2.toString());
 				hasNext = false;
 			}
 		}

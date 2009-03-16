@@ -51,10 +51,16 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	}
 		
 	public String execute(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		return SUCCESS;
 	}
 	
 	public String save(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		if (cancel!=null){
 			return CANCEL;
 		}

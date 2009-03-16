@@ -13,8 +13,10 @@ import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.appfuse.model.LabelValue;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ResourceType;
@@ -40,13 +42,16 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
             put("com.mysql.jdbc.Driver", "MySQL");
             put("org.postgresql.Driver", "Postgres");
             put("org.h2.Driver", "H2");
-            put("net.sourceforge.jtds.jdbc.Driver", "MS SQL Server");  
+            put("com.microsoft.sqlserver.jdbc.SQLServerDriver", "MS SQL Server");  
+            put("net.sourceforge.jtds.jdbc.Driver", "JTDS");  
             put("oracle.jdbc.OracleDriver", "Oracle");
             put("sun.jdbc.odbc.JdbcOdbcDriver", "Generic ODBC");
+            put("", "Other");
         }  
     };
 	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
 	protected HttpServletRequest request;
+	private String jdbcDriverClass;
     
     
 	public void prepare() {
@@ -64,6 +69,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 		
 	public String execute(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		return SUCCESS;
 	}
 
@@ -74,6 +82,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 	
 	public String save(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		if (cancel != null) {
 			return "cancel";
 		}
@@ -84,13 +95,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		boolean isNew = (resource.getId() == null);
 		resource.setDirty();
 		resource = resourceManager.save(resource);								
-//		if (resourceType.equalsIgnoreCase(OCCURRENCE)){
-//			resource = occResourceManager.save((OccurrenceResource)resource);				
-//		}else if (resourceType.equalsIgnoreCase(CHECKLIST)){
-//			resource = checklistResourceManager.save((ChecklistResource)resource);				
-//		}else{
-//			resource = metaResourceManager.save(resource);								
-//		}
 		String key = (isNew) ? "resource.added" : "resource.updated";
 		saveMessage(getText(key));
 		if (isNew){
@@ -102,11 +106,36 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		}
 		return resourceType;
 	}
+	public String connection(){
+		if (resource==null){
+			return RESOURCE404;
+		}
+		DataResource res = (DataResource) resource;
+		if (res.getJdbcDriverClass()!=null && !jdbcDriverClasses.containsKey(res.getJdbcDriverClass())){
+			jdbcDriverClass=res.getJdbcDriverClass();
+		}
+		return SUCCESS;
+	}
+	public String saveConnection(){
+		if (resource==null){
+			return RESOURCE404;
+		}
+		if (StringUtils.trimToNull(jdbcDriverClass)!=null){
+			// advance manual driver entry found. Overrides regular drop down
+			DataResource res = (DataResource) resource;
+			res.setJdbcDriverClass(jdbcDriverClass);
+		}
+		save();
+		return SUCCESS;
+	}
 
 	public String publish() {
 		// publish only whne POSTed, not with ordinary GET
 		if (request.getMethod().equalsIgnoreCase("post")){
 			Resource res = getResourceTypeMatchingManager().publish(resource_id);
+			if (res==null){
+				return RESOURCE404;
+			}
 		}
 		return SUCCESS;
 	}
@@ -135,7 +164,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	}
 	
 	public String delete() {
-		if (resource != null && resourceType!=null) {
+		if (resource==null){
+			return RESOURCE404;
+		}else if (resourceType!=null) {
 			// remove resource with appropiate manager
 			getResourceTypeMatchingManager().remove(resource.getId());
 			log.debug("Resource deleted");
@@ -153,7 +184,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		}else{
 			saveMessage("Can't identify resource to be deleted");			
 		}
-
 		return "delete";
 	}
 

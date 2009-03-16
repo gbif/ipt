@@ -1,9 +1,9 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="sources.sqlsources"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-	<meta name="heading" content="<@s.text name='sqlSettings.intellectualRights'/>"/>              
+	<meta name="heading" content="<@s.text name='sources.sqlsources'/>"/>              
 </head>
 
 <!--<h1>SQL Settings</h1>

@@ -36,7 +36,9 @@ public class AnnotationAction extends BaseMetadataResourceAction{
     }
     public String list(){
     	prepare();
-    	if (resource !=null){
+		if (resource==null){
+			return RESOURCE404;
+		}else{
     		if (StringUtils.trimToNull(annotationType)!=null){
         		annotations=annotationManager.getByType(resource_id, annotationType.toString());
     		}else{

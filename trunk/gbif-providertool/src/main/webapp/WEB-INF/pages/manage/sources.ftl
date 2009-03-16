@@ -1,5 +1,5 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="sources.heading"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
@@ -17,8 +17,6 @@
     </script>
 </head>
 
-<!--<h1>Source Data</h1>
-<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <p class="explMt">Please upload your data as tab files or define a SQL view to pull it from a database.
 You can define as many sources as you like, but there needs to be at least one.
@@ -29,7 +27,6 @@ If your data does not exactly match those formats you have the option to configu
 <h2><@s.text name="sources.filesources"/></h2>
 <div class="horizontal_dotted_line_large_soft"></div>
 <fieldset class="noBottomMargin">
-<legend><!--<@s.text name="sources.filesources"/>--></legend>
 	<@s.iterator value="fileSources" status="stat">
 	<@s.form action="saveSource" method="post">
 	  <@s.hidden key="resource_id"/>
@@ -69,38 +66,35 @@ If your data does not exactly match those formats you have the option to configu
 </fieldset>
 
 
-<div class="break">
+<div class="break"></div>
 <p>
 	SQL data sources are sql select statements to an external relational database (like views).
 	The IPT can pull data from those databases when updating the internal cache.
 </p>
-</div>
 <h2><@s.text name="sources.sqlsources"/></h2>
 <div class="horizontal_dotted_line_large_soft"></div>
-<fieldset>
-<legend><!--<@s.text name="sources.sqlsources"/>--></legend>
-	<div>
-		<@s.form action="editConnection" method="get">
-		  <@s.hidden key="resource_id"/>
-		  	<div>
-		  	<div class="left">
-			<#if resource.hasDbConnection()>
-				<@s.label key="resource.jdbcUrl" />
-			<#else>
-				<p class="reminder">
-					<@s.text name="sources.noDbConnection" />
-				</p>
-			</#if>
-			</div>
-			<div>		
-		  <@s.submit cssClass="button" key="button.edit" />
-		  </div>
-		  </div>
-		</@s.form>
-	</div>
+<fieldset class="noBottomMargin">
+	<@s.form action="editConnection" method="get">
+	  <@s.hidden key="resource_id"/>
+	  <div>
+	  	<div class="left">
+		<#if resource.hasDbConnection()>
+			<@s.label key="resource.jdbcUrl" />
+		<#else>
+			<p class="reminder">
+				<@s.text name="sources.noDbConnection" />
+			</p>
+		</#if>
+		</div>
+		<div class="right">
+			<@s.submit cssClass="button" key="button.edit" theme="simple"/>
+		</div>
+	  <div>		
+	</@s.form>
 
-	<div class="break">
-		<#if resource.hasDbConnection() && (sqlSources?size>0)>
+	<div class="break"></div>
+	<#if resource.hasDbConnection()>
+		<#if (sqlSources?size>0)>
 			<@s.iterator value="sqlSources" status="stat">
 				<div class="newline">
 				<@s.form action="editSource" method="get">
@@ -111,32 +105,39 @@ If your data does not exactly match those formats you have the option to configu
 						<span class="citation"><#if (sql?length>50)>${sql?substring(0, 50)}<#else>${sql}</#if></span>
 					</div>
 					<div class="right">
-					  <@s.submit cssClass="button" key="button.edit"/>
+					  <@s.submit cssClass="button" key="button.edit" theme="simple"/>
 					</div>
 				</@s.form>
 				</div>
-			</@s.iterator>	
+			</@s.iterator>
+			<div class="break"></div>
+		<#else>
+			<div class="left">
+				<p class="reminder">Please configure at least one sql view to start using this datasource</p>
+				<#-- <@s.text name="sources.noDbConnection" /> -->
+			</div>
 		</#if>
-	</div>
-	<div class="break">
-		<#if resource.hasDbConnection()>
+		<div class="right">
 			<@s.form action="editSource" method="get">
 			  <@s.hidden key="resource_id"/>
 			  <@s.hidden key="sid" value=""/>
-			  <@s.submit cssClass="button" key="button.add" />
+			  <@s.submit cssClass="button" key="button.add" theme="simple"/>
 			</@s.form>
-		</#if>
-	</div>
+		</div>
+	</#if>
 </fieldset>
 
 
+<#if (fileSources?size>0) || (sqlSources?size>0)>
 <div class="break">
 <@s.form action="mappings" method="get">
-  <@s.hidden key="resource_id"/>
-  <div class="breakRight">
-	  <@s.submit cssClass="button" key="button.next" theme="simple"/>
-  </div>
+	<@s.hidden key="resource_id"/>
+	<div class="breakRight">
+		<@s.submit cssClass="button" key="button.next" theme="simple"/>
+	</div>
 </@s.form>
 </div>
+</#if>
+
 
 <div class="break20"></div>

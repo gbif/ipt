@@ -30,7 +30,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
     private SourceManager sourceManager;
     private List<SourceFile> fileSources = new ArrayList<SourceFile>();
     private List<SourceSql> sqlSources = new ArrayList<SourceSql>();
-    private SourceBase source;
+    private SourceBase source = new SourceSql();
     // file upload
     private File file;
     private String fileContentType;
@@ -47,8 +47,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		super.prepare();
 		if (sid != null) {
 			source = sourceManager.get(sid);
-		}else{
-			source = new SourceSql();
 		}
 	}
 
@@ -57,10 +55,16 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
      * @return "input"
      */
     public String execute() {
+		if (resource==null){
+			return RESOURCE404;
+		}
         return SUCCESS;
     }
 
     public String list() {
+		if (resource==null){
+			return RESOURCE404;
+		}
     	if (resource_id==null){
     		return ERROR;
     	}
