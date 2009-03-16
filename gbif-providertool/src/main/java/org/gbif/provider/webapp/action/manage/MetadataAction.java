@@ -111,8 +111,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 			return RESOURCE404;
 		}
 		DataResource res = (DataResource) resource;
-		if (res.getJdbcDriverClass()!=null && !jdbcDriverClasses.containsKey(res.getJdbcDriverClass())){
+		if (StringUtils.trimToNull(res.getJdbcDriverClass())!=null && !jdbcDriverClasses.containsKey(res.getJdbcDriverClass())){
 			jdbcDriverClass=res.getJdbcDriverClass();
+			res.setJdbcDriverClass("");
 		}
 		return SUCCESS;
 	}
@@ -264,4 +265,13 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public void setServletRequest(HttpServletRequest request) {
 		this.request=request;
 	}
+
+	public String getJdbcDriverClass() {
+		return jdbcDriverClass;
+	}
+
+	public void setJdbcDriverClass(String jdbcDriverClass) {
+		this.jdbcDriverClass = jdbcDriverClass;
+	}
+	
 }

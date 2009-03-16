@@ -32,7 +32,7 @@
 
  	<@s.select id="driverSelect" key="resource.jdbcDriverClass" required="true" headerKey="Select database system" emptyOption="false" list="jdbcDriverClasses" />
 	<div id="advancedDriver">
-    	<@s.textfield key="jdbcDriverClass" value="" required="false" maxlength="120" cssClass="text large"/>
+    	<@s.textfield key="jdbcDriverClass" required="false" maxlength="120" cssClass="text large"/>
     </div>
     <@s.textfield key="resource.jdbcUrl" required="true" maxlength="120" cssClass="text large"/>
     <@s.textfield key="resource.jdbcUser" required="true" maxlength="120" cssClass="text large"/>
