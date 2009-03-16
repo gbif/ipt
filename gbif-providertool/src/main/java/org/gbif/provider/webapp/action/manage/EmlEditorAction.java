@@ -34,19 +34,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	protected String nextPage;
 	protected final String NEXT = "next";
 	
-	protected Map<String, String> isoCountryI18nCodeMap;
-	protected Map<String, String> isoLanguageI18nCodeMap;
-	protected Map<String, String> ranksI18nCodeMap;
-	
 	public void prepare() {
 		super.prepare();
 		if (resource!=null){
 			eml = emlManager.load(resource);
-			// load term discts according to locale language
-			String lang = getLocaleLanguage();
-			isoCountryI18nCodeMap = thesaurusManager.getConceptCodeMap(Vocabulary.Country.uri, lang, true);
-			isoLanguageI18nCodeMap = thesaurusManager.getConceptCodeMap(Vocabulary.Language.uri, lang, true);
-			ranksI18nCodeMap = thesaurusManager.getConceptCodeMap(Rank.URI, lang, false);
 		}
 	}
 		
@@ -99,10 +90,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 	public void setNextPage(String nextPage) {
 		this.nextPage = nextPage;
 	}
-	public Map<String, String> getIsoLanguageI18nCodeMap() {
-		return isoLanguageI18nCodeMap;
-	}
-
 	public List getRoles() {
 		return  Arrays.asList(Role.values());
 	 }
@@ -148,16 +135,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements Prepa
 		}
 		eml.setKeywords(keywords);
 	}
-	
-	public Map<String, String> getIsoCountryI18nCodeMap() {
-		return isoCountryI18nCodeMap;
-	}
 
-	public Map<String, String> getAllRanks() {
-		return ranksI18nCodeMap;
+	public String getCountryVocUri(){
+		return Vocabulary.Country.uri;
 	}
-	public Map<String, String> getRanksI18nCodeMap() {
-		return ranksI18nCodeMap;
+	public String getLanguageVocUri(){
+		return Vocabulary.Language.uri;
 	}
-	
+	public String getRankVocUri(){
+		return Rank.URI;
+	}	
 }

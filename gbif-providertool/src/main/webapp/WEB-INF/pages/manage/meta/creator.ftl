@@ -4,17 +4,26 @@
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='eml.resourceCreator'/>"/>    
+	<script>
+	$(document).ready(function(){
+		var url = '<@s.url value="/ajax/vocSelect.html"/>';
+		// load language codes
+		var params = {uri:"${languageVocUri}",alpha:true,empty:true};
+		var id = "languageSelect";
+		ajaxSelectVocabulary(url, id, params);
+		// load country codes
+		params = {uri:"${countryVocUri}",alpha:true,empty:true};
+		id = "countrySelect";
+		ajaxSelectVocabulary(url, id, params);
+	});
+	</script>
 </head>
-
-
-<!--<h1 ><@s.text name="eml.resourceCreator"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>-->
 
 <div class="break10"></div>
 <@s.form id="emlForm" action="creator" method="post" validate="false">
 <fieldset>
 	<div>
-		<@s.select key="eml.language" list="isoLanguageI18nCodeMap" required="true" cssClass="text medium"/>
+		<@s.select id="languageSelect" key="eml.language" list="{'${eml.language!}'}" required="true" cssClass="text medium"/>
 	</div>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="geocoverage"/>
@@ -62,7 +71,7 @@
 			<@s.textfield key="eml.resourceCreator.address.province" label="%{getText('agent.address.province')}" required="false" cssClass="text xhalf"/>
 		</div>
 		<div class="leftxhalf">
-			<@s.select key="eml.resourceCreator.address.country" list="isoCountryI18nCodeMap" required="true" cssClass="text xhalf"/>
+			<@s.select id="countrySelect" key="eml.resourceCreator.address.country" list="{'${(eml.getResourceCreator().address.country)!}'}" required="true" cssClass="text xhalf"/>
 		</div>
 	</div>
 	<div class="breakRight"></div>

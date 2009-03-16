@@ -17,6 +17,10 @@ public class VocabularyAction extends BaseAction{
 	
     private Map<String,String> voc;
 	private ExtensionProperty prop;
+	private boolean empty=true;
+	private boolean alpha=false;
+	private String val;
+	private String uri;
 	private Long id;
 	
     public String execute() {
@@ -27,6 +31,10 @@ public class VocabularyAction extends BaseAction{
         return SUCCESS;
     }
 
+    public String voc() {
+		voc=thesaurusManager.getConceptCodeMap(uri, getLocaleLanguage(), alpha);
+        return SUCCESS;
+    }
     
 	public Long getId() {
 		return id;
@@ -43,6 +51,29 @@ public class VocabularyAction extends BaseAction{
 	public ExtensionProperty getProp() {
 		return prop;
 	}
-    
-    
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	public void setAlpha(boolean alpha) {
+		this.alpha = alpha;
+	}
+
+	public String getVal() {
+		return val;
+	}
+
+	public void setVal(String val) {
+		this.val = val;
+	}
+
+	public boolean isEmpty() {
+		return empty;
+	}
+
+	public void setEmpty(boolean empty) {
+		this.empty = empty;
+	}
+	
 }

@@ -9,7 +9,7 @@
       	$("#advancedDriver").hide();
       	// check if Other was selected
 	    $("select#driverSelect").change( function () { 
-	      if ($(this).val()==""){
+	      if ($(this).val()=="${other}"){
 	      	$("#advancedDriver").slideDown("normal");
 	      }else{
 	      	$("#advancedDriver input").val("");
