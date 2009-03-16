@@ -156,7 +156,7 @@
 	<h2>Property Mappings</h2>
 	<p>For a single property that you want to map, select a column from your source or enter a fixed value into the text field.
 	   If the property has a vocabulary associated you can also select a term from the dropdown.<br/>
-	   To add more properties please select them from the available properties just above (hint: the menu opens when you move the mouse above).
+	   To add more properties please select them from the available properties just above (clicking the arrow opens menu).
 	</p>
 	
 	<div id="mappings">

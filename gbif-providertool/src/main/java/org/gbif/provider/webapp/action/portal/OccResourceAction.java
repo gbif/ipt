@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.struts2.interceptor.SessionAware;
 import org.appfuse.model.LabelValue;
 import org.gbif.provider.geo.MapUtil;
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
@@ -54,7 +55,11 @@ public class OccResourceAction extends BaseOccurrenceResourceAction implements P
 		if (resource != null) {
 			// geoserver map link
 			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, null);
-			geoserverMapBBox = resource.getBbox().toStringWMS();
+			if (resource.getBbox()!=null && resource.getBbox().isValid()){
+				geoserverMapBBox = resource.getBbox().toStringWMS();
+			}else{
+				geoserverMapBBox = BBox.NewWorldInstance().toStringWMS();				
+			}
 		}
 		// prepare select lists
 		countryClasses.put(1, "occurrences");

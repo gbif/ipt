@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.util.TabFileWriter;
 
 @Entity
@@ -33,7 +34,7 @@ public class ViewCoreMapping extends ViewMappingBase {
 		return guidColumn;
 	}
 	public void setGuidColumn(String guidColumn) {
-		this.guidColumn = guidColumn;
+		this.guidColumn = StringUtils.trimToNull(guidColumn);
 	}
 	
 	@Column(length=128, name="link_col")
@@ -41,14 +42,14 @@ public class ViewCoreMapping extends ViewMappingBase {
 		return linkColumn;
 	}
 	public void setLinkColumn(String linkColumn) {
-		this.linkColumn = linkColumn;
+		this.linkColumn = StringUtils.trimToNull(linkColumn);
 	}
 
 	public String getLinkTemplate() {
 		return linkTemplate;
 	}
 	public void setLinkTemplate(String linkTemplate) {
-		this.linkTemplate = linkTemplate;
+		this.linkTemplate = StringUtils.trimToNull(linkTemplate);
 	}
 
 }

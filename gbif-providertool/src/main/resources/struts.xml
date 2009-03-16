@@ -173,7 +173,8 @@
         </global-results>
         
         <action name="404" class="org.gbif.provider.webapp.action.portal.NotFoundAction">
-            <result>/WEB-INF/pages/about/about.ftl</result>
+            <result name="resource404">/WEB-INF/pages/404resource.ftl</result>
+            <result name="record404">/WEB-INF/pages/404record.ftl</result>
         </action>
         
         <!-- single pages -->
@@ -480,6 +481,10 @@
         <default-interceptor-ref name="managerStack" />
         <default-action-ref name="resources" />
         <global-results>
+            <result name="resource404" type="redirect-action">
+                <param name="actionName">404</param>
+                <param name="namespace">/</param>
+            </result>
             <result name="resource-busy" type="redirect-action">
                 <param name="actionName">status</param>
                 <param name="resource_id">${#parameters.resource_id}</param>
@@ -552,10 +557,10 @@
                 <param name="resource_id">${resource.id}</param>
             </result>
         </action>
-        <action name="editConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction">
+        <action name="editConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="connection">
             <result>/WEB-INF/pages/manage/connectionForm.ftl</result>
         </action>
-        <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
+        <action name="saveConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="saveConnection">
             <result name="input">/WEB-INF/pages/manage/connectionForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>

@@ -43,6 +43,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.IndexColumn;
@@ -171,7 +172,7 @@ public abstract class DataResource extends Resource {
 		return jdbcDriverClass;
 	}
 	public void setJdbcDriverClass(String jdbcDriverClass) {
-		this.jdbcDriverClass = jdbcDriverClass;
+		this.jdbcDriverClass = StringUtils.trimToNull(jdbcDriverClass);
 	}
 	
 	@Column(length=128)
@@ -179,7 +180,7 @@ public abstract class DataResource extends Resource {
 		return jdbcUrl;
 	}
 	public void setJdbcUrl(String jdbcUrl) {
-		this.jdbcUrl = jdbcUrl;
+		this.jdbcUrl = StringUtils.trimToNull(jdbcUrl);
 	}
 	
 	@Column(length=64)

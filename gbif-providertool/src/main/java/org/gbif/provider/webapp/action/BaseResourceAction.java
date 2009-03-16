@@ -106,7 +106,6 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 			queue.remove();
 		}
 		// save back to session
-		log.debug("Recently viewed resources: "+queue.toString());
 		session.put(Constants.RECENT_RESOURCES, queue);
 	}
 	

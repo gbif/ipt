@@ -176,6 +176,9 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     }
 
 	public String execute(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		return SUCCESS;
 	}
 
@@ -230,6 +233,9 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	}
 	
 	public String delete(){
+		if (resource==null){
+			return RESOURCE404;
+		}
 		resource.removeExtensionMapping(view);
         viewMappingManager.remove(view);
         return SUCCESS;

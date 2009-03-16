@@ -74,24 +74,29 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		
 		// meta descriptor file
 		File descriptor = writeDescriptor(resource, archiveFiles);
-		
+		if (!descriptor.exists()){
+			throw new IOException("Archive descriptor could not be generated");
+		}
 		// zip archive
 		File archive = cfg.getArchiveFile(resource.getId());
 		Set<File> files= new HashSet(archiveFiles.keySet());
 		files.add(descriptor);
-		files.add(cfg.getEmlFile(resource.getId()));
+		File eml = cfg.getEmlFile(resource.getId());
+		if (eml.exists()){
+			files.add(eml);
+		}
 		ZipUtil.zipFiles(files, archive);
 		
 		// also dump all taxa in a separate file
-		try {
-			File taxDump = dumpTaxa(resource.getId());
-			files= new HashSet();
-			files.add(taxDump);
-			archive = new File(archive.getParentFile(), "archive-taxon.zip");
-			ZipUtil.zipFiles(files, archive);
-		} catch (SQLException e) {
-			log.warn("Couldnt dump taxa for resource "+resource.getId(), e);
-		}
+//		try {
+//			File taxDump = dumpTaxa(resource.getId());
+//			files= new HashSet();
+//			files.add(taxDump);
+//			archive = new File(archive.getParentFile(), "archive-taxon.zip");
+//			ZipUtil.zipFiles(files, archive);
+//		} catch (SQLException e) {
+//			log.warn("Couldnt dump taxa for resource "+resource.getId(), e);
+//		}
 		return archive;		
 	}
 	
@@ -142,7 +147,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	}
 	private File dumpTaxa(Long resourceId) throws IOException, SQLException{
 		File file = new File(cfg.getArchiveFile(resourceId).getParentFile(), "archive-extra-taxa.txt");
-		String select = String.format("select dc.LOCAL_ID as DwcLocalId, dc.guid as DwcGuid, t.GUID ,t.LABEL as ScientificName, t.RANK as DwcRank, acc.guid as acceptedTaxonGuid, acc.label acceptedTaxon, p.guid as parentTaxonGuid,  p.label parentTaxon,      dc.binomial, dc.higher_taxon_iD, dc.higher_taxon, dc.kingdom, dc.phylum, dc.classs, dc.orderrr, dc.family, dc.genus, dc.subgenus, dc.specific_epithet, dc.taxon_rank, dc.infraspecific_epithet, dc.scientific_name_authorship, dc.nomenclatural_code, dc.taxon_according_to, dc.name_published_in, dc.taxonomic_status, dc.nomenclatural_status, dc.accepted_taxon_iD, dc.accepted_taxon, dc.basionym_iD, dc.basionym     FROM taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id  left join darwin_core dc on dc.taxon_fk = t.id   where t.resource_fk=%s order by id", resourceId);		 
+		String select = String.format("select dc.LOCAL_ID as DwcLocalId, dc.guid as DwcGuid, t.GUID ,t.LABEL as ScientificName, t.RANK as DwcRank, acc.guid as acceptedTaxonGuid, acc.label acceptedTaxon, p.guid as parentTaxonGuid,  p.label parentTaxon,      dc.binomial, dc.higher_taxon_iD, dc.higher_taxon, dc.kingdom, dc.phylum, dc.classs, dc.orderrr, dc.family, dc.genus, dc.subgenus, dc.specific_epithet, dc.taxon_rank, dc.infraspecific_epithet, dc.scientific_name_authorship, dc.nomenclatural_code, dc.taxon_according_to, dc.name_published_in, dc.taxonomic_status, dc.nomenclatural_status, dc.accepted_taxon_iD, dc.accepted_taxon, dc.basionym_iD, dc.basionym     FROM taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id  left join darwin_core dc on dc.taxon_fk = t.id   where t.resource_fk=%s order by t.id", resourceId);		 
 		return dumpFile(file, select);
 	}
 	private String buildPropertySelect(ViewMappingBase view){

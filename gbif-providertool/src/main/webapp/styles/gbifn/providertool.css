@@ -453,6 +453,11 @@ div.chart form, div.map form {
 
 /* @group other */
  
+.left{
+	float: left;
+	text-align: left;
+}
+
 .right{
 	float: right;
 	text-align: right;
