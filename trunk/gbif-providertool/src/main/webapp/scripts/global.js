@@ -4,6 +4,17 @@ function ajaxHtmlUpdate(url, target, params) {
 		$(target).html(data);
 	});
 }
+function ajaxSelectVocabulary(url, id, params){
+	$.get(url, params, function(data) { 
+		var v = $("select#"+id).val();
+		var name = $("select#"+id).attr("name");
+		var d = $(data);
+		d.attr("name",name);
+		d.attr("id",id);
+		d.val(v);
+		$("select#"+id).replaceWith(d);
+	});
+}
 function listenToChange(selector, handler) {
 	$(selector).change(function(e){handler()});
 }		

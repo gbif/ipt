@@ -419,6 +419,9 @@
         <action name="propVocabulary" class="org.gbif.provider.webapp.action.manage.VocabularyAction">
             <result>/WEB-INF/pages/ajax/propVocabulary.ftl</result>
         </action>
+        <action name="vocSelect" class="org.gbif.provider.webapp.action.manage.VocabularyAction" method="voc">
+            <result>/WEB-INF/pages/ajax/vocSelect.ftl</result>
+        </action>
         <action name="keywords" class="org.gbif.provider.webapp.action.portal.KeywordAction">
             <result>/WEB-INF/pages/ajax/keywords.ftl</result>
         </action>

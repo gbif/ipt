@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 public class MetadataAction extends BaseMetadataResourceAction implements Preparable, ServletRequestAware{
+	private static final String OTHER = "other";
 	@Autowired
 	protected ResourceFactory resourceFactory;
 	protected List<? extends Resource> resources;
@@ -46,7 +47,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
             put("net.sourceforge.jtds.jdbc.Driver", "JTDS");  
             put("oracle.jdbc.OracleDriver", "Oracle");
             put("sun.jdbc.odbc.JdbcOdbcDriver", "Generic ODBC");
-            put("", "Other");
+            put(OTHER, "Other");
         }  
     };
 	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
@@ -113,7 +114,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		DataResource res = (DataResource) resource;
 		if (StringUtils.trimToNull(res.getJdbcDriverClass())!=null && !jdbcDriverClasses.containsKey(res.getJdbcDriverClass())){
 			jdbcDriverClass=res.getJdbcDriverClass();
-			res.setJdbcDriverClass("");
+			res.setJdbcDriverClass(OTHER);
 		}
 		return SUCCESS;
 	}
@@ -273,5 +274,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public void setJdbcDriverClass(String jdbcDriverClass) {
 		this.jdbcDriverClass = jdbcDriverClass;
 	}
-	
+	public String getOther(){
+		return OTHER;
+	}
 }
