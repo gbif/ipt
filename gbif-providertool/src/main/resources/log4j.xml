@@ -13,10 +13,10 @@
     
     <!-- for debugging all httpclient communication, especially with registry -->
     <logger name="httpclient.wire.header">
-        <level value="INFO"/>
+        <level value="ERROR"/>
     </logger>
     <logger name="httpclient.wire.content">
-        <level value="INFO"/>
+        <level value="ERROR"/>
     </logger>
 
 
@@ -97,11 +97,11 @@
     
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
-        <level value="DEBUG" />
+        <level value="INFO" />
     </logger>
     
     <root>
-        <level value="DEBUG"/>
+        <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
