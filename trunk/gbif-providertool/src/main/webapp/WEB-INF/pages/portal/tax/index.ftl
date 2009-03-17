@@ -3,6 +3,8 @@
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>    
+    
+	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>    
 	<script>
 	function updateByTaxon(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByTaxon.html"/>';
@@ -32,6 +34,19 @@
 	    $("#showWebservices").click(function () {
 	      $("#services").slideToggle("normal");
 	    });
+	    
+		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "690", "${height}", "9"); 
+		so.addParam("allowFullScreen", "true");
+		so.addVariable("swf", "");
+		so.addVariable("bbox", "${geoserverMapBBox}");
+		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
+		so.addVariable("wms_url", escape("${geoserverMapUrl}"));
+		so.addVariable("type", "wms");
+		<#-- geowebcache doesnt work reliably so far
+		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resource_id)}");
+		so.addVariable("type", "gwc");
+		-->
+		so.write("occmap");	    
 	});
 	</script>
 	
@@ -161,6 +176,12 @@
 </div>
 
 </@s.push>
+
+<div id="loc-geoserver-big">
+	<h2><@s.text name="stats.occPointMap"/></h2>	
+	<!--<div class="horizontal_dotted_line_graph"></div>-->
+	<div id="occmap"></div>	
+</div>
 
 <br class="clearfix" />
 

@@ -120,16 +120,7 @@
 </@s.form>
 
 
-<div id="loc-geoserver" class="stats map">
-	<#-- <label><@s.text name="stats.occPointMap"/></label>	
-	<div class="horizontal_dotted_line_graph"></div>
-	 -->
-	<div id="occmap"></div>	
-</div>
-
-<br class="clearfix" />
-
-<div id="loc-stats" class="stats stat-table">
+<div id="loc-stats1" class="stats stat-table">
 	<label><@s.text name="stats.geoStats"/></label>
 	<table class="lefthead">
 		<tr>
@@ -155,7 +146,7 @@
 	</table>
 </div>
 
-<div id="tax-stats" class="stats stat-table">
+<div id="tax-stats2" class="stats stat-table">
 	<label><@s.text name="stats.taxStats"/></label>
 	<table class="lefthead">
 		<tr>
@@ -181,7 +172,7 @@
 	</table>
 </div>
 
-<div id="temp-stats" class="stats stat-table">
+<div id="temp-stats3" class="stats stat-table">
 	<label><@s.text name="stats.tempStats"/></label>
 	<table class="lefthead">
 		<tr>
@@ -191,18 +182,13 @@
 	</table>
 </div>
 
-<br class="clearfix" />
-
-<div id="loc-countries" class="stats map">
-	<label><@s.text name="stats.occByCountry"/></label>	
-	<div class="horizontal_dotted_line_graph"></div>	
-	<@s.form id="countryClassForm">
-		<@s.select id="countryClass" name="country" list="countryClasses" value="1" theme="simple"/>
-	</@s.form>
-	<div id="imgByCountry"></div>
+<div id="loc-geoserver-big">
+	<h2><@s.text name="stats.occPointMap"/></h2>	
+	<!--<div class="horizontal_dotted_line_graph"></div>-->
+	<div id="occmap"></div>	
 </div>
 
-<div id="loc-pie" class="stats chart stat-right">
+<div id="loc-pie" class="stats chart">
 	<label><@s.text name="stats.occByRegion"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="regionClassForm">
@@ -211,11 +197,7 @@
 	<div id="imgByRegion"></div>
 </div>
 
-
-<br class="clearfix" />
-
-
-<div id="tax-pie" class="stats chart ">
+<div id="tax-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.byTaxon"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="rankForm">
@@ -224,7 +206,10 @@
 	<div id="imgByTaxon"></div>
 </div>
 
-<div id="recordbasis-pie" class="stats chart stat-right">
+<br class="clearfix" />
+
+
+<div id="recordbasis-pie" class="stats chart">
 	<label><@s.text name="stats.occByBasisOfRecord"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByBasisOfRecord">
@@ -232,11 +217,7 @@
 	</div>
 </div>
 
-
-<br class="clearfix" />
-
-
-<div id="host-pie" class="stats chart ">
+<div id="host-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.occByHost"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="hostForm">
@@ -245,12 +226,23 @@
 	<div id="imgByHost"></div>
 </div>
 
-<div id="time-pie" class="stats chart stat-right">
+<br class="clearfix" />
+
+<div id="time-pie" class="stats chart ">
 	<label><@s.text name="stats.occByDateColected"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByDateColected">
 		<@s.action name="occResourceStatsByDateColected" namespace="/ajax" executeResult="true"/>
 	</div>
+</div>
+
+<div id="loc-countries" class="stats map stat-right">
+	<label><@s.text name="stats.occByCountry"/></label>	
+	<div class="horizontal_dotted_line_graph"></div>	
+	<@s.form id="countryClassForm">
+		<@s.select id="countryClass" name="country" list="countryClasses" value="1" theme="simple"/>
+	</@s.form>
+	<div id="imgByCountry"></div>
 </div>
 
 <br class="clearfix" />
