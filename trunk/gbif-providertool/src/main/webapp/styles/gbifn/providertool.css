@@ -832,6 +832,13 @@ fieldset .noBottomMargin{
 	margin-left: 10px;
 }
 
+div #loc-geoserver-big{
+	width: 690px;
+	height: 240px;
+	clear: both;
+}
+
+
 div #loc-geoserver #occmap{
 	margin-top: -3px;
 }
