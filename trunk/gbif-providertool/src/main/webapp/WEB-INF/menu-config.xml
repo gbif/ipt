@@ -13,6 +13,7 @@
             <Item name="Extensions" title="menu.admin.extensions" page="/admin/extensions.html"/>
             <Item name="Thesaurus" title="menu.admin.thesaurus" page="/admin/vocabularies.html"/>
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
+            <Item name="ViewResources" title="menu.admin.resources" page="/admin/resources.html"/>
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
             <Item name="ActiveTasks" title="menu.admin.activeTasks" page="/admin/activeTasks.html"/>
