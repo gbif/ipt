@@ -19,7 +19,7 @@
     <!-- by default dont append existing parameters -->
     <constant name="struts.url.includeParams" value="none" />
     
-    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.devMode" value="true"/>
     
     <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
 
@@ -720,6 +720,10 @@
         <global-results>
             <result name="cancel" type="redirect">/index.html</result>
             <result name="error" type="redirect">/index.html</result>
+            <result name="resource404" type="redirect-action">
+                <param name="actionName">404</param>
+                <param name="namespace">/</param>
+            </result>
         </global-results>
         
         <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
@@ -802,16 +806,16 @@
         </action>
         
         <!-- RESOURCES -->
-        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
-            <result>/WEB-INF/pages/admin/resourceList.ftl</result>
+        <action name="resources" class="org.gbif.provider.webapp.action.admin.MetadataAction" method="list">
+            <result type="freemarker">/WEB-INF/pages/admin/resourceList.ftl</result>
         </action>
-        <action name="resource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
-            <result>/WEB-INF/pages/admin/resourceForm.ftl</result>
+        <action name="resource" class="org.gbif.provider.webapp.action.admin.MetadataAction">
+            <result type="freemarker">/WEB-INF/pages/admin/resourceForm.ftl</result>
         </action>        
-        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
+        <action name="saveResource" class="org.gbif.provider.webapp.action.admin.MetadataAction" method="save">
             <result type="redirect-action">resources</result>
             <result name="cancel" type="redirect-action">resources</result>
-            <result name="input">/WEB-INF/pages/admin/resourceForm.ftl</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/admin/resourceForm.ftl</result>
         </action>
         
     </package>
