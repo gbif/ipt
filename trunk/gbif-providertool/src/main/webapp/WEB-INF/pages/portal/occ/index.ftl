@@ -45,7 +45,7 @@
 	      $("#services").slideToggle("normal");
 	    });
 	    
-		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
+		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "690", "${height}", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
 		so.addVariable("bbox", "${geoserverMapBBox}");
@@ -118,6 +118,16 @@
 		</div>
 	</div>
 </@s.form>
+
+
+<div id="loc-geoserver" class="stats map">
+	<#-- <label><@s.text name="stats.occPointMap"/></label>	
+	<div class="horizontal_dotted_line_graph"></div>
+	 -->
+	<div id="occmap"></div>	
+</div>
+
+<br class="clearfix" />
 
 <div id="loc-stats" class="stats stat-table">
 	<label><@s.text name="stats.geoStats"/></label>
@@ -192,17 +202,7 @@
 	<div id="imgByCountry"></div>
 </div>
 
-<div id="loc-geoserver" class="stats map stat-right">
-	<label><@s.text name="stats.occPointMap"/></label>	
-	<div class="horizontal_dotted_line_graph"></div>
-	<div id="occmap"></div>	
-</div>
-
-
-<br class="clearfix" />
-
-
-<div id="loc-pie" class="stats chart">
+<div id="loc-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.occByRegion"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="regionClassForm">
@@ -211,7 +211,11 @@
 	<div id="imgByRegion"></div>
 </div>
 
-<div id="tax-pie" class="stats chart stat-right">
+
+<br class="clearfix" />
+
+
+<div id="tax-pie" class="stats chart ">
 	<label><@s.text name="stats.byTaxon"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="rankForm">
@@ -220,11 +224,7 @@
 	<div id="imgByTaxon"></div>
 </div>
 
-
-<br class="clearfix" />
-
-
-<div id="recordbasis-pie" class="stats chart">
+<div id="recordbasis-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.occByBasisOfRecord"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByBasisOfRecord">
@@ -232,7 +232,11 @@
 	</div>
 </div>
 
-<div id="host-pie" class="stats chart stat-right">
+
+<br class="clearfix" />
+
+
+<div id="host-pie" class="stats chart ">
 	<label><@s.text name="stats.occByHost"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<@s.form id="hostForm">
@@ -241,11 +245,7 @@
 	<div id="imgByHost"></div>
 </div>
 
-
-<br class="clearfix" />
-
-
-<div id="time-pie" class="stats chart">
+<div id="time-pie" class="stats chart stat-right">
 	<label><@s.text name="stats.occByDateColected"/></label>
 	<div class="horizontal_dotted_line_graph"></div>	
 	<div id="imgByDateColected">
