@@ -53,7 +53,7 @@
 </@s.form>
 
 <div id="loc-geoserver" class="stats map">
-	<label><@s.text name="stats.occPointMap"/></label>
+	<#-- <label><@s.text name="stats.occPointMap"/></label> -->
 	<div id="occmap"></div>	
 </div>
 
