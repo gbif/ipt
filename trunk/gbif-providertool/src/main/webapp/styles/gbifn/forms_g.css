@@ -258,6 +258,13 @@ select.select[class]{
 	margin-right: 4px;
 }
 
+
+.leftLarge-foo{
+	width: 570px;
+	float: left;
+	margin-right: 4px;
+}
+
 .leftMedium{
 	width: 169px;
 	float: left;
@@ -292,6 +299,11 @@ form .state{
 form .large, form textarea.textarea{
     width: 336px;
 }
+
+form .large-foo{
+    width: 564px;
+}
+
 
 form .tags{
     width: 320px;
