@@ -27,6 +27,7 @@
         <constructor-arg ref="providerCfgManager"/>
         <constructor-arg value="${webappDir}"/>
         <constructor-arg value="${dataDir}"/>
+        <constructor-arg value="${registryUrl}"/>
     </bean>
     
     

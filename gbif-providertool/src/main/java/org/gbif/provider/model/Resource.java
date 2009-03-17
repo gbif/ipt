@@ -71,7 +71,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	protected ResourceMetadata meta = new ResourceMetadata();
 	protected BBox geoCoverage;
 	protected Set<String> keywords = new HashSet<String>();
-	protected Map<ServiceType, String> services = new HashMap<ServiceType, String>();
+	protected Map<String, String> services = new HashMap<String, String>();
 	protected PublicationStatus status;
 	protected String type;
 	// resource meta-metadata
@@ -164,11 +164,22 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 	@CollectionOfElements(fetch=FetchType.LAZY)
-	public Map<ServiceType, String> getServices() {
+	public Map<String, String> getServices() {
 		return services;
 	}
-	public void setServices(Map<ServiceType, String> services) {
+	public void setServices(Map<String, String> services) {
 		this.services = services;
+	}
+	public void putService(ServiceType type, String uuid) {
+		if (StringUtils.trimToNull(uuid)!=null){
+			this.services.put(type.code, StringUtils.trimToNull(uuid));
+		}else{
+			this.services.remove(type.code);
+		}
+	}
+	@Transient
+	public String getServiceUUID(ServiceType type) {
+		return this.services.get(type.code);
 	}
 	
 	public BBox getGeoCoverage() {
@@ -327,7 +338,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	@Transient
 	public String getRegistryUrl() {
 		if (StringUtils.trimToNull(getUddiID())!=null){
-			return RegistryManagerImpl.REGISTRY_RESOURCE_URL + "/" + getUddiID();
+			return AppConfig.getRegistryResourceUrl() + "/" + getUddiID();
 		}
 		return null;
 	}
