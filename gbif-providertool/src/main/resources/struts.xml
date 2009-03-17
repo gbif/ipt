@@ -500,10 +500,10 @@
         </global-results>
         
 
-        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
+        <action name="publishAll" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publishAll">
             <result>/WEB-INF/pages/manage/resourceList.ftl</result>
         </action>
-        <action name="publishAll" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publishAll">
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
             <result>/WEB-INF/pages/manage/resourceList.ftl</result>
         </action>
         <action name="resource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
@@ -799,6 +799,19 @@
             <result type="redirect-action">
                 <param name="actionName">vocabularies</param>
             </result>
+        </action>
+        
+        <!-- RESOURCES -->
+        <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
+            <result>/WEB-INF/pages/admin/resourceList.ftl</result>
+        </action>
+        <action name="resource" class="org.gbif.provider.webapp.action.manage.MetadataAction">
+            <result>/WEB-INF/pages/admin/resourceForm.ftl</result>
+        </action>        
+        <action name="saveResource" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
+            <result type="redirect-action">resources</result>
+            <result name="cancel" type="redirect-action">resources</result>
+            <result name="input">/WEB-INF/pages/admin/resourceForm.ftl</result>
         </action>
         
     </package>
