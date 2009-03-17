@@ -17,15 +17,20 @@
 	<@s.textfield key="resource.contactName" required="true" cssClass="text large"/>
 	<@s.textfield key="resource.contactEmail" required="true" cssClass="text large"/>
 
+	<div class="break"></div>
 	<h3>Registered Services</h3>
-	<#list services.keySet() as st>
-		<@s.textfield name="services[${st}]" value="${services[st]}" cssClass="text large" theme="simple"/>
+	<#if (resource.services?size>0)>
+	<#list resource.services.keySet() as st>
+		<@s.textfield name="resource.services[${st}]" value="${services[st]}" cssClass="text large" theme="simple"/>
 	</#list>
-	
-	<div class="breakRightButtons">
-    	<@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
-	    <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
-	</div>
+	<#else>
+		<p>None</p>
+	</#if>
+
+	<div class="break"></div>
+	<@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
+    <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
+
   </fieldset>
 </@s.form>
 	
