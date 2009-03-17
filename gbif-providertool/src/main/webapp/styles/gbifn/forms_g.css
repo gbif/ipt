@@ -4,7 +4,7 @@
 
 /* ----- CLASSIC WUFOO FORM ----- */
 form {
-    font-size: .9em;
+    font-size: 12px;
 }
 
 form ul {
@@ -24,7 +24,7 @@ form ul.glassList {
 
 form ul.glassList li {
     line-height: 1.1em;
-    font-size: 1.1em;
+    font-size: 12px,;
     padding: 2px 0 3px 0;
 }
 
@@ -186,7 +186,7 @@ p label {
 
 input.text, input.number, input.url, input.email, input.password, input.file,
 textarea.textarea, select.select{
-    font-size: 1.2em;
+    font-size: 12px;
     border-top: 1px solid #7c7c7c;
     border-left: 1px solid #c3c3c3;
     border-right: 1px solid #c3c3c3;
@@ -231,13 +231,14 @@ label.choice {
 }
 
 textarea.textarea{
-    font-size: 1.1em;
-    font-family: Tahoma,"Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+    font-size: 12px;
+    color: #333;
+    font-family: Arial, Helvetica;
     margin-bottom: 1px;
 }
 
 textarea.textarea[class]{
-    font-family: "Lucida Grande", Tahoma, "Trebuchet MS", Verdana, sans-serif;
+    font-family: Arial, Helvetica;
 }
 
 select.select{
