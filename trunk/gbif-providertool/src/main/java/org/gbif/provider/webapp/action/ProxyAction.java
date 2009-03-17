@@ -26,6 +26,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.service.impl.RegistryManagerImpl;
+import org.gbif.provider.util.AppConfig;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -54,7 +55,7 @@ public class ProxyAction extends ActionSupport  {
 	}
 	
 	public String organisations(){
-        method = new GetMethod(RegistryManagerImpl.REGISTRY_ORG_URL+".json");
+        method = new GetMethod(AppConfig.getRegistryOrgUrl()+".json");
         method.setFollowRedirects(true);
         try {
 	        httpClient.executeMethod(method);

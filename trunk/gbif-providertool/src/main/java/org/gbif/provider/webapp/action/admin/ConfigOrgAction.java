@@ -116,10 +116,10 @@ public class ConfigOrgAction extends BasePostAction{
 	}
 	
 	public String getRegistryOrgUrl(){
-		return RegistryManagerImpl.REGISTRY_ORG_URL;
+		return AppConfig.getRegistryOrgUrl();
 	}
 	public String getRegistryNodeUrl(){
-		return RegistryManagerImpl.REGISTRY_NODE_URL;
+		return AppConfig.getRegistryNodeUrl();
 	}
 
 	public void setOrganisationKey(String organisationKey) {

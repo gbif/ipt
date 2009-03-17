@@ -12,7 +12,6 @@
     <@s.hidden name="resource_id" value="${(resource.id)!}"/>
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 
-	<@s.textfield key="resource.title" cssClass="text large"/>
 	<@s.textfield key="resource.meta.uddiID" cssClass="text large"/>
 	<@s.textfield key="resource.contactName" required="true" cssClass="text large"/>
 	<@s.textfield key="resource.contactEmail" required="true" cssClass="text large"/>
@@ -21,7 +20,7 @@
 	<h3>Registered Services</h3>
 	<#if (resource.services?size>0)>
 	<#list resource.services.keySet() as st>
-		<@s.textfield name="resource.services[${st}]" value="${services[st]}" cssClass="text large" theme="simple"/>
+		<@s.textfield label="${st}" name="resource.services[${st}]" value="${resource.services[st]}" cssClass="text large" />
 	</#list>
 	<#else>
 		<p>None</p>

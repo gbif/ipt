@@ -24,10 +24,6 @@ import org.gbif.provider.service.RegistryManager;
 import org.xml.sax.SAXException;
 
 public class RegistryManagerImpl extends HttpBaseManager implements RegistryManager{
-	public static final String REGISTRY_ORG_URL = "http://gbrds.gbif.org/registry/organization";
-	public static final String REGISTRY_RESOURCE_URL = "http://gbrds.gbif.org/registry/resource";
-	public static final String REGISTRY_SERVICE_URL = "http://gbrds.gbif.org/registry/service";
-	public static final String REGISTRY_NODE_URL = "http://gbrds.gbif.org/registry/node";
 	private ResourceMetadataHandler metaHandler = new ResourceMetadataHandler();
 	private NewRegistryEntryHandler newRegistryEntryHandler = new NewRegistryEntryHandler();
 	
@@ -58,7 +54,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
         };
-        String result = executePost(REGISTRY_ORG_URL,  data, true);
+        String result = executePost(cfg.getRegistryOrgUrl(),  data, true);
         if (result!=null){
             // read new UDDI ID
 			try {
@@ -80,7 +76,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 
 	private void setRegistryCredentials() {
 		try {
-			URI geoURI = new URI(REGISTRY_ORG_URL);
+			URI geoURI = new URI(cfg.getRegistryOrgUrl());
 			setCredentials(geoURI.getHost(), cfg.getOrg().getUddiID(), cfg.getOrgPassword());		
 		} catch (URISyntaxException e) {
 			log.error("Exception setting the registry credentials", e);
@@ -106,8 +102,6 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 			log.info("The IPT has been registered with GBIF as resource "+ cfg.getIpt().getUddiID());
 			// RSS resource feed service
 	    	registerService(key, ServiceType.RSS, cfg.getAtomFeedURL());
-			// IPT EML service
-	    	registerService(key, ServiceType.EML, cfg.getEmlUrl("ipt"));
 	        return key;        	
 		}
 		log.warn("Failed to register IPT with GBIF as a new resource");
@@ -124,7 +118,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(meta.getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(meta.getContactEmail()))
         };
-        String result = executePost(REGISTRY_RESOURCE_URL,  data, true);
+        String result = executePost(cfg.getRegistryResourceUrl(),  data, true);
         if (result!=null){
             // read new UDDI ID
 			try {
@@ -151,7 +145,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("accessPointType", serviceType.code),
                 new NameValuePair("accessPointURL", StringUtils.trimToEmpty(accessPointURL))
         };
-        String result = executePost(REGISTRY_SERVICE_URL,  data, true);
+        String result = executePost(cfg.getRegistryServiceUrl(),  data, true);
         if (result!=null){
             // read new UDDI ID
 			try {
@@ -170,11 +164,11 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	}
 	private String registerService(Resource resource, ServiceType serviceType, String accessPointURL) throws RegistryException{
 		// validate that service is not already registered
-    	if (resource.getServices().containsKey(serviceType)){
+    	if (resource.getServiceUUID(serviceType)!=null){
     		throw new IllegalArgumentException("Service is already registered");
     	}
     	String key = registerService(resource.getUddiID(), serviceType, accessPointURL);
-    	resource.getServices().put(serviceType, key);
+    	resource.putService(serviceType, key);
 		return key;
 	}
 	
@@ -252,10 +246,10 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 
 	
 	private String getOrganisationUri(){
-		return String.format("%s/%s", REGISTRY_ORG_URL, cfg.getOrg().getUddiID());
+		return String.format("%s/%s", cfg.getRegistryOrgUrl(), cfg.getOrg().getUddiID());
 	}
 	private String getIptUri(){
-		return String.format("%s/%s", REGISTRY_RESOURCE_URL, cfg.getIpt().getUddiID());
+		return String.format("%s/%s", cfg.getRegistryResourceUrl(), cfg.getIpt().getUddiID());
 	}
 
 	public boolean testLogin() {

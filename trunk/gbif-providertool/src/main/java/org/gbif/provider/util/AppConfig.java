@@ -37,12 +37,12 @@ public class AppConfig{
 	private static String baseURL;	
 	private static String dataDIR;	
 	private static File webappDIR;	
-
-	private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir) {
+	private static String registryURL; 
+	private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl) {
 		super();
 		AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
 		AppConfig.webappDIR = new File(webappDir);
-
+		AppConfig.registryURL = registryUrl;
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
 		setBaseUrl(cfg.getBaseUrl());
@@ -83,7 +83,21 @@ public class AppConfig{
 	public String getAtomFeedURL(Integer page) {
 		return String.format("%s?page=%s", getAtomFeedURL(), page);
 	}
-
+	
+	// REGISTRY URLS
+	public static String getRegistryOrgUrl() {
+		return String.format("%s/organization", registryURL);
+	}
+	public static String getRegistryResourceUrl() {
+		return String.format("%s/resource", registryURL);
+	}
+	public static String getRegistryServiceUrl() {
+		return String.format("%s/service", registryURL);
+	}
+	public static String getRegistryNodeUrl() {
+		return String.format("%s/node", registryURL);
+	}
+	
 	
 	// RESOURCE BASICS
 	public URL getResourceUrl(String guid) {
@@ -330,8 +344,7 @@ public class AppConfig{
 		providerCfgManager.save(cfg);
 	}
 
-	
-	
+
 	// UTILITY METHODS
 	private static String trimUrl(String url){
 		url=url.trim();
