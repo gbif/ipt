@@ -52,16 +52,10 @@
 	</fieldset>
 </@s.form>
 
-<div id="loc-geoserver" class="stats map">
+<div id="loc-geoserver-big">
 	<#-- <label><@s.text name="stats.occPointMap"/></label> -->
 	<div id="occmap"></div>	
 </div>
 
-
-<div class="break79"></div>
-<div class="break79"></div>
-<div class="break79"></div>
-<div class="break20"></div>
-<div class="break10"></div>
 
 <#include "/WEB-INF/pages/inc/occurrenceList.ftl">  
