@@ -405,7 +405,7 @@ div.chart form, div.map form {
 	padding-right: 17px;
 	position: relative;
 	top: -39px;
-	margin-bottom: -34px;
+	margin-bottom: -33px;
 	text-align: right;
 	padding-top: 0px;
 	margin-top: 0px;
@@ -830,6 +830,10 @@ fieldset .noBottomMargin{
 .transformationImage{
 	background-color: #FFFFFF;
 	margin-left: 10px;
+}
+
+div #loc-geoserver #occmap{
+	margin-top: -3px;
 }
 
 /* @group tag cloud */
