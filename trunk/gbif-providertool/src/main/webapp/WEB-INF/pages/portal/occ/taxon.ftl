@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script>
 	$(document).ready(function(){
-		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "${width}", "${height}", "9"); 
+		var so = new SWFObject("<@s.url value="/scripts/IptOccurrenceMap.swf"/>", "swf", "690", "${height}", "9"); 
 		so.addParam("allowFullScreen", "true");
 		so.addVariable("swf", "");
 		so.addVariable("wms_url", escape("${geoserverMapUrl}"));
@@ -32,16 +32,8 @@
 
 </@s.form>
 
-<div id="loc-countries" class="stats map">
-	<label><@s.text name="stats.occByCountry"/></label>	
-	<div id="imgByCountry">
-		<@s.action name="occResourceStatsByCountry" namespace="/ajax" executeResult="true">
-			<@s.param name="filter" value="%{id}"/>
-		</@s.action>
-	</div>
-</div>
 <div id="loc-geoserver" class="stats map">
-	<label><@s.text name="stats.occPointMap"/></label>
+	<#-- <label><@s.text name="stats.occPointMap"/></label> -->
 	<div id="occmap"></div>	
 </div>
 
