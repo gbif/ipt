@@ -18,8 +18,8 @@
 		<img class="rightf" src="${cfg.getResourceLogoUrl(resource_id)}" />
 	</#if>
 	<div>
-		<div class="leftLarge">
-			<@s.textfield key="resource.title" required="true" cssClass="text large"/>
+		<div class="leftLarge-foo">
+			<@s.textfield key="resource.title" required="true" cssClass="text large-foo"/>
 	 	</div>
 		<div class="leftMedium">
 			<@s.select key="resource.type" list="resourceTypeMap" required="true" cssClass="text medium"/>
