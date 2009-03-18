@@ -297,6 +297,17 @@ public class AppConfig{
 	
 	
 
+	public File getLog4jFile() {
+		return new File(this.getDataDir(), "logging/"+cfg.getLog4jFilename());
+	}
+	public String getLog4jFilename() {
+		return cfg.getLog4jFilename();
+	}
+	public void setLog4jFilename(String log4jFile) {
+		cfg.setLog4jFilename(log4jFile);
+	}
+
+
 	public void setBaseUrl(String baseUrl) {
 		cfg.setBaseUrl(trimUrl(baseUrl));
 		baseURL=getBaseUrl();

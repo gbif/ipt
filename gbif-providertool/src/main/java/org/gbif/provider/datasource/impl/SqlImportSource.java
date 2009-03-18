@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.datasource.ImportRecord;
@@ -48,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class SqlImportSource implements ImportSource{
+	private static final Integer FETCH_SIZE = 1000;
 	private static Log log = LogFactory.getLog(SqlImportSource.class);
 	@Autowired
 	private TermMappingManager termMappingManager;
@@ -87,18 +90,16 @@ public class SqlImportSource implements ImportSource{
 			throw new IllegalArgumentException("View needs to have a source of type SourceSql ");
 		}
 		SourceSql src = (SourceSql) view.getSource();
-    	// try to load JDBC driver
-		try {
-			Class.forName(resource.getJdbcDriverClass());
-		} catch (ClassNotFoundException e) {
-			throw new ImportSourceException("Cant find JDBC driver class", e);
-		}
     	// try to connect to db via JDBC
 		try {
-			Driver driver = DriverManager.getDriver(resource.getJdbcUrl());
-			this.conn = DriverManager.getConnection(resource.getJdbcUrl(), resource.getJdbcUser(), resource.getJdbcPassword());
+			DataSource ds = resource.getDatasource();
+			if (ds!=null){
+				this.conn = ds.getConnection();				
+			}else{
+				throw new ImportSourceException("Can't connect to database");				
+			}
 		} catch (SQLException e) {
-			throw new ImportSourceException("Cant connect to database", e);
+			throw new ImportSourceException("Can't connect to database", e);
 		}
     	//FIXME: clone mappings
 		this.resource = resource;
@@ -109,7 +110,7 @@ public class SqlImportSource implements ImportSource{
     	this.maxRecords = maxRecords;
     	try {
     		this.stmt = this.conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-    		this.stmt.setFetchSize(Integer.MIN_VALUE);       
+    		this.stmt.setFetchSize(FETCH_SIZE);       
     		log.debug("SQLImportSource executing for resourceId[" + resource.getId() + "], connection[" + resource.getJdbcUrl() +"], the following SQL: " + this.viewSql);
     		this.rs = this.stmt.executeQuery(this.viewSql);
     		this.hasNext = this.rs.next();

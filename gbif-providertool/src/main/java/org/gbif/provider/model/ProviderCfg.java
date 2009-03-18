@@ -25,6 +25,7 @@ public class ProviderCfg {
 	private String geoserverDataDir;
 	private String geoserverUser;
 	private String geoserverPass;
+	private String log4jFile;
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -100,6 +101,14 @@ public class ProviderCfg {
 		this.geoserverDataDir = geoserverDataDir;
 	}
 
+	@Column(length=64)
+	public String getLog4jFilename() {
+		return log4jFile;
+	}
+	public void setLog4jFilename(String log4jFile) {
+		this.log4jFile = log4jFile;
+	}
+	
 	@Column(length=64)
 	public String getGeoserverUser() {
 		return geoserverUser;

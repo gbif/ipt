@@ -52,6 +52,50 @@
 	You will therefore have to download them yourselves, add the jar to the IPT lib folder and restart the application server.
 	On Tomcat the IPT lib folder is at <i>&lt;%CATALINA_HOME%&gt;/webapps/ipt/WEB-INF/lib</i> 
 </p>
-<ul class="plain">
-	<li><a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=F914793A-6FB4-475F-9537-B8FCB776BEFD&displaylang=en">Microsoft SQL Server JDBC Driver 2.0</a>,com.microsoft.sqlserver.jdbc.SQLServerDriver, jdbc:sqlserver://localhost:1433;databaseName=AdventureWorks;user=UserName;password=*****</li>
-</ul>
+<dl>
+		<dt>MySQL</dt>
+		<dd>included v5.1.6</dd>
+		<dd>default port: 3306</dd>
+		<dd>com.mysql.jdbc.Driver</dd>
+		<dd>jdbc:mysql://host:port/database</dd>
+		
+		<dt>PostgreSQL</dt>
+		<dd>included v8.2-504.jdbc3</dd>
+		<dd>default port: 5432</dd>
+		<dd>org.postgresql.Driver</dd>
+		<dd>jdbc:postgresql://host:port/database?charSet=LATIN1&compatible=7.2</dd>
+
+		<dt>Sybase</dt>
+		<dd>included v1.2.2</dd>
+		<dd>default port: 1433</dd>
+		<dd>net.sourceforge.jtds.jdbc.Driver</dd>
+		<dd>jdbc:jtds:sybase://server:port/database</dd>
+
+		<dt>Microsoft SQL Server</dt>
+		<dd>included v1.2.2</dd>
+		<dd>default port: 1433</dd>
+		<dd>net.sourceforge.jtds.jdbc.Driver</dd>
+		<dd>jdbc:jtds:sqlserver://server/database</dd>
+
+		<dt>Microsoft SQL Server</dt>
+		<dd><a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=F914793A-6FB4-475F-9537-B8FCB776BEFD&displaylang=en">download</a></dd>
+		<dd>default port: 1433</dd>
+		<dd>com.microsoft.sqlserver.jdbc.SQLServerDriver</dd>
+		<dd>jdbc:microsoft:sqlserver://host:port;databasename=database</dd>
+
+		<dt>Oracle</dt>
+		<dd>included v14</dd>
+		<dd>default port: 1521</dd>
+		<dd>oracle.jdbc.OracleDriver</dd>
+		<dd>jdbc:oracle:thin:@//host:port/database</dd>
+
+		<dt>H2</dt>
+		<dd>included v1.1.104</dd>
+		<dd>org.h2.Driver</dd>
+		<dd>jdbc:h2:/ABSOLUTE/PATH/TO/DATABASE/database;auto_server=true</dd>
+
+		<dt>Sun ODBC</dt>
+		<dd>included Java5</dd>
+		<dd>sun.jdbc.odbc.JdbcOdbcDriver</dd>
+		<dd>jdbc:odbc:data-source-name</dd>
+</dl>

@@ -18,23 +18,15 @@ package org.gbif.provider.webapp.action.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.RequestAware;
-import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.gbif.provider.service.GeoserverManager;
-import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.impl.RegistryManagerImpl;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.ActionContext;
 
 public class ConfigAction extends BasePostAction{
 	private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
@@ -52,11 +44,17 @@ public class ConfigAction extends BasePostAction{
 			return "cancel";
 		}
 		this.cfg.save();
+		reloadLogger();
 		saveMessage(getText("config.updated"));
 		check();
 		return SUCCESS;
 	}
 	
+	private void reloadLogger(){
+		LogManager.resetConfiguration();
+		DOMConfigurator.configure(cfg.getLog4jFile().getAbsolutePath());
+		//PropertyConfigurator.configure();
+	}
 
 	public String updateGeoserver() throws Exception {
 		try {

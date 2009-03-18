@@ -214,10 +214,10 @@ public abstract class DataResource extends Resource {
 				datasource = new SimpleDriverDataSource(driver, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword());
 			} catch(java.lang.ClassNotFoundException e) {
 				datasource = null;
-				log.debug(String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s", this.jdbcDriverClass, this.getJdbcUrl()), e);
+				log.warn(String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s", this.jdbcDriverClass, this.getJdbcUrl()), e);
 			} catch (Exception e) {
 				datasource = null;
-				log.debug(String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s, Password=%s", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword()), e);
+				log.warn(String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s, Password=***", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser()), e);
 			}			
 		}else{
 			datasource = null;
