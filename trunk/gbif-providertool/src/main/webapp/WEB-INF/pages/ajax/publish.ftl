@@ -17,7 +17,7 @@
 	  </#if>
        <div id="registryDetails" style="display:none" class="${resource.status}">
        		<h2>Registered Data</h2>
-       		<div id="registryData">retrieving registry data...</div>
+       		<div id="registryData">None</div>
        </div>	     
 	</div>
    <#if resource.isRegistered()>

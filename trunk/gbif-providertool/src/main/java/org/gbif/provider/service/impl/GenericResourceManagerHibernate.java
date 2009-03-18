@@ -101,6 +101,8 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	@Transactional(readOnly=false)
 	public T publish(Long resourceId) {
 		T resource = get(resourceId);
+		// make resource public. Otherwise it wont get registered with GBIF
+		resource.setStatus(PublicationStatus.dirty);
 		updateRegistry(resource);
 		// in case sth goes wrong
 		Eml metadata;
@@ -141,7 +143,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 			}else{
 				registryManager.registerResource(resource);			
 			}
-		} catch (RegistryException e) {
+		} catch (Exception e) {
 			resource.setDirty();
 			log.warn("Failed to communicate with registry", e);
 		}
