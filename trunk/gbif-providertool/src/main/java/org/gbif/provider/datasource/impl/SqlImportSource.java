@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -46,7 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class SqlImportSource implements ImportSource{
-
+	private static Log log = LogFactory.getLog(SqlImportSource.class);
 	@Autowired
 	private TermMappingManager termMappingManager;
 	@Autowired
@@ -108,6 +110,7 @@ public class SqlImportSource implements ImportSource{
     	try {
     		this.stmt = this.conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
     		this.stmt.setFetchSize(Integer.MIN_VALUE);       
+    		log.debug("SQLImportSource executing for resourceId[" + resource.getId() + "], connection[" + resource.getJdbcUrl() +"], the following SQL: " + this.viewSql);
     		this.rs = this.stmt.executeQuery(this.viewSql);
     		this.hasNext = this.rs.next();
 		} catch (SQLException e) {
