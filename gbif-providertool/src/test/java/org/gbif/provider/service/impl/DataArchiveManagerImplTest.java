@@ -19,7 +19,7 @@ public class DataArchiveManagerImplTest extends ResourceTestBase{
 		this.setupOccResource();
 		try {
 			dataArchiveManager.createArchive(resource);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		

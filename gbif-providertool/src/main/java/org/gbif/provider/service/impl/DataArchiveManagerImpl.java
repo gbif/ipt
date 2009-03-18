@@ -50,7 +50,10 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	@Autowired
 	private Configuration freemarker;
 
-	public File createArchive(DataResource resource) throws IOException {
+	public File createArchive(DataResource resource) throws IOException, IllegalStateException {
+		if (resource.getCoreMapping()==null){
+			throw new IllegalStateException("Resource needs at least a core mapping to create a data archive");
+		}
 		Map<File, ViewMappingBase> archiveFiles = new HashMap<File, ViewMappingBase>();		
 		// individual archive files
 		try {

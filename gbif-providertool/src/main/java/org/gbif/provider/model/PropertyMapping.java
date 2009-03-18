@@ -103,7 +103,7 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 		return column;
 	}
 	public void setColumn(String column) {
-		this.column = column;
+		this.column = StringUtils.trimToNull(column);
 	}
 
 	public String getValue() {
