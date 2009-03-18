@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
@@ -87,7 +88,15 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
         ResultSetMetaData meta = rs.getMetaData();
         int columnNum = meta.getColumnCount();
         for (int i=1; i<=columnNum; i++){
-        	columnHeaders.add(meta.getTableName(i)+"."+meta.getColumnName(i));
+        	String col="";
+        	if (StringUtils.trimToNull(meta.getSchemaName(i))!=null){
+        		col+= StringUtils.trimToEmpty(meta.getSchemaName(i))+".";
+        	}
+        	if (StringUtils.trimToNull(meta.getTableName(i))!=null){
+        		col+= StringUtils.trimToEmpty(meta.getTableName(i))+".";
+        	}
+    		col+= meta.getColumnName(i);
+        	columnHeaders.add(col);
         }
         preview.add(columnHeaders);
         

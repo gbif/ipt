@@ -206,6 +206,9 @@ import org.springframework.transaction.annotation.Transactional;
 			} catch (IOException e) {
 				log.error("Could not write DarwinCore archive", e);
 				this.annotationManager.annotateResource(resource, "Could not write DarwinCore archive. IOException");
+			} catch (Exception e) {
+				log.error("Could not create DarwinCore archive", e);
+				this.annotationManager.annotateResource(resource, "Could not create DarwinCore archive");
 			}
 			
 			//
