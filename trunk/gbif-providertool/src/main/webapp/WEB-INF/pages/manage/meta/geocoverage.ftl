@@ -36,10 +36,10 @@
 <fieldset>
 	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
-	<input type="hidden" id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
-	<input type="hidden" id="maxx" name="eml.geographicCoverage.boundingCoordinates.max.longitude" />
-	<input type="hidden" id="miny" name="eml.geographicCoverage.boundingCoordinates.min.latitude" />
-	<input type="hidden" id="maxy" name="eml.geographicCoverage.boundingCoordinates.max.latitude" />
+	<@s.hidden id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
+	<@s.hidden id="maxx" key="eml.geographicCoverage.boundingCoordinates.max.longitude" />
+	<@s.hidden id="miny" key="eml.geographicCoverage.boundingCoordinates.min.latitude" />
+	<@s.hidden id="maxy" key="eml.geographicCoverage.boundingCoordinates.max.latitude" />
 	<div class="newline"></div>
 	<@s.textarea key="eml.geographicCoverage.description" required="false" cssClass="text xlarge"/>
 </fieldset>
