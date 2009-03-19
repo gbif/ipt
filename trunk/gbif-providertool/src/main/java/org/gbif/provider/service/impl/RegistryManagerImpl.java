@@ -276,7 +276,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getIpt().getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getIpt().getContactEmail()))
         };
-        String result = executePut(getIptUri(),  data, true);
+        String result = executePost(getIptUri(),  data, true);
         if (result==null){
     		throw new RegistryException("Bad registry response");
         }
@@ -298,7 +298,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
         };
-        String result = executePut(getOrganisationUri(),  data, true);
+        String result = executePost(getOrganisationUri(),  data, true);
         if (result==null){
     		throw new RegistryException("Bad registry response");
         }
@@ -320,7 +320,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
         };
-        String result = executePut(resource.getRegistryUrl(),  data, true);
+        String result = executePost(resource.getRegistryUrl(),  data, true);
         if (result==null){
     		throw new RegistryException("Bad registry response");
         }
