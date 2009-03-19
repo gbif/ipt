@@ -150,11 +150,13 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     		occurrences = darwinCoreManager.getByTaxon(id, resource_id, true);
     		if (taxon!=null){
     			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, taxon, null);
+    			BBox bbox = BBox.NewWorldInstance();
     			if (taxon.getBbox()!=null && taxon.getBbox().isValid()){
-    				geoserverMapBBox = taxon.getBbox().toStringWMS();
-    			}else{
-    				geoserverMapBBox = resource.getGeoCoverage().toStringWMS();
+    				bbox = taxon.getBbox();
+    			}else if (resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
+    				bbox = resource.getGeoCoverage();
     			}
+				geoserverMapBBox = bbox.toStringWMS();
     		}
     	}
 		return SUCCESS;
