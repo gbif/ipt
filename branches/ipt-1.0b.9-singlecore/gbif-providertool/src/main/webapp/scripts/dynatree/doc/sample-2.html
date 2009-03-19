@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Dynatree - Example</title>
+
+	<script src='../jquery/jquery.js' type='text/javascript'></script>
+	<script src='../jquery/ui.core.js' type='text/javascript'></script>
+    <script src='../jquery/jquery.cookie.js' type='text/javascript'></script>
+
+	<link href='../src/skin/ui.dynatree.css' rel='stylesheet' type='text/css'>
+	<script src='../src/jquery.dynatree.js' type='text/javascript'></script>
+
+	<link href='sample.css' rel='stylesheet' type='text/css'>
+    <script src='sample.js' type='text/javascript'></script>
+    
+<script type='text/javascript'>
+	$(function(){
+		// Initialize the tree inside the <div>element.
+		// The tree structure is read from the contained <ul> tag.
+		$("#tree").dynatree({
+			title: "Sample 2",
+			rootVisible: true,
+			autoCollapse: true,
+//			clickFolderMode: 3,
+			onActivate: function(dtnode) {
+				$("#echoActive").text(dtnode.data.title);
+				if( dtnode.data.url )
+					window.open(dtnode.data.url, dtnode.data.target);
+			},
+			onDeactivate: function(dtnode) {
+				$("#echoSelected").text("-");
+			},
+			onFocus: function(dtnode) {
+				$("#echoFocused").text(dtnode.data.title);
+			},
+			onBlur: function(dtnode) {
+				$("#echoFocused").text("-");
+			},
+			onLazyRead: function(dtnode){
+				var fakeJsonResult = [
+				    { title: 'Lazy node 1', isLazy: true },
+				    { title: 'Simple node 2', select: true }
+				];
+//				alert ("Let's pretend we're using this AJAX response to load the branch:\n " + jsonResult);
+				function fakeAjaxResponse() {
+					return function() {
+						dtnode.append(fakeJsonResult);
+						// Remove the 'loading...' status:
+						dtnode.setLazyNodeStatus(DTNodeStatus_Ok);
+					};
+				}
+				window.setTimeout(fakeAjaxResponse(), 1500);
+			}
+		});
+
+		$("#btnAddCode").click(function(){
+			// Sample: add an hierarchic branch using code.
+			// This is how we would add tree nodes programatically
+			var rootNode = $("#tree").dynatree("getRoot");
+			var childNode = rootNode.append({
+				title: "Programatically addded nodes",
+				tooltip: "This folder and all child nodes were added programmatically.",
+				isFolder: true
+			});
+			childNode.append({
+				title: "Document using a custom icon",
+				icon: "customdoc1.gif"
+			});
+		});
+
+		$("#btnAddObject").click(function(){
+			// Sample: add an hierarchic branch using an array
+			var obj = [
+				{ title: 'Lazy node 1', isLazy: true },
+				{ title: 'Lazy node 2', isLazy: true },
+				{ title: 'Folder node 3', isFolder: true,
+					children: [
+						{ title: 'node 3.1' },
+						{ title: 'node 3.2',
+							children: [
+								{ title: 'node 3.2.1' },
+								{ title: 'node 3.2.2',
+									children: [
+										{ title: 'node 3.2.2.1' }
+									]
+								},
+							]
+						},
+					]
+				}
+			];
+			$("#tree").dynatree("getRoot").append(obj);
+		});
+
+		$("#btnActiveNode").click(function(){
+			$("#tree").dynatree("getTree").activateKey("id4.3.2");
+//			$("#tree").dynatree("getTree").getNodeByKey("id4.3.2").activate();
+		});
+
+		$("#btnShowActive").click(function(){
+			var dtnode = $("#tree").dynatree("getActiveNode");
+			if( dtnode )
+				alert("Currently active: " + dtnode.data.title);
+			else
+				alert("No active node.");
+		});
+	});
+</script>
+</head>
+
+<body class="example">
+	<h1>Example: Programming</h1>
+	<p class="description">
+		Note: this example uses a data attribute in some places, so it is not 
+		strictly compliant. 
+	</p>
+	
+	<div id="tree">
+		<ul>
+			<li>This simple node (and the following) have been created from html.
+			<li id="id1" title="This is item #1">item1 with key and tooltip
+			<li id="id2">item2 with key 'id2'
+
+			<li id="id3" class="folder">Standard Folder with some children
+				<ul>
+					<li id="id3.1">Sub-item 3.1
+					<li id="id3.2">Sub-item 3.2
+				</ul>
+
+			<li id="id4">item 4. Note that also non-folders (i.e. 'documents') may have child nodes
+				<ul>
+					<li id="id4.1">Sub-item 4.1
+					<li id="id4.2">Sub-item 4.2
+					<li id="id4.3">Sub-item 4.3
+						<ul>
+							<li id="id4.3.1">Sub-item 4.3.1
+							<li id="id4.3.2">Sub-item 4.3.2
+							<ul>
+								<li id="id4.3.2.1">Sub-item 4.3.2.1
+								<li id="id4.3.2.2">Sub-item 4.3.2.2
+							</ul>
+						</ul>
+					<li id="id4.4">Sub-item 4.4
+				</ul>
+
+			<li id="id5" class="expanded folder">Advanced examples
+				<ul>
+					<li data="key: 'node5.1'">item5.1: Using data attribute as an alternative way to specify a key.
+					<li data="key: 'node5.3', isFolder: true">item5.1: Using data attribute as an alternative way to specify a folder.
+					<li id="id5.2">Sub-item 5.2
+					<li>Using some <b>bold</b> markup in the text (&lt;li&gt; tag only).
+					<li><span>Using some <b>bold</b> markup in the text (&lt;li&gt;&lt;span&gt; tag).</span>
+					<li><span><h3>Title</h3>
+                        <p>Some text longer text. Some text longer text. Some text <br>
+                        longer text. Some text longer text. Some text longer text. </p>
+                        </span>
+					<li><span>Using some extended markup in the text (&lt;li&gt;&lt;span&gt; tag).<button value="123">Click me</button>
+					</span>
+					<li>Item without a key. Keys are optional (generated automatically), but may be used in the callbacks
+				</ul>
+
+			<li>item3
+		</ul>
+	</div>
+
+	<div>Active node: <span id="echoActive">-</span></div>
+	<div>Focused node: <span id="echoFocused">-</span></div>
+	<p>
+		<button id="btnAddCode">Add nodes programmatically</button>
+		<button id="btnAddObject">Add nodes using arrays</button>
+		<button id="btnActiveNode">Activate item id4.3.2</button>
+		<button id="btnShowActive">Show active node...</button>
+	</p>
+	<hr>
+	<p class="sample-links">
+		<a class="hideInsideFS" href="http://dynatree.googlecode.com">jquery.dynatree.js project home</a>
+		&nbsp; <a class="hideOutsideFS" href="#">Link to this page</a>
+		&nbsp; <a class="hideInsideFS" href="samples.html">Example Browser</a>
+	 </p>
+</body>
+</html>

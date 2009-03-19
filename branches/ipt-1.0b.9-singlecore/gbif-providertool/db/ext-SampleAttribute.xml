@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://ipt.gbif.org/extension/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ipt.gbif.org/extension/  extension.xsd" 
+    title="Sample Attribute" link="" name="SampleAttribute" namespace="http://rs.tdwg.org/dwc/terms/" type="Sample">
+    <property name="SampleAttributeID" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeID"/>
+    <property name="SampleAttributeType" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeType"/>
+    <property name="SampleAttributeValue" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeValue"/>
+    <property name="SampleAttributeAccuracy" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeAccuracy"/>
+    <property name="SampleAttributeUnit" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeUnit"/>
+    <property name="SampleAttributeDeterminedDate" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeDeterminedDate"/>
+    <property name="SampleAttributeDeterminedBy" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeDeterminedBy"/>
+    <property name="SampleAttributeRemarks" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeRemarks"/>
+</extension>

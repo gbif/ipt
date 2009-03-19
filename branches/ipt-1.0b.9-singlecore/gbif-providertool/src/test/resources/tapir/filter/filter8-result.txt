@@ -1,0 +1,1 @@
+Filter: not (AND: http://rs.tdwg.org/dwc/terms/country is null and http://rs.tdwg.org/dwc/terms/scientificName like 'Aus')
