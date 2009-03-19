@@ -39,7 +39,7 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     			BBox bbox = BBox.NewWorldInstance();
     			if (region.getBbox()!=null && region.getBbox().isValid()){
     				bbox = region.getBbox();
-    			}else if (resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
+    			}else if (resource!=null && resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
     				bbox = resource.getGeoCoverage();
     			}
 				geoserverMapBBox = bbox.toStringWMS();
@@ -59,7 +59,7 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     			BBox bbox = BBox.NewWorldInstance();
     			if (region.getBbox()!=null && region.getBbox().isValid()){
     				bbox = region.getBbox();
-    			}else if (resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
+    			}else if (resource!=null && resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
     				bbox = resource.getGeoCoverage();
     			}
 				geoserverMapBBox = bbox.toStringWMS();

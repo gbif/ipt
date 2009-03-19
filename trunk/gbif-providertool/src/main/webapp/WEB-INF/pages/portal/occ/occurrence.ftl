@@ -10,8 +10,8 @@
 
 <img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 
-<h2>${dwc.collectionCode} - ${dwc.catalogNumber}</h2>	
-<h3>${dwc.scientificName}</h3>
+<h2>${dwc.collectionCode!"Unknown collection code"} - ${dwc.catalogNumber!"Unknown catalogue number"}</h2>	
+<h3>${dwc.scientificName!"Unknown Species"}</h3>
 
 <@s.form>
 
