@@ -114,7 +114,7 @@ public class HttpBaseManager {
 		}
 		return result;
 	}
-	protected String executePut(String uri, NameValuePair[] params, boolean authenticate){
+	private String executePut(String uri, NameValuePair[] params, boolean authenticate){
 		String result = null;
 		log.info("Putting to "+uri);
 		PutMethod method = newHttpPut(uri, authenticate);
