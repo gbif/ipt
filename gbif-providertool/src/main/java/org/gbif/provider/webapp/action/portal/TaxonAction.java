@@ -153,7 +153,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     			BBox bbox = BBox.NewWorldInstance();
     			if (taxon.getBbox()!=null && taxon.getBbox().isValid()){
     				bbox = taxon.getBbox();
-    			}else if (resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
+    			}else if (resource!=null && resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
     				bbox = resource.getGeoCoverage();
     			}
 				geoserverMapBBox = bbox.toStringWMS();
