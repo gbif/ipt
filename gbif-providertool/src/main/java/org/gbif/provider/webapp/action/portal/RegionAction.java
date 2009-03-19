@@ -4,6 +4,7 @@ package org.gbif.provider.webapp.action.portal;
 import java.util.List;
 
 import org.gbif.provider.geo.MapUtil;
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
@@ -35,11 +36,13 @@ public class RegionAction extends BaseOccurrenceResourceAction {
 			// geoserver map link
     		if (region!=null){
     			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, region);
+    			BBox bbox = BBox.NewWorldInstance();
     			if (region.getBbox()!=null && region.getBbox().isValid()){
-    				geoserverMapBBox = region.getBbox().toStringWMS();
-    			}else{
-    				geoserverMapBBox = resource.getGeoCoverage().toStringWMS();
+    				bbox = region.getBbox();
+    			}else if (resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
+    				bbox = resource.getGeoCoverage();
     			}
+				geoserverMapBBox = bbox.toStringWMS();
     		}else{
         		return RECORD404;
     		}
@@ -53,11 +56,13 @@ public class RegionAction extends BaseOccurrenceResourceAction {
     		occurrences = darwinCoreManager.getByRegion(region.getId(), resource_id, true);
     		if (region!=null){
     			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, null, region);
+    			BBox bbox = BBox.NewWorldInstance();
     			if (region.getBbox()!=null && region.getBbox().isValid()){
-    				geoserverMapBBox = region.getBbox().toStringWMS();
-    			}else{
-    				geoserverMapBBox = resource.getGeoCoverage().toStringWMS();
+    				bbox = region.getBbox();
+    			}else if (resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
+    				bbox = resource.getGeoCoverage();
     			}
+				geoserverMapBBox = bbox.toStringWMS();
     		}else{
         		return RECORD404;
     		}
