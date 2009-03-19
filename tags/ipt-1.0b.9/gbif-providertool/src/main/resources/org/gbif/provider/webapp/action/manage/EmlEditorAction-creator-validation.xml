@@ -1,0 +1,32 @@
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+
+  <!-- Dataset form validation -->
+    <field name="eml.resourceCreator.firstName">
+        <field-validator type="requiredstring">
+            <message key="errors.required"/>
+        </field-validator>
+    </field>
+    <field name="eml.resourceCreator.lastName">
+        <field-validator type="requiredstring">
+            <message key="errors.required"/>
+        </field-validator>
+    </field>
+    
+    <field name="eml.resourceCreator.email">
+        <field-validator type="requiredstring">
+            <message key="errors.required"/>
+        </field-validator>
+        <field-validator type="email">
+            <message key="errors.email"/>
+        </field-validator>
+    </field>
+    <field name="eml.resourceCreator.address.country">
+        <field-validator type="requiredstring">
+            <message key="errors.required"/>
+        </field-validator>
+    </field>
+    
+
+</validators>
