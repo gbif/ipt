@@ -74,7 +74,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private Taxon basionym;
 //		private String basionymID;
 //		private String basionym;	
-		private String notes;
 		
 		public static Taxon newInstance(DataResource resource){
 			Taxon tax = new Taxon();
@@ -239,14 +238,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.nomenclaturalStatus = nomStatus;
 		}
 
-		@Lob
-		public String getNotes() {
-			return notes;
-		}
-		public void setNotes(String notes) {
-			this.notes = notes;
-		}
-
 		@ManyToOne(optional = true)
 		public Taxon getAcceptedTaxon() {
 			return acceptedTaxon;
@@ -261,6 +252,44 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 		public void setBasionym(Taxon basionym) {
 			this.basionym = basionym;
+		}
+
+		public String getBinomial() {
+			return binomial;
+		}
+		public void setBinomial(String binomial) {
+			this.binomial = binomial;
+		}
+
+		@Column(length=128)
+		public String getSpecificEpithet() {
+			return specificEpithet;
+		}
+		public void setSpecificEpithet(String specificEpithet) {
+			this.specificEpithet = specificEpithet;
+		}
+
+		@Column(length=128)
+		public String getInfraspecificEpithet() {
+			return infraspecificEpithet;
+		}
+		public void setInfraspecificEpithet(String infraspecificEpithet) {
+			this.infraspecificEpithet = infraspecificEpithet;
+		}
+
+		public String getScientificNameAuthorship() {
+			return scientificNameAuthorship;
+		}
+		public void setScientificNameAuthorship(String scientificNameAuthorship) {
+			this.scientificNameAuthorship = scientificNameAuthorship;
+		}
+
+		public String getTaxonAccordingTo() {
+			return taxonAccordingTo;
+		}
+
+		public void setTaxonAccordingTo(String taxonAccordingTo) {
+			this.taxonAccordingTo = taxonAccordingTo;
 		}
 
 		@Override
