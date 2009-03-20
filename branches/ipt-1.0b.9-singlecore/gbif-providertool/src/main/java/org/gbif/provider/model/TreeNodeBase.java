@@ -12,16 +12,16 @@ import javax.persistence.Transient;
 
 @MappedSuperclass
 public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> implements BaseObject, TreeNode<T, E>, Comparable<T>{
-	private Long id;
-	private T parent;
-	private String label;
+	protected Long id;
+	protected T parent;
+	protected String label;
 	private Long lft;
 	private Long rgt;
-	private E type;
+	protected E type;
 	private String mpath;
 	protected DataResource resource;
-	private BBox bbox = new BBox();
-	private int occTotal;
+	protected BBox bbox = new BBox();
+	protected int occTotal;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

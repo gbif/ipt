@@ -25,15 +25,15 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 @Table(
-		uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
+	uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
 )
 @org.hibernate.annotations.Table(
-		appliesTo="Taxon",
-		indexes={
-				@Index(name="tax_label", columnNames={"label"} ),
-				@Index(name="tax_lft", columnNames={"lft"} ),
-				@Index(name="tax_rgt", columnNames={"rgt"} )
-		}
+	appliesTo="Taxon",
+	indexes={
+		@Index(name="tax_label", columnNames={"label"} ),
+		@Index(name="tax_lft", columnNames={"lft"} ),
+		@Index(name="tax_rgt", columnNames={"rgt"} )
+	}
 )
 public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
@@ -46,20 +46,35 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private boolean isDeleted;
 		private Date modified;
 		// taxon specific
-		private String rank;
-		private String name;
+		//private String taxonID; --> this.guid
+		// private String scientificName; --> this.label
+		private String binomial;
+//		private String kingdom;
+//		private String phylum;
+//		private String classs;
+//		private String order;
+//		private String family;
+//		private String genus;
+//		private String subgenus;
+		private String specificEpithet;
+		private String taxonRank;
+		private String infraspecificEpithet;
+		private String scientificNameAuthorship;
 		private String nomenclaturalCode;
-		// not existing in DwC, but used for TaxonCore
-		private String taxonomicParentID;
-		private String acceptedTaxonID;
-		private String basionymID;
-		private String nomenclaturalReference;
-		private String taxStatus;
-		private String nomStatus;
-		private String notes;
-		// derived
+		private String taxonAccordingTo;
+		private String namePublishedIn;
+		private String taxonomicStatus;
+		private String nomenclaturalStatus;
+//		private Taxon higherTaxon; --> this.parent
+//		private String higherTaxonID;  
+//		private String higherTaxon;
 		private Taxon acceptedTaxon;
+//		private String acceptedTaxonID;
+//		private String acceptedTaxon;
 		private Taxon basionym;
+//		private String basionymID;
+//		private String basionym;	
+		private String notes;
 		
 		public static Taxon newInstance(DataResource resource){
 			Taxon tax = new Taxon();
@@ -124,14 +139,24 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.modified = modified;
 		}
 
-		@Column(length=128)
+		@Transient
+		@Deprecated
 		public String getRank() {
-			return rank;
+			return taxonRank;
 		}
+		@Deprecated
 		public void setRank(String rank) {
-			this.rank = rank;
+			this.taxonRank = rank;
 		}
 		
+		@Column(length=128)
+		public String getTaxonRank() {
+			return taxonRank;
+		}
+		public void setTaxonRank(String taxonRank) {
+			this.taxonRank = taxonRank;
+		}
+
 		@Transient
 		public Rank getDwcRank() {
 			return super.getType();
@@ -157,51 +182,61 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.nomenclaturalCode = nomenclaturalCode;
 		}
 
-		@Column(length=32)
+		@Transient
 		public String getTaxonomicParentID() {
-			return taxonomicParentID;
-		}
-		public void setTaxonomicParentID(String taxonomicParentID) {
-			this.taxonomicParentID = taxonomicParentID;
+			if (parent!=null){
+				return parent.guid;				
+			}
+			return null;
 		}
 
-		@Column(length=32)
+		@Transient
 		public String getAcceptedTaxonID() {
-			return acceptedTaxonID;
-		}
-		public void setAcceptedTaxonID(String acceptedTaxonID) {
-			this.acceptedTaxonID = acceptedTaxonID;
+			if (acceptedTaxon!=null){
+				return acceptedTaxon.guid;				
+			}
+			return null;
 		}
 
-		@Column(length=32)
+		@Transient
 		public String getBasionymID() {
-			return basionymID;
-		}
-		public void setBasionymID(String basionymID) {
-			this.basionymID = basionymID;
+			if (basionym!=null){
+				return basionym.guid;				
+			}
+			return null;
 		}
 
+		@Transient
+		@Deprecated
 		public String getNomenclaturalReference() {
-			return nomenclaturalReference;
+			return namePublishedIn;
 		}
+		@Deprecated
 		public void setNomenclaturalReference(String nomenclaturalReference) {
-			this.nomenclaturalReference = nomenclaturalReference;
+			this.namePublishedIn = nomenclaturalReference;
+		}
+
+		public String getNamePublishedIn() {
+			return namePublishedIn;
+		}
+		public void setNamePublishedIn(String namePublishedIn) {
+			this.namePublishedIn = namePublishedIn;
 		}
 
 		@Column(length=128)
 		public String getTaxonomicStatus() {
-			return taxStatus;
+			return taxonomicStatus;
 		}
 		public void setTaxonomicStatus(String taxStatus) {
-			this.taxStatus = taxStatus;
+			this.taxonomicStatus = taxStatus;
 		}
 
 		@Column(length=128)
 		public String getNomenclaturalStatus() {
-			return nomStatus;
+			return nomenclaturalStatus;
 		}
 		public void setNomenclaturalStatus(String nomStatus) {
-			this.nomStatus = nomStatus;
+			this.nomenclaturalStatus = nomStatus;
 		}
 
 		@Lob
@@ -247,8 +282,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			Taxon rhs = (Taxon) object;
 			return new EqualsBuilder()
 					.append(this.getLabel(), rhs.getLabel())
-					.append(this.rank, rhs.rank)
-					.append(this.name, rhs.name)
+					.append(this.taxonRank, rhs.taxonRank)
+					.append(this.taxonAccordingTo, rhs.taxonAccordingTo)
 					.append(this.getParent(), rhs.getParent())
 					.append(this.getId(), rhs.getId()).isEquals();
 		}
@@ -256,8 +291,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		 * @see java.lang.Object#hashCode()
 		 */
 		public int hashCode() {
-			return new HashCodeBuilder(2136008009, 497664597).append(this.rank).append(this.getLabel())
-					.append(this.name).append(this.getParent()).append(this.getId())
+			return new HashCodeBuilder(2136008009, 497664597).append(this.taxonRank).append(this.getLabel())
+					.append(this.taxonAccordingTo).append(this.getParent()).append(this.getId())
 					.toHashCode();
 		}
 
