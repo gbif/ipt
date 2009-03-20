@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Tokenizer;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -121,6 +122,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         List<String> newIdList =  Arrays.asList(StringUtils.split(newProperties, " "));
     	for (ExtensionProperty prop : view.getExtension().getProperties()){
         	if (prop == null){
+        		continue;
+        	}
+        	if (resourceType.equals(CHECKLIST) && !prop.getGroup().equalsIgnoreCase(ChecklistResource.DWC_GROUP)){
+        		// for checklists only show the taxon group of darwin core
         		continue;
         	}
         	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup();

@@ -34,7 +34,8 @@ import org.gbif.provider.util.Constants;
 @Entity
 public class ChecklistResource extends DataResource {
 	private static final String DWC_GUID_PROPERTY = "TaxonID";
-
+	public static final String DWC_GROUP = "Taxon";
+	
 	private int numCommonNames;
 	private int numCommonNameLanguages;
 	private int numDistributions;

@@ -17,14 +17,11 @@
 package org.gbif.provider.model;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,7 +43,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.annotations.IndexColumn;
+import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
@@ -65,7 +62,6 @@ public abstract class DataResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private UploadEvent lastUpload;
-	private ExtensionMapping coreMapping;
 	// extension mappings, not including the core mapping
 	private Map<Long, ExtensionMapping> extensionMappings = new HashMap<Long, ExtensionMapping>();
 	//
@@ -96,7 +92,7 @@ public abstract class DataResource extends Resource {
 		ExtensionMapping coreVM = new ExtensionMapping();
 		coreVM.setResource(this);
 		coreVM.setExtension(ext);
-		this.setCoreMapping(coreVM);
+		this.addExtensionMapping(coreVM);
 	}
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -125,21 +121,20 @@ public abstract class DataResource extends Resource {
 		return all;
 	}
 	
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="resource")
-//    @JoinColumn(insertable=false, updatable=false)
-//    @org.hibernate.annotations.Where(clause="mapping_type='CORE'")        
+	@Transient
 	public ExtensionMapping getCoreMapping() {
-		return coreMapping;
+		return extensionMappings.get(Constants.DARWIN_CORE_EXTENSION_ID);
+//		for (ExtensionMapping m : extensionMappings.values()){
+//			if (m.isCore()){
+//				return m;
+//			}
+//		}
+//		return null;
 	}
-	public void setCoreMapping(ExtensionMapping coreMapping) {
-		this.coreMapping = coreMapping;
-	}
-	
 
 
 	@OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name="resource_fk", insertable=false, updatable=false)
-    @org.hibernate.annotations.Where(clause="mapping_type='EXT'")        
 	@MapKey(columns = @Column(name = "extension_fk"))
 	public Map<Long, ExtensionMapping> getExtensionMappingsMap() {
 		return extensionMappings;
@@ -149,8 +144,15 @@ public abstract class DataResource extends Resource {
 	}
 	@Transient
 	public List<ExtensionMapping> getExtensionMappings() {
-		return new ArrayList<ExtensionMapping>(extensionMappings.values());
+		List<ExtensionMapping> exts = new ArrayList<ExtensionMapping>();
+		for (ExtensionMapping m : extensionMappings.values()){
+			if (!m.isCore()){
+				exts.add(m);
+			}
+		}
+		return exts;
 	}
+	
 	public void addExtensionMapping(ExtensionMapping mapping) {
 		mapping.setResource(this);
 		this.extensionMappings.put(mapping.getExtension().getId(), mapping);
@@ -278,7 +280,7 @@ public abstract class DataResource extends Resource {
 	@Transient
 	public boolean hasMinimalMapping() {
 		boolean result = false;
-		if (coreMapping.getPropertyMappings().size() > 0){
+		if (getCoreMapping().getPropertyMappings().size() > 0){
 			result = true;
 		}
 		return result;

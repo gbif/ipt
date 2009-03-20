@@ -23,6 +23,7 @@
         <mapping class="org.gbif.provider.model.DarwinCore"/>
         <mapping class="org.gbif.provider.model.DataResource"/>
         <mapping class="org.gbif.provider.model.Extension"/>
+        <mapping class="org.gbif.provider.model.ExtensionMapping"/>
         <mapping class="org.gbif.provider.model.ExtensionProperty"/>
         <mapping class="org.gbif.provider.model.OccurrenceResource"/>
         <mapping class="org.gbif.provider.model.OccStatByRegionAndTaxon"/>        
@@ -41,10 +42,7 @@
         <mapping class="org.gbif.provider.model.ThesaurusVocabulary"/>
         <mapping class="org.gbif.provider.model.Transformation"/>
         <mapping class="org.gbif.provider.model.UploadEvent"/>
-        <mapping class="org.gbif.provider.model.ViewMappingBase"/>
-        <mapping class="org.gbif.provider.model.ViewCoreMapping"/>
-        <mapping class="org.gbif.provider.model.ViewExtensionMapping"/>
-        <!-- embeddedable -->
+        <!-- embeddable -->
         <mapping class="org.gbif.provider.model.BBox"/>
         <mapping class="org.gbif.provider.model.Point"/>
         
