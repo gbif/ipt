@@ -45,9 +45,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private String link;
 		private boolean isDeleted;
 		private Date modified;
-		@NotNull
-		private DataResource resource;
-		
 		// taxon specific
 		private String rank;
 		private String name;
@@ -64,10 +61,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private Taxon acceptedTaxon;
 		private Taxon basionym;
 		
-		// stats
-		private BBox bbox = new BBox();
-		private int occTotal;
-		
 		public static Taxon newInstance(DataResource resource){
 			Taxon tax = new Taxon();
 			tax.resource=resource;
@@ -80,19 +73,17 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			return super.getId();
 		}
 		
-		@ManyToOne(optional = false)
-		public DataResource getResource() {
-			return resource;
+		@Transient
+		public String getTaxonID() {
+			return guid;
 		}
+		public void setTaxonID(String taxonID) {
+			this.guid = taxonID;
+		}
+		
 		public void setResource(DataResource resource) {
 			this.resource = resource;
 		}
-		@Transient
-		public Long getResourceId() {
-			return resource.getId();
-		}
-
-		
 		@Column(length=64)
 		@org.hibernate.annotations.Index(name="tax_local_id")
 		public String getLocalId() {
@@ -166,27 +157,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.nomenclaturalCode = nomenclaturalCode;
 		}
 
-		public BBox getBbox() {
-			if (bbox==null){
-				bbox = new BBox();
-			}
-			return bbox;
-		}
-		public void setBbox(BBox bbox) {
-			this.bbox = bbox;
-		}
-		public void expandBox(Point p) {
-			getBbox().expandBox(p);
-		}
-
-		public int getOccTotal() {
-			return occTotal;
-		}
-		public void setOccTotal(int occTotal) {
-			this.occTotal = occTotal;
-		}
-
-		
 		@Column(length=32)
 		public String getTaxonomicParentID() {
 			return taxonomicParentID;
@@ -258,15 +228,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.basionym = basionym;
 		}
 
-		/**
-		 * Count a single occurrence record
-		 * @param region
-		 */
-		public void countOcc(DarwinCore dwc) {
-			this.occTotal++;
-			bbox.expandBox(dwc.getLocation());			
-		}
-		
 		@Override
 		protected int compareWithoutHierarchy(Taxon first, Taxon second) {
 			return new CompareToBuilder()

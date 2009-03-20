@@ -7,6 +7,7 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.util.Constants;
 
 public class ResourceFactoryImpl implements ResourceFactory{
 	private GenericManager<Extension> extensionManager;
@@ -18,15 +19,17 @@ public class ResourceFactoryImpl implements ResourceFactory{
 
 	
 	public OccurrenceResource newOccurrenceResourceInstance(){
-		OccurrenceResource resource =  OccurrenceResource.newInstance();
-		Extension core = extensionManager.get(ExtensionType.Occurrence.extensionID);
+		OccurrenceResource resource =  new OccurrenceResource();
+		resource.resetCoreMapping();
+		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
 		resource.getCoreMapping().setExtension(core);
 		return resource;
 	}
 	
 	public ChecklistResource newChecklistResourceInstance(){
-		Extension core = extensionManager.get(ExtensionType.Checklist.extensionID);
-		ChecklistResource resource =  ChecklistResource.newInstance();
+		ChecklistResource resource =  new ChecklistResource();
+		resource.resetCoreMapping();
+		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
 		resource.getCoreMapping().setExtension(core);
 		return resource;
 	}

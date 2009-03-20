@@ -4,6 +4,7 @@ package org.gbif.provider.task;
 import java.io.IOException;
 
 import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -23,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 	 * @author markus
 	 *
 	 */
-	public class ChecklistUploadTask extends ImportTask<Taxon, ChecklistResource> {
+	public class ChecklistUploadTask extends ImportTask<ChecklistResource> {
 		public static final int TASK_TYPE_ID = 7;
 		// resource stats
 		private ChecklistResourceManager checklistResourceManager;
@@ -36,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 		
 		@Autowired
 		private ChecklistUploadTask(TaxonManager taxonManager, ChecklistResourceManager checklistResourceManager) {
-			super(taxonManager, checklistResourceManager);
+			super(checklistResourceManager);
 			this.checklistResourceManager=checklistResourceManager;
 		}
 
@@ -48,20 +49,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 		}
 
 		@Override
-		protected void recordHandler(Taxon record) {
-			Rank dwcRank = null; 
-			if (rankCache.containsKey(record.getRank())){
-				dwcRank = rankCache.get(record.getRank());
-			}else{
-				// query thesaurus to find a matching rank
-				ThesaurusConcept rank = thesaurusManager.getConcept(Rank.URI, record.getRank());
-				if (rank != null){
-					dwcRank = Rank.getByUri(rank.getUri());
-				}
-				// also keep NULL ranks in cache
-				rankCache.put(record.getRank(), dwcRank);
-			}
-			record.setDwcRank(dwcRank);				
+		protected void recordHandler(DarwinCore record) {
+			//FIXME: where do we do the rank interpretation ???
+//			Rank dwcRank = null; 
+//			if (rankCache.containsKey(record.getRank())){
+//				dwcRank = rankCache.get(record.getRank());
+//			}else{
+//				// query thesaurus to find a matching rank
+//				ThesaurusConcept rank = thesaurusManager.getConcept(Rank.URI, record.getRank());
+//				if (rank != null){
+//					dwcRank = Rank.getByUri(rank.getUri());
+//				}
+//				// also keep NULL ranks in cache
+//				rankCache.put(record.getRank(), dwcRank);
+//			}
+//			record.setDwcRank(dwcRank);				
 		}
 
 

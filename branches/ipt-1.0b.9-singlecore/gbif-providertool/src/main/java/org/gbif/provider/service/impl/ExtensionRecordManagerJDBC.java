@@ -30,7 +30,7 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.ViewExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.dto.CommonName;
 import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
@@ -214,7 +214,7 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 
 	public ExtendedRecord extendCoreRecord(DataResource resource, CoreRecord coreRecord) {
 		ExtendedRecord extRec = new ExtendedRecord(coreRecord);
-		for (ViewExtensionMapping view : resource.getExtensionMappings()){
+		for (ExtensionMapping view : resource.getExtensionMappings()){
 			// Extension extension, List<ExtensionProperty> properties, Set<Long> coreIds, Long resourceId) {
 			List<ExtensionRecord> extensionRecords = getExtensionRecords(view.getExtension(), view.getMappedProperties(), coreRecord.getCoreId(), resource.getId());
 			for (ExtensionRecord erec : extensionRecords){
@@ -228,7 +228,7 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 		for (CoreRecord core : coreRecords){
 			extendedRecords.put(core.getCoreId(), new ExtendedRecord(core));
 		}
-		for (ViewExtensionMapping view : resource.getExtensionMappings()){
+		for (ExtensionMapping view : resource.getExtensionMappings()){
 			List<ExtensionRecord> extensionRecords = getExtensionRecords(view.getExtension(), view.getMappedProperties(), extendedRecords.keySet(), resource.getId());
 			for (ExtensionRecord erec : extensionRecords){
 				extendedRecords.get(erec.getCoreId()).addExtensionRecord(erec);

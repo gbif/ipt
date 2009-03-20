@@ -2,7 +2,6 @@ package org.gbif.provider.task;
 
 	import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,23 +10,21 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.ImportSourceFactory;
 import org.gbif.provider.model.Annotation;
-import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.CoreRecordFactory;
-import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.service.DarwinCoreFactory;
+import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.FullTextSearchManager;
@@ -51,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 	 * @param <T>
 	 * @param <R>
 	 */
-	public abstract class ImportTask<T extends CoreRecord, R extends DataResource> extends TaskBase<UploadEvent, R>{
+	public abstract class ImportTask<R extends DataResource> extends TaskBase<UploadEvent, R>{
 		private Map<String, Long> idMap = new HashMap<String, Long>();
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
@@ -78,20 +75,19 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		private DataArchiveManager dataArchiveManager;
 		@Autowired
-		private CoreRecordFactory coreRecordFactory;
-		private CoreRecordManager<T> coreRecordManager;
+		private DarwinCoreFactory coreRecordFactory;
+		private DarwinCoreManager coreRecordManager;
 		@Autowired
 		private ExtensionRecordManager extensionRecordManager;
 		@Autowired
 		private UploadEventManager uploadEventManager;
 		@Autowired
 		@Qualifier("viewMappingManager")
-		private GenericManager<ViewMappingBase> viewMappingManager;
+		private GenericManager<ExtensionMapping> viewMappingManager;
 
 		
-		public ImportTask(CoreRecordManager<T> coreRecordManager, GenericResourceManager<R> resourceManager){
+		public ImportTask(GenericResourceManager<R> resourceManager){
 			super(resourceManager);
-			this.coreRecordManager = coreRecordManager;
 		}
 		
 		public final UploadEvent call() throws Exception{
@@ -112,7 +108,7 @@ import org.springframework.transaction.annotation.Transactional;
 				lastLogDate = now;
 				
 				// upload further extensions one by one
-				for (ViewExtensionMapping vm : resource.getExtensionMappings()){
+				for (ExtensionMapping vm : resource.getExtensionMappings()){
 					// run import into db
 					uploadExtension(vm);
 					now = new Date();
@@ -218,7 +214,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private void setFinalExtensionStats(Extension ext){
-			ViewMappingBase view = resource.getExtensionMapping(ext);				
+			ExtensionMapping view = resource.getExtensionMapping(ext);				
 			view.setRecTotal(currentProcessed.get()-currentErroneous.get());
 			viewMappingManager.save(view);
 		}
@@ -254,7 +250,7 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
-						T record = (T) coreRecordFactory.build(resource, irec, annotations);
+						DarwinCore record = coreRecordFactory.build(resource, irec, annotations);
 						if (record == null){
 							currentErroneous.addAndGet(1);
 							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
@@ -262,7 +258,7 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 						try {
 							// get previous record or null if it didnt exist yet based on localID and resource
-							T oldRecord = coreRecordManager.findByLocalId(irec.getLocalId(), getResourceId());
+							DarwinCore oldRecord = coreRecordManager.findByLocalId(irec.getLocalId(), getResourceId());
 							
 							// check if localID was unique. All old records should have deleted flag=true
 							// so if deleted is false, the same localID was inserted before already!
@@ -318,7 +314,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 
-		private T persistRecord(T record, T oldRecord) {
+		private DarwinCore persistRecord(DarwinCore record, DarwinCore oldRecord) {
 			// check if new record version is different from old one
 			if (oldRecord != null && oldRecord.hashCode() == record.hashCode()){
 				// same record. reset isDeleted flag of old record
@@ -354,7 +350,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 
-		private void updateCoreProperties(T record, T oldRecord) {
+		private void updateCoreProperties(DarwinCore record, DarwinCore oldRecord) {
 			// assign new GUID if none exists
 			if (record.getGuid() == null){
 				// if old version exists already reuse the previously assigned GUID
@@ -371,7 +367,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
-		private File uploadExtension(ViewExtensionMapping vm) throws InterruptedException {
+		private File uploadExtension(ExtensionMapping vm) throws InterruptedException {
 			String extensionName = vm.getExtension().getName();
 			Extension extension = vm.getExtension();
 			log.info(String.format("Starting upload of %s extension for resource %s", extensionName, getTitle() ));					
@@ -474,7 +470,7 @@ import org.springframework.transaction.annotation.Transactional;
 		/** Hook for working with a single record provided for subclasses 
 		 * @param record
 		 */
-		abstract protected void recordHandler(T record);
+		abstract protected void recordHandler(DarwinCore record);
 		abstract protected void extensionRecordHandler(ExtensionRecord extRec);
 
 		/** Hook for doing final processing for the entire resource, e.g. setting statistics gathered via the record hook 

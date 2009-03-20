@@ -29,7 +29,7 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
@@ -134,7 +134,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			File data = cfg.getArchiveFile(resource.getId(), resource.getCoreMapping().getExtension());
 			log.info("Building core mapping text index for resource[" + resource.getId() + "]");
 			buildIndex(writer, data);
-			for (ViewMappingBase view : resource.getExtensionMappings()) {
+			for (ExtensionMapping view : resource.getExtensionMappings()) {
 				log.info("Building extension[" + view.getExtension().getName() + "] index for resource[" + resource.getId() + "]");
 				File extensionFile = cfg.getArchiveFile(resource.getId(),view.getExtension());
 				buildIndex(writer, extensionFile);

@@ -32,9 +32,9 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceBase;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.SourceInspectionManager;
@@ -54,8 +54,8 @@ public class MappingAction extends BaseDataResourceAction implements Preparable{
     private ExtensionManager extensionManager;
 	private List<Extension> extensions;
 	private List<SourceBase> sources;
-	private List<ViewExtensionMapping> extMappings;
-	private ViewCoreMapping coreMapping;
+	private List<ExtensionMapping> extMappings;
+	private ExtensionMapping coreMapping;
 		
 
 	@Override
@@ -66,7 +66,7 @@ public class MappingAction extends BaseDataResourceAction implements Preparable{
 		extMappings = resource.getExtensionMappings();
 		extensions = extensionManager.getInstalledExtensions();
 		// filter already mapped extensions
-		for (ViewMappingBase map : resource.getAllMappings()) {
+		for (ExtensionMapping map : resource.getAllMappings()) {
 			extensions.remove(map.getExtension());
 		}
 	}
@@ -86,10 +86,10 @@ public class MappingAction extends BaseDataResourceAction implements Preparable{
 	public List<SourceBase> getSources() {
 		return sources;
 	}
-	public List<ViewExtensionMapping> getExtMappings() {
+	public List<ExtensionMapping> getExtMappings() {
 		return extMappings;
 	}
-	public ViewCoreMapping getCoreMapping() {
+	public ExtensionMapping getCoreMapping() {
 		return coreMapping;
 	}	
 }

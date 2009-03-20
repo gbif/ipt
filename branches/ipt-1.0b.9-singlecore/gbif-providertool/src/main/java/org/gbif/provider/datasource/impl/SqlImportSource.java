@@ -37,9 +37,9 @@ import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceSql;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TermMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,43 +49,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author markus
  *
  */
-public class SqlImportSource implements ImportSource{
+public class SqlImportSource extends ImportSourceBase{
 	private static final Integer FETCH_SIZE = 1000;
-	private static Log log = LogFactory.getLog(SqlImportSource.class);
-	@Autowired
-	private TermMappingManager termMappingManager;
-	@Autowired
-	private AnnotationManager annotationManager;
 
 	private Connection conn;
 	private Statement stmt;
 	private ResultSet rs;
 	private String viewSql;
 
-	private boolean hasNext;
-	private Integer maxRecords;
-	
-	private Collection<PropertyMapping> properties;
-	private String coreIdColumn;
-	private String guidColumn;
-	private String linkColumn;
-	private String linkTemplate;
-	private DataResource resource;
-	private Long resourceId;
-	// key=header column name, value=term mapping map
-	private Map<String, Map<String, String>> vocMap = new HashMap<String, Map<String, String>>();
+	public void init(DataResource resource, ExtensionMapping view) throws ImportSourceException{
+    	super.init(resource, view);
 
-
-	public void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
-    	init(resource, view, null);
-    	this.guidColumn = view.getGuidColumn();
-    	this.linkColumn = view.getLinkColumn();
-    	this.linkTemplate = view.getLinkTemplate();
-    }
-	public void init(DataResource resource, ViewExtensionMapping view) throws ImportSourceException{
-		init(resource, view, null);
-    }
-	private void init(DataResource resource, ViewMappingBase view, Integer maxRecords) throws ImportSourceException{
 		if (!(view.getSource() instanceof SourceSql)){
 			throw new IllegalArgumentException("View needs to have a source of type SourceSql ");
 		}
@@ -101,13 +75,7 @@ public class SqlImportSource implements ImportSource{
 		} catch (SQLException e) {
 			throw new ImportSourceException("Can't connect to database", e);
 		}
-    	//FIXME: clone mappings
-		this.resource = resource;
-    	this.resourceId=resource.getId();
     	this.viewSql=src.getSql();
-    	this.properties = view.getPropertyMappings().values();
-    	this.coreIdColumn = view.getCoreIdColumn();
-    	this.maxRecords = maxRecords;
     	try {
     		this.stmt = this.conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
     		this.stmt.setFetchSize(FETCH_SIZE);       
@@ -119,13 +87,6 @@ public class SqlImportSource implements ImportSource{
 			this.hasNext = false;
 			throw new ImportSourceException("Cant init sql result set", e);
 		}
-		// see if term mappings exist and keep them in vocMap in that case
-		for (PropertyMapping pm : this.properties){
-			Map<String, String> tmap = termMappingManager.getMappingMap(pm.getTermTransformationId());
-			if (!tmap.isEmpty()){
-				vocMap.put(pm.getColumn(), tmap);
-			}
-    	}
 
     }
     
@@ -149,8 +110,8 @@ public class SqlImportSource implements ImportSource{
 					row.setGuid(rs.getString(guidColumn));					
 				}
 				if (linkColumn != null){
-					if (linkTemplate.contains(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER)){
-						row.setLink( linkTemplate.replace(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER, rs.getString(linkColumn)) );
+					if (linkTemplate.contains(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER)){
+						row.setLink( linkTemplate.replace(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER, rs.getString(linkColumn)) );
 					}else{
 						row.setLink(rs.getString(linkColumn));
 					}
@@ -179,14 +140,6 @@ public class SqlImportSource implements ImportSource{
 			try {
 				// forward rs cursor
 				hasNext = rs.next();
-				// dont iterate any further if the max number of records to be iterated has been reached
-				if (maxRecords != null){
-					maxRecords--;					
-					if (maxRecords < 0){
-						hasNext=false;
-						annotationManager.annotateResource(resource, "MaxRecords reached. Stop iterating through ImportSource");
-					}
-				}
 			} catch (SQLException e2) {
 				annotationManager.annotateResource(resource, "Exception while iterating RDBMS source"+e2.toString());
 				hasNext = false;

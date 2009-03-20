@@ -194,4 +194,10 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 			this.save(e);
 		}
 	}
+
+	public Extension getExtensionByUri(String uri) {
+        return (Extension) getSession().createQuery(String.format("from Extension where namespace=:uri"))
+    	.setParameter("uri", uri)
+    	.uniqueResult();
+	}
 }

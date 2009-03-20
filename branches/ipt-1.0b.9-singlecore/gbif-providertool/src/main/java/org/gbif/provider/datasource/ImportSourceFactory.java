@@ -1,13 +1,10 @@
 package org.gbif.provider.datasource;
 
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 
 public interface ImportSourceFactory {
-
-	public ImportSource newInstance(DataResource resource, ViewCoreMapping view) throws ImportSourceException;
-	public ImportSource newInstance(DataResource resource, ViewExtensionMapping view) throws ImportSourceException;
-
+	public ImportSource newInstance(DataResource resource, ExtensionMapping view) throws ImportSourceException;
 }

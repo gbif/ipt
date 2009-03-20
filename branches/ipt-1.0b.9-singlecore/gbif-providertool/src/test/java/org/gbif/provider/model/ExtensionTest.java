@@ -51,14 +51,14 @@ public class ExtensionTest extends BaseDaoTestCase{
 		Extension ext1 = new Extension();
 		ext1.setName("testExtensionMap 1");
 		ext1 = extensionManager.save(ext1);
-		ViewExtensionMapping map1 = new ViewExtensionMapping();
+		ExtensionMapping map1 = new ExtensionMapping();
 		map1.setExtension(ext1);
 		occRes.addExtensionMapping(map1);
 
 		Extension ext2 = new Extension();
 		ext2.setName("testExtensionMap 2");
 		ext2 = extensionManager.save(ext2);
-		ViewExtensionMapping map2 = new ViewExtensionMapping();
+		ExtensionMapping map2 = new ExtensionMapping();
 		map2.setExtension(ext2);
 		occRes.addExtensionMapping(map2);
 		
@@ -66,7 +66,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 		
 		// check retrieved data. what about the hibernate cache?
 		DataResource res = occResourceManager.get(occId);		
-		Collection<ViewMappingBase> allMappings = res.getAllMappings();
+		Collection<ExtensionMapping> allMappings = res.getAllMappings();
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);

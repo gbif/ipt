@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
 
 public class NamespaceRegistry {
 	private Map<String, String> ns2prefix = new HashMap<String, String>();
@@ -153,7 +153,7 @@ public class NamespaceRegistry {
 		}
 	}
 	public void addResource(DataResource resource){
-		for (ViewMappingBase view : resource.getAllMappings()){
+		for (ExtensionMapping view : resource.getAllMappings()){
 			this.addAll(view.getMappedProperties());
 		}
 	}

@@ -21,7 +21,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
@@ -114,7 +114,7 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 			taxonManager.flagAllAsDeleted((ChecklistResource)res);
 		}
 		// remove extension data
-		for (ViewMappingBase vm : res.getExtensionMappings()){
+		for (ExtensionMapping vm : res.getExtensionMappings()){
 			vm.setRecTotal(0);
 			extensionRecordManager.removeAll(vm.getExtension(), resourceId);
 		}

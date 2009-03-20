@@ -81,10 +81,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	private boolean isDeleted;
 	private Date modified;
 	@NotNull
-	private OccurrenceResource resource;
+	private DataResource resource;
 
 	// DarinCore derived fields. calculated from raw Strings
-	private Point location;
+	private Point location = new Point();
 	private Taxon taxon;
 	private Region region;
 	private Date collected;
@@ -230,13 +230,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 
 	
-	public static DarwinCore newInstance(OccurrenceResource resource){
+	public static DarwinCore newInstance(DataResource resource){
 		DarwinCore dwc = new DarwinCore();
-		dwc.location= new Point();
 		dwc.resource=resource;
 		return dwc;
 	}
-	public static DarwinCore newMock(OccurrenceResource resource){
+	public static DarwinCore newMock(DataResource resource){
 		Random rnd = new Random();
 		DarwinCore dwc = DarwinCore.newInstance(resource);
 		// populate instance
@@ -319,10 +318,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 
 	@ManyToOne
-	public OccurrenceResource getResource() {
+	public DataResource getResource() {
 		return resource;
 	}
-	public void setResource(OccurrenceResource resource) {
+	public void setResource(DataResource resource) {
 		this.resource = resource;
 	}
 	@Transient
@@ -764,6 +763,13 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 	
 	// SAMPLE
+	@Transient
+	public String getSampleID() {
+		return guid;
+	}
+	public void setSampleID(String sampleID) {
+		this.guid = sampleID;
+	}
 	@Column(length=128)
 	@org.hibernate.annotations.Index(name="idx_dwc_institution_code")
 	public String getInstitutionCode() {

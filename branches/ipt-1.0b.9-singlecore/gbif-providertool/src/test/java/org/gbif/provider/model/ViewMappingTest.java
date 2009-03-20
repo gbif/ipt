@@ -6,26 +6,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ViewMappingTest {
-	private ViewMappingBase vm1;
-	private ViewMappingBase vm2;
-	private ViewMappingBase vm3;
+	private ExtensionMapping vm1;
+	private ExtensionMapping vm2;
+	private ExtensionMapping vm3;
 
 	@Before
 	public void setUp() throws Exception {
 		DataResource r = OccurrenceResource.newInstance();
 		r.setTitle("Berlin Moss");
 		SourceSql src = new SourceSql("Specimens", "Select * from specimen limit 100");
-		vm1 = new ViewExtensionMapping();
+		vm1 = new ExtensionMapping();
 		vm1.setCoreIdColumn("specimen_id");
 		vm1.setSource(src);
 		vm1.setResource(r);
 		
-		vm2 = new ViewExtensionMapping();
+		vm2 = new ExtensionMapping();
 		vm2.setCoreIdColumn("specimen_id");
 		vm2.setSource(src);
 		vm2.setResource(r);
 		
-		vm3 = new ViewExtensionMapping();
+		vm3 = new ExtensionMapping();
 		vm3.setCoreIdColumn("field_number");
 		vm3.setSource(src);
 		vm3.setResource(r);

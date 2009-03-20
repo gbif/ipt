@@ -33,16 +33,12 @@ import org.gbif.provider.util.Constants;
  */
 @Entity
 public class ChecklistResource extends DataResource {
+	private static final String DWC_GUID_PROPERTY = "TaxonID";
+
 	private int numCommonNames;
 	private int numCommonNameLanguages;
 	private int numDistributions;
 	private int numDistributionRegions;
-	
-	public static ChecklistResource newInstance(){
-		ChecklistResource resource =  new ChecklistResource();
-		resource.resetCoreMapping();
-		return resource;
-	}
 	
 	public int getNumCommonNames() {
 		return numCommonNames;
@@ -87,6 +83,12 @@ public class ChecklistResource extends DataResource {
 
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
+	}
+
+	@Override
+	@Transient
+	public String getDwcGuidPropertyName() {
+		return DWC_GUID_PROPERTY;
 	}
 
 }

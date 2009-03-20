@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 	 * @author markus
 	 *
 	 */
-	public class OccUploadTask extends ImportTask<DarwinCore, OccurrenceResource> {
+	public class OccUploadTask extends ImportTask<OccurrenceResource> {
 		public static final int TASK_TYPE_ID = 1;
 		// resource stats
 		private OccurrenceResource occResource;
@@ -79,8 +79,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		
 		@Autowired
-		private OccUploadTask(DarwinCoreManager dwcManager, OccResourceManager resourceManager) {
-			super(dwcManager, resourceManager);
+		private OccUploadTask(OccResourceManager resourceManager) {
+			super(resourceManager);
 			this.occResourceManager = resourceManager;
 		}
 

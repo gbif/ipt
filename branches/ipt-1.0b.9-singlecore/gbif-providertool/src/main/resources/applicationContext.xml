@@ -148,7 +148,7 @@
     <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
         <constructor-arg ref="extensionManager"/>
     </bean>
-    <bean id="coreRecordFactory" class="org.gbif.provider.service.impl.CoreRecordFactoryImpl"/>        
+    <bean id="darwinCoreFactory" class="org.gbif.provider.service.impl.DarwinCoreFactoryImpl"/>        
     
 	<!-- FULL TEXT SEARCHING -->
 	<bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene" />

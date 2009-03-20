@@ -17,9 +17,9 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.AnnotationManager;
@@ -54,7 +54,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		if (resource.getCoreMapping()==null){
 			throw new IllegalStateException("Resource needs at least a core mapping to create a data archive");
 		}
-		Map<File, ViewMappingBase> archiveFiles = new HashMap<File, ViewMappingBase>();		
+		Map<File, ExtensionMapping> archiveFiles = new HashMap<File, ExtensionMapping>();		
 		// individual archive files
 		try {
 			if (resource instanceof OccurrenceResource){
@@ -67,7 +67,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}catch (Exception e) {
 			annotationManager.annotateResource(resource, "Could not write data archive file for extension "+resource.getCoreMapping().getExtension().getName() +" of resource "+resource.getTitle());				
 		}
-		for (ViewExtensionMapping view : resource.getExtensionMappings()){
+		for (ExtensionMapping view : resource.getExtensionMappings()){
 			try{
 				archiveFiles.put(dumpExtension(view), view);
 			}catch (Exception e) {
@@ -103,8 +103,8 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		return archive;		
 	}
 	
-	private File writeDescriptor(DataResource resource, Map<File, ViewMappingBase> archiveFiles){
-		Map<String, ViewMappingBase> fileMap = new HashMap<String, ViewMappingBase>();
+	private File writeDescriptor(DataResource resource, Map<File, ExtensionMapping> archiveFiles){
+		Map<String, ExtensionMapping> fileMap = new HashMap<String, ExtensionMapping>();
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("cfg", cfg);
 		data.put("resource", resource);
@@ -131,19 +131,19 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}
 		return descriptor;
 	}
-	private File dumpOccCore(ViewCoreMapping view) throws IOException, SQLException{
+	private File dumpOccCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
 		String select = String.format("SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, select);
 	}
-	private File dumpTaxCore(ViewCoreMapping view) throws IOException, SQLException{
+	private File dumpTaxCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
 		String select = String.format("SELECT id %s FROM taxon where resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());
 		//FIXME: hacking the dump with a hardcoded select. Not too bad, but well...
 		select = String.format("select t.ID ,t.NOMENCLATURAL_CODE ,t.LABEL ,t.RANK ,t.LOCAL_ID ,t.GUID ,t.LINK ,t.NOTES ,t.TAXONOMIC_STATUS ,t.NOMENCLATURAL_STATUS ,t.NOMENCLATURAL_REFERENCE , t.accepted_taxon_id, acc.label acceptedTaxon, t.taxonomic_parent_id,  p.label parentTaxon   from taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id   where t.resource_fk=%s order by id", view.getResourceId());		 
 		return dumpFile(file, select);
 	}
-	private File dumpExtension(ViewExtensionMapping view) throws IOException, SQLException{
+	private File dumpExtension(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
 		String select = String.format("SELECT coreid %s FROM %s where resource_fk=%s order by coreid", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
 		return dumpFile(file, select);
@@ -153,7 +153,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		String select = String.format("select dc.LOCAL_ID as DwcLocalId, dc.guid as DwcGuid, t.GUID ,t.LABEL as ScientificName, t.RANK as DwcRank, acc.guid as acceptedTaxonGuid, acc.label acceptedTaxon, p.guid as parentTaxonGuid,  p.label parentTaxon,      dc.binomial, dc.higher_taxon_iD, dc.higher_taxon, dc.kingdom, dc.phylum, dc.classs, dc.orderrr, dc.family, dc.genus, dc.subgenus, dc.specific_epithet, dc.taxon_rank, dc.infraspecific_epithet, dc.scientific_name_authorship, dc.nomenclatural_code, dc.taxon_according_to, dc.name_published_in, dc.taxonomic_status, dc.nomenclatural_status, dc.accepted_taxon_iD, dc.accepted_taxon, dc.basionym_iD, dc.basionym     FROM taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id  left join darwin_core dc on dc.taxon_fk = t.id   where t.resource_fk=%s order by t.id", resourceId);		 
 		return dumpFile(file, select);
 	}
-	private String buildPropertySelect(ViewMappingBase view){
+	private String buildPropertySelect(ExtensionMapping view){
 		String select = "";
 		for (ExtensionProperty p : view.getMappedProperties()){
 			String col = namingStrategy.propertyToColumnName(p.getName());

@@ -37,6 +37,7 @@ import org.hibernate.annotations.MapKey;
  */
 @Entity
 public class OccurrenceResource extends DataResource {
+	private static final String DWC_GUID_PROPERTY = "SampleID";
 	private BBox bbox = new BBox();
 	private Integer featureHash;
 	// cached statistics
@@ -49,12 +50,6 @@ public class OccurrenceResource extends DataResource {
 	private int numTerminalRegions;
 	private int numCountries;
 	
-	public static OccurrenceResource newInstance(){
-		OccurrenceResource resource =  new OccurrenceResource();
-		resource.resetCoreMapping();
-		return resource;
-	}
-
 	public BBox getBbox() {
 		return bbox;
 	}
@@ -144,5 +139,11 @@ public class OccurrenceResource extends DataResource {
 		numTerminalRegions=0;
 		
 		super.resetStats();
+	}
+	
+	@Override
+	@Transient
+	public String getDwcGuidPropertyName() {
+		return DWC_GUID_PROPERTY;
 	}
 }

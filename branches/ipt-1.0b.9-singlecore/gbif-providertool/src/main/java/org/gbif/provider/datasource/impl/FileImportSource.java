@@ -32,9 +32,9 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceFile;
-import org.gbif.provider.model.ViewCoreMapping;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TermMappingManager;
 import org.gbif.provider.util.AppConfig;
@@ -46,40 +46,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author markus
  *
  */
-public class FileImportSource implements ImportSource{
-	protected final Log log = LogFactory.getLog(getClass());
-	@Autowired
-	private TermMappingManager termMappingManager;
-	@Autowired
-	private AnnotationManager annotationManager;
-	
+public class FileImportSource extends ImportSourceBase{
 	private TabFileReader reader;
 	private String[] currentLine;
 	// key=header column name
 	private Map<String, Integer> headerMap = new HashMap<String, Integer>();
-	// key=header column name, value=term mapping map
-	private Map<String, Map<String, String>> vocMap = new HashMap<String, Map<String, String>>();
 
-	private Collection<PropertyMapping> properties;
-	private String coreIdColumn;
-	private String guidColumn;
-	private String linkColumn;
-	private String linkTemplate;
-	private Long resourceId;
 
-	public void init(DataResource resource, ViewCoreMapping view) throws ImportSourceException{
-    	ViewMappingBase extView = (ViewMappingBase) view;
-    	init(resource, extView);
-    	this.guidColumn = view.getGuidColumn();
-    	this.linkColumn = view.getLinkColumn();
-    	this.linkTemplate = view.getLinkTemplate();
-    }
-	public void init(DataResource resource, ViewExtensionMapping view) throws ImportSourceException{
-    	ViewMappingBase extView = (ViewMappingBase) view;
-    	init(resource, extView);
-    }
-	private void init(DataResource resource, ViewMappingBase view) throws ImportSourceException{
-		if (!(view.getSource() instanceof SourceFile)){
+	public void init(DataResource resource, ExtensionMapping view) throws ImportSourceException{
+    	super.init(resource, view);
+
+    	if (!(view.getSource() instanceof SourceFile)){
 			throw new IllegalArgumentException("View needs to have a source of type SourceFile");
 		}
 		SourceFile src = (SourceFile) view.getSource();
@@ -94,17 +71,6 @@ public class FileImportSource implements ImportSource{
 		} catch (Exception e) {
 			throw new ImportSourceException("Cant read source file "+src.getFilename(), e);
 		}
-    	//FIXME: clone mappings
-		this.resourceId=resource.getId();
-		this.properties = view.getPropertyMappings().values();
-		this.coreIdColumn = view.getCoreIdColumn();
-		// see if term mappings exist and keep them in vocMap in that case
-		for (PropertyMapping pm : this.properties){
-			Map<String, String> tmap = termMappingManager.getMappingMap(pm.getTermTransformationId());
-			if (!tmap.isEmpty()){
-				vocMap.put(pm.getColumn(), tmap);
-			}
-    	}
     }
 
     
@@ -137,8 +103,8 @@ public class FileImportSource implements ImportSource{
 					row.setGuid(getCurrentValue(guidColumn));					
 				}
 				if (linkColumn != null){
-					if (linkTemplate.contains(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER)){
-						row.setLink( linkTemplate.replace(ViewCoreMapping.TEMPLATE_ID_PLACEHOLDER, getCurrentValue(linkColumn)) );
+					if (linkTemplate.contains(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER)){
+						row.setLink( linkTemplate.replace(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER, getCurrentValue(linkColumn)) );
 					}else{
 						row.setLink(getCurrentValue(linkColumn));
 					}

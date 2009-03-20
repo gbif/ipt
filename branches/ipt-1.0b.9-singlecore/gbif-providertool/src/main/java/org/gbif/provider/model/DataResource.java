@@ -65,9 +65,9 @@ public abstract class DataResource extends Resource {
 	private String jdbcUser;
 	private String jdbcPassword;
 	private UploadEvent lastUpload;
-	private ViewCoreMapping coreMapping;
+	private ExtensionMapping coreMapping;
 	// extension mappings, not including the core mapping
-	private Map<Long, ViewExtensionMapping> extensionMappings = new HashMap<Long, ViewExtensionMapping>();
+	private Map<Long, ExtensionMapping> extensionMappings = new HashMap<Long, ExtensionMapping>();
 	//
 	// transient properties
 	//
@@ -93,7 +93,7 @@ public abstract class DataResource extends Resource {
 			ext = getCoreMapping().getExtension();
 		}
 		// ensure that core mapping exists
-		ViewCoreMapping coreVM = new ViewCoreMapping();
+		ExtensionMapping coreVM = new ExtensionMapping();
 		coreVM.setResource(this);
 		coreVM.setExtension(ext);
 		this.setCoreMapping(coreVM);
@@ -117,8 +117,8 @@ public abstract class DataResource extends Resource {
 	}
 	
 	@Transient
-	public Set<ViewMappingBase> getAllMappings() {
-		Set<ViewMappingBase> all = new HashSet<ViewMappingBase>(extensionMappings.values());
+	public Set<ExtensionMapping> getAllMappings() {
+		Set<ExtensionMapping> all = new HashSet<ExtensionMapping>(extensionMappings.values());
 		if (getCoreMapping() != null){
 			all.add(getCoreMapping());
 		}
@@ -128,10 +128,10 @@ public abstract class DataResource extends Resource {
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="resource")
 //    @JoinColumn(insertable=false, updatable=false)
 //    @org.hibernate.annotations.Where(clause="mapping_type='CORE'")        
-	public ViewCoreMapping getCoreMapping() {
+	public ExtensionMapping getCoreMapping() {
 		return coreMapping;
 	}
-	public void setCoreMapping(ViewCoreMapping coreMapping) {
+	public void setCoreMapping(ExtensionMapping coreMapping) {
 		this.coreMapping = coreMapping;
 	}
 	
@@ -141,26 +141,26 @@ public abstract class DataResource extends Resource {
     @JoinColumn(name="resource_fk", insertable=false, updatable=false)
     @org.hibernate.annotations.Where(clause="mapping_type='EXT'")        
 	@MapKey(columns = @Column(name = "extension_fk"))
-	public Map<Long, ViewExtensionMapping> getExtensionMappingsMap() {
+	public Map<Long, ExtensionMapping> getExtensionMappingsMap() {
 		return extensionMappings;
 	}
-	public void setExtensionMappingsMap(Map<Long, ViewExtensionMapping> extensionMappings) {
+	public void setExtensionMappingsMap(Map<Long, ExtensionMapping> extensionMappings) {
 		this.extensionMappings = extensionMappings;
 	}
 	@Transient
-	public List<ViewExtensionMapping> getExtensionMappings() {
-		return new ArrayList<ViewExtensionMapping>(extensionMappings.values());
+	public List<ExtensionMapping> getExtensionMappings() {
+		return new ArrayList<ExtensionMapping>(extensionMappings.values());
 	}
-	public void addExtensionMapping(ViewExtensionMapping mapping) {
+	public void addExtensionMapping(ExtensionMapping mapping) {
 		mapping.setResource(this);
 		this.extensionMappings.put(mapping.getExtension().getId(), mapping);
 	}
-	public void removeExtensionMapping(ViewMappingBase mapping) {
+	public void removeExtensionMapping(ExtensionMapping mapping) {
 		this.extensionMappings.remove(mapping.getExtension().getId());
 	}
 
 	@Transient
-	public ViewMappingBase getExtensionMapping(Extension extension) {
+	public ExtensionMapping getExtensionMapping(Extension extension) {
 		if (extension.equals(getCoreMapping().getExtension())){
 			return getCoreMapping();
 		}
@@ -377,4 +377,7 @@ public abstract class DataResource extends Resource {
 	public String getLayerName(){
 		return "gbif:resource"+getId();
 	}
+	
+	@Transient
+	public abstract String getDwcGuidPropertyName();
 }

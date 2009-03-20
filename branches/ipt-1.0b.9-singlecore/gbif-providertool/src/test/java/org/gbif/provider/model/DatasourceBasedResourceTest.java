@@ -32,7 +32,7 @@ public class DatasourceBasedResourceTest {
 		Extension ext = new Extension();
 		ext.setId(1L);
 		ext.setName("Bernde");
-		ViewExtensionMapping vm = new ViewExtensionMapping();
+		ExtensionMapping vm = new ExtensionMapping();
 		vm.setId(23L);
 		vm.setExtension(ext);
 		r.addExtensionMapping(vm);
