@@ -591,6 +591,7 @@
                 <maven.test.skip>true</maven.test.skip>
                 <ipt.datadir>/Users/markus/Desktop/data</ipt.datadir>
                 <ipt.mail.from>IPT &lt;m.doering@mac.com&gt;</ipt.mail.from>
+                <ipt.dev>true</ipt.dev>
             </properties>
         </profile>
         
@@ -604,7 +605,7 @@
         </profile>
 
         <profile>
-            <id>release</id>
+            <id>prod</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
                 <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
@@ -655,6 +656,7 @@
         <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
         <ipt.datadir></ipt.datadir>
         <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>
+        <ipt.dev>false</ipt.dev>
         
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
     </properties>
