@@ -18,7 +18,7 @@
 </head>
 
 <div class="break10"></div>
-<p class="explMt">Please upload your data as tab files or define a SQL view to pull it from a database.
+<p class="explMt">Please upload your data as tab files with a single header row or define a SQL view to pull it from a database.
 You can define as many sources as you like, but there needs to be at least one.
 Readily supported formats can be <a href="">found here</a>. 
 If your data does not exactly match those formats you have the option to configure simple transformations and adjustments in the next configuration step.
