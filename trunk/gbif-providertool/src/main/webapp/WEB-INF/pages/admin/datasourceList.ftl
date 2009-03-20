@@ -6,6 +6,7 @@
     <meta name="menu" content="AdminMenu"/>
 </head>
 
+<div class="break55"></div>
 <@display.table name="activeDatasources" class="table" requestURI="" id="activeDatasources" export=false pagesize=25>
     <@display.column property="id" sortable=true href="/manage/resource.html" media="html"
         paramId="resource_id" paramProperty="id" titleKey="resource.id"/>
