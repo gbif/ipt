@@ -650,7 +650,8 @@
         <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
         <jdbc.username>sa</jdbc.username>
         <jdbc.password></jdbc.password>
-
+        <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
+        
         <!-- IPT settings -->
         <copyright.year>2009</copyright.year>
         <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
@@ -658,6 +659,5 @@
         <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>
         <ipt.dev>false</ipt.dev>
         
-        <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
     </properties>
 </project>

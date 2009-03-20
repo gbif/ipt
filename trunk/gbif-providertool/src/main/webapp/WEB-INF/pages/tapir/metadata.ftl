@@ -37,13 +37,13 @@
         <hasContact>
           <role>system administrator</role>
           <vcard:VCARD>
-            <vcard:FN>${cfg.contactName}</vcard:FN>
-            <vcard:EMAIL>${cfg.contactEmail}</vcard:EMAIL>
+            <vcard:FN>${cfg.ipt.contactName}</vcard:FN>
+            <vcard:EMAIL>${cfg.ipt.contactEmail}</vcard:EMAIL>
           </vcard:VCARD>
         </hasContact>
         <geo:Point>
-          <geo:lat>${cfg.location.latitude}</geo:lat>
-          <geo:long>${cfg.location.longitude}</geo:long>
+          <geo:lat>${cfg.ipt.location.latitude}</geo:lat>
+          <geo:long>${cfg.ipt.location.longitude}</geo:long>
         </geo:Point>
       </entity>
     </relatedEntity>
