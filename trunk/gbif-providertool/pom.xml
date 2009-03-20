@@ -147,14 +147,6 @@
                         <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
                     </componentProperties>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>hbm2ddl</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>${jdbc.groupId}</groupId>
@@ -594,16 +586,36 @@
         <!-- Use "-P prod" when you want to use the settings in this profile -->
         <!-- =============================================================== -->
         <profile>
-            <id>prod</id>
+            <id>markus</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
+                <ipt.datadir>/Users/markus/Desktop/data</ipt.datadir>
+                <ipt.mail.from>IPT &lt;m.doering@mac.com&gt;</ipt.mail.from>
             </properties>
         </profile>
+        
+        <profile>
+            <id>bgbm</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <ipt.datadir>/usr/local/jakarta-tomcat/ipt_data</ipt.datadir>
+                <ipt.mail.from>IPT-BGBM &lt;ipt@bgbm.org&gt;</ipt.mail.from>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>release</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
+            </properties>
+        </profile>
+        
+        
     </profiles>
 
     <properties>
         <!-- Application settings -->
-        <copyright.year>2008</copyright.year>
         <dao.framework>hibernate</dao.framework>
         <web.framework>struts</web.framework>
         <amp.genericCore>true</amp.genericCore>
@@ -638,6 +650,12 @@
         <jdbc.username>sa</jdbc.username>
         <jdbc.password></jdbc.password>
 
+        <!-- IPT settings -->
+        <copyright.year>2009</copyright.year>
+        <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
+        <ipt.datadir></ipt.datadir>
+        <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>
+        
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
     </properties>
 </project>

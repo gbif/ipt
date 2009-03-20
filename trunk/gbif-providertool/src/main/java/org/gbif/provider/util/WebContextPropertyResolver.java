@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class WebContextPropertyResolver extends PropertyPlaceholderConfigurer im
 	@Override
 	protected String resolvePlaceholder(String placeholder, Properties props) {
 		String result = super.resolvePlaceholder(placeholder, props);
-		if (result==null){
+		if (StringUtils.trimToNull(result)==null){
 			if (context==null){
 				throw new NullPointerException("Servlet context is required for WebContextPropertyResolver");
 			}
