@@ -19,7 +19,7 @@
     <!-- by default dont append existing parameters -->
     <constant name="struts.url.includeParams" value="none" />
     
-    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.devMode" value="${ipt.dev}"/>
     
     <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
 
