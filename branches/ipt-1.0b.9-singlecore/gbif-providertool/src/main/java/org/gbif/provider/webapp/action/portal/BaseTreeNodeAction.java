@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseTreeNodeAction<T extends org.gbif.provider.model.TreeNodeBase<T, E>, E extends Enum> extends BaseDataResourceAction {
 	@Autowired
 	protected MapUtil mapUtil;
-	protected TreeNodeManager<T, E> treeNodeManager;
 	@Autowired
 	protected DarwinCoreManager darwinCoreManager;
+	protected TreeNodeManager<T, E> treeNodeManager;
 	protected Long id;
 	protected T node;
 	protected List<DarwinCore> occurrences;
@@ -28,7 +28,12 @@ public class BaseTreeNodeAction<T extends org.gbif.provider.model.TreeNodeBase<T
 	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
 	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
 	 
-    public String execute(){
+    public BaseTreeNodeAction(TreeNodeManager<T, E> treeNodeManager) {
+		super();
+		this.treeNodeManager = treeNodeManager;
+	}
+
+	public String execute(){
     	if (id!=null){
     		node=treeNodeManager.get(id);
 			// geoserver map link
@@ -51,7 +56,6 @@ public class BaseTreeNodeAction<T extends org.gbif.provider.model.TreeNodeBase<T
     public String occurrences(){
     	if (resource_id!=null && id!=null){
     		node=treeNodeManager.get(id);
-    		occurrences = darwinCoreManager.getByRegion(node.getId(), resource_id, true);
     		if (node!=null){
     			geoserverMapUrl = getGeoserverUrl(node);
     			BBox bbox = BBox.NewWorldInstance();

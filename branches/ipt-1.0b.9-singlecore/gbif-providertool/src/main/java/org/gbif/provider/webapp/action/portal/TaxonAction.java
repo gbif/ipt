@@ -22,6 +22,7 @@ import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.service.TreeNodeManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
@@ -31,11 +32,10 @@ import com.opensymphony.xwork2.Preparable;
 
 public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Preparable{
 	@Autowired
-	private TaxonManager taxonManager;
-	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
 	private AnnotationManager annotationManager;
+	private TaxonManager taxonManager;
 	// parameters
     private String action;
     private int type;
@@ -56,6 +56,10 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
     private ExtendedRecord rec;
 	private List<Extension> extensions = new ArrayList<Extension>();
 	
+	public TaxonAction(TaxonManager taxonManager) {
+		super(taxonManager);
+		this.taxonManager=taxonManager;
+	}
 	private void setRequestedTaxon(){
     	if (id!=null){
     		node=taxonManager.get(id);
@@ -106,7 +110,16 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
     	}
 		return RECORD404;
     }
-    
+	
+	@Override
+    public String occurrences(){
+		String result = super.occurrences();
+		if (node!=null){
+	    	occurrences = darwinCoreManager.getByTaxon(node.getId(), resource_id, true);
+		}
+    	return result;
+    }
+
 	public String search(){
 		super.prepare();
 		taxa = taxonManager.search(resource_id, q);
