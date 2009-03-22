@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -106,6 +106,16 @@ It is beyond the scope of this manual to provide detailled installation
 Java
 \end_layout
 
+\begin_layout Standard
+Mac OS X already comes complete with a fully configured and ready-to-use
+ Java runtime environment.
+ 
+\end_layout
+
+\begin_layout Standard
+For Windows machines, follow these stes to install it: 
+\end_layout
+
 \begin_layout Enumerate
 Download the Java 2 Standard Edition Runtime Environment (JRE), release
  version 5.0 or later, from http://java.sun.com/j2se.
@@ -120,12 +130,12 @@ Set an environment variable named JRE_HOME to the pathname of the directory
  into which you installed the JRE, e.g.
  c:
 \backslash
-jre5.0 or /usr/local/java/jre5.0.
+jre5.0:
 \end_layout
 
 \begin_deeper
 \begin_layout Enumerate
-On Windows, open the 
+Open the 
 \emph on
 Control Panel
 \emph default
@@ -134,7 +144,11 @@ Control Panel
 System
 \emph default
  icon.
- Go to the 
+ 
+\end_layout
+
+\begin_layout Enumerate
+Go to the 
 \emph on
 Advanced
 \emph default
@@ -143,7 +157,11 @@ Advanced
 Environment variables
 \emph default
  button.
- in the 
+ 
+\end_layout
+
+\begin_layout Enumerate
+In the 
 \emph on
 System variables
 \emph default
@@ -168,10 +186,6 @@ Program Files
 Java
 \backslash
 jre6
-\end_layout
-
-\begin_layout Enumerate
-On Mac OS, 
 \end_layout
 
 \end_deeper
@@ -242,6 +256,38 @@ go to the bin folder and execute startut.bat (Window) or startup.sh (Mac OS).
 
 \begin_layout Subsubsection
 Tomcat configuration
+\end_layout
+
+\begin_layout Standard
+*****is it enough to give links for the memory?*****
+\end_layout
+
+\begin_layout Itemize
+Tomcat comes with very little allocated memory.
+ This amount should be increased depending on the amount of physical memory
+ on the server.
+ If the server has at least 2GB of RAM, the available memory should be increased
+ to 1GB.
+ For more information on how to do it, see the following links:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-mor
+e-memory/
+\end_layout
+
+\begin_layout Itemize
+http://wiki.apache.org/tomcat/FAQ/Memory
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+On Mac OS, some permissions need to be modified.
+ The user should open a Terminal window, go to the bin folder of the Tomcat
+ installation and execute the following command: 
+\emph on
+sudo chmod 775 *.sh
 \end_layout
 
 \begin_layout Section
@@ -354,30 +400,6 @@ Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib
 \begin_layout Enumerate
 Restart Tomcat (shutdown.bat then startup.bat on Windows, shutdown.sh and startup.sh
  on Mac OS)
-\end_layout
-
-\begin_layout Standard
-Configure Geoserver The only configuration that geoserver needs to be aware
- of, it where your IPTs data directory is located.
- By default geoserver tries to find the IPT data directory in Tomcat/webapps/ipt
-/data.
- If you have a different directory, please adjust this setting as follows:
- Log into geoservers config interface as the admin http://localhost:8080/geoserv
-er/config/index.do.
- The default credentials are user=admin, password=geoserver.
- Go to the Feature Data Set Configuration (Menu: Config/Data/Datastores),
- select IPT and edit the datadir so it points to your data directory.
- Then save and apply the configuration (upper corner left).
- Configure GeoWebCache? The IPT makes use of GeoWebCache? (GWC), a plugin
- for geoserver that caches WMS images which increases performance a lot.
- As with IPT, GWC needs to know the URL for geoserver.
- By default it assumes you run geoserver under http://localhost:8080/geoserver
- If you need to change that, please update geoservers web.xml settings, in
- particular the following parameter: <context-param> <param-name>GEOSERVER_WMS_U
-RL</param-name> <param-value>http://EXAMPLE.COM:PORT/PATH/wms?request=GetCapabili
-ties</param-value> </context-param> General configuration help for the geoserver
- bundled version can be found here: http://geoserver.org/display/GEOSDOC/5.+GWC+-+
-GeoWebCache 
 \end_layout
 
 \begin_layout Part
@@ -794,10 +816,133 @@ View Users
 
 \begin_layout Standard
 This page allows the administrator to manage users.
+ There are three users roles: administrator, manager and user.
 \end_layout
 
 \begin_layout Standard
+The page displays the list of users their usernames, full names and emails.
+ By clicking on the username, one can edit the user profile.
+ One can also export the list in different formats (CSV, Excel, XML and
+ PDF).
+\end_layout
 
+\begin_layout Standard
+The page also gives the opportunity to add a new user through the 
+\emph on
+Add
+\emph default
+ button at the bottom of the page.
+\end_layout
+
+\begin_layout Subsection*
+User Profile
+\end_layout
+
+\begin_layout Standard
+The User Profile page allows the administrator to add a new user or to edit
+ or delete an existing user.
+\end_layout
+
+\begin_layout Standard
+To add a new user, the following fields must be filled in:
+\end_layout
+
+\begin_layout Description
+username
+\end_layout
+
+\begin_layout Description
+password needs to be filled in twice for confirmation
+\end_layout
+
+\begin_layout Description
+e-mail
+\end_layout
+
+\begin_layout Description
+password
+\begin_inset space ~
+\end_inset
+
+hint will be e-mailed to the user who forgot his password
+\end_layout
+
+\begin_layout Description
+first
+\begin_inset space ~
+\end_inset
+
+name
+\end_layout
+
+\begin_layout Description
+last
+\begin_inset space ~
+\end_inset
+
+name
+\end_layout
+
+\begin_layout Standard
+The administrator must also apply some settings to the account:
+\end_layout
+
+\begin_layout Description
+Enabled the account is enabled and ready to be used
+\end_layout
+
+\begin_layout Description
+Expired the account is not valid anymore and cannot be used to login to
+ the IPT
+\end_layout
+
+\begin_layout Description
+Locked the account is locked and cannot be used to login to the IPT
+\end_layout
+
+\begin_layout Description
+Password
+\begin_inset space ~
+\end_inset
+
+Expired the user must change his password next time he logs in.
+\end_layout
+
+\begin_layout Standard
+Finally, the administrator must assign one or several roles to the account.
+ The following roles are available:
+\end_layout
+
+\begin_layout Description
+ROLE_ADMIN the user is given administrative rights and has access to all
+ the features of the IPT, in particular its technical settings.
+ He can also manage the data recorded in the IPT.
+ The administrator supersedes all the other roles and can do anything any
+ other role can do.
+\end_layout
+
+\begin_layout Description
+ROLE_MANAGER the user is given manager rights and can manage the data recorded
+ in the IPT.
+ He can create, edit, delete, or publish data.
+\end_layout
+
+\begin_layout Description
+ROLE_USER the user role is the most basic role of the IPT.
+ the user can explore the site and browse the published information.
+\end_layout
+
+\begin_layout Section*
+Current Users
+\end_layout
+
+\begin_layout Standard
+This page displays a list of the currently logged in users on the IPT.
+ The administrator is offered the possibility to send them an e-mail.
+\end_layout
+
+\begin_layout Section*
+Active Datasources
 \end_layout
 
 \begin_layout Part
