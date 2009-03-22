@@ -50,6 +50,19 @@ General specifications
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+*****Currently only a copy/paste of the white paper*****
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Open source (Apache 2.0 license) Java based customisable, multilingual web
  application.
  • Connects and serves 3 types of data: taxon primary occurrence data, taxon
@@ -259,7 +272,16 @@ Tomcat configuration
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 *****is it enough to give links for the memory?*****
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -394,7 +416,16 @@ Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib
 \end_layout
 
 \begin_layout Enumerate
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 *****What about h2-1.1.104.jar mentioned on the wiki?****
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
@@ -471,11 +502,20 @@ Settings
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 *****To be renamed 
 \emph on
 configuration
 \emph default
 ? *****
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -787,8 +827,6 @@ Extensions
 \begin_layout Standard
 Extensions allow for serving additional data types, such as multiple identificat
 ions or descriptive data about species.
- It is possible to define custom extensions, but this is not automated process
- with this version of the IPT.
 \end_layout
 
 \begin_layout Standard
@@ -797,13 +835,110 @@ The page provides a list of available extensions ans shows whether they
  Each extension can be installed or uninstalled by clicking on its name.
 \end_layout
 
+\begin_layout Standard
+By default, available extensions are:
+\end_layout
+
+\begin_layout Itemize
+ResourceRelationship 
+\end_layout
+
+\begin_layout Itemize
+SampleAttribute
+\end_layout
+
+\begin_layout Itemize
+EventAttribute 
+\end_layout
+
+\begin_layout Itemize
+Identification 
+\end_layout
+
+\begin_layout Itemize
+Description 
+\end_layout
+
+\begin_layout Itemize
+Multimedia 
+\end_layout
+
+\begin_layout Itemize
+CommonName 
+\end_layout
+
+\begin_layout Itemize
+Distribution 
+\end_layout
+
+\begin_layout Itemize
+MaterialExamined 
+\end_layout
+
+\begin_layout Itemize
+DarwinCore 
+\end_layout
+
+\begin_layout Itemize
+Taxon 
+\end_layout
+
+\begin_layout Itemize
+VernacularName
+\end_layout
+
+\begin_layout Standard
+The user can get more information about an extension and install it by clicking
+ on its name.
+\end_layout
+
+\begin_layout Standard
+It is possible to define custom extensions, but this is not automated process
+ with this version of the IPT.
+\end_layout
+
 \begin_layout Section*
 Thesaurus
 \end_layout
 
 \begin_layout Standard
-This page shows a list of the available thesauri.
+Thesaurus vocabularies allow for specifying controlled vocabularies to help
+ standardise concepts.
+ This page shows a list of the available thesauri.
  More information can be obtained by clicking on the Vocabulary name.
+\end_layout
+
+\begin_layout Standard
+By default, available thesauri are:
+\end_layout
+
+\begin_layout Itemize
+ISO 639-1 Languages 
+\end_layout
+
+\begin_layout Itemize
+Country Codes 
+\end_layout
+
+\begin_layout Itemize
+Language Vocabulary 
+\end_layout
+
+\begin_layout Itemize
+Darwin Core Type Vocabulary
+\end_layout
+
+\begin_layout Itemize
+Nomenclatural Codes
+\end_layout
+
+\begin_layout Itemize
+Taxonomic Ranks
+\end_layout
+
+\begin_layout Standard
+It is possible to define custom vocabularies, but this is not automated
+ process with this version of the IPT.
 \end_layout
 
 \begin_layout Section*
@@ -811,7 +946,16 @@ View Users
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 *****Rename to Manage Users? *****
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
