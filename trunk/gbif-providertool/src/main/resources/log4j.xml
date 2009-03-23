@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- 
+        This is a dummy only
+        
+        The real log4j configurations are sitting in data/logging
+        The user can configure at runtime which configuration to use.
+        
+    -->
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                value="%p %t-%c{1}.%M(%L) | %m%n"/>
+        </layout>
+    </appender>
+    
+    <!-- GBIF things -->
+    <logger name="org.gbif.provider">
+        <level value="WARN" />
+    </logger>
+    
+    <root>
+        <level value="WARN"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</log4j:configuration>

@@ -37,6 +37,8 @@ import org.hibernate.annotations.MapKey;
  */
 @Entity
 public class OccurrenceResource extends DataResource {
+	public static final String DWC_GUID_PROPERTY = "SampleID";
+
 	private BBox bbox = new BBox();
 	private Integer featureHash;
 	// cached statistics
