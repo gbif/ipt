@@ -131,7 +131,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 			} catch (ParseException e) {
 				addError(e.getTapirMessage());
 			} catch (IllegalArgumentException e) {
-				//addError("Invalid request with illegal arguments submitted", e);
+				addError("Invalid request with illegal arguments submitted", e);
 			} catch (Exception e) {
 				addError("Unknown error", e);
 			}

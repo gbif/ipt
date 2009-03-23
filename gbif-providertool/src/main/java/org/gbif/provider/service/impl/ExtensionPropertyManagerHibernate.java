@@ -19,9 +19,10 @@ public class ExtensionPropertyManagerHibernate extends GenericManagerHibernate<E
 	public ExtensionProperty getCorePropertyByQualName(String qName) {
 		// use ExtensionProperty to parse qualname intp pieces for querying 
 		ExtensionProperty prop = new ExtensionProperty(qName);
-		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and p.namespace=:namespace and e.core=true) ")
+		return (ExtensionProperty) getSession().createQuery("select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and (p.namespace=:namespace or p.namespace=:namespace2) and e.core=true) ")
 		.setParameter("name", prop.getName())
 		.setParameter("namespace", prop.getNamespace())
+		.setParameter("namespace2", prop.getNamespace()+"/")  // some namespaces like darwin core use a trailing slash which gets lost when parsing a qualified concept name
 		.uniqueResult();
 	}
 
