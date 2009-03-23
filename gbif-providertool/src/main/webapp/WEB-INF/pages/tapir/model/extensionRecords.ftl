@@ -1,3 +1,4 @@
+<#if (rec.getExtensions()?size>0)>
 <dwr:DarwinExtensions>
 <#-- loop through each extension-->
 <#list rec.getExtensions() as ext>
@@ -12,3 +13,4 @@
   </#list>
 </#list>
 </dwr:DarwinExtensions>
+</#if>

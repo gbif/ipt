@@ -159,8 +159,14 @@ public class ViewMappingBase  implements BaseObject, Comparable<ViewMappingBase>
 	
 	@Transient
 	public boolean hasMappedProperty(ExtensionProperty property) {
-		if (property!=null && propertyMappings.containsKey(property.getId())){
-			return true;
+		if (property!=null){
+			if (propertyMappings.containsKey(property.getId())){
+				return true;
+			}else if (property.getExtension().isCore() && property.getName().equalsIgnoreCase(ChecklistResource.DWC_GUID_PROPERTY)){
+				return true;
+			}else if (property.getExtension().isCore() && property.getName().equalsIgnoreCase(OccurrenceResource.DWC_GUID_PROPERTY)){
+				return true;
+			}			
 		}
 		return false;
 	}	

@@ -382,8 +382,10 @@ public class AppConfig{
 	}
 	
 	public void reloadLogger(){
-		LogManager.resetConfiguration();
-		DOMConfigurator.configure(getLog4jFile().getAbsolutePath());
+		if (getLog4jFile().exists()){
+			LogManager.resetConfiguration();
+			DOMConfigurator.configure(getLog4jFile().getAbsolutePath());
+		}
 	}
 	
 }

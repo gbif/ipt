@@ -818,6 +818,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public String getSampleDetails() {
 		return sampleDetails;
 	}
+	@Transient
+	public String getSampleID() {
+		return guid;
+	}
 	public void setSampleDetails(String sampleDetails) {
 		this.sampleDetails = sampleDetails;
 	}
