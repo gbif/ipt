@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.ViewMappingBase;
@@ -41,10 +42,16 @@ public class NamespaceRegistry {
 		return prefix(prop.getNamespace());
 	}
 	public String tagname(ExtensionProperty prop){
-		return StringUtils.deleteWhitespace(StringUtils.capitaliseAllWords(prop.getName()));
+		return tagname(prop.getName());
+	}
+	private String tagname(String name){
+		return StringUtils.deleteWhitespace(StringUtils.capitaliseAllWords(name));
 	}
 	public String tagnameQualified(ExtensionProperty prop){
 		return String.format("%s:%s",prefix(prop),tagname(prop));
+	}
+	public String tagnameQualifiedExtension(Extension ext){
+		return String.format("%s:%s",prefix(ext.getNamespace()),tagname(ext.getName()));
 	}
 
 	public boolean isEmpty() {
@@ -67,6 +74,9 @@ public class NamespaceRegistry {
 		}
 		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/")){
 			prefix="dwc";
+		}
+		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/dwcrecord/")){
+			prefix="dwr";
 		}
 		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/dwcore/")){
 			prefix="dwcore";

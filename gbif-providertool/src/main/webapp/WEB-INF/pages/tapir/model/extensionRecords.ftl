@@ -1,12 +1,14 @@
+<dwr:DarwinExtensions>
 <#-- loop through each extension-->
 <#list rec.getExtensions() as ext>
-  <extension name="${ext.name}" xmlns:x="${ext.name}">
+  <#-- loop through each record in this extension, creating an extension element for each record -->
   <#list rec.getExtensionRecords(ext) as eRec>
-	<xrecord>
-	  <#list eRec.properties as p>
-	    <${nsr.tagnameQualified(p)}>${(eRec.getPropertyValue(p)!"")?xml}</${nsr.tagnameQualified(p)}>
-	  </#list>
-	</xrecord>
+  <${nsr.tagnameQualifiedExtension(ext)}>
+    <#-- loop through each property of this record -->
+    <#list eRec.properties as p>
+	  <${nsr.tagnameQualified(p)}>${(eRec.getPropertyValue(p)!"")?xml}</${nsr.tagnameQualified(p)}>
+    </#list>
+  </${nsr.tagnameQualifiedExtension(ext)}>
   </#list>
-  </extension>
 </#list>
+</dwr:DarwinExtensions>

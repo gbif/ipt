@@ -9,11 +9,11 @@
 <search ${nsr.xmlnsDef()}>  
 </#if>
 <#escape x as x?xml>
- <records>
+ <dwr:DarwinRecordSet>
    <#list records as rec>
 	<#include "/WEB-INF/pages/tapir/model/dwc.ftl">  
    </#list>
- </records>
+ </dwr:DarwinRecordSet>
  <summary start="${start?c}" <#if (next>0)> next="${next?c}"</#if> totalReturned="${records?size?c}"<#if totalMatched??> totalMatched="${totalMatched?c}"</#if>/>
 </#escape>
 </search>
