@@ -44,18 +44,12 @@ public class ConfigAction extends BasePostAction{
 			return "cancel";
 		}
 		this.cfg.save();
-		reloadLogger();
+		cfg.reloadLogger();
 		saveMessage(getText("config.updated"));
 		check();
 		return SUCCESS;
 	}
 	
-	private void reloadLogger(){
-		LogManager.resetConfiguration();
-		DOMConfigurator.configure(cfg.getLog4jFile().getAbsolutePath());
-		//PropertyConfigurator.configure();
-	}
-
 	public String updateGeoserver() throws Exception {
 		try {
 			geoManager.updateCatalog();
