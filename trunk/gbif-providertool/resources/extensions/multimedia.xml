@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="../extension.xsd" 
+    xsi:schemaLocation="http://gbrds.gbif.org/resources/schemas/extension.xsd" 
     title="Multimedia" name="Multimedia" namespace="http://rs.gbif.org/ecat/terms/">
     <property name="identifier" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/identifier"/>
     <property name="title" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/title"/>

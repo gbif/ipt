@@ -2,7 +2,7 @@
 
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="../extension.xsd" 
+    xsi:schemaLocation="http://gbrds.gbif.org/resources/schemas/extension.xsd" 
     title="Resource Relationship" name="ResourceRelationship" namespace="http://rs.tdwg.org/dwc/terms/">
     
     <property name="ResourceRelationshipID" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/ResourceRelationshipID"/> 
