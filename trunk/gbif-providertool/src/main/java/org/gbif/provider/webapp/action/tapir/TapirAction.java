@@ -53,7 +53,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	private static final String METADATA = "metadata";
 	private static final String SEARCH = "search";
 	private static final String INVENTORY = "inventory";
-	private static final String MODEL_LOCATION = "http://rs.tdwg.org/tapir/cs/dwc/dwcstar.xml";
+	private static final String MODEL_LOCATION = "http://darwincore.googlecode.com/svn/trunk/tapir/dwc_extensible.tom";
 	private static final String MODEL_ALIAS = "dwc";
 	private static final Set<String> RESERVED_PARAMETERS = new HashSet<String>(Arrays.asList(new String[]{"operation","op","cnt","count","s","start","l","limit","t","template","c","concept","n","tagname","f","filter","e","envelope","m","model","p","partial","o","orderby","d","descend"}));
 	//
@@ -238,7 +238,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 	}
 
 	//
-	// INVENTORY
+	// SEARCH
 	//
 	private String search() throws ParseException {
 		// check requested model
@@ -246,7 +246,8 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 			if (model.equalsIgnoreCase(MODEL_LOCATION) || model.equalsIgnoreCase(MODEL_ALIAS)){
 				parseFilter();
 				doSearch();
-				setNextRecord();			
+				setNextRecord();
+				addModelNamespaces();
 				return SEARCH;
 			}
 			addFatal("The requested output model is not supported: "+model);
@@ -256,6 +257,11 @@ public class TapirAction extends BaseOccurrenceResourceAction implements Servlet
 		return ERROR;
 	}
 
+	private void addModelNamespaces(){
+		nsr.add("http://rs.tdwg.org/dwc/dwcrecord/");
+		nsr.add("http://rs.tdwg.org/dwc/terms/");
+		nsr.add("http://purl.org/dc/terms/");
+	}
 
 	private void doSearch() {
 		// parse orderby
