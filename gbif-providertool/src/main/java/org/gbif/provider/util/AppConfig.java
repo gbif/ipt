@@ -12,6 +12,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.struts2.util.ServletContextAware;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
@@ -46,7 +48,7 @@ public class AppConfig{
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
 		setBaseUrl(cfg.getBaseUrl());
-		
+		reloadLogger();
 		log.info(String.format("\n--------------------\nIPT_DATA_DIR: %s\nIPT_WEBAPP_DIR: %s\nIPT_BASE_URL: %s\nIPT_GEOSERVER_URL: %s\nIPT_GEOSERVER_DATA_DIR: %s\n--------------------\n", dataDIR,webappDIR.getAbsolutePath(),baseURL,cfg.getGeoserverUrl(),cfg.getGeoserverDataDir()));
 	}
 
@@ -378,4 +380,10 @@ public class AppConfig{
 		}
 		return true;
 	}
+	
+	public void reloadLogger(){
+		LogManager.resetConfiguration();
+		DOMConfigurator.configure(getLog4jFile().getAbsolutePath());
+	}
+	
 }
