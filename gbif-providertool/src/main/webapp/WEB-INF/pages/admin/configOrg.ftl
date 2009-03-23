@@ -5,7 +5,9 @@
     <meta name="heading" content="<@s.text name="config.registry"/>"/>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery/ui.core.min.js'/>"></script>
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
+	<script type="text/javascript" src="<@s.url value='/scripts/jquery-validate/jquery.validate.min.js'/>"></script>
 	<link rel="stylesheet" type="text/css" href="<@s.url value='/scripts/jquery.autocomplete.css'/>" />
+
 	<script>
 	<#--
 	  first get list of all organisations, then attach automplete event based on this list
@@ -118,6 +120,8 @@
 				e.preventDefault();
 		    }
 		});
+		<#-- form validation -->
+		$("#providerCfg").validate();		
 	});
 	
 	</script>
@@ -130,13 +134,13 @@
 <@s.form id="providerCfg" method="post">
 <fieldset>
     <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/>
-	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external"/>
+	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external required"/>
     <div>
         <div class="leftxhalf">
 			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
-			<@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external"/>
+			<@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external required"/>
 		    <@s.hidden id="orgNodeKey" key="config.orgNode" cssClass="external"/>
         </div>
         <div>
@@ -145,10 +149,10 @@
 	</div>
     <div>
         <div class="leftxhalf">
-			<@s.textfield id="orgName" key="config.org.contactName" required="true" cssClass="text large external"/>
+			<@s.textfield id="orgName" key="config.org.contactName" required="true" cssClass="text large external required"/>
         </div>
         <div  class="leftxhalf">
-			<@s.textfield id="orgEmail" key="config.org.contactEmail" required="true" cssClass="text large external"/>
+			<@s.textfield id="orgEmail" key="config.org.contactEmail" required="true" cssClass="text large external required"/>
         </div>
 	</div>
 	<@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
