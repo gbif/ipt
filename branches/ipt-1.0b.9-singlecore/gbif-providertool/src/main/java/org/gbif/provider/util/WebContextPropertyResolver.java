@@ -25,31 +25,42 @@ import org.springframework.web.context.ServletContextAware;
 public class WebContextPropertyResolver extends PropertyPlaceholderConfigurer implements ServletContextAware{
 	private final Log log = LogFactory.getLog(WebContextPropertyResolver.class);
 	private ServletContext context;
-	
+	private String testWebappDir;
 	
 	@Override
 	protected String resolvePlaceholder(String placeholder, Properties props) {
 		String result = super.resolvePlaceholder(placeholder, props);
 		if (result==null){
-			if (context==null){
+			if (context==null && testWebappDir==null){
 				throw new NullPointerException("Servlet context is required for WebContextPropertyResolver");
 			}
 			// only use the webcontext placeholders as defaults that can be overridden by regular property definitions
 			if (placeholder.equalsIgnoreCase("datadir")){
-				result = context.getRealPath("/data");
-				log.debug(String.format("Resolved DATADIR placeholder with servlet context : %s",result));
+				result = getPath("/data");
 			}
 			else if (placeholder.equalsIgnoreCase("webappdir")){
-				result = context.getRealPath("/");
-				log.debug(String.format("Resolved WEBAPPDIR placeholder with servlet context : %s",result));
+				result = getPath("/");
 			}
 		}
 		return result;
 	}
-
+	private String getPath(String relPath){
+		if (context!=null){
+			String result = context.getRealPath(relPath); 
+			System.out.println(String.format("Resolved relative path %s with servlet context : %s",relPath, result));
+			return result;
+		}
+		String result = new File (testWebappDir, relPath).getAbsolutePath(); 
+		System.out.println(String.format("Resolved relative path %s with test dir: %s",relPath, result));
+		return result;
+	}
+	
 	@Autowired(required=true)
 	public void setServletContext(ServletContext servletContext) {
 		this.context = servletContext;		
 	}
-	
+
+	public void setTestWebappDir(String testWebappDir) {
+		this.testWebappDir = testWebappDir;
+	}
 }

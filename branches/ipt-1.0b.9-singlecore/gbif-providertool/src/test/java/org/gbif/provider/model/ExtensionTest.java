@@ -9,6 +9,7 @@ import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.util.Constants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,7 +38,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 		extension.addProperty(propMap);
 		extension = extensionManager.save(extension);
 		// check dwc, checklist and inserted extensions
-		for (Long extId : Arrays.asList(ExtensionType.Checklist.extensionID, ExtensionType.Occurrence.extensionID, extension.getId())){
+		for (Long extId : Arrays.asList(Constants.DARWIN_CORE_EXTENSION_ID, extension.getId())){
 			Extension ext = extensionManager.get(extId);
 			List<ExtensionProperty> props = ext.getProperties(); 
 			assertFalse(props.isEmpty());
@@ -70,7 +71,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);
-		assertTrue(res.getCoreMapping().getExtension().getId().equals(ExtensionType.Occurrence.extensionID));
+		assertTrue(res.getCoreMapping().getExtension().getId().equals(Constants.DARWIN_CORE_EXTENSION_ID));
 		// the core mapping should not be in the extension mappings map
 		assertFalse(res.getExtensionMappings().contains(res.getCoreMapping()));
 		// but in all mappings it should:

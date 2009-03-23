@@ -12,7 +12,7 @@ public class ViewMappingTest {
 
 	@Before
 	public void setUp() throws Exception {
-		DataResource r = OccurrenceResource.newInstance();
+		DataResource r = new OccurrenceResource();
 		r.setTitle("Berlin Moss");
 		SourceSql src = new SourceSql("Specimens", "Select * from specimen limit 100");
 		vm1 = new ExtensionMapping();

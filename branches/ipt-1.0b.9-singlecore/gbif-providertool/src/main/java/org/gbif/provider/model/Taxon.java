@@ -68,10 +68,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 //		private Taxon higherTaxon; --> this.parent
 //		private String higherTaxonID;  
 //		private String higherTaxon;
-		private Taxon acceptedTaxon;
+		private Taxon acc;
 //		private String acceptedTaxonID;
 //		private String acceptedTaxon;
-		private Taxon basionym;
+		private Taxon bas;
 //		private String basionymID;
 //		private String basionym;	
 		
@@ -182,30 +182,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 
 		@Transient
-		public String getTaxonomicParentID() {
-			if (parent!=null){
-				return parent.guid;				
-			}
-			return null;
-		}
-
-		@Transient
-		public String getAcceptedTaxonID() {
-			if (acceptedTaxon!=null){
-				return acceptedTaxon.guid;				
-			}
-			return null;
-		}
-
-		@Transient
-		public String getBasionymID() {
-			if (basionym!=null){
-				return basionym.guid;				
-			}
-			return null;
-		}
-
-		@Transient
 		@Deprecated
 		public String getNomenclaturalReference() {
 			return namePublishedIn;
@@ -239,19 +215,62 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		}
 
 		@ManyToOne(optional = true)
-		public Taxon getAcceptedTaxon() {
-			return acceptedTaxon;
+		public Taxon getAcc() {
+			return acc;
 		}
-		public void setAcceptedTaxon(Taxon acceptedTaxon) {
-			this.acceptedTaxon = acceptedTaxon;
+		public void setAcc(Taxon acceptedTaxon) {
+			this.acc = acceptedTaxon;
+		}
+		@Transient
+		public String getAcceptedTaxonID() {
+			if (acc!=null){
+				return acc.guid;				
+			}
+			return null;
+		}
+		@Transient
+		public String getAcceptedTaxon() {
+			if (acc!=null){
+				return acc.label;				
+			}
+			return null;
 		}
 
-		@ManyToOne(optional = true)
-		public Taxon getBasionym() {
-			return basionym;
+		@Transient
+		public String getHigherTaxonID() {
+			if (parent!=null){
+				return parent.guid;				
+			}
+			return null;
 		}
-		public void setBasionym(Taxon basionym) {
-			this.basionym = basionym;
+		@Transient
+		public String getHigherTaxon() {
+			if (parent!=null){
+				return parent.label;				
+			}
+			return null;
+		}
+		
+		@Transient
+		public String getBasionymID() {
+			if (bas!=null){
+				return bas.guid;				
+			}
+			return null;
+		}
+		@Transient
+		public String getBasionym() {
+			if (bas!=null){
+				return bas.label;				
+			}
+			return null;
+		}
+		@ManyToOne(optional = true)
+		public Taxon getBas() {
+			return bas;
+		}
+		public void setBas(Taxon basionym) {
+			this.bas = basionym;
 		}
 
 		public String getBinomial() {

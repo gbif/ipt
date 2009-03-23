@@ -147,14 +147,6 @@
                         <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
                     </componentProperties>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>hbm2ddl</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>${jdbc.groupId}</groupId>

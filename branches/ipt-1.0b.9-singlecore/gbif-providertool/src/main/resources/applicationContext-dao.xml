@@ -51,22 +51,100 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <!-- If you want to be able to do simple CRUD for new domain objects without 
-        having to cast, you don't have create a Dao interface and implementation 
-        for that domain object, you simply have to do the following.  
-        
-        eg... 'fooDao'
+
+
+
+    <!-- external datasource routing/registry -->
     
-    <bean id="fooDao" class="org.appfuse.dao.hibernate.GenericDaoHibernate">
-        <constructor-arg value="org.gbif.provider.model.Foo"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
+    
+    <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.Long" />            
+        </property>
+    </bean>
+
+    <!--  IPT MANAGER  -->
+    <bean id="abstractManager" abstract="true">
+        <!--property name="sessionFactory" ref="sessionFactory"/-->
+    </bean>
+    <bean id="abstractJDBCManager" abstract="true">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
     
-    You will need to create a Dao interface and implementation for that 
-        domain object if you need more than simple CRUD to occur.  
-        (finders, bulk update/delete, etc.)
-    -->
-
-    <!-- Add new DAOs here -->
-
+    <bean id="annotationManager" class="org.gbif.provider.service.impl.AnnotationManagerHibernate" parent="abstractManager"/>
+    
+    <bean id="occResourceManager" class="org.gbif.provider.service.impl.OccResourceManagerHibernate" parent="abstractManager"/>
+    <bean id="checklistResourceManager" class="org.gbif.provider.service.impl.ChecklistResourceManagerHibernate" parent="abstractManager"/>            
+    <bean id="dataResourceManager" class="org.gbif.provider.service.impl.DataResourceManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.DataResource"/>
+    </bean>
+    <bean id="resourceManager" class="org.gbif.provider.service.impl.GenericResourceManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.Resource"/>
+    </bean>
+    
+    <bean id="resourceKeywordManager" class="org.gbif.provider.service.impl.ResourceKeywordManagerJDBC" parent="abstractJDBCManager"/>
+    
+    <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
+    
+    <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="propertyMappingManager" class="org.gbif.provider.service.impl.GenericManagerHibernate" parent="abstractManager">        
+        <constructor-arg value="org.gbif.provider.model.PropertyMapping"/>
+    </bean>    
+    
+    <bean id="transformationManager" class="org.gbif.provider.service.impl.TransformationManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="termMappingManager" class="org.gbif.provider.service.impl.TermMappingManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="extensionManager" class="org.gbif.provider.service.impl.ExtensionManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="extensionPropertyManager" class="org.gbif.provider.service.impl.ExtensionPropertyManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="occStatManager" class="org.gbif.provider.service.impl.OccStatManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="taxonManager" class="org.gbif.provider.service.impl.TaxonManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="hqlTester" class="org.gbif.provider.service.impl.HqlTesterHibernate" parent="abstractManager"/>        
+    
+    <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
+    
+    <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
+    
+    <bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
+    
+    <bean id="extensionFactory" class="org.gbif.provider.service.util.ExtensionFactory"/>
+    
+    <!-- cache / import manager -->
+    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
+    
+    <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl">        
+        <property name="dataSource" ref="externalResourceRoutingDatasource"/>
+    </bean>
+    
+    <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
+    
+    <bean id="dataArchiveManager" class="org.gbif.provider.service.impl.DataArchiveManagerImpl" parent="abstractManager"/>
+    
+    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerJDBC"  parent="abstractJDBCManager" lazy-init="true">
+        <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
+        <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
+    </bean>
+    
+    <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
+        <constructor-arg ref="extensionManager"/>
+    </bean>
+    <bean id="darwinCoreFactory" class="org.gbif.provider.service.impl.DarwinCoreFactoryImpl"/>        
+    
+    <!-- FULL TEXT SEARCHING -->
+    <bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene" />
+    
 </beans>
