@@ -2,7 +2,7 @@
 <!-- related resources described by dublin core -->
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="../extension.xsd" 
+    xsi:schemaLocation="http://gbrds.gbif.org/resources/schemas/extension.xsd" 
     title="Related Resources" name="relation" namespace="http://purl.org/dc/terms/">
     
     <property name="abstract" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/abstract"/>

@@ -9,7 +9,7 @@
 -->
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="../extension.xsd" 
+    xsi:schemaLocation="http://gbrds.gbif.org/resources/schemas/extension.xsd" 
     title="Vernacular Name" name="VernacularName" namespace="http://rs.gbif.org/ecat/terms/">
     <property name="vernacularName" namespace="http://rs.gbif.org/ecat/terms/" qualName="http://rs.gbif.org/ecat/terms/vernacularName" required="true"/>
     <property name="language" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/language"/>
