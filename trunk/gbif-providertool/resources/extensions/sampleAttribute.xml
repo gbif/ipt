@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-	This defines the extension for defining vernacular names as extensions to a Taxon core object
-	An instance of this represents a http://rs.gbif.org/ecat/class/VernacularName
-	
-	This has the dependency on thesauri:
-		- language code:  http://rs.gbif.org/thesaurus/languageCode.xml
-		- area: http://rs.gbif.org/thesaurus/area.xml
--->
+
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="../extension.xsd" 
-    title="Identification History" name="Identification" namespace="http://rs.tdwg.org/dwc/terms/">
-    <property name="NomenclaturalCode" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/ScientificName" required="true"/>
-    <property name="ScientificName" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/ScientificName" required="true"/>
-    <property name="TaxonAccordingTo" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/TaxonAccordingTo"/>    
-    <property name="IdentifiedBy" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/IdentifiedBy" />
-    <property name="DateIdentified" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/DateIdentified" />
-    <property name="IdentificationReferences" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/IdentificationReferences" />
-    <property name="IdentificationRemarks" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/IdentificationRemarks" />
-    <property name="IdentificationQualifier" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/IdentificationQualifier" />
-    <property name="TypeStatus" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/TypeStatus" />
+    title="Sample Attribute" name="SampleAttribute" namespace="http://rs.tdwg.org/dwc/terms/">
+    <property name="SampleAttributeID" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeID" />
+    <property name="SampleAttributeType" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeType" />
+    <property name="SampleAttributeValue" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeValue" />
+    <property name="SampleAttributeAccuracy" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeAccuracy" />
+    <property name="SampleAttributeUnit" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeUnit" />
+    <property name="SampleAttributeDeterminedDate" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeDeterminedDate" />
+    <property name="SampleAttributeDeterminedBy" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeDeterminedBy" />
+    <property name="SampleAttributeRemarks" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/SampleAttributeRemarks" />
 </extension>

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-	This defines the extension for defining vernacular names as extensions to a Taxon core object
-	An instance of this represents a http://rs.gbif.org/ecat/class/VernacularName
-	
-	This has the dependency on thesauri:
-		- language code:  http://rs.gbif.org/thesaurus/languageCode.xml
-		- area: http://rs.gbif.org/thesaurus/area.xml
--->
+
 <extension xmlns="http://ipt.gbif.org/extension/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="../extension.xsd" 
     title="Identification History" name="Identification" namespace="http://rs.tdwg.org/dwc/terms/">
-    <property name="NomenclaturalCode" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/ScientificName" required="true"/>
+    <property name="NomenclaturalCode" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/NomenclaturalCode"/>
     <property name="ScientificName" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/ScientificName" required="true"/>
     <property name="TaxonAccordingTo" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/TaxonAccordingTo"/>    
     <property name="IdentifiedBy" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/IdentifiedBy" />
