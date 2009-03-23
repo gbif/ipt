@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	This defines the extension for defining vernacular names as extensions to a Taxon core object
+	An instance of this represents a http://rs.gbif.org/ecat/class/VernacularName
+	
+	This has the dependency on thesauri:
+		- language code:  http://rs.gbif.org/thesaurus/languageCode.xml
+		- area: http://rs.gbif.org/thesaurus/area.xml
+-->
+<extension xmlns="http://ipt.gbif.org/extension/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="../extension.xsd" 
+    title="Alternative Identifier" name="identifier" namespace="http://purl.org/dc/terms/">
+    <property name="format" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/format"/>
+    <property name="identifier" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/identifier"/>
+</extension>
