@@ -1,5 +1,5 @@
-#summary User manual based on version 1.0beta
+#summary Upcoming user manual
 
 
-= PRELIMINARY NOTE =
+= WORK IN PROGRESS =
 The documentation is currently being written. We hope to release an initial document mid April 2009.
