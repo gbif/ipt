@@ -3,7 +3,7 @@ package org.gbif.provider.util;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.service.DarwinCoreFactory;
+import org.gbif.provider.model.factory.DarwinCoreFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

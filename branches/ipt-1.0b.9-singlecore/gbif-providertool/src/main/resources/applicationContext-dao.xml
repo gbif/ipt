@@ -120,9 +120,7 @@
     <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
     
     <bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
-    
-    <bean id="extensionFactory" class="org.gbif.provider.service.util.ExtensionFactory"/>
-    
+        
     <!-- cache / import manager -->
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
     
@@ -139,10 +137,6 @@
         <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
     </bean>
     
-    <bean id="resourceFactory" class="org.gbif.provider.service.impl.ResourceFactoryImpl">        
-        <constructor-arg ref="extensionManager"/>
-    </bean>
-    <bean id="darwinCoreFactory" class="org.gbif.provider.service.impl.DarwinCoreFactoryImpl"/>        
     
     <!-- FULL TEXT SEARCHING -->
     <bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene" />

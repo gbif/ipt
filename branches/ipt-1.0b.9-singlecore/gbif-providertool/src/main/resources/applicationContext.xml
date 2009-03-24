@@ -72,6 +72,19 @@
     <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor"/>
 	
     
+    <!-- MODEL FACTORIES -->
+    <bean id="extensionFactory" class="org.gbif.provider.service.util.ExtensionFactory"/>
+    
+    <bean id="resourceFactory" class="org.gbif.provider.model.factory.ResourceFactory">        
+        <constructor-arg ref="extensionManager"/>
+    </bean>
+    
+    <bean id="darwinCoreFactory" class="org.gbif.provider.model.factory.DarwinCoreFactory"/>        
+    
+    <bean id="taxonFactory" class="org.gbif.provider.model.factory.TaxonFactory"/>        
+
+    <bean id="regionFactory" class="org.gbif.provider.model.factory.RegionFactory"/>        
+    
     <!-- IMPORT SOURCE -->
     <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
         <lookup-method name="newFileImportSource" bean="fileImportSource"/>

@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

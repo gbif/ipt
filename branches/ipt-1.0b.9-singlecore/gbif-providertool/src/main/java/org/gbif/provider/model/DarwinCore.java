@@ -643,6 +643,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			}else{
 				return null;
 			}
+		}else if (rank==Rank.TerminalTaxon){
+			return getScientificName();
 		}else{
 			return StringUtils.trimToNull(getPropertyValue(StringUtils.capitalise(rank.columnName)));
 		}
@@ -652,7 +654,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	 */
 	@Transient
 	public String getTaxonomyPath() {
-		return getTaxonomyPath(Rank.InfraSpecies)+"|"+getScientificName();
+		return getTaxonomyPath(Rank.TerminalTaxon);
 	}
 	@Transient
 	public String getTaxonomyPath(Rank rank) {
@@ -677,6 +679,9 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		}
 		if (rank.compareTo(Rank.InfraSpecies) >= 0){
 			path += "|"+StringUtils.trimToEmpty(getInfraspecificEpithet());
+		}
+		if (rank.compareTo(Rank.TerminalTaxon) >= 0){
+			path += "|"+StringUtils.trimToEmpty(getScientificName());
 		}
 		return path;
 	}

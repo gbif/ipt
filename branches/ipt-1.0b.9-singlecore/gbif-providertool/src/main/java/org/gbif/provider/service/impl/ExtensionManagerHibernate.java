@@ -178,15 +178,6 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
         	.uniqueResult();
 	}
 
-	public ExtensionProperty getProperty(String qualname) {
-		Session session = getSession();
-        Object obj = session.createQuery(String.format("select p from ExtensionProperty p where p.qualName=:qualname"))
-    	.setParameter("qualname", qualname)
-    	.uniqueResult();
-        
-        return (ExtensionProperty) obj;
-	}
-
 	public void synchroniseExtensionsWithRepository() {
 		Collection<String> urls = registryManager.listAllExtensions();
 		Collection<Extension> extensions = extensionFactory.build(urls);

@@ -46,7 +46,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getRoots(Long resourceId) {
-		return treeNodeSupport.getRoots(resourceId, getSession(), "n.acceptedTaxon is null");
+		return treeNodeSupport.getRoots(resourceId, getSession(), "n.acc is null");
 	}
 
 	@Override
@@ -71,8 +71,9 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	
 	public void lookupAcceptedTaxa(Long resourceId) {
+		//FIXME: ID & String lookup need to use DarwinCore table
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set accepted_taxon_fk = (select tp.id from taxon tp where tp.local_id=t.accepted_taxon_id and tp.id!=t.id and resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set acc_fk = (select tp.id from taxon tp where tp.local_id=t.accepted_taxon_id and tp.id!=t.id and resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -83,8 +84,9 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public void lookupBasionymTaxa(Long resourceId) {
+		//FIXME: ID & String lookup need to use DarwinCore table
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set basionym_fk = (select tp.id from taxon tp where tp.local_id = t.basionym_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set bas_fk = (select tp.id from taxon tp where tp.local_id = t.basionym_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -96,6 +98,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public void lookupParentTaxa(Long resourceId) {
 		Connection cn = getConnection();
+		//FIXME: ID & String lookup need to use DarwinCore table
 		String sql = String.format("update Taxon t set parent_fk = (select tp.id from taxon tp where tp.local_id = t.taxonomic_parent_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
@@ -112,14 +115,9 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public int countByType(Long resourceId, Rank rank){
 		return treeNodeSupport.countByType(resourceId, rank, getSession());
-//		Long cnt = (Long) query("select count(tax) from Taxon tax WHERE tax.type = :rank and tax.resource.id = :resourceId")
-//        	.setLong("resourceId", resourceId)
-//        	.setParameter("rank", rank)
-//        	.iterate().next();
-//        return cnt.intValue();
 	}
 	public int countSynonyms(Long resourceId) {
-		return ((Long) query("select count(tax) from Taxon tax WHERE tax.acceptedTaxon is not null and tax.resource.id = :resourceId")
+		return ((Long) query("select count(tax) from Taxon tax WHERE tax.acc is not null and tax.resource.id = :resourceId")
 				.setLong("resourceId", resourceId)
 				.iterate().next()).intValue();
 	}
@@ -157,7 +155,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getSynonyms(Long taxonId) {
-		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by s.label")
+		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acc=t  order by s.label")
     	.setLong("taxonId", taxonId)
     	.list();
 	}

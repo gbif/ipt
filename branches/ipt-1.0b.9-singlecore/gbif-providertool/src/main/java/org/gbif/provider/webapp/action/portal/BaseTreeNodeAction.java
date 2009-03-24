@@ -73,10 +73,12 @@ public class BaseTreeNodeAction<T extends org.gbif.provider.model.TreeNodeBase<T
     }
     private String getGeoserverUrl(T node){
     	if (Region.class.isAssignableFrom(node.getClass())){
-    		return mapUtil.getWMSGoogleMapUrl(resource_id, null, (Region) node); 
+    		Region r = (Region) node;
+    		return mapUtil.getWMSGoogleMapUrl(resource_id, null, r); 
     	}
     	else if (Taxon.class.isAssignableFrom(node.getClass())){
-    		return mapUtil.getWMSGoogleMapUrl(resource_id, (Taxon) node, null); 
+    		Taxon t = (Taxon) node;
+    		return mapUtil.getWMSGoogleMapUrl(resource_id, t, null); 
     	}
     	return "";
     }

@@ -76,7 +76,8 @@ public class ResourceManagerTest extends ResourceTestBase{
 		Long id = resource.getId();
 		resourceManager.save(resource);		
 		Resource resu = resourceManager.get(id);
-		assertEquals(resu.getStatus(), PublicationStatus.uptodate);
+		// stays dirty and not uptodate because resource isnt registered
+		assertEquals(resu.getStatus(), PublicationStatus.dirty);
 
 		resource.setStatus(PublicationStatus.dirty);
 		resourceManager.save(resource);		

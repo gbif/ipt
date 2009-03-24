@@ -2,9 +2,13 @@ package org.gbif.provider.task;
 
 	import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -16,21 +20,34 @@ import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.ImportSourceFactory;
 import org.gbif.provider.model.Annotation;
+import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.factory.DarwinCoreFactory;
+import org.gbif.provider.model.factory.RegionFactory;
+import org.gbif.provider.model.factory.TaxonFactory;
+import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.DarwinCoreFactory;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccStatManager;
+import org.gbif.provider.service.RegionManager;
+import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.service.impl.GeoserverManagerImpl;
+import org.gbif.provider.util.CacheMap;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,6 +66,22 @@ import org.springframework.transaction.annotation.Transactional;
 	 * @param <R>
 	 */
 	public abstract class ImportTask<R extends DataResource> extends TaskBase<UploadEvent, R>{
+		protected static final List<Rank> higherRanks;
+		protected static final List<RegionType> higherGeography;
+		static  
+		  {  
+		    List<Rank> ranks = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
+		    Collections.reverse(ranks);
+		    higherRanks = Collections.unmodifiableList(ranks);  
+		  }  
+		static  
+		  {  
+		    List<RegionType> regionTypes = new ArrayList<RegionType>(RegionType.DARWIN_CORE_REGIONS);
+		    regionTypes.add(RegionType.Locality);
+		    Collections.reverse(regionTypes);
+		    higherGeography = Collections.unmodifiableList(regionTypes);  
+		  }
+		
 		private Map<String, Long> idMap = new HashMap<String, Long>();
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
@@ -75,15 +108,35 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		private DataArchiveManager dataArchiveManager;
 		@Autowired
-		private DarwinCoreFactory coreRecordFactory;
-		private DarwinCoreManager coreRecordManager;
+		private DarwinCoreFactory dwcFactory;
+		@Autowired
+		private RegionFactory regionFactory;
+		@Autowired
+		private TaxonFactory taxonFactory;		
+		@Autowired
+		private DarwinCoreManager dwcManager;
 		@Autowired
 		private ExtensionRecordManager extensionRecordManager;
+		protected BBox bbox;
+		protected int numRegions;
+		protected int numTaxa;
+		private CacheMap<String, Taxon> taxonCache = new CacheMap<String, Taxon>(2500);
+		private LinkedList<Taxon> newTaxa = new LinkedList<Taxon>();
+		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
+		private LinkedList<Region> newRegions = new LinkedList<Region>();
 		@Autowired
 		private UploadEventManager uploadEventManager;
 		@Autowired
 		@Qualifier("viewMappingManager")
 		private GenericManager<ExtensionMapping> viewMappingManager;
+		@Autowired
+		protected GeoserverManagerImpl geoTools;
+		@Autowired
+		protected OccStatManager occStatManager;
+		@Autowired
+		protected TaxonManager taxonManager;
+		@Autowired
+		protected RegionManager regionManager;
 
 		
 		public ImportTask(GenericResourceManager<R> resourceManager){
@@ -137,6 +190,8 @@ import org.springframework.transaction.annotation.Transactional;
 			currentActivity="Preparing import";
 			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
+			
+			bbox=new BBox();
 
 			resource= loadResource();
 			
@@ -144,7 +199,7 @@ import org.springframework.transaction.annotation.Transactional;
 			prepareHandler(resource);
 			
 			// remove all previous upload artifacts
-			coreRecordManager.removeAll(resource);
+			dwcManager.removeAll(resource);
 			cacheManager.prepareUpload(getResourceId());
 
 			recordsUploaded = 0;
@@ -183,6 +238,13 @@ import org.springframework.transaction.annotation.Transactional;
 			resource.setLastUpload(event);
 			resource.setRecTotal(recordsUploaded);
 			
+			// create nested set indices
+			currentActivity = "Creating taxonomy index";
+			taxonManager.buildNestedSet(getResourceId());
+			
+			currentActivity = "Creating region index";
+			regionManager.buildNestedSet(getResourceId());
+
 			// call subclass handler for specific postprocessing
 			closeHandler(resource);
 			resourceManager.save(resource);
@@ -250,15 +312,15 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
-						DarwinCore record = coreRecordFactory.build(resource, irec, annotations);
-						if (record == null){
+						DarwinCore dwc = dwcFactory.build(resource, irec, annotations);
+						if (dwc == null){
 							currentErroneous.addAndGet(1);
 							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
 						try {
 							// get previous record or null if it didnt exist yet based on localID and resource
-							DarwinCore oldRecord = coreRecordManager.findByLocalId(irec.getLocalId(), getResourceId());
+							DarwinCore oldRecord = dwcManager.findByLocalId(irec.getLocalId(), getResourceId());
 							
 							// check if localID was unique. All old records should have deleted flag=true
 							// so if deleted is false, the same localID was inserted before already!
@@ -266,17 +328,31 @@ import org.springframework.transaction.annotation.Transactional;
 								annotationManager.badCoreRecord(resource, irec.getLocalId(), "Duplicate local ID");
 							}
 							// assign managed properties
-							updateCoreProperties(record, oldRecord);
+							updateCoreProperties(dwc, oldRecord);
+							
+							// extract taxon
+							try{
+								extractTaxon(dwc);
+							} catch (Exception e) {
+								annotationManager.badCoreRecord(resource, dwc.getLocalId(), "Error extracting taxon: "+e.toString());
+							}
+
+							// extract region
+							try{
+								extractRegion(dwc);
+							} catch (Exception e) {
+								annotationManager.badCoreRecord(resource, dwc.getLocalId(), "Error extracting region: "+e.toString());
+							}
 							
 							// allow specific actions per record
-							recordHandler(record);
+							recordHandler(dwc);
 
 							// save core record
-							record = persistRecord(record, oldRecord);
+							dwc = persistRecord(dwc, oldRecord);
 							
 							// persist record annotations with good GUID
 							for (Annotation anno : annotations){
-								anno.setGuid(record.getGuid());
+								anno.setGuid(dwc.getGuid());
 								annotationManager.save(anno);
 							}
 							annotations.clear();
@@ -293,7 +369,7 @@ import org.springframework.transaction.annotation.Transactional;
 						
 						// clear session cache once in a while...
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0){
-							coreRecordManager.flush();
+							dwcManager.flush();
 						}
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 1000 == 0){
 							log.debug(status());
@@ -322,23 +398,23 @@ import org.springframework.transaction.annotation.Transactional;
 				// also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
 //				oldRecord.setTaxon(record.getTaxon()); 
 //				oldRecord.setRegion(record.getRegion());
-				record = coreRecordManager.save(oldRecord);
+				record = dwcManager.save(oldRecord);
 				
 			}else if (oldRecord!=null){
 				// modified record that existed before.
 				// copy all properties to oldRecord is too cumbersome, so
 				// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
-				coreRecordFactory.copyPersistentProperties(oldRecord, record);
+				dwcFactory.copyPersistentProperties(oldRecord, record);
 				oldRecord.setDeleted(false);
 				oldRecord.setModified(new Date());									
-				record = coreRecordManager.save(oldRecord);									
+				record = dwcManager.save(oldRecord);									
 				// increase counter of changed records
 				recordsChanged += 1;
 				
 			}else{
 				// new record that didnt exist before. Just save new dwc
 				record.setModified(new Date());
-				record = coreRecordManager.save(record);
+				record = dwcManager.save(record);
 				// increase counter of added records
 				recordsAdded += 1;
 			}
@@ -477,5 +553,153 @@ import org.springframework.transaction.annotation.Transactional;
 		 * @param resource
 		 */
 		abstract protected void closeHandler(R resource);
+
+		protected Taxon extractTaxon(DarwinCore dwc) {
+			String path = dwc.getTaxonomyPath();
+			Taxon taxon=findPersistentTaxon(path);
+			if (taxon == null){
+				// taxon doesnt exist yet. create it based on ScientificName
+				taxon = Taxon.newInstance(resource);
+				taxon.setMpath(path);
+				taxon.setScientificName(dwc.getScientificName());
+				taxon.setNomenclaturalCode(dwc.getNomenclaturalCode());
+				if (dwc.getTaxonRank()!=null){
+					taxon.setRank(dwc.getTaxonRank());
+				}
+		
+				// need to link the new taxon into the taxonomic hierarchy
+				// try to find lowest persistent higher taxon 
+				// create new higher taxa as we go up and havent found a persistent one yet
+				Taxon parent = null;
+				newTaxa.clear();
+				boolean persistentParentFound = false;
+				// first see if infraspecific epitheton exists. 
+				// This means there also is a species which we will use as a higher taxon too
+				if (dwc.getInfraspecificEpithet()!=null){
+					parent = findPersistentTaxon(dwc.getTaxonomyPath(Rank.Species));
+					if (parent==null){
+						// cant find species. create new taxon and go further up the ranks
+						parent = taxonFactory.build(dwc, Rank.Species);
+						// we cant assign a parent yet, therefor put it on the new taxon stack 
+						// and save it later once we reach a persistent taxon or the kingdom
+						newTaxa.add(parent);
+					}else{
+						persistentParentFound=true;
+					}
+					taxon.setParent(parent);
+				}
+				if (!persistentParentFound){
+					for (Rank rank : higherRanks){
+						if (dwc.getHigherTaxonName(rank)==null){
+							continue;
+						}
+						parent = findPersistentTaxon(dwc.getTaxonomyPath(rank));
+						if (parent!=null){
+							persistentParentFound=true;
+						}else{
+							parent = taxonFactory.build(dwc, rank);
+							newTaxa.add(parent);
+						}
+						if (taxon.getParent()==null){
+							taxon.setParent(parent);
+						}
+						if (persistentParentFound){
+							break;
+						}
+					}
+				}
+				// save new taxa
+				if (!persistentParentFound && !newTaxa.isEmpty()){
+					// no persistent taxon found in entire hierarchy.
+					// use highest taxon as a new taxonomy root
+					parent = newTaxa.removeLast();
+					saveTaxon(parent);
+				}
+				// save all other new taxa if there are any
+				Taxon newTaxon;
+				while(!newTaxa.isEmpty()){
+					newTaxon = newTaxa.removeLast();
+					newTaxon.setParent(parent);
+					parent = saveTaxon(newTaxon);
+				}
+				
+				// finally save the real taxon linked to the darwin core record
+				saveTaxon(taxon);
+			}
+			
+			dwc.setTaxon(taxon);
+			return taxon;			
+		}
+
+		private Taxon findPersistentTaxon(String mpath) {
+			if (taxonCache.containsKey(mpath)){
+				return taxonCache.get(mpath);
+			}else{
+				// cache is limited, so we need to check the db too to make sure it doesnt exist
+				return taxonManager.getByMaterializedPath(getResourceId(), mpath);
+			}
+		}
+
+
+
+		private Taxon saveTaxon(Taxon taxon) {
+			taxonManager.save(taxon);
+			taxonCache.put(taxon.getMpath(), taxon);
+			numTaxa++;
+			return taxon;
+		}
+
+		protected Region extractRegion(DarwinCore dwc) {			
+			Region region = null;
+			boolean persistentParentFound=false;
+			newRegions.clear();
+			for (RegionType regionType : higherGeography){
+				if (dwc.getHigherGeographyName(regionType)==null){
+					continue;
+				}
+				region = findPersistentRegion(dwc.getGeographyPath(regionType));
+				if (region!=null){
+					persistentParentFound=true;
+					break;
+				}else{
+					region = regionFactory.build(dwc, regionType);
+					newRegions.add(region);
+				}
+			}
+		
+			// save new taxa
+			if (!persistentParentFound && !newRegions.isEmpty()){
+				// no persistent region found in entire hierarchy.
+				// use highest region as a new geography root region
+				region = newRegions.removeLast();
+				saveRegion(region);
+			}
+			// save all other new regions if there are any
+			Region newRegion;
+			while(!newRegions.isEmpty()){
+				newRegion = newRegions.removeLast();
+				newRegion.setParent(region);
+				region = saveRegion(newRegion);
+			}
+				
+			dwc.setRegion(region);
+			return region;			
+		}
+
+		private Region findPersistentRegion(String mpath) {
+			if (regionCache.containsKey(mpath)){
+				return regionCache.get(mpath);
+			}else{
+				// cache is limited, so we need to check the db too to make sure it doesnt exist
+				return regionManager.getByMaterializedPath(getResourceId(), mpath);
+			}
+		}
+
+		private Region saveRegion(Region region) {
+			regionManager.save(region);
+			regionCache.put(region.getMpath(), region);
+			numRegions++;
+			return region;
+		}
 
 	}

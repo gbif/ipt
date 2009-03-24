@@ -2,9 +2,9 @@ package org.gbif.provider.util;
 
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class ResourceTestBase extends TransactionalTestBase {

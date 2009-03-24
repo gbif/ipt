@@ -28,12 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 		public static final int TASK_TYPE_ID = 7;
 		// resource stats
 		private ChecklistResourceManager checklistResourceManager;
-		@Autowired
-		private ThesaurusManager thesaurusManager;
-		@Autowired
-		private TaxonManager taxonManager;
-		private CacheMap<String, Rank> rankCache = new CacheMap<String, Rank>(250);
-		//dataResource stats
 		
 		@Autowired
 		private ChecklistUploadTask(TaxonManager taxonManager, ChecklistResourceManager checklistResourceManager) {
@@ -50,20 +44,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		@Override
 		protected void recordHandler(DarwinCore record) {
-			//FIXME: where do we do the rank interpretation ???
-//			Rank dwcRank = null; 
-//			if (rankCache.containsKey(record.getRank())){
-//				dwcRank = rankCache.get(record.getRank());
-//			}else{
-//				// query thesaurus to find a matching rank
-//				ThesaurusConcept rank = thesaurusManager.getConcept(Rank.URI, record.getRank());
-//				if (rank != null){
-//					dwcRank = Rank.getByUri(rank.getUri());
-//				}
-//				// also keep NULL ranks in cache
-//				rankCache.put(record.getRank(), dwcRank);
-//			}
-//			record.setDwcRank(dwcRank);				
 		}
 
 

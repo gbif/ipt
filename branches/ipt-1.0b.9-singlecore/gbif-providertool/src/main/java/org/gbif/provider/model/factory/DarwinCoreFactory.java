@@ -1,4 +1,4 @@
-package org.gbif.provider.service.impl;
+package org.gbif.provider.model.factory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,14 +19,10 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Point;
 import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.service.AnnotationManager;
-import org.gbif.provider.service.DarwinCoreFactory;
 import org.gbif.provider.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DarwinCoreFactoryImpl implements DarwinCoreFactory {
-	private static Log log = LogFactory.getLog(DarwinCoreFactoryImpl.class);
-	@Autowired
-	private AnnotationManager annotationManager;
+public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore>{
 
 	public DarwinCore build(DataResource resource, ImportRecord rec, Set<Annotation> annotations) {
 		if (rec==null){
@@ -154,42 +150,4 @@ public class DarwinCoreFactoryImpl implements DarwinCoreFactory {
 		return dwc;
 	}
 
-	
-	public DarwinCore copyPersistentProperties(DarwinCore target, DarwinCore source) {
-			Class recClass = target.getClass();
-			for (Method getter : recClass.getMethods()){
-				try {
-					String methodName = getter.getName();
-					if ( (methodName.startsWith("get") || methodName.startsWith("is")) && !methodName.equals("getClass")  && !getter.isAnnotationPresent(Transient.class)){
-						String setterName;
-						if (methodName.startsWith("get")){
-							setterName = "set"+methodName.substring(3);
-						}else{
-							setterName = "set"+methodName.substring(2);
-						}
-						Class returnType = getter.getReturnType();
-						try{
-							Method setter = recClass.getMethod(setterName, returnType);
-							setter.invoke(target, getter.invoke(source));
-						} catch (NoSuchMethodException e){
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IllegalAccessException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		
-		return target;
-	}
 }

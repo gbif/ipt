@@ -4,8 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.gbif.provider.service.ResourceFactory;
-import org.gbif.provider.service.impl.ResourceFactoryImpl;
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.junit.Before;
 import org.junit.Test;
 

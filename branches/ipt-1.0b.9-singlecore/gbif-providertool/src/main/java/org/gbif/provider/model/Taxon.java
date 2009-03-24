@@ -78,6 +78,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		public static Taxon newInstance(DataResource resource){
 			Taxon tax = new Taxon();
 			tax.resource=resource;
+			tax.modified = new Date();
+			tax.isDeleted = false;
 			tax.setGuid(UUID.randomUUID().toString());					
 			return tax;
 		}

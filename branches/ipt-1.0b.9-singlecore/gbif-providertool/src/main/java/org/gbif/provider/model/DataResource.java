@@ -84,15 +84,14 @@ public abstract class DataResource extends Resource {
 
 	public void resetCoreMapping(){
 		// keep extension if core mappings existed already
-		Extension ext = null;
 		if (getCoreMapping()!=null){
-			ext = getCoreMapping().getExtension();
+			Extension ext = getCoreMapping().getExtension();
+			// ensure that core mapping exists
+			ExtensionMapping coreVM = new ExtensionMapping();
+			coreVM.setResource(this);
+			coreVM.setExtension(ext);
+			this.addExtensionMapping(coreVM);
 		}
-		// ensure that core mapping exists
-		ExtensionMapping coreVM = new ExtensionMapping();
-		coreVM.setResource(this);
-		coreVM.setExtension(ext);
-		this.addExtensionMapping(coreVM);
 	}
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -114,22 +113,12 @@ public abstract class DataResource extends Resource {
 	
 	@Transient
 	public Set<ExtensionMapping> getAllMappings() {
-		Set<ExtensionMapping> all = new HashSet<ExtensionMapping>(extensionMappings.values());
-		if (getCoreMapping() != null){
-			all.add(getCoreMapping());
-		}
-		return all;
+		return new HashSet<ExtensionMapping>(extensionMappings.values());
 	}
 	
 	@Transient
 	public ExtensionMapping getCoreMapping() {
 		return extensionMappings.get(Constants.DARWIN_CORE_EXTENSION_ID);
-//		for (ExtensionMapping m : extensionMappings.values()){
-//			if (m.isCore()){
-//				return m;
-//			}
-//		}
-//		return null;
 	}
 
 

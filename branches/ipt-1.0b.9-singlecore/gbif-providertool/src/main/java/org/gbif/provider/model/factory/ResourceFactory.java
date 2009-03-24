@@ -1,18 +1,19 @@
-package org.gbif.provider.service.impl;
+package org.gbif.provider.model.factory;
 
 import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericManager;
-import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.Constants;
 
-public class ResourceFactoryImpl implements ResourceFactory{
+public class ResourceFactory {
 	private GenericManager<Extension> extensionManager;
 
-	public ResourceFactoryImpl(GenericManager<Extension> extensionManager) {
+	public ResourceFactory(GenericManager<Extension> extensionManager) {
 		super();
 		this.extensionManager = extensionManager;
 	}
@@ -20,20 +21,23 @@ public class ResourceFactoryImpl implements ResourceFactory{
 	
 	public OccurrenceResource newOccurrenceResourceInstance(){
 		OccurrenceResource resource =  new OccurrenceResource();
-		resource.resetCoreMapping();
-		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-		resource.getCoreMapping().setExtension(core);
+		initCoreMapping(resource);
 		return resource;
 	}
 	
 	public ChecklistResource newChecklistResourceInstance(){
 		ChecklistResource resource =  new ChecklistResource();
-		resource.resetCoreMapping();
-		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-		resource.getCoreMapping().setExtension(core);
+		initCoreMapping(resource);
 		return resource;
 	}
-
+	private void initCoreMapping(DataResource resource){
+		resource.resetCoreMapping();
+		ExtensionMapping coreVM = new ExtensionMapping();
+		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);		
+		coreVM.setResource(resource);
+		coreVM.setExtension(core);
+		resource.addExtensionMapping(coreVM);
+	}
 	public Resource newMetadataResourceInstance(){
 		Resource resource = new Resource();
 		return resource;
