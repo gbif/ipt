@@ -1,3 +1,14 @@
 #summary list of issues to be covered by the upcoming resource configuration documentation
 
- * 
+== Extensions & Thesaurus vocabs ==
+ * extensions are not versioned
+ * thesaurus is
+
+== custom themes ==
+ * css & themes
+ 
+== maven src build ==
+...
+
+== H2 db ==
+...
