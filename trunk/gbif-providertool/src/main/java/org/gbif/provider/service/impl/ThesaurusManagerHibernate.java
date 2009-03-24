@@ -156,16 +156,49 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 		
 		Collection<ThesaurusVocabulary> vocabularies = ThesaurusFactory.build(urls);
 		for (ThesaurusVocabulary tv: vocabularies) {
-			getSession().saveOrUpdate(tv);
+			synchronise(tv);
 		}
 	}
 	
+	/**
+	 * A TV is unique on the URI
+	 * If the URI to synchronise is found then the concepts and terms are deleted, and recreated as they might be new
+	 * Otherwise a new one is created. 
+	 */
 	public void synchronise(ThesaurusVocabulary tv) {
-		// delete any existing
-		// and then save
-		int affected = getSession().createQuery("delete from ThesaurusVocabulary where uri=:uri").setString("uri", tv.getUri()).executeUpdate();
-		log.info("Deleting vocabulary[" + tv.getUri() + "] affected " + affected + " rows");
+		ThesaurusVocabulary existing = getVocabulary(tv.getUri());
+			
 		getSession().save(tv);
 		log.info("Thesaurus vocabulary saved: " + tv.getId());
+		
+		if (existing != null) {
+			log.info("No existing vocabulary exists for uri: " + tv.getUri());			
+			log.info("Updating any existing ExtensionProperty objects to use latest vocabulary");
+			getSession().createQuery("update ExtensionProperty set vocabulary=:new where vocabulary=:old")
+				.setEntity("old", existing)
+				.setEntity("new", tv)
+				.executeUpdate();
+			log.info("Deleting old vocabulary: " + existing.getId());
+			
+			
+			// for some reason, it seems deletes DO NOT cascade on H2
+			// the following will leave the VocabularyConcepts and Terms
+			//getSession().delete(existing);
+			//getSession().flush();
+			for (ThesaurusConcept tc : existing.getConcepts()) {
+				for (ThesaurusTerm tt : tc.getTerms()) {
+					getSession().delete(tt);
+				}
+				getSession().delete(tc);
+			}
+			getSession().delete(existing);
+			getSession().flush();
+			
+			//int affected = getSession().createQuery("delete from ThesaurusVocabulary where id=:id").setLong("id", existing.getId()).executeUpdate();
+			//log.info("Deleting vocabulary[" + tv.getUri() + "] affected " + affected + " rows");
+			//getSession().delete(existing);
+			//getSession().flush();
+			log.info("Deleted vocabulary");
+		}
 	}
 }

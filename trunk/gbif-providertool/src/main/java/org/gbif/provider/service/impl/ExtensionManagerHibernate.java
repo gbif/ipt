@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.gbif.provider.model.Extension;
@@ -12,7 +11,6 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.service.util.ExtensionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,7 +189,16 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		Collection<String> urls = registryManager.listAllExtensions();
 		Collection<Extension> extensions = extensionFactory.build(urls);
 		for (Extension e: extensions) {
-			this.save(e);
+			// see if it exists - we don't support any versioning so they don't get updated
+			List existing = getSession().createQuery("from Extension where namespace=:namespace and name=:name")
+			.setParameter("namespace", e.getNamespace())
+			.setParameter("name", e.getName())
+			.list();		
+			if (existing != null && existing.size()==0) {
+				this.save(e);
+			} else {
+				log.info("Not updating Extension since it already exists: " + e.getNamespace() + " - " + e.getName());
+			}
 		}
 	}
 }

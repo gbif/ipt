@@ -16,6 +16,8 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class ThesaurusVocabulary implements Comparable {
@@ -58,7 +60,22 @@ public class ThesaurusVocabulary implements Comparable {
 	
 	@OneToMany(mappedBy="vocabulary",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@IndexColumn(name = "conceptOrder",base=0, nullable=false)
+	@OnDelete(action=OnDeleteAction.CASCADE)
 	public List<ThesaurusConcept> getConcepts() {
+		
+		// a hack by Tim to quickly support the concept order where it is not set
+		int maxConceptOrder = 0;
+		for (ThesaurusConcept tc : concepts) {
+			if (tc.getConceptOrder() != null) {
+				maxConceptOrder = tc.getConceptOrder(); 
+			}
+		}
+		for (ThesaurusConcept tc : concepts) {
+			if (tc.getConceptOrder() == null) {
+				tc.setConceptOrder(maxConceptOrder++); 
+			}
+		}
+		
 		return concepts;
 	}
 	public void setConcepts(List<ThesaurusConcept> concepts) {
