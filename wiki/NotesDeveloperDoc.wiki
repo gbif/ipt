@@ -1,3 +1,3 @@
-#list of issues to be covered by the upcoming developer documentation
+#summary list of issues to be covered by the upcoming developer documentation
 
  * 
