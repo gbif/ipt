@@ -4,12 +4,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
@@ -22,6 +25,8 @@ import org.gbif.provider.model.xml.ResourceMetadataHandler;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.xml.sax.SAXException;
+
+import com.googlecode.jsonplugin.JSONUtil;
 
 public class RegistryManagerImpl extends HttpBaseManager implements RegistryManager{
 	private ResourceMetadataHandler metaHandler = new ResourceMetadataHandler();
@@ -233,17 +238,49 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	}
 
 	public Collection<String> listAllExtensions() {
-		Collection<String> urls = new LinkedList<String>();
-		urls.add("http://gbrds.gbif.org/resources/extensions/vernacularName.xml");
-		return urls;
+		log.info("Using extension definitions url: " +cfg.getExtensionDefinitionsUrl());
+		return extractURLs(cfg.getExtensionDefinitionsUrl(), "extensions");
 	}
 
 	public Collection<String> listAllThesauri() {
-		Collection<String> urls = new LinkedList<String>();
-		urls.add("http://gbrds.gbif.org/resources/thesauri/lang.xml");
-		return urls;
+		log.info("Using thesaurus definitions url: " +cfg.getThesaurusDefinitionsUrl());
+		return extractURLs(cfg.getThesaurusDefinitionsUrl(), "thesauri");
 	}
-
+	
+	/**
+	 * Executes a request to the provided registry URL and extracts the URLS of each of the provided values
+	 * @param registryUrl To call, e.g. http://gbrds.gbif.org/registry/ipt/extensions.json
+	 * @param mapKey To extract the list from in the response JSON
+	 * @return The list of URL
+	 */
+	protected List<String> extractURLs(String registryUrl, String mapKey) {
+		GetMethod method = new GetMethod(registryUrl);
+		try {
+	        client.executeMethod(method);
+	        String result = method.getResponseBodyAsString();
+	        
+	        if (result!=null) {
+		        Map<String, Object> extensions = (Map) JSONUtil.deserialize(result);
+		        List<Map<String,String>> urlsInMaps = (List) extensions.get(mapKey);
+		        if (urlsInMaps != null) {
+		        	List<String> urls = new LinkedList<String>();
+		        	for (Map<String,String> urlMap : urlsInMaps) {
+		        		urls.add(urlMap.get("url"));
+		        	}
+		        	return urls;
+		        } else {
+		        	log.error("No urls were found in the response from: " + registryUrl);
+		        }
+	        }
+		} catch (Exception e) {
+			log.error("Error getting URLS from " + registryUrl, e);
+		} finally{
+			if (method!=null){
+				method.releaseConnection();
+			}
+		}
+		return new LinkedList<String>();
+	}
 	
 	private String getOrganisationUri(){
 		return String.format("%s/%s", cfg.getRegistryOrgUrl(), cfg.getOrg().getUddiID());

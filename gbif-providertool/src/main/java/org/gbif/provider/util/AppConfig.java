@@ -99,6 +99,12 @@ public class AppConfig{
 	public static String getRegistryNodeUrl() {
 		return String.format("%s/node", registryURL);
 	}
+	public static String getExtensionDefinitionsUrl() {
+		return String.format("%s/ipt/extensions.json", registryURL);
+	}
+	public static String getThesaurusDefinitionsUrl() {
+		return String.format("%s/ipt/thesauri.json", registryURL);
+	}
 	
 	
 	// RESOURCE BASICS
