@@ -145,7 +145,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public String publishAll() {
 		list();
 		for (Resource res : resources){
-			if (res.isModified()){
+			if (res.isDirty()){
 				getResourceTypeMatchingManager().publish(res.getId());
 				saveMessage("Published "+res.getTitle());
 			}

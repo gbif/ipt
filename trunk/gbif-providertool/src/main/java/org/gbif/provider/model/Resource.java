@@ -322,7 +322,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		return getStatus().compareTo(PublicationStatus.modified) >= 0;
 	}
 	@Transient
-	public boolean isModified() {
+	public boolean isDirty() {
 		if (status==null){
 			return true;
 		}
