@@ -14,10 +14,17 @@
 	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
 	<div>
 	  <div class="leftMedium">
-		<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" required="true" cssClass="text medium"/>
+		<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" cssClass="text medium"/>
 	  </div>
-	  <div>
-		<@s.checkbox key="config.gbifAnalytics" />
+	  <div class="leftMedium" style="padding-left:10px">
+		<li id="wwgrp_providerCfg_config_gbifAnalytics" class="wwgrp">
+		 <div id="wwlbl_providerCfg_config_gbifAnalytics" class="wwlbl">
+			<label for="providerCfg_config_gbifAnalytics" class="desc"><@s.text name="config.gbifAnalytics"/></label>
+		 </div> 
+		 <div id="wwctrl_providerCfg_config_gbifAnalytics" class="wwctrl">
+		 	<@s.checkbox key="config.gbifAnalytics" theme="simple"/>
+		 </div>
+		</li>		
 	  </div>
 	</div>
 	<div class="newline">
