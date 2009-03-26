@@ -21,7 +21,7 @@
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/effects.highlight.min.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/scripts/global.js'/>"></script>
 		
-		<s:test value='%{cfg.isGbifAnalytics()}'>
+		<s:if test='%{cfg.isGbifAnalytics()}'>
 			<script type="text/javascript">
 			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -32,9 +32,9 @@
 			pageTracker._trackPageview();
 			} catch(err) {}
 			</script>
-		</s:test>
+		</s:if>
 		<!-- custom user header START -->
-		<s:property value='%{cfg.getHeaderHtml()}'/>
+		<s:property escape="false" value='%{cfg.getHeaderHtml()}'/>
 		<!-- custom user header END -->
 		
 	    <c:choose>

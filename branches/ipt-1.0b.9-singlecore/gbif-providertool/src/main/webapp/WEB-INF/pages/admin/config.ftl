@@ -12,10 +12,19 @@
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
-	<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" required="true" cssClass="text medium"/>
-	<@s.textarea key="config.headerHtml" cssClass="text xlarge"/>
+	<div>
+	  <div class="leftMedium">
+		<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" required="true" cssClass="text medium"/>
+	  </div>
+	  <div>
+		<@s.checkbox key="config.gbifAnalytics" />
+	  </div>
+	</div>
+	<div class="newline">
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
+	</div>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
+	<@s.textarea key="config.headerHtml" cssClass="text xlarge"/>
   </fieldset>
 <div class="horizontal_dotted_line_xlarge_soft_foo"></div>  
 
