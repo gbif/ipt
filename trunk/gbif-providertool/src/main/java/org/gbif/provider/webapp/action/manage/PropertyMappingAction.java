@@ -149,7 +149,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	
     private void automap(){
 		// if this mapping is still empty try to automap
-		if (view.getMappedProperties()!=null && view.getMappedProperties().size()<1){
+		if (view!=null && view.getMappedProperties()!=null && view.getMappedProperties().size()<1){
 			// regex pattern to normalise property names
 			Pattern p = Pattern.compile("[\\s_-]");
 			Matcher m = null;
