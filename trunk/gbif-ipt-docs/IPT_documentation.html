@@ -39,45 +39,47 @@
       </li>
       </ul>
     </li>
-    <li><a href="#toc12">3.5. Mac OS X test installation</a>
+    <li><a href="#toc12">3.5. Geoserver Configuration</a>
+    </li>
+    <li><a href="#toc13">3.6. Mac OS X (TM) test installation</a>
     </li>
     </ul>
   </li>
-  <li><a href="#toc13">4. Configuration</a>
+  <li><a href="#toc14">4. Configuration</a>
     <ul>
-    <li><a href="#toc14">4.1. Settings</a>
+    <li><a href="#toc15">4.1. Settings</a>
       <ul>
-      <li><a href="#toc15">4.1.1. Settings</a>
+      <li><a href="#toc16">4.1.1. Settings</a>
       </li>
-      <li><a href="#toc16">4.1.2. Geoserver Settings</a>
+      <li><a href="#toc17">4.1.2. Geoserver Settings</a>
       </li>
-      <li><a href="#toc17">4.1.3. Organisation</a>
+      <li><a href="#toc18">4.1.3. Organisation</a>
       </li>
-      <li><a href="#toc18">4.1.4. IPT Instance</a>
+      <li><a href="#toc19">4.1.4. IPT Instance</a>
       </li>
       </ul>
     </li>
-    <li><a href="#toc19">4.2. Extensions</a>
+    <li><a href="#toc20">4.2. Extensions</a>
     </li>
-    <li><a href="#toc20">4.3. Thesaurus</a>
+    <li><a href="#toc21">4.3. Thesaurus</a>
     </li>
-    <li><a href="#toc21">4.4. View Users</a>
+    <li><a href="#toc22">4.4. View Users</a>
       <ul>
-      <li><a href="#toc22">4.4.1. User Profile</a>
+      <li><a href="#toc23">4.4.1. User Profile</a>
       </li>
       </ul>
     </li>
-    <li><a href="#toc23">4.5. Current Users</a>
+    <li><a href="#toc24">4.5. Current Users</a>
     </li>
-    <li><a href="#toc24">4.6. Active Datasources</a>
+    <li><a href="#toc25">4.6. Active Datasources</a>
     </li>
     </ul>
   </li>
-  <li><a href="#toc25">5. Primary Occurences</a>
+  <li><a href="#toc26">5. Primary Occurences</a>
   </li>
-  <li><a href="#toc26">6. Name datasheets</a>
+  <li><a href="#toc27">6. Name datasheets</a>
   </li>
-  <li><a href="#toc27">7. Metadata</a>
+  <li><a href="#toc28">7. Metadata</a>
   </li>
   </ul>
 
@@ -89,13 +91,13 @@
 <a id="toc2" name="toc2"></a>
 <h1>2. General specifications</h1>
 <p>
-The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management based on roles, which allows for multiple curators to share a common instance.
+The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
 </p>
 <p>
-It connects and serves three types of data : taxon primary occurrence data, taxon checklists and general resource metadata. The IPT manages multiple data sources and has several upload options: Relational database Management Systems or tab files. It does not however accept manual entries (except for individual metadata descriptions).
+It connects and serves three types of data : taxon primary occurrence data, taxon checklists and general resource metadata. The IPT manages multiple data sources and has several upload options: relational database management systems or tab files. It does not however accept manual entries (except for individual metadata descriptions).
 </p>
 <p>
-Its web interface allows for data browsing and full text search. It also offers details pages for the three types of data, with specific functionality for each type (i.e. density maps, metadata edition). 
+Its public web interface allows for data browsing and full text search. It also offers customised details pages for the three types of data, with specific functionality for each type (i.e. density maps, metadata edition). 
 </p>
 <p>
 The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or providing new ones, as appropriate. It also manages technical metadata about the installation and allows for an easy setup of Google Analytics for usage statistics. 
@@ -105,27 +107,27 @@ The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or
 <a id="toc4" name="toc4"></a>
 <h2>3.1. Requirements</h2>
 <p>
-The IPT will run on any OS (Linux, Mac OS, Windows) provided that:
+The IPT will run on any of the most widespread Operating Systems (Linux, Mac OS (TM), MS Windows (TM)) provided that:
 </p>
 <ul>
-<li>Java, version 5 or more, is installed;
+<li>Java (TM) runtime environment (<a href="http://java.sun.com/">http://java.sun.com/</a>) version 5 or more is installed; 
 </li>
-<li>A webserver with a Servlet container, such as Tomcat or Jetty, is installed and connected to the Internet.
+<li>A web server with a servlet container, such as Apache Tomcat (<a href="http://tomcat.apache.org">http://tomcat.apache.org</a>) or Jetty (<a href="http://jetty.mortbay.com/">http://jetty.mortbay.com/</a>), is installed and connected to the Internet.
 </li>
 </ul>
 
 <a id="toc5" name="toc5"></a>
 <h2>3.2. Brief overview of Java and Tomcat installation and configuration</h2>
 <p>
-It is beyond the scope of this manual to provide detailled installation and configuration instructions for the virtual machine and the server. Here is a quick overview for Windows and Mac OS computers.
+It is beyond the scope of this manual to provide detailed installation and configuration instructions for the virtual machine and the server. Here is a quick overview for MS Windows (TM) and Mac OS (TM) computers.
 </p>
 <a id="toc6" name="toc6"></a>
 <h3>3.2.1. Java</h3>
 <p>
-Mac OS X already comes complete with a fully configured and ready-to-use Java runtime environment. 
+Mac OS X (TM) already comes complete with a fully configured and ready-to-use Java runtime environment. 
 </p>
 <p>
-For Windows machines, follow these stes to install it: 
+For MS Windows (TM) machines, follow these steps to install it: 
 </p>
 <ol>
 <li>Download the Java 2 Standard Edition Runtime Environment (JRE), release version 5.0 or later, from <a href="http://java.sun.com/j2se">http://java.sun.com/j2se</a>.
@@ -150,7 +152,7 @@ For Windows machines, follow these stes to install it:
 The IPT should run in any compliant java application server using Java 1.5. Tomcat 5.5 is recommended for the installation. It was also successfully tested on Tomcat 6 and Jetty.
 </p>
 <p>
-The application server will need a rather large amount of memory as the IPT runs a full database. It may be necessary to increase the server's available memory to 1GB.
+The application server will need a rather large amount of memory allocated as the IPT runs a full database. It is recommended to increase the server's available memory to at least 1GB (general instructions below). 
 </p>
 <h4>3.2.2.1. Tomcat installation</h4>
 <ol>
@@ -168,7 +170,7 @@ The application server will need a rather large amount of memory as the IPT runs
 
 <h4>3.2.2.2. Tomcat configuration</h4>
 <p>
-Tomcat comes with very little allocated memory. This amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
+Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
 </p>
 <ul>
 <li><a href="http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/">http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/</a>
@@ -182,11 +184,11 @@ Tomcat comes with very little allocated memory. This amount should be increased 
 <ol>
 <li>Download the web archive file (ipt-1.0.war at the time of writing) from the project downloads page: <a href="http://code.google.com/p/gbif-providertoolkit/downloads/list">http://code.google.com/p/gbif-providertoolkit/downloads/list</a>
 </li>
-<li>rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
+<li>Rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
 </li>
 <li>Launch Tomcat:
  <ol>
- <li>open a command prompt (Windows) or a terminal window (Mac OS)
+ <li>open a command prompt (MS Windows(TM)) or a terminal window (Mac OS (TM)) 
  </li>
  <li>navigate to the Tomcat installation folder
  </li>
@@ -201,7 +203,7 @@ Tomcat comes with very little allocated memory. This amount should be increased 
 <a id="toc9" name="toc9"></a>
 <h2>3.4. Geoserver Installation</h2>
 <p>
-GeoServer is an open source software server written in Java that allows users to share and edit geospatial data. It is used to run IPT geoservices via a plugin that can access the IPT cache. If there is already a geoserver installation on the server, only the plugin needs to be installed. If there is no such installation, a geoserver archive bundled with the plugin is provided.
+GeoServer (<a href="http://geoserver.org/">http://geoserver.org/</a>) is an open source software server written in Java that allows users to share and edit geospatial data. It is used to run IPT geographic web services via a plugin that can access the IPT cache. If there is already a geoserver installation on the server, only the plugin needs to be installed. If there is no such installation, a geoserver archive bundled with the plugin is provided.
 </p>
 <a id="toc10" name="toc10"></a>
 <h3>3.4.1. Geoserver and bundled plugin installation</h3>
@@ -209,11 +211,11 @@ GeoServer is an open source software server written in Java that allows users to
 This installation is required if the Geoserver is not yet installed on the machine.
 </p>
 <ol>
-<li>Download the zipped archive from the project downloads page. The file is geoserver-ipt-1.0b.7.zip at the time of writing.
+<li>Download the zipped archive from the project downloads page;
 </li>
-<li>Extract it into the Tomcat webapps folder and rename it as geoserver.
+<li>Extract it into the Tomcat webapps folder and rename it as geoserver;
 </li>
-<li>Restart Tomcat (shutdown.bat then startup.bat on Windows, shutdown.sh and startup.sh on Mac OS)
+<li>Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS(TM)).
 </li>
 </ol>
 
@@ -223,24 +225,43 @@ This installation is required if the Geoserver is not yet installed on the machi
 If the Geoserver is already installed on the server, only the plugin needs to be installed.
 </p>
 <ol>
-<li>Downoad the jar file from the project downloads page. The file is gt2-ipt-1.0b.7.jar at the time of writing.
+<li>Downoad the jar file from the project downloads page;
 </li>
-<li>Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder.
+<li>Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder;
 </li>
-<li>Restart Tomcat (shutdown.bat then startup.bat on Windows, shutdown.sh and startup.sh on Mac OS)
+<li>Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS (TM)) .
 </li>
 </ol>
 
 <a id="toc12" name="toc12"></a>
-<h2>3.5. Mac OS X test installation</h2>
+<h2>3.5. Geoserver Configuration</h2>
+<p>
+In order to allow the IPT and the Geoserver to communicate to one another, it is necessary to define the IPT Base Directory. It is done by: 
+</p>
+<ul>
+<li>navigating with your web browser to <a href="http://localhost:8080/ipt/">http://localhost:8080/ipt/</a>;
+</li>
+<li>logging in with username <i>admin</i> and password <i>admin</i>;
+</li>
+<li>navigating to <i>Settings</i> &gt; <i>Settings</i> &gt; <i>IPT Base Directory</i>;
+</li>
+<li>pressing the <i>Update Geoserver</i> button.
+</li>
+</ul>
+
+<p>
+This procedure will be explained with more details in the <i>Configuration</i> section of this document.
+</p>
+<a id="toc13" name="toc13"></a>
+<h2>3.6. Mac OS X (TM) test installation</h2>
 <p>
 A standalone version without any dependencies is provided for Mac OS X. It is very easy to install as it only requires a simple click and is very convenient to test the IPT. It should not however be used for production purposes.
 The disk image can be downloaded at the time of writing from the following address: <a href="ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg">ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg</a>
 </p>
-<a id="toc13" name="toc13"></a>
+<a id="toc14" name="toc14"></a>
 <h1>4. Configuration</h1>
 <p>
-Once the IPT has been installed, it is accessible in a browser at the following URL: <a href="http://localhost:8080/ipt/">http://localhost:8080/ipt/</a>
+Once the IPT has been installed, it is accessible in a web browser at the following URL: <a href="http://localhost:8080/ipt/">http://localhost:8080/ipt/</a>
 </p>
 <p>
 To be able to configure the software, one must login as administrator by clicking on the <i>Login</i> button in the main menu and entering a username and password. By default, the adminstrative username is <i>admin</i> and the password is also <i>admin</i>.
@@ -265,7 +286,7 @@ Once logged in, a new <i>Admin</i> section appears in the menu. The subsequent d
 </li>
 </ul>
 
-<a id="toc14" name="toc14"></a>
+<a id="toc15" name="toc15"></a>
 <h2>4.1. Settings</h2>
 <p>
 The Settings section is divided in three configuration options:
@@ -279,57 +300,57 @@ The Settings section is divided in three configuration options:
 </li>
 </ul>
 
-<a id="toc15" name="toc15"></a>
+<a id="toc16" name="toc16"></a>
 <h3>4.1.1. Settings</h3>
 <p>
 The Settings page allows the administrator to define a number of parameters that are essential for the IPT to function correctly.
 </p>
 <h4>4.1.1.1. IPT Base URL</h4>
 <p>
-This is the URL of the IPT. It is filled in by default with the local URL (<a href="http://localhost:8080/ipt">http://localhost:8080/ipt</a>). If the IPT is to be accessed by distant users on a network, the parameter should be changed to the networked URL (e.g. <a href="http://67.233.45.122:8080/ipt">http://67.233.45.122:8080/ipt</a> or <a href="http://exemple.com:8080/ipt">http://exemple.com:8080/ipt</a>).
+This is the URL of the IPT. It is filled in by default with the local URL (<a href="http://localhost:8080/ipt">http://localhost:8080/ipt</a>). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. <a href="http://67.233.45.122:8080/ipt">http://67.233.45.122:8080/ipt</a> or <a href="http://exemple.com:8080/ipt">http://exemple.com:8080/ipt</a>).
 </p>
 <h4>4.1.1.2. IPT Base Directory</h4>
 <p>
-This field is the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the <i>Update Geoserver</i> button.
+This field defines the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the <i>Update Geoserver</i> button. 
 </p>
 <h4>4.1.1.3. Google Maps API Key</h4>
 <p>
-In order to embed Google Maps in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This key is specific to a server and needs to be requested for each public installation. The administrator can get such a key by clicking on the Get Google Maps API key link and following instructions provided by Google.
+In order to use the the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the Get Google Maps API key link and following instructions provided by Google.
 </p>
-<a id="toc16" name="toc16"></a>
+<a id="toc17" name="toc17"></a>
 <h3>4.1.2. Geoserver Settings</h3>
 <p>
 The Settings page also allows the administrator to define some parameters for the Geoserver. For more information about the Geoserver, see its users guide: <a href="http://geoserver.org/display/GEOSDOC/Users+Guide">http://geoserver.org/display/GEOSDOC/Users+Guide</a>
 </p>
 <h4>4.1.2.1. Base URL</h4>
 <p>
-The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (<a href="http://localhost:8080/geoserver">http://localhost:8080/geoserver</a>). If the Geoserver is to be accessed by distant users on a network, the parameter should be changed to the networked URL (e.g. <a href="http://67.233.45.122:8080/geoserver">http://67.233.45.122:8080/geoserver</a> or <a href="http://exemple.com:8080/geoserver">http://exemple.com:8080/geoserver</a>).
+The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (<a href="http://localhost:8080/geoserver">http://localhost:8080/geoserver</a>). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. <a href="http://67.233.45.122:8080/geoserver">http://67.233.45.122:8080/geoserver</a> or <a href="http://exemple.com:8080/geoserver">http://exemple.com:8080/geoserver</a>).
 </p>
 <h4>4.1.2.2. Data Directory</h4>
 <p>
-The Data Directory is the location in the file system of the directory where data reside. It is filled in by default but can be modified manually.
+The Data Directory is the location in the server file system of the directory where data reside. It is filled in by default but can be modified manually.
 </p>
 <h4>4.1.2.3. Admin User and password</h4>
 <p>
 By default, the administrative username is <i>admin</i> and the administrative password is <i>geoserver</i>. These parameters <i>must</i> be changed if the server is to be used for production and/or accessible to the public.
 </p>
-<a id="toc17" name="toc17"></a>
+<a id="toc18" name="toc18"></a>
 <h3>4.1.3. Organisation</h3>
 <p>
-This page allows the administrator to define the GBIF oganisation he belongs to. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
+This page allows the administrator to define the GBIF organisation hosting the IPT installation. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
 </p>
 <p>
-The following fields can be filled in:
+The following fields must filled in:
 </p>
 <dl>
 <dt>Title </dt><dd>
-  this is the name of the organisation
+  this is the full name of the organisation
 </dd>
 <dt>Organisation Identifier</dt><dd>
-  this is a code provided by the GBIF when the organisation is registered
+  this is a code provided automatically by the GBIF once the organisation is registered filling and sending this form
 </dd>
 <dt>GBIF Node </dt><dd>
-  GBIF Node the organisation belongs to
+  GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network
 </dd>
 <dt>Organisation password </dt><dd>
   this password can be used by other members of the organisation to retrieve the information
@@ -351,17 +372,17 @@ The following fields can be filled in:
 </dd>
 </dl>
 
-<a id="toc18" name="toc18"></a>
+<a id="toc19" name="toc19"></a>
 <h3>4.1.4. IPT Instance</h3>
 <p>
 This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to populate the homepage of this IPT instance.
 </p>
 <dl>
 <dt>Organisation Identifier </dt><dd>
-  this is the code provided by the GBIF to the registered organisation
+  this is the code provided automatically by GBIF during the organisation registration process
 </dd>
 <dt>Title </dt><dd>
-  this is the name given to the IPT instance. It can be the name of an organisation, a collection, etc.
+  this is the name given to the IPT instance. It can be the name of an organisation, a project, a natural history collection, etc.
 </dd>
 <dt>Contact Name </dt><dd>
   Name of the contact person
@@ -383,13 +404,13 @@ This page allows the administrator to define some parameters regarding the IPT i
 </dd>
 </dl>
 
-<a id="toc19" name="toc19"></a>
+<a id="toc20" name="toc20"></a>
 <h2>4.2. Extensions</h2>
 <p>
 Extensions allow for serving additional data types, such as multiple identifications or descriptive data about species.
 </p>
 <p>
-The page provides a list of available extensions ans shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
+The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
 </p>
 <p>
 By default, available extensions are:
@@ -425,12 +446,12 @@ By default, available extensions are:
 The user can get more information about an extension and install it by clicking on its name.
 </p>
 <p>
-It is possible to define custom extensions, but this is not automated process with this version of the IPT.
+It is possible to define custom extensions, but this is not automated process with this the 1.0 version of the IPT.
 </p>
-<a id="toc20" name="toc20"></a>
+<a id="toc21" name="toc21"></a>
 <h2>4.3. Thesaurus</h2>
 <p>
-Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the Vocabulary name.
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the names under the Vocabulary column.
 </p>
 <p>
 By default, available thesauri are:
@@ -451,9 +472,9 @@ By default, available thesauri are:
 </ul>
 
 <p>
-It is possible to define custom vocabularies, but this is not automated process with this version of the IPT.
+It is possible to define custom vocabularies, but this is not automated process with version 1.0 of the IPT.
 </p>
-<a id="toc21" name="toc21"></a>
+<a id="toc22" name="toc22"></a>
 <h2>4.4. View Users</h2>
 <p>
 This page allows the administrator to manage users. There are three users roles: <i>administrator</i>, <i>manager</i> and <i>user</i>.
@@ -464,7 +485,7 @@ The page displays the list of users their usernames, full names and emails. By c
 <p>
 The page also gives the opportunity to add a new user through the <i>Add</i> button at the bottom of the page.
 </p>
-<a id="toc22" name="toc22"></a>
+<a id="toc23" name="toc23"></a>
 <h3>4.4.1. User Profile</h3>
 <p>
 The User Profile page allows the administrator to add a new user or to edit or delete an existing user.
@@ -522,18 +543,18 @@ Finally, the administrator must assign one or several roles to the account. The 
 </dd>
 </dl>
 
-<a id="toc23" name="toc23"></a>
+<a id="toc24" name="toc24"></a>
 <h2>4.5. Current Users</h2>
 <p>
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 </p>
-<a id="toc24" name="toc24"></a>
-<h2>4.6. Active Datasources</h2>
 <a id="toc25" name="toc25"></a>
-<h1>5. Primary Occurences</h1>
+<h2>4.6. Active Datasources</h2>
 <a id="toc26" name="toc26"></a>
-<h1>6. Name datasheets</h1>
+<h1>5. Primary Occurences</h1>
 <a id="toc27" name="toc27"></a>
+<h1>6. Name datasheets</h1>
+<a id="toc28" name="toc28"></a>
 <h1>7. Metadata</h1>
 
 <!-- xhtml code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
