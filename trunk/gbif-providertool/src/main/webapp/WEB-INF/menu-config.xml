@@ -20,7 +20,6 @@
             -->
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
-            <Item name="ActiveTasks" title="menu.admin.activeTasks" page="/admin/activeTasks.html"/>
         </Menu>
     </Menus>
 </MenuConfig>
