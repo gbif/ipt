@@ -295,13 +295,13 @@ div.usersButtons{
 	position: relative;
 	bottom: 12px;
 }
-.draft{
+.unpublished{
 	background-color: #fdd8d6;
 }
-.dirty{
+.modified{
 	background-color: #feffe6;
 }
-.uptodate{
+.published{
 	background-color: #e2f9d7;
 }
 #registryDetails {

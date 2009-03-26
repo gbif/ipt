@@ -7,14 +7,14 @@ var data = {
 };
 var params = {
 	url: '<s:url value="/ajax/publish.do"/>',
-	timeout: 10000,
+	timeout: 5000,
 	data: data,
 	dataType: 'html',
 	error: function (XMLHttpRequest, textStatus, errorThrown) {
 		$("div.loading").hide();
-		alert("Publishing error: "+textStatus);
-		console.debug(errorThrown);
-		console.debug(XMLHttpRequest);
+		alert("There has been an publishing error.\nPlease try again later.\n\nReason:"+textStatus);
+		//console.debug(errorThrown);
+		//console.debug(XMLHttpRequest);
 		},
 	success: publishResponse
 };
@@ -26,8 +26,8 @@ function publishResponse(data, textStatus){
 		e.preventDefault(); 
 		$("div.loading").show();
 		params['type']='POST';	
-		console.debug("Publish POST");
-		console.debug(params);
+		//console.debug("Publish POST");
+		//console.debug(params);
 		$.ajax(params);
 	});
     $("#statusContainer div.arrow").click(
@@ -39,8 +39,8 @@ function publishResponse(data, textStatus){
 }
 $(document).ready(function(){
 	params['type']='GET';	
-	console.debug("Publish GET");
-	console.debug(params);
+	//console.debug("Publish GET");
+	//console.debug(params);
 	$.ajax(params);
 });
 </script>
