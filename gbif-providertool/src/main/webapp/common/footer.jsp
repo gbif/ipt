@@ -8,6 +8,6 @@
       <li>&copy; <s:text name="copyright.year"/> <a href="<s:text name="company.url"/>"><s:text name="company.name"/></a></li>
     </ul>        
     <ul class="sepmenu">
-      <li><a href='<s:url value="/about.html"/>'><s:property value="%{cfg.title}"/></a></li>
+      <li>Contact: <s:property value="%{cfg.ipt.contactName}"/> &lt;<s:property value="%{cfg.ipt.contactEmail}"/>&gt;</li>
     </ul>
         

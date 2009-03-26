@@ -4,6 +4,8 @@
         <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
     </Displayers>
     <Menus>
+        <Menu name="HomeMenu" title="menu.home" page="/index.html">            
+        </Menu>
         <Menu name="ExplorerMenu" title="menu.explorer" page="/resources.html">            
         </Menu>
         <Menu name="ManagerMenu" title="menu.manager" page="/manage/resources.html?resourceType=meta" roles="ROLE_ADMIN,ROLE_MANAGER">
@@ -19,8 +21,6 @@
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
             <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
             <Item name="ActiveTasks" title="menu.admin.activeTasks" page="/admin/activeTasks.html"/>
-        </Menu>
-        <Menu name="AboutMenu" title="menu.about" page="/about.html">            
         </Menu>
     </Menus>
 </MenuConfig>

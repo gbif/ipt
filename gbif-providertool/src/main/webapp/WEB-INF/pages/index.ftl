@@ -2,8 +2,7 @@
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <head>
     <title>${cfg.ipt.title}</title>
-    <!--<meta name="menu" content="MainMenu"/>-->
-    <meta name="menu" content="AboutMenu"/>
+    <meta name="menu" content="HomeMenu"/>
     <meta name="submenu" content="metadata"/>
     <meta name="decorator" content="fullsize"/>
 </head>

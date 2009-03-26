@@ -177,12 +177,6 @@
             <result name="record404">/WEB-INF/pages/404record.ftl</result>
         </action>
         
-        <!-- single pages -->
-        <action name="about" class="org.gbif.provider.webapp.action.IndexAction">
-            <result>/WEB-INF/pages/about/about.ftl</result>
-        </action>
-
-
         <!-- actions for all resources -->
         <action name="busy">
             <result>/WEB-INF/pages/busy.ftl</result>
