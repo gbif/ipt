@@ -64,6 +64,7 @@ public class ThesaurusVocabulary implements Comparable {
 	public List<ThesaurusConcept> getConcepts() {
 		
 		// a hack by Tim to quickly support the concept order where it is not set
+		/*
 		int maxConceptOrder = 0;
 		for (ThesaurusConcept tc : concepts) {
 			if (tc.getConceptOrder() != null) {
@@ -75,7 +76,7 @@ public class ThesaurusVocabulary implements Comparable {
 				tc.setConceptOrder(maxConceptOrder++); 
 			}
 		}
-		
+		*/
 		return concepts;
 	}
 	public void setConcepts(List<ThesaurusConcept> concepts) {
