@@ -2,11 +2,11 @@
 
 + General specifications +
 
-The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management based on roles, which allows for multiple curators to share a common instance.
+The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
 
-It connects and serves three types of data : taxon primary occurrence data, taxon checklists and general resource metadata. The IPT manages multiple data sources and has several upload options: Relational database Management Systems or tab files. It does not however accept manual entries (except for individual metadata descriptions).
+It connects and serves three types of data : taxon primary occurrence data, taxon checklists and general resource metadata. The IPT manages multiple data sources and has several upload options: relational database management systems or tab files. It does not however accept manual entries (except for individual metadata descriptions).
 
-Its web interface allows for data browsing and full text search. It also offers details pages for the three types of data, with specific functionality for each type (i.e. density maps, metadata edition). 
+Its public web interface allows for data browsing and full text search. It also offers customised details pages for the three types of data, with specific functionality for each type (i.e. density maps, metadata edition). 
 
 The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or providing new ones, as appropriate. It also manages technical metadata about the installation and allows for an easy setup of Google Analytics for usage statistics. 
 
@@ -15,21 +15,21 @@ The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or
 
 ++ Requirements ++
 
-The IPT will run on any OS (Linux, Mac OS, Windows) provided that:
+The IPT will run on any of the most widespread Operating Systems (Linux, Mac OS (TM), MS Windows (TM)) provided that:
 
-- Java, version 5 or more, is installed;
-- A webserver with a Servlet container, such as Tomcat or Jetty, is installed and connected to the Internet.
+- Java (TM) runtime environment (http://java.sun.com/) version 5 or more is installed; 
+- A web server with a servlet container, such as Apache Tomcat (http://tomcat.apache.org) or Jetty (http://jetty.mortbay.com/), is installed and connected to the Internet.
 
 
 ++ Brief overview of Java and Tomcat installation and configuration ++
 
-It is beyond the scope of this manual to provide detailled installation and configuration instructions for the virtual machine and the server. Here is a quick overview for Windows and Mac OS computers.
+It is beyond the scope of this manual to provide detailed installation and configuration instructions for the virtual machine and the server. Here is a quick overview for MS Windows (TM) and Mac OS (TM) computers.
 
 +++ Java +++
 
-Mac OS X already comes complete with a fully configured and ready-to-use Java runtime environment. 
+Mac OS X (TM) already comes complete with a fully configured and ready-to-use Java runtime environment. 
 
-For Windows machines, follow these stes to install it: 
+For MS Windows (TM) machines, follow these steps to install it: 
 
 + Download the Java 2 Standard Edition Runtime Environment (JRE), release version 5.0 or later, from http://java.sun.com/j2se.
 + Install the JRE according to the instructions included with the release.
@@ -43,7 +43,7 @@ For Windows machines, follow these stes to install it:
 
 The IPT should run in any compliant java application server using Java 1.5. Tomcat 5.5 is recommended for the installation. It was also successfully tested on Tomcat 6 and Jetty.
 
-The application server will need a rather large amount of memory as the IPT runs a full database. It may be necessary to increase the server's available memory to 1GB.
+The application server will need a rather large amount of memory allocated as the IPT runs a full database. It is recommended to increase the server's available memory to at least 1GB (general instructions below). 
 
 ++++ Tomcat installation ++++
 
@@ -56,7 +56,7 @@ The application server will need a rather large amount of memory as the IPT runs
 
 ++++ Tomcat configuration ++++
 
-Tomcat comes with very little allocated memory. This amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
+Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
 - http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/
 - http://wiki.apache.org/tomcat/FAQ/Memory
 
@@ -64,9 +64,9 @@ Tomcat comes with very little allocated memory. This amount should be increased 
 ++ IPT Installation ++
 
 + Download the web archive file (ipt-1.0.war at the time of writing) from the project downloads page: http://code.google.com/p/gbif-providertoolkit/downloads/list
-+ rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
++ Rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
 + Launch Tomcat:
- + open a command prompt (Windows) or a terminal window (Mac OS)
+ + open a command prompt (MS Windows(TM)) or a terminal window (Mac OS (TM)) 
  + navigate to the Tomcat installation folder
  + go to the bin folder and execute startup.bat (windows) or startup.sh (Mac OS)
 + The IPT can then be accessed in any browser at http://localhost:8080/ipt/
@@ -74,34 +74,46 @@ Tomcat comes with very little allocated memory. This amount should be increased 
 
 ++ Geoserver Installation ++
 
-GeoServer is an open source software server written in Java that allows users to share and edit geospatial data. It is used to run IPT geoservices via a plugin that can access the IPT cache. If there is already a geoserver installation on the server, only the plugin needs to be installed. If there is no such installation, a geoserver archive bundled with the plugin is provided.
+GeoServer (http://geoserver.org/) is an open source software server written in Java that allows users to share and edit geospatial data. It is used to run IPT geographic web services via a plugin that can access the IPT cache. If there is already a geoserver installation on the server, only the plugin needs to be installed. If there is no such installation, a geoserver archive bundled with the plugin is provided.
 
 +++ Geoserver and bundled plugin installation +++
 
 This installation is required if the Geoserver is not yet installed on the machine.
 
-+ Download the zipped archive from the project downloads page. The file is geoserver-ipt-1.0b.7.zip at the time of writing.
-+ Extract it into the Tomcat webapps folder and rename it as “geoserver”.
-+ Restart Tomcat (shutdown.bat then startup.bat on Windows, shutdown.sh and startup.sh on Mac OS)
++ Download the zipped archive from the project downloads page;
++ Extract it into the Tomcat webapps folder and rename it as “geoserver”;
++ Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS(TM)).
 
 
 +++ Plugin installation +++
 
 If the Geoserver is already installed on the server, only the plugin needs to be installed.
 
-+ Downoad the jar file from the project downloads page. The file is gt2-ipt-1.0b.7.jar at the time of writing.
-+ Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder.
-+ Restart Tomcat (shutdown.bat then startup.bat on Windows, shutdown.sh and startup.sh on Mac OS)
++ Downoad the jar file from the project downloads page;
++ Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder;
++ Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS (TM)) .
 
 
-++ Mac OS X test installation ++
+++ Geoserver Configuration ++
+
+In order to allow the IPT and the Geoserver to communicate to one another, it is necessary to define the IPT Base Directory. It is done by: 
+- navigating with your web browser to http://localhost:8080/ipt/;
+- logging in with username //admin// and password //admin//;
+- navigating to //Settings// > //Settings// > //IPT Base Directory//;
+- pressing the //Update Geoserver// button.
+
+
+This procedure will be explained with more details in the //Configuration// section of this document.
+
+
+++ Mac OS X (TM) test installation ++
 
 A standalone version without any dependencies is provided for Mac OS X. It is very easy to install as it only requires a simple click and is very convenient to test the IPT. It should not however be used for production purposes.
 The disk image can be downloaded at the time of writing from the following address: ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg
 
 + Configuration +
 
-Once the IPT has been installed, it is accessible in a browser at the following URL: http://localhost:8080/ipt/
+Once the IPT has been installed, it is accessible in a web browser at the following URL: http://localhost:8080/ipt/
 
 To be able to configure the software, one must login as administrator by clicking on the //Login// button in the main menu and entering a username and password. By default, the adminstrative username is //admin// and the password is also //admin//.
 
@@ -131,15 +143,15 @@ The Settings page allows the administrator to define a number of parameters that
 
 ++++ IPT Base URL ++++
 
-This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). If the IPT is to be accessed by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/ipt or http://exemple.com:8080/ipt).
+This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/ipt or http://exemple.com:8080/ipt).
 
 ++++ IPT Base Directory ++++
 
-This field is the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the //Update Geoserver// button.
+This field defines the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the //Update Geoserver// button. 
 
 ++++ Google Maps API Key ++++
 
-In order to embed Google Maps in the IPT pages, it is necessary to own a //Google Maps API Key//. This key is specific to a server and needs to be requested for each public installation. The administrator can get such a key by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+In order to use the the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a //Google Maps API Key//. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
 
 +++ Geoserver Settings +++
 
@@ -147,11 +159,11 @@ The Settings page also allows the administrator to define some parameters for th
 
 ++++ Base URL ++++
 
-The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). If the Geoserver is to be accessed by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/geoserver or http://exemple.com:8080/geoserver).
+The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/geoserver or http://exemple.com:8080/geoserver).
 
 ++++ Data Directory ++++
 
-The Data Directory is the location in the file system of the directory where data reside. It is filled in by default but can be modified manually.
+The Data Directory is the location in the server file system of the directory where data reside. It is filled in by default but can be modified manually.
 
 ++++ Admin User and password ++++
 
@@ -159,16 +171,16 @@ By default, the administrative username is //admin// and the administrative pass
 
 +++ Organisation +++
 
-This page allows the administrator to define the GBIF oganisation he belongs to. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
+This page allows the administrator to define the GBIF organisation hosting the IPT installation. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
 
-The following fields can be filled in:
+The following fields must filled in:
 
 : Title 
-  this is the name of the organisation
+  this is the full name of the organisation
 : Organisation Identifier
-  this is a code provided by the GBIF when the organisation is registered
+  this is a code provided automatically by the GBIF once the organisation is registered filling and sending this form
 : GBIF Node 
-  GBIF Node the organisation belongs to
+  GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network
 : Organisation password 
   this password can be used by other members of the organisation to retrieve the information
 : Contact Name 
@@ -188,9 +200,9 @@ The following fields can be filled in:
 This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to populate the homepage of this IPT instance.
 
 : Organisation Identifier 
-  this is the code provided by the GBIF to the registered organisation
+  this is the code provided automatically by GBIF during the organisation registration process
 : Title 
-  this is the name given to the IPT instance. It can be the name of an organisation, a collection, etc.
+  this is the name given to the IPT instance. It can be the name of an organisation, a project, a natural history collection, etc.
 : Contact Name 
   Name of the contact person
 : Contact Email 
@@ -209,7 +221,7 @@ This page allows the administrator to define some parameters regarding the IPT i
 
 Extensions allow for serving additional data types, such as multiple identifications or descriptive data about species.
 
-The page provides a list of available extensions ans shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
+The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
 
 By default, available extensions are:
 
@@ -229,11 +241,11 @@ By default, available extensions are:
 
 The user can get more information about an extension and install it by clicking on its name.
 
-It is possible to define custom extensions, but this is not automated process with this version of the IPT.
+It is possible to define custom extensions, but this is not automated process with this the 1.0 version of the IPT.
 
 ++ Thesaurus ++
 
-Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the Vocabulary name.
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the names under the Vocabulary column.
 
 By default, available thesauri are:
 
@@ -245,7 +257,7 @@ By default, available thesauri are:
 - Taxonomic Ranks
 
 
-It is possible to define custom vocabularies, but this is not automated process with this version of the IPT.
+It is possible to define custom vocabularies, but this is not automated process with version 1.0 of the IPT.
 
 ++ View Users ++
 
