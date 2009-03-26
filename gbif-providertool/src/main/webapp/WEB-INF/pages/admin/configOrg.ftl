@@ -25,15 +25,15 @@
 			mustMatch:true, 
 			matchContains:true,
 			formatItem: function(row, i, max) {
-				return row.nodeName;
+				return row.name;
 			},
 			formatResult: function(row) {
-				return row.nodeName;
+				return row.name;
 			}
 		}).result( function(event, data, formatted) {
 		  	//console.debug(data);
 			$("#orgNodeKey").val(data.key);
-			$("#orgNodeName").val(data.nodeName);
+			$("#orgNodeName").val(data.name);
 		});
 	}
 	function udpateOrgList(data){
