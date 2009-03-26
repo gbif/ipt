@@ -32,7 +32,7 @@
 			}
 		}).result( function(event, data, formatted) {
 		  	console.debug(data);
-			$("#orgNodeKey").val(data.nodeKey);
+			$("#orgNodeKey").val(data.key);
 			$("#orgNodeName").val(data.nodeName);
 		});
 	}
