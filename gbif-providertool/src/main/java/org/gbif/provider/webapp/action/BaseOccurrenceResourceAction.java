@@ -17,11 +17,17 @@
 package org.gbif.provider.webapp.action;
 
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.service.OccResourceManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Sets the resource type group  
+ */
 public class BaseOccurrenceResourceAction extends BaseResourceAction<OccurrenceResource>{
-    public BaseOccurrenceResourceAction(){
+    /**
+	 * Generated 
+	 */
+	private static final long serialVersionUID = -8397969082862865969L;
+
+	public BaseOccurrenceResourceAction(){
     	super();
     	resourceType=OCCURRENCE;
     }
@@ -31,5 +37,4 @@ public class BaseOccurrenceResourceAction extends BaseResourceAction<OccurrenceR
 		resourceManager=occResourceManager;
 		super.prepare();
 	}
-    
 }

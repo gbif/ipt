@@ -50,7 +50,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
             put(OTHER, "Other");
         }  
     };
-	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
+	private Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap),true);
 	protected HttpServletRequest request;
 	private String jdbcDriverClass;
     
@@ -60,10 +60,14 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		if (resource == null && resourceType!=null) {
 			// create new empty resource
 			if (resourceType.equalsIgnoreCase(OCCURRENCE)){
-				resource = resourceFactory.newOccurrenceResourceInstance();				
-			}else if (resourceType.equalsIgnoreCase(CHECKLIST)){
-				resource = resourceFactory.newChecklistResourceInstance();				
-			}else{
+				resource = resourceFactory.newOccurrenceResourceInstance();
+				resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap(ResourceType.SAMPLE_GROUP)),true);
+				
+			} else if (resourceType.equalsIgnoreCase(CHECKLIST)){
+				resource = resourceFactory.newChecklistResourceInstance();
+				resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap(ResourceType.TAXON_GROUP)),true);
+				
+			} else{
 				resource = resourceFactory.newMetadataResourceInstance();				
 			}
 		}
