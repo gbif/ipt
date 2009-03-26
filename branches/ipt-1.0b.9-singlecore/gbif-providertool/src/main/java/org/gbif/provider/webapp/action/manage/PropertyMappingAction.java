@@ -124,7 +124,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         	if (prop == null){
         		continue;
         	}
-        	if (resourceType.equals(CHECKLIST) && !prop.getGroup().equalsIgnoreCase(ChecklistResource.DWC_GROUP)){
+        	if (resourceType.equals(CHECKLIST) && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())){
         		// for checklists only show the taxon group of darwin core
         		continue;
         	}

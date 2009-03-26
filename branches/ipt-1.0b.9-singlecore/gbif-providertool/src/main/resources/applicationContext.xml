@@ -42,6 +42,7 @@
         <constructor-arg value="${webappDir}"/>
         <constructor-arg value="${dataDir}"/>
         <constructor-arg value="${registryUrl}"/>
+        <constructor-arg value="${gbif.analytics.key}"/>
     </bean>
     
     

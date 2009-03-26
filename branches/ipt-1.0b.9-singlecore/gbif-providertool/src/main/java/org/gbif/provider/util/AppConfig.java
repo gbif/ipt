@@ -8,6 +8,8 @@ import java.net.URL;
 
 import javax.persistence.Transient;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -37,12 +39,15 @@ public class AppConfig{
 	private static String baseURL;	
 	private static String dataDIR;	
 	private static File webappDIR;	
-	private static String registryURL; 
-	private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl) {
+	private static String registryURL;
+	private static String gbifAnalyticsKey; 
+	
+	private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl, String gbifAnalyticsKey) {
 		super();
 		AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
 		AppConfig.webappDIR = new File(webappDir);
 		AppConfig.registryURL = registryUrl;
+		AppConfig.gbifAnalyticsKey = gbifAnalyticsKey;
 		this.providerCfgManager = providerCfgManager;
 		cfg=providerCfgManager.load();
 		setBaseUrl(cfg.getBaseUrl());
@@ -84,6 +89,10 @@ public class AppConfig{
 		return String.format("%s?page=%s", getAtomFeedURL(), page);
 	}
 	
+	public static String getGbifAnalyticsKey() {
+		return gbifAnalyticsKey;
+	}
+
 	// REGISTRY URLS
 	public static String getRegistryOrgUrl() {
 		return String.format("%s/organization", registryURL);
@@ -293,6 +302,12 @@ public class AppConfig{
 	public String getGeoserverUser() {
 		return cfg.getGeoserverUser();
 	}
+	public String getHeaderHtml() {
+		return cfg.getHeaderHtml();
+	}
+	public boolean isGbifAnalytics() {
+		return cfg.isGbifAnalytics();
+	}
 
 	
 	
@@ -336,6 +351,12 @@ public class AppConfig{
 	public void setGeoserverUser(String geoserverUser) {
 		cfg.setGeoserverUser(geoserverUser);
 	}
+	public void setGbifAnalytics(boolean gbifAnalytics) {
+		cfg.setGbifAnalytics(gbifAnalytics);
+	}
+	public void setHeaderHtml(String headerHtml) {
+		cfg.setHeaderHtml(headerHtml);
+	}
 
 
 	public void resetOrg() {
@@ -378,4 +399,5 @@ public class AppConfig{
 		}
 		return true;
 	}
+
 }

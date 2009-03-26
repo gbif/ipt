@@ -13,6 +13,7 @@
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
 	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
 	<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" required="true" cssClass="text medium"/>
+	<@s.textarea key="config.headerHtml" cssClass="text xlarge"/>
 	<@s.textfield key="config.googleMapsApiKey" required="false" cssClass="text xlarge"/>
 	<div>&nbsp;&nbsp;<a href="http://code.google.com/apis/maps/signup.html">Get Google Maps API key</a></div>
   </fieldset>

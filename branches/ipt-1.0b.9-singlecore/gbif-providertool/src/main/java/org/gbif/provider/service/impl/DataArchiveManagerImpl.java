@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -133,14 +134,12 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	}
 	private File dumpOccCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT dc.id %s FROM Darwin_Core dc where dc.resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());			
+		String select = String.format("SELECT dc.guid %s %s %s FROM Darwin_Core dc where dc.resource_fk=%s", OccurrenceResource.DWC_GUID_PROPERTY, buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, select);
 	}
 	private File dumpTaxCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT id %s FROM taxon where resource_fk=%s order by id", buildPropertySelect(view), view.getResourceId());
-		//FIXME: hacking the dump with a hardcoded select. Not too bad, but well...
-		select = String.format("select t.ID ,t.NOMENCLATURAL_CODE ,t.LABEL ,t.RANK ,t.LOCAL_ID ,t.GUID ,t.LINK ,t.NOTES ,t.TAXONOMIC_STATUS ,t.NOMENCLATURAL_STATUS ,t.NOMENCLATURAL_REFERENCE , t.accepted_taxon_id, acc.label acceptedTaxon, t.taxonomic_parent_id,  p.label parentTaxon   from taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id   where t.resource_fk=%s order by id", view.getResourceId());		 
+		String select = String.format("SELECT guid %s %s %s FROM taxon where resource_fk=%s", ChecklistResource.DWC_GUID_PROPERTY, buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());
 		return dumpFile(file, select);
 	}
 	private File dumpExtension(ExtensionMapping view) throws IOException, SQLException{
@@ -153,19 +152,29 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		String select = String.format("select dc.LOCAL_ID as DwcLocalId, dc.guid as DwcGuid, t.GUID ,t.LABEL as ScientificName, t.RANK as DwcRank, acc.guid as acceptedTaxonGuid, acc.label acceptedTaxon, p.guid as parentTaxonGuid,  p.label parentTaxon,      dc.binomial, dc.higher_taxon_iD, dc.higher_taxon, dc.kingdom, dc.phylum, dc.classs, dc.orderrr, dc.family, dc.genus, dc.subgenus, dc.specific_epithet, dc.taxon_rank, dc.infraspecific_epithet, dc.scientific_name_authorship, dc.nomenclatural_code, dc.taxon_according_to, dc.name_published_in, dc.taxonomic_status, dc.nomenclatural_status, dc.accepted_taxon_iD, dc.accepted_taxon, dc.basionym_iD, dc.basionym     FROM taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id  left join darwin_core dc on dc.taxon_fk = t.id   where t.resource_fk=%s order by t.id", resourceId);		 
 		return dumpFile(file, select);
 	}
+	private String buildPropertySelect(List<String> propertyNames){
+		String select = "";
+		for (String pn : propertyNames){
+			select += ","+getColumnName(pn);
+		}
+		return select;
+	}
 	private String buildPropertySelect(ExtensionMapping view){
 		String select = "";
 		for (ExtensionProperty p : view.getMappedProperties()){
-			String col = namingStrategy.propertyToColumnName(p.getName());
-			// check reserved sql words
-			if (col.equalsIgnoreCase("order")){
-				col="orderrr as \"ORDER\" ";
-			}else if (col.equalsIgnoreCase("class")){
-				col="classs as \"CLASS\" ";
-			}
-			select += ","+col;
+			select += ","+getColumnName(p.getName());
 		}
 		return select;
+	}
+	private String getColumnName(String propName){
+		String col = namingStrategy.propertyToColumnName(propName);
+		// check reserved sql words
+		if (col.equalsIgnoreCase("order")){
+			col="orderrr as \"ORDER\" ";
+		}else if (col.equalsIgnoreCase("class")){
+			col="classs as \"CLASS\" ";
+		}
+		return col;
 	}
 	private File dumpFile(File file, String select) throws IOException, SQLException{
 		if (file.exists()){

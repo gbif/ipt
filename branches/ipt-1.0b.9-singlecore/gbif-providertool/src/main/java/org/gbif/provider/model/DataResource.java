@@ -368,6 +368,12 @@ public abstract class DataResource extends Resource {
 	public String getLayerName(){
 		return "gbif:resource"+getId();
 	}
+
+	@Transient
+	public List<String> getAdditionalIdentifiers(){
+		List<String> ids = new ArrayList<String>();
+		return ids;
+	}
 	
 	@Transient
 	public abstract String getDwcGuidPropertyName();

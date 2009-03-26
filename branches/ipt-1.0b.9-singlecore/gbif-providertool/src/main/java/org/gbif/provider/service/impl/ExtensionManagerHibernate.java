@@ -54,7 +54,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		try {
 			cn = getConnection();
 			// create table basics
-			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL)", table);
+			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL, guid varchar(128) NOT NULL)", table);
 			Statement st = cn.createStatement();
 			try {
 				st.execute(ddl);
@@ -62,7 +62,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 				st.close();
 			}
 			// create indices
-			String[] indexedColumns = {"coreid","resource_fk"};
+			String[] indexedColumns = {"coreid","resource_fk", "guid"};
 			for (String col : indexedColumns){
 				ddl = String.format("CREATE INDEX IDX%s_%s ON %s(%s)", table, col, table, col);
 				st = cn.createStatement();
