@@ -160,6 +160,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			Matcher m = null;
 			int autoCount = 0;
 	    	for (ExtensionProperty prop : view.getExtension().getProperties()){
+	        	if (resourceType.equals(CHECKLIST) && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())){
+	        		// for checklists only show the taxon group of darwin core
+	        		continue;
+	        	}
 				m = p.matcher(prop.getName());
 				String propName = m.replaceAll("");
 				for (String col : sourceColumns){
