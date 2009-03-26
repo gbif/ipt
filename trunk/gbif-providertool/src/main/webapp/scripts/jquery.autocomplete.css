@@ -19,6 +19,7 @@
 	padding: 2px 5px;
 	cursor: default;
 	display: block;
+	text-align: left;
 	/* 
 	if width will be 100% horizontal scrollbar will apear 
 	when scroll mode will be used
@@ -43,6 +44,6 @@
 }
 
 .ac_over {
-	background-color: #0A246A;
+	background-color: #6fa1d9;
 	color: white;
 }
