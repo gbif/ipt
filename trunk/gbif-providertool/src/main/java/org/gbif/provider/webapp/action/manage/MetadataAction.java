@@ -145,7 +145,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 	public String publishAll() {
 		list();
 		for (Resource res : resources){
-			if (res.isDirty()){
+			if (res.isModified()){
 				getResourceTypeMatchingManager().publish(res.getId());
 				saveMessage("Published "+res.getTitle());
 			}
@@ -156,7 +156,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		list();
 		int i=0;
 		for (Resource res : resources){
-			if (res.getStatus().equals(PublicationStatus.dirty)){
+			if (res.getStatus().equals(PublicationStatus.modified)){
 				i++;
 				getResourceTypeMatchingManager().publish(res.getId());
 			}

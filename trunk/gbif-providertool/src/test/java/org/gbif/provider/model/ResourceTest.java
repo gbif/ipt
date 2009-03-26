@@ -16,15 +16,15 @@ public class ResourceTest extends ContextAwareTestBase{
 	@Test
 	public void testIsPublished(){
 		Resource resource = factory.newMetadataResourceInstance();
-		assertFalse(resource.isPublished());
+		assertFalse(resource.isPublic());
 		resource = factory.newChecklistResourceInstance();
-		resource.setStatus(PublicationStatus.draft);
-		assertFalse(resource.isPublished());
+		resource.setStatus(PublicationStatus.unpublished);
+		assertFalse(resource.isPublic());
 		
-		resource.setStatus(PublicationStatus.dirty);
-		assertTrue(resource.isPublished());
+		resource.setStatus(PublicationStatus.modified);
+		assertTrue(resource.isPublic());
 		
-		resource.setStatus(PublicationStatus.uptodate);
-		assertTrue(resource.isPublished());		
+		resource.setStatus(PublicationStatus.published);
+		assertTrue(resource.isPublic());		
 	}
 }

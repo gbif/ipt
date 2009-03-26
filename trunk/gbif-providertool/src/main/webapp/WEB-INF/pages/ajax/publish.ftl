@@ -8,7 +8,7 @@
     <div class="arrow"><img src="<@s.url value='/images/arrow_right.png'/>" /></div>
     <div class="arrow" style="display:none"><img src="<@s.url value='/images/arrow_down.png'/>" /></div>
 	</#if>	
-	  <#if resource.isDirty()>
+	  <#if resource.isModified()>
 		<@s.form id="publishForm" action="publish" namespace="/ajax" method="post">
 		    <@s.hidden name="resource_id" value="${resource.id}"/>
 		    <@s.hidden name="resourceType" value="${resourceType}"/>

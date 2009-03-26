@@ -204,7 +204,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			doc.add(new Field(FIELD_DATA, handler.getContent(), Field.Store.NO, Field.Index.ANALYZED));
 			// store publication status
 			String acl = resource.getCreator().getId().toString(); 
-			if (resource.isPublished()){
+			if (resource.isPublic()){
 				acl += " "+PUBLIC_ACCESS;
 			}
 			doc.add(new Field(FIELD_ACCESS, acl, Field.Store.NO, Field.Index.ANALYZED));

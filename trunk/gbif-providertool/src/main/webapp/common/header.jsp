@@ -21,30 +21,18 @@
 <div id="switchLocale" style="display:none" class="right">
   <ul class="plain_m">  
 	<li><a href="?locale=en"><img src="<c:url value='/images/flags/flag_en.gif'/>"/></a></li>
+	<!-- 
 	<li><a href="?locale=es"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
 	<li><a href="?locale=de"><img src="<c:url value='/images/flags/flag_de.gif'/>"/></a></li>
 	<li><a href="?locale=fr"><img src="<c:url value='/images/flags/flag_fr.gif'/>"/></a></li>
+	 -->
   </ul>
 	
 </div>
-
-<!-- 
-<div id="branding">
-	<img src="<c:url value='/images/copyHeader.jpg'/>"/>
-</div>
- -->
  
 <div id="logo">
 	<a href="<c:url value='/index.html'/>"><img src="<c:url value='/images/logo.jpg'/>" /></a>
 </div>
-
-<s:if test="resourceType!=null">
-<%--
-<div id="currentResourceClass">
-	<s:text name="resourceClass.%{resourceType}"/><s:if test="resource.isDirty()">*</s:if>
-</div>
---%>
-</s:if>
 
 <noscript>
 <!-- test for javascript -->
