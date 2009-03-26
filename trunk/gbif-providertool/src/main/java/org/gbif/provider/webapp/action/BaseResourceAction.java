@@ -149,4 +149,8 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
 		return resourceTypes;
 	}
 
+	protected void setResourceTypes(Map<String, String> resourceTypes) {
+		this.resourceTypes = resourceTypes;
+	}
+
 }

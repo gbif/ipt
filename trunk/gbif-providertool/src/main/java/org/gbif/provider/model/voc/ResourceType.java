@@ -1,16 +1,10 @@
 package org.gbif.provider.model.voc;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.DarwinCore;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.Taxon;
+	
 
 public enum ResourceType {
 	Specimen("Sample","http://rs.tdwg.org/dwc/terms/Sample"),
@@ -31,6 +25,9 @@ public enum ResourceType {
 	DescriptionChecklist("Taxon","http://rs.tdwg.org/dwc/terms/Taxon"),
 	DistributionChecklist("Taxon","http://rs.tdwg.org/dwc/terms/Taxon");
 
+	public static final String TAXON_GROUP="Taxon";
+	public static final String SAMPLE_GROUP="Sample";
+	
 	public static ResourceType byName(String name){
 		for (ResourceType rt : ResourceType.values()){
 			if (rt.name().equalsIgnoreCase(name)){
@@ -48,6 +45,20 @@ public enum ResourceType {
 			map.put(rt.name(), "resourceType."+rt.name());
 		}
 		htmlSelectMap = Collections.unmodifiableMap(map);
+	}
+	
+	/**
+	 * @param group To use (TAXON_GROUP, SAMPLE_GROUP)
+	 * @return The resource types for that group only
+	 */
+    public static Map<String, String> htmlSelectMap(String group) {
+		Map<String, String> map = new HashMap<String, String>();
+		for (ResourceType rt : ResourceType.values()){
+			if (rt.group.equals(group)) {
+				map.put(rt.name(), "resourceType."+rt.name());
+			}
+		}
+		return Collections.unmodifiableMap(map);
 	}
 	
 	public String group;	
