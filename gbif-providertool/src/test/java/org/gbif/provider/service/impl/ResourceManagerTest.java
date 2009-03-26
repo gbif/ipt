@@ -72,15 +72,15 @@ public class ResourceManagerTest extends ResourceTestBase{
 	@Test
 	public void testSaveResource(){
 		setupOccResource();
-		resource.setStatus(PublicationStatus.uptodate);
+		resource.setStatus(PublicationStatus.published);
 		Long id = resource.getId();
 		resourceManager.save(resource);		
 		Resource resu = resourceManager.get(id);
-		assertEquals(resu.getStatus(), PublicationStatus.uptodate);
+		assertEquals(resu.getStatus(), PublicationStatus.published);
 
-		resource.setStatus(PublicationStatus.dirty);
+		resource.setStatus(PublicationStatus.modified);
 		resourceManager.save(resource);		
 		resu = resourceManager.get(id);
-		assertEquals(resu.getStatus(), PublicationStatus.dirty);
+		assertEquals(resu.getStatus(), PublicationStatus.modified);
 }
 }

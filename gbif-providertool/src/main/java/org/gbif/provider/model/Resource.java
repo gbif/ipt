@@ -110,15 +110,15 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	public void setStatus(PublicationStatus status) {
 		// a not registered resource cant be uptodate
 		if (status==null){
-			status=PublicationStatus.draft;
-		}else if (status.equals(PublicationStatus.uptodate) && !isRegistered()){
-			status=PublicationStatus.dirty;
+			status=PublicationStatus.unpublished;
+		}else if (status.equals(PublicationStatus.published) && !isRegistered()){
+			status=PublicationStatus.modified;
 		}
 		this.status = status;
 	}
 	public void setDirty() {
-		if (status!=null && status.equals(PublicationStatus.uptodate)){
-			this.status = PublicationStatus.dirty;
+		if (status!=null && status.equals(PublicationStatus.published)){
+			this.status = PublicationStatus.modified;
 		}
 	}
 	
@@ -315,18 +315,18 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 	}
 	
 	@Transient
-	public boolean isPublished() {
+	public boolean isPublic() {
 		if (status==null){
 			return false;
 		}
-		return getStatus().compareTo(PublicationStatus.dirty) >= 0;
+		return getStatus().compareTo(PublicationStatus.modified) >= 0;
 	}
 	@Transient
-	public boolean isDirty() {
+	public boolean isModified() {
 		if (status==null){
 			return true;
 		}
-		return getStatus().compareTo(PublicationStatus.uptodate) < 0;
+		return getStatus().compareTo(PublicationStatus.published) < 0;
 	}
 	@Transient
 	public boolean isRegistered() {

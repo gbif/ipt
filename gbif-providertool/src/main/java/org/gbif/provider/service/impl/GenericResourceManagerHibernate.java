@@ -70,7 +70,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	
 	public List<Long> getPublishedResourceIDs() {
         return query(String.format("select id from %s where status>=:status", persistentClass.getName()))
-        .setParameter("status", PublicationStatus.dirty)
+        .setParameter("status", PublicationStatus.modified)
 		.list();
 	}
 	
@@ -102,7 +102,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	public T publish(Long resourceId) {
 		T resource = get(resourceId);
 		// make resource public. Otherwise it wont get registered with GBIF
-		resource.setStatus(PublicationStatus.dirty);
+		resource.setStatus(PublicationStatus.modified);
 		updateRegistry(resource);
 		// in case sth goes wrong
 		Eml metadata;
@@ -110,11 +110,11 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 			metadata = emlManager.publishNewEmlVersion(resource);
 			resource.updateWithMetadata(metadata);
 			// the resource is really published and the EML reflects the state of the resource
-			resource.setStatus(PublicationStatus.uptodate);
+			resource.setStatus(PublicationStatus.published);
 			fullTextSearchManager.buildResourceIndex(resourceId);
 		} catch (IOException e) {
 			log.error(String.format("Can't publish resource %s. IOException", resourceId), e);
-			resource.setStatus(PublicationStatus.draft);
+			resource.setStatus(PublicationStatus.unpublished);
 			save(resource);
 		}		
 		save(resource);
@@ -125,7 +125,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	@Transactional(readOnly=false)
 	public void unPublish(Long resourceId) {
 		T resource = get(resourceId);
-		resource.setStatus(PublicationStatus.draft);
+		resource.setStatus(PublicationStatus.unpublished);
 		save(resource);
 		fullTextSearchManager.buildResourceIndex(resourceId);
 		try {
@@ -151,7 +151,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 
 	public List<T> latest(int startPage, int pageSize) {
         return query(String.format("from %s res where res.status>=:status ORDER BY res.modified, res.id", persistentClass.getSimpleName()))
-        .setParameter("status", PublicationStatus.dirty)
+        .setParameter("status", PublicationStatus.modified)
         .setFirstResult(H2Utils.offset(startPage, pageSize))
         .setMaxResults(pageSize)
 		.list();
@@ -159,7 +159,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 
 	public List<T> searchByKeyword(String keyword) {
         return query(String.format("select res from %s res join res.keywords as k where res.status>=:status and k=:keyword", persistentClass.getName()))
-        .setParameter("status", PublicationStatus.dirty)
+        .setParameter("status", PublicationStatus.modified)
         .setParameter("keyword", keyword)
 		.list();
 	}
@@ -183,7 +183,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		log.debug(hql);
 		log.debug("search box: "+box);
         return query(hql)
-        .setParameter("status", PublicationStatus.dirty)
+        .setParameter("status", PublicationStatus.modified)
         .setDouble("boxMinX", box.getMin().getLongitude())
         .setDouble("boxMaxX", box.getMax().getLongitude())
         .setDouble("boxMinY", box.getMin().getLatitude())

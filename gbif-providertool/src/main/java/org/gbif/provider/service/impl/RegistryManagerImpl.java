@@ -191,7 +191,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	 * @see org.gbif.provider.service.RegistryManager#registerResource(java.lang.Long)
 	 */
 	public String registerResource(Resource resource) throws RegistryException{
-		if (!resource.isPublished()){
+		if (!resource.isPublic()){
 			String msg = "Resource " +resource.getId()+ " needs to be published before it can be registered with GBIF";
 			log.error(msg);
 			throw new IllegalArgumentException(msg);

@@ -1,7 +1,7 @@
 package org.gbif.provider.model.voc;
 
 public enum PublicationStatus {
-	draft,
-	dirty,
-	uptodate
+	unpublished,
+	modified,
+	published
 }
