@@ -31,7 +31,7 @@
 				return row.nodeName;
 			}
 		}).result( function(event, data, formatted) {
-		  	console.debug(data);
+		  	//console.debug(data);
 			$("#orgNodeKey").val(data.key);
 			$("#orgNodeName").val(data.nodeName);
 		});
@@ -55,7 +55,7 @@
 		});
 	}
 	function udpateOrg(data){
-	  	console.debug(data);
+	  	//console.debug(data);
 		$(".organisationKey").val(data.key);
 		updateResendLink(data.key);
 		$("#orgTitle").val(data.name);
@@ -110,7 +110,7 @@
 	    <#if config.orgNode??>
 		  $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}/${config.orgNode}.json'/>", function(data){
 			$("#orgNodeName").val(data.nodeName);
-		  	console.debug(data);
+		  	//console.debug(data);
 		  });
 	    </#if>
 	  </#if>
