@@ -1,5 +1,7 @@
 /* @override http://localhost:8080/styles/gbifn/providertool.css */
 
+/* @override http://localhost:8080/styles/gbifn/providertool.css */
+
 
 /* PROVIDERTOOL customising simplicity */
 
@@ -384,7 +386,9 @@ div.chart, div.stats{
 	float: left;
 	margin-bottom: 20px;
 }
-
+div.stats div{
+	clear: both;
+}
 div.stats label{
 	font-size: 16px;
 	font-style: italic;
@@ -403,15 +407,15 @@ div.chart{
 	height: 200px;
 }
 div.chart form, div.map form {
-	padding-right: 17px;
 	position: relative;
-	top: -39px;
-	margin-bottom: -33px;
+	ruby-position: top;
+	line-height: 1px;
+	top: -16px;
+	margin-top: 0px;
+	margin-bottom: -18px;
 	text-align: right;
 	padding-top: 0px;
-	margin-top: 0px;
-	line-height: 1px;
-	ruby-position: top;
+	padding-right: 17px;
 }
 .map img{
 	border: 1px solid #000;
