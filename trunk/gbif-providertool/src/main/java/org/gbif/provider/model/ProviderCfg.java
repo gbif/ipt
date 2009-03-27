@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,8 @@ public class ProviderCfg {
 	private String geoserverUser;
 	private String geoserverPass;
 	private String log4jFile;
+	private String headerHtml;
+	private boolean gbifAnalytics = true;
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) 
 	public Long getId() {
@@ -133,5 +136,21 @@ public class ProviderCfg {
 		googleMapsApiKey = StringUtils.trimToNull(googleMapsApiKey);
 		this.googleMapsApiKey = googleMapsApiKey;
 	}
+	
+	@Lob
+	public String getHeaderHtml() {
+		return headerHtml;
+	}
+	public void setHeaderHtml(String headerHtml) {
+		this.headerHtml = StringUtils.trimToEmpty(headerHtml);
+	}
+	
+	public boolean isGbifAnalytics() {
+		return gbifAnalytics;
+	}
+	public void setGbifAnalytics(boolean gbifAnalytics) {
+		this.gbifAnalytics = gbifAnalytics;
+	}
+
 	
 }

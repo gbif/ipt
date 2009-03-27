@@ -16,11 +16,13 @@ import org.gbif.provider.model.dto.CommonName;
 import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.StatsCount;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
+import org.gbif.provider.service.TreeNodeManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
@@ -28,19 +30,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class TaxonAction extends BaseDataResourceAction implements Preparable{
-	@Autowired
-	private MapUtil mapUtil;
-	@Autowired
-	private TaxonManager taxonManager;
-	@Autowired
-	private DarwinCoreManager darwinCoreManager;
+public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Preparable{
 	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
 	private AnnotationManager annotationManager;
+	private TaxonManager taxonManager;
 	// parameters
-    private Long id;
     private String action;
     private int type;
     private String category;
@@ -48,48 +44,45 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     private String q;
     // results
     private String title;
-    private Taxon taxon;
     private List<Taxon> taxa;
     private List<Taxon> synonyms;
     private List<CommonName> commonNames;
     private List<Distribution> distributions;
     private List<StatsCount> stats;
     private List<Annotation> annotations;
-    // occurrences only
-    private List<DarwinCore> occurrences;
-	public String geoserverMapUrl;
-	public String geoserverMapBBox;
-	public int width = OccResourceStatsAction.DEFAULT_WIDTH;
-	public int height = OccResourceStatsAction.DEFAULT_HEIGHT;
     // xml/json serialisation only
     private Map<Object, Object> json;
     private NamespaceRegistry nsr;
     private ExtendedRecord rec;
 	private List<Extension> extensions = new ArrayList<Extension>();
 	
+	public TaxonAction(TaxonManager taxonManager) {
+		super(taxonManager);
+		this.taxonManager=taxonManager;
+	}
 	private void setRequestedTaxon(){
     	if (id!=null){
-    		taxon=taxonManager.get(id);
+    		node=taxonManager.get(id);
     	}else if (guid!=null){
-    		taxon=taxonManager.get(guid);
-    		if (taxon!=null){
-        		id=taxon.getId();
+    		node=taxonManager.get(guid);
+    		if (node!=null){
+        		id=node.getId();
     		}
     	}
     	if(resource==null){
-    		resource=taxon.getResource();
+    		resource=node.getResource();
     		updateResourceType();
     	}
 	}
 	public String execute(){
 		setRequestedTaxon();
-    	if (taxon!=null){
-			stats = taxonManager.getRankStats(taxon.getId());
-			synonyms = taxonManager.getSynonyms(taxon.getId());
-			rec = extensionRecordManager.extendCoreRecord(taxon.getResource(), taxon);
+    	if (node!=null){
+			stats = taxonManager.getRankStats(node.getId());
+			synonyms = taxonManager.getSynonyms(node.getId());
+			rec = extensionRecordManager.extendCoreRecord(node.getResource(), node);
 			if (format != null){
 	        	if (format.equalsIgnoreCase("xml")){
-	        		nsr = new NamespaceRegistry(taxon.getResource());
+	        		nsr = new NamespaceRegistry(node.getResource());
 	        		return "xml";
 	        	}
 	        	else if (format.equalsIgnoreCase("rdf")){
@@ -108,16 +101,25 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	    				extensions.add(e);
 	    			}
 	    		}
-				commonNames = extensionRecordManager.getCommonNames(taxon.getCoreId());
-				distributions = extensionRecordManager.getDistributions(taxon.getCoreId());
+				commonNames = extensionRecordManager.getCommonNames(node.getCoreId());
+				distributions = extensionRecordManager.getDistributions(node.getCoreId());
 			}
         	// find annotations
-        	annotations = annotationManager.getByRecord(taxon.getResourceId(), taxon.getGuid());
+        	annotations = annotationManager.getByRecord(node.getResourceId(), node.getGuid());
         	return SUCCESS;
     	}
 		return RECORD404;
     }
-    
+	
+	@Override
+    public String occurrences(){
+		String result = super.occurrences();
+		if (node!=null){
+	    	occurrences = darwinCoreManager.getByTaxon(node.getId(), resource_id, true);
+		}
+    	return result;
+    }
+
 	public String search(){
 		super.prepare();
 		taxa = taxonManager.search(resource_id, q);
@@ -127,8 +129,8 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     public String listByRank(){
     	title = category;
     	setRequestedTaxon();
-    	if (taxon != null){
-    		title += " below "+taxon.getScientificName();
+    	if (node != null){
+    		title += " below "+node.getScientificName();
     	}
 		taxa=taxonManager.getByRank(resource_id, id, category);
 		return SUCCESS;
@@ -137,30 +139,12 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
     	StatusType st = StatusType.getByInt(type);
     	title = String.format("%s - %s", st.name(), category);
     	setRequestedTaxon();
-    	if (taxon != null){
-    		title += " below "+taxon.getScientificName();
+    	if (node != null){
+    		title += " below "+node.getScientificName();
     	}
 		taxa=taxonManager.getByStatus(resource_id, id, st, category);
 		return SUCCESS;
-    }
-    
-    public String occurrences(){
-    	if (id!=null && resource_id!=null){
-    		taxon=taxonManager.get(id);
-    		occurrences = darwinCoreManager.getByTaxon(id, resource_id, true);
-    		if (taxon!=null){
-    			geoserverMapUrl = mapUtil.getWMSGoogleMapUrl(resource_id, taxon, null);
-    			BBox bbox = BBox.NewWorldInstance();
-    			if (taxon.getBbox()!=null && taxon.getBbox().isValid()){
-    				bbox = taxon.getBbox();
-    			}else if (resource!=null && resource.getGeoCoverage()!=null && resource.getGeoCoverage().isValid()){
-    				bbox = resource.getGeoCoverage();
-    			}
-				geoserverMapBBox = bbox.toStringWMS();
-    		}
-    	}
-		return SUCCESS;
-    }
+    }    
 
 	public Long getId() {
 		return id;
@@ -171,7 +155,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 	}
 
 	public Taxon getTaxon() {
-		return taxon;
+		return node;
 	}
 
 	public List<DarwinCore> getOccurrences() {
@@ -226,7 +210,7 @@ public class TaxonAction extends BaseDataResourceAction implements Preparable{
 		return title;
 	}
 	public Taxon getRecord(){
-		return taxon;
+		return node;
 	}
 	public String getFormat() {
 		return format;

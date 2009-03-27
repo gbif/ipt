@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -25,52 +26,61 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 @Table(
-		uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
+	uniqueConstraints = {@UniqueConstraint(columnNames={"sourceId", "resource_fk"})}
 )
 @org.hibernate.annotations.Table(
-		appliesTo="Taxon",
-		indexes={
-				@Index(name="tax_label", columnNames={"label"} ),
-				@Index(name="tax_lft", columnNames={"lft"} ),
-				@Index(name="tax_rgt", columnNames={"rgt"} )
-		}
+	appliesTo="Taxon",
+	indexes={
+		@Index(name="tax_label", columnNames={"label"} ),
+		@Index(name="tax_lft", columnNames={"lft"} ),
+		@Index(name="tax_rgt", columnNames={"rgt"} )
+	}
 )
 public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
 		// for core record
-		private String localId;
+		private String sourceId;
 		@NotNull
 		private String guid;
 		private String link;
 		private boolean isDeleted;
 		private Date modified;
-		@NotNull
-		private DataResource resource;
-		
 		// taxon specific
-		private String rank;
-		private String name;
+		//private String taxonID; --> this.guid
+		// private String scientificName; --> this.label
+		private String binomial;
+//		private String kingdom;
+//		private String phylum;
+//		private String classs;
+//		private String order;
+//		private String family;
+//		private String genus;
+//		private String subgenus;
+		private String specificEpithet;
+		private String taxonRank;
+		private String infraspecificEpithet;
+		private String scientificNameAuthorship;
 		private String nomenclaturalCode;
-		// not existing in DwC, but used for TaxonCore
-		private String taxonomicParentID;
-		private String acceptedTaxonID;
-		private String basionymID;
-		private String nomenclaturalReference;
-		private String taxStatus;
-		private String nomStatus;
-		private String notes;
-		// derived
-		private Taxon acceptedTaxon;
-		private Taxon basionym;
-		
-		// stats
-		private BBox bbox = new BBox();
-		private int occTotal;
+		private String taxonAccordingTo;
+		private String namePublishedIn;
+		private String taxonomicStatus;
+		private String nomenclaturalStatus;
+//		private Taxon higherTaxon; --> this.parent
+//		private String higherTaxonID;  
+//		private String higherTaxon;
+		private Taxon acc;
+//		private String acceptedTaxonID;
+//		private String acceptedTaxon;
+		private Taxon bas;
+//		private String basionymID;
+//		private String basionym;	
 		
 		public static Taxon newInstance(DataResource resource){
 			Taxon tax = new Taxon();
 			tax.resource=resource;
+			tax.modified = new Date();
+			tax.isDeleted = false;
 			tax.setGuid(UUID.randomUUID().toString());					
 			return tax;
 		}
@@ -80,26 +90,25 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			return super.getId();
 		}
 		
-		@ManyToOne(optional = false)
-		public DataResource getResource() {
-			return resource;
+		@Column(length=64)
+		@org.hibernate.annotations.Index(name="tax_source_id")
+		public String getSourceId() {
+			return sourceId;
 		}
-		public void setResource(DataResource resource) {
-			this.resource = resource;
-		}
-		@Transient
-		public Long getResourceId() {
-			return resource.getId();
+		public void setSourceId(String sourceId) {
+			this.sourceId = sourceId;
 		}
 
-		
-		@Column(length=64)
-		@org.hibernate.annotations.Index(name="tax_local_id")
-		public String getLocalId() {
-			return localId;
+		@Transient
+		public String getTaxonID() {
+			return guid;
 		}
-		public void setLocalId(String localId) {
-			this.localId = localId;
+		public void setTaxonID(String taxonID) {
+			this.guid = taxonID;
+		}
+				
+		public void setResource(DataResource resource) {
+			this.resource = resource;
 		}
 
 		@Column(length=128, unique=true)
@@ -133,14 +142,24 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.modified = modified;
 		}
 
-		@Column(length=128)
+		@Transient
+		@Deprecated
 		public String getRank() {
-			return rank;
+			return taxonRank;
 		}
+		@Deprecated
 		public void setRank(String rank) {
-			this.rank = rank;
+			this.taxonRank = rank;
 		}
 		
+		@Column(length=128)
+		public String getTaxonRank() {
+			return taxonRank;
+		}
+		public void setTaxonRank(String taxonRank) {
+			this.taxonRank = taxonRank;
+		}
+
 		@Transient
 		public Rank getDwcRank() {
 			return super.getType();
@@ -166,107 +185,136 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			this.nomenclaturalCode = nomenclaturalCode;
 		}
 
-		public BBox getBbox() {
-			if (bbox==null){
-				bbox = new BBox();
-			}
-			return bbox;
-		}
-		public void setBbox(BBox bbox) {
-			this.bbox = bbox;
-		}
-		public void expandBox(Point p) {
-			getBbox().expandBox(p);
-		}
-
-		public int getOccTotal() {
-			return occTotal;
-		}
-		public void setOccTotal(int occTotal) {
-			this.occTotal = occTotal;
-		}
-
-		
-		@Column(length=32)
-		public String getTaxonomicParentID() {
-			return taxonomicParentID;
-		}
-		public void setTaxonomicParentID(String taxonomicParentID) {
-			this.taxonomicParentID = taxonomicParentID;
-		}
-
-		@Column(length=32)
-		public String getAcceptedTaxonID() {
-			return acceptedTaxonID;
-		}
-		public void setAcceptedTaxonID(String acceptedTaxonID) {
-			this.acceptedTaxonID = acceptedTaxonID;
-		}
-
-		@Column(length=32)
-		public String getBasionymID() {
-			return basionymID;
-		}
-		public void setBasionymID(String basionymID) {
-			this.basionymID = basionymID;
-		}
-
+		@Transient
+		@Deprecated
 		public String getNomenclaturalReference() {
-			return nomenclaturalReference;
+			return namePublishedIn;
 		}
+		@Deprecated
 		public void setNomenclaturalReference(String nomenclaturalReference) {
-			this.nomenclaturalReference = nomenclaturalReference;
+			this.namePublishedIn = nomenclaturalReference;
+		}
+
+		public String getNamePublishedIn() {
+			return namePublishedIn;
+		}
+		public void setNamePublishedIn(String namePublishedIn) {
+			this.namePublishedIn = namePublishedIn;
 		}
 
 		@Column(length=128)
 		public String getTaxonomicStatus() {
-			return taxStatus;
+			return taxonomicStatus;
 		}
 		public void setTaxonomicStatus(String taxStatus) {
-			this.taxStatus = taxStatus;
+			this.taxonomicStatus = taxStatus;
 		}
 
 		@Column(length=128)
 		public String getNomenclaturalStatus() {
-			return nomStatus;
+			return nomenclaturalStatus;
 		}
 		public void setNomenclaturalStatus(String nomStatus) {
-			this.nomStatus = nomStatus;
-		}
-
-		@Lob
-		public String getNotes() {
-			return notes;
-		}
-		public void setNotes(String notes) {
-			this.notes = notes;
+			this.nomenclaturalStatus = nomStatus;
 		}
 
 		@ManyToOne(optional = true)
-		public Taxon getAcceptedTaxon() {
-			return acceptedTaxon;
+		public Taxon getAcc() {
+			return acc;
 		}
-		public void setAcceptedTaxon(Taxon acceptedTaxon) {
-			this.acceptedTaxon = acceptedTaxon;
+		public void setAcc(Taxon acceptedTaxon) {
+			this.acc = acceptedTaxon;
+		}
+		@Transient
+		public String getAcceptedTaxonID() {
+			if (acc!=null){
+				return acc.guid;				
+			}
+			return null;
+		}
+		@Transient
+		public String getAcceptedTaxon() {
+			if (acc!=null){
+				return acc.label;				
+			}
+			return null;
 		}
 
-		@ManyToOne(optional = true)
-		public Taxon getBasionym() {
-			return basionym;
+		@Transient
+		public String getHigherTaxonID() {
+			if (parent!=null){
+				return parent.guid;				
+			}
+			return null;
 		}
-		public void setBasionym(Taxon basionym) {
-			this.basionym = basionym;
-		}
-
-		/**
-		 * Count a single occurrence record
-		 * @param region
-		 */
-		public void countOcc(DarwinCore dwc) {
-			this.occTotal++;
-			bbox.expandBox(dwc.getLocation());			
+		@Transient
+		public String getHigherTaxon() {
+			if (parent!=null){
+				return parent.label;				
+			}
+			return null;
 		}
 		
+		@Transient
+		public String getBasionymID() {
+			if (bas!=null){
+				return bas.guid;				
+			}
+			return null;
+		}
+		@Transient
+		public String getBasionym() {
+			if (bas!=null){
+				return bas.label;				
+			}
+			return null;
+		}
+		@ManyToOne(optional = true)
+		public Taxon getBas() {
+			return bas;
+		}
+		public void setBas(Taxon basionym) {
+			this.bas = basionym;
+		}
+
+		public String getBinomial() {
+			return binomial;
+		}
+		public void setBinomial(String binomial) {
+			this.binomial = binomial;
+		}
+
+		@Column(length=128)
+		public String getSpecificEpithet() {
+			return specificEpithet;
+		}
+		public void setSpecificEpithet(String specificEpithet) {
+			this.specificEpithet = specificEpithet;
+		}
+
+		@Column(length=128)
+		public String getInfraspecificEpithet() {
+			return infraspecificEpithet;
+		}
+		public void setInfraspecificEpithet(String infraspecificEpithet) {
+			this.infraspecificEpithet = infraspecificEpithet;
+		}
+
+		public String getScientificNameAuthorship() {
+			return scientificNameAuthorship;
+		}
+		public void setScientificNameAuthorship(String scientificNameAuthorship) {
+			this.scientificNameAuthorship = scientificNameAuthorship;
+		}
+
+		public String getTaxonAccordingTo() {
+			return taxonAccordingTo;
+		}
+
+		public void setTaxonAccordingTo(String taxonAccordingTo) {
+			this.taxonAccordingTo = taxonAccordingTo;
+		}
+
 		@Override
 		protected int compareWithoutHierarchy(Taxon first, Taxon second) {
 			return new CompareToBuilder()
@@ -286,8 +334,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			Taxon rhs = (Taxon) object;
 			return new EqualsBuilder()
 					.append(this.getLabel(), rhs.getLabel())
-					.append(this.rank, rhs.rank)
-					.append(this.name, rhs.name)
+					.append(this.taxonRank, rhs.taxonRank)
+					.append(this.taxonAccordingTo, rhs.taxonAccordingTo)
 					.append(this.getParent(), rhs.getParent())
 					.append(this.getId(), rhs.getId()).isEquals();
 		}
@@ -295,8 +343,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		 * @see java.lang.Object#hashCode()
 		 */
 		public int hashCode() {
-			return new HashCodeBuilder(2136008009, 497664597).append(this.rank).append(this.getLabel())
-					.append(this.name).append(this.getParent()).append(this.getId())
+			return new HashCodeBuilder(2136008009, 497664597).append(this.taxonRank).append(this.getLabel())
+					.append(this.taxonAccordingTo).append(this.getParent()).append(this.getId())
 					.toHashCode();
 		}
 
@@ -346,6 +394,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 				return false;
 			}
 			return true;
-		}		
+		}
 		
 }

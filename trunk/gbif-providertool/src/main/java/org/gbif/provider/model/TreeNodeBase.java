@@ -12,13 +12,16 @@ import javax.persistence.Transient;
 
 @MappedSuperclass
 public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> implements BaseObject, TreeNode<T, E>, Comparable<T>{
-	private Long id;
-	private T parent;
-	private String label;
+	protected Long id;
+	protected T parent;
+	protected String label;
 	private Long lft;
 	private Long rgt;
-	private E type;
+	protected E type;
 	private String mpath;
+	protected DataResource resource;
+	protected BBox bbox = new BBox();
+	protected int occTotal;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -135,5 +138,43 @@ public abstract class TreeNodeBase<T extends TreeNodeBase, E extends Enum> imple
 			infos = String.format("%s", getParent().getLabel());
 		}
 		return String.format("%s (%s)", this.getLabel(), infos);
+	}
+	
+	@ManyToOne(optional = false)
+	public DataResource getResource() {
+		return resource;
+	}
+	public void setResource(DataResource resource) {
+		this.resource = resource;
+	}
+	@Transient
+	public Long getResourceId() {
+		return resource.getId();
+	}
+	public BBox getBbox() {
+		if (bbox==null){
+			bbox = new BBox();
+		}
+		return bbox;
+	}
+	public void setBbox(BBox bbox) {
+		this.bbox = bbox;
+	}
+	public void expandBox(Point p) {
+		getBbox().expandBox(p);
+	}
+	public int getOccTotal() {
+		return occTotal;
+	}
+	public void setOccTotal(int occTotal) {
+		this.occTotal = occTotal;
+	}
+	/**
+	 * Count a single occurrence record
+	 * @param region
+	 */
+	public void countOcc(DarwinCore dwc) {
+		this.occTotal++;
+		bbox.expandBox(dwc.getLocation());
 	}
 }

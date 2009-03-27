@@ -43,7 +43,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Entity
 public class PropertyMapping implements BaseObject , Comparable<PropertyMapping> {
 	private Long id;	
-	private ViewMappingBase viewMapping;
+	private ExtensionMapping viewMapping;
 	private ExtensionProperty property;
 	private String column;
 	private Transformation termTransformation;
@@ -69,10 +69,10 @@ public class PropertyMapping implements BaseObject , Comparable<PropertyMapping>
 	
 	@ManyToOne(optional=false)
 	//@JoinColumn(name="view_mapping_fk", insertable=false, updatable=false, nullable=false)
-	public ViewMappingBase getViewMapping() {
+	public ExtensionMapping getViewMapping() {
 		return viewMapping;
 	}
-	public void setViewMapping(ViewMappingBase viewMapping) {
+	public void setViewMapping(ExtensionMapping viewMapping) {
 		this.viewMapping = viewMapping;
 	}
 	

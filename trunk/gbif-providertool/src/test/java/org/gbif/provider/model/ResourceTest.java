@@ -1,7 +1,7 @@
 package org.gbif.provider.model;
 
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
-import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.util.ContextAwareTestBase;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;

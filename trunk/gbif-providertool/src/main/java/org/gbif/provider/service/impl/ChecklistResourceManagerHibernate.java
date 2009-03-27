@@ -17,7 +17,7 @@ import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.ViewExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
@@ -148,7 +148,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 		Long resourceId = resource.getId();
 		super.setResourceStats(resource);
 		// checklist specific
-		for (ViewExtensionMapping em : resource.getExtensionMappings()){
+		for (ExtensionMapping em : resource.getExtensionMappings()){
 			if (em.getExtension().getId().equals(Constants.COMMON_NAME_EXTENSION_ID)){
 				resource.setNumCommonNames(extensionRecordManager.count(em.getExtension(), resourceId));
 				ExtensionProperty property = extensionPropertyManager.get(Constants.COMMON_NAME_LANGUAGE_PROPERTY_ID);

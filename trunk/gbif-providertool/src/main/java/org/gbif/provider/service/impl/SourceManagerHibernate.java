@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class SourceManagerHibernate extends	GenericResourceRelatedManagerHiberna
 	@Transactional(readOnly=false)
 	public void remove(SourceBase obj) {
 		// also remove all ViewMappings that are based on this source
-		List<ViewMappingBase> views = viewMappingManager.getAll(obj.getResource().getId());
-		for (ViewMappingBase vm : views){
+		List<ExtensionMapping> views = viewMappingManager.getAll(obj.getResource().getId());
+		for (ExtensionMapping vm : views){
 			if (vm!=null && vm.getSource().equals(obj)){
 				// view mapping uses this source, so also delete it!
 				viewMappingManager.remove(vm);

@@ -46,7 +46,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getRoots(Long resourceId) {
-		return treeNodeSupport.getRoots(resourceId, getSession(), "n.acceptedTaxon is null");
+		return treeNodeSupport.getRoots(resourceId, getSession(), "n.acc is null");
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	
 	public void lookupAcceptedTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set accepted_taxon_fk = (select tp.id from taxon tp where tp.local_id=t.accepted_taxon_id and tp.id!=t.id and resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set acc_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk   where tp.source_id=dwc.accepted_taxon_id and tp.id!=t.id and tp.resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -84,7 +84,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public void lookupBasionymTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set basionym_fk = (select tp.id from taxon tp where tp.local_id = t.basionym_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set bas_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk   where tp.source_id = dwc.basionym_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -96,30 +96,62 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public void lookupParentTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set parent_fk = (select tp.id from taxon tp where tp.local_id = t.taxonomic_parent_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set parent_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
-			log.debug(i+" taxa updated with parent taxon.");
+			if (i>0){
+				log.debug(i+" taxa resolved via higherTaxonID.");
+			}else{
+				// no taxa have been resolved. Try to use the verbose higher taxon name string to match
+				sql = String.format("update Taxon t set parent_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+				st = cn.createStatement();
+				i = st.executeUpdate(sql);
+				log.debug(i+" taxa resolved via higherTaxon.");
+			}
+			//TODO: warn about taxa with non matching higherTaxon or higherTaxonID
 		} catch (SQLException e) {
 			log.debug("Setting parent taxa failed.", e);
 		}
 	}
 	
+	private int lookupColumn(Long resourceId, String fkColumn, String lookupColumn, boolean useSourceId){
+		String dwcColumn = "scientific_name";
+		String taxColumn = "label";
+		if (useSourceId){
+			dwcColumn="source_id";
+			taxColumn = "source_id";
+		}
+		Connection cn = getConnection();
+		String sql = String.format("update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", fkColumn, resourceId, resourceId);
+		int i = 0;
+		try {
+			Statement st = cn.createStatement();
+			i = st.executeUpdate(sql);
+			if (i>0){
+				log.debug(i+" taxa resolved via higherTaxonID.");
+			}else{
+				// no taxa have been resolved. Try to use the verbose higher taxon name string to match
+				sql = String.format("update Taxon t set parent_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+				st = cn.createStatement();
+				i = st.executeUpdate(sql);
+				log.debug(i+" taxa resolved via higherTaxon.");
+			}
+			//TODO: warn about taxa with non matching higherTaxon or higherTaxonID
+		} catch (SQLException e) {
+			log.debug("Setting parent taxa failed.", e);
+		}
+		return i;		
+	}
 	public int countTreeNodes(Long resourceId) {
 		return treeNodeSupport.countTreeNodes(resourceId, getSession());
 	}
 
 	public int countByType(Long resourceId, Rank rank){
 		return treeNodeSupport.countByType(resourceId, rank, getSession());
-//		Long cnt = (Long) query("select count(tax) from Taxon tax WHERE tax.type = :rank and tax.resource.id = :resourceId")
-//        	.setLong("resourceId", resourceId)
-//        	.setParameter("rank", rank)
-//        	.iterate().next();
-//        return cnt.intValue();
 	}
 	public int countSynonyms(Long resourceId) {
-		return ((Long) query("select count(tax) from Taxon tax WHERE tax.acceptedTaxon is not null and tax.resource.id = :resourceId")
+		return ((Long) query("select count(tax) from Taxon tax WHERE tax.acc is not null and tax.resource.id = :resourceId")
 				.setLong("resourceId", resourceId)
 				.iterate().next()).intValue();
 	}
@@ -157,7 +189,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public List<Taxon> getSynonyms(Long taxonId) {
-		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acceptedTaxon=t  order by s.label")
+		return query("select s from Taxon s, Taxon t  where t.id=:taxonId and s.acc=t  order by s.label")
     	.setLong("taxonId", taxonId)
     	.list();
 	}
@@ -172,4 +204,6 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         	.list();
         return StatsUtils.getDataMap(data);
 	}
+	
+	
 }

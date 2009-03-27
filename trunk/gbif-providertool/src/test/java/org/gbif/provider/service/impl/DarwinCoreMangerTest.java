@@ -58,12 +58,12 @@ public class DarwinCoreMangerTest extends ResourceTestBase{
         		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 
         		DarwinCore dwc = DarwinCore.newMock(res);
-				dwc.setLocalId(LOCAL_ID);
+				dwc.setSourceId(LOCAL_ID);
 				dwc = darwinCoreManager.save(dwc);
 				
 				// create new dwc record with different data, but the same localId!
         		DarwinCore dwcTwin = DarwinCore.newMock(res);
-				dwcTwin.setLocalId(LOCAL_ID);		
+				dwcTwin.setSourceId(LOCAL_ID);		
 				// should raise exception...
 		        dwcTwin = darwinCoreManager.save(dwcTwin);
 

@@ -13,9 +13,9 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 
 public enum ExtensionType {
-	Occurrence(1l, OccurrenceResource.class, DarwinCore.class, "Darwin_Core", "occ", 1l),
-	Checklist(7l, ChecklistResource.class, Taxon.class, "Taxon", "tax", 7l),	
-	Metadata(null, Resource.class, Resource.class, "Resource", "meta", null);	
+	Occurrence(1l, OccurrenceResource.class, DarwinCore.class, "Darwin_Core", "occ"),
+	Checklist(7l, ChecklistResource.class, Taxon.class, "Taxon", "tax"),	
+	Metadata(null, Resource.class, Resource.class, "Resource", "meta");	
 
 	public static ExtensionType byResourceClass(Class resourceClass){
 		for (ExtensionType et : ExtensionType.values()){
@@ -49,14 +49,12 @@ public enum ExtensionType {
 	public Class coreClass;	
 	public String tableName;	
 	public String alias;	
-	public Long extensionID;
 	
-	private ExtensionType (Long id, Class resourceClass, Class coreClass, String tableName, String alias, Long extensionID){
+	private ExtensionType (Long id, Class resourceClass, Class coreClass, String tableName, String alias){
 		this.id=id;
 		this.resourceClass=resourceClass;
 		this.coreClass=coreClass;
 		this.tableName=tableName;
 		this.alias=alias;
-		this.extensionID=extensionID;
 	}
 }

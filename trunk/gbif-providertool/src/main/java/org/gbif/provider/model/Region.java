@@ -9,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.logging.Log;
@@ -34,58 +32,11 @@ import org.hibernate.annotations.Index;
 public class Region extends TreeNodeBase<Region, RegionType> implements ResourceRelatedObject{
 	protected static final Log log = LogFactory.getLog(Region.class);
 
-	private Resource resource;
-	// stats
-	private BBox bbox = new BBox();
-	private int occTotal;
-	
 	public static Region newInstance(DataResource resource){
 		Region region = new Region();
 		region.resource=resource;
 		return region;
 	}
-	
-	@ManyToOne(optional = false)
-	public Resource getResource() {
-		return resource;
-	}
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
-	@Transient
-	public Long getResourceId() {
-		return resource.getId();
-	}
-
-	public BBox getBbox() {
-		if (bbox==null){
-			bbox = new BBox();
-		}
-		return bbox;
-	}
-	public void setBbox(BBox bbox) {
-		this.bbox = bbox;
-	}
-	public void expandBox(Point p) {
-		getBbox().expandBox(p);
-	}
-
-	public int getOccTotal() {
-		return occTotal;
-	}
-	public void setOccTotal(int occTotal) {
-		this.occTotal = occTotal;
-	}
-	
-	/**
-	 * Count a single occurrence record
-	 * @param region
-	 */
-	public void countOcc(DarwinCore dwc) {
-		this.occTotal++;
-		bbox.expandBox(dwc.getLocation());
-	}
-	
 	
 	@Override
 	protected int compareWithoutHierarchy(Region first, Region second) {

@@ -1,9 +1,7 @@
 package org.gbif.provider.webapp.action;
 
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccResourceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

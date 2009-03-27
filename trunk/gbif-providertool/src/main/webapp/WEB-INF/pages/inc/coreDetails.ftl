@@ -25,7 +25,7 @@
 	<th>Annotations</th>
 	<td>
 	  <#if annotations??>
-		<a href="Javascript:Effect.toggle('annotations', 'blind', { duration: 0.3 }); return false;">${annotations?size} notes</a> 
+		<a href="Javascript:$('#annotations').slideToggle('normal'); return false;">${annotations?size} notes</a> 
 	  <#else>
 		None 
 	  </#if>

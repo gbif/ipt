@@ -16,14 +16,18 @@
 
 package org.gbif.provider.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.util.Constants;
 
 /**
@@ -34,17 +38,11 @@ import org.gbif.provider.util.Constants;
 @Entity
 public class ChecklistResource extends DataResource {
 	public static final String DWC_GUID_PROPERTY = "TaxonID";
-
+	public static final String DWC_GROUPS = "Taxon,DublinCore";	
 	private int numCommonNames;
 	private int numCommonNameLanguages;
 	private int numDistributions;
 	private int numDistributionRegions;
-	
-	public static ChecklistResource newInstance(){
-		ChecklistResource resource =  new ChecklistResource();
-		resource.resetCoreMapping();
-		return resource;
-	}
 	
 	public int getNumCommonNames() {
 		return numCommonNames;
@@ -91,4 +89,19 @@ public class ChecklistResource extends DataResource {
 		return new ToStringBuilder(this).appendSuper(super.toString()).toString();
 	}
 
+	@Override
+	@Transient
+	public String getDwcGuidPropertyName() {
+		return DWC_GUID_PROPERTY;
+	}
+
+	@Override
+	@Transient
+	public List<String> getAdditionalIdentifiers(){
+		List<String> ids = super.getAdditionalIdentifiers();
+		ids.add("AcceptedTaxonID");
+		ids.add("HigherTaxonID");
+		ids.add("BasionymID");
+		return ids;
+	}
 }

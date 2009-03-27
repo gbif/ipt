@@ -21,7 +21,7 @@ import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.model.Transformation;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.GenericResourceRelatedManager;

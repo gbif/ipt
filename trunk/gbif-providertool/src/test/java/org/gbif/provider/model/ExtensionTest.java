@@ -5,10 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.ResourceFactory;
+import org.gbif.provider.util.Constants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -37,7 +38,7 @@ public class ExtensionTest extends BaseDaoTestCase{
 		extension.addProperty(propMap);
 		extension = extensionManager.save(extension);
 		// check dwc, checklist and inserted extensions
-		for (Long extId : Arrays.asList(ExtensionType.Checklist.extensionID, ExtensionType.Occurrence.extensionID, extension.getId())){
+		for (Long extId : Arrays.asList(Constants.DARWIN_CORE_EXTENSION_ID, extension.getId())){
 			Extension ext = extensionManager.get(extId);
 			List<ExtensionProperty> props = ext.getProperties(); 
 			assertFalse(props.isEmpty());
@@ -51,14 +52,14 @@ public class ExtensionTest extends BaseDaoTestCase{
 		Extension ext1 = new Extension();
 		ext1.setName("testExtensionMap 1");
 		ext1 = extensionManager.save(ext1);
-		ViewExtensionMapping map1 = new ViewExtensionMapping();
+		ExtensionMapping map1 = new ExtensionMapping();
 		map1.setExtension(ext1);
 		occRes.addExtensionMapping(map1);
 
 		Extension ext2 = new Extension();
 		ext2.setName("testExtensionMap 2");
 		ext2 = extensionManager.save(ext2);
-		ViewExtensionMapping map2 = new ViewExtensionMapping();
+		ExtensionMapping map2 = new ExtensionMapping();
 		map2.setExtension(ext2);
 		occRes.addExtensionMapping(map2);
 		
@@ -66,11 +67,11 @@ public class ExtensionTest extends BaseDaoTestCase{
 		
 		// check retrieved data. what about the hibernate cache?
 		DataResource res = occResourceManager.get(occId);		
-		Collection<ViewMappingBase> allMappings = res.getAllMappings();
+		Collection<ExtensionMapping> allMappings = res.getAllMappings();
 
 		assertTrue(res.getAllMappings().size()==3);
 		assertTrue(res.getExtensionMappings().size()==2);
-		assertTrue(res.getCoreMapping().getExtension().getId().equals(ExtensionType.Occurrence.extensionID));
+		assertTrue(res.getCoreMapping().getExtension().getId().equals(Constants.DARWIN_CORE_EXTENSION_ID));
 		// the core mapping should not be in the extension mappings map
 		assertFalse(res.getExtensionMappings().contains(res.getCoreMapping()));
 		// but in all mappings it should:
