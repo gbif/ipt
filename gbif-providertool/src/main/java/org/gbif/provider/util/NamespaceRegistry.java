@@ -147,15 +147,18 @@ public class NamespaceRegistry {
 		add(property.getNamespace(), preferredPrefix);
 	}	
 	public void add(String namespace, String preferredPrefix) {
-		String prefix = preferredPrefix;
-		if (ns2prefix.containsValue(prefix)){
-			int i = 2;
-			while (ns2prefix.containsValue(prefix)){
-				prefix = preferredPrefix+i;
-				i++;
+		// only add if not existing yet
+		if (!ns2prefix.containsKey(namespace)){
+			String prefix = preferredPrefix;		
+			if (ns2prefix.containsValue(prefix)){
+				int i = 2;
+				while (ns2prefix.containsValue(prefix)){
+					prefix = preferredPrefix+i;
+					i++;
+				}
 			}
+			ns2prefix.put(namespace, prefix);
 		}
-		ns2prefix.put(namespace, prefix);
 	}	
 	public void addAll(Collection<ExtensionProperty> properties) {
 		for (ExtensionProperty p : properties){
