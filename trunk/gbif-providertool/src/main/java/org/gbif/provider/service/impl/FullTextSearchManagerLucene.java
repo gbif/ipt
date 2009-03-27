@@ -213,8 +213,10 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			log.error("Error indexing metadata for resource "+resourceId, e);
 		} finally {
 			try {
-				writer.commit();
-				writer.optimize();
+				if (writer!=null){
+					writer.commit();
+					writer.optimize();
+				}
 			} catch (CorruptIndexException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
