@@ -13,6 +13,8 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.service.util.ThesaurusFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ThesaurusManagerHibernate extends GenericManagerHibernate<ThesaurusTerm> implements ThesaurusManager{
     @Autowired
@@ -172,7 +174,7 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 		log.info("Thesaurus vocabulary saved: " + tv.getId());
 		
 		if (existing != null) {
-			log.info("No existing vocabulary exists for uri: " + tv.getUri());			
+			log.info("Existing vocabulary exists for uri: " + tv.getUri());			
 			log.info("Updating any existing ExtensionProperty objects to use latest vocabulary");
 			getSession().createQuery("update ExtensionProperty set vocabulary=:new where vocabulary=:old")
 				.setEntity("old", existing)
@@ -180,25 +182,30 @@ public class ThesaurusManagerHibernate extends GenericManagerHibernate<Thesaurus
 				.executeUpdate();
 			log.info("Deleting old vocabulary: " + existing.getId());
 			
-			
-			// for some reason, it seems deletes DO NOT cascade on H2
-			// the following will leave the VocabularyConcepts and Terms
+			// there appears to be a bug in H2 H8 where deletes are not cascaded
 			//getSession().delete(existing);
 			//getSession().flush();
-			for (ThesaurusConcept tc : existing.getConcepts()) {
-				for (ThesaurusTerm tt : tc.getTerms()) {
-					getSession().delete(tt);
-				}
-				getSession().delete(tc);
-			}
-			getSession().delete(existing);
+			
+			
+			// futhermore looping over 2 nested sets of concepts with terms takes 30 secs for 15000 concepts
+			// therefore I exploit deletes with inner selects which makes this an H2 specific operation
+			getSession().evict(existing);
+			int affected =
+				getSession().createSQLQuery("delete from thesaurus_term where concept_fk in " +
+					"(select id from thesaurus_concept where thesaurus_concept.vocabulary_fk=:vocabId)")
+					.setLong("vocabId", existing.getId()).executeUpdate();
+			log.info("Removed " + affected + " terms associated wth concepts in the vocabulary[" + existing.getId() + "]");
+			affected =
+				getSession().createSQLQuery("delete from thesaurus_concept where vocabulary_fk=:vocabId")
+					.setLong("vocabId", existing.getId()).executeUpdate();
+			log.info("Removed " + affected + " concepts associated the vocabulary[" + existing.getId() + "]");
+			getSession().flush();
+			getSession().createSQLQuery("delete from thesaurus_vocabulary where id=:vocabId")
+					.setLong("vocabId", existing.getId()).executeUpdate();
 			getSession().flush();
 			
-			//int affected = getSession().createQuery("delete from ThesaurusVocabulary where id=:id").setLong("id", existing.getId()).executeUpdate();
-			//log.info("Deleting vocabulary[" + tv.getUri() + "] affected " + affected + " rows");
-			//getSession().delete(existing);
-			//getSession().flush();
-			log.info("Deleted vocabulary");
+			
+			log.info("Deleted vocabulary[" + existing.getId() + "]");
 		}
 	}
 }

@@ -39,7 +39,7 @@ public class ThesaurusConcept implements Comparable, BaseObject{
 	private static Log log = LogFactory.getLog(ThesaurusConcept.class);
 	
 	
-	private Set<ThesaurusTerm> terms;
+	private Set<ThesaurusTerm> terms = new HashSet<ThesaurusTerm>();
 	@OneToMany(mappedBy="concept",fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	public Set<ThesaurusTerm> getTerms() {
 		return terms;

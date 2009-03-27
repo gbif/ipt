@@ -25,7 +25,7 @@ public class ThesaurusVocabulary implements Comparable {
 	private String uri;
 	private String title;
 	private String link;
-	private List<ThesaurusConcept> concepts;
+	private List<ThesaurusConcept> concepts = new LinkedList<ThesaurusConcept>();
 	private Date modified = new Date();
 	
 	@Id
@@ -87,6 +87,17 @@ public class ThesaurusVocabulary implements Comparable {
 			concepts = new LinkedList<ThesaurusConcept>();
 		}
 		concept.setVocabulary(this);
+		
+		if (concept.getConceptOrder() == null) {
+			// set the order to be the next one
+			int maxOrder = 0;
+			for(ThesaurusConcept tc : concepts) {
+				if(tc.getConceptOrder()!=null && maxOrder < tc.getConceptOrder()) {
+					maxOrder = tc.getConceptOrder();
+				}
+			}
+			concept.setConceptOrder(maxOrder+1);
+		}
 		concepts.add(concept);
 	}	
 	public Date getModified() {
