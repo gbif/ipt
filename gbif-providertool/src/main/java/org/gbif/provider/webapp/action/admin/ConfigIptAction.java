@@ -95,8 +95,6 @@ public class ConfigIptAction extends BasePostAction{
 		}else if (StringUtils.trimToNull(cfg.getOrgPassword())==null){
 			saveMessage(getText("config.check.orgPassword"));
 		}else{
-			// test login credentials at:
-			// http://gbrds.gbif.org/registry/organization/4BEC1EC0-04B9-11DE-BBF6-C4393BAE3AC3?op=login
 			if (!registryManager.testLogin()){
 				// authorization error
 				saveMessage(getText("config.check.orgLogin"));

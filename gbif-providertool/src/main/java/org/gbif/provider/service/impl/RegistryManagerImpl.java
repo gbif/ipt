@@ -50,7 +50,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
     		throw new IllegalArgumentException(msg);
 		}
 		setRegistryCredentials();
-		// http://code.google.com/p/gbif-registry/wiki/ExplanationUDDI#CREATE_ORGANIZATION
+		// http://code.google.com/p/gbif-registry/wiki/ExplanationUDDI#CREATE_ORGANISATION
         NameValuePair[] data = {
                 new NameValuePair("nodeKey", StringUtils.trimToEmpty(cfg.getOrgNode())),
                 new NameValuePair("name", StringUtils.trimToEmpty(cfg.getOrg().getTitle())),
@@ -116,6 +116,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	private String registerResource(ResourceMetadata meta) throws RegistryException{
 		// registering IPT resource
         NameValuePair[] data = {
+                new NameValuePair("organisationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
                 new NameValuePair("organizationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
                 new NameValuePair("name", StringUtils.trimToEmpty(meta.getTitle())), // name
                 new NameValuePair("description", StringUtils.trimToEmpty(meta.getDescription())), // description
@@ -290,7 +291,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	}
 
 	public boolean testLogin() {
-		// http://server:port/registration/organization/30?op=login
+		// http://server:port/registration/organisation/30?op=login
 		setRegistryCredentials();
         NameValuePair[] params = {
                 new NameValuePair("op", "login")
@@ -350,12 +351,12 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		}
 		setRegistryCredentials();
         NameValuePair[] data = {
-                //new NameValuePair("nodeKey", StringUtils.trimToEmpty(cfg.getOrgNode())),
-                new NameValuePair("name", StringUtils.trimToEmpty(cfg.getOrg().getTitle())),
-                new NameValuePair("description", StringUtils.trimToEmpty(cfg.getOrg().getDescription())),
-                new NameValuePair("homepageURL", StringUtils.trimToEmpty(cfg.getOrg().getLink())),
-                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
-                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
+                new NameValuePair("organisationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
+                new NameValuePair("name", StringUtils.trimToEmpty(resource.getTitle())),
+                new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())),
+                new NameValuePair("homepageURL", StringUtils.trimToEmpty(resource.getLink())),
+                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(resource.getContactName())),
+                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getContactEmail()))
         };
         String result = executePost(resource.getRegistryUrl(),  data, true);
         if (result==null){

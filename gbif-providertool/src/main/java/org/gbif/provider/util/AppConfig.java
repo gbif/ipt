@@ -97,7 +97,7 @@ public class AppConfig{
 
 	// REGISTRY URLS
 	public static String getRegistryOrgUrl() {
-		return String.format("%s/organization", registryURL);
+		return String.format("%s/organisation", registryURL);
 	}
 	public static String getRegistryResourceUrl() {
 		return String.format("%s/resource", registryURL);

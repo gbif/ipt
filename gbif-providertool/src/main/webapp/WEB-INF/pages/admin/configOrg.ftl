@@ -49,7 +49,8 @@
 				return row.name;
 			}
 		}).result( function(event, data, formatted) {
-			udpateOrg(data);
+			var url = "<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/'/>"+data.key+'.json';
+			$.getJSON(url, udpateOrg);
 			alert("You need to enter your organisations password before you can register anything on behalf of this organisation");
 			showWithKey();
 		});
@@ -71,7 +72,7 @@
 		$("#orgDescription").val(data.description);
 	}
 	function updateResendLink(key){
-		$("#btnResend").attr('href',"http://gbrds.gbif.org/registry/organization/"+key+"?op=password");
+		$("#btnResend").attr('href',"${registryOrgUrl}/"+key+"?op=password");
 	}
 	function showWithKey(){
 		$(".btnWithoutKey").hide();
@@ -166,7 +167,7 @@
 	  	<#-- the IPT is already registered. No way to change the organisation again -->
     	<a id="btnNew" href="#">Clear form</a> &nbsp;&nbsp;&nbsp;
 	  </#if>
-    	<a id="btnResend" target="_blank" href="http://gbrds.gbif.org/registry/organization">Resend Password</a>
+    	<a id="btnResend" target="_blank" href="#">Resend Password</a>
     </div>
   </fieldset>
 

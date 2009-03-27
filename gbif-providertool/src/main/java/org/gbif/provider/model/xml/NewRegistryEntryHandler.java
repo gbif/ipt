@@ -47,6 +47,8 @@ public class NewRegistryEntryHandler extends DefaultHandler{
 			password=content;
 		} else if (name.equalsIgnoreCase("key")){
 			key=content.replaceAll("\\s", "");
+		} else if (name.equalsIgnoreCase("organisationKey")){
+			organisationKey=content.replaceAll("\\s", "");
 		} else if (name.equalsIgnoreCase("organizationKey")){
 			organisationKey=content.replaceAll("\\s", "");
 		} else if (name.equalsIgnoreCase("resourceKey")){
