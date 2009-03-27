@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 public class DatasourceBasedResourceTest {
+	//private ResourceFactory factory = new ResourceFactoryImpl();
 	private Resource r1;
 	private Resource r2;
 	private Resource r3;
@@ -22,7 +24,8 @@ public class DatasourceBasedResourceTest {
 		r3.setTitle("A different title");
 	}
 	private Resource getNewResource(){
-		DataResource r = OccurrenceResource.newInstance();
+		//DataResource r = factory.newOccurrenceResourceInstance();
+		DataResource r = new OccurrenceResource();
 		r.setTitle("Berlin Moss");
 		r.setCreated(now);
 		r.setGuid(guid);
@@ -32,7 +35,7 @@ public class DatasourceBasedResourceTest {
 		Extension ext = new Extension();
 		ext.setId(1L);
 		ext.setName("Bernde");
-		ViewExtensionMapping vm = new ViewExtensionMapping();
+		ExtensionMapping vm = new ExtensionMapping();
 		vm.setId(23L);
 		vm.setExtension(ext);
 		r.addExtensionMapping(vm);

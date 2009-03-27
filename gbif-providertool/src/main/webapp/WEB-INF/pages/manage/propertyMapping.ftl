@@ -105,11 +105,8 @@
 	 	<@s.select key="view.coreIdColumn" required="true"
 			headerKey="Select local identifier for core record" emptyOption="false" list="columnOptions" />
 			
-		<#if view.isCore()>
-		 	<@s.select key="view.guidColumn" emptyOption="true" list="columnOptions" />
-	 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
-	    	<@s.textfield key="view.linkTemplate" cssClass="block2col"/>
-	 	</#if>
+ 		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
+    	<@s.textfield key="view.linkTemplate" cssClass="block2col"/>
 	 	
 		<div class="breakLeft">
 	        <@s.submit cssClass="button" key="button.save" theme="simple"/>

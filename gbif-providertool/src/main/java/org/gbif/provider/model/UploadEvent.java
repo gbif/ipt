@@ -28,6 +28,7 @@ public class UploadEvent implements ResourceRelatedObject{
 	private Long id;
 	private Resource resource;
 	private Date executionDate;
+	private int emlVersion;
 	private int recordsUploaded;
 	private int recordsDeleted;
 	private int recordsChanged;
@@ -64,6 +65,13 @@ public class UploadEvent implements ResourceRelatedObject{
 	}
 	public void setExecutionDate(Date executionDate) {
 		this.executionDate = executionDate;
+	}
+	
+	public int getEmlVersion() {
+		return emlVersion;
+	}
+	public void setEmlVersion(int emlVersion) {
+		this.emlVersion = emlVersion;
 	}
 	
 	public int getRecordsUploaded() {

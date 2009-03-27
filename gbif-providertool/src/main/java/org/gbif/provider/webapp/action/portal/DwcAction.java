@@ -13,10 +13,11 @@ import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.NamespaceRegistry;
+import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.gbif.provider.webapp.action.BaseOccurrenceResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DwcAction extends BaseOccurrenceResourceAction {
+public class DwcAction extends BaseDataResourceAction {
 	@Autowired
 	private DarwinCoreManager darwinCoreManager;
 	@Autowired

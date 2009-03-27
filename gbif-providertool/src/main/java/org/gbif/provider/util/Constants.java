@@ -33,6 +33,7 @@ public class Constants {
     public static final Long TEST_USER_ID = 1L;
 	public static final Long TEST_TAXON_ID = 666l;
     // hacky, but needed for resource managers to calculate stats via setResourceStats
+    public static final Long DARWIN_CORE_EXTENSION_ID = 1L;
     public static final Long COMMON_NAME_EXTENSION_ID = 8L;
     public static final Long COMMON_NAME_LANGUAGE_PROPERTY_ID = 424L;
     public static final Long DISTRIBUTION_EXTENSION_ID = 11L;

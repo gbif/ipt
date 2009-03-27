@@ -52,7 +52,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 		try {
 			cn = getConnection();
 			// create table basics
-			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL)", table);
+			String ddl = String.format("CREATE TABLE IF NOT EXISTS %s (coreid bigint NOT NULL, resource_fk bigint NOT NULL, guid varchar(128) NOT NULL)", table);
 			Statement st = cn.createStatement();
 			try {
 				st.execute(ddl);
@@ -60,7 +60,7 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 				st.close();
 			}
 			// create indices
-			String[] indexedColumns = {"coreid","resource_fk"};
+			String[] indexedColumns = {"coreid","resource_fk", "guid"};
 			for (String col : indexedColumns){
 				ddl = String.format("CREATE INDEX IDX%s_%s ON %s(%s)", table, col, table, col);
 				st = cn.createStatement();
@@ -176,15 +176,6 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
         	.uniqueResult();
 	}
 
-	public ExtensionProperty getProperty(String qualname) {
-		Session session = getSession();
-        Object obj = session.createQuery(String.format("select p from ExtensionProperty p where p.qualName=:qualname"))
-    	.setParameter("qualname", qualname)
-    	.uniqueResult();
-        
-        return (ExtensionProperty) obj;
-	}
-
 	public void synchroniseExtensionsWithRepository() {
 		Collection<String> urls = registryManager.listAllExtensions();
 		Collection<Extension> extensions = extensionFactory.build(urls);
@@ -200,5 +191,11 @@ public class ExtensionManagerHibernate extends GenericManagerHibernate<Extension
 				log.info("Not updating Extension since it already exists: " + e.getNamespace() + " - " + e.getName());
 			}
 		}
+	}
+
+	public Extension getExtensionByUri(String uri) {
+        return (Extension) getSession().createQuery(String.format("from Extension where namespace=:uri"))
+    	.setParameter("uri", uri)
+    	.uniqueResult();
 	}
 }

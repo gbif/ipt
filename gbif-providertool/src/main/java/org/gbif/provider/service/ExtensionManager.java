@@ -26,8 +26,8 @@ public interface ExtensionManager extends GenericManager<Extension>{
 	 * @return
 	 */
 	public List<Extension> getInstalledExtensions();
+	public Extension getExtensionByUri(String uri);
 	public Extension getCore();
-	public ExtensionProperty getProperty(String qualname);
 	
 	/**
 	 * This will communicate with the central registry of extensions and update the database extension tables

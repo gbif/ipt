@@ -4,18 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
             http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
     
-    <!-- For application settings and future properties files. This custom resolver exposes 2 dynamic properties datadir & webappdir -->
-    <bean id="propertyConfigurer" class="org.gbif.provider.util.WebContextPropertyResolver">
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
-        <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:application.properties</value>
-                <value>classpath:ipt.properties</value>
-            </list>
-        </property>
-    </bean>
-    
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="jdbc:h2:${dataDir}/db/ipt;auto_server=true"/>

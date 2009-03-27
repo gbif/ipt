@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.service.GeoserverManager;
-import org.gbif.provider.service.ResourceFactory;
 import org.gbif.provider.service.impl.GeoserverManagerImpl;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.gbif.provider.util.ResourceTestBase;

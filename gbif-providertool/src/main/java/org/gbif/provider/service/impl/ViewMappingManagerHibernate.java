@@ -5,15 +5,15 @@ import java.util.List;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHibernate<ViewMappingBase> implements ViewMappingManager{
+public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHibernate<ExtensionMapping> implements ViewMappingManager{
 	@Autowired
 	private ExtensionRecordManager extensionRecordManager;
 	@Autowired
@@ -21,15 +21,15 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
     private GenericManager<PropertyMapping> propertyMappingManager;
 	
 	public ViewMappingManagerHibernate() {
-		super(ViewMappingBase.class);
+		super(ExtensionMapping.class);
 	}
 
 	@Override
 	public int removeAll(Resource resource) {
 		// make sure all existing extension records are removed too!
-		List<ViewMappingBase> views = this.getAll(resource.getId());
+		List<ExtensionMapping> views = this.getAll(resource.getId());
 		int i = 0;
-		for (ViewMappingBase vm : views){
+		for (ExtensionMapping vm : views){
 			remove(vm);
 			i++;
 		}
@@ -37,7 +37,7 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
 	}
 
 	@Override
-	public void remove(ViewMappingBase obj) {
+	public void remove(ExtensionMapping obj) {
 		// make sure all existing extension records are removed too!
 		if (!obj.isCore()){
 			extensionRecordManager.removeAll(obj.getExtension(), obj.getResource().getId());

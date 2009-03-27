@@ -2,38 +2,54 @@ package org.gbif.provider.task;
 
 	import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.ImportSourceFactory;
 import org.gbif.provider.model.Annotation;
-import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.BBox;
+import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Region;
+import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
 import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.factory.DarwinCoreFactory;
+import org.gbif.provider.model.factory.RegionFactory;
+import org.gbif.provider.model.factory.TaxonFactory;
+import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.CoreRecordFactory;
-import org.gbif.provider.service.CoreRecordManager;
+import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.DataArchiveManager;
+import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccStatManager;
+import org.gbif.provider.service.RegionManager;
+import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.service.impl.GeoserverManagerImpl;
+import org.gbif.provider.util.CacheMap;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,8 +67,25 @@ import org.springframework.transaction.annotation.Transactional;
 	 * @param <T>
 	 * @param <R>
 	 */
-	public abstract class ImportTask<T extends CoreRecord, R extends DataResource> extends TaskBase<UploadEvent, R>{
+	public abstract class ImportTask<R extends DataResource> extends TaskBase<UploadEvent, R>{
+		protected static final List<Rank> higherRanks;
+		protected static final List<RegionType> higherGeography;
+		static  
+		  {  
+		    List<Rank> ranks = new ArrayList<Rank>(Rank.DARWIN_CORE_HIGHER_RANKS);
+		    Collections.reverse(ranks);
+		    higherRanks = Collections.unmodifiableList(ranks);  
+		  }  
+		static  
+		  {  
+		    List<RegionType> regionTypes = new ArrayList<RegionType>(RegionType.DARWIN_CORE_REGIONS);
+		    regionTypes.add(RegionType.Locality);
+		    Collections.reverse(regionTypes);
+		    higherGeography = Collections.unmodifiableList(regionTypes);  
+		  }
+		
 		private Map<String, Long> idMap = new HashMap<String, Long>();
+		private boolean extractHigherTaxonomy;
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
 		private Integer recordsUploaded;
@@ -78,20 +111,41 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		private DataArchiveManager dataArchiveManager;
 		@Autowired
-		private CoreRecordFactory coreRecordFactory;
-		private CoreRecordManager<T> coreRecordManager;
+		private DarwinCoreFactory dwcFactory;
+		@Autowired
+		private RegionFactory regionFactory;
+		@Autowired
+		private TaxonFactory taxonFactory;		
+		@Autowired
+		private DarwinCoreManager dwcManager;
 		@Autowired
 		private ExtensionRecordManager extensionRecordManager;
+		@Autowired
+		private EmlManager emlManager;
+		protected BBox bbox;
+		protected int numRegions;
+		protected int numTaxa;
+		private CacheMap<String, Taxon> taxonCache = new CacheMap<String, Taxon>(2500);
+		private LinkedList<Taxon> newTaxa = new LinkedList<Taxon>();
+		private CacheMap<String, Region> regionCache = new CacheMap<String, Region>(1000);
+		private LinkedList<Region> newRegions = new LinkedList<Region>();
 		@Autowired
 		private UploadEventManager uploadEventManager;
 		@Autowired
 		@Qualifier("viewMappingManager")
-		private GenericManager<ViewMappingBase> viewMappingManager;
+		private GenericManager<ExtensionMapping> viewMappingManager;
+		@Autowired
+		protected GeoserverManagerImpl geoTools;
+		@Autowired
+		protected OccStatManager occStatManager;
+		@Autowired
+		protected TaxonManager taxonManager;
+		@Autowired
+		protected RegionManager regionManager;
 
 		
-		public ImportTask(CoreRecordManager<T> coreRecordManager, GenericResourceManager<R> resourceManager){
+		public ImportTask(GenericResourceManager<R> resourceManager){
 			super(resourceManager);
-			this.coreRecordManager = coreRecordManager;
 		}
 		
 		public final UploadEvent call() throws Exception{
@@ -112,7 +166,7 @@ import org.springframework.transaction.annotation.Transactional;
 				lastLogDate = now;
 				
 				// upload further extensions one by one
-				for (ViewExtensionMapping vm : resource.getExtensionMappings()){
+				for (ExtensionMapping vm : resource.getExtensionMappings()){
 					// run import into db
 					uploadExtension(vm);
 					now = new Date();
@@ -141,6 +195,8 @@ import org.springframework.transaction.annotation.Transactional;
 			currentActivity="Preparing import";
 			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
+			
+			bbox=new BBox();
 
 			resource= loadResource();
 			
@@ -148,7 +204,7 @@ import org.springframework.transaction.annotation.Transactional;
 			prepareHandler(resource);
 			
 			// remove all previous upload artifacts
-			coreRecordManager.removeAll(resource);
+			dwcManager.removeAll(resource);
 			cacheManager.prepareUpload(getResourceId());
 
 			recordsUploaded = 0;
@@ -162,7 +218,13 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setJobSourceType(taskTypeId());
 			event.setExecutionDate(new Date());
 			event.setResource(resource);
-			
+
+			// extract higher taxonomy or use pointers aka higherTaxonID?
+			if (resource.getCoreMapping().hasMappedProperty("HigherTaxonID") || resource.getCoreMapping().hasMappedProperty("HigherTaxon")){
+				extractHigherTaxonomy=false;
+			}else{
+				extractHigherTaxonomy=true;
+			}
 		}
 		
 		
@@ -171,28 +233,45 @@ import org.springframework.transaction.annotation.Transactional;
 			currentProcessed.set(0);
 			currentErroneous.set(0);
 
-			//
-			// resource stats
-			//
-			currentActivity = "Generating resource statistics";
+			// lookup parentID, basionymID and acceptedID
+			currentActivity = "Resolving higher taxa";
+			taxonManager.lookupParentTaxa(getResourceId());
+
+			currentActivity = "Resolving accepted taxa";
+			taxonManager.lookupAcceptedTaxa(getResourceId());
+
+			currentActivity = "Resolving basionyms";
+			taxonManager.lookupBasionymTaxa(getResourceId());
+
+			// create nested set indices
+			currentActivity = "Creating taxonomy index";
+			taxonManager.buildNestedSet(getResourceId());
+			
+			currentActivity = "Creating region index";
+			regionManager.buildNestedSet(getResourceId());
+
+			// call subclass handler for specific postprocessing
+			closeHandler(resource);
+			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
+
 			// update resource and upload event statistics
-			event.setResource(resource);			
+			currentActivity = "Generating resource statistics";			
+			event.setResource(resource);
+			Eml eml = emlManager.load(resource);
+			event.setEmlVersion(eml.getEmlVersion());
 			event.setRecordsAdded(recordsAdded);
 			event.setRecordsChanged(recordsChanged);
 			event.setRecordsDeleted(resource.getRecTotal()+recordsAdded-recordsUploaded);
 			event.setRecordsUploaded(recordsUploaded);		
 			event.setRecordsErroneous(recordsErroneous);
 			event = uploadEventManager.save(event);			
+			
 			// update resource properties
 			resource.setLastUpload(event);
-			resource.setRecTotal(recordsUploaded);
-			
-			// call subclass handler for specific postprocessing
-			closeHandler(resource);
+			resource.setRecTotal(recordsUploaded);			
 			resourceManager.save(resource);
 			resourceManager.flush();
-			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
-
+			
 			// update cache db statistics
 			cacheManager.analyze();
 			
@@ -218,7 +297,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		private void setFinalExtensionStats(Extension ext){
-			ViewMappingBase view = resource.getExtensionMapping(ext);				
+			ExtensionMapping view = resource.getExtensionMapping(ext);				
 			view.setRecTotal(currentProcessed.get()-currentErroneous.get());
 			viewMappingManager.save(view);
 		}
@@ -254,33 +333,47 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 
 						 // get darwincore record based on this core record alone. no exceptions here!
-						T record = (T) coreRecordFactory.build(resource, irec, annotations);
-						if (record == null){
+						DarwinCore dwc = dwcFactory.build(resource, irec, annotations);
+						if (dwc == null){
 							currentErroneous.addAndGet(1);
-							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
+							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
 						try {
-							// get previous record or null if it didnt exist yet based on localID and resource
-							T oldRecord = coreRecordManager.findByLocalId(irec.getLocalId(), getResourceId());
+							// get previous record or null if it didnt exist yet based on sourceID and resource
+							DarwinCore oldRecord = dwcManager.findBySourceId(irec.getSourceId(), getResourceId());
 							
-							// check if localID was unique. All old records should have deleted flag=true
-							// so if deleted is false, the same localID was inserted before already!
+							// check if sourceID was unique. All old records should have deleted flag=true
+							// so if deleted is false, the same sourceID was inserted before already!
 							if (oldRecord != null && !oldRecord.isDeleted()){
-								annotationManager.badCoreRecord(resource, irec.getLocalId(), "Duplicate local ID");
+								annotationManager.badCoreRecord(resource, irec.getSourceId(), "Duplicate source ID");
 							}
 							// assign managed properties
-							updateCoreProperties(record, oldRecord);
+							updateCoreProperties(dwc, oldRecord);
+							
+							// extract taxon
+							try{
+								extractTaxon(dwc);
+							} catch (Exception e) {
+								annotationManager.badCoreRecord(resource, dwc.getSourceId(), "Error extracting taxon: "+e.toString());
+							}
+
+							// extract region
+							try{
+								extractRegion(dwc);
+							} catch (Exception e) {
+								annotationManager.badCoreRecord(resource, dwc.getSourceId(), "Error extracting region: "+e.toString());
+							}
 							
 							// allow specific actions per record
-							recordHandler(record);
+							recordHandler(dwc);
 
 							// save core record
-							record = persistRecord(record, oldRecord);
+							dwc = persistRecord(dwc, oldRecord);
 							
 							// persist record annotations with good GUID
 							for (Annotation anno : annotations){
-								anno.setGuid(record.getGuid());
+								anno.setGuid(dwc.getGuid());
 								annotationManager.save(anno);
 							}
 							annotations.clear();
@@ -289,15 +382,15 @@ import org.springframework.transaction.annotation.Transactional;
 							recordsUploaded++;
 
 						} catch (ObjectNotFoundException e2){
-							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown local ID: "+e2.toString());
+							annotationManager.badCoreRecord(resource, irec.getSourceId(), "Unkown source ID: "+e2.toString());
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
-							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown error: "+e.toString());
+							annotationManager.badCoreRecord(resource, irec.getSourceId(), "Unkown error: "+e.toString());
 						}
 						
 						// clear session cache once in a while...
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 100 == 0){
-							coreRecordManager.flush();
+							dwcManager.flush();
 						}
 						if (currentProcessed.get() > 0 && currentProcessed.get() % 1000 == 0){
 							log.debug(status());
@@ -318,7 +411,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 
-		private T persistRecord(T record, T oldRecord) {
+		private DarwinCore persistRecord(DarwinCore record, DarwinCore oldRecord) {
 			// check if new record version is different from old one
 			if (oldRecord != null && oldRecord.hashCode() == record.hashCode()){
 				// same record. reset isDeleted flag of old record
@@ -326,35 +419,35 @@ import org.springframework.transaction.annotation.Transactional;
 				// also assign to old record cause this one gets saved if the record stays the same. And the old taxon or region has been deleted already...
 //				oldRecord.setTaxon(record.getTaxon()); 
 //				oldRecord.setRegion(record.getRegion());
-				record = coreRecordManager.save(oldRecord);
+				record = dwcManager.save(oldRecord);
 				
 			}else if (oldRecord!=null){
 				// modified record that existed before.
 				// copy all properties to oldRecord is too cumbersome, so
 				// remove old record and save new one, preserving its GUID (copied in updateManagedProperties() )
-				coreRecordFactory.copyPersistentProperties(oldRecord, record);
+				dwcFactory.copyPersistentProperties(oldRecord, record);
 				oldRecord.setDeleted(false);
 				oldRecord.setModified(new Date());									
-				record = coreRecordManager.save(oldRecord);									
+				record = dwcManager.save(oldRecord);									
 				// increase counter of changed records
 				recordsChanged += 1;
 				
 			}else{
 				// new record that didnt exist before. Just save new dwc
 				record.setModified(new Date());
-				record = coreRecordManager.save(record);
+				record = dwcManager.save(record);
 				// increase counter of added records
 				recordsAdded += 1;
 			}
 			
 			// the new darwin core id (managed by hibernate) used for all other extensions
-			idMap.put(record.getLocalId(), record.getId());
+			idMap.put(record.getSourceId(), record.getId());
 
 			return record;
 		}
 
 
-		private void updateCoreProperties(T record, T oldRecord) {
+		private void updateCoreProperties(DarwinCore record, DarwinCore oldRecord) {
 			// assign new GUID if none exists
 			if (record.getGuid() == null){
 				// if old version exists already reuse the previously assigned GUID
@@ -371,7 +464,7 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
-		private File uploadExtension(ViewExtensionMapping vm) throws InterruptedException {
+		private File uploadExtension(ExtensionMapping vm) throws InterruptedException {
 			String extensionName = vm.getExtension().getName();
 			Extension extension = vm.getExtension();
 			log.info(String.format("Starting upload of %s extension for resource %s", extensionName, getTitle() ));					
@@ -396,15 +489,15 @@ import org.springframework.transaction.annotation.Transactional;
 						if (Thread.currentThread().isInterrupted()){
 							throw new InterruptedException(String.format("Cache import task for resource %s was interrupted externally", getResourceId()));
 						}
-						if (rec == null || rec.getLocalId()==null){
+						if (rec == null || rec.getSourceId()==null){
 							currentErroneous.addAndGet(1);
-							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
+							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
-						Long coreId = idMap.get(rec.getLocalId());
+						Long coreId = idMap.get(rec.getSourceId());
 						rec.setId(coreId);
 						if (coreId == null){
-							annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown local ID");
+							annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown source ID");
 						}else{
 							// TODO: check if record has changed
 							try {
@@ -414,7 +507,7 @@ import org.springframework.transaction.annotation.Transactional;
 							} catch (Exception e) {
 								e.printStackTrace();
 								currentErroneous.addAndGet(1);
-								annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown error: "+e.toString());
+								annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown error: "+e.toString());
 							}
 						}
 
@@ -474,12 +567,164 @@ import org.springframework.transaction.annotation.Transactional;
 		/** Hook for working with a single record provided for subclasses 
 		 * @param record
 		 */
-		abstract protected void recordHandler(T record);
+		abstract protected void recordHandler(DarwinCore record);
 		abstract protected void extensionRecordHandler(ExtensionRecord extRec);
 
 		/** Hook for doing final processing for the entire resource, e.g. setting statistics gathered via the record hook 
 		 * @param resource
 		 */
 		abstract protected void closeHandler(R resource);
+
+		/**
+		 * Extract unique Taxa from Darwin Core record, either the terminal taxon, but potentially also the higher taxonomy.
+		 * If dwc:HigherTaxon or dwc:HigherTaxonID are mapped, the explicit higher taxonomy is *not* extracted.
+		 * Otherwise Each higher taxon becomes a new taxon if not already existing.
+		 * @param dwc
+		 * @return
+		 */
+		protected Taxon extractTaxon(DarwinCore dwc) {
+			// first extract terminal taxon			
+			String path = dwc.getTaxonomyPath();
+			Taxon terminalTaxon=findPersistentTaxon(path);
+			if (terminalTaxon == null){
+				// taxon doesnt exist yet. create it based on ScientificName
+				terminalTaxon = taxonFactory.build(dwc);		
+				// also extract higher taxonomy? set via prepare()
+				if (extractHigherTaxonomy){
+					// extract higher taxonomy if not already extracted and link terminal taxon into hierarchy
+					// try to find lowest persistent higher taxon 
+					// create new higher taxa as we go up and havent found a persistent one yet
+					Taxon parent = null;
+					newTaxa.clear();
+					boolean persistentParentFound = false;
+					// first see if infraspecific epitheton exists. 
+					// This means there also is a species which we will use as a higher taxon too
+					if (dwc.getInfraspecificEpithet()!=null){
+						parent = findPersistentTaxon(dwc.getTaxonomyPath(Rank.Species));
+						if (parent==null){
+							// cant find species. create new taxon and go further up the ranks
+							parent = taxonFactory.build(dwc, Rank.Species);
+							// we cant assign a parent yet, therefor put it on the new taxon stack 
+							// and save it later once we reach a persistent taxon or the kingdom
+							newTaxa.add(parent);
+						}else{
+							persistentParentFound=true;
+						}
+						terminalTaxon.setParent(parent);
+					}
+					if (!persistentParentFound){
+						for (Rank rank : higherRanks){
+							if (dwc.getHigherTaxonName(rank)==null){
+								continue;
+							}
+							parent = findPersistentTaxon(dwc.getTaxonomyPath(rank));
+							if (parent!=null){
+								persistentParentFound=true;
+							}else{
+								parent = taxonFactory.build(dwc, rank);
+								newTaxa.add(parent);
+							}
+							if (terminalTaxon.getParent()==null){
+								terminalTaxon.setParent(parent);
+							}
+							if (persistentParentFound){
+								break;
+							}
+						}
+					}
+					// save new taxa
+					if (!persistentParentFound && !newTaxa.isEmpty()){
+						// no persistent taxon found in entire hierarchy.
+						// use highest taxon as a new taxonomy root
+						parent = newTaxa.removeLast();
+						saveTaxon(parent);
+					}
+					// save all other new taxa if there are any
+					Taxon newTaxon;
+					while(!newTaxa.isEmpty()){
+						newTaxon = newTaxa.removeLast();
+						newTaxon.setParent(parent);
+						parent = saveTaxon(newTaxon);
+					}
+				}
+				
+				// finally save the terminal taxon to be linked to the darwin core record
+				saveTaxon(terminalTaxon);
+			}
+			
+			dwc.setTaxon(terminalTaxon);
+			return terminalTaxon;			
+		}
+
+		private Taxon findPersistentTaxon(String mpath) {
+			if (taxonCache.containsKey(mpath)){
+				return taxonCache.get(mpath);
+			}else{
+				// cache is limited, so we need to check the db too to make sure it doesnt exist
+				return taxonManager.getByMaterializedPath(getResourceId(), mpath);
+			}
+		}
+
+
+
+		private Taxon saveTaxon(Taxon taxon) {
+			taxonManager.save(taxon);
+			taxonCache.put(taxon.getMpath(), taxon);
+			numTaxa++;
+			return taxon;
+		}
+
+		protected Region extractRegion(DarwinCore dwc) {			
+			Region region = null;
+			boolean persistentParentFound=false;
+			newRegions.clear();
+			for (RegionType regionType : higherGeography){
+				if (dwc.getHigherGeographyName(regionType)==null){
+					continue;
+				}
+				region = findPersistentRegion(dwc.getGeographyPath(regionType));
+				if (region!=null){
+					persistentParentFound=true;
+					break;
+				}else{
+					region = regionFactory.build(dwc, regionType);
+					newRegions.add(region);
+				}
+			}
+		
+			// save new taxa
+			if (!persistentParentFound && !newRegions.isEmpty()){
+				// no persistent region found in entire hierarchy.
+				// use highest region as a new geography root region
+				region = newRegions.removeLast();
+				saveRegion(region);
+			}
+			// save all other new regions if there are any
+			Region newRegion;
+			while(!newRegions.isEmpty()){
+				newRegion = newRegions.removeLast();
+				newRegion.setParent(region);
+				region = saveRegion(newRegion);
+			}
+				
+			dwc.setRegion(region);
+			return region;			
+		}
+
+		private Region findPersistentRegion(String mpath) {
+			if (regionCache.containsKey(mpath)){
+				return regionCache.get(mpath);
+			}else{
+				// cache is limited, so we need to check the db too to make sure it doesnt exist
+				return regionManager.getByMaterializedPath(getResourceId(), mpath);
+			}
+		}
+
+		private Region saveRegion(Region region) {
+			regionManager.save(region);
+			regionCache.put(region.getMpath(), region);
+			numRegions++;
+			return region;
+		}
 
 	}

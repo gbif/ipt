@@ -9,6 +9,7 @@ import java.util.Set;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.TermMapping;
 import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.TermMappingManager;
 import org.gbif.provider.util.Constants;
@@ -24,6 +25,8 @@ public class TermMappingManagerTest extends ResourceTestBase {
 	private SourceInspectionManager sourceInspectionManager;
 	@Autowired 
 	private ExtensionManager extensionManager;
+	@Autowired 
+	private ExtensionPropertyManager extensionPropertyManager;
 	@Autowired
 	private TermMappingManager termMappingManager;
 
@@ -31,7 +34,7 @@ public class TermMappingManagerTest extends ResourceTestBase {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public void testDistinctTerms(){
 		setupOccResource();
-		ExtensionProperty prop = extensionManager.getProperty(Constants.SCIENTIFIC_NAME_QUALNAME);
+		ExtensionProperty prop = extensionPropertyManager.getCorePropertyByQualName(Constants.SCIENTIFIC_NAME_QUALNAME);
 		try {
 			Set<String> terms = sourceInspectionManager.getDistinctValues(resource.getCoreMapping().getSource(), resource.getCoreMapping().getMappedProperty(prop).getColumn());
 			assertTrue(terms.size()>500);

@@ -28,12 +28,13 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Tokenizer;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.Transformation;
-import org.gbif.provider.model.ViewExtensionMapping;
-import org.gbif.provider.model.ViewMappingBase;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.GenericManager;
@@ -56,7 +57,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
     private SourceManager sourceManager;
 	@Autowired
 	@Qualifier("viewMappingManager")
-    private GenericManager<ViewMappingBase> viewMappingManager;
+    private GenericManager<ExtensionMapping> viewMappingManager;
 	@Autowired
 	private ExtensionManager extensionManager;
 	@Autowired
@@ -72,7 +73,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	private Long eid;
 	private Long sid;
 	// persistent stuff
-	private ViewMappingBase view;
+	private ExtensionMapping view;
 	// transformationID for term mapping forwarding only
 	private Long tid;
 	private Long mappings_idx;
@@ -96,7 +97,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         	}
         }else if (eid != null && sid != null) {
         	// create new view mapping
-        	view = new ViewExtensionMapping();
+        	view = new ExtensionMapping();
         	view.setResource(resource);
         	view.setExtension(extensionManager.get(eid));
         	view.setSource(sourceManager.get(sid));
@@ -121,6 +122,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         List<String> newIdList =  Arrays.asList(StringUtils.split(newProperties, " "));
     	for (ExtensionProperty prop : view.getExtension().getProperties()){
         	if (prop == null){
+        		continue;
+        	}
+        	if (resourceType.equals(CHECKLIST) && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())){
+        		// for checklists only show the taxon group of darwin core
         		continue;
         	}
         	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup();
@@ -155,6 +160,10 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			Matcher m = null;
 			int autoCount = 0;
 	    	for (ExtensionProperty prop : view.getExtension().getProperties()){
+	        	if (resourceType.equals(CHECKLIST) && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())){
+	        		// for checklists only show the taxon group of darwin core
+	        		continue;
+	        	}
 				m = p.matcher(prop.getName());
 				String propName = m.replaceAll("");
 				for (String col : sourceColumns){
@@ -265,11 +274,11 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 		return sourceColumns;
 	}
 
-	public ViewMappingBase getView() {
+	public ExtensionMapping getView() {
 		return view;
 	}
 
-	public void setView(ViewMappingBase view) {
+	public void setView(ExtensionMapping view) {
 		this.view = view;
 	}
 
