@@ -31,7 +31,7 @@ public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore>{
 		DarwinCore dwc = DarwinCore.newInstance(resource);
 		dwc.setGuid(rec.getGuid());
 		dwc.setLink(rec.getLink());
-		dwc.setLocalId(rec.getLocalId());
+		dwc.setSourceId(rec.getSourceId());
 		dwc.setDeleted(false);
 		Point loc = new Point();
 		for (ExtensionProperty prop : rec.getProperties().keySet()){

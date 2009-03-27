@@ -18,15 +18,15 @@ public class ImportRecord  {
 	private Long resourceId;
 	// for core record
 	private Long coreid;
-	private String localId;
+	private String sourceId;
 	private String guid;
 	private String link;
 
 	
 	
-	public ImportRecord(Long resourceId, String localId) {
+	public ImportRecord(Long resourceId, String sourceId) {
 		super();
-		this.localId = localId;
+		this.sourceId = sourceId;
 		this.resourceId = resourceId;
 	}
 	
@@ -74,8 +74,8 @@ public class ImportRecord  {
 		this.coreid = id;
 	}	
 
-	public String getLocalId() {
-		return localId;
+	public String getSourceId() {
+		return sourceId;
 	}
 
 	public String getGuid() {

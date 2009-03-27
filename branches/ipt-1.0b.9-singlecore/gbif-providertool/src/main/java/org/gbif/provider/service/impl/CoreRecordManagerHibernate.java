@@ -57,15 +57,15 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 		super(persistentClass);
 	}
 
-    public T findByLocalId(final String localId, final Long resourceId) {
+    public T findBySourceId(final String sourceId, final Long resourceId) {
     	T result = null;
     	try{
-    		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId and core.localId = :localId", persistentClass.getName()))
+    		Query query = getSession().createQuery(String.format("select core FROM %s core WHERE core.resource.id = :resourceId and core.sourceId = :sourceId", persistentClass.getName()))
 						.setLong("resourceId", resourceId)
-						.setString("localId", localId);
+						.setString("sourceId", sourceId);
         	result = (T) query.uniqueResult();
     	} catch (NonUniqueResultException e){
-    		log.debug("local ID is not unique within the resource. Corrupted cache!");
+    		log.debug("source ID is not unique within the resource. Corrupted cache!");
     	}
 		return result;
 	}

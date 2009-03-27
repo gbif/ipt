@@ -71,9 +71,8 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	
 	public void lookupAcceptedTaxa(Long resourceId) {
-		//FIXME: ID & String lookup need to use DarwinCore table
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set acc_fk = (select tp.id from taxon tp where tp.local_id=t.accepted_taxon_id and tp.id!=t.id and resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set acc_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk   where tp.source_id=dwc.accepted_taxon_id and tp.id!=t.id and tp.resource_fk=%s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -84,9 +83,8 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 
 	public void lookupBasionymTaxa(Long resourceId) {
-		//FIXME: ID & String lookup need to use DarwinCore table
 		Connection cn = getConnection();
-		String sql = String.format("update Taxon t set bas_fk = (select tp.id from taxon tp where tp.local_id = t.basionym_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set bas_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk   where tp.source_id = dwc.basionym_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
@@ -98,17 +96,53 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	public void lookupParentTaxa(Long resourceId) {
 		Connection cn = getConnection();
-		//FIXME: ID & String lookup need to use DarwinCore table
-		String sql = String.format("update Taxon t set parent_fk = (select tp.id from taxon tp where tp.local_id = t.taxonomic_parent_id and tp.id!=t.id and resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+		String sql = String.format("update Taxon t set parent_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
 		try {
 			Statement st = cn.createStatement();
 			int i = st.executeUpdate(sql);
-			log.debug(i+" taxa updated with parent taxon.");
+			if (i>0){
+				log.debug(i+" taxa resolved via higherTaxonID.");
+			}else{
+				// no taxa have been resolved. Try to use the verbose higher taxon name string to match
+				sql = String.format("update Taxon t set parent_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+				st = cn.createStatement();
+				i = st.executeUpdate(sql);
+				log.debug(i+" taxa resolved via higherTaxon.");
+			}
+			//TODO: warn about taxa with non matching higherTaxon or higherTaxonID
 		} catch (SQLException e) {
 			log.debug("Setting parent taxa failed.", e);
 		}
 	}
 	
+	private int lookupColumn(Long resourceId, String fkColumn, String lookupColumn, boolean useSourceId){
+		String dwcColumn = "scientific_name";
+		String taxColumn = "label";
+		if (useSourceId){
+			dwcColumn="source_id";
+			taxColumn = "source_id";
+		}
+		Connection cn = getConnection();
+		String sql = String.format("update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", fkColumn, resourceId, resourceId);
+		int i = 0;
+		try {
+			Statement st = cn.createStatement();
+			i = st.executeUpdate(sql);
+			if (i>0){
+				log.debug(i+" taxa resolved via higherTaxonID.");
+			}else{
+				// no taxa have been resolved. Try to use the verbose higher taxon name string to match
+				sql = String.format("update Taxon t set parent_fk = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.taxonomic_parent_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", resourceId, resourceId);
+				st = cn.createStatement();
+				i = st.executeUpdate(sql);
+				log.debug(i+" taxa resolved via higherTaxon.");
+			}
+			//TODO: warn about taxa with non matching higherTaxon or higherTaxonID
+		} catch (SQLException e) {
+			log.debug("Setting parent taxa failed.", e);
+		}
+		return i;		
+	}
 	public int countTreeNodes(Long resourceId) {
 		return treeNodeSupport.countTreeNodes(resourceId, getSession());
 	}
@@ -170,4 +204,6 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
         	.list();
         return StatsUtils.getDataMap(data);
 	}
+	
+	
 }

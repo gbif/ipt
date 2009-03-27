@@ -164,6 +164,13 @@ public class ExtensionMapping  implements BaseObject, Comparable<ExtensionMappin
 		}
 		return false;
 	}	
+	@Transient
+	public boolean hasMappedProperty(String propertyName) {
+		if (getPropertyMappingByName(propertyName)!=null){
+			return true;
+		}
+		return false;
+	}	
 
 	@Transient
 	public PropertyMapping getMappedProperty(ExtensionProperty property) {

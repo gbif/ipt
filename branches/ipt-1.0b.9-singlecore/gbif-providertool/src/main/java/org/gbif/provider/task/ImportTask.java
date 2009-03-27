@@ -30,6 +30,7 @@ import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.factory.DarwinCoreFactory;
 import org.gbif.provider.model.factory.RegionFactory;
 import org.gbif.provider.model.factory.TaxonFactory;
@@ -38,6 +39,7 @@ import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.DataArchiveManager;
+import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericManager;
@@ -83,6 +85,7 @@ import org.springframework.transaction.annotation.Transactional;
 		  }
 		
 		private Map<String, Long> idMap = new HashMap<String, Long>();
+		private boolean extractHigherTaxonomy;
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
 		private Integer recordsUploaded;
@@ -117,6 +120,8 @@ import org.springframework.transaction.annotation.Transactional;
 		private DarwinCoreManager dwcManager;
 		@Autowired
 		private ExtensionRecordManager extensionRecordManager;
+		@Autowired
+		private EmlManager emlManager;
 		protected BBox bbox;
 		protected int numRegions;
 		protected int numTaxa;
@@ -213,7 +218,13 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setJobSourceType(taskTypeId());
 			event.setExecutionDate(new Date());
 			event.setResource(resource);
-			
+
+			// extract higher taxonomy or use pointers aka higherTaxonID?
+			if (resource.getCoreMapping().hasMappedProperty("HigherTaxonID") || resource.getCoreMapping().hasMappedProperty("HigherTaxon")){
+				extractHigherTaxonomy=false;
+			}else{
+				extractHigherTaxonomy=true;
+			}
 		}
 		
 		
@@ -222,22 +233,16 @@ import org.springframework.transaction.annotation.Transactional;
 			currentProcessed.set(0);
 			currentErroneous.set(0);
 
-			//
-			// resource stats
-			//
-			currentActivity = "Generating resource statistics";
-			// update resource and upload event statistics
-			event.setResource(resource);			
-			event.setRecordsAdded(recordsAdded);
-			event.setRecordsChanged(recordsChanged);
-			event.setRecordsDeleted(resource.getRecTotal()+recordsAdded-recordsUploaded);
-			event.setRecordsUploaded(recordsUploaded);		
-			event.setRecordsErroneous(recordsErroneous);
-			event = uploadEventManager.save(event);			
-			// update resource properties
-			resource.setLastUpload(event);
-			resource.setRecTotal(recordsUploaded);
-			
+			// lookup parentID, basionymID and acceptedID
+			currentActivity = "Resolving higher taxa";
+			taxonManager.lookupParentTaxa(getResourceId());
+
+			currentActivity = "Resolving accepted taxa";
+			taxonManager.lookupAcceptedTaxa(getResourceId());
+
+			currentActivity = "Resolving basionyms";
+			taxonManager.lookupBasionymTaxa(getResourceId());
+
 			// create nested set indices
 			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
@@ -247,10 +252,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 			// call subclass handler for specific postprocessing
 			closeHandler(resource);
-			resourceManager.save(resource);
-			resourceManager.flush();
 			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
 
+			// update resource and upload event statistics
+			currentActivity = "Generating resource statistics";			
+			event.setResource(resource);
+			Eml eml = emlManager.load(resource);
+			event.setEmlVersion(eml.getEmlVersion());
+			event.setRecordsAdded(recordsAdded);
+			event.setRecordsChanged(recordsChanged);
+			event.setRecordsDeleted(resource.getRecTotal()+recordsAdded-recordsUploaded);
+			event.setRecordsUploaded(recordsUploaded);		
+			event.setRecordsErroneous(recordsErroneous);
+			event = uploadEventManager.save(event);			
+			
+			// update resource properties
+			resource.setLastUpload(event);
+			resource.setRecTotal(recordsUploaded);			
+			resourceManager.save(resource);
+			resourceManager.flush();
+			
 			// update cache db statistics
 			cacheManager.analyze();
 			
@@ -315,17 +336,17 @@ import org.springframework.transaction.annotation.Transactional;
 						DarwinCore dwc = dwcFactory.build(resource, irec, annotations);
 						if (dwc == null){
 							currentErroneous.addAndGet(1);
-							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
+							annotationManager.badCoreRecord(resource, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
 						try {
-							// get previous record or null if it didnt exist yet based on localID and resource
-							DarwinCore oldRecord = dwcManager.findByLocalId(irec.getLocalId(), getResourceId());
+							// get previous record or null if it didnt exist yet based on sourceID and resource
+							DarwinCore oldRecord = dwcManager.findBySourceId(irec.getSourceId(), getResourceId());
 							
-							// check if localID was unique. All old records should have deleted flag=true
-							// so if deleted is false, the same localID was inserted before already!
+							// check if sourceID was unique. All old records should have deleted flag=true
+							// so if deleted is false, the same sourceID was inserted before already!
 							if (oldRecord != null && !oldRecord.isDeleted()){
-								annotationManager.badCoreRecord(resource, irec.getLocalId(), "Duplicate local ID");
+								annotationManager.badCoreRecord(resource, irec.getSourceId(), "Duplicate source ID");
 							}
 							// assign managed properties
 							updateCoreProperties(dwc, oldRecord);
@@ -334,14 +355,14 @@ import org.springframework.transaction.annotation.Transactional;
 							try{
 								extractTaxon(dwc);
 							} catch (Exception e) {
-								annotationManager.badCoreRecord(resource, dwc.getLocalId(), "Error extracting taxon: "+e.toString());
+								annotationManager.badCoreRecord(resource, dwc.getSourceId(), "Error extracting taxon: "+e.toString());
 							}
 
 							// extract region
 							try{
 								extractRegion(dwc);
 							} catch (Exception e) {
-								annotationManager.badCoreRecord(resource, dwc.getLocalId(), "Error extracting region: "+e.toString());
+								annotationManager.badCoreRecord(resource, dwc.getSourceId(), "Error extracting region: "+e.toString());
 							}
 							
 							// allow specific actions per record
@@ -361,10 +382,10 @@ import org.springframework.transaction.annotation.Transactional;
 							recordsUploaded++;
 
 						} catch (ObjectNotFoundException e2){
-							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown local ID: "+e2.toString());
+							annotationManager.badCoreRecord(resource, irec.getSourceId(), "Unkown source ID: "+e2.toString());
 						} catch (Exception e) {
 							currentErroneous.addAndGet(1);
-							annotationManager.badCoreRecord(resource, irec.getLocalId(), "Unkown error: "+e.toString());
+							annotationManager.badCoreRecord(resource, irec.getSourceId(), "Unkown error: "+e.toString());
 						}
 						
 						// clear session cache once in a while...
@@ -420,7 +441,7 @@ import org.springframework.transaction.annotation.Transactional;
 			}
 			
 			// the new darwin core id (managed by hibernate) used for all other extensions
-			idMap.put(record.getLocalId(), record.getId());
+			idMap.put(record.getSourceId(), record.getId());
 
 			return record;
 		}
@@ -468,15 +489,15 @@ import org.springframework.transaction.annotation.Transactional;
 						if (Thread.currentThread().isInterrupted()){
 							throw new InterruptedException(String.format("Cache import task for resource %s was interrupted externally", getResourceId()));
 						}
-						if (rec == null || rec.getLocalId()==null){
+						if (rec == null || rec.getSourceId()==null){
 							currentErroneous.addAndGet(1);
-							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing local ID. Line "+String.valueOf(currentProcessed.get()));
+							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
-						Long coreId = idMap.get(rec.getLocalId());
+						Long coreId = idMap.get(rec.getSourceId());
 						rec.setId(coreId);
 						if (coreId == null){
-							annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown local ID");
+							annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown source ID");
 						}else{
 							// TODO: check if record has changed
 							try {
@@ -486,7 +507,7 @@ import org.springframework.transaction.annotation.Transactional;
 							} catch (Exception e) {
 								e.printStackTrace();
 								currentErroneous.addAndGet(1);
-								annotationManager.badExtensionRecord(resource, extension, rec.getLocalId(), "Unkown error: "+e.toString());
+								annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown error: "+e.toString());
 							}
 						}
 
@@ -554,81 +575,85 @@ import org.springframework.transaction.annotation.Transactional;
 		 */
 		abstract protected void closeHandler(R resource);
 
+		/**
+		 * Extract unique Taxa from Darwin Core record, either the terminal taxon, but potentially also the higher taxonomy.
+		 * If dwc:HigherTaxon or dwc:HigherTaxonID are mapped, the explicit higher taxonomy is *not* extracted.
+		 * Otherwise Each higher taxon becomes a new taxon if not already existing.
+		 * @param dwc
+		 * @return
+		 */
 		protected Taxon extractTaxon(DarwinCore dwc) {
+			// first extract terminal taxon			
 			String path = dwc.getTaxonomyPath();
-			Taxon taxon=findPersistentTaxon(path);
-			if (taxon == null){
+			Taxon terminalTaxon=findPersistentTaxon(path);
+			if (terminalTaxon == null){
 				// taxon doesnt exist yet. create it based on ScientificName
-				taxon = Taxon.newInstance(resource);
-				taxon.setMpath(path);
-				taxon.setScientificName(dwc.getScientificName());
-				taxon.setNomenclaturalCode(dwc.getNomenclaturalCode());
-				if (dwc.getTaxonRank()!=null){
-					taxon.setRank(dwc.getTaxonRank());
-				}
-		
-				// need to link the new taxon into the taxonomic hierarchy
-				// try to find lowest persistent higher taxon 
-				// create new higher taxa as we go up and havent found a persistent one yet
-				Taxon parent = null;
-				newTaxa.clear();
-				boolean persistentParentFound = false;
-				// first see if infraspecific epitheton exists. 
-				// This means there also is a species which we will use as a higher taxon too
-				if (dwc.getInfraspecificEpithet()!=null){
-					parent = findPersistentTaxon(dwc.getTaxonomyPath(Rank.Species));
-					if (parent==null){
-						// cant find species. create new taxon and go further up the ranks
-						parent = taxonFactory.build(dwc, Rank.Species);
-						// we cant assign a parent yet, therefor put it on the new taxon stack 
-						// and save it later once we reach a persistent taxon or the kingdom
-						newTaxa.add(parent);
-					}else{
-						persistentParentFound=true;
-					}
-					taxon.setParent(parent);
-				}
-				if (!persistentParentFound){
-					for (Rank rank : higherRanks){
-						if (dwc.getHigherTaxonName(rank)==null){
-							continue;
-						}
-						parent = findPersistentTaxon(dwc.getTaxonomyPath(rank));
-						if (parent!=null){
-							persistentParentFound=true;
-						}else{
-							parent = taxonFactory.build(dwc, rank);
+				terminalTaxon = taxonFactory.build(dwc);		
+				// also extract higher taxonomy? set via prepare()
+				if (extractHigherTaxonomy){
+					// extract higher taxonomy if not already extracted and link terminal taxon into hierarchy
+					// try to find lowest persistent higher taxon 
+					// create new higher taxa as we go up and havent found a persistent one yet
+					Taxon parent = null;
+					newTaxa.clear();
+					boolean persistentParentFound = false;
+					// first see if infraspecific epitheton exists. 
+					// This means there also is a species which we will use as a higher taxon too
+					if (dwc.getInfraspecificEpithet()!=null){
+						parent = findPersistentTaxon(dwc.getTaxonomyPath(Rank.Species));
+						if (parent==null){
+							// cant find species. create new taxon and go further up the ranks
+							parent = taxonFactory.build(dwc, Rank.Species);
+							// we cant assign a parent yet, therefor put it on the new taxon stack 
+							// and save it later once we reach a persistent taxon or the kingdom
 							newTaxa.add(parent);
+						}else{
+							persistentParentFound=true;
 						}
-						if (taxon.getParent()==null){
-							taxon.setParent(parent);
-						}
-						if (persistentParentFound){
-							break;
+						terminalTaxon.setParent(parent);
+					}
+					if (!persistentParentFound){
+						for (Rank rank : higherRanks){
+							if (dwc.getHigherTaxonName(rank)==null){
+								continue;
+							}
+							parent = findPersistentTaxon(dwc.getTaxonomyPath(rank));
+							if (parent!=null){
+								persistentParentFound=true;
+							}else{
+								parent = taxonFactory.build(dwc, rank);
+								newTaxa.add(parent);
+							}
+							if (terminalTaxon.getParent()==null){
+								terminalTaxon.setParent(parent);
+							}
+							if (persistentParentFound){
+								break;
+							}
 						}
 					}
-				}
-				// save new taxa
-				if (!persistentParentFound && !newTaxa.isEmpty()){
-					// no persistent taxon found in entire hierarchy.
-					// use highest taxon as a new taxonomy root
-					parent = newTaxa.removeLast();
-					saveTaxon(parent);
-				}
-				// save all other new taxa if there are any
-				Taxon newTaxon;
-				while(!newTaxa.isEmpty()){
-					newTaxon = newTaxa.removeLast();
-					newTaxon.setParent(parent);
-					parent = saveTaxon(newTaxon);
+					// save new taxa
+					if (!persistentParentFound && !newTaxa.isEmpty()){
+						// no persistent taxon found in entire hierarchy.
+						// use highest taxon as a new taxonomy root
+						parent = newTaxa.removeLast();
+						saveTaxon(parent);
+					}
+					// save all other new taxa if there are any
+					Taxon newTaxon;
+					while(!newTaxa.isEmpty()){
+						newTaxon = newTaxa.removeLast();
+						newTaxon.setParent(parent);
+						parent = saveTaxon(newTaxon);
+					}
 				}
 				
-				// finally save the real taxon linked to the darwin core record
-				saveTaxon(taxon);
+				// finally save the terminal taxon to be linked to the darwin core record
+				saveTaxon(terminalTaxon);
 			}
 			
-			dwc.setTaxon(taxon);
-			return taxon;			
+			dwc.setTaxon(terminalTaxon);
+			return terminalTaxon;			
 		}
 
 		private Taxon findPersistentTaxon(String mpath) {

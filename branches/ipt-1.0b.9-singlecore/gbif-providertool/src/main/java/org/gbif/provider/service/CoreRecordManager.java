@@ -25,11 +25,11 @@ public interface CoreRecordManager<T extends CoreRecord> extends GenericResource
 	 * Find a core record via its local ID within a given resource.
 	 * This method assures to return a single record, as the combination is guaranteed to be unique in the database.
 	 * @See save
-	 * @param localId the local identifier used in the source
+	 * @param sourceId the local identifier used in the source
 	 * @param resourceId the resource identifier for the source
 	 * @return
 	 */
-	T findByLocalId(String localId, Long resourceId);
+	T findBySourceId(String sourceId, Long resourceId);
 	
 	/**
 	 * get single record by its GUID

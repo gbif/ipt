@@ -55,20 +55,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 		@Override
 		protected void closeHandler(ChecklistResource resource) {
-			// lookup parentID, basionymID and acceptedID
-			currentActivity = "Processing parent taxa";
-			taxonManager.lookupParentTaxa(getResourceId());
-
-			currentActivity = "Processing accepted taxa";
-			taxonManager.lookupAcceptedTaxa(getResourceId());
-
-			currentActivity = "Processing basionyms";
-			taxonManager.lookupBasionymTaxa(getResourceId());
-			
-			// create nested set indices
-			currentActivity = "Creating taxonomy index";
-			taxonManager.buildNestedSet(getResourceId());
-
 			currentActivity = "Building resource stats";
 			checklistResourceManager.setResourceStats(resource);
 

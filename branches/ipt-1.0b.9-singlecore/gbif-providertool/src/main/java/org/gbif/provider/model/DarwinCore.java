@@ -58,7 +58,7 @@ import org.hibernate.validator.NotNull;
  */
 @Entity
 @Table(name="Darwin_Core"
-	, uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
+	, uniqueConstraints = {@UniqueConstraint(columnNames={"sourceId", "resource_fk"})}
 ) 
 
 @org.hibernate.annotations.Table(appliesTo = "Darwin_Core", indexes = { 	
@@ -74,7 +74,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 
 	// for core record
 	private Long id;
-	private String localId;
+	private String sourceId;
 	@NotNull
 	private String guid;
 	private String link;
@@ -242,7 +242,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		// set unique localId to ensure we can save this record. Otherwise we might get a non unique constraint exception...
 		String guid = UUID.randomUUID().toString();
 		String localId = rnd.nextInt(99999999)+"";
-		dwc.setLocalId(localId);
+		dwc.setSourceId(localId);
 		dwc.setGuid(guid);
 		dwc.setCatalogNumber("rbgk-"+localId+"-x");
 		dwc.setBasisOfRecord("PreservedSpecimen");
@@ -273,13 +273,13 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	}
 
 	@Column(length=64)
-	@org.hibernate.annotations.Index(name="dwc_local_id")
-	public String getLocalId() {
-		return localId;
+	@org.hibernate.annotations.Index(name="dwc_source_id")
+	public String getSourceId() {
+		return sourceId;
 	}
 
-	public void setLocalId(String localId) {
-		this.localId = localId;
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
 	}	
 
 	@Column(length=128, unique=true)
@@ -456,7 +456,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			.append("id", this.getId())
 			.append("basisOfRecord", this.basisOfRecord)
 			.append("scientificName",this.getScientificName())
-			.append("localID", this.getLocalId())
+			.append("localID", this.getSourceId())
 			.append("deleted", this.isDeleted())
 			.append("institutionCode", this.institutionCode)
 			.append("collectionCode",this.collectionCode)
@@ -489,7 +489,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
         // core record
         result = 31 * result + (guid != null ? guid.hashCode() : 0);
         result = 31 * result + (link != null ? link.hashCode() : 0);
-        result = 31 * result + (localId != null ? localId.hashCode() : 0);
+        result = 31 * result + (sourceId != null ? sourceId.hashCode() : 0);
         // Sample
         result = 31 * result + (getInstitutionCode() != null ? getInstitutionCode().hashCode() : 0);
         result = 31 * result + (getCollectionCode() != null ? getCollectionCode().hashCode() : 0);
@@ -624,7 +624,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 				.append(this.collectionCode, myClass.collectionCode)
 				.append(this.catalogNumber, myClass.catalogNumber)
 				.append(this.getScientificName(),	myClass.getScientificName())
-				.append(this.localId, myClass.localId)
+				.append(this.sourceId, myClass.sourceId)
 				.append(this.guid,myClass.guid)
 				.toComparison();
 	}
@@ -681,7 +681,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 			path += "|"+StringUtils.trimToEmpty(getInfraspecificEpithet());
 		}
 		if (rank.compareTo(Rank.TerminalTaxon) >= 0){
-			path += "|"+StringUtils.trimToEmpty(getScientificName());
+			path += "|"+ StringUtils.trimToEmpty(getScientificName()) + " sec "+StringUtils.trimToEmpty(getTaxonAccordingTo());
 		}
 		return path;
 	}

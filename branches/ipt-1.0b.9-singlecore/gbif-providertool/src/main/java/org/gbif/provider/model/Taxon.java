@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -25,7 +26,7 @@ import org.hibernate.validator.NotNull;
 
 @Entity
 @Table(
-	uniqueConstraints = {@UniqueConstraint(columnNames={"localId", "resource_fk"})}
+	uniqueConstraints = {@UniqueConstraint(columnNames={"sourceId", "resource_fk"})}
 )
 @org.hibernate.annotations.Table(
 	appliesTo="Taxon",
@@ -39,7 +40,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		protected static final Log log = LogFactory.getLog(Taxon.class);
 
 		// for core record
-		private String localId;
+		private String sourceId;
 		@NotNull
 		private String guid;
 		private String link;
@@ -89,6 +90,15 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 			return super.getId();
 		}
 		
+		@Column(length=64)
+		@org.hibernate.annotations.Index(name="tax_source_id")
+		public String getSourceId() {
+			return sourceId;
+		}
+		public void setSourceId(String sourceId) {
+			this.sourceId = sourceId;
+		}
+
 		@Transient
 		public String getTaxonID() {
 			return guid;
@@ -96,17 +106,9 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		public void setTaxonID(String taxonID) {
 			this.guid = taxonID;
 		}
-		
+				
 		public void setResource(DataResource resource) {
 			this.resource = resource;
-		}
-		@Column(length=64)
-		@org.hibernate.annotations.Index(name="tax_local_id")
-		public String getLocalId() {
-			return localId;
-		}
-		public void setLocalId(String localId) {
-			this.localId = localId;
 		}
 
 		@Column(length=128, unique=true)
@@ -392,6 +394,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 				return false;
 			}
 			return true;
-		}		
+		}
 		
 }

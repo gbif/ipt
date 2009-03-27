@@ -22,6 +22,7 @@ public class TaxonFactory extends ModelBaseFactory<Taxon>{
 			return null;
 		}
 		Taxon tax = Taxon.newInstance(dwc.getResource());
+		tax.setSourceId(dwc.getSourceId());
 		tax.setMpath(dwc.getTaxonomyPath(rank));
 		tax.setScientificName(dwc.getHigherTaxonName(rank));
 		tax.setTaxonAccordingTo(dwc.getTaxonAccordingTo());
@@ -36,7 +37,7 @@ public class TaxonFactory extends ModelBaseFactory<Taxon>{
 			//TODO: this is a workaround for keeping links and localid in the taxon class. 
 			// Can this be removed at some point and served from darwin core alone?
 			tax.setLink(dwc.getLink());
-			tax.setLocalId(dwc.getLocalId());
+			tax.setSourceId(dwc.getSourceId());
 			tax.setModified(dwc.getModified());
 			// other copied taxon properties
 			tax.setSpecificEpithet(dwc.getSpecificEpithet());
