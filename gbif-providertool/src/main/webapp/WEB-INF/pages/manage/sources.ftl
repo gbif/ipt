@@ -4,7 +4,13 @@
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='sources.heading'/>"/>
-    <script>
+	<script>
+		function sourcePreview(sid){
+			var url = '<@s.url action="sourcePreview" namespace="/ajax"/>';
+			var params = { sid: sid }; 
+			var target = '#sourcepreview';	
+			ajaxHtmlUpdate(url, target, params);
+		};
 		function confirmDelete() {   
 		    var msg = "Are you sure you want to delete this source? \n All associated property mappings will be lost too. If you want to upload a newer version of the file, simply upload a file with the exact same filename again.";
 		    ans = confirm(msg);
@@ -14,6 +20,18 @@
 		        return false;
 		    }
 		}
+		$(document).ready(function(){
+		    $(".previewGlass").click(function (e) {
+				e.preventDefault(); 
+		      	$("#sourcepreview").slideDown("normal");
+		    	var id = $(this).attr("id").substring(2);
+		      	sourcePreview(id);
+		    });
+		    $("#sourcepreview").click(function () {
+		      	$("#sourcepreview").slideUp("normal");
+		    });
+		});
+		
     </script>
 </head>
 
@@ -33,19 +51,20 @@ If your data does not exactly match those formats you have the option to configu
 	  <@s.hidden key="sid" value="${fs.id}"/>
 		<div class="newline">
 			<div class="left">
-				<strong>${fs_index + 1}) ${fs.filename}</strong>				
-				<span>
+				<img id="sp${fs.id}" class="previewGlass" src="<@s.url value="/images/glasses.png"/>" width="20" height="20"/>
+				<strong>${fs.filename}</strong>				
+				<span style="padding-left:10px">
 					<#if (fs.fileSize<0)>
 						FILE MISSING!
 					<#else>
 						[${fs.fileSizeInKB}kB<#if fs.dateUploaded??>, ${fs.dateUploaded?datetime}</#if>]
 					</#if>
 				</span>
-			</div>
-		    <div class="leftMedium" style="padding-left:20px">
+		    	<span style="padding-left:20px"></span>
 			 	<@s.checkbox key="sourceFile.headers" value="${fs.headers?string}" theme="simple"/>
 			 	<span><@s.text name="source.headers"/></span>
-		    </div>
+			</div>
+			
 			<div class="right">
 				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete()" theme="simple"/>
 				<@s.submit cssClass="button right" key="button.save" theme="simple"/>
@@ -69,6 +88,7 @@ If your data does not exactly match those formats you have the option to configu
 	  </@s.form>
 	</div>
 </fieldset>
+
 
 
 <div class="break"></div>
@@ -106,7 +126,8 @@ If your data does not exactly match those formats you have the option to configu
 				  <@s.hidden key="resource_id"/>
 				  <@s.hidden key="sid" value="${id}"/>
 					<div class="left">
-						<strong>${stat.index+1}) ${name!"???"}</strong> : 
+						<img id="sp${id}" class="previewGlass" src="<@s.url value="/images/glasses.png"/>" width="20" height="20"/>
+						<strong>${name!"???"}</strong> : 
 						<span class="citation"><#if (sql?length>50)>${sql?substring(0, 50)}<#else>${sql}</#if></span>
 					</div>
 					<div class="right">
@@ -131,6 +152,12 @@ If your data does not exactly match those formats you have the option to configu
 		</div>
 	</#if>
 </fieldset>
+
+
+<div class="break"></div>
+<div id="sourcepreview" style="display:none">
+	Retrieving source data ...
+</div>	
 
 
 <#if (fileSources?size>0) || (sqlSources?size>0)>
