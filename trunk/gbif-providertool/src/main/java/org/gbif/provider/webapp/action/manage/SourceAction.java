@@ -103,6 +103,10 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
     	return SUCCESS;
     }
     
+    public String updateFile(){
+    	sourceManager.save(source);
+    	return SUCCESS;
+    }
     
     public String delete() {
     	if (sid != null){
@@ -295,6 +299,16 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 	}
 
 	public void setSource(SourceSql source) {
+		this.source = source;
+	}
+	
+	public SourceFile getSourceFile() {
+		return (SourceFile) source;
+	}
+	public void setSourceFile(SourceFile source) {
+		this.source = source;
+	}
+	public void setSource(SourceFile source) {
 		this.source = source;
 	}
 

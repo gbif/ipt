@@ -71,6 +71,10 @@ public class SourceFile extends SourceBase {
 		this.fileSize = fileSize;
 	}
 	
+	public boolean isHeaders() {
+		return headers;
+	}
+	@Transient
 	public boolean hasHeaders() {
 		return headers;
 	}

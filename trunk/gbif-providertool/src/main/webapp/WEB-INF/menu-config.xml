@@ -19,7 +19,6 @@
             <Item name="ViewResources" title="menu.admin.resources" page="/admin/resources.html"/>
             -->
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
-            <Item name="ActiveDatasources" title="menu.admin.activeDatasources" page="/admin/activeDatasources.html"/>
         </Menu>
     </Menus>
 </MenuConfig>

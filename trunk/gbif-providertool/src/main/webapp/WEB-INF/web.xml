@@ -207,6 +207,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+<!--
     <servlet> 
         <servlet-name>H2Console</servlet-name> 
         <servlet-class>org.h2.server.web.WebServlet</servlet-class> 
@@ -221,7 +222,7 @@
         <servlet-name>H2Console</servlet-name> 
         <url-pattern>/h2/*</url-pattern> 
     </servlet-mapping>     
-    
+-->
     
     
     <session-config>

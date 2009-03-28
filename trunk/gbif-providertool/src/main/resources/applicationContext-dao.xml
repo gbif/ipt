@@ -53,17 +53,6 @@
     
 
 
-
-    <!-- external datasource routing/registry -->
-    
-    <bean id="datasourceRegistry" class="org.gbif.provider.datasource.DatasourceRegistry" />
-    
-    <bean id="externalResourceRoutingDatasource" class="org.gbif.provider.datasource.ExternalResourceRoutingDatasource">
-        <property name="targetDataSources">
-            <map key-type="java.lang.Long" />            
-        </property>
-    </bean>
-
     <!--  IPT MANAGER  -->
     <bean id="abstractManager" abstract="true">
         <!--property name="sessionFactory" ref="sessionFactory"/-->
@@ -124,9 +113,7 @@
     <!-- cache / import manager -->
     <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
     
-    <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl">        
-        <property name="dataSource" ref="externalResourceRoutingDatasource"/>
-    </bean>
+    <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl"/>        
     
     <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
     

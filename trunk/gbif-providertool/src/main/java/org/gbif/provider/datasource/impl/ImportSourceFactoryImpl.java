@@ -1,16 +1,10 @@
 package org.gbif.provider.datasource.impl;
 
-import org.gbif.provider.datasource.DatasourceContextHolder;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.datasource.ImportSourceFactory;
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.TabFileReader;
 
 public class ImportSourceFactoryImpl implements ImportSourceFactory {
 
@@ -26,7 +20,6 @@ public class ImportSourceFactoryImpl implements ImportSourceFactory {
     	if (view.isMappedToFile()){
     		src = newFileImportSource();
     	}else{
-			DatasourceContextHolder.setResourceId(resource.getId());
 			src = newSqlImportSource();
     	}
 		// init with resource, view
