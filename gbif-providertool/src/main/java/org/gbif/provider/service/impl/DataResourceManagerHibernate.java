@@ -16,18 +16,10 @@
 
 package org.gbif.provider.service.impl;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.datasource.DatasourceRegistry;
-import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.CacheManager;
@@ -36,7 +28,6 @@ import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TransformationManager;
 import org.gbif.provider.service.ViewMappingManager;
-import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,8 +56,6 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	}
 
 	@Autowired
-	private DatasourceRegistry registry;
-	@Autowired
 	private CacheManager cacheManager;
 
 
@@ -86,25 +75,11 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 			log.debug("Removing sourceManager");
 			sourceManager.removeAll(obj);
 			log.debug("SourceManager removed");
-			// update registry
-			if (registry.containsKey(resourceId)){
-				log.debug("Removing " + resourceId + " from registry");
-				registry.removeDatasource(resourceId);
-			}		
 		}
 		// remove resource entity
 		super.remove(obj);
 	}
 
-	@Override
-	@Transactional(readOnly=false)
-	public T save(T resource) {
-		// call the real thing first to get a resourceId assigned
-		T persistentResource = super.save(resource);
-		//datasource might have been updated, so re-register
-		registry.registerDatasource(resource);
-		return persistentResource;
-	}
 	
 	@Override
 	public T get(Long id) {

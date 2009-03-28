@@ -16,9 +16,11 @@
 
 package org.gbif.provider.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.SourceBase;
 
 public interface SourceInspectionManager {
@@ -28,6 +30,7 @@ public interface SourceInspectionManager {
 	 * @throws Exception
 	 */
 	public List<List<? extends Object>> getPreview(SourceBase source) throws Exception;
+	public List<String> getAllTables(DataResource resource) throws SQLException;
 	/**
 	 * @param data source either to file or SQL statement
 	 * @return list of column headers only (same first row in getPreview())

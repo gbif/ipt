@@ -29,8 +29,6 @@
             <!-- Interceptor to handle allowing only admins to certain actions -->
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
-            <!-- Interceptor to select the external routing datasource -->
-            <interceptor name="datasource-selector" class="datasourceInterceptor"/>
             <interceptor name="resource-watcher" class="resourceInterceptor"/>
 
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
@@ -72,7 +70,6 @@
             </interceptor-stack>
             <interceptor-stack name="resourceStack">
                 <interceptor-ref name="resource-watcher"/>
-                <interceptor-ref name="datasource-selector"/>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
             <interceptor-stack name="adminStack">
@@ -536,6 +533,12 @@
                 <param name="resource_id">${resource.id}</param>
             </result>
         </action>
+        <action name="updateSourceFile" class="org.gbif.provider.webapp.action.manage.SourceAction" method="updateFile">
+            <result type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
+        </action>
         <action name="editSource" class="org.gbif.provider.webapp.action.manage.SourceAction">
             <result>/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
         </action>
@@ -740,15 +743,6 @@
             <result>/WEB-INF/pages/admin/flushCache.jsp</result>
         </action>
 
-        <action name="activeDatasources" class="org.gbif.provider.webapp.action.manage.DatasourceRegistryAction" method="list">
-            <result type="freemarker">/WEB-INF/pages/admin/datasourceList.ftl</result>
-        </action>
-        
-        <action name="activeTasks">
-            <result type="freemarker">/WEB-INF/pages/missing.ftl</result>
-            <result name="tbd">/WEB-INF/pages/scheduler/jobList.ftl</result>
-        </action>
-        
         <action name="config" class="org.gbif.provider.webapp.action.admin.ConfigAction">
             <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>

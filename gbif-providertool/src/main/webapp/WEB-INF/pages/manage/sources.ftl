@@ -27,32 +27,32 @@ If your data does not exactly match those formats you have the option to configu
 <h2><@s.text name="sources.filesources"/></h2>
 <div class="horizontal_dotted_line_large_soft"></div>
 <fieldset class="noBottomMargin">
-	<@s.iterator value="fileSources" status="stat">
-	<@s.form action="saveSource" method="post">
+  <#list fileSources as fs>
+	<@s.form action="updateSourceFile" method="post">
 	  <@s.hidden key="resource_id"/>
-	  <@s.hidden key="sid" value="${id}"/>
+	  <@s.hidden key="sid" value="${fs.id}"/>
 		<div class="newline">
 			<div class="left">
-				<strong>${stat.index+1}) ${filename}</strong>				
+				<strong>${fs_index + 1}) ${fs.filename}</strong>				
 				<span>
-					<#if (fileSize<0)>
+					<#if (fs.fileSize<0)>
 						FILE MISSING!
 					<#else>
-						[${fileSizeInKB}kB<#if dateUploaded??>, ${dateUploaded?datetime}</#if>]
+						[${fs.fileSizeInKB}kB<#if fs.dateUploaded??>, ${fs.dateUploaded?datetime}</#if>]
 					</#if>
 				</span>
 			</div>
 		    <div class="leftMedium" style="padding-left:20px">
-			 	<@s.checkbox key="fileSources[${stat.index+1}]" theme="simple"/>
-			 	<span>column headers</span>
+			 	<@s.checkbox key="sourceFile.headers" value="${fs.headers?string}" theme="simple"/>
+			 	<span><@s.text name="source.headers"/></span>
 		    </div>
 			<div class="right">
 				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete()" theme="simple"/>
-				<@s.submit cssClass="button right" key="button.save" method="save" theme="simple"/>
+				<@s.submit cssClass="button right" key="button.save" theme="simple"/>
 			</div>
 		</div>
 	</@s.form>
-	</@s.iterator>
+  </#list>
 	
 	<div class="break2">
 	  <@s.form action="uploadSource" enctype="multipart/form-data" method="post">

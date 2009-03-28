@@ -18,6 +18,7 @@ package org.gbif.provider.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -30,7 +31,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang.StringUtils;
+import org.gbif.provider.datasource.ImportSourceException;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
@@ -41,7 +46,7 @@ import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class SourceInspectionManagerImpl extends JdbcDaoSupport implements SourceInspectionManager {
+public class SourceInspectionManagerImpl implements SourceInspectionManager {
 	private static final int PREVIEW_SIZE = 5;
 	@Autowired
 	private AppConfig cfg;
@@ -74,10 +79,21 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		}
 	}
 	
-	
+	private Connection getResourceConnection(DataResource resource) throws SQLException{
+    	// try to connect to db via JDBC
+		DataSource ds = resource.getDatasource();
+		Connection conn;
+		if (ds!=null){
+			conn = ds.getConnection();				
+		}else{
+			throw new SQLException("Can't connect to database");				
+		}
+		return conn;
+	}
 	
 	private List<List<? extends Object>> getPreview(SourceSql source) throws SQLException {
-		Statement stmt = this.getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		Connection conn = getResourceConnection(source.getResource());
+		Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 		stmt.setMaxRows(PREVIEW_SIZE);
 		stmt.setFetchSize(PREVIEW_SIZE);
 		ResultSet rs = stmt.executeQuery(source.getSql());
@@ -126,11 +142,13 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
 		TabFileReader reader = new TabFileReader(getSourceFile(source));
 		// read file
-		 preview.add(Arrays.asList(reader.getHeader()));
-	     while (reader.hasNext() && preview.size()<7) {
-			 preview.add(Arrays.asList(reader.next()));
-	     }		 
-		 return preview;
+		if (!source.hasHeaders()){
+			preview.add(getHeader(source));
+		}
+	    while (reader.hasNext() && preview.size()<7) {
+	    	preview.add(Arrays.asList(reader.next()));
+	    }		 
+		return preview;
 	}
 	private List<String> getHeader(SourceFile source) throws IOException, MalformedTabFileException {
 		TabFileReader reader = new TabFileReader(getSourceFile(source));
@@ -154,8 +172,9 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 	}
 	
 	
-	public List getAllTables() throws SQLException {
-		DatabaseMetaData dbmd = this.getConnection().getMetaData();
+	public List<String> getAllTables(DataResource resource) throws SQLException {
+		Connection conn = getResourceConnection(resource);
+		DatabaseMetaData dbmd = conn.getMetaData();
 		List<String> tableNames = new ArrayList<String>();
 	    ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
     	while (rs.next()) {
@@ -198,20 +217,22 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 	}
 	
 	private Iterator<Object> getSourceColumnIterator(SourceFile source, String column) throws IOException, MalformedTabFileException{
-		return new FileIterator(getSourceFile(source), column);
+		int columnIdx=0;
+		List<String> h = getHeader(source);
+		while (columnIdx < h.size()){
+			if (h.get(columnIdx).equals(column)){
+				break;
+			}
+			columnIdx++;
+		}
+		return new FileIterator(getSourceFile(source), columnIdx);
 	}
 	private class FileIterator implements Iterator<Object>{
 		private TabFileReader reader;
 		private int columnIdx;
-		public FileIterator(File source, String column) throws IOException, MalformedTabFileException{
+		public FileIterator(File source, int columnIdx) throws IOException, MalformedTabFileException{
 			reader = new TabFileReader(source);
-			String[] h = reader.getHeader();
-			while (columnIdx<h.length){
-				columnIdx++;
-				if (h[columnIdx].equals(column)){
-					break;
-				}
-			}
+			this.columnIdx = columnIdx;
 		}
 		public boolean hasNext() {
 			return reader.hasNext();
@@ -233,7 +254,8 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 		private String column;
 		private boolean hasNext;
 		public SqlIterator(SourceSql source, String column) throws SQLException{
-			this.stmt = getConnection().createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			Connection conn = getResourceConnection(source.getResource());
+			this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			this.stmt.setFetchSize(100);
 			this.rs = stmt.executeQuery(source.getSql());
 			this.column = column;

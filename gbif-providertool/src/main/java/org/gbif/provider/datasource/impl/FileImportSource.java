@@ -36,6 +36,7 @@ import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.service.AnnotationManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.TermMappingManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.TabFileReader;
@@ -51,6 +52,8 @@ public class FileImportSource extends ImportSourceBase{
 	private String[] currentLine;
 	// key=header column name
 	private Map<String, Integer> headerMap = new HashMap<String, Integer>();
+	@Autowired
+	private SourceInspectionManager sourceInspectionManager;
 
 
 	public void init(DataResource resource, ExtensionMapping view) throws ImportSourceException{
@@ -64,7 +67,7 @@ public class FileImportSource extends ImportSourceBase{
 		try {
 			this.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()));
 			Integer i = 0;
-			for (String h : this.reader.getHeader()){
+			for (String h : sourceInspectionManager.getHeader(src)){
 				this.headerMap.put(h, i);
 				i++;
 			}
