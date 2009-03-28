@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,7 +84,6 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	
 	// temp stuff
     private List<String> sourceColumns;
-	private Map<Long, Map<String,String>> vocs = new HashMap<Long, Map<String,String>>();	
 
 	@Override
 	public void prepare(){
@@ -143,11 +144,6 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
                 	}
             		availProperties.get(group).add(prop);
     			}
-    		}
-    		// create vocabulary drop downs if needed
-    		if (prop.getVocabulary()!=null){
-    			ThesaurusVocabulary voc = prop.getVocabulary();
-    			vocs.put(prop.getId(), thesaurusManager.getConceptCodeMap(voc.getUri(), getLocaleLanguage(), false));
     		}
     	}        
 	}
@@ -292,10 +288,6 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 
 	public void setSid(Long sid) {
 		this.sid = sid;
-	}
-
-	public Map<Long, Map<String, String>> getVocs() {
-		return vocs;
 	}
 
 	public void setMappings_idx(Long mappings_idx) {
