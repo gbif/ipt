@@ -140,14 +140,15 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 	
 	private List<List<? extends Object>> getPreview(SourceFile source) throws IOException, MalformedTabFileException {
 		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
-		TabFileReader reader = new TabFileReader(getSourceFile(source));
 		// read file
 		if (!source.hasHeaders()){
 			preview.add(getHeader(source));
 		}
-	    while (reader.hasNext() && preview.size()<7) {
+		TabFileReader reader = new TabFileReader(getSourceFile(source));
+	    while (reader.hasNext() && preview.size()<=PREVIEW_SIZE) {
 	    	preview.add(Arrays.asList(reader.next()));
-	    }		 
+	    }
+	    reader.close();
 		return preview;
 	}
 	private List<String> getHeader(SourceFile source) throws IOException, MalformedTabFileException {
@@ -160,10 +161,12 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 			int numCols = reader.getHeader().length;
 			headers = new ArrayList<String>();
 			int i = 1;
-			while (1 <= numCols){
-				headers.add(String.format("column-%03d",i));				
+			while (i <= numCols){
+				headers.add(String.format("column-%03d",i));
+				i++;
 			}
 		}
+		reader.close();
 		return headers;
 	}
 	private File getSourceFile(SourceFile source){

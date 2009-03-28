@@ -47,6 +47,8 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		super.prepare();
 		if (sid != null) {
 			source = sourceManager.get(sid);
+		}else{
+			source.setResource(resource);			
 		}
 	}
 
@@ -98,7 +100,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		if (delete != null) {
 			return delete();
 		}
-		source.setResource(resource);
     	sourceManager.save(source);
     	return SUCCESS;
     }
@@ -224,6 +225,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
             try {
 				sourceInspectionManager.getHeader(source);
 			} catch (Exception e) {
+				log.info(getText("sources.invalidSql"), e);
 				this.addActionError(getText("sources.invalidSql"));
 			}
         }
