@@ -56,7 +56,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 	/**
-	 * Tha main task responsible for uploading raw data into the cache and doing simple preprocessing while iterating through the ImportSource.
+	 * Tha main task responsible for importing raw data into the cache and doing simple preprocessing while iterating through the ImportSource.
 	 * Any further secondary postprocessing is done with the help of a second post processing task that this task will automatically schedule once its done.
 	 * @author markus
 	 *
@@ -92,7 +92,7 @@ import org.springframework.transaction.annotation.Transactional;
 		private Integer recordsChanged;
 		private Integer recordsAdded;
 		private Integer recordsErroneous;
-		// upload status
+		// import status
 		protected String currentActivity;
 		private AtomicInteger currentProcessed;
 		private AtomicInteger currentErroneous;
@@ -153,22 +153,22 @@ import org.springframework.transaction.annotation.Transactional;
 			try {
 				lastLogDate = new Date();
 
-				// prepare upload, removing previous records, calling prepare of helper tasks
+				// prepare import, removing previous records, calling prepare of helper tasks
 				prepare();
 				Date now = new Date();
 				log.info(String.format("Import preparation took %s ms", (now.getTime()-lastLogDate.getTime())));
 				lastLogDate = now;
 				
 				// run import of core into db, calling a subclass handler per record and finally at the end
-				uploadCore();
+				importCore();
 				now = new Date();
 				log.info(String.format("Import core took %s ms", (now.getTime()-lastLogDate.getTime())));
 				lastLogDate = now;
 				
-				// upload further extensions one by one
+				// import further extensions one by one
 				for (ExtensionMapping vm : resource.getExtensionMappings()){
 					// run import into db
-					uploadExtension(vm);
+					importExtension(vm);
 					now = new Date();
 					log.info(String.format("Importing %s records of extension %s took %s ms", vm.getRecTotal(), vm.getExtension().getName(), (now.getTime()-lastLogDate.getTime())));
 					lastLogDate = now;
@@ -182,7 +182,7 @@ import org.springframework.transaction.annotation.Transactional;
 			} catch (InterruptedException e) {
 				// thread was interrupted. Try to exit nicely by removing all potentially corrupt data.
 				prepare();
-				annotationManager.annotateResource(resource, "Upload task was interrupted/canceled. Partially existing upload was removed");
+				annotationManager.annotateResource(resource, "Upload task was interrupted/canceled. Partially existing import was removed");
 				throw e;
 			}
 			
@@ -203,7 +203,7 @@ import org.springframework.transaction.annotation.Transactional;
 			// call subclass handler first, might need to remove dependend records before removing the core records
 			prepareHandler(resource);
 			
-			// remove all previous upload artifacts
+			// remove all previous import artifacts
 			dwcManager.removeAll(resource);
 			cacheManager.prepareUpload(getResourceId());
 
@@ -212,7 +212,7 @@ import org.springframework.transaction.annotation.Transactional;
 			recordsChanged = 0;
 			recordsAdded = 0;
 
-			// track upload in upload event metadata (mainly statistics)
+			// track import in upload event metadata (mainly statistics)
 			event = new UploadEvent();
 			event.setJobSourceId(this.hashCode());
 			event.setJobSourceType(taskTypeId());
@@ -229,7 +229,7 @@ import org.springframework.transaction.annotation.Transactional;
 		
 		
 		private void close() {
-			log.info(String.format("Closing upload for resource %s", getTitle() ));					
+			log.info(String.format("Closing import for resource %s", getTitle() ));					
 			currentProcessed.set(0);
 			currentErroneous.set(0);
 
@@ -252,7 +252,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 			// call subclass handler for specific postprocessing
 			closeHandler(resource);
-			log.info(String.format("Core upload of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
+			log.info(String.format("Core import of %s records to cache done. %s deleted, %s added and %s records changed. %s bad records were skipped.", event.getRecordsUploaded(), event.getRecordsDeleted(), event.getRecordsAdded(), event.getRecordsChanged(), event.getRecordsErroneous()));
 
 			// update resource and upload event statistics
 			currentActivity = "Generating resource statistics";			
@@ -303,8 +303,8 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
-		private File uploadCore() throws InterruptedException {
-			log.info("Starting upload of core records for resource "+ getTitle());					
+		private File importCore() throws InterruptedException {
+			log.info("Starting import of core records for resource "+ getTitle());					
 			currentActivity="Uploading "+resource.getCoreMapping().getExtension().getName();
 			currentProcessed.set(0);
 			currentErroneous.set(0);
@@ -397,7 +397,7 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 					}
 				} finally {
-					// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension uploads
+					// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension imports
 					recordsErroneous = currentErroneous.get(); 
 					source.close();
 				}
@@ -464,13 +464,13 @@ import org.springframework.transaction.annotation.Transactional;
 		}
 
 		@Transactional(readOnly=false, noRollbackFor={Exception.class})
-		private File uploadExtension(ExtensionMapping vm) throws InterruptedException {
+		private File importExtension(ExtensionMapping vm) throws InterruptedException {
 			String extensionName = vm.getExtension().getName();
 			Extension extension = vm.getExtension();
-			log.info(String.format("Starting upload of %s extension for resource %s", extensionName, getTitle() ));					
+			log.info(String.format("Starting import of %s extension for resource %s", extensionName, getTitle() ));					
 			File out = null;
 			// keep track of records for each extension and then store the totals in the viewMapping.
-			// once extension is uploaded this counter will be reset by the next extension.
+			// once extension is imported this counter will be reset by the next extension.
 			// used to feed status()
 			currentActivity="Uploading "+extensionName;
 			currentProcessed.set(0);
@@ -517,8 +517,8 @@ import org.springframework.transaction.annotation.Transactional;
 						}
 					}
 				} catch (Exception e){
-					annotationManager.annotateResource(resource, String.format("Unknown error uploading extension %s. Extension skipped", extensionName));
-					log.error("Unknown error uploading extension "+extensionName, e);
+					annotationManager.annotateResource(resource, String.format("Unknown error importing extension %s. Extension skipped", extensionName));
+					log.error("Unknown error importing extension "+extensionName, e);
 				} finally {
 					setFinalExtensionStats(extension);
 				}
@@ -539,17 +539,17 @@ import org.springframework.transaction.annotation.Transactional;
 			String coreInfo = "";
 			String recordStatus ="";
 			if (currentProcessed.get() > 0){
-				// core uploaded already
+				// core imported already
 				recordStatus = String.format(". %s records processed", currentProcessed.get());
 			}
 			if (recordsUploaded != null){
-				// core uploaded already
+				// core imported already
 				coreInfo = String.format(". %s core records in total", recordsUploaded);
 			}
 			if (currentProcessed!=null){
 				return String.format("%s%s%s%s", currentActivity, recordStatus, subclassInfo, coreInfo);
 			}else{
-				return "Waiting for upload to start.";
+				return "Waiting for import to start.";
 			}
 		}
 

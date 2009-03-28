@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.Tokenizer;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.model.Transformation;
@@ -39,6 +40,7 @@ import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
@@ -66,8 +68,6 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	@Qualifier("propertyMappingManager")
     private GenericManager<PropertyMapping> propertyMappingManager;
 	@Autowired
-    private ThesaurusManager thesaurusManager;
-	@Autowired
     private TransformationManager transformationManager;
 	
 	// persistent stuff
@@ -81,6 +81,8 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 	private Long mappings_idx;
 	private String newProperties=""; // space delimited list of property IDs just added for mapping
     private Map<String, List<ExtensionProperty>> availProperties = new HashMap<String, List<ExtensionProperty>>();
+    private PropertyMapping guidProperty;
+	private String guidPropertyName;
 	
 	// temp stuff
     private List<String> sourceColumns;
@@ -114,10 +116,12 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 			sourceColumns = new ArrayList<String>();
 			log.debug("Cant read datasource column headers", e);
 		}
-
+		
     	// try to automap columns in case there aint no mapping yet
 		automap();
-    	
+		
+		// the property name used as GUID depending on resource type
+		guidPropertyName = resourceType.equals(CHECKLIST) ? ChecklistResource.DWC_GUID_PROPERTY : OccurrenceResource.DWC_GUID_PROPERTY;
     	// prepare list of property mappings to create form with and to be filled by params interceptor
         // parse list of newly mapped properties
         List<String> newIdList =  Arrays.asList(StringUtils.split(newProperties, " "));
@@ -125,9 +129,24 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
         	if (prop == null){
         		continue;
         	}
-        	if (resourceType.equals(CHECKLIST) && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())){
+    		// for the darwin core mapping filter some properties
+        	if (view.isCore()){
         		// for checklists only show the taxon group of darwin core
-        		continue;
+            	if (resourceType.equals(CHECKLIST) && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())){
+            		continue;
+            	}
+        		// remove the GUID identifier for DarwinCore
+            	if (prop.getName().equalsIgnoreCase(guidPropertyName)){
+            		// setup GUID property depending upon resource type
+        			guidProperty = view.getPropertyMapping(prop.getId());
+        	    	if (guidProperty==null){
+        	    		//setup empty one
+        	    		guidProperty = new PropertyMapping();
+        	    		guidProperty.setProperty(prop);
+        	    		view.addPropertyMapping(guidProperty);
+        	    	}
+            		continue;
+            	}
         	}
         	String group = prop.getGroup()==null ? view.getExtension().getName() : prop.getGroup();
     		// is this property mapped already?
@@ -308,6 +327,18 @@ public class PropertyMappingAction extends BaseDataResourceAction implements Pre
 
 	public Map<String, List<ExtensionProperty>> getAvailProperties() {
 		return availProperties;
+	}
+
+	public PropertyMapping getGuidProperty() {
+		return guidProperty;
+	}
+
+	public void setGuidProperty(PropertyMapping guidProperty) {
+		this.guidProperty = guidProperty;
+	}
+
+	public String getGuidPropertyName() {
+		return guidPropertyName;
 	}
 	
 }
