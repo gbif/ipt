@@ -49,10 +49,14 @@
 		$("#mappings").prepend(newPropForm);
 		$("div#"+propertyFormId).effect("highlight", {}, 1000);
 		// finally load potential vocabulary via ajax
+		loadVocabulary(id);
+	}
+	
+	function loadVocabulary(id){
+    	var propertyFormId = "propertyForm"+id;
 		var url = '<@s.url value="/ajax/propVocabulary.html"/>';
 		ajaxHtmlUpdate(url, "div#"+propertyFormId+" div.valueMapping", {id:id});
 	}
-	
 	
 	$(document).ready(function(){
 		$("#propertyFormTemplate").hide(0);
@@ -72,7 +76,12 @@
 	      	addProperty($(this));
 	      	$(this).parent().remove();
 	    });
-
+	    
+	  	<#list view.getPropertyMappingsSorted() as mp>
+		  <#if (mp.property.vocabulary??)>
+		    loadVocabulary(${mp.property.id});
+		  </#if>
+	    </#list>
 	});
 	
 	</script>	
@@ -158,7 +167,7 @@
 	
 	<div id="mappings">
   	<#list view.getPropertyMappingsSorted() as mp>
-	  <div class="minibreak propertyForm">
+	  <div id="propertyForm${mp.property.id}" class="minibreak propertyForm">
 		<div>
 			<strong>${mp.property.name}</strong>
 			<#if mp.property.link??>
@@ -170,17 +179,15 @@
 				<@s.select id="sourceColumn_${mp.property.id}" key="view.propertyMappings[${mp.property.id}].column" list="sourceColumns"
 					required="${mp.property.required?string}" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
 			</div>
-			<div>
-				<#if (mp.property.vocabulary??)>
-				    <@s.submit cssClass="button" key="button.termMapping" method="termMapping" theme="simple" onclick="return confirmTermMapping('${mp.property.id}')"/>
-				    or select a static value:
-					<@s.select key="view.propertyMappings[${mp.property.id}].value"
-						list="vocs[${mp.property.id}]" 
-						style="display: inline" headerKey="" emptyOption="true" theme="simple"/>						
-				<#else>
-			        <@s.textfield  name="view.propertyMappings[${mp.property.id}].value" value="${mp.value!}" cssClass="large" theme="simple"/>  
-				</#if>
+		  <#if (mp.property.vocabulary??)>
+			<div class="left valueMapping">
+				<img src='<@s.url value="/images/ajax-loader.gif"/>'/>
 			</div>
+		  <#else>
+			<div>
+		        <@s.textfield  name="view.propertyMappings[${mp.property.id}].value" value="${mp.value!}" cssClass="large" theme="simple"/>  
+			</div>
+		  </#if>
 		</div>
 	  </div> <#-- minibreak per mapping -->
 	</#list>
@@ -200,20 +207,20 @@
 
 <#-- property form template -->
 <div id="propertyFormTemplate" style="display:none">
-<div class="minibreak propertyForm">
-<div>
-	<strong></strong>
-	<a href="#" target="_blank">(about)</a>
-</div>
-<div class="overhang">
-	<div class="left">
-		<@s.select id="" name="" list="sourceColumns" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
+  <div class="minibreak propertyForm">
+	<div>
+		<strong></strong>
+		<a href="#" target="_blank">(about)</a>
 	</div>
-	<div class="left valueMapping">
-		<img src='<@s.url value="/images/ajax-loader.gif"/>'/>
+	<div class="overhang">
+		<div class="left">
+			<@s.select id="" name="" list="sourceColumns" headerKey="" emptyOption="true" style="display: inline" theme="simple"/>
+		</div>
+		<div class="left valueMapping">
+			<img src='<@s.url value="/images/ajax-loader.gif"/>'/>
+		</div>
 	</div>
-</div>
-</div>
+  </div>
 </div> <#-- property form template -->
 
 </body>
