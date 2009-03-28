@@ -74,7 +74,7 @@
 	
     
     <!-- MODEL FACTORIES -->
-    <bean id="extensionFactory" class="org.gbif.provider.service.util.ExtensionFactory"/>
+    <bean id="extensionFactory" class="org.gbif.provider.model.factory.ExtensionFactory"/>
     
     <bean id="resourceFactory" class="org.gbif.provider.model.factory.ResourceFactory">        
         <constructor-arg ref="extensionManager"/>

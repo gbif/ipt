@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import java.util.Set;
 
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.factory.ExtensionFactory;
 import org.junit.Test;
 
 public class ExtensionFactoryTest {
