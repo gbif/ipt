@@ -70,8 +70,6 @@
     
     <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
     
-    <bean id="datasourceInterceptor" class="org.gbif.provider.datasource.DatasourceInterceptor"/>
-	
     
     <!-- MODEL FACTORIES -->
     <bean id="extensionFactory" class="org.gbif.provider.model.factory.ExtensionFactory"/>
