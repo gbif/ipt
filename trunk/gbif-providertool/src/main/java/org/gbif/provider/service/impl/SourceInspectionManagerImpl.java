@@ -162,7 +162,7 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 			headers = new ArrayList<String>();
 			int i = 1;
 			while (i <= numCols){
-				headers.add(String.format("column-%03d",i));
+				headers.add(String.format("col%03d",i));
 				i++;
 			}
 		}
