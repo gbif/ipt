@@ -110,10 +110,10 @@
         <@s.hidden id="mappings_idx" name="mappings_idx" value=""/>
         <@s.hidden id="newProperties" name="newProperties" value=""/>
         
-
-	 	<@s.select key="view.coreIdColumn" required="true"
-			headerKey="Select local identifier for core record" emptyOption="false" list="columnOptions" />
-			
+	 	<@s.select key="view.coreIdColumn" required="true" headerKey="Select local identifier for core record" emptyOption="false" list="columnOptions" />
+		<#if view.isCore()>
+		 	<@s.select key="guidProperty.column" emptyOption="true" list="columnOptions" />
+	 	</#if>			
  		<@s.select key="view.linkColumn" emptyOption="true" list="columnOptions"/>
     	<@s.textfield key="view.linkTemplate" cssClass="block2col"/>
 	 	
@@ -167,6 +167,7 @@
 	
 	<div id="mappings">
   	<#list view.getPropertyMappingsSorted() as mp>
+  	  <#if mp.property.name!=guidPropertyName>
 	  <div id="propertyForm${mp.property.id}" class="minibreak propertyForm">
 		<div>
 			<strong>${mp.property.name}</strong>
@@ -190,6 +191,7 @@
 		  </#if>
 		</div>
 	  </div> <#-- minibreak per mapping -->
+	  </#if>
 	</#list>
 	</div>
  
