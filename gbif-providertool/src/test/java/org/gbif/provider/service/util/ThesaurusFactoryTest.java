@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.model.factory.ThesaurusFactory;
 import org.junit.Test;
 
 public class ThesaurusFactoryTest {

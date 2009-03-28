@@ -8,10 +8,10 @@ import java.util.List;
 
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.factory.ExtensionFactory;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.util.ExtensionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

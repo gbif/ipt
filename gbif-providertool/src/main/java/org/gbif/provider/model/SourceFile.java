@@ -15,6 +15,7 @@ public class SourceFile extends SourceBase {
 	private static Log log = LogFactory.getLog(SourceFile.class);
 	private Date dateUploaded;
 	private long fileSize;
+	private boolean headers=false;
 
 	public SourceFile() {
 		super();
@@ -68,6 +69,13 @@ public class SourceFile extends SourceBase {
 	}
 	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
+	}
+	
+	public boolean hasHeaders() {
+		return headers;
+	}
+	public void setHeaders(boolean headers) {
+		this.headers = headers;
 	}	
 	
 	

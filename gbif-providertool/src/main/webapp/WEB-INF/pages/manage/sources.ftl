@@ -42,8 +42,13 @@ If your data does not exactly match those formats you have the option to configu
 					</#if>
 				</span>
 			</div>
+		    <div class="leftMedium" style="padding-left:20px">
+			 	<@s.checkbox key="fileSources[${stat.index+1}]" theme="simple"/>
+			 	<span>column headers</span>
+		    </div>
 			<div class="right">
 				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete()" theme="simple"/>
+				<@s.submit cssClass="button right" key="button.save" method="save" theme="simple"/>
 			</div>
 		</div>
 	</@s.form>

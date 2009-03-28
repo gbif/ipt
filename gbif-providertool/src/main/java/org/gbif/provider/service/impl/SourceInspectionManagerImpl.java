@@ -134,7 +134,19 @@ public class SourceInspectionManagerImpl extends JdbcDaoSupport implements Sourc
 	}
 	private List<String> getHeader(SourceFile source) throws IOException, MalformedTabFileException {
 		TabFileReader reader = new TabFileReader(getSourceFile(source));
-		return Arrays.asList(reader.getHeader());
+		List<String> headers;
+		if (source.hasHeaders()){
+			headers = Arrays.asList(reader.getHeader());
+		}else{
+			// create numbered column names if no headers are present
+			int numCols = reader.getHeader().length;
+			headers = new ArrayList<String>();
+			int i = 1;
+			while (1 <= numCols){
+				headers.add(String.format("column-%03d",i));				
+			}
+		}
+		return headers;
 	}
 	private File getSourceFile(SourceFile source){
 		File sourceFile = cfg.getResourceSourceFile(source.getResource().getId(), source.getFilename());

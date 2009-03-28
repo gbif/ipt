@@ -1,4 +1,4 @@
-package org.gbif.provider.service.util;
+package org.gbif.provider.model.factory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
+import org.gbif.provider.service.util.CallParamNoNSRule;
 import org.xml.sax.SAXException;
 
 /**

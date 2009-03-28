@@ -1,4 +1,4 @@
-package org.gbif.provider.service.util;
+package org.gbif.provider.model.factory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +20,7 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ThesaurusVocabulary;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.provider.service.util.ThesaurusHandlingRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
