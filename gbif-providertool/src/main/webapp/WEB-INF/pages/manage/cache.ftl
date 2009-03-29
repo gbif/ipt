@@ -32,10 +32,7 @@ Depending upon the amount of data this process may take a long time during which
   <@s.form id="banane">
 	<table>
 		<#if resource.lastUpload??>
-			<@s.url id="logsUrl" action="logEvents" namespace="/admin" includeParams="get">
-				<@s.param name="sourceId" value="resource.lastUpload.jobSourceId" />
-				<@s.param name="sourceType" value="resource.lastUpload.jobSourceType" />
-			</@s.url>
+			<@s.url id="logsUrl" action="annotations" namespace="/" includeParams="get"/>
 			<tr>
 				<th><@s.text name="resource.lastUpload"/></th>
 				<td>${resource.lastUpload.executionDate} (<a href="${logsUrl}">logs</a>)</td>
