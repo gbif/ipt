@@ -2,22 +2,17 @@ package org.gbif.provider.webapp.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Vector;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.appfuse.Constants;
+import org.appfuse.model.LabelValue;
 import org.appfuse.model.User;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +43,15 @@ public class BaseAction extends org.appfuse.webapp.action.BaseAction {
 	        }
 	    }
 		return null;
+	}
+	public boolean isAdminUser() {
+		User user = getCurrentUser();
+		for (LabelValue val : user.getRoleList()){
+			if (val.getValue().equalsIgnoreCase(Constants.ADMIN_ROLE)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void setCancel(String cancel) {

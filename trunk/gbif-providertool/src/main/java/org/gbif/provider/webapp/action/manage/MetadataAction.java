@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.appfuse.model.LabelValue;
+import org.appfuse.model.User;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.factory.ResourceFactory;
@@ -82,7 +83,11 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 
 	public String list(){
 		resource=null;
-		resources = getResourceTypeMatchingManager().getResourcesByUser(getCurrentUser().getId());
+		if (isAdminUser()){
+			resources = getResourceTypeMatchingManager().getAll();
+		}else{
+			resources = getResourceTypeMatchingManager().getResourcesByUser(getCurrentUser().getId());
+		}
 		return SUCCESS;
 	}
 	
