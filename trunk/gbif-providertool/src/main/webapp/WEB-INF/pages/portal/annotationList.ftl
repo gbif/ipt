@@ -12,6 +12,10 @@
 			var params = { resource_id:${resource_id}, id: anchor.name }; 
 			$.get(url, params, function(data) { 
 				$(anchor).parent().parent().after("<tr class='odd anno'><td colspan='4'>"+data+"</td></tr>");
+				$("a.close").click(function (e) {
+					e.preventDefault();
+					$(this).parent().parent().parent().parent().parent().empty();
+			    });
 			});
 		};
 		

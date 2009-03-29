@@ -7,6 +7,6 @@
 		<#if annotation.guid??>
 		<li><a href="detail.html?resource_id=${resource_id}&guid=${annotation.guid}">record</a></li>
 		</#if>
-		<li><a href="Javascript:$('#annotation-${annotation.id}').hide();">close</a></li>
+		<li><a href="#" class="close">close</a></li>
 	</ul>
 </div>
