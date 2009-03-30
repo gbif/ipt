@@ -784,6 +784,12 @@
         <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
             <result type="freemarker">/WEB-INF/pages/admin/vocabulary.ftl</result>
         </action>
+        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
+            <result type="freemarker">
+                <param name="location">/WEB-INF/pages/admin/vocabularyExport.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
         <action name="concept" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="concept">
             <result type="freemarker">/WEB-INF/pages/admin/concept.ftl</result>
         </action>

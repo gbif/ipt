@@ -137,7 +137,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	}
 	
 	public int annotateAmbigousNames(Long resourceId){
-		List<Taxon> ambigousTaxa = query("select t from Taxon t, Taxon t2 WHERE t.scientificName=t2.scientificName and t.taxonAccordingTo=t2.taxonAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId")
+		List<Taxon> ambigousTaxa = query("select t from Taxon t, Taxon t2 WHERE t.label=t2.label and t.taxonAccordingTo=t2.taxonAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId")
 				.setLong("resourceId", resourceId)
 				.list();
 		for (Taxon tax : ambigousTaxa){

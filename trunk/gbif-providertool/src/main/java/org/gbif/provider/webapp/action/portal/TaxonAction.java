@@ -6,26 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.gbif.provider.geo.MapUtil;
 import org.gbif.provider.model.Annotation;
-import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.dto.CommonName;
-import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.AnnotationManager;
-import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.service.TreeNodeManager;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.NamespaceRegistry;
-import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -46,8 +39,6 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
     private String title;
     private List<Taxon> taxa;
     private List<Taxon> synonyms;
-    private List<CommonName> commonNames;
-    private List<Distribution> distributions;
     private List<StatsCount> stats;
     private List<Annotation> annotations;
     // xml/json serialisation only
@@ -101,8 +92,6 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
 	    				extensions.add(e);
 	    			}
 	    		}
-				commonNames = extensionRecordManager.getCommonNames(node.getCoreId());
-				distributions = extensionRecordManager.getDistributions(node.getCoreId());
 			}
         	// find annotations
         	annotations = annotationManager.getByRecord(node.getResourceId(), node.getGuid());
@@ -229,12 +218,6 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
 	}
 	public List<Extension> getExtensions() {
 		return extensions;
-	}
-	public List<CommonName> getCommonNames() {
-		return commonNames;
-	}
-	public List<Distribution> getDistributions() {
-		return distributions;
 	}
 	public void setQ(String q) {
 		this.q = q;

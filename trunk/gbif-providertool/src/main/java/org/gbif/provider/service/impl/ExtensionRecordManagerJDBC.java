@@ -26,13 +26,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.model.dto.CommonName;
-import org.gbif.provider.model.dto.Distribution;
+import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.service.ExtensionManager;
@@ -48,8 +47,8 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 	@Transactional(readOnly=false)
 	public void insertExtensionRecord(ExtensionRecord rec) {
 		String table = namingStrategy.extensionTableName(rec.getExtension());
-		String cols = "coreid, resource_fk, guid";
-		String vals = String.format("%s,%s,'%s'", rec.getCoreId(), rec.getResourceId(), rec.getGuid());
+		String cols = "resource_fk, source_id";
+		String vals = String.format("%s,'%s'", rec.getResourceId(), rec.getSourceId());
 		for (ExtensionProperty p : rec){
 			if (rec.getPropertyValue(p)!=null){
 				cols += String.format(",%s", namingStrategy.propertyToColumnName(p.getName()));
@@ -80,6 +79,37 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 	}
 
 	@Transactional(readOnly=false)
+	public int updateCoreIds(Extension extension, DataResource resource) {
+		String table = namingStrategy.extensionTableName(extension);
+		String coreTable = "darwin_core";
+		if (resource instanceof ChecklistResource){
+			coreTable="taxon";
+		}
+		String sql = String.format("update %s e set e.coreid=(select c.id from %s c where c.resource_fk=e.resource_fk and c.source_id=e.source_id) where e.resource_fk=%s", table, coreTable, resource.getId());
+		Connection cn = null;
+		int count = 0;
+		try {
+			cn=getConnection();
+			Statement st = cn.createStatement();			
+			count = st.executeUpdate(sql);
+			log.debug(String.format("Updated %s records with coreids for extension %s", count, extension.getName()));
+		} catch (SQLException e) {
+			log.error(String.format("Couldn't update coreids for extension %s", extension.getName()), e);
+		} finally {
+			if (cn!=null){
+//				try {
+//					cn.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+			}
+		}
+		//TODO: annotate extension records with unknown source IDs
+		//annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown source ID");
+		return count;	
+	}
+	
+	@Transactional(readOnly=false)
 	public int removeAll(Extension extension, Long resourceId) {
 		String table = namingStrategy.extensionTableName(extension);
 		String sql = String.format("delete from %s where resource_fk=%s", table, resourceId);
@@ -91,7 +121,7 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			count = st.executeUpdate(sql);
 			log.debug(String.format("Removed %s records for extension %s", count, extension.getName()));
 		} catch (SQLException e) {
-			log.error(String.format("Couldn't rmove all records for extension %s", extension.getName()));
+			log.error(String.format("Couldn't remove all records for extension %s", extension.getName()));
 			e.printStackTrace();
 		} finally {
 			if (cn!=null){
@@ -116,56 +146,6 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 		String sql = String.format("select count(distinct %s) from %s where resource_fk=%s", column, table, resourceId);
 		return executeCount(sql);
 	}
-	public List<CommonName> getCommonNames(Long taxonId) {
-		List<CommonName> cnames = new ArrayList<CommonName>();
-		String sql = String.format("SELECT name, language, region FROM TAX_COMMON_NAMES where coreid=%s", taxonId);
-		Connection cn = null;
-		try {
-			cn =  getConnection();
-			Statement st = cn.createStatement();			
-			ResultSet result = st.executeQuery(sql); 
-			// create extension records from JDBC resultset
-			while (result.next()){
-				cnames.add(new CommonName(result.getString("name"), result.getString("language"), result.getString("region")));
-			}
-		} catch (SQLException e) {
-			log.warn("Couldn't read common names");
-		} finally {
-			if (cn!=null){
-//				try {
-//					cn.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-			}
-		}
-		return cnames;
-	}
-	public List<Distribution> getDistributions(Long taxonId) {
-		List<Distribution> distributions = new ArrayList<Distribution>();
-		String sql = String.format("SELECT region, status FROM TAX_Description where coreid=%s", taxonId);
-		Connection cn = null;
-		try {
-			cn = getConnection();
-			Statement st = cn.createStatement();			
-			ResultSet result = st.executeQuery(sql); 
-			// create extension records from JDBC resultset
-			while (result.next()){
-				distributions.add(new Distribution(result.getString("region"), result.getString("status")));
-			}
-		} catch (SQLException e) {
-			log.warn("Couldn't read distributions");
-		} finally {
-			if (cn!=null){
-//				try {
-//					cn.close();
-//				} catch (SQLException e) {
-//					e.printStackTrace();
-//				}
-			}
-		}
-		return distributions;
-	}
 
 
 	private List<ExtensionRecord> getExtensionRecords(Extension extension, List<ExtensionProperty> properties, Long coreId, Long resourceId) {
@@ -187,7 +167,7 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			ResultSet result = st.executeQuery(sql); 
 			// create extension records from JDBC resultset
 			while (result.next()){
-				ExtensionRecord rec = new ExtensionRecord(result.getLong("coreid"), resourceId);
+				ExtensionRecord rec = new ExtensionRecord(resourceId, result.getLong("coreid"));
 				for (ExtensionProperty p : properties){
 					String value = result.getString(namingStrategy.propertyToColumnName(p.getName()));
 					if (value!=null){

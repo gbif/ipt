@@ -5,12 +5,7 @@
     <meta name="submenu" content="tax"/>
     <meta name="heading" content="${taxon.scientificName}"/>
 </head>
-	
-<style>
-</style>	
 
-<!--<h1>${taxon.scientificName}</h1>-->
-<!--<div class="horizontal_dotted_line_large"></div>-->
 <div class="break20"></div>
 <img class="taxDetailImg" src="${cfg.getResourceLogoUrl(resource_id)}" />
 
@@ -104,50 +99,6 @@
 			  <td><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&id=${syn.id?c}"/>'>${syn.scientificName}</a></td>
 			  <td>${syn.taxonomicStatus!}</td>
 			  <td>${syn.nomenclaturalStatus!}</td>
-			</tr>
-			</#list>
-		</table>
-	</fieldset>
-	<div class="horizontal_dotted_line_large_soft"></div>		
-</div>
-</#if>
-
-<#if (commonNames?size>0)>
-<div id="commonNames">
-	<fieldset>
-		<h2><@s.text name="taxon.commonNames"/></h2>
-		<table>
-			<tr>
-			  <th>Common Name</th>
-			  <th>Language</th>
-			  <th>Region</th>
-			</tr>
-			<#list commonNames as cn>	
-			<tr>
-			  <td>${cn.name!}</td>
-			  <td>${cn.lang!}</td>
-			  <td>${cn.region!}</td>
-			</tr>
-			</#list>
-		</table>
-	</fieldset>
-	<div class="horizontal_dotted_line_large_soft"></div>		
-</div>
-</#if>
-
-<#if (distributions?size>0)>
-<div id="distribution">
-	<fieldset>
-		<h2><@s.text name="taxon.distribution"/></h2>
-		<table>
-			<tr>
-			  <th>Region</th>
-			  <th>Status</th>
-			</tr>
-			<#list distributions as d>	
-			<tr>
-			  <td>${d.region!}</td>
-			  <td>${d.status!}</td>
 			</tr>
 			</#list>
 		</table>

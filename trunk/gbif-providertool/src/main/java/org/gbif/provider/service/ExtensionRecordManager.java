@@ -22,17 +22,14 @@ import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
-import org.gbif.provider.model.dto.CommonName;
-import org.gbif.provider.model.dto.Distribution;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
 
 public interface ExtensionRecordManager {
 	public ExtendedRecord extendCoreRecord(DataResource resource, CoreRecord coreRecord);
 	public List<ExtendedRecord> extendCoreRecords(DataResource resource, CoreRecord[] coreRecords);
-	public List<CommonName> getCommonNames(Long taxonId);
-	public List<Distribution> getDistributions(Long taxonId);
 	public void insertExtensionRecord(ExtensionRecord record);
+	public int updateCoreIds(Extension extension, DataResource resource);
 	/**
 	 * Delete all extension records for a given resource that are linked to a core record which is flagged as deleted
 	 * @param extension

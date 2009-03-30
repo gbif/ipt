@@ -8,6 +8,7 @@
 <p>To participate in the discussion and definition of this vocabulary please visit:<br/>
 ${vocabulary.link!"<em>not available</em>"}
 </p>
+<p>Download vocabulary as <a href="vocabularyExport.xml?id=${vocabulary.id?c}">thesaurus xml</a></p>
 
 <table class="vocabularyListTable">
 	<tr>
