@@ -30,6 +30,11 @@
         <level value="ERROR"/>
     </logger>
 
+    <!-- table tag -->
+    <logger name="org.displaytag">
+        <level value="WARN"/>
+    </logger>
+    
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
     <logger name="org.springframework.security">
         <level value="ERROR"/>
