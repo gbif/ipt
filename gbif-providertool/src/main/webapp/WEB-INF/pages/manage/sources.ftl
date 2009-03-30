@@ -4,6 +4,12 @@
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='sources.heading'/>"/>
+	<style>
+		.noBottomMargin{
+			padding:0px;
+			margin:0px;
+		}
+	</style>
 	<script>
 		function sourcePreview(sid){
 			var url = '<@s.url action="sourcePreview" namespace="/ajax"/>';
@@ -44,9 +50,9 @@ If your data does not exactly match those formats you have the option to configu
 
 <h2><@s.text name="sources.filesources"/></h2>
 <div class="horizontal_dotted_line_large_soft"></div>
-<fieldset class="noBottomMargin">
   <#list fileSources as fs>
 	<!-- source form -->
+	<fieldset class="noBottomMargin">
 	<@s.form action="updateSourceFile" method="post">
 	  <@s.hidden key="resource_id"/>
 	  <@s.hidden key="sid" value="${fs.id}"/>
@@ -72,9 +78,11 @@ If your data does not exactly match those formats you have the option to configu
 			</div>
 		</div>
 	</@s.form>
+	</fieldset>
   </#list>
 	
-	<!-- source upload -->
+<!-- source upload -->
+<fieldset class="noBottomMargin">
 	<div class="break2">
 	  <@s.form action="uploadSource" enctype="multipart/form-data" method="post">
 		<@s.hidden key="resource_id"/>

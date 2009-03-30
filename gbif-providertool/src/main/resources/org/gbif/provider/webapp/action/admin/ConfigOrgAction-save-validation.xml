@@ -1,17 +1,22 @@
 <!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
     "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
 <validators>
-    <field name="resource.title">
+    <field name="config.org.title">
         <field-validator type="requiredstring">
-            <message>Dataset title required</message>
+            <message>Organisation title required</message>
         </field-validator>
     </field>
-    <field name="resource.contactName">
+    <field name="config.orgNodeName">
+        <field-validator type="requiredstring">
+            <message>GBIF node required</message>
+        </field-validator>
+    </field>
+    <field name="config.org.contactName">
         <field-validator type="requiredstring">
             <message>Contact required</message>
         </field-validator>
     </field>
-    <field name="resource.contactEmail">
+    <field name="config.org.contactEmail">
         <field-validator type="requiredstring">
             <message>Email contact required</message>
         </field-validator>

@@ -15,6 +15,8 @@
 	${cfg.ipt.description}
 </div>
 
+<div class="newline"></div>
+
 <h3>Hosted resources</h3>
 <div class="horizontal_dotted_line_xlarge_soft"></div>
 <div style="height: 56px; clear: both"></div>
