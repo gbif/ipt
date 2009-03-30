@@ -131,6 +131,13 @@
 
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
 
+<p>
+Please select your registered organisation (the title form unlocks after all organisations have been downloaded from the GBIF registry), 
+or enter a new organisation in case you dont find yourself.
+Please enter the contact in charge of maintaining installations. 
+This contact will receive a password required for further configurations.
+If you have already selected an organisation but you want to enter a new one, please click the &quot;clear form&quot; link at the bottom.
+</p>
 
 <@s.form id="providerCfg" method="post">
 <fieldset>

@@ -104,6 +104,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		
 		Connection cn = getConnection();
 		String sql = String.format("update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.%s_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
+		log.debug(sql);
 		int i = 0;
 		try {
 			Statement st = cn.createStatement();
@@ -114,6 +115,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 				// select id from taxon where label in
 				// no taxa have been resolved. Try to use the verbose higher taxon name string to match
 				sql = String.format("update Taxon t set %s = (select max(tp.id) FROM taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.label = dwc.%s and tp.id!=t.id and tp.resource_fk = %s  GROUP BY tp.label  HAVING count(tp.id)=1 ) WHERE resource_fk = %s", jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
+				log.debug(sql);
 				st = cn.createStatement();
 				i = st.executeUpdate(sql);
 				log.debug(i+" taxa resolved via "+lookupColumn+".");
@@ -121,6 +123,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 			
 			// warn about taxa with non matching pointers
 			String hql = String.format("select t from Taxon t, DarwinCore dwc WHERE dwc.sourceId=t.sourceId and dwc.resource=t.resource and (dwc.%s is not null or dwc.%sID is not null) and t.%s is null and t.resource.id = :resourceId", lookupColumn, lookupColumn, fkColumn); 
+			log.debug(hql);
 			List<Taxon> corruptTaxa = query(hql)
 				.setLong("resourceId", resourceId)
 				.list();
