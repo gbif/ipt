@@ -100,8 +100,11 @@ public class ChecklistResource extends DataResource {
 	public List<String> getAdditionalIdentifiers(){
 		List<String> ids = super.getAdditionalIdentifiers();
 		ids.add("AcceptedTaxonID");
+		ids.add("AcceptedTaxon");
 		ids.add("HigherTaxonID");
+		ids.add("HigherTaxon");
 		ids.add("BasionymID");
+		ids.add("Basionym");
 		return ids;
 	}
 }

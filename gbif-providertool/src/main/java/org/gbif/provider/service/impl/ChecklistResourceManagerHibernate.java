@@ -99,7 +99,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 		String hql = "";
 		List<Object[]> taxBySth;
 		// count all terminal taxa. No matter what rank. Higher, non terminal taxa have occ_count=0, so we can include them without problem
-		hql = String.format("select t.rank, count(t)   from Taxon t   where t.resource.id=:resourceId  group by t.rank");		
+		hql = String.format("select t.taxonRank, count(t)   from Taxon t   where t.resource.id=:resourceId  group by t.taxonRank");		
         taxBySth = getSession().createQuery(hql)
         	.setParameter("resourceId", resourceId)
         	.list();

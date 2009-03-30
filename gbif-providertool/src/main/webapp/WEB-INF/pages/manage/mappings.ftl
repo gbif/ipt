@@ -45,7 +45,7 @@
 		 	<@s.select key="mappings.sources" name="sid" emptyOption="false" list="sources" listKey="id" listValue="name" theme="simple"/>
 		</div>
 		<div class="right">
-			<@s.submit cssClass="button right" key="button.save" />
+			<@s.submit cssClass="button right" key="button.configure" />
 		</div>
 	</#if>
 	  </@s.form>

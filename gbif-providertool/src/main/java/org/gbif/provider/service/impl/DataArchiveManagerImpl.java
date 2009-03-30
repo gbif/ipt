@@ -111,6 +111,11 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		data.put("resource", resource);
 		for (File f : archiveFiles.keySet()){
 			if (archiveFiles.get(f).isCore()){
+				if (resource instanceof ChecklistResource){
+					data.put("isChecklist", true);
+				}else {
+					data.put("isChecklist", false);
+				}
 				data.put("coreView", archiveFiles.get(f));
 				data.put("coreFilename", f.getName());
 			}else{
@@ -134,22 +139,17 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	}
 	private File dumpOccCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT dc.guid %s %s %s FROM Darwin_Core dc where dc.resource_fk=%s", OccurrenceResource.DWC_GUID_PROPERTY, buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());			
+		String select = String.format("SELECT guid, modified, link, source_id %s %s FROM Darwin_Core where resource_fk=%s", buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, select);
 	}
 	private File dumpTaxCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT guid %s %s %s FROM taxon where resource_fk=%s", ChecklistResource.DWC_GUID_PROPERTY, buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());
+		String select = String.format("SELECT guid, modified, link, source_id %s %s FROM taxon where resource_fk=%s", buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());
 		return dumpFile(file, select);
 	}
 	private File dumpExtension(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT coreid %s FROM %s where resource_fk=%s order by coreid", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
-		return dumpFile(file, select);
-	}
-	private File dumpTaxa(Long resourceId) throws IOException, SQLException{
-		File file = new File(cfg.getArchiveFile(resourceId).getParentFile(), "archive-extra-taxa.txt");
-		String select = String.format("select dc.LOCAL_ID as DwcLocalId, dc.guid as DwcGuid, t.GUID ,t.LABEL as ScientificName, t.RANK as DwcRank, acc.guid as acceptedTaxonGuid, acc.label acceptedTaxon, p.guid as parentTaxonGuid,  p.label parentTaxon,      dc.binomial, dc.higher_taxon_iD, dc.higher_taxon, dc.kingdom, dc.phylum, dc.classs, dc.orderrr, dc.family, dc.genus, dc.subgenus, dc.specific_epithet, dc.taxon_rank, dc.infraspecific_epithet, dc.scientific_name_authorship, dc.nomenclatural_code, dc.taxon_according_to, dc.name_published_in, dc.taxonomic_status, dc.nomenclatural_status, dc.accepted_taxon_iD, dc.accepted_taxon, dc.basionym_iD, dc.basionym     FROM taxon t left join taxon acc on t.accepted_taxon_fk = acc.id left join taxon p on t.parent_fk = p.id  left join darwin_core dc on dc.taxon_fk = t.id   where t.resource_fk=%s order by t.id", resourceId);		 
+		String select = String.format("SELECT guid %s FROM %s where resource_fk=%s order by guid", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
 		return dumpFile(file, select);
 	}
 	private String buildPropertySelect(List<String> propertyNames){
