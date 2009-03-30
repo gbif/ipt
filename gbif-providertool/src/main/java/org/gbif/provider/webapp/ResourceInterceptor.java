@@ -48,7 +48,7 @@ public class ResourceInterceptor extends AbstractInterceptor{
 				resourceId = Long.valueOf(requested_id.toString());
 				if (cacheManager.isBusy(resourceId)){
 					log.debug(String.format("Resource %s is busy. Issue resultname '%s'", resourceId, RESOURCE_BUSY));
-					return "resource-busy";
+					return RESOURCE_BUSY;
 				}
 			} catch (NumberFormatException e) {
 				// do nothing, aint no proper resource anyway

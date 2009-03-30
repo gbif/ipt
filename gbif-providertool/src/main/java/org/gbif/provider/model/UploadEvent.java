@@ -28,6 +28,7 @@ public class UploadEvent implements ResourceRelatedObject{
 	private Long id;
 	private Resource resource;
 	private Date executionDate;
+	private long duration;
 	private int emlVersion;
 	private int recordsUploaded;
 	private int recordsDeleted;
@@ -122,6 +123,13 @@ public class UploadEvent implements ResourceRelatedObject{
 		this.jobSourceType = jobSourceType;
 	}
 	
+	@Transient
+	public long getDuration() {
+		return duration;
+	}
+	public void setDuration(long duration) {
+		this.duration = duration;
+	}
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
@@ -161,6 +169,12 @@ public class UploadEvent implements ResourceRelatedObject{
 				.append("executionDate", this.executionDate).append(
 						"recordsAdded", this.recordsAdded).append(
 						"recordsDeleted", this.recordsDeleted).toString();
+	}
+	/**
+	 * set duration to ms since exec date and now
+	 */
+	public void setDuration() {
+		this.duration = new Date().getTime() - this.executionDate.getTime();
 	}
 	
 }
