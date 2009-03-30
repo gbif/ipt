@@ -25,6 +25,10 @@
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
 
 
+<p>
+
+</p>
+
 <@s.form id="providerCfg" method="post">
 
 <fieldset>

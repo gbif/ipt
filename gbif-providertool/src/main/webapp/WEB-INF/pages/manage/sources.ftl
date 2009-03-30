@@ -46,6 +46,7 @@ If your data does not exactly match those formats you have the option to configu
 <div class="horizontal_dotted_line_large_soft"></div>
 <fieldset class="noBottomMargin">
   <#list fileSources as fs>
+	<!-- source form -->
 	<@s.form action="updateSourceFile" method="post">
 	  <@s.hidden key="resource_id"/>
 	  <@s.hidden key="sid" value="${fs.id}"/>
@@ -73,6 +74,7 @@ If your data does not exactly match those formats you have the option to configu
 	</@s.form>
   </#list>
 	
+	<!-- source upload -->
 	<div class="break2">
 	  <@s.form action="uploadSource" enctype="multipart/form-data" method="post">
 		<@s.hidden key="resource_id"/>
