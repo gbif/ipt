@@ -33,8 +33,12 @@ The description image url should be a valid image URL that is being display on t
 <@s.form id="providerCfg" method="post">
 
 <fieldset>
-	<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
-	<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge"/>
+	<div class="leftxLarge">	
+		<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
+	</div>
+	<div class="leftxLarge">
+		<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge"/>
+	</div>
     <div>
         <div class="leftxhalf">
 			<@s.textfield key="config.ipt.contactName" required="true" cssClass="text large"/>
@@ -68,7 +72,9 @@ The description image url should be a valid image URL that is being display on t
 	<div style="clear:both">
 		<@s.textarea key="config.ipt.description" cssClass="text xlarge"/>
 	</div>
-	<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>	
+	<div class="leftxLarge">
+		<@s.textfield key="config.ipt.descriptionImage" required="false" cssClass="text xlarge"/>	
+	</div>
   </fieldset>
 
   <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
