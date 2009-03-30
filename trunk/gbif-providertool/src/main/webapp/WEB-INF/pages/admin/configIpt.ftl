@@ -68,7 +68,7 @@ The description image url should be a valid image URL that is being display on t
 	<div style="clear:both">
 		<@s.textarea key="config.ipt.description" cssClass="text xlarge"/>
 	</div>
-	<@s.textfield key="config.ipt.descriptionImage" required="false" cssClass="text xlarge"/>	
+	<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>	
   </fieldset>
 
   <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
