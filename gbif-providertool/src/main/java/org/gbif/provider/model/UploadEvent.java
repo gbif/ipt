@@ -123,7 +123,6 @@ public class UploadEvent implements ResourceRelatedObject{
 		this.jobSourceType = jobSourceType;
 	}
 	
-	@Transient
 	public long getDuration() {
 		return duration;
 	}

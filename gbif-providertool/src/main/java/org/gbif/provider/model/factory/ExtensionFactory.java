@@ -38,7 +38,7 @@ public class ExtensionFactory {
 	protected static Log log = LogFactory.getLog(ExtensionFactory.class);
 	protected static HttpClient httpClient =  new HttpClient(new MultiThreadedHttpConnectionManager());
 	@Autowired
-	protected ThesaurusManager thesaurusManager;
+	private ThesaurusManager thesaurusManager;
 	
 	
 	/**
@@ -228,5 +228,9 @@ public class ExtensionFactory {
 		digester.addCallParam("*/property", 0, "thesaurus");
 		digester.parse(is);
 		return urls;
+	}
+
+	public void setThesaurusManager(ThesaurusManager thesaurusManager) {
+		this.thesaurusManager = thesaurusManager;
 	}
 }

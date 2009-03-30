@@ -18,7 +18,8 @@ public enum AnnotationType {
 	UnknownVocTerm,
 	TrimmedData,	
 	HumanComment,	
-	AmbigousTaxon;
+	AmbigousTaxon,
+	BadPointer;
 
     public static final Map<String, String> htmlSelectMap;
 	static
