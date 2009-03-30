@@ -24,6 +24,7 @@ import org.hibernate.validator.NotNull;
 public class Annotation implements ResourceRelatedObject{
 	private Long id;
 	private String guid;
+	private String sourceId;
 	@NotNull
 	private Resource resource;
 	@NotNull
@@ -53,6 +54,14 @@ public class Annotation implements ResourceRelatedObject{
 	}
 	public void setGuid(String guid) {
 		this.guid = guid;
+	}
+	
+	@Column(length=128)
+	public String getSourceId() {
+		return sourceId;
+	}
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
 	}
 	
 	@ManyToOne

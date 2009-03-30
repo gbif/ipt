@@ -28,7 +28,7 @@ import org.gbif.provider.model.dto.ExtensionRecord;
 public interface ExtensionRecordManager {
 	public ExtendedRecord extendCoreRecord(DataResource resource, CoreRecord coreRecord);
 	public List<ExtendedRecord> extendCoreRecords(DataResource resource, CoreRecord[] coreRecords);
-	public void insertExtensionRecord(ExtensionRecord record);
+	public void insertExtensionRecord(DataResource resource, ExtensionRecord record);
 	public int updateCoreIds(Extension extension, DataResource resource);
 	/**
 	 * Delete all extension records for a given resource that are linked to a core record which is flagged as deleted

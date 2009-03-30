@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,7 +23,6 @@ import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Region;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.UploadEvent;
@@ -276,6 +273,9 @@ import org.springframework.transaction.annotation.Transactional;
 			annotationManager.annotateResource(resource, "Complete import took "+event.getDuration() + " ms");
 			event = uploadEventManager.save(event);			
 			
+			// update annotations with final GUID
+			annotationManager.updateCoreIds(resource);
+			
 			// update resource properties
 			resource.setLastUpload(event);
 			resource.setRecTotal(recordsUploaded);			
@@ -297,7 +297,7 @@ import org.springframework.transaction.annotation.Transactional;
 				annotationManager.annotateResource(resource, "Could not write DarwinCore archive. IOException");
 			} catch (Exception e) {
 				log.error("Could not create DarwinCore archive", e);
-				this.annotationManager.annotateResource(resource, "Could not create DarwinCore archive");
+				annotationManager.annotateResource(resource, "Could not create DarwinCore archive");
 			}
 			
 			//
@@ -505,7 +505,7 @@ import org.springframework.transaction.annotation.Transactional;
 						try {
 							ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
 							extensionRecordHandler(extRec);
-							extensionRecordManager.insertExtensionRecord(extRec);
+							extensionRecordManager.insertExtensionRecord(resource, extRec);
 						} catch (Exception e) {
 							e.printStackTrace();
 							currentErroneous.addAndGet(1);

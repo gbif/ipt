@@ -1,13 +1,19 @@
 package org.gbif.provider.service.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.Annotation;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.service.AnnotationManager;
 import org.hibernate.Session;
@@ -18,23 +24,23 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 	}
 
 	public Annotation annotate(CoreRecord record, AnnotationType type,String note) {
-		return annotate(record.getResource(), record.getGuid(), type.toString(), null, true, note);
+		return annotate(record.getResource(), record.getSourceId(), record.getGuid(), type.toString(), null, true, note);
 	}
 	public Annotation annotate(CoreRecord record, AnnotationType type, String actor, String note) {
-		return annotate(record.getResource(), record.getGuid(), type.toString(), actor, true, note);
+		return annotate(record.getResource(), record.getSourceId(), record.getGuid(), type.toString(), actor, true, note);
 	}
-	public Annotation annotate(Resource resource, String guid, AnnotationType type, String actor, String note) {
-		return annotate(resource, guid, type.toString(), actor, true, note);
+	public Annotation annotate(Resource resource, String sourceId, String guid, AnnotationType type, String actor, String note) {
+		return annotate(resource, sourceId, guid, type.toString(), actor, true, note);
 	}
 
 	
 	public Annotation annotate(CoreRecord record, String type, boolean removeDuringImport, String note) {
-		return annotate(record.getResource(), record.getGuid(), type, null, removeDuringImport, note);
+		return annotate(record.getResource(), record.getSourceId(), record.getGuid(), type, null, removeDuringImport, note);
 	}	
 	public Annotation annotate(CoreRecord record, String type, String actor, boolean removeDuringImport, String note) {
-		return annotate(record.getResource(), record.getGuid(), type, actor, removeDuringImport, note);
+		return annotate(record.getResource(), record.getSourceId(), record.getGuid(), type, actor, removeDuringImport, note);
 	}
-	public Annotation annotate(Resource resource, String guid, String type, String actor, boolean removeDuringImport, String note) {
+	public Annotation annotate(Resource resource, String sourceId, String guid, String type, String actor, boolean removeDuringImport, String note) {
 		Annotation anno = new Annotation();
 		anno.setResource(resource);
 		if (actor==null){
@@ -42,6 +48,7 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 		}
 		anno.setRemoveDuringImport(removeDuringImport);
 		anno.setCreator(actor);
+		anno.setSourceId(sourceId);
 		anno.setGuid(guid);
 		anno.setNote(note);
 		anno.setType(type);
@@ -53,11 +60,11 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 	}
 
 	public Annotation badDataType(CoreRecord record, String property, String dataType, String value){
-		return annotate(record.getResource(), record.getGuid(), AnnotationType.WrongDatatype, null, String.format("Couldnt transform value '%s' for property %s into %s value", value, property, dataType));
+		return annotate(record.getResource(), record.getSourceId(), record.getGuid(), AnnotationType.WrongDatatype, null, String.format("Couldnt transform value '%s' for property %s into %s value", value, property, dataType));
 	}
 
 	public Annotation annotateResource(Resource resource, String note) {
-		return annotate(resource, null, AnnotationType.Resource, null, note);
+		return annotate(resource, null, null, AnnotationType.Resource, null, note);
 	}
 
 	public Annotation badReference(CoreRecord record, String property, String refId, String note) {
@@ -65,27 +72,27 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 		if (note.length()>0){
 			note = ". "+note;
 		}
-		return annotate(record.getResource(), record.getGuid(), AnnotationType.BadReference, null, String.format("Couldn't find referenced %s id '%s'%s", property, refId, note));
+		return annotate(record.getResource(), record.getSourceId(), record.getGuid(), AnnotationType.BadReference, null, String.format("Couldn't find referenced %s id '%s'%s", property, refId, note));
 	}
-	public Annotation badCoreRecord(Resource resource, String localId, String note) {
+	public Annotation badCoreRecord(Resource resource, String sourceId, String note) {
 		note = StringUtils.trimToEmpty(note);
 		if (note.length()>0){
 			note = ". "+note;
 		}
-		if (localId==null){
-			localId="?";
+		if (sourceId==null){
+			sourceId="?";
 		}
-		return annotate(resource, null, AnnotationType.BadCoreRecord, null, String.format("Couldn't import core record with local id '%s'%s", localId, note));
+		return annotate(resource, sourceId, null, AnnotationType.BadCoreRecord, null, String.format("Couldn't import core record with local id '%s'%s", sourceId, note));
 	}
-	public Annotation badExtensionRecord(Resource resource, Extension extension, String localId, String note) {
+	public Annotation badExtensionRecord(Resource resource, Extension extension, String sourceId, String note) {
 		note = StringUtils.trimToEmpty(note);
 		if (note.length()>0){
 			note = ". "+note;
 		}
-		if (localId==null){
-			localId="?";
+		if (sourceId==null){
+			sourceId="?";
 		}
-		return annotate(resource, null, AnnotationType.BadExtensionRecord, null, String.format("Couldn't import %s extension record with local id '%s'%s", extension.getName(), localId, note));
+		return annotate(resource, sourceId, null, AnnotationType.BadExtensionRecord, null, String.format("Couldn't import %s extension record with local id '%s'%s", extension.getName(), sourceId, note));
 	}
 
 	
@@ -132,6 +139,29 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 		        .executeUpdate();
 		log.info(String.format("Removed %s annotations bound to resource %s", count, resource.getTitle()));
 		return count;
+	}
+
+	public int updateCoreIds(DataResource resource) {
+		String coreTable = "darwin_core";
+		if (resource instanceof ChecklistResource){
+			coreTable="taxon";
+		}
+		String sql = String.format("update annotation a set a.guid=(select c.id from %s c where c.resource_fk=a.resource_fk and c.source_id=a.source_id) where a.resource_fk=%s and a.source_id is not null and a.guid is null", coreTable, resource.getId());
+		Connection cn = null;
+		int count = 0;
+		try {
+			cn=getConnection();
+			Statement st = cn.createStatement();			
+			count = st.executeUpdate(sql);
+			log.debug(String.format("Updated %s annotations with guids", count));
+		} catch (SQLException e) {
+			log.error("Couldn't update annotations", e);
+		}
+		return count;	
+	}
+
+	public Annotation annotate(Resource resource, ExtensionRecord record, AnnotationType type, String note) {
+		return annotate(resource, record.getSourceId(), null, type, null, note);
 	}
 
 }

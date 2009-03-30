@@ -352,6 +352,9 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		@Transient
 		public String getPropertyValue(ExtensionProperty property){
 			String propName = property.getName();
+			if (propName.equals("Class")){
+				return null;
+			}
 			String getter = String.format("get%s", propName);
 			String value = null;
 			try {
@@ -361,15 +364,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 					value=obj.toString();
 				}
 			} catch (SecurityException e) {
-				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				e.printStackTrace();
 			}
 			return value;
 		}

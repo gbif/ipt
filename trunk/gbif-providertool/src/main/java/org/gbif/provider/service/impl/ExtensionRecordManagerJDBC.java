@@ -34,8 +34,11 @@ import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.dto.ExtendedRecord;
 import org.gbif.provider.model.dto.ExtensionRecord;
+import org.gbif.provider.model.voc.AnnotationType;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionRecordManager;
+import org.h2.jdbc.JdbcSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,16 +46,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements ExtensionRecordManager {	
     @Autowired
 	private ExtensionManager extensionManager;
+	@Autowired
+	protected AnnotationManager annotationManager;
 
 	@Transactional(readOnly=false)
-	public void insertExtensionRecord(ExtensionRecord rec) {
+	public void insertExtensionRecord(DataResource resource, ExtensionRecord rec) {
 		String table = namingStrategy.extensionTableName(rec.getExtension());
 		String cols = "resource_fk, source_id";
 		String vals = String.format("%s,'%s'", rec.getResourceId(), rec.getSourceId());
 		for (ExtensionProperty p : rec){
 			if (rec.getPropertyValue(p)!=null){
 				cols += String.format(",%s", namingStrategy.propertyToColumnName(p.getName()));
-				vals += String.format(",'%s'", rec.getPropertyValue(p));
+				String val = rec.getPropertyValue(p);
+				if (val.length() > p.getColumnLength() && p.getColumnLength() > 0){
+					val = val.substring(0, p.getColumnLength());
+					annotationManager.annotate(resource, rec.getSourceId(), null, AnnotationType.TrimmedData, null, String.format("Exceeding data for property %s [%s] cut off", p.getName(), p.getColumnLength()));
+				}
+				vals += String.format(",'%s'", val);
 			}
 		}
 		String sql = String.format("insert into %s (%s) VALUES (%s)", table, cols, vals);
@@ -61,6 +71,12 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 			cn=getConnection();
 			Statement st = cn.createStatement();
 			st.execute(sql);
+		} catch (JdbcSQLException e) {
+			if (e.getErrorCode()==90005){
+				System.out.println("YUPPIE YEAH!");
+			}else{
+				System.out.println("ERROR CODE:"+e.getErrorCode());
+			}
 		} catch (SQLException e) {
 			if (rec.getExtension()==null){
 				log.error(String.format("Couldn't insert record for extension=NULL", rec.getExtension()), e);

@@ -163,7 +163,20 @@ public class ExtensionMapping  implements BaseObject, Comparable<ExtensionMappin
 			return true;
 		}
 		return false;
-	}	
+	}
+	
+	@Transient
+	public boolean hasProperty(ExtensionProperty property) {
+		if (hasMappedProperty(property)){
+			return true;
+		}
+		// check if this is a core mapping with extra implicit dwc properties
+		if (this.isCore() && property.getExtension().equals(this.getExtension()) && this.getResource().getAdditionalIdentifiers().contains(property.getName())){
+			return true;
+		}
+		return false;
+	}
+
 	@Transient
 	public boolean hasMappedProperty(String propertyName) {
 		if (getPropertyMappingByName(propertyName)!=null){
