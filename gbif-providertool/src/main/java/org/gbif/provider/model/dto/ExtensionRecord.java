@@ -39,42 +39,47 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 	private Long coreId;
-	private String guid;
-	private Extension extension;
 	private Long resourceId;
+	private String sourceId;
+	private Extension extension;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 
 	public static ExtensionRecord newInstance(ImportRecord iRec){
-		ExtensionRecord extRec = new ExtensionRecord(iRec.getId(), iRec.getResourceId(), iRec.getGuid(), iRec.getProperties());
+		ExtensionRecord extRec = new ExtensionRecord(iRec.getResourceId(), iRec.getSourceId(), iRec.getProperties());
 		return extRec;
 	}
 	
-	public ExtensionRecord(Long coreId, Long resourceId) {
+	public ExtensionRecord(Long resourceId, String sourceId) {
 		super();
-		this.coreId = coreId;
 		this.resourceId = resourceId;
+		this.sourceId = sourceId;
 	}
-	public ExtensionRecord(Long coreId, Long resourceId, String guid, Map<ExtensionProperty, String> properties) {
+	public ExtensionRecord(Long resourceId, Long coreId) {
 		super();
-		this.coreId = coreId;
 		this.resourceId = resourceId;
-		this.guid = guid;
+		this.coreId = coreId;
+	}
+	public ExtensionRecord(Long resourceId, String sourceId, Map<ExtensionProperty, String> properties) {
+		super();
+		this.resourceId = resourceId;
+		this.sourceId = sourceId;
 		this.properties = properties;
 		}
-
-	/* (non-Javadoc)
-	 * @see org.gbif.provider.model.Record#getCoreId()
-	 */
-	public Long getCoreId() {
-		return coreId;
-	}
 
 	public Long getResourceId() {
 		return resourceId;
 	}
 
-	public String getGuid() {
-		return guid;
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public Long getCoreId() {
+		return coreId;
+	}
+
+	public void setCoreId(Long coreId) {
+		this.coreId = coreId;
 	}
 
 	public Extension getExtension(){
@@ -143,14 +148,14 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 			return false;
 		}
 		ExtensionRecord rhs = (ExtensionRecord) object;
-		return new EqualsBuilder().append(this.coreId, rhs.coreId).append(
+		return new EqualsBuilder().append(this.sourceId, rhs.sourceId).append(
 				this.properties, rhs.properties).isEquals();
 	}
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return new HashCodeBuilder(890875527, 2143130705).append(this.coreId)
+		return new HashCodeBuilder(890875527, 2143130705).append(this.sourceId)
 				.append(this.properties).toHashCode();
 	}
 	/**
@@ -158,7 +163,7 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 	 */
 	public String toString() {
 		return new ToStringBuilder(this).append("properties", this.properties)
-				.append("coreId", this.coreId).toString();
+				.append("coreId", this.sourceId).toString();
 	}
 	
 }

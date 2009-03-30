@@ -70,7 +70,11 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}
 		for (ExtensionMapping view : resource.getExtensionMappings()){
 			try{
-				archiveFiles.put(dumpExtension(view), view);
+				if (resource instanceof ChecklistResource){
+					archiveFiles.put(dumpTaxExtension(view), view);
+				}else{
+					archiveFiles.put(dumpOccExtension(view), view);
+				}
 			}catch (Exception e) {
 				annotationManager.annotateResource(resource, "Could not write data archive file for extension "+view.getExtension().getName() +" of resource "+resource.getTitle());				
 			}
@@ -91,16 +95,6 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		}
 		ZipUtil.zipFiles(files, archive);
 		
-		// also dump all taxa in a separate file
-//		try {
-//			File taxDump = dumpTaxa(resource.getId());
-//			files= new HashSet();
-//			files.add(taxDump);
-//			archive = new File(archive.getParentFile(), "archive-taxon.zip");
-//			ZipUtil.zipFiles(files, archive);
-//		} catch (SQLException e) {
-//			log.warn("Couldnt dump taxa for resource "+resource.getId(), e);
-//		}
 		return archive;		
 	}
 	
@@ -142,14 +136,19 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		String select = String.format("SELECT guid, modified, link, source_id %s %s FROM Darwin_Core where resource_fk=%s", buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());			
 		return dumpFile(file, select);
 	}
+	private File dumpOccExtension(ExtensionMapping view) throws IOException, SQLException{
+		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
+		String select = String.format("SELECT c.guid %s FROM %s e join darwin_core c on c.id=e.coreid where e.resource_fk=%s", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
+		return dumpFile(file, select);
+	}
 	private File dumpTaxCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
 		String select = String.format("SELECT guid, modified, link, source_id %s %s FROM taxon where resource_fk=%s", buildPropertySelect(view.getResource().getAdditionalIdentifiers()), buildPropertySelect(view), view.getResourceId());
 		return dumpFile(file, select);
 	}
-	private File dumpExtension(ExtensionMapping view) throws IOException, SQLException{
+	private File dumpTaxExtension(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT guid %s FROM %s where resource_fk=%s order by guid", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
+		String select = String.format("SELECT c.guid %s FROM %s e join taxon c on c.id=e.coreid where e.resource_fk=%s", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
 		return dumpFile(file, select);
 	}
 	private String buildPropertySelect(List<String> propertyNames){

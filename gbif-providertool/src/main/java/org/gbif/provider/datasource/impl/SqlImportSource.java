@@ -104,7 +104,7 @@ public class SqlImportSource extends ImportSourceBase{
 		ImportRecord row = null;
 		if (hasNext){
 			try {
-				row = new ImportRecord(resourceId, rs.getString(coreIdColumn), rs.getString(guidColumn));
+				row = new ImportRecord(resourceId, rs.getString(coreIdColumn));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
 				if (guidColumn != null){
 					row.setGuid(rs.getString(guidColumn));					

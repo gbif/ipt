@@ -16,19 +16,16 @@ public class ImportRecord  {
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 	private Extension extension;
 	private Long resourceId;
-	// for core record
-	private Long coreid;
 	private String sourceId;
 	private String guid;
 	private String link;
 
 	
 	
-	public ImportRecord(Long resourceId, String sourceId, String guid) {
+	public ImportRecord(Long resourceId, String sourceId) {
 		super();
 		this.sourceId = sourceId;
 		this.resourceId = resourceId;
-		this.guid = guid;
 	}
 	
 	public Map<ExtensionProperty, String> getProperties() {
@@ -65,16 +62,6 @@ public class ImportRecord  {
 		return extension;
 	}
 	
-	
-	// CORE RECORD
-	public Long getId() {
-		return coreid;
-	}
-
-	public void setId(Long id) {
-		this.coreid = id;
-	}	
-
 	public String getSourceId() {
 		return sourceId;
 	}

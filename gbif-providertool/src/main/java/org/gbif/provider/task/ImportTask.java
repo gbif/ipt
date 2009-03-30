@@ -84,7 +84,6 @@ import org.springframework.transaction.annotation.Transactional;
 		    higherGeography = Collections.unmodifiableList(regionTypes);  
 		  }
 		
-		private Map<String, Long> idMap = new HashMap<String, Long>();
 		private boolean extractHigherTaxonomy;
 		// keep track of the following statistics for UploadEvent
 		private UploadEvent event;
@@ -450,9 +449,6 @@ import org.springframework.transaction.annotation.Transactional;
 				// increase counter of added records
 				recordsAdded += 1;
 			}
-			
-			// the new darwin core id (managed by hibernate) used for all other extensions
-			idMap.put(record.getSourceId(), record.getId());
 
 			return record;
 		}
@@ -505,21 +501,15 @@ import org.springframework.transaction.annotation.Transactional;
 							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
 							continue;
 						}
-						Long coreId = idMap.get(rec.getSourceId());
-						rec.setId(coreId);
-						if (coreId == null){
-							annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown source ID");
-						}else{
-							// TODO: check if record has changed
-							try {
-								ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
-								extensionRecordHandler(extRec);
-								extensionRecordManager.insertExtensionRecord(extRec);
-							} catch (Exception e) {
-								e.printStackTrace();
-								currentErroneous.addAndGet(1);
-								annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown error: "+e.toString());
-							}
+						// TODO: check if record has changed
+						try {
+							ExtensionRecord extRec = ExtensionRecord.newInstance(rec);
+							extensionRecordHandler(extRec);
+							extensionRecordManager.insertExtensionRecord(extRec);
+						} catch (Exception e) {
+							e.printStackTrace();
+							currentErroneous.addAndGet(1);
+							annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Unkown error: "+e.toString());
 						}
 
 						// debug status
@@ -538,6 +528,10 @@ import org.springframework.transaction.annotation.Transactional;
 				annotationManager.annotateResource(resource, String.format("Couldn't open import source for extension %s. Extension skipped", extensionName));
 				log.error("Couldn't open import source for extension "+extensionName, e);
 			}
+						
+			// update extension with coreid
+			extensionRecordManager.updateCoreIds(extension, resource);
+			
 			return out;
 		}
 		
