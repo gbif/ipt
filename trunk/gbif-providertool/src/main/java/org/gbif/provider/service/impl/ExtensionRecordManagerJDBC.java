@@ -48,8 +48,8 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements Exten
 	@Transactional(readOnly=false)
 	public void insertExtensionRecord(ExtensionRecord rec) {
 		String table = namingStrategy.extensionTableName(rec.getExtension());
-		String cols = "coreid, resource_fk";
-		String vals = String.format("%s, %s", rec.getCoreId(), rec.getResourceId());
+		String cols = "coreid, resource_fk, guid";
+		String vals = String.format("%s,%s,'%s'", rec.getCoreId(), rec.getResourceId(), rec.getGuid());
 		for (ExtensionProperty p : rec){
 			if (rec.getPropertyValue(p)!=null){
 				cols += String.format(",%s", namingStrategy.propertyToColumnName(p.getName()));

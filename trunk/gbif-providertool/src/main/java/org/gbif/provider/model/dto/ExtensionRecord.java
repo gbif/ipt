@@ -39,12 +39,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 	private Long coreId;
+	private String guid;
 	private Extension extension;
 	private Long resourceId;
 	private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
 
 	public static ExtensionRecord newInstance(ImportRecord iRec){
-		ExtensionRecord extRec = new ExtensionRecord(iRec.getId(), iRec.getResourceId(), iRec.getProperties());
+		ExtensionRecord extRec = new ExtensionRecord(iRec.getId(), iRec.getResourceId(), iRec.getGuid(), iRec.getProperties());
 		return extRec;
 	}
 	
@@ -53,10 +54,11 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 		this.coreId = coreId;
 		this.resourceId = resourceId;
 	}
-	public ExtensionRecord(Long coreId, Long resourceId, Map<ExtensionProperty, String> properties) {
+	public ExtensionRecord(Long coreId, Long resourceId, String guid, Map<ExtensionProperty, String> properties) {
 		super();
 		this.coreId = coreId;
 		this.resourceId = resourceId;
+		this.guid = guid;
 		this.properties = properties;
 		}
 
@@ -69,6 +71,10 @@ public class ExtensionRecord implements Iterable<ExtensionProperty>, Record{
 
 	public Long getResourceId() {
 		return resourceId;
+	}
+
+	public String getGuid() {
+		return guid;
 	}
 
 	public Extension getExtension(){
