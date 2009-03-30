@@ -73,7 +73,7 @@ The description image url should be a valid image URL that is being display on t
 		<@s.textarea key="config.ipt.description" cssClass="text xlarge"/>
 	</div>
 	<div class="leftxLarge">
-		<@s.textfield key="config.ipt.descriptionImage" required="false" cssClass="text xlarge"/>	
+		<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
 	</div>
   </fieldset>
 
