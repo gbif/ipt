@@ -16,9 +16,10 @@
 	</p>
 <#else>
 	<p class="explMt">
-		Data in the IPT is organised along the <a href="">star schema</a>. 
-		There is a core, fixed table that you need to map your data to.
-		And there are a number of extension tables that you can optionally configure and the IPT administrator can define. 
+		Data in the IPT is organised along the <a href="#star">star schema</a>. 
+		There is a core, fixed table based on Darwin Core terms that you need to map your data to.
+		And there are a number of extension tables that you can optionally configure and the IPT administrator can define.
+		Each extension can hold multiple records for a single core record, e.g. you can publish many images for a species or occurrence. 
 	</p>
 </#if>
 			
@@ -102,3 +103,6 @@
 	</div>
 </@s.form>
 </div>
+
+<a name="star" />
+<img src="<@s.url value='/images/star_scheme.png'/>"/>

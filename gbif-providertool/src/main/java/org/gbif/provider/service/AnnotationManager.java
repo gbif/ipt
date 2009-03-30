@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.CoreRecord;
+import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.dto.ExtensionRecord;
 import org.gbif.provider.model.voc.AnnotationType;
 
 public interface AnnotationManager extends GenericResourceRelatedManager<Annotation>{
@@ -15,13 +17,14 @@ public interface AnnotationManager extends GenericResourceRelatedManager<Annotat
 	public List<Annotation> getByActor(Long resourceId, String actor);
 	public List<Annotation> getByLatest(Long resourceId, Date earliestDate);
 
-	public Annotation annotate(Resource resource, String guid, String type, String actor, boolean removeDuringImport, String note);
+	public Annotation annotate(Resource resource, String sourceId, String guid, String type, String actor, boolean removeDuringImport, String note);
 	public Annotation annotate(CoreRecord record, String type, String actor, boolean removeDuringImport, String note);
 	public Annotation annotate(CoreRecord record, String type, boolean removeDuringImport, String note);
 
-	public Annotation annotate(Resource resource, String guid, AnnotationType type, String actor, String note);
+	public Annotation annotate(Resource resource, String sourceId, String guid, AnnotationType type, String actor, String note);
 	public Annotation annotate(CoreRecord record, AnnotationType type, String actor, String note);
 	public Annotation annotate(CoreRecord record, AnnotationType type, String note);
+	public Annotation annotate(Resource resource, ExtensionRecord record, AnnotationType type, String note);
 	
 	public Annotation badDataType(CoreRecord record, String property, String dataType, String value);
 	public Annotation badReference(CoreRecord record, String property, String id, String note);
@@ -32,4 +35,6 @@ public interface AnnotationManager extends GenericResourceRelatedManager<Annotat
 
 	// annotations for the whole resource will result in guid=null
 	public Annotation annotateResource(Resource resource, String note);
+	
+	public int updateCoreIds(DataResource resource);
 }
