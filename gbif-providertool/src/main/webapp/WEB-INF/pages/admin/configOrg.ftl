@@ -142,10 +142,12 @@ If you have already selected an organisation but you want to enter a new one, pl
 <@s.form id="providerCfg" method="post">
 <fieldset>
     <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/>
-	<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external required"/>
+	<div class="leftxLarge">
+		<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external required"/>
+	</div>	
     <div>
-        <div class="leftxhalf">
-			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
+        <div class="leftMedium">
+			<@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text medium organisationKey"/>
         </div>
         <div class="left">
 			<@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external required"/>
