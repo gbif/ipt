@@ -105,6 +105,7 @@ In order to allow the IPT and the Geoserver to communicate to one another, it is
 
 This procedure will be explained with more details in the //Configuration// section of this document.
 
+For more information about the Geoserver, please refer to its own manual: http://geoserver.org/
 
 ++ Mac OS X (TM) test installation ++
 
@@ -148,6 +149,10 @@ This is the URL of the IPT. It is filled in by default with the local URL (http:
 ++++ IPT Base Directory ++++
 
 This field defines the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the //Update Geoserver// button. 
+
+++++ config.log4jFilename ++++
+
+[**//What is it? Should it be there? Not with this name in any case.//**]
 
 ++++ Google Maps API Key ++++
 
@@ -274,14 +279,16 @@ The User Profile page allows the administrator to add a new user or to edit or d
 To add a new user, the following fields must be filled in:
 
 : username
+  user's username
 : password 
   needs to be filled in twice for confirmation
 : e-mail
 : password hint
   will be e-mailed to the user who forgot his password
 : first name
+  user's first name
 : last name
-
+  user's last name
 
 The administrator must also apply some settings to the account:
 
@@ -302,14 +309,26 @@ Finally, the administrator must assign one or several roles to the account. The 
 : ROLE_MANAGER 
   the user is given manager rights and can manage the data recorded in the IPT. He can create, edit, delete, or publish data.
 : ROLE_USER 
-  the user role is the most basic role of the IPT. the user can explore the site and browse the published information.
+  the user role is the most basic role of the IPT. The user can explore the site and browse the published information. He can also annotate resources. [**//Is it so?, I have not managed to do it.//**]
+  
+  
+A visitor that is not logged in is considered to be an //anonymous user//. Such a user can explore the site and browse the published information.
 
+++ Resources ++
+
+This page displays a list of all resources that have been uploaded to the IPT. 
+
+In order to find the right resource, the administrator can order the list by clicking on the table headers. Resources can be ordered by title, date of modification, UUID or Type. A second click on the header will invert the order.
+
+The administrator can get more details about eache resource by clicking on its title. The administrator can then modify the UUID, the contact name and contact email. He also has access to the registered services. [**//What are they?//**]
 
 ++ Current Users ++
 
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 
 ++ Active Datasources ++
+
+This page displays a list of all the active datasources in the IPT.
 
 + Primary Occurences +
 
