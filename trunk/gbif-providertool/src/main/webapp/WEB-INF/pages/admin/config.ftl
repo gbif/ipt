@@ -9,9 +9,15 @@
 
 <@s.form id="providerCfg" action="config" method="post">
   <fieldset>
+  <div class="leftxlarge">
 	<@s.textfield key="config.baseUrl" required="true" cssClass="text xlarge"/>
+	</div>
+	<div class="leftxlarge">
 	<@s.textfield key="config.dataDir" disabled="true" cssClass="text xlarge"/>
+	</div>	
+	<div class="leftxlarge">	
 	<@s.submit cssClass="button" name="updateGeoserver" method="updateGeoserver" key="button.geoserver" theme="simple"/>
+	</div>
 	<div>
 	  <div class="leftMedium">
 		<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" cssClass="text medium"/>
@@ -34,8 +40,6 @@
 	<@s.textarea key="config.headerHtml" cssClass="text xlarge"/>
   </fieldset>
 <div class="horizontal_dotted_line_xlarge_soft_foo"></div>  
-
-
 <h2 class="modifiedh2"><@s.text name="config.geoserver"/></h2>
 <fieldset>
     <div>
