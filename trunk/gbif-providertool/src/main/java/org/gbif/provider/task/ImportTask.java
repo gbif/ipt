@@ -179,6 +179,10 @@ import org.springframework.transaction.annotation.Transactional;
 				log.info(String.format("Import closing took %s ms", (now.getTime()-lastLogDate.getTime())));
 				lastLogDate = now;
 				
+				String msg = String.format("Import closing took %s ms", (now.getTime()-lastLogDate.getTime()));
+				log.info(msg);
+				annotationManager.annotateResource(resource, msg);
+				
 			} catch (InterruptedException e) {
 				// thread was interrupted. Try to exit nicely by removing all potentially corrupt data.
 				prepare();
@@ -191,14 +195,21 @@ import org.springframework.transaction.annotation.Transactional;
 		
 
 		private void prepare() {
+			resource= loadResource();
+
+			// track import in upload event metadata (mainly statistics)
+			event = new UploadEvent();
+			event.setJobSourceId(this.hashCode());
+			event.setJobSourceType(taskTypeId());
+			event.setExecutionDate(new Date());
+			event.setResource(resource);
+
 			// prepare this instance
 			currentActivity="Preparing import";
 			currentProcessed = new AtomicInteger(0);
 			currentErroneous = new AtomicInteger(0);
 			
 			bbox=new BBox();
-
-			resource= loadResource();
 			
 			// call subclass handler first, might need to remove dependend records before removing the core records
 			prepareHandler(resource);
@@ -211,13 +222,6 @@ import org.springframework.transaction.annotation.Transactional;
 			recordsErroneous = null;
 			recordsChanged = 0;
 			recordsAdded = 0;
-
-			// track import in upload event metadata (mainly statistics)
-			event = new UploadEvent();
-			event.setJobSourceId(this.hashCode());
-			event.setJobSourceType(taskTypeId());
-			event.setExecutionDate(new Date());
-			event.setResource(resource);
 
 			// extract higher taxonomy or use pointers aka higherTaxonID?
 			if (resource.getCoreMapping().hasMappedProperty("HigherTaxonID") || resource.getCoreMapping().hasMappedProperty("HigherTaxon")){
@@ -243,6 +247,8 @@ import org.springframework.transaction.annotation.Transactional;
 			currentActivity = "Resolving basionyms";
 			taxonManager.lookupBasionymTaxa(getResourceId());
 
+			taxonManager.annotateAmbigousNames(getResourceId());
+			
 			// create nested set indices
 			currentActivity = "Creating taxonomy index";
 			taxonManager.buildNestedSet(getResourceId());
@@ -264,6 +270,7 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setRecordsDeleted(resource.getRecTotal()+recordsAdded-recordsUploaded);
 			event.setRecordsUploaded(recordsUploaded);		
 			event.setRecordsErroneous(recordsErroneous);
+			event.setDuration();
 			event = uploadEventManager.save(event);			
 			
 			// update resource properties

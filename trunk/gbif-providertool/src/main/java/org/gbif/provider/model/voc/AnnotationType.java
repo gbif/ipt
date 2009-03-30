@@ -17,7 +17,8 @@ public enum AnnotationType {
 	BadExtensionRecord,
 	UnknownVocTerm,
 	TrimmedData,	
-	HumanComment;	
+	HumanComment,	
+	AmbigousTaxon;
 
     public static final Map<String, String> htmlSelectMap;
 	static

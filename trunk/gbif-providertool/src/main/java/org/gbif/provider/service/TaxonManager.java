@@ -41,4 +41,11 @@ public interface TaxonManager extends CoreRecordManager<Taxon>, TreeNodeManager<
 	 * @return
 	 */
 	public List<Taxon> getByStatus(Long resourceId, Long taxonId, StatusType st, String status);
+	
+	/**
+	 * Create an annotations for each ambigous name, i.e. multiple taxa with the same ScientificName & taxonAccordingTo
+	 * @param resourceId
+	 * @return
+	 */
+	public int annotateAmbigousNames(Long resourceId);
 }

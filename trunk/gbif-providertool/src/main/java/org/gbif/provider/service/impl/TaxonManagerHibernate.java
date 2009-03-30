@@ -13,18 +13,23 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
+import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
+import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.StatsUtils;
 import org.hibernate.Query;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> implements TaxonManager {
 	private TreeNodeSupportHibernate<Taxon, Rank> treeNodeSupport;
+	@Autowired
+	private AnnotationManager annotationManager;
 
 	public TaxonManagerHibernate() {
 		super(Taxon.class);
@@ -115,6 +120,15 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 		}
 	}
 	
+	/**
+	 * 1. lookup matching columns with scientific_name & accordingTo having count=1 (avoid linking to ambigous names)
+	 * 2. annotate records with broken taxon pointers
+	 * @param resourceId
+	 * @param fkColumn
+	 * @param lookupColumn
+	 * @param useSourceId
+	 * @return
+	 */
 	private int lookupColumn(Long resourceId, String fkColumn, String lookupColumn, boolean useSourceId){
 		String dwcColumn = "scientific_name";
 		String taxColumn = "label";
@@ -142,6 +156,16 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 			log.debug("Setting parent taxa failed.", e);
 		}
 		return i;		
+	}
+	
+	public int annotateAmbigousNames(Long resourceId){
+		List<Taxon> ambigousTaxa = query("select t from Taxon t, Taxon t2 WHERE t.scientificName=t2.scientificName and t.taxonAccordingTo=t2.taxonAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId")
+				.setLong("resourceId", resourceId)
+				.list();
+		for (Taxon tax : ambigousTaxa){
+			annotationManager.annotate(tax, AnnotationType.AmbigousTaxon, String.format("Multiple taxa named '%s' according to '%s' found",tax.getScientificName(), tax.getTaxonAccordingTo()));
+		}
+		return ambigousTaxa.size();
 	}
 	public int countTreeNodes(Long resourceId) {
 		return treeNodeSupport.countTreeNodes(resourceId, getSession());

@@ -59,14 +59,7 @@
     
     
     <!-- Struts Interceptors -->
-    <bean id="managerInterceptor" class="org.appfuse.webapp.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles">
-            <list>
-                <value>ROLE_ADMIN</value>
-                <value>ROLE_MANAGER</value>
-            </list>
-        </property>
-    </bean>
+    <bean id="managerInterceptor" class="org.gbif.provider.webapp.ManagerInterceptor"/>
     
     <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
     
