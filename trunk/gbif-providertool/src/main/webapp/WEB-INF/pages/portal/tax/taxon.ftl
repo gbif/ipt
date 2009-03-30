@@ -25,13 +25,26 @@
 	<fieldset>
 		<h2>Basics</h2>
 		<table>	
+		
+			<tr>
+			  <th><@s.text name="taxon.taxonAccordingTo"/></th>
+			  <td>${taxon.taxonAccordingTo!}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.namePublishedIn"/></th>
+			  <td>${taxon.namePublishedIn!}</td>
+			</tr>
 			<tr>
 			  <th><@s.text name="taxon.code"/></th>
 			  <td>${taxon.nomenclaturalCode!}</td>
 			</tr>
 			<tr>
-			  <th><@s.text name="taxon.rank"/></th>
-			  <td>${taxon.rank!}</td>
+			  <th><@s.text name="taxon.taxonRank"/></th>
+			  <td>${taxon.taxonRank!}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.nomenclaturalStatus"/></th>
+			  <td>${taxon.nomenclaturalStatus!}</td>
 			</tr>
 			<tr>
 			  <th><@s.text name="taxon.taxonomicStatus"/></th>
@@ -40,20 +53,32 @@
 			<tr>
 			<#if taxon.getParent()??>
 			  <th><@s.text name="taxon.parent"/></th>
-			  <td><#if taxon.getParent()??><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&id=${taxon.getParent().id?c}"/>'>${(taxon.getParent().scientificName)!}</a></#if></td>
+			  <td><#if taxon.getParent()??><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&guid=${taxon.getHigherTaxonID()}"/>'>${taxon.getHigherTaxon()!}</a></#if></td>
 			</#if>
 			<#if taxon.getAcceptedTaxon()??>
 			  <th><@s.text name="taxon.accepted"/></th>
-			  <td><#if taxon.getAcceptedTaxon()??><a href="<@s.url value='/taxDetail.html?resource_id=${resource_id}&id=${taxon.getAcceptedTaxon().id?c}'/>">${(taxon.getAcceptedTaxon().scientificName)!}</a></#if></td>
+			  <td><#if taxon.getAcceptedTaxon()??><a href="<@s.url value='/taxDetail.html?resource_id=${resource_id}&guid=${taxon.getAcceptedTaxonID()}'/>">${taxon.getAcceptedTaxon()!}</a></#if></td>
+			</#if>
+			<#if taxon.getBasionym()??>
+			  <th><@s.text name="taxon.basionym"/></th>
+			  <td><#if taxon.getBasionym()??><a href="<@s.url value='/taxDetail.html?resource_id=${resource_id}&guid=${taxon.getBasionymID()}'/>">${taxon.getBasionym()!}</a></#if></td>
 			</#if>
 			</tr>
 			<tr>
-			  <th><@s.text name="taxon.nomenclaturalStatus"/></th>
-			  <td>${taxon.nomenclaturalStatus!}</td>
+			  <th><@s.text name="taxon.binomial"/></th>
+			  <td>${taxon.binomial!}</td>
 			</tr>
 			<tr>
-			  <th><@s.text name="taxon.basionym"/></th>
-			  <td>${(taxon.getBasionym().scientificName)!}</td>
+			  <th><@s.text name="taxon.specificEpithet"/></th>
+			  <td>${taxon.specificEpithet!}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.infraspecificEpithet"/></th>
+			  <td>${taxon.infraspecificEpithet!}</td>
+			</tr>
+			<tr>
+			  <th><@s.text name="taxon.scientificNameAuthorship"/></th>
+			  <td>${taxon.scientificNameAuthorship!}</td>
 			</tr>
 			<tr>
 			  <th><@s.text name="taxon.notes"/></th>

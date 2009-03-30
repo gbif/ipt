@@ -23,6 +23,7 @@ import org.gbif.provider.util.StatsUtils;
 import org.hibernate.Query;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,8 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	private TreeNodeSupportHibernate<Taxon, Rank> treeNodeSupport;
 	@Autowired
 	private AnnotationManager annotationManager;
+	@Autowired
+	private NamingStrategy namingStrategy;
 
 	public TaxonManagerHibernate() {
 		super(Taxon.class);
@@ -76,15 +79,15 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 
 	
 	public void lookupAcceptedTaxa(Long resourceId) {
-		lookupColumn(resourceId, "acc_fk", "accepted_taxon");
+		lookupColumn(resourceId, "acc", "acceptedTaxon");
 	}
 
 	public void lookupBasionymTaxa(Long resourceId) {
-		lookupColumn(resourceId, "bas_fk", "basionym");
+		lookupColumn(resourceId, "bas", "basionym");
 	}
 
 	public void lookupParentTaxa(Long resourceId) {
-		lookupColumn(resourceId, "parent_fk", "taxonomic_parent");
+		lookupColumn(resourceId, "parent", "higherTaxon");
 	}
 	
 	/**
@@ -96,8 +99,8 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	 * @return
 	 */
 	private int lookupColumn(Long resourceId, String fkColumn, String lookupColumn){
-		String jdbcLookupColumn = lookupColumn;
-		String jdbcFkColumn = fkColumn;
+		String jdbcLookupColumn = namingStrategy.propertyToColumnName(lookupColumn);
+		String jdbcFkColumn = fkColumn+"_fk";
 		
 		Connection cn = getConnection();
 		String sql = String.format("update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.%s_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
@@ -108,20 +111,21 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 			if (i>0){
 				log.debug(i+" taxa resolved via "+jdbcLookupColumn+" ID.");
 			}else{
+				// select id from taxon where label in
 				// no taxa have been resolved. Try to use the verbose higher taxon name string to match
-				sql = String.format("update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.label = dwc.%s and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s", jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
+				sql = String.format("update Taxon t set %s = (select max(tp.id) FROM taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.label = dwc.%s and tp.id!=t.id and tp.resource_fk = %s  GROUP BY tp.label  HAVING count(tp.id)=1 ) WHERE resource_fk = %s", jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
 				st = cn.createStatement();
 				i = st.executeUpdate(sql);
 				log.debug(i+" taxa resolved via "+lookupColumn+".");
 			}
 			
 			// warn about taxa with non matching pointers
-			String hql = String.format("select t from Taxon t WHERE (t.%s is not null or t.%sID is not null) and t.%s is null and t.resource.id = :resourceId", lookupColumn, lookupColumn, fkColumn); 
+			String hql = String.format("select t from Taxon t, DarwinCore dwc WHERE dwc.sourceId=t.sourceId and dwc.resource=t.resource and (dwc.%s is not null or dwc.%sID is not null) and t.%s is null and t.resource.id = :resourceId", lookupColumn, lookupColumn, fkColumn); 
 			List<Taxon> corruptTaxa = query(hql)
 				.setLong("resourceId", resourceId)
 				.list();
 			for (Taxon tax : corruptTaxa){
-				annotationManager.annotate(tax, AnnotationType.BadPointer, String.format("Taxon '%s' with broken pointer to %s",tax.getId(), tax.getScientificName(), lookupColumn));
+				annotationManager.annotate(tax, AnnotationType.BadPointer, String.format("Taxon:%s '%s' with broken %s pointer",tax.getSourceId(), tax.getScientificName(), lookupColumn));
 			}
 		} catch (SQLException e) {
 			log.debug("Resolving taxon "+lookupColumn+" failed.", e);
@@ -158,11 +162,11 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	public List<Taxon> getByRank(Long resourceId, Long taxonId, String rank){
 		Query query;
 		if (taxonId==null){
-			query = query("from Taxon WHERE rank = :rank and resource.id = :resourceId order by label")
+			query = query("from Taxon WHERE taxonRank = :rank and resource.id = :resourceId order by label")
 		        	.setLong("resourceId", resourceId)
 		        	.setString("rank", rank);
 		}else{
-			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.rank = :rank   order by t.label")
+			query = query("select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.taxonRank = :rank   order by t.label")
 		        	.setLong("taxonId", taxonId)
 		        	.setString("rank", rank);
 		}
@@ -193,7 +197,7 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon> imp
 	public List<StatsCount> getRankStats(Long taxonId) {
 		String hql = "";
 		List<Object[]> data;
-		hql = "select t.rank, count(t)   from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt   group by t.rank, t.type  order by t.type, t.rank";		
+		hql = "select t.taxonRank, count(t)   from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt   group by t.taxonRank, t.type  order by t.type, t.taxonRank";		
         data = getSession().createQuery(hql)
         	.setLong("taxonId", taxonId)
         	.list();

@@ -238,15 +238,18 @@ import org.springframework.transaction.annotation.Transactional;
 			currentErroneous.set(0);
 
 			// lookup parentID, basionymID and acceptedID
-			currentActivity = "Resolving higher taxa";
-			taxonManager.lookupParentTaxa(getResourceId());
+			if (!extractHigherTaxonomy){
+				currentActivity = "Resolving higher taxa";
+				taxonManager.lookupParentTaxa(getResourceId());
 
-			currentActivity = "Resolving accepted taxa";
-			taxonManager.lookupAcceptedTaxa(getResourceId());
+				currentActivity = "Resolving accepted taxa";
+				taxonManager.lookupAcceptedTaxa(getResourceId());
 
-			currentActivity = "Resolving basionyms";
-			taxonManager.lookupBasionymTaxa(getResourceId());
+				currentActivity = "Resolving basionyms";
+				taxonManager.lookupBasionymTaxa(getResourceId());
+			}
 
+			// annotate ambigous names, i.e. same name & accordingTo
 			taxonManager.annotateAmbigousNames(getResourceId());
 			
 			// create nested set indices
