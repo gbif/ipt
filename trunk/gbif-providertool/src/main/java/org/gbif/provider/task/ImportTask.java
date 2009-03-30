@@ -271,6 +271,7 @@ import org.springframework.transaction.annotation.Transactional;
 			event.setRecordsUploaded(recordsUploaded);		
 			event.setRecordsErroneous(recordsErroneous);
 			event.setDuration();
+			annotationManager.annotateResource(resource, "Complete import took "+event.getDuration() + " ms");
 			event = uploadEventManager.save(event);			
 			
 			// update resource properties
@@ -291,7 +292,7 @@ import org.springframework.transaction.annotation.Transactional;
 				log.info("DarwinCore archive created at "+archive.getAbsolutePath());
 			} catch (IOException e) {
 				log.error("Could not write DarwinCore archive", e);
-				this.annotationManager.annotateResource(resource, "Could not write DarwinCore archive. IOException");
+				annotationManager.annotateResource(resource, "Could not write DarwinCore archive. IOException");
 			} catch (Exception e) {
 				log.error("Could not create DarwinCore archive", e);
 				this.annotationManager.annotateResource(resource, "Could not create DarwinCore archive");

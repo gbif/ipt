@@ -36,7 +36,7 @@ public class ExtensionFactoryTest {
 	public void testBuildFromServer() {
 		try {
 			ExtensionFactory ef = new ExtensionFactory();
-			ef.thesaurusManager=new MockThesaurusManager();
+			ef.setThesaurusManager(new MockThesaurusManager());
 			Extension e = ef.build("http://gbrds.gbif.org/resources/extensions/vernacularName.xml");
 			
 			// no assertions as it relies on external sources...
