@@ -26,7 +26,8 @@
 
 
 <p>
-
+This description will be presented on the homepage. HTML markup is allowed in the description.
+The description image url should be a valid image URL that is being display on the homepage too.
 </p>
 
 <@s.form id="providerCfg" method="post">

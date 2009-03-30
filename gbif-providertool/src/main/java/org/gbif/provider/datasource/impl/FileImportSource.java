@@ -99,7 +99,7 @@ public class FileImportSource extends ImportSourceBase{
 		currentLine = reader.next();
 		if (hasNext()){
 			try {
-				row = new ImportRecord(resourceId, getCurrentValue(coreIdColumn));
+				row = new ImportRecord(resourceId, getCurrentValue(coreIdColumn), getCurrentValue(guidColumn));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
 				//
 				if (guidColumn != null){

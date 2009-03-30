@@ -24,10 +24,11 @@ public class ImportRecord  {
 
 	
 	
-	public ImportRecord(Long resourceId, String sourceId) {
+	public ImportRecord(Long resourceId, String sourceId, String guid) {
 		super();
 		this.sourceId = sourceId;
 		this.resourceId = resourceId;
+		this.guid = guid;
 	}
 	
 	public Map<ExtensionProperty, String> getProperties() {
