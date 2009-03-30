@@ -46,7 +46,7 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 	private String name;
 	private String namespace;
 	private String group;
-	private int columnLength;
+	private int columnLength = 255;  // sensible default
 	private String link;
 	private boolean required;
 	private ThesaurusVocabulary vocabulary;
