@@ -139,7 +139,7 @@
 <fieldset>
 	<h2>${ext.name}</h2>	
 	<table>	
-	<#list extWrapper.getExtensionRecords(ext) as eRec>
+	<#list rec.getExtensionRecords(ext) as eRec>
 		<#list eRec.properties as p>
 		 <tr>
 			<th>${p.name}</th>

@@ -34,10 +34,6 @@ public class Constants {
 	public static final Long TEST_TAXON_ID = 666l;
     // hacky, but needed for resource managers to calculate stats via setResourceStats
     public static final Long DARWIN_CORE_EXTENSION_ID = 1L;
-    public static final Long COMMON_NAME_EXTENSION_ID = 8L;
-    public static final Long COMMON_NAME_LANGUAGE_PROPERTY_ID = 424L;
-    public static final Long DISTRIBUTION_EXTENSION_ID = 11L;
-    public static final Long DISTRIBUTION_REGION_PROPERTY_ID = 435L;
     public static final String SCIENTIFIC_NAME_QUALNAME = "http://rs.tdwg.org/dwc/terms/ScientificName";
     public static final String RECENT_RESOURCES = "recentResources";
     public static final String DEFAULT_LOGO = "images/resource-logo.gif";

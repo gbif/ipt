@@ -144,24 +144,7 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 	}
 
 	public ChecklistResource setResourceStats(ChecklistResource resource) {
-		log.debug("Setting checklist resource stats");
-		Long resourceId = resource.getId();
 		super.setResourceStats(resource);
-		// checklist specific
-		for (ExtensionMapping em : resource.getExtensionMappings()){
-			if (em.getExtension().getId().equals(Constants.COMMON_NAME_EXTENSION_ID)){
-				resource.setNumCommonNames(extensionRecordManager.count(em.getExtension(), resourceId));
-				ExtensionProperty property = extensionPropertyManager.get(Constants.COMMON_NAME_LANGUAGE_PROPERTY_ID);
-				resource.setNumCommonNameLanguages(extensionRecordManager.countDistinct(property, resourceId));				
-			}
-			if (em.getExtension().getId().equals(Constants.DISTRIBUTION_EXTENSION_ID)){
-				resource.setNumDistributions(extensionRecordManager.count(em.getExtension(), resourceId));
-				ExtensionProperty property = extensionPropertyManager.get(Constants.DISTRIBUTION_REGION_PROPERTY_ID);
-				resource.setNumDistributionRegions(extensionRecordManager.countDistinct(property, resourceId));
-			}
-		}
-		// save stats
-//		this.save(resource);
 		return resource;
 	}
 

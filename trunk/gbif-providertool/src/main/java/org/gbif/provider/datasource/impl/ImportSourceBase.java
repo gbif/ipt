@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.datasource.ImportSource;
@@ -60,7 +61,7 @@ public abstract class ImportSourceBase implements ImportSource{
 	}
 	
 	protected String escapeRawValue(String val){
-		if (val==null){
+		if (StringUtils.trimToNull(val)==null){
 			return null;
 		}
 		return ESCAPE_PATTERN.matcher(val).replaceAll(" ");

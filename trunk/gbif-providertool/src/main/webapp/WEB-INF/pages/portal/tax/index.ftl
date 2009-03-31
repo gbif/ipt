@@ -139,24 +139,14 @@
 </div>
 
 <div id="tax-stats3" class="stats stat-table">
-	<label><@s.text name="stats.taxStats"/></label>
+	<label><@s.text name="stats.extensions"/></label>
 	<table class="lefthead">
+ 	  	<#list resource.getExtensionMappings() as e>
 		<tr>
-			<td>Common Names</td>
-			<td>${numCommonNames}</td>
+			<td>${e.extension.name}</td>
+			<td>${e.recTotal}</td>
 		</tr>
-		<tr>
-			<td>Common Name Languages</td>
-			<td>${numCommonNameLanguages}</td>
-		</tr>
-		<tr>
-			<td>Distributions</td>
-			<td>${numDistributions}</td>
-		</tr>
-		<tr>
-			<td>Distribution Regions</td>
-			<td>${numDistributionRegions}</td>
-		</tr>
+		</#list>
 	</table>
 </div>
 
