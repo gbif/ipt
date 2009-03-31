@@ -47,7 +47,7 @@ public class DwcAction extends BaseDataResourceAction {
         		id=dwc.getId();
     		}
     	}
-    	if(resource==null){
+    	if(resource==null && dwc!=null){
     		resource=dwc.getResource();
     		updateResourceType();
     	}

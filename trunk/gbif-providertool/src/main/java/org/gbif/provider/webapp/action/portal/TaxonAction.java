@@ -60,7 +60,7 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
         		id=node.getId();
     		}
     	}
-    	if(resource==null){
+    	if(resource==null & node!=null){
     		resource=node.getResource();
     		updateResourceType();
     	}

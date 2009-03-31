@@ -33,8 +33,10 @@
             <para>${eml.abstract!}</para>
         </abstract>
         <keywordSet>
+        	<keyword>IPT</keyword>
+        	<keyword>GBIF</keyword>
         	<#list eml.keywords as k>
-            <keyword>${k}</keyword>
+            <keyword>${k!""}</keyword>
             </#list>
         </keywordSet>
         <intellectualRights>
