@@ -6,7 +6,7 @@ import org.gbif.provider.model.BBox;
 
 public class GeoKeyword implements Serializable{
 	private String description;
-	private BBox boundingCoordinates;
+	private BBox boundingCoordinates = BBox.NewWorldInstance();
 	
 	
 	public String getDescription() {
