@@ -3,6 +3,14 @@
     <meta name="resource" content="${dwc.resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
+    <script>
+	$(document).ready(function(){
+		$("a#annotationToggle").click(function(e){
+			e.preventDefault();
+			$('#annotations').slideToggle('normal');
+		});    
+	});
+    </script>
 </head>
 
 

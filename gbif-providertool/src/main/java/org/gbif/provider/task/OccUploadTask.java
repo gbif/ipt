@@ -94,7 +94,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 			resource.setBbox(bbox);
 			
 			// reseed geowebcache
-			geoTools.updateGeowebcache(resource);
+			//geoTools.updateGeowebcache(resource);
 		}
 
 
