@@ -126,6 +126,6 @@
     
     
     <!-- FULL TEXT SEARCHING -->
-    <bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene" />
+    <bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene"/>
     
 </beans>

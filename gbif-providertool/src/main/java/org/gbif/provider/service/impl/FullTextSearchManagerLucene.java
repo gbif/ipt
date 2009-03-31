@@ -64,45 +64,6 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	protected String indexDirectoryName = "lucene";
 	
 	
-	private void openWriter() throws CorruptIndexException, LockObtainFailedException, IOException{
-		if (writer==null){
-			if (searcher!=null){
-				searcher.close();
-				searcher=null;
-			}
-			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
-		}
-	}
-	private void openSearcher() throws CorruptIndexException, IOException {
-		if (searcher==null){
-			if (writer!=null){
-				writer.optimize();
-				writer.close();
-				writer=null;
-			}
-			searcher = new IndexSearcher(IndexReader.open(indexDir));
-		}
-	}
-	public void init() {
-		indexDir = new File(cfg.getDataDir(), indexDirectoryName);
-		SAXParserFactory factory = SAXParserFactory.newInstance();		 
-		try {
-			saxParser=factory.newSAXParser();
-			openSearcher();
-		} catch (ParserConfigurationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SAXException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	public void destroy() {
 		if (searcher!=null){
 			try {
@@ -117,6 +78,41 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			} catch (IOException e) {
 				log.error("Error closing Lucene writer: " + e.getMessage(), e);
 			}
+		}
+	}
+	
+	private SAXParser getSAXParser() throws ParserConfigurationException, SAXException{
+		if (saxParser==null){
+			SAXParserFactory factory = SAXParserFactory.newInstance();		 
+			saxParser=factory.newSAXParser();
+			log.info("Lucene SAXParser created");
+		}
+		return saxParser;
+	}
+	private File getIndexDir(){
+		if (indexDir==null){
+			indexDir = new File(cfg.getDataDir(), indexDirectoryName);
+		}
+		return indexDir;
+	}
+	private void openWriter() throws CorruptIndexException, LockObtainFailedException, IOException{
+		if (writer==null){
+			if (searcher!=null){
+				searcher.close();
+				searcher=null;
+			}
+			writer = new IndexWriter(getIndexDir(), new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
+		}
+	}
+	
+	private void openSearcher() throws CorruptIndexException, IOException {
+		if (searcher==null){
+			if (writer!=null){
+				writer.optimize();
+				writer.close();
+				writer=null;
+			}
+			searcher = new IndexSearcher(IndexReader.open(getIndexDir()));
 		}
 	}
 
@@ -192,15 +188,15 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	    try {
 	    	File eml = cfg.getEmlFile(resourceId);
 			log.info("Building resource metadata text index for resource[" + resourceId + "]");
-			saxParser.parse(eml, handler);
+			getSAXParser().parse(eml, handler);
 			// make sure lucene writer is open. Reuse existing one if kept open
 	    	openWriter();
 			// if resource was indexed before remove the existing index document
-			Query query = new TermQuery(new Term(FIELD_ID, resourceId.toString()));
+			Query query = new TermQuery(new Term(FIELD_ID, resource.getGuid()));
 			writer.deleteDocuments(query);
 			// create new index document
 			Document doc = new Document();
-			doc.add(new Field(FIELD_ID, resourceId.toString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+			doc.add(new Field(FIELD_ID, resource.getGuid(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 			doc.add(new Field(FIELD_DATA, handler.getContent(), Field.Store.NO, Field.Index.ANALYZED));
 			// store publication status
 			String acl = resource.getCreator().getId().toString(); 
