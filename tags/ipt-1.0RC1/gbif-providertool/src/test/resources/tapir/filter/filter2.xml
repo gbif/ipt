@@ -1,8 +1,0 @@
-<template>
-	<filter>
-		<greaterThanOrEquals> 
-			<concept id="http://rs.tdwg.org/dwc/dwcore/ScientificName"/> 
-			<parameter name="lower"/> 
-		</greaterThanOrEquals> 
-	</filter>
-</template>
