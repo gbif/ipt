@@ -35,19 +35,19 @@ public interface FullTextSearchManager {
 	/**
 	 * @param resourceId To search within
 	 * @param q unparsed query string
-	 * @return List of core entity IDs
+	 * @return List of core entity GUIDs
 	 */
-	public List<Long> search(Long resourceId, String q);
+	public List<String> search(Long resourceId, String q);
 	
 	/** do full text search on metadata of all published resources
 	 * @param q unparsed query string
-	 * @return list of resourceIds matching
+	 * @return list of GUIDs matching
 	 */
-	public List<Long> search(String q);
+	public List<String> search(String q);
 	
 	/** do full text search on metadata of all resources accessible to a given user
 	 * @param q unparsed query string
-	 * @return list of resourceIds matching
+	 * @return list of GUIDs for resources matching
 	 */
-	public List<Long> search(String q, Long userId);
+	public List<String> search(String q, Long userId);
 }
