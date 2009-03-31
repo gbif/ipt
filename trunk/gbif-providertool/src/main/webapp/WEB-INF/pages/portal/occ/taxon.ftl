@@ -14,7 +14,12 @@
 		so.addVariable("bbox", "${geoserverMapBBox}");
 		so.addVariable("type", "wms");
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
-		so.write("occmap");	    
+		so.write("occmap");
+			    
+		$("a#annotationToggle").click(function(e){
+			e.preventDefault();
+			$('#annotations').slideToggle('normal');
+		});    
 	});
 	</script>
     

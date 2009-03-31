@@ -4,6 +4,14 @@
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>
     <meta name="heading" content="${taxon.scientificName}"/>
+    <script>
+	$(document).ready(function(){
+		$("a#annotationToggle").click(function(e){
+			e.preventDefault();
+			$('#annotations').slideToggle('normal');
+		});    
+	});
+    </script>
 </head>
 
 <div class="break20"></div>
