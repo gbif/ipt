@@ -41,6 +41,30 @@
             <email>mdoering@gbif.org</email>
             <timezone>+1</timezone>
         </developer>
+        <developer>
+            <id>timrobertson100</id>
+            <name>Tim Robertson</name>
+            <email>trobertson@gbif.org</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>jatorre</id>
+            <name>Javier de la Torre</name>
+            <email>jatorre@vizzuality.com</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>saleiva</id>
+            <name>Sergio Alvarez Leiva</name>
+            <email>saleiva@gmail.com</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>mdoering</id>
+            <name>Markus Döring</name>
+            <email>mdoering@gbif.org</email>
+            <timezone>+1</timezone>
+        </developer>
     </developers>
     
     <build>
