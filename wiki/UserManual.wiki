@@ -80,7 +80,7 @@ Tomcat installation
   # Download a binary distribution of Tomcat from http://tomcat.apache.org/download-55.cgi.
   # Unpack the binary distribution into a location of your choice (e.g. C:\apache-tomcat-5.5.27)
   # Open a command prompt window and navigate to the installation folder.
-  # Mac OS only: some files need to have their permissions adapted: type sudo chmod 775 '*' at the command line. You will be asked your administrative password.
+  # Mac OS only: some files need to have their permissions adapted: type sudo chmod 775 `*` at the command line. You will be asked your administrative password.
   # go to the bin folder and execute startut.bat (MS Windows (TM)) or startup.sh (Mac OS (TM)). A new Tomcat window will open. You need to keep this window open.
 
 Tomcat configuration
