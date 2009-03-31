@@ -152,7 +152,7 @@
    <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ALA" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="A+00:00" dc:URI="http://iso.org/iso3166#A+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="AZ" dc:URI="http://iso.org/iso3166#AZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="AZERBAIJAN" xml:lang="en"/>
   </preferred>
@@ -332,7 +332,7 @@
    <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BLR" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="B+00:00" dc:URI="http://iso.org/iso3166#B+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="BZ" dc:URI="http://iso.org/iso3166#BZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BELIZE" xml:lang="en"/>
   </preferred>
@@ -494,7 +494,7 @@
    <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CY" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="C+00:00" dc:URI="http://iso.org/iso3166#C+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="CZ" dc:URI="http://iso.org/iso3166#CZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CZECH REPUBLIC" xml:lang="en"/>
   </preferred>
@@ -548,7 +548,7 @@
    <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="DO" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="D+00:00" dc:URI="http://iso.org/iso3166#D+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="DZ" dc:URI="http://iso.org/iso3166#DZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ALGERIA" xml:lang="en"/>
   </preferred>
@@ -1115,7 +1115,7 @@
    <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KY" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="K+00:00" dc:URI="http://iso.org/iso3166#K+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="KZ" dc:URI="http://iso.org/iso3166#KZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KAZAKHSTAN" xml:lang="en"/>
   </preferred>
@@ -1414,7 +1414,7 @@
    <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MYS" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="M+00:00" dc:URI="http://iso.org/iso3166#M+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="MZ" dc:URI="http://iso.org/iso3166#MZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MOZAMBIQUE" xml:lang="en"/>
   </preferred>
@@ -1522,7 +1522,7 @@
    <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NU" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="N+00:00" dc:URI="http://iso.org/iso3166#N+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="NZ" dc:URI="http://iso.org/iso3166#NZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NEW ZEALAND" xml:lang="en"/>
   </preferred>
@@ -1882,7 +1882,7 @@
    <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SY" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="S+00:00" dc:URI="http://iso.org/iso3166#S+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="SZ" dc:URI="http://iso.org/iso3166#SZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SWAZILAND" xml:lang="en"/>
   </preferred>
@@ -2026,7 +2026,7 @@
    <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TWN" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="T+00:00" dc:URI="http://iso.org/iso3166#T+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="TZ" dc:URI="http://iso.org/iso3166#TZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TANZANIA, UNITED REPUBLIC OF" xml:lang="en"/>
   </preferred>
@@ -2080,7 +2080,7 @@
    <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="UY" xml:lang="en"/>
   </alternative>
  </concept>
- <concept dc:identifier="U+00:00" dc:URI="http://iso.org/iso3166#U+00:00"  dc:issued="2008-12-18T04:39:51+00:00">
+ <concept dc:identifier="UZ" dc:URI="http://iso.org/iso3166#UZ"  dc:issued="2008-12-18T04:39:51+00:00">
   <preferred>
    <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UZBEKISTAN" xml:lang="en"/>
   </preferred>
