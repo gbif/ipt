@@ -19,6 +19,7 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
+import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.model.xml.NewRegistryEntryHandler;
 import org.gbif.provider.model.xml.ResourceMetadataHandler;
@@ -56,6 +57,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
                 new NameValuePair("name", StringUtils.trimToEmpty(cfg.getOrg().getTitle())),
                 new NameValuePair("description", StringUtils.trimToEmpty(cfg.getOrg().getDescription())),
                 new NameValuePair("homepageURL", StringUtils.trimToEmpty(cfg.getOrg().getLink())),
+                new NameValuePair("primaryContactType", ContactType.technical.name()),
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
         };
@@ -117,10 +119,10 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		// registering IPT resource
         NameValuePair[] data = {
                 new NameValuePair("organisationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
-                new NameValuePair("organizationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
                 new NameValuePair("name", StringUtils.trimToEmpty(meta.getTitle())), // name
                 new NameValuePair("description", StringUtils.trimToEmpty(meta.getDescription())), // description
                 new NameValuePair("homepageURL", StringUtils.trimToEmpty(meta.getLink())),
+                new NameValuePair("primaryContactType", ContactType.administrative.name()),
                 new NameValuePair("primaryContactName", StringUtils.trimToEmpty(meta.getContactName())),
                 new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(meta.getContactEmail()))
         };

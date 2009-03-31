@@ -11,6 +11,9 @@
 		});    
 	});
     </script>
+    <style>
+	    th{padding-right:15px;}
+    </style>
 </head>
 
 
