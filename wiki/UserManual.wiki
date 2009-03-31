@@ -264,11 +264,13 @@ username:user’s username password:needs to be filled in twice for confirmation
 
 The administrator must also apply some settings to the account:
 
-Enabled:the account is enabled and ready to be used Expired:the account is not valid anymore and cannot be used to login to the IPT Locked:the account is locked and cannot be used to login to the IPT PasswordExpired: the user must change his password next time he logs in.
+Enabled: the account is enabled and ready to be used Expired:the account is not valid anymore and cannot be used to login to the IPT Locked:the account is locked and cannot be used to login to the IPT PasswordExpired: the user must change his password next time he logs in.
 
 Finally, the administrator must assign one or several roles to the account. The following roles are available:
 
-ROLE_ADMINthe user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. He can also manage the data recorded in the IPT. The administrator supersedes all the other roles and can do anything any other role can do. ROLE_MANAGERthe user is given manager rights and can manage the data recorded in the IPT. He can create, edit, delete, or publish data. ROLE_USERthe user role is the most basic role of the IPT. The user can explore the site and browse the published information. He can also annotate resources.
+ROLE_ADMIN the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. He can also manage the data recorded in the IPT. The administrator supersedes all the other roles and can do anything any other role can do.
+ROLE_MANAGER the user is given manager rights and can manage the data recorded in the IPT. He can create, edit, delete, or publish data.
+ROLE_USER the user role is the most basic role of the IPT. The user can explore the site and browse the published information. He can also annotate resources.
 
 A visitor that is not logged in is considered to be an anonymous user. Such a user can explore the site and browse the published information.
 
