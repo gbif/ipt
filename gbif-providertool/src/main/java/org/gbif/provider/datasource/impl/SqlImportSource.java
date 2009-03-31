@@ -104,22 +104,22 @@ public class SqlImportSource extends ImportSourceBase{
 		ImportRecord row = null;
 		if (hasNext){
 			try {
-				row = new ImportRecord(resourceId, rs.getString(coreIdColumn));
+				row = new ImportRecord(resourceId, escapeRawValue(rs.getString(coreIdColumn)));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
 				if (guidColumn != null){
-					row.setGuid(rs.getString(guidColumn));					
+					row.setGuid(escapeRawValue(rs.getString(guidColumn)));					
 				}
 				if (linkColumn != null){
 					if (linkTemplate.contains(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER)){
 						row.setLink( linkTemplate.replace(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER, rs.getString(linkColumn)) );
 					}else{
-						row.setLink(rs.getString(linkColumn));
+						row.setLink(escapeRawValue(rs.getString(linkColumn)));
 					}
 				}
 		    	for (PropertyMapping pm : properties){
 		    		if (pm.getColumn() != null && pm.getColumn() != null && !pm.getColumn().startsWith("#")){
 		    			String column = pm.getColumn();
-	    				String val = rs.getString(column);
+	    				String val = escapeRawValue(rs.getString(column));
 	    				// lookup value in term mapping map
 	    				if (vocMap.containsKey(column)){
 	    					if (vocMap.get(column).containsKey(val)){

@@ -65,12 +65,12 @@ public class FileImportSource extends ImportSourceBase{
 		SourceFile src = (SourceFile) view.getSource();
     	// try to setup FileReader
 		try {
-			this.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()));
 			Integer i = 0;
 			for (String h : sourceInspectionManager.getHeader(src)){
 				this.headerMap.put(h, i);
 				i++;
 			}
+			this.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()), !src.hasHeaders());
 		} catch (Exception e) {
 			throw new ImportSourceException("Cant read source file "+src.getFilename(), e);
 		}
@@ -89,15 +89,15 @@ public class FileImportSource extends ImportSourceBase{
 
 	private String getCurrentValue(String columnName){
 		if (headerMap.containsKey(columnName)){
-			return currentLine[headerMap.get(columnName)];
+			return escapeRawValue(currentLine[headerMap.get(columnName)]);
 		}else{
 			return null;
 		}
 	}
 	public ImportRecord next() {
 		ImportRecord row = null;
-		currentLine = reader.next();
 		if (hasNext()){
+			currentLine = reader.next();
 			try {
 				row = new ImportRecord(resourceId, getCurrentValue(coreIdColumn));
 				//TODO: the mapping that takes place here should probably be done with a separate mapping class
