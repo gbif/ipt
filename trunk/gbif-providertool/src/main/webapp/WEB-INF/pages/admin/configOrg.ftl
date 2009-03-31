@@ -16,6 +16,7 @@
 	-->
 	var orgs;
 	function udpateNodeList(data){
+		$("#nodeLoading").hide();
 	  <#if !config.isOrgRegistered()>
 		$("#orgNodeName").removeAttr("readonly");
 	  </#if>        
@@ -37,6 +38,7 @@
 		});
 	}
 	function udpateOrgList(data){
+		$("#orgLoading").hide();
 		$("#orgTitle").removeAttr("readonly").autocomplete(data, {
 			width:340, 
 			minChars:1, 
@@ -126,6 +128,18 @@
 	});
 	
 	</script>
+	<style>
+		#orgLoading{
+			position: relative;
+			bottom: 26px;
+			left: 12px;
+		}
+		#nodeLoading{
+			position: relative;
+			bottom: 26px;
+			left: 12px;
+		}
+	</style>
 </head>
 
 
@@ -144,6 +158,7 @@ If you have already selected an organisation but you want to enter a new one, pl
     <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/>
 	<div class="leftxLarge">
 		<@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external required"/>
+		<span id="orgLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
 	</div>	
     <div>
         <div class="leftxhalf">
@@ -151,10 +166,11 @@ If you have already selected an organisation but you want to enter a new one, pl
         </div>
         <div class="left">
 			<@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external required"/>
+			<span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
 		    <@s.hidden id="orgNodeKey" key="config.orgNode" cssClass="external"/>
         </div>
         <div>
-			<@s.textfield id="orgPassword" key="config.orgPassword" required="true" cssClass="text medium"/>
+			<@s.textfield id="orgPassword" key="config.orgPassword" required="false" cssClass="text medium"/>
         </div>
 	</div>
     <div>
@@ -162,7 +178,7 @@ If you have already selected an organisation but you want to enter a new one, pl
 			<@s.textfield id="orgName" key="config.org.contactName" required="true" cssClass="text large external required"/>
         </div>
         <div  class="leftxhalf">
-			<@s.textfield id="orgEmail" key="config.org.contactEmail" required="true" cssClass="text large external required"/>
+			<@s.textfield id="orgEmail" key="config.org.contactEmail" required="true" cssClass="text large external required email"/>
         </div>
 	</div>
 	<@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
