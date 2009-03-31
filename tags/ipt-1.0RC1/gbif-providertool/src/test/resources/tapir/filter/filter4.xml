@@ -1,0 +1,7 @@
+<template>
+	<filter>
+		<isNull>
+		  <concept id="http://wixner.org/friend/count" />
+		</isNull>
+	</filter>
+</template>
