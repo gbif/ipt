@@ -156,6 +156,12 @@ public class ExtensionFactory {
 		digester.addCallMethod("*/property", "setQualName", 1);
 		digester.addCallParam("*/property", 0, "qualName");
 
+		digester.addCallMethod("*/property", "setName", 1);
+		digester.addCallParam("*/property", 0, "name");
+		
+		digester.addCallMethod("*/property", "setNamespace", 1);
+		digester.addCallParam("*/property", 0, "namespace");
+
 		digester.addCallMethod("*/property", "setRequired", 1);
 		digester.addCallParam("*/property", 0, "required");
 		
