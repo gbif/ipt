@@ -3,6 +3,7 @@
 <head>
     <title><fmt:message key="login.title"/></title>
     <meta name="menu" content="Login"/> 
+	<%@ include file="/scripts/login.js"%>
 </head>
 
 <style>
@@ -64,5 +65,4 @@
 <div class="break" style="clear: both;"></div>
 </div>
 
-<%@ include file="/scripts/login.js"%>
 </body>
