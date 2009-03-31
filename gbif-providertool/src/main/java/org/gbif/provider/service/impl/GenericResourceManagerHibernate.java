@@ -130,7 +130,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		fullTextSearchManager.buildResourceIndex(resourceId);
 		try {
 			registryManager.deleteResource(resource);
-		} catch (RegistryException e) {
+		} catch (Exception e) {
 			log.warn("Failed to remove resource from registry", e);
 		}
 	}

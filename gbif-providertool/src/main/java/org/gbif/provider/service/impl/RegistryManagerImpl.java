@@ -116,6 +116,11 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	}
 
 	private String registerResource(ResourceMetadata meta) throws RegistryException{
+		if (!cfg.isOrgRegistered()){
+			String msg = "Organisation is not registered. Cannot register resources";
+			log.warn(msg);
+			throw new RegistryException(msg);
+		}
 		// registering IPT resource
         NameValuePair[] data = {
                 new NameValuePair("organisationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
@@ -150,7 +155,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 	private String registerService(String resourceKey, ServiceType serviceType, String accessPointURL) throws RegistryException{
 		NameValuePair[] data = {
                 new NameValuePair("resourceKey", StringUtils.trimToEmpty(resourceKey)),
-                new NameValuePair("accessPointType", serviceType.code),
+                new NameValuePair("type", serviceType.code),
                 new NameValuePair("accessPointURL", StringUtils.trimToEmpty(accessPointURL))
         };
         String result = executePost(cfg.getRegistryServiceUrl(),  data, true);
@@ -306,20 +311,20 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		if (!cfg.isIptRegistered()){
 			String msg = "IPT is not registered. Cannot update";
 			log.warn(msg);
-    		throw new IllegalStateException(msg);
+		}else{
+			setRegistryCredentials();
+	        NameValuePair[] data = {
+	                new NameValuePair("name", StringUtils.trimToEmpty(cfg.getIpt().getTitle())),
+	                new NameValuePair("description", StringUtils.trimToEmpty(cfg.getIpt().getDescription())),
+	                new NameValuePair("homepageURL", StringUtils.trimToEmpty(cfg.getIpt().getLink())),
+	                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getIpt().getContactName())),
+	                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getIpt().getContactEmail()))
+	        };
+	        String result = executePost(getIptUri(),  data, true);
+	        if (result==null){
+	    		throw new RegistryException("Bad registry response");
+	        }
 		}
-		setRegistryCredentials();
-        NameValuePair[] data = {
-                new NameValuePair("name", StringUtils.trimToEmpty(cfg.getIpt().getTitle())),
-                new NameValuePair("description", StringUtils.trimToEmpty(cfg.getIpt().getDescription())),
-                new NameValuePair("homepageURL", StringUtils.trimToEmpty(cfg.getIpt().getLink())),
-                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getIpt().getContactName())),
-                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getIpt().getContactEmail()))
-        };
-        String result = executePost(getIptUri(),  data, true);
-        if (result==null){
-    		throw new RegistryException("Bad registry response");
-        }
 	}
 
 
@@ -327,21 +332,21 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		if (!cfg.isOrgRegistered()){
 			String msg = "Organisation is not registered. Cannot update";
 			log.warn(msg);
-    		throw new IllegalStateException(msg);
+		}else{
+			setRegistryCredentials();
+	        NameValuePair[] data = {
+	                //new NameValuePair("nodeKey", StringUtils.trimToEmpty(cfg.getOrgNode())),
+	                new NameValuePair("name", StringUtils.trimToEmpty(cfg.getOrg().getTitle())),
+	                new NameValuePair("description", StringUtils.trimToEmpty(cfg.getOrg().getDescription())),
+	                new NameValuePair("homepageURL", StringUtils.trimToEmpty(cfg.getOrg().getLink())),
+	                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
+	                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
+	        };
+	        String result = executePost(getOrganisationUri(),  data, true);
+	        if (result==null){
+	    		throw new RegistryException("Bad registry response");
+	        }
 		}
-		setRegistryCredentials();
-        NameValuePair[] data = {
-                //new NameValuePair("nodeKey", StringUtils.trimToEmpty(cfg.getOrgNode())),
-                new NameValuePair("name", StringUtils.trimToEmpty(cfg.getOrg().getTitle())),
-                new NameValuePair("description", StringUtils.trimToEmpty(cfg.getOrg().getDescription())),
-                new NameValuePair("homepageURL", StringUtils.trimToEmpty(cfg.getOrg().getLink())),
-                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(cfg.getOrg().getContactName())),
-                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(cfg.getOrg().getContactEmail()))
-        };
-        String result = executePost(getOrganisationUri(),  data, true);
-        if (result==null){
-    		throw new RegistryException("Bad registry response");
-        }
 	}
 
 
@@ -349,34 +354,34 @@ public class RegistryManagerImpl extends HttpBaseManager implements RegistryMana
 		if (!resource.isRegistered()){
 			String msg = "Resource is not registered. Cannot update";
 			log.warn(msg);
-    		throw new IllegalStateException(msg);
+		}else{
+			setRegistryCredentials();
+	        NameValuePair[] data = {
+	                new NameValuePair("organisationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
+	                new NameValuePair("name", StringUtils.trimToEmpty(resource.getTitle())),
+	                new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())),
+	                new NameValuePair("homepageURL", StringUtils.trimToEmpty(resource.getLink())),
+	                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(resource.getContactName())),
+	                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getContactEmail()))
+	        };
+	        String result = executePost(resource.getRegistryUrl(),  data, true);
+	        if (result==null){
+	    		throw new RegistryException("Bad registry response");
+	        }
 		}
-		setRegistryCredentials();
-        NameValuePair[] data = {
-                new NameValuePair("organisationKey", StringUtils.trimToEmpty(cfg.getOrg().getUddiID())),
-                new NameValuePair("name", StringUtils.trimToEmpty(resource.getTitle())),
-                new NameValuePair("description", StringUtils.trimToEmpty(resource.getDescription())),
-                new NameValuePair("homepageURL", StringUtils.trimToEmpty(resource.getLink())),
-                new NameValuePair("primaryContactName", StringUtils.trimToEmpty(resource.getContactName())),
-                new NameValuePair("primaryContactEmail", StringUtils.trimToEmpty(resource.getContactEmail()))
-        };
-        String result = executePost(resource.getRegistryUrl(),  data, true);
-        if (result==null){
-    		throw new RegistryException("Bad registry response");
-        }
 	}
 	
 	public void deleteResource(Resource resource) throws RegistryException {
-		if (!resource.isRegistered()){
+		if (resource.isRegistered()){
+			setRegistryCredentials();
+	        String result = executeDelete(resource.getRegistryUrl(),  true);
+	        if (result==null){
+	    		throw new RegistryException("Bad registry response");
+	        }
+		}else{
 			String msg = "Resource is not registered";
 			log.warn(msg);
-    		throw new IllegalStateException(msg);
 		}
-		setRegistryCredentials();
-        String result = executeDelete(resource.getRegistryUrl(),  true);
-        if (result==null){
-    		throw new RegistryException("Bad registry response");
-        }
 	}
 	
 }
