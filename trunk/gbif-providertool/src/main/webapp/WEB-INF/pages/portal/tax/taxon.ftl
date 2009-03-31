@@ -22,10 +22,12 @@
 
 <@s.form>
 
+<#assign extRec=rec>
 <#assign rec=taxon>
 <#assign resource_id=taxon.resource.id>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
-	
+<#assign rec=extRec>
+
 <div class="horizontal_dotted_line_large_soft"></div>	
 <div id="basics">
 	<fieldset>
