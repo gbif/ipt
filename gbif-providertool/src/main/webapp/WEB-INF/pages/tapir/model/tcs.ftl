@@ -5,7 +5,7 @@
     <tn:nomenclaturalCode rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonName#${t.nomenclaturalCode}"/>
     </#if>                         
     <dc:title>${t.scientificName!}</dc:title>
-    <dct:modified>${t.modified?datetime?string(xmlDateFormat)}</dct:modified>
+    <dct:modified>${(t.modified?datetime?string(xmlDateFormat))!}</dct:modified>
     <#if t.dwcRank??>
     <tn:rank rdf:resource="${t.dwcRank.uri}"/>
     </#if>                         

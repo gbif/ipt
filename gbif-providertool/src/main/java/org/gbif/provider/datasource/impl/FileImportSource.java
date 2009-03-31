@@ -106,8 +106,8 @@ public class FileImportSource extends ImportSourceBase{
 					row.setGuid(getCurrentValue(guidColumn));					
 				}
 				if (linkColumn != null){
-					if (linkTemplate.contains(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER)){
-						row.setLink( linkTemplate.replace(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER, getCurrentValue(linkColumn)) );
+					if (linkTemplate!=null && linkTemplate.contains(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER)){
+						row.setLink( linkTemplate.replace(ExtensionMapping.TEMPLATE_ID_PLACEHOLDER, StringUtils.trimToEmpty(getCurrentValue(linkColumn))) );
 					}else{
 						row.setLink(getCurrentValue(linkColumn));
 					}
