@@ -51,7 +51,11 @@ public class NamespaceRegistry {
 		return String.format("%s:%s",prefix(prop),tagname(prop));
 	}
 	public String tagnameQualifiedExtension(Extension ext){
-		return String.format("%s:%s",prefix(ext.getNamespace()),tagname(ext.getName()));
+		String pre = "";
+		if (prefix(ext.getNamespace())!=null){
+			pre = prefix(ext.getNamespace())+":";
+		}
+		return pre + tagname(ext.getName());
 	}
 
 	public boolean isEmpty() {
@@ -71,6 +75,9 @@ public class NamespaceRegistry {
 		String prefix = null;
 		if (ns.equalsIgnoreCase("http://ipt.gbif.org")){
 			prefix="ipt";
+		}
+		else if (ns.equalsIgnoreCase("http://rs.gbif.org/ecat/terms/")){
+			prefix="ecat";
 		}
 		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/")){
 			prefix="dwc";
@@ -168,6 +175,7 @@ public class NamespaceRegistry {
 	public void addResource(DataResource resource){
 		for (ExtensionMapping view : resource.getAllMappings()){
 			this.addAll(view.getMappedProperties());
+			this.add(view.getExtension().getNamespace());
 		}
 		this.add("http://rs.tdwg.org/dwc/dwcrecord/");
 	}
