@@ -9,21 +9,21 @@
     <#if t.dwcRank??>
     <tn:rank rdf:resource="${t.dwcRank.uri}"/>
     </#if>                         
-    <#if t.rank??>
-    <tn:rankString>${t.rank}</tn:rankString>
+    <#if t.taxonRank??>
+    <tn:rankString>${t.taxonRank}</tn:rankString>
     </#if>                         
     <tn:nameComplete>${t.scientificName!}</tn:nameComplete>
-    <#if t.nomenclaturalReference??>
-    <tcom:publishedIn>${t.nomenclaturalReference}</tcom:publishedIn>    
+    <#if t.namePublishedIn??>
+    <tcom:publishedIn>${t.namePublishedIn}</tcom:publishedIn>    
     </#if>                         
-    <#if t.basionym??>
+    <#if t.bas??>
     <tn:hasBasionym>
-        <tn:TaxonName rdf:resource="#tc-${t.basionym.guid}"/>
+        <tn:TaxonName rdf:resource="#tc-${t.bas.guid}"/>
     </tn:hasBasionym>
     </#if>
     <#if t.nomStatus??>
     <tn:hasAnnotation>
-    	<tn:note>${t.nomStatus}</tn:note>
+    	<tn:note>${t.nomenclaturalStatus}</tn:note>
     	<tn:subjectTaxonName>
     		<tn:TaxonName rdf:resource="#tn-${t.guid}">
     	</tn:subjectTaxonName>
@@ -31,14 +31,14 @@
     </#if>
 </tn:TaxonName>        
 <tc:TaxonConcept rdf:about="#tc-${t.guid}">
-    <tc:accordingToString>${t.resource.title}</tc:accordingToString>
+    <tc:accordingToString>${t.taxonAccordingTo!t.resource.title}</tc:accordingToString>
     <tc:hasName rdf:resource="#tn-${t.guid}"/>
     <tc:nameString>${t.scientificName!}</tc:nameString>
     <#if t.dwcRank??>
     <tn:rank rdf:resource="${t.dwcRank.uri}" />
     </#if>                         
-    <#if t.rank??>
-    <tc:rankString>${t.rank}</tc:rankString>
+    <#if t.taxonRank??>
+    <tc:rankString>${t.taxonRank}</tc:rankString>
     </#if>                         
     <#if t.parent??>
         <tc:hasRelationship>
@@ -49,11 +49,11 @@
             </tc:Relationship>
         </tc:hasRelationship>
     </#if>                         
-    <#if t.acceptedTaxon??>
+    <#if t.acc??>
         <tc:hasRelationship>
             <tc:Relationship>
                 <tc:fromTaxon rdf:resource="#tc-${t.guid}"/>
-                <tc:toTaxon rdf:resource="#tc-${t.acceptedTaxon.guid}"/>
+                <tc:toTaxon rdf:resource="#tc-${t.acc.guid}"/>
                 <tc:relationshipCategory rdf:resource="http://rs.tdwg.org/ontology/voc/TaxonConcept#IsSynonymFor"/>
             </tc:Relationship>
         </tc:hasRelationship>
