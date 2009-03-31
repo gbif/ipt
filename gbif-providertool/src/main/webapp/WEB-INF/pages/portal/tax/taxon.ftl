@@ -12,6 +12,9 @@
 		});    
 	});
     </script>
+    <style>
+	    th{padding-right:15px;}
+    </style>
 </head>
 
 <div class="break20"></div>
@@ -118,13 +121,12 @@
 <#if (stats?size>0)>
 <div id="stats">
 	<fieldset>
-		<h2><@s.text name="taxon.statistics"/></h2>
-		<p>Number of accepted taxa included:</p>
+		<h2><@s.text name="taxon.included"/></h2>
 		<table>
 			<#list stats as st>	
 			<tr>
-			  <th>${st.label}</th>
-			  <td><a href="<@s.url value='/taxListByRank.html?resource_id=${resource_id?c}&category=${st.label}&id=${taxon.id?c}'/>">#${st.count}</a></td>
+			  <th>${st.label}&nbsp;</th>
+			  <td><a href="<@s.url value='/taxListByRank.html?resource_id=${resource_id?c}&category=${st.label}&id=${taxon.id?c}'/>">${st.count} taxa</a></td>
 			</tr>
 			</#list>
 		</table>
