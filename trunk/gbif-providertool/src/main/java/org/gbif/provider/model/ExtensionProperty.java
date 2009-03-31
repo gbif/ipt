@@ -16,10 +16,6 @@
 
 package org.gbif.provider.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,17 +23,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.IndexColumn;
 
 @Entity
 public class ExtensionProperty implements BaseObject, Comparable<ExtensionProperty> {
@@ -93,15 +82,23 @@ public class ExtensionProperty implements BaseObject, Comparable<ExtensionProper
 		}
 	}
 	public void setQualName(String qualName) {
+		String n=qualName;
+		String ns="";
 		if (qualName.lastIndexOf("#")>0){
-			this.name=qualName.substring(qualName.lastIndexOf("#")+1);
-			this.namespace=qualName.substring(0, qualName.lastIndexOf("#"));
+			n=qualName.substring(qualName.lastIndexOf("#")+1);
+			ns=qualName.substring(0, qualName.lastIndexOf("#"));
 		}else if (qualName.lastIndexOf("/")>0){
-			this.name=qualName.substring(qualName.lastIndexOf("/")+1);
-			this.namespace=qualName.substring(0, qualName.lastIndexOf("/"));
+			n=qualName.substring(qualName.lastIndexOf("/")+1);
+			ns=qualName.substring(0, qualName.lastIndexOf("/"));
 		}else if (qualName.lastIndexOf("@")>0){
-			this.name=qualName.substring(0, qualName.lastIndexOf("@"));
-			this.namespace=qualName.substring(qualName.lastIndexOf("@")+1);
+			n=qualName.substring(0, qualName.lastIndexOf("@"));
+			ns=qualName.substring(qualName.lastIndexOf("@")+1);
+		}
+		if (StringUtils.trimToNull(this.name)==null){
+			this.name=n;
+		}
+		if (StringUtils.trimToNull(this.namespace)==null){
+			this.namespace=ns;
 		}
 	}
 

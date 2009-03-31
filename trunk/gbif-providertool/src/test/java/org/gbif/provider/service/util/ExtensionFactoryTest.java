@@ -9,7 +9,9 @@ import static org.junit.Assert.fail;
 import java.util.Set;
 
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.factory.ExtensionFactory;
+import org.gbif.provider.service.ExtensionPropertyManager;
 import org.junit.Test;
 
 public class ExtensionFactoryTest {
@@ -25,6 +27,11 @@ public class ExtensionFactoryTest {
 			
 			assertNotNull(e.getProperties());
 			assertEquals(5, e.getProperties().size());
+			for (ExtensionProperty p : e.getProperties()){
+				if (p.getName().equalsIgnoreCase("language")){
+					assertEquals("http://purl.org/dc/terms/", p.getNamespace());
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
