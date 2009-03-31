@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <org.gbif.provider.model.eml.Eml>
-  <emlVersion>7</emlVersion>
+  <emlVersion>8</emlVersion>
   <resourceCreator>
     <firstName>Markus</firstName>
     <lastName>Döring</lastName>
@@ -18,7 +18,7 @@
     <role>ORIGINATOR</role>
     <homepage></homepage>
   </resourceCreator>
-  <pubDate>2009-03-31 22:03:18.807 CEST</pubDate>
+  <pubDate>2009-03-31 22:11:40.189 CEST</pubDate>
   <language>en</language>
   <keywords>
     <string>phytosociology</string>
