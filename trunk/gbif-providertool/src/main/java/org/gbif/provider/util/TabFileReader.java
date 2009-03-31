@@ -27,12 +27,14 @@ public class TabFileReader implements Iterator<String[]>{
 	private LineIterator it;
 	private final File file;
 	private String[] header;
+	private boolean returnHeaderRow;
 	private static Pattern tabPattern = Pattern.compile("\t");
 	
-	public TabFileReader(File file) throws IOException, MalformedTabFileException{
+	public TabFileReader(File file, boolean returnHeaderRow) throws IOException, MalformedTabFileException{
 		this.it = FileUtils.lineIterator(file, "UTF-8");
 		this.file = file;
 		// read header
+		this.returnHeaderRow = returnHeaderRow; 
 		if (it.hasNext()){
 		    String line = it.nextLine();
 			header = tabPattern.split(line);
@@ -55,12 +57,18 @@ public class TabFileReader implements Iterator<String[]>{
 	}
 
 	public boolean hasNext() {
-		return it.hasNext();
+		return returnHeaderRow || it.hasNext();
 	}
 
-	public String[] next() {
-	    String line = it.nextLine();
-	    String[] columns = tabPattern.split(line);
+	public String[] next() {	    
+	    String[] columns;
+	    if (returnHeaderRow){
+			columns = header;
+			returnHeaderRow=false;
+		}else{
+			String line = it.nextLine();
+		    columns = tabPattern.split(line);
+		}
 		if (columns.length > header.length){
 			List<String> cl = Arrays.asList(columns);
 			cl.subList(0, header.length-1);

@@ -3,6 +3,7 @@ package org.gbif.provider.datasource.impl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +17,7 @@ import org.gbif.provider.service.TermMappingManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class ImportSourceBase implements ImportSource{
+	protected static final Pattern ESCAPE_PATTERN = Pattern.compile("[\\t\\n\\r]");
 	protected Log log = LogFactory.getLog(getClass());
 	@Autowired
 	protected TermMappingManager termMappingManager;
@@ -56,4 +58,9 @@ public abstract class ImportSourceBase implements ImportSource{
     	}
 
 	}
+	
+	protected String escapeRawValue(String val){
+		return ESCAPE_PATTERN.matcher(val).replaceAll(" ");
+	}
+	
 }

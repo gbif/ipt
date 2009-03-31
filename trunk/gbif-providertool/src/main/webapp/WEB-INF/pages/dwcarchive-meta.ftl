@@ -1,5 +1,5 @@
 <archive xmlns="http://rs.tdwg.org/dwc/terms/xsd/archive/">
-  <file encoding="UTF-8" fieldsTerminatedBy="\t" linesTerminatedBy="\n" ignoreHeaderLines="1" rowType="${coreView.extension.rowType}" location="${coreFilename}">
+  <file encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${coreView.extension.rowType}" location="${coreFilename}">
     <field index="0" term="http://purl.org/dc/terms/identifier"/>
     <field index="1" term="http://purl.org/dc/terms/modified"/>
     <field index="2" term="http://purl.org/dc/terms/source"/>
@@ -21,7 +21,7 @@
  <#assign filenames = fileMap?keys>
  <#list filenames as fn>
   <#assign view = fileMap[fn]>
-  <file encoding="UTF-8" fieldsTerminatedBy="\t" linesTerminatedBy="\n" ignoreHeaderLines="1" rowType="${view.extension.rowType}" location="${fn}">
+  <file encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${view.extension.rowType}" location="${fn}">
     <field index="0" term="http://purl.org/dc/terms/identifier"/>
     <#list view.getMappedProperties() as p>
     <field index="${p_index+1}" term="${p.qualName}"/>
