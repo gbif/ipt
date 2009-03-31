@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://ipt.gbif.org/extension/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://ipt.gbif.org/extension/ http://gbrds.gbif.org/resources/schemas/extension.xsd" 
+    title="Multimedia" name="Multimedia" namespace="http://rs.gbif.org/ecat/terms/">
+    <property name="identifier" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/identifier" columnLength="255"/>
+    <property name="title" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/title" columnLength="255"/>
+    <property name="format" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/format" columnLength="255"/>
+    <property name="license" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/license" columnLength="255"/>
+    <property name="modified" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/modified" columnLength="255"/>    
+</extension>

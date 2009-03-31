@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://rs.tdwg.org/dwc/dwcrecord/"
+    xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:dwr="http://rs.tdwg.org/dwc/dwcrecord/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/">
+    <xs:import namespace="http://rs.tdwg.org/dwc/terms/" schemaLocation="http://darwincore.googlecode.com/svn/trunk/xsd/tdwg_dwcterms.xsd"/>
+    <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="http://darwincore.googlecode.com/svn/trunk/xsd/dublin_core.xsd"/>
+    <xs:annotation>
+        <xs:documentation>
+            This schema defines a classic darwin core record using the new terms from namespace http://rs.tdwg.org/dwc/terms/
+            It allows every term including extensions to appear as often as needed and in any order.
+        </xs:documentation>
+    </xs:annotation>
+    
+    
+    <xs:element name="DarwinRecordSet" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="dwr:DarwinRecord" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="DarwinRecord">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice maxOccurs="unbounded">
+                    <xs:element ref="dwc:anyIdentifier" />
+                    <xs:element ref="dwc:anyDatasetTerm" />
+                    <xs:element ref="dwc:anyIdentificationTerm" />  
+                    <xs:element ref="dwc:anyTaxonTerm" />
+                    <xs:element ref="dwc:anySamplingLocationTerm" />
+                    <xs:element ref="dwc:anySampleTerm" />
+                    <xs:element ref="dwc:anySamplingEventTerm" />
+                    <xs:group ref="dwc:anyDublinCoreTerm"/>
+                </xs:choice>
+                
+                <xs:element name="DarwinExtensions">
+                    <xs:complexType>
+                        
+                        <xs:sequence>
+                            <xs:any namespace="##other" processContents="lax" maxOccurs="unbounded" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>
