@@ -60,6 +60,9 @@ public abstract class ImportSourceBase implements ImportSource{
 	}
 	
 	protected String escapeRawValue(String val){
+		if (val==null){
+			return null;
+		}
 		return ESCAPE_PATTERN.matcher(val).replaceAll(" ");
 	}
 	
