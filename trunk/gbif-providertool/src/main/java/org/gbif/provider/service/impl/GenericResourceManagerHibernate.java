@@ -165,9 +165,9 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	}
 
 	public List<T> search(String q) {
-		List<Long> ids = fullTextSearchManager.search(q);
+		List<String> ids = fullTextSearchManager.search(q);
 		List<T> results = new LinkedList<T>();
-	    for (Long id : ids) {
+	    for (String id : ids) {
 			T res = get(id);
 			log.debug("Adding record[" + id+ "] to results. GUID[" + res.getGuid() + "]");
 		    results.add(res);

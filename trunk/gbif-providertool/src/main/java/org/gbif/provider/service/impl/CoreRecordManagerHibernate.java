@@ -126,9 +126,9 @@ public class CoreRecordManagerHibernate<T extends CoreRecord> extends GenericRes
 
 
 	public List<T> search(final Long resourceId, final String q) {
-		List<Long> ids = fullTextSearchManager.search(resourceId, q);
+		List<String> ids = fullTextSearchManager.search(resourceId, q);
 		List<T> results = new LinkedList<T>();
-	    for (Long id : ids) {
+	    for (String id : ids) {
 			T coreObj = get(id);
 			log.debug("Adding record[" + id+ "] to results. GUID[" + coreObj.getGuid() + "]");
 		    results.add(coreObj);

@@ -232,11 +232,11 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	 * @param q The query
 	 * @return List of IDs for core records
 	 */
-	public List<Long> search(Long resourceId, String q) {
+	public List<String> search(Long resourceId, String q) {
 		File indexDir = getResourceIndexDirectory(resourceId);
 		IndexReader reader = null;
 		Searcher searcher = null;
-		List<Long> results = new LinkedList<Long>();
+		List<String> results = new LinkedList<String>();
 		try {
 			reader = IndexReader.open(indexDir);
 			searcher = new IndexSearcher(reader);
@@ -257,7 +257,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		    for (ScoreDoc scoreDoc : hits) {
 		    	Document doc = searcher.doc(scoreDoc.doc);
 				String id = doc.get(FIELD_ID);
-			    results.add(Long.parseLong(id));
+			    results.add(id);
 		    }		    		    
 		    
 		} catch (Exception e) {
@@ -293,8 +293,8 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 			buildResourceIndex(rid);
 	    }
 	}
-	public List<Long> search(String q, Long userId) {
-		List<Long> results = new LinkedList<Long>();
+	public List<String> search(String q, Long userId) {
+		List<String> results = new LinkedList<String>();
 		try {
 			// make sure lucene searcher is open. Reuse existing one if kept open
 	    	openSearcher();
@@ -315,20 +315,21 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		    for (ScoreDoc scoreDoc : hits) {
 		    	Document doc = searcher.doc(scoreDoc.doc);
 				String id = doc.get(FIELD_ID);
-			    results.add(Long.parseLong(id));
+			    results.add(id);
 		    }		    
 		    		    
 		} catch (Exception e) {
 			log.error("Error with FullTextSearch[" + e.getMessage()+"] - returning empty results rather than passing error to user", e);
 		}
-		return results;	}
+		return results;	
+	}
 
 	/* (non-Javadoc)
 	 * Does the seaching across all published resources
 	 * @see org.gbif.provider.service.FullTextSearchManager#search(java.lang.String)
 	 */
-	public List<Long> search(String q) {
-		List<Long> results = new LinkedList<Long>();
+	public List<String> search(String q) {
+		List<String> results = new LinkedList<String>();
 		try {
 			// make sure lucene searcher is open. Reuse existing one if kept open
 	    	openSearcher();
@@ -348,7 +349,7 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 		    for (ScoreDoc scoreDoc : hits) {
 		    	Document doc = searcher.doc(scoreDoc.doc);
 				String id = doc.get(FIELD_ID);
-			    results.add(Long.parseLong(id));
+			    results.add(id);
 		    }		    
 		    		    
 		} catch (Exception e) {
@@ -360,9 +361,9 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 	private Term normalizeQueryString(String q){
 		// Lucene indexes on lower case it seems
 		q = q.toLowerCase();
-//		if (!q.endsWith("*")) {
-//			q = q + "*";
-//		}
+		if (!q.endsWith("*")) {
+			q = q + "*";
+		}
 		return new Term(FIELD_DATA, q);
 	}
 
