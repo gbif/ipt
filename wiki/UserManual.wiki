@@ -198,7 +198,23 @@ This page allows the administrator to define the GBIF organisation hosting the I
 
 The following fields must filled in:
 
-Title:this is the full name of the organisation OrganisationIdentifier: this is a code provided automatically by the GBIF once the organisation is registered filling and sending this form GBIFNode: GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network Organisationpassword: this password can be used by other members of the organisation to retrieve the information Contact:Name: Name of the contact person Contact:Email: Email of the contact person Homepage:URL of the organisation’s website Description:Description of the organisation Cancel/ Save / Register: The three buttons allow the administrator to respectively delete what he just typed, saved the information in the form or register the organisation with the GBIF. When does so, he will receive an Organisation Identifier that will be automatically filled in the right field.
+Title: this is the full name of the organisation 
+
+Organisation Identifier: this is a code provided automatically by the GBIF once the organisation is registered filling and sending this form 
+
+GBIF Node: GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network 
+
+Organisation password: this password can be used by other members of the organisation to retrieve the information 
+
+Contact Name: Name of the contact person 
+
+Contact Email: Email of the contact person 
+
+Homepage URL of the organisation’s website 
+
+Description: Description of the organisation 
+
+Cancel/ Save / Register: The three buttons allow the administrator to respectively delete what he just typed, saved the information in the form or register the organisation with the GBIF. When does so, he will receive an Organisation Identifier that will be automatically filled in the right field.
 
 ===== 4.1.4  IPT Instance =====
 
@@ -264,7 +280,13 @@ username:user’s username password:needs to be filled in twice for confirmation
 
 The administrator must also apply some settings to the account:
 
-Enabled: the account is enabled and ready to be used Expired:the account is not valid anymore and cannot be used to login to the IPT Locked:the account is locked and cannot be used to login to the IPT PasswordExpired: the user must change his password next time he logs in.
+Enabled: the account is enabled and ready to be used 
+
+Expired: the account is not valid anymore and cannot be used to login to the IPT 
+
+Locked: the account is locked and cannot be used to login to the IPT 
+
+PasswordExpired: the user must change his password next time he logs in.
 
 Finally, the administrator must assign one or several roles to the account. The following roles are available:
 
