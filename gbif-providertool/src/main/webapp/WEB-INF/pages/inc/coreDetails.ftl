@@ -3,10 +3,10 @@
 	<th>GUID</th>
 	<td><a href="${cfg.getDetailUrl(rec)}">${rec.guid}</a></td>
  </tr>
- <#if rec.localId??>
+ <#if rec.sourceId??>
 	 <tr>
 		<th>SourceID</th>
-		<td><#if rec.link??><a href="${rec.link}">${rec.localId}</a><#else>${rec.localId}</#if></td>
+		<td><#if rec.link??><a href="${rec.link}">${rec.sourceId}</a><#else>${rec.sourceId}</#if></td>
 	 </tr>
  </#if>
  <tr>
