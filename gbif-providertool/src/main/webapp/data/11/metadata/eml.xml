@@ -6,7 +6,7 @@
     xmlns:res="eml://ecoinformatics.org/resource-2.0.1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:dc="http://purl.org/dc/terms/" 
-    packageId="79829665-82c9-414b-b3c1-c1920c4c6c78/eml-2.xml" system="GBIF-IPT" scope="system">
+    packageId="79829665-82c9-414b-b3c1-c1920c4c6c78/eml-7.xml" system="GBIF-IPT" scope="system">
     <dataset>
         <alternateIdentifier>79829665-82c9-414b-b3c1-c1920c4c6c78</alternateIdentifier>
         <title>PonTaurus</title>
@@ -132,6 +132,6 @@
         </project>
     </dataset>
     <additionalMetadata>
-	    <dc:replaces>79829665-82c9-414b-b3c1-c1920c4c6c78/eml-1.xml</dc:replaces>
+	    <dc:replaces>79829665-82c9-414b-b3c1-c1920c4c6c78/eml-6.xml</dc:replaces>
     </additionalMetadata>
 </eml:eml>
