@@ -3,6 +3,7 @@
     <meta name="menu" content="AdminMenu"/>
     <meta name="decorator" content="default"/>
     <meta name="heading" content="<@s.text name="config.metadata"/>"/>
+	<script type="text/javascript" src="<@s.url value='/scripts/jquery-validate/jquery.validate.min.js'/>"></script>
 	<script>
 	$(document).ready(function(){
 		$("#registerIpt").click(function(e) {
@@ -10,6 +11,8 @@
 				e.preventDefault();
 		    }
 		});	
+		<#-- form validation -->
+		$("#providerCfg").validate();		
 	});
 	
 	</script>
@@ -37,20 +40,20 @@ The description image url should be a valid image URL that is being display on t
 		<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
 	</div>
 	<div class="leftxLarge">
-		<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge"/>
+		<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge required"/>
 	</div>
     <div>
         <div class="leftxhalf">
-			<@s.textfield key="config.ipt.contactName" required="true" cssClass="text large"/>
+			<@s.textfield key="config.ipt.contactName" required="true" cssClass="text large required"/>
         </div>
         <div class="leftxhalf">
-			<@s.textfield key="config.ipt.contactEmail" required="true" cssClass="text large"/>
+			<@s.textfield key="config.ipt.contactEmail" required="true" cssClass="text large required email"/>
         </div>
 	</div>
 	<div>
 	  <div class="leftxhalf">    
 		<div>
-			<@s.textfield key="config.ipt.link" required="true" cssClass="text large"/>
+			<@s.textfield key="config.ipt.link" cssClass="text large"/>
 		</div>
 	    <div>
 	        <div class="leftMedium">
@@ -70,10 +73,10 @@ The description image url should be a valid image URL that is being display on t
       </div>
     </div>
 	<div style="clear:both">
-		<@s.textarea key="config.ipt.description" cssClass="text xlarge"/>
+		<@s.textarea key="config.ipt.description" required="true" cssClass="text xlarge required"/>
 	</div>
 	<div class="leftxLarge">
-		<@s.textfield key="config.descriptionImage" required="false" cssClass="text xlarge"/>
+		<@s.textfield key="config.descriptionImage" cssClass="text xlarge"/>
 	</div>
   </fieldset>
 
