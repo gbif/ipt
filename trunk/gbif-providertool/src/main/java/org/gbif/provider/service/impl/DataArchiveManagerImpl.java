@@ -44,6 +44,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	// CALL CSVWRITE('/Users/markus/Desktop/test.txt', 'select id, label from taxon order by label', 'utf8', '	', '')
 	private static final String CSVWRITE = "CALL CSVWRITE('%s', '%s', 'utf8')";
 	private static final String DESCRIPTOR_TEMPLATE = "/WEB-INF/pages/dwcarchive-meta.ftl";
+	public static final String OCC_SKIP_COLUMNS = "|SampleID|";
 	public static final String TAX_SKIP_COLUMNS = "|ScientificName|TaxonID|Kingdom|Phylum|Class|Order|Family|Genus|Subgenus|HigherTaxonID|HigherTaxon|AcceptedTaxonID|AcceptedTaxon|BasionymID|Basionym|";
 	
 	@Autowired
@@ -121,7 +122,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 			coreProperties = getChecklistProperties(resource.getCoreMapping());
 		}else {
 			data.put("isChecklist", false);
-			coreProperties = resource.getCoreMapping().getMappedProperties();
+			coreProperties = getOccurrenceProperties(resource.getCoreMapping());
 		}
 		data.put("coreProperties", coreProperties);
 		data.put("coreFilename", coreFile.getName());
@@ -146,7 +147,8 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	}
 	private File dumpOccCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
-		String select = String.format("SELECT guid, modified, link, source_id %s FROM Darwin_Core where resource_fk=%s", buildPropertySelect(view), view.getResourceId());			
+		List<ExtensionProperty> properties = getOccurrenceProperties(view);
+		String select = String.format("SELECT guid, modified, link, source_id %s FROM Darwin_Core where resource_fk=%s", buildPropertySelect("", properties), view.getResourceId());			
 		return dumpFile(file, select);
 	}
 	private File dumpOccExtension(ExtensionMapping view) throws IOException, SQLException{
@@ -164,6 +166,16 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
 		String select = String.format("SELECT c.guid %s FROM %s e join taxon c on c.id=e.coreid where e.resource_fk=%s", buildPropertySelect(view), namingStrategy.extensionTableName(view.getExtension()), view.getResourceId());			
 		return dumpFile(file, select);
+	}
+	
+	private List<ExtensionProperty> getOccurrenceProperties(ExtensionMapping view){
+		List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
+		for (ExtensionProperty p : view.getMappedProperties()){
+			if (!OCC_SKIP_COLUMNS.contains("|"+p.getName()+"|")){
+				properties.add(p);
+			}
+		}
+		return properties;
 	}
 	private List<ExtensionProperty> getChecklistProperties(ExtensionMapping view){
 		List<ExtensionProperty> properties = new ArrayList<ExtensionProperty>();
