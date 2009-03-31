@@ -538,6 +538,11 @@
                 <param name="actionName">sources</param>
                 <param name="resource_id">${resource.id}</param>
             </result>
+			<!-- added by tim -->
+            <result name="delete" type="redirect-action">
+                <param name="actionName">sources</param>
+                <param name="resource_id">${resource.id}</param>
+            </result>
         </action>
         <action name="editSource" class="org.gbif.provider.webapp.action.manage.SourceAction">
             <result>/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
