@@ -87,11 +87,7 @@ public class TaxonAction extends BaseTreeNodeAction<Taxon, Rank> implements Prep
 	        		return format;
 	        	}
 			}else{
-	    		for (Extension e:rec.getExtensions()){
-	    			if (!e.getId().equals(Constants.COMMON_NAME_EXTENSION_ID) && !e.getId().equals(Constants.DISTRIBUTION_EXTENSION_ID)){
-	    				extensions.add(e);
-	    			}
-	    		}
+				extensions.addAll(rec.getExtensions());
 			}
         	// find annotations
         	annotations = annotationManager.getByRecord(node.getResourceId(), node.getGuid());

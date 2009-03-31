@@ -172,13 +172,15 @@
 	</table>
 </div>
 
-<div id="temp-stats3" class="stats stat-table">
-	<label><@s.text name="stats.tempStats"/></label>
+<div id="tax-stats3" class="stats stat-table">
+	<label><@s.text name="stats.extensions"/></label>
 	<table class="lefthead">
+ 	  	<#list resource.getExtensionMappings() as e>
 		<tr>
-			<td><@s.text name="occResource.recWithDate"/></td>
-			<td>${resource.recWithDate}</td>
+			<td>${e.extension.name}</td>
+			<td>${e.recTotal}</td>
 		</tr>
+		</#list>
 	</table>
 </div>
 

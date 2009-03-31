@@ -45,7 +45,7 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 		private String guid;
 		private String link;
 		private boolean isDeleted;
-		private Date modified;
+		private Date modified = new Date();
 		// taxon specific
 		//private String taxonID; --> this.guid
 		// private String scientificName; --> this.label
