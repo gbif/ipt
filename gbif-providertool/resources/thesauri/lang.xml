@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <thesaurus 
-	dc:URI="http://psi.oasis-open.org/iso/639/" 
-	dc:description="http://vocabularies.gbif.org/en/vocabularies/lang" 
-	dc:title="Language" 
+	dc:URI="http://iso.org/639-1" 
+	dc:description="" 
+	dc:title="ISO 639-1 Languages" 
 	xmlns="http://data.gbif.org/thesaurus" 
 	xmlns:dc="http://purl.org/dc/terms/" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
