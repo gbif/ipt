@@ -210,10 +210,6 @@ public class Eml implements Serializable{
 		return resourceCreator;
 	}
 
-	public GeoKeyword geographicCoverage() {
-		return geographicCoverage;
-	}
-
 	public TimeKeyword temporalCoverage() {
 		return temporalCoverage;
 	}

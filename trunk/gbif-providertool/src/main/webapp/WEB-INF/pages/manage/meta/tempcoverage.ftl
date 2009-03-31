@@ -35,6 +35,7 @@
 		</div>
 		<div class="left">
 			<@s.checkbox key="eml.temporalCoverage.single" value="false" onclick="javascript:toggleSingleDate(this);" />
+			<span>e.g. 1999-07-21</span>
 		</div>
 	</div>
 </fieldset>
@@ -46,6 +47,7 @@
 <h1 class="modifiedh1Secondary"><@s.text name="eml.keywords"/></h1>
 <div class="horizontal_dotted_line_large_foo"></div>
 <fieldset style="padding-top:13px;">
+	<p>Keywords separated by comma</p>
 	<@s.textarea key="keywords" label="" required="false" cssClass="text xlarge"/>
 </fieldset>
 

@@ -265,7 +265,7 @@ public class Resource implements BaseObject, Comparable<Resource>, Timestampable
 		}
 		this.keywords = keys;
 		// geoCoverage
-		this.geoCoverage = eml.geographicCoverage().getBoundingCoordinates();
+		this.geoCoverage = eml.getGeographicCoverage().getBoundingCoordinates();
 	}
 	
 	

@@ -17,7 +17,7 @@
 		var so = new SWFObject("<@s.url value="/scripts/IptGeoCoverageMap.swf"/>", "swf", "690", "250", "9"); 
 		so.addParam("allowFullScreen", "false");
 		so.addVariable("swf", "");
-		var data = "<#if (eml.geographicCoverage().boundingCoordinates.min.x)??>{'minx':${eml.geographicCoverage().boundingCoordinates.min.x},'maxx':${eml.geographicCoverage().boundingCoordinates.max.x},'miny':${eml.geographicCoverage().boundingCoordinates.min.y},'maxy':${eml.geographicCoverage().boundingCoordinates.max.y}}</#if>";
+		var data = "<#if (eml.geographicCoverage.boundingCoordinates.min.x)??>{'minx':${eml.geographicCoverage.boundingCoordinates.min.x},'maxx':${eml.geographicCoverage.boundingCoordinates.max.x},'miny':${eml.geographicCoverage.boundingCoordinates.min.y},'maxy':${eml.geographicCoverage.boundingCoordinates.max.y}}</#if>";
 		so.addVariable("data", data);
 		so.addVariable("api_key", "${cfg.getGoogleMapsApiKey()}");
 		so.write("map");
