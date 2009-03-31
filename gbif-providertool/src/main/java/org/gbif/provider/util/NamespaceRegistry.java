@@ -95,10 +95,10 @@ public class NamespaceRegistry {
 			prefix="rdfs";
 		}
 		else if (ns.equalsIgnoreCase("http://purl.org/dc/elements/1.1/")){
-			prefix="dc";
+			prefix="dcel";
 		}
 		else if (ns.equalsIgnoreCase("http://purl.org/dc/terms/")){
-			prefix="dct";
+			prefix="dc";
 		}
 		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/tapir/1.0")){
 			prefix="tapir";
