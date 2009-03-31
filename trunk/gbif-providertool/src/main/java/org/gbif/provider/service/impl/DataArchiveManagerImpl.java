@@ -157,7 +157,7 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	private File dumpTaxCore(ExtensionMapping view) throws IOException, SQLException{
 		File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
 		List<ExtensionProperty> properties = getChecklistProperties(view);
-		String select = String.format("SELECT t.guid, t.modified, t.link, t.source_id, t.label, acc.guid,acc.label, p.guid,p.label, bas.guid,bas.label %s FROM taxon t left join taxon p on t.parent_fk=p.id left join taxon acc on t.acc_fk=acc.id left join taxon bas on t.bas_fk=bas.id WHERE t.resource_fk=%s", buildPropertySelect("t.", properties), view.getResourceId());
+		String select = String.format("SELECT t.guid, t.modified, t.link, t.source_id, t.label as ScientificName, acc.guid as AcceptedTaxonID,acc.label AcceptedTaxon, p.guid as HigherTaxonID,p.label as HigherTaxon, bas.guid as BasionymID,bas.label as Basionym %s FROM taxon t left join taxon p on t.parent_fk=p.id left join taxon acc on t.acc_fk=acc.id left join taxon bas on t.bas_fk=bas.id WHERE t.resource_fk=%s", buildPropertySelect("t.", properties), view.getResourceId());
 		return dumpFile(file, select);
 	}
 	private File dumpTaxExtension(ExtensionMapping view) throws IOException, SQLException{
