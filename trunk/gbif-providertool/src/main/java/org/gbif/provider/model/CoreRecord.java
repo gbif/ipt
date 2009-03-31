@@ -41,7 +41,7 @@ import org.hibernate.validator.NotNull;
 public interface CoreRecord extends ResourceRelatedObject, Record {
 
 	String getSourceId();
-	void setSourceId(String localId);
+	void setSourceId(String sourceId);
 
 	String getGuid();
 	void setGuid(String guid);

@@ -239,12 +239,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 		Random rnd = new Random();
 		DarwinCore dwc = DarwinCore.newInstance(resource);
 		// populate instance
-		// set unique localId to ensure we can save this record. Otherwise we might get a non unique constraint exception...
+		// set unique sourceId to ensure we can save this record. Otherwise we might get a non unique constraint exception...
 		String guid = UUID.randomUUID().toString();
-		String localId = rnd.nextInt(99999999)+"";
-		dwc.setSourceId(localId);
+		String sourceId = rnd.nextInt(99999999)+"";
+		dwc.setSourceId(sourceId);
 		dwc.setGuid(guid);
-		dwc.setCatalogNumber("rbgk-"+localId+"-x");
+		dwc.setCatalogNumber("rbgk-"+sourceId+"-x");
 		dwc.setBasisOfRecord("PreservedSpecimen");
 		dwc.setInstitutionCode("RBGK");
 		// location

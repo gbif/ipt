@@ -44,26 +44,26 @@ public class DarwinCoreMangerTest extends ResourceTestBase{
 		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 		DarwinCore dwc = DarwinCore.newMock(res);
 		// this should fail if run twice... for manual testing only
-		//dwc.setLocalId("12443990");
+		//dwc.setSourceId("12443990");
 		dwc = darwinCoreManager.save(dwc);
 		darwinCoreManager.flush();
 	}
 
 	@Test
-	public void testLocalIdUniqueConstraint() {
+	public void testSourceIdUniqueConstraint() {
 		//FIXME: somehow this ttest persists only the dwc, but not the dwc.tax and dwc.loc component. This causes other tests later own to fail!
 		new AssertThrows(EntityExistsException.class) {
             public void test() {
-            	final String LOCAL_ID = "xcf-x";
+            	final String SOURCE_ID = "xcf-x";
         		OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 
         		DarwinCore dwc = DarwinCore.newMock(res);
-				dwc.setSourceId(LOCAL_ID);
+				dwc.setSourceId(SOURCE_ID);
 				dwc = darwinCoreManager.save(dwc);
 				
-				// create new dwc record with different data, but the same localId!
+				// create new dwc record with different data, but the same sourceId!
         		DarwinCore dwcTwin = DarwinCore.newMock(res);
-				dwcTwin.setSourceId(LOCAL_ID);		
+				dwcTwin.setSourceId(SOURCE_ID);		
 				// should raise exception...
 		        dwcTwin = darwinCoreManager.save(dwcTwin);
 
