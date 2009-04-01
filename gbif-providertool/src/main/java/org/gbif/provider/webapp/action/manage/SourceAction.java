@@ -185,7 +185,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 				// check for unique columns, allowing 1 NULL header (often the last column)
 				if (tmp.contains(h)){
 					// non unique columns. Set header to false by default 
-			        saveMessage(getText("sources.noHeaders", msgParams));
 					fsource.setHeaders(false);
 					break;
 				}else{
@@ -195,7 +194,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		} catch (Exception e) {
 			log.error("Error inspecting source file "+fsource.getName(), e);
 		}
-		log.info(String.format("Tab file %s uploaded with %s columns", srcFile.getAbsolutePath(), headers .size()));
+		log.info(String.format("Source file %s uploaded with %s columns and %s header row", srcFile.getAbsolutePath(), headers.size(), fsource.hasHeaders()?"one":"no"));
 		if (headers!=null && headers.size() > 1){
 			// save file in view mapping
 			sourceManager.save(fsource);
