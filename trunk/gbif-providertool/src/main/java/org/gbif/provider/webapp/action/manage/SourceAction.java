@@ -184,7 +184,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 				h = StringUtils.trimToNull(h);
 				// check for unique columns, allowing 1 NULL header (often the last column)
 				if (tmp.contains(h)){
-					// non unique columns. Set header to false by default 
+					// non unique columns. Set header to false by default
 					fsource.setHeaders(false);
 					break;
 				}else{
