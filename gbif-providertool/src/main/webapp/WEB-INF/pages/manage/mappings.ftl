@@ -95,14 +95,62 @@
 </fieldset>
 </#if>
 
-<div class="break">
-<@s.form action="cache" method="get">
-	<@s.hidden key="resource_id"/>
-	<div class="breakRight">
-		<@s.submit cssClass="button" key="button.next" theme="simple"/>
-	</div>
-</@s.form>
+
+<h2><@s.text name="dataResource.cache"/></h2>
+<div class="horizontal_dotted_line_large_soft_nm"></div>
+<p class="explMt">The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
+based on the transformations and mappings you have configured. 
+Depending upon the amount of data this process may take a long time during which this resource is blocked. 
+</p>
+<fieldset style="padding-top:0px;">
+<div>
+  <@s.form id="banane">
+	<table>
+		<#if resource.lastUpload??>
+			<@s.url id="logsUrl" action="annotations" namespace="/" includeParams="get"/>
+			<tr>
+				<th><@s.text name="resource.lastUpload"/></th>
+				<td>${resource.lastUpload.executionDate} (<a href="${logsUrl}">logs</a>)</td>
+			</tr>
+		</#if>
+		<tr>
+			<th><@s.text name="resource.recordCount"/></th>
+			<td>${resource.recTotal}</td>
+		</tr>
+
+		
+		<tr>
+			<th colspan="2">&nbsp;</th>
+		</tr>
+		
+				
+ 	  	<#list resource.getExtensionMappings() as v>
+			<tr>
+				<th>${v.extension.name}</th>
+				<td>${v.recTotal}</td>
+			</tr>
+	  	</#list>
+	</table>
+  </@s.form>
 </div>
+
+<div>
+<#if resource.hasMinimalMapping()>
+	<@s.form action="runImport" method="post" >
+	  <@s.hidden key="resource_id" />
+	  <@s.submit cssClass="button" key="button.upload" />
+	</@s.form>
+<#else>
+	<p class="reminder">Please finalize at least the core mapping before uploading data</p>
+</#if>
+</div>
+    
+</fieldset>
+
+
+
+<h2>Darwin Core Star Schema</h2>
+<div class="horizontal_dotted_line_large_soft_nm"></div>
 
 <a name="star" />
 <img src="<@s.url value='/images/star_scheme.png'/>"/>
