@@ -42,10 +42,13 @@
 </head>
 
 <div class="break10"></div>
-<p class="explMt">Please upload your data as tab files with a single header row or define a SQL view to pull it from a database.
-You can define as many sources as you like, but there needs to be at least one.
-Readily supported formats can be <a href="">found here</a>. 
-If your data does not exactly match those formats you have the option to configure simple transformations and adjustments in the next configuration step.
+<p class="explMt">Please upload your data as tab delimited text files or define a SQL view to pull it from a database.
+You will need to map the main, core records to the <a href="http://darwincore.googlecode.com/svn/trunk/terms/index.htm#theterms">Darwin Core terms</a> in the next step, 
+so if you can, please adjust your source data accordingly.
+For the main "core" records, please also make sure they have a unique identifier per row.
+<br/>You can define as many sources as you like and you will be able to upload additional information to complement a core darwin core record.
+For this to work, your additional sources need to refer to your core identifiers, i.e. have a foreign key. They dont need their own identifier though.
+<br/>Files currently cannot be larger than 100MB, but you can compress 1 or more files using zip. They will be unpacked on the server automatically.  
 </p>
 
 <h2><@s.text name="sources.filesources"/></h2>

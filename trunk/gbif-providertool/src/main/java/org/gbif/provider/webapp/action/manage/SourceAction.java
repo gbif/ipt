@@ -7,9 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
@@ -170,8 +173,25 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		fsource.setDateUploaded(new Date());
 
 		List<String> headers = null;
+		ArrayList<Object> msgParams = new ArrayList<Object>();
+		msgParams.add(srcFile.getName());
 		try {
+			fsource.setHeaders(true);
 			headers = sourceInspectionManager.getHeader(fsource);
+			// see if first row columns are unique and do not contain empty fields
+			Set<String> tmp = new HashSet<String>();
+			for (String h : headers){
+				h = StringUtils.trimToNull(h);
+				// check for unique columns, allowing 1 NULL header (often the last column)
+				if (tmp.contains(h)){
+					// non unique columns. Set header to false by default 
+			        saveMessage(getText("sources.noHeaders", msgParams));
+					fsource.setHeaders(false);
+					break;
+				}else{
+					tmp.add(h);
+				}
+			}
 		} catch (Exception e) {
 			log.error("Error inspecting source file "+fsource.getName(), e);
 		}
@@ -179,10 +199,8 @@ public class SourceAction extends BaseDataResourceAction implements Preparable{
 		if (headers!=null && headers.size() > 1){
 			// save file in view mapping
 			sourceManager.save(fsource);
-			ArrayList<Object> params = new ArrayList<Object>();
-			params.add(srcFile.getName());
-			params.add(String.valueOf(headers.size()));
-	        saveMessage(getText("sources.sourceFileUploaded", params));
+			msgParams.add(String.valueOf(headers.size()));
+	        saveMessage(getText("sources.sourceFileUploaded", msgParams));
 		}else{
 			fsource.setResource(null);
 			ArrayList<Object> params = new ArrayList<Object>();
