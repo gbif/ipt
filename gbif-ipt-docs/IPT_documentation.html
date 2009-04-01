@@ -77,11 +77,27 @@
     </li>
     </ul>
   </li>
-  <li><a href="#toc27">5. Primary Occurences</a>
-  </li>
-  <li><a href="#toc28">6. Name datasheets</a>
-  </li>
-  <li><a href="#toc29">7. Metadata</a>
+  <li><a href="#toc27">5. Resources Management</a>
+    <ul>
+    <li><a href="#toc28">5.1. Data Types</a>
+      <ul>
+      <li><a href="#toc29">5.1.1. Taxon Primary Occurence Data</a>
+      </li>
+      <li><a href="#toc30">5.1.2. Taxonomic Checklists</a>
+      </li>
+      <li><a href="#toc31">5.1.3. Resource Metadata</a>
+      </li>
+      </ul>
+    </li>
+    <li><a href="#toc32">5.2. Creating and configuring new resources</a>
+      <ul>
+      <li><a href="#toc33">5.2.1. Resource Creation</a>
+      </li>
+      <li><a href="#toc34">5.2.2. Resource Configuration (occurences and checklists only)</a>
+      </li>
+      </ul>
+    </li>
+    </ul>
   </li>
   </ul>
 
@@ -574,14 +590,216 @@ This page displays a list of the currently logged in users on the IPT. The admin
 <a id="toc26" name="toc26"></a>
 <h2>4.7. Active Datasources</h2>
 <p>
-This page displays a list of all the active datasources in the IPT.
+This page displays a list of all the active data sources in the IPT.
 </p>
 <a id="toc27" name="toc27"></a>
-<h1>5. Primary Occurences</h1>
+<h1>5. Resources Management</h1>
 <a id="toc28" name="toc28"></a>
-<h1>6. Name datasheets</h1>
+<h2>5.1. Data Types</h2>
 <a id="toc29" name="toc29"></a>
-<h1>7. Metadata</h1>
+<h3>5.1.1. Taxon Primary Occurence Data</h3>
+<a id="toc30" name="toc30"></a>
+<h3>5.1.2. Taxonomic Checklists</h3>
+<a id="toc31" name="toc31"></a>
+<h3>5.1.3. Resource Metadata</h3>
+<a id="toc32" name="toc32"></a>
+<h2>5.2. Creating and configuring new resources</h2>
+<a id="toc33" name="toc33"></a>
+<h3>5.2.1. Resource Creation</h3>
+<p>
+New resources are created by a manager (or an administrator) on the <i>Manage</i> page.
+</p>
+<p>
+The manager chooses which resource type to create by clicking on the corresponding link in the <i>Resource Actions</i> menu: <i>New Occurence Resource</i>, <i>New Checklist Resource</i> or <i>New Metadata Resource</i>.
+</p>
+<h4>Basic Metadata</h4>
+<p>
+The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
+</p>
+<dl>
+<dt>Title</dt><dd>
+  Title of the resource
+</dd>
+<dt>Type</dt><dd>
+  Type of data. The list differs depending on the type of data (see description of the different data types above).
+</dd>
+<dt>Contact Name</dt><dd>
+  Name of the contact person
+</dd>
+<dt>Contact Email</dt><dd>
+  Email of the contact person
+</dd>
+<dt>Upload logo</dt><dd>
+  The manager can upload a logo associated with the resource. The logo must be a squared image 68 pixels wide.
+</dd>
+<dt>Description</dt><dd>
+  Description of the resource
+</dd>
+</dl>
+
+<p>
+Once the fields have been filled in, the manager can save the form, the resource is then created and can be accessed later on in the <i>Manage</i> section.
+</p>
+<a id="toc34" name="toc34"></a>
+<h3>5.2.2. Resource Configuration (occurences and checklists only)</h3>
+<p>
+Once the resource has been created, the manager must define a data source and map properties.
+</p>
+<h4>5.2.2.1. Source Data</h4>
+<p>
+Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as he wants, but it is necessary to define at least one.
+</p>
+<h5>5.2.2.1.1. File Data Sources</h5>
+<p>
+In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such <i>tab delimited text files</i> are easily created from any spreadsheet software or database management systems.
+</p>
+<p>
+Once the file has been uploaded, the manager can define whether the first row of the file is a header or not, by checking or unchecking the <i>column headers</i> box and pressing the <i>save</i> button. All the data fields will then be named after this header. If not set, generic names (col001, col002, col003 and so on) will be used.
+</p>
+<p>
+When done adding data sources, the manager can press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
+</p>
+<h5>5.2.2.1.2. SQL Data Sources</h5>
+<p>
+In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
+</p>
+<p>
+Pressing the <i>Edit</i> button on the <i>Source Data</i> page will bring the manager to the <i>SQL Settings</i> page. This is the page where the database connection will be defined. To this effect, the manager needs to know the database type, the database connection URL, the database user and the database password. He also needs to make sure that the right Java DataBase Connection (JDBC) driver is installed. Fortunately, most of them are already bundled with the IPT. It is furthermore easy to add new ones, by downloading them and adding the <i>jar</i> file to the ITP <i>lib</i> folder and restarting the application server.
+</p>
+<p>
+The <i>SQL Settings</i> page also gives a list of important parameters for the most used databases.
+</p>
+<dl>
+<dt>Database Type</dt><dd>
+  the manager must define the type of the database holding the data. If his particular system is not in the list, he can use a generic ODBC or choose the <i>other</i> option and define his own driver class.
+</dd>
+<dt>Database Connection URL</dt><dd>
+  the manager must fill in the URL of the database connection. the format to be used is explained in the second part of the <i>SQL Settings</i> page. The manager will generally need to know the host or server (<i>localhost</i> if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called <i>test</i>, the database connection URL will be jdbc:mysql://localhost:3306/test.
+</dd>
+<dt>Database user</dt><dd>
+  the username of a database user with SELECT rights
+</dd>
+<dt>Database password</dt><dd>
+  the corresponding password
+</dd>
+</dl>
+
+<p>
+Once all the fields have been filled in, the manager can <i>save</i> the form. He will then be brought back to the <i>Source Data</i> page where he can add more data sources or press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
+</p>
+<h4>5.2.2.2. Property Mappings</h4>
+<p>
+Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see <i>Extensions</i> section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
+</p>
+<p>
+The <i>Property Mappings</i> page displays a list of the existing mappings, that can be edited, and gives the possibility to add new mappings.
+</p>
+<p>
+When done adding or editing mappings, the manager can press the <i>Next</i> button to go to the <i>Cache</i> page.
+</p>
+<h5>5.2.2.2.1. Your Existing Mappings</h5>
+<p>
+When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension. These mappings can be viewed or modified by pressing the <i>Edit</i> button.
+</p>
+<p>
+The page is split in three parts:
+</p>
+<dl>
+<dt>ID properties</dt><dd>
+  A list of all properties related to the ID <b>??????????</b>
+</dd>
+<dt>Property Mappings</dt><dd>
+  A list of all the selected extension or core properties that have been mapped to a data source field.
+</dd>
+<dt>Available Properties</dt><dd>
+  A list of all the selected extension or core properties that have not been mapped to a data source field.
+</dd>
+</dl>
+
+<h5>ID Properties</h5>
+<p>
+ <b>??????????</b>
+</p>
+<dl>
+<dt>Source ID for record</dt><dd>
+</dd>
+<dt>GUID for record</dt><dd>
+</dd>
+<dt>Link to record details</dt><dd>
+</dd>
+<dt>Link template with &lt;ID&gt; placeholder</dt><dd>
+</dd>
+</dl>
+
+<p>
+The <i>save</i> button will save the information that was entered in the fields. The <i>Done</i> button brings the manager back to the main <i>Property Mappings</i> page <b>without saving the information</b>.
+</p>
+<h5>Property Mappings</h5>
+<p>
+<b>Will add screenshots to clarify</b>
+</p>
+<p>
+Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source.
+</p>
+<h5>Available Properties</h5>
+<p>
+This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
+</p>
+<h5>5.2.2.2.2. Add New Mapping</h5>
+<p>
+To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the <i>Add</i> button.
+</p>
+<p>
+The page is split in three parts:
+</p>
+<dl>
+<dt>ID properties</dt><dd>
+  A list of all properties related to the ID <b>??????????</b>
+</dd>
+<dt>Available Properties</dt><dd>
+  A list of all the selected extension or core properties that have not been mapped to a data source field.
+</dd>
+<dt>Property Mappings</dt><dd>
+  A list of all the selected extension or core properties that have already been mapped to a data source field.
+</dd>
+</dl>
+
+<h5>ID Properties</h5>
+<p>
+ <b>??????????</b>
+</p>
+<dl>
+<dt>Source ID for record</dt><dd>
+</dd>
+<dt>GUID for record</dt><dd>
+</dd>
+<dt>Link to record details</dt><dd>
+</dd>
+<dt>Link template with &lt;ID&gt; placeholder</dt><dd>
+</dd>
+</dl>
+
+<p>
+The <i>save</i> button will save the information that was entered in the fields. The <i>Done</i> button brings the manager back to the main <i>Property Mappings</i> page <b>without saving the information</b>.
+</p>
+<h5>Available Properties</h5>
+<p>
+This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. 
+</p>
+<h5>Property Mappings</h5>
+<p>
+After having added some properties to  the list, the manager can choose which data source field should be mapped to them (by selecting it in the drop-down).
+</p>
+<p>
+When done, the <i>Save</i> button should be pressed before the <i>Done</i> button.
+</p>
+<h4>5.2.2.3. Cache</h4>
+<p>
+The cache page allows the manager to actually import the data into the IPT. This is done by pressing the <i>Upload</i> button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
+</p>
+<p>
+The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
+</p>
 
 <!-- xhtml code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
 <!-- cmdline: txt2tags -\-toc -t xhtml -i - -o - -->

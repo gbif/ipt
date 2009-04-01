@@ -328,10 +328,173 @@ This page displays a list of the currently logged in users on the IPT. The admin
 
 ++ Active Datasources ++
 
-This page displays a list of all the active datasources in the IPT.
+This page displays a list of all the active data sources in the IPT.
 
-+ Primary Occurences +
++ Resources Management +
 
-+ Name datasheets +
+++ Data Types ++
 
-+ Metadata +
++++ Taxon Primary Occurence Data +++
+
++++ Taxonomic Checklists +++
+
++++ Resource Metadata +++
+
+++ Creating and configuring new resources ++
+
++++ Resource Creation +++
+
+New resources are created by a manager (or an administrator) on the //Manage// page.
+
+The manager chooses which resource type to create by clicking on the corresponding link in the //Resource Actions// menu: //New Occurence Resource//, //New Checklist Resource// or //New Metadata Resource//.
+
+==== Basic Metadata ====
+
+The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
+
+: Title
+  Title of the resource
+: Type
+  Type of data. The list differs depending on the type of data (see description of the different data types above).
+: Contact Name
+  Name of the contact person
+: Contact Email
+  Email of the contact person
+: Upload logo
+  The manager can upload a logo associated with the resource. The logo must be a squared image 68 pixels wide.
+: Description
+  Description of the resource
+
+
+Once the fields have been filled in, the manager can save the form, the resource is then created and can be accessed later on in the //Manage// section.
+
++++ Resource Configuration (occurences and checklists only)+++
+
+Once the resource has been created, the manager must define a data source and map properties.
+
+++++ Source Data ++++
+
+Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as he wants, but it is necessary to define at least one.
+
++++++ File Data Sources +++++
+
+In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such //tab delimited text files// are easily created from any spreadsheet software or database management systems.
+
+Once the file has been uploaded, the manager can define whether the first row of the file is a header or not, by checking or unchecking the //column headers// box and pressing the //save// button. All the data fields will then be named after this header. If not set, generic names (col001, col002, col003 and so on) will be used.
+
+When done adding data sources, the manager can press the //Next// button to go to the //Property Mappings// page.
+
++++++ SQL Data Sources +++++
+
+In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
+
+Pressing the //Edit// button on the //Source Data// page will bring the manager to the //SQL Settings// page. This is the page where the database connection will be defined. To this effect, the manager needs to know the database type, the database connection URL, the database user and the database password. He also needs to make sure that the right Java DataBase Connection (JDBC) driver is installed. Fortunately, most of them are already bundled with the IPT. It is furthermore easy to add new ones, by downloading them and adding the //jar// file to the ITP //lib// folder and restarting the application server.
+
+The //SQL Settings// page also gives a list of important parameters for the most used databases.
+
+: Database Type
+  the manager must define the type of the database holding the data. If his particular system is not in the list, he can use a generic ODBC or choose the //other// option and define his own driver class.
+: Database Connection URL
+  the manager must fill in the URL of the database connection. the format to be used is explained in the second part of the //SQL Settings// page. The manager will generally need to know the host or server (//localhost// if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called //test//, the database connection URL will be jdbc:mysql://localhost:3306/test.
+: Database user
+  the username of a database user with SELECT rights
+: Database password
+  the corresponding password
+
+
+Once all the fields have been filled in, the manager can //save// the form. He will then be brought back to the //Source Data// page where he can add more data sources or press the //Next// button to go to the //Property Mappings// page.
+
+++++ Property Mappings ++++
+
+Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see //Extensions// section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
+
+The //Property Mappings// page displays a list of the existing mappings, that can be edited, and gives the possibility to add new mappings.
+
+When done adding or editing mappings, the manager can press the //Next// button to go to the //Cache// page.
+
++++++ Your Existing Mappings +++++
+
+When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension. These mappings can be viewed or modified by pressing the //Edit// button.
+
+The page is split in three parts:
+
+: ID properties
+  A list of all properties related to the ID **??????????**
+: Property Mappings
+  A list of all the selected extension or core properties that have been mapped to a data source field.
+: Available Properties
+  A list of all the selected extension or core properties that have not been mapped to a data source field.
+
+
+===== ID Properties =====
+
+ **??????????**
+
+: Source ID for record
+: GUID for record
+: Link to record details
+: Link template with <ID> placeholder
+
+
+The //save// button will save the information that was entered in the fields. The //Done// button brings the manager back to the main //Property Mappings// page **without saving the information**.
+
+===== Property Mappings =====
+
+**Will add screenshots to clarify**
+
+Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source.
+
+===== Available Properties =====
+
+This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the //property mappings// section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
+
++++++ Add New Mapping +++++
+
+To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the //Add// button.
+
+The page is split in three parts:
+
+: ID properties
+  A list of all properties related to the ID **??????????**
+: Available Properties
+  A list of all the selected extension or core properties that have not been mapped to a data source field.
+: Property Mappings
+  A list of all the selected extension or core properties that have already been mapped to a data source field.
+
+
+===== ID Properties =====
+
+ **??????????**
+
+: Source ID for record
+: GUID for record
+: Link to record details
+: Link template with <ID> placeholder
+
+
+The //save// button will save the information that was entered in the fields. The //Done// button brings the manager back to the main //Property Mappings// page **without saving the information**.
+
+===== Available Properties =====
+
+This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the //property mappings// section. 
+
+===== Property Mappings =====
+
+After having added some properties to  the list, the manager can choose which data source field should be mapped to them (by selecting it in the drop-down).
+
+When done, the //Save// button should be pressed before the //Done// button.
+
+++++ Cache ++++
+
+The cache page allows the manager to actually import the data into the IPT. This is done by pressing the //Upload// button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
+
+The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
+
+
+
+
+
+
+
+
+
