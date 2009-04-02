@@ -3,11 +3,9 @@
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-	<meta name="heading" content="<@s.text name='propMappings.heading'/>"/>    
+	<meta name="heading" content="<@s.text name='mappings.heading'/>"/>    
 </head>
 
-<!--<h1>Property Mappings</h1>
-<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <#-- See if sources exist -->
 <#if (sources?size<1)>
