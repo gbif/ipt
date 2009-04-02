@@ -128,7 +128,7 @@ Depending upon the amount of data this process may take a long time during which
 				<td>${v.recTotal}</td>
 			</tr>
 	  	</#list>
-	</table>
+	</table>#
   </@s.form>
 </div>
 
@@ -136,10 +136,10 @@ Depending upon the amount of data this process may take a long time during which
 <#if resource.hasMinimalMapping()>
 	<@s.form action="runImport" method="post" >
 	  <@s.hidden key="resource_id" />
-	  <@s.submit cssClass="button" key="button.upload" />
+	  <@s.submit cssClass="button" key="button.import" />
 	</@s.form>
 <#else>
-	<p class="reminder">Please finalize at least the core mapping before uploading data</p>
+	<p class="reminder">Please finalize at least the core mapping before you importing data</p>
 </#if>
 </div>
     

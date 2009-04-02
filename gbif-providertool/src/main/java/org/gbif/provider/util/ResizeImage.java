@@ -4,6 +4,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.BufferedInputStream;
+import java.io.DataInput;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,6 +24,7 @@ import javax.media.jai.RenderedOp;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.MemoryCacheSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
 
@@ -31,8 +33,7 @@ public class ResizeImage {
 
 	public static void resizeImage(File source, File resized, int newWidth, int newHeight) throws IOException{
         // read in the original image from a file
-        InputStream inputStream = new FileInputStream(source);
-        PlanarImage originalImage = JAI.create("stream", new MemoryCacheSeekableStream(inputStream));
+        PlanarImage originalImage = JAI.create("stream", new FileSeekableStream(source));
 
         final int originalWidth=originalImage.getWidth();
         final int originalHeight=originalImage.getHeight();
@@ -54,7 +55,6 @@ public class ResizeImage {
         JAI.create("encode", newImage, outputStream, "PNG", null);
         
         log.debug("Resized logo image with factor "+scale);
-        inputStream.close();
         outputStream.close();     
 
 	}

@@ -211,7 +211,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 			ResizeImage.resizeImage(file, logoFile, Constants.LOGO_SIZE, Constants.LOGO_SIZE);
 		} catch (Exception e) {
 			log.error("Couldnt upload or resize logo",e);
-			saveMessage("Couldnt upload or resize logo. You might want to try a smaller image");
+			saveMessage(getText("logo.resizeError"));
         	return false;
 		}
 

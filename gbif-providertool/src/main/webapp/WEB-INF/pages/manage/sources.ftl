@@ -77,7 +77,7 @@ For this to work, your additional sources need to refer to your core identifiers
 			
 			<div class="right">
 				<@s.submit cssClass="button right" key="button.delete" method="delete" onclick="return confirmDelete()" theme="simple"/>
-				<@s.submit cssClass="button right" key="button.save" theme="simple"/>
+				<@s.submit cssClass="button right" key="button.update" theme="simple"/>
 			</div>
 		</div>
 	</@s.form>
