@@ -1,7 +1,8 @@
 #summary Version history of releases
 === IPT 1.0 RC2 ===
- * delete resource bug fixed
+ * delete freshly added mapping bug fixed
  * more explanations on source files, dwc 
+ * try to auto-detect headers in source files
 
 === IPT 1.0 RC1 ===
  * GBIF registry integration
