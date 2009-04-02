@@ -1,4 +1,16 @@
 #summary Version history of releases
+=== IPT 1.0 RC2 ===
+ * delete resource bug fixed
+ * more explanations on source files, dwc 
+
+=== IPT 1.0 RC1 ===
+ * GBIF registry integration
+ * zipped source file upload
+ * new property mapping UI 
+   * dynamically load required vocabularies
+   * dynamically add the properties
+ * Geoserver 1.7.2 with geowebcache
+ * support checklists supplied with flat taxonomic dwc hierarchies 
 
 === IPT 1.0b4 ===
  * show resource and record annotations
