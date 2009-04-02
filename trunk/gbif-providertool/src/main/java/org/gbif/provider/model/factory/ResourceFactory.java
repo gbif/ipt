@@ -31,10 +31,8 @@ public class ResourceFactory {
 		return resource;
 	}
 	private void initCoreMapping(DataResource resource){
-		resource.resetCoreMapping();
 		ExtensionMapping coreVM = new ExtensionMapping();
 		Extension core = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);		
-		coreVM.setResource(resource);
 		coreVM.setExtension(core);
 		resource.addExtensionMapping(coreVM);
 	}

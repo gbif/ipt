@@ -38,24 +38,23 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
 
 	@Override
 	public void remove(ExtensionMapping obj) {
-		// make sure all existing extension records are removed too!
+		// cant delete core extension mappings. They will just be emptied to look like new ones
 		if (!obj.isCore()){
-			extensionRecordManager.removeAll(obj.getExtension(), obj.getResource().getId());
-		}
-		// remove links from resource
-		DataResource res = obj.getResource();
-		if (res.getCoreMapping().equals(obj)){
-			// its a core mapping. replace with empty one
-			res.resetCoreMapping();
-		}else{
+			DataResource res = obj.getResource();
+			// make sure all existing extension records are removed too!
+			extensionRecordManager.removeAll(obj.getExtension(), obj.getResource().getId());			
 			res.removeExtensionMapping(obj);
-		}		
-		universalSave(res);
-		// remove property mappings for this view
-		List<PropertyMapping> pms = obj.getPropertyMappingsSorted();
-		for (PropertyMapping pm : pms){
-			propertyMappingManager.remove(pm);
+			super.remove(obj);
+			universalSave(res);
+		}else{
+			// reset core mapping
+			obj.reset();
+			this.save(obj);
+			// remove property mappings for this view
+			List<PropertyMapping> pms = obj.getPropertyMappingsSorted();
+			for (PropertyMapping pm : pms){
+				propertyMappingManager.remove(pm);
+			}
 		}
-		super.remove(obj);
 	}
 }

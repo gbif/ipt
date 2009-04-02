@@ -81,18 +81,6 @@ public abstract class DataResource extends Resource {
 	private int numTerminalTaxa;
 	private int numAccepted;
 	private int numSynonyms;
-
-	public void resetCoreMapping(){
-		// keep extension if core mappings existed already
-		if (getCoreMapping()!=null){
-			Extension ext = getCoreMapping().getExtension();
-			// ensure that core mapping exists
-			ExtensionMapping coreVM = new ExtensionMapping();
-			coreVM.setResource(this);
-			coreVM.setExtension(ext);
-			this.addExtensionMapping(coreVM);
-		}
-	}
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="last_upload_event_fk", nullable=true) 

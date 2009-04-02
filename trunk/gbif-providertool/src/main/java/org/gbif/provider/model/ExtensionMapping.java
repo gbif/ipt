@@ -301,5 +301,13 @@ public class ExtensionMapping  implements BaseObject, Comparable<ExtensionMappin
 	public void setLinkTemplate(String linkTemplate) {
 		this.linkTemplate = StringUtils.trimToNull(linkTemplate);
 	}
+	public void reset() {
+		this.setCoreIdColumn(null);
+		this.setLinkColumn(null);
+		this.setLinkTemplate(null);
+		this.setRecTotal(0);
+		this.setSource(null);
+		this.setPropertyMappings(new HashMap<Long, PropertyMapping>());
+	}
 
 }
