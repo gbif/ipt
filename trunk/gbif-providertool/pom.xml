@@ -678,7 +678,7 @@
         
         <!-- IPT settings -->
         <copyright.year>2009</copyright.year>
-        <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
+        <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>
         <ipt.datadir></ipt.datadir>
         <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>
         <ipt.dev>false</ipt.dev>
