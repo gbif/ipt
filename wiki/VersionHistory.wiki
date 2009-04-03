@@ -12,14 +12,14 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
 = IPT 1.0 RC1 =
 [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+Size+DownloadCount Download latest release]
 
+ * support checklists supplied with flat taxonomic dwc hierarchies 
  * GBIF registry integration for organisation, resources & services
  * extension & vocabulary synchronisation via GBIF registry
- * zipped source file upload
  * new property mapping UI 
    * dynamically load required vocabularies
    * dynamically add the properties
+ * zipped source file upload
  * Geoserver 1.7.2 with geowebcache
- * support checklists supplied with flat taxonomic dwc hierarchies 
 
 === IPT 1.0b4 ===
  * show resource and record annotations
