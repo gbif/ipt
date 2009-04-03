@@ -1,11 +1,15 @@
 #summary Version history of releases
-=== IPT 1.0 RC2 - SNAPSHOT ===
+== IPT 1.0 RC2 - SNAPSHOT ==
+Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
  * delete freshly added mapping bug fixed
  * more explanations on source files, dwc 
  * try to auto-detect headers in source files
 
 = IPT 1.0 RC1 =
- * GBIF registry integration
+[http://code.google.com/p/gbif-providertoolkit/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+Size+DownloadCount Download latest release]
+
+ * GBIF registry integration for organisation, resources & services
+ * extension & vocabulary synchronisation via GBIF registry
  * zipped source file upload
  * new property mapping UI 
    * dynamically load required vocabularies
@@ -22,7 +26,6 @@
 
 
 === IPT 1.0 beta ===
-files: [http://gbif-providertoolkit.googlecode.com/files/ipt-1.0beta.war ipt.war] [http://kiwaia.gbif.org/ipt/IPT-1.0beta_geoserver.zip geoserver.zip]
  * Metadata portal
    * fulltext search across all resource metadata
    * geospatial bounding box search with map
