@@ -2,7 +2,7 @@
 == IPT 1.0 RC2 - SNAPSHOT ==
 Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
  * more explanations on source files, dwc 
- * try to auto-detect headers in source files
+ * auto-detecting headers in source files, see Issue131
  * Fixed bugs:
    * Issue132 fixed delete mapping bug
 
