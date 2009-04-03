@@ -1,9 +1,10 @@
 #summary Version history of releases
 == IPT 1.0 RC2 - SNAPSHOT ==
 Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
- * delete freshly added mapping bug fixed
  * more explanations on source files, dwc 
  * try to auto-detect headers in source files
+ * Fixed bugs:
+   * Issue132 fixed delete mapping bug
 
 = IPT 1.0 RC1 =
 [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+Size+DownloadCount Download latest release]
