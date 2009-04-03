@@ -5,6 +5,8 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
  * auto-detecting headers in source files, see Issue131
  * Fixed bugs:
    * Issue132 fixed delete mapping bug
+   * Issue130
+   * Issue129 uploading &resizing larger logo images
 
 = IPT 1.0 RC1 =
 [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+Size+DownloadCount Download latest release]
