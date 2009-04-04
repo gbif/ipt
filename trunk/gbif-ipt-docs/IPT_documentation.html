@@ -89,13 +89,43 @@
       </li>
       </ul>
     </li>
-    <li><a href="#toc32">5.2. Creating and configuring new resources</a>
+    <li><a href="#toc32">5.2. Resource Creation</a>
+    </li>
+    <li><a href="#toc33">5.3. Resource Metadata</a>
       <ul>
-      <li><a href="#toc33">5.2.1. Resource Creation</a>
+      <li><a href="#toc34">5.3.1. Basic Metadata</a>
       </li>
-      <li><a href="#toc34">5.2.2. Resource Configuration (occurences and checklists only)</a>
+      <li><a href="#toc35">5.3.2. Resource Originator</a>
+      </li>
+      <li><a href="#toc36">5.3.3. Geographic Coverage</a>
+      </li>
+      <li><a href="#toc37">5.3.4. Taxonomic Coverage</a>
+      </li>
+      <li><a href="#toc38">5.3.5. Temporal Coverage</a>
+      </li>
+      <li><a href="#toc39">5.3.6. General Keywords</a>
+      </li>
+      <li><a href="#toc40">5.3.7. IPRights</a>
+      </li>
+      <li><a href="#toc41">5.3.8. Research Project</a>
+      </li>
+      <li><a href="#toc42">5.3.9. Methods</a>
       </li>
       </ul>
+    </li>
+    <li><a href="#toc43">5.4. Resource Configuration (occurences and checklists only)</a>
+      <ul>
+      <li><a href="#toc44">5.4.1. Source Data</a>
+      </li>
+      <li><a href="#toc45">5.4.2. Property Mappings</a>
+      </li>
+      <li><a href="#toc46">5.4.3. Cache</a>
+      </li>
+      </ul>
+    </li>
+    <li><a href="#toc47">5.5. Resource Publication</a>
+    </li>
+    <li><a href="#toc48">5.6. Resource Edition</a>
     </li>
     </ul>
   </li>
@@ -603,16 +633,20 @@ This page displays a list of all the active data sources in the IPT.
 <a id="toc31" name="toc31"></a>
 <h3>5.1.3. Resource Metadata</h3>
 <a id="toc32" name="toc32"></a>
-<h2>5.2. Creating and configuring new resources</h2>
-<a id="toc33" name="toc33"></a>
-<h3>5.2.1. Resource Creation</h3>
+<h2>5.2. Resource Creation</h2>
 <p>
 New resources are created by a manager (or an administrator) on the <i>Manage</i> page.
 </p>
 <p>
 The manager chooses which resource type to create by clicking on the corresponding link in the <i>Resource Actions</i> menu: <i>New Occurence Resource</i>, <i>New Checklist Resource</i> or <i>New Metadata Resource</i>.
 </p>
-<h4>Basic Metadata</h4>
+<a id="toc33" name="toc33"></a>
+<h2>5.3. Resource Metadata</h2>
+<p>
+When the resource has been created, the manager can its metadata.
+</p>
+<a id="toc34" name="toc34"></a>
+<h3>5.3.1. Basic Metadata</h3>
 <p>
 The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
 </p>
@@ -621,7 +655,43 @@ The first step is to basically describe the dataset that will be published. The 
   Title of the resource
 </dd>
 <dt>Type</dt><dd>
-  Type of data. The list differs depending on the type of data (see description of the different data types above).
+  Type of data:
+    <ul>
+    <li>Checklist
+    </li>
+    <li>Fossil Specimen
+    </li>
+    <li>Legislative Checklist
+    </li>
+    <li>Living Specimen
+    </li>
+    <li>Moving Image
+    </li>
+    <li>Nomenclature Checklist
+    </li>
+    <li>Organism Observation
+    </li>
+    <li>Organism Observation by Human
+    </li>
+    <li>Organism Observation by Machine
+    </li>
+    <li>Preserved Specimen
+    </li>
+    <li>Regional Checklist
+    </li>
+    <li>Sound Recording
+    </li>
+    <li>Species Descriptions
+    </li>
+    <li>Species Distributions
+    </li>
+    <li>Specimen
+    </li>
+    <li>Still Image
+    </li>
+    <li>Taxonomic Checklist
+    </li>
+    </ul>
 </dd>
 <dt>Contact Name</dt><dd>
   Name of the contact person
@@ -640,16 +710,156 @@ The first step is to basically describe the dataset that will be published. The 
 <p>
 Once the fields have been filled in, the manager can save the form, the resource is then created and can be accessed later on in the <i>Manage</i> section.
 </p>
-<a id="toc34" name="toc34"></a>
-<h3>5.2.2. Resource Configuration (occurences and checklists only)</h3>
+<a id="toc35" name="toc35"></a>
+<h3>5.3.2. Resource Originator</h3>
+<p>
+This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
+</p>
+<ul>
+<li>Resource Language (mandatory field)
+</li>
+<li>First Name (mandatory field)
+</li>
+<li>Last Name (mandatory field)
+</li>
+<li>Organisation
+</li>
+<li>Position
+</li>
+<li>Phone
+</li>
+<li>Email (mandatory field)
+</li>
+<li>Homepage
+</li>
+<li>Address
+</li>
+<li>Postal Code
+</li>
+<li>City
+</li>
+<li>Province
+</li>
+<li>Country (mandatory field)
+</li>
+</ul>
+
+<a id="toc36" name="toc36"></a>
+<h3>5.3.3. Geographic Coverage</h3>
+<p>
+In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
+</p>
+<h5>Using the map</h5>
+<p>
+The manager can navigate on the map by clicking and dragging the cursor around and can zoom using the scale on the left of the map. Double-clicking somewhere on the map will zoom and center the map on this point.
+</p>
+<h5>Creating a new area</h5>
+<p>
+The manager must click on the grey <i>select area</i> button in the top right corner of the map. He can then click and drag his mouse to select an area. Only one area can be created per map.
+</p>
+<h5>Description</h5>
+<p>
+The manager can describe the geographic coverage in the box below the map.
+</p>
+<a id="toc37" name="toc37"></a>
+<h3>5.3.4. Taxonomic Coverage</h3>
+<h4>5.3.4.1. Taxonomic Metadata</h4>
+<dl>
+<dt>General Taxonomic Coverage Description </dt><dd>
+<p></p>
+</dd>
+<dt>Taxonomic Keywords </dt><dd>
+</dd>
+</dl>
+
+<h4>5.3.4.2. Lowest Common Taxon</h4>
+<dl>
+<dt>Scientific Name (mandatory field)</dt><dd>
+<p></p>
+</dd>
+<dt>Common Name </dt><dd>
+<p></p>
+</dd>
+<dt>Rank (mandator field)</dt><dd>
+</dd>
+</dl>
+
+<a id="toc38" name="toc38"></a>
+<h3>5.3.5. Temporal Coverage</h3>
+<p>
+The manger must fill in the temporal information of the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox.
+</p>
+<a id="toc39" name="toc39"></a>
+<h3>5.3.6. General Keywords</h3>
+<p>
+In this section, the manager can indicate keywords for the resource. The keywords must be separated by a comma. 
+</p>
+<a id="toc40" name="toc40"></a>
+<h3>5.3.7. IPRights</h3>
+<p>
+On this page, he manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
+</p>
+<p>
+The GBIF supports the use of the Creative Commons license, which allow the originator to keep his copyright but allow people to copy and distribute at conditions specified by the originator. For more information, see <a href="http://creativecommons.org/license/">http://creativecommons.org/license/</a>.
+</p>
+<dl>
+<dt>Purpose</dt><dd>
+<p></p>
+</dd>
+<dt>Maintenance</dt><dd>
+<p></p>
+</dd>
+<dt>IPRights</dt><dd>
+</dd>
+</dl>
+
+<a id="toc41" name="toc41"></a>
+<h3>5.3.8. Research Project</h3>
+<p>
+If the resource is linked to a specific reseach project, the manager can describe it in this section.
+</p>
+<dl>
+<dt>Title</dt><dd>
+<p></p>
+</dd>
+<dt>Project Lead Organisation</dt><dd>
+<p></p>
+</dd>
+<dt>Abstract</dt><dd>
+<p></p>
+</dd>
+<dt>Funding</dt><dd>
+<p></p>
+</dd>
+<dt>Study Area Description</dt><dd>
+<p></p>
+</dd>
+<dt>Design Description</dt><dd>
+</dd>
+</dl>
+
+<a id="toc42" name="toc42"></a>
+<h3>5.3.9. Methods</h3>
+<dl>
+<dt>Methods</dt><dd>
+</dd>
+<dt>Sampling Description</dt><dd>
+</dd>
+<dt>Quality Control</dt><dd>
+</dd>
+</dl>
+
+<a id="toc43" name="toc43"></a>
+<h2>5.4. Resource Configuration (occurences and checklists only)</h2>
 <p>
 Once the resource has been created, the manager must define a data source and map properties.
 </p>
-<h4>5.2.2.1. Source Data</h4>
+<a id="toc44" name="toc44"></a>
+<h3>5.4.1. Source Data</h3>
 <p>
 Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as he wants, but it is necessary to define at least one.
 </p>
-<h5>5.2.2.1.1. File Data Sources</h5>
+<h4>5.4.1.1. File Data Sources</h4>
 <p>
 In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such <i>tab delimited text files</i> are easily created from any spreadsheet software or database management systems.
 </p>
@@ -659,7 +869,7 @@ Once the file has been uploaded, the manager can define whether the first row of
 <p>
 When done adding data sources, the manager can press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
 </p>
-<h5>5.2.2.1.2. SQL Data Sources</h5>
+<h4>5.4.1.2. SQL Data Sources</h4>
 <p>
 In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
 </p>
@@ -687,7 +897,8 @@ The <i>SQL Settings</i> page also gives a list of important parameters for the m
 <p>
 Once all the fields have been filled in, the manager can <i>save</i> the form. He will then be brought back to the <i>Source Data</i> page where he can add more data sources or press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
 </p>
-<h4>5.2.2.2. Property Mappings</h4>
+<a id="toc45" name="toc45"></a>
+<h3>5.4.2. Property Mappings</h3>
 <p>
 Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see <i>Extensions</i> section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
 </p>
@@ -697,7 +908,7 @@ The <i>Property Mappings</i> page displays a list of the existing mappings, that
 <p>
 When done adding or editing mappings, the manager can press the <i>Next</i> button to go to the <i>Cache</i> page.
 </p>
-<h5>5.2.2.2.1. Your Existing Mappings</h5>
+<h4>5.4.2.1. Your Existing Mappings</h4>
 <p>
 When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension. These mappings can be viewed or modified by pressing the <i>Edit</i> button.
 </p>
@@ -745,7 +956,7 @@ Each Darwin Core or extension property mapped to a data source field is displaye
 <p>
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
 </p>
-<h5>5.2.2.2.2. Add New Mapping</h5>
+<h4>5.4.2.2. Add New Mapping</h4>
 <p>
 To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the <i>Add</i> button.
 </p>
@@ -793,13 +1004,18 @@ After having added some properties to  the list, the manager can choose which da
 <p>
 When done, the <i>Save</i> button should be pressed before the <i>Done</i> button.
 </p>
-<h4>5.2.2.3. Cache</h4>
+<a id="toc46" name="toc46"></a>
+<h3>5.4.3. Cache</h3>
 <p>
 The cache page allows the manager to actually import the data into the IPT. This is done by pressing the <i>Upload</i> button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
 </p>
 <p>
 The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
 </p>
+<a id="toc47" name="toc47"></a>
+<h2>5.5. Resource Publication</h2>
+<a id="toc48" name="toc48"></a>
+<h2>5.6. Resource Edition</h2>
 
 <!-- xhtml code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
 <!-- cmdline: txt2tags -\-toc -t xhtml -i - -o - -->
