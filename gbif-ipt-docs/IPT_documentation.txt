@@ -336,26 +336,50 @@ This page displays a list of all the active data sources in the IPT.
 
 +++ Taxon Primary Occurence Data +++
 
+  
+
 +++ Taxonomic Checklists +++
+   
 
 +++ Resource Metadata +++
 
-++ Creating and configuring new resources ++
+++ Resource Creation ++
 
-+++ Resource Creation +++
 
 New resources are created by a manager (or an administrator) on the //Manage// page.
 
 The manager chooses which resource type to create by clicking on the corresponding link in the //Resource Actions// menu: //New Occurence Resource//, //New Checklist Resource// or //New Metadata Resource//.
 
-==== Basic Metadata ====
+
+++ Resource Metadata ++
+
+When the resource has been created, the manager can its metadata.
+
++++ Basic Metadata +++
 
 The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
 
 : Title
   Title of the resource
 : Type
-  Type of data. The list differs depending on the type of data (see description of the different data types above).
+  Type of data:
+    - Checklist
+    - Fossil Specimen
+    - Legislative Checklist
+    - Living Specimen
+    - Moving Image
+    - Nomenclature Checklist
+    - Organism Observation
+    - Organism Observation by Human
+    - Organism Observation by Machine
+    - Preserved Specimen
+    - Regional Checklist
+    - Sound Recording
+    - Species Descriptions
+    - Species Distributions
+    - Specimen
+    - Still Image
+    - Taxonomic Checklist
 : Contact Name
   Name of the contact person
 : Contact Email
@@ -368,15 +392,118 @@ The first step is to basically describe the dataset that will be published. The 
 
 Once the fields have been filled in, the manager can save the form, the resource is then created and can be accessed later on in the //Manage// section.
 
-+++ Resource Configuration (occurences and checklists only)+++
++++ Resource Originator +++
+
+This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
+
+- Resource Language (mandatory field)
+- First Name (mandatory field)
+- Last Name (mandatory field)
+- Organisation
+- Position
+- Phone
+- Email (mandatory field)
+- Homepage
+- Address
+- Postal Code
+- City
+- Province
+- Country (mandatory field)
+
+
++++ Geographic Coverage +++
+
+In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
+
+===== Using the map =====
+
+The manager can navigate on the map by clicking and dragging the cursor around and can zoom using the scale on the left of the map. Double-clicking somewhere on the map will zoom and center the map on this point.
+
+===== Creating a new area =====
+
+The manager must click on the grey //select area// button in the top right corner of the map. He can then click and drag his mouse to select an area. Only one area can be created per map.
+
+===== Description =====
+
+The manager can describe the geographic coverage in the box below the map.
+
+
++++ Taxonomic Coverage +++
+
+++++ Taxonomic Metadata ++++
+
+
+: General Taxonomic Coverage Description 
+
+: Taxonomic Keywords 
+
+
+++++ Lowest Common Taxon ++++
+
+: Scientific Name (mandatory field)
+
+: Common Name 
+
+: Rank (mandator field)
+
+
+
++++ Temporal Coverage +++
+
+The manger must fill in the temporal information of the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox.
+
++++ General Keywords +++
+
+In this section, the manager can indicate keywords for the resource. The keywords must be separated by a comma. 
+
++++ IPRights +++
+
+On this page, he manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
+
+The GBIF supports the use of the Creative Commons license, which allow the originator to keep his copyright but allow people to copy and distribute at conditions specified by the originator. For more information, see http://creativecommons.org/license/.
+
+: Purpose
+
+: Maintenance
+
+: IPRights
+
+
+
++++ Research Project +++
+
+If the resource is linked to a specific reseach project, the manager can describe it in this section.
+
+: Title
+
+: Project Lead Organisation
+
+: Abstract
+
+: Funding
+
+: Study Area Description
+ 
+: Design Description
+
+
+
++++ Methods +++
+
+: Methods
+: Sampling Description
+: Quality Control
+
+
+++ Resource Configuration (occurences and checklists only) ++
 
 Once the resource has been created, the manager must define a data source and map properties.
 
-++++ Source Data ++++
++++ Source Data +++
 
 Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as he wants, but it is necessary to define at least one.
 
-+++++ File Data Sources +++++
+++++ File Data Sources ++++
 
 In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such //tab delimited text files// are easily created from any spreadsheet software or database management systems.
 
@@ -384,7 +511,7 @@ Once the file has been uploaded, the manager can define whether the first row of
 
 When done adding data sources, the manager can press the //Next// button to go to the //Property Mappings// page.
 
-+++++ SQL Data Sources +++++
+++++ SQL Data Sources ++++
 
 In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
 
@@ -404,7 +531,7 @@ The //SQL Settings// page also gives a list of important parameters for the most
 
 Once all the fields have been filled in, the manager can //save// the form. He will then be brought back to the //Source Data// page where he can add more data sources or press the //Next// button to go to the //Property Mappings// page.
 
-++++ Property Mappings ++++
++++ Property Mappings +++
 
 Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see //Extensions// section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
 
@@ -412,7 +539,7 @@ The //Property Mappings// page displays a list of the existing mappings, that ca
 
 When done adding or editing mappings, the manager can press the //Next// button to go to the //Cache// page.
 
-+++++ Your Existing Mappings +++++
+++++ Your Existing Mappings ++++
 
 When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension. These mappings can be viewed or modified by pressing the //Edit// button.
 
@@ -448,7 +575,7 @@ Each Darwin Core or extension property mapped to a data source field is displaye
 
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the //property mappings// section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
 
-+++++ Add New Mapping +++++
+++++ Add New Mapping ++++
 
 To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the //Add// button.
 
@@ -484,17 +611,13 @@ After having added some properties to  the list, the manager can choose which da
 
 When done, the //Save// button should be pressed before the //Done// button.
 
-++++ Cache ++++
++++ Cache +++
 
 The cache page allows the manager to actually import the data into the IPT. This is done by pressing the //Upload// button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
 
 The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
 
+++ Resource Publication ++
 
 
-
-
-
-
-
-
+++ Resource Edition ++
