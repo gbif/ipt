@@ -1,5 +1,57 @@
 + Background Information +
 
+The Global Biodiversity Information Facility (GBIF) works to make digital 
+biodiversity data openly and freely available on the Internet for everyone. 
+GBIF provides access to scientific biodiversity data for decision-making, research endeavours and public use. GBIF endorses both open source software 
+and open data access.
+
+In terms of structure, GBIF is a dynamic, growing partnership of countries, organisations, institutions and individuals working together to mobilise 
+scientific biodiversity data. 
+
+GBIF is also a network of data publishers who retain ownership and 
+control of the data they share. Linked datasets provide a more robust representation of biodiversity than any single dataset. 
+
+In this framework, GBIF develops software tools to make possible to 
+easily integrate biodiversity data from heterogeneous sources using common 
+standards and protocols. One of these tools is the GBIF Integrated Publishing Toolkit (IPT) that this user manual refers to.
+
+The GBIF IPT is an open source, Java (TM) based web application 
+that connects and serves three types of biodiversity data: taxon primary 
+occurrence data, taxon checklists and general resource metadata. The data 
+registered in a GBIF IPT instance is connected to the GBIF distributed 
+network and made available for public consultation and use. Several factors 
+have motivated the development of this new tool: 
+
+- the limitations of the existing systems to publish primary biodiversity 
+occurrence records that use tools and protocols that were not designed 
+to transfer big amounts of records (DiGIR, TAPIR, ABCD); 
+- the need to decentralise and speed up the process of indexing biodiversity occurrence datasets; 
+- the need to offer additional benefits and services to the data publishers to encourage data publication (i.e. public web interface to 
+browse/expose (meta)data, mapping services); 
+- the need to offer data quality assessment tools to data publishers and 
+generalise data cleaning habits; 
+- the need to increase data exchange using globally accepted formats 
+(i.e. OGC web services); 
+- the need for easy ways to monitor data access and use for the different 
+resources connected to the GBIF Network; 
+- the lack of appropriate tools to publish other types of biodiversity data, 
+such as names checklists and dataset metadata; 
+- existing requests to facilitate and automate dataset registration with 
+the GBIF Network; 
+- the requirement to implement (and assign if needed) Universal Unique 
+Identifiers (UUIDs) associated to all published elements to increase 
+interoperability in the GBIF Network; 
+
+
+The GBIF IPT, as an open source pro ject, is made freely available for both 
+those who wish to use it to publish their data and those who wish to participate in its development, documentation and helpdesk. This is a list of the 
+current online resources related to the GBIF IPT: 
+
+- the GBIF IPT mailing list: http://lists.gbif.org/mailman/listinfo/ipt/; 
+- the GBIF IPT test installation (for testing purposes): http://ipt.gbif.org/; 
+- the GBIF IPT code site: http://code.google.com/p/gbif-providertoolkit/. 
+
+
 + General specifications +
 
 The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
