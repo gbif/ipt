@@ -18,8 +18,6 @@
 
 </head>
 
-<!--<h1><@s.text name="eml.temporalCoverage"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 <@s.form id="emlForm" action="tempcoverage" method="post" validate="false">
 <fieldset>
@@ -35,7 +33,9 @@
 		</div>
 		<div class="left">
 			<@s.checkbox key="eml.temporalCoverage.single" value="false" onclick="javascript:toggleSingleDate(this);" />
-			<span>e.g. 1999-07-21</span>
+		</div>
+		<div class="left">
+			<span>e.g. 1999/07/21</span>
 		</div>
 	</div>
 </fieldset>
