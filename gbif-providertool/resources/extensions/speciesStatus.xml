@@ -31,5 +31,7 @@
     <property name="CountryCode" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/CountryCode" thesaurus="http://gbrds.gbif.org/resources/thesauri/country-code.xml" columnLength="3"/>
     <property name="StateProvince" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/StateProvince" columnLength="128"/>
     <property name="County" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/County" columnLength="128"/>
-    <property name="Locality" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/Locality" columnLength="1000"/>
+    <property name="Locality" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/Locality" columnLength="256"/>
+    
+    <property name="TaxonRemarks" namespace="http://rs.tdwg.org/dwc/terms/" qualName="http://rs.tdwg.org/dwc/terms/TaxonRemarks" columnLength="1000"/>    
 </extension>
