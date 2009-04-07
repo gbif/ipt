@@ -1,3 +1,4 @@
+
 + Background Information +
 
 The Global Biodiversity Information Facility (GBIF) works to make digital 
@@ -168,55 +169,62 @@ The disk image can be downloaded at the time of writing from the following addre
 
 Once the IPT has been installed, it is accessible in a web browser at the following URL: http://localhost:8080/ipt/
 
-To be able to configure the software, one must login as administrator by clicking on the //Login// button in the main menu and entering a username and password. By default, the adminstrative username is //admin// and the password is also //admin//.
+To be able to configure the software, one must login as administrator by clicking on the //Login// button in the main menu and entering a username and password. By default, the administrative username is //admin// and the password is also //admin//.
+
+
 
 Once logged in, a new //Admin// section appears in the menu. The subsequent drop-down menu offers the following choices:
 
-- Settings
+- Configuration
 - Extensions
 - Thesaurus
-- View Users
+- Manage Users
 - Current Users
-- Active Datasources
-- Background Tasks
 
+[screenshots/admin_menu.png]
 
-++ Settings ++
+++ Configuration ++
 
-The Settings section is divided in three configuration options:
+The Settings section is divided in three configuration options available via the menu on the right hand side of the page:
 
 - Settings
 - Organisation
 - IPT Instance
+
+[screenshots/config_menu.png]
 
 
 +++ Settings +++
 
 The Settings page allows the administrator to define a number of parameters that are essential for the IPT to function correctly.
 
+[screenshots/config_settings.png]
+
 ++++ IPT Base URL ++++
 
-This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/ipt or http://exemple.com:8080/ipt).
+This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the public URL (e.g. http://67.233.45.122:8080/ipt or http://exemple.com:8080/ipt).
 
-++++ IPT Base Directory ++++
+++++ IPT Data Directory ++++
 
-This field defines the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the //Update Geoserver// button. 
+This field defines the location of the IPT data folder in the file system. It is filled in by default and does not need to be changed. It is followed by a button that must be clicked for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the //Update Geoserver// button. 
 
-++++ config.log4jFilename ++++
-
-[**//What is it? Should it be there? Not with this name in any case.//**]
+++++ Logging ++++
 
 ++++ Google Maps API Key ++++
 
-In order to use the the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a //Google Maps API Key//. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+In order to use the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a //Google Maps API Key//. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+
+++++ Additional raw HTML headers ++++
 
 +++ Geoserver Settings +++
 
 The Settings page also allows the administrator to define some parameters for the Geoserver. For more information about the Geoserver, see its users guide: http://geoserver.org/display/GEOSDOC/Users+Guide
 
+[screenshots/config_geoserver_settings.png]
+
 ++++ Base URL ++++
 
-The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/geoserver or http://exemple.com:8080/geoserver).
+The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to a public URL (e.g. http://67.233.45.122:8080/geoserver or http://exemple.com:8080/geoserver).
 
 ++++ Data Directory ++++
 
@@ -230,16 +238,18 @@ By default, the administrative username is //admin// and the administrative pass
 
 This page allows the administrator to define the GBIF organisation hosting the IPT installation. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
 
+[screenshots/config_organisation.png]
+
 The following fields must filled in:
 
 : Title 
-  this is the full name of the organisation
+  Full name of the organisation
 : Organisation Identifier
-  this is a code provided automatically by the GBIF once the organisation is registered filling and sending this form
+Code provided automatically by the GBIF once the organisation is registered filling and sending this form
 : GBIF Node 
   GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network
 : Organisation password 
-  this password can be used by other members of the organisation to retrieve the information
+  This password can be used by other members of the organisation to retrieve the information
 : Contact Name 
   Name of the contact person
 : Contact Email 
@@ -249,15 +259,20 @@ The following fields must filled in:
 : Description 
   Description of the organisation
 : Cancel / Save / Register 
-  The three buttons allow the administrator to respectively delete what he just typed, saved the information in the form or register the organisation with the GBIF. When does so, he will receive an Organisation Identifier that will be automatically filled in the right field.
-
+  The three buttons allow the administrator to respectively delete what he just typed, saved the information in the form or register the organisation with the GBIF. When does so, he will receive an Organisation Identifier that will be automatically filled in the right field. The //Register// button is only available if the organisation is not yet registered.
+: Clear form
+  This link is only available if a registered organisation is already defined. It allows the administrator to clear the form in order to register a new organisation.
+: Resend Password
+  This link is only available if a registered organisation is already defined. An e-mail with the organisation's password is sent to the organisation's contact person when the link is clicked.
 
 +++ IPT Instance +++
 
 This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to populate the homepage of this IPT instance.
 
-: Organisation Identifier 
-  this is the code provided automatically by GBIF during the organisation registration process
+[screenshots/config_ipt_instance.png]
+
+: Resource Identifier 
+  This is a code provided by the GBIF when the IPT instance is registered.
 : Title 
   this is the name given to the IPT instance. It can be the name of an organisation, a project, a natural history collection, etc.
 : Contact Name 
@@ -270,8 +285,8 @@ This page allows the administrator to define some parameters regarding the IPT i
   the coordinates will be used to display the right portion of the Google Maps.
 : Description 
   description of the organisation
-: Description Image URL 
-  Image used on the front page of the IPT instance
+: Image URL 
+  URL of the image used on the front page of the IPT instance. This URL must be public.
 
 
 ++ Extensions ++
