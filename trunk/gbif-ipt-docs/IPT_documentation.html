@@ -59,7 +59,7 @@
     <ul>
     <li><a href="#toc19">4.2. Thesaurus</a>
     </li>
-    <li><a href="#toc20">4.3. View Users</a>
+    <li><a href="#toc20">4.3. Manage Users</a>
       <ul>
       <li><a href="#toc21">4.3.1. User Profile</a>
       </li>
@@ -69,59 +69,53 @@
     </li>
     <li><a href="#toc23">4.5. Current Users</a>
     </li>
-    <li><a href="#toc24">4.6. Active Datasources</a>
-    </li>
-    </ul>
-  </li>
-  <li><a href="#toc25">5. Resources Management</a>
-    <ul>
-    <li><a href="#toc26">5.1. Data Types</a>
+    <li><a href="#toc24">4.6. Data Types</a>
       <ul>
-      <li><a href="#toc27">5.1.1. Taxon Primary Occurence Data</a>
+      <li><a href="#toc25">4.6.1. Taxon Primary Occurence Data</a>
       </li>
-      <li><a href="#toc28">5.1.2. Taxonomic Checklists</a>
+      <li><a href="#toc26">4.6.2. Taxonomic Checklists</a>
       </li>
-      <li><a href="#toc29">5.1.3. Resource Metadata</a>
+      <li><a href="#toc27">4.6.3. Resource Metadata</a>
       </li>
       </ul>
     </li>
-    <li><a href="#toc30">5.2. Resource Creation</a>
+    <li><a href="#toc28">4.7. Resource Creation</a>
     </li>
-    <li><a href="#toc31">5.3. Resource Metadata</a>
+    <li><a href="#toc29">4.8. Resource Metadata</a>
       <ul>
-      <li><a href="#toc32">5.3.1. Basic Metadata</a>
+      <li><a href="#toc30">4.8.1. Basic Metadata</a>
       </li>
-      <li><a href="#toc33">5.3.2. Resource Originator</a>
+      <li><a href="#toc31">4.8.2. Resource Originator</a>
       </li>
-      <li><a href="#toc34">5.3.3. Geographic Coverage</a>
+      <li><a href="#toc32">4.8.3. Geographic Coverage</a>
       </li>
-      <li><a href="#toc35">5.3.4. Taxonomic Coverage</a>
+      <li><a href="#toc33">4.8.4. Taxonomic Coverage</a>
       </li>
-      <li><a href="#toc36">5.3.5. Temporal Coverage</a>
+      <li><a href="#toc34">4.8.5. Temporal Coverage</a>
       </li>
-      <li><a href="#toc37">5.3.6. General Keywords</a>
+      <li><a href="#toc35">4.8.6. General Keywords</a>
       </li>
-      <li><a href="#toc38">5.3.7. IPRights</a>
+      <li><a href="#toc36">4.8.7. IPRights</a>
       </li>
-      <li><a href="#toc39">5.3.8. Research Project</a>
+      <li><a href="#toc37">4.8.8. Research Project</a>
       </li>
-      <li><a href="#toc40">5.3.9. Methods</a>
+      <li><a href="#toc38">4.8.9. Methods</a>
       </li>
       </ul>
     </li>
-    <li><a href="#toc41">5.4. Resource Configuration (occurences and checklists only)</a>
+    <li><a href="#toc39">4.9. Resource Configuration (occurences and checklists only)</a>
       <ul>
-      <li><a href="#toc42">5.4.1. Source Data</a>
+      <li><a href="#toc40">4.9.1. Source Data</a>
       </li>
-      <li><a href="#toc43">5.4.2. Property Mappings</a>
+      <li><a href="#toc41">4.9.2. Property Mappings</a>
       </li>
-      <li><a href="#toc44">5.4.3. Cache</a>
+      <li><a href="#toc42">4.9.3. Cache</a>
       </li>
       </ul>
     </li>
-    <li><a href="#toc45">5.5. Resource Publication</a>
+    <li><a href="#toc43">4.10. Resource Publication</a>
     </li>
-    <li><a href="#toc46">5.6. Resource Edition</a>
+    <li><a href="#toc44">4.11. Resource Edition</a>
     </li>
     </ul>
   </li>
@@ -278,7 +272,7 @@ The application server will need a rather large amount of memory allocated as th
 </li>
 <li>Open a command prompt window and navigate to the installation folder.
 </li>
-<li>Mac OS only: some files need to have their permissions adapted: type “<i>sudo chmod 775 *</i>” at the command line. You will be asked your administrative password.
+<li>Mac OS only: some files need to have their permissions adapted: type <i>sudo chmod 775 *</i> at the command line. You will be asked your administrative password.
 </li>
 <li>go to the <i>bin</i> folder and execute startut.bat (Window) or startup.sh (Mac OS). A new Tomcat window will open. You need to keep this window open.
 </li>
@@ -329,7 +323,7 @@ This installation is required if the Geoserver is not yet installed on the machi
 <ol>
 <li>Download the zipped archive from the project downloads page;
 </li>
-<li>Extract it into the Tomcat webapps folder and rename it as “geoserver”;
+<li>Extract it into the Tomcat webapps folder and rename it as geoserver;
 </li>
 <li>Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS(TM)).
 </li>
@@ -435,7 +429,7 @@ This field defines the location of the IPT data folder in the file system. It is
 <h4>4.0.1.3. Logging</h4>
 <h4>4.0.1.4. Google Maps API Key</h4>
 <p>
-In order to use the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+In order to use the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the Get Google Maps API key link and following instructions provided by Google.
 </p>
 <h4>4.0.1.5. Additional raw HTML headers</h4>
 <a id="toc16" name="toc16"></a>
@@ -545,6 +539,9 @@ Extensions allow for serving additional data types, such as multiple identificat
 The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
 </p>
 <p>
+<img align="middle" src="screenshots/extensions.png" border="0" alt=""/>
+</p>
+<p>
 By default, available extensions are:
 </p>
 <ul>
@@ -575,15 +572,21 @@ By default, available extensions are:
 </ul>
 
 <p>
-The user can get more information about an extension and install it by clicking on its name.
+Clicking on an extension name will open a new page with information about the extension, including a list of properties.  The administrator can get more information about a property by clicking on its name. It is also possible on this page to install or remove an extension.
 </p>
 <p>
-It is possible to define custom extensions, but this is not automated process with this the 1.0 version of the IPT.
+<img align="middle" src="screenshots/extensions_example.png" border="0" alt=""/>
+</p>
+<p>
+It is also possible to define custom extensions, but the process is not automated in version 1.0 of the IPT.
 </p>
 <a id="toc19" name="toc19"></a>
 <h2>4.2. Thesaurus</h2>
 <p>
-Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the names under the Vocabulary column.
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. 
+</p>
+<p>
+<img align="middle" src="screenshots/thesaurus.png" border="0" alt=""/>
 </p>
 <p>
 By default, available thesauri are:
@@ -604,18 +607,24 @@ By default, available thesauri are:
 </ul>
 
 <p>
-It is possible to define custom vocabularies, but this is not automated process with version 1.0 of the IPT.
+Clicking on a thesaurus name will open a new page with information about the thesaurus, including a list of terms.
+</p>
+<p>
+<img align="middle" src="screenshots/thesaurus_example.png" border="0" alt=""/>
+</p>
+<p>
+It is also possible to define custom vocabularies, but the process is not automated in version 1.0 of the IPT.
 </p>
 <a id="toc20" name="toc20"></a>
-<h2>4.3. View Users</h2>
+<h2>4.3. Manage Users</h2>
 <p>
-This page allows the administrator to manage users. There are three users roles: <i>administrator</i>, <i>manager</i> and <i>user</i>.
+This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The administrator can also export the list in different formats (CSV, Excel, XML and PDF).
 </p>
 <p>
-The page displays the list of users their usernames, full names and emails. By clicking on the username, one can edit the user profile. One can also export the list in different formats (CSV, Excel, XML and PDF).
+<img align="middle" src="screenshots/manage_users.png" border="0" alt=""/>
 </p>
 <p>
-The page also gives the opportunity to add a new user through the <i>Add</i> button at the bottom of the page.
+The administrator can also add a new user through the <i>Add</i> button at the bottom of the page.
 </p>
 <a id="toc21" name="toc21"></a>
 <h3>4.3.1. User Profile</h3>
@@ -623,29 +632,32 @@ The page also gives the opportunity to add a new user through the <i>Add</i> but
 The User Profile page allows the administrator to add a new user or to edit or delete an existing user.
 </p>
 <p>
+<img align="middle" src="screenshots/user_profile.png" border="0" alt=""/>
+</p>
+<p>
 To add a new user, the following fields must be filled in:
 </p>
 <dl>
-<dt>username</dt><dd>
-  user's username
+<dt>username (mandatory field)</dt><dd>
 </dd>
-<dt>password </dt><dd>
+<dt>password (mandatory field)</dt><dd>
   needs to be filled in twice for confirmation
 </dd>
-<dt>e-mail</dt><dd>
+<dt>e-mail (mandatory field)</dt><dd>
 </dd>
-<dt>password hint</dt><dd>
+<dt>password hint (mandatory field)</dt><dd>
   will be e-mailed to the user who forgot his password
 </dd>
-<dt>first name</dt><dd>
-  user's first name
+<dt>first name (mandatory field)</dt><dd>
 </dd>
-<dt>last name</dt><dd>
-  user's last name
-<p></p>
+<dt>last name (mandatory field)</dt><dd>
+</dd>
+</dl>
+
+<p>
 The administrator must also apply some settings to the account:
-<p></p>
-</dd>
+</p>
+<dl>
 <dt>Enabled </dt><dd>
   the account is enabled and ready to be used
 </dd>
@@ -665,16 +677,26 @@ Finally, the administrator must assign one or several roles to the account. The 
 </p>
 <dl>
 <dt>ROLE_ADMIN </dt><dd>
- the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. He can also manage the data recorded in the IPT. The administrator supersedes all the other roles and can do anything any other role can do.
+ the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. The administrator can also manage the data recorded in the IPT. This role supersedes all the other roles and can do anything any other role can do.
 </dd>
 <dt>ROLE_MANAGER </dt><dd>
-  the user is given manager rights and can manage the data recorded in the IPT. He can create, edit, delete, or publish data.
+  the user is given manager rights and can manage the data recorded in the IPT, and can create, edit, delete, or publish data.
 </dd>
 <dt>ROLE_USER </dt><dd>
-  the user role is the most basic role of the IPT. The user can explore the site and browse the published information. He can also annotate resources. [<b><i>Is it so?, I have not managed to do it.</i></b>]
+  the user role is the most basic role of the IPT. The user can explore the site, browse the published information and annotate resources. 
+  %Is it really possible to annotate resources?
 </dd>
 </dl>
 
+<p>
+To assign a user a role, the administrator must select it in the <i>Available Roles</i> column and click on the arrow to move it in the <i>Current Roles</i> column.
+</p>
+<p>
+<img align="middle" src="screenshots/assign_role.png" border="0" alt=""/>
+</p>
+<p>
+Conversely, to remove a role from a user, the administrator must select it in the <i>Current Roles</i> column and click on the arrow to move it back to the <i>Available Roles</i> column.
+</p>
 <p>
 A visitor that is not logged in is considered to be an <i>anonymous user</i>. Such a user can explore the site and browse the published information.
 </p>
@@ -694,36 +716,32 @@ The administrator can get more details about eache resource by clicking on its t
 <p>
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 </p>
-<a id="toc24" name="toc24"></a>
-<h2>4.6. Active Datasources</h2>
 <p>
-This page displays a list of all the active data sources in the IPT.
+<img align="middle" src="screenshots/current_users.png" border="0" alt=""/>
 </p>
+<a id="toc24" name="toc24"></a>
+<h2>4.6. Data Types</h2>
 <a id="toc25" name="toc25"></a>
-<h1>5. Resources Management</h1>
+<h3>4.6.1. Taxon Primary Occurence Data</h3>
 <a id="toc26" name="toc26"></a>
-<h2>5.1. Data Types</h2>
+<h3>4.6.2. Taxonomic Checklists</h3>
 <a id="toc27" name="toc27"></a>
-<h3>5.1.1. Taxon Primary Occurence Data</h3>
+<h3>4.6.3. Resource Metadata</h3>
 <a id="toc28" name="toc28"></a>
-<h3>5.1.2. Taxonomic Checklists</h3>
-<a id="toc29" name="toc29"></a>
-<h3>5.1.3. Resource Metadata</h3>
-<a id="toc30" name="toc30"></a>
-<h2>5.2. Resource Creation</h2>
+<h2>4.7. Resource Creation</h2>
 <p>
 New resources are created by a manager (or an administrator) on the <i>Manage</i> page.
 </p>
 <p>
 The manager chooses which resource type to create by clicking on the corresponding link in the <i>Resource Actions</i> menu: <i>New Occurence Resource</i>, <i>New Checklist Resource</i> or <i>New Metadata Resource</i>.
 </p>
-<a id="toc31" name="toc31"></a>
-<h2>5.3. Resource Metadata</h2>
+<a id="toc29" name="toc29"></a>
+<h2>4.8. Resource Metadata</h2>
 <p>
 When the resource has been created, the manager can describe its metadata.
 </p>
-<a id="toc32" name="toc32"></a>
-<h3>5.3.1. Basic Metadata</h3>
+<a id="toc30" name="toc30"></a>
+<h3>4.8.1. Basic Metadata</h3>
 <p>
 The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
 </p>
@@ -787,8 +805,8 @@ The first step is to basically describe the dataset that will be published. The 
 <p>
 Once the fields have been filled in, the manager can save the form, the resource is then created and can be accessed later on in the <i>Manage</i> section.
 </p>
-<a id="toc33" name="toc33"></a>
-<h3>5.3.2. Resource Originator</h3>
+<a id="toc31" name="toc31"></a>
+<h3>4.8.2. Resource Originator</h3>
 <p>
 This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
 </p>
@@ -821,8 +839,8 @@ This section describes the originator of the resource, i.e. the person responsib
 </li>
 </ul>
 
-<a id="toc34" name="toc34"></a>
-<h3>5.3.3. Geographic Coverage</h3>
+<a id="toc32" name="toc32"></a>
+<h3>4.8.3. Geographic Coverage</h3>
 <p>
 In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
 </p>
@@ -838,9 +856,9 @@ The manager must click on the grey <i>select area</i> button in the top right co
 <p>
 The manager can describe the geographic coverage in the box below the map.
 </p>
-<a id="toc35" name="toc35"></a>
-<h3>5.3.4. Taxonomic Coverage</h3>
-<h4>5.3.4.1. Taxonomic Metadata</h4>
+<a id="toc33" name="toc33"></a>
+<h3>4.8.4. Taxonomic Coverage</h3>
+<h4>4.8.4.1. Taxonomic Metadata</h4>
 <dl>
 <dt>General Taxonomic Coverage Description </dt><dd>
 <p></p>
@@ -849,7 +867,7 @@ The manager can describe the geographic coverage in the box below the map.
 </dd>
 </dl>
 
-<h4>5.3.4.2. Lowest Common Taxon</h4>
+<h4>4.8.4.2. Lowest Common Taxon</h4>
 <dl>
 <dt>Scientific Name (mandatory field)</dt><dd>
 <p></p>
@@ -861,18 +879,18 @@ The manager can describe the geographic coverage in the box below the map.
 </dd>
 </dl>
 
-<a id="toc36" name="toc36"></a>
-<h3>5.3.5. Temporal Coverage</h3>
+<a id="toc34" name="toc34"></a>
+<h3>4.8.5. Temporal Coverage</h3>
 <p>
 The manger must fill in the temporal information of the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox.
 </p>
-<a id="toc37" name="toc37"></a>
-<h3>5.3.6. General Keywords</h3>
+<a id="toc35" name="toc35"></a>
+<h3>4.8.6. General Keywords</h3>
 <p>
 In this section, the manager can indicate keywords for the resource. The keywords must be separated by a comma. 
 </p>
-<a id="toc38" name="toc38"></a>
-<h3>5.3.7. IPRights</h3>
+<a id="toc36" name="toc36"></a>
+<h3>4.8.7. IPRights</h3>
 <p>
 On this page, he manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
 </p>
@@ -890,8 +908,8 @@ The GBIF supports the use of the Creative Commons license, which allow the origi
 </dd>
 </dl>
 
-<a id="toc39" name="toc39"></a>
-<h3>5.3.8. Research Project</h3>
+<a id="toc37" name="toc37"></a>
+<h3>4.8.8. Research Project</h3>
 <p>
 If the resource is linked to a specific reseach project, the manager can describe it in this section.
 </p>
@@ -915,8 +933,8 @@ If the resource is linked to a specific reseach project, the manager can describ
 </dd>
 </dl>
 
-<a id="toc40" name="toc40"></a>
-<h3>5.3.9. Methods</h3>
+<a id="toc38" name="toc38"></a>
+<h3>4.8.9. Methods</h3>
 <dl>
 <dt>Methods</dt><dd>
 </dd>
@@ -926,17 +944,17 @@ If the resource is linked to a specific reseach project, the manager can describ
 </dd>
 </dl>
 
-<a id="toc41" name="toc41"></a>
-<h2>5.4. Resource Configuration (occurences and checklists only)</h2>
+<a id="toc39" name="toc39"></a>
+<h2>4.9. Resource Configuration (occurences and checklists only)</h2>
 <p>
 Once the resource has been created, the manager must define a data source and map properties.
 </p>
-<a id="toc42" name="toc42"></a>
-<h3>5.4.1. Source Data</h3>
+<a id="toc40" name="toc40"></a>
+<h3>4.9.1. Source Data</h3>
 <p>
 Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as he wants, but it is necessary to define at least one.
 </p>
-<h4>5.4.1.1. File Data Sources</h4>
+<h4>4.9.1.1. File Data Sources</h4>
 <p>
 In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such <i>tab delimited text files</i> are easily created from any spreadsheet software or database management systems.
 </p>
@@ -946,7 +964,7 @@ Once the file has been uploaded, the manager can define whether the first row of
 <p>
 When done adding data sources, the manager can press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
 </p>
-<h4>5.4.1.2. SQL Data Sources</h4>
+<h4>4.9.1.2. SQL Data Sources</h4>
 <p>
 In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
 </p>
@@ -974,8 +992,8 @@ The <i>SQL Settings</i> page also gives a list of important parameters for the m
 <p>
 Once all the fields have been filled in, the manager can <i>save</i> the form. He will then be brought back to the <i>Source Data</i> page where he can add more data sources or press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
 </p>
-<a id="toc43" name="toc43"></a>
-<h3>5.4.2. Property Mappings</h3>
+<a id="toc41" name="toc41"></a>
+<h3>4.9.2. Property Mappings</h3>
 <p>
 Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see <i>Extensions</i> section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
 </p>
@@ -985,7 +1003,7 @@ The <i>Property Mappings</i> page displays a list of the existing mappings, that
 <p>
 When done adding or editing mappings, the manager can press the <i>Next</i> button to go to the <i>Cache</i> page.
 </p>
-<h4>5.4.2.1. Your Existing Mappings</h4>
+<h4>4.9.2.1. Your Existing Mappings</h4>
 <p>
 When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension. These mappings can be viewed or modified by pressing the <i>Edit</i> button.
 </p>
@@ -1004,7 +1022,7 @@ The page is split in three parts:
 </dd>
 </dl>
 
-<h5>5.4.2.1.1. ID Properties</h5>
+<h5>4.9.2.1.1. ID Properties</h5>
 <p>
 In this section, the manager can define which fields are used as identifiers (IDs). 
 </p>
@@ -1014,7 +1032,7 @@ If the source is mapped to DarwinCore, the following fields are to be filled in:
 </p>
 <dl>
 <dt>Source ID for record (mandatory field)</dt><dd>
-  The sourceID is the local ID for one core record that extensions can link to. Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
+  The sourceID is the local ID for one core record that extensions can link to.Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
 </dd>
 <dt>GUID for record</dt><dd>
   The GUID (Globally Unique IDentifier) is optional but will be autogenerated if not mapped. It is used as public ID for published records.
@@ -1040,18 +1058,18 @@ If the source is mapped to an extension, only one field is to be filled in:
 </dd>
 </dl>
 
-<h5>5.4.2.1.2. Property Mappings</h5>
+<h5>4.9.2.1.2. Property Mappings</h5>
 <p>
 Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (i.e. same value for all records) by entering it in the text field (and choosing a blank value in the drop-down).
 </p>
 <p>
 If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a <i>Terms</i> button and a new drop down are available. Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the soruce often uses different terms then the ones defined in the controlled vacabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
 </p>
-<h5>5.4.2.1.3. Available Properties</h5>
+<h5>4.9.2.1.3. Available Properties</h5>
 <p>
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
 </p>
-<h4>5.4.2.2. Add New Mapping</h4>
+<h4>4.9.2.2. Add New Mapping</h4>
 <p>
 To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the <i>Add</i> button.
 </p>
@@ -1070,7 +1088,7 @@ The page is split in three parts:
 </dd>
 </dl>
 
-<h5>5.4.2.2.1. ID Properties</h5>
+<h5>4.9.2.2.1. ID Properties</h5>
 <p>
 In this section, the manager can define which fields are used as identifiers (IDs). 
 </p>
@@ -1080,7 +1098,7 @@ If the source is mapped to DarwinCore, the following fields are to be filled in:
 </p>
 <dl>
 <dt>Source ID for record (mandatory field)</dt><dd>
-  The sourceID is the local ID for one core record that extensions can link to. Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
+  The sourceID is the local ID for one core record that extensions can link to.Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
 </dd>
 <dt>GUID for record</dt><dd>
   The GUID (Globally Unique IDentifier) is optional but will be autogenerated if not mapped. It is used as public ID for published records.
@@ -1106,30 +1124,31 @@ If the source is mapped to an extension, only one field is to be filled in:
 </dd>
 </dl>
 
-<h5>5.4.2.2.2. Available Properties</h5>
+<h5>4.9.2.2.2. Available Properties</h5>
 <p>
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. 
 </p>
-<h5>5.4.2.2.3. Property Mappings</h5>
+<h5>4.9.2.2.3. Property Mappings</h5>
 <p>
 After having added some properties to  the list, the manager can choose which data source field should be mapped to them (by selecting it in the drop-down).
 </p>
 <p>
 When done, the <i>Save</i> button should be pressed before the <i>Done</i> button.
 </p>
-<a id="toc44" name="toc44"></a>
-<h3>5.4.3. Cache</h3>
+<a id="toc42" name="toc42"></a>
+<h3>4.9.3. Cache</h3>
 <p>
 The cache page allows the manager to actually import the data into the IPT. This is done by pressing the <i>Upload</i> button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
 </p>
 <p>
 The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
 </p>
-<a id="toc45" name="toc45"></a>
-<h2>5.5. Resource Publication</h2>
-<a id="toc46" name="toc46"></a>
-<h2>5.6. Resource Edition</h2>
+<a id="toc43" name="toc43"></a>
+<h2>4.10. Resource Publication</h2>
+<a id="toc44" name="toc44"></a>
+<h2>4.11. Resource Edition</h2>
 
 <!-- xhtml code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
-<!-- cmdline: txt2tags -t xhtml -\-toc /Volumes/HD1/areve/Desktop/gbif-ipt-docs/IPT_documentation.txt -->
+<!-- cmdline: txt2tags -\-toc -t xhtml -i - -o - -->
 </body></html>
+	

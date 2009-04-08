@@ -295,6 +295,8 @@ Extensions allow for serving additional data types, such as multiple identificat
 
 The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
 
+[screenshots/extensions.png]
+
 By default, available extensions are:
 
 - ResourceRelationship 
@@ -311,13 +313,17 @@ By default, available extensions are:
 - VernacularName
 
 
-The user can get more information about an extension and install it by clicking on its name.
+Clicking on an extension name will open a new page with information about the extension, including a list of properties.  The administrator can get more information about a property by clicking on its name. It is also possible on this page to install or remove an extension.
 
-It is possible to define custom extensions, but this is not automated process with this the 1.0 version of the IPT.
+[screenshots/extensions_example.png]
+
+It is also possible to define custom extensions, but the process is not automated in version 1.0 of the IPT.
 
 ++ Thesaurus ++
 
-Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the names under the Vocabulary column.
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. 
+
+[screenshots/thesaurus.png]
 
 By default, available thesauri are:
 
@@ -329,33 +335,37 @@ By default, available thesauri are:
 - Taxonomic Ranks
 
 
-It is possible to define custom vocabularies, but this is not automated process with version 1.0 of the IPT.
+Clicking on a thesaurus name will open a new page with information about the thesaurus, including a list of terms.
 
-++ View Users ++
+[screenshots/thesaurus_example.png]
 
-This page allows the administrator to manage users. There are three users roles: //administrator//, //manager// and //user//.
+It is also possible to define custom vocabularies, but the process is not automated in version 1.0 of the IPT.
 
-The page displays the list of users their usernames, full names and emails. By clicking on the username, one can edit the user profile. One can also export the list in different formats (CSV, Excel, XML and PDF).
+++ Manage Users ++
 
-The page also gives the opportunity to add a new user through the //Add// button at the bottom of the page.
+This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The administrator can also export the list in different formats (CSV, Excel, XML and PDF).
+
+[screenshots/manage_users.png]
+
+The administrator can also add a new user through the //Add// button at the bottom of the page.
 
 +++ User Profile +++
 
 The User Profile page allows the administrator to add a new user or to edit or delete an existing user.
 
+[screenshots/user_profile.png]
+
 To add a new user, the following fields must be filled in:
 
-: username
-  user's username
-: password 
+: username (mandatory field)
+: password (mandatory field)
   needs to be filled in twice for confirmation
-: e-mail
-: password hint
+: e-mail (mandatory field)
+: password hint (mandatory field)
   will be e-mailed to the user who forgot his password
-: first name
-  user's first name
-: last name
-  user's last name
+: first name (mandatory field)
+: last name (mandatory field)
+
 
 The administrator must also apply some settings to the account:
 
@@ -372,13 +382,20 @@ The administrator must also apply some settings to the account:
 Finally, the administrator must assign one or several roles to the account. The following roles are available:
 
 : ROLE_ADMIN 
- the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. He can also manage the data recorded in the IPT. The administrator supersedes all the other roles and can do anything any other role can do.
+ the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. The administrator can also manage the data recorded in the IPT. This role supersedes all the other roles and can do anything any other role can do.
 : ROLE_MANAGER 
-  the user is given manager rights and can manage the data recorded in the IPT. He can create, edit, delete, or publish data.
+  the user is given manager rights and can manage the data recorded in the IPT, and can create, edit, delete, or publish data.
 : ROLE_USER 
-  the user role is the most basic role of the IPT. The user can explore the site and browse the published information. He can also annotate resources. [**//Is it so?, I have not managed to do it.//**]
-  
-  
+  the user role is the most basic role of the IPT. The user can explore the site, browse the published information and annotate resources. 
+  %Is it really possible to annotate resources?
+ 
+ 
+To assign a user a role, the administrator must select it in the //Available Roles// column and click on the arrow to move it in the //Current Roles// column.
+
+[screenshots/assign_role.png]
+
+Conversely, to remove a role from a user, the administrator must select it in the //Current Roles// column and click on the arrow to move it back to the //Available Roles// column.
+
 A visitor that is not logged in is considered to be an //anonymous user//. Such a user can explore the site and browse the published information.
 
 ++ Resources ++
@@ -393,11 +410,7 @@ The administrator can get more details about eache resource by clicking on its t
 
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 
-++ Active Datasources ++
-
-This page displays a list of all the active data sources in the IPT.
-
-+ Resources Management +
+[screenshots/current_users.png]
 
 ++ Data Types ++
 
