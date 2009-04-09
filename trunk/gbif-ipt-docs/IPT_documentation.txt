@@ -44,7 +44,7 @@ Identifiers (UUIDs) associated to all published elements to increase
 interoperability in the GBIF Network; 
 
 
-The GBIF IPT, as an open source pro ject, is made freely available for both 
+The GBIF IPT, as an open source project, is made freely available for both 
 those who wish to use it to publish their data and those who wish to participate in its development, documentation and helpdesk. This is a list of the 
 current online resources related to the GBIF IPT: 
 
@@ -70,7 +70,7 @@ The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or
 
 The IPT will run on any of the most widespread Operating Systems (Linux, Mac OS (TM), MS Windows (TM)) provided that:
 
-- Java (TM) runtime environment (http://java.sun.com/) version 5 or more is installed; 
+- Java (TM) runtime environment (http://java.sun.com/) version 5 or higher is installed; 
 - A web server with a servlet container, such as Apache Tomcat (http://tomcat.apache.org) or Jetty (http://jetty.mortbay.com/), is installed and connected to the Internet.
 
 
@@ -80,7 +80,7 @@ It is beyond the scope of this manual to provide detailed installation and confi
 
 +++ Java +++
 
-Mac OS X (TM) already comes complete with a fully configured and ready-to-use Java runtime environment. 
+Mac OS X (TM) includes a fully configured and ready-to-use Java runtime environment. 
 
 For MS Windows (TM) machines, follow these steps to install it: 
 
@@ -171,8 +171,6 @@ Once the IPT has been installed, it is accessible in a web browser at the follow
 
 To be able to configure the software, one must login as administrator by clicking on the //Login// button in the main menu and entering a username and password. By default, the administrative username is //admin// and the password is also //admin//.
 
-
-
 Once logged in, a new //Admin// section appears in the menu. The subsequent drop-down menu offers the following choices:
 
 - Configuration
@@ -181,15 +179,17 @@ Once logged in, a new //Admin// section appears in the menu. The subsequent drop
 - Manage Users
 - Current Users
 
+
 [screenshots/admin_menu.png]
 
 ++ Configuration ++
 
-The Settings section is divided in three configuration options available via the menu on the right hand side of the page:
+The Configuration section is divided in three configuration options available via the menu on the right hand side of the page:
 
 - Settings
 - Organisation
 - IPT Instance
+
 
 [screenshots/config_menu.png]
 
@@ -202,7 +202,7 @@ The Settings page allows the administrator to define a number of parameters that
 
 ++++ IPT Base URL ++++
 
-This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the public URL (e.g. http://67.233.45.122:8080/ipt or http://exemple.com:8080/ipt).
+This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the public URL (e.g. http://67.233.45.122:8080/ipt or http://example.com:8080/ipt).
 
 ++++ IPT Data Directory ++++
 
@@ -212,7 +212,7 @@ This field defines the location of the IPT data folder in the file system. It is
 
 ++++ Google Maps API Key ++++
 
-In order to use the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a //Google Maps API Key//. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+In order to use Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a //Google Maps API Key//. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
 
 ++++ Additional raw HTML headers ++++
 
@@ -224,7 +224,7 @@ The Settings page also allows the administrator to define some parameters for th
 
 ++++ Base URL ++++
 
-The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to a public URL (e.g. http://67.233.45.122:8080/geoserver or http://exemple.com:8080/geoserver).
+The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to a public URL (e.g. http://67.233.45.122:8080/geoserver or http://example.com:8080/geoserver).
 
 ++++ Data Directory ++++
 
@@ -264,6 +264,7 @@ Code provided automatically by the GBIF once the organisation is registered fill
   This link is only available if a registered organisation is already defined. It allows the administrator to clear the form in order to register a new organisation.
 : Resend Password
   This link is only available if a registered organisation is already defined. An e-mail with the organisation's password is sent to the organisation's contact person when the link is clicked.
+
 
 +++ IPT Instance +++
 
@@ -343,7 +344,7 @@ It is also possible to define custom vocabularies, but the process is not automa
 
 ++ Manage Users ++
 
-This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The administrator can also export the list in different formats (CSV, Excel, XML and PDF).
+This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The list can also be exported using different formats (CSV, Excel, XML and PDF).
 
 [screenshots/manage_users.png]
 
@@ -372,11 +373,11 @@ The administrator must also apply some settings to the account:
 : Enabled 
   the account is enabled and ready to be used
 : Expired 
-  the account is not valid anymore and cannot be used to login to the IPT
+  the account is no longer valid and cannot be used to login to the IPT
 : Locked 
   the account is locked and cannot be used to login to the IPT
 : Password Expired 
-  the user must change his password next time he logs in.
+  the password must be changed at next login.
 
 
 Finally, the administrator must assign one or several roles to the account. The following roles are available:
@@ -398,33 +399,34 @@ Conversely, to remove a role from a user, the administrator must select it in th
 
 A visitor that is not logged in is considered to be an //anonymous user//. Such a user can explore the site and browse the published information.
 
-++ Resources ++
-
-This page displays a list of all resources that have been uploaded to the IPT. 
-
-In order to find the right resource, the administrator can order the list by clicking on the table headers. Resources can be ordered by title, date of modification, UUID or Type. A second click on the header will invert the order.
-
-The administrator can get more details about eache resource by clicking on its title. The administrator can then modify the UUID, the contact name and contact email. He also has access to the registered services. [**//What are they?//**]
-
 ++ Current Users ++
 
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 
 [screenshots/current_users.png]
 
++ Resources Management +
+
 ++ Data Types ++
 
 +++ Taxon Primary Occurence Data +++
 
-  
+Taxon Primary Occurrence Data (or simply, occurrence data) is defined in the scope of GBIF as digital text or multimedia data record detailing facts about the instance of occurrence of an organism, i.e. on the what, where, when, how and by whom of the occurrence and the recording.
+
+In terms of connecting data to the IPT, an occurrence dataset is defined as a table or database storing information about the distribution of biological organisms in the form of points defined by a textual description and/or geographical coordinates.
+
 
 +++ Taxonomic Checklists +++
-   
+
+Taxonomic checklist data refers to structured data providing information about taxonomic names and their relationships.
 
 +++ Resource Metadata +++
 
-++ Resource Creation ++
+In the context of GBIF, metadata records are those which provide information about the suppliers of biodiversity data and about the origins and purpose of those data.
 
+In regards of the IPT, a metadata record is composed of all the descriptive information that must be attached to a dataset in terms of origin (who produced the original data, who is connecting it to the IPT instance), contents (both taxonomically and geographically), intellectual property rights, etc.
+
+++ Resource Creation ++
 
 New resources are created by a manager (or an administrator) on the //Manage// page.
 
@@ -433,9 +435,11 @@ The manager chooses which resource type to create by clicking on the correspondi
 
 ++ Resource Metadata ++
 
-When the resource has been created, the manager can describe its metadata.
+When the resource has been created, the manager can add its metadata.
 
 +++ Basic Metadata +++
+
+[screenshots/basic_metadata.png]
 
 The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
 
@@ -461,18 +465,18 @@ The first step is to basically describe the dataset that will be published. The 
     - Still Image
     - Taxonomic Checklist
 : Contact Name
-  Name of the contact person
 : Contact Email
-  Email of the contact person
 : Upload logo
   The manager can upload a logo associated with the resource. The logo must be a squared image 68 pixels wide.
 : Description
   Description of the resource
 
 
-Once the fields have been filled in, the manager can save the form, the resource is then created and can be accessed later on in the //Manage// section.
+Once the fields have been filled in and the form saved, the resource is created and can be accessed from the //Manage// section.
 
 +++ Resource Originator +++
+
+[screenshots/resource_originator.png]
 
 This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
 
@@ -493,15 +497,19 @@ This section describes the originator of the resource, i.e. the person responsib
 
 +++ Geographic Coverage +++
 
+[screenshots/geographic_coverage.png]
+
 In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
 
 ===== Using the map =====
 
-The manager can navigate on the map by clicking and dragging the cursor around and can zoom using the scale on the left of the map. Double-clicking somewhere on the map will zoom and center the map on this point.
+The manager can navigate on the map by clicking and dragging the cursor around and can zoom using the scale on the left of the map. Double-clicking somewhere on the map will zoom and centre the map on that point. 
 
 ===== Creating a new area =====
 
-The manager must click on the grey //select area// button in the top right corner of the map. He can then click and drag his mouse to select an area. Only one area can be created per map.
+[screenshots/map_area.png]
+
+The manager must click on the grey select area button in the top right corner of the map. Clicking and dragging with the  mouse will define the geographic coverage area. Only one area can be created per map. 
 
 ===== Description =====
 
@@ -509,6 +517,8 @@ The manager can describe the geographic coverage in the box below the map.
 
 
 +++ Taxonomic Coverage +++
+
+[screenshots/taxonomic_coverage.png]
 
 ++++ Taxonomic Metadata ++++
 
@@ -524,23 +534,29 @@ The manager can describe the geographic coverage in the box below the map.
 
 : Common Name 
 
-: Rank (mandator field)
+: Rank (mandatory field)
 
 
 
 +++ Temporal Coverage +++
 
-The manger must fill in the temporal information of the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox.
+[screenshots/temporal_coverage.png]
+
+The manger must fill in the temporal coverage of the collection of information related to the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox. 
 
 +++ General Keywords +++
 
-In this section, the manager can indicate keywords for the resource. The keywords must be separated by a comma. 
+[screenshots/keywords.png]
+
+In this section, the manager can indicate a series of keywords defining/describing the resource. The different keywords must be separated by commas.
 
 +++ IPRights +++
 
-On this page, he manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
+On this page, the manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
 
-The GBIF supports the use of the Creative Commons license, which allow the originator to keep his copyright but allow people to copy and distribute at conditions specified by the originator. For more information, see http://creativecommons.org/license/.
+[screenshots/IPR.png]
+
+The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
 
 : Purpose
 
@@ -551,6 +567,8 @@ The GBIF supports the use of the Creative Commons license, which allow the origi
 
 
 +++ Research Project +++
+
+[screenshots/research_project.png]
 
 If the resource is linked to a specific reseach project, the manager can describe it in this section.
 
@@ -570,6 +588,8 @@ If the resource is linked to a specific reseach project, the manager can describ
 
 +++ Methods +++
 
+[screenshots/methods.png]
+
 : Methods
 : Sampling Description
 : Quality Control
@@ -581,11 +601,11 @@ Once the resource has been created, the manager must define a data source and ma
 
 +++ Source Data +++
 
-Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as he wants, but it is necessary to define at least one.
+Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as wanted, but it is necessary to define at least one.
 
 ++++ File Data Sources ++++
 
-In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such //tab delimited text files// are easily created from any spreadsheet software or database management systems.
+In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such //tab delimited text files// are easily created from any spreadsheet software or database management system.
 
 Once the file has been uploaded, the manager can define whether the first row of the file is a header or not, by checking or unchecking the //column headers// box and pressing the //save// button. All the data fields will then be named after this header. If not set, generic names (col001, col002, col003 and so on) will be used.
 
@@ -595,7 +615,7 @@ When done adding data sources, the manager can press the //Next// button to go t
 
 In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
 
-Pressing the //Edit// button on the //Source Data// page will bring the manager to the //SQL Settings// page. This is the page where the database connection will be defined. To this effect, the manager needs to know the database type, the database connection URL, the database user and the database password. He also needs to make sure that the right Java DataBase Connection (JDBC) driver is installed. Fortunately, most of them are already bundled with the IPT. It is furthermore easy to add new ones, by downloading them and adding the //jar// file to the ITP //lib// folder and restarting the application server.
+Pressing the //Edit// button on the //Source Data// page will bring the manager to the //SQL Settings// page. This is the page where the database connection will be defined. To this effect, the following information is needed: the database type, the database connection URL, the database user and the database password. The right Java DataBase Connection (JDBC) driver must also be installed. Many of them are already bundled with the IPT. It is possible to add new ones, by downloading them and adding the //jar// file to the ITP //lib// folder and restarting the application server.
 
 The //SQL Settings// page also gives a list of important parameters for the most used databases.
 
@@ -609,7 +629,7 @@ The //SQL Settings// page also gives a list of important parameters for the most
   the corresponding password
 
 
-Once all the fields have been filled in, the manager can //save// the form. He will then be brought back to the //Source Data// page where he can add more data sources or press the //Next// button to go to the //Property Mappings// page.
+Once all the fields have been filled in, the form can be saved. The //Source Data// page will be loaded again and where more data sources can be added. Otherwise, pressing the //Next// button will display the //Property Mappings// page. 
 
 +++ Property Mappings +++
 
@@ -621,7 +641,7 @@ When done adding or editing mappings, the manager can press the //Next// button 
 
 ++++ Your Existing Mappings ++++
 
-When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension. These mappings can be viewed or modified by pressing the //Edit// button.
+When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension to the farthest extend possible. These mappings can be viewed or modified by pressing the //Edit// button.
 
 The page is split in three parts:
 
@@ -642,9 +662,9 @@ In this section, the manager can define which fields are used as identifiers (ID
 If the source is mapped to DarwinCore, the following fields are to be filled in:
 
 : Source ID for record (mandatory field)
-  The sourceID is the local ID for one core record that extensions can link to. Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
+  The sourceID is the local ID for each core record that extensions can link to. It is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
 : GUID for record
-  The GUID (Globally Unique IDentifier) is optional but will be autogenerated if not mapped. It is used as public ID for published records.
+  The GUID (Globally Unique IDentifier) is optional but will be generated automatically if not mapped. It is used as a public ID for published records.
 : Link to record details
   This is a link to the HTML details page for a single record. It can link to any public webpage (i.e. not in the IPT) holding the data. If this link is not available in the database, the manager can use the //Link template with <ID> placeholder// (see below).
 : Link template with <ID> placeholder
@@ -665,9 +685,9 @@ If the source is mapped to an extension, only one field is to be filled in:
 
 % Will add screenshots to clarify
 
-Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (i.e. same value for all records) by entering it in the text field (and choosing a blank value in the drop-down).
+Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (a common value for all records, i.e. the project/collection code) by entering it in the text field (and choosing a blank value in the drop-down).
 
-If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a //Terms// button and a new drop down are available. Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the soruce often uses different terms then the ones defined in the controlled vacabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
+If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a //Terms// button and a new drop down are available. Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
 
 +++++ Available Properties +++++
 
