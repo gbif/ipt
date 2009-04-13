@@ -732,6 +732,10 @@ THe publication state is indicated by a coloured box in the upper right corner o
 
 [screenshots/unpublished_unregistered.png]
 
+It is necessary for the IPT to be registered to be able to publish the resource.
+
+[screenshots/modified_not_registered.png]
+
 The //Publish// button simply allows the publication of the resource which will become fully available to the public.
 
 [screenshots/published_registered.png]
