@@ -601,15 +601,19 @@ Once the resource has been created, the manager must define a data source and ma
 
 +++ Source Data +++
 
-Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as wanted, but it is necessary to define at least one.
+Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as wanted, but it is necessary to define at least one. As the main one will be mapped to the Darwin Core terms, it is best for the source data to be adjusted accordingly (i.e. column names should be Darwin Core terms). Others will be used to complement a core Darwin Core record. For this to work, additional sources need to refer to  core identifiers, i.e. have a foreign key, but do not need their own identifier. 
 
 ++++ File Data Sources ++++
 
-In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such //tab delimited text files// are easily created from any spreadsheet software or database management system.
+[screenshots/file_data_sources.png]
+
+In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such //tab delimited text files// are easily created from any spreadsheet software or database management system. 
+
+Zip-compressed can be used and will be automatically unpacked on the server. Uploaded files (compressed or not) cannot be larger than 100MB.
 
 Once the file has been uploaded, the manager can define whether the first row of the file is a header or not, by checking or unchecking the //column headers// box and pressing the //save// button. All the data fields will then be named after this header. If not set, generic names (col001, col002, col003 and so on) will be used.
 
-When done adding data sources, the manager can press the //Next// button to go to the //Property Mappings// page.
+When done adding data sources, the manager can press the //Next// button to go to the //Mappings// page.
 
 ++++ SQL Data Sources ++++
 
@@ -618,6 +622,8 @@ In order to define a SQL data source, the manager must first configure a databas
 Pressing the //Edit// button on the //Source Data// page will bring the manager to the //SQL Settings// page. This is the page where the database connection will be defined. To this effect, the following information is needed: the database type, the database connection URL, the database user and the database password. The right Java DataBase Connection (JDBC) driver must also be installed. Many of them are already bundled with the IPT. It is possible to add new ones, by downloading them and adding the //jar// file to the ITP //lib// folder and restarting the application server.
 
 The //SQL Settings// page also gives a list of important parameters for the most used databases.
+
+[screenshots/sql_settings.png]
 
 : Database Type
   the manager must define the type of the database holding the data. If his particular system is not in the list, he can use a generic ODBC or choose the //other// option and define his own driver class.
@@ -631,13 +637,15 @@ The //SQL Settings// page also gives a list of important parameters for the most
 
 Once all the fields have been filled in, the form can be saved. The //Source Data// page will be loaded again and where more data sources can be added. Otherwise, pressing the //Next// button will display the //Property Mappings// page. 
 
-+++ Property Mappings +++
++++ Mappings +++
 
 Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see //Extensions// section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
 
-The //Property Mappings// page displays a list of the existing mappings, that can be edited, and gives the possibility to add new mappings.
+[screenshots/dc_star_schema.png]
 
-When done adding or editing mappings, the manager can press the //Next// button to go to the //Cache// page.
+The //Property Mappings// page displays a list of the existing mappings, that can be edited, gives the possibility to add new mappings and allows to actually import or re-import the data.
+
+[screenshots/mappings.png]
 
 ++++ Your Existing Mappings ++++
 
@@ -659,6 +667,8 @@ In this section, the manager can define which fields are used as identifiers (ID
 
 ===== DarwinCore mapping =====
 
+[screenshots/id_properties.png]
+
 If the source is mapped to DarwinCore, the following fields are to be filled in:
 
 : Source ID for record (mandatory field)
@@ -675,6 +685,8 @@ NB: The //save// button will save the information that was entered in the fields
 
 ===== Extension mapping =====
 
+[screenshots/extension_id.png]
+
 If the source is mapped to an extension, only one field is to be filled in:
 
 : Source ID for record (mandatory field)
@@ -683,13 +695,19 @@ If the source is mapped to an extension, only one field is to be filled in:
 
 +++++ Property Mappings +++++
 
-% Will add screenshots to clarify
-
 Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (a common value for all records, i.e. the project/collection code) by entering it in the text field (and choosing a blank value in the drop-down).
 
-If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a //Terms// button and a new drop down are available. Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
+[screenshots/property_mappings.png]
+
+If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a //Terms// button and a new drop down are available. 
+
+[screenshots/controlled_vocabulary.png]
+
+Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
 
 +++++ Available Properties +++++
+
+[screenshots/available_properties.png]
 
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the //property mappings// section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
 
@@ -697,61 +715,25 @@ This section displays a list of the selected extension or core properties not ye
 
 To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the //Add// button.
 
-The page is split in three parts:
-
-: ID properties
-  A list of all properties used as identifiers.
-: Available Properties
-  A list of all the selected extension or core properties that have not been mapped to a data source field.
-: Property Mappings
-  A list of all the selected extension or core properties that have already been mapped to a data source field.
+The procedure is then the same as working with //existing mappings// (see above).
 
 
-+++++ ID Properties +++++
+++++ Cache Database ++++
 
-In this section, the manager can define which fields are used as identifiers (IDs). 
-
-===== DarwinCore mapping =====
-
-If the source is mapped to DarwinCore, the following fields are to be filled in:
-
-: Source ID for record (mandatory field)
-  The sourceID is the local ID for one core record that extensions can link to. Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
-: GUID for record
-  The GUID (Globally Unique IDentifier) is optional but will be autogenerated if not mapped. It is used as public ID for published records.
-: Link to record details
-  This is a link to the HTML details page for a single record. It can link to any public webpage (i.e. not in the IPT) holding the data. If this link is not available in the database, the manager can use the //Link template with <ID> placeholder// (see below).
-: Link template with <ID> placeholder
-  The manager can enter a direct link to an external webpage. The manager can use //<ID>// as a placeholder that will be dynamically replaced for every record. Each record can then be linked to a specific webpage.
-
-
-NB: The //save// button will save the information that was entered in the fields. The //Done// button brings the manager back to the main //Property Mappings// page **without saving the information**.
-
-===== Extension mapping =====
-
-If the source is mapped to an extension, only one field is to be filled in:
-
-: Source ID for record (mandatory field)
-  The source ID is the local ID for an extension record that the core can link to.
-
-
-+++++ Available Properties +++++
-
-This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the //property mappings// section. 
-
-+++++ Property Mappings +++++
-
-After having added some properties to  the list, the manager can choose which data source field should be mapped to them (by selecting it in the drop-down).
-
-When done, the //Save// button should be pressed before the //Done// button.
-
-+++ Cache +++
-
-The cache page allows the manager to actually import the data into the IPT. This is done by pressing the //Upload// button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
+The cache page allows the manager to actually import the data into the IPT. This is done by pressing the //Import// button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
 
 The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
 
 ++ Resource Publication ++
 
+Once a Resource has been configured and its metadata filled in, it can be published to the IPT.
 
-++ Resource Edition ++
+THe publication state is indicated by a coloured box in the upper right corner of the page. 
+
+[screenshots/unpublished_unregistered.png]
+
+The //Publish// button simply allows the publication of the resource which will become fully available to the public.
+
+[screenshots/published_registered.png]
+
+It is also possible to delete a resource by using the //Delete// button on its //Basic Metadata// page.
