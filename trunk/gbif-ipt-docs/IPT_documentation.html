@@ -4,10 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="generator" content="http://txt2tags.sf.net" />
-<style>img {border:1px solid black;}
-</style>
 </head>
-<body bgcolor="#fafafa" text="black">
+<body bgcolor="white" text="black">
 <div align="center">
 </div>
 
@@ -115,15 +113,11 @@
       <ul>
       <li><a href="#toc42">5.4.1. Source Data</a>
       </li>
-      <li><a href="#toc43">5.4.2. Property Mappings</a>
-      </li>
-      <li><a href="#toc44">5.4.3. Cache</a>
+      <li><a href="#toc43">5.4.2. Mappings</a>
       </li>
       </ul>
     </li>
-    <li><a href="#toc45">5.5. Resource Publication</a>
-    </li>
-    <li><a href="#toc46">5.6. Resource Edition</a>
+    <li><a href="#toc44">5.5. Resource Publication</a>
     </li>
     </ul>
   </li>
@@ -1003,17 +997,23 @@ Once the resource has been created, the manager must define a data source and ma
 <a id="toc42" name="toc42"></a>
 <h3>5.4.1. Source Data</h3>
 <p>
-Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as wanted, but it is necessary to define at least one.
+Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as wanted, but it is necessary to define at least one. As the main one will be mapped to the Darwin Core terms, it is best for the source data to be adjusted accordingly (i.e. column names should be Darwin Core terms). Others will be used to complement a core Darwin Core record. For this to work, additional sources need to refer to  core identifiers, i.e. have a foreign key, but do not need their own identifier. 
 </p>
 <h4>5.4.1.1. File Data Sources</h4>
 <p>
-In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such <i>tab delimited text files</i> are easily created from any spreadsheet software or database management system.
+<img align="middle" src="screenshots/file_data_sources.png" border="0" alt=""/>
+</p>
+<p>
+In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such <i>tab delimited text files</i> are easily created from any spreadsheet software or database management system. 
+</p>
+<p>
+Zip-compressed can be used and will be automatically unpacked on the server. Uploaded files (compressed or not) cannot be larger than 100MB.
 </p>
 <p>
 Once the file has been uploaded, the manager can define whether the first row of the file is a header or not, by checking or unchecking the <i>column headers</i> box and pressing the <i>save</i> button. All the data fields will then be named after this header. If not set, generic names (col001, col002, col003 and so on) will be used.
 </p>
 <p>
-When done adding data sources, the manager can press the <i>Next</i> button to go to the <i>Property Mappings</i> page.
+When done adding data sources, the manager can press the <i>Next</i> button to go to the <i>Mappings</i> page.
 </p>
 <h4>5.4.1.2. SQL Data Sources</h4>
 <p>
@@ -1024,6 +1024,9 @@ Pressing the <i>Edit</i> button on the <i>Source Data</i> page will bring the ma
 </p>
 <p>
 The <i>SQL Settings</i> page also gives a list of important parameters for the most used databases.
+</p>
+<p>
+<img align="middle" src="screenshots/sql_settings.png" border="0" alt=""/>
 </p>
 <dl>
 <dt>Database Type</dt><dd>
@@ -1044,15 +1047,18 @@ The <i>SQL Settings</i> page also gives a list of important parameters for the m
 Once all the fields have been filled in, the form can be saved. The <i>Source Data</i> page will be loaded again and where more data sources can be added. Otherwise, pressing the <i>Next</i> button will display the <i>Property Mappings</i> page. 
 </p>
 <a id="toc43" name="toc43"></a>
-<h3>5.4.2. Property Mappings</h3>
+<h3>5.4.2. Mappings</h3>
 <p>
 Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see <i>Extensions</i> section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
 </p>
 <p>
-The <i>Property Mappings</i> page displays a list of the existing mappings, that can be edited, and gives the possibility to add new mappings.
+<img align="middle" src="screenshots/dc_star_schema.png" border="0" alt=""/>
 </p>
 <p>
-When done adding or editing mappings, the manager can press the <i>Next</i> button to go to the <i>Cache</i> page.
+The <i>Property Mappings</i> page displays a list of the existing mappings, that can be edited, gives the possibility to add new mappings and allows to actually import or re-import the data.
+</p>
+<p>
+<img align="middle" src="screenshots/mappings.png" border="0" alt=""/>
 </p>
 <h4>5.4.2.1. Your Existing Mappings</h4>
 <p>
@@ -1079,6 +1085,9 @@ In this section, the manager can define which fields are used as identifiers (ID
 </p>
 <h5>DarwinCore mapping</h5>
 <p>
+<img align="middle" src="screenshots/id_properties.png" border="0" alt=""/>
+</p>
+<p>
 If the source is mapped to DarwinCore, the following fields are to be filled in:
 </p>
 <dl>
@@ -1101,6 +1110,9 @@ NB: The <i>save</i> button will save the information that was entered in the fie
 </p>
 <h5>Extension mapping</h5>
 <p>
+<img align="middle" src="screenshots/extension_id.png" border="0" alt=""/>
+</p>
+<p>
 If the source is mapped to an extension, only one field is to be filled in:
 </p>
 <dl>
@@ -1114,9 +1126,21 @@ If the source is mapped to an extension, only one field is to be filled in:
 Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (a common value for all records, i.e. the project/collection code) by entering it in the text field (and choosing a blank value in the drop-down).
 </p>
 <p>
-If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a <i>Terms</i> button and a new drop down are available. Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
+<img align="middle" src="screenshots/property_mappings.png" border="0" alt=""/>
+</p>
+<p>
+If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a <i>Terms</i> button and a new drop down are available. 
+</p>
+<p>
+<img align="middle" src="screenshots/controlled_vocabulary.png" border="0" alt=""/>
+</p>
+<p>
+Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
 </p>
 <h5>5.4.2.1.3. Available Properties</h5>
+<p>
+<img align="middle" src="screenshots/available_properties.png" border="0" alt=""/>
+</p>
 <p>
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
 </p>
@@ -1125,79 +1149,41 @@ This section displays a list of the selected extension or core properties not ye
 To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the <i>Add</i> button.
 </p>
 <p>
-The page is split in three parts:
+The procedure is then the same as working with <i>existing mappings</i> (see above).
 </p>
-<dl>
-<dt>ID properties</dt><dd>
-  A list of all properties used as identifiers.
-</dd>
-<dt>Available Properties</dt><dd>
-  A list of all the selected extension or core properties that have not been mapped to a data source field.
-</dd>
-<dt>Property Mappings</dt><dd>
-  A list of all the selected extension or core properties that have already been mapped to a data source field.
-</dd>
-</dl>
-
-<h5>5.4.2.2.1. ID Properties</h5>
+<h4>5.4.2.3. Cache Database</h4>
 <p>
-In this section, the manager can define which fields are used as identifiers (IDs). 
-</p>
-<h5>DarwinCore mapping</h5>
-<p>
-If the source is mapped to DarwinCore, the following fields are to be filled in:
-</p>
-<dl>
-<dt>Source ID for record (mandatory field)</dt><dd>
-  The sourceID is the local ID for one core record that extensions can link to. Tt is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
-</dd>
-<dt>GUID for record</dt><dd>
-  The GUID (Globally Unique IDentifier) is optional but will be autogenerated if not mapped. It is used as public ID for published records.
-</dd>
-<dt>Link to record details</dt><dd>
-  This is a link to the HTML details page for a single record. It can link to any public webpage (i.e. not in the IPT) holding the data. If this link is not available in the database, the manager can use the <i>Link template with &lt;ID&gt; placeholder</i> (see below).
-</dd>
-<dt>Link template with &lt;ID&gt; placeholder</dt><dd>
-  The manager can enter a direct link to an external webpage. The manager can use <i>&lt;ID&gt;</i> as a placeholder that will be dynamically replaced for every record. Each record can then be linked to a specific webpage.
-</dd>
-</dl>
-
-<p>
-NB: The <i>save</i> button will save the information that was entered in the fields. The <i>Done</i> button brings the manager back to the main <i>Property Mappings</i> page <b>without saving the information</b>.
-</p>
-<h5>Extension mapping</h5>
-<p>
-If the source is mapped to an extension, only one field is to be filled in:
-</p>
-<dl>
-<dt>Source ID for record (mandatory field)</dt><dd>
-  The source ID is the local ID for an extension record that the core can link to.
-</dd>
-</dl>
-
-<h5>5.4.2.2.2. Available Properties</h5>
-<p>
-This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. 
-</p>
-<h5>5.4.2.2.3. Property Mappings</h5>
-<p>
-After having added some properties to  the list, the manager can choose which data source field should be mapped to them (by selecting it in the drop-down).
-</p>
-<p>
-When done, the <i>Save</i> button should be pressed before the <i>Done</i> button.
-</p>
-<a id="toc44" name="toc44"></a>
-<h3>5.4.3. Cache</h3>
-<p>
-The cache page allows the manager to actually import the data into the IPT. This is done by pressing the <i>Upload</i> button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
+The cache page allows the manager to actually import the data into the IPT. This is done by pressing the <i>Import</i> button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
 </p>
 <p>
 The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
 </p>
-<a id="toc45" name="toc45"></a>
+<a id="toc44" name="toc44"></a>
 <h2>5.5. Resource Publication</h2>
-<a id="toc46" name="toc46"></a>
-<h2>5.6. Resource Edition</h2>
+<p>
+Once a Resource has been configured and its metadata filled in, it can be published to the IPT.
+</p>
+<p>
+THe publication state is indicated by a coloured box in the upper right corner of the page. 
+</p>
+<p>
+<img align="middle" src="screenshots/unpublished_unregistered.png" border="0" alt=""/>
+</p>
+<p>
+It is necessary for the IPT to be registered to be able to publish the resource.
+</p>
+<p>
+<img align="middle" src="screenshots/modified_not_registered.png" border="0" alt=""/>
+</p>
+<p>
+The <i>Publish</i> button simply allows the publication of the resource which will become fully available to the public.
+</p>
+<p>
+<img align="middle" src="screenshots/published_registered.png" border="0" alt=""/>
+</p>
+<p>
+It is also possible to delete a resource by using the <i>Delete</i> button on its <i>Basic Metadata</i> page.
+</p>
 
 <!-- xhtml code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
 <!-- cmdline: txt2tags -t xhtml -\-toc /Volumes/HD1/areve/Desktop/gbif-ipt-docs/IPT_documentation.txt -->
