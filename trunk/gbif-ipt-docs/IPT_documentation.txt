@@ -446,7 +446,7 @@ The first step is to basically describe the dataset that will be published. The 
 : Title
   Title of the resource
 : Type
-  Type of data:
+  The type of resource data. The list depends on the data type (//Occurence//, //Checklist// or //Metadata//):
     - Checklist
     - Fossil Specimen
     - Legislative Checklist
@@ -480,19 +480,20 @@ Once the fields have been filled in and the form saved, the resource is created 
 
 This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
 
-- Resource Language (mandatory field)
-- First Name (mandatory field)
-- Last Name (mandatory field)
-- Organisation
-- Position
-- Phone
-- Email (mandatory field)
-- Homepage
-- Address
-- Postal Code
-- City
-- Province
-- Country (mandatory field)
+: Resource Language (mandatory field)
+  The language of the resource data (not the language of the metadata)
+: First Name (mandatory field)
+: Last Name (mandatory field)
+: Organisation
+: Position
+: Phone
+: Email (mandatory field)
+: Homepage
+: Address
+: Postal Code
+: City
+: Province
+: Country (mandatory field)
 
 
 +++ Geographic Coverage +++
