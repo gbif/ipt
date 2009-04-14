@@ -434,11 +434,27 @@ This is the URL of the IPT. It is filled in by default with the local URL (<a hr
 This field defines the location of the IPT data folder in the file system. It is filled in by default and does not need to be changed. It is followed by a button that must be clicked for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the <i>Update Geoserver</i> button. 
 </p>
 <h4>4.1.1.3. Logging</h4>
-<h4>4.1.1.4. Google Maps API Key</h4>
+<p>
+This option is used for debugging purposes. It should be left on <i>production.xml</i> except in case of bugs and errors, in which case it can be moved to help developers in their debugging.
+</p>
+<p>
+Before changing this setting, the administrator should contact the IPT developpers.
+</p>
+<h4>4.1.1.4. Enable GBIF Usage Tracking</h4>
+<p>
+The GBIF usage tracking box is used to track the usage of all IPT instances.
+</p>
+<h4>4.1.1.5. Google Maps API Key</h4>
 <p>
 In order to use Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
 </p>
-<h4>4.1.1.5. Additional raw HTML headers</h4>
+<h4>4.1.1.6. Additional raw HTML headers</h4>
+<p>
+This field allows the manager to add some HTML headers to all pages of the IPT instance. It can be useful to add keywords or usage tracking (e.g. Google Analytics).
+</p>
+<p>
+The content must be XHTML compliant and will be included in the <i>HEAD</i> section of every single HTML page.
+</p>
 <a id="toc17" name="toc17"></a>
 <h3>4.1.2. Geoserver Settings</h3>
 <p>
@@ -770,43 +786,53 @@ The first step is to basically describe the dataset that will be published. The 
   Title of the resource
 </dd>
 <dt>Type</dt><dd>
-  Type of data:
-    <ul>
-    <li>Checklist
-    </li>
-    <li>Fossil Specimen
-    </li>
-    <li>Legislative Checklist
-    </li>
-    <li>Living Specimen
-    </li>
-    <li>Moving Image
-    </li>
-    <li>Nomenclature Checklist
-    </li>
-    <li>Organism Observation
-    </li>
-    <li>Organism Observation by Human
-    </li>
-    <li>Organism Observation by Machine
-    </li>
-    <li>Preserved Specimen
-    </li>
-    <li>Regional Checklist
-    </li>
-    <li>Sound Recording
-    </li>
-    <li>Species Descriptions
-    </li>
-    <li>Species Distributions
-    </li>
-    <li>Specimen
-    </li>
-    <li>Still Image
-    </li>
-    <li>Taxonomic Checklist
-    </li>
-    </ul>
+  The type of resource data. The list depends on the data type (<i>Occurence</i>, <i>Checklist</i> or <i>Metadata</i>):
+    <dl>
+    <dt>Checklist</dt><dd>
+    A resource describing a checklist.
+    </dd>
+    <dt>Fossil Specimen</dt><dd>
+    A resource describing a fossilized specimen.
+    </dd>
+    <dt>Legislative Checklist</dt><dd>
+    </dd>
+    <dt>Living Specimen</dt><dd>
+    A resource describing a living specimen.
+    </dd>
+    <dt>Moving Image</dt><dd>
+    </dd>
+    <dt>Nomenclature Checklist</dt><dd>
+    A resource describing a nomenclatural checklist.
+    </dd>
+    <dt>Organism Observation</dt><dd>
+    A resource describing an observation.
+    </dd>
+    <dt>Organism Observation by Human</dt><dd>
+    A resource describing an observation made by one or more people without accompanying physical evidence.
+    </dd>
+    <dt>Organism Observation by Machine</dt><dd>
+    A resource describing an observation made by a machine without accompanying physical evidence.
+    </dd>
+    <dt>Preserved Specimen</dt><dd>
+    A resource describing a preserved specimen.
+    </dd>
+    <dt>Regional Checklist</dt><dd>
+    A resource describing a taxonomic checklist.
+    </dd>
+    <dt>Sound Recording</dt><dd>
+    </dd>
+    <dt>Species Descriptions</dt><dd>
+    </dd>
+    <dt>Species Distributions</dt><dd>
+    </dd>
+    <dt>Specimen</dt><dd>
+    </dd>
+    <dt>Still Image</dt><dd>
+    </dd>
+    <dt>Taxonomic Checklist</dt><dd>
+    A resource describing a taxonomic checklist.
+    </dd>
+    </dl>
 </dd>
 <dt>Contact Name</dt><dd>
 </dd>
@@ -831,34 +857,35 @@ Once the fields have been filled in and the form saved, the resource is created 
 <p>
 This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
 </p>
-<ul>
-<li>Resource Language (mandatory field)
-</li>
-<li>First Name (mandatory field)
-</li>
-<li>Last Name (mandatory field)
-</li>
-<li>Organisation
-</li>
-<li>Position
-</li>
-<li>Phone
-</li>
-<li>Email (mandatory field)
-</li>
-<li>Homepage
-</li>
-<li>Address
-</li>
-<li>Postal Code
-</li>
-<li>City
-</li>
-<li>Province
-</li>
-<li>Country (mandatory field)
-</li>
-</ul>
+<dl>
+<dt>Resource Language (mandatory field)</dt><dd>
+  The language of the resource data (not the language of the metadata)
+</dd>
+<dt>First Name (mandatory field)</dt><dd>
+</dd>
+<dt>Last Name (mandatory field)</dt><dd>
+</dd>
+<dt>Organisation</dt><dd>
+</dd>
+<dt>Position</dt><dd>
+</dd>
+<dt>Phone</dt><dd>
+</dd>
+<dt>Email (mandatory field)</dt><dd>
+</dd>
+<dt>Homepage</dt><dd>
+</dd>
+<dt>Address</dt><dd>
+</dd>
+<dt>Postal Code</dt><dd>
+</dd>
+<dt>City</dt><dd>
+</dd>
+<dt>Province</dt><dd>
+</dd>
+<dt>Country (mandatory field)</dt><dd>
+</dd>
+</dl>
 
 <a id="toc34" name="toc34"></a>
 <h3>5.3.3. Geographic Coverage</h3>
@@ -1044,7 +1071,19 @@ The <i>SQL Settings</i> page also gives a list of important parameters for the m
 </dl>
 
 <p>
-Once all the fields have been filled in, the form can be saved. The <i>Source Data</i> page will be loaded again and where more data sources can be added. Otherwise, pressing the <i>Next</i> button will display the <i>Property Mappings</i> page. 
+After defining the SQL settings, the manager must add some SQL <i>SELECT</i> statements to create views on the data. This is done by clicking on the <i>ADD</i> button and filling in the form.
+</p>
+<p>
+<img align="middle" src="screenshots/add_statement.png" border="0" alt=""/>
+</p>
+<p>
+Several of these queries can be created, e.g. one for each Darwin Core extension in use.
+</p>
+<p>
+<img align="middle" src="screenshots/sql_statements.png" border="0" alt=""/>
+</p>
+<p>
+Once all data sources have been defined, pressing the <i>Next</i> button will bring the manager to the <i>Mappings</i> page. The SQL statements will be mapped the same way as uploaded text files.
 </p>
 <a id="toc43" name="toc43"></a>
 <h3>5.4.2. Mappings</h3>

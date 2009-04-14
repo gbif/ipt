@@ -210,11 +210,23 @@ This field defines the location of the IPT data folder in the file system. It is
 
 ++++ Logging ++++
 
+This option is used for debugging purposes. It should be left on //production.xml// except in case of bugs and errors, in which case it can be moved to help developers in their debugging.
+
+Before changing this setting, the administrator should contact the IPT developpers.
+
+++++ Enable GBIF Usage Tracking ++++
+
+The GBIF usage tracking box is used to track the usage of all IPT instances.
+
 ++++ Google Maps API Key ++++
 
 In order to use Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a //Google Maps API Key//. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
 
 ++++ Additional raw HTML headers ++++
+
+This field allows the manager to add some HTML headers to all pages of the IPT instance. It can be useful to add keywords or usage tracking (e.g. Google Analytics).
+
+The content must be XHTML compliant and will be included in the //HEAD// section of every single HTML page.
 
 +++ Geoserver Settings +++
 
@@ -442,28 +454,39 @@ When the resource has been created, the manager can add its metadata.
 [screenshots/basic_metadata.png]
 
 The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
+%see http://darwincore.googlecode.com/svn/trunk/terms/type-vocabulary/index.htm#theterms
 
 : Title
   Title of the resource
 : Type
   The type of resource data. The list depends on the data type (//Occurence//, //Checklist// or //Metadata//):
-    - Checklist
-    - Fossil Specimen
-    - Legislative Checklist
-    - Living Specimen
-    - Moving Image
-    - Nomenclature Checklist
-    - Organism Observation
-    - Organism Observation by Human
-    - Organism Observation by Machine
-    - Preserved Specimen
-    - Regional Checklist
-    - Sound Recording
-    - Species Descriptions
-    - Species Distributions
-    - Specimen
-    - Still Image
-    - Taxonomic Checklist
+    : Checklist
+    A resource describing a checklist.
+    : Fossil Specimen
+    A resource describing a fossilized specimen.
+    : Legislative Checklist
+    : Living Specimen
+    A resource describing a living specimen.
+    : Moving Image
+    : Nomenclature Checklist
+    A resource describing a nomenclatural checklist.
+    : Organism Observation
+    A resource describing an observation.
+    : Organism Observation by Human
+    A resource describing an observation made by one or more people without accompanying physical evidence.
+    : Organism Observation by Machine
+    A resource describing an observation made by a machine without accompanying physical evidence.
+    : Preserved Specimen
+    A resource describing a preserved specimen.
+    : Regional Checklist
+    A resource describing a taxonomic checklist.
+    : Sound Recording
+    : Species Descriptions
+    : Species Distributions
+    : Specimen
+    : Still Image
+    : Taxonomic Checklist
+    A resource describing a taxonomic checklist.
 : Contact Name
 : Contact Email
 : Upload logo
@@ -644,7 +667,7 @@ Several of these queries can be created, e.g. one for each Darwin Core extension
 
 [screenshots/sql_statements.png]
 
-Once all data sources have been defined, pressing the //Next// button will bring the manager to the //Mappings// page. 
+Once all data sources have been defined, pressing the //Next// button will bring the manager to the //Mappings// page. The SQL statements will be mapped the same way as uploaded text files.
 
 +++ Mappings +++
 
