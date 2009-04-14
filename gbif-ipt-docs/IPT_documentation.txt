@@ -636,7 +636,15 @@ The //SQL Settings// page also gives a list of important parameters for the most
   the corresponding password
 
 
-Once all the fields have been filled in, the form can be saved. The //Source Data// page will be loaded again and where more data sources can be added. Otherwise, pressing the //Next// button will display the //Property Mappings// page. 
+After defining the SQL settings, the manager must add some SQL //SELECT// statements to create views on the data. This is done by clicking on the //ADD// button and filling in the form.
+
+[screenshots/add_statement.png]
+
+Several of these queries can be created, e.g. one for each Darwin Core extension in use.
+
+[screenshots/sql_statements.png]
+
+Once all data sources have been defined, pressing the //Next// button will bring the manager to the //Mappings// page. 
 
 +++ Mappings +++
 
