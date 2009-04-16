@@ -752,24 +752,35 @@ The procedure is then the same as working with //existing mappings// (see above)
 
 ++++ Cache Database ++++
 
-The cache page allows the manager to actually import the data into the IPT. This is done by pressing the //Import// button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message.
+The cache page allows the manager to actually import the data into the IPT. This is done by pressing the //Import// button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message. If errors occur during the import operation, they are attached as //annotations// to the resource. These annotations are available through the //explore// menu.
 
 The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
 
 ++ Resource Publication ++
 
-Once a Resource has been configured and its metadata filled in, it can be published to the IPT.
+Once a Resource has been configured and its metadata filled in, it can be published to the IPT, via the //Publish// button.
 
-THe publication state is indicated by a coloured box in the upper right corner of the page. 
+Publishing a resource also registers it with GBIF and updates its  
+metadata in the registry. A resource therefore has 3 states, indicated by a coloured box in the upper right corner of the page:
+
+: unpublished,unregistered
+This is the default for new resources. It is neither  
+registered nor should it be visible in the public portal part of the IPT.
 
 [screenshots/unpublished_unregistered.png]
 
-It is necessary for the IPT to be registered to be able to publish the resource.
+: modified,not registered: the resource is intended to be public, is present  
+in the IPT portal and if settings allow, should be registered with GBIF. The resource metadata is modified though  
+and differs from a) GBIFs registry metadata or b) the versioned EML  
+document which is generated each time the manager publishes a resource (NB: the geoserver WFS/WMS services' own metadata are then also out of date).
 
 [screenshots/modified_not_registered.png]
 
-The //Publish// button simply allows the publication of the resource which will become fully available to the public.
+: published,registered
+Same as above, but the metadata in the registry/ 
+EML&geoserver should reflect your latest state.
 
 [screenshots/published_registered.png]
+
 
 It is also possible to delete a resource by using the //Delete// button on its //Basic Metadata// page.
