@@ -159,8 +159,8 @@
                     <reportSet>
                         <reports>
                             <!-- 
-                            <report>index</report>
                             -->
+                            <report>index</report>
                             <report>summary</report>
                             <report>license</report>
                             <report>project-team</report>
