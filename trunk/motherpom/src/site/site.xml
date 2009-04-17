@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Maven">
+<project name="GBIF-${artifactId}">
   <bannerLeft>
     <name>GBIF</name>
     <src>http://tools.gbif.org/maven/sites/logo_leaf.gif</src>
     <href>http://www.gbif.org/</href>
   </bannerLeft>
-  <bannerRight>
-    <src>http://maven.apache.org/images/maven-small.gif</src>
-  </bannerRight>
+  <publishDate format="dd MMM yyyy" />
+  <skin>
+    <groupId>org.apache.tapestry</groupId>
+    <artifactId>maven-skin</artifactId>
+    <version>1.1</version>
+  </skin>
   <body>
     <links>
       <item name="GBIF" href="http://www.gbif.org/" />
       <item name="Google Code" href="http://code.google.com/hosting/search?q=label:gbif"/>
     </links>
-
-    <menu ref="reports"/>
-
+    ${reports}
   </body>
 </project>
