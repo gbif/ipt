@@ -26,9 +26,9 @@
     </organization>
  
     <scm>
-        <connection>scm:svn:http://${googlecode.project}.googlecode.com/svn/</connection>
-        <developerConnection>scm:svn:https://${googlecode.project}.googlecode.com/svn/</developerConnection>
-        <url>http://code.google.com/p/${googlecode.project}/source/browse</url>
+        <connection>scm:svn:http://${googlecode.project}.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://${googlecode.project}.googlecode.com/svn/trunk/</developerConnection>
+        <url>http://code.google.com/p/${googlecode.project}/source/browse#svn/trunk/</url>
     </scm>
     
     <issueManagement>
@@ -97,6 +97,11 @@
         <url>http://repository.jboss.org/maven2</url>
         <layout>default</layout>
       </repository>
+        <repository>
+            <id>appfuse</id>
+            <url>http://static.appfuse.org/repository</url>
+        </repository>
+        
     </repositories>
 
     <distributionManagement> 
@@ -145,14 +150,17 @@
                 <!-- Test coverage can be a useful indication of the quality of your unit tests. It basically tells you how much of your code is actually run by your unit tests, which, in turn, can give you a good idea of the tests' quality -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
-            </plugin>     
+            </plugin>
+            <!-- Do not use all reports, but run selectively the following -->
             <plugin>
-                <!-- Do not use all reports, but run selectively the following -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <reportSets>
                     <reportSet>
                         <reports>
+                            <!-- 
+                            <report>index</report>
+                            -->
                             <report>summary</report>
                             <report>license</report>
                             <report>project-team</report>
@@ -163,7 +171,7 @@
                         </reports>
                     </reportSet>
                 </reportSets>
-            </plugin>
+                </plugin>
         </plugins>
     </reporting>
     
