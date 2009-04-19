@@ -130,7 +130,7 @@
 <h1>1. Background Information</h1>
 <p>
 The Global Biodiversity Information Facility (GBIF) works to make digital 
-biodiversity data openly and freely available on the Internet for everyone. 
+biodiversity data openly and freely available on the internet for everyone. 
 GBIF provides access to scientific biodiversity data for decision-making, research endeavours and public use. GBIF endorses both open source software 
 and open data access.
 </p>
@@ -143,7 +143,7 @@ GBIF is also a network of data publishers who retain ownership and
 control of the data they share. Linked datasets provide a more robust representation of biodiversity than any single dataset. 
 </p>
 <p>
-In this framework, GBIF develops software tools to make possible to 
+In this framework, GBIF develops software tools to make it possible to 
 easily integrate biodiversity data from heterogeneous sources using common 
 standards and protocols. One of these tools is the GBIF Integrated Publishing Toolkit (IPT) that this user manual refers to.
 </p>
@@ -203,7 +203,7 @@ current online resources related to the GBIF IPT:
 <a id="toc2" name="toc2"></a>
 <h1>2. General specifications</h1>
 <p>
-The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
+The GBIF Integrated Publishing Toolkit (IPT) is an open source Java-based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
 </p>
 <p>
 It connects and serves three types of data : taxon primary occurrence data, taxon checklists and general resource metadata. The IPT manages multiple data sources and has several upload options: relational database management systems or tab files. It does not however accept manual entries (except for individual metadata descriptions).
@@ -224,7 +224,7 @@ The IPT will run on any of the most widespread Operating Systems (Linux, Mac OS 
 <ul>
 <li>Java (TM) runtime environment (<a href="http://java.sun.com/">http://java.sun.com/</a>) version 5 or higher is installed; 
 </li>
-<li>A web server with a servlet container, such as Apache Tomcat (<a href="http://tomcat.apache.org">http://tomcat.apache.org</a>) or Jetty (<a href="http://jetty.mortbay.com/">http://jetty.mortbay.com/</a>), is installed and connected to the Internet.
+<li>a web server with a servlet container, such as Apache Tomcat (<a href="http://tomcat.apache.org">http://tomcat.apache.org</a>) or Jetty (<a href="http://jetty.mortbay.com/">http://jetty.mortbay.com/</a>), is installed and connected to the internet.
 </li>
 </ul>
 
@@ -239,7 +239,7 @@ It is beyond the scope of this manual to provide detailed installation and confi
 Mac OS X (TM) includes a fully configured and ready-to-use Java runtime environment. 
 </p>
 <p>
-For MS Windows (TM) machines, follow these steps to install it: 
+For MS Windows (TM) machines, follow these steps to install: 
 </p>
 <ol>
 <li>Download the Java 2 Standard Edition Runtime Environment (JRE), release version 5.0 or later, from <a href="http://java.sun.com/j2se">http://java.sun.com/j2se</a>.
@@ -264,7 +264,7 @@ For MS Windows (TM) machines, follow these steps to install it:
 The IPT should run in any compliant java application server using Java 1.5. Tomcat 5.5 is recommended for the installation. It was also successfully tested on Tomcat 6 and Jetty.
 </p>
 <p>
-The application server will need a rather large amount of memory allocated as the IPT runs a full database. It is recommended to increase the server's available memory to at least 1GB (general instructions below). 
+The application server will require a rather large amount of memory allocated as the IPT runs a full database. It is recommended to increase the server's available memory to at least 1GB (see general instructions below). 
 </p>
 <h4>3.2.2.1. Tomcat installation</h4>
 <ol>
@@ -274,15 +274,15 @@ The application server will need a rather large amount of memory allocated as th
 </li>
 <li>Open a command prompt window and navigate to the installation folder.
 </li>
-<li>Mac OS only: some files need to have their permissions adapted: type “<i>sudo chmod 775 *</i>” at the command line. You will be asked your administrative password.
+<li>Mac OS only: some files need to have their permissions adapted: type “<i>sudo chmod 775 *</i>” at the command line. You will be asked for your administrative password.
 </li>
-<li>go to the <i>bin</i> folder and execute startut.bat (Window) or startup.sh (Mac OS). A new Tomcat window will open. You need to keep this window open.
+<li>Go to the <i>bin</i> folder and execute startut.bat (Window) or startup.sh (Mac OS). A new Tomcat window will open. You need to keep this window open.
 </li>
 </ol>
 
 <h4>3.2.2.2. Tomcat configuration</h4>
 <p>
-Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
+Tomcat comes with very little allocated memory. In order to improve performance levels, this amount should be increased depending on the physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do this, see the following links:
 </p>
 <ul>
 <li><a href="http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/">http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/</a>
@@ -337,7 +337,7 @@ This installation is required if the Geoserver is not yet installed on the machi
 If the Geoserver is already installed on the server, only the plugin needs to be installed.
 </p>
 <ol>
-<li>Downoad the jar file from the project downloads page;
+<li>Downoad the <i>jar</i> file from the project downloads page;
 </li>
 <li>Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder;
 </li>
@@ -348,7 +348,7 @@ If the Geoserver is already installed on the server, only the plugin needs to be
 <a id="toc12" name="toc12"></a>
 <h2>3.5. Geoserver Configuration</h2>
 <p>
-In order to allow the IPT and the Geoserver to communicate to one another, it is necessary to define the IPT Base Directory. It is done by: 
+In order to allow the IPT and the Geoserver to communicate to one another, it is necessary to define the IPT Base Directory. This is done by: 
 </p>
 <ul>
 <li>navigating with your web browser to <a href="http://localhost:8080/ipt/">http://localhost:8080/ipt/</a>;
@@ -371,7 +371,7 @@ For more information about the Geoserver, please refer to its own manual: <a hre
 <h2>3.6. Mac OS X (TM) test installation</h2>
 <p>
 A standalone version without any dependencies is provided for Mac OS X. It is very easy to install as it only requires a simple click and is very convenient to test the IPT. It should not however be used for production purposes.
-The disk image can be downloaded at the time of writing from the following address: <a href="ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg">ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg</a>
+At the time of writing, the disk image can be downloaded from the following address: <a href="ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg">ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg</a>
 </p>
 <a id="toc14" name="toc14"></a>
 <h1>4. Configuration</h1>
@@ -403,7 +403,7 @@ Once logged in, a new <i>Admin</i> section appears in the menu. The subsequent d
 <a id="toc15" name="toc15"></a>
 <h2>4.1. Configuration</h2>
 <p>
-The Configuration section is divided in three configuration options available via the menu on the right hand side of the page:
+The Configuration section is divided into three configuration options available via the menu on the right hand side of the page:
 </p>
 <ul>
 <li>Settings
@@ -446,7 +446,7 @@ The GBIF usage tracking box is used to track the usage of all IPT instances.
 </p>
 <h4>4.1.1.5. Google Maps API Key</h4>
 <p>
-In order to use Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+In order to use Google Maps (TM) feature embedded in the IPT pages, it is necessary to own a <i>Google Maps API Key</i>. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
 </p>
 <h4>4.1.1.6. Additional raw HTML headers</h4>
 <p>
@@ -512,7 +512,7 @@ Code provided automatically by the GBIF once the organisation is registered fill
   Description of the organisation
 </dd>
 <dt>Cancel / Save / Register </dt><dd>
-  The three buttons allow the administrator to respectively delete what he just typed, saved the information in the form or register the organisation with the GBIF. When does so, he will receive an Organisation Identifier that will be automatically filled in the right field. The <i>Register</i> button is only available if the organisation is not yet registered.
+  The three buttons allow the administrator to respectively delete what was just typed, save the information in the form or register the organisation with the GBIF. When doing so, an Organisation Identifier will be sent that will automatically fill the right field. The <i>Register</i> button is only available if the organisation is not yet registered.
 </dd>
 <dt>Clear form</dt><dd>
   This link is only available if a registered organisation is already defined. It allows the administrator to clear the form in order to register a new organisation.
@@ -525,7 +525,7 @@ Code provided automatically by the GBIF once the organisation is registered fill
 <a id="toc19" name="toc19"></a>
 <h3>4.1.4. IPT Instance</h3>
 <p>
-This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to populate the homepage of this IPT instance.
+This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to feed the homepage of this IPT instance.
 </p>
 <p>
 <img align="middle" src="screenshots/config_ipt_instance.png" border="0" alt=""/>
@@ -610,13 +610,13 @@ It is also possible to define custom extensions, but the process is not automate
 <a id="toc21" name="toc21"></a>
 <h2>4.3. Thesaurus</h2>
 <p>
-Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. 
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauruses. 
 </p>
 <p>
 <img align="middle" src="screenshots/thesaurus.png" border="0" alt=""/>
 </p>
 <p>
-By default, available thesauri are:
+By default, the available thesauruses are:
 </p>
 <ul>
 <li>ISO 639-1 Languages 
@@ -673,7 +673,7 @@ To add a new user, the following fields must be filled in:
 <dt>e-mail (mandatory field)</dt><dd>
 </dd>
 <dt>password hint (mandatory field)</dt><dd>
-  will be e-mailed to the user who forgot his password
+  will be e-mailed to the user who forgot his/her password
 </dd>
 <dt>first name (mandatory field)</dt><dd>
 </dd>
@@ -758,7 +758,7 @@ Taxonomic checklist data refers to structured data providing information about t
 In the context of GBIF, metadata records are those which provide information about the suppliers of biodiversity data and about the origins and purpose of those data.
 </p>
 <p>
-In regards of the IPT, a metadata record is composed of all the descriptive information that must be attached to a dataset in terms of origin (who produced the original data, who is connecting it to the IPT instance), contents (both taxonomically and geographically), intellectual property rights, etc.
+As regards the IPT, a metadata record is composed of all the descriptive information that must be attached to a dataset in terms of origin (who produced the original data, who is connecting it to the IPT instance), contents (both taxonomically and geographically), intellectual property rights, etc.
 </p>
 <a id="toc30" name="toc30"></a>
 <h2>5.2. Resource Creation</h2>
@@ -792,7 +792,7 @@ The first step is to basically describe the dataset that will be published. The 
     A resource describing a checklist.
     </dd>
     <dt>Fossil Specimen</dt><dd>
-    A resource describing a fossilized specimen.
+    A resource describing a fossilised specimen.
     </dd>
     <dt>Legislative Checklist</dt><dd>
     </dd>
@@ -839,7 +839,7 @@ The first step is to basically describe the dataset that will be published. The 
 <dt>Contact Email</dt><dd>
 </dd>
 <dt>Upload logo</dt><dd>
-  The manager can upload a logo associated with the resource. The logo must be a squared image 68 pixels wide.
+  The manager can upload a logo associated with the resource. The logo must be a square image, 68 pixels by 68 pixels.
 </dd>
 <dt>Description</dt><dd>
   Description of the resource
@@ -942,7 +942,7 @@ The manager can describe the geographic coverage in the box below the map.
 <img align="middle" src="screenshots/temporal_coverage.png" border="0" alt=""/>
 </p>
 <p>
-The manger must fill in the temporal coverage of the collection of information related to the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox. 
+The manager must fill in the temporal coverage of the collection of information related to the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox. 
 </p>
 <a id="toc37" name="toc37"></a>
 <h3>5.3.6. General Keywords</h3>
@@ -961,7 +961,7 @@ On this page, the manager can indicate the information related to intellectual p
 <img align="middle" src="screenshots/IPR.png" border="0" alt=""/>
 </p>
 <p>
-The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see <a href="http://creativecommons.org/license/">http://creativecommons.org/license/</a>. 
+The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see <a href="http://creativecommons.org/license/">http://creativecommons.org/license/</a>. 
 </p>
 <dl>
 <dt>Purpose</dt><dd>
@@ -1057,16 +1057,16 @@ The <i>SQL Settings</i> page also gives a list of important parameters for the m
 </p>
 <dl>
 <dt>Database Type</dt><dd>
-  the manager must define the type of the database holding the data. If his particular system is not in the list, he can use a generic ODBC or choose the <i>other</i> option and define his own driver class.
+  The type of the database holding the data must be defined. If this particular system is not in the list, the manager can use a generic ODBC or choose the <i>other</i> option and to define a custom driver class.
 </dd>
 <dt>Database Connection URL</dt><dd>
-  the manager must fill in the URL of the database connection. the format to be used is explained in the second part of the <i>SQL Settings</i> page. The manager will generally need to know the host or server (<i>localhost</i> if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called <i>test</i>, the database connection URL will be jdbc:mysql://localhost:3306/test.
+  The manager must fill in the URL of the database connection. The format to be used is explained in the second part of the <i>SQL Settings</i> page. The manager will generally need to know the host or server (<i>localhost</i> if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called <i>test</i>, the database connection URL will be jdbc:mysql://localhost:3306/test.
 </dd>
 <dt>Database user</dt><dd>
-  the username of a database user with SELECT rights
+  The username of a database user with SELECT rights
 </dd>
 <dt>Database password</dt><dd>
-  the corresponding password
+  The corresponding password
 </dd>
 </dl>
 
@@ -1101,7 +1101,7 @@ The <i>Property Mappings</i> page displays a list of the existing mappings, that
 </p>
 <h4>5.4.2.1. Your Existing Mappings</h4>
 <p>
-When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension to the farthest extend possible. These mappings can be viewed or modified by pressing the <i>Edit</i> button.
+When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension to the furthest extent possible. These mappings can be viewed or modified by pressing the <i>Edit</i> button.
 </p>
 <p>
 The page is split in three parts:
@@ -1181,7 +1181,7 @@ Managers have to use one of the controlled terms either as static values by sele
 <img align="middle" src="screenshots/available_properties.png" border="0" alt=""/>
 </p>
 <p>
-This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down).
+This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the <i>property mappings</i> section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down menu).
 </p>
 <h4>5.4.2.2. Add New Mapping</h4>
 <p>
@@ -1200,7 +1200,7 @@ The cache can be rebuilt at any time when the manager wants to update the inform
 <a id="toc44" name="toc44"></a>
 <h2>5.5. Resource Publication</h2>
 <p>
-Once a Resource has been configured and its metadata filled in, it can be published to the IPT, via the <i>Publish</i> button.
+Once a Resource has been configured and its metadata filled in, it can be published on the IPT, via the <i>Publish</i> button.
 </p>
 <p>
 Publishing a resource also registers it with GBIF and updates its  
@@ -1236,5 +1236,5 @@ It is also possible to delete a resource by using the <i>Delete</i> button on it
 </p>
 
 <!-- xhtml code generated by txt2tags 2.5 (http://txt2tags.sf.net) -->
-<!-- cmdline: txt2tags -t xhtml -\-toc /Users/arnaudreveillon/Documents/gbif-ipt-docs/IPT_documentation.txt -->
+<!-- cmdline: txt2tags -t xhtml -\-toc /Volumes/HD1/areve/Desktop/gbif-ipt-docs/IPT_documentation.txt -->
 </body></html>
