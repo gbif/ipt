@@ -1,6 +1,6 @@
-<archive xmlns="http://rs.tdwg.org/dwc/terms/xsd/archive/">
-  <file encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${rowType}" location="${coreFilename}">
-    <field index="0" term="http://purl.org/dc/terms/identifier"/>
+<starArchive xmlns="http://rs.tdwg.org/dwc/terms/xsd/archive/">
+  <core encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${rowType}" location="${coreFilename}">
+    <id index="0" term="http://purl.org/dc/terms/identifier"/>
     <field index="1" term="http://purl.org/dc/terms/modified"/>
     <field index="2" term="http://purl.org/dc/terms/source"/>
     <field index="3" term="http://ipt.gbif.org/terms/sourceID"/>
@@ -18,26 +18,17 @@
     <#list coreProperties as p>
     <field index="${p_index+idx}" term="${p.qualName}"/>
     </#list>
-  </file>
+  </core>
  <#assign filenames = fileMap?keys>
  <#list filenames as fn>
   <#assign view = fileMap[fn]>
-  <file encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${view.extension.rowType}" location="${fn}">
-    <field index="0" term="http://purl.org/dc/terms/identifier"/>
+  <extension encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${view.extension.rowType}" location="${fn}">
+    <coreid index="0" term="http://purl.org/dc/terms/identifier"/>
     <#list view.getMappedProperties() as p>
     <field index="${p_index+1}" term="${p.qualName}"/>
     </#list>
-  </file>
+  </extension>
  </#list>
-	
-  <relationships>
-   <#list filenames as fn>
-    <relationship>
-      <file location="${coreFilename}" fieldIndex="0"/>
-      <file location="${fn}" fieldIndex="0"/>
-    </relationship>
-   </#list>
-  </relationships>	
-</archive>
+</starArchive>
 <#escape x as x?xml>
 </#escape>
