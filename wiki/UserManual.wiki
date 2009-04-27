@@ -5,6 +5,7 @@ Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.co
 
 
 
+
 = 1. Background Information =
 
 The Global Biodiversity Information Facility (GBIF) works to make digital 
@@ -176,7 +177,7 @@ Once logged in, a new _Admin_ section appears in the menu. The subsequent drop-d
  * Manage Users
  * Current Users
 
-http://paroligolophus.net/gbif/ipt/screenshots/admin_menu.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/admin_menu.png
 
 == 4.1. Configuration ==
 
@@ -186,13 +187,13 @@ The Configuration section is divided into three configuration options available 
  * Organisation
  * IPT Instance
 
-http://paroligolophus.net/gbif/ipt/screenshots/config_menu.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/config_menu.png
 
 === 4.1.1. Settings ===
 
 The Settings page allows the administrator to define a number of parameters that are essential for the IPT to function correctly.
 
-http://paroligolophus.net/gbif/ipt/screenshots/config_settings.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/config_settings.png
 
 ==== 4.1.1.1. IPT Base URL ====
 
@@ -226,7 +227,7 @@ The content must be XHTML compliant and will be included in the _HEAD_ section o
 
 The Settings page also allows the administrator to define some parameters for the Geoserver. For more information about the Geoserver, see its users guide: http://geoserver.org/display/GEOSDOC/Users+Guide
 
-http://paroligolophus.net/gbif/ipt/screenshots/config_geoserver_settings.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/config_geoserver_settings.png
 
 ==== 4.1.2.1. Base URL ====
 
@@ -244,7 +245,7 @@ By default, the administrative username is _admin_ and the administrative passwo
 
 This page allows the administrator to define the GBIF organisation hosting the IPT installation. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
 
-http://paroligolophus.net/gbif/ipt/screenshots/config_organisation.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/config_organisation.png
 
 The following fields must filled in:
 
@@ -275,7 +276,7 @@ Resend Password
 
 This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to feed the homepage of this IPT instance.
 
-http://paroligolophus.net/gbif/ipt/screenshots/config_ipt_instance.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/config_ipt_instance.png
 
 Resource Identifier 
   This is a code provided by the GBIF when the IPT instance is registered.
@@ -300,7 +301,7 @@ Extensions allow for serving additional data types, such as multiple identificat
 
 The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
 
-http://paroligolophus.net/gbif/ipt/screenshots/extensions.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/extensions.png
 
 By default, available extensions are:
 
@@ -319,7 +320,7 @@ By default, available extensions are:
 
 Clicking on an extension name will open a new page with information about the extension, including a list of properties.  The administrator can get more information about a property by clicking on its name. It is also possible on this page to install or remove an extension.
 
-http://paroligolophus.net/gbif/ipt/screenshots/extensions_example.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/extensions_example.png
 
 It is also possible to define custom extensions, but the process is not automated in version 1.0 of the IPT.
 
@@ -327,7 +328,7 @@ It is also possible to define custom extensions, but the process is not automate
 
 Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauruses. 
 
-http://paroligolophus.net/gbif/ipt/screenshots/thesaurus.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/thesaurus.png
 
 By default, the available thesauruses are:
 
@@ -340,7 +341,7 @@ By default, the available thesauruses are:
 
 Clicking on a thesaurus name will open a new page with information about the thesaurus, including a list of terms.
 
-http://paroligolophus.net/gbif/ipt/screenshots/thesaurus_example.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/thesaurus_example.png
 
 It is also possible to define custom vocabularies, but the process is not automated in version 1.0 of the IPT.
 
@@ -348,7 +349,7 @@ It is also possible to define custom vocabularies, but the process is not automa
 
 This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The list can also be exported using different formats (CSV, Excel, XML and PDF).
 
-http://paroligolophus.net/gbif/ipt/screenshots/manage_users.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/manage_users.png
 
 The administrator can also add a new user through the _Add_ button at the bottom of the page.
 
@@ -356,7 +357,7 @@ The administrator can also add a new user through the _Add_ button at the bottom
 
 The User Profile page allows the administrator to add a new user or to edit or delete an existing user.
 
-http://paroligolophus.net/gbif/ipt/screenshots/user_profile.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/user_profile.png
 
 To add a new user, the following fields must be filled in:
 
@@ -392,7 +393,7 @@ ROLE_USER
 
 To assign a user a role, the administrator must select it in the _Available Roles_ column and click on the arrow to move it in the _Current Roles_ column.
 
-http://paroligolophus.net/gbif/ipt/screenshots/assign_role.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/assign_role.png
 
 Conversely, to remove a role from a user, the administrator must select it in the _Current Roles_ column and click on the arrow to move it back to the _Available Roles_ column.
 
@@ -402,7 +403,7 @@ A visitor that is not logged in is considered to be an _anonymous user_. Such a 
 
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 
-http://paroligolophus.net/gbif/ipt/screenshots/current_users.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/current_users.png
 
 = 5. Resources Management =
 
@@ -436,7 +437,7 @@ When the resource has been created, the manager can add its metadata.
 
 === 5.3.1. Basic Metadata ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/basic_metadata.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/basic_metadata.png
 
 The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
 
@@ -482,7 +483,7 @@ Once the fields have been filled in and the form saved, the resource is created 
 
 === 5.3.2. Resource Originator ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/resource_originator.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/resource_originator.png
 
 This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
 
@@ -503,7 +504,7 @@ Country (mandatory field)
 
 === 5.3.3. Geographic Coverage ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/geographic_coverage.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/geographic_coverage.png
 
 In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
 
@@ -513,7 +514,7 @@ The manager can navigate on the map by clicking and dragging the cursor around a
 
 ===== Creating a new area =====
 
-http://paroligolophus.net/gbif/ipt/screenshots/map_area.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/map_area.png
 
 The manager must click on the grey select area button in the top right corner of the map. Clicking and dragging with the  mouse will define the geographic coverage area. Only one area can be created per map. 
 
@@ -523,7 +524,7 @@ The manager can describe the geographic coverage in the box below the map.
 
 === 5.3.4. Taxonomic Coverage ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/taxonomic_coverage.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/taxonomic_coverage.png
 
 ==== 5.3.4.1. Taxonomic Metadata ====
 
@@ -541,13 +542,13 @@ Rank (mandatory field)
 
 === 5.3.5. Temporal Coverage ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/temporal_coverage.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/temporal_coverage.png
 
 The manager must fill in the temporal coverage of the collection of information related to the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox. 
 
 === 5.3.6. General Keywords ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/keywords.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/keywords.png
 
 In this section, the manager can indicate a series of keywords defining/describing the resource. The different keywords must be separated by commas.
 
@@ -555,7 +556,7 @@ In this section, the manager can indicate a series of keywords defining/describi
 
 On this page, the manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
 
-http://paroligolophus.net/gbif/ipt/screenshots/IPR.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/IPR.png
 
 The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
 
@@ -567,7 +568,7 @@ IPRights
 
 === 5.3.8. Research Project ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/research_project.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/research_project.png
 
 If the resource is linked to a specific reseach project, the manager can describe it in this section.
 
@@ -585,7 +586,7 @@ Design Description
 
 === 5.3.9. Methods ===
 
-http://paroligolophus.net/gbif/ipt/screenshots/methods.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/methods.png
 
 Methods
 Sampling Description
@@ -601,7 +602,7 @@ Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sourc
 
 ==== 5.4.1.1. File Data Sources ====
 
-http://paroligolophus.net/gbif/ipt/screenshots/file_data_sources.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/file_data_sources.png
 
 In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such _tab delimited text files_ are easily created from any spreadsheet software or database management system. 
 
@@ -619,7 +620,7 @@ Pressing the _Edit_ button on the _Source Data_ page will bring the manager to t
 
 The _SQL Settings_ page also gives a list of important parameters for the most used databases.
 
-http://paroligolophus.net/gbif/ipt/screenshots/sql_settings.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/sql_settings.png
 
 Database Type
   The type of the database holding the data must be defined. If this particular system is not in the list, the manager can use a generic ODBC or choose the _other_ option and to define a custom driver class.
@@ -632,11 +633,11 @@ Database password
 
 After defining the SQL settings, the manager must add some SQL _SELECT_ statements to create views on the data. This is done by clicking on the _ADD_ button and filling in the form.
 
-http://paroligolophus.net/gbif/ipt/screenshots/add_statement.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/add_statement.png
 
 Several of these queries can be created, e.g. one for each Darwin Core extension in use.
 
-http://paroligolophus.net/gbif/ipt/screenshots/sql_statements.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/sql_statements.png
 
 Once all data sources have been defined, pressing the _Next_ button will bring the manager to the _Mappings_ page. The SQL statements will be mapped the same way as uploaded text files.
 
@@ -644,11 +645,11 @@ Once all data sources have been defined, pressing the _Next_ button will bring t
 
 Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see _Extensions_ section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
 
-http://paroligolophus.net/gbif/ipt/screenshots/dc_star_schema.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/dc_star_schema.png
 
 The _Property Mappings_ page displays a list of the existing mappings, that can be edited, gives the possibility to add new mappings and allows to actually import or re-import the data.
 
-http://paroligolophus.net/gbif/ipt/screenshots/mappings.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/mappings.png
 
 ==== 5.4.2.1. Your Existing Mappings ====
 
@@ -669,7 +670,7 @@ In this section, the manager can define which fields are used as identifiers (ID
 
 ===== DarwinCore mapping =====
 
-http://paroligolophus.net/gbif/ipt/screenshots/id_properties.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/id_properties.png
 
 If the source is mapped to DarwinCore, the following fields are to be filled in:
 
@@ -686,7 +687,7 @@ NB: The _save_ button will save the information that was entered in the fields. 
 
 ===== Extension mapping =====
 
-http://paroligolophus.net/gbif/ipt/screenshots/extension_id.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/extension_id.png
 
 If the source is mapped to an extension, only one field is to be filled in:
 
@@ -697,17 +698,17 @@ Source ID for record (mandatory field)
 
 Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (a common value for all records, i.e. the project/collection code) by entering it in the text field (and choosing a blank value in the drop-down).
 
-http://paroligolophus.net/gbif/ipt/screenshots/property_mappings.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/property_mappings.png
 
 If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a _Terms_ button and a new drop down are available. 
 
-http://paroligolophus.net/gbif/ipt/screenshots/controlled_vocabulary.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/controlled_vocabulary.png
 
 Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
 
 ===== 5.4.2.1.3. Available Properties =====
 
-http://paroligolophus.net/gbif/ipt/screenshots/available_properties.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/available_properties.png
 
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the _property mappings_ section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down menu).
 
@@ -734,7 +735,7 @@ unpublished,unregistered
 This is the default for new resources. It is neither  
 registered nor should it be visible in the public portal part of the IPT.
 
-http://paroligolophus.net/gbif/ipt/screenshots/unpublished_unregistered.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/unpublished_unregistered.png
 
 modified,not registered
 the resource is intended to be public, is present  
@@ -742,12 +743,15 @@ in the IPT portal and if settings allow, should be registered with GBIF. The res
 and differs from a) GBIFs registry metadata or b) the versioned EML  
 document which is generated each time the manager publishes a resource (NB: the geoserver WFS/WMS services' own metadata are then also out of date).
 
-http://paroligolophus.net/gbif/ipt/screenshots/modified_not_registered.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/modified_not_registered.png
 
 published,registered
 Same as above, but the metadata in the registry/ 
 EML&geoserver should reflect your latest state.
 
-http://paroligolophus.net/gbif/ipt/screenshots/published_registered.png
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/published_registered.png
 
 It is also possible to delete a resource by using the _Delete_ button on its _Basic Metadata_ page.
+
+
+
