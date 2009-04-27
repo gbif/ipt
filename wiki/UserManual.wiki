@@ -1,328 +1,753 @@
-#summary GBIF IPT User manual ver. 0.1
+#summary GBIF IPT User manual ver. 0.2
 #labels Phase-Deploy
 
 Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20Manual%200.1.pdf]
 
-=== 1  Background Information ===
 
-The Global Biodiversity Information Facility (GBIF) works to make digital biodiversity data openly and freely available on the Internet for everyone. GBIF provides access to scientific biodiversity data for decision-making, research endeavours and public use. GBIF endorses both open source software and open data access.
 
-In terms of structure, GBIF is a dynamic, growing partnership of countries, organisations, institutions and individuals working together to mobilise scientific biodiversity data.
+= 1. Background Information =
 
-http://www.gbif.org/
+The Global Biodiversity Information Facility (GBIF) works to make digital 
+biodiversity data openly and freely available on the internet for everyone. 
+GBIF provides access to scientific biodiversity data for decision-making, research endeavours and public use. GBIF endorses both open source software 
+and open data access.
 
-GBIF is also a network of data publishers who retain ownership and control of the data they share. Linked datasets provide a more robust representation of biodiversity than any single dataset.
+In terms of structure, GBIF is a dynamic, growing partnership of countries, organisations, institutions and individuals working together to mobilise 
+scientific biodiversity data. 
 
-In this framework, GBIF develops software tools to make possible to easily integrate biodiversity data from heterogeneous sources using common standards and protocols. One of these tools is the GBIF Integrated Publishing Toolkit (IPT) that this user manual refers to.
+GBIF is also a network of data publishers who retain ownership and 
+control of the data they share. Linked datasets provide a more robust representation of biodiversity than any single dataset. 
 
-The GBIF IPT is an open source, Java (TM) based web application that connects and serves three types of biodiversity data: taxon primary occurrence data, taxon checklists and general resource metadata. The data registered in a GBIF IPT instance is connected to the GBIF distributed network and made available for public consultation and use. Several factors have motivated the development of this new tool:
+In this framework, GBIF develops software tools to make it possible to 
+easily integrate biodiversity data from heterogeneous sources using common 
+standards and protocols. One of these tools is the GBIF Integrated Publishing Toolkit (IPT) that this user manual refers to.
 
-  * the limitations of the existing systems to publish primary biodiversity occurrence records that use tools and protocols that were not designed to transfer big amounts of records (DiGIR, TAPIR, ABCD);
-  * the need to decentralise and speed up the process of indexing biodiversity occurrence datasets;
-  * the need to offer additional benefits and services to the data publishers to encourage data publication (i.e. public web interface to browse/expose (meta)data, mapping services);
-  * the need to offer data quality assessment tools to data publishers and generalise data cleaning habits;
-  * the need to increase data exchange using globally accepted formats (i.e. OGC web services);
-  * the need for easy ways to monitor data access and use for the different resources connected to the GBIF Network;
-  * the lack of appropriate tools to publish other types of biodiversity data, such as names checklists and dataset metadata;
-  * existing requests to facilitate and automate dataset registration with the GBIF Network;
-  * the requirement to implement (and assign if needed) Universal Unique Identifiers (UUIDs) associated to all published elements to increase interoperability in the GBIF Network;
+The GBIF IPT is an open source, Java (TM) based web application 
+that connects and serves three types of biodiversity data: taxon primary 
+occurrence data, taxon checklists and general resource metadata. The data 
+registered in a GBIF IPT instance is connected to the GBIF distributed 
+network and made available for public consultation and use. Several factors 
+have motivated the development of this new tool: 
 
-The GBIF IPT, as an open source project, is made freely available for both those who wish to use it to publish their data and those who wish to participate in its development, documentation and helpdesk. This is a list of the current online resources related to the GBIF IPT:
+ * the limitations of the existing systems to publish primary biodiversity 
+occurrence records that use tools and protocols that were not designed 
+to transfer big amounts of records (DiGIR, TAPIR, ABCD); 
+ * the need to decentralise and speed up the process of indexing biodiversity occurrence datasets; 
+ * the need to offer additional benefits and services to the data publishers to encourage data publication (i.e. public web interface to 
+browse/expose (meta)data, mapping services); 
+ * the need to offer data quality assessment tools to data publishers and 
+generalise data cleaning habits; 
+ * the need to increase data exchange using globally accepted formats 
+(i.e. OGC web services); 
+ * the need for easy ways to monitor data access and use for the different 
+resources connected to the GBIF Network; 
+ * the lack of appropriate tools to publish other types of biodiversity data, 
+such as names checklists and dataset metadata; 
+ * existing requests to facilitate and automate dataset registration with 
+the GBIF Network; 
+ * the requirement to implement (and assign if needed) Universal Unique 
+Identifiers (UUIDs) associated to all published elements to increase 
+interoperability in the GBIF Network; 
 
-  * the GBIF IPT mailing list: http://lists.gbif.org/mailman/listinfo/ipt/;
-  * the GBIF IPT test installation (for testing purposes): http://ipt.gbif.org/;
-  * the GBIF IPT code site: http://code.google.com/p/gbif-providertoolkit/.
+The GBIF IPT, as an open source project, is made freely available for both 
+those who wish to use it to publish their data and those who wish to participate in its development, documentation and helpdesk. This is a list of the 
+current online resources related to the GBIF IPT: 
 
-=== 2  General Specifications ===
+ * the GBIF IPT mailing list: http://lists.gbif.org/mailman/listinfo/ipt/; 
+ * the GBIF IPT test installation (for testing purposes): http://ipt.gbif.org/; 
+ * the GBIF IPT code site: http://code.google.com/p/gbif-providertoolkit/. 
 
-The GBIF Integrated Publishing Toolkit (IPT) is an Open source Java based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
+= 2. General specifications =
+
+The GBIF Integrated Publishing Toolkit (IPT) is an open source Java-based web application. It embeds its own database, is easily customisable and is multilingual. It has a user management feature based on roles, which allows for multiple data managers to share a common instance.
 
 It connects and serves three types of data : taxon primary occurrence data, taxon checklists and general resource metadata. The IPT manages multiple data sources and has several upload options: relational database management systems or tab files. It does not however accept manual entries (except for individual metadata descriptions).
 
-Its public web interface allows for data browsing and full text search. It also offers customised detail pages for the three types of data, with specific functionality for each type (i.e. density maps, metadata edition).
+Its public web interface allows for data browsing and full text search. It also offers customised details pages for the three types of data, with specific functionality for each type (i.e. density maps, metadata edition). 
 
-The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or providing new ones, as appropriate. It also manages technical metadata about the installation and allows for an easy setup of Google Analytics for usage statistics.
+The IPT manages Universally Unique IDentifiers (UUID), recycling existing IDs or providing new ones, as appropriate. It also manages technical metadata about the installation and allows for an easy setup of Google Analytics for usage statistics. 
 
-=== 3  Installation ===
+= 3. Installation =
 
-==== 3.1  Requirements ====
+== 3.1. Requirements ==
 
 The IPT will run on any of the most widespread Operating Systems (Linux, Mac OS (TM), MS Windows (TM)) provided that:
 
-  * Java (TM) runtime environment (http://java.sun.com/) version 5 or more is installed;
-  * A web server with a servlet container, such as Apache Tomcat (http://tomcat.apache.org/) or Jetty (http://jetty.mortbay.com/), is installed and connected to the Internet.
+ * Java (TM) runtime environment (http://java.sun.com/) version 5 or higher is installed; 
+ * a web server with a servlet container, such as Apache Tomcat (http://tomcat.apache.org) or Jetty (http://jetty.mortbay.com/), is installed and connected to the internet.
 
-==== 3.2  Brief overview of Java and Tomcat installation and configuration ====
+== 3.2. Brief overview of Java and Tomcat installation and configuration ==
 
 It is beyond the scope of this manual to provide detailed installation and configuration instructions for the virtual machine and the server. Here is a quick overview for MS Windows (TM) and Mac OS (TM) computers.
 
-===== 3.2.1  Java =====
+=== 3.2.1. Java ===
 
-Mac OS X (TM) already comes complete with a fully configured and ready-to-use Java runtime environment.
+Mac OS X (TM) includes a fully configured and ready-to-use Java runtime environment. 
 
-For MS Windows (TM) machines, follow these steps to install it:
+For MS Windows (TM) machines, follow these steps to install: 
 
-  # Download the Java 2 Standard Edition Runtime Environment (JRE), release version 5.0 or later, from http://java.sun.com/j2se.
-  # Install the JRE according to the instructions included with the release.
-  # Set an environment variable named JRE_HOME to the pathname of the directory into which you installed the JRE, e.g. c:\jre5.0:
-    # Open the Control Panel and click the System icon.
-    # Go to the Advanced pane and click the Environment variables button.
-    # In the System variables section, click New. In the Variable name box, type JRE_HOME; in the Variable value box, type the path to the JRE e.g. C:\Program Files\Java\jre6
+ # Download the Java 2 Standard Edition Runtime Environment (JRE), release version 5.0 or later, from http://java.sun.com/j2se.
+ # Install the JRE according to the instructions included with the release.
+ # Set an environment variable named JRE_HOME to the pathname of the directory into which you installed the JRE, e.g. c:\jre5.0:
+  # Open the _Control Panel_ and click the _System_ icon. 
+  # Go to the _Advanced_ pane and click the _Environment variables_ button. 
+  # In the _System variables_ section, click _New_. In the _Variable name_ box, type JRE_HOME; in the _Variable value_ box, type the path to the JRE e.g. C:\Program Files\Java\jre6
 
-===== 3.2.2  Application server =====
+=== 3.2.2. Application server ===
 
 The IPT should run in any compliant java application server using Java 1.5. Tomcat 5.5 is recommended for the installation. It was also successfully tested on Tomcat 6 and Jetty.
 
-The application server will need a rather large amount of memory allocated as the IPT runs a full database. It is recommended to increase the server’s available memory to at least 1GB (general instructions below).
+The application server will require a rather large amount of memory allocated as the IPT runs a full database. It is recommended to increase the server's available memory to at least 1GB (see general instructions below). 
 
-Tomcat installation
+==== 3.2.2.1. Tomcat installation ====
 
-  # Download a binary distribution of Tomcat from http://tomcat.apache.org/download-55.cgi.
-  # Unpack the binary distribution into a location of your choice (e.g. C:\apache-tomcat-5.5.27)
-  # Open a command prompt window and navigate to the installation folder.
-  # Mac OS only: some files need to have their permissions adapted: type sudo chmod 775 `*` at the command line. You will be asked your administrative password.
-  # go to the bin folder and execute startut.bat (MS Windows (TM)) or startup.sh (Mac OS (TM)). A new Tomcat window will open. You need to keep this window open.
+ # Download a binary distribution of Tomcat from http://tomcat.apache.org/download-55.cgi.
+ # Unpack the binary distribution into a location of your choice (e.g. C:\apache-tomcat-5.5.27)
+ # Open a command prompt window and navigate to the installation folder.
+ # Mac OS only: some files need to have their permissions adapted: type “_sudo chmod 775 *_” at the command line. You will be asked for your administrative password.
+ # Go to the _bin_ folder and execute startut.bat (Window) or startup.sh (Mac OS). A new Tomcat window will open. You need to keep this window open.
 
-Tomcat configuration
+==== 3.2.2.2. Tomcat configuration ====
 
-Tomcat comes with very little allocated memory. In order to increase performance, this amount should be increased depending on the amount of physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do it, see the following links:
+Tomcat comes with very little allocated memory. In order to improve performance levels, this amount should be increased depending on the physical memory on the server. If the server has at least 2GB of RAM, the available memory should be increased to 1GB. For more information on how to do this, see the following links:
 
-  * http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/
-  * http://wiki.apache.org/tomcat/FAQ/Memory
+ * http://explanatorygap.net/2005/03/06/configuring-tomcat-under-os-x-server-for-more-memory/
+ * http://wiki.apache.org/tomcat/FAQ/Memory
 
-==== 3.3  IPT Installation ====
+== 3.3. IPT Installation ==
 
-  # Download the web archive file (ipt-1.0.war at the time of writing) from the project downloads page: http://code.google.com/p/gbif-providertoolkit/downloads/list
-  # Rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
-  # Launch Tomcat:
-    # open a command prompt (MS Windows(TM)) or a terminal window (Mac OS (TM))
-    # navigate to the Tomcat installation folder
-    # go to the bin folder and execute startup.bat (MS Windows (TM)) or startup.sh (Mac OS (TM))
-  # The IPT can then be accessed in any browser at http://localhost:8080/ipt/
+ # Download the web archive file (ipt-1.0.war at the time of writing) from the project downloads page: http://code.google.com/p/gbif-providertoolkit/downloads/list
+ # Rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
+ # Launch Tomcat:
+  # open a command prompt (MS Windows(TM)) or a terminal window (Mac OS (TM)) 
+  # navigate to the Tomcat installation folder
+  # go to the bin folder and execute startup.bat (windows) or startup.sh (Mac OS)
+ # The IPT can then be accessed in any browser at http://localhost:8080/ipt/
 
-==== 3.4  Geoserver Installation ====
+== 3.4. Geoserver Installation ==
 
 GeoServer (http://geoserver.org/) is an open source software server written in Java that allows users to share and edit geospatial data. It is used to run IPT geographic web services via a plugin that can access the IPT cache. If there is already a geoserver installation on the server, only the plugin needs to be installed. If there is no such installation, a geoserver archive bundled with the plugin is provided.
 
-===== 3.4.1  Geoserver and bundled plugin installation =====
+=== 3.4.1. Geoserver and bundled plugin installation ===
 
 This installation is required if the Geoserver is not yet installed on the machine.
 
-  # Download the zipped archive from the IPT project downloads page;
-  # Extract it into the Tomcat webapps folder and rename it as geoserver
-  # Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS(TM)).
+ # Download the zipped archive from the project downloads page;
+ # Extract it into the Tomcat webapps folder and rename it as “geoserver”;
+ # Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS(TM)).
 
-===== 3.4.2  Plugin installation =====
+=== 3.4.2. Plugin installation ===
 
 If the Geoserver is already installed on the server, only the plugin needs to be installed.
 
-  # Downoad the jar file from the IPT project downloads page;
-  # Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder;
-  # Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS (TM)) .
+ # Downoad the _jar_ file from the project downloads page;
+ # Install it in your existing Geoserver installation, in the geoserver/WEB-INF/lib folder;
+ # Restart Tomcat (shutdown.bat then startup.bat on MS Windows (TM), shutdown.sh and startup.sh on Mac OS (TM)) .
 
-==== 3.5  Geoserver Configuration ====
+== 3.5. Geoserver Configuration ==
 
-In order to allow the IPT and the Geoserver to communicate to one another, it is necessary to define the IPT Base Directory. It is done by:
+In order to allow the IPT and the Geoserver to communicate to one another, it is necessary to define the IPT Base Directory. This is done by: 
 
-  * navigating with your web browser to http://localhost:8080/ipt/;
-  * logging in with username admin and password admin;
-  * navigating to Settings > Settings > IPT Base Directory;
-  * pressing the Update Geoserver button.
+ * navigating with your web browser to http://localhost:8080/ipt/;
+ * logging in with username _admin_ and password _admin_;
+ * navigating to _Settings_ > _Settings_ > _IPT Base Directory_;
+ * pressing the _Update Geoserver_ button.
 
-This procedure will be explained with more details in the Configuration section of this document.
+This procedure will be explained with more details in the _Configuration_ section of this document.
 
 For more information about the Geoserver, please refer to its own manual: http://geoserver.org/
 
-==== 3.6  Mac OS X (TM) test installation ====
+== 3.6. Mac OS X (TM) test installation ==
 
-A standalone version without any dependencies is provided for Mac OS X (TM). It is very easy to install as it only requires a simple click and is very convenient to test the IPT. It should not however be used for production purposes. The disk image can be downloaded at the time of writing from the following address: ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg
+A standalone version without any dependencies is provided for Mac OS X. It is very easy to install as it only requires a simple click and is very convenient to test the IPT. It should not however be used for production purposes.
+At the time of writing, the disk image can be downloaded from the following address: ftp://ftp.gbif.org/projects/ipt/downloads/ipt-1.0b.8.dmg
 
-=== 4  Configuration ===
+= 4. Configuration =
 
 Once the IPT has been installed, it is accessible in a web browser at the following URL: http://localhost:8080/ipt/
 
-To configure the software, one must login as administrator by clicking on the Login button in the main menu and entering a username and password. By default, the adminstrative username is admin and the password is also admin.
+To be able to configure the software, one must login as administrator by clicking on the _Login_ button in the main menu and entering a username and password. By default, the administrative username is _admin_ and the password is also _admin_.
 
-Once logged in, a new Admin section appears in the menu. The subsequent drop-down menu offers the following choices:
+Once logged in, a new _Admin_ section appears in the menu. The subsequent drop-down menu offers the following choices:
 
-  * Settings
-  * Extensions
-  * Thesaurus
-  * View Users
-  * Current Users
-  * Active Datasources
-  * Background Tasks
+ * Configuration
+ * Extensions
+ * Thesaurus
+ * Manage Users
+ * Current Users
 
-==== 4.1  Settings ====
+http://paroligolophus.net/gbif/ipt/screenshots/admin_menu.png
 
-The Settings section is divided in three configuration options:
+== 4.1. Configuration ==
 
-  * Settings
-  * Organisation
-  * IPT Instance
+The Configuration section is divided into three configuration options available via the menu on the right hand side of the page:
 
-===== 4.1.1  Settings =====
+ * Settings
+ * Organisation
+ * IPT Instance
+
+http://paroligolophus.net/gbif/ipt/screenshots/config_menu.png
+
+=== 4.1.1. Settings ===
 
 The Settings page allows the administrator to define a number of parameters that are essential for the IPT to function correctly.
 
-IPT Base URL
+http://paroligolophus.net/gbif/ipt/screenshots/config_settings.png
 
-This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/ipt or http://exemple.com:8080/ipt).
+==== 4.1.1.1. IPT Base URL ====
 
-IPT Base Directory
+This is the URL of the IPT. It is filled in by default with the local URL (http://localhost:8080/ipt). ). In order to make the IPT instance accessible by distant users on a network, the parameter should be changed to the public URL (e.g. http://67.233.45.122:8080/ipt or http://example.com:8080/ipt).
 
-This field defines the location of the IPT in the file system. It is filled in by default and does not need to be changed. It is followed by a button that needs to be clicked in order for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the Update Geoserver button.
+==== 4.1.1.2. IPT Data Directory ====
 
-Google Maps API Key
+This field defines the location of the IPT data folder in the file system. It is filled in by default and does not need to be changed. It is followed by a button that must be clicked for the Geoserver to know where to access the IPT. If the IPT is moved or renamed, it is necessary to renew the location by pressing the _Update Geoserver_ button. 
 
-In order to use the the Google Maps (TM) feature embeded in the IPT pages, it is necessary to own a Google Maps API Key. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the Get Google Maps API key link and following instructions provided by Google.
+==== 4.1.1.3. Logging ====
 
-===== 4.1.2  Geoserver Settings =====
+This option is used for debugging purposes. It should be left on _production.xml_ except in case of bugs and errors, in which case it can be moved to help developers in their debugging.
+
+Before changing this setting, the administrator should contact the IPT developpers.
+
+==== 4.1.1.4. Enable GBIF Usage Tracking ====
+
+The GBIF usage tracking box is used to track the usage of all IPT instances.
+
+==== 4.1.1.5. Google Maps API Key ====
+
+In order to use Google Maps (TM) feature embedded in the IPT pages, it is necessary to own a _Google Maps API Key_. This free key is specific to a server and needs to be requested for each public installation. The administrator can get such a key for free by clicking on the “Get Google Maps API key” link and following instructions provided by Google.
+
+==== 4.1.1.6. Additional raw HTML headers ====
+
+This field allows the manager to add some HTML headers to all pages of the IPT instance. It can be useful to add keywords or usage tracking (e.g. Google Analytics).
+
+The content must be XHTML compliant and will be included in the _HEAD_ section of every single HTML page.
+
+=== 4.1.2. Geoserver Settings ===
 
 The Settings page also allows the administrator to define some parameters for the Geoserver. For more information about the Geoserver, see its users guide: http://geoserver.org/display/GEOSDOC/Users+Guide
 
-Base URL
+http://paroligolophus.net/gbif/ipt/screenshots/config_geoserver_settings.png
 
-The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to the networked URL (e.g. http://67.233.45.122:8080/geoserver or http://exemple.com:8080/geoserver).
+==== 4.1.2.1. Base URL ====
 
-Data Directory
+The Base URL is the URL of the Geoserver. It is filled in by default with the local Geoserver URL (http://localhost:8080/geoserver). In order to make the Geoserver accessible by distant users on a network, the parameter should be changed to a public URL (e.g. http://67.233.45.122:8080/geoserver or http://example.com:8080/geoserver).
+
+==== 4.1.2.2. Data Directory ====
 
 The Data Directory is the location in the server file system of the directory where data reside. It is filled in by default but can be modified manually.
 
-Admin User and password
+==== 4.1.2.3. Admin User and password ====
 
-By default, the administrative username is admin and the administrative password is geoserver. These parameters must be changed if the server is to be used for production and/or accessible to the public.
+By default, the administrative username is _admin_ and the administrative password is _geoserver_. These parameters _must_ be changed if the server is to be used for production and/or accessible to the public.
 
-===== 4.1.3  Organisation =====
+=== 4.1.3. Organisation ===
 
 This page allows the administrator to define the GBIF organisation hosting the IPT installation. It is necessary to define the organisation in order to register the IPT. The GBIF keeps a directory of organisations, resources and services and a password is necessary to register the organisation or to access its data.
 
+http://paroligolophus.net/gbif/ipt/screenshots/config_organisation.png
+
 The following fields must filled in:
 
-Title: this is the full name of the organisation 
+Title 
+  Full name of the organisation
+Organisation Identifier
+Code provided automatically by the GBIF once the organisation is registered filling and sending this form
+GBIF Node 
+  GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network
+Organisation password 
+  This password can be used by other members of the organisation to retrieve the information
+Contact Name 
+  Name of the contact person
+Contact Email 
+  Email of the contact person
+Homepage 
+  URL of the organisation's website
+Description 
+  Description of the organisation
+Cancel / Save / Register 
+  The three buttons allow the administrator to respectively delete what was just typed, save the information in the form or register the organisation with the GBIF. When doing so, an Organisation Identifier will be sent that will automatically fill the right field. The _Register_ button is only available if the organisation is not yet registered.
+Clear form
+  This link is only available if a registered organisation is already defined. It allows the administrator to clear the form in order to register a new organisation.
+Resend Password
+  This link is only available if a registered organisation is already defined. An e-mail with the organisation's password is sent to the organisation's contact person when the link is clicked.
 
-Organisation Identifier: this is a code provided automatically by the GBIF once the organisation is registered filling and sending this form 
+=== 4.1.4. IPT Instance ===
 
-GBIF Node: GBIF Participant Node that endorses the publication of the data in this installation to be connected to the GBIF Network 
+This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to feed the homepage of this IPT instance.
 
-Organisation password: this password can be used by other members of the organisation to retrieve the information 
+http://paroligolophus.net/gbif/ipt/screenshots/config_ipt_instance.png
 
-Contact Name: Name of the contact person 
+Resource Identifier 
+  This is a code provided by the GBIF when the IPT instance is registered.
+Title 
+  this is the name given to the IPT instance. It can be the name of an organisation, a project, a natural history collection, etc.
+Contact Name 
+  Name of the contact person
+Contact Email 
+  Email of the contact person
+Homepage 
+  URL of the organisation's website
+Latitude and Longitude 
+  the coordinates will be used to display the right portion of the Google Maps.
+Description 
+  description of the organisation
+Image URL 
+  URL of the image used on the front page of the IPT instance. This URL must be public.
 
-Contact Email: Email of the contact person 
-
-Homepage URL of the organisation’s website 
-
-Description: Description of the organisation 
-
-Cancel/ Save / Register: The three buttons allow the administrator to respectively delete what he just typed, saved the information in the form or register the organisation with the GBIF. When does so, he will receive an Organisation Identifier that will be automatically filled in the right field.
-
-===== 4.1.4  IPT Instance =====
-
-This page allows the administrator to define some parameters regarding the IPT instance that is being run. The information filled in on this page will be used to populate the homepage of this IPT instance.
-
-OrganisationIdentifier: this is the code provided automatically by GBIF during the organisation registration process Title:this is the name given to the IPT instance. It can be the name of an organisation, a project, a natural history collection, etc. ContactName: Name of the contact person ContactEmail: Email of the contact person Homepage:URL of the organisation’s website Latitudeand Longitude: the coordinates will be used to display the right portion of the Google Maps. Description:description of the organisation DescriptionImage URL: Image used on the front page of the IPT instance
-
-==== 4.2  Extensions ====
+== 4.2. Extensions ==
 
 Extensions allow for serving additional data types, such as multiple identifications or descriptive data about species.
 
 The page provides a list of available extensions and shows whether they are installed or not. Each extension can be installed or uninstalled by clicking on its name.
 
+http://paroligolophus.net/gbif/ipt/screenshots/extensions.png
+
 By default, available extensions are:
 
-  * ResourceRelationship
-  * SampleAttribute
-  * EventAttribute
-  * Identification
-  * Description
-  * Multimedia
-  * CommonName
-  * Distribution
-  * MaterialExamined
-  * DarwinCore
-  * Taxon
-  * VernacularName
+ * ResourceRelationship 
+ * SampleAttribute
+ * EventAttribute 
+ * Identification 
+ * Description 
+ * Multimedia 
+ * CommonName 
+ * Distribution 
+ * MaterialExamined 
+ * DarwinCore 
+ * Taxon 
+ * VernacularName
 
-The user can get more information about an extension and install it by clicking on its name.
+Clicking on an extension name will open a new page with information about the extension, including a list of properties.  The administrator can get more information about a property by clicking on its name. It is also possible on this page to install or remove an extension.
 
-It is possible to define custom extensions, but this is not automated process with this the 1.0 version of the IPT.
+http://paroligolophus.net/gbif/ipt/screenshots/extensions_example.png
 
-==== 4.3  Thesaurus ====
+It is also possible to define custom extensions, but the process is not automated in version 1.0 of the IPT.
 
-Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauri. More information can be obtained by clicking on the names under the Vocabulary column.
+== 4.3. Thesaurus ==
 
-By default, available thesauri are:
+Thesaurus vocabularies allow for specifying controlled vocabularies to help standardise concepts. This page shows a list of the available thesauruses. 
 
-  * ISO 639-1 Languages
-  * Country Codes
-  * Language Vocabulary
-  * Darwin Core Type Vocabulary
-  * Nomenclatural Codes
-  * Taxonomic Ranks
+http://paroligolophus.net/gbif/ipt/screenshots/thesaurus.png
 
-It is possible to define custom vocabularies, but this is not automated process with version 1.0 of the IPT.
+By default, the available thesauruses are:
 
-==== 4.4  View Users ====
+ * ISO 639-1 Languages 
+ * Country Codes 
+ * Language Vocabulary 
+ * Darwin Core Type Vocabulary
+ * Nomenclatural Codes
+ * Taxonomic Ranks
 
-This page allows the administrator to manage users. There are three users roles: administrator, manager and user.
+Clicking on a thesaurus name will open a new page with information about the thesaurus, including a list of terms.
 
-The page displays the list of users their usernames, full names and emails. By clicking on the username, one can edit the user profile. One can also export the list in different formats (CSV, MS Excel (TM), XML and PDF).
+http://paroligolophus.net/gbif/ipt/screenshots/thesaurus_example.png
 
-The page also gives the opportunity to add a new user through the Add button at the bottom of the page.
+It is also possible to define custom vocabularies, but the process is not automated in version 1.0 of the IPT.
 
-===== 4.4.1  User Profile =====
+== 4.4. Manage Users ==
+
+This page allows the administrator to manage users. It displays a list of users with their usernames, full names and emails. Clicking on the username edits the user profile. The list can also be exported using different formats (CSV, Excel, XML and PDF).
+
+http://paroligolophus.net/gbif/ipt/screenshots/manage_users.png
+
+The administrator can also add a new user through the _Add_ button at the bottom of the page.
+
+=== 4.4.1. User Profile ===
 
 The User Profile page allows the administrator to add a new user or to edit or delete an existing user.
 
+http://paroligolophus.net/gbif/ipt/screenshots/user_profile.png
+
 To add a new user, the following fields must be filled in:
 
-username:user’s username password:needs to be filled in twice for confirmation e-mail  passwordhint: will be e-mailed to the user who forgot his password firstname: user’s first name lastname: user’s last name
+username (mandatory field)
+password (mandatory field)
+  needs to be filled in twice for confirmation
+e-mail (mandatory field)
+password hint (mandatory field)
+  will be e-mailed to the user who forgot his/her password
+first name (mandatory field)
+last name (mandatory field)
 
 The administrator must also apply some settings to the account:
 
-Enabled: the account is enabled and ready to be used 
-
-Expired: the account is not valid anymore and cannot be used to login to the IPT 
-
-Locked: the account is locked and cannot be used to login to the IPT 
-
-PasswordExpired: the user must change his password next time he logs in.
+Enabled 
+  the account is enabled and ready to be used
+Expired 
+  the account is no longer valid and cannot be used to login to the IPT
+Locked 
+  the account is locked and cannot be used to login to the IPT
+Password Expired 
+  the password must be changed at next login.
 
 Finally, the administrator must assign one or several roles to the account. The following roles are available:
 
-ROLE_ADMIN the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. He can also manage the data recorded in the IPT. The administrator supersedes all the other roles and can do anything any other role can do.
+ROLE_ADMIN 
+ the user is given administrative rights and has access to all the features of the IPT, in particular its technical settings. The administrator can also manage the data recorded in the IPT. This role supersedes all the other roles and can do anything any other role can do.
+ROLE_MANAGER 
+  the user is given manager rights and can manage the data recorded in the IPT, and can create, edit, delete, or publish data.
+ROLE_USER 
+  the user role is the most basic role of the IPT. The user can explore the site, browse the published information and annotate resources. 
+  %Is it really possible to annotate resources?
 
-ROLE_MANAGER the user is given manager rights and can manage the data recorded in the IPT. He can create, edit, delete, or publish data.
+To assign a user a role, the administrator must select it in the _Available Roles_ column and click on the arrow to move it in the _Current Roles_ column.
 
-ROLE_USER the user role is the most basic role of the IPT. The user can explore the site and browse the published information. He can also annotate resources.
+http://paroligolophus.net/gbif/ipt/screenshots/assign_role.png
 
-A visitor that is not logged in is considered to be an anonymous user. Such a user can explore the site and browse the published information.
+Conversely, to remove a role from a user, the administrator must select it in the _Current Roles_ column and click on the arrow to move it back to the _Available Roles_ column.
 
-==== 4.5  Resources ====
+A visitor that is not logged in is considered to be an _anonymous user_. Such a user can explore the site and browse the published information.
 
-This page displays a list of all resources that have been uploaded to the IPT.
-
-In order to find the right resource, the administrator can order the list by clicking on the table headers. Resources can be ordered by title, date of modification, UUID or Type. A second click on the header will invert the order.
-
-The administrator can get more details about eache resource by clicking on its title. The administrator can then modify the UUID, the contact name and contact email. He also has access to the registered services.
-
-==== 4.6  Current Users ====
+== 4.5. Current Users ==
 
 This page displays a list of the currently logged in users on the IPT. The administrator is offered the possibility to send them an e-mail.
 
-==== 4.7  Active Datasources ====
+http://paroligolophus.net/gbif/ipt/screenshots/current_users.png
 
-This page displays a list of all the active datasources in the IPT.
+= 5. Resources Management =
 
-=== 5  Primary Occurences ===
+== 5.1. Data Types ==
 
-This section is not available for this version of the manual
+=== 5.1.1. Taxon Primary Occurence Data ===
 
-=== 6  Name datasheets ===
+Taxon Primary Occurrence Data (or simply, occurrence data) is defined in the scope of GBIF as digital text or multimedia data record detailing facts about the instance of occurrence of an organism, i.e. on the what, where, when, how and by whom of the occurrence and the recording.
 
-This section is not available for this version of the manual
+In terms of connecting data to the IPT, an occurrence dataset is defined as a table or database storing information about the distribution of biological organisms in the form of points defined by a textual description and/or geographical coordinates.
 
-=== 7  Metadata ===
+=== 5.1.2. Taxonomic Checklists ===
 
-This section is not available for this version of the manual
+Taxonomic checklist data refers to structured data providing information about taxonomic names and their relationships.
+
+=== 5.1.3. Resource Metadata ===
+
+In the context of GBIF, metadata records are those which provide information about the suppliers of biodiversity data and about the origins and purpose of those data.
+
+As regards the IPT, a metadata record is composed of all the descriptive information that must be attached to a dataset in terms of origin (who produced the original data, who is connecting it to the IPT instance), contents (both taxonomically and geographically), intellectual property rights, etc.
+
+== 5.2. Resource Creation ==
+
+New resources are created by a manager (or an administrator) on the _Manage_ page.
+
+The manager chooses which resource type to create by clicking on the corresponding link in the _Resource Actions_ menu: _New Occurence Resource_, _New Checklist Resource_ or _New Metadata Resource_.
+
+== 5.3. Resource Metadata ==
+
+When the resource has been created, the manager can add its metadata.
+
+=== 5.3.1. Basic Metadata ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/basic_metadata.png
+
+The first step is to basically describe the dataset that will be published. The manager must fill in the following fields:
+
+Title
+  Title of the resource
+Type
+  The type of resource data. The list depends on the data type (_Occurence_, _Checklist_ or _Metadata_):
+    Checklist
+    A resource describing a checklist.
+    Fossil Specimen
+    A resource describing a fossilised specimen.
+    Legislative Checklist
+    Living Specimen
+    A resource describing a living specimen.
+    Moving Image
+    Nomenclature Checklist
+    A resource describing a nomenclatural checklist.
+    Organism Observation
+    A resource describing an observation.
+    Organism Observation by Human
+    A resource describing an observation made by one or more people without accompanying physical evidence.
+    Organism Observation by Machine
+    A resource describing an observation made by a machine without accompanying physical evidence.
+    Preserved Specimen
+    A resource describing a preserved specimen.
+    Regional Checklist
+    A resource describing a taxonomic checklist.
+    Sound Recording
+    Species Descriptions
+    Species Distributions
+    Specimen
+    Still Image
+    Taxonomic Checklist
+    A resource describing a taxonomic checklist.
+Contact Name
+Contact Email
+Upload logo
+  The manager can upload a logo associated with the resource. The logo must be a square image, 68 pixels by 68 pixels.
+Description
+  Description of the resource
+
+Once the fields have been filled in and the form saved, the resource is created and can be accessed from the _Manage_ section.
+
+=== 5.3.2. Resource Originator ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/resource_originator.png
+
+This section describes the originator of the resource, i.e. the person responsible for the information entered in the IPT. The following fields are to be filled in:
+
+Resource Language (mandatory field)
+  The language of the resource data (not the language of the metadata)
+First Name (mandatory field)
+Last Name (mandatory field)
+Organisation
+Position
+Phone
+Email (mandatory field)
+Homepage
+Address
+Postal Code
+City
+Province
+Country (mandatory field)
+
+=== 5.3.3. Geographic Coverage ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/geographic_coverage.png
+
+In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
+
+===== Using the map =====
+
+The manager can navigate on the map by clicking and dragging the cursor around and can zoom using the scale on the left of the map. Double-clicking somewhere on the map will zoom and centre the map on that point. 
+
+===== Creating a new area =====
+
+http://paroligolophus.net/gbif/ipt/screenshots/map_area.png
+
+The manager must click on the grey select area button in the top right corner of the map. Clicking and dragging with the  mouse will define the geographic coverage area. Only one area can be created per map. 
+
+===== Description =====
+
+The manager can describe the geographic coverage in the box below the map.
+
+=== 5.3.4. Taxonomic Coverage ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/taxonomic_coverage.png
+
+==== 5.3.4.1. Taxonomic Metadata ====
+
+General Taxonomic Coverage Description 
+
+Taxonomic Keywords 
+
+==== 5.3.4.2. Lowest Common Taxon ====
+
+Scientific Name (mandatory field)
+
+Common Name 
+
+Rank (mandatory field)
+
+=== 5.3.5. Temporal Coverage ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/temporal_coverage.png
+
+The manager must fill in the temporal coverage of the collection of information related to the resource: start and end date. The dates must be filled in using the format "YYYY/MM/DD" (e.g. 2003/04/22). If the resource covers a single day, the manager can enter a single date and check the corresponding checkbox. 
+
+=== 5.3.6. General Keywords ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/keywords.png
+
+In this section, the manager can indicate a series of keywords defining/describing the resource. The different keywords must be separated by commas.
+
+=== 5.3.7. IPRights ===
+
+On this page, the manager can indicate the information related to intellectual property rights (IPRights) attached to the resource.
+
+http://paroligolophus.net/gbif/ipt/screenshots/IPR.png
+
+The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
+
+Purpose
+
+Maintenance
+
+IPRights
+
+=== 5.3.8. Research Project ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/research_project.png
+
+If the resource is linked to a specific reseach project, the manager can describe it in this section.
+
+Title
+
+Project Lead Organisation
+
+Abstract
+
+Funding
+
+Study Area Description
+
+Design Description
+
+=== 5.3.9. Methods ===
+
+http://paroligolophus.net/gbif/ipt/screenshots/methods.png
+
+Methods
+Sampling Description
+Quality Control
+
+== 5.4. Resource Configuration (occurences and checklists only) ==
+
+Once the resource has been created, the manager must define a data source and map properties.
+
+=== 5.4.1. Source Data ===
+
+Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources. The manager can define as many data sources as wanted, but it is necessary to define at least one. As the main one will be mapped to the Darwin Core terms, it is best for the source data to be adjusted accordingly (i.e. column names should be Darwin Core terms). Others will be used to complement a core Darwin Core record. For this to work, additional sources need to refer to  core identifiers, i.e. have a foreign key, but do not need their own identifier. 
+
+==== 5.4.1.1. File Data Sources ====
+
+http://paroligolophus.net/gbif/ipt/screenshots/file_data_sources.png
+
+In order to define a file data source, the manager must upload a text file with a single header row and with tab separated values. Such _tab delimited text files_ are easily created from any spreadsheet software or database management system. 
+
+Zip-compressed can be used and will be automatically unpacked on the server. Uploaded files (compressed or not) cannot be larger than 100MB.
+
+Once the file has been uploaded, the manager can define whether the first row of the file is a header or not, by checking or unchecking the _column headers_ box and pressing the _save_ button. All the data fields will then be named after this header. If not set, generic names (col001, col002, col003 and so on) will be used.
+
+When done adding data sources, the manager can press the _Next_ button to go to the _Mappings_ page.
+
+==== 5.4.1.2. SQL Data Sources ====
+
+In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
+
+Pressing the _Edit_ button on the _Source Data_ page will bring the manager to the _SQL Settings_ page. This is the page where the database connection will be defined. To this effect, the following information is needed: the database type, the database connection URL, the database user and the database password. The right Java DataBase Connection (JDBC) driver must also be installed. Many of them are already bundled with the IPT. It is possible to add new ones, by downloading them and adding the _jar_ file to the ITP _lib_ folder and restarting the application server.
+
+The _SQL Settings_ page also gives a list of important parameters for the most used databases.
+
+http://paroligolophus.net/gbif/ipt/screenshots/sql_settings.png
+
+Database Type
+  The type of the database holding the data must be defined. If this particular system is not in the list, the manager can use a generic ODBC or choose the _other_ option and to define a custom driver class.
+Database Connection URL
+  The manager must fill in the URL of the database connection. The format to be used is explained in the second part of the _SQL Settings_ page. The manager will generally need to know the host or server (_localhost_ if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called _test_, the database connection URL will be jdbc:mysql://localhost:3306/test.
+Database user
+  The username of a database user with SELECT rights
+Database password
+  The corresponding password
+
+After defining the SQL settings, the manager must add some SQL _SELECT_ statements to create views on the data. This is done by clicking on the _ADD_ button and filling in the form.
+
+http://paroligolophus.net/gbif/ipt/screenshots/add_statement.png
+
+Several of these queries can be created, e.g. one for each Darwin Core extension in use.
+
+http://paroligolophus.net/gbif/ipt/screenshots/sql_statements.png
+
+Once all data sources have been defined, pressing the _Next_ button will bring the manager to the _Mappings_ page. The SQL statements will be mapped the same way as uploaded text files.
+
+=== 5.4.2. Mappings ===
+
+Data in the IPT is organised along a star schema: a fixed table holds Darwin Core terms and is linked to a number of extension tables (in a one-to-many relationship) that can be optionally configured and defined by the IPT administrator (see _Extensions_ section above). Each extension can hold multiple records for a single core record, e.g. there can be many images for a species or occurrence.
+
+http://paroligolophus.net/gbif/ipt/screenshots/dc_star_schema.png
+
+The _Property Mappings_ page displays a list of the existing mappings, that can be edited, gives the possibility to add new mappings and allows to actually import or re-import the data.
+
+http://paroligolophus.net/gbif/ipt/screenshots/mappings.png
+
+==== 5.4.2.1. Your Existing Mappings ====
+
+When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension to the furthest extent possible. These mappings can be viewed or modified by pressing the _Edit_ button.
+
+The page is split in three parts:
+
+ID properties
+  A list of all properties used as identifiers
+Property Mappings
+  A list of all the selected extension or core properties that have been mapped to a data source field.
+Available Properties
+  A list of all the selected extension or core properties that have not been mapped to a data source field.
+
+===== 5.4.2.1.1. ID Properties =====
+
+In this section, the manager can define which fields are used as identifiers (IDs). 
+
+===== DarwinCore mapping =====
+
+http://paroligolophus.net/gbif/ipt/screenshots/id_properties.png
+
+If the source is mapped to DarwinCore, the following fields are to be filled in:
+
+Source ID for record (mandatory field)
+  The sourceID is the local ID for each core record that extensions can link to. It is also used to compare an existing record when a new version is imported. It is a required field as the IPT currently doesn't support sources without identifiers.
+GUID for record
+  The GUID (Globally Unique IDentifier) is optional but will be generated automatically if not mapped. It is used as a public ID for published records.
+Link to record details
+  This is a link to the HTML details page for a single record. It can link to any public webpage (i.e. not in the IPT) holding the data. If this link is not available in the database, the manager can use the _Link template with <ID> placeholder_ (see below).
+Link template with <ID> placeholder
+  The manager can enter a direct link to an external webpage. The manager can use _<ID>_ as a placeholder that will be dynamically replaced for every record. Each record can then be linked to a specific webpage.
+
+NB: The _save_ button will save the information that was entered in the fields. The _Done_ button brings the manager back to the main _Property Mappings_ page *without saving the information*.
+
+===== Extension mapping =====
+
+http://paroligolophus.net/gbif/ipt/screenshots/extension_id.png
+
+If the source is mapped to an extension, only one field is to be filled in:
+
+Source ID for record (mandatory field)
+  The source ID is the local ID for an extension record that the core can link to.
+
+===== 5.4.2.1.2. Property Mappings =====
+
+Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (a common value for all records, i.e. the project/collection code) by entering it in the text field (and choosing a blank value in the drop-down).
+
+http://paroligolophus.net/gbif/ipt/screenshots/property_mappings.png
+
+If controlled vocabulary has been defined for the Darwin Core or the extension, it is not possible to manually enter a fixed value. In this case, a _Terms_ button and a new drop down are available. 
+
+http://paroligolophus.net/gbif/ipt/screenshots/controlled_vocabulary.png
+
+Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
+
+===== 5.4.2.1.3. Available Properties =====
+
+http://paroligolophus.net/gbif/ipt/screenshots/available_properties.png
+
+This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the _property mappings_ section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down menu).
+
+==== 5.4.2.2. Add New Mapping ====
+
+To add a new mapping, the manager must first choose what extension will be mapped to which data source, then press the _Add_ button.
+
+The procedure is then the same as working with _existing mappings_ (see above).
+
+==== 5.4.2.3. Cache Database ====
+
+The cache page allows the manager to actually import the data into the IPT. This is done by pressing the _Import_ button. Depending on the amount of data, the operation can take a long time. Once done, the IPT displays a confirmation message. If errors occur during the import operation, they are attached as _annotations_ to the resource. These annotations are available through the _explore_ menu.
+
+The cache can be rebuilt at any time when the manager wants to update the information with new or updated sources.
+
+== 5.5. Resource Publication ==
+
+Once a Resource has been configured and its metadata filled in, it can be published on the IPT, via the _Publish_ button.
+
+Publishing a resource also registers it with GBIF and updates its  
+metadata in the registry. A resource therefore has three states, indicated by a coloured box in the upper right corner of the page:
+
+unpublished,unregistered
+This is the default for new resources. It is neither  
+registered nor should it be visible in the public portal part of the IPT.
+
+http://paroligolophus.net/gbif/ipt/screenshots/unpublished_unregistered.png
+
+modified,not registered
+the resource is intended to be public, is present  
+in the IPT portal and if settings allow, should be registered with GBIF. The resource metadata is modified though  
+and differs from a) GBIFs registry metadata or b) the versioned EML  
+document which is generated each time the manager publishes a resource (NB: the geoserver WFS/WMS services' own metadata are then also out of date).
+
+http://paroligolophus.net/gbif/ipt/screenshots/modified_not_registered.png
+
+published,registered
+Same as above, but the metadata in the registry/ 
+EML&geoserver should reflect your latest state.
+
+http://paroligolophus.net/gbif/ipt/screenshots/published_registered.png
+
+It is also possible to delete a resource by using the _Delete_ button on its _Basic Metadata_ page.
