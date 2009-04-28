@@ -1,3 +1,4 @@
+<#escape x as x?xml>
 <starArchive xmlns="http://rs.tdwg.org/dwc/terms/xsd/archive/">
   <core encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${rowType}" location="${coreFilename}">
     <id index="0" term="http://purl.org/dc/terms/identifier"/>
@@ -30,5 +31,4 @@
   </extension>
  </#list>
 </starArchive>
-<#escape x as x?xml>
 </#escape>
