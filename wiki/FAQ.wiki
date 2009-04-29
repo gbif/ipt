@@ -5,6 +5,16 @@
 
 In this page you will find answers for the most frequent asked questions about the GBIF IPT by installers and users. Please check the contents of this page before contacting the helpdesk.
 
+
+
+= Installation =
+
+== After installing the IPT, I receive a message "FAIL - Application at context path /ipt could not be started" and the application does not launch. ==
+
+Some Linux distributions, like [http://www.centos.org/ CentOS] or [http://www.redhat.com/ Red Hat Linux] include Tomcat incorrectly shipped with two libraries, xml-apis.jar and/or xalan.jar, in the Tomcat directories (../tomcat5/shared/, ../tomcat5/common/).
+These libraries are not needed for the GBIF IPT operation so make a backup copy of them and then remove them. If that does not solve your problem, put the files back into place from the backup copy.
+
+
 = Performance =
 
 == My GBIF IPT instance is slow. What can I do to improve performance? ==
