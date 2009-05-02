@@ -482,7 +482,9 @@ The first step is to basically describe the dataset that will be published. The 
     A resource describing a taxonomic checklist.
     : Sound Recording
     : Species Descriptions
+    A resource describing a general or detailed description of a species.
     : Species Distributions
+    A resource describing the geographic distribution of a species.
     : Specimen
     : Still Image
     : Taxonomic Checklist
@@ -580,13 +582,21 @@ On this page, the manager can indicate the information related to intellectual p
 
 [screenshots/IPR.png]
 
-The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
+
 
 : Purpose
+  A description of the purpose of this dataset.
 
 : Maintenance
+  A description of the maintenance of this data resource. This includes information about the frequency of update, and whether there is ongoing data collection.
 
 : IPRights
+  Typically, an intellectual Rights element will contain a rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might incude requirements for use, requirements for attribution, or other requirements the owner would like to impose.
+  
+  : Considering using a Creative Commons license?
+The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
+
+  The link below the IPRights box “Considering using a Creative Commons license?” automates the process of creating a Creative Commons licence – the user can copy the output straight into the IPRights box.  
 
 
 
@@ -607,6 +617,7 @@ If the resource is linked to a specific reseach project, the manager can describ
 : Study Area Description
  
 : Design Description
+  The field designDescription contains general textual descriptions of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work. Literature citations may also be used to describe the research design.
 
 
 
