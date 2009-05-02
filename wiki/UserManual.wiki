@@ -1,7 +1,7 @@
-#summary GBIF IPT User manual ver. 0.2
+#summary GBIF IPT User manual ver. 0.3
 #labels Phase-Deploy
 
-Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20User%20Manual%20v.%200.2.pdf]
+Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20User%20Manual%20v.%200.3.pdf]
 
 
 
@@ -467,7 +467,9 @@ Type
     A resource describing a taxonomic checklist.
     Sound Recording
     Species Descriptions
+    A resource describing a general or detailed description of a species.
     Species Distributions
+    A resource describing the geographic distribution of a species.
     Specimen
     Still Image
     Taxonomic Checklist
@@ -558,13 +560,19 @@ On this page, the manager can indicate the information related to intellectual p
 
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/IPR.png
 
-The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
-
 Purpose
+  A description of the purpose of this dataset.
 
 Maintenance
+  A description of the maintenance of this data resource. This includes information about the frequency of update, and whether there is ongoing data collection.
 
 IPRights
+  Typically, an intellectual Rights element will contain a rights management statement for the resource, or reference a service providing such information. Rights information encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. In the case of a data set, rights might incude requirements for use, requirements for attribution, or other requirements the owner would like to impose.
+
+  Considering using a Creative Commons license?
+The GBIF promotes the use of the Creative Commons licenses, which allow the originator to keep his/her copyright and at the same time allow to copy and distribute the information under the conditions specified by the originator. For more information, see http://creativecommons.org/license/. 
+
+  The link below the IPRights box “Considering using a Creative Commons license?” automates the process of creating a Creative Commons licence – the user can copy the output straight into the IPRights box.  
 
 === 5.3.8. Research Project ===
 
@@ -583,6 +591,7 @@ Funding
 Study Area Description
 
 Design Description
+  The field designDescription contains general textual descriptions of research design. It can include detailed accounts of goals, motivations, theory, hypotheses, strategy, statistical design, and actual work. Literature citations may also be used to describe the research design.
 
 === 5.3.9. Methods ===
 
@@ -752,6 +761,4 @@ EML&geoserver should reflect your latest state.
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/published_registered.png
 
 It is also possible to delete a resource by using the _Delete_ button on its _Basic Metadata_ page.
-
-
 
