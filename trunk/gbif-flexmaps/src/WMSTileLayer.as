@@ -4,9 +4,11 @@ package
 	import com.google.maps.CopyrightCollection;
 	import com.google.maps.LatLng;
 	import com.google.maps.LatLngBounds;
-	import com.google.maps.TileLayerBase;	
+	import com.google.maps.TileLayerBase;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
+	import flash.events.IOErrorEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
 	
@@ -44,6 +46,7 @@ package
 			bbox=LL.lng()+","+LL.lat()+","+UR.lng()+","+UR.lat();
 			
 			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler,false,0,true);
            	
            	var tileUrl:String = wmsUrl +"&BBOX="+bbox;
            	trace(tileUrl);
@@ -52,6 +55,10 @@ package
 			
 			
 		}
+		
+		private function ioErrorHandler(event:IOErrorEvent):void {
+			event.currentTarget.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+		}		
 		
 		private function dd2MercMetersLng(p_lng:Number):Number { 
 			return Number((MAGIC_NUMBER * p_lng).toFixed(4)); 
