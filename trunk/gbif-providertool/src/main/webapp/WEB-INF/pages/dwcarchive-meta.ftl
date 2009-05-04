@@ -1,5 +1,5 @@
 <#escape x as x?xml>
-<starArchive xmlns="http://rs.tdwg.org/dwc/terms/xsd/archive/">
+<starArchive xmlns="http://rs.tdwg.org/dwc/text/">
   <core encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${rowType}" location="${coreFilename}">
     <id index="0" term="http://purl.org/dc/terms/identifier"/>
     <field index="1" term="http://purl.org/dc/terms/modified"/>

@@ -88,6 +88,9 @@ public class NamespaceRegistry {
 		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/dwcore/")){
 			prefix="dwcore";
 		}
+		else if (ns.equalsIgnoreCase("http://rs.tdwg.org/dwc/text/")){
+			prefix="arch";
+		}
 		else if (ns.equalsIgnoreCase("http://www.w3.org/1999/02/22-rdf-syntax-ns#")){
 			prefix="rdf";
 		}
