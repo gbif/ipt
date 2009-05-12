@@ -138,9 +138,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 			// advance manual driver entry found. Overrides regular drop down
 			DataResource res = (DataResource) resource;			
 			res.setJdbcDriverClass(jdbcDriverClass);
-			testDbConnection();
 		}
 		save();
+		testDbConnection();
 		return SUCCESS;
 	}
 	
