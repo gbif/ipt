@@ -411,7 +411,9 @@ public class AppConfig{
 	public void reloadLogger(){
 		if (getLog4jFile().exists()){
 			LogManager.resetConfiguration();
+			IptFileAppender.LOGDIR=getLog4jFile().getParent();
 			DOMConfigurator.configure(getLog4jFile().getAbsolutePath());
+			log.info("Reloaded log4j settings from "+getLog4jFile().getAbsolutePath());
 		}
 	}
 	
