@@ -6,12 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -133,15 +136,32 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		}
 		if (StringUtils.trimToNull(jdbcDriverClass)!=null){
 			// advance manual driver entry found. Overrides regular drop down
-			DataResource res = (DataResource) resource;
+			DataResource res = (DataResource) resource;			
 			res.setJdbcDriverClass(jdbcDriverClass);
+			testDbConnection();
 		}
 		save();
 		return SUCCESS;
 	}
+	
+	private void testDbConnection(){
+		if (resource!=null){
+			DataResource res = (DataResource) resource;
+			try {
+				DataSource dsa = res.getDatasource();
+				if (dsa!=null){
+					Connection con = dsa.getConnection();
+				}
+			} catch (SQLException e) {
+				String msg = "Could not establish db connection: "+e.getMessage();
+				log.warn(msg, e);
+				saveMessage(msg);
+			}			
+		}
+	}
 
 	public String publish() {
-		// publish only whne POSTed, not with ordinary GET
+		// publish only when POSTed, not with ordinary GET
 		if (request.getMethod().equalsIgnoreCase("post")){
 			Resource res = getResourceTypeMatchingManager().publish(resource_id);
 			if (res==null){

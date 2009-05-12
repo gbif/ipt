@@ -181,11 +181,15 @@ public abstract class DataResource extends Resource {
 	@Transient
 	public DataSource getDatasource() {
 		if (datasource == null){
-			this.udpateDatasource();
+			try {
+				this.udpateDatasource();
+			} catch (SQLException e) {
+				// DONT do nothing. Error is logged already
+			}
 		}
 		return datasource;
 	}
-	public void udpateDatasource() {
+	public void udpateDatasource() throws SQLException{
 		if (this.getJdbcUrl() != null && jdbcDriverClass != null){			
 			try {
 				Class.forName(this.jdbcDriverClass);	
@@ -193,16 +197,20 @@ public abstract class DataResource extends Resource {
 				datasource = new SimpleDriverDataSource(driver, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword());
 			} catch(java.lang.ClassNotFoundException e) {
 				datasource = null;
-				log.warn(String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s", this.jdbcDriverClass, this.getJdbcUrl()), e);
+				String msg = String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s", this.jdbcDriverClass, this.getJdbcUrl());
+				log.warn(msg, e);
+				throw new SQLException(msg, e);
 			} catch (Exception e) {
 				datasource = null;
-				log.warn(String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s, Password=***", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser()), e);
+				String msg = String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser());
+				log.warn(msg, e);
+				throw new SQLException(msg, e);
 			}			
 		}else{
 			datasource = null;
 		}
 	}	
-	
+
 	@Transient
 	public boolean hasDbConnection(){
 		boolean hasDbConnection = false;

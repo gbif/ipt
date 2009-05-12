@@ -9,6 +9,14 @@
                 value="%p %t-%c{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
+    <appender name="LOGFILE" class="org.gbif.provider.util.IptFileAppender">
+        <param name="File"   value="ipt.log" />
+        <param name="Append" value="true" />
+        <param name="MaxFileSize" value="10000KB" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%p %t-%c{1}.%M(%L) | %m%n"/>
+        </layout>
+    </appender>
     
     
     <!-- for debugging all httpclient communication, especially with registry -->
@@ -109,6 +117,7 @@
     
     <root>
         <level value="DEBUG"/>
+        <appender-ref ref="LOGFILE"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 
