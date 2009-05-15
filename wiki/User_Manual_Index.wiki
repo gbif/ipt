@@ -33,9 +33,9 @@ While the editor, authors and the publisher have attempted to make this user man
 
 === Contents ===
 
-  #1 [User_Manual_Chapter_1#x1-60001 Background Information]
+  #1 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_1#x1-60001 Background Information]
   #2 [#x1-70002 General specifications]
-  #3 [#x1-80003 Installation]
+  #3 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_3#x1-80003 Installation]
     # [#x1-90003.1 Requirements]
     # [#x1-100003.2 Brief overview of Java and Tomcat installation and configuration]
       # [#x1-110003.2.1 Java]
