@@ -223,7 +223,7 @@ Once the resource has been created, the manager must define a data source and ma
 
 Data sources can be of two kinds in the IPT: File Data Sources or SQL Data Sources (connections to existing database servers). The manager can define as many data sources as wanted, but it is necessary to define at least one. As the main one will be mapped to the Darwin Core terms, it is best for the source data to be adjusted accordingly (i.e. column names should be Darwin Core terms). Others will be used to complement a core Darwin Core record. For this to work, additional sources need to refer to core identifiers, i.e. have a foreign key, but do not need their own identifier.
 
-File Data Sources
+==== File Data Sources ====
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.024x.png]
 
@@ -235,7 +235,7 @@ Once the file has been uploaded, the manager can define whether the first row of
 
 When done adding data sources, the manager can press the Next button to go to the Mappings page.
 
-SQL Data Sources
+==== SQL Data Sources ==== 
 
 In order to define a SQL data source, the manager must first configure a database connection, then add some SQL select statements to create views on the data.
 
@@ -273,7 +273,7 @@ The Property Mappings page displays a list of the existing mappings, that can be
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.029x.png]
 
-Your Existing Mappings
+==== Your Existing Mappings ==== 
 
 When defining new data sources, the IPT will automatically map those fields whose name fits a Darwin Core term or the field name of an installed extension to the furthest extent possible. These mappings can be viewed or modified by pressing the Edit button.
 
@@ -285,7 +285,7 @@ The page is split in three parts:
 
 *Available Properties* A list of all the selected extension or core properties that have not been mapped to a data source field.
 
-ID Properties
+==== ID Properties ==== 
 
 In this section, the manager can define which fields are used as identifiers (IDs).
 
@@ -313,7 +313,7 @@ If the source is mapped to an extension, only one field is to be filled in:
 
 *Source ID for record* (mandatory field) The source ID is the local ID for an extension record that the core can link to.
 
-Property Mappings
+==== Property Mappings ==== 
 
 Each Darwin Core or extension property mapped to a data source field is displayed in the list, followed by the data source field. This field can be changed as the drop-down menu displays the full list of fields of a given data source. It is also possible to assign a fixed value (a common value for all records, i.e. the project/collection code) by entering it in the text field (and choosing a blank value in the drop-down).
 
@@ -325,8 +325,8 @@ If controlled vocabulary has been defined for the Darwin Core or the extension, 
 
 Managers have to use one of the controlled terms either as static values by selecting one from the drop down, or by selecting a source column that contains such values. As the source often uses different terms than the ones defined in the controlled vocabulary, the manager will be able to transform/map each value from the source to a controlled term in the vocabulary.
 
-Available Properties
-
+==== Available Properties ==== 
+ 
 This section displays a list of the selected extension or core properties not yet mapped to a data source field. They are grouped in subsections that can be expanded by clicking on the green arrow. To map an available property to a data source field, the manager must click on the said property that will then move to the property mappings section. The manager can then choose which data source field should be mapped to it (by selecting it in the drop-down menu).
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.034x.png]
