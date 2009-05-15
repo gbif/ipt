@@ -1,3 +1,5 @@
+For a complete and updated list of the IPT features, please refer to the [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20WHITE%20PAPER%20v%201.1.pdf IPT Technical White Paper]. The information provided below may not be up to date. 
+
 #summary Brief summary of IPT features
 
  * [#Current_Features Current Features]
