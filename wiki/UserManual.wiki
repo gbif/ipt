@@ -1,7 +1,7 @@
 #summary GBIF IPT User manual ver. 1.0
 #labels Phase-Deploy
 
-Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20User%20Manual%20v.%200.3.pdf]
+Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF_IPT_User_Manual_1.0.pdf]
 
 = The GBIF Integrated Publishing Toolkit User Manual =
 
