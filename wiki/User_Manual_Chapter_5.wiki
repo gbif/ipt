@@ -245,7 +245,13 @@ The SQL Settings page also gives a list of important parameters for the most use
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.025x.png]
 
-Database TypeThe type of the database holding the data must be defined. If this particular system is not in the list, the manager can use a generic ODBC or choose the other option and to define a custom driver class. Database Connection URLThe manager must fill in the URL of the database connection. The format to be used is explained in the second part of the SQL Settings page. The manager will generally need to know the host or server (localhost if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called test, the database connection URL will be jdbc:mysql://localhost:3306/test. Database UserThe username of a database user with SELECT rights Database PasswordThe corresponding password
+*Database Type* The type of the database holding the data must be defined. If this particular system is not in the list, the manager can use a generic ODBC or choose the other option and to define a custom driver class. 
+
+*Database Connection URL* The manager must fill in the URL of the database connection. The format to be used is explained in the second part of the SQL Settings page. The manager will generally need to know the host or server (localhost if the database is on the same machine as the IPT), the port (default ports are given for most used databases), and the name of the database (to be asked to the database administrator). For instance, for a local MySQL database called test, the database connection URL will be jdbc:mysql://localhost:3306/test. 
+
+*Database User* The username of a database user with SELECT rights 
+
+*Database Password* The corresponding password
 
 After defining the SQL settings, the manager must add some SQL SELECT statements to create views on the data. This is done by clicking on the ADD button and filling in the form.
 
@@ -273,7 +279,11 @@ When defining new data sources, the IPT will automatically map those fields whos
 
 The page is split in three parts:
 
-ID PropertiesA list of all properties used as identifiers Property MappingsA list of all the selected extension or core properties that have been mapped to a data source field. Available PropertiesA list of all the selected extension or core properties that have not been mapped to a data source field.
+*ID Properties* A list of all properties used as identifiers 
+
+*Property Mappings* A list of all the selected extension or core properties that have been mapped to a data source field. 
+
+*Available Properties* A list of all the selected extension or core properties that have not been mapped to a data source field.
 
 ID Properties
 
@@ -289,9 +299,9 @@ If the source is mapped to DarwinCore, the following fields are to be filled in:
 
 *GUID for record* The GUID (Globally Unique IDentifier) is optional but will be generated automatically if not mapped. It is used as a public ID for published records. 
 
-*Link to record details* This is a link to the HTML details page for a single record. It can link to any public webpage (i.e. not in the IPT) holding the data. If this link is not available in the database, the manager can use the Link template with <ID> placeholder (see below). 
+*Link to record details* This is a link to the HTML details page for a single record. It can link to any public webpage (i.e. not in the IPT) holding the data. If this link is not available in the database, the manager can use the Link template with {{{<ID>}}} placeholder (see below). 
 
-*Link template with <ID> placeholder* The manager can enter a direct link to an external webpage. The manager can use <ID> as a placeholder that will be dynamically replaced for every record. Each record can then be linked to a specific webpage.
+*Link template with {{{<ID>}}} placeholder* The manager can enter a direct link to an external webpage. The manager can use {{{<ID>}}} as a placeholder that will be dynamically replaced for every record. Each record can then be linked to a specific webpage.
 
 NB: The save button will save the information that was entered in the fields. The Done button brings the manager back to the main Property Mappings page without saving the information.
 
