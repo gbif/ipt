@@ -45,7 +45,7 @@ While the editor, authors and the publisher have attempted to make this user man
       # [#x1-170003.4.1 Geoserver and bundled plugin installation]
       # [#x1-180003.4.2 Plugin installation]
     # [#x1-190003.5 Geoserver Configuration]
-    # [#x1-200003.6 Mac OS X (TM) test installation]
+    # [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_3#x1-200003.6 Mac OS X (TM) test installation]
   #4 [#x1-210004 Configuration]
     # [#x1-220004.1 Configuration]
       # [#x1-230004.1.1 Settings]
