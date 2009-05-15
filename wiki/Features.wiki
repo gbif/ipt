@@ -1,6 +1,6 @@
-For a complete and updated list of the IPT features, please refer to the [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20WHITE%20PAPER%20v%201.1.pdf IPT Technical White Paper]. The information provided below may not be up to date. 
+For a complete and updated list of the IPT features, *please refer to the [http://gbif-providertoolkit.googlecode.com/files/GBIF%20IPT%20WHITE%20PAPER%20v%201.1.pdf IPT Technical White Paper]*. Please note that *the information provided below may not be up to date*.
 
-#summary Brief summary of IPT features
+==Brief summary of IPT features==
 
  * [#Current_Features Current Features]
  * [#Planned_Features Planned Features]
@@ -19,7 +19,7 @@ For a complete and updated list of the IPT features, please refer to the [http:/
  * manage dateLastModified 
     * when uploading new data (in particular new re-imported versions) into the index db compare existing and new records and determine if the record has changed. Store this date_last_updated per record so it can be used for incremental harvesting! 
  * manage UUIDs 
-    * reuse existing UUIDs in master db or create new one for all records, datasets & provider. Link them to stable local IDs if possible 
+    * reuse existing UUIDs in master db or create new one for all records, datasets & provider. Link them to stable local IDs if possible.
  * Only hosting of data initially 
     * only metadata can be edited 
     * no forms for editing taxon occurrences or checklists 
