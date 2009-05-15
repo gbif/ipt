@@ -1,4 +1,5 @@
 #summary Installation and build instructions based on IPT version 1.0beta
+#labels Deprecated
 
 The IPT consists of 2 webapplications that run separately in a Java 1.5 container.
 The default installation of the IPT is using the compiled ipt.war and a geoserver.zip archive available in the download section. Alternatively you can build the IPT from source which is described at the bottom of this page (only recommended for Java developers).
