@@ -131,17 +131,17 @@ This section describes the originator of the resource, i.e. the person responsib
 
 In this section, the manager can describe the geographic coverage of the resource by drawing it on a map.
 
-Using the map
+==== Using the map ====
 
 The manager can navigate on the map by clicking and dragging the cursor around and can zoom using the scale on the left of the map. Double-clicking somewhere on the map will zoom and centre the map on that point.
 
-Creating a new area
+==== Creating a new area ====
 
 The manager must click on the grey select area button in the top right corner of the map. Clicking and dragging with the mouse will define the geographic coverage area. Only one area can be created per map.
 
 [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/GBIF_IPT_User_Manual_1.017x.png]
 
-Description
+==== Description ====
 
 The manager can describe the geographic coverage in the box below the map.
 
