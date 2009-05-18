@@ -1,7 +1,10 @@
 <#escape x as x?xml>
-<starArchive xmlns="http://rs.tdwg.org/dwc/text/">
-  <core encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${rowType}" location="${coreFilename}">
-    <id index="0" term="http://purl.org/dc/terms/identifier"/>
+<archive xmlns="http://rs.tdwg.org/dwc/text/">
+  <core encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${rowType}">
+    <files>
+      <location>${coreFilename}</location>
+    </files>
+    <id index="0" />
     <field index="1" term="http://purl.org/dc/terms/modified"/>
     <field index="2" term="http://purl.org/dc/terms/source"/>
     <field index="3" term="http://ipt.gbif.org/terms/sourceID"/>
@@ -24,11 +27,14 @@
  <#list filenames as fn>
   <#assign view = fileMap[fn]>
   <extension encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${view.extension.rowType}" location="${fn}">
-    <coreid index="0" term="http://purl.org/dc/terms/identifier"/>
+    <files>
+      <location>${coreFilename}</location>
+    </files>
+    <coreid index="0" />
     <#list view.getMappedProperties() as p>
     <field index="${p_index+1}" term="${p.qualName}"/>
     </#list>
   </extension>
  </#list>
-</starArchive>
+</archive>
 </#escape>
