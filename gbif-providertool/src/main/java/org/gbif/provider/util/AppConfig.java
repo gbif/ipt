@@ -251,7 +251,7 @@ public class AppConfig{
     	return String.format("%s/wfs?request=DescribeFeatureType&typeName=gbif:resource%s", getGeoserverUrl(), resourceId);
 	}
 	public String getWmsEndpoint(Long resourceId){
-    	return String.format("%s/wms?request=GetMap&bbox=-180,-90,180,90&layers=gbif:countries,gbif:resource%s&width=320&height=160&bgcolor=0x7391AD&Format=image/jpeg", getGeoserverUrl(), resourceId);
+    	return String.format("%s/wms?request=GetMap&bbox=-180,-90,180,90&layers=gbif:resource%s&width=320&height=160&bgcolor=0x7391AD&Format=image/jpeg", getGeoserverUrl(), resourceId);
 	}
 		
 	
