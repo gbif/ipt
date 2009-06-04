@@ -4,15 +4,22 @@ We try our best to keep scheduled releases.
 Estimated releases can vary considerably and are shown mainly to give an idea of what is coming next.
 
 === IPT 1.0 ===
-scheduled for 1.4.2009
- * adapt cache data model to new [http://128.32.146.144/darwincore/terms/index.htm darwin core terms]
- * central website for downloading & defining data extensions
- * annotations & validations
+scheduled for 1.9.2009 (depends on final dwc ratification)
+ * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
+ * asynchroneous annotation API added for validation services
+ * updated registry services:
+   * organisation registration only done externally (not in ipt admin UI)
+   * resource tagging supported
+ * resource status shown with 2 separate stati: 
+    * registration status
+    * publication status: private, draft/modified, public
 
 === IPT 1.1 ===
 not scheduled
  * advanced mapping/transformations
 
+
 === IPT 2.0 ===
 not scheduled
- * new CoreRecord type Site allows to share hierarchical site definitions incl polygon based shapes
+ * new core record type Publication allows to share publication metadata with link to full body text
+ * new core record type Site allows to share hierarchical site definitions incl polygon based shapes
