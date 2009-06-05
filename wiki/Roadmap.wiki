@@ -7,7 +7,7 @@ Estimated releases can vary considerably and are shown mainly to give an idea of
 scheduled for 1.9.2009 (depends on final dwc ratification)
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
  * asynchroneous annotation API added for validation services
- * updated registry services:
+ * simplified registry interaction:
    * organisation registration only done externally (not in ipt admin UI)
    * resource tagging supported
  * resource status shown with 2 separate stati: 
@@ -16,10 +16,11 @@ scheduled for 1.9.2009 (depends on final dwc ratification)
 
 === IPT 1.1 ===
 not scheduled
- * advanced mapping/transformations
-
+ * remove appfuse dependency
+   * replace with custom user/role management or even gbif openid interaction?
 
 === IPT 2.0 ===
 not scheduled
+ * advanced mapping/transformations
  * new core record type Publication allows to share publication metadata with link to full body text
  * new core record type Site allows to share hierarchical site definitions incl polygon based shapes
