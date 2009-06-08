@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thesaurus dc:URI="http://rs.tdwg.org/dwc/dwctype/" dc:description="" dc:title="Darwin Core Type Vocabulary" numConcepts="9" xmlns="http://data.gbif.org/thesaurus" xmlns:dc="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://data.gbif.org/thesaurus  http://gbrds.gbif.org/resources/schemas/thesaurus.xsd">
+ <concept dc:identifier="preservedspecimen" dc:URI="http://rs.tdwg.org/dwc/dwctype/PreservedSpecimen"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Preserved Specimen" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fossilspecimen" dc:URI="http://rs.tdwg.org/dwc/dwctype/FossilSpecimen"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Fossil Specimen" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="livingspecimen" dc:URI="http://rs.tdwg.org/dwc/dwctype/LivingSpecimen"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Living Specimen" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="humanobservation" dc:URI="http://rs.tdwg.org/dwc/dwctype/HumanObservation"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Human Observation" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="machineobservation" dc:URI="http://rs.tdwg.org/dwc/dwctype/MachineObservation"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Machine Observation" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="stillimage" dc:URI="http://rs.tdwg.org/dwc/dwctype/StillImage"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Still Image" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="movingimage" dc:URI="http://rs.tdwg.org/dwc/dwctype/MovingImage"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Moving Image" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sound" dc:URI="http://rs.tdwg.org/dwc/dwctype/Sound"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Sound" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="physicalobject" dc:URI="http://rs.tdwg.org/dwc/dwctype/PhysicalObject"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="Physical Object" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+</thesaurus>
