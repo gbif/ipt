@@ -554,6 +554,15 @@
         </profile>
         
         <profile>
+            <id>gbif</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <ipt.datadir>/usr/share/tomcat5/ipt-data/current</ipt.datadir>
+                <ipt.mail.from>IPT-GBIFS &lt;support@gbif.org&gt;</ipt.mail.from>
+            </properties>
+        </profile>
+        
+        <profile>
             <id>bgbm</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
