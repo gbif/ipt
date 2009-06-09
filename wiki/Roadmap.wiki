@@ -17,8 +17,8 @@ not scheduled
 
 === IPT 1.2 - "Performance" ===
 not scheduled
- * separate cache database into 1 shared resource configuration db and 1 data cache db per resource: issue:157
- * provide single default root node for taxonomic and regional tree: issue:158
+ * separate cache database into 1 shared resource configuration db and 1 data cache db per resource: Issue157
+ * provide single default root node for taxonomic and regional tree: Issue158
  * http://code.google.com/p/gbif-providertoolkit/issues/list?q=label:Performance
  
 === IPT 1.3 - "Validation" ===
