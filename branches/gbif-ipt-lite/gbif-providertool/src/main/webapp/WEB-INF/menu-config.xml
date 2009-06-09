@@ -6,8 +6,6 @@
     <Menus>
         <Menu name="HomeMenu" title="menu.home" page="/index.html">            
         </Menu>
-        <Menu name="ExplorerMenu" title="menu.explorer" page="/resources.html">            
-        </Menu>
         <Menu name="ManagerMenu" title="menu.manager" page="/manage/resources.html?resourceType=meta" roles="ROLE_ADMIN,ROLE_MANAGER">
         </Menu> 
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/config.html">
@@ -15,9 +13,7 @@
             <Item name="Extensions" title="menu.admin.extensions" page="/admin/extensions.html"/>
             <Item name="Thesaurus" title="menu.admin.thesaurus" page="/admin/vocabularies.html"/>
             <Item name="ViewUsers" title="menu.admin.users" page="/admin/users.html"/>
-            <!-- 
             <Item name="ViewResources" title="menu.admin.resources" page="/admin/resources.html"/>
-            -->
             <Item name="ActiveUsers" title="menu.admin.activeUsers" page="/admin/activeUsers.html"/>
         </Menu>
     </Menus>

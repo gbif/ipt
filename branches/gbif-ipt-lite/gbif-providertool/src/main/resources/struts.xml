@@ -140,8 +140,8 @@
         </action-->
         
         <!-- Application Home -->
-        <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
-            <result type="freemarker">/WEB-INF/pages/index.ftl</result>
+        <action name="index" class="org.gbif.iptlite.action.IndexAction">
+            <result type="freemarker">/WEB-INF/pages/iptlite/index.ftl</result>
         </action>
 
     </package>
@@ -155,252 +155,9 @@
     </package>
     
 
-    <!-- Actions showing data to the public, anonymous users -->
-    <package name="portal" namespace="/" extends="default-freemarker">
-        <default-interceptor-ref name="portalStack" />
-        
-        <global-results>
-            <result name="resource404" type="redirect-action">
-                <param name="actionName">404</param>
-            </result>
-            <result name="record404" type="redirect-action">
-                <param name="actionName">404</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
-        </global-results>
-        
-        <action name="404" class="org.gbif.provider.webapp.action.portal.NotFoundAction">
-            <result name="resource404">/WEB-INF/pages/404resource.ftl</result>
-            <result name="record404">/WEB-INF/pages/404record.ftl</result>
-        </action>
-        
-        <!-- actions for all resources -->
-        <action name="busy">
-            <result>/WEB-INF/pages/busy.ftl</result>
-            <result name="resource-busy">/WEB-INF/pages/busy.ftl</result>
-        </action>
-        <action name="search" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="search">
-            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
-            <result name="occ" type="redirect-action">
-                <param name="actionName">occSearch</param>
-                <param name="q">${q}</param>
-                <param name="resource_id">${resource.id}</param>
-            </result>
-            <result name="tax" type="redirect-action">
-                <param name="actionName">taxSearch</param>
-                <param name="q">${q}</param>
-                <param name="resource_id">${resource.id}</param>
-            </result>
-        </action>
-        <!-- forwarding actions for all resource types. Allows easy linking without knowing the type of resource -->        
-        <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
-            <result name="occ" type="redirect-action">
-                <param name="actionName">occResource</param>
-                <param name="resource_id">${resource.id}</param>
-            </result>
-            <result name="tax" type="redirect-action">
-                <param name="actionName">taxResource</param>
-                <param name="resource_id">${resource.id}</param>
-            </result>
-            <result name="meta" type="redirect-action">
-                <param name="actionName">metaResource</param>
-                <param name="resource_id">${resource.id}</param>
-            </result>
-        </action>
-        <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
-            <result name="occ" type="redirect-action">
-                <param name="actionName">occDetail</param>
-                <param name="resource_id">${resource.id}</param>
-                <param name="guid">${guid}</param>
-            </result>
-            <result name="tax" type="redirect-action">
-                <param name="actionName">taxDetail</param>
-                <param name="resource_id">${resource.id}</param>
-                <param name="guid">${guid}</param>
-            </result>
-        </action>
-        <action name="eml" class="org.gbif.provider.webapp.action.portal.DataAction" method="eml">
-            <result name="success" type="stream">
-                <param name="contentType">text/xml</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="eml.xml"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
-        <action name="archive" class="org.gbif.provider.webapp.action.portal.DataAction">
-            <result name="success" type="stream">
-                <param name="contentType">application/zip</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="archive.zip"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
-        <action name="logo" class="org.gbif.provider.webapp.action.portal.DataAction" method="logo">
-            <result name="success" type="stream">
-                <param name="contentType">image/jpeg</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="logo.jpg"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
-  
-        
-        
-        <!-- annotations -->
-        <action name="annotations" class="org.gbif.provider.webapp.action.portal.AnnotationAction" method="list">
-            <result>/WEB-INF/pages/portal/annotationList.ftl</result>
-        </action>
-        <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction">
-            <result>/WEB-INF/pages/portal/annotationList.ftl</result>
-        </action>
-        
-
-        <!-- metadata actions -->
-        <action name="metaResource" class="org.gbif.provider.webapp.action.portal.ResourceAction">
-            <result>/WEB-INF/pages/portal/meta/resource.ftl</result>
-        </action>
-        <action name="geoSearch" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="geoSearch">
-            <result>/WEB-INF/pages/portal/meta/metaSearch.ftl</result>
-        </action>
-        <action name="resources" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="list">
-            <result>/WEB-INF/pages/portal/meta/resourceList.ftl</result>
-        </action>
-        <action name="atom" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
-            <result name="success" type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/atom.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-        </action>
-        <action name="rss" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
-            <result name="success" type="freemarker">
-                <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-        </action>
-        
-        
-        <!-- occurrence actions -->
-        <action name="occResource" class="org.gbif.provider.webapp.action.portal.OccResourceAction">
-            <result>/WEB-INF/pages/portal/occ/index.ftl</result>
-        </action>
-        <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
-            <param name="zoom">true</param>
-            <param name="title">true</param>
-            <param name="statsBy">{1}</param>
-            <param name="resourceClass">occ</param>
-            <result name="pie">/WEB-INF/pages/portal/stats.ftl</result>
-            <result name="map">/WEB-INF/pages/portal/mapstats.ftl</result>
-            <result name="chart">/WEB-INF/pages/portal/stats.ftl</result>
-        </action>
-        <action name="occTaxon" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="occurrences">
-            <result>/WEB-INF/pages/portal/occ/taxon.ftl</result>
-        </action>
-        <action name="occRegion" class="org.gbif.provider.webapp.action.portal.RegionAction" method="occurrences">
-            <result>/WEB-INF/pages/portal/occ/region.ftl</result>
-        </action>
-        <action name="occDetail" class="org.gbif.provider.webapp.action.portal.DwcAction">
-            <result>/WEB-INF/pages/portal/occ/occurrence.ftl</result>
-            <result name="xml">
-                <param name="location">/WEB-INF/pages/portal/occ/xmlDetail.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="json">
-                <param name="location">/WEB-INF/pages/missing.ftl</param>                
-                <param name="contentType">text/json</param>
-            </result>
-        </action>
-        <action name="occSearch" class="org.gbif.provider.webapp.action.portal.DwcAction" method="search">
-            <result>/WEB-INF/pages/portal/occ/occSearch.ftl</result>
-        </action>
-        
-        
-        <!-- checklist actions -->
-        <action name="taxResource" class="org.gbif.provider.webapp.action.portal.TaxResourceAction">
-            <result>/WEB-INF/pages/portal/tax/index.ftl</result>
-        </action>
-        <action name="taxDetail" class="org.gbif.provider.webapp.action.portal.TaxonAction">
-            <result>/WEB-INF/pages/portal/tax/taxon.ftl</result>
-            <result name="xml">
-                <param name="location">/WEB-INF/pages/portal/tax/xmlDetail.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="rdf">
-                <param name="location">/WEB-INF/pages/portal/tax/rdfDetail.ftl</param>                
-                <param name="contentType">text/rdf</param>
-            </result>
-            <result name="json">
-                <param name="location">/WEB-INF/pages/missing.ftl</param>                
-                <param name="contentType">text/json</param>
-            </result>
-        </action>
-        <action name="taxSearch" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="search">
-            <result>/WEB-INF/pages/portal/tax/taxSearch.ftl</result>
-        </action>
-        <action name="taxResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.TaxResourceStatsAction" method="statsBy{1}">
-            <param name="zoom">true</param>
-            <param name="title">true</param>
-            <param name="statsBy">{1}</param>
-            <param name="resourceClass">tax</param>
-            <result name="pie">/WEB-INF/pages/portal/stats.ftl</result>
-            <result name="map">/WEB-INF/pages/portal/mapstats.ftl</result>
-            <result name="chart">/WEB-INF/pages/portal/stats.ftl</result>
-        </action>
-        <action name="taxListBy*" class="org.gbif.provider.webapp.action.portal.TaxonAction" method="listBy{1}">
-            <param name="action">{1}</param>
-            <result >/WEB-INF/pages/portal/tax/taxonList.ftl</result>
-        </action>
-        
-    </package>    
     
     <!-- undecorated AJAX calls needed by the portal -->
     <package name="ajax" namespace="/ajax" extends="default-freemarker">
-        <action name="occResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.OccResourceStatsAction" method="statsBy{1}">
-            <param name="statsBy">{1}</param>
-            <param name="resourceClass">occ</param>
-            <result name="pie">/WEB-INF/pages/ajax/chartimg.ftl</result>
-            <result name="map">/WEB-INF/pages/ajax/chartimg.ftl</result>
-            <result name="chart">/WEB-INF/pages/ajax/chartimg.ftl</result>
-        </action>
-        <action name="taxResourceStatsBy*" class="org.gbif.provider.webapp.action.portal.TaxResourceStatsAction" method="statsBy{1}">
-            <param name="statsBy">{1}</param>
-            <param name="resourceClass">tax</param>
-            <result name="pie">/WEB-INF/pages/ajax/chartimg.ftl</result>
-            <result name="map">/WEB-INF/pages/ajax/chartimg.ftl</result>
-            <result name="chart">/WEB-INF/pages/ajax/chartimg.ftl</result>
-        </action>
-        
-        <action name="publish" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publish">
-            <result>/WEB-INF/pages/ajax/publish.ftl</result>
-        </action>
-
-        <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
-            <result name="resource-busy">/WEB-INF/pages/ajax/status.ftl</result>
-            <result name="resource-ready">/WEB-INF/pages/ajax/status.ftl</result>
-        </action>
-        <action name="taxonTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction">
-            <result>
-                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
-                <param name="contentType">text/json</param>
-            </result>
-        </action>
-        <action name="taxonSubTree" class="org.gbif.provider.webapp.action.portal.TaxonTreeAction" method="subNodes">
-            <result>
-                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
-                <param name="contentType">text/json</param>
-            </result>
-        </action>
-        <action name="regionTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction">
-            <result>
-                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
-                <param name="contentType">text/json</param>
-            </result>
-        </action>
-        <action name="regionSubTree" class="org.gbif.provider.webapp.action.portal.RegionTreeAction" method="subNodes">
-            <result>
-                <param name="location">/WEB-INF/pages/ajax/treej.ftl</param>                
-                <param name="contentType">text/json</param>
-            </result>
-        </action>
         <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
             <result>/WEB-INF/pages/ajax/preview.ftl</result>
         </action>
@@ -437,38 +194,6 @@
 
     
     
-    <!-- TAPIR Actions -->
-    <package name="tapir" namespace="/tapir" extends="default-freemarker">
-        <default-interceptor-ref name="portalStack" />
-        
-        <action name="service" class="org.gbif.provider.webapp.action.tapir.TapirAction">
-            <result name="ping">
-                <param name="location">/WEB-INF/pages/tapir/ping.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="metadata">
-                <param name="location">/WEB-INF/pages/tapir/metadata.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="capabilities">
-                <param name="location">/WEB-INF/pages/tapir/capabilities.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="inventory">
-                <param name="location">/WEB-INF/pages/tapir/inventory.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="search">
-                <param name="location">/WEB-INF/pages/tapir/search.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-            <result name="error">
-                <param name="location">/WEB-INF/pages/tapir/error.ftl</param>                
-                <param name="contentType">text/xml</param>
-            </result>
-        </action>
-    </package>
-    
 
     <!-- Base package for all managing packages  -->
     <package name="manage" namespace="/manage" extends="default-freemarker">
@@ -491,9 +216,6 @@
         </global-results>
         
 
-        <action name="publishAll" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publishAll">
-            <result>/WEB-INF/pages/manage/resourceList.ftl</result>
-        </action>
         <action name="resources" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="list">
             <result>/WEB-INF/pages/manage/resourceList.ftl</result>
         </action>
@@ -654,11 +376,6 @@
         <action name="validation" class="org.gbif.provider.webapp.action.manage.MetadataAction">
             <result>/WEB-INF/pages/manage/validation.ftl</result>
         </action>
-
-        <action name="history" class="org.gbif.provider.webapp.action.manage.ImportAction" method="history">
-            <result>/WEB-INF/pages/manage/uploadHistory.ftl</result>
-        </action>
-        
     </package>
     
     
