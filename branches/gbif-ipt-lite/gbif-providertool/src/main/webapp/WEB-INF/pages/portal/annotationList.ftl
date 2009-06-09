@@ -3,8 +3,8 @@
 <head>
     <title>Resource Annotations</title>
     <meta name="resource" content="${resource.title}"/>
-    <meta name="menu" content="ExplorerMenu"/>
-    <meta name="submenu" content="${resourceType}"/>
+    <meta name="menu" content="ManagerMenu"/>
+    <meta name="submenu" content="manage_resource"/>
     <meta name="heading" content="Resource Annotations"/>
 	<script type="text/javascript">  
 		function showAnnotation(anchor){

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.FileUtils;
 import org.gbif.iptlite.util.CsvFileWriter;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
@@ -131,6 +132,27 @@ import org.springframework.transaction.annotation.Transactional;
 		private void prepare(){
 			// prepare import, removing previous records, calling prepare of helper tasks
 			resource= loadResource();
+			resource.resetStats();
+			
+			// clear resource annotations
+			annotationManager.removeAll(resource);
+
+			// remove previous archive files
+			File archiveZip = cfg.getArchiveFile(resource.getId());
+			if (archiveZip.exists()){
+				archiveZip.delete();
+				log.debug("Removed zipped previous archive");
+			}
+			File archiveDir = cfg.getArchiveDescriptor(resource.getId()).getParentFile();
+			try {
+				FileUtils.deleteDirectory(archiveDir);
+				archiveDir.mkdir();
+			} catch (IOException e) {
+				String msg = "Couldn't clear existing resource archive at "+archiveDir.getAbsolutePath();
+				log.error(msg, e);
+				annotationManager.annotateResource(resource, msg);
+			}
+
 			// track import in upload event metadata (mainly statistics)
 			event = new UploadEvent();
 			event.setJobSourceId(this.hashCode());
@@ -145,6 +167,7 @@ import org.springframework.transaction.annotation.Transactional;
 			coreRecordsUploaded = 0;
 			coreRecordsErroneous = 0;
 			coreIds.clear();
+			
 		}
 		
 		private void close(){
