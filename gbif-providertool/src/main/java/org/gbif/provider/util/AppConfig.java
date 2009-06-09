@@ -234,6 +234,9 @@ public class AppConfig{
     public String getArchiveUrl(String guid){
 		return String.format("%sarchive-dwc.zip", getResourceUrl(guid));
     }
+    public String getArchiveUrl(Long resourceId){
+		return getWebappURL(String.format("archive.do?resource_id=%s", resourceId)).toString();
+    }
 
     public File getArchiveTcsFile(Long resourceId){
 		return new File(getResourceDataDir(resourceId), "archive-tcs.zip");

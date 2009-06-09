@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>gbif-ipt</artifactId>
+    <artifactId>gbif-ipt-lite</artifactId>
     <packaging>war</packaging>
     <!-- -SNAPSHOT -->
     <version>1.0-SNAPSHOT</version>
-    <name>GBIF Integrated Publishing Toolkit</name>
+    <name>GBIF Integrated Publishing Toolkit - lite</name>
     <description>
         The GBIF IPT is an open source, Java (TM) based web application that connects and serves three types of biodiversity data: taxon primary occurrence data, taxon checklists and general resource metadata.
         The data registered in a GBIF IPT instance is connected to the GBIF distributed network and made available for public consultation and use.
@@ -557,7 +557,7 @@
             <id>gbif</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
-                <ipt.datadir>/usr/share/tomcat5/webapps/ipt-data/current</ipt.datadir>
+                <ipt.datadir>/usr/share/tomcat5/ipt-lite-data</ipt.datadir>
                 <ipt.mail.from>IPT-GBIFS &lt;support@gbif.org&gt;</ipt.mail.from>
             </properties>
         </profile>

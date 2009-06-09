@@ -4,6 +4,7 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.gbif.provider.util.Constants;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -51,7 +52,10 @@ public class User extends BaseObject implements Serializable, UserDetails {
     /**
      * Default constructor - creates a new instance with no values set.
      */
-    public User() {}
+    public User() {
+    	// add manager role by default for IPT lite
+    	roles.add(new Role(Constants.MANAGER_ROLE));
+    }
 
     /**
      * Create a new instance and set the username.
