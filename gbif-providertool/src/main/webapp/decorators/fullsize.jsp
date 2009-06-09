@@ -30,11 +30,7 @@
             </div><!-- end mainfull -->
 
             <div id="nav">
-<%--                 <div class="wrapper"> --%>
-<%--                     <h2 class="accessibility"></h2> --%>
-                    <jsp:include page="/common/menu.jsp"/>
-<%--                 </div> --%>
-                <!-- <hr/> -->
+                <jsp:include page="/common/menu.jsp"/>
             </div><!-- end nav -->
         </div>
 

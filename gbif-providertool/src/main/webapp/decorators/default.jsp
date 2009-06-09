@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ include file="/common/taglibs.jsp"%>
 
-<s:url id="resourcePortal" action="resource" namespace="/" includeParams="none">
+<s:url id="resourcePortal" action="resource" namespace="/manage" includeParams="none">
 	<s:param name="resource_id" value="resource_id" />
 </s:url>
 
@@ -51,7 +51,6 @@
 		                </s:a>
 			        	<div class="horizontal_dotted_line_small_foo"></div>		                
 		            	<decorator:getProperty property="page.contextmenu" />
-			        	<%@ include file="/common/submenu_actions_publish.jsp" %>
 	                	<s:if test="resource.id>0">	                
 				        	<%@ include file="/common/submenu_actions_eml.jsp" %>
 				        	<s:if test="resourceType in {'occ','tax'}">
@@ -60,42 +59,6 @@
 			        	</s:if>
 			        	<%@ include file="/common/submenu_recent.jsp" %>						
 			        </c:when>
-			        
-			        <c:when test='${currentSubMenu == "occ"}'>
-		                <s:a href="%{resourcePortal}">
-		                	<h1 id="resourceName">${currentResourceTitle}</h1>
-		                </s:a>
-		                <div class="horizontal_dotted_line_small_foo"></div>		                
-		            	<decorator:getProperty property="page.contextmenu" />
-						<div id="taxnav">
-							<label>Navigate Taxonomy</label>
-               				 <%@ include file="/common/taxontree.jsp" %>
-						</div>
-						<div id="locnav">
-							<label>Navigate Geography</label>
-               				 <%@ include file="/common/regiontree.jsp" %>
-						</div>
-					</c:when>
-
-			        <c:when test='${currentSubMenu == "tax"}'>
-		                <s:a href="%{resourcePortal}">
-		                	<h1 id="resourceName">${currentResourceTitle}</h1>
-		                </s:a>
-		                <div class="horizontal_dotted_line_small_foo"></div>
-		            	<decorator:getProperty property="page.contextmenu" />
-						<div id="taxnav">
-							<label>Navigate Taxonomy</label>
-               				 <%@ include file="/common/taxontree.jsp" %>
-						</div>
-					</c:when>
-			        
-			        <c:when test='${currentSubMenu == "meta"}'>
-		            	<decorator:getProperty property="page.contextmenu" />
-	                	<h1>Metadata Repo</h1>
-	                	<div class="horizontal_dotted_line_small_foo"></div>
-			        	<%@ include file="/common/submenu_recent.jsp" %>
-			        	<%@ include file="/common/tagcloud.jsp" %>
-					</c:when>			
 							
 			        <c:otherwise>
 			            <!-- NO SUBMENU -->
@@ -106,11 +69,7 @@
             </div><!-- end sub -->
 
             <div id="nav">
-                <%-- <div class="wrapper"> --%>
-                    <%-- <h2 class="accessibility"></h2> --%>
-                    <jsp:include page="/common/menu.jsp"/>
-                <%-- </div> --%>
-                <!-- <hr/> -->
+                <jsp:include page="/common/menu.jsp"/>
             </div><!-- end nav -->
         </div>
 	    <div id="footer" class="clearfix">

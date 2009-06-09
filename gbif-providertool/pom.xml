@@ -554,11 +554,11 @@
         </profile>
         
         <profile>
-            <id>bgbm</id>
+            <id>gbif</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
-                <ipt.datadir>/usr/local/jakarta-tomcat/ipt_data</ipt.datadir>
-                <ipt.mail.from>IPT-BGBM &lt;ipt@bgbm.org&gt;</ipt.mail.from>
+                <ipt.datadir>/usr/share/tomcat5/webapps/ipt-data/current</ipt.datadir>
+                <ipt.mail.from>IPT-GBIFS &lt;support@gbif.org&gt;</ipt.mail.from>
             </properties>
         </profile>
 

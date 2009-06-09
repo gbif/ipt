@@ -4,7 +4,6 @@
 <c:set var="currentResourceTitle" scope="request"><decorator:getProperty property="meta.resource"/></c:set>
 <c:set var="currentHeading" scope="request"><decorator:getProperty property="meta.heading"/></c:set>
 <c:set var="currentHeading2" scope="request"><decorator:getProperty property="meta.heading2"/></c:set>
-<c:set var="taxTreeAction">taxDetail</c:set>
         <title><decorator:title/> | <s:text name="webapp.name"/></title>
         <!-- HTTP 1.1 -->
         <meta http-equiv="Cache-Control" content="no-store"/>
@@ -41,13 +40,8 @@
 	      <c:when test='${currentSubMenu == "meta"}'>
           </c:when>        
           <c:when test='${currentSubMenu == "occ" || currentSubMenu == "tax"}'>
-	        <c:if test='${currentSubMenu == "occ"}'>
-				<c:set var="taxTreeAction">occTaxon</c:set>
-			</c:if>			
-			<link rel="STYLESHEET" type="text/css" href="<c:url value='/scripts/dynatree/skin/ui.dynatree.css'/>">
 			<script  src="<c:url value='/scripts/jquery/ui.core.min.js'/>"></script>
 			<script  src="<c:url value='/scripts/jquery.cookie.js'/>"></script>
-			<script  src="<c:url value='/scripts/dynatree/jquery.dynatree.min.js'/>"></script>
           </c:when>        
 	      <c:when test='${currentSubMenu == "tax"}'>
           </c:when>        
