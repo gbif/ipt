@@ -14,16 +14,12 @@
 
 ***************************************************************************/
 
-package org.gbif.provider.webapp.action;
+package org.gbif.iptlite.action;
 
-import java.util.Date;
-import java.util.List;
-
-import org.appfuse.service.UserManager;
-import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.webapp.action.BaseAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -33,16 +29,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
  *
  */
 public class IndexAction extends BaseAction{
-	@Autowired
-	@Qualifier("dataResourceManager")
-    private GenericResourceManager<DataResource> dataResourceManager;
-    private List<DataResource> resources;
-	@Autowired
-	private AppConfig cfg;
-	private Date pubDate = new Date();
+    @Autowired
+    @Qualifier("resourceManager")
+    protected GenericResourceManager<Resource> metaResourceManager;
+    private int numResources;
 	
 	public String execute(){
-		resources = dataResourceManager.getAllDistinct();
+		numResources = metaResourceManager.getAllIds().size();
 		return SUCCESS;
 	}
 	
@@ -51,16 +44,11 @@ public class IndexAction extends BaseAction{
 	}
 
 	
-	public List<DataResource> getResources() {
-		return resources;
-	}
-
 	public AppConfig getCfg() {
 		return cfg;
 	}
 
-	public Date getPubDate() {
-		return pubDate;
-	}
-	
+	public int getNumResources() {
+		return numResources;
+	}	
 }
