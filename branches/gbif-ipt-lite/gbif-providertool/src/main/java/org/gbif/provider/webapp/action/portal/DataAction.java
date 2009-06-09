@@ -18,7 +18,6 @@ public class DataAction extends BaseMetadataResourceAction {
 	@Autowired
 	private AppConfig cfg;
 	private Integer version=0;
-	private String format;
 	
 	private void setResourceId(){
     	if (resource_id==null){
@@ -32,11 +31,7 @@ public class DataAction extends BaseMetadataResourceAction {
     	setResourceId();
     	if (resource_id != null){
     		File data = null;
-    		if (format.equalsIgnoreCase("tcs")){
-        		data = cfg.getArchiveTcsFile(resource_id);    			
-    		}else{
-        		data = cfg.getArchiveFile(resource_id);
-    		}
+    		data = cfg.getArchiveFile(resource_id);
     		inputStream = new FileInputStream(data);
     		return SUCCESS;
     	}
@@ -83,10 +78,6 @@ public class DataAction extends BaseMetadataResourceAction {
 
 	public void setVersion(Integer version) {
 		this.version = version;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
 	}
 	
 }

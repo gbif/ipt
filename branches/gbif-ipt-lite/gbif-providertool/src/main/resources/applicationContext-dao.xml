@@ -90,6 +90,8 @@
     
     <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        
     
+    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
+
     <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
     
     <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
