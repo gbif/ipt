@@ -1,20 +1,16 @@
 package org.gbif.provider.util;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.gbif.provider.tapir.TemplateFactoryTest;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import static org.junit.Assert.assertTrue;
 
 
 public class XmlContentHandlerTest {
