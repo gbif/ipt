@@ -3,31 +3,32 @@
 We try our best to keep scheduled releases. 
 Estimated releases can vary considerably and are shown mainly to give an idea of what is coming next.
 
-=== IPT 1.0 ===
-*DarwinCore*, scheduled for 1.9.2009 (depends on final dwc ratification)
+=== IPT 1.0 - "DarwinCore" ===
+scheduled for 1.9.2009 (depends on final dwc ratification)
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
  * simplified registry interaction:
    * organisation registration only done externally (not in ipt admin UI)
    * write resource tags (= metadata keywords) to registry
 
-=== IPT 1.1 ===
-*AppFuse*, not scheduled
+=== IPT 1.1 - "AppFuse" ===
+not scheduled
  * remove appfuse dependency
    * replace with custom user/role management or even gbif openid interaction?
 
-=== IPT 1.2 ===
-*Performance*, not scheduled
+=== IPT 1.2 - "Performance" ===
+not scheduled
  * separate cache database into 1 shared resource configuration db and 1 data cache db per resource: issue:157
  * provide single default root node for taxonomic and regional tree: issue:158
  * http://code.google.com/p/gbif-providertoolkit/issues/list?q=label:Performance
  
-=== IPT 1.3 ===
-*Validation*, not scheduled
+=== IPT 1.3 - "Validation" ===
+not scheduled
  * asynchroneous annotation API added for validation services
 
-=== IPT 1.4 ===
-*Transformations*, not scheduled
+=== IPT 1.4 - "Transformations" ===
+not scheduled
  * advanced mapping/transformations
+
 
 === IPT 2.0 ===
 not scheduled
