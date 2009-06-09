@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.model.CoreRecord;
@@ -36,6 +37,12 @@ public class CsvFileWriter {
 	public CsvFileWriter(File file, ExtensionMapping view, boolean useLink) throws IOException{
 		this.header=view.getMappedProperties();
 		this.file = file;
+		if (file.exists()){
+			file.delete();
+		}else{
+			FileUtils.forceMkdir(file.getParentFile());
+		}
+		file.createNewFile();
 		this.writer = new BufferedWriter(new FileWriter(file));
 		this.useLink=useLink;
 		this.guidPropertyName = view.getResource().getDwcGuidPropertyName();

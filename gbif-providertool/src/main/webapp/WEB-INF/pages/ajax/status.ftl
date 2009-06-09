@@ -7,7 +7,7 @@ ${status}
 	</@s.form>
 	-->
 <#else>
-	<@s.form action="resource" method="get" namespace="/">
+	<@s.form action="annotations" method="get" namespace="/manage">
 		<@s.hidden key="resource_id"/>
 		<@s.submit cssClass="button" key="button.done"/>
 	</@s.form>

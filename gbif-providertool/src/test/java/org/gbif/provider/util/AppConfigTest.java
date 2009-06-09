@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AppConfigTest extends ContextAwareTestBase{
 	@Autowired
 	public AppConfig cfg;
-	@Autowired
-	private DarwinCoreFactory dwcFactory;
 
 	@Test
 	public void testPropertiesLoaded() {
@@ -25,13 +23,6 @@ public class AppConfigTest extends ContextAwareTestBase{
 		
 		cfg.setBaseUrl(" http://localhost:8080/ipt  ");
 		assertEquals("http://localhost:8080/ipt", cfg.getBaseUrl());
-	}
-	
-	@Test
-	public void testCoreDetail() {
-		CoreRecord rec = DarwinCore.newMock(new OccurrenceResource());
-		System.out.println(cfg.getDetailUrl(rec));
-		System.out.println(cfg.getDetailUrl(rec, "xml"));
 	}
 	
 }

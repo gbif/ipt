@@ -63,9 +63,6 @@ import org.springframework.transaction.annotation.Transactional;
 		// keep track of all core ids for basic integrity checks
 		private Set<String> coreIds = new HashSet<String>();
 		
-		// transient annotations
-		private Set<Annotation> annotations = new HashSet<Annotation>();
-		
 		// managers
 		@Autowired
 		private ImportSourceFactory importSourceFactory;
