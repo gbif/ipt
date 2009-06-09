@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.gbif.iptlite.util.CsvFileWriter;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -188,11 +189,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 			ImportSource source=null;
 			File out = null;
+			CsvFileWriter writer = null; 
 			// make sure in the finally section that source & writer is closed and upload event is created properly.
 			try {
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
 				source = importSourceFactory.newInstance(resource, resource.getCoreMapping());
 				out = cfg.getArchiveFile(resource.getId(), resource.getCoreMapping().getExtension());
+				writer = new CsvFileWriter(out, resource.getCoreMapping(), true); 
 					
 				// get list of all core properties in an ordered, stable way (the same)
 				List<ExtensionProperty> props = resource.getCoreMapping().getMappedProperties();
@@ -216,7 +219,7 @@ import org.springframework.transaction.annotation.Transactional;
 					
 					// write core record row to file
 					try{
-						writeRow(out, props, irec, true);
+						writer.write(irec);
 						// set stats per record. Saving of final resource stats is done in the close() section
 						coreRecordsUploaded++;
 
@@ -238,8 +241,12 @@ import org.springframework.transaction.annotation.Transactional;
 				if (source!=null){
 					source.close();
 				}
-				if (out!=null){
-					out.close();
+				if (writer!=null){
+					try {
+						writer.close();
+					} catch (IOException e) {
+						log.warn("Couldn't close core data file writer", e);
+					}
 				}
 			}
 
@@ -251,8 +258,11 @@ import org.springframework.transaction.annotation.Transactional;
 		private File createExtensionFile(ExtensionMapping vm) throws InterruptedException {
 			String extensionName = vm.getExtension().getName();
 			Extension extension = vm.getExtension();
-			log.info(String.format("Start building %s extension data file for resource %s", extensionName, getTitle() ));					
+			log.info(String.format("Start building %s extension data file for resource %s", extensionName, getTitle() ));
+			
 			File out = null;
+			CsvFileWriter writer = null;
+			ImportSource source=null;
 			// keep track of records for each extension and then store the totals in the viewMapping.
 			// once extension is imported this counter will be reset by the next extension.
 			// used to feed status()
@@ -262,49 +272,52 @@ import org.springframework.transaction.annotation.Transactional;
 
 			try {
 				//  prepare import source
-				ImportSource source = importSourceFactory.newInstance(resource, vm);
+				source = importSourceFactory.newInstance(resource, vm);
 				out = cfg.getArchiveFile(resource.getId(), extension);
+				writer = new CsvFileWriter(out, vm, false); 
 
-				// catch any errors after we opened the source to close it properly and set the extension statistics at least
-				try{
-					// Do we need a
-					for (ImportRecord rec : source){
-						currentProcessed.addAndGet(1);
-						if (rec == null || rec.getSourceId()==null){
-							currentErroneous.addAndGet(1);
-							annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
-							continue;
-						}
-						if (!coreIds.contains(rec.getSourceId())){
-							currentErroneous.addAndGet(1);
-							annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Extension record references a core source ID which does not exist. Line "+String.valueOf(currentProcessed.get()));
-							continue;
-						}
-
+				// Do we need a
+				for (ImportRecord rec : source){
+					currentProcessed.addAndGet(1);
+					if (rec == null || rec.getSourceId()==null){
+						currentErroneous.addAndGet(1);
+						annotationManager.badExtensionRecord(resource, extension, null, "Seems to be an empty record or missing source ID. Line "+String.valueOf(currentProcessed.get()));
+						continue;
 					}
-				} catch (Exception e){
-					annotationManager.annotateResource(resource, String.format("Unknown error importing extension %s. Extension skipped", extensionName));
-					log.error("Unknown error importing extension "+extensionName, e);
-				} finally {
-					setFinalExtensionStats(extension);
+					if (!coreIds.contains(rec.getSourceId())){
+						currentErroneous.addAndGet(1);
+						annotationManager.badExtensionRecord(resource, extension, rec.getSourceId(), "Extension record references a core source ID which does not exist. Line "+String.valueOf(currentProcessed.get()));
+						continue;
+					}
+					// write row to file
+					writer.write(rec);
 				}
-			// outer catch/try for import soruce only
+
+			// outer catch/try
 			} catch (ImportSourceException e) {
 				annotationManager.annotateResource(resource, String.format("Couldn't open import source for extension %s. Extension skipped", extensionName));
 				log.error("Couldn't open import source for extension "+extensionName, e);
+			} catch (IOException e) {
+				annotationManager.annotateResource(resource, "Couldn't open archive file for writing. Import aborted: "+e.toString());
+				throw new InterruptedException();
+			} finally {
+				// store final numbers in normal Integer so that the AtomicNumber can be reset by other extension imports
+				coreRecordsErroneous = currentErroneous.get();
+				if (source!=null){
+					source.close();
+				}
+				if (writer!=null){
+					try {
+						writer.close();
+					} catch (IOException e) {
+						log.warn("Couldn't close extension data file writer", e);
+					}
+				}
 			}
 						
-			// update extension with coreid
-			extensionRecordManager.updateCoreIds(extension, resource);
-			
 			return out;
 		}
 		
-		
-		private void writeRow(File out, List<ExtensionProperty> propertyOrder, ImportRecord rec, boolean writeLink){
-			
-		}
-
 		
 		public final synchronized String status() {
 			String coreInfo = "";
@@ -320,7 +333,7 @@ import org.springframework.transaction.annotation.Transactional;
 			if (currentProcessed!=null){
 				return String.format("%s%s%s", currentActivity, recordStatus, coreInfo);
 			}else{
-				return "Waiting for import to start.";
+				return "Waiting for archiving to start.";
 			}
 		}
 
