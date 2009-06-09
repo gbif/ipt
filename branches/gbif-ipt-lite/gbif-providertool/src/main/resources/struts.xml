@@ -154,7 +154,65 @@
 		<default-interceptor-ref name="defaultStack"/>
     </package>
     
+    <!-- Actions showing data to the public, anonymous users -->
+    <package name="portal" namespace="/" extends="default-freemarker">
+        <default-interceptor-ref name="portalStack" />
+        
+        <global-results>
+            <result name="resource404" type="redirect-action">
+                <param name="actionName">404</param>
+            </result>
+            <result name="record404" type="redirect-action">
+                <param name="actionName">404</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
+            </result>
+        </global-results>
+        
+        <action name="404" class="org.gbif.provider.webapp.action.portal.NotFoundAction">
+            <result name="resource404">/WEB-INF/pages/404resource.ftl</result>
+            <result name="record404">/WEB-INF/pages/404record.ftl</result>
+        </action>
 
+        <action name="eml" class="org.gbif.provider.webapp.action.portal.DataAction" method="eml">
+            <result name="success" type="stream">
+                <param name="contentType">text/xml</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="eml.xml"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        <action name="archive" class="org.gbif.provider.webapp.action.portal.DataAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/zip</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="archive.zip"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        <action name="logo" class="org.gbif.provider.webapp.action.portal.DataAction" method="logo">
+            <result name="success" type="stream">
+                <param name="contentType">image/jpeg</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="logo.jpg"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+        <action name="atom" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
+            <result name="success" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/atom.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        <action name="rss" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="rss">
+            <result name="success" type="freemarker">
+                <param name="location">/WEB-INF/pages/portal/rss.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+        
+    </package>
+        
     
     <!-- undecorated AJAX calls needed by the portal -->
     <package name="ajax" namespace="/ajax" extends="default-freemarker">
