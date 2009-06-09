@@ -567,19 +567,6 @@
             </result>
         </action>
         
-        <!-- RESOURCES -->
-        <action name="resources" class="org.gbif.provider.webapp.action.admin.MetadataAction" method="list">
-            <result type="freemarker">/WEB-INF/pages/admin/resourceList.ftl</result>
-        </action>
-        <action name="resource" class="org.gbif.provider.webapp.action.admin.MetadataAction">
-            <result type="freemarker">/WEB-INF/pages/admin/resourceForm.ftl</result>
-        </action>        
-        <action name="saveResource" class="org.gbif.provider.webapp.action.admin.MetadataAction" method="save">
-            <result type="redirect-action">resources</result>
-            <result name="cancel" type="redirect-action">resources</result>
-            <result name="input" type="freemarker">/WEB-INF/pages/admin/resourceForm.ftl</result>
-        </action>
-        
     </package>
 
 </struts>

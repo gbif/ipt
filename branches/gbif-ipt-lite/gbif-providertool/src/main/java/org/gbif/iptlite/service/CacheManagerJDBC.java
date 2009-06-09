@@ -136,7 +136,7 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 				status = t.status();			
 			}
 		}else{
-			status = "Archive generated: "+cfg.getArchiveUrl(t.loadResource().getGuid());			
+			status = "Archive generated: "+cfg.getArchiveUrl(resourceId);			
 		}
 		return status;
 	}
