@@ -26,9 +26,9 @@
  <#assign filenames = fileMap?keys>
  <#list filenames as fn>
   <#assign view = fileMap[fn]>
-  <extension encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${view.extension.rowType}" location="${fn}">
+  <extension encoding="UTF-8" fieldsTerminatedBy="," linesTerminatedBy="\n" fieldsEnclosedBy='"' ignoreHeaderLines="1" rowType="${view.extension.rowType}">
     <files>
-      <location>${coreFilename}</location>
+      <location>${fn}</location>
     </files>
     <coreid index="0" />
     <#list view.getMappedProperties() as p>
