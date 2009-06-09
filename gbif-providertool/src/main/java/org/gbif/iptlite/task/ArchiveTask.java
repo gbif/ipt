@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FileUtils;
-import org.gbif.iptlite.util.CsvFileWriter;
+import org.gbif.iptlite.util.ArchiveWriter;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -198,13 +198,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 			ImportSource source=null;
 			File out = null;
-			CsvFileWriter writer = null; 
+			ArchiveWriter writer = null; 
 			// make sure in the finally section that source & writer is closed and upload event is created properly.
 			try {
 				// prepare core import source. Can be a file or database source to iterate over in read-only mode
 				source = importSourceFactory.newInstance(resource, resource.getCoreMapping());
 				out = cfg.getArchiveFile(resource.getId(), resource.getCoreMapping().getExtension());
-				writer = new CsvFileWriter(out, resource.getCoreMapping(), true); 
+				writer = new ArchiveWriter(out, resource.getCoreMapping(), true); 
 					
 				// get list of all core properties in an ordered, stable way (the same)
 				List<ExtensionProperty> props = resource.getCoreMapping().getMappedProperties();
@@ -270,7 +270,7 @@ import org.springframework.transaction.annotation.Transactional;
 			log.info(String.format("Start building %s extension data file for resource %s", extensionName, getTitle() ));
 			
 			File out = null;
-			CsvFileWriter writer = null;
+			ArchiveWriter writer = null;
 			ImportSource source=null;
 			// keep track of records for each extension and then store the totals in the viewMapping.
 			// once extension is imported this counter will be reset by the next extension.
@@ -283,7 +283,7 @@ import org.springframework.transaction.annotation.Transactional;
 				//  prepare import source
 				source = importSourceFactory.newInstance(resource, vm);
 				out = cfg.getArchiveFile(resource.getId(), extension);
-				writer = new CsvFileWriter(out, vm, false); 
+				writer = new ArchiveWriter(out, vm, false); 
 
 				// Do we need a
 				for (ImportRecord rec : source){

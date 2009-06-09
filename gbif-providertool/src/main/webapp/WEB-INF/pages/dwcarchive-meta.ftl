@@ -5,7 +5,7 @@
     <files>
       <location>${coreFilename}</location>
     </files>
-    <id index="0" />
+    <id index="0" term="http://rs.tdwg.org/dwc/terms/${guidPropertyName}"/>
     <field index="1" term="http://purl.org/dc/terms/source"/>
     <#list coreProperties as p>
     <field index="${p_index+2}" term="${p.qualName}"/>

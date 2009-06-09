@@ -91,7 +91,17 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		data.put("cfg", cfg);
 		data.put("resource", resource);
 		data.put("rowType", resource.getCoreMapping().getExtension().getRowType());
-		data.put("coreProperties", resource.getCoreMapping().getMappedProperties());
+		// get all properties but the GUID one (SampleID or TaxonID)
+		String guidPropertyName = resource.getDwcGuidPropertyName();
+		data.put("guidPropertyName", guidPropertyName);
+		List<ExtensionProperty> props = resource.getCoreMapping().getMappedProperties();
+		for (ExtensionProperty p : props){
+			if (p.getName().equalsIgnoreCase(guidPropertyName)){
+				props.remove(p);
+				break;
+			}
+		}
+		data.put("coreProperties", props);
 		data.put("coreFilename", coreFile.getName());
 		
 		for (File f : archiveFiles.keySet()){
