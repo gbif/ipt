@@ -6,8 +6,8 @@
 	<@s.head theme="ajax" debug="false"/>
 </head>
 
-<h1>Upload in Progress</h1>
-<p class="reminder">This resource is currently being updated and not available. Please wait until the upload is finished or cancel it.</p>
+<h1>Building archive</h1>
+<p class="reminder">This resource is currently not available. Please wait until the archive is generated.</p>
 
 <@s.url id="statusUrl" value="/ajax/resourceStatus.html?resource_id=${Parameters.resource_id}"/>
 <@s.div id="status" theme="ajax" href="%{statusUrl}" updateFreq="3000" showLoadingText="false" 

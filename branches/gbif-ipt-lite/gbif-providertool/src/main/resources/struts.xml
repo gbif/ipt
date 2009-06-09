@@ -209,6 +209,10 @@
     
     <!-- undecorated AJAX calls needed by the portal -->
     <package name="ajax" namespace="/ajax" extends="default-freemarker">
+        <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
+            <result name="resource-busy">/WEB-INF/pages/ajax/status.ftl</result>
+            <result name="resource-ready">/WEB-INF/pages/ajax/status.ftl</result>
+        </action>
         <action name="sourcePreview" class="org.gbif.provider.webapp.action.manage.SourceAction" method="sourcePreview">
             <result>/WEB-INF/pages/ajax/preview.ftl</result>
         </action>
@@ -406,7 +410,7 @@
         <action name="status" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/manage/uploadStatus.ftl</result>
             <result name="resource-ready" type="redirect-action">
-                <param name="actionName">resource</param>
+                <param name="actionName">annotations</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
