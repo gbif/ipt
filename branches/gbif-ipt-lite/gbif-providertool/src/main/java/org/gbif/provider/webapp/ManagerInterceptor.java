@@ -25,7 +25,8 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 
 
 public class ManagerInterceptor implements Interceptor{
-    @Autowired
+    private static final String RESOURCE_ID_PARAMETER_NAME = "resource_id";
+	@Autowired
     @Qualifier("resourceManager")
     protected GenericResourceManager<Resource> resourceManager;
 
@@ -51,7 +52,7 @@ public class ManagerInterceptor implements Interceptor{
 	
 	private boolean isResourceOwner(HttpServletRequest request){		
 		//get requested resource
-		Object requested_id = request.getParameter(ResourceInterceptor.PARAMETER_NAME);
+		Object requested_id = request.getParameter(RESOURCE_ID_PARAMETER_NAME);
 		if (requested_id != null && requested_id.getClass().isArray() && ((Object[]) requested_id).length == 1) {
 			requested_id = ((Object[]) requested_id)[0];
 		}

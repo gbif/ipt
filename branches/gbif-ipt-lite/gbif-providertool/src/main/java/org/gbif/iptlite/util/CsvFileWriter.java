@@ -1,4 +1,4 @@
-package org.gbif.provider.util;
+package org.gbif.iptlite.util;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +22,7 @@ import org.gbif.provider.model.dto.ExtensionRecord;
 
 
 
-public class TabFileWriter {
+public class CsvFileWriter {
 	public static final String ID_COLUMN_NAME = "dc:identifier";
 	public static final String LINK_COLUMN_NAME = "dc:source";
 	public static final String MODIFIED_COLUMN_NAME = "dc:modified";
@@ -33,7 +33,7 @@ public class TabFileWriter {
 	private final String guidPropertyName;
 	private boolean useLink=false;
 	
-	public TabFileWriter(File file, ExtensionMapping view, boolean useLink) throws IOException{
+	public CsvFileWriter(File file, ExtensionMapping view, boolean useLink) throws IOException{
 		this.header=view.getMappedProperties();
 		this.file = file;
 		this.writer = new BufferedWriter(new FileWriter(file));

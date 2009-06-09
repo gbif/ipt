@@ -22,10 +22,8 @@ import java.util.List;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.SourceManager;
-import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.TransformationManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.util.GChartBuilder;
@@ -43,8 +41,6 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	private static final int MAX_CHART_DATA = 20;
 	protected static GChartBuilder gpb = new GChartBuilder();
 	@Autowired
-	private TaxonManager taxonManager;
-	@Autowired
 	private TransformationManager transformationManager;
 	@Autowired
 	private ViewMappingManager mappingManager;
@@ -55,9 +51,6 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		super(persistentClass);
 	}
 
-	@Autowired
-	private CacheManager cacheManager;
-
 
 	@Override
 	@Transactional(readOnly=false)
@@ -66,7 +59,6 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		if (obj!=null){
 			Long resourceId = obj.getId();
 			log.debug("Trying to remove data resource "+resourceId);
-			cacheManager.clear(resourceId);
 			// remove transformations
 			transformationManager.removeAll(obj);
 			// remove mappings
@@ -116,17 +108,5 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	}
 
 	protected void setResourceStats(DataResource resource) {
-		Long resourceId = resource.getId();
-		resource.setNumClasses(taxonManager.countByType(resourceId, Rank.Class));
-		resource.setNumFamilies(taxonManager.countByType(resourceId, Rank.Family));
-		resource.setNumGenera(taxonManager.countByType(resourceId, Rank.Genus));
-		resource.setNumKingdoms(taxonManager.countByType(resourceId, Rank.Kingdom));
-		resource.setNumOrders(taxonManager.countByType(resourceId, Rank.Order));
-		resource.setNumPhyla(taxonManager.countByType(resourceId, Rank.Phylum));
-		resource.setNumSpecies(taxonManager.countByType(resourceId, Rank.Species));
-		resource.setNumTaxa(taxonManager.count(resourceId));
-		resource.setNumTerminalTaxa(taxonManager.countTerminalNodes(resourceId));
-		resource.setNumAccepted(taxonManager.countAccepted(resourceId));
-		resource.setNumSynonyms(taxonManager.countSynonyms(resourceId));
 	}
 }

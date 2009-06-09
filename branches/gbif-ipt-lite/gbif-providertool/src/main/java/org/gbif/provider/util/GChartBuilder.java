@@ -5,17 +5,12 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.model.voc.Rank;
 
 import com.googlecode.gchartjava.AxisInfo;
 import com.googlecode.gchartjava.AxisStyle;
@@ -23,11 +18,9 @@ import com.googlecode.gchartjava.BarChart;
 import com.googlecode.gchartjava.BarChartDataSeries;
 import com.googlecode.gchartjava.Color;
 import com.googlecode.gchartjava.Country;
-import com.googlecode.gchartjava.Data;
 import com.googlecode.gchartjava.DataUtil;
 import com.googlecode.gchartjava.Fill;
 import com.googlecode.gchartjava.GeographicalArea;
-import com.googlecode.gchartjava.LinearGradientFill;
 import com.googlecode.gchartjava.MapChart;
 import com.googlecode.gchartjava.PieChart;
 import com.googlecode.gchartjava.PoliticalBoundary;
@@ -236,35 +229,4 @@ public class GChartBuilder {
 		return result;
 	}	
 
-
-	public static String generateUploadChartUrl(int width, int height, List<UploadEvent> data){
-		return generateUploadChartUrl(width, height, null, data);
-	}
-
-	public static String generateUploadChartUrl(int width, int height, String title, List<UploadEvent> data){
-		final int MAX_BARS = width / (BAR_WIDTH+9);
-		float[] gData = new float[MAX_BARS];
-		Integer minYear = null;
-		Integer maxYear = null;
-		
-		//for (UploadEvent event: data){
-
-		BarChartDataSeries series = new BarChartDataSeries(DataUtil.normalize(gData), COLORS.get(1));
-        BarChart chart = new BarChart(series);
-        chart.setSize(width, height);
-        chart.setBarWidth(BAR_WIDTH);
-        
-//		String chartUrl = "http://chart.apis.google.com/chart?cht=bvs&chs=320x160&chd=t:10,50,60,40,50,60,100,40,20,80,40,77,20,50,60,100,40,20,80,40,7,15,5,9,55,7850,40,50,60,100,40,20,60,100,13,56,48,13,20,10,50,78,60,80,40,50,60,100,40,20,40,50,60,0,80,40,50,60,100,40,20&chco=c6d9fd&chbh=3";
-        
-        String result;
-        if (title != null){
-        	chart.setTitle(title,Color.BLACK,16);
-        	result = chart.createURLString();
-        }else{
-        	chart.setTitle("",Color.BLACK,16);
-        	result = chart.createURLString().split("&chtt=")[0];
-        }
-        
-		return result;
-	}	
 }

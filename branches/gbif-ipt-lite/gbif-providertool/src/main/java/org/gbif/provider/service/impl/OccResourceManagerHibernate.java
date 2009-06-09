@@ -1,90 +1,22 @@
 package org.gbif.provider.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.OccStatByRegionAndTaxon;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.HostType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
-import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.OccResourceManager;
-import org.gbif.provider.service.OccStatManager;
-import org.gbif.provider.service.RegionManager;
-import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.GChartBuilder;
 import org.gbif.provider.util.StatsUtils;
-import org.hibernate.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.googlecode.gchartjava.GeographicalArea;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 public class OccResourceManagerHibernate extends DataResourceManagerHibernate<OccurrenceResource> implements OccResourceManager{
 
-	@Autowired
-	private GeoserverManagerImpl geoTools;
-	@Autowired
-	private RegionManager regionManager;
-	
 	public OccResourceManagerHibernate() {
 		super(OccurrenceResource.class);
 	}
-	
-	
-	
-	
-	/* (non-Javadoc)
-	 * Also writes/updates the geoserver featuretype
-	 * @see org.gbif.provider.service.impl.GenericResourceManagerHibernate#publish(java.lang.Long)
-	 */
-	@Override
-	public OccurrenceResource publish(Long resourceId) {
-		OccurrenceResource resource = super.publish(resourceId);			
-		try {
-			geoTools.updateFeatureType(resource);
-		} catch (IOException e) {
-			log.error("Can't write new Geoserver FeatureTypeInfo for resource "+resource.getId());
-		}
-		return resource;
-	}
-
-	/* (non-Javadoc)
-	 * Also removes the geoserver featuretype in case of occurrence resources
-	 * @see org.gbif.provider.service.impl.GenericResourceManagerHibernate#unPublish(java.lang.Long)
-	 */
-	@Override
-	public void unPublish(Long resourceId) {
-		OccurrenceResource resource = get(resourceId);			
-		try {
-			geoTools.removeFeatureType(resource);
-		} catch (IOException e) {
-			log.error("Can't remove Geoserver FeatureTypeInfo for resource "+resource.getId());
-		}
-		super.unPublish(resourceId);
-	}
-	
 	
 	
 	public List<StatsCount> occByBasisOfRecord(Long resourceId) {
@@ -276,16 +208,7 @@ public class OccResourceManagerHibernate extends DataResourceManagerHibernate<Oc
 	}
 
 	public OccurrenceResource setResourceStats(OccurrenceResource resource) {
-		log.debug("Building occurrence resource stats");
-		Long resourceId = resource.getId();
 		super.setResourceStats(resource);
-		// count occurrence specific stats
-		resource.setNumCountries(regionManager.countByType(resourceId, RegionType.Country));
-		resource.setNumRegions(regionManager.count(resourceId));
-		resource.setNumTerminalRegions(regionManager.countTerminalNodes(resourceId));
-		resource = this.save(resource);
-		this.flush();
-		// save stats
 		return resource;
 	}
 

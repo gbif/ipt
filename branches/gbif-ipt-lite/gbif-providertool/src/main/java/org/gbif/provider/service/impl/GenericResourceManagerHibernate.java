@@ -23,14 +23,11 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.BBox;
-import org.gbif.provider.model.Point;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.EmlManager;
-import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
@@ -47,8 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class GenericResourceManagerHibernate<T extends Resource> extends GenericManagerHibernate<T> implements GenericResourceManager<T> {
 	@Autowired
 	protected AppConfig cfg;
-	@Autowired
-	private FullTextSearchManager fullTextSearchManager;
 	@Autowired
 	private EmlManager emlManager;
 	@Autowired
@@ -80,8 +75,6 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		// first remove all associated core records, taxa and regions
 		if (obj!=null){
 			Long resourceId = obj.getId();
-			// unpublish resource first
-			this.unPublish(resourceId);
 			if (resourceId != null){
 				// remove data dir
 				File dataDir = cfg.getResourceDataDir(resourceId);
@@ -98,42 +91,6 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		}
 	}
 
-	@Transactional(readOnly=false)
-	public T publish(Long resourceId) {
-		T resource = get(resourceId);
-		// make resource public. Otherwise it wont get registered with GBIF
-		resource.setStatus(PublicationStatus.modified);
-		updateRegistry(resource);
-		// in case sth goes wrong
-		Eml metadata;
-		try {
-			metadata = emlManager.publishNewEmlVersion(resource);
-			resource.updateWithMetadata(metadata);
-			// the resource is really published and the EML reflects the state of the resource
-			resource.setStatus(PublicationStatus.published);
-			fullTextSearchManager.buildResourceIndex(resourceId);
-		} catch (IOException e) {
-			log.error(String.format("Can't publish resource %s. IOException", resourceId), e);
-			resource.setStatus(PublicationStatus.unpublished);
-			save(resource);
-		}		
-		save(resource);
-		flush();
-		return resource;
-	}
-
-	@Transactional(readOnly=false)
-	public void unPublish(Long resourceId) {
-		T resource = get(resourceId);
-		resource.setStatus(PublicationStatus.unpublished);
-		save(resource);
-		fullTextSearchManager.buildResourceIndex(resourceId);
-		try {
-			registryManager.deleteResource(resource);
-		} catch (Exception e) {
-			log.warn("Failed to remove resource from registry", e);
-		}
-	}
 	
 	
 	private void updateRegistry(Resource resource){
@@ -164,16 +121,6 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 		.list();
 	}
 
-	public List<T> search(String q) {
-		List<String> ids = fullTextSearchManager.search(q);
-		List<T> results = new LinkedList<T>();
-	    for (String id : ids) {
-			T res = get(id);
-			log.debug("Adding record[" + id+ "] to results. GUID[" + res.getGuid() + "]");
-		    results.add(res);
-	    }		    
-	    return results;
-	}
 
 	public List<T> searchByBBox(BBox box) {
 		// res.geoCoverage.max.longitude

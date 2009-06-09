@@ -18,7 +18,7 @@ public class DataArchiveManagerImplTest extends ResourceTestBase{
 	public void testArchiving(){
 		this.setupOccResource();
 		try {
-			dataArchiveManager.createArchive(resource);
+			dataArchiveManager.packageArchive(resource);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

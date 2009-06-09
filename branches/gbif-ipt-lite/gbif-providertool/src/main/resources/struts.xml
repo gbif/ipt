@@ -29,7 +29,6 @@
             <!-- Interceptor to handle allowing only admins to certain actions -->
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
-            <interceptor name="resource-watcher" class="resourceInterceptor"/>
 
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
@@ -69,7 +68,6 @@
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
             <interceptor-stack name="resourceStack">
-                <interceptor-ref name="resource-watcher"/>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
             <interceptor-stack name="adminStack">
@@ -81,7 +79,6 @@
                 <interceptor-ref name="managerOnly"/>
             </interceptor-stack>
             <interceptor-stack name="portalStack">
-                <interceptor-ref name="resource-watcher"/>
                 <interceptor-ref name="defaultStack"/>
             </interceptor-stack>
         </interceptors>
@@ -89,10 +86,6 @@
         <default-action-ref name="index" />
 
         <global-results>
-            <result name="resource-busy" type="redirect-action">
-                <param name="actionName">busy</param>
-                <param name="resource_id">${#parameters.resource_id}</param>
-            </result>
             <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
             <result name="mainMenu" type="redirect-action">/index</result>
             <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
@@ -407,18 +400,9 @@
             </result>
         </action>
 
-        <action name="cache" class="org.gbif.provider.webapp.action.manage.ImportAction">
-            <result>/WEB-INF/pages/manage/cache.ftl</result>
-        </action>
         <action name="runImport" class="org.gbif.provider.webapp.action.manage.ImportAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
-                <param name="resource_id">${resource_id}</param>
-            </result>
-        </action>
-        <action name="cancelUpload" class="org.gbif.provider.webapp.action.manage.ImportAction" method="cancel">
-            <result name="success" type="redirect-action">
-                <param name="actionName">resource</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
@@ -426,13 +410,8 @@
             <result name="resource-busy">/WEB-INF/pages/manage/uploadStatus.ftl</result>
             <result name="resource-ready" type="redirect-action">
                 <param name="actionName">resource</param>
-                <param name="namespace">/</param>
                 <param name="resource_id">${resource_id}</param>
             </result>
-        </action>
-        
-        <action name="validation" class="org.gbif.provider.webapp.action.manage.MetadataAction">
-            <result>/WEB-INF/pages/manage/validation.ftl</result>
         </action>
     </package>
     
