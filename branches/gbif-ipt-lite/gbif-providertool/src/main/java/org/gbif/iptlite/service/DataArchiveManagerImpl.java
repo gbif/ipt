@@ -25,10 +25,12 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DataArchiveManager;
+import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.impl.BaseManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.TabFileWriter;
@@ -47,6 +49,9 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 	protected AppConfig cfg;
 	@Autowired
 	private Configuration freemarker;
+	@Autowired
+	private EmlManager emlManager;
+	
 
 	public File packageArchive(DataResource resource) throws IOException, IllegalStateException {
 		if (resource.getCoreMapping()==null){
@@ -64,6 +69,15 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		files.addAll(extensionFiles.keySet());
 		files.add(coreFile);
 		
+		// eml metadata
+		Eml eml = emlManager.publishNewEmlVersion(resource);
+		File emlFile = cfg.getEmlFile(resource.getId());
+		if (emlFile.exists()){
+			files.add(emlFile);
+		}else{
+			log.warn("No EML file existing to include in archive");
+		}
+		
 		// meta descriptor file
 		File descriptor = writeDescriptor(resource, extensionFiles, coreFile);
 		if (descriptor.exists()){
@@ -74,12 +88,6 @@ public class DataArchiveManagerImpl extends BaseManager implements DataArchiveMa
 		
 		// zip archive
 		File archive = cfg.getArchiveFile(resource.getId());
-		File eml = cfg.getEmlFile(resource.getId());
-		if (eml.exists()){
-			files.add(eml);
-		}else{
-			log.warn("No EML file existing to include in archive");
-		}
 		ZipUtil.zipFiles(files, archive);
 		
 		return archive;		

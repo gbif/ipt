@@ -28,6 +28,7 @@ import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.factory.DarwinCoreFactory;
 import org.gbif.provider.model.factory.RegionFactory;
 import org.gbif.provider.model.factory.TaxonFactory;
+import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericManager;
@@ -180,7 +181,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 			// update resource properties
 			resource.setLastUpload(event);
-			resource.setRecTotal(coreRecordsUploaded);			
+			resource.setRecTotal(coreRecordsUploaded);
+			resource.setStatus(PublicationStatus.published);
 
 			resourceManager.save(resource);
 			resourceManager.flush();
