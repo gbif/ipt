@@ -67,22 +67,12 @@ import org.springframework.transaction.annotation.Transactional;
 		private Set<Annotation> annotations = new HashSet<Annotation>();
 		
 		// managers
-		private GenericResourceManager<DataResource> dataResourceManager;
 		@Autowired
 		private ImportSourceFactory importSourceFactory;
 		@Autowired
 		private DataArchiveManager dataArchiveManager;
 		@Autowired
-		private DarwinCoreFactory dwcFactory;
-		@Autowired
-		private RegionFactory regionFactory;
-		@Autowired
-		private TaxonFactory taxonFactory;		
-		@Autowired
 		private EmlManager emlManager;
-		@Autowired
-		@Qualifier("viewMappingManager")
-		private GenericManager<ExtensionMapping> viewMappingManager;
 		@Autowired
 		private UploadEventManager uploadEventManager;
 
@@ -90,7 +80,6 @@ import org.springframework.transaction.annotation.Transactional;
 		@Autowired
 		public ArchiveTask(@Qualifier("dataResourceManager") GenericResourceManager<DataResource> dataResourceManager) {
 			super(dataResourceManager);
-			this.dataResourceManager=dataResourceManager;
 		}
 		
 		private void logElapsedTime(String msg){
