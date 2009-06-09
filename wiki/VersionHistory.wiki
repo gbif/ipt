@@ -1,8 +1,11 @@
 #summary Version history of releases
-== IPT 1.0 RC2 - SNAPSHOT ==
+== IPT 1.0 - SNAPSHOT ==
 Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
+
+== IPT 1.0 RC2 ==
  * more explanations on source files, dwc 
  * auto-detecting headers in source files, see Issue131
+ * updated dwc archive text format
  * Fixed bugs:
    * Issue132 fixed delete mapping bug
    * Issue130
