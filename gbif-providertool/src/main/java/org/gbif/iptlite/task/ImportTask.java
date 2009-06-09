@@ -1,4 +1,4 @@
-package org.gbif.provider.task;
+package org.gbif.iptlite.task;
 
 	import java.io.File;
 import java.io.IOException;
@@ -290,7 +290,7 @@ import org.springframework.transaction.annotation.Transactional;
 			//
 			currentActivity = "Creating data archive";
 			try {
-				File archive = dataArchiveManager.createArchive(resource);
+				File archive = dataArchiveManager.packageArchive(resource);
 				log.info("DarwinCore archive created at "+archive.getAbsolutePath());
 			} catch (IOException e) {
 				log.error("Could not write DarwinCore archive", e);

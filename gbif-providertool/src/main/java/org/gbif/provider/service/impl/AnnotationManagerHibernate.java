@@ -82,7 +82,7 @@ public class AnnotationManagerHibernate extends GenericResourceRelatedManagerHib
 		if (sourceId==null){
 			sourceId="?";
 		}
-		return annotate(resource, sourceId, null, AnnotationType.BadCoreRecord, null, String.format("Couldn't import core record with local id '%s'%s", sourceId, note));
+		return annotate(resource, sourceId, null, AnnotationType.BadCoreRecord, null, String.format("Couldn't import core record with source id '%s'%s", sourceId, note));
 	}
 	public Annotation badExtensionRecord(Resource resource, Extension extension, String sourceId, String note) {
 		note = StringUtils.trimToEmpty(note);

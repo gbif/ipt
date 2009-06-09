@@ -206,6 +206,7 @@ public class ExtensionMapping  implements BaseObject, Comparable<ExtensionMappin
 		for (PropertyMapping pm : propertyMappings.values()){
 			props.add(pm.getProperty());
 		}
+		Collections.sort(props);
 		return props;
 	}
 	@Transient

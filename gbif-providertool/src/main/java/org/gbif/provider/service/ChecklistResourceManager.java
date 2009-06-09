@@ -29,6 +29,5 @@ public interface ChecklistResourceManager extends GenericResourceManager<Checkli
 	String taxByStatusPieUrl(List<StatsCount> data, StatusType type, int width,	int height, boolean title);
 	
 	ChecklistResource setResourceStats(ChecklistResource resource);
-	public File writeTcsArchive(Long resourceId) throws IOException;
 
 }

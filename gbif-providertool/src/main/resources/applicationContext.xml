@@ -46,10 +46,6 @@
     </bean>
     
     
-    <!-- Utility singletons -->
-    <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
-    <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
-    
     <!-- Parsing freemarker templates other than struts2 -->
     <bean id="freemarkerCfg" class="freemarker.template.Configuration">
         <property name="defaultEncoding" value="utf8"/>
@@ -61,8 +57,6 @@
     <!-- Struts Interceptors -->
     <bean id="managerInterceptor" class="org.gbif.provider.webapp.ManagerInterceptor"/>
     
-    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
-    
     
     <!-- MODEL FACTORIES -->
     <bean id="extensionFactory" class="org.gbif.provider.model.factory.ExtensionFactory"/>
@@ -71,11 +65,6 @@
         <constructor-arg ref="extensionManager"/>
     </bean>
     
-    <bean id="darwinCoreFactory" class="org.gbif.provider.model.factory.DarwinCoreFactory"/>        
-    
-    <bean id="taxonFactory" class="org.gbif.provider.model.factory.TaxonFactory"/>        
-
-    <bean id="regionFactory" class="org.gbif.provider.model.factory.RegionFactory"/>        
     
     <!-- IMPORT SOURCE -->
     <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
@@ -98,7 +87,6 @@
     </bean>
 	
 	<!-- All tasks are non-singleton (prototype) -->
-    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
-    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
+    <bean id="archiveTask" scope="prototype" class="org.gbif.iptlite.task.ArchiveTask" />
     
 </beans>

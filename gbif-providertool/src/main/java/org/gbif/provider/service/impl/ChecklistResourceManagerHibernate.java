@@ -3,9 +3,7 @@ package org.gbif.provider.service.impl;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -14,21 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Taxon;
-import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.dto.StatsCount;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
-import org.gbif.provider.service.ExtensionRecordManager;
-import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.NamespaceRegistry;
 import org.gbif.provider.util.StatsUtils;
 import org.gbif.provider.util.ZipUtil;
 import org.hibernate.ScrollableResults;
@@ -42,13 +32,9 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 	private static final String TCS_ARCHIVE_FILENAME="tcsArchive.rdf";
 	private static final String TCS_TEMPLATE="/WEB-INF/pages/tapir/model/tcsDataset.ftl";
 	@Autowired
-	private ExtensionRecordManager extensionRecordManager;
-	@Autowired
 	private ExtensionManager extensionManager;
 	@Autowired
 	private ExtensionPropertyManager extensionPropertyManager;
-	@Autowired
-	private TaxonManager taxonManager;
 	@Autowired
 	private Configuration freemarkerCfg;
 	
@@ -146,57 +132,6 @@ public class ChecklistResourceManagerHibernate extends DataResourceManagerHibern
 	public ChecklistResource setResourceStats(ChecklistResource resource) {
 		super.setResourceStats(resource);
 		return resource;
-	}
-
-	public File writeTcsArchive(Long resourceId) throws IOException{
-		File archive = cfg.getArchiveTcsFile(resourceId);
-		File tcs = cfg.getResourceDataFile(resourceId, TCS_ARCHIVE_FILENAME);
-		Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tcs,false),"UTF8"));
-		// taxa=List<Taxon>
-		Template temp = freemarkerCfg.getTemplate(TCS_TEMPLATE);  
-		Map<String, Object> data = new HashMap<String, Object>();
-
-//		// namespace registry
-//		NamespaceRegistry nsr = new NamespaceRegistry(); 
-//		data.put("nsr", nsr);
-//		
-		// taxa
-		ScrollableResults results = taxonManager.scrollResource(resourceId);
-		int batchSize=10;
-		int i = 0;
-		int batch=0;
-		Boolean header=true;
-		Boolean footer=false;		
-		while(!footer){
-			i=0;
-			batch++;
-			data.put("header", header);			
-			List<Taxon> taxa = new ArrayList<Taxon>(); 
-			footer=true;
-			while(results.next() && i<batchSize){
-				footer=false;
-				Taxon taxon = (Taxon) results.get(0);
-				taxa.add(taxon);
-				if (results.isLast()){
-					footer=true;
-				}
-				i++;
-			}
-			data.put("taxa", taxa);
-			data.put("footer", footer);
-			// append taxa batch to file
-			try {
-				temp.process(data, out);
-			} catch (TemplateException e) {
-				log.error("TCS template error", e);
-			}
-			out.flush();  
-			// next batch without headers
-			header=false;
-			log.debug("TCS archive batch "+batch+" written");
-		}
-		ZipUtil.zipFile(tcs, archive);
-		return archive;
 	}
 
 }

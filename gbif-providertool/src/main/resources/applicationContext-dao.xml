@@ -72,8 +72,6 @@
         <constructor-arg value="org.gbif.provider.model.Resource"/>
     </bean>
     
-    <bean id="resourceKeywordManager" class="org.gbif.provider.service.impl.ResourceKeywordManagerJDBC" parent="abstractJDBCManager"/>
-    
     <bean id="sourceManager" class="org.gbif.provider.service.impl.SourceManagerHibernate" parent="abstractManager"/>
     
     <bean id="viewMappingManager" class="org.gbif.provider.service.impl.ViewMappingManagerHibernate" parent="abstractManager"/>        
@@ -92,40 +90,17 @@
     
     <bean id="thesaurusManager" class="org.gbif.provider.service.impl.ThesaurusManagerHibernate" parent="abstractManager"/>        
     
-    <bean id="uploadEventManager" class="org.gbif.provider.service.impl.UploadEventManagerHibernate" parent="abstractManager"/>        
-    
-    <bean id="occStatManager" class="org.gbif.provider.service.impl.OccStatManagerHibernate" parent="abstractManager"/>        
-    
-    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractManager"/>        
-    
-    <bean id="taxonManager" class="org.gbif.provider.service.impl.TaxonManagerHibernate" parent="abstractManager"/>        
-    
-    <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
-    
-    <bean id="hqlTester" class="org.gbif.provider.service.impl.HqlTesterHibernate" parent="abstractManager"/>        
-    
     <bean id="emlManager" class="org.gbif.provider.service.impl.EmlManagerImpl"/>        
     
     <bean id="registryManager" class="org.gbif.provider.service.impl.RegistryManagerImpl"/>        
     
-    <bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
-        
     <!-- cache / import manager -->
-    <bean id="extensionRecordManager" class="org.gbif.provider.service.impl.ExtensionRecordManagerJDBC"  parent="abstractJDBCManager"/>
-    
     <bean id="sourceInspectionManager" class="org.gbif.provider.service.impl.SourceInspectionManagerImpl"/>        
     
-    <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
+    <bean id="dataArchiveManager" class="org.gbif.iptlite.service.DataArchiveManagerImpl" parent="abstractManager"/>
     
-    <bean id="dataArchiveManager" class="org.gbif.provider.service.impl.DataArchiveManagerImpl" parent="abstractManager"/>
-    
-    <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerJDBC"  parent="abstractJDBCManager" lazy-init="true">
-        <lookup-method name="newOccUploadTask" bean="occUploadTask"/>
-        <lookup-method name="newChecklistUploadTask" bean="checklistUploadTask"/>
+    <bean id="cacheManager" class="org.gbif.iptlite.service.CacheManagerJDBC"  parent="abstractJDBCManager" lazy-init="true">
+        <lookup-method name="newArchiveTask" bean="archiveTask"/>
     </bean>
-    
-    
-    <!-- FULL TEXT SEARCHING -->
-    <bean id="fullTextSearchManager" class="org.gbif.provider.service.impl.FullTextSearchManagerLucene"/>
     
 </beans>

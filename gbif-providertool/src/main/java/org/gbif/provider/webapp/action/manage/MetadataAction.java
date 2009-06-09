@@ -160,39 +160,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		}
 	}
 
-	public String publish() {
-		// publish only when POSTed, not with ordinary GET
-		if (request.getMethod().equalsIgnoreCase("post")){
-			Resource res = getResourceTypeMatchingManager().publish(resource_id);
-			if (res==null){
-				return RESOURCE404;
-			}
-		}
-		return SUCCESS;
-	}
-	
-	public String publishAll() {
-		list();
-		for (Resource res : resources){
-			if (res.isDirty()){
-				getResourceTypeMatchingManager().publish(res.getId());
-				saveMessage("Published "+res.getTitle());
-			}
-		}
-		return SUCCESS;
-	}
-	public String republish() {
-		list();
-		int i=0;
-		for (Resource res : resources){
-			if (res.getStatus().equals(PublicationStatus.modified)){
-				i++;
-				getResourceTypeMatchingManager().publish(res.getId());
-			}
-		}
-		saveMessage("Republished "+i+" modified resources");
-		return SUCCESS;
-	}
 	
 	public String delete() {
 		if (resource==null){

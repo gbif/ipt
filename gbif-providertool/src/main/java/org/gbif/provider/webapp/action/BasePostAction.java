@@ -16,24 +16,9 @@
 
 package org.gbif.provider.webapp.action;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.gbif.provider.service.GeoserverManager;
-import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.impl.RegistryManagerImpl;
-import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.webapp.action.BaseAction;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.ActionContext;
 
 public class BasePostAction extends BaseAction  implements ServletRequestAware{
 	protected HttpServletRequest request;

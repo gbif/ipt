@@ -1,9 +1,8 @@
-package org.gbif.provider.service.impl;
+package org.gbif.iptlite.service;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
@@ -19,18 +18,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.AnnotationManager;
-import org.gbif.provider.service.CacheManager;
-import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.service.OccStatManager;
-import org.gbif.provider.service.RegionManager;
-import org.gbif.provider.service.TaxonManager;
-import org.gbif.provider.service.UploadEventManager;
+import org.gbif.provider.service.impl.BaseManagerJDBC;
 import org.gbif.provider.task.Task;
 import org.gbif.provider.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,18 +47,6 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 	@Qualifier("dataResourceManager")
 	private GenericResourceManager<DataResource> dataResourceManager;
 	@Autowired
-	private UploadEventManager uploadEventManager;
-	@Autowired
-	private TaxonManager taxonManager;
-	@Autowired
-	private RegionManager regionManager;
-	@Autowired
-	private DarwinCoreManager darwinCoreManager;
-	@Autowired
-	private ExtensionRecordManager extensionRecordManager;
-	@Autowired
-	private OccStatManager occStatManager;
-	@Autowired
 	private AnnotationManager annotationManager;
 
 
@@ -89,42 +69,24 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 		return f;
 	}
 
-	protected Task<UploadEvent> newOccUploadTask(){
-		throw new NotImplementedException("Should have been overriden by Springs method injection");
-	}
-	protected Task<UploadEvent> newChecklistUploadTask(){
+	protected Task<File> newArchiveTask(){
 		throw new NotImplementedException("Should have been overriden by Springs method injection");
 	}
 
 	
-	
+
 	@Transactional(readOnly=false)
-	public void prepareUpload(Long resourceId) {
+	public void clear(Long resourceId) {
 		DataResource res = dataResourceManager.get(resourceId);
 		if (res==null){
 			throw new NullPointerException("Resource must exist");
-		}
-		// flag all old records as deleted, but dont remove them from the cache
-		if (res instanceof OccurrenceResource){
-			darwinCoreManager.flagAllAsDeleted((OccurrenceResource)res);
-			//taxonManager.flagAllAsDeleted((ChecklistResource)res);
-			occStatManager.removeAll(res);
-			taxonManager.removeAll(res);
-		}else{
-			taxonManager.flagAllAsDeleted((ChecklistResource)res);
-		}
-		// remove extension data
-		for (ExtensionMapping vm : res.getExtensionMappings()){
-			vm.setRecTotal(0);
-			extensionRecordManager.removeAll(vm.getExtension(), resourceId);
 		}
 		// update resource stats
 		res.resetStats();
 		dataResourceManager.save(res);
 		log.debug("Reset resource stats");
 		
-		// remove core record related upload artifacts like taxa & regions
-		regionManager.removeAll(res);
+		// remove annotations
 		annotationManager.removeAll(res);
 
 		// remove generated files
@@ -136,28 +98,14 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 		File cacheDir = cfg.getResourceCacheDir(resourceId);
 		try {
 			FileUtils.deleteDirectory(cacheDir);
+			cacheDir.mkdir();
 		} catch (IOException e) {
-			log.error("Couldn't remove existing resource cache at "+cacheDir.getAbsolutePath(), e);
+			log.error("Couldn't clear existing resource cache at "+cacheDir.getAbsolutePath(), e);
 			e.printStackTrace();
 		}
 	}
 
-	@Transactional(readOnly=false)
-	public void clear(Long resourceId) {
-		prepareUpload(resourceId);
-		DataResource res = dataResourceManager.get(resourceId);
-		if (res != null){
-			// remove lastUpload reference			
-			res.setLastUpload(null);
-			dataResourceManager.save(res);
-			uploadEventManager.flush();
-			uploadEventManager.removeAll(res);
-			darwinCoreManager.removeAll(res);
-			taxonManager.removeAll(res);
-		}
-	}
-
-	public Set<Long> currentUploads() {
+	private Set<Long> currentUploads() {
 		for (Long id : futures.keySet()){
 			Future f = futures.get(id);
 			if (f.isDone()){
@@ -196,37 +144,11 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 	public Future runUpload(Long resourceId) {
 		DataResource res = dataResourceManager.get(resourceId);
 		// create task
-		Task<UploadEvent> task;
-		if (res instanceof OccurrenceResource){
-			task = newOccUploadTask();
-		}else{
-			task = newChecklistUploadTask();
-		}
+		Task<File> task;
+		task = newArchiveTask();
 		task.init(resourceId);
 		// submit
 		return submitUpload(task);
 	}
 
-	public void cancelUpload(Long resourceId) {
-		Future<?> f = futures.get(resourceId);
-		if (f!=null){
-			f.cancel(true);
-		}else{
-			log.warn("No task running for resource "+resourceId);
-		}
-		
-	}
-
-	public void analyze() {
-		Connection cn = getConnection();
-		String sql ="analyze";
-		try {
-			Statement st = cn.createStatement();			
-			st.execute(sql);
-		} catch (SQLException e) {
-			log.error(String.format("Couldn't execute analyze SQL per JDBC: %s", sql), e);
-		}
-	}
-
-	
 }
