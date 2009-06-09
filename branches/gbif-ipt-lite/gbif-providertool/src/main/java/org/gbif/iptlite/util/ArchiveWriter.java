@@ -23,7 +23,7 @@ import org.gbif.provider.model.dto.ExtensionRecord;
 
 
 
-public class CsvFileWriter {
+public class ArchiveWriter {
 	public static final String ID_COLUMN_NAME = "dc:identifier";
 	public static final String LINK_COLUMN_NAME = "dc:source";
 	public static final String MODIFIED_COLUMN_NAME = "dc:modified";
@@ -34,7 +34,7 @@ public class CsvFileWriter {
 	private final String guidPropertyName;
 	private boolean useLink=false;
 	
-	public CsvFileWriter(File file, ExtensionMapping view, boolean useLink) throws IOException{
+	public ArchiveWriter(File file, ExtensionMapping view, boolean useLink) throws IOException{
 		this.header=view.getMappedProperties();
 		this.file = file;
 		if (file.exists()){
@@ -54,10 +54,9 @@ public class CsvFileWriter {
 	private void writePropertyHeader() throws IOException {
 //		writer.write(valToString(ID_COLUMN_NAME));
 		writer.write(guidPropertyName);
-		writer.append("\t");
 		if (useLink){
-			writer.write(valToString(LINK_COLUMN_NAME));
 			writer.append("\t");
+			writer.write(valToString(LINK_COLUMN_NAME));
 		}
 		for (ExtensionProperty prop : header){
 			if (prop.getName().equals(guidPropertyName)){
