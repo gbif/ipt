@@ -88,7 +88,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 		
 		@Autowired
-		public ArchiveTask(GenericResourceManager<DataResource> dataResourceManager) {
+		public ArchiveTask(@Qualifier("dataResourceManager") GenericResourceManager<DataResource> dataResourceManager) {
 			super(dataResourceManager);
 			this.dataResourceManager=dataResourceManager;
 		}

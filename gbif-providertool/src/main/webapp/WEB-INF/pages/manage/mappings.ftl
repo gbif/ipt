@@ -94,11 +94,9 @@
 </#if>
 
 
-<h2><@s.text name="dataResource.cache"/></h2>
+<h2>Archive Builder</h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
-<p class="explMt">The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
-based on the transformations and mappings you have configured. 
-Depending upon the amount of data this process may take a long time during which this resource is blocked. 
+<p class="explMt">If you have configured your resource, you can now build a darwin core archive.
 </p>
 <fieldset style="padding-top:0px;">
 <div>
@@ -108,7 +106,7 @@ Depending upon the amount of data this process may take a long time during which
 			<@s.url id="logsUrl" action="annotations" namespace="/" includeParams="get"/>
 			<tr>
 				<th><@s.text name="resource.lastUpload"/></th>
-				<td>${resource.lastUpload.executionDate} (<a href="${logsUrl}">logs</a>)</td>
+				<td>${resource.lastUpload.executionDate}</td>
 			</tr>
 		</#if>
 		<tr>
@@ -128,7 +126,7 @@ Depending upon the amount of data this process may take a long time during which
 				<td>${v.recTotal}</td>
 			</tr>
 	  	</#list>
-	</table>#
+	</table>
   </@s.form>
 </div>
 
@@ -136,7 +134,7 @@ Depending upon the amount of data this process may take a long time during which
 <#if resource.hasMinimalMapping()>
 	<@s.form action="runImport" method="post" >
 	  <@s.hidden key="resource_id" />
-	  <@s.submit cssClass="button" key="button.import" />
+	  <@s.submit cssClass="button" key="button.build" />
 	</@s.form>
 <#else>
 	<p class="reminder">Please finalize at least the core mapping before you importing data</p>

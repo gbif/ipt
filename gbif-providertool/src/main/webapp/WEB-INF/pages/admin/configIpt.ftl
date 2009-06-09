@@ -6,11 +6,6 @@
 	<script type="text/javascript" src="<@s.url value='/scripts/jquery-validate/jquery.validate.min.js'/>"></script>
 	<script>
 	$(document).ready(function(){
-		$("#registerIpt").click(function(e) {
-		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot link this installation to another organisation through the IPT but will have to get in touch with GBIF personally.")) {
-				e.preventDefault();
-		    }
-		});	
 		<#-- form validation -->
 		$("#providerCfg").validate();		
 	});
@@ -36,12 +31,6 @@ The description image url should be a valid image URL that is being display on t
 <@s.form id="providerCfg" method="post">
 
 <fieldset>
-	<div class="leftxLarge">	
-		<@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
-	</div>
-	<div class="leftxLarge">
-		<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge required"/>
-	</div>
     <div>
         <div class="leftxhalf">
 			<@s.textfield key="config.ipt.contactName" required="true" cssClass="text large required"/>
@@ -72,7 +61,10 @@ The description image url should be a valid image URL that is being display on t
 		</#if>
       </div>
     </div>
-	<div style="clear:both">
+	<div style="clear:both" class="leftxLarge">
+		<@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge required"/>
+	</div>
+	<div>
 		<@s.textarea key="config.ipt.description" required="true" cssClass="text xlarge required"/>
 	</div>
 	<div class="leftxLarge">
@@ -82,7 +74,4 @@ The description image url should be a valid image URL that is being display on t
 
   <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
   <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
-  <#if !config.ipt.uddiID?? && config.org.uddiID??>
-    <@s.submit cssClass="button" id="registerIpt" key="button.register" method="register" theme="simple"/>
-  </#if>
 </@s.form>
