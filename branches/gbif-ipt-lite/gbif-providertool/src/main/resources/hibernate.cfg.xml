@@ -26,5 +26,6 @@
         <mapping class="org.gbif.provider.model.ThesaurusTerm"/>
         <mapping class="org.gbif.provider.model.ThesaurusVocabulary"/>
         <mapping class="org.gbif.provider.model.Transformation"/>
+        <mapping class="org.gbif.provider.model.UploadEvent"/>
     </session-factory>
 </hibernate-configuration>

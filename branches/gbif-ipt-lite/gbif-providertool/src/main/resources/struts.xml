@@ -221,9 +221,6 @@
         <action name="vocSelect" class="org.gbif.provider.webapp.action.manage.VocabularyAction" method="voc">
             <result>/WEB-INF/pages/ajax/vocSelect.ftl</result>
         </action>
-        <action name="keywords" class="org.gbif.provider.webapp.action.portal.KeywordAction">
-            <result>/WEB-INF/pages/ajax/keywords.ftl</result>
-        </action>
         <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction" method="show">
             <result>/WEB-INF/pages/ajax/annotation.ftl</result>
         </action>
@@ -413,6 +410,14 @@
                 <param name="resource_id">${resource_id}</param>
             </result>
         </action>
+        
+        <!-- annotations taken from portal code -->
+        <action name="annotations" class="org.gbif.provider.webapp.action.portal.AnnotationAction" method="list">
+            <result>/WEB-INF/pages/portal/annotationList.ftl</result>
+        </action>
+        <action name="annotation" class="org.gbif.provider.webapp.action.portal.AnnotationAction">
+            <result>/WEB-INF/pages/portal/annotationList.ftl</result>
+        </action>        
     </package>
     
     
