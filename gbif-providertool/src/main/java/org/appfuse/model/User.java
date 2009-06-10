@@ -53,8 +53,6 @@ public class User extends BaseObject implements Serializable, UserDetails {
      * Default constructor - creates a new instance with no values set.
      */
     public User() {
-    	// add manager role by default for IPT lite
-    	roles.add(new Role(Constants.MANAGER_ROLE));
     }
 
     /**

@@ -547,7 +547,7 @@
             <id>markus</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
-                <ipt.datadir>/Users/markus/Desktop/data</ipt.datadir>
+                <ipt.datadir>/Users/markus/Desktop/ipt-lite-data</ipt.datadir>
                 <ipt.mail.from>IPT &lt;m.doering@mac.com&gt;</ipt.mail.from>
                 <ipt.dev>true</ipt.dev>
             </properties>
