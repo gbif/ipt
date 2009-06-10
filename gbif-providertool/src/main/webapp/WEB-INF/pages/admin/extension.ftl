@@ -26,26 +26,25 @@
 
 <table class="extensionTable">	
  <tr>
-	<th><@s.text name='extension.name'/></th>
-	<td>${extension.name}</td>
+	<th><@s.text name='extension.link'/></th>
+	<td><#if extension.link??><a href="${extension.link}" target="_blank">${extension.link}</a><#else> unavailable</#if></td>
  </tr>
  <tr>
 	<th><@s.text name='extension.tablename'/></th>
 	<td>${tableName}</td>
  </tr>
  <tr>
-	<th><@s.text name='extension.link'/></th>
-	<td><#if extension.link??><img src="<@s.url value='/images/assets/bullet_blue.gif'/>"/><a href="${extension.link}" target="_blank"> view info</a><#else><img src="<@s.url value='/images/assets/bullet_grey.gif'/>"/> unaviable</#if></td>
- </tr>
-  <tr>
 	<th>Installed</th>
 	<td><#if extension.installed==true><img src="<@s.url value='/images/assets/bullet_green.gif'/>"/> yes<#else><img src="<@s.url value='/images/assets/bullet_delete.gif'/>"/> no</#if></td>
  </tr>
  <tr>
 	<th><@s.text name='extension.properties'/></th>
 	<td>
+	  <#list properties?keys as group>
+	    <br/>
+	    <h4>${group}</h4>
 		<ul class="plain">
-		<#list extension.properties as p>
+		<#list properties[group] as p>
 			<li>
 				<#if p??>
 				<a class="property">${p.name}</a>
@@ -85,6 +84,7 @@
 			</li>
 		</#list>
 		</ul>
+	  </#list>
 	</td>
  </tr>
 </table>
