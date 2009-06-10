@@ -2,8 +2,8 @@
 <head>
     <title>${cfg.ipt.title}</title>
     <meta name="menu" content="HomeMenu"/>
-    <meta name="submenu" content="metadata"/>
-    <meta name="decorator" content="fullsize"/>
+	<meta name="submenu" content="manage_resource"/>    
+	<meta name="heading" content="Basic Metadata"/>    
 </head>
 
 

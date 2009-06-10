@@ -6,7 +6,10 @@
     <Menus>
         <Menu name="HomeMenu" title="menu.home" page="/index.html">            
         </Menu>
-        <Menu name="ManagerMenu" title="menu.manager" page="/manage/resources.html?resourceType=meta" roles="ROLE_ADMIN,ROLE_MANAGER">
+        <Menu name="ManagerMenu" title="menu.manager" page="/manage/resources.html" roles="ROLE_ADMIN,ROLE_MANAGER">
+            <Item name="Resources" title="menu.admin.config" page="/manage/resources.html"/>
+            <Item name="Extensions" title="menu.admin.extensions" page="/manage/extensions.html"/>
+            <Item name="Vocabularies" title="menu.admin.thesaurus" page="/manage/vocabularies.html"/>
         </Menu> 
         <Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN" width="120" page="/admin/config.html">
             <Item name="ProviderCfg" title="menu.admin.config" page="/admin/config.html"/>
