@@ -16,18 +16,27 @@
 
 package org.gbif.provider.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.UploadEvent;
 import org.gbif.provider.model.dto.StatsCount;
-import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.service.AnnotationManager;
+import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.TransformationManager;
+import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.util.GChartBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -46,6 +55,14 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 	private ViewMappingManager mappingManager;
 	@Autowired
     private SourceManager sourceManager;
+	@Autowired
+	private AnnotationManager annotationManager;
+	@Autowired
+	private UploadEventManager uploadEventManager;
+	@Autowired
+	@Qualifier("propertyMappingManager")
+    private GenericManager<PropertyMapping> propertyMappingManager;
+
 
 	public DataResourceManagerHibernate(Class<T> persistentClass) {
 		super(persistentClass);
@@ -59,6 +76,13 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		if (obj!=null){
 			Long resourceId = obj.getId();
 			log.debug("Trying to remove data resource "+resourceId);
+			obj.resetStats();
+			save(obj);
+			flush();
+			// remove upload events after we have set the resource.lastEvent to null
+			uploadEventManager.removeAll(obj);
+			// remove annotations
+			annotationManager.removeAll(obj);
 			// remove transformations
 			transformationManager.removeAll(obj);
 			// remove mappings
@@ -72,7 +96,7 @@ public class DataResourceManagerHibernate<T extends DataResource> extends Generi
 		super.remove(obj);
 	}
 
-	
+
 	@Override
 	public T get(Long id) {
 		T obj = super.get(id);

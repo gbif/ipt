@@ -12,15 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import javax.mail.MethodNotSupportedException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.apache.bcel.verifier.exc.InvalidMethodException;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.AnnotationManager;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.impl.BaseManagerJDBC;
 import org.gbif.provider.task.Task;
@@ -75,37 +79,8 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 
 	
 
-	@Transactional(readOnly=false)
-	public void clear(Long resourceId) {
-		DataResource res = dataResourceManager.get(resourceId);
-		if (res==null){
-			throw new NullPointerException("Resource must exist");
-		}
-		// update resource stats
-		res.resetStats();
-		dataResourceManager.save(res);
-		log.debug("Reset resource stats");
-		
-		// remove annotations
-		annotationManager.removeAll(res);
 
-		// remove generated files
-		File dump = cfg.getArchiveFile(resourceId);
-		dump.delete();
-		log.debug("Removed data archive");
-		
-		// remove cached static files
-		File cacheDir = cfg.getResourceCacheDir(resourceId);
-		try {
-			FileUtils.deleteDirectory(cacheDir);
-			cacheDir.mkdir();
-		} catch (IOException e) {
-			log.error("Couldn't clear existing resource cache at "+cacheDir.getAbsolutePath(), e);
-			e.printStackTrace();
-		}
-	}
-
-	private Set<Long> currentUploads() {
+	public Set<Long> currentUploads() {
 		for (Long id : futures.keySet()){
 			Future f = futures.get(id);
 			if (f.isDone()){
@@ -151,4 +126,22 @@ public class CacheManagerJDBC extends BaseManagerJDBC implements CacheManager{
 		return submitUpload(task);
 	}
 
+	
+	
+	
+	public void analyze() {
+		throw new InvalidMethodException("Cache method not supported due to missing cache db");
+	}
+
+	public void cancelUpload(Long resourceId) {
+		throw new InvalidMethodException("Cache method not supported due to missing cache db");
+	}
+
+	public void prepareUpload(Long resourceId) {
+		throw new InvalidMethodException("Cache method not supported due to missing cache db");
+	}
+
+	public void clear(Long resourceId) {
+		throw new InvalidMethodException("Cache method not supported due to missing cache db");
+	}
 }

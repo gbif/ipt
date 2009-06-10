@@ -16,14 +16,10 @@
 
 package org.gbif.iptlite.action;
 
-import org.gbif.iptlite.service.CacheManager;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.webapp.action.BaseAction;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.opensymphony.xwork2.Preparable;
 

@@ -1,7 +1,7 @@
 <head>
     <title><@s.text name="occResourceList.title"/></title>
     <meta name="menu" content="ManageMenu"/>
-	<meta name="submenu" content="manage_resource"/>    
+    <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="<@s.text name='extensionList.heading'/>"/>
 </head>
 

@@ -1,7 +1,7 @@
 <head>
     <title>${vocabulary.title} Vocabulary</title>
     <meta name="menu" content="ManageMenu"/>
-	<meta name="submenu" content="manage_resource"/>    
+    <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="${vocabulary.title} Vocabulary"/>
 </head>
 

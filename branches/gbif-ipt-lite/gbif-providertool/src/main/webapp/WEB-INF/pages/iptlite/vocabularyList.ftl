@@ -1,7 +1,7 @@
 <head>
     <title>Extension vocabularies</title>
     <meta name="menu" content="ManageMenu"/>
-	<meta name="submenu" content="manage_resource"/>    
+    <meta name="decorator" content="fullsize"/>
     <meta name="heading" content="Extension vocabularies"/>
 </head>
 
@@ -17,7 +17,7 @@
 	</tr>
 <#list vocabularies as voc>
 	<tr>
-		<td><a href="vocabulary.html?id=${voc.id?c}">${voc.title}</a></td>
+		<td><a href="vocab.html?id=${voc.id?c}">${voc.title}</a></td>
 		<td>${voc.uri!}</td>
 	</tr>
 </#list>
