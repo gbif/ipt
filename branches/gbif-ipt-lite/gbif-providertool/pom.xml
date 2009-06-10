@@ -6,7 +6,7 @@
     <artifactId>gbif-ipt-lite</artifactId>
     <packaging>war</packaging>
     <!-- -SNAPSHOT -->
-    <version>1.0-lite-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>GBIF Integrated Publishing Toolkit - lite</name>
     <description>
         The GBIF IPT is an open source, Java (TM) based web application that connects and serves three types of biodiversity data: taxon primary occurrence data, taxon checklists and general resource metadata.
@@ -558,7 +558,8 @@
             <properties>
                 <maven.test.skip>true</maven.test.skip>
                 <ipt.datadir>/usr/share/tomcat5/ipt-lite-data</ipt.datadir>
-                <ipt.mail.from>IPT-GBIFS &lt;support@gbif.org&gt;</ipt.mail.from>
+                <ipt.mail.from>IPT-GBIFS &lt;portal@gbif.org&gt;</ipt.mail.from>
+                <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
             </properties>
         </profile>
 
