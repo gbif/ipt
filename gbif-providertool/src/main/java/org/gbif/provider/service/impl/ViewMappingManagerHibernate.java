@@ -26,7 +26,7 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
 		List<ExtensionMapping> views = this.getAll(resource.getId());
 		int i = 0;
 		for (ExtensionMapping vm : views){
-			remove(vm);
+			remove(vm, true);
 			i++;
 		}
 		return i;
@@ -34,13 +34,12 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
 
 	@Override
 	public void remove(ExtensionMapping obj) {
-		// cant delete core extension mappings. They will just be emptied to look like new ones
-		if (!obj.isCore()){
-			DataResource res = obj.getResource();
-			res.removeExtensionMapping(obj);
-			super.remove(obj);
-			universalSave(res);
-		}else{
+		remove(obj, false);
+	}
+	
+	private void remove(ExtensionMapping obj, boolean force) {
+		// cant delete core extension mappings unless forced. They will just be emptied to look like new ones
+		if (obj.isCore() && !force){
 			// reset core mapping
 			obj.reset();
 			this.save(obj);
@@ -49,6 +48,13 @@ public class ViewMappingManagerHibernate extends GenericResourceRelatedManagerHi
 			for (PropertyMapping pm : pms){
 				propertyMappingManager.remove(pm);
 			}
+		}else{
+			DataResource res = obj.getResource();
+			res.removeExtensionMapping(obj);
+			super.remove(obj);
+			universalSave(res);
 		}
 	}
+	
+
 }

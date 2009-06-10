@@ -426,23 +426,23 @@
         
         <!-- EXTENSIONS -->
         <action name="extensions" class="org.gbif.provider.webapp.action.admin.ExtensionAction" method="list">
-            <result type="freemarker">/WEB-INF/pages/iptlite/extensionList.ftl</result>
+            <result>/WEB-INF/pages/iptlite/extensionList.ftl</result>
         </action>
         <action name="extension" class="org.gbif.provider.webapp.action.admin.ExtensionAction">
-            <result type="freemarker">/WEB-INF/pages/iptlite/extension.ftl</result>
+            <result>/WEB-INF/pages/iptlite/extension.ftl</result>
         </action>
         <!-- VOCABULARIES -->
-        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
-            <result type="freemarker">/WEB-INF/pages/iptlite/vocabularyList.ftl</result>
+        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="list">
+            <result>/WEB-INF/pages/iptlite/vocabularyList.ftl</result>
         </action>
-        <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
-            <result type="freemarker">/WEB-INF/pages/iptlite/vocabulary.ftl</result>
+        <action name="vocab" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
+            <result>/WEB-INF/pages/iptlite/vocabulary.ftl</result>
         </action>
         <action name="concept" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="concept">
-            <result type="freemarker">/WEB-INF/pages/iptlite/concept.ftl</result>
+            <result>/WEB-INF/pages/iptlite/concept.ftl</result>
         </action>        
-        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
-            <result type="freemarker">
+        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
+            <result>
                 <param name="location">/WEB-INF/pages/admin/vocabularyExport.ftl</param>                
                 <param name="contentType">text/xml</param>
             </result>
@@ -571,13 +571,13 @@
         </action>
 
         <!-- VOCABULARIES -->
-        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
+        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="list">
             <result type="freemarker">/WEB-INF/pages/admin/vocabularyList.ftl</result>
         </action>
-        <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
+        <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
             <result type="freemarker">/WEB-INF/pages/admin/vocabulary.ftl</result>
         </action>
-        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
+        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
             <result type="freemarker">
                 <param name="location">/WEB-INF/pages/admin/vocabularyExport.ftl</param>                
                 <param name="contentType">text/xml</param>

@@ -7,7 +7,7 @@
     <@display.column property="creator.fullName" sortable=true title='${struts.getText("resource.creator")}'/>
     <@display.column property="type" sortable=true title='${struts.getText("resource.type")}'/>
 
-    <#if res.isPublic()>
+    <#if (res?? && res.isPublic())>
       <@display.column value='<a href="${cfg.getWebappURL("eml.xml")}?resource_id=${res.id}">EML</a>' title='${struts.getText("resource.metadata")}' />
       <@display.column value='<a href="${cfg.getWebappURL("archive.do")}?resource_id=${res.id}">download</a>' title='${struts.getText("resource.archive")}' />
     <#else>

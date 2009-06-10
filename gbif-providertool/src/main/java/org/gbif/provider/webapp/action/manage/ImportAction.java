@@ -1,6 +1,6 @@
 package org.gbif.provider.webapp.action.manage;
 
-import org.gbif.iptlite.service.CacheManager;
+import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 

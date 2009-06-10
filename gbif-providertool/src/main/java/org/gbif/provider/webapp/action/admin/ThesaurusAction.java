@@ -42,11 +42,11 @@ public class ThesaurusAction extends BaseAction {
     private Long id;
 
 
-	public String execute(){
+	public String list(){
 		vocabularies = thesaurusManager.getVocabularies();
 		return SUCCESS;
 	}
-	public String vocabulary(){
+	public String execute(){
 		vocabulary = thesaurusManager.getVocabulary(id);
 		concepts = thesaurusManager.getAllConcepts(vocabulary.getUri());
 		return SUCCESS;
