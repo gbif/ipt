@@ -46,24 +46,13 @@ import org.mortbay.start.Main;
  * @author Justin Deoliveira, OpenGEO
  *
  */
-public class GeoServerConsole {
+public class IptServerConsole {
 	private static final String APPNAME = "IPT";
 
     /**
-     * Strategy for controlling a Jetty instance.
-     */
-    public interface Handler {
-        void start() throws Exception;
-        boolean isStarted() throws Exception;
-        
-        void stop() throws Exception;
-        boolean isStopped() throws Exception;
-    }
-    
-    /**
      * Handler which runs an internal instance of {@link Server}.
      */
-    public static class DebugHandler implements Handler {
+    public static class DebugHandler implements JettyHandler {
 
         /**
          * the server instance.
@@ -131,7 +120,7 @@ public class GeoServerConsole {
     /**
      * Handler which runs a live jetty instance via {@link Main}. 
      */
-    public static class ProductionHandler implements Handler {
+    public static class ProductionHandler implements JettyHandler {
 
         Main main = new Main();
         
@@ -169,13 +158,13 @@ public class GeoServerConsole {
     /**
      * life cycle handler
      */
-    Handler handler;
+    JettyHandler handler;
     /**
      * geoserver data directory
      */
     File dd;
     
-    public GeoServerConsole(Handler handler) {
+    public IptServerConsole(JettyHandler handler) {
         this.handler = handler;
         
         w = new Frame();
@@ -434,7 +423,7 @@ public class GeoServerConsole {
             
             setSize( 550, 350 );
             setTitle( APPNAME );
-            setIconImage( Toolkit.getDefaultToolkit().createImage( GeoServerConsole.class.getResource( "gs.gif")) );
+            setIconImage( Toolkit.getDefaultToolkit().createImage( IptServerConsole.class.getResource( "gs.gif")) );
             pack();
             
             addWindowListener(new WindowAdapter(){

@@ -1,18 +1,17 @@
 package org.geoserver.console;
 
-import org.geoserver.console.GeoServerConsole.DebugHandler;
-import org.geoserver.console.GeoServerConsole.Handler;
-import org.geoserver.console.GeoServerConsole.ProductionHandler;
+import org.geoserver.console.IptServerConsole.DebugHandler;
+import org.geoserver.console.IptServerConsole.ProductionHandler;
 
 /**
- * Entrance point to {@link GeoServerConsole} application.
+ * Entrance point to {@link IptServerConsole} application.
  * 
  * @author Justin Deoliveira, OpenGEO
  */
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Handler h = null;
+        JettyHandler h = null;
         for ( int i = 0; args != null && i < args.length; i++) {
             if ( "--debug".equalsIgnoreCase( args[i] ) ) {
                 h = new DebugHandler();
@@ -21,6 +20,6 @@ public class Main {
         if ( h == null ) {
             h = new ProductionHandler();
         }
-        GeoServerConsole console = new GeoServerConsole( h );
+        IptServerConsole console = new IptServerConsole( h );
     }
 }
