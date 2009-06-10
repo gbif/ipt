@@ -20,6 +20,6 @@ public class Main {
         if ( h == null ) {
             h = new ProductionHandler();
         }
-        IptServerConsole console = new IptServerConsole( h );
+        IptLiteServerConsole console = new IptLiteServerConsole( h );
     }
 }
