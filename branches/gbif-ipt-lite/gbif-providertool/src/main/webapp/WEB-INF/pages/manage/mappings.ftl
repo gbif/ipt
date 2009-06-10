@@ -16,7 +16,7 @@
 	<p class="explMt">
 		Data in the IPT is organised along the <a href="#star">star schema</a>. 
 		There is a core, fixed table based on Darwin Core terms that you need to map your data to.
-		And there are a number of extension tables that you can optionally configure and the IPT administrator can define.
+		And there are a number of <a href="extensions.html">extension tables</a> that you can optionally configure and the IPT administrator can define.
 		Each extension can hold multiple records for a single core record, e.g. you can publish many images for a species or occurrence. 
 	</p>
 </#if>
@@ -78,6 +78,7 @@
 	   <@s.hidden key="mid" value=""/>
 		<div class="leftMedium">
 		 	<@s.select key="mappings.extensions" name="eid" required="false" emptyOption="false" list="extensions" listKey="id" listValue="name" cssClass="text medium"/>
+		 	<a href="extensions.html"><img src="<@s.url value='/images/assets/info_on.png'/>" /></a>
 		</div>
 		<div class="leftMedium">
 		 	<@s.select key="mappings.sources" name="sid" required="false" emptyOption="false" list="sources" listKey="id" listValue="name" cssClass="text medium"/>
@@ -89,6 +90,7 @@
 			</li>
 		</div>
 	  </@s.form>
+	  
 	</div>
 </fieldset>
 </#if>
