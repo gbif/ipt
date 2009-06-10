@@ -783,13 +783,13 @@
         </action>
 
         <!-- VOCABULARIES -->
-        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
+        <action name="vocabularies" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="list">
             <result type="freemarker">/WEB-INF/pages/admin/vocabularyList.ftl</result>
         </action>
-        <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
+        <action name="vocabulary" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
             <result type="freemarker">/WEB-INF/pages/admin/vocabulary.ftl</result>
         </action>
-        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction" method="vocabulary">
+        <action name="vocabularyExport" class="org.gbif.provider.webapp.action.admin.ThesaurusAction">
             <result type="freemarker">
                 <param name="location">/WEB-INF/pages/admin/vocabularyExport.ftl</param>                
                 <param name="contentType">text/xml</param>
