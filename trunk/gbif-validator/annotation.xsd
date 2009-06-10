@@ -2,48 +2,56 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:element name="annotations">
     <xs:complexType>
-        <xs:sequence>
-            <xs:element name="file" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="annotation" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="note" type="xs:string"></xs:element>    
-                                    <xs:element name="suggestedValue" minOccurs="0" maxOccurs="unbounded">
-                                        <xs:annotation><xs:documentation>A proposed new value for a single property. Multiple proposal can form a single annotation. If multiple proposals for the same record are needed (because of no 100% match), multiple annotations should be created</xs:documentation></xs:annotation>
-                                        <xs:complexType>
-                                            <xs:attribute name="property" type="xs:string"></xs:attribute>
-                                            <xs:attribute name="value" type="xs:string"></xs:attribute>
-                                        </xs:complexType>
-                                    </xs:element>    
-                                </xs:sequence>
-                                <xs:attribute name="coreid">
-                                    <xs:annotation>
-                                        <xs:documentation>The ID of the core record this annotation belongs to, even if its an annotation about an extension record of that core record. Alos see lineNumber for annotations about extension records</xs:documentation>
-                                    </xs:annotation>
-                                </xs:attribute>
-                                <xs:attribute name="lineNumber">
-                                    <xs:annotation>
-                                        <xs:documentation>The optional line number of the row in an extension file this annotations is about. In combination with filename this gives a unique ID for extension records which otherwise can't be identified</xs:documentation>
-                                    </xs:annotation>
-                                </xs:attribute>
-                                <xs:attribute name="probability" type="probabilityType">
-                                    <xs:annotation>
-                                        <xs:documentation>The optional probability the suggested new values are correct</xs:documentation>
-                                    </xs:annotation>                                    
-                                </xs:attribute>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                    <xs:attribute name="filename">
-                        <xs:annotation>
-                            <xs:documentation>The name of the file within the archive that annotations are grouped by</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
+        <xs:choice>
+            <xs:sequence>
+                <xs:element name="file" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="annotation" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="note" type="xs:string"></xs:element>    
+                                        <xs:element name="suggestedValue" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation><xs:documentation>A proposed new value for a single property. Multiple proposal can form a single annotation. If multiple proposals for the same record are needed (because of no 100% match), multiple annotations should be created</xs:documentation></xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attribute name="property" type="xs:string"></xs:attribute>
+                                                <xs:attribute name="value" type="xs:string"></xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>    
+                                    </xs:sequence>
+                                    <xs:attribute name="type" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The optional type of annotation if the service can provide it.  E.g. broken pointers / foreign keys </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="coreid" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>The ID of the core record this annotation belongs to, even if its an annotation about an extension record of that core record. Alos see lineNumber for annotations about extension records</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="lineNumber" type="xs:positiveInteger">
+                                        <xs:annotation>
+                                            <xs:documentation>The optional line number of the row in an extension file this annotations is about. In combination with filename this gives a unique ID for extension records which otherwise can't be identified</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="probability" type="probabilityType">
+                                        <xs:annotation>
+                                            <xs:documentation>The optional probability the suggested new values are correct</xs:documentation>
+                                        </xs:annotation>                                    
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="filename">
+                            <xs:annotation>
+                                <xs:documentation>The name of the file within the archive that annotations are grouped by</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:element name="error" minOccurs="0" maxOccurs="1" type="xs:string" />
+        </xs:choice>
         <xs:attribute name="score" type="xs:string"><xs:annotation><xs:documentation>An optional overall score for the entire dataset, e.g. to attest this dataset has passed certain criteria</xs:documentation></xs:annotation></xs:attribute>
         <xs:attribute name="source" type="xs:anyURI"><xs:annotation><xs:documentation>The URI to the dataset/darwin core archive used for this validation</xs:documentation></xs:annotation></xs:attribute>
         <xs:attribute name="creator" type="xs:string"><xs:annotation><xs:documentation>The agent which created the annotations</xs:documentation></xs:annotation></xs:attribute>
