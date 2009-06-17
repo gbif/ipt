@@ -1,7 +1,6 @@
 #summary Roadmap for upcoming releases
 
-We try our best to keep scheduled releases. 
-Estimated releases can vary considerably and are shown mainly to give an idea of what is coming next.
+Estimated release dates can vary considerably and are shown mainly to indicate forthcoming functionality.
 
 === IPT 1.1 - "Response to early adopters feedback" ===
 not currently scheduled
@@ -23,7 +22,7 @@ not currently scheduled
    * The IPT must support the outcomes of the extension registration and tagging work
 
 === IPT 1.2 - "DarwinCore" ===
-scheduled for 1.9.2009 (depends on final dwc ratification)
+schedule dependent on final dwc ratification
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
  * simplified registry interaction:
    * organisation registration only done externally (not in ipt admin UI)
