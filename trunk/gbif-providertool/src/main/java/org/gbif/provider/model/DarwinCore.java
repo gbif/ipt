@@ -68,7 +68,7 @@ import org.hibernate.validator.NotNull;
 public class DarwinCore implements CoreRecord, Comparable<DarwinCore>{
 	public static final Set<String> INTEGER_PROPERTIES = new HashSet<String>(Arrays.asList("YearSampled","DayOfMonth","StartDayOfYear","EndDayOfYear","IndividualCount","CatalogNumberNumeric"));
 	public static final Set<String> DOUBLE_PROPERTIES = new HashSet<String>(Arrays.asList("CoordinateUncertaintyInMeters", "MaximumDepthInMeters", "MaximumElevationInMeters","DistanceAboveSurfaceInMetersMaximum","DistanceAboveSurfaceInMetersMinimum"));
-	public static final Set<String> DATE_PROPERTIES = new HashSet<String>(Arrays.asList("DateIdentified", "LatestDateCollected"));
+	public static final Set<String> DATE_PROPERTIES = new HashSet<String>(Arrays.asList("DateIdentified", "EarliestDateCollected", "LatestDateCollected"));
 	public static final Set<String> TOKEN_PROPERTIES = new HashSet<String>(Arrays.asList("kingdom", "phylum", "class", "order", "family", "genus", "subgenus"));	
 
 
