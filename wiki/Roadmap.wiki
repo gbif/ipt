@@ -15,7 +15,7 @@ not currently scheduled
    * Logged as issues tagged with "Configuration" in Issues list
    * Inline help, tooltips etc to guide users through process 
 
- * Extensions and vocabularies
+ * GBIF registry interaction
    * Issues relating to this section are tagged with "Registry"
    * The GBIF registry (a component of the GBRDS) is under active development
    * The registry will allows for managing the extensions including the tagging of extensions (e.g. gisin.org:Invasive extensions)
