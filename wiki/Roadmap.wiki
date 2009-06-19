@@ -29,7 +29,13 @@ schedule dependent on final dwc ratification
    * write resource tags (= metadata keywords) to registry
 
 
-=== IPT 1.3 - "Performance" ===
+=== IPT 1.3 - "Annotation" ===
+not scheduled, see Issue
+ * asynchronous [http://code.google.com/p/gbif-annotation-processor/wiki/AnnotationAPI annotation API] added for validation services
+ * 
+
+
+=== IPT 1.4 - "Performance" ===
 not scheduled
  * separate cache database into 1 shared resource configuration db and 1 data cache db per resource: Issue157
  * provide single default root node for taxonomic and regional tree: Issue158
@@ -38,10 +44,7 @@ not scheduled
    * Performance reasons primarily
    * Replace with custom user/role management (check status of gbif openid offerings?)
    * Consider simplifying main page markup and CSS (lower priority)
- 
-=== IPT 1.4 - "Validation" ===
-not scheduled
- * asynchronous annotation API added for validation services
+
 
 === IPT 1.5 - "Transformations" ===
 not scheduled
