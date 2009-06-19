@@ -36,7 +36,12 @@ schedule dependent on final dwc ratification
    * write resource tags (= metadata keywords) to registry
 
 
-=== IPT 1.4 - "Performance" ===
+=== IPT 1.4 - "Transformations" ===
+not scheduled
+ * advanced mapping/transformations
+
+
+=== IPT 1.5 - "Performance" ===
 not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label: Performance Performance issues]
  * separate cache database into 1 shared resource configuration db and 1 data cache db per resource: Issue157
  * provide single default root node for taxonomic and regional tree: Issue158
@@ -47,9 +52,6 @@ not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=
    * Consider simplifying main page markup and CSS (lower priority)
 
 
-=== IPT 1.5 - "Transformations" ===
-not scheduled
- * advanced mapping/transformations
 
 
 === IPT 2.0 ===
