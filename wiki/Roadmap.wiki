@@ -32,7 +32,7 @@ schedule dependent on final dwc ratification
 === IPT 1.3 - "Annotation" ===
 not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label:Annotation Annotation issues]
  * asynchronous [http://code.google.com/p/gbif-annotation-processor/wiki/AnnotationAPI annotation API] added for validation services
- * 
+ * download of annotations as CSV file
 
 
 === IPT 1.4 - "Performance" ===
