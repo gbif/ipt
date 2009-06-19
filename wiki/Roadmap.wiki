@@ -21,18 +21,19 @@ not currently scheduled
    * The registry will allows for managing the extensions including the tagging of extensions (e.g. gisin.org:Invasive extensions)
    * The IPT must support the outcomes of the extension registration and tagging work
 
-=== IPT 1.2 - "DarwinCore" ===
+
+=== IPT 1.2 - "Annotation" ===
+not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label:Annotation Annotation issues]
+ * asynchronous [http://code.google.com/p/gbif-annotation-processor/wiki/AnnotationAPI annotation API] added for validation services
+ * download of annotations as CSV file
+
+
+=== IPT 1.3 - "DarwinCore" ===
 schedule dependent on final dwc ratification
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
  * simplified registry interaction:
    * organisation registration only done externally (not in ipt admin UI)
    * write resource tags (= metadata keywords) to registry
-
-
-=== IPT 1.3 - "Annotation" ===
-not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label:Annotation Annotation issues]
- * asynchronous [http://code.google.com/p/gbif-annotation-processor/wiki/AnnotationAPI annotation API] added for validation services
- * download of annotations as CSV file
 
 
 === IPT 1.4 - "Performance" ===
