@@ -160,6 +160,24 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		}
 	}
 
+	public String publish() {
+		// publish only when POSTed, not with ordinary GET
+		if (request.getMethod().equalsIgnoreCase("post")){
+			Resource res = getResourceTypeMatchingManager().publish(resource_id);
+			if (res==null){
+				return RESOURCE404;
+			}
+		}
+		return SUCCESS;
+	}
+	
+	public String unpublish() {
+		// unpublish only when POSTed, not with ordinary GET
+		if (request.getMethod().equalsIgnoreCase("post")){
+			getResourceTypeMatchingManager().unPublish(resource_id);
+		}
+		return SUCCESS;
+	}
 	
 	public String delete() {
 		if (resource==null){

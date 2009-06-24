@@ -63,6 +63,12 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
     		.setParameter("userId", userId).list();
 	}
 	
+	public List<T> getPublishedResources() {
+        return query(String.format("select res from %s res where status>=:status", persistentClass.getName()))
+        .setParameter("status", PublicationStatus.modified)
+		.list();
+	}
+
 	public List<Long> getPublishedResourceIDs() {
         return query(String.format("select id from %s where status>=:status", persistentClass.getName()))
         .setParameter("status", PublicationStatus.modified)
@@ -92,6 +98,20 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
 	}
 
 	
+	@Transactional(readOnly=false)
+	public T publish(Long resourceId) {
+		T resource = get(resourceId);
+		resource.setStatus(PublicationStatus.published);
+		save(resource);
+		return resource;
+	}
+
+	@Transactional(readOnly=false)
+	public void unPublish(Long resourceId) {
+		T resource = get(resourceId);
+		resource.setStatus(PublicationStatus.unpublished);
+		save(resource);
+	}
 	
 	private void updateRegistry(Resource resource){
 		try {
