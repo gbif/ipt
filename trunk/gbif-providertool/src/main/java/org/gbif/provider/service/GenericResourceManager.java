@@ -37,7 +37,7 @@ public interface GenericResourceManager<T extends Resource> extends GenericManag
 	 * @return list of resourceIDs
 	 */
 	public List<Long> getPublishedResourceIDs();
-	
+	public List<T> getPublishedResources();
 	/** get latest modified resources
 	 * @param startPage starting page, first page = 1
 	 * @param pageSize
