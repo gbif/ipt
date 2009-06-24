@@ -133,7 +133,7 @@
         </action-->
         
         <!-- Application Home -->
-        <action name="index" class="org.gbif.iptlite.action.IndexAction">
+        <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
             <result type="freemarker">/WEB-INF/pages/iptlite/index.ftl</result>
         </action>
 
@@ -209,6 +209,13 @@
     
     <!-- undecorated AJAX calls needed by the portal -->
     <package name="ajax" namespace="/ajax" extends="default-freemarker">
+        <action name="publish" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="publish">
+            <result>/WEB-INF/pages/ajax/publish.ftl</result>
+        </action>
+        <action name="unpublish" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="unpublish">
+            <result>/WEB-INF/pages/ajax/publish.ftl</result>
+        </action>
+
         <action name="resourceStatus" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
             <result name="resource-busy">/WEB-INF/pages/ajax/status.ftl</result>
             <result name="resource-ready">/WEB-INF/pages/ajax/status.ftl</result>
