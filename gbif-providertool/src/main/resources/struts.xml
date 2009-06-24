@@ -134,7 +134,7 @@
         
         <!-- Application Home -->
         <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
-            <result type="freemarker">/WEB-INF/pages/iptlite/index.ftl</result>
+            <result type="freemarker">/WEB-INF/pages/index.ftl</result>
         </action>
 
     </package>

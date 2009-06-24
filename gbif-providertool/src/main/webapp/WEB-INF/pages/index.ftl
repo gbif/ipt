@@ -8,16 +8,15 @@
 
 
 <h1>${cfg.ipt.title}</h1>
-<h4>Hosting ${numResources} resources</h4>
 
 <div id="about">
 	<img class="right" src="${cfg.getDescriptionImage()}" />
 	${cfg.ipt.description}
 </div>
 
+<br/>
 <div class="newline"></div>
 
 <h3>Public Resources</h3>
-<div class="horizontal_dotted_line_xlarge_soft"></div>
 <div style="height: 56px; clear: both"></div>
 <#include "/WEB-INF/pages/inc/resourceManagerList.ftl">  

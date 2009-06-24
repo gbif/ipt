@@ -167,6 +167,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 			if (res==null){
 				return RESOURCE404;
 			}
+			log.info("Published resource "+resource_id);
 		}
 		return SUCCESS;
 	}
@@ -175,6 +176,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		// unpublish only when POSTed, not with ordinary GET
 		if (request.getMethod().equalsIgnoreCase("post")){
 			getResourceTypeMatchingManager().unPublish(resource_id);
+			log.info("Unpublished resource "+resource_id);
 		}
 		return SUCCESS;
 	}

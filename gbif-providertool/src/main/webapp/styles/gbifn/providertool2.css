@@ -285,15 +285,9 @@ div.usersButtons{
 	padding: 8px;
 	text-align: center;
 }
-#statusContainer div.arrow {
-	float: right;
-	position: relative;
-	bottom: 36px;
-}
 #statusContainer .publishButton{
 	width: 80px;
 	position: relative;
-	bottom: 12px;
 }
 .unpublished{
 	background-color: #fdd8d6;
