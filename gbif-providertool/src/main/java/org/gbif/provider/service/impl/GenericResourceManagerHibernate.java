@@ -68,12 +68,18 @@ public class GenericResourceManagerHibernate<T extends Resource> extends Generic
     		.setParameter("userId", userId).list();
 	}
 	
+	public List<T> getPublishedResources() {
+        return query(String.format("select res from %s res where status>=:status", persistentClass.getName()))
+        .setParameter("status", PublicationStatus.modified)
+		.list();
+	}
+	
 	public List<Long> getPublishedResourceIDs() {
         return query(String.format("select id from %s where status>=:status", persistentClass.getName()))
         .setParameter("status", PublicationStatus.modified)
 		.list();
 	}
-	
+
 	@Override
 	@Transactional(readOnly=false)
 	public void remove(T obj) {

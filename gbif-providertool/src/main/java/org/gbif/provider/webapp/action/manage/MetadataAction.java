@@ -171,6 +171,14 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
 		return SUCCESS;
 	}
 	
+	public String unpublish() {
+		// unpublish only when POSTed, not with ordinary GET
+		if (request.getMethod().equalsIgnoreCase("post")){
+			getResourceTypeMatchingManager().unPublish(resource_id);
+		}
+		return SUCCESS;
+	}
+	
 	public String publishAll() {
 		list();
 		for (Resource res : resources){
