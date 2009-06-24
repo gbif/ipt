@@ -37,10 +37,8 @@ public class IndexAction extends BaseAction{
     @Qualifier("resourceManager")
     protected GenericResourceManager<Resource> metaResourceManager;
     private List<Resource> resources;
-    private int numResources;
 	
 	public String execute(){
-		numResources = metaResourceManager.getAllIds().size();
 		resources = metaResourceManager.getPublishedResources();
 		return SUCCESS;
 	}
@@ -56,10 +54,6 @@ public class IndexAction extends BaseAction{
 
 	public AppConfig getCfg() {
 		return cfg;
-	}
-
-	public int getNumResources() {
-		return numResources;
 	}
 
 }
