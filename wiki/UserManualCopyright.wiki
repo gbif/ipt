@@ -1,19 +1,19 @@
 #summary GBIF IPT User manual ver. 1.0 - INDEX
 #sidebar TableOfContents
 
-Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF_IPT_User_Manual_1.0.pdf]
-
 = The GBIF Integrated Publishing Toolkit User Manual =
+
+<wiki:toc max_depth="3" />
 
 GBIF Secretariat
 May 2009
 
-*Published by:*
+== Publisher ==
 
 Global Biodiversity Information Facility,
 http://www.gbif.org/
 
-*Copyright notice:*  
+== Copyright notice ==
 
 This user manual is released under a ’Creative Commons Attribution-Noncommercial-Share Alike 3.0 Unported License’
 http://creativecommons.org/licenses/by-nc-sa/3.0/
@@ -23,57 +23,10 @@ In general terms, that means that you are free to copy, distribute, transmit, re
   * you may not use this work for commercial purposes;
   * if you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
-*Recommended citation:*
+== Recommended citation ==
 
 Réveillon, A. 2009. _The GBIF Integrated Publishing Toolkit User Manual_, version 1.0. Copenhagen: Global Biodiversity Information Facility. 37 pp.
 
-*Disclaimer:*  
+== Disclaimer ==
 
 While the editor, authors and the publisher have attempted to make this user manual as accurate and as thorough as possible, the information contained herein is provided on as “as is” basis, and without any warranties with respect to its accuracy or completeness. The editor, authors and the publisher shall have no liability to any person or entity for any loss or damage caused by using the information provided in this user manual.
-
-=== Contents ===
-
-  #1 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_1 Background Information]
-  #2 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_2 General specifications]
-  #3 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_3 Installation]
-    # 3.1 Requirements
-    # 3.2 Brief overview of Java and Tomcat installation and configuration
-      # 3.2.1 Java
-      # 3.2.2 Application server
-    # 3.3 IPT Installation
-    # 3.4 Geoserver Installation
-      # 3.4.1 Geoserver and bundled plugin installation
-      # 3.4.2 Plugin installation
-    # 3.5 Geoserver Configuration
-    # 3.6 Mac OS X (TM) test installation
-  #4 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_4 Configuration]
-    # 4.1 Configuration
-      # 4.1.1 Settings
-      # 4.1.2 Geoserver Settings
-      # 4.1.3 Organisation
-      # 4.1.4 IPT Instance
-    # 4.2 Extensions
-    # 4.3 Thesaurus
-    # 4.4 Manage Users
-      # 4.4.1 User Profile
-    # 4.5 Current Users
-  #5 [http://code.google.com/p/gbif-providertoolkit/wiki/User_Manual_Chapter_5 Resources Management]
-    # 5.1 Data Types
-      # 5.1.1 Taxon Primary Occurence Data
-      # 5.1.2 Taxonomic Checklists
-      # 5.1.3 Resource Metadata
-    # 5.2 Resource Creation
-    # 5.3 Resource Metadata
-      # 5.3.1 Basic Metadata
-      # 5.3.2 Resource Originator
-      # 5.3.3 Geographic Coverage
-      # 5.3.4 Taxonomic Coverage
-      # 5.3.5 Temporal Coverage
-      # 5.3.6 General Keywords
-      # 5.3.7 IPRights
-      # 5.3.8 Research Project
-      # 5.3.9 Methods
-    # 5.4 Data Resource Configuration (occurences and checklists only)
-      # 5.4.1 Source Data
-      # 5.4.2 Mappings
-    # 5.5 Resource Publication
