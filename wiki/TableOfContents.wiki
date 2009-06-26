@@ -12,7 +12,7 @@
 
 GBIF Secretariat, May 2009
 
-== Development ==
+== Developer Documentation ==
  # FAQ
  # Roadmap
  # VersionHistory
