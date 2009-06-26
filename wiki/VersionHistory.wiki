@@ -16,7 +16,7 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
    * Issue129 uploading &resizing larger logo images
    * Issue123
 
-= IPT 1.0 RC1 =
+== IPT 1.0 RC1 ==
 [http://code.google.com/p/gbif-providertoolkit/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+Size+DownloadCount Download latest release]
 
  * support checklists supplied with flat taxonomic dwc hierarchies 
@@ -28,7 +28,7 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
  * zipped source file upload
  * Geoserver 1.7.2 with geowebcache
 
-=== IPT 1.0b4 ===
+== IPT 1.0b4 ==
  * show resource and record annotations
  * allow source link templates that take an ID parameter
  * Fixed bugs:
@@ -36,7 +36,7 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
    * Issue61, Issue57 
 
 
-=== IPT 1.0 beta ===
+== IPT 1.0 beta ==
  * Metadata portal
    * fulltext search across all resource metadata
    * geospatial bounding box search with map
@@ -60,11 +60,11 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
    * auto column mapping for new mappings based on column/property names
    * term transformation added to map source values to other values/controlled terms, e.g. "Deutschland" -> "DE"
 
-=== IPT 0.5.1 ===
+== IPT 0.5.1 ==
  * uses XStream for EML metadata persistency
  * bug fixes in config UI
 
-=== IPT 0.5 ===
+== IPT 0.5 ==
  * uses embedded H2 database
  * geoserver plugin updated for geotools 2.5 and H2
  * geoserver feature types are updated by the IPT when occurrence resources are changed
@@ -74,18 +74,18 @@ Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
  * resource type property added to metadata
  * taxon & region trees open corresponding node in taxon & region overview page
 
-=== IPT 0.4 ===
+== IPT 0.4 ==
  * google maps integrated
  * simple EML metadata forms
  * eml output
  * provider settings UI
  * improved occurrence webapp
 
-=== IPT 0.3 ===
+== IPT 0.3 ==
  * occurrence webapp added
  * taxon & region trees implemented
  * rss feeds
 
-=== IPT 0.2 ===
+== IPT 0.2 ==
  * nested set created for taxonomy & region hierarchy
  * upload/import tasks
