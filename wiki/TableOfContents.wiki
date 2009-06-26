@@ -1,8 +1,8 @@
 #summary One-sentence summary of this page.
 
 = User Manual =
- [User_Manual_Chapter_1 Background Information]
- [User_Manual_Chapter_2 General specifications]
- [User_Manual_Chapter_3 Installation]
- [User_Manual_Chapter_4 Configuration]
- [User_Manual_Chapter_5 Resources Management]
+ # [User_Manual_Chapter_1 Background Information]
+ # [User_Manual_Chapter_2 General specifications]
+ # [User_Manual_Chapter_3 Installation]
+ # [User_Manual_Chapter_4 Configuration]
+ # [User_Manual_Chapter_5 Resources Management]
