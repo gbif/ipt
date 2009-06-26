@@ -1,12 +1,9 @@
 #summary GBIF IPT User manual - Chapter 5
 #sidebar TableOfContents
 
-Get the PDF version of this manual at [http://gbif-providertoolkit.googlecode.com/files/GBIF_IPT_User_Manual_1.0.pdf]
-
 = The GBIF Integrated Publishing Toolkit User Manual =
 
-GBIF Secretariat, May 2009
-
+<wiki:toc max_depth="3" />
 
 = 5 Resources Management =
 
