@@ -1,4 +1,5 @@
 #summary Roadmap for upcoming releases
+#sidebar TableOfContents
 
 Estimated release dates can vary considerably and are shown mainly to indicate forthcoming functionality.
 
