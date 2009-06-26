@@ -1,5 +1,6 @@
 #summary Frequently Asked Questions about the GBIF IPT
 #labels Phase-Support
+#sidebar TableOfContents
 
 = Frequently Asked Questions (FAQ) about the GBIF IPT =
 
