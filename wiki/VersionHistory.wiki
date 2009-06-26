@@ -1,6 +1,8 @@
 #summary Version history of releases
 #sidebar TableOfContents
 
+<wiki:toc max_depth="2" />
+
 == IPT 1.0 - SNAPSHOT ==
 Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
 
