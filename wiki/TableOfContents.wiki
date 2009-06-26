@@ -1,9 +1,12 @@
 #summary One-sentence summary of this page.
 
 == User Manual ==
-[User_Manual_Index index]
- # [User_Manual_Chapter_1 Background Information]
- # [User_Manual_Chapter_2 General specifications]
- # [User_Manual_Chapter_3 Installation]
- # [User_Manual_Chapter_4 Configuration]
- # [User_Manual_Chapter_5 Resources Management]
+ # [UserManualChapter1 Background Information]
+ # [UserManualChapter2 General specifications]
+ # [UserManualChapter3 Installation]
+ # [UserManualChapter4 Configuration]
+ # [UserManualChapter5 Resources Management]
+ # [UserManualCopyright Copyright]
+
+[http://gbif-providertoolkit.googlecode.com/files/GBIF_IPT_User_Manual_1.0.pdf PDF version]
+GBIF Secretariat, May 2009
