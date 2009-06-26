@@ -6,6 +6,8 @@ The instructions found here help you to access this data directly.
 Please be aware that any modifications done to this database may corrupt the IPT!
 Before modifying any data yourself, please make a backup of your data directoy.
 
+<wiki:toc max_depth="2" />
+
 == The H2 Database ==
 The database used for caching the data and storing most configurations is a pure Java RDBMS known as H2.
 Detailed informations about it can be found at http://www.h2database.com/
