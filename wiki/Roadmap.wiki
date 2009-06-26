@@ -3,9 +3,9 @@
 
 Estimated release dates can vary considerably and are shown mainly to indicate forthcoming functionality.
 
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="2" />
 
-=== IPT 1.1 - "Response to early adopters feedback" ===
+== IPT 1.1 - "Response to early adopters feedback" ==
 not currently scheduled
 
 *High priority areas to be addressed*
@@ -25,13 +25,13 @@ not currently scheduled
    * The IPT must support the outcomes of the extension registration and tagging work
 
 
-=== IPT 1.2 - "Annotation" ===
+== IPT 1.2 - "Annotation" ==
 not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label:Annotation Annotation issues]
  * asynchronous [http://code.google.com/p/gbif-annotation-processor/wiki/AnnotationAPI annotation API] added for validation services
  * download of annotations as CSV file
 
 
-=== IPT 1.3 - "DarwinCore" ===
+== IPT 1.3 - "DarwinCore" ==
 schedule dependent on final dwc ratification
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
  * simplified registry interaction:
@@ -39,12 +39,12 @@ schedule dependent on final dwc ratification
    * write resource tags (= metadata keywords) to registry
 
 
-=== IPT 1.4 - "Transformations" ===
+== IPT 1.4 - "Transformations" ==
 not scheduled
  * advanced mapping/transformations
 
 
-=== IPT 1.5 - "Performance" ===
+== IPT 1.5 - "Performance" ==
 not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label: Performance Performance issues]
  * separate cache database into 1 shared resource configuration db and 1 data cache db per resource: Issue157
  * provide single default root node for taxonomic and regional tree: Issue158
@@ -57,7 +57,7 @@ not scheduled, see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=
 
 
 
-=== IPT 2.0 ===
+== IPT 2.0 ==
 not scheduled
  * new core record type Publication allows to share publication metadata with link to full body text
  * new core record type Site allows to share hierarchical site definitions incl polygon based shapes
