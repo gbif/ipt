@@ -12,8 +12,25 @@ To provide context, a few examples might include:
 
 == Use Cases ==
  * A data source has common names separated into separate columns, one for English, one for French, one for German.  To transform the data to the target schema,  these three columns would be transformed to three rows,  with one column containing the common name and one column containing the language reference.
+
  * A data source as latitude and longitude separated into a degree column, a minutes column, and a second column.  To transform the data to the target schema would require concatenization into latitude and longitude columns
+
  * A classification is expressed in a series of columns with kingdom, phylum, class, order, etc repeated for every row down to species. To transform the data to the target schema would require converting this denormalized form to a normal “parent-child” adjacency list.
+
+== Typical Checklist Formats ==
+=== Accepted Name by Foreign Key Reference ===
+This is the target format as per the schema. 
+
+||id||Taxon||Rank||parentID||acceptedID||
+||1||Animalia||Kingdom|| ||1||
+||2||Arthropoda||Phylum||1||2||
+||3||Insecta||Class||2||3||
+||4||Lepidoptera||Order||3||3||
+||5||Noctuidae||Family||4||5||
+||6||Noctua pronuba Linnaeus||Species||5||6||
+||7||Noctua atlantica Warran||Species|| ||6||
+||8||Noctua comes Hübner||Species|| ||6||
+||7||Orthopleura plecta||Species||6||7||
 
 
 = Transformation Types =
