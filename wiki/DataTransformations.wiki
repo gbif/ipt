@@ -1,5 +1,7 @@
 #summary Documenting data transformations
+#sidebar TableOfContents
 
+<wiki:toc max_depth="3" />
 
 = Introduction =
 In many cases the soruce data does not easily map to given darwin core terms or defined extensions.
@@ -8,20 +10,28 @@ In order to support these data sources, one usually has to do some __data transf
 Looking at the IPT data flow, transformations have to happen before data is mapped onto the final darwin core.
 
 = Transformation Types =
-== 1 ==
+== Pivots ==
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/1.png
 
-== 2 ==
+== Normalisation ==
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/2.png
 
-== 3 ==
+== ID Lookup ==
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/3.png
 
-== 4 ==
+== Term Lookup ==
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/4.png
 
-== 5 ==
+This is already implemented in the current IPT when mapping controlled vocabularies.
+It would be desirable to allow term translations in any property mapping, regardless whether the term defines a controlled vocabulary or not.
+
+== Concatenation ==
 http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/5.png
+
+Concatenating multiple columns and fixed strings.
+
+== Substring splitting ==
+Splitting column values into substrings
 
 
 = IPT Implementation =
