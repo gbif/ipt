@@ -1,0 +1,32 @@
+#summary Documenting data transformations
+
+
+= Introduction =
+In many cases the soruce data does not easily map to given darwin core terms or defined extensions.
+In order to support these data sources, one usually has to do some __data transformations__ which can be reduced to a certain number of common patterns or transformation types, that are applied in different scenarios.
+
+Looking at the IPT data flow, transformations have to happen before data is mapped onto the final darwin core.
+
+= Transformation Types =
+== 1 ==
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/1.png
+
+== 2 ==
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/2.png
+
+== 3 ==
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/3.png
+
+== 4 ==
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/4.png
+
+== 5 ==
+http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/webapp/images/transformations/5.png
+
+
+= IPT Implementation =
+ * on file level or rather as a temporary H2 database?
+ * H2 would allow to do many of the transformations as simple SQL views, not producing any new files at all!
+   # initially import all files or external SQL sources into H2
+   # define h2 sql views
+   # run final import/dwc-a generation on intermediate h2 db
