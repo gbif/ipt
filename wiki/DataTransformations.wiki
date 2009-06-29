@@ -8,6 +8,13 @@ In many cases the soruce data does not easily map to given darwin core terms or 
 In order to support these data sources, one usually has to do some __data transformations__ which can be reduced to a certain number of common patterns or transformation types, that are applied in different scenarios.
 
 Looking at the IPT data flow, transformations have to happen before data is mapped onto the final darwin core.
+To provide context, a few examples might include:
+
+== Use Cases ==
+ * A data source has common names separated into separate columns, one for English, one for French, one for German.  To transform the data to the target schema,  these three columns would be transformed to three rows,  with one column containing the common name and one column containing the language reference.
+ * A data source as latitude and longitude separated into a degree column, a minutes column, and a second column.  To transform the data to the target schema would require concatenization into latitude and longitude columns
+ * A classification is expressed in a series of columns with kingdom, phylum, class, order, etc repeated for every row down to species. To transform the data to the target schema would require converting this denormalized form to a normal “parent-child” adjacency list.
+
 
 = Transformation Types =
 == Pivots ==
