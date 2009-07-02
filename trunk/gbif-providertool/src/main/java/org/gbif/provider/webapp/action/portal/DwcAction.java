@@ -56,8 +56,12 @@ public class DwcAction extends BaseDataResourceAction {
 	public String execute(){
 		setRequestedRecord();
 		if (dwc !=null){
-			region_id = dwc.getRegion().getId();
-			taxon_id = dwc.getTaxon().getId();
+			if (dwc.getRegion()!=null){
+				region_id = dwc.getRegion().getId();
+			}
+			if (dwc.getTaxon()!=null){
+				taxon_id = dwc.getTaxon().getId();
+			}
     		rec = extensionRecordManager.extendCoreRecord(dwc.getResource(), dwc);
         	if (format!=null && format.equalsIgnoreCase("xml")){
         		nsr = new NamespaceRegistry(dwc.getResource());
