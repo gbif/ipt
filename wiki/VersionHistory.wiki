@@ -5,6 +5,8 @@
 
 == IPT 1.0 - SNAPSHOT ==
 Download latest snapshot: [ftp://ftp.gbif.org/projects/ipt/downloads/]
+ * Fixed bugs:
+   * Issue182
 
 == IPT 1.0 RC2 ==
  * more explanations on source files, dwc 
