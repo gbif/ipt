@@ -14,6 +14,7 @@ GBIF Secretariat, May 2009
 
 == Developer Documentation ==
  # [FAQ]
+ # HowToContribute
  # [Roadmap]
  # VersionHistory
  # [Database]
