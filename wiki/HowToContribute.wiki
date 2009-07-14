@@ -6,7 +6,7 @@ The core development of the IPT is directed by GBIF, but the coding, the documen
 
 = How To Contribute =
 == Documentation ==
-We are always keen on getting a better documentation. The easiest and quickest way to help us improving the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the user manual which is [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/gbif-ipt-docs/IPT_documentation.txt hosted in the code repository].
+We are always keen on getting a better documentation. The easiest and quickest way to help us improving the user manual is to [http://code.google.com/p/gbif-providertoolkit/issues/entry?template=Documentation%20issue submit documentation issues] into our issue tracker and mark them with "Documentation". This will be picked up by our technical writer and finally end up in the user manual which is [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/gbif-ipt-docs/IPT_documentation.txt hosted in the code repository].
 
 If you feel there is a lot to modify, please get in touch with us to get write access to subversion.
 
