@@ -1,0 +1,12 @@
+#summary Key Technologies used
+#sidebar TableOfContents
+
+= Key Technologies =
+ * Appfuse2 [http://appfuse.org/display/APF/AppFuse+QuickStart#AppFuseQuickStart-create Struts 2 Basic archetype]
+   * planned to move to pure [http://struts.apache.org/2.x/index.html struts2], [http://www.springsource.org/about spring 2.5], [https://www.hibernate.org/5.html hibernate] & [http://freemarker.sourceforge.net/docs/ freemarker] implementation, removing many of the appfuse overhead (which sped up initial development though)
+ * 2 tier architecture with merged DAO/Service layer
+ * [http://geoserver.org Geoserver] with custom [http://code.google.com/p/gbif-providertoolkit/source/browse/trunk/GT2-gbif-providertool/ datasource module] for WFS and maps 
+ * statistic charts via google chart API using http://code.google.com/p/gchartjava/
+ * Cache DB as embedded [http://www.h2database.com/ H2 database] 
+ * [http://lucene.apache.org/java/docs/ Lucene] for full text search
+ * [http://jquery.com/ JQuery] for javascript and ajax
