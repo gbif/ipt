@@ -14,4 +14,4 @@ If you feel there is a lot to modify, please get in touch with us to get write a
 The IPT and the documentation both need internationalisation. In the case of the IPT all text is kept in so called property files, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources.properties original] is in english and if you are able and willing to translate it into another language, please get in touch with us!
 
 == Source Code ==
-Java or html/jquery developers are very welcome to contribute. See [http://code.google.com/p/gbif-providertoolkit/wiki/Features#Key_Technologies key technologies] for the most important frameworks we use.
+Java or html/jquery developers are very welcome to contribute. See KeyTechnologies for the most important frameworks we use.
