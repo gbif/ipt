@@ -166,6 +166,20 @@ This format uses the Taxon name as a foreign key to the accepted name instead of
 ||7 ||Orthopleura plecta ||Species ||6 || ||
 
 
+=== Synonym Reference merged with Higher Taxon Reference ===
+This format combines the acceptedTaxonID with the higherTaxonID into a single column.  The context of whether the taxon row references a synonym or a higher taxon is based on the taxonomic status of the name.   This format was used in a list of genera output by Fauna Europaea.
+
+Effective transformation would entail iterating through the rows and, based on the interpretation of the taxonomic status value (accepted | synonym) would move the parent taxon ID to a new acceptedTaxonID column.
+
+||id ||Taxon ||Rank ||Status||parentID ||
+||1||Acerentomidae||Family||Accepted||0||
+||2||Acerentomon||Genus||Accepted||1||
+||3||Acerentomon affine Bagnall 1912||species||Accepted||2||
+||4||Acerentomon agrorum Womersley 1928||Genus||Synonym||3||
+||5||Acerentomon metarhinus Womersley 1928||Genus||Synonym||3||
+||6||Acerentomon oblongum Womersley 1927||Genus||Synonym||3||
+||7||Acerentomon propinquum Condé 1945||Genus||Synonym||3||
+
 
 
 = Transformation Types =
