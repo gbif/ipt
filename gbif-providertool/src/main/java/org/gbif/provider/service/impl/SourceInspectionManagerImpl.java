@@ -142,7 +142,7 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
 		// read file
 		preview.add(getHeader(source));
-		CSVReader reader = CSVReader.buildReader(getSourceFile(source), !source.hasHeaders());
+		CSVReader reader = CSVReader.buildReader(getSourceFile(source), source.hasHeaders());
 	    while (reader.hasNext() && preview.size()<=PREVIEW_SIZE) {
 	    	preview.add(Arrays.asList(reader.next()));
 	    }

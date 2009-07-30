@@ -67,6 +67,32 @@ public class CSVReaderTest {
 		}
 	}
 	
+	
+	@Test
+	public void testHeaderTrue() throws IOException {
+		File source = classpathFile("iucn100.csv");
+
+		CSVReader reader = CSVReader.buildReader(source, true);
+		for (String[] row : reader){
+			assertEquals(row[1], "Aaadonta angaurana");
+			break;
+		}
+		reader.close();
+	}
+	
+	@Test
+	public void testHeaderFalse() throws IOException {
+		File source = classpathFile("iucn100.csv");
+
+		CSVReader reader = CSVReader.buildReader(source, false);
+		for (String[] row : reader){
+			assertEquals(row[1], "Lophopsittacus bensoni Holyoak, 1973");
+			break;
+		}
+		reader.close();
+	}
+
+	
 	public File classpathFile(String path){
 		File f = null;
 		//relative path. Use classpath instead
