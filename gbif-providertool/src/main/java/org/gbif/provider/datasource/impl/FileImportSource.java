@@ -17,30 +17,20 @@
 package org.gbif.provider.datasource.impl;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.gbif.iptlite.util.CSVReader;
 import org.gbif.provider.datasource.ImportRecord;
-import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceFile;
-import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.model.ExtensionMapping;
-import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.SourceInspectionManager;
-import org.gbif.provider.service.TermMappingManager;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
