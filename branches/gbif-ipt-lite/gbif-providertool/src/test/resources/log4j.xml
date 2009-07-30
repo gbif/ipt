@@ -92,7 +92,7 @@
 
     <!-- additivity="false" -->
     <!-- GBIF things -->
-    <logger name="org.gbif.provider">
+    <logger name="org.gbif">
         <level value="DEBUG" />
     </logger>
 

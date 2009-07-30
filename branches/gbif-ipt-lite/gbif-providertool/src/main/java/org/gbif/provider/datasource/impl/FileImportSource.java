@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.iptlite.util.CSVReader;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSource;
 import org.gbif.provider.datasource.ImportSourceException;
@@ -48,7 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class FileImportSource extends ImportSourceBase{
-	private TabFileReader reader;
+	private CSVReader reader;
 	private String[] currentLine;
 	// key=header column name
 	private Map<String, Integer> headerMap = new HashMap<String, Integer>();
@@ -70,7 +71,7 @@ public class FileImportSource extends ImportSourceBase{
 				this.headerMap.put(h, i);
 				i++;
 			}
-			this.reader = new TabFileReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()), !src.hasHeaders());
+			this.reader = CSVReader.buildReader(AppConfig.getResourceSourceFile(resource.getId(), src.getFilename()), src.hasHeaders());
 		} catch (Exception e) {
 			throw new ImportSourceException("Cant read source file "+src.getFilename(), e);
 		}

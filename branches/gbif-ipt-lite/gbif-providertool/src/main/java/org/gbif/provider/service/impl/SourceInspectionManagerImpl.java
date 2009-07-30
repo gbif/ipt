@@ -34,6 +34,7 @@ import java.util.Set;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
+import org.gbif.iptlite.util.CSVReader;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.SourceBase;
@@ -42,7 +43,6 @@ import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.MalformedTabFileException;
-import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
@@ -142,7 +142,7 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 		List<List<? extends Object>> preview = new ArrayList<List<? extends Object>>();
 		// read file
 		preview.add(getHeader(source));
-		TabFileReader reader = new TabFileReader(getSourceFile(source), !source.hasHeaders());
+		CSVReader reader = CSVReader.buildReader(getSourceFile(source), !source.hasHeaders());
 	    while (reader.hasNext() && preview.size()<=PREVIEW_SIZE) {
 	    	preview.add(Arrays.asList(reader.next()));
 	    }
@@ -150,7 +150,7 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 		return preview;
 	}
 	private List<String> getHeader(SourceFile source) throws IOException, MalformedTabFileException {
-		TabFileReader reader = new TabFileReader(getSourceFile(source), true);
+		CSVReader reader = CSVReader.buildReader(getSourceFile(source), true);
 		List<String> headers;
 		if (source.hasHeaders()){
 			headers = Arrays.asList(reader.getHeader());
@@ -229,10 +229,10 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 		return new FileIterator(getSourceFile(source), columnIdx, !source.hasHeaders());
 	}
 	private class FileIterator implements Iterator<Object>{
-		private TabFileReader reader;
+		private CSVReader reader;
 		private int columnIdx;
 		public FileIterator(File source, int columnIdx, boolean returnHeaderRow) throws IOException, MalformedTabFileException{
-			reader = new TabFileReader(source, returnHeaderRow);
+			reader = CSVReader.buildReader(source, returnHeaderRow);
 			this.columnIdx = columnIdx;
 		}
 		public boolean hasNext() {
