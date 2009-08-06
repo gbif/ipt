@@ -43,7 +43,7 @@ import org.gbif.provider.util.MalformedTabFileException;
  */
 public class CSVReader implements Iterator<String[]>, Iterable<String[]>{
 	private static final String[] popularDelimiters = {"\t","|",",",";"};
-	private static final String[] popularEncodings = {"latin-1","utf-8","utf-16"}; 
+	private static final String[] popularEncodings = {"UTF-8","Cp1252","ISO-8859-1","MacRoman","UTF-16","UTF-16BE","UTF-16LE"}; // big/little endian 
 	protected static final Log log = LogFactory.getLog(CSVReader.class);
 
 	private String[] header;
