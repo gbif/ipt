@@ -174,16 +174,6 @@
                 </plugin>
         </plugins>
     </reporting>
-    
-
-    <profiles>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <maven.test.skip>true</maven.test.skip>
-            </properties>
-        </profile>
-    </profiles>
 
     <properties>
         <copyright.year>2009</copyright.year>
