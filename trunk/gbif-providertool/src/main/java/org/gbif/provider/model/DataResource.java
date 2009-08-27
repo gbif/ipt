@@ -197,14 +197,14 @@ public abstract class DataResource extends Resource {
 				datasource = new SimpleDriverDataSource(driver, this.getJdbcUrl(), this.getJdbcUser(), this.getJdbcPassword());
 			} catch(java.lang.ClassNotFoundException e) {
 				datasource = null;
-				String msg = String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s", this.jdbcDriverClass, this.getJdbcUrl());
+				String msg = String.format("Couldnt load JDBC driver to create new external datasource connection with JDBC Class=%s and URL=%s. Error: %s", this.jdbcDriverClass, this.getJdbcUrl(), e.getMessage());
 				log.warn(msg, e);
-				throw new SQLException(msg, e);
+				throw new SQLException(msg);
 			} catch (Exception e) {
 				datasource = null;
-				String msg = String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser());
+				String msg = String.format("Couldnt create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s", this.jdbcDriverClass, this.getJdbcUrl(), this.getJdbcUser(), e.getMessage());
 				log.warn(msg, e);
-				throw new SQLException(msg, e);
+				throw new SQLException(msg);
 			}			
 		}else{
 			datasource = null;
