@@ -631,6 +631,6 @@
         <ipt.dev>false</ipt.dev>
         
         <!-- Maven build settings -->
-        <maven.test.skip>false</maven.test.skip>
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 </project>
