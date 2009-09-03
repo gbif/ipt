@@ -17,7 +17,7 @@ mvn org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse
   }}}
  # Import the `gbif-providertool` project into Eclipse as an existing Java project. To Run IPT on localhost:8080:
   {{{ 
-mvn -Peclipse -U`
+mvn -Peclipse -U
   }}}
 
 = Setting up Eclipse Environment and Code Checkstyles  =
