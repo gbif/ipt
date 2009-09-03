@@ -5,7 +5,7 @@
 Make sure you have Eclipse, Subversion, and Maven installed. Then:
  # SVN check out IPT:
   {{{
-svn checkout https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertoolkit gbif-providertoolkit --username <your username>
+svn checkout https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool gbif-providertool --username <your username>
   }}}
  # Add the Maven repository to Eclipse: 
   {{{
