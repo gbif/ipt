@@ -7,6 +7,10 @@ package org.appfuse;
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
+/**
+ * TODO: Documentation.
+ * 
+ */
 public class Constants {
     //~ Static fields/initializers =============================================
 

@@ -32,6 +32,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
         query = "select r from Role r where r.name = :name "
         )
 })
+/**
+ * TODO: Documentation.
+ * 
+ */
 public class Role extends BaseObject implements Serializable, GrantedAuthority {
     private static final long serialVersionUID = 3690197650654049848L;
     private Long id;

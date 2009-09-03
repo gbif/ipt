@@ -18,6 +18,10 @@ import org.hibernate.util.ReflectHelper;
  * @author Thomas Mueller
  *
  */
+/**
+ * TODO: Documentation.
+ * 
+ */
 public class H2Dialect extends Dialect {
 
     private String querySequenceString;

@@ -1,258 +1,265 @@
+/*
+ * Copyright 2009 GBIF.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.gbif.provider.model.eml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.gbif.provider.model.Resource;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import org.appfuse.model.User;
-import org.gbif.provider.model.BBox;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.util.AppConfig;
+/**
+ * TODO: Documentation.
+ * 
+ */
+public class Eml implements Serializable {
+  private static final long serialVersionUID = 770733523572837495L;
+  private transient Resource resource;
+  // serialised data
+  private int emlVersion = 0;
+  private Agent resourceCreator = new Agent();
+  private Date pubDate;
+  private String language = "en";
+  private String intellectualRights;
+  // keywords
+  private List<String> keywords = new ArrayList<String>();
+  private GeoKeyword geographicCoverage = new GeoKeyword(); // should be a list
+                                                            // really
+  private TimeKeyword temporalCoverage = new TimeKeyword(); // should be a list
+                                                            // really
+  // taxonomy
+  private String taxonomicCoverageDescription;
+  private TaxonKeyword lowestCommonTaxon = new TaxonKeyword();
+  private List<TaxonKeyword> taxonomicClassification = new ArrayList<TaxonKeyword>();
+  // methods
+  private String methods;
+  private String samplingDescription;
+  private String qualityControl;
+  // other
+  private Project researchProject = new Project();
+  private String purpose;
+  private String maintenance;
 
-public class Eml implements Serializable{
-	private static final long serialVersionUID = 770733523572837495L;
-	private transient Resource resource;
-	// serialised data
-	private int emlVersion = 0;
-	private Agent resourceCreator = new Agent();
-	private Date pubDate;
-	private String language="en";
-	private String intellectualRights;
-	// keywords
-	private List<String> keywords = new ArrayList<String>();
-	private GeoKeyword geographicCoverage = new GeoKeyword();  // should be a list really
-	private TimeKeyword temporalCoverage = new TimeKeyword();   // should be a list really
-	// taxonomy
-	private String taxonomicCoverageDescription;
-	private TaxonKeyword lowestCommonTaxon = new TaxonKeyword();
-	private List<TaxonKeyword> taxonomicClassification = new ArrayList<TaxonKeyword>();
-	// methods
-	private String methods;
-	private String samplingDescription;
-	private String qualityControl;
-	// other
-	private Project researchProject = new Project();
-	private String purpose;
-	private String maintenance;
-	
-	public Eml(){
-		super();
-		this.pubDate = new Date();
-		this.resourceCreator.setRole(Role.ORIGINATOR);
-	}
-	
-	
-	//
-	// DELEGATOR METHODS for resource
-	//
-	
-	public Resource getResource() {
-		return resource;
-	}
+  public Eml() {
+    super();
+    this.pubDate = new Date();
+    this.resourceCreator.setRole(Role.ORIGINATOR);
+  }
 
-	public String getGuid() {
-		return resource.getGuid();
-	}
+  //
+  // DELEGATOR METHODS for resource
+  //
 
-	public int getEmlVersion() {
-		return emlVersion;
-	}
-	public void setEmlVersion(int emlVersion) {
-		this.emlVersion = emlVersion;
-	}
-	public int increaseEmlVersion() {
-		this.emlVersion += 1;
-		return this.emlVersion;
-	}
+  public void addKeyword(String keyword) {
+    this.keywords.add(keyword);
+  }
 
+  public String getAbstract() {
+    return resource.getDescription();
+  }
 
-	public String getAbstract() {
-		return resource.getDescription();
-	}
-	public void setAbstract(String text) {
-		resource.setDescription(text);
-	}
+  public int getEmlVersion() {
+    return emlVersion;
+  }
 
-	public String getLink() {
-		return resource.getLink();
-	}
-	public void setLink(String link) {
-		resource.setLink(link);
-	}
+  public GeoKeyword getGeographicCoverage() {
+    return geographicCoverage;
+  }
 
-	public String getTitle() {
-		return resource.getTitle();
-	}
-	public void setTitle(String title) {
-		resource.setTitle(title);
-	}
-	
+  public String getGuid() {
+    return resource.getGuid();
+  }
 
-	
+  public String getIntellectualRights() {
+    return intellectualRights;
+  }
 
-	
-	// regular getter/setter
-	
-	public Date getPubDate() {
-		return pubDate;
-	}
+  public List<String> getKeywords() {
+    return keywords;
+  }
 
-	public void setPubDate(Date pubDate) {
-		this.pubDate = pubDate;
-	}
+  public String getLanguage() {
+    return language;
+  }
 
-	public String getLanguage() {
-		return language;
-	}
+  public String getLink() {
+    return resource.getLink();
+  }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+  public TaxonKeyword getLowestCommonTaxon() {
+    return lowestCommonTaxon;
+  }
 
-	public String getIntellectualRights() {
-		return intellectualRights;
-	}
+  public String getMaintenance() {
+    return maintenance;
+  }
 
-	public void setIntellectualRights(String intellectualRights) {
-		this.intellectualRights = intellectualRights;
-	}
+  // regular getter/setter
 
+  public String getMethods() {
+    return methods;
+  }
 
+  public Date getPubDate() {
+    return pubDate;
+  }
 
-	public String getTaxonomicCoverageDescription() {
-		return taxonomicCoverageDescription;
-	}
+  public String getPurpose() {
+    return purpose;
+  }
 
-	public void setTaxonomicCoverageDescription(String taxonomicCoverageDescription) {
-		this.taxonomicCoverageDescription = taxonomicCoverageDescription;
-	}
+  public String getQualityControl() {
+    return qualityControl;
+  }
 
-	public List<TaxonKeyword> getTaxonomicClassification() {
-		return taxonomicClassification;
-	}
-	
-	public void setTaxonomicClassification(
-			List<TaxonKeyword> taxonomicClassification) {
-		this.taxonomicClassification = taxonomicClassification;
-	}
+  public Project getResearchProject() {
+    return researchProject;
+  }
 
-	public String getMethods() {
-		return methods;
-	}
+  public Resource getResource() {
+    return resource;
+  }
 
-	public void setMethods(String methods) {
-		this.methods = methods;
-	}
+  public Agent getResourceCreator() {
+    return resourceCreator;
+  }
 
-	public String getSamplingDescription() {
-		return samplingDescription;
-	}
+  public String getSamplingDescription() {
+    return samplingDescription;
+  }
 
-	public void setSamplingDescription(String samplingDescription) {
-		this.samplingDescription = samplingDescription;
-	}
+  public List<TaxonKeyword> getTaxonomicClassification() {
+    return taxonomicClassification;
+  }
 
-	public String getQualityControl() {
-		return qualityControl;
-	}
+  public String getTaxonomicCoverageDescription() {
+    return taxonomicCoverageDescription;
+  }
 
-	public void setQualityControl(String qualityControl) {
-		this.qualityControl = qualityControl;
-	}
+  public TimeKeyword getTemporalCoverage() {
+    return temporalCoverage;
+  }
 
-	public Project getResearchProject() {
-		return researchProject;
-	}
+  public String getTitle() {
+    return resource.getTitle();
+  }
 
-	public void setResearchProject(Project researchProject) {
-		this.researchProject = researchProject;
-	}
+  public int increaseEmlVersion() {
+    this.emlVersion += 1;
+    return this.emlVersion;
+  }
 
-	public String getPurpose() {
-		return purpose;
-	}
+  public TaxonKeyword lowestCommonTaxon() {
+    return lowestCommonTaxon;
+  }
 
-	public void setPurpose(String purpose) {
-		this.purpose = purpose;
-	}
+  // cant replace instance, just modify their properties
+  public Agent resourceCreator() {
+    return resourceCreator;
+  }
 
-	public String getMaintenance() {
-		return maintenance;
-	}
+  public void setAbstract(String text) {
+    resource.setDescription(text);
+  }
 
-	public void setMaintenance(String maintenance) {
-		this.maintenance = maintenance;
-	}
+  public void setEmlVersion(int emlVersion) {
+    this.emlVersion = emlVersion;
+  }
 
-	public List<String> getKeywords() {
-		return keywords;
-	}
+  public void setGeographicCoverage(GeoKeyword geographicCoverage) {
+    this.geographicCoverage = geographicCoverage;
+  }
 
-	public void setKeywords(List<String> keywords) {
-		this.keywords = keywords;
-	}
-	
-	public void addKeyword(String keyword) {
-		this.keywords.add(keyword);
-	}
-	
-	// cant replace instance, just modify their properties
-	public Agent resourceCreator() {
-		return resourceCreator;
-	}
+  public void setIntellectualRights(String intellectualRights) {
+    this.intellectualRights = intellectualRights;
+  }
 
-	public TimeKeyword temporalCoverage() {
-		return temporalCoverage;
-	}
+  public void setKeywords(List<String> keywords) {
+    this.keywords = keywords;
+  }
 
-	public TaxonKeyword lowestCommonTaxon() {
-		return lowestCommonTaxon;
-	}
+  public void setLanguage(String language) {
+    this.language = language;
+  }
 
-	public Agent getResourceCreator() {
-		return resourceCreator;
-	}
+  public void setLink(String link) {
+    resource.setLink(link);
+  }
 
-	public void setResourceCreator(Agent resourceCreator) {
-		this.resourceCreator = resourceCreator;
-	}
+  public void setLowestCommonTaxon(TaxonKeyword lowestCommonTaxon) {
+    this.lowestCommonTaxon = lowestCommonTaxon;
+  }
 
-	public GeoKeyword getGeographicCoverage() {
-		return geographicCoverage;
-	}
+  public void setMaintenance(String maintenance) {
+    this.maintenance = maintenance;
+  }
 
-	public void setGeographicCoverage(GeoKeyword geographicCoverage) {
-		this.geographicCoverage = geographicCoverage;
-	}
+  public void setMethods(String methods) {
+    this.methods = methods;
+  }
 
-	public TimeKeyword getTemporalCoverage() {
-		return temporalCoverage;
-	}
+  public void setPubDate(Date pubDate) {
+    this.pubDate = pubDate;
+  }
 
-	public void setTemporalCoverage(TimeKeyword temporalCoverage) {
-		this.temporalCoverage = temporalCoverage;
-	}
+  public void setPurpose(String purpose) {
+    this.purpose = purpose;
+  }
 
-	public TaxonKeyword getLowestCommonTaxon() {
-		return lowestCommonTaxon;
-	}
+  public void setQualityControl(String qualityControl) {
+    this.qualityControl = qualityControl;
+  }
 
-	public void setLowestCommonTaxon(TaxonKeyword lowestCommonTaxon) {
-		this.lowestCommonTaxon = lowestCommonTaxon;
-	}
+  public void setResearchProject(Project researchProject) {
+    this.researchProject = researchProject;
+  }
 
+  public void setResource(Resource resource) {
+    this.resource = resource;
+  }
 
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
+  public void setResourceCreator(Agent resourceCreator) {
+    this.resourceCreator = resourceCreator;
+  }
+
+  public void setSamplingDescription(String samplingDescription) {
+    this.samplingDescription = samplingDescription;
+  }
+
+  public void setTaxonomicClassification(
+      List<TaxonKeyword> taxonomicClassification) {
+    this.taxonomicClassification = taxonomicClassification;
+  }
+
+  public void setTaxonomicCoverageDescription(
+      String taxonomicCoverageDescription) {
+    this.taxonomicCoverageDescription = taxonomicCoverageDescription;
+  }
+
+  public void setTemporalCoverage(TimeKeyword temporalCoverage) {
+    this.temporalCoverage = temporalCoverage;
+  }
+
+  public void setTitle(String title) {
+    resource.setTitle(title);
+  }
+
+  public TimeKeyword temporalCoverage() {
+    return temporalCoverage;
+  }
 
 }
