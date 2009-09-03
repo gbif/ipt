@@ -41,7 +41,7 @@
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=${cfg.googleMapsApiKey}" type="text/javascript"></script>
     <script type="text/javascript">
       if (GBrowserIsCompatible()) {
-        var point = new GLatLng(${dwc.location.latitude!0},${dwc.location.longitude!0});
+        var point = new GLatLng(${(dwc.location.latitude!0)?c},${(dwc.location.longitude!0)?c});
         var map = new GMap2(document.getElementById("map"));
         map.setMapType(G_PHYSICAL_MAP);
         map.addMapType(G_PHYSICAL_MAP);
