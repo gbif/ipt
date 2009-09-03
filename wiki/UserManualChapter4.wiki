@@ -5,7 +5,7 @@
 
 <wiki:toc max_depth="3" />
 
-= 4 Installation =
+= 4 Configuration =
 
 
 Once the IPT has been installed, it is accessible in a web browser at the following URL: http://localhost:8080/ipt/
