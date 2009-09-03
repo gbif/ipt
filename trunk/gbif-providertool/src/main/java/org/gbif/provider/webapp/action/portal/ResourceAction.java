@@ -1,9 +1,19 @@
+/*
+ * Copyright 2009 GBIF.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.gbif.provider.webapp.action.portal;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.ChecklistResource;
@@ -13,173 +23,183 @@ import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ResourceKeywordManager;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
 
-public class ResourceAction extends BaseMetadataResourceAction implements Preparable{
-	@Autowired
-	private EmlManager emlManager;
-	@Autowired
-	private ResourceKeywordManager keywordManager;
-	private Eml eml;
-	private String format;
-    private List<? extends Resource> resources;
-    // for feed
-    private Date now = new Date();
-    // for meta portal
-    private List<String> alphabet;
-    private List<String> keywords;
-    private Map<String, Integer> tagcloud;
-    // for searching
-	private String keyword;
-	private String q;
-	private BBox bbox;
-	private Double bbox_top;
-	private Double bbox_bottom;
-	private Double bbox_left;
-	private Double bbox_right;
-	private Integer page=1;
-	
-	public String execute(){
-		if (resource!=null){
-			eml = emlManager.load(resource);
-			tagcloud=keywordManager.getCloud();
-			return SUCCESS;
-		}		
-		return RESOURCE404;
-	}
-	
-	public String forward(){
-		if (resource instanceof OccurrenceResource) {
-			return OCCURRENCE;
-		}else if (resource instanceof ChecklistResource) {
-			return CHECKLIST;
-		}else{
-			return METADATA;
-		}
-	}
+import org.springframework.beans.factory.annotation.Autowired;
 
-	public String list(){
-		resource=null;
-		resources = getResourceTypeMatchingManager().latest(page, 500);
-		alphabet=keywordManager.getAlphabet();
-		if (alphabet.isEmpty()){
-			keywords = new ArrayList();
-		}else{
-			keywords = keywordManager.getKeywords(alphabet.get(0));
-		}
-		tagcloud=keywordManager.getCloud();
-		return SUCCESS;
-	}
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-	public String rss(){
-		resources = resourceManager.latest(page, 25);
-		return SUCCESS;
-	}
+/**
+ * TODO: Documentation.
+ * 
+ */
+public class ResourceAction extends BaseMetadataResourceAction implements
+    Preparable {
+  @Autowired
+  private EmlManager emlManager;
+  @Autowired
+  private ResourceKeywordManager keywordManager;
+  private Eml eml;
+  private String format;
+  private List<? extends Resource> resources;
+  // for feed
+  private final Date now = new Date();
+  // for meta portal
+  private List<String> alphabet;
+  private List<String> keywords;
+  private Map<String, Integer> tagcloud;
+  // for searching
+  private String keyword;
+  private String q;
+  private BBox bbox;
+  private Double bboxTop;
+  private Double bboxBottom;
+  private Double bboxLeft;
+  private Double bboxRight;
+  private Integer page = 1;
 
-	public String search() {
-		// check if a single resource is being searched.
-		if (resource!=null){
-			// forward in this case to different search
-			return forward();
-		}
-		if (q!=null){
-			resources = getResourceTypeMatchingManager().search(q);
-		}else{
-			resources = getResourceTypeMatchingManager().searchByKeyword(keyword);
-		}
-		tagcloud=keywordManager.getCloud();
-		return SUCCESS;
-	}
-	
-	public String geoSearch() {
-		bbox = new BBox(bbox_bottom, bbox_left, bbox_top, bbox_right);
-		resources = getResourceTypeMatchingManager().searchByBBox(bbox);
-		tagcloud=keywordManager.getCloud();
-		return SUCCESS;
-	}
-	
-	
-	
-	public String getFormat() {
-		return format;
-	}
+  @Override
+  public String execute() {
+    if (resource != null) {
+      eml = emlManager.load(resource);
+      tagcloud = keywordManager.getCloud();
+      return SUCCESS;
+    }
+    return RESOURCE404;
+  }
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
-	
-	public Eml getEml() {
-		return eml;
-	}
+  public String forward() {
+    if (resource instanceof OccurrenceResource) {
+      return OCCURRENCE;
+    } else if (resource instanceof ChecklistResource) {
+      return CHECKLIST;
+    } else {
+      return METADATA;
+    }
+  }
 
-	public void setEml(Eml eml) {
-		this.eml = eml;
-	}
+  public String geoSearch() {
+    bbox = new BBox(bboxBottom, bboxLeft, bboxTop, bboxRight);
+    resources = getResourceTypeMatchingManager().searchByBBox(bbox);
+    tagcloud = keywordManager.getCloud();
+    return SUCCESS;
+  }
 
-	public List<? extends Resource> getResources() {
-		return resources;
-	}
+  public List<String> getAlphabet() {
+    return alphabet;
+  }
 
-	public Map<String, Integer> getTagcloud() {
-		return tagcloud;
-	}
+  public BBox getBbox() {
+    return bbox;
+  }
 
-	public List<String> getAlphabet() {
-		return alphabet;
-	}
+  public Eml getEml() {
+    return eml;
+  }
 
-	public List<String> getKeywords() {
-		return keywords;
-	}
+  public String getFormat() {
+    return format;
+  }
 
-	public String getKeyword() {
-		return keyword;
-	}
+  public String getKeyword() {
+    return keyword;
+  }
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
+  public List<String> getKeywords() {
+    return keywords;
+  }
 
-	public String getQ() {
-		return q;
-	}
+  public Date getNow() {
+    return now;
+  }
 
-	public void setQ(String q) {
-		this.q = q;
-	}
+  public Integer getPage() {
+    return page;
+  }
 
-	public void setBbox_top(Double bbox_top) {
-		this.bbox_top = bbox_top;
-	}
+  public String getQ() {
+    return q;
+  }
 
-	public void setBbox_bottom(Double bbox_bottom) {
-		this.bbox_bottom = bbox_bottom;
-	}
+  public List<? extends Resource> getResources() {
+    return resources;
+  }
 
-	public void setBbox_left(Double bbox_left) {
-		this.bbox_left = bbox_left;
-	}
+  public Map<String, Integer> getTagcloud() {
+    return tagcloud;
+  }
 
-	public void setBbox_right(Double bbox_right) {
-		this.bbox_right = bbox_right;
-	}
+  public String list() {
+    resource = null;
+    resources = getResourceTypeMatchingManager().latest(page, 500);
+    alphabet = keywordManager.getAlphabet();
+    if (alphabet.isEmpty()) {
+      keywords = new ArrayList();
+    } else {
+      keywords = keywordManager.getKeywords(alphabet.get(0));
+    }
+    tagcloud = keywordManager.getCloud();
+    return SUCCESS;
+  }
 
-	public Integer getPage() {
-		return page;
-	}
+  public String rss() {
+    resources = resourceManager.latest(page, 25);
+    return SUCCESS;
+  }
 
-	public void setPage(Integer page) {
-		this.page = page;
-	}
+  public String search() {
+    // check if a single resource is being searched.
+    if (resource != null) {
+      // forward in this case to different search
+      return forward();
+    }
+    if (q != null) {
+      resources = getResourceTypeMatchingManager().search(q);
+    } else {
+      resources = getResourceTypeMatchingManager().searchByKeyword(keyword);
+    }
+    tagcloud = keywordManager.getCloud();
+    return SUCCESS;
+  }
 
-	public Date getNow() {
-		return now;
-	}
+  public void setBboxBottom(Double bboxBottom) {
+    this.bboxBottom = bboxBottom;
+  }
 
-	public BBox getBbox() {
-		return bbox;
-	}
-		
+  public void setBboxLeft(Double bboxLeft) {
+    this.bboxLeft = bboxLeft;
+  }
+
+  public void setBboxRight(Double bboxRight) {
+    this.bboxRight = bboxRight;
+  }
+
+  public void setBboxTop(Double bboxTop) {
+    this.bboxTop = bboxTop;
+  }
+
+  public void setEml(Eml eml) {
+    this.eml = eml;
+  }
+
+  public void setFormat(String format) {
+    this.format = format;
+  }
+
+  public void setKeyword(String keyword) {
+    this.keyword = keyword;
+  }
+
+  public void setPage(Integer page) {
+    this.page = page;
+  }
+
+  public void setQ(String q) {
+    this.q = q;
+  }
+
 }

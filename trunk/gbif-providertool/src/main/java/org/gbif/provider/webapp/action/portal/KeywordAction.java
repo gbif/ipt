@@ -1,56 +1,55 @@
+/*
+ * Copyright 2009 GBIF.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package org.gbif.provider.webapp.action.portal;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import org.gbif.provider.service.ResourceKeywordManager;
+import org.gbif.provider.webapp.action.BaseAction;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.SessionAware;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.eml.Eml;
-import org.gbif.provider.model.eml.Role;
-import org.gbif.provider.model.eml.TaxonKeyword;
-import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.service.EmlManager;
-import org.gbif.provider.service.ResourceKeywordManager;
-import org.gbif.provider.webapp.action.BaseAction;
-import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
-import org.gbif.provider.webapp.action.BaseResourceAction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+/**
+ * TODO: Documentation.
+ * 
+ */
+public class KeywordAction extends BaseAction {
+  @Autowired
+  private ResourceKeywordManager keywordManager;
+  private List<String> keywords;
+  private Map<String, Integer> tagcloud;
+  private String prefix = "A";
 
-import com.opensymphony.xwork2.Preparable;
+  @Override
+  public String execute() {
+    keywords = keywordManager.getKeywords(prefix);
+    return SUCCESS;
+  }
 
-public class KeywordAction extends BaseAction{
-	@Autowired
-	private ResourceKeywordManager keywordManager;
-    private List<String> keywords;
-    private Map<String, Integer> tagcloud;
-	private String prefix="A";
-	
-	public String execute(){
-		keywords = keywordManager.getKeywords(prefix);
-		return SUCCESS;
-	}
+  public List<String> getKeywords() {
+    return keywords;
+  }
 
+  public Map<String, Integer> getTagcloud() {
+    return tagcloud;
+  }
 
-	
-	
-	public List<String> getKeywords() {
-		return keywords;
-	}
+  public void setPrefix(String prefix) {
+    this.prefix = prefix;
+  }
 
-	public Map<String, Integer> getTagcloud() {
-		return tagcloud;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-			
 }

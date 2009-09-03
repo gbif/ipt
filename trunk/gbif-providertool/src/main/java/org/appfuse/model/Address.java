@@ -15,6 +15,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
 @Embeddable
+/**
+ * TODO: Documentation.
+ * 
+ */
 public class Address extends BaseObject implements Serializable {
     private static final long serialVersionUID = 3617859655330969141L;
     private String address;
