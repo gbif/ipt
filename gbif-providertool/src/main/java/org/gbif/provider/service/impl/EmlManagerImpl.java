@@ -44,21 +44,24 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 /**
- * TODO: Documentation.
+ * TODO: Documentation
+ * 
  * 
  */
 public class EmlManagerImpl implements EmlManager {
   protected static final Log log = LogFactory.getLog(EmlManagerImpl.class);
   private static final String EML_TEMPLATE = "/WEB-INF/pages/eml.ftl";
 
-  public GenericResourceManager<Resource> resourceManager;
   @Autowired
   public AppConfig cfg;
 
   @Autowired
-  private Configuration freemarker;
-  @Autowired
   @Qualifier("resourceManager")
+  public GenericResourceManager<Resource> resourceManager;
+
+  @Autowired
+  private Configuration freemarker;
+
   private final XStream xstream = new XStream();
 
   public Eml load(Resource resource) {
