@@ -28,15 +28,17 @@ import java.util.List;
  * To register this class in your Spring context file, use the following XML.
  * 
  * <pre>
- * &lt;bean id="userManager" class="com.yasasu.service.impl.GenericManagerImpl"&gt;
- * &lt;constructor-arg&gt;
- * &lt;constructor-arg value="com.yasasu.model.User"/&gt;
- * &lt;/constructor-arg&gt;
- * &lt;/bean&gt;
+ *     &lt;bean id="userManager" class="com.yasasu.service.impl.GenericManagerImpl"&gt;
+ *         &lt;constructor-arg&gt;
+ *             &lt;constructor-arg value="com.yasasu.model.User"/&gt;
+ *         &lt;/constructor-arg&gt;
+ *     &lt;/bean&gt;
  * </pre>
+ * 
  * 
  */
 public class HqlTesterHibernate extends BaseManager implements HqlTester {
+
   public void runHql() {
     List<Object[]> objs = getSession().createQuery(
         "select s from OccStatByRegionAndTaxon s WHERE s.resource.id=0 ").list();

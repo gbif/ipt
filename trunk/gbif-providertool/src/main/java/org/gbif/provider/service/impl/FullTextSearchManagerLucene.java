@@ -68,23 +68,20 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
   private static final String FIELD_DATA = "data";
   private static final String FIELD_ACCESS = "acl";
   private static final String PUBLIC_ACCESS = "public";
-
   protected final Log log = LogFactory.getLog(getClass());
-
-  @Autowired
-  protected AppConfig cfg;
-
   protected String indexDirectoryName = "lucene";
 
   @Autowired
-  @Qualifier("resourceManager")
-  private GenericResourceManager<Resource> resourceManager;
+  protected AppConfig cfg;
 
   private File indexDir;
   private IndexWriter writer;
   private Searcher searcher;
   private final XmlContentHandler handler = new XmlContentHandler();
   private SAXParser saxParser;
+  @Autowired
+  @Qualifier("resourceManager")
+  private GenericResourceManager<Resource> resourceManager;
 
   /**
    * @see org.gbif.provider.service.FullTextSearchManager#buildDataResourceIndex(org.gbif.provider.model.DataResource)
@@ -93,10 +90,9 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
     IndexWriter w = null;
     try {
       // this is just a quick test
-      File iDir = getResourceIndexDirectory(resource.getId());
-      w = new IndexWriter(iDir, new StandardAnalyzer(), true,
+      File dir = getResourceIndexDirectory(resource.getId());
+      w = new IndexWriter(dir, new StandardAnalyzer(), true,
           IndexWriter.MaxFieldLength.UNLIMITED);
-
       // IGNORE the header row
       File data = cfg.getArchiveFile(resource.getId(),
           resource.getCoreMapping().getExtension());
@@ -111,7 +107,6 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
         buildIndex(w, extensionFile);
       }
       w.optimize();
-
     } catch (Exception e) {
       log.error("Error building index: " + e.getMessage(), e);
     } finally {
@@ -207,13 +202,13 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
    * @return List of IDs for core records
    */
   public List<String> search(Long resourceId, String q) {
-    File iDir = getResourceIndexDirectory(resourceId);
+    File dir = getResourceIndexDirectory(resourceId);
     IndexReader reader = null;
-    Searcher iSearcher = null;
+    Searcher s = null;
     List<String> results = new LinkedList<String>();
     try {
-      reader = IndexReader.open(iDir);
-      iSearcher = new IndexSearcher(reader);
+      reader = IndexReader.open(dir);
+      s = new IndexSearcher(reader);
 
       // do a term query
       Term term = normalizeQueryString(q);
@@ -224,13 +219,13 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
           BooleanClause.Occur.MUST);
 
       TopDocCollector collector = new TopDocCollector(10);
-      iSearcher.search(wild, collector);
+      s.search(wild, collector);
       ScoreDoc[] hits = collector.topDocs().scoreDocs;
       int numTotalHits = collector.getTotalHits();
       log.debug("Search term[" + q + "] found[" + numTotalHits + "] records");
 
       for (ScoreDoc scoreDoc : hits) {
-        Document doc = iSearcher.doc(scoreDoc.doc);
+        Document doc = s.doc(scoreDoc.doc);
         String id = doc.get(FIELD_ID);
         results.add(id);
       }
@@ -241,8 +236,8 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
 
     } finally {
       try {
-        if (iSearcher != null) {
-          iSearcher.close();
+        if (s != null) {
+          s.close();
         }
       } catch (IOException e) {
         log.error("Error closing Lucene searcher: " + e.getMessage(), e);

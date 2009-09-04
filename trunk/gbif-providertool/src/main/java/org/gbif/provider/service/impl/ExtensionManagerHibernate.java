@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO: Documentation.
+ * TODO: Documentation
  * 
  */
 public class ExtensionManagerHibernate extends

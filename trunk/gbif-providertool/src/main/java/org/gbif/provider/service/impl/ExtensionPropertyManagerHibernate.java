@@ -49,7 +49,12 @@ public class ExtensionPropertyManagerHibernate extends
     return (ExtensionProperty) getSession().createQuery(
         "select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and (p.namespace=:namespace or p.namespace=:namespace2) and e.core=true) ").setParameter(
         "name", prop.getName()).setParameter("namespace", prop.getNamespace()).setParameter(
-        "namespace2", prop.getNamespace() + "/").uniqueResult();
+        "namespace2", prop.getNamespace() + "/").uniqueResult(); // some
+    // namespaces
+    // like darwin
+    // core use a trailing slash
+    // which gets lost when parsing
+    // a qualified concept name
   }
 
   public Set<ExtensionProperty> lookupFilterCoreProperties(Filter filter)
@@ -77,5 +82,4 @@ public class ExtensionPropertyManagerHibernate extends
     }
     return props;
   }
-
 }
