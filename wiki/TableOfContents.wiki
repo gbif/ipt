@@ -1,25 +1,21 @@
 #summary One-sentence summary of this page.
 
-== User Manual ==
- # [UserManualChapter1 Background Information]
- # [UserManualChapter2 General specifications]
- # [UserManualChapter3 Installation]
- # [UserManualChapter4 Configuration]
- # [UserManualChapter5 Resources Management]
- # [UserManualCopyright Copyright]
+ * User Manual
+   * [UserManualChapter1 Background Information]
+   * [UserManualChapter2 General specifications]
+   * [UserManualChapter3 Installation]
+   * [UserManualChapter4 Configuration]
+   * [UserManualChapter5 Resources Management]
+   * [UserManualCopyright Copyright]
 
-[http://gbif-providertoolkit.googlecode.com/files/GBIF_IPT_User_Manual_1.0.pdf PDF version]
-
-GBIF Secretariat, May 2009
-
-== Developers ==
- * Eclipse
-   * [EclipseEnvironmentAndCheckstyles Environment & Checkstyles]
-   * [EclipseSetupOSX Developing on Mac OS X]
- *[FAQ]
- * HowToContribute
- * [Roadmap]
- * VersionHistory
- * KeyTechnologies
- * [Database]
- * DataTransformations
+ * Developers
+   * Eclipse
+     * [EclipseEnvironmentAndCheckstyles Environment and Checkstyles]
+     * [EclipseSetupOSX Developing on Mac OS X]
+   * [FAQ]
+   * [HowToContribute]
+   * [Roadmap]
+   * [VersionHistory]
+   * [KeyTechnologies]
+   * [Database]
+   * [DataTransformations]
