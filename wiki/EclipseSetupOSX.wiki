@@ -18,7 +18,7 @@ https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool
 }}}
 
 === Enable Maven dependency management ===
-IPT uses *Mavin* for building and managing the project which is configured using a pom.xml file. 
+IPT uses *Mavin* for building and managing the project which is configured using the *pom.xml* file located in the root directory of the *ipt* project. 
 
 To activate Maven, make sure you have the *M2_REPOS* classpath variable defined in Eclipse:
 
@@ -27,7 +27,7 @@ Window->Preferences->Java->Build Path->Classpath Variables->New...
 # Create a variable named "M2_REPOS" pointing to your local Maven repository (i.e. ~/.m2/repository).
 }}}
 
-Then use simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
+Then simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
 
 After this step you will see build errors. The workaround is manually adding the following two libraries to the *ipt* project build path:
 
@@ -50,9 +50,11 @@ In the *JRE* tab of the *ipt-eclipse* run configuration, type the following *VM 
 After clicking *Run*, the *ipt* project will compile and deploy the web app to `http://localhost:8080`. Note that the VM arguments include flags for debugging at address 4000. This allows us to create a run configuration for debugging the IPT web app.
 
 === Create a run configuration for debugging ===
-To debug the IPT web app with breakpoints, create a run configuration for a *remote Java application* and name it *ipt-remote-debug*.
+To debug the IPT web app with breakpoints, create a run configuration for a *Remote Java Application* and name it *ipt-remote-debug*.
 
-In the *Connect* tab of the *ipt-remote-debug' run configuration, under *Connection Properties* set the *Port* to *4000*. Set your breakpoints in server side Java source files or client side JSP files and click *Run*. Finally, accessing the IPT web app at` http://localhost:8080` will bring you into debug mode at your breakpoints.
+In the *Connect* tab of the *ipt-remote-debug* run configuration, under *Connection Properties* set the *Port* to *4000*. Set your breakpoints in server side Java source files or client side JSP files and click *Run*. 
+
+Finally, accessing the IPT web app at` http://localhost:8080` will bring you into debug mode at your breakpoints.
 
 
  
