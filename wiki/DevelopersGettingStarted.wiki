@@ -12,3 +12,7 @@ The GBIF IPT is an open source web application in Java that connects and serves 
 Developers should start with the [EclipseEnvironmentAndCheckstyles Eclipse Setup] page that describe how to configure the Eclipse environment for IPT development and how to setup the IPT checkstyles that enforce good programming style.
 
 Next, the  [EclipseSetupOSX Developing IPT on Mac OS X] page describes a typical Eclipse development setup for working with IPT source code, including checking out the source and setting up run configurations for deploying and debugging the IPT web application.
+
+== Developer Community ==
+
+The developer community exists primarily through the [http://groups.google.com/group/gbif-ipt-contributors GBIF IPT Contributors Group] on on this code site. 
