@@ -8,8 +8,8 @@
    * [UserManualChapter5 Resources Management]
    * [UserManualCopyright Copyright]
  * Developers
-   * [EclipseEnvironmentAndCheckstyles Environment and Checkstyles]
-   * [EclipseSetupOSX Developing on Mac OS X]
+   * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
+   * [EclipseSetupOSX OS X Developers]
    * [FAQ]
    * [HowToContribute]
    * [Roadmap]
