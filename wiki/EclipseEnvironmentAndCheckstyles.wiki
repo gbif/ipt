@@ -1,8 +1,8 @@
 #summary Eclipse environment and checkstyles
 
-= Eclipse Environment and Code Checkstyles  =
+= Eclipse Environment and Checkstyles  =
 
-These instructions describe how to configure the Eclipse environment for IPT checkstyles and development. 
+These instructions describe how to configure the Eclipse environment for IPT development and checkstyles (that enforce good programming style). 
 
 === Required IPT variables ===
 {{{
