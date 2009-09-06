@@ -1,0 +1,58 @@
+#summary Setting up Eclipse for developing IPT on Mac OS X
+
+= Developing IPT on Mac OS X =
+
+The following describes a typical Eclipse development setup for working with IPT source code in the following environment:
+ * OS X 10.5.8
+ * Java 1.5.0_19 
+ * Eclipse 3.5
+ * Subclipse 1.6 (Eclipse Plugin)
+ * Maven 2.0.9
+ * M2Eclipse [http://m2eclipse.sonatype.org/update-dev development build] (Eclipse Plugin)
+
+=== Check out source code ===
+Using Subclipse, *check out as a project in the workspace* the main line of IPT development and name the project *ipt*:
+
+{{{
+https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool
+}}}
+
+=== Enable Maven dependency management ===
+IPT uses *Mavin* for building and managing the project which is configured using a pom.xml file. 
+
+To activate Maven, make sure you have the *M2_REPOS* classpath variable defined in Eclipse:
+
+{{{
+Window->Preferences->Java->Build Path->Classpath Variables->New...
+# Create a variable named "M2_REPOS" pointing to your local Maven repository (i.e. ~/.m2/repository).
+}}}
+
+Then use simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
+
+After this step you will see build errors. The workaround is manually adding the following two libraries to the *ipt* project build path:
+
+{{{
+ipt/target/warpath/appfuse-struts-2.0.2.warpath.jar
+ipt/target/warpath/appfuse-web-common-2.0.2.warpath.jar
+}}}
+
+=== Create a run configuration ===
+To run the IPT web app, create a new Maven Build run configuration and name it *ipt-eclipse*. 
+
+In the *Main* tab of the *ipt-eclipse* run configuration, type *eclipse* in the *Profiles* box. Select the *Update Snapshots* and *Skip Tests* checkboxes. For the *Maven Runtime* option, click the *Configure...* button, add the *External* Maven installation on your machine, click *Okay*, and then select it as the *Maven Runtime*.
+
+In the *JRE* tab of the *ipt-eclipse* run configuration, type the following *VM arguments*:
+
+{{{
+-Xmx1048m -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n
+}}}
+
+After clicking *Run*, the *ipt* project will compile and deploy the web app to `http://localhost:8080`. Note that the VM arguments include flags for debugging at address 4000. This allows us to create a run configuration for debugging the IPT web app.
+
+=== Create a run configuration for debugging ===
+To debug the IPT web app with breakpoints, create a run configuration for a *remote Java application* and name it *ipt-remote-debug*.
+
+In the *Connect* tab of the *ipt-remote-debug' run configuration, under *Connection Properties* set the *Port* to *4000*. Set your breakpoints in server side Java source files or client side JSP files and click *Run*. Finally, accessing the IPT web app at` http://localhost:8080` will bring you into debug mode at your breakpoints.
+
+
+ 
