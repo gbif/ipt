@@ -1,4 +1,4 @@
-#summary Getting started with IPT
+#summary Getting started with IPT development
 
 == Introduction  ==
 
