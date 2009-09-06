@@ -13,7 +13,7 @@
 GBIF Secretariat, May 2009
 
 == Developer Documentation ==
- # [EclipseEnvironmentAndCheckstyles] Eclipse Environment and Code Checkstyles]
+ # [EclipseEnvironmentAndCheckstyles Eclipse Environment and Code Checkstyles]
  # [EclipseSetupOSX IPT Development in Eclipse on Mac OS X]
  # [FAQ]
  # HowToContribute
