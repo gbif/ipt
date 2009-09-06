@@ -5,7 +5,6 @@
    * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
    * [EclipseSetupOSX OS X Developers]
    * [FAQ]
-   * [HowToContribute]
    * [Roadmap]
    * [VersionHistory]
    * [Database]
