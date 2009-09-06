@@ -7,7 +7,6 @@
    * [UserManualChapter4 Configuration]
    * [UserManualChapter5 Resources Management]
    * [UserManualCopyright Copyright]
-
  * Developers
    * Eclipse
      * [EclipseEnvironmentAndCheckstyles Environment and Checkstyles]
