@@ -1,5 +1,7 @@
 #summary Getting started with IPT development
 
+= Getting Started =
+
 == Introduction  ==
 
 The GBIF IPT is an open source web application in Java that connects and serves biodiversity data that are registered in a GBIF IPT instance and connected to the GBIF distributed network for public consultation and use.
