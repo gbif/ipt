@@ -19,4 +19,4 @@ Next, the  [EclipseSetupOSX Developing IPT on Mac OS X] page describes a typical
 
 == Developer Community ==
 
-The developer community exists primarily through the [http://groups.google.com/group/gbif-ipt-contributors GBIF IPT Contributors Group] on on this code site. 
+The developer community exists primarily through the [http://groups.google.com/group/gbif-ipt-contributors GBIF IPT Contributors Group] and on this code site. 
