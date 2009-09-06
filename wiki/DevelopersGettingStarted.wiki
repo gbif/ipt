@@ -1,0 +1,12 @@
+#summary Getting started with IPT
+
+== Introduction  ==
+
+The GBIF IPT is an open source web application in Java that connects and serves biodiversity data that are registered in a GBIF IPT instance and connected to the GBIF distributed network for public consultation and use.
+
+
+== Working with the Code ==
+
+Developers should start with the [EclipseEnvironmentAndCheckstyles Eclipse Setup] page that describe how to configure the Eclipse environment for IPT development and how to setup the IPT checkstyles that enforce good programming style.
+
+Next, the  [EclipseSetupOSX Developing IPT on Mac OS X] page describes a typical Eclipse development setup for working with IPT source code, including checking out the source and setting up run configurations for deploying and debugging the IPT web application.
