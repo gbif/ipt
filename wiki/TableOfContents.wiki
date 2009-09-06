@@ -13,8 +13,9 @@
 GBIF Secretariat, May 2009
 
 == Developers ==
- # [EclipseEnvironmentAndCheckstyles Eclipse Environment]
- # [EclipseSetupOSX Developing on Mac OS X]
+ * Eclipse
+   * [EclipseEnvironmentAndCheckstyles Environment & Checkstyles]
+   * [EclipseSetupOSX Developing on Mac OS X]
  # [FAQ]
  # HowToContribute
  # [Roadmap]
