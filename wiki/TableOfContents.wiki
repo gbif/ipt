@@ -16,10 +16,10 @@ GBIF Secretariat, May 2009
  * Eclipse
    * [EclipseEnvironmentAndCheckstyles Environment & Checkstyles]
    * [EclipseSetupOSX Developing on Mac OS X]
- # [FAQ]
- # HowToContribute
- # [Roadmap]
- # VersionHistory
- # KeyTechnologies
- # [Database]
- # DataTransformations
+ *[FAQ]
+ * HowToContribute
+ * [Roadmap]
+ * VersionHistory
+ * KeyTechnologies
+ * [Database]
+ * DataTransformations
