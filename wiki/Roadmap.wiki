@@ -5,6 +5,9 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 
 <wiki:toc max_depth="2" />
 
+= Release 1.0 =
+scheduled for 1.november 2009
+
 == Internationalisation ==
  * Ensure application is fully internationalised
    * check all actions and templates for hard coded values
@@ -27,10 +30,7 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
 
-
-= Release 1.0 =
- * public release 1.0
-
+= Release 1.1 =
 == Mapping Improvements ==
  * Intuitiveness of mapping section
    * Logged as issues tagged with "Configuration" in Issues list
@@ -56,8 +56,7 @@ see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label: Performa
 
 
 
-
-== IPT 2.0 ==
-not scheduled
+= Release 2.0 =
+== new data types ==
  * new core record type Publication allows to share publication metadata with link to full body text
  * new core record type Site allows to share hierarchical site definitions incl polygon based shapes
