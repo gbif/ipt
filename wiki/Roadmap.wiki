@@ -26,7 +26,7 @@ scheduled for 1.november 2009
    * organisation registration only done externally (not in ipt admin UI)
    * write resource tags (= metadata keywords) to registry
 
-== DarwinCore update ==
+== Darwin Core update ==
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
 
