@@ -28,7 +28,13 @@ Window->Preferences->Java->Build Path->Classpath Variables->New...
 # Create a variable named "M2_REPOS" pointing to your local Maven repository (i.e. ~/.m2/repository).
 }}}
 
-Then simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
+Next, check out the *motherpom* project:
+
+{{{
+https://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom
+}}}
+
+and then right-click the project and *Run As Maven Install*. Finally, simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
 
 After this step you will see build errors. The workaround is manually adding the following two libraries to the *ipt* project build path:
 
