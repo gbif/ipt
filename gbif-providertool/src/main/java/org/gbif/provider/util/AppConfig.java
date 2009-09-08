@@ -173,8 +173,7 @@ public class AppConfig {
   private final ProviderCfgManager providerCfgManager;
   private ProviderCfg cfg;
 
-  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir,
-      String dataDir, String registryUrl, String gbifAnalyticsKey) {
+  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl, String gbifAnalyticsKey) {
     super();
     AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
     AppConfig.webappDIR = new File(webappDir);
