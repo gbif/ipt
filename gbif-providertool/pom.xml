@@ -48,26 +48,8 @@
     </contributors>
     
     <build>
-        <defaultGoal>jetty:run-war</defaultGoal>
+        <defaultGoal>jetty:run</defaultGoal>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appfuse-maven-plugin</artifactId>
-                <version>${appfuse.version}</version>
-                <configuration>
-                    <genericCore>${amp.genericCore}</genericCore>
-                    <fullSource>${amp.fullSource}</fullSource>
-                </configuration>
-                <!-- Dependency needed by appfuse:gen-model to connect to database. -->
-                <!-- See http://issues.appfuse.org/browse/APF-868 to learn more.    -->
-                <dependencies>
-                    <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
@@ -113,12 +95,24 @@
                 </configuration>
             </plugin>
             
-            
+<!--
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.6</version>
+                <version>2.5.1</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <wtpversion>1.5</wtpversion>
+                </configuration>
             </plugin>
-            
+-->
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>hibernate3-maven-plugin</artifactId>
@@ -173,6 +167,8 @@
                     </scanTargetPatterns>
                 </configuration>
             </plugin>
+
+<!--
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.0.2</version>
@@ -181,38 +177,9 @@
                         WEB-INF/lib/*, **/jdbc.properties, **/application.properties, **/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**,
                         admin/**
                     </dependentWarExcludes>
-                    <!-- 
-                    <webResources>
-                        <resource>
-                            <! this is relative to the pom.xml directory >
-                            <directory>data</directory>
-                            <! by default targetPath=WAR root directory >
-                            <targetPath>WEB-INF/data</targetPath>
-                        </resource>
-                        </webResources>
-                    -->
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.appfuse</groupId>
-                <artifactId>maven-warpath-plugin</artifactId>
-                <version>${appfuse.version}</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>add-classes</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <warpathExcludes>
-                        applicationContext*.xml,ApplicationResources*.properties,ehcache.xml,
-                        hibernate.cfg.xml,jdbc.properties,application.properties,log4j.xml,mail.properties,**/persistence.xml,
-                        sql-map-config.xml,struts.xml
-                    </warpathExcludes>
-                </configuration>
-            </plugin>
+-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>native2ascii-maven-plugin</artifactId>
@@ -270,6 +237,10 @@
                 <includes>
                     <include>applicationContext-resources.xml</include>
                     <include>struts.xml</include>
+                    <include>ApplicationResources_de.properties</include>
+                    <include>ApplicationResources_es.properties</include>
+                    <include>ApplicationResources_fr.properties</include>
+                    <include>ApplicationResources_kr.properties</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>
@@ -297,10 +268,6 @@
             <id>central</id>
             <url>http://repo1.maven.org/maven2</url>
         </repository>
-        <repository>
-            <id>appfuse</id>
-            <url>http://static.appfuse.org/repository</url>
-        </repository>        
         <repository>
             <id>gbif</id>
             <url>http://tools.gbif.org/maven/repository/</url>
@@ -330,72 +297,363 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>appfuse</id>
-            <url>http://static.appfuse.org/repository</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencies>
-        <dependency>
+
+<!-- dependencies from appfuse -->
+<dependency>
+    <groupId>org.appfuse</groupId>
+    <artifactId>appfuse-hibernate</artifactId>
+    <version>${appfuse.version}</version>
+    <exclusions>
+        <!-- remove SLF4j as it converts all logs into strings -->
+        <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+        <exclusion>
             <groupId>org.appfuse</groupId>
-            <artifactId>appfuse-${web.framework}</artifactId>
-            <version>${appfuse.version}</version>
-            <type>war</type>
-            <exclusions>
-                <!-- remove SLF4j as it converts all logs into strings -->
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>	            
-        </dependency>
-        <dependency>
-            <groupId>org.appfuse</groupId>
-            <artifactId>appfuse-${web.framework}</artifactId>
-            <version>${appfuse.version}</version>
-            <type>warpath</type>
-            <!-- This exclusion and the dependency following this one allow DAO framework switching. -->
-            <!-- You only need these if you want to use JPA or iBATIS. See APF-565 for more information. -->
-            <!-- It does no harm to leave it in for Hibernate, but it's not needed. -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.appfuse</groupId>
-                    <artifactId>appfuse-hibernate</artifactId>
-                </exclusion>
-                <!-- remove SLF4j as it converts all logs into strings -->
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl104-over-slf4j</artifactId>
-                </exclusion>
-                <!-- appfuse data model, i.e. org.appfuse.model.* -->
-                <exclusion>        
-                    <groupId>org.appfuse</groupId>        
-                    <artifactId>appfuse-data-common</artifactId>      
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.appfuse</groupId>
-            <artifactId>appfuse-${dao.framework}</artifactId>
-            <version>${appfuse.version}</version>
-            <exclusions>
-                <!-- remove SLF4j as it converts all logs into strings -->
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.appfuse</groupId>
-                    <artifactId>appfuse-data-common</artifactId>
-                </exclusion>
-            </exclusions>	
-        </dependency>
+            <artifactId>appfuse-data-common</artifactId>
+        </exclusion>
+    </exclusions>	
+</dependency>
+<dependency>
+    <groupId>commons-beanutils</groupId>
+    <artifactId>commons-beanutils</artifactId>
+    <version>${commons.beanutils.version}</version>
+</dependency>
+<dependency>
+    <groupId>commons-collections</groupId>
+    <artifactId>commons-collections</artifactId>
+    <version>${commons.collections.version}</version>
+</dependency>
+<dependency>
+    <groupId>commons-dbcp</groupId>
+    <artifactId>commons-dbcp</artifactId>
+    <version>${commons.dbcp.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>xercesImpl</artifactId>
+            <groupId>xerces</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>${commons.fileupload.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>commons-io</artifactId>
+            <groupId>commons-io</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>commons-lang</groupId>
+    <artifactId>commons-lang</artifactId>
+    <version>${commons.lang.version}</version>
+</dependency>
+<dependency>
+    <groupId>displaytag</groupId>
+    <artifactId>displaytag</artifactId>
+    <version>1.2</version>
+</dependency>
+<dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>mail</artifactId>
+    <version>${javamail.version}</version>
+</dependency>
+<dependency>
+    <groupId>javax.persistence</groupId>
+    <artifactId>persistence-api</artifactId>
+    <version>${jpa.version}</version>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jsp-api</artifactId>
+    <version>${jsp.version}</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>${servlet.version}</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jstl</artifactId>
+    <version>${jstl.version}</version>
+</dependency>
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>${junit.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+<dependency>
+    <groupId>net.sf.ehcache</groupId>
+    <artifactId>ehcache</artifactId>
+    <version>${ehcache.version}</version>
+</dependency>
+<dependency>
+    <groupId>opensymphony</groupId>
+    <artifactId>clickstream</artifactId>
+    <version>${clickstream.version}</version>
+</dependency>
+<dependency>
+    <groupId>opensymphony</groupId>
+    <artifactId>oscache</artifactId>
+    <version>${oscache.version}</version>
+</dependency>
+<dependency>
+    <groupId>opensymphony</groupId>
+    <artifactId>sitemesh</artifactId>
+    <version>${sitemesh.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>${commons.io.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-core</artifactId>
+    <version>${struts.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-codebehind-plugin</artifactId>
+    <version>${struts.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-spring-plugin</artifactId>
+    <version>${struts.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring-beans</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-core</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-context</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>${aspectj.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>${aspectj.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.codehaus.xfire</groupId>
+    <artifactId>xfire-java5</artifactId>
+    <version>${xfire.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>commons-attributes-api</artifactId>
+            <groupId>commons-attributes</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>jaxen</artifactId>
+            <groupId>jaxen</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>xmlParserAPIs</artifactId>
+            <groupId>xerces</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>xercesImpl</artifactId>
+            <groupId>xerces</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>XmlSchema</artifactId>
+            <groupId>org.apache.ws.commons</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.codehaus.xfire</groupId>
+    <artifactId>xfire-spring</artifactId>
+    <version>${xfire.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-remoting</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.directwebremoting</groupId>
+    <artifactId>dwr</artifactId>
+    <version>${dwr.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate</artifactId>
+    <version>${hibernate.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>ehcache</artifactId>
+            <groupId>net.sf.ehcache</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>commons-collections</artifactId>
+            <groupId>commons-collections</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-annotations</artifactId>
+    <version>${hibernate.annotations.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-commons-annotations</artifactId>
+    <version>${hibernate.annotations.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.jmock</groupId>
+    <artifactId>jmock</artifactId>
+    <version>${jmock.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.jmock</groupId>
+    <artifactId>jmock-junit4</artifactId>
+    <version>${jmock.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>${spring.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-orm</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aspects</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core-tiger</artifactId>
+    <version>${spring.security.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring-core</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-support</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-taglibs</artifactId>
+    <version>${spring.security.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-support</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.subethamail</groupId>
+    <artifactId>subethasmtp-wiser</artifactId>
+    <version>${wiser.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.tuckey</groupId>
+    <artifactId>urlrewritefilter</artifactId>
+    <version>${urlrewrite.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>ant</artifactId>
+            <groupId>ant</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>struts-menu</groupId>
+    <artifactId>struts-menu</artifactId>
+    <version>${struts.menu.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>xml-apis</artifactId>
+            <groupId>xml-apis</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>taglibs</groupId>
+    <artifactId>standard</artifactId>
+    <version>${jstl.version}</version>
+</dependency>
+<dependency>
+    <groupId>velocity</groupId>
+    <artifactId>velocity</artifactId>
+    <version>${velocity.version}</version>
+</dependency>
+
+<!-- other -->
         <dependency>
             <groupId>${jdbc.groupId}</groupId>
             <artifactId>${jdbc.artifactId}</artifactId>
@@ -476,6 +734,7 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
         <!-- JDBC driver to support a variety of external datasources -->
         <dependency>
             <groupId>mysql</groupId>
@@ -592,24 +851,45 @@
 
     <properties>
         <googlecode.project>gbif-providertoolkit</googlecode.project>
-        
         <!-- Application settings -->
-        <dao.framework>hibernate</dao.framework>
-        <web.framework>struts</web.framework>
-        <amp.genericCore>true</amp.genericCore>
-        <amp.fullSource>false</amp.fullSource>
+        <copyright.year>2008</copyright.year>
         
         <!-- Framework dependency versions -->
-        <appfuse.version>2.0.2</appfuse.version>
         <spring.version>2.5.5</spring.version>
         <gt.version>2.5.1</gt.version>
+        <appfuse.version>2.0.2</appfuse.version>
+        <aspectj.version>1.6.0</aspectj.version>
+        <clickstream.version>1.0.2</clickstream.version>
+        <commons.beanutils.version>1.7.0</commons.beanutils.version>
+        <commons.collections.version>3.2</commons.collections.version>
+        <commons.dbcp.version>1.2.1</commons.dbcp.version>
+        <commons.fileupload.version>1.2.1</commons.fileupload.version>
+        <commons.io.version>1.3.2</commons.io.version>
+        <commons.lang.version>2.3</commons.lang.version>
+        <dwr.version>2.0.1</dwr.version>
+        <ehcache.version>1.4.1</ehcache.version>
+        <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
+        <hibernate.version>3.2.6.ga</hibernate.version>
+        <javamail.version>1.4</javamail.version>
+        <jpa.version>1.0</jpa.version>
+        <jstl.version>1.1.2</jstl.version>
+        <log4j.version>1.2.13</log4j.version>
+        <oscache.version>2.3</oscache.version>
+        <sitemesh.version>2.2.1</sitemesh.version>
+        <spring.security.version>2.0.1</spring.security.version>
+        <struts.menu.version>2.4.3</struts.menu.version>
+        <struts.version>2.0.11.1</struts.version>
+        <urlrewrite.version>3.0.4</urlrewrite.version>
+        <velocity.version>1.4</velocity.version>
+        <xfire.version>1.2.6</xfire.version>
+		<lucene.version>2.4.0</lucene.version>
+
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>
         <jsp.version>2.0</jsp.version>
         <junit.version>4.4</junit.version>
         <servlet.version>2.4</servlet.version>
         <wiser.version>1.2</wiser.version>
-		<lucene.version>2.4.0</lucene.version>
 
         <!-- Cargo settings -->
         <cargo.container>tomcat5x</cargo.container>

@@ -39,7 +39,7 @@
             classpath:/applicationContext-i18n-maps.xml
             classpath:/applicationContext-resources.xml
             classpath:/applicationContext-service.xml
-            /WEB-INF/applicationContext-struts.xml
+            classpath:/applicationContext-struts.xml
             /WEB-INF/security.xml
         </param-value>
     </context-param>
