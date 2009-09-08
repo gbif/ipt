@@ -1,5 +1,12 @@
 #summary One-sentence summary of this page.
 
+ * User Manual
+   * [UserManualChapter1 Background Information]
+   * [UserManualChapter2 General specifications]
+   * [UserManualChapter3 Installation]
+   * [UserManualChapter4 Configuration]
+   * [UserManualChapter5 Resources Management]
+   * [UserManualCopyright Copyright]
  * Developers
    * [DevelopersGettingStarted Getting Started]
    * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
@@ -9,10 +16,3 @@
    * [VersionHistory]
    * [Database]
    * [DataTransformations]
- * User Manual
-   * [UserManualChapter1 Background Information]
-   * [UserManualChapter2 General specifications]
-   * [UserManualChapter3 Installation]
-   * [UserManualChapter4 Configuration]
-   * [UserManualChapter5 Resources Management]
-   * [UserManualCopyright Copyright]
