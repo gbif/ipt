@@ -1,0 +1,25 @@
+#summary One-sentence summary of this page.
+
+= Web App Configuration =
+ * web.xml
+ * struts.xml (configures all actions and URL mappings)
+ * hibernate.cfg.xml
+ * applicationContext.xml (Spring beans) 
+   # applicationContext-dao.xml
+   # applicationContext-i18n-maps.xml
+   # applicationContext-resources.xml
+   # applicationContext-service.xml 
+   # applicationContext-struts.xml
+   # applicationContext.xml
+
+= Properties Files =
+ * application.properties (IPT app settings) 
+ * ipt.properties (user configurable domain, base URL, data directory, mail settings)
+ * velocity.properties (static)
+ * displaytag.properties (static)
+ * xwork-conversion.properties (static)
+
+= Page layout =
+ * src/main/webapp/WEB-INF/decorators.xml
+ * src/main/webapp/WEB-INF/sitemesh.xml
+
