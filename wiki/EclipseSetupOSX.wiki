@@ -19,7 +19,7 @@ https://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool
 }}}
 
 === Enable Maven dependency management ===
-IPT uses *Mavin* for building and managing the project which is configured using the *pom.xml* file located in the root directory of the *ipt* project. 
+IPT uses *Maven* for building and managing the project, which is configured using the *pom.xml* file located in the root directory of the *ipt* project. 
 
 To activate Maven, make sure you have the *M2_REPOS* classpath variable defined in Eclipse:
 
