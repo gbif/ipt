@@ -4,6 +4,7 @@
  * web.xml
  * struts.xml (configures all actions and URL mappings)
  * hibernate.cfg.xml
+ * urlrewrite.xml (RESTFUL to url parameter rewriting)
  * applicationContext.xml (Spring beans) 
    # applicationContext-dao.xml
    # applicationContext-i18n-maps.xml
@@ -23,3 +24,32 @@
  * src/main/webapp/WEB-INF/decorators.xml
  * src/main/webapp/WEB-INF/sitemesh.xml
 
+= Tricky Architecture Bits =
+
+=== Runtime application configuration ===
+
+IPT data directory layout.
+
+{{{
+WebContextPropertyResolver.java
+AppConfig.java
+}}}
+
+=== IPT 2-Tier Architecture ===
+
+DAO and services merged into a single service layer. With the exception of AppFuse user management is 3-tier DAO and services.
+
+=== Upload Process ===
+
+http://www.websequencediagrams.com/cgi-bin/cdraw?lz=U291cmNlLT5JbXBvcnRBY3Rpb246IHVwbG9hZAoACQwtPkNhY2hlTWFuYWdlcjogcnVuVQAgBm5vdGUgcmlnaHQgb2YgABgOQXN5bmNocm9ub3VzIGNvdXBsaW5nIHVzaW5nIEpESyBGdXR1cmU8AEQGRXZlbnQ-CgBcDACBEQhUYXNrOiBjYWxsKCkAgRAHVGFzawARDmluaXQoKQCBAQ8ANAxyZXNldACBAwVudHMsIAAIBWZsYWdzIChlLmcuIGRlcml2ZWRUYXhvbm9teT8AXQ4AgXIOcHJlcGFyZQCBfgYAbghvdmVyAIFzD2ZsYWdBc0RlbGV0ZWRcbnJlbW92ZUQAYwZEYXRhIChFLmcuIHQAbgZpYyAvIGdlb2dyYXBoaWNhbCBoaWVyYXJjaGllcykANwhTdGF0cwBECEV4dGVuc2lvbkRhdGEAWQhBcmNoaXZlcwCCHw0AgX8NaQCDbAVDb3JlAIIWHWRldGVybWluZSBpZiBtb2RpZmllZFxudXBkYXRlIC8gaW5zZXJ0c1xuY3JlYXRlIGFubm90YXRpb25zIGZvciBiYWQgcm93cwpsb29wIEZvciBlYWNoIGUAgS0IIHR5cGUKIACDHAsAg0UPAIUTBQCBWwkoKQogIACCYQoAVVVlbmQAhGgcbG9zZQCEdg8AhFUQb2x2ZSBpZHMgcmVmZXJlbmNlZCBieSBuYW1lIGZpZWxkcyAoYmFzaW9ueW1zLCBoaWdoZXIgdGF4YSBldGMAQRsAglcHZSBhbWJpZ3VvdXMAUAUAg0wbYnVpbGQgbmVzdGVkAIVrBigAYwUAhFsLZXMAgTMbAINiB3N0YXQARSFEd0MtQQCEWBpnZW5lcmF0ZSBMdWNlbmUgaW5kZXgK&s=modern-blue.png
+
+[http://www.websequencediagrams.com/?lz=U291cmNlLT5JbXBvcnRBY3Rpb246IHVwbG9hZAoACQwtPkNhY2hlTWFuYWdlcjogcnVuVQAgBm5vdGUgcmlnaHQgb2YgABgOQXN5bmNocm9ub3VzIGNvdXBsaW5nIHVzaW5nIEpESyBGdXR1cmU8AEQGRXZlbnQ-CgBcDACBEQhUYXNrOiBjYWxsKCkAgRAHVGFzawARDmluaXQoKQCBAQ8ANAxyZXNldACBAwVudHMsIAAIBWZsYWdzIChlLmcuIGRlcml2ZWRUYXhvbm9teT8AXQ4AgXIOcHJlcGFyZQCBfgYAbghvdmVyAIFzD2ZsYWdBc0RlbGV0ZWRcbnJlbW92ZUQAYwZEYXRhIChFLmcuIHQAbgZpYyAvIGdlb2dyYXBoaWNhbCBoaWVyYXJjaGllcykANwhTdGF0cwBECEV4dGVuc2lvbkRhdGEAWQhBcmNoaXZlcwCCHw0AgX8NaQCDbAVDb3JlAIIWHWRldGVybWluZSBpZiBtb2RpZmllZFxudXBkYXRlIC8gaW5zZXJ0c1xuY3JlYXRlIGFubm90YXRpb25zIGZvciBiYWQgcm93cwpsb29wIEZvciBlYWNoIGUAgS0IIHR5cGUKIACDHAsAg0UPAIUTBQCBWwkoKQogIACCYQoAVVVlbmQAhGgcbG9zZQCEdg8AhFUQb2x2ZSBpZHMgcmVmZXJlbmNlZCBieSBuYW1lIGZpZWxkcyAoYmFzaW9ueW1zLCBoaWdoZXIgdGF4YSBldGMAQRsAglcHZSBhbWJpZ3VvdXMAUAUAg0wbYnVpbGQgbmVzdGVkAIVrBigAYwUAhFsLZXMAgTMbAINiB3N0YXQARSFEd0MtQQCEWBpnZW5lcmF0ZSBMdWNlbmUgaW5kZXg&s=modern-blue Edit]
+=== Internationalization ===
+
+The *.ftl and *.jsp files are internationalized. Occurs on templating level and action level.
+ 
+=== Registry and Publication Process ===
+
+=== Lucene ===
+
+Main index is across all metadata through all resources. There is also one for each resource that indexes each data.
