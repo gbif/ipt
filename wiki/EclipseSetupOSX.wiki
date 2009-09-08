@@ -36,13 +36,6 @@ https://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom
 
 and then right-click the project and *Run As Maven Install*. Finally, simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
 
-After this step you will see build errors. The workaround is manually adding the following two libraries to the *ipt* project build path:
-
-{{{
-ipt/target/warpath/appfuse-struts-2.0.2.warpath.jar
-ipt/target/warpath/appfuse-web-common-2.0.2.warpath.jar
-}}}
-
 === Create a run configuration ===
 To run the IPT web app, create a new Maven Build run configuration and name it *ipt-eclipse*. 
 
