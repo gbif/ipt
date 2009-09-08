@@ -34,7 +34,7 @@ Next, check out the *motherpom* project:
 https://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom
 }}}
 
-and then right-click the project and *Run As Maven Install*. Finally, simply use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
+and then right-click the project and *Run As->Maven Install*. Finally, use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
 
 === Create a run configuration ===
 To run the IPT web app, create a new Maven Build run configuration and name it *ipt-eclipse*. 
