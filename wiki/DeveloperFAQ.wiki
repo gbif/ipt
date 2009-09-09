@@ -1,4 +1,6 @@
-#summary One-sentence summary of this page.
+#summary Developer Frequently Asked Questions
+
+<wiki:toc max_depth="2" />
 
 = Configuration files =
  * web.xml
