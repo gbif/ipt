@@ -28,14 +28,9 @@ Eclipse->Preferences->Java->Build Path->Classpath Variables->New...
 # Create a variable named "M2_REPOS" pointing to your local Maven repository (i.e. ~/.m2/repository).
 }}}
 
-Also, set the *Maven preferences* as follows:
+Also, configure *Maven preferences* and set *Goals to run on project import* to `org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse` and also check the
+*Download repository index updates on startup* and *Update Maven projects on startup*.
 
-{{{
-Eclipse->Preferences->Maven
-# Set 'Goals to run on project import' to 'org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse'
-# Check the 'Download repository index updates on startup'
-# Check the 'Update Maven projects on startup'
-}}}
 Next, check out the *motherpom* project:
 
 {{{
