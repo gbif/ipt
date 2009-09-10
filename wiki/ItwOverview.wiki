@@ -74,3 +74,30 @@
  * *14:30* - Course summary by Alberto González-Talaván
  * *15:00* - Course evaluation by Alberto González-Talaván
  * *15:30* - End of the course
+
+= Participants =
+||*Surname*||*Name*||*Country/Organisation*||*Email*||
+||Akbaraly||Michael||GBIF France||akbaraly@gbif.fr||
+||Akpona||Adéloui Hugues||DGFRN, Benin||akpona@gmail.com||
+||Chen||Elie||Academia Sinica, Chinese Taipei||eliechen@gate.sinica.edu.tw||
+||Daly||Brenda||Endangered Wildlife Trust||brendad@ewt.org.za||
+||Desmet||Peter||Université de Montréal, Canada||peter.desmet@umontreal.ca||
+||Endresen||Dag Terje Filip||Nordic Genetic Resource Center||dag.endresen@nordgen.org||
+||Graf||Mickaël||GBIF Sweden||mickael.graf@nrm.se||
+||Haefeli||Inés Amalia||MCTIP, Argentina||ihaefeli@mincyt.gob.ar||
+||Holetschek||Jörg||BGBM, Germany||j.holetschek@bgbm.org||
+||Jinbo||Utsugi||University of Tokyo, Japan||cujinbo@mail.ecc.u-tokyo.ac.jp||
+||Kim||DaeHwan||KISTI, Korea||dhkim@kisti.re.kr||
+||Keita||DouDou Crespin||COSE, Guinea||Crespin_5@yahoo.fr||
+||Lange||Christian||Natural History Museum of Denmark||christianl@snm.ku.dk||
+||Lusa||Silvia||GBIF Spain||lusa@gbif.es||
+||Moreno Vargas||Diego Alexander||A. von Humboldt Institute, Colombia||damorenov@gmail.com||
+||Noé||Nicolas||Belgium Biodiversity Platform||Nicolas.noe@ulb.ac.be||
+||Pîzzigatti Correa||Pedro Luiz||Universidade de São Paulo, Brazil||Pedro.correa@usp.br||
+||Rasoamanana||Mbolatiana Toky||Bibliothèque Universitaire d’Antananarivo, Madagascar||mbolatiana_toky@yahoo.fr||
+||Réveillon||Arnaud||GBIF Secretariat contractor||arnaud.reveillon@me.com||
+||Russell||Laura||University of Kansas, USA||larussell@ku.edu||
+||Sanabria Rodríguez||Aurelio||INBio, Costa Rica||asanabria@inbio.ac.cr||
+||Sood||Rajesh||GBIF Secretariat contractor||rajksood@hotmail.com||
+||Sotillo Enriquez||Arelys||Centro Nacional de Biodiversidad, Cuba||sotillo@ecologia.cu||
+||Theeten||Franck||Royal Museum for Central Africa, Belgium||franck.theeten@africamuseum.be||
