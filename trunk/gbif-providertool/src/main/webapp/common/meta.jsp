@@ -1,4 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
+
+<!--  References mappings.ftl -->
+
 <c:set var="currentMenu" scope="request"><decorator:getProperty property="meta.menu"/></c:set>
 <c:set var="currentSubMenu" scope="request"><decorator:getProperty property="meta.submenu"/></c:set>
 <c:set var="currentResourceTitle" scope="request"><decorator:getProperty property="meta.resource"/></c:set>

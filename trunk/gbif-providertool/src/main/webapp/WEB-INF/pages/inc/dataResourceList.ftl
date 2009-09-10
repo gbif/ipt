@@ -1,3 +1,4 @@
+<!--<#assign display=JspTaglibs["http://displaytag.sf.net"] />-->
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 
 <@display.table name="resources" class="table" requestURI="" id="resourceList" export=false pagesize=5>
