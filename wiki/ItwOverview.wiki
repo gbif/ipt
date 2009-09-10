@@ -76,28 +76,28 @@
  * *15:30* - End of the course
 
 = Participants =
-||*Surname*||*Name*||*Country/Organisation*||*Email*||
-||Akbaraly||Michael||GBIF France||akbaraly@gbif.fr||
-||Akpona||Adéloui Hugues||DGFRN, Benin||akpona@gmail.com||
-||Chen||Elie||Academia Sinica, Chinese Taipei||eliechen@gate.sinica.edu.tw||
-||Daly||Brenda||Endangered Wildlife Trust||brendad@ewt.org.za||
-||Desmet||Peter||Université de Montréal, Canada||peter.desmet@umontreal.ca||
-||Endresen||Dag Terje Filip||Nordic Genetic Resource Center||dag.endresen@nordgen.org||
-||Graf||Mickaël||GBIF Sweden||mickael.graf@nrm.se||
-||Haefeli||Inés Amalia||MCTIP, Argentina||ihaefeli@mincyt.gob.ar||
-||Holetschek||Jörg||BGBM, Germany||j.holetschek@bgbm.org||
-||Jinbo||Utsugi||University of Tokyo, Japan||cujinbo@mail.ecc.u-tokyo.ac.jp||
-||Kim||DaeHwan||KISTI, Korea||dhkim@kisti.re.kr||
-||Keita||DouDou Crespin||COSE, Guinea||Crespin_5@yahoo.fr||
-||Lange||Christian||Natural History Museum of Denmark||christianl@snm.ku.dk||
-||Lusa||Silvia||GBIF Spain||lusa@gbif.es||
-||Moreno Vargas||Diego Alexander||A. von Humboldt Institute, Colombia||damorenov@gmail.com||
-||Noé||Nicolas||Belgium Biodiversity Platform||Nicolas.noe@ulb.ac.be||
-||Pîzzigatti Correa||Pedro Luiz||Universidade de São Paulo, Brazil||Pedro.correa@usp.br||
-||Rasoamanana||Mbolatiana Toky||Bibliothèque Universitaire d’Antananarivo, Madagascar||mbolatiana_toky@yahoo.fr||
-||Réveillon||Arnaud||GBIF Secretariat contractor||arnaud.reveillon@me.com||
-||Russell||Laura||University of Kansas, USA||larussell@ku.edu||
-||Sanabria Rodríguez||Aurelio||INBio, Costa Rica||asanabria@inbio.ac.cr||
-||Sood||Rajesh||GBIF Secretariat contractor||rajksood@hotmail.com||
-||Sotillo Enriquez||Arelys||Centro Nacional de Biodiversidad, Cuba||sotillo@ecologia.cu||
-||Theeten||Franck||Royal Museum for Central Africa, Belgium||franck.theeten@africamuseum.be||
+||*Surname*||*Name*||*Country/Organisation*||
+||Akbaraly||Michael||GBIF France||
+||Akpona||Adéloui Hugues||DGFRN, Benin||
+||Chen||Elie||Academia Sinica, Chinese Taipei||
+||Daly||Brenda||Endangered Wildlife Trust||
+||Desmet||Peter||Université de Montréal, Canada||
+||Endresen||Dag Terje Filip||Nordic Genetic Resource Center||
+||Graf||Mickaël||GBIF Sweden||
+||Haefeli||Inés Amalia||MCTIP, Argentina||
+||Holetschek||Jörg||BGBM, Germany||
+||Jinbo||Utsugi||University of Tokyo, Japan||
+||Kim||DaeHwan||KISTI, Korea||
+||Keita||DouDou Crespin||COSE, Guinea||
+||Lange||Christian||Natural History Museum of Denmark||
+||Lusa||Silvia||GBIF Spain||
+||Moreno Vargas||Diego Alexander||A. von Humboldt Institute, Colombia||
+||Noé||Nicolas||Belgium Biodiversity Platform||
+||Pîzzigatti Correa||Pedro Luiz||Universidade de São Paulo, Brazil||
+||Rasoamanana||Mbolatiana Toky||Bibliothèque Universitaire d’Antananarivo, Madagascar||
+||Réveillon||Arnaud||GBIF Secretariat contractor||
+||Russell||Laura||University of Kansas, USA||
+||Sanabria Rodríguez||Aurelio||INBio, Costa Rica||
+||Sood||Rajesh||GBIF Secretariat contractor||
+||Sotillo Enriquez||Arelys||Centro Nacional de Biodiversidad, Cuba||
+||Theeten||Franck||Royal Museum for Central Africa, Belgium||
