@@ -1,0 +1,76 @@
+#summary IPT Training Workshop Overview
+#sidebar IptTrainingWorkshopTOC
+<wiki:toc max_depth="3" />
+
+
+= Agenda =
+== 14th September 2009: Introduction and context ==
+
+ * *09:00* - Welcome and introduction to the course by Nick King 
+    Background information and rationale
+ * *09:15* - Logistics and practicalities by Louise Scharff 
+    Lunch and coffee breaks, timetable, internet access, materials and resources.
+ * *09:20* - Summary and planning for the course by Alberto González-Talaván
+    Programme review and brief summary of each session
+ * *09:30* - IPT context: the GBIF Informatics suite by Samy Gaiji
+    Presentation about the new informatics suite developed by the GBIF Secretariat, and how the data and metadata flows work in this schema. This will serve to put the IPT into context from the technical point of view.
+ * *10:00* - IPT context: primary biodiversity data publication  by Vishwas Chavan
+    Brief presentation on how the IPT improves the landscape of primary biodiversity data publication: bigger variety of data types that can be served, internationalisation, more data interfaces, etc.
+ * *10:30* - Coffee/tea break
+ * *11:00* - IPT context: names and taxonomies publication  by David Remsen
+    Brief presentation on the key role of the IPT in the mobilisation of names resources.
+ * *11:30* - IPT context: metadata publication  by Éamonn Ó Tuama
+    Brief presentation on the importance of the IPT as the first GBIF tool that addresses the publication of complete sets of metadata, associated or not to digital biodiversity datasets.
+ * *12:00* - IPT context: questions, answers and discussion chaired by Alberto González-Talaván 
+ * *12:30* - Lunch break
+ * *13:30* - IPT requirements and base technologies  (min 20' discussion) by Markus Döring/Tim Robertson
+•	Apache Tomcat
+•	Java and Java RDBMS (H2)
+•	Geoserver
+•	IPT versions
+ * *14:30* - Coffee/tea break
+ * *15:00* - Practical demonstration: IPT installation and configuration by Arnaud Réveillon
+    Step by step demonstration on how to install, configure and connect example datasets to an GBIF IPT.
+ * *17:00* - Close of the session.
+
+
+== 15th September 2009: Installation, configuration and connection of resources. Functionality. ==
+
+
+ * *09:00* - Practical session I: Preparing your system to run the GBIF IPT  presented and led by José Cuadra
+    During this session, the participants will have to install and configure the necessary software to run the GBIF IPT in their own computers.
+ * *10:00* - Practical session II: Preparing your data to make it IPT compliant  presented and led by Markus Döring/Tim Robertson/José Cuadra
+    A short explanation on the requirements of the data that can be connected to an GBIF IPT instance, and practical exercises with examples by the participants.
+ * *10:30* - Coffee/tea break
+ * *11:00* - Practical session III: Installing, configuring the basic options and connection of datasets to the IPT by Markus Döring, Tim Robertson & José Cuadra
+    Practical exercise by the participants: set up and configuring their own IPT instances, checking system annotations, connecting and registration of datasets provided by them, and creation of metadata records.
+ * *12:30* - Lunch break
+ * *13:30* - Practical session III (cont)
+ * *14:30* - GBIF IPT functionality: an overview (min 5' discussion) by Markus Döring/Tim Robertson
+    A quick overview on all the different interfaces and services to access data.
+ * *15:00* - Coffee/tea break
+ * *15:30* - The IPT user interface and data quality tools (min 5' discussion) by Louise Scharff
+    An overview of the public side of the GBIF IPT, including user annotations.
+ * *16:00* - IPT data interfaces (min 15' discussion) by Markus Döring/Tim Robertson
+    The interfaces available for other applications to consult an IPT instance are explained: web services (REST and OGC), TAPIR interface, TCS, DwC Archive, EML, RSS.
+ * *17:00* - Close of the session.
+
+ 
+== 16th September 2009: Expansion and future. ==
+
+
+ * *09:00* - Customisation of the interface of your GBIF IPT instance (min 15' discussion) by Arnaud Réveillon
+    A tutorial on how to customise the aspect of the IPT through the user interface and through RSS. This will include also the translation of the tool into other languages.
+ * *09:30* - Expansion of the GBIF IPT: extensions (min 15' discussion) by Markus Döring/Tim Robertson
+    Advanced tutorial on how to design and connect new extensions to your GBIF IPT instance. Ideally, this session will include a case study presented by one of the participants who has already developed IPT extensions.
+ * *10:30* - Coffee/tea break
+ * *11:00* - The GBIF IPT development platforms (min 15' discussion) by Markus Döring/Tim Robertson
+    During this sessions, those willing to get involved in the development of the IPT will receive all the information needed on the different development platforms the GBIF IPT has been built upon: Appfuse2, Struts 2, Java RDBMS (H2), Google Chart, Lucene.
+ * *11:45* - The GBIF IPT roadmap (min 15' discussion) by Markus Döring/Tim Robertson
+    An overview of the future of the IPT: versions, enhancements, bug fixing, etc.
+ * *12:30* - Lunch break
+ * *13:30* - Migration and upgrading of an IPT installation (min 15' discussion) by Markus Döring/Tim Robertson
+    How to proceed when new versions of the IPT are available. 
+ * *14:30* - Course summary by Alberto González-Talaván
+ * *15:00* - Course evaluation by Alberto González-Talaván
+ * *15:30* - End of the course
