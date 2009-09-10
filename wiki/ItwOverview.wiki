@@ -1,5 +1,5 @@
 #summary IPT Training Workshop Overview
-#sidebar IptTrainingWorkshopTOC
+#sidebar IptTrainingTOC
 <wiki:toc max_depth="3" />
 
 
