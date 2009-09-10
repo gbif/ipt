@@ -92,9 +92,11 @@ function getFormAsString(frmObj) {
     return query;
 }
 
-/* Function to hide form elements that show through
-   the search form when it is visible */
-function toggleForm(frmObj, iState) // 1 visible, 0 hidden 
+/*
+ * Function to hide form elements that show through the search form when it is
+ * visible
+ */
+function toggleForm(frmObj, iState) // 1 visible, 0 hidden
 {
     for(var i = 0; i < frmObj.length; i++) {
         if (frmObj.elements[i].type.indexOf("select") == 0 || frmObj.elements[i].type.indexOf("checkbox") == 0) {
@@ -135,7 +137,7 @@ function move(list,to) {
     list.focus();
 } 
 
-/*  This function is to select all options in a multi-valued <select> */
+/* This function is to select all options in a multi-valued <select> */
 function selectAll(elementId) {
     var element = document.getElementById(elementId);
     len = element.length;
@@ -146,8 +148,8 @@ function selectAll(elementId) {
     }
 }
 
-/* This function is used to select a checkbox by passing
- * in the checkbox id
+/*
+ * This function is used to select a checkbox by passing in the checkbox id
  */
 function toggleChoice(elementId) {
     var element = document.getElementById(elementId);
@@ -158,8 +160,9 @@ function toggleChoice(elementId) {
     }
 }
 
-/* This function is used to select a radio button by passing
- * in the radio button id and index you want to select
+/*
+ * This function is used to select a radio button by passing in the radio button
+ * id and index you want to select
  */
 function toggleRadio(elementId, index) {
     var element = document.getElementsByName(elementId)[index];
@@ -227,7 +230,7 @@ String.prototype.trim = function () {
 };
 
 // This function is used by the login screen to validate user/pass
-// are entered. 
+// are entered.
 function validateRequired(form) {                                    
     var bValid = true;
     var focusField = null;
@@ -314,6 +317,7 @@ function addFocusHandlers(elements) {
     }
 }
 
+
 function radio(clicked){
     var form = clicked.form;
     var checkboxes = form.elements[clicked.name];
@@ -329,7 +333,7 @@ function radio(clicked){
         }
     }
 
-    // highlight the row    
+    // highlight the row
     clicked.parentNode.parentNode.className="over";
 }
 

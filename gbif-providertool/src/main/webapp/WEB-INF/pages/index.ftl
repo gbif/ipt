@@ -1,4 +1,4 @@
-<#assign display=JspTaglibs["http://displaytag.sf.net"] />
+<#assign display=JspTaglibs["/WEB-INF/appfuse.tld"] />
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <head>
     <title>${cfg.ipt.title}</title>
