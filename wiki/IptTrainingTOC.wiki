@@ -1,4 +1,4 @@
 #summary TOC for the IPT training workshop
 
- * [ItwOverview]
- * [ItwResources] 
+ * [ItwOverview Housekeeping]
+ * [ItwResources Resources] 
