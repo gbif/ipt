@@ -48,7 +48,7 @@
     </contributors>
     
     <build>
-        <defaultGoal>jetty:run</defaultGoal>
+        <defaultGoal>jetty:run-war</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
