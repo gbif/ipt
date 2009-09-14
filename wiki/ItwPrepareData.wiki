@@ -1,0 +1,16 @@
+#summary Prepare your data to fit to darwin core
+#sidebar IptTrainingTOC
+<wiki:toc max_depth="3" />
+
+= Things you can do =
+== In a database ==
+ * setup a SQL view to use functions (can also be done in IPT sql source definition)
+   * concatenation, splitting of strings: e.g. build full scientific name (watchout autonyms)
+   * format dates ala ISO
+   * create year/month/day by parsing native sql date types
+ * use a UNION to merge 2 or more tables, e.g. accepted taxa and synonyms or specimen and observations
+ * select fixed values (prefer to do this in IPT mapping)
+
+== In Text Files ==
+ * convert to UTF8
+ * replace
