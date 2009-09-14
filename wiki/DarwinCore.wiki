@@ -73,7 +73,8 @@ exact transcription of the collecting date, while `eventDate` can be encoded in 
 
 == Primary data ==
 All DwC terms can be used to describe an occurrence record.
-It is recommended to publish at least the following terms:
+It is recommended to publish at least the following terms. 
+Terms flagged with !!! have to be present to be recognised by the current GBIF indexing:
 
  * [http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord basisOfRecord] !!!
  * [http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID occurrenceID]
