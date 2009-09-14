@@ -112,14 +112,29 @@ The simplest way to do so is to create new terms in a new namespace and simply e
 
 Often multiple _subrecords_ for an extension is desired, such as many common names for a species or multiple images for a specimen.
 In order to share these richer, related records the *star scheme* is used, whereby an extension consists of multiple records, each
- linked to a core dwc record. Any number of extension records for a single extension as well as different extensions (e.g. images & identification) is possible.
+ linked to a core dwc record. Any number of extension records potentially from different extensions (e.g. images & identification) for a single core record is possible.
+
 
 = The Darwin Core Archive =
-The Darwin Core archive (DwC-A) format provides a means to publish 
-rich taxonomic information in a relatively simple, text-based format. A Darwin Core archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file. The format follows the Darwin Core text guidelines. A typical package is illustrated in the diagram below and consists of components described in the next sections.
+The Darwin Core archive (DwC-A) format provides a means to publish dwc records plus extensions in a relatively simple, text-based format. 
+A Darwin Core archive consists of a set of text files that are bundled into a common package and then zipped into a single archive file. 
+The format follows the [http://rs.tdwg.org/dwc/terms/guides/text/index.htm Darwin Core text guidelines]. 
+A typical package is illustrated in the diagram below and consists of components described in [http://code.google.com/p/gbif-ecat/wiki/DwCArchive details here].
 
+http://gbif-ecat.googlecode.com/files/dwca.png
 
-Please see http://code.google.com/p/gbif-ecat/wiki/DwCArchive
 
 
 = Best Practices =
+ 
+ # prefer to use standard CSV (i.e. delimiter = , quotation = ") or TAB files instead of custom delimiters and quotes
+ # always encode text as UTF-8
+ # make sure you have replaced line breaks, i.e. \r \n or \r\n with either simple spaces or use 2 characters "\r" to escape the line break if the intention is to preserve them
+ # encode NULLs as empty fields, i.e. no characters between 2 delimiters, not \N or \NULL
+ # DwC-A requires a identifier column. In case only a single core file is needed, this column may contain NULLs, i.e. empty fields. It is still required to designate a column for identifiers. This is to be avoided as much as possible and it is highly recommended to supply records with IDs.
+ # dwc:higherTaxon(ID), dwc:acceptedTaxon(ID) or dwc:basionym(ID) must point to existing records in the dataset. Specifically it is invalid to point to higher taxa which dont exist as records. For this the denormalised higher darwin core ranks like dwc:kingdom should be used.
+ # always include dwc:kingdom. If its the same throughout the dataset consider using a static mapping in the meta descriptor, see below
+ # if you can, include dwc:phylum and dwc:family
+ # test your archive with the [http://code.google.com/p/gbif-indexingtoolkit/wiki/DarwinCoreArchiveReader dwc-a reader]
+ # the primary key in the core taxon file, mapped to the Darwin Core taxonID term, is preferred to be a globally unique identifier (GUID) rather than a typical integer id that is not unique outside the source database.
+ 
