@@ -62,6 +62,7 @@ than the denormalised hierarchy. In this case the IPT follows the recommendation
 
 {{{
  ID term >> Text term >> Denormalised term
+ higherTaxonID >> higherTaxon >> kingdom,family,...
 }}}
 
 === Verbatim terms ===
