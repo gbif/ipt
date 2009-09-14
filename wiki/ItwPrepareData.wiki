@@ -23,5 +23,13 @@
 == Unix Stream Editor,  SED ==
  * http://www.unixguide.net/unix/sedoneliner.shtml
  * http://www.brunolinux.com/02-The_Terminal/Find_and%20Replace_with_Sed.html
- * replace in place and create backup copy `sed -i.old "s/\\\\N//g" allNames.txt`
- * convert DOS newlines (CR/LF) to Unix format: `sed 's/.$//'`
+ * replace in place and create backup copy 
+    `sed -i.old "s/\\\\N//g" allNames.txt`
+ * convert DOS newlines (CR/LF) to Unix format: 
+    `sed 's/.$//'`
+
+== Character encoding converter ==
+convert character encodings from Windows-1252 to UTF-8:
+{{{
+iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt
+}}}
