@@ -73,16 +73,16 @@ exact transcription of the collecting date, while _eventDate_ can be encoded in 
 All DwC terms can be used to describe an occurrence record.
 It is recommended to publish at least the following terms:
 
- * [http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord basisOfRecord]
+ * [http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord basisOfRecord] *
  * [http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID occurrenceID]
- * [http://rs.tdwg.org/dwc/terms/index.htm#institutionID institutionID]
- * [http://rs.tdwg.org/dwc/terms/index.htm#collectionID collectionID]
+ * [http://rs.tdwg.org/dwc/terms/index.htm#institutionCode institutionCode] *
+ * [http://rs.tdwg.org/dwc/terms/index.htm#collectionCode collectionCode] *
  * [http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber catalogNumber]
  * [http://rs.tdwg.org/dwc/terms/index.htm#recordedBy recordedBy]
  * [http://rs.tdwg.org/dwc/terms/index.htm#eventDate eventDate]
  * [http://rs.tdwg.org/dwc/terms/index.htm#year year]
  * [http://rs.tdwg.org/dwc/terms/index.htm#typeStatus typeStatus]
- * [http://rs.tdwg.org/dwc/terms/index.htm#scientificName  scientificName ]
+ * [http://rs.tdwg.org/dwc/terms/index.htm#scientificName  scientificName] *
  * [http://rs.tdwg.org/dwc/terms/index.htm#kingdom kingdom]
  * [http://rs.tdwg.org/dwc/terms/index.htm#family family]
  * [http://rs.tdwg.org/dwc/terms/index.htm#locality locality]
@@ -92,31 +92,31 @@ It is recommended to publish at least the following terms:
 
 === Example ===
 {{{
-SampleID=96db9d09-596d-409c-8626-f4460078d0eb
-InstitutionCode=BGBM
-CollectionCode=B
-BasisOfRecord=preservedspecimen
-CatalogNumber=1159
-EarliestDateCollected=1999-08-06 00:00:00.0
-Collector=Markus Döring
-Continent=Asia
-Country=TR
-StateProvince=Adana
-Locality=Aladaglari, lower Narpiz Deresi, next to fountain, 2900m
-MinimumElevationInMeters=2900
-DecimalLatitude=37.82800
-DecimalLongitude=35.13600
-GeodeticDatum=WGS84
-IdentifiedBy=Markus Döring
-ScientificName=Festuca anatolica subsp. anatolica
-Kingdom=Plantae
-Phylum=Magnoliophyta
-Class=
-Order=Cyperales
-Family=Poaceae
-Genus=Festuca
-SpecificEpithet=anatolica
-InfraspecificEpithet=anatolica
+occurrenceID=96db9d09-596d-409c-8626-f4460078d0eb
+institutionCode=BGBM
+collectionCode=B
+basisOfRecord=preservedspecimen
+catalogNumber=1159
+eventDate=1999-08-06 00:00:00.0
+collector=Markus Döring
+continent=Asia
+country=TR
+stateProvince=Adana
+locality=Aladaglari, lower Narpiz Deresi, next to fountain, 2900m
+minimumElevationInMeters=2900
+decimalLatitude=37.82800
+decimalLongitude=35.13600
+geodeticDatum=WGS84
+identifiedBy=Markus Döring
+scientificName=Festuca anatolica subsp. anatolica
+kingdom=Plantae
+phylum=Magnoliophyta
+class=
+order=Cyperales
+family=Poaceae
+genus=Festuca
+specificEpithet=anatolica
+infraspecificEpithet=anatolica
 }}}
 [http://spreadsheets.google.com/pub?key=tnoVriNunOOMzYp709vtauQ&output=html  PonTaurus dataset sample]
 
