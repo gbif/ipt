@@ -1,0 +1,14 @@
+#summary Introduction to Darwin Core
+#sidebar IptTrainingTOC
+<wiki:toc max_depth="3" />
+
+= Introduction =
+ * IPT and DwC
+ * DwC History
+
+= Terms =
+== Primary data ==
+
+== Checklists ==
+
+= DwC Archive =
