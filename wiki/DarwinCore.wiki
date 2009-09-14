@@ -3,7 +3,7 @@
 <wiki:toc max_depth="3" />
 
 = Introduction =
-Darwin Core is an upcoming standard from [http://www.tdwg.org TDWG], currently under review, which is based on the ideas 
+Darwin Core is an upcoming standard from [http://www.tdwg.org/activities/darwincore/ TDWG], currently under review, which is based on the ideas 
 of the popular [http://dublincore.org/ Dublin Core] metadata terms.
 
 == IPT and Darwin Core ==
