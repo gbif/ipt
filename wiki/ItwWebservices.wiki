@@ -8,4 +8,4 @@
    * Metadata: http://ipt.gbif.org/tapir/11/?op=m
    * Capabilities: http://ipt.gbif.org/tapir/11/?op=c
    * Inventory: http://ipt.gbif.org/tapir/11/?op=i&c=ScientificName&s=25&l=50&n=species
-   * Search: http://ipt.gbif.org/tapir/11/?op=s&model=dwc&f=Genus%20equals%20%22Festuca%22&s=5&l=5
+   * Search: http://ipt.gbif.org/tapir/11/?op=s&model=dwc&f=Genus%20equals%20"Festuca"&s=5&l=5
