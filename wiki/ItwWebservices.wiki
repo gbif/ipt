@@ -2,9 +2,18 @@
 #sidebar IptTrainingTOC
 <wiki:toc max_depth="3" />
 
+*Pontaurus*
+http://ipt.gbif.org/occResource.html?resource_id=11
+
+= REST XML =
+
+= OGC =
+
+= DwC-A =
+
 = TAPIR =
  * [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc57 TAPIR specs]
- * PonTaurus Example endpoint: http://ipt.gbif.org/tapir/11/
+ * Pontaurus Example endpoint: http://ipt.gbif.org/tapir/11/
    * Metadata: http://ipt.gbif.org/tapir/11/?op=m
    * Capabilities: http://ipt.gbif.org/tapir/11/?op=c
    * Inventory: http://ipt.gbif.org/tapir/11/?op=i&c=ScientificName&s=25&l=50&n=species
