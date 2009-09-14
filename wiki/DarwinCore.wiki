@@ -4,7 +4,7 @@
 
 = Introduction =
 Darwin Core is an upcoming standard from [http://www.tdwg.org/activities/darwincore/ TDWG], currently under review, which is based on the ideas 
-of the popular [http://dublincore.org/ Dublin Core] metadata terms.
+of the popular [http://dublincore.org/documents/dcmi-terms/ terms from the Dublin Core Metadata Initiative].
 
 == IPT and Darwin Core ==
 The IPT has core biodiversity data types built-in, which are based on Darwin Core (DwC) terms. 
