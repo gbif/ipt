@@ -92,19 +92,41 @@ It is recommended to publish at least the following terms:
 
 === Example ===
 {{{
-	
+SampleID=96db9d09-596d-409c-8626-f4460078d0eb
+InstitutionCode=BGBM
+CollectionCode=B
+BasisOfRecord=preservedspecimen
+CatalogNumber=1159
+EarliestDateCollected=1999-08-06 00:00:00.0
+Collector=Markus Döring
+Continent=Asia
+Country=TR
+StateProvince=Adana
+Locality=Aladaglari, lower Narpiz Deresi, next to fountain, 2900m
+MinimumElevationInMeters=2900
+DecimalLatitude=37.82800
+DecimalLongitude=35.13600
+GeodeticDatum=WGS84
+IdentifiedBy=Markus Döring
+ScientificName=Festuca anatolica subsp. anatolica
+Kingdom=Plantae
+Phylum=Magnoliophyta
+Class=
+Order=Cyperales
+Family=Poaceae
+Genus=Festuca
+SpecificEpithet=anatolica
+InfraspecificEpithet=anatolica
 }}}
+[http://spreadsheets.google.com/pub?key=tnoVriNunOOMzYp709vtauQ&output=html  PonTaurus dataset sample]
+
 
 == Checklists ==
 GBIF ECAT provides [http://code.google.com/p/gbif-ecat/wiki/publishingChecklists recommendations on how to publish species checklists].
 
 
 === Example ===
-{{{
-	
-}}}
-
-
+[http://spreadsheets.google.com/pub?key=tnoVriNunOOMzYp709vtauQ&output=html  Euro+Med dataset sample]
 
 = Darwin Core Extensions =
 Recognising that DwC only covers the core biodiversity metadata, extensions to darwin core are a common need across all communities.
