@@ -7,5 +7,5 @@
  * PonTaurus Example endpoint: http://ipt.gbif.org/tapir/11/
    * Metadata: http://ipt.gbif.org/tapir/11/?op=m
    * Capabilities: http://ipt.gbif.org/tapir/11/?op=c
-   * Inventory: http://ipt.gbif.org/tapir/11/?op=i&cnt=true&c=scientificName&s=25&l=50
-   * Search: http://ipt.gbif.org/tapir/11/?op=s&model=dwc&f=genus%20equals%20Festuca&s=5&l=5
+   * Inventory: http://ipt.gbif.org/tapir/11/?op=i&cnt=true&c=ScientificName&s=25&l=50
+   * Search: http://ipt.gbif.org/tapir/11/?op=s&model=dwc&f=Genus%20equals%20Festuca&s=5&l=5
