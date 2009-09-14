@@ -31,4 +31,4 @@
 == Character encoding converter - iconv ==
 http://unixhelp.ed.ac.uk/CGI/man-cgi?iconv
 convert character encodings from Windows-1252 to UTF-8:
-  ´iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt´
+  `iconv -f CP1252 -t utf-8 example.txt > exampleUTF8.txt`
