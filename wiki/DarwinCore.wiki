@@ -73,16 +73,16 @@ exact transcription of the collecting date, while _eventDate_ can be encoded in 
 All DwC terms can be used to describe an occurrence record.
 It is recommended to publish at least the following terms:
 
- * [http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord basisOfRecord] *
+ * [http://rs.tdwg.org/dwc/terms/index.htm#basisOfRecord basisOfRecord] !!!
  * [http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID occurrenceID]
- * [http://rs.tdwg.org/dwc/terms/index.htm#institutionCode institutionCode] *
- * [http://rs.tdwg.org/dwc/terms/index.htm#collectionCode collectionCode] *
+ * [http://rs.tdwg.org/dwc/terms/index.htm#institutionCode institutionCode] !!!
+ * [http://rs.tdwg.org/dwc/terms/index.htm#collectionCode collectionCode] !!!
  * [http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber catalogNumber]
  * [http://rs.tdwg.org/dwc/terms/index.htm#recordedBy recordedBy]
  * [http://rs.tdwg.org/dwc/terms/index.htm#eventDate eventDate]
  * [http://rs.tdwg.org/dwc/terms/index.htm#year year]
  * [http://rs.tdwg.org/dwc/terms/index.htm#typeStatus typeStatus]
- * [http://rs.tdwg.org/dwc/terms/index.htm#scientificName  scientificName] *
+ * [http://rs.tdwg.org/dwc/terms/index.htm#scientificName  scientificName] !!!
  * [http://rs.tdwg.org/dwc/terms/index.htm#kingdom kingdom]
  * [http://rs.tdwg.org/dwc/terms/index.htm#family family]
  * [http://rs.tdwg.org/dwc/terms/index.htm#locality locality]
