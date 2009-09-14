@@ -128,6 +128,8 @@ GBIF ECAT provides [http://code.google.com/p/gbif-ecat/wiki/publishingChecklists
 === Example ===
 [http://spreadsheets.google.com/pub?key=tnoVriNunOOMzYp709vtauQ&output=html  Euro+Med dataset sample]
 
+more examples can be found on the [http://code.google.com/p/gbif-ecat/wiki/publishingClassifications ECAT site]
+
 = Darwin Core Extensions =
 Recognising that DwC only covers the core biodiversity metadata, extensions to darwin core are a common need across all communities.
 The simplest way to do so is to create new terms in a new namespace and simply extend a regular dwc record with these terms.
