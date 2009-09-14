@@ -5,20 +5,20 @@
 = Introduction =
 Darwin Core is an upcoming standard from [http://www.tdwg.org/activities/darwincore/ TDWG], currently under review, which is based on the ideas 
 of the popular [http://dublincore.org/documents/dcmi-terms/ terms from the Dublin Core Metadata Initiative].
+A strong principle is to not tie the definition of a term to a technology, e.g. XML or RDF.
 
 == IPT and Darwin Core ==
 The IPT has core biodiversity data types built-in, which are based on Darwin Core (DwC) terms. 
 These core types, i.e. occurrence and checklist records, are not changeable and have a fixed set of terms describing them.
 
 == Darwin Core History ==
-Traditionally Darwin Core has only been used to describe primary data, i.e. occurrences of species. 
-When we were looking for a very simple checklist data exchange formats and with the rise of tagging of species on Flickr, 
-it became apparent that simple terms for biodiversity in the tradition of Dublin Core would be very useful - and indeed very much overlapping with the 
+Traditionally Darwin Core has only been used to describe primary data, i.e. occurrences of species, in particular through DiGIR and XML encoding. 
+When we were looking for a very simple checklist data exchange formats and with the rise of tagging of species on Flickr, it became apparent that simple terms for biodiversity in the tradition of Dublin Core would be very useful - and indeed very much overlapping with the 
 Darwin Core terms in use already.
 
 == Status ==
 Currently DwC is under public review and is expected to be ratified before the next TDWG meeting in the beginning of November 2009.
-As DwC has been a moving target during the development of the IPT, the consistent [http://darwincore.googlecode.com/svn/tags/dwc-2009-04-IPT/terms/index.htm April 2009 DwC edition] 
+As DwC has been a moving target during the development of the IPT, the consistent April 2009 DwC edition
 was frozen and has been implemented in the current RC2 release of IPT 1.0. 
 Small changes have been made to Darwin Core since, mainly renaming terms while keeping the definition the same. 
 With the final ratification as a full TDWG standard the IPT will be updated to reflect these and released as the official version 1.0 GA.
