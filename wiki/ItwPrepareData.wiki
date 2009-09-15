@@ -2,8 +2,10 @@
 #sidebar IptTrainingTOC
 <wiki:toc max_depth="3" />
 
-= Things you can do =
+= Things to consider =
  * create a local identifier if not existing
+ * create full dwc:scientificName including authorship
+ * create decimal coordinates & precision
 
 == In a database ==
  * setup a SQL view to use functions (can also be done in IPT sql source definition)
