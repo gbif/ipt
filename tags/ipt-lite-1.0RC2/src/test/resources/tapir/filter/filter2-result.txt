@@ -1,0 +1,1 @@
+Filter: http://rs.tdwg.org/dwc/dwcore/ScientificName >= 'Aus'
