@@ -3,14 +3,14 @@
 <page:applyDecorator name="default">
 
 <head>
-    <title><fmt:message key="403.title"/></title>
-    <meta name="heading" content="<fmt:message key='403.title'/>"/>
+    <title><s:text name="403.title"/></title>
+    <meta name="heading" content="<s:text name='403.title'/>"/>
 </head>
 
 <p>
-    <fmt:message key="403.message">
+    <s:text name="403.message">
         <fmt:param><c:url value="/"/></fmt:param>
-    </fmt:message>
+    </s:text>
 </p>
 <p style="text-align: center; margin-top: 20px">
     <a href="http://community.webshots.com/photo/56793801/56801692jkyHaR"
