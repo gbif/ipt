@@ -5,9 +5,11 @@
 <struts>
     <!-- Constants -->
     <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <!-- default locale -->
+    <constant name="struts.locale" value="en_US"/>
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
     <constant name="struts.action.extension" value="html,xml,do"/>
     <constant name="struts.objectFactory" value="spring"/>
-    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
     <!-- See the 2 references of fileUpload interceptor below and make sure it is also set to the  
 		 same value as this mulitpart in BOTH 
 		 Additionally see SoureAction which ALSO checks the size... -->

@@ -27,6 +27,12 @@
             <timezone>+1</timezone>
         </developer>
         <developer>
+            <id>aaron</id>
+            <name>Aaron Steele</name>
+            <email>eightysteele@gmail.com</email>
+            <timezone>-8</timezone>
+        </developer>
+        <developer>
             <id>timrobertson100</id>
             <name>Tim Robertson</name>
             <email>trobertson@gbif.org</email>
@@ -356,7 +362,12 @@
 <dependency>
     <groupId>displaytag</groupId>
     <artifactId>displaytag</artifactId>
-    <version>1.2</version>
+    <version>${displaytag.version}</version>
+</dependency>
+<dependency>
+    <groupId>displaytag</groupId>
+    <artifactId>displaytag-export-poi</artifactId>
+    <version>${displaytag.version}</version>
 </dependency>
 <dependency>
     <groupId>javax.mail</groupId>
@@ -822,6 +833,7 @@
             <properties>
                 <ipt.datadir>/usr/share/tomcat5/ipt-data/current</ipt.datadir>
                 <ipt.mail.from>IPT-GBIFS &lt;support@gbif.org&gt;</ipt.mail.from>
+                <ipt.dev>false</ipt.dev>
             </properties>
         </profile>
         
@@ -830,6 +842,7 @@
             <properties>
                 <ipt.datadir>/usr/local/jakarta-tomcat/ipt_data</ipt.datadir>
                 <ipt.mail.from>IPT-BGBM &lt;ipt@bgbm.org&gt;</ipt.mail.from>
+                <ipt.dev>false</ipt.dev>
             </properties>
         </profile>
 
@@ -837,6 +850,7 @@
             <id>prod</id>
             <properties>
                 <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
+                <ipt.dev>false</ipt.dev>
             </properties>
         </profile>
         <profile>
@@ -844,6 +858,7 @@
             <properties>
                 <maven.test.skip>false</maven.test.skip>
                 <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>                
+                <ipt.dev>false</ipt.dev>
             </properties>
         </profile>        
         
@@ -883,7 +898,8 @@
         <velocity.version>1.4</velocity.version>
         <xfire.version>1.2.6</xfire.version>
 		<lucene.version>2.4.0</lucene.version>
-
+        <displaytag.version>1.1.1</displaytag.version>
+        
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>
         <jsp.version>2.0</jsp.version>
@@ -914,7 +930,7 @@
         <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>
         <ipt.datadir></ipt.datadir>
         <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>
-        <ipt.dev>false</ipt.dev>
+        <ipt.dev>true</ipt.dev>
         
         <!-- Maven build settings -->
         <maven.test.skip>true</maven.test.skip>
