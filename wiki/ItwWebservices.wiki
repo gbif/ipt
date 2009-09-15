@@ -5,11 +5,23 @@
 *Pontaurus*
 http://ipt.gbif.org/occResource.html?resource_id=11
 
-= REST XML =
-
 = OGC =
 
-= DwC-A =
+GML / searchable fields:
+{{{
+ guid (String)
+ taxonId (Long)
+ regionId (Long)
+ scientificName (String)
+ locality (String)
+ institutionCode (String)
+ collectionCode (String)
+ catalogNumber (String)
+ collector (String)
+ dateCollected (String)
+ basisOfRecord (String)
+ coords (Coordinate[])
+}}}
 
 = TAPIR =
  * [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc57 TAPIR specs]
