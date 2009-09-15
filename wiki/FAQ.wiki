@@ -14,6 +14,13 @@ In this page you will find answers for the most frequent asked questions about t
 Some Linux distributions, like [http://www.centos.org/ CentOS] or [http://www.redhat.com/ Red Hat Linux] include Tomcat incorrectly shipped with two libraries, xml-apis.jar and/or xalan.jar, in the Tomcat directories (../tomcat5/shared/, ../tomcat5/common/).
 These libraries are not needed for the GBIF IPT operation so make a backup copy of them and then remove them. If that does not solve your problem, put the files back into place from the backup copy.
 
+= Usage =
+== Yikes when deleting a resource ==
+Sometimes deleting a resource causes an error and leaves a corrupted resource behind that cannot be modified again and causes the resource listing in Explore and Manage to fail. Apart from a fresh reinstall the only way to fix this is to enable the H2 Console and modify the database manually like this, with `77` being the resource number to be deleted:
+
+{{{
+  DELETE RESOURCE WHERE ID=77;
+}}}
 
 = Performance =
 
