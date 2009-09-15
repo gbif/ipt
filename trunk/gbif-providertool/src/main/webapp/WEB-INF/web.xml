@@ -5,20 +5,16 @@
     <display-name>providertool</display-name>
     <distributable/>
 
-    <!-- precompiled jsp mappings -->
-
-    <!--
-        <context-param>
-        <param-name>IPT_DATA_DIR</param-name>
-        <param-value>/Users/markus/Desktop/ipt/data</param-value>
-        </context-param> 
-    -->
-    
     <!-- Define the default CSS Theme -->
     <context-param>
         <param-name>csstheme</param-name>
         <param-value>gbifn</param-value>
     </context-param>
+
+    <!--
+        As soon as we got rid of the pure JSP pages and integrated them into struts2
+        we can get rid of the following 2 non struts exceptions
+    -->
     <!-- Define the basename for a resource bundle for I18N -->
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
@@ -30,6 +26,8 @@
         <param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>
         <param-value>en</param-value>
     </context-param>
+
+
     <!-- Context Configuration locations for Spring XML files -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -72,7 +70,6 @@
         <filter-name>lazyLoadingFilter</filter-name>
         <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
     </filter>
-    <!-- Use "org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter" if you're using JPA -->
     <filter>
         <filter-name>localeFilter</filter-name>
         <filter-class>org.appfuse.webapp.filter.LocaleFilter</filter-class>
@@ -126,12 +123,6 @@
         <filter-name>securityFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping> 
-    <!-- Commented out for 2 reasons: 1) it's a pain when developing JSPs, and
-                                      2) it causes the Signup webtest to fail -->
-    <!--filter-mapping>
-        <filter-name>cacheFilter</filter-name>
-        <url-pattern>*.jsp</url-pattern>
-    </filter-mapping-->
     <filter-mapping>
         <filter-name>lazyLoadingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -204,7 +195,7 @@
     <servlet>
         <servlet-name>JspSupportServlet</servlet-name>
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>5</load-on-startup>
     </servlet>
 
 <!--
@@ -222,8 +213,7 @@
         <servlet-name>H2Console</servlet-name> 
         <url-pattern>/h2/*</url-pattern> 
     </servlet-mapping>     
--->
-    
+-->    
     
     <session-config>
         <session-timeout>10</session-timeout>
@@ -233,20 +223,4 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <error-page>
-        <error-code>500</error-code>
-        <location>/error.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>400</error-code>
-        <location>/index.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/403.jsp</location>
-    </error-page>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/404.jsp</location>
-    </error-page>
 </web-app>
