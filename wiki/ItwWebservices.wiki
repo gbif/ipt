@@ -6,8 +6,7 @@
 http://ipt.gbif.org/occResource.html?resource_id=11
 
 = OGC =
-
-GML / searchable fields:
+GML model / searchable fields:
 {{{
  guid (String)
  taxonId (Long)
