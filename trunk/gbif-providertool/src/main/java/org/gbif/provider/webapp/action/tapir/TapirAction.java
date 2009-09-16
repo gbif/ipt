@@ -72,8 +72,10 @@ public class TapirAction extends BaseOccurrenceResourceAction implements
   private static final String METADATA = "metadata";
   private static final String SEARCH = "search";
   private static final String INVENTORY = "inventory";
-  private static final String MODEL_LOCATION = "http://darwincore.googlecode.com/svn/trunk/tapir/dwc_extensible.tom";
-  private static final String MODEL_ALIAS = "dwc";
+  private static final String DWC_MODEL_LOCATION = "http://darwincore.googlecode.com/svn/trunk/tapir/dwc_extensible.tom";
+  private static final String DWC_MODEL_ALIAS = "dwc";
+  private static final String ABCD_MODEL_LOCATION = "http://darwincore.googlecode.com/svn/trunk/tapir/abcd.tom";
+  private static final String ABCD_MODEL_ALIAS = "abcd";
   private static final Set<String> RESERVED_PARAMETERS = new HashSet<String>(
       Arrays.asList(new String[] {
           "operation", "op", "cnt", "count", "s", "start", "l", "limit", "t",
@@ -221,11 +223,11 @@ public class TapirAction extends BaseOccurrenceResourceAction implements
   }
 
   public String getModelAlias() {
-    return MODEL_ALIAS;
+    return DWC_MODEL_ALIAS;
   }
 
   public String getModelLocation() {
-    return MODEL_LOCATION;
+    return DWC_MODEL_LOCATION;
   }
 
   public int getNext() {
@@ -637,13 +639,14 @@ public class TapirAction extends BaseOccurrenceResourceAction implements
   private String search() throws ParseException {
     // check requested model
     if (model != null) {
-      if (model.equalsIgnoreCase(MODEL_LOCATION)
-          || model.equalsIgnoreCase(MODEL_ALIAS)) {
+      if (model.equalsIgnoreCase(DWC_MODEL_LOCATION) || model.equalsIgnoreCase(DWC_MODEL_ALIAS)) {
         parseFilter();
         doSearch();
         setNextRecord();
         addModelNamespaces();
         return SEARCH;
+      }else if (model.equalsIgnoreCase(ABCD_MODEL_LOCATION) || model.equalsIgnoreCase(ABCD_MODEL_ALIAS)) {
+          addFatal("The requested ABCD output model is not yet supported.");
       }
       addFatal("The requested output model is not supported: " + model);
     } else {
