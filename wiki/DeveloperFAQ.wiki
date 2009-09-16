@@ -46,8 +46,14 @@ http://www.websequencediagrams.com/cgi-bin/cdraw?lz=U291cmNlLT5JbXBvcnRBY3Rpb246
 [http://www.websequencediagrams.com/?lz=U291cmNlLT5JbXBvcnRBY3Rpb246IHVwbG9hZAoACQwtPkNhY2hlTWFuYWdlcjogcnVuVQAgBm5vdGUgcmlnaHQgb2YgABgOQXN5bmNocm9ub3VzIGNvdXBsaW5nIHVzaW5nIEpESyBGdXR1cmU8AEQGRXZlbnQ-CgBcDACBEQhUYXNrOiBjYWxsKCkAgRAHVGFzawARDmluaXQoKQCBAQ8ANAxyZXNldACBAwVudHMsIAAIBWZsYWdzIChlLmcuIGRlcml2ZWRUYXhvbm9teT8AXQ4AgXIOcHJlcGFyZQCBfgYAbghvdmVyAIFzD2ZsYWdBc0RlbGV0ZWRcbnJlbW92ZUQAYwZEYXRhIChFLmcuIHQAbgZpYyAvIGdlb2dyYXBoaWNhbCBoaWVyYXJjaGllcykANwhTdGF0cwBECEV4dGVuc2lvbkRhdGEAWQhBcmNoaXZlcwCCHw0AgX8NaQCDbAVDb3JlAIIWHWRldGVybWluZSBpZiBtb2RpZmllZFxudXBkYXRlIC8gaW5zZXJ0c1xuY3JlYXRlIGFubm90YXRpb25zIGZvciBiYWQgcm93cwpsb29wIEZvciBlYWNoIGUAgS0IIHR5cGUKIACDHAsAg0UPAIUTBQCBWwkoKQogIACCYQoAVVVlbmQAhGgcbG9zZQCEdg8AhFUQb2x2ZSBpZHMgcmVmZXJlbmNlZCBieSBuYW1lIGZpZWxkcyAoYmFzaW9ueW1zLCBoaWdoZXIgdGF4YSBldGMAQRsAglcHZSBhbWJpZ3VvdXMAUAUAg0wbYnVpbGQgbmVzdGVkAIVrBigAYwUAhFsLZXMAgTMbAINiB3N0YXQARSFEd0MtQQCEWBpnZW5lcmF0ZSBMdWNlbmUgaW5kZXg&s=modern-blue Edit]
 
 == Internationalization ==
-Internationalisation is done on templates (*.ftl, *.jsp) and action classes.
+Internationalisation is done on templates (*.ftl, *.jsp) and action classes using java resource bundles in src/main/resources/ApplicationResources_*.properties. Resource bundles finally have to be encoded as latin1 and other unicode characters need to be escaped. This is ok for western languages with few special unicode characters, but especially for asian languages this is unwieldy. We therefore encode the proeprty files in UTF8 and use the native2ascii maven plugin to process the files into valid property files.
+
  * [http://struts.apache.org/2.x/docs/text.html Struts2 i18n]
+ * http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/native2ascii.html
+ * http://mojo.codehaus.org/native2ascii-maven-plugin/native2ascii-mojo.html
+
+A nice tool to help tralsation is Attesoro. It will mean we have to work with valid property files from the beginning though, removing the native2ascii plugin and utf8 bundles:
+ * http://attesoro.org/screenshot.html
  
 == Registry and Publication Process ==
 
