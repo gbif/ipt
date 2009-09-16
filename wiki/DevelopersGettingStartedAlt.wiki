@@ -22,6 +22,7 @@ cd motherpom/
 mvn install
 
 cd gbif-providertool/
+
 # the following will take a LONG time the first execution (grab a coffee / lunch)
 
 mvn install -Dmaven.test.skip=true
@@ -44,8 +45,6 @@ mvn org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse
 
 # open eclipse and do an "import existing project into the workspace" 
 # select the project folder as the root and it should show the gbif-providertool
-
-
 
 
 
