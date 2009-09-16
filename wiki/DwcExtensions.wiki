@@ -5,7 +5,7 @@
  * Registered with registry. Currently please email GBIF (Jose, Markus, Tim). List of currently registered files:
     * http://gbrds.gbif.org/registry/ipt/extensions.json
     * http://gbrds.gbif.org/registrydev/ipt/extensions.json
- * To update your IPT go to admin/extensions and click on "synchronize"
+ * To update your IPT go to admin/extensions and click on "check for all available extensions"
 http://img30.imageshack.us/img30/4489/picture1te.png
 
 = Distribution Example =
