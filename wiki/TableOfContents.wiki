@@ -15,6 +15,7 @@
    * [DwcExtensions]
  * Developers
    * [DevelopersGettingStarted Getting Started]
+   * [DevelopersGettingStartedAlt Getting Started (command line setup)]
    * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
    * [EclipseSetupOSX OS X Developers]
    * [DeveloperFAQ]
