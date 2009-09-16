@@ -12,6 +12,7 @@
    * [DarwinCore] 
    * [ItwPrepareData Prepare Your Data]
    * [ItwWebservices Data Services] 
+   * [DwcExtensions]
  * Developers
    * [DevelopersGettingStarted Getting Started]
    * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
