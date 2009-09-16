@@ -6,3 +6,7 @@
     * http://gbrds.gbif.org/registry/ipt/extensions.json
     * http://gbrds.gbif.org/registrydev/ipt/extensions.json
  * To update your IPT go to admin/extensions and click on "synchronize"
+
+= Distribution Example =
+ * http://spreadsheets.google.com/pub?key=r4I1G8E7mDIgY_kt9Rxyc8A&gid=2
+ * http://gbif-providertoolkit.googlecode.com/files/ext_gna_distribution.xml
