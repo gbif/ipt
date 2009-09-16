@@ -1,5 +1,4 @@
 #summary Prepare your data to fit to darwin core
-#sidebar IptTrainingTOC
 <wiki:toc max_depth="3" />
 
 = Things to consider =
