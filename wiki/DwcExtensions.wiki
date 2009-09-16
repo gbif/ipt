@@ -1,0 +1,8 @@
+#summary Working with DwC Extensions
+
+= Introduction =
+ * Extension definition as XML file. Example: http://gbrds.gbif.org/resources/extensions/vernacularName.xml
+ * Registered with registry. Currently please email GBIF (Jose, Markus, Tim). List of currently registered files:
+    * http://gbrds.gbif.org/registry/ipt/extensions.json
+    * http://gbrds.gbif.org/registrydev/ipt/extensions.json
+ * To update your IPT go to admin/extensions and click on "synchronize"
