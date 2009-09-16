@@ -23,24 +23,27 @@ mvn install
 
 cd gbif-providertool/
 # the following will take a LONG time the first execution (grab a coffee / lunch)
+
 mvn install -Dmaven.test.skip=true
 
 # HINT: if you know you have all the libraries on the machine (e.g. after the first build), use the following:
+
 mvn install -o -npu
 
 # this will start a Jetty Server running the application
+
 mvn jetty:run-war -Dmaven.test.skip=true
 
 # set up eclipse
+
 mvn eclipse:eclipse
 
 # some environments have issues with the above
+
 mvn org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse
 
 # open eclipse and do an "import existing project into the workspace" 
 # select the project folder as the root and it should show the gbif-providertool
-
-
 
 
 
