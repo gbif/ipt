@@ -79,7 +79,7 @@ Terms flagged with !!! have to be present to be recognised by the current GBIF i
  * [http://rs.tdwg.org/dwc/terms/index.htm#occurrenceID occurrenceID]
  * [http://rs.tdwg.org/dwc/terms/index.htm#institutionCode institutionCode] !!!
  * [http://rs.tdwg.org/dwc/terms/index.htm#collectionCode collectionCode] !!!
- * [http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber catalogNumber]
+ * [http://rs.tdwg.org/dwc/terms/index.htm#catalogNumber catalogNumber] !!!
  * [http://rs.tdwg.org/dwc/terms/index.htm#recordedBy recordedBy]
  * [http://rs.tdwg.org/dwc/terms/index.htm#eventDate eventDate]
  * [http://rs.tdwg.org/dwc/terms/index.htm#year year]
