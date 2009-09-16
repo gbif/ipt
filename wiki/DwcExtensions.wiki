@@ -6,6 +6,7 @@
     * http://gbrds.gbif.org/registry/ipt/extensions.json
     * http://gbrds.gbif.org/registrydev/ipt/extensions.json
  * To update your IPT go to admin/extensions and click on "synchronize"
+http://img30.imageshack.us/img30/4489/picture1te.png
 
 = Distribution Example =
  * http://spreadsheets.google.com/pub?key=r4I1G8E7mDIgY_kt9Rxyc8A&gid=2
