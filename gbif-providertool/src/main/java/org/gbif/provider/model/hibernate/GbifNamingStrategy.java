@@ -30,8 +30,7 @@ import java.util.regex.Pattern;
  * TODO: Documentation.
  * 
  */
-public class GbifNamingStrategy extends ImprovedNamingStrategy implements
-    IptNamingStrategy {
+public class GbifNamingStrategy extends ImprovedNamingStrategy implements IptNamingStrategy {
   static final Pattern MULTI_UPPERCASE = Pattern.compile("([A-Z])([A-Z]+)");
 
   protected final Log log = LogFactory.getLog(getClass());
@@ -39,7 +38,7 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy implements
   public String extensionTableName(Extension ext) {
     if (ext != null) {
       // replace all whitespace
-      String extensionName = StringUtils.deleteWhitespace(ext.getName());
+      String extensionName = StringUtils.deleteWhitespace(ext.getName()+"_"+Math.abs(ext.getNamespace().hashCode()));
       // use Hibernate NamingStrategy now for the rest...
       return "dwc_" + tableName(extensionName);
     } else {
@@ -89,5 +88,19 @@ public class GbifNamingStrategy extends ImprovedNamingStrategy implements
     // propertyName));
     return x;
   }
+
+  
+  
+  
+  
+  
+	public static void main(String[] args) {
+		GbifNamingStrategy strat = new GbifNamingStrategy();
+		Extension ext = new Extension();
+		ext.setName("Multimedia");
+//		ext.setName("VernacularName");
+		ext.setNamespace("http://rs.gbif.org/ipt/terms/1.0/");
+		System.out.println(strat.extensionTableName(ext));
+	}
 
 }

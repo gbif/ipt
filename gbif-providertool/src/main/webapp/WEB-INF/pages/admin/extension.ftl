@@ -26,12 +26,20 @@
 
 <table class="extensionTable">	
  <tr>
-	<th><@s.text name='extension.link'/></th>
-	<td><#if extension.link??><a href="${extension.link}" target="_blank">${extension.link}</a><#else> unavailable</#if></td>
+	<th><@s.text name='extension.name'/></th>
+	<td>${extension.name}</td>
+ </tr>
+ <tr>
+	<th><@s.text name='extension.namespace'/></th>
+	<td>${extension.namespace}</td>
  </tr>
  <tr>
 	<th><@s.text name='extension.tablename'/></th>
 	<td>${tableName}</td>
+ </tr>
+ <tr>
+	<th><@s.text name='extension.link'/></th>
+	<td><#if extension.link??><a href="${extension.link}" target="_blank">${extension.link}</a><#else> unavailable</#if></td>
  </tr>
  <tr>
 	<th>Installed</th>
