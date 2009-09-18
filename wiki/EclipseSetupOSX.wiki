@@ -46,6 +46,8 @@ https://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom
 
 and then right-click the project and *Run As->Maven Install*. Finally, use the *M2Eclipse* plugin to *enable dependency management* for the *ipt* project. The Maven menu is available by right-clicking the *ipt* project.
 
+At this point, if there is an error in the project ("Some errors were encountered while processing the poms."), restart Eclipse and it will automatically update the dependencies. This should remove the error.
+
 === Create a run configuration ===
 To run the IPT web app, create a new Maven Build run configuration and name it *ipt-eclipse*. 
 
