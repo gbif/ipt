@@ -51,7 +51,7 @@ At this point, if there is an error in the project ("Some errors were encountere
 === Create a run configuration ===
 To run the IPT web app, create a new Maven Build run configuration.
 
-Right-click the *ipt* project and *Run As->Run configurations->Maven Build. Press the "New" button to create a configuration. Name it *ipt-eclipse*. 
+Right-click the *ipt* project and *Run As->Run configurations->Maven Build*. Press the "New" button to create a configuration. Name it *ipt-eclipse*. 
 
 In the *Main* tab of the *ipt-eclipse* run configuration, type *eclipse* in the *Profiles* box. Select the *Update Snapshots* and *Skip Tests* checkboxes. For the *Maven Runtime* option, click the *Configure...* button, add the *External* Maven installation on your machine, click *Okay*, and then select it as the *Maven Runtime* in the *ipt-eclipse* Maven Build.
 
@@ -64,9 +64,9 @@ In the *JRE* tab of the *ipt-eclipse* run configuration, type the following *VM 
 After clicking *Run*, the *ipt* project will compile and deploy the web app to `http://localhost:8080`. Note that the VM arguments include flags for debugging at address 4000. This allows us to create a run configuration for debugging the IPT web app.
 
 === Create a run configuration for debugging ===
-To debug the IPT web app with breakpoints, create a run configuration for a *Remote Java Application* and name it *ipt-remote-debug*.
+To debug the IPT web app with breakpoints, create a second run configuration for a *Remote Java Application* and name it *ipt-remote-debug*.
 
-In the *Connect* tab of the *ipt-remote-debug* run configuration, under *Connection Properties* set the *Port* to *4000*. Set your breakpoints in server side Java source files or client side JSP files and click *Run*. 
+In the *Connect* tab of the *ipt-remote-debug* run configuration, under *Connection Properties* set the *Port* to *4000*. Now you're all set. Simply set some breakpoints in the server side Java source files or client side JSP files and click *Run*. 
 
 Finally, accessing the IPT web app at` http://localhost:8080` will bring you into debug mode at your breakpoints.
 
