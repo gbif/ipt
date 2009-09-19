@@ -49,9 +49,11 @@ and then right-click the project and *Run As->Maven Install*. Finally, use the *
 At this point, if there is an error in the project ("Some errors were encountered while processing the poms."), restart Eclipse and it will automatically update the dependencies. This should remove the error.
 
 === Create a run configuration ===
-To run the IPT web app, create a new Maven Build run configuration and name it *ipt-eclipse*. 
+To run the IPT web app, create a new Maven Build run configuration.
 
-In the *Main* tab of the *ipt-eclipse* run configuration, type *eclipse* in the *Profiles* box. Select the *Update Snapshots* and *Skip Tests* checkboxes. For the *Maven Runtime* option, click the *Configure...* button, add the *External* Maven installation on your machine, click *Okay*, and then select it as the *Maven Runtime*.
+Right-click the *ipt* project and *Run As->Run configurations->Maven Build. Press the "New" button to create a configuration. Name it *ipt-eclipse*. 
+
+In the *Main* tab of the *ipt-eclipse* run configuration, type *eclipse* in the *Profiles* box. Select the *Update Snapshots* and *Skip Tests* checkboxes. For the *Maven Runtime* option, click the *Configure...* button, add the *External* Maven installation on your machine, click *Okay*, and then select it as the *Maven Runtime* in the *ipt-eclipse* Maven Build.
 
 In the *JRE* tab of the *ipt-eclipse* run configuration, type the following *VM arguments*:
 
