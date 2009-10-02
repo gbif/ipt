@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<extension xmlns="http://ipt.gbif.org/extension/"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://ipt.gbif.org/extension/ http://gbrds.gbif.org/resources/schemas/extension.xsd" 
-    title="GNA Alternative Identifiers" name="Identifier" namespace="http://purl.org/dc/terms/">
-    <property name="identifier" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/identifier" required="true" />
-    <property name="format" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/format"/>
-    <property name="type" namespace="http://purl.org/dc/terms/" qualName="http://purl.org/dc/terms/type"/>
-</extension>
