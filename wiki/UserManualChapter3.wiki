@@ -54,7 +54,7 @@ Tomcat comes with very little allocated memory. In order to improve performance 
 == 3.3  IPT Installation ==
 
   # Download the web archive file (ipt-1.0.war at the time of writing) from the project downloads page:
-  http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/downloads/list
+  http://code.google.com/p/gbif-providertoolkit/downloads/list/downloads/list
   # Rename it to ipt.war and copy it into the webapps folder of the Tomcat installation directory.
   # Launch Tomcat:
     # open a command prompt (MS Windows(TM)) or a terminal window (Mac OS (TM))
