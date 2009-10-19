@@ -64,11 +64,12 @@ In the *JRE* tab of the *ipt-eclipse* run configuration, type the following *VM 
 After clicking *Run*, the *ipt* project will compile and deploy the web app to `http://localhost:8080`. Note that the VM arguments include flags for debugging at address 4000. This allows us to create a run configuration for debugging the IPT web app.
 
 === Create a run configuration for debugging ===
-To debug the IPT web app with breakpoints, create a second run configuration for a *Remote Java Application* and name it *ipt-remote-debug*.
+To debug the IPT web app with breakpoints, create a debug configuration
 
-In the *Connect* tab of the *ipt-remote-debug* run configuration, under *Connection Properties* set the *Port* to *4000*. Now you're all set. Simply set some breakpoints in the server side Java source files or client side JSP files and click *Run*. 
+Right-click the *ipt* project and *Debug As->Debug configurations->Remote Java Application*. Press the "New" button to create a configuration. Name it *ipt-remote-debug*.
+
+In the *Connect* tab of the *ipt-remote-debug* run configuration, under *Connection Properties* set the *Port* to *4000*. 
+
+Now the application is ready for debugging. Simply set some breakpoints in the server side Java source files or client side JSP files and click *Debug*. 
 
 Finally, accessing the IPT web app at` http://localhost:8080` will bring you into debug mode at your breakpoints.
-
-
- 
