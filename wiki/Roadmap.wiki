@@ -6,7 +6,7 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 <wiki:toc max_depth="2" />
 
 = Release 1.0 =
-scheduled for 1.november 2009
+scheduled for November 2009
 
 == Internationalisation ==
  * Ensure application is fully internationalised
