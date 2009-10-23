@@ -27,7 +27,7 @@
 
 <@s.form id="occResourceForm" action="saveConnection" method="post" validate="true">
     <li style="display: none">
-        <@s.hidden name="resource_id" value="%{resource.id}"/>
+        <@s.hidden name="resourceId" value="%{resource.id}"/>
     </li>
 
  	<@s.select id="driverSelect" key="resource.jdbcDriverClass" required="true" headerKey="Select database system" emptyOption="false" list="jdbcDriverClasses" />

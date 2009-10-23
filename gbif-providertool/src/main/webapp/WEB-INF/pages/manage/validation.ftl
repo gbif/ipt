@@ -20,7 +20,7 @@
 
 
 <@s.form action="validation" method="get">
-  <@s.hidden key="resource_id"/>
+  <@s.hidden key="resourceId"/>
   <fieldset>
     <legend><@s.text name="occResourceOverview.validation"/></legend>
     <#if resource.hasData()>

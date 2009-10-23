@@ -18,13 +18,13 @@
 </head>
 
 <div class="break20"></div>
-<img class="taxDetailImg" src="${cfg.getResourceLogoUrl(resource_id)}" />
+<img class="taxDetailImg" src="${cfg.getResourceLogoUrl(resourceId)}" />
 
 <@s.form>
 
 <#assign extRec=rec>
 <#assign rec=taxon>
-<#assign resource_id=taxon.resource.id>
+<#assign resourceId=taxon.resource.id>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
 <#assign rec=extRec>
 
@@ -61,15 +61,15 @@
 			<tr>
 			<#if taxon.getParent()??>
 			  <th><@s.text name="taxon.parent"/></th>
-			  <td><#if taxon.getParent()??><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&guid=${taxon.getHigherTaxonID()}"/>'>${taxon.getHigherTaxon()!}</a></#if></td>
+			  <td><#if taxon.getParent()??><a href='<@s.url value="/taxDetail.html?resourceId=${resourceId}&guid=${taxon.getHigherTaxonID()}"/>'>${taxon.getHigherTaxon()!}</a></#if></td>
 			</#if>
 			<#if taxon.getAcceptedTaxon()??>
 			  <th><@s.text name="taxon.accepted"/></th>
-			  <td><#if taxon.getAcceptedTaxon()??><a href="<@s.url value='/taxDetail.html?resource_id=${resource_id}&guid=${taxon.getAcceptedTaxonID()}'/>">${taxon.getAcceptedTaxon()!}</a></#if></td>
+			  <td><#if taxon.getAcceptedTaxon()??><a href="<@s.url value='/taxDetail.html?resourceId=${resourceId}&guid=${taxon.getAcceptedTaxonID()}'/>">${taxon.getAcceptedTaxon()!}</a></#if></td>
 			</#if>
 			<#if taxon.getBasionym()??>
 			  <th><@s.text name="taxon.basionym"/></th>
-			  <td><#if taxon.getBasionym()??><a href="<@s.url value='/taxDetail.html?resource_id=${resource_id}&guid=${taxon.getBasionymID()}'/>">${taxon.getBasionym()!}</a></#if></td>
+			  <td><#if taxon.getBasionym()??><a href="<@s.url value='/taxDetail.html?resourceId=${resourceId}&guid=${taxon.getBasionymID()}'/>">${taxon.getBasionym()!}</a></#if></td>
 			</#if>
 			</tr>
 			<tr>
@@ -109,7 +109,7 @@
 			</tr>
 			<#list synonyms as syn>	
 			<tr>
-			  <td><a href='<@s.url value="/taxDetail.html?resource_id=${resource_id}&id=${syn.id?c}"/>'>${syn.scientificName}</a></td>
+			  <td><a href='<@s.url value="/taxDetail.html?resourceId=${resourceId}&id=${syn.id?c}"/>'>${syn.scientificName}</a></td>
 			  <td>${syn.taxonomicStatus!}</td>
 			  <td>${syn.nomenclaturalStatus!}</td>
 			</tr>
@@ -128,7 +128,7 @@
 			<#list stats as st>	
 			<tr>
 			  <th>${st.label}&nbsp;</th>
-			  <td><a href="<@s.url value='/taxListByRank.html?resource_id=${resource_id?c}&category=${st.label}&id=${taxon.id?c}'/>">${st.count} taxa</a></td>
+			  <td><a href="<@s.url value='/taxListByRank.html?resourceId=${resourceId?c}&category=${st.label}&id=${taxon.id?c}'/>">${st.count} taxa</a></td>
 			</tr>
 			</#list>
 		</table>

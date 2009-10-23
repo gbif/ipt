@@ -5,7 +5,7 @@
 	<ul class="plain">
 		<s:iterator value="#session.recentResources" status="resstatus">
 			<s:url id="recentLink" action="resource" includeParams="none">
-				<s:param name="resource_id" value="value" />
+				<s:param name="resourceId" value="value" />
 			</s:url>
 			<li><s:a href="%{recentLink}"><s:property value="label"/></s:a></li>
 		</s:iterator>
