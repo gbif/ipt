@@ -23,7 +23,7 @@
     <!-- http://localhost/resource/91/ -->
     <rule>
         <from>^/resource/(\d+)/?$</from>
-        <to type="forward">/resource.html?resource_id=$1</to>
+        <to type="forward">/resource.html?resourceId=$1</to>
     </rule>
     <!-- http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f -->
     <rule>
@@ -48,7 +48,7 @@
     <!-- Resource logo http://localhost/resource/91/logo.jpg-->
     <rule>
         <from>^/resource/(\d+)/logo.jpg$</from>
-        <to type="forward">/logo.do?resource_id=$1</to>
+        <to type="forward">/logo.do?resourceId=$1</to>
     </rule>
     
     <!-- 
@@ -86,7 +86,7 @@
     -->
     <rule>
         <from>^/tapir/(\d+)/?$</from>
-        <to type="forward">/tapir/service.xml?resource_id=$1</to>
+        <to type="forward">/tapir/service.xml?resourceId=$1</to>
     </rule>
 </urlrewrite>
 

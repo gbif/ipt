@@ -57,7 +57,7 @@ For this to work, your additional sources need to refer to your core identifiers
 	<!-- source form -->
 	<fieldset class="noBottomMargin">
 	<@s.form action="updateSourceFile" method="post">
-	  <@s.hidden key="resource_id"/>
+	  <@s.hidden key="resourceId"/>
 	  <@s.hidden key="sid" value="${fs.id}"/>
 		<div class="newline">
 			<div class="left">
@@ -88,7 +88,7 @@ For this to work, your additional sources need to refer to your core identifiers
 <fieldset class="noBottomMargin">
 	<div class="break2">
 	  <@s.form action="uploadSource" enctype="multipart/form-data" method="post">
-		<@s.hidden key="resource_id"/>
+		<@s.hidden key="resourceId"/>
 		<div class="left">
 			<@s.file name="file" key="sources.selectSourceFile" cssClass="file tablefile" required="false"/>
 		</div>
@@ -113,7 +113,7 @@ For this to work, your additional sources need to refer to your core identifiers
 <div class="horizontal_dotted_line_large_soft"></div>
 <fieldset class="noBottomMargin">
 	<@s.form action="editConnection" method="get">
-	  <@s.hidden key="resource_id"/>
+	  <@s.hidden key="resourceId"/>
 	  <div>
 	  	<div class="left">
 		<#if resource.hasDbConnection()>
@@ -136,7 +136,7 @@ For this to work, your additional sources need to refer to your core identifiers
 			<@s.iterator value="sqlSources" status="stat">
 				<div class="newline">
 				<@s.form action="editSource" method="get">
-				  <@s.hidden key="resource_id"/>
+				  <@s.hidden key="resourceId"/>
 				  <@s.hidden key="sid" value="${id}"/>
 					<div class="left">
 						<img id="sp${id}" class="previewGlass" src="<@s.url value="/images/glasses.png"/>" width="20" height="20"/>
@@ -158,7 +158,7 @@ For this to work, your additional sources need to refer to your core identifiers
 		</#if>
 		<div class="right">
 			<@s.form action="editSource" method="get">
-			  <@s.hidden key="resource_id"/>
+			  <@s.hidden key="resourceId"/>
 			  <@s.hidden key="sid" value=""/>
 			  <@s.submit cssClass="button" key="button.add" theme="simple"/>
 			</@s.form>
@@ -176,7 +176,7 @@ For this to work, your additional sources need to refer to your core identifiers
 <#if (fileSources?size>0) || (sqlSources?size>0)>
 <div class="break">
 <@s.form action="mappings" method="get">
-	<@s.hidden key="resource_id"/>
+	<@s.hidden key="resourceId"/>
 	<div class="breakRight">
 		<@s.submit cssClass="button" key="button.next" theme="simple"/>
 	</div>
