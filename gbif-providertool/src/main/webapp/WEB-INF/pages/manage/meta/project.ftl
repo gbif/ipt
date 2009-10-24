@@ -12,7 +12,7 @@
 <div class="break10"></div>
 <@s.form id="emlForm" action="project" method="post" validate="false">
 <fieldset>
-	<@s.hidden name="resource_id" value="${resource_id?c}"/>
+	<@s.hidden name="resourceId" value="${resourceId?c}"/>
 	<@s.hidden name="nextPage" value="methods"/>
 
 	<@s.textfield key="eml.researchProject.title" cssClass="text xlarge" />

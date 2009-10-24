@@ -21,7 +21,7 @@
 </@display.table>
 
 <@s.form action="resource" method="get">
-  <@s.hidden key="resource_id"/>
+  <@s.hidden key="resourceId"/>
   <@s.submit cssClass="button" key="button.done" theme="simple"/>
 </@s.form>
 
