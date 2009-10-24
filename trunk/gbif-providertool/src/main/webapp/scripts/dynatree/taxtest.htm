@@ -22,14 +22,14 @@
 			cookieId: "ipt-taxtree",
 			idPrefix: "taxnode",
 			fx: { height: "toggle", duration: 100 },
-			initAjax: {	url: "http://localhost:8080/ajax/taxonTree.do?resourceId=10",
+			initAjax: {	url: "http://localhost:8080/ajax/taxonTree.do?resource_id=10",
 						data: {}
 			},
 			onActivate: function(dtnode) {
 			    alert("You activated " + dtnode.data.title);
 			},
 			onLazyRead: function(dtnode){
-				$.getJSON("http://localhost:8080/ajax/taxonSubTree.do?resourceId=10",{id:dtnode.data.key},
+				$.getJSON("http://localhost:8080/ajax/taxonSubTree.do?resource_id=10",{id:dtnode.data.key},
 				        function(data){
 							dtnode.setLazyNodeStatus(DTNodeStatus_Ok);
 							dtnode.append(data);

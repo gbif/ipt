@@ -41,7 +41,7 @@
 		<tr>
 		  <th><@s.text name="region.parent"/></th>
 		  <@s.url id="occRegionUrl" action="occRegion" namespace="/" includeParams="none">
-			<@s.param name="resourceId" value="${resourceId}"/>
+			<@s.param name="resource_id" value="${resource_id}"/>
 			<@s.param name="id" value="${region.parent.id}"/>
 		  </@s.url>
 		  <td><a href="${occRegionUrl}">${region.parent}</a></td>

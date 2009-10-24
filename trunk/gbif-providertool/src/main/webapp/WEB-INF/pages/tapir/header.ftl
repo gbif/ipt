@@ -3,7 +3,7 @@
  ${nsr.xmlnsDef()}>
     <header>
 <#escape x as x?xml>
-        <source accesspoint="${cfg.getTapirEndpoint(resourceId)}" sendtime="${now?datetime?string(xmlDateFormat)}">
+        <source accesspoint="${cfg.getTapirEndpoint(resource_id)}" sendtime="${now?datetime?string(xmlDateFormat)}">
           <software name="GBIF Integrated Publishing Toolkit" version="<@s.text name="webapp.version"/>"/>
         </source>
 </#escape>

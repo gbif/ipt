@@ -9,7 +9,7 @@
 	<meta name="heading" content="<@s.text name='mapStats.heading'/>"/>          
 	<script>
 	function updateMap(area){
-		var params = {resourceId:${resourceId}, zoom:'true', area:area }; 
+		var params = {resource_id:${resource_id}, zoom:'true', area:area }; 
 		var url = '<@s.url value="/ajax/occResourceStatsBy%{statsBy}.html"/>';
 		var target = 'stats-map';	
 		var myAjax = new Ajax.Updater(target, url, {method: 'get', parameters: params});
@@ -40,7 +40,7 @@
 	<@display.table name="data" class="table" requestURI="" id="dataList" export=true pagesize=50>
 	    <@display.column property="label" sortable=true titleKey="stats.country"/>
 	    <#if recordAction??>	    
-	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resourceId=${resourceId?c}" media="html" paramId="id" paramProperty="id"/>
+	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}" media="html" paramId="id" paramProperty="id"/>
 		<#else>
 	    	<@display.column property="count" sortable=true titleKey="stats.count" />
 	    </#if>	

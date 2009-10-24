@@ -2,7 +2,7 @@
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 
 <@display.table name="occurrences" uid="occ" class="table" requestURI="" id="occurrenceList" export=false pagesize=50>
-    <@display.column property="catalogNumber" sortable=true href="occDetail.html?resourceId=${resourceId?c}" media="html" paramId="guid" paramProperty="guid" titleKey="dwc.catalogNumber"/>
+    <@display.column property="catalogNumber" sortable=true href="occDetail.html?resource_id=${resource_id?c}" media="html" paramId="guid" paramProperty="guid" titleKey="dwc.catalogNumber"/>
     <@display.column property="collectionCode" sortable=true titleKey="dwc.collectionCode"/>
 	<@display.column property="taxon" sortable=true titleKey="dwc.taxon"/>    
     <@display.column property="country" sortable=true maxLength=50 titleKey="dwc.country"/>

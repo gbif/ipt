@@ -35,7 +35,7 @@
 <@s.form>
 
 <#assign rec=taxon>
-<#assign resourceId=taxon.resource.id>
+<#assign resource_id=taxon.resource.id>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
 
 </@s.form>

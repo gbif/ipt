@@ -17,7 +17,7 @@
     <@s.hidden key="tid"/>
     <@s.hidden key="mid"/>
     <@s.hidden key="origin"/>
-    <@s.hidden key="resourceId"/>
+    <@s.hidden key="resource_id"/>
     <@s.submit cssClass="button" key="button.scan" theme="simple"/>
 </@s.form>
 
@@ -26,7 +26,7 @@
     <@s.hidden key="tid"/>
     <@s.hidden key="mid"/>
     <@s.hidden key="origin"/>
-    <@s.hidden key="resourceId"/>
+    <@s.hidden key="resource_id"/>
 
 	<table>
     <#list termMappings as m> 

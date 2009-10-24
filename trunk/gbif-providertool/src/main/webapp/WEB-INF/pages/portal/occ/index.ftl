@@ -8,25 +8,25 @@
 	<script>
 	function updateByRegion(){
 		var url = '<@s.url value="/ajax/occResourceStatsByRegion.html"/>';
-		var params = { resourceId: ${resourceId}, type: $("#regionClass").val() }; 
+		var params = { resource_id: ${resource_id}, type: $("#regionClass").val() }; 
 		var target = '#imgByRegion';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByCountry(){
 		var url = '<@s.url value="/ajax/occResourceStatsByCountry.html"/>';
-		var params = { resourceId: ${resourceId}, type: $("#countryClass").val() }; 
+		var params = { resource_id: ${resource_id}, type: $("#countryClass").val() }; 
 		var target = '#imgByCountry';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByTaxon(){
 		var url = '<@s.url value="/ajax/occResourceStatsByTaxon.html"/>';
-		var params = { resourceId: ${resourceId}, type: $("#rank").val() }; 
+		var params = { resource_id: ${resource_id}, type: $("#rank").val() }; 
 		var target = '#imgByTaxon';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByHost(){
 		var url = '<@s.url value="/ajax/occResourceStatsByHost.html"/>';
-		var params = { resourceId: ${resourceId}, type: $("#hostType").val() }; 
+		var params = { resource_id: ${resource_id}, type: $("#hostType").val() }; 
 		var target = '#imgByHost';	
 		ajaxHtmlUpdate(url, target, params);
 	};
@@ -53,7 +53,7 @@
 		so.addVariable("wms_url", escape("${geoserverMapUrl}"));
 		so.addVariable("type", "wms");
 		<#-- geowebcache doesnt work reliably so far
-		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resourceId)}");
+		so.addVariable("geowebcache_url", "${cfg.getGeoserverWebCacheUrl(resource_id)}");
 		so.addVariable("type", "gwc");
 		-->
 		so.write("occmap");	    
@@ -66,7 +66,7 @@
 <div class="horizontal_dotted_line_large"></div>
 <fieldset>
 	<div id="metadata">
-		<img class="right" src="${cfg.getResourceLogoUrl(resourceId)}" />
+		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
 		<span>${resource.description}</span>
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
@@ -77,10 +77,10 @@
 				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
 			</li>
 			<li>
-				<a href="metaResource.html?resourceId=${resourceId}">Full Metadata</a>
+				<a href="metaResource.html?resource_id=${resource_id}">Full Metadata</a>
 			</li>
 			<li>
-				<a href="annotations.html?resourceId=${resourceId}">Annotations</a>
+				<a href="annotations.html?resource_id=${resource_id}">Annotations</a>
 			</li>
 		</ul>
 		<div class="break35"></div>
@@ -104,15 +104,15 @@
 				</tr>
 				<tr>
 					<th><@s.text name="dataResource.tapir"/></th>
-					<td><a href="${cfg.getTapirEndpoint(resourceId)}">${cfg.getTapirEndpoint(resourceId)}</a></td>
+					<td><a href="${cfg.getTapirEndpoint(resource_id)}">${cfg.getTapirEndpoint(resource_id)}</a></td>
 				</tr>
 				<tr>
 					<th><@s.text name="dataResource.wfs"/></th>
-					<td><a href="${cfg.getWfsEndpoint(resourceId)}">${cfg.getWfsEndpoint(resourceId)}</a></td>
+					<td><a href="${cfg.getWfsEndpoint(resource_id)}">${cfg.getWfsEndpoint(resource_id)}</a></td>
 				</tr>
 				<tr>
 					<th><@s.text name="dataResource.wms"/></th>
-					<td><a href="${cfg.getWmsEndpoint(resourceId)}">${cfg.getWmsEndpoint(resourceId)}</a></td>
+					<td><a href="${cfg.getWmsEndpoint(resource_id)}">${cfg.getWmsEndpoint(resource_id)}</a></td>
 				</tr>
 			</table>
 		</div>

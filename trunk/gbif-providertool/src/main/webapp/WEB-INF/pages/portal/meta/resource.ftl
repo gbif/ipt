@@ -13,7 +13,7 @@
 
 <@s.form>
 <div>
-<img class="rightImage_nm" src="${cfg.getResourceLogoUrl(resourceId)}" />
+<img class="rightImage_nm" src="${cfg.getResourceLogoUrl(resource_id)}" />
 <table style="width: 400px;">	
  <tr>
 	<th>GUID</th>
@@ -25,7 +25,7 @@
  </tr>
  <tr>
 	<th>Annotations</th>
-	<td><a href="annotations.html?resourceId=${resourceId}">Annotations</a></td>
+	<td><a href="annotations.html?resource_id=${resource_id}">Annotations</a></td>
  </tr>
 </table>
 </div>

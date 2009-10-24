@@ -106,7 +106,7 @@
         <@s.hidden key="mid"/>
         <@s.hidden key="sid"/>
         <@s.hidden key="eid"/>
-	    <@s.hidden key="resourceId"/>
+	    <@s.hidden key="resource_id"/>
         <@s.hidden id="mappings_idx" name="mappings_idx" value=""/>
         <@s.hidden id="newProperties" name="newProperties" value=""/>
         

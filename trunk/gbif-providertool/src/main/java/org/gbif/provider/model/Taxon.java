@@ -15,6 +15,16 @@
  */
 package org.gbif.provider.model;
 
+import org.gbif.provider.model.voc.Rank;
+
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.annotations.Index;
+import org.hibernate.validator.NotNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -27,26 +37,17 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.gbif.provider.model.voc.Rank;
-import org.hibernate.annotations.Index;
-import org.hibernate.validator.NotNull;
-
 /**
  * TODO: Documentation.
  * 
  */
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "sourceId",
-    "resource_fk" }) })
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {
+    "sourceId", "resource_fk"})})
 @org.hibernate.annotations.Table(appliesTo = "Taxon", indexes = {
-    @Index(name = "tax_label", columnNames = { "label" }),
-    @Index(name = "tax_lft", columnNames = { "lft" }),
-    @Index(name = "tax_rgt", columnNames = { "rgt" }) })
+    @Index(name = "tax_label", columnNames = {"label"}),
+    @Index(name = "tax_lft", columnNames = {"lft"}),
+    @Index(name = "tax_rgt", columnNames = {"rgt"})})
 public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
   protected static final Log log = LogFactory.getLog(Taxon.class);
 
@@ -66,21 +67,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
   private String link;
   private boolean isDeleted;
   private Date modified = new Date();
-
   // taxon specific
   // private String taxonID; --> this.guid
-  private String scientificNameID;
-  private String nameAccordingToID;
-  private String namePublishedInID;
-  private String taxonConceptID;
-
   // private String scientificName; --> this.label
-
-  private String nameAccordingTo;
-  // deprecated private String taxonAccordingTo;
-  private String namePublishedIn;
-
-  // deprecated private String binomial;
+  private String binomial;
   // private String kingdom;
   // private String phylum;
   // private String classs;
@@ -89,35 +79,25 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
   // private String genus;
   // private String subgenus;
   private String specificEpithet;
-  private String infraspecificEpithet;
   private String taxonRank;
-  private String verbatimTaxonRank;
+  private String infraspecificEpithet;
   private String scientificNameAuthorship;
-  private String vernacularName;
   private String nomenclaturalCode;
+  private String taxonAccordingTo;
+  private String namePublishedIn;
   private String taxonomicStatus;
   private String nomenclaturalStatus;
-  private String taxonRemarks;
-
-  // deprecated private Taxon higherTaxon; --> this.parent
-  // private Taxon parentNameUsage; -- this.parent
-  // deprecated private String higherTaxonID;
-  // private String parentNameUsageID;
-  // depreacated private String higherTaxon;
-  // private String higherClassification;
-
+  // private Taxon higherTaxon; --> this.parent
+  // private String higherTaxonID;
+  // private String higherTaxon;
   private Taxon acc;
-  // deprecated private String acceptedTaxonID;
-  // private String acceptedNameUsageID;
-  // deprecated private String acceptedTaxon;
-  // private String acceptedNameUsage;
 
+  // private String acceptedTaxonID;
+  // private String acceptedTaxon;
   private Taxon bas;
 
-  // deprecated private String basionymID;
-  // private String originalNameUsageID;
-  // deprecated private String basionym;
-  // private String originalNameUsage;
+  // private String basionymID;
+  // private String basionym;
 
   /**
    * @see java.lang.Object#equals(Object)
@@ -129,8 +109,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     }
     Taxon rhs = (Taxon) object;
     return new EqualsBuilder().append(this.getLabel(), rhs.getLabel()).append(
-        this.taxonRank, rhs.taxonRank).append(this.nameAccordingTo,
-        rhs.nameAccordingTo).append(this.getParent(), rhs.getParent()).append(
+        this.taxonRank, rhs.taxonRank).append(this.taxonAccordingTo,
+        rhs.taxonAccordingTo).append(this.getParent(), rhs.getParent()).append(
         this.getId(), rhs.getId()).isEquals();
   }
 
@@ -176,10 +156,9 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return null;
   }
 
-  // deprecated
-  // public String getBinomial() {
-  // return binomial;
-  // }
+  public String getBinomial() {
+    return binomial;
+  }
 
   @Transient
   public Long getCoreId() {
@@ -226,26 +205,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return modified;
   }
 
-  // deprecated in favor of nameAccordingTo
-  // public String getTaxonAccordingTo() {
-  // return taxonAccordingTo;
-  // }
-  public String getNameAccordingTo() {
-    return nameAccordingTo;
-  }
-
-  @Column(length = 128)
-  public String getNameAccordingToID() {
-    return nameAccordingToID;
-  }
-
   public String getNamePublishedIn() {
     return namePublishedIn;
-  }
-
-  @Column(length = 128)
-  public String getNamePublishedInID() {
-    return namePublishedInID;
   }
 
   @Column(length = 64)
@@ -302,11 +263,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return scientificNameAuthorship;
   }
 
-  @Column(length = 128)
-  public String getScientificNameID() {
-    return scientificNameID;
-  }
-
   @Column(length = 64)
   @org.hibernate.annotations.Index(name = "tax_source_id")
   public String getSourceId() {
@@ -318,9 +274,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return specificEpithet;
   }
 
-  @Column(length = 128)
-  public String getTaxonConceptID() {
-    return taxonConceptID;
+  public String getTaxonAccordingTo() {
+    return taxonAccordingTo;
   }
 
   @Transient
@@ -338,26 +293,14 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     return taxonRank;
   }
 
-  public String getTaxonRemarks() {
-    return taxonRemarks;
-  }
-
-  public String getVerbatimTaxonRank() {
-    return verbatimTaxonRank;
-  }
-
-  public String getVernacularName() {
-    return vernacularName;
-  }
-
   /**
    * @see java.lang.Object#hashCode()
    */
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(2136008009, 497664597).append(this.taxonRank)
-        .append(this.getLabel()).append(this.nameAccordingTo).append(
-            this.getParent()).append(this.getId()).toHashCode();
+    return new HashCodeBuilder(2136008009, 497664597).append(this.taxonRank).append(
+        this.getLabel()).append(this.taxonAccordingTo).append(this.getParent()).append(
+        this.getId()).toHashCode();
   }
 
   @org.hibernate.annotations.Index(name = "tax_deleted")
@@ -371,6 +314,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
 
   public void setBas(Taxon basionym) {
     this.bas = basionym;
+  }
+
+  public void setBinomial(String binomial) {
+    this.binomial = binomial;
   }
 
   public void setDeleted(boolean isDeleted) {
@@ -389,11 +336,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     this.infraspecificEpithet = infraspecificEpithet;
   }
 
-  // deprecated
-  // public void setBinomial(String binomial) {
-  // this.binomial = binomial;
-  // }
-
   public void setLink(String link) {
     this.link = link;
   }
@@ -402,24 +344,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     this.modified = modified;
   }
 
-  // deprecated in favor of nameAccordingTo
-  // public void setTaxonAccordingTo(String taxonAccordingTo) {
-  // this.taxonAccordingTo = taxonAccordingTo;
-  // }
-  public void setNameAccordingTo(String nameAccordingTo) {
-    this.nameAccordingTo = nameAccordingTo;
-  }
-
-  public void setNameAccordingToID(String nameAccordingToID) {
-    this.nameAccordingToID = nameAccordingToID;
-  }
-
   public void setNamePublishedIn(String namePublishedIn) {
     this.namePublishedIn = namePublishedIn;
-  }
-
-  public void setNamePublishedInID(String namePublishedInID) {
-    this.namePublishedInID = namePublishedInID;
   }
 
   public void setNomenclaturalCode(String nomenclaturalCode) {
@@ -477,10 +403,6 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     this.scientificNameAuthorship = scientificNameAuthorship;
   }
 
-  public void setScientificNameID(String scientificNameID) {
-    this.scientificNameID = scientificNameID;
-  }
-
   public void setSourceId(String sourceId) {
     this.sourceId = sourceId;
   }
@@ -489,8 +411,8 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     this.specificEpithet = specificEpithet;
   }
 
-  public void setTaxonConceptID(String taxonConceptID) {
-    this.taxonConceptID = taxonConceptID;
+  public void setTaxonAccordingTo(String taxonAccordingTo) {
+    this.taxonAccordingTo = taxonAccordingTo;
   }
 
   public void setTaxonID(String taxonID) {
@@ -505,22 +427,10 @@ public class Taxon extends TreeNodeBase<Taxon, Rank> implements CoreRecord {
     this.taxonRank = taxonRank;
   }
 
-  public void setTaxonRemarks(String taxonRemarks) {
-    this.taxonRemarks = taxonRemarks;
-  }
-
-  public void setVerbatimTaxonRank(String verbatimTaxonRank) {
-    this.verbatimTaxonRank = verbatimTaxonRank;
-  }
-
-  public void setVernacularName(String vernacularName) {
-    this.vernacularName = vernacularName;
-  }
-
   @Override
   protected int compareWithoutHierarchy(Taxon first, Taxon second) {
-    return new CompareToBuilder().append(first.resource, second.resource)
-        .append(first.getLabel(), second.getLabel()).toComparison();
+    return new CompareToBuilder().append(first.resource, second.resource).append(
+        first.getLabel(), second.getLabel()).toComparison();
   }
 
 }

@@ -9,7 +9,7 @@
 	<script type="text/javascript">  
 		function showAnnotation(anchor){
 			var url = '<@s.url value="/ajax/annotation.html"/>';
-			var params = { resourceId:${resourceId}, id: anchor.name }; 
+			var params = { resource_id:${resource_id}, id: anchor.name }; 
 			$.get(url, params, function(data) { 
 				$(anchor).parent().parent().after("<tr class='odd anno'><td colspan='4'>"+data+"</td></tr>");
 				$("a.close").click(function (e) {
@@ -46,7 +46,7 @@
 <div class="break10"></div>
 <div class="annotationRight">
 <@s.form id="annotationTypeForm" method="get">
-	<@s.hidden name="resourceId" value="${resourceId}"/>
+	<@s.hidden name="resource_id" value="${resource_id}"/>
 	<@s.select id="annotationType" name="annotationType" value="annotationType" list="annotationTypes" emptyOption="true" style="display: inline" theme="simple"/>
 </@s.form>
 </div>

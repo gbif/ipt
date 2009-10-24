@@ -9,7 +9,7 @@
 <#escape x as x?xml>
     <dc:title>${resource.title}</dc:title>
     <dc:type>http://purl.org/dc/dcmitype/Service</dc:type>
-    <accesspoint>${cfg.getTapirEndpoint(resourceId)}</accesspoint>
+    <accesspoint>${cfg.getTapirEndpoint(resource_id)}</accesspoint>
     <dc:description>${resource.description!}</dc:description>
     <dc:language>${eml.language!}</dc:language>
     <dc:subject><#list eml.keywords as k>${k} </#list></dc:subject>
@@ -50,7 +50,7 @@
       </entity>
     </relatedEntity>
     <custom>
-    	<ipt:logoURL>${cfg.getResourceLogoUrl(resourceId)}</ipt:logoURL>‚‚
+    	<ipt:logoURL>${cfg.getResourceLogoUrl(resource_id)}</ipt:logoURL>‚‚
     </custom>
   </metadata>
 </#escape>
