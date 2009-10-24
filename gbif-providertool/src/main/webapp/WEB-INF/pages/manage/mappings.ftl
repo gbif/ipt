@@ -27,7 +27,7 @@
 <fieldset>
 	<div>
 	  <@s.form action="propMapping" method="get">
-	   <@s.hidden key="resourceId"/>
+	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value="${coreMapping.id}"/>
 		<div class="left">
 			<strong>${coreMapping.extension.name}</strong>
@@ -54,7 +54,7 @@
 	<@s.iterator value="extMappings" status="stat">
 	<div class="newline">
 	  <@s.form action="propMapping" method="post">
-	   <@s.hidden key="resourceId"/>
+	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value="${id}"/>
 		<div class="left">
 			<strong>${extension.name}</strong>
@@ -74,7 +74,7 @@
 <fieldset>
 	<div>
 	  <@s.form action="propMapping" method="post">
-	   <@s.hidden key="resourceId"/>
+	   <@s.hidden key="resource_id"/>
 	   <@s.hidden key="mid" value=""/>
 		<div class="leftMedium">
 		 	<@s.select key="mappings.extensions" name="eid" required="false" emptyOption="false" list="extensions" listKey="id" listValue="name" cssClass="text medium"/>
@@ -135,7 +135,7 @@ Depending upon the amount of data this process may take a long time during which
 <div>
 <#if resource.hasMinimalMapping()>
 	<@s.form action="runImport" method="post" >
-	  <@s.hidden key="resourceId" />
+	  <@s.hidden key="resource_id" />
 	  <@s.submit cssClass="button" key="button.import" />
 	</@s.form>
 <#else>

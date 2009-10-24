@@ -68,7 +68,7 @@
 <div id="fullsearch">
 	<div class="searchBox">
 		<s:form action="search" namespace="/" name="search" theme="simple" method="get">
-			<s:hidden name="resourceId" value="%{resourceId}" />
+			<s:hidden name="resource_id" value="%{resource_id}" />
 			<s:textfield name="q" theme="simple" cssClass="searchInput"/>
 		</s:form>
 	</div>

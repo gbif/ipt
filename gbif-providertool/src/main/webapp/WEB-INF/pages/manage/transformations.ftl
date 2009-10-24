@@ -26,7 +26,7 @@ Otherwise you can always configure you own set of transformations.
 	<#list transformations as t>
 	<div class="newline">
 	  <@s.form action="transformations" method="post">
-	    <@s.hidden name="resourceId" value="${resourceId}"/>
+	    <@s.hidden name="resource_id" value="${resource_id}"/>
 	    <@s.hidden name="tid" value="${t.id}"/>
 		<div class="left">
 			<strong>${t.type!}</strong>
@@ -100,7 +100,7 @@ $('transformationType').observe('change', updateImage);
 
 <div class="break">
 <@s.form action="mappings" method="get">
-	<@s.hidden key="resourceId"/>
+	<@s.hidden key="resource_id"/>
 	<div class="breakRight">  
 		<@s.submit cssClass="button" key="button.next" theme="simple"/>
 	</div>

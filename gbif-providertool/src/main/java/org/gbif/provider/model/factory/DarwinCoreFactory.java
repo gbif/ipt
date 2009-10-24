@@ -15,11 +15,6 @@
  */
 package org.gbif.provider.model.factory;
 
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.DarwinCore;
@@ -28,6 +23,12 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.Point;
 import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.util.Constants;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * TODO: Documentation.
@@ -59,8 +60,6 @@ public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore> {
       String propName = prop.getName();
       // first try the properties which we try to persist converted as other
       // data types
-      // TODO: Why are only the minimums of elevation and depth used for
-      // single elevation and depth variables?
       if (propName.equalsIgnoreCase("MinimumElevationInMeters")) {
         dwc.setMinimumElevationInMeters(val);
         if (val != null) {
@@ -83,31 +82,15 @@ public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore> {
                 "MinimumDepthInMeters", "Double", val));
           }
         }
-        // deprecated in favor of eventDate
-        // } else if (propName.equalsIgnoreCase("EarliestDateCollected")) {
-        // dwc.setEarliestDateCollected(val);
-        // if (val != null) {
-        // try {
-        // Date typedVal = Constants.dateIsoFormat().parse(val);
-        // dwc.setCollected(typedVal);
-        // } catch (ParseException e) {
-        // // TODO: Should this be "ISO Date" instead of "Integer"?
-        // annotations.add(annotationManager.badDataType(dwc,
-        // "EarliestDateCollected", "Integer", val));
-        // }
-        // }
-      } else if (propName.equalsIgnoreCase("EventDate")) {
-        dwc.setEventDate(val);
+      } else if (propName.equalsIgnoreCase("EarliestDateCollected")) {
+        dwc.setEarliestDateCollected(val);
         if (val != null) {
           try {
             Date typedVal = Constants.dateIsoFormat().parse(val);
             dwc.setCollected(typedVal);
           } catch (ParseException e) {
-            // TODO: Should this be "ISO Date" instead of "Integer"?
-            // annotations.add(annotationManager.badDataType(dwc,
-            // "EarliestDateCollected", "Integer", val));
-            annotations.add(annotationManager.badDataType(dwc, "EventDate",
-                "ISO Date", val));
+            annotations.add(annotationManager.badDataType(dwc,
+                "EarliestDateCollected", "Integer", val));
           }
         }
       } else if (propName.equalsIgnoreCase("DecimalLatitude")) {
@@ -116,8 +99,7 @@ public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore> {
           try {
             loc.setLatitude(Double.valueOf(val));
           } catch (NumberFormatException e) {
-            annotationManager
-                .badDataType(dwc, "DecimalLatitude", "Double", val);
+            annotationManager.badDataType(dwc, "DecimalLatitude", "Double", val);
           } catch (IllegalArgumentException e) {
             annotationManager.annotate(dwc, AnnotationType.WrongDatatype,
                 String.format("Latitude value '%s' is out of allowed range",

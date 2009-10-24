@@ -9,7 +9,7 @@
 
 <@s.form id="resourceForm" action="saveResource" method="post">
   <fieldset>
-    <@s.hidden name="resourceId" value="${(resource.id)!}"/>
+    <@s.hidden name="resource_id" value="${(resource.id)!}"/>
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 
 	<@s.textfield key="resource.meta.uddiID" cssClass="text large"/>

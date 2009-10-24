@@ -2,7 +2,7 @@
 <s:if test="resource.id>0">
 <script>
 var data = { 
-	resourceId: <s:property value="%{resource.id}"/>, 
+	resource_id: <s:property value="%{resource.id}"/>, 
 	resourceType:'<s:property value="%{resourceType}"/>', 
 };
 var params = {

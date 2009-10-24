@@ -21,6 +21,7 @@ import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.CacheMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -57,22 +58,13 @@ public class TaxonFactory extends ModelBaseFactory<Taxon> {
       // the following props can be removed at some point and served from darwin
       // core alone joined via resource&sourceId
       tax.setLink(dwc.getLink());
-      // deprecated in favor of nameAccordingTo
-      // tax.setTaxonAccordingTo(dwc.getTaxonAccordingTo());
-      tax.setScientificNameID(dwc.getScientificNameID());
-      tax.setNameAccordingToID(dwc.getNameAccordingToID());
-      tax.setNamePublishedInID(dwc.getNamePublishedInID());
-      tax.setTaxonConceptID(dwc.getTaxonConceptID());
-      tax.setNameAccordingTo(dwc.getNameAccordingTo());
-      tax.setNamePublishedIn(dwc.getNamePublishedIn());
+      tax.setTaxonAccordingTo(dwc.getTaxonAccordingTo());
       tax.setSpecificEpithet(dwc.getSpecificEpithet());
       tax.setInfraspecificEpithet(dwc.getInfraspecificEpithet());
-      tax.setVerbatimTaxonRank(dwc.getVerbatimTaxonRank());
       tax.setScientificNameAuthorship(dwc.getScientificNameAuthorship());
-      tax.setVernacularName(dwc.getVernacularName());
+      tax.setNamePublishedIn(dwc.getNamePublishedIn());
       tax.setTaxonomicStatus(dwc.getTaxonomicStatus());
       tax.setNomenclaturalStatus(dwc.getNomenclaturalStatus());
-      tax.setTaxonRemarks(dwc.getTaxonRemarks());
     } else {
       // a higher extracted taxon
       tax.setTaxonRank(rank.toString());

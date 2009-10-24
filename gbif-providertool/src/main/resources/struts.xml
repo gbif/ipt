@@ -93,7 +93,7 @@
         <global-results>
             <result name="resource-busy" type="redirect-action">
                 <param name="actionName">busy</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
             <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
             <result name="mainMenu" type="redirect-action">/index</result>
@@ -167,7 +167,7 @@
             </result>
             <result name="record404" type="redirect-action">
                 <param name="actionName">404</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
         </global-results>
         
@@ -186,38 +186,38 @@
             <result name="occ" type="redirect-action">
                 <param name="actionName">occSearch</param>
                 <param name="q">${q}</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="tax" type="redirect-action">
                 <param name="actionName">taxSearch</param>
                 <param name="q">${q}</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <!-- forwarding actions for all resource types. Allows easy linking without knowing the type of resource -->        
         <action name="resource" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
                 <param name="actionName">occResource</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="tax" type="redirect-action">
                 <param name="actionName">taxResource</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="meta" type="redirect-action">
                 <param name="actionName">metaResource</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <action name="detail" class="org.gbif.provider.webapp.action.portal.ResourceAction" method="forward">
             <result name="occ" type="redirect-action">
                 <param name="actionName">occDetail</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
                 <param name="guid">${guid}</param>
             </result>
             <result name="tax" type="redirect-action">
                 <param name="actionName">taxDetail</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
                 <param name="guid">${guid}</param>
             </result>
         </action>
@@ -483,11 +483,11 @@
             </result>
             <result name="resource-busy" type="redirect-action">
                 <param name="actionName">status</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
             <result name="error" type="redirect-action">resources</result>
         </global-results>
@@ -507,16 +507,16 @@
             <result name="input">/WEB-INF/pages/manage/metadata.ftl</result>
             <result name="occ" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="tax" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="meta" type="redirect-action">
                 <param name="actionName">creatorForm</param>
                 <param name="namespace">/manage/meta</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resources</param>
@@ -532,18 +532,18 @@
             <result name="input">/WEB-INF/pages/manage/sources.ftl</result>
             <result name="error" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <action name="updateSourceFile" class="org.gbif.provider.webapp.action.manage.SourceAction" method="updateFile">
             <result type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
 			<!-- added by tim -->
             <result name="delete" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <action name="editSource" class="org.gbif.provider.webapp.action.manage.SourceAction">
@@ -553,15 +553,15 @@
             <result name="input">/WEB-INF/pages/manage/sourceSqlForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="delete" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>
         <action name="editConnection" class="org.gbif.provider.webapp.action.manage.MetadataAction" method="connection">
@@ -571,11 +571,11 @@
             <result name="input">/WEB-INF/pages/manage/connectionForm.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">sources</param>
-                <param name="resourceId">${resource.id}</param>
+                <param name="resource_id">${resource.id}</param>
             </result>
         </action>        
         
@@ -593,15 +593,15 @@
             <result name="input">/WEB-INF/pages/manage/propertyMapping.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">mappings</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">mappings</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
             <result name="terms" type="redirect-action">
                 <param name="actionName">terMapping</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
                 <param name="tid">${tid}</param>
                 <param name="mid">${mid}</param>
             </result>
@@ -617,13 +617,13 @@
             <result name="input" type="freemarker">/WEB-INF/pages/manage/termMapping.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">${origin}</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
                 <param name="tid">${tid}</param>
                 <param name="mid">${mid}</param>
             </result>
             <result name="cancel" type="redirect-action">
                 <param name="actionName">${origin}</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
                 <param name="tid">${tid}</param>
                 <param name="mid">${mid}</param>
             </result>
@@ -635,13 +635,13 @@
         <action name="runImport" class="org.gbif.provider.webapp.action.manage.ImportAction" method="upload">
             <result type="redirect-action">
                 <param name="actionName">status</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
         </action>
         <action name="cancelUpload" class="org.gbif.provider.webapp.action.manage.ImportAction" method="cancel">
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
         </action>
         <action name="status" class="org.gbif.provider.webapp.action.manage.ImportAction" method="status">
@@ -649,7 +649,7 @@
             <result name="resource-ready" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="namespace">/</param>
-                <param name="resourceId">${resourceId}</param>
+                <param name="resource_id">${resource_id}</param>
             </result>
         </action>
         
@@ -672,12 +672,12 @@
             <result name="cancel" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="namespace">/manage</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
             <result name="error" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="namespace">/manage</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
         </global-results>
         
@@ -700,18 +700,18 @@
             <result name="success" type="redirect-action">
                 <param name="actionName">resource</param>
                 <param name="namespace">/manage</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
         </action>
         <action name="*" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" method="save">
             <result name="back" type="redirect-action">
                 <param name="actionName">${backPage}Form</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
             <result name="input" type="freemarker">/WEB-INF/pages/manage/meta/{1}.ftl</result>
             <result name="success" type="redirect-action">
                 <param name="actionName">${nextPage}Form</param>
-                <param name="resourceId">${#parameters.resourceId}</param>
+                <param name="resource_id">${#parameters.resource_id}</param>
             </result>
         </action>
 

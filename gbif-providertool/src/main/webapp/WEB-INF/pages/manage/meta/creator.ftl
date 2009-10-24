@@ -25,7 +25,7 @@
 	<div>
 		<@s.select id="languageSelect" key="eml.language" list="{'${eml.language!}'}" required="true" cssClass="text medium"/>
 	</div>
-	<@s.hidden name="resourceId" value="${resourceId?c}"/>
+	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="geocoverage"/>
 
 	<div class="newline">

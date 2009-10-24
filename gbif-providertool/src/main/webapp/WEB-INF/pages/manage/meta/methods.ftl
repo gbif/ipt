@@ -11,7 +11,7 @@
 <div class="break10"></div>
 <@s.form id="emlForm" action="methods" method="get" validate="false">
 <fieldset>
-	<@s.hidden name="resourceId" value="${resourceId}"/>
+	<@s.hidden name="resource_id" value="${resource_id}"/>
 
 	<@s.textarea key="eml.methods" required="false" cssClass="text xlarge slim"/>
 	<@s.textarea key="eml.samplingDescription" required="false" cssClass="text xlarge slim"/>

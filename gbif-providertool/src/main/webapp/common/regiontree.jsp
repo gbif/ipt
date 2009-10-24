@@ -13,11 +13,11 @@
 		idPrefix: "geonode",
 		fx: { height: "toggle", duration: 100 },
 		initAjax: {	url: '<c:url value="/ajax/regionTree.do"/>?id=<s:property value="region_id"/>',
-					data: {resourceId:<s:property value="resourceId"/>}
+					data: {resource_id:<s:property value="resource_id"/>}
 		},
 		onLazyRead: function(dtnode){
 			$.getJSON('<c:url value="/ajax/regionSubTree.do"/>',
-					{resourceId:<s:property value="resourceId"/>, id:dtnode.data.key},
+					{resource_id:<s:property value="resource_id"/>, id:dtnode.data.key},
 			        function(data){
 						dtnode.setLazyNodeStatus(DTNodeStatus_Ok);
 						dtnode.append(data);
@@ -26,7 +26,7 @@
 		},			
 		onActivate: function(dtnode) {
 			var action = '<c:url value="/occRegion.html"/>';
-			var url = action + '?resourceId=<s:property value="resourceId"/>&id='+dtnode.data.key;
+			var url = action + '?resource_id=<s:property value="resource_id"/>&id='+dtnode.data.key;
 			window.location.href=url;
 		}
 	});

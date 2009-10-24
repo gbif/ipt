@@ -11,7 +11,7 @@
 <div class="break10"></div>
 
 <@s.form id="sqlSourceForm" action="saveSource" method="post">
-  <@s.hidden key="resourceId"/>
+  <@s.hidden key="resource_id"/>
   <@s.hidden key="sid"/>
   <@s.textfield key="source.name" required="true" cssClass="text large"/>
   <@s.textarea key="source.sql" required="true" cssClass="text xlarge"/>

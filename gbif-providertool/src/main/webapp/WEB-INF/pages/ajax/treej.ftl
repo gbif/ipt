@@ -15,7 +15,7 @@
         expand: true,
         children:
 		<@s.action name="${treeType}Tree" executeResult="true">
-			<@s.param name="resourceId" value="${resourceId?c}"/>
+			<@s.param name="resource_id" value="${resource_id?c}"/>
 			<@s.param name="treeType" value="${treeType}"/>
 			<@s.param name="focus" value="${focus?c}"/>
 			<@s.param name="parents" value="${parents}"/>

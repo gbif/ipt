@@ -3,7 +3,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <s:url id="resourcePortal" action="resource" namespace="/" includeParams="none">
-	<s:param name="resourceId" value="resourceId" />
+	<s:param name="resource_id" value="resource_id" />
 </s:url>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">

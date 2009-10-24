@@ -34,7 +34,7 @@
 
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 <fieldset>
-	<@s.hidden name="resourceId" value="${resourceId?c}"/>
+	<@s.hidden name="resource_id" value="${resource_id?c}"/>
 	<@s.hidden name="nextPage" value="taxcoverage"/>
 	<@s.hidden id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
 	<@s.hidden id="maxx" key="eml.geographicCoverage.boundingCoordinates.max.longitude" />
