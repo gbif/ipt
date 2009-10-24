@@ -21,7 +21,7 @@
 	<ul class="actionmenu">
 	<#list types as t>
 		<li>
-			<a href="?resource_id=${resource_id}&zoom=true&type=${t.ordinal()}">${t.name()}</a>
+			<a href="?resourceId=${resourceId}&zoom=true&type=${t.ordinal()}">${t.name()}</a>
 		</li>
 	</#list>
 	</ul>
@@ -33,9 +33,9 @@
 	    <@display.column property="label" sortable=true titleKey="stats.category"/>
 	    <#if recordAction??>
 		  <#if (drow.id)??>
-	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}&type=${type}" media="html" paramId="id" paramProperty="id"/>
+	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resourceId=${resourceId?c}&type=${type}" media="html" paramId="id" paramProperty="id"/>
 	      <#else>
-	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resource_id=${resource_id?c}&type=${type}" media="html" paramId="category" paramProperty="label"/>
+	    	<@display.column property="count" sortable=true titleKey="stats.count" href="${recordAction}.html?resourceId=${resourceId?c}&type=${type}" media="html" paramId="category" paramProperty="label"/>
 		  </#if>
 		<#else>
 	    	<@display.column property="count" sortable=true titleKey="stats.count"/>

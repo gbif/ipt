@@ -7,19 +7,19 @@
 	<script>
 	function updateByTaxon(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByTaxon.html"/>';
-		var params = { resource_id: ${resource_id}, type: $("#rank").val() }; 
+		var params = { resourceId: ${resourceId}, type: $("#rank").val() }; 
 		var target = '#imgByTaxon';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByStatus(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByStatus.html"/>';
-		var params = { resource_id: ${resource_id}, type: $("#statusClass").val() }; 
+		var params = { resourceId: ${resourceId}, type: $("#statusClass").val() }; 
 		var target = '#imgByStatus';	
 		ajaxHtmlUpdate(url, target, params);
 	};
 	function updateByRank(){
 		var url = '<@s.url value="/ajax/taxResourceStatsByRank.html"/>';
-		var params = { resource_id: ${resource_id} }; 
+		var params = { resourceId: ${resourceId} }; 
 		var target = '#imgByRank';	
 		ajaxHtmlUpdate(url, target, params);
 	};
@@ -43,7 +43,7 @@
 <div class="horizontal_dotted_line_large"></div>
 <fieldset>
 	<div id="metadata">
-		<img class="right" src="${cfg.getResourceLogoUrl(resource_id)}" />
+		<img class="right" src="${cfg.getResourceLogoUrl(resourceId)}" />
 		<span><@s.property value="resource.description"/></span>
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
@@ -55,10 +55,10 @@
 				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
 			</li>
 			<li>
-				<a href="metaResource.html?resource_id=${resource_id}">Full Metadata</a>
+				<a href="metaResource.html?resourceId=${resourceId}">Full Metadata</a>
 			</li>
 			<li>
-				<a href="annotations.html?resource_id=${resource_id}">Annotations</a>
+				<a href="annotations.html?resourceId=${resourceId}">Annotations</a>
 			</li>
 		</ul>
 		<div class="break35"></div>

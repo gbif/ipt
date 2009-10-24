@@ -11,11 +11,11 @@
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   <fieldset>
-    <@s.hidden name="resource_id" value="${(resource.id)!}"/>
+    <@s.hidden name="resourceId" value="${(resource.id)!}"/>
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
     <@s.hidden name="guid" value="${(resource.guid)!}"/>
-    <#if resource_id??>
-		<img class="rightf" src="${cfg.getResourceLogoUrl(resource_id)}" />
+    <#if resourceId??>
+		<img class="rightf" src="${cfg.getResourceLogoUrl(resourceId)}" />
 	</#if>
 	<div>
 		<div class="leftLarge-foo">
