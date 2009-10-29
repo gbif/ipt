@@ -1,11 +1,11 @@
 <#assign display=JspTaglibs["http://displaytag.sf.net"] />
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <head>
-    <title>Resource Annotations</title>
+    <title><@s.text name='annotationslist.title'/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="${resourceType}"/>
-    <meta name="heading" content="Resource Annotations"/>
+    <meta name="heading" content="<@s.text name='annotationslist.heading'/>"/>
 	<script type="text/javascript">  
 		function showAnnotation(anchor){
 			var url = '<@s.url value="/ajax/annotation.html"/>';

@@ -1,12 +1,12 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="validation.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
     
     <script>
 		function confirmReset() {   
-		    var msg = "Are you sure you want to reset this resource? This will remove all uploaded data and files and clear the entire cache.";
+		    var msg = "<@s.text name="validation.confirm"/>";
 		    ans = confirm(msg);
 		    if (ans) {
 		        return true;
@@ -15,21 +15,17 @@
 		    }
 		}
     </script>
-
 </head>
-
 
 <@s.form action="validation" method="get">
   <@s.hidden key="resourceId"/>
   <fieldset>
-    <legend><@s.text name="occResourceOverview.validation"/></legend>
+    <legend><@s.text name="validation.legend"/></legend>
     <#if resource.hasData()>
-		<div><@s.a href="%{logsUrl}">Upload error logs</@s.a></div>
+		<div><@s.a href="%{logsUrl}"><@s.text name="validation.errorlogs"/></@s.a></div>
 	    <@s.submit cssClass="button" key="button.validate"/>
     <#else>
-    	<p class="reminder">Please upload data first</p>
+    	<p class="reminder"><@s.text name="validation.errorlogs"/></p>
     </#if>
   </fieldset>
 </@s.form>
-
-

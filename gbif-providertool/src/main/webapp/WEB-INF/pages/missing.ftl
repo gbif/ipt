@@ -1,13 +1,12 @@
 <head>
-    <title>Missing Feature</title>
+    <title><@s.text name='missing.title'/></title>
     <meta name="menu" content="MainMenu"/>
 </head>
 
-<h1>Missing Feature</h1>
+<h1><@s.text name='missing.title'/></h1>
 
 <div class="separator"></div>
 
 <p>
-    This feature is under construction.
-    Please try again in the next version
+    <@s.text name='missing.message'/>
 </p>

@@ -1,7 +1,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <div id="tagcloud">
 	<s:if test="tagcloud">
-	<label>Keyword Cloud</label>
+	<label><s:text name="tag.cloud"/></label>
 	<div class="tagCloud">
       <s:iterator value="tagcloud">
 		<s:url id="tagLink" action="search" namespace="/" includeParams="none">

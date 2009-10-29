@@ -3,11 +3,11 @@
     <meta name="resource" content="${resource.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
 	<meta name="submenu" content="manage_resource"/>    
-	<meta name="heading" content="Basic Metadata"/>    
+	<meta name="heading" content="<@s.text name='metadata.heading'/>"/>    
 </head>
 
 
-<p class="explMt">Please describe the dataset you want to publish as a whole</p>
+<p class="explMt"><@s.text name='metadata.describe'/></p>
 
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   <fieldset>

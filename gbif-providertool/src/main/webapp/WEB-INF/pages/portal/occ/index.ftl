@@ -70,28 +70,28 @@
 		<span>${resource.description}</span>
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
-		<label>${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}</label>
+		<label>${(resource.lastUpload.recordsUploaded)!0} <@s.text name='occ.index.recordsloaded'/> ${(resource.lastUpload.executionDate)!}</label>
 		</p>
 		<ul class="minimenu">
 			<li class="last">
 				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
 			</li>
 			<li>
-				<a href="metaResource.html?resourceId=${resourceId}">Full Metadata</a>
+				<a href="metaResource.html?resourceId=${resourceId}"><@s.text name='occ.index.fullmetadata'/></a>
 			</li>
 			<li>
-				<a href="annotations.html?resourceId=${resourceId}">Annotations</a>
+				<a href="annotations.html?resourceId=${resourceId}"><@s.text name='occ.index.annotations'/></a>
 			</li>
 		</ul>
 		<div class="break35"></div>
 		<div id="services" style="display:none">
 			<table class="lefthead">
 				<tr>
-					<th>Contact</th>
+					<th><@s.text name='occ.index.contact'/></th>
 					<td>${resource.contactName}"/> <#if resource.contactEmail??>&lt;${resource.contactEmail}&gt;</#if></td>
 				</tr>
 				<tr>
-					<th>Homepage</th>
+					<th><@s.text name='occ.index.homepage'/></th>
 					<td><a href="${resource.link!}">${resource.link!}</a></td>
 				</tr>
 				<tr>

@@ -1,14 +1,14 @@
 <head>
-    <title>${vocabulary.title} Vocabulary</title>
+    <title><@s.text name='vocabulary.title'/> ${vocabulary.title}</title>
 	<meta name="decorator" content="fullsize"/>    
-    <meta name="heading" content="${vocabulary.title} Vocabulary"/>
+    <meta name="heading" content="<@s.text name='vocabulary.title'/> ${vocabulary.title}"/>
     <meta name="menu" content="AdminMenu"/>
 </head>
 
-<p>To participate in the discussion and definition of this vocabulary please visit:<br/>
-${vocabulary.link!"<em>not available</em>"}
+<p><@s.text name='vocabulary.instructions'/>
+${vocabulary.link!"<em><@s.text name='vocabulary.notavailable'/></em>"}
 </p>
-<p>Download vocabulary as <a href="vocabularyExport.xml?id=${vocabulary.id?c}">thesaurus xml</a></p>
+<p><@s.text name='vocabulary.downloadas'/> <a href="vocabularyExport.xml?id=${vocabulary.id?c}"><@s.text name='vocabulary.xml'/></a></p>
 
 <table class="vocabularyListTable">
 	<tr>

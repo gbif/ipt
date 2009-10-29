@@ -1,5 +1,5 @@
 <head>
-    <title>${concept.vocabulary.title} Vocabulary</title>
+    <title><@s.text name='concept.title'/> ${concept.vocabulary.title}</title>
     <meta name="heading" content="${concept.identifier}"/>
     <meta name="menu" content="AdminMenu"/>
 </head>

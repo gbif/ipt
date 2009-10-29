@@ -1,7 +1,7 @@
 <#include "/WEB-INF/pages/inc/tableMacros.ftl">  
 
 <head>
-    <title><@s.text name="resource.title"/></title>
+    <title><@s.text name="meta.resource.title"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="meta"/>
@@ -16,7 +16,7 @@
 <img class="rightImage_nm" src="${cfg.getResourceLogoUrl(resourceId)}" />
 <table style="width: 400px;">	
  <tr>
-	<th>GUID</th>
+	<th><@s.text name="meta.resource.guid"/></th>
 	<td><a href="${cfg.getResourceUrl(resource.guid)}">${resource.guid}</a></td>
  </tr>
  <tr>
@@ -24,15 +24,15 @@
 	<td><a href="${cfg.getEmlUrl(resource.guid)}">EML</a></td>
  </tr>
  <tr>
-	<th>Annotations</th>
-	<td><a href="annotations.html?resourceId=${resourceId}">Annotations</a></td>
+	<th><@s.text name="meta.resource.annotatations"/></th>
+	<td><a href="annotations.html?resourceId=${resourceId}"><@s.text name="meta.resource.annotations"/></a></td>
  </tr>
 </table>
 </div>
 
 <div id="basics">
 	<fieldset>
-		<h2>Basics</h2>
+		<h2><@s.text name="meta.resource.basics"/></h2>
 		<table>	
 			<@trow label="resource.title" val=resource.title!/>  
 			<@trow label="resource.status" val=resource.status!/>  
@@ -45,7 +45,7 @@
 
 <div>
 	<fieldset>
-		<h2>Resource Creator</h2>
+		<h2><@s.text name="meta.resource.creator"/></h2>
 		<table>
 			<@trow label="eml.resourceCreator.firstName" val=eml.resourceCreator().firstName!/>  
 			<@trow label="eml.resourceCreator.lastName" val=eml.resourceCreator().lastName!/>  
@@ -66,7 +66,7 @@
 
 <div>
 	<fieldset>
-		<h2>Taxonomic Coverage</h2>
+		<h2><@s.text name="meta.resource.taxoncoverage"/></h2>
 		<table>
 			<@trow label="eml.taxonomicCoverageDescription" val=eml.taxonomicCoverageDescription!/>  
 			 <tr>
@@ -83,7 +83,7 @@
 
 <div>
 	<fieldset>
-		<h2>Spatial Coverage</h2>
+		<h2><@s.text name="meta.resource.spatialcoverage"/></h2>
 		<table>
 			<@trow label="eml.geographicCoverage.boundingCoordinates" val=(eml.getGeographicCoverage().boundingCoordinates.toStringShort(3))!/>  
 			<@trow label="eml.geographicCoverage.description" val=eml.getGeographicCoverage().description!/>  
@@ -94,7 +94,7 @@
 
 <div>
 	<fieldset>
-		<h2>Temporal Coverage</h2>
+		<h2><@s.text name="meta.resource.temporalcoverage"/></h2>
 		<table>
 			<@trow label="eml.temporalCoverage.start" val=(eml.getTemporalCoverage().start?date?string)!/>  
 			<@trow label="eml.temporalCoverage.end" val=(eml.getTemporalCoverage().end?date?string)!/>
@@ -108,7 +108,7 @@
 
 <div>
 	<fieldset>
-		<h2>Keywords</h2>
+		<h2><@s.text name="meta.resource.keywords"/></h2>
 		<table>
 			 <tr>
 			  <th><@s.text name="eml.keywords"/></th>
@@ -136,7 +136,7 @@
 
 <div>
 	<fieldset>
-		<h2>Methods</h2>
+		<h2><@s.text name="meta.resource.methods"/></h2>
 		<table>
 			<@trow label="eml.methods" val=eml.methods!/>  
 			<@trow label="eml.samplingDescription" val=eml.samplingDescription!/>  
@@ -148,7 +148,7 @@
 
 <div>
 	<fieldset>
-		<h2>Rights</h2>
+		<h2><@s.text name="meta.resource.rights"/></h2>
 		<table>
 			<@trow label="eml.purpose" val=eml.purpose!/>  
 			<@trow label="eml.maintenance" val=eml.maintenance!/>  

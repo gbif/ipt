@@ -1,5 +1,5 @@
 <head>
-    <title>Metadata Repository</title>
+    <title><@s.text name='meta.resourcelist.title'/></title>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="meta"/>
     <meta name="heading" content="<@s.text name='resourceClass.${resourceType}'/>"/>
@@ -52,7 +52,7 @@
 
 <div id="tagindex">
 
-  <h2>Keyword Index</h2>	
+  <h2><@s.text name='meta.resourcelist.keywordindex'/></h2>	
   <ul class="indexmenu">
 	<#assign fullAlphabet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']>
     <#list fullAlphabet as c>

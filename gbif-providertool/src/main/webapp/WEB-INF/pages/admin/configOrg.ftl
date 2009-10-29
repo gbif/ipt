@@ -101,7 +101,7 @@
 			$(".organisationKey").val("");
 			$(".external").val("");
 			$("#orgPassword").val("").attr("readonly","readonly");
-			alert("When you register the IPT, a new organisation will also be created and your selected GBIF node will be asked for endorsement.");
+			alert("<@s.text name='configorg.alert'/>");
 			showWithoutKey();
 		});
 	  </#if>
@@ -119,7 +119,7 @@
 	  </#if>
 	  <#-- execute always -->
 		$("#btnRegister").click(function(e) {
-		    if (! confirm("Are you sure you want to register this organisation with GBIF?")) {
+		    if (! confirm("<@s.text name='configorg.confirm'/>")) {
 				e.preventDefault();
 		    }
 		});
@@ -146,11 +146,7 @@
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
 
 <p>
-Please select your registered organisation (the title form unlocks after all organisations have been downloaded from the GBIF registry), 
-or enter a new organisation in case you dont find yourself.
-Please enter the contact in charge of maintaining installations. 
-This contact will receive a password required for further configurations.
-If you have already selected an organisation but you want to enter a new one, please click the &quot;clear form&quot; link at the bottom.
+<@s.text name='configorg.instructions'/>
 </p>
 
 <@s.form id="providerCfg" method="post">
@@ -197,4 +193,3 @@ If you have already selected an organisation but you want to enter a new one, pl
   </fieldset>
 
 </@s.form>
-

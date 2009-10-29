@@ -1,12 +1,12 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="manage.transformations.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
-	<meta name="heading" content="<@s.text name='trans.heading'/>"/>       
+	<meta name="heading" content="<@s.text name='manage.transformations.heading'/>"/>       
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>    
 <script>
 function sorry(){
-	alert('Sorry, you cannot add arbitrary transformations for now. Please add term translations during the property mapping step.');
+	alert('<@s.text name='manage.transformations.alert'/>');
 	return false;
 };
 </script>	
@@ -14,13 +14,10 @@ function sorry(){
 </head>
 
 <p class="explMt">
-Transformations will allow you to adjust your data according to certain patterns found frequently in data structures before it gets imported into the IPT cache.
-Each transformation results in a new view on your source data that can be used later on to define the final mappings to the IPT data model.<br/>
-Common data formats are preconfigured, so if you happen to have your data in these formats select the matching preconfiguration.
-Otherwise you can always configure you own set of transformations. 
+<@s.text name='manage.transformations.explanation'/>
 </p>
 
-<h2>Your Transformation Views</h2>
+<h2><@s.text name='manage.transformations.heading'/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
 	<#list transformations as t>
@@ -72,24 +69,24 @@ function updateImage(){
 $('transformationType').observe('change', updateImage);
 </script>	
 
-
-
 <#if (transformations?size<1)>
-<h2>Common formats</h2>
+<h2><@s.text name='manage.transformations.common'/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
-	<p>Only visible if no transformation has yet been configured...</p>
-	<p>If your data matches one of the following formats, select the mathing one to load a set of preconfigured transformations.
-		You will need to configure each of them in the next steps.
+	<p>
+	<@s.text name='manage.transformations.onlyvisible'/>
+	</p>
+	<p>
+	<@s.text name='manage.transformations.ifmatches'/>
 	</p>
 	<div class="break2">
-		<h2 class="modifiedh2">Denormalised with explicit hierarchy</h2>
-		<p>Denormalised checklist with explicit taxonomic hierarchy in several columns</p>
+		<h2 class="modifiedh2"><@s.text name='manage.transformations.denormalisedexplicit'/></h2>
+		<p><@s.text name='manage.transformations.denormalisedexplicit.explanation'/></p>
 		<img class="transformationImage" src="<@s.url value='/images/transformations/denorm_explicit.png'/>"/>
 	</div>
 	<div class="minibreak">
-		<h2 class="modifiedh2">Denormalised with implied hierarchy</h2>
-		<p>Denormalised checklist with implied taxonomic hierarchy hidden in sequence of records</p>
+		<h2 class="modifiedh2"><@s.text name='manage.transformations.denormalisedimplied'/></h2>
+		<p><@s.text name='manage.transformations.denormalisedimplied.explanation'/></p>
 		<img class="transformationImage" src="<@s.url value='/images/transformations/denorm_implied.png'/>"/>
 	</div>
 	<div class="break">

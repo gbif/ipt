@@ -1,19 +1,18 @@
 <head>
-    <title><@s.text name="resourceOverview.title"/></title>
+    <title><@s.text name="uploadstatus.title"/></title>
     <meta name="resource" content="<@s.property value="resource.title"/>"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<@s.head theme="ajax" debug="false"/>
 </head>
 
-<h1>Upload in Progress</h1>
-<p class="reminder">This resource is currently being updated and not available. Please wait until the upload is finished or cancel it.</p>
+<h1><@s.text name="uploadstatus.inprogress"/></h1>
+<p class="reminder"><@s.text name="uploadstatus.reminder"/></p>
 
 <@s.url id="statusUrl" value="/ajax/resourceStatus.html?resourceId=${Parameters.resourceId}"/>
 <@s.div id="status" theme="ajax" href="%{statusUrl}" updateFreq="3000" showLoadingText="false" 
 	startTimerListenTopics="/startTimer" stopTimerListenTopics="/stopTimer" executeScripts="true"
-	errorText="Unable to retrieve resource status" >
+	errorText="<@s.text name="uploadstatus.error"/>" >
 </@s.div>
 
 <br/>
-

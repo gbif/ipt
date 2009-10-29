@@ -1,5 +1,5 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="mappings.title"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
@@ -9,20 +9,15 @@
 <div class="break10"></div>
 <#-- See if sources exist -->
 <#if (sources?size<1)>
-	<p class="reminder">There are no data sources configured.<br/>
-		Please <a href="<@s.url action="sources"/>">define at least one source</a> first.
+	<p class="reminder"><@s.text name='mappings.nosources'/> <a href="<@s.url action="sources"/>"><@s.text name='mappings.define'/></a> <@s.text name='mappings.atleastone'/>
 	</p>
 <#else>
 	<p class="explMt">
-		Data in the IPT is organised along the <a href="#star">star schema</a>. 
-		There is a core, fixed table based on Darwin Core terms that you need to map your data to.
-		And there are a number of extension tables that you can optionally configure and the IPT administrator can define.
-		Each extension can hold multiple records for a single core record, e.g. you can publish many images for a species or occurrence. 
+		<@s.text name='mappings.explanation.1'/> <a href="#star"><@s.text name='mappings.starschema'/></a>. <@s.text name='mappings.explanation.2'/>
 	</p>
 </#if>
 			
-
-<h2>Your Existing Mappings</h2>
+<h2><@s.text name='mappings.existing'/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
 	<div>
@@ -32,13 +27,13 @@
 		<div class="left">
 			<strong>${coreMapping.extension.name}</strong>
 	<#if coreMapping.source??> 
-			<span>${coreMapping.propertyMappings?size} properties mapped to source <i>${coreMapping.source.name}</i></span>
+			<span>${coreMapping.propertyMappings?size} <@s.text name='mappings.mapped'/> <i>${coreMapping.source.name}</i></span>
 		</div>
 		<div class="right">
 			<@s.submit cssClass="button right" key="button.edit" />
 		</div>
 	<#else>
-			<span>&nbsp;&nbsp;&nbsp;Assign source: </span>
+			<span>&nbsp;&nbsp;&nbsp;<@s.text name='mappings.assign'/></span>
 		</div>
 		<div class="left">
 		 	<@s.select key="mappings.sources" name="sid" emptyOption="false" list="sources" listKey="id" listValue="name" theme="simple"/>
@@ -58,7 +53,7 @@
 	   <@s.hidden key="mid" value="${id}"/>
 		<div class="left">
 			<strong>${extension.name}</strong>
-			<span>${propertyMappings?size} properties mapped to source <i>${source.name}</i></span>
+			<span>${propertyMappings?size} <@s.text name='mappings.mapped'/> <i>${source.name}</i></span>
 		</div>
 		<div class="right">
 			<@s.submit cssClass="button right" key="button.edit" />
@@ -69,7 +64,7 @@
 </fieldset>
 
 <#if (extensions?size>0)>
-<h2>Add New Mapping</h2>
+<h2><@s.text name='mappings.addnew'/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 <fieldset>
 	<div>
@@ -96,9 +91,8 @@
 
 <h2><@s.text name="dataResource.cache"/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
-<p class="explMt">The IPT caches all data being served. You can update the cache at any time and start a data import from your sources
-based on the transformations and mappings you have configured. 
-Depending upon the amount of data this process may take a long time during which this resource is blocked. 
+<p class="explMt">
+<@s.text name='mappings.explanation.cache'/> 
 </p>
 <fieldset style="padding-top:0px;">
 <div>
@@ -139,7 +133,7 @@ Depending upon the amount of data this process may take a long time during which
 	  <@s.submit cssClass="button" key="button.import" />
 	</@s.form>
 <#else>
-	<p class="reminder">Please finalize at least the core mapping before you importing data</p>
+	<p class="reminder"><@s.text name='mappings.reminder'/></p>
 </#if>
 </div>
     
@@ -147,7 +141,7 @@ Depending upon the amount of data this process may take a long time during which
 
 
 
-<h2>Darwin Core Star Schema</h2>
+<h2><@s.text name='mappings.dwc'/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 
 <a name="star" />

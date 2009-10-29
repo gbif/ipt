@@ -1,13 +1,12 @@
 <head>
-    <title>Resource busy</title>
+    <title><@s.text name='busy.title'/></title>
     <meta name="menu" content="ExplorerMenu"/>
 </head>
 
-<h1>Resource busy</h1>
+<h1><@s.text name='busy.title'/></h1>
 
 <div class="separator"></div>
 
 <p class="reminder">
-    The resource you are trying to access is being updated right now.
-    Please try again later.
+    <@s.text name='busy.message'/>
 </p>

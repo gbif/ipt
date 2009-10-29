@@ -13,18 +13,18 @@
 <div id="topmenu" class="right">
 	<ul class="sepmenu">
 	  <c:if test="${pageContext.request.remoteUser != null}">
-	  	<li><s:text name="user.status"/> <a href='<s:url value="/editProfile.html"/>'>${pageContext.request.remoteUser}</a></li>
+	  	<li><s:text name="user.status"/> =-= <a href='<s:url value="/editProfile.html"/>'>${pageContext.request.remoteUser}</a></li>
 	  	<li><a href='<s:url value="/logout.jsp"/>'><s:text name="user.logout"/></a></li>
 	  </c:if>
 	</ul>
 </div>
 <div id="switchLocale" style="display:none" class="right">
   <ul class="plain_m">  
-	<li><a href="?locale=en"><img src="<c:url value='/images/flags/flag_en.gif'/>"/></a></li>
+	<li><a href="?request_locale=en"><img src="<c:url value='/images/flags/flag_en.gif'/>"/></a></li>
+	<li><a href="?request_locale=es"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
 	<!-- 
-	<li><a href="?locale=es"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
-	<li><a href="?locale=de"><img src="<c:url value='/images/flags/flag_de.gif'/>"/></a></li>
-	<li><a href="?locale=fr"><img src="<c:url value='/images/flags/flag_fr.gif'/>"/></a></li>
+	<li><a href="?request_locale=de"><img src="<c:url value='/images/flags/flag_de.gif'/>"/></a></li>
+	<li><a href="?request_locale=fr"><img src="<c:url value='/images/flags/flag_fr.gif'/>"/></a></li>
 	 -->
   </ul>
 	

@@ -6,9 +6,9 @@
 </head>
 	
 
-<h1>Your Search: ${q}</h1>  
+<h1><@s.text name='occsearch.yoursearch'/> ${q}</h1>  
 <div class="horizontal_dotted_line_large_foo"></div>
 
 <div class="break55"></div>
 
-<#include "/WEB-INF/pages/inc/occurrenceList.ftl">  
+<#include "/WEB-INF/pages/inc/occurrenceList.ftl">

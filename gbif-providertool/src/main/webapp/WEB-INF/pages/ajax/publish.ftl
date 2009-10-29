@@ -16,8 +16,8 @@
 		</@s.form>
 	  </#if>
        <div id="registryDetails" style="display:none" class="${resource.status}">
-       		<h2>Registered Data</h2>
-       		<div id="registryData">None</div>
+       		<h2><@s.text name='publish.registered'/></h2>
+       		<div id="registryData"><@s.text name='publish.none'/></div>
        </div>	     
 	</div>
    <#if resource.isRegistered()>

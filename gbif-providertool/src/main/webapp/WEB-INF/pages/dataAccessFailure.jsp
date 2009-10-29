@@ -1,9 +1,9 @@
 <%@ include file="/common/taglibs.jsp" %>
 
-<title>Data Access Error</title>
+<title><s:text name="dataaccessfailure.title"/></title>
 
 <head>
-    <meta name="heading" content="Data Access Failure"/>
+    <meta name="heading" content="<s:text name="dataaccessfailure.title"/>"/>
     <meta name="menu" content="AdminMenu"/>
 </head>
 

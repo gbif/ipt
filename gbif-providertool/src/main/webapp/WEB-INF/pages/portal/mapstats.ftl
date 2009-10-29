@@ -2,11 +2,11 @@
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 
 <head>
-    <title><@s.text name="occResourceOverview.title"/> Statistics</title>
+    <title><@s.text name="mapstats.title"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
-	<meta name="heading" content="<@s.text name='mapStats.heading'/>"/>          
+	<meta name="heading" content="<@s.text name='mapstats.heading'/>"/>          
 	<script>
 	function updateMap(area){
 		var params = {resourceId:${resourceId}, zoom:'true', area:area }; 

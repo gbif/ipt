@@ -1,9 +1,9 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="propertymapping.title"/></title>
     <meta name="resource" content="${view.resource.title}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-    <meta name="heading" content="Property Mappings"/>
+    <meta name="heading" content="<@s.text name='propertymapping.heading'/>"/>
     
 	<script>
 	var previewLoaded=0;
@@ -21,7 +21,7 @@
 	function confirmTermMapping(idx, tid){
 		$("#mappings_idx").val(idx);
 		if(isEmpty('#sourceColumn_'+idx)){
-			alert('You need to select a source column first');
+			alert('<@s.text name='propertyheading.alert'/>');
 			return false;
 		}
 		return true;
@@ -94,8 +94,7 @@
 
 <#if !columnOptions??>
 	<#-- import source doesnt work -->
-	<p class="reminder">There is no working import source configured. <br/>
-		Please check your <a href="<@s.url action="sources"/>">sources</a>.
+	<p class="reminder"><@s.text name='propertymapping.nosource'/> <a href="<@s.url action="sources"/>"><@s.text name='propertymapping.sources'/></a>.
 	</p>
 <#else>
 
@@ -128,7 +127,7 @@
   </div>
 
   <div class="block2col" id="availableProperties">
-	<h2>Available Properties</h2>
+	<h2><@s.text name='propertymapping.available'/></h2>
 	<div id="properties">
   	<#list availProperties?keys as group>
   	  <div class="propGroup">
@@ -155,14 +154,12 @@
 
   <div class="break"></div>
   <div id="sourcepreview">
-	Retrieving source data ...
+	<@s.text name='propertymapping.retrieving'/>
   </div>	
 
   <div class="break"></div>	
-	<h2>Property Mappings</h2>
-	<p>For a single property that you want to map, select a column from your source or enter a fixed value into the text field.
-	   If the property has a vocabulary associated you can also select a term from the dropdown.<br/>
-	   To add more properties please select them from the available properties just above (clicking the arrow opens menu).
+	<h2><@s.text name='propertymapping.mappings'/></h2>
+	<p><@s.text name='propertymapping.instructions'/>
 	</p>
 	
 	<div id="mappings">
