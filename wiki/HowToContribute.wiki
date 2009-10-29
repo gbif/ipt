@@ -1,4 +1,3 @@
-#summary How to contribute
 #sidebar TableOfContents
 
 = Introduction =
@@ -11,7 +10,28 @@ We are always keen on getting a better documentation. The easiest and quickest w
 If you feel there is a lot to modify, please get in touch with us to get write access to subversion.
 
 == Translations ==
-The IPT and the documentation both need internationalisation. In the case of the IPT all text is kept in so called property files, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources.properties original] is in english and if you are able and willing to translate it into another language, please get in touch with us!
+The IPT and the documentation both need internationalisation. In the case of the IPT all text is kept in so called property files, one for each language. The [http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources.properties original] is in english and if you are able and willing to translate it into another language, here's how...
+
+To add new internationalization follow these steps:
+  * Download Attesoro from http://attesoro.org/download.html
+  * Download the default properties file ApplicationResources.properties from the gbif-providertoolkit project site (http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources.properties).
+  * In the same location as the default properties in the previous step, download the properties file from the gbif-providertoolkt project site for the language to which you wish to translate. For example, for the French properties file, download http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool/src/main/resources/ApplicationResources-fr.properties.
+  * Open the Attesoro jar file (e.g., attesoro_1_8.jar). It is an executable jar file that will run as an application if you have Java installed on your system. Otherwise you will have to install Java and then run the Attesoro jar file.
+  * In Attesoro, select the File->Open menu item and open the ApplicationResources.properties file downloaded from the gbif-providertoolkit project site in a previous step, above. If you have done all of the previous steps correctly you should see a screen such as the following:
+
+http://gbif-providertoolkit.googlecode.com/files/Attesoro-fr.png
+
+The panel at the upper left contains the name of the default properties file and, beneath it, any language-specific property files in the same location (files that follow the convention {propertyfilename}-lc.properties, where lc is the two-letter language code). Select a language from the list to see and edit properties in that language.
+
+The panel in the lower left contains the list of properties in the default properties file. Properties rendered in blue on the list have a default value, but no corresponding value in the selected language. Select a property from the list to view and edit the value and the comment for that property in the selected language.
+
+The panel in the upper right contains the value of the property. In the upper uneditable part of the panel following the label "Default Text:" is the value of the property in the default properties file. The text box below the label "Translated text:" is either empty or it contains the value of the property in the selected language properties file. The checkbox labeled "Use default" shows whether the property exists or not in that language properties file. Enter or edit the value of the property in the text box.
+
+The panel in the lower right is similar in function to the value panel in the upper right, except that the value there is for the comment about the selected property.
+
+To fully translate the properties file, enter or edit the translated text and (optionally) the comment for each property on the list for the selected language. When finished, select the File->Save menu to overwrite the original property file for the language you are translating. When you feel that you have a final product, either add the contents of the ApplicationResources-{lc}.properties file to the wiki page for that language, create a new one if it doesn't exist, or send it to a project owner who can add it for you. To add or change wiki page content you must have be a project member with EditWiki privileges. You can request to become a member by sending a request to people on the "Project owners:" list at http://code.google.com/p/gbif-providertoolkit/.
+
+
 
 == Source Code ==
 Java or html/jquery developers are very welcome to contribute. See KeyTechnologies for the most important frameworks we use.
