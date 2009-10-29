@@ -22,7 +22,6 @@
   <ul class="plain_m">  
 	<li><a href="?request_locale=en"><img src="<c:url value='/images/flags/flag_en.gif'/>"/></a></li>
 	<li><a href="?request_locale=es"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
-	<li><a href="?request_locale=es"><img src="<c:url value='/images/flags/flag_es.gif'/>"/></a></li>
 	<!-- 
 	<li><a href="?request_locale=de"><img src="<c:url value='/images/flags/flag_de.gif'/>"/></a></li>
 	<li><a href="?request_locale=fr"><img src="<c:url value='/images/flags/flag_fr.gif'/>"/></a></li>
