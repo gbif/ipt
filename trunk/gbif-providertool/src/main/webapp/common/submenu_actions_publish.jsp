@@ -12,7 +12,7 @@ var params = {
 	dataType: 'html',
 	error: function (XMLHttpRequest, textStatus, errorThrown) {
 		$("div.loading").hide();
-		alert("There has been an publishing error.\nPlease try again later.\n\nReason:"+textStatus);
+		alert("<s:text name="publish.error"/>"+textStatus);
 		//console.debug(errorThrown);
 		//console.debug(XMLHttpRequest);
 		},
@@ -45,9 +45,9 @@ $(document).ready(function(){
 });
 </script>
 <div class="loading" style="display:none">
-  Publishing <img src='<s:url value="/images/ajax-loader.gif"/>'/>
+  <s:text name="publish.publishing"/> <img src='<s:url value="/images/ajax-loader.gif"/>'/>
 </div>
 <div id="publish">
- <p>loading status...</p>
+ <p><s:text name="publish.loadstatus"/></p>
 </div>
 </s:if>

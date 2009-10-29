@@ -1,14 +1,14 @@
 <#assign display=JspTaglibs["http://displaytag.sf.net"] />
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 <head>
-    <title><@s.text name="occResourceOverview.title"/> Statistics</title>
+    <title><@s.text name="stats.title"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="${resourceType}"/>
 </head>
 
 
-<h1>Chart Statistics</h1>
+<h1><@s.text name='stats.chartstats'/></h1>
 <div class="horizontal_dotted_line_large_foo"></div>
 <div class="break20"></div>
 

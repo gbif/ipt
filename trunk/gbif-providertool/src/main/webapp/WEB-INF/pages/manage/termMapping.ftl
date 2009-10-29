@@ -1,18 +1,18 @@
 <head>
-    <title><@s.text name="occResourceOverview.title"/></title>
+    <title><@s.text name="termmapping.title"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-    <meta name="heading" content="Term Mappings for ${voc.title}"/>
+    <meta name="heading" content="<@s.text name='termmapping.heading'/> ${voc.title}"/>
 </head>
 
-<h2>Source terms from <i>${column}</i> in <i>${source.name}</i></h2>
+<h2><@s.text name='termmapping.sourcefrom'/> <i>${column}</i> <@s.text name='termmapping.in'/> <i>${source.name}</i></h2>
 
 <@s.form action="terMappingScan" method="get">
 	<#if (termMappings?size<1)>
-		<p class="reminder">No terms found. Please lookup terms from source first.</p>
+		<p class="reminder"><@s.text name='termmapping.noterms'/></p>
 	<#else>
-		<p>Rescan source for new terms:</p>
+		<p><@s.text name='termmapping.rescan'/></p>
 	</#if>
     <@s.hidden key="tid"/>
     <@s.hidden key="mid"/>
@@ -45,4 +45,4 @@
     </#if>
     <@s.submit cssClass="button" name="cancel" key="button.done" theme="simple"/>
  
-</@s.form> 
+</@s.form>

@@ -7,7 +7,7 @@
 	<script>
 	$(document).ready(function(){
 		$("#registerIpt").click(function(e) {
-		    if (! confirm("Are you sure you want to register this IPT with GBIF? Once you registered as part of an organisation you cannot link this installation to another organisation through the IPT but will have to get in touch with GBIF personally.")) {
+		    if (! confirm("<@s.text name='config.ipt.message'/>")) {
 				e.preventDefault();
 		    }
 		});	
@@ -29,8 +29,7 @@
 
 
 <p>
-This description will be presented on the homepage. HTML markup is allowed in the description.
-The description image url should be a valid image URL that is being display on the homepage too.
+<@s.text name='config.ipt.html'/>
 </p>
 
 <@s.form id="providerCfg" method="post">

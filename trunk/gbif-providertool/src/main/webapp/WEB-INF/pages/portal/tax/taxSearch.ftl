@@ -6,7 +6,7 @@
 </head>
 	
 
-<h1>Your Search: ${q}</h1>  
+<h1><@s.text name='taxsearch.yoursearch'/> ${q}</h1>  
 <div class="horizontal_dotted_line_large_foo"></div>
 
 <div class="break55"></div>

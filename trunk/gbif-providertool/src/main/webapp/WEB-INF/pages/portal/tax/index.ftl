@@ -1,4 +1,3 @@
-
 <head>
     <title><@s.text name="occResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
@@ -47,7 +46,7 @@
 		<span><@s.property value="resource.description"/></span>
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
-		<label>${(resource.lastUpload.recordsUploaded)!0} total records uploaded ${(resource.lastUpload.executionDate)!}</label>
+		<label>${(resource.lastUpload.recordsUploaded)!0} <@s.text name='occ.index.recordsloaded'/> ${(resource.lastUpload.executionDate)!}</label>
 		</p>
 		
 		<ul class="minimenu">
@@ -55,21 +54,21 @@
 				<a id="showWebservices"><@s.text name="dataResource.services"/></a>
 			</li>
 			<li>
-				<a href="metaResource.html?resourceId=${resourceId}">Full Metadata</a>
+				<a href="metaResource.html?resourceId=${resourceId}"><@s.text name='occ.index.fullmetadata'/></a>
 			</li>
 			<li>
-				<a href="annotations.html?resourceId=${resourceId}">Annotations</a>
+				<a href="annotations.html?resourceId=${resourceId}"><@s.text name='occ.index.annotations'/></a>
 			</li>
 		</ul>
 		<div class="break35"></div>
 		<div id="services" style="display:none">
 			<table class="lefthead">
 				<tr>
-					<th>Contact</th>
+					<th><@s.text name='occ.index.contact'/></th>
 					<td>${resource.contactName} <#if resource.contactEmail??>&lt;${resource.contactEmail}&gt;</#if></td>
 				</tr>
 				<tr>
-					<th>Homepage</th>
+					<th><@s.text name='occ.index.homepage'/></th>
 					<td><#if resource.link??><a href="${resource.link}">${resource.link}</a></#if></td>
 				</tr>
 				<tr>
@@ -95,7 +94,7 @@
 	<label><@s.text name="stats.taxStats"/></label>
 	<table class="lefthead">
 		<tr>
-			<td>Distinct Names</td>
+			<td><@s.text name='occ.index.distinctnames'/></td>
 			<td>${numTaxa}</td>
 		</tr>
 		<tr>
@@ -103,11 +102,11 @@
 			<td>${numTerminalTaxa}</td>
 		</tr>
 		<tr>
-			<td>Accepted Taxa</td>
+			<td><@s.text name='occ.index.acceptedtaxa'/></td>
 			<td>${numAccepted}</td>
 		</tr>
 		<tr>
-			<td>Other Names</td>
+			<td><@s.text name='occ.index.othernames'/></td>
 			<td>${numSynonyms}</td>
 		</tr>
 	</table>
@@ -117,7 +116,7 @@
 	<label><@s.text name="stats.taxStats"/></label>
 	<table class="lefthead">
 		<tr>
-			<td>Kingdoms</td>
+			<td><@s.text name='occ.index.kingdoms'/></td>
 			<td>${numKingdoms}</td>
 		</tr>
 		<tr>
@@ -185,4 +184,3 @@
 
 
 <br class="clearfix" />
-

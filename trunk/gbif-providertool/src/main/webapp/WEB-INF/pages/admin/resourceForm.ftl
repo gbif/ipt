@@ -17,7 +17,7 @@
 	<@s.textfield key="resource.contactEmail" required="true" cssClass="text large"/>
 
 	<div class="break"></div>
-	<h3>Registered Services</h3>
+	<h3><@s.text name='resourceform.registeredservices'/></h3>
 	<#if (resource.services?size>0)>
 	<#list resource.services.keySet() as st>
 		<@s.textfield label="${st}" name="resource.services[${st}]" value="${resource.services[st]}" cssClass="text large" />
@@ -31,5 +31,4 @@
     <@s.submit cssClass="button" method="cancel" key="button.cancel" theme="simple"/>
 
   </fieldset>
-</@s.form>
-	
+</@s.form>	

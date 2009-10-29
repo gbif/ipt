@@ -1,5 +1,5 @@
 <head>
-    <title><@s.text name="taxon.title"/></title>
+    <title><@s.text name="occurrence.title"/></title>
     <meta name="resource" content="${dwc.resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="occ"/>
@@ -21,8 +21,8 @@
 
 <img class="right" src="${cfg.getResourceLogoUrl(resourceId)}" />
 
-<h2>${dwc.collectionCode!"Unknown collection code"} - ${dwc.catalogNumber!"Unknown catalogue number"}</h2>	
-<h3>${dwc.scientificName!"Unknown Species"}</h3>
+<h2>${dwc.collectionCode!"<@s.text name="occurrence.unknowncollectioncode"/>"} - ${dwc.catalogNumber!"<@s.text name="occurrence.unknowncatalognumber"/>"}</h2>	
+<h3>${dwc.scientificName!"<@s.text name="occurrence.unknownspecies"/>"}</h3>
 
 <@s.form>
 
@@ -30,7 +30,6 @@
 <#assign rec=dwc>
 <#include "/WEB-INF/pages/inc/coreDetails.ftl">  
 <#assign rec=recExtended>
-
 
 <#assign core=dwc.resource.coreMapping>
 <fieldset>

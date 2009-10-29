@@ -45,12 +45,10 @@
 </@s.form>
 
 
-<h2>JDBC driver resources</h2>
+<h2><@s.text name='connectionform.jdbcresources'/></h2>
 <div class="horizontal_dotted_line_large_soft"></div>
 <p>
-	Some of the above JDBC drivers have licenses that do not allow us to bundle them with this software. 
-	You will therefore have to download them yourselves, add the jar to the IPT lib folder and restart the application server.
-	On Tomcat the IPT lib folder is at <i>&lt;%CATALINA_HOME%&gt;/webapps/ipt/WEB-INF/lib</i> 
+	<@s.text name='connectionform.instructions'/> 
 </p>
 <dl>
 		<dt>MySQL</dt>

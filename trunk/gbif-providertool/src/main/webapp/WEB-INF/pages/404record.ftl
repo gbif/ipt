@@ -11,4 +11,4 @@
 </head>
 
 <p></p>
-<p class="error">We are sorry, but the requested record in resource ${resource.title} does not exist or is private</p>
+<p class="error"><@s.text name='404.record.sorry'/> ${resource.title} <@s.text name='404.record.private'/></p>

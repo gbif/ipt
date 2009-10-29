@@ -1,14 +1,14 @@
 <head>
-    <title>Thesaurus vocabularies</title>
+    <title><@s.text name='vocabularylist.title'/></title>
 	<meta name="decorator" content="fullsize"/>    
-    <meta name="heading" content="Thesaurus vocabularies"/>
+    <meta name="heading" content="<@s.text name='vocabularylist.title'/>"/>
     <meta name="menu" content="AdminMenu"/>
 </head>
 
 <p>
-	<@s.text name="thesaurus.explaination.1"/>  
-	<@s.text name="thesaurus.explaination.2"/>   
-	<@s.text name="thesaurus.explaination.3"/> 
+	<@s.text name="thesaurus.explanation.1"/>  
+	<@s.text name="thesaurus.explanation.2"/>   
+	<@s.text name="thesaurus.explanation.3"/> 
 </p>
 <p>
 	<a href="synchroniseThesauri.html"><@s.text name="thesaurus.update"/></a>

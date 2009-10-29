@@ -1,8 +1,8 @@
 <head>
-    <title>${extension.name} Extension/></title>
+    <title><@s.text name='extension.title'/> ${extension.name}/></title>
     <meta name="decorator" content="fullsize"/>
     <meta name="menu" content="AdminMenu"/>
-    <meta name="heading" content="${extension.name} Extension"/>
+    <meta name="heading" content="<@s.text name='extension.title'/> ${extension.name}"/>
 	<script type="text/javascript">  
 		$(document).ready(function(){
 			$("table.propertyInfo").hide();			
@@ -42,7 +42,7 @@
 	<td><#if extension.link??><a href="${extension.link}" target="_blank">${extension.link}</a><#else> unavailable</#if></td>
  </tr>
  <tr>
-	<th>Installed</th>
+	<th><@s.text name='extension.install'/></th>
 	<td><#if extension.installed==true><img src="<@s.url value='/images/assets/bullet_green.gif'/>"/> yes<#else><img src="<@s.url value='/images/assets/bullet_delete.gif'/>"/> no</#if></td>
  </tr>
  <tr>
@@ -58,30 +58,30 @@
 				<a class="property">${p.name}</a>
 				<table class="propertyInfo">
 					<tr>
-						<th>Qualified Name:</th>
+						<th><@s.text name='extension.properties.qualifiedname'/></th>
 						<td>${p.qualName!}</td>
 					</tr>
 					<tr>
-						<th>Namespace:</th>
+						<th><@s.text name='extension.properties.namespace'/></th>
 						<td>${p.namespace!}</td>
 					</tr>
 					<tr>
-						<th>Group:</th>
+						<th><@s.text name='extension.properties.group'/></th>
 						<td>${p.group!}</td>
 					</tr>
 					<tr>
-						<th>Name:</th>
+						<th><@s.text name='extension.properties.name'/></th>
 						<td>${p.name!}</td>
 					</tr>
 				  	<#if p.link??>
 					<tr>
-						<th>Documentation</th>
+						<th><@s.text name='extension.properties.documentation'/></th>
 						<td><a href="${p.link}" target="_blank">${p.link}</a></td>
 					</tr>
 					</#if>
 				    <#if p.vocabulary??>
 					<tr>
-						<th>Vocabulary</th>
+						<th><@s.text name='extension.properties.vocabulary'/></th>
 						<td><a href="vocabulary.html?id=${p.vocabulary.id?c}">${p.vocabulary.title}</a></td>
 					</tr>
 					</#if>

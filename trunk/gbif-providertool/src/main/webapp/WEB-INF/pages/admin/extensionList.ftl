@@ -6,9 +6,9 @@
 </head>
 
 <p>
-	<@s.text name="extension.explaination.1"/>  
-	<@s.text name="extension.explaination.2"/>   
-	<@s.text name="extension.explaination.3"/> 
+	<@s.text name="extension.explanation.1"/>  
+	<@s.text name="extension.explanation.2"/>   
+	<@s.text name="extension.explanation.3"/> 
 </p>
 <p>
 	<a href="synchroniseExtensions.html"><@s.text name="extension.update"/></a>

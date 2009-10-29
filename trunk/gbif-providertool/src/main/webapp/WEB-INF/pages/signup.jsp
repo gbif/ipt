@@ -9,10 +9,7 @@
 <body id="signup"/>
 
 <s:form name="signupForm" action="signup" method="post" validate="true">
-	<p>Please fill out this form to register as a new user with limited rights. <br/>
-	If you want to manage your own resources/datasets, you will need Manager rights.
-	After you have created your account you can request those rights from the 
-	administrator <i><s:property value="%{iptCfg.contactName}"/> &lt;<s:property value="%{iptCfg.contactEmail}"/>&gt;</i>
+	<p><s:text name="signup.instructions"/> <i><s:property value="%{iptCfg.contactName}"/> &lt;<s:property value="%{iptCfg.contactEmail}"/>&gt;</i>
 	</p>
 	
     <s:textfield key="user.username" cssClass="text large" required="true"/>

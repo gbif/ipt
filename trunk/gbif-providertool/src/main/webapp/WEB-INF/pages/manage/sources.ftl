@@ -18,7 +18,7 @@
 			ajaxHtmlUpdate(url, target, params);
 		};
 		function confirmDelete() {   
-		    var msg = "Are you sure you want to delete this source? \n All associated property mappings will be lost too. If you want to upload a newer version of the file, simply upload a file with the exact same filename again.";
+		    var msg = "<@s.text name='sources.confirmdelete'/>";
 		    ans = confirm(msg);
 		    if (ans) {
 		        return true;
@@ -42,13 +42,8 @@
 </head>
 
 <div class="break10"></div>
-<p class="explMt">Please upload your data as tab delimited text files or define a SQL view to pull it from a database.
-You will need to map the main, core records to the <a href="http://darwincore.googlecode.com/svn/trunk/terms/index.htm#theterms">Darwin Core terms</a> in the next step, 
-so if you can, please adjust your source data accordingly.
-For the main "core" records, please also make sure they have a unique identifier per row.
-<br/>You can define as many sources as you like and you will be able to upload additional information to complement a core darwin core record.
-For this to work, your additional sources need to refer to your core identifiers, i.e. have a foreign key. They dont need their own identifier though.
-<br/>Files currently cannot be larger than 100MB, but you can compress 1 or more files using zip. They will be unpacked on the server automatically.  
+<p class="explMt">
+<@s.text name='sources.instructions.1'/> <a href="http://darwincore.googlecode.com/svn/trunk/terms/index.htm#theterms"><@s.text name='sources.dwcterms'/></a> <@s.text name='sources.instructions.2'/>  
 </p>
 
 <h2><@s.text name="sources.filesources"/></h2>
@@ -102,12 +97,9 @@ For this to work, your additional sources need to refer to your core identifiers
 	</div>
 </fieldset>
 
-
-
 <div class="break"></div>
 <p>
-	SQL data sources are sql select statements to an external relational database (like views).
-	The IPT can pull data from those databases when updating the internal cache.
+	<@s.text name='sources.explanation'/>
 </p>
 <h2><@s.text name="sources.sqlsources"/></h2>
 <div class="horizontal_dotted_line_large_soft"></div>
@@ -152,7 +144,7 @@ For this to work, your additional sources need to refer to your core identifiers
 			<div class="break"></div>
 		<#else>
 			<div class="left">
-				<p class="reminder">Please configure at least one sql view to start using this datasource</p>
+				<p class="reminder"><@s.text name='sources.atleastone'/></p>
 				<#-- <@s.text name="sources.noDbConnection" /> -->
 			</div>
 		</#if>
@@ -169,7 +161,7 @@ For this to work, your additional sources need to refer to your core identifiers
 
 <div class="break"></div>
 <div id="sourcepreview" style="display:none">
-	Retrieving source data ...
+	<@s.text name='sources.retrieving'/>
 </div>	
 
 

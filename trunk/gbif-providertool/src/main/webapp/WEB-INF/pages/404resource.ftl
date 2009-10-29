@@ -10,4 +10,4 @@
 </head>
 
 <p></p>
-<p class="error">We are sorry, but the requested resource does not exist or is private</p>
+<p class="error"><@s.text name='404.resource.sorry'/></p>

@@ -103,9 +103,9 @@
 		<h2><@s.text name="taxon.synonymy"/></h2>
 		<table>
 			<tr>
-			  <th>Scientific Name</th>
-			  <th>Taxonomic Status</th>
-			  <th>Nomenclatural Status</th>
+			  <th><@s.text name="taxon.scientificName"/></th>
+			  <th><@s.text name="taxon.taxonomicstatus"/></th>
+			  <th><@s.text name="taxon.nomenclaturalstatus"/></th>
 			</tr>
 			<#list synonyms as syn>	
 			<tr>

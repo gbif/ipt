@@ -1,6 +1,6 @@
 <#assign display=JspTaglibs["http://displaytag.sf.net"] />
 <head>
-    <title>All Resources</title>
+    <title><@s.text name='admin.resourcelist.title'/></title>
     <meta name="menu" content="AdminMenu"/>
     <meta name="submenu" content="admin"/>
     <meta name="heading" content="<@s.text name='resourceClass.${resourceType}'/>"/>
