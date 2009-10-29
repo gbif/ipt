@@ -39,8 +39,8 @@
 <div id="jsalert">
  <img src="<c:url value='/images/assets/bigWarning.png'/>"/>
  <div class="textColumn">
-	 <h2>You seem to have JavaScript disabled</h2>
-	 <p>This site is making extensive use of JavaScript so it is advised that you enable JavaScript. If you're running the NoScript Mozilla extenstion you need to add ipt.gbif.org in the list of trusted domains.</p>
+	 <h2><s:text name="header.nojavascript"/></h2>
+	 <p><s:text name="header.jsmessage"/></p>
 </div>
 </div>
 </noscript>
