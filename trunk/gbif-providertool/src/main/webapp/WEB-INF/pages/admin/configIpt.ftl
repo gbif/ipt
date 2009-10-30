@@ -27,35 +27,15 @@
 
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
         
-<!--
-  -- IMPORTANT IMPLEMENTATION NOTE regarding the 'x' variable defined below.
-  --
-  -- The default database value for PROVIDER_CFG.IPT_META_DESCRIPTION (accessible
-  -- here using "config.ipt.description") is an empty string. When rendering the 
-  -- text area that contains this value, there are two cases to handle:
-  --
-  -- 1) If the value is an empty string, we assume the user hasn't completed the
-  -- IPT installation yet, so we set the text area value with an *internationalized* 
-  -- message (accessible here using 'webapp.description') that prompts them to 
-  -- enter a description for their IPT instance.
-  --
-  -- 2) If the value is a non-empty string, then we simply set the text area with
-  -- that value and we're done.
-  -- 
-  -- The text area value is assigned to variable x below which is used for rendering.
-  --
---> 
 <#assign x>
-  <#if config.ipt.description == ''>
-    <@s.text name='webapp.description'/>
-  <#else>
-     ${config.ipt.description}
+  <#if config.ipt.description != ''>
+    ${config.ipt.description}
   </#if>
 </#assign>
 
 <p>
 <p>
-<a href='http://code.google.com/p/gbif-providertoolkit/wiki/UserManualChapter1'><@s.text name='webapp.manual' /></a>
+<a href='http://code.google.com/p/gbif-providertoolkit/wiki/FinishingInstallation'><@s.text name='webapp.manual' /></a>
 <p>
 
 <@s.form id="providerCfg" method="post">

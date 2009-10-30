@@ -39,7 +39,9 @@
 </#if>
 </h1>
 <div id="about">
-    <img class="right" src="${cfg.getDescriptionImage()}" />
+    <#if cfg.getDescriptionImage() != ''>
+        <img class="right" src="${cfg.getDescriptionImage()}" />
+    </#if>
     <#if cfg.ipt.description == ''>
         <@s.text name="webapp.installed"/>
         <p>
