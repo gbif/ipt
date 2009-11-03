@@ -45,7 +45,7 @@
             </xs:sequence>
             <xs:attribute ref="dc:URI" use="required">
                 <xs:annotation>
-                    <xs:documentation>The proper full URI. Preferrrably pointing to an RDF document in an ontology</xs:documentation>
+                    <xs:documentation>The proper full URI. Preferably pointing to an RDF document in an ontology</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
             <xs:attribute ref="dc:description" use="optional">

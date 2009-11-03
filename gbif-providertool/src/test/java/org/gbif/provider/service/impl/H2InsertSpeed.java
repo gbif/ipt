@@ -15,23 +15,21 @@
  */
 package org.gbif.provider.service.impl;
 
+import java.util.Date;
+
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
-import org.gbif.provider.util.ContextAwareTestBase;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
 
 /**
  * TODO: Documentation.
  * 
  */
-public class H2InsertSpeed extends ContextAwareTestBase {
+public class H2InsertSpeed /* extends ContextAwareTestBase */{
   @Autowired
   protected DarwinCoreManager darwinCoreManager;
   @Autowired
@@ -39,7 +37,8 @@ public class H2InsertSpeed extends ContextAwareTestBase {
 
   @Test
   public void testDwcInserts() {
-    OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
+    OccurrenceResource res = occResourceManager
+        .get(Constants.TEST_OCC_RESOURCE_ID);
     int i = 0;
     DarwinCore dwc;
     Date start = new Date();

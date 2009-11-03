@@ -27,18 +27,17 @@
             <xs:sequence>
                 <xs:choice maxOccurs="unbounded">
                     <xs:element ref="dwc:anyIdentifier" />
-                    <xs:element ref="dwc:anyDatasetTerm" />
+                    <xs:element ref="dwc:anyRecordLevelTerm" />
+                    <xs:element ref="dwc:anyOccurrenceTerm" />
+                    <xs:element ref="dwc:anyEventTerm" />
+                    <xs:element ref="dwc:anyLocationTerm" />
+                    <xs:element ref="dwc:anyGeologicalContextTerm" />
                     <xs:element ref="dwc:anyIdentificationTerm" />  
                     <xs:element ref="dwc:anyTaxonTerm" />
-                    <xs:element ref="dwc:anySamplingLocationTerm" />
-                    <xs:element ref="dwc:anySampleTerm" />
-                    <xs:element ref="dwc:anySamplingEventTerm" />
-                    <xs:group ref="dwc:anyDublinCoreTerm"/>
                 </xs:choice>
                 
                 <xs:element name="DarwinExtensions">
                     <xs:complexType>
-                        
                         <xs:sequence>
                             <xs:any namespace="##other" processContents="lax" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>

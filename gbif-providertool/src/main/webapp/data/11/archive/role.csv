@@ -1,0 +1,4 @@
+"ID","DESCRIPTION","NAME"
+"1","Administrator role (can edit Users and Datasources)","ROLE_ADMIN"
+"2","Default role for all Users","ROLE_USER"
+"3","Manager role (can edit Datasources)","ROLE_MANAGER"
