@@ -1,0 +1,10 @@
+"ID","INSTALLED","LINK","NAMESPACE","TITLE","NAME","CORE","MODIFIED"
+"16","FALSE",,"http://purl.org/dc/terms/","Related Resources","relation","FALSE","2009-03-31 10:07:55.606"
+"17","FALSE",,"http://rs.tdwg.org/dwc/terms/","Event Attribute","EventAttribute","FALSE","2009-03-31 10:07:55.766"
+"18","FALSE",,"http://rs.gbif.org/ipt/terms/1.0/","Identification History","Identification","FALSE","2009-03-31 10:07:55.926"
+"19","FALSE",,"http://purl.org/dc/terms/","Alternative Identifier","identifier","FALSE","2009-03-31 10:07:56.086"
+"21","FALSE",,"http://rs.tdwg.org/dwc/terms/","Resource Relationship","ResourceRelationship","FALSE","2009-03-31 10:07:56.406"
+"22","FALSE",,"http://rs.tdwg.org/dwc/terms/","Sample Attribute","SampleAttribute","FALSE","2009-03-31 10:07:56.566"
+"20","TRUE",,"http://rs.gbif.org/ipt/terms/1.0/","Multimedia","Multimedia","FALSE","2009-03-31 10:07:56.246"
+"15","TRUE",,"http://rs.gbif.org/ipt/terms/1.0/","Vernacular Name","VernacularName","FALSE","2009-03-31 10:07:55.442"
+"1","TRUE","http://wiki.tdwg.org/twiki/bin/view/DarwinCore/DarwinCoreDraftStandard","http://rs.tdwg.org/dwc/terms/","Darwin Core","DarwinCore","TRUE",

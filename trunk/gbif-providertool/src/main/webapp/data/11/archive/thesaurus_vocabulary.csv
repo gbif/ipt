@@ -1,0 +1,6 @@
+"ID","MODIFIED","TITLE","URI","LINK"
+"13","2009-03-31 10:07:22.143","ISO 3166 Country Codes","http://iso.org/iso3166",""
+"14","2009-03-31 10:07:22.286","Darwin Core Type Vocabulary","http://rs.tdwg.org/dwc/dwctype/",""
+"15","2009-03-31 10:07:22.367","TDWG Nomenclatural Codes","http://rs.tdwg.org/ontology/voc/TaxonName.rdf#NomenclaturalCodeTerm",""
+"16","2009-03-31 10:07:22.447","Taxonomic Ranks","http://rs.tdwg.org/ontology/voc/TaxonRank",""
+"17","2009-03-31 10:07:55.066","ISO 639-1 Languages","http://iso.org/639-1","http://vocabularies.gbif.org/en/vocabularies/lang"
