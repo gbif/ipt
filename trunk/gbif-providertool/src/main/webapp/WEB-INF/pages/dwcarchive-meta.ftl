@@ -11,13 +11,13 @@
    <#assign idx=4>
    <#if isChecklist>
     <#assign idx=11>
-    <field index="4" term="http://rs.tdwg.org/dwc/terms/ScientificName"/>
-    <field index="5" term="http://rs.tdwg.org/dwc/terms/AcceptedTaxonID"/>
-    <field index="6" term="http://rs.tdwg.org/dwc/terms/AcceptedTaxon"/>
-    <field index="7" term="http://rs.tdwg.org/dwc/terms/HigherTaxonID"/>
-    <field index="8" term="http://rs.tdwg.org/dwc/terms/HigherTaxon"/>
-    <field index="9" term="http://rs.tdwg.org/dwc/terms/BasionymID"/>
-    <field index="10" term="http://rs.tdwg.org/dwc/terms/Basionym"/>
+    <field index="4" term="http://rs.tdwg.org/dwc/terms/scientificName"/>
+    <field index="5" term="http://rs.tdwg.org/dwc/terms/acceptedNameUsageID"/>
+    <field index="6" term="http://rs.tdwg.org/dwc/terms/acceptedNameUsage"/>
+    <field index="7" term="http://rs.tdwg.org/dwc/terms/parentNameUsageID"/>
+    <field index="8" term="http://rs.tdwg.org/dwc/terms/parentNameUsage"/>
+    <field index="9" term="http://rs.tdwg.org/dwc/terms/originalNameUsageID"/>
+    <field index="10" term="http://rs.tdwg.org/dwc/terms/originalNameUsage"/>
    </#if>
     <#list coreProperties as p>
     <field index="${p_index+idx}" term="${p.qualName}"/>
