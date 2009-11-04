@@ -7,7 +7,7 @@
 	<@display.column property="taxon" sortable=true titleKey="dwc.taxon"/>    
     <@display.column property="country" sortable=true maxLength=50 titleKey="dwc.country"/>
 	<@display.column property="region" sortable=true maxLength=50 titleKey="dwc.region"/>    
-	<@display.column property="earliestDateCollected" sortable=true titleKey="dwc.earliestDateCollected" />    
+	<@display.column property="eventDate" sortable=true titleKey="dwc.eventDate" />    
     
     <@display.setProperty name="paging.banner.item_name"><@s.text name="dwcList.occurrence"/></@display.setProperty>
     <@display.setProperty name="paging.banner.items_name"><@s.text name="dwcList.occurrences"/></@display.setProperty>
