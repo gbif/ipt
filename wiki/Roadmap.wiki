@@ -17,15 +17,6 @@ scheduled for November 2009
 == Delete bug fixed ==
  * Issue155
 
-== GBIF registry interaction ==
-   * Issues relating to this section are tagged with "Registry"
-   * The GBIF registry (a component of the GBRDS) is under active development
-   * The registry will allows for managing the extensions including the tagging of extensions (e.g. gisin.org:Invasive extensions)
-   * The IPT must support the outcomes of the extension registration and tagging work
- * simplified registry interaction:
-   * organisation registration only done externally (not in ipt admin UI)
-   * write resource tags (= metadata keywords) to registry
-
 == Darwin Core update ==
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
@@ -55,8 +46,16 @@ see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label: Performa
    * Consider simplifying main page markup and CSS (lower priority)
 
 
-
 = Release 2.0 =
 == new data types ==
  * new core record type Publication allows to share publication metadata with link to full body text
  * new core record type Site allows to share hierarchical site definitions incl polygon based shapes
+
+= GBIF registry interaction (as soon as registry is stable) =
+   * Issues relating to this section are tagged with "Registry"
+   * The GBIF registry (a component of the GBRDS) is under active development
+   * The registry will allows for managing the extensions including the tagging of extensions (e.g. gisin.org:Invasive extensions)
+   * The IPT must support the outcomes of the extension registration and tagging work
+ * simplified registry interaction:
+   * organisation registration only done externally (not in ipt admin UI)
+   * write resource tags (= metadata keywords) to registry
