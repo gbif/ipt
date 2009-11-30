@@ -1,0 +1,6 @@
+#summary Details about the IPT TAPIR implementation
+
+<wiki:toc max_depth="2" />
+
+= TAPIR =
+The IPT supports TAPIR intermediate, i.e. it has a fixed [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc23 output model] but does understand [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc65 KVP encoded] custom [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc47 filters]. It uses [http://www.tdwg.org/dav/subgroups/tapir/1.0/docs/tdwg_tapir_specification_2009-09-08.htm#toc57 URL encoded KVP requests] and does not support XML request documents.
