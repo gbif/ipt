@@ -64,7 +64,7 @@
   <qualityControl></qualityControl>
   <researchProject>
     <title>PonTaurus</title>
-    <__abstract></__abstract>
+    <projectAbstract></projectAbstract>
     <funding></funding>
     <studyAreaDescription></studyAreaDescription>
     <designDescription></designDescription>
