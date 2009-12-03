@@ -256,16 +256,16 @@
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
-<!--            <testResource>-->
-<!--                <directory>src/main/webapp/data</directory>-->
-<!--                <targetPath>test-webapp/data</targetPath>-->
-<!--                <filtering>false</filtering>-->
-<!--            </testResource>-->
-<!--            <testResource>-->
-<!--                <directory>src/main/webapp/WEB-INF/pages</directory>-->
-<!--                <targetPath>test-webapp/WEB-INF/pages</targetPath>-->
-<!--                <filtering>false</filtering>-->
-<!--            </testResource>-->
+            <testResource>
+                <directory>src/main/webapp/data</directory>
+                <targetPath>test-webapp/data</targetPath>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/main/webapp/WEB-INF/pages</directory>
+                <targetPath>test-webapp/WEB-INF/pages</targetPath>
+                <filtering>false</filtering>
+            </testResource>
         </testResources>
     </build>
 
