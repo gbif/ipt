@@ -15,25 +15,27 @@
  */
 package org.gbif.provider.service.impl;
 
-import java.util.List;
-
-import javax.persistence.EntityExistsException;
-
 import org.gbif.provider.model.DarwinCore;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
+import org.gbif.provider.util.ResourceTestBase;
+
 import org.hibernate.PropertyValueException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.AssertThrows;
 
+import java.util.List;
+
+import javax.persistence.EntityExistsException;
+
 /**
  * TODO: Documentation.
  * 
  */
-public class DarwinCoreMangerTest /* extends ResourceTestBase */{
+public class DarwinCoreMangerTest extends ResourceTestBase {
   @Autowired
   protected DarwinCoreManager darwinCoreManager;
   @Autowired
@@ -73,8 +75,7 @@ public class DarwinCoreMangerTest /* extends ResourceTestBase */{
     new AssertThrows(PropertyValueException.class) {
       @Override
       public void test() {
-        OccurrenceResource res = occResourceManager
-            .get(Constants.TEST_OCC_RESOURCE_ID);
+        OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
         DarwinCore dwc = DarwinCore.newMock(res);
         // remove resource to check if constraints work
         dwc.setResource(null);
@@ -87,8 +88,7 @@ public class DarwinCoreMangerTest /* extends ResourceTestBase */{
 
   @Test
   public void testFlagAllAsDeleted() {
-    OccurrenceResource resource = occResourceManager
-        .get(Constants.TEST_OCC_RESOURCE_ID);
+    OccurrenceResource resource = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
     darwinCoreManager.flagAllAsDeleted(resource);
   }
 
@@ -101,19 +101,18 @@ public class DarwinCoreMangerTest /* extends ResourceTestBase */{
 
   @Test
   public void testSave() {
-    OccurrenceResource res = occResourceManager
-        .get(Constants.TEST_OCC_RESOURCE_ID);
+    OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
     DarwinCore dwc = DarwinCore.newMock(res);
     // this should fail if run twice... for manual testing only
     // dwc.setSourceId("12443990");
+    System.out.println(dwc.getGuid());
     dwc = darwinCoreManager.save(dwc);
     darwinCoreManager.flush();
   }
 
   @Test
   public void testSimpleSave() {
-    OccurrenceResource res = occResourceManager
-        .get(Constants.TEST_OCC_RESOURCE_ID);
+    OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
     DarwinCore dwc = DarwinCore.newMock(res);
     try {
       dwc = darwinCoreManager.save(dwc);
@@ -130,8 +129,7 @@ public class DarwinCoreMangerTest /* extends ResourceTestBase */{
       @Override
       public void test() {
         final String sourceId = "xcf-x";
-        OccurrenceResource res = occResourceManager
-            .get(Constants.TEST_OCC_RESOURCE_ID);
+        OccurrenceResource res = occResourceManager.get(Constants.TEST_OCC_RESOURCE_ID);
 
         DarwinCore dwc = DarwinCore.newMock(res);
         dwc.setSourceId(sourceId);
