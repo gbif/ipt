@@ -1,4 +1,0 @@
-"ID","ACCOUNT_EXPIRED","ACCOUNT_LOCKED","ADDRESS_ADDRESS","ADDRESS_CITY","ADDRESS_COUNTRY","POSTAL_CODE","ADDRESS_PROVINCE","CREDENTIALS_EXPIRED","EMAIL","ACCOUNT_ENABLED","FIRST_NAME","LAST_NAME","PASSWORD","PASSWORD_HINT","PHONE_NUMBER","USERNAME","VERSION","WEBSITE"
-"1","FALSE","FALSE","","Copenhagen","DK","2100","DK","FALSE","ipt-admin@mailinator.com","TRUE","Admiral","Adminska","d033e22ae348aeb5660fc2140aec35850c4da997","\""admin\""","","admin","0","http://www.gbif.org"
-"2","FALSE","FALSE","","Copenhagen","DK","2100","DK","FALSE","ipt-manager@mailinator.com","TRUE","Manfred","Macher","1a8565a9dc72048ba03b4156be3e569f22771f23","\""manager\""","","manager","0","http://www.gbif.org"
-"3","FALSE","FALSE","","Copenhagen","DK","2100","DK","FALSE","ipt-user@mailinator.com","TRUE","Usanna","Usirna","12dea96fec20593566ab75692c9949596833adc9","\""user\""","","user","2","http://www.gbif.org"
