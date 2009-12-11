@@ -159,6 +159,7 @@ public class ExtensionRecordManagerJDBC extends BaseManagerJDBC implements
   @Transactional(readOnly = false)
   public int removeAll(Extension extension, Long resourceId) {
     String table = namingStrategy.extensionTableName(extension);
+    table = "darwin_core";
     String sql = String.format("delete from %s where resource_fk=%s", table,
         resourceId);
     Connection cn = null;

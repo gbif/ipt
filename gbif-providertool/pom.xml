@@ -670,7 +670,7 @@
             <artifactId>${jdbc.artifactId}</artifactId>
             <version>${jdbc.version}</version>
         </dependency>
-        <!-- Dependencies with scope=provided aren't picked up from dependent JARs -->
+        <!-- Dependencies with scope=provided aren't picked up from dependent JARs-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jsp-api</artifactId>
@@ -812,6 +812,13 @@
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
         </dependency>        
+        <dependency>
+        	<groupId>com.google.collections</groupId>
+        	<artifactId>google-collections</artifactId>
+        	<version>1.0-rc4</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
     </dependencies>
     
 

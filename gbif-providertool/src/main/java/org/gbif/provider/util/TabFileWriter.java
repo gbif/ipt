@@ -89,7 +89,7 @@ public class TabFileWriter {
     writer.append("\t");
     writer.write(valToString(rec.getLink()));
     writer.append("\t");
-    writer.write(valToString(rec.getModified()));
+    writer.write(valToString(rec.getDateModified()));
     writer.append("\t");
     writer.write(valToString(rec.getGuid()));
     writeRecordProperties(rec);

@@ -15,11 +15,6 @@
  */
 package org.gbif.provider.service.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.Taxon;
 import org.gbif.provider.model.dto.StatsCount;
@@ -29,10 +24,16 @@ import org.gbif.provider.model.voc.StatusType;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.util.StatsUtils;
+
 import org.hibernate.Query;
 import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  * TODO: Documentation.
@@ -54,12 +55,12 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
 
   public int annotateAmbigousNames(Long resourceId) {
     List<Taxon> ambigousTaxa = query(
-        "select t from Taxon t, Taxon t2 WHERE t.label=t2.label and t.taxonAccordingTo=t2.taxonAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId")
-        .setLong("resourceId", resourceId).list();
+        "select t from Taxon t, Taxon t2 WHERE t.label=t2.label and t.taxonAccordingTo=t2.taxonAccordingTo and t.resource=t2.resource and t.id<>t2.id and t.resource.id = :resourceId").setLong(
+        "resourceId", resourceId).list();
     for (Taxon tax : ambigousTaxa) {
-      annotationManager.annotate(tax, AnnotationType.AmbigousTaxon, String
-          .format("Multiple taxa named '%s' according to '%s' found", tax
-              .getScientificName(), tax.getNameAccordingTo()));
+      annotationManager.annotate(tax, AnnotationType.AmbigousTaxon,
+          String.format("Multiple taxa named '%s' according to '%s' found",
+              tax.getScientificName(), tax.getTaxonAccordingTo()));
     }
     return ambigousTaxa.size();
   }
@@ -78,8 +79,8 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
 
   public int countSynonyms(Long resourceId) {
     return ((Long) query(
-        "select count(tax) from Taxon tax WHERE tax.acc is not null and tax.resource.id = :resourceId")
-        .setLong("resourceId", resourceId).iterate().next()).intValue();
+        "select count(tax) from Taxon tax WHERE tax.acc is not null and tax.resource.id = :resourceId").setLong(
+        "resourceId", resourceId).iterate().next()).intValue();
   }
 
   public int countTerminalNodes(Long resourceId) {
@@ -99,12 +100,12 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
     Query query;
     if (taxonId == null) {
       query = query(
-          "from Taxon WHERE taxonRank = :rank and resource.id = :resourceId order by label")
-          .setLong("resourceId", resourceId).setString("rank", rank);
+          "from Taxon WHERE taxonRank = :rank and resource.id = :resourceId order by label").setLong(
+          "resourceId", resourceId).setString("rank", rank);
     } else {
       query = query(
-          "select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.taxonRank = :rank   order by t.label")
-          .setLong("taxonId", taxonId).setString("rank", rank);
+          "select t from Taxon t, Taxon root   where root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.taxonRank = :rank   order by t.label").setLong(
+          "taxonId", taxonId).setString("rank", rank);
     }
     return query.list();
   }
@@ -114,18 +115,16 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
     Query query;
     if (taxonId == null) {
       query = query(
-          String
-              .format(
-                  "from Taxon WHERE %s = :category and resource.id = :resourceId order by label",
-                  st.columnName)).setLong("resourceId", resourceId).setString(
+          String.format(
+              "from Taxon WHERE %s = :category and resource.id = :resourceId order by label",
+              st.columnName)).setLong("resourceId", resourceId).setString(
           "category", category);
     } else {
       query = query(
-          String
-              .format(
-                  "select t from Taxon, Taxon root WHERE root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.%s=:category   order by t.label",
-                  st.columnName)).setLong("taxonId", taxonId).setString(
-          "category", category);
+          String.format(
+              "select t from Taxon, Taxon root WHERE root.id=:taxonId and t.resource=root.resource and t.lft>root.lft and t.rgt<root.rgt and t.%s=:category   order by t.label",
+              st.columnName)).setLong("taxonId", taxonId).setString("category",
+          category);
     }
     return query.list();
   }
@@ -156,8 +155,8 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
 
   public List<Taxon> getSynonyms(Long taxonId) {
     return query(
-        "select s from Taxon s, Taxon t  where t.id=:taxonId and s.acc=t  order by s.label")
-        .setLong("taxonId", taxonId).list();
+        "select s from Taxon s, Taxon t  where t.id=:taxonId and s.acc=t  order by s.label").setLong(
+        "taxonId", taxonId).list();
   }
 
   public void lookupAcceptedTaxa(Long resourceId) {
@@ -193,10 +192,9 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
     String jdbcFkColumn = fkColumn + "_fk";
 
     Connection cn = getConnection();
-    String sql = String
-        .format(
-            "update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.%s_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s",
-            jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
+    String sql = String.format(
+        "update Taxon t set %s = (select tp.id   from taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.source_id = dwc.%s_id and tp.id!=t.id and tp.resource_fk = %s) WHERE resource_fk = %s",
+        jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
     log.debug(sql);
     int i = 0;
     try {
@@ -208,10 +206,9 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
         // select id from taxon where label in
         // no taxa have been resolved. Try to use the verbose higher taxon name
         // string to match
-        sql = String
-            .format(
-                "update Taxon t set %s = (select max(tp.id) FROM taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.label = dwc.%s and tp.id!=t.id and tp.resource_fk = %s  GROUP BY tp.label  HAVING count(tp.id)=1 ) WHERE resource_fk = %s",
-                jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
+        sql = String.format(
+            "update Taxon t set %s = (select max(tp.id) FROM taxon tp join darwin_core dwc on dwc.source_id=t.source_id and dwc.resource_fk=t.resource_fk    where tp.label = dwc.%s and tp.id!=t.id and tp.resource_fk = %s  GROUP BY tp.label  HAVING count(tp.id)=1 ) WHERE resource_fk = %s",
+            jdbcFkColumn, jdbcLookupColumn, resourceId, resourceId);
         log.debug(sql);
         st = cn.createStatement();
         i = st.executeUpdate(sql);
@@ -219,17 +216,15 @@ public class TaxonManagerHibernate extends CoreRecordManagerHibernate<Taxon>
       }
 
       // warn about taxa with non matching pointers
-      String hql = String
-          .format(
-              "select t from Taxon t, DarwinCore dwc WHERE dwc.sourceId=t.sourceId and dwc.resource=t.resource and (dwc.%s is not null or dwc.%sID is not null) and t.%s is null and t.resource.id = :resourceId",
-              lookupColumn, lookupColumn, fkColumn);
+      String hql = String.format(
+          "select t from Taxon t, DarwinCore dwc WHERE dwc.sourceId=t.sourceId and dwc.resource=t.resource and (dwc.%s is not null or dwc.%sID is not null) and t.%s is null and t.resource.id = :resourceId",
+          lookupColumn, lookupColumn, fkColumn);
       log.debug(hql);
-      List<Taxon> corruptTaxa = query(hql).setLong("resourceId", resourceId)
-          .list();
+      List<Taxon> corruptTaxa = query(hql).setLong("resourceId", resourceId).list();
       for (Taxon tax : corruptTaxa) {
-        annotationManager.annotate(tax, AnnotationType.BadPointer, String
-            .format("Taxon:%s '%s' with broken %s pointer", tax.getSourceId(),
-                tax.getScientificName(), lookupColumn));
+        annotationManager.annotate(tax, AnnotationType.BadPointer,
+            String.format("Taxon:%s '%s' with broken %s pointer",
+                tax.getSourceId(), tax.getScientificName(), lookupColumn));
       }
     } catch (SQLException e) {
       log.debug("Resolving taxon " + lookupColumn + " failed.", e);

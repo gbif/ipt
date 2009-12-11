@@ -15,11 +15,6 @@
  */
 package org.gbif.provider.model.factory;
 
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.model.Annotation;
 import org.gbif.provider.model.DarwinCore;
@@ -29,29 +24,44 @@ import org.gbif.provider.model.Point;
 import org.gbif.provider.model.voc.AnnotationType;
 import org.gbif.provider.util.Constants;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.text.ParseException;
+import java.util.Set;
+
 /**
- * TODO: Documentation.
+ * This class can be used to build a Darwin Core entity from an
+ * {@link ImportRecord}.
  * 
  */
 public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore> {
 
+  /**
+   * Builds and returns a new Darwin Core entity.
+   * 
+   * @param resource the entity resource
+   * @param rec the imported record
+   * @param annotations any annotations
+   * @return
+   */
   public DarwinCore build(DataResource resource, ImportRecord rec,
       Set<Annotation> annotations) {
     if (rec == null) {
       return null;
     }
-    DarwinCore dwc = DarwinCore.newInstance(resource);
-    dwc.setGuid(rec.getGuid());
-    dwc.setLink(rec.getLink());
-    dwc.setSourceId(rec.getSourceId());
-    dwc.setDeleted(false);
+    DarwinCore entity = new DarwinCore();
+    entity.setResource(resource);
+    entity.setGuid(rec.getGuid());
+    entity.setLink(rec.getLink());
+    entity.setSourceId(rec.getSourceId());
+    entity.setDeleted(false);
     Point loc = new Point();
     for (ExtensionProperty prop : rec.getProperties().keySet()) {
-      String val = StringUtils.trimToNull(rec.getPropertyValue(prop));
-      if (val != null && val.length() > prop.getColumnLength()
+      String propVal = StringUtils.trimToNull(rec.getPropertyValue(prop));
+      if (propVal != null && propVal.length() > prop.getColumnLength()
           && prop.getColumnLength() > 0) {
-        val = val.substring(0, prop.getColumnLength());
-        annotations.add(annotationManager.annotate(dwc,
+        propVal = propVal.substring(0, prop.getColumnLength());
+        annotations.add(annotationManager.annotate(entity,
             AnnotationType.TrimmedData, String.format(
                 "Exceeding data for property %s [%s] cut off", prop.getName(),
                 prop.getColumnLength())));
@@ -59,144 +69,109 @@ public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore> {
       String propName = prop.getName();
       // first try the properties which we try to persist converted as other
       // data types
-      // TODO: Why are only the minimums of elevation and depth used for
-      // single elevation and depth variables?
       if (propName.equalsIgnoreCase("MinimumElevationInMeters")) {
-        dwc.setMinimumElevationInMeters(val);
-        if (val != null) {
+        entity.setMinimumElevationInMeters(propVal);
+        if (propVal != null) {
           try {
-            Double typedVal = Double.valueOf(val);
-            dwc.setElevation(typedVal);
+            Double typedVal = Double.valueOf(propVal);
+            entity.setElevation(typedVal);
           } catch (NumberFormatException e) {
-            annotations.add(annotationManager.badDataType(dwc,
-                "MinimumElevationInMeters", "Double", val));
+            annotations.add(annotationManager.badDataType(entity,
+                "MinimumElevationInMeters", "Double", propVal));
           }
         }
       } else if (propName.equalsIgnoreCase("MinimumDepthInMeters")) {
-        dwc.setMinimumDepthInMeters(val);
-        if (val != null) {
+        entity.setMinimumDepthInMeters(propVal);
+        if (propVal != null) {
           try {
-            Double typedVal = Double.valueOf(val);
-            dwc.setDepth(typedVal);
+            Double typedVal = Double.valueOf(propVal);
+            entity.setDepth(typedVal);
           } catch (NumberFormatException e) {
-            annotations.add(annotationManager.badDataType(dwc,
-                "MinimumDepthInMeters", "Double", val));
-          }
-        }
-        // deprecated in favor of eventDate
-        // } else if (propName.equalsIgnoreCase("EarliestDateCollected")) {
-        // dwc.setEarliestDateCollected(val);
-        // if (val != null) {
-        // try {
-        // Date typedVal = Constants.dateIsoFormat().parse(val);
-        // dwc.setCollected(typedVal);
-        // } catch (ParseException e) {
-        // // TODO: Should this be "ISO Date" instead of "Integer"?
-        // annotations.add(annotationManager.badDataType(dwc,
-        // "EarliestDateCollected", "Integer", val));
-        // }
-        // }
-      } else if (propName.equalsIgnoreCase("EventDate")) {
-        dwc.setEventDate(val);
-        if (val != null) {
-          try {
-            Date typedVal = Constants.dateIsoFormat().parse(val);
-            dwc.setCollected(typedVal);
-          } catch (ParseException e) {
-            // TODO: Should this be "ISO Date" instead of "Integer"?
-            // annotations.add(annotationManager.badDataType(dwc,
-            // "EarliestDateCollected", "Integer", val));
-            annotations.add(annotationManager.badDataType(dwc, "EventDate",
-                "ISO Date", val));
+            annotations.add(annotationManager.badDataType(entity,
+                "MinimumDepthInMeters", "Double", propVal));
           }
         }
       } else if (propName.equalsIgnoreCase("DecimalLatitude")) {
-        dwc.setDecimalLatitude(val);
-        if (val != null) {
+        entity.setDecimalLatitude(propVal);
+        if (propVal != null) {
           try {
-            loc.setLatitude(Double.valueOf(val));
+            loc.setLatitude(Double.valueOf(propVal));
           } catch (NumberFormatException e) {
-            annotationManager
-                .badDataType(dwc, "DecimalLatitude", "Double", val);
+            annotationManager.badDataType(entity, "DecimalLatitude", "Double",
+                propVal);
           } catch (IllegalArgumentException e) {
-            annotationManager.annotate(dwc, AnnotationType.WrongDatatype,
+            annotationManager.annotate(entity, AnnotationType.WrongDatatype,
                 String.format("Latitude value '%s' is out of allowed range",
-                    val));
+                    propVal));
           }
         }
       } else if (propName.equalsIgnoreCase("DecimalLongitude")) {
-        dwc.setDecimalLongitude(val);
-        if (val != null) {
+        entity.setDecimalLongitude(propVal);
+        if (propVal != null) {
           try {
-            loc.setLongitude(Double.valueOf(val));
+            loc.setLongitude(Double.valueOf(propVal));
           } catch (NumberFormatException e) {
-            annotationManager.badDataType(dwc, "DecimalLongitude", "Double",
-                val);
+            annotationManager.badDataType(entity, "DecimalLongitude", "Double",
+                propVal);
           } catch (IllegalArgumentException e) {
-            annotationManager.annotate(dwc, AnnotationType.WrongDatatype,
+            annotationManager.annotate(entity, AnnotationType.WrongDatatype,
                 String.format("Longitude value '%s' is out of allowed range",
-                    val));
+                    propVal));
           }
         }
       } else if (propName.equalsIgnoreCase("Class")) {
         // stupid case. property is called Classs because Class is a reserved
         // word in java...
-        dwc.setClasss(val);
+        entity.setClasss(propVal);
       } else {
         // use reflection to find property
-        if (!dwc.setPropertyValue(prop, val)) {
+        if (!entity.setPropertyValue(prop, propVal)) {
           log.warn("Can't set unknown property DarwinCore." + propName);
         }
       }
 
       // now just check types and potentially annotate
-      if (val != null) {
-        for (String p : DarwinCore.INTEGER_PROPERTIES) {
-          if (propName.equalsIgnoreCase(p)) {
-            Integer typedVal = null;
+      if (propVal != null && DarwinCore.isDarwinCoreTerm(propName)) {
+        switch (DarwinCore.dataType(propName)) {
+          case INTEGER:
             try {
-              typedVal = Integer.valueOf(val);
+              Integer.valueOf(propVal);
             } catch (NumberFormatException e) {
-              annotations.add(annotationManager.badDataType(dwc, p, "Integer",
-                  val));
+              annotations.add(annotationManager.badDataType(entity, propVal,
+                  "Integer", propVal));
             }
-          }
-        }
-        for (String p : DarwinCore.DOUBLE_PROPERTIES) {
-          if (propName.equalsIgnoreCase(p)) {
-            Double typedVal = null;
+            break;
+          case DOUBLE:
             try {
-              typedVal = Double.valueOf(val);
+              Double.valueOf(propVal);
             } catch (NumberFormatException e) {
-              annotations.add(annotationManager.badDataType(dwc, p, "Double",
-                  val));
+              annotations.add(annotationManager.badDataType(entity, propVal,
+                  "Double", propVal));
             }
-          }
-        }
-        for (String p : DarwinCore.DATE_PROPERTIES) {
-          if (propName.equalsIgnoreCase(p)) {
+            break;
+          case DATE:
             try {
-              Date typedVal = Constants.dateIsoFormat().parse(val);
+              Constants.dateIsoFormat().parse(propVal);
             } catch (ParseException e) {
-              annotations.add(annotationManager.badDataType(dwc, p, "ISO Date",
-                  val));
+              annotations.add(annotationManager.badDataType(entity, propVal,
+                  "ISO Date", propVal));
             }
-          }
-        }
-        for (String p : DarwinCore.TOKEN_PROPERTIES) {
-          if (propName.equalsIgnoreCase(p)
-              && StringUtils.trimToEmpty(val).contains(" ")) {
-            annotations.add(annotationManager.badDataType(dwc, p, "Monominal",
-                val));
-          }
+            break;
+          case TOKEN:
+            if (StringUtils.trimToEmpty(propVal).contains(" ")) {
+              annotations.add(annotationManager.badDataType(entity, propVal,
+                  "Monominal", propVal));
+            }
+            break;
         }
       }
     }
+
     // persist only valid localities
     if (loc.isValid()) {
-      dwc.setLocation(loc);
+      entity.setLocation(loc);
     }
-    return dwc;
+    return entity;
   }
 
 }
