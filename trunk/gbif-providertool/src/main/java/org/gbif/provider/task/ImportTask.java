@@ -731,14 +731,14 @@ public abstract class ImportTask<R extends DataResource> extends
       // updateManagedProperties() )
       dwcFactory.copyPersistentProperties(oldRecord, record);
       oldRecord.setDeleted(false);
-      oldRecord.setModified(new Date());
+      oldRecord.setDateModified(new Date());
       record = dwcManager.save(oldRecord);
       // increase counter of changed records
       recordsChanged += 1;
 
     } else {
       // new record that didnt exist before. Just save new dwc
-      record.setModified(new Date());
+      record.setDateModified(new Date());
       record = dwcManager.save(record);
       // increase counter of added records
       recordsAdded += 1;

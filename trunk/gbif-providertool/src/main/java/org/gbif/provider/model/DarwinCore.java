@@ -15,11 +15,23 @@
  */
 package org.gbif.provider.model;
 
-import java.lang.reflect.InvocationTargetException;
+import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.RegionType;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.annotations.Index;
+import org.hibernate.validator.NotNull;
+
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -37,57 +49,150 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.model.voc.RegionType;
-import org.hibernate.validator.NotNull;
-
 /**
- * The core class for taxon occurrence records with normalised properties used
- * by the webapp. The generated property values can be derived from different
- * extensions like DarwinCore or ABCD but the ones here are used for creating
- * most of the webapp functionality
+ * This class can be used to encapsulate the properties of a Darwin Core record
+ * and store it as a data store entity. The Darwin Core properties come from:
+ * 
+ * <pre>
+ * http://code.google.com/p/darwincore/source/browse/trunk/xsd/tdwg_dwc_simple.xsd
+ * </pre>
+ * 
+ * Note: This class has a natural ordering that is inconsistent with equals.
  * 
  */
 @Entity
-@Table(name = "Darwin_Core", uniqueConstraints = { @UniqueConstraint(columnNames = {
-    "sourceId", "resource_fk" }) })
+@Table(name = "darwin_core", uniqueConstraints = {@UniqueConstraint(columnNames = {
+    "sourceId", "resource_fk"})})
 @org.hibernate.annotations.Table(appliesTo = "Darwin_Core", indexes = {
-    @org.hibernate.annotations.Index(name = "latitude", columnNames = { "lat" }),
-    @org.hibernate.annotations.Index(name = "longitude", columnNames = { "lon" }) })
-/**
- * TODO: Documentation.
- * 
- */
+    @Index(name = "latitude", columnNames = {"lat"}),
+    @Index(name = "longitude", columnNames = {"lon"})})
 public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
-  public static final Set<String> INTEGER_PROPERTIES = new HashSet<String>(
-      Arrays.asList("Year", "Month", "Day", "StartDayOfYear", "EndDayOfYear",
-          "IndividualCount"));
-  public static final Set<String> DOUBLE_PROPERTIES = new HashSet<String>(
-      Arrays.asList("DecimalLatitude", "DecimalLongitude",
-          "CoordinateUncertaintyInMeters", "CoordinatePrecision",
-          "MaximumDepthInMeters", "MaximumElevationInMeters",
-          "MinimumDepthInMeters", "MinimumElevationInMeters",
-          "MaximumDistanceAboveSurfaceInMeters",
-          "MinimumDistanceAboveSurfaceInMeters", "pointRadiusSpatialFit",
-          "footprintSpatialFit"));
-  public static final Set<String> DATE_PROPERTIES = new HashSet<String>(Arrays
-      .asList("Modified", "DateIdentified", "EventDate"));
-  public static final Set<String> TOKEN_PROPERTIES = new HashSet<String>(Arrays
-      .asList("kingdom", "phylum", "class", "order", "family", "genus",
-          "subgenus"));
 
-  public static DarwinCore newInstance(DataResource resource) {
-    DarwinCore dwc = new DarwinCore();
-    dwc.resource = resource;
-    return dwc;
+  /**
+   * Enumeration of valid data types that Darwin Core properties can assume.
+   * 
+   */
+  public static enum Type {
+    INTEGER, DOUBLE, DATE, TOKEN, STRING;
+  }
+
+  /**
+   * This class can be used to get the data type of a Darwin Core property name.
+   * 
+   */
+  private static class TypeOracle {
+
+    static final ImmutableSet<String> INTEGER_PROPERTIES = ImmutableSet.of(
+        "month", "day", "startdayofyear", "enddayofyear", "individualcount");
+
+    static final ImmutableSet<String> DOUBLE_PROPERTIES = ImmutableSet.of(
+        "decimallongitude", "coordinateuncertaintyinmeters",
+        "coordinateprecision", "maximumdepthinmeters",
+        "maximumelevationinmeters", "minimumdepthinmeters",
+        "minimumelevationinmeters", "maximumdistanceabovesurfaceinmeters",
+        "minimumdistanceabovesurfaceinmeters", "pointradiusspatialfit",
+        "footprintspatialfit");
+
+    static final ImmutableSet<String> DATE_PROPERTIES = ImmutableSet.of(
+        "modified", "dateidentified", "eventdate");
+
+    static final ImmutableSet<String> TOKEN_PROPERTIES = ImmutableSet.of(
+        "phylum", "class", "order", "family", "genus", "subgenus");
+
+    static Type typeOf(String propertyName) {
+      Preconditions.checkNotNull(propertyName);
+      Preconditions.checkArgument(propertyName.length() > 0);
+      String property = propertyName.toLowerCase();
+      if (INTEGER_PROPERTIES.contains(property)) {
+        return Type.INTEGER;
+      } else if (DOUBLE_PROPERTIES.contains(property)) {
+        return Type.DOUBLE;
+      } else if (DATE_PROPERTIES.contains(property)) {
+        return Type.DATE;
+      } else if (TOKEN_PROPERTIES.contains(property)) {
+        return Type.TOKEN;
+      } else {
+        return Type.STRING;
+      }
+    }
+  }
+
+  // Darwin Core terms from:
+  // http://code.google.com/p/darwincore/source/browse/trunk/xsd/tdwg_dwc_simple.xsd
+  private final static Set<String> DARWIN_CORE_TERMS = ImmutableSet.of(
+      "acceptednameusage", "acceptednameusageid", "accessrights",
+      "associatedmedia", "associatedoccurrences", "associatedreferences",
+      "associatedsequences", "associatedtaxa", "basisofrecord", "bed",
+      "behavior", "bibliographiccitation", "catalognumber", "class",
+      "collectioncode", "collectionid", "continent", "coordinateprecision",
+      "coordinateuncertaintyinmeters", "country", "countrycode", "county",
+      "datageneralizations", "datasetid", "datasetname", "dateidentified",
+      "day", "decimallatitude", "decimallongitude", "disposition",
+      "dynamicproperties", "earliestageorloweststage",
+      "earliesteonorlowesteonothem", "earliestepochorlowestseries",
+      "earliesteraorlowesterathem", "earliestperiodorlowestsystem",
+      "enddayofyear", "establishmentmeans", "eventdate", "eventid",
+      "eventremarks", "eventtime", "family", "fieldnotes", "fieldnumber",
+      "footprintsrs", "footprintspatialfit", "footprintwkt", "formation",
+      "genus", "geodeticdatum", "geologicalcontextid", "georeferenceprotocol",
+      "georeferenceremarks", "georeferencesources",
+      "georeferenceverificationstatus", "georeferencedby", "group", "habitat",
+      "higherclassification", "highergeography", "highergeographyid",
+      "highestbiostratigraphiczone", "identificationid",
+      "identificationqualifier", "identificationreferences",
+      "identificationremarks", "identifiedby", "individualcount",
+      "individualid", "informationwithheld", "infraspecificepithet",
+      "institutioncode", "institutionid", "island", "islandgroup", "kingdom",
+      "language", "latestageorhigheststage", "latesteonorhighesteonothem",
+      "latestepochorhighestseries", "latesteraorhighesterathem",
+      "latestperiodorhighestsystem", "lifestage", "lithostratigraphicterms",
+      "locality", "locationaccordingto", "locationid", "locationremarks",
+      "lowestbiostratigraphiczone", "maximumdepthinmeters",
+      "maximumdistanceabovesurfaceinmeters", "maximumelevationinmeters",
+      "member", "minimumdepthinmeters", "minimumdistanceabovesurfaceinmeters",
+      "minimumelevationinmeters", "modified", "month", "municipality",
+      "nameaccordingto", "nameaccordingtoid", "namepublishedin",
+      "namepublishedinid", "nomenclaturalcode", "nomenclaturalstatus",
+      "occurrencedetails", "occurrenceid", "occurrenceremarks",
+      "occurrencestatus", "order", "originalnameusage", "originalnameusageid",
+      "othercatalognumbers", "ownerinstitutioncode", "parentnameusage",
+      "parentnameusageid", "phylum", "pointradiusspatialfit", "preparations",
+      "previousidentifications", "recordnumber", "recordedby",
+      "reproductivecondition", "rights", "rightsholder", "samplingeffort",
+      "samplingprotocol", "scientificname", "scientificnameauthorship",
+      "scientificnameid", "sex", "specificepithet", "startdayofyear",
+      "stateprovince", "subgenus", "taxonconceptid", "taxonid", "taxonrank",
+      "taxonremarks", "taxonomicstatus", "type", "typestatus",
+      "verbatimcoordinatesystem", "verbatimcoordinates", "verbatimdepth",
+      "verbatimelevation", "verbatimeventdate", "verbatimlatitude",
+      "verbatimlocality", "verbatimlongitude", "verbatimsrs",
+      "verbatimtaxonrank", "vernacularname", "waterbody", "year");
+
+  private static final Log log = LogFactory.getLog(DarwinCore.class);
+
+  /**
+   * Returns the Java data type associated with a Darwin Core term. If the term
+   * is null a {@link NullPointerException} is thrown. If the term is the empty
+   * String a {@link IllegalArgumentException} is thrown. If the term is not a
+   * Darwin Core term, null is returned.
+   * 
+   * @param term the Darwin Core term
+   */
+  public static Type dataType(String term) {
+    Preconditions.checkNotNull(term);
+    Preconditions.checkArgument(term.length() > 0);
+    return DARWIN_CORE_TERMS.contains(term.toLowerCase())
+        ? TypeOracle.typeOf(term) : null;
+  }
+
+  public static boolean isDarwinCoreTerm(String term) {
+    return (term != null) && DARWIN_CORE_TERMS.contains(term.toLowerCase());
   }
 
   public static DarwinCore newMock(DataResource resource) {
     Random rnd = new Random();
-    DarwinCore dwc = DarwinCore.newInstance(resource);
+    DarwinCore dwc = new DarwinCore();
+    dwc.setResource(resource);
     // populate instance
     // set unique sourceId to ensure we can save this record. Otherwise we might
     // get a non unique constraint exception...
@@ -107,240 +212,340 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return dwc;
   }
 
-  // for core record
+  /**
+   * Static factory method that returns a new DarwinCore entity. If any of the
+   * parameters are null, or if a String parameter is the empty String, an
+   * {@link IllegalArgumentException} is thrown.
+   * 
+   * @param sourceId the source id
+   * @param resource the resource
+   * @param taxon the taxon
+   * @param region the region
+   * @param guid the guid
+   */
+  public static DarwinCore with(String sourceId, DataResource resource,
+      Taxon taxon, Region region, String guid) {
+    Preconditions.checkNotNull(sourceId);
+    Preconditions.checkArgument(sourceId.length() > 0);
+    Preconditions.checkNotNull(resource);
+    Preconditions.checkNotNull(taxon);
+    Preconditions.checkNotNull(region);
+    Preconditions.checkNotNull(guid);
+    Preconditions.checkArgument(guid.length() > 0);
+    DarwinCore entity = new DarwinCore();
+    entity.setSourceId(sourceId);
+    entity.setResource(resource);
+    entity.setTaxon(taxon);
+    entity.setRegion(region);
+    entity.setGuid(guid);
+    return entity;
+  }
+
+  private static String geographicPath(DarwinCore entity, RegionType regionType) {
+    Preconditions.checkNotNull(entity);
+    Preconditions.checkNotNull(regionType);
+    String path = StringUtils.trimToEmpty(entity.continent);
+    if (regionType.compareTo(RegionType.Continent) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.continent);
+    }
+    if (regionType.compareTo(RegionType.Waterbody) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.waterbody);
+    }
+    if (regionType.compareTo(RegionType.IslandGroup) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.islandGroup);
+    }
+    if (regionType.compareTo(RegionType.Island) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.island);
+    }
+    if (regionType.compareTo(RegionType.Country) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.country);
+    }
+    if (regionType.compareTo(RegionType.State) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.stateProvince);
+    }
+    if (regionType.compareTo(RegionType.County) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.county);
+    }
+    if (regionType.compareTo(RegionType.Locality) >= 0) {
+      path += "|" + StringUtils.trimToEmpty(entity.locality);
+    }
+    return path;
+  }
+
+  private static String higherTaxonName(DarwinCore entity, Rank rank) {
+    Preconditions.checkNotNull(entity);
+    Preconditions.checkNotNull(rank);
+    if (rank == Rank.Species) {
+      if (entity.specificEpithet != null) {
+        return StringUtils.trimToNull(String.format("%s %s", entity.genus,
+            entity.specificEpithet));
+      } else {
+        return null;
+      }
+    } else if (rank == Rank.InfraSpecies) {
+      if (entity.infraspecificEpithet != null) {
+        return StringUtils.trimToNull(String.format("%s %s %s %s",
+            entity.genus, entity.specificEpithet, entity.taxonRank,
+            entity.infraspecificEpithet));
+      } else {
+        return null;
+      }
+    } else if (rank == Rank.TerminalTaxon) {
+      return entity.scientificName;
+    } else {
+      return StringUtils.trimToNull(propertyValue(entity,
+          StringUtils.capitalize(rank.columnName)));
+    }
+  }
+
+  private static String propertyValue(DarwinCore entity, String propName) {
+    if (propName.equals("Class")) {
+      propName = "Classs";
+    }
+    String getter = String.format("get%s", propName);
+    String value = null;
+    try {
+      Method m = entity.getClass().getMethod(getter);
+      Object obj = m.invoke(entity);
+      if (obj != null) {
+        value = obj.toString();
+      }
+    } catch (Exception e) {
+      log.info(String.format("Unable to get property value for %s", propName));
+    }
+    return value;
+  }
+
+  private static String taxonomyPath(DarwinCore dc, Rank rank) {
+    Preconditions.checkNotNull(dc);
+    Preconditions.checkNotNull(rank);
+    StringBuilder b = new StringBuilder(StringUtils.trimToEmpty(dc.kingdom));
+    if (rank.compareTo(Rank.Phylum) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.phylum));
+    }
+    if (rank.compareTo(Rank.Class) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.classs));
+    }
+    if (rank.compareTo(Rank.Order) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.order));
+    }
+    if (rank.compareTo(Rank.Family) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.family));
+    }
+    if (rank.compareTo(Rank.Genus) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.genus));
+    }
+    if (rank.compareTo(Rank.Species) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.specificEpithet));
+    }
+    if (rank.compareTo(Rank.InfraSpecies) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.infraspecificEpithet));
+    }
+    if (rank.compareTo(Rank.TerminalTaxon) >= 0) {
+      b.append("|" + StringUtils.trimToEmpty(dc.scientificName));
+      b.append(" sec ");
+      b.append(StringUtils.trimToEmpty(dc.nameAccordingTo));
+    }
+    return b.toString();
+  }
+
+  // Calculating the hashCode is expensive so we cache it:
+  private int cachedHashCode = -1;
+  // CoreRecord properties:
   private Long id;
   private String sourceId;
-  // TODO: It looks under Occurrence as if the guid is supposed to be the
-  // occurrenceID, but what if the record is for a Taxon instead?
   @NotNull
   private String guid;
   private String link;
   private boolean isDeleted;
+  private Date dateModified;
 
-  private Date modified;
   @NotNull
   private DataResource resource;
-
-  // DarwinCore derived fields. calculated from raw Strings
+  // Derived properties:
   private Point location = new Point();
   private Taxon taxon;
   private Region region;
   private Date collected;
-
   private Double elevation;
+
   private Double depth;
-
-  // TODO: Determine if these other typed terms need to be have typed variables
-  private int yearint, monthint, dayint, startday, endday, indivcount;
-  private Double coorduncertainty, coordprecision;
-  private Double minelev, maxelev, mindepth, maxdepth, minabove, maxabove;
-  private Double pointradiusfit, footprintfit;
-  private Date identified;
-
-  // 
-  // All Simple DarwinCore terms
-  // 
-  // Dublin Core terms - all record-level
-
-  // TODO: Should the type have an @NotNull annotation?
-  private String type;
-  // dcterms:modified = this.modified
-  private String language;
-  private String rights;
-  private String rightsHolder;
-  private String accessRights; // was private String accessConstraints;
-  private String bibliographicCitation; // was private String citation;
-
-  // Other record-level terms
-  private String institutionID;
-  private String collectionID;
-  private String datasetID;
-  private String institutionCode;
-  private String collectionCode;
-  private String datasetName;
-  private String ownerInstitutionCode;
-  private String basisOfRecord;
-  private String informationWithheld;
-  private String dataGeneralizations;
-  private String dynamicProperties;
-
-  // Occurrence
-  // TODO: It looks as if the guid is supposed to be the occurrenceID, but
-  // what if the record is for a Taxon instead?
-  // occurrenceID = this.guid
-  private String catalogNumber;
-  private String occurrenceDetails;
-  private String occurrenceRemarks;
-
-  // deprecated private String catalogNumberNumeric;
-  private String recordNumber; // was private String collectorNumber;
-  private String recordedBy; // was private String collector;
-  private String individualID;
-  private String individualCount;
-  private String sex;
-  private String lifeStage;
-  private String reproductiveCondition;
-  private String behavior;
-  private String establishmentMeans;
-  private String occurrenceStatus;
-  private String preparations;
-  private String disposition;
-  private String otherCatalogNumbers;
-  private String previousIdentifications;
+  // Simple DarwinCore properties from:
+  // http://code.google.com/p/darwincore/source/browse/trunk/xsd/tdwg_dwc_simple.xsd
+  private String acceptedNameUsage;
+  private String acceptedNameUsageId;
+  private String accessRights;
   private String associatedMedia;
+  private String associatedOccurrences;
   private String associatedReferences;
-  private String associatedOccurrences; // was private String associatedSamples;
   private String associatedSequences;
   private String associatedTaxa;
-  // deprecated private String sampleAttributes;
-
-  // Event
-  private String eventID; // was private String samplingEventID;
-  private String samplingProtocol;
-  private String samplingEffort;
-  // deprecated private String earliestDateCollected;
-  // deprecated private String latestDateCollected;
-  // deprecated private String startTimeOfDay;
-  // deprecated private String endTimeOfDay;
-  private String eventDate;
-  private String eventTime;
-  private String startDayOfYear;
-  private String endDayOfYear;
-  private String year; // was private String yearSampled;
-  private String month; // was private String monthOfYear;
-  private String day; // was private String dayOfMonth;
-  private String verbatimEventDate; // was private String
-  // verbatimCollectingDate;
-  private String habitat;
-  private String fieldNumber;
-  private String fieldNotes;
-  private String eventRemarks; // was private String samplingEventRemarks;
-  // deprecated private String samplingEventAttributes;
-
-  // Location => this.region
-  private String locationID; // was private String samplingLocationID;
-  private String higherGeographyID;
-  private String higherGeography;
+  private String basisOfRecord;
+  private String bed;
+  private String behavior;
+  private String bibliographicCitation;
+  private String catalogNumber;
+  private String classs;
+  private String collectionCode;
+  private String collectionID;
   private String continent;
-  private String waterBody;
-  private String islandGroup;
-  private String island;
+  private String coordinatePrecision;
+  private String coordinateUncertaintyInMeters;
   private String country;
   private String countryCode;
-  private String stateProvince;
   private String county;
-  private String municipality;
-  private String locality;
-  private String verbatimLocality;
-  private String verbatimElevation;
-  private String minimumElevationInMeters;
-  private String maximumElevationInMeters;
-  private String verbatimDepth;
-  private String minimumDepthInMeters;
-  private String maximumDepthInMeters;
-  private String minimumDistanceAboveSurfaceInMeters;
-  // was private String distanceAboveSurfaceInMetersMinimum;
-  private String maximumDistanceAboveSurfaceInMeters;
-  // was private String distanceAboveSurfaceInMetersMaximum;
-  private String locationAccordingTo;
-  private String locationRemarks; // was private String samplingLocationRemarks;
-  private String verbatimCoordinates;
-  private String verbatimLatitude;
-  private String verbatimLongitude;
-  private String verbatimCoordinateSystem;
-  private String verbatimSRS;
+  private String dataGeneralizations;
+  private String datasetID;
+  private String datasetName;
+  private String dateIdentified;
+  private String day;
   private String decimalLatitude;
   private String decimalLongitude;
-  private String geodeticDatum;
-  private String coordinateUncertaintyInMeters;
-  private String coordinatePrecision;
-  private String pointRadiusSpatialFit;
-  private String footprintWKT;
+  private String disposition;
+  private String dynamicProperties;
+  private String earliestAgeOrLowestStage;
+  private String earliestEonOrLowestEonothem;
+  private String earliestEpochOrLowestSeries;
+  private String earliestEraOrLowestErathem;
+  private String earliestPeriodOrLowestSystem;
+  private String endDayOfYear;
+  private String establishmentMeans;
+  private String eventDate;
+  private String eventId;
+  private String eventRemarks;
+  private String eventTime;
+  private String family;
+  private String fieldNotes;
+  private String fieldNumber;
   private String footprintSRS;
   private String footprintSpatialFit;
-  private String georeferencedBy;
+  private String footprintWKT;
+  private String formation;
+  private String genus;
+  private String geodeticDatum;
+  private String geologicalContextId;
   private String georeferenceProtocol;
+  private String georeferenceRemarks;
   private String georeferenceSources;
   private String georeferenceVerificationStatus;
-  private String georeferenceRemarks;
-
-  // GeologicalContext
-  private String geologicalContextID;
-  private String earliestEonOrLowestEonothem;
-  private String latestEonOrHighestEonothem;
-  private String earliestEraOrLowestErathem;
-  private String latestEraOrHighestErathem;
-  private String earliestPeriodOrLowestSystem;
-  private String latestPeriodOrHighestSystem;
-  private String earliestEpochOrLowestSeries;
-  private String latestEpochOrHighestSeries;
-  private String earliestAgeOrLowestStage;
-  private String latestAgeOrHighestStage;
-  private String lowestBiostratigraphicZone;
-  private String highestBiostratigraphicZone;
-  private String lithostratigraphicTerms;
+  private String georeferencedBy;
   private String group;
-  private String formation;
-  private String member;
-  private String bed;
-
-  // Identification
+  private String habitat;
+  private String higherClassification;
+  private String higherGeography;
+  private String higherGeographyID;
+  private String highestBiostratigraphicZone;
   private String identificationID;
-  private String identifiedBy;
-  private String dateIdentified;
+  private String identificationQualifier;
   private String identificationReferences;
   private String identificationRemarks;
-  private String identificationQualifier;
-  private String typeStatus;
-
-  // Taxon => this.taxon
-  private String taxonID;
-  private String scientificNameID;
-  private String acceptedNameUsageID; // was private String acceptedTaxonID;
-  private String parentNameUsageID; // was private String higherTaxonID;
-  private String originalNameUsageID; // was private String basionymID;
-  private String nameAccordingToID;
-  private String namePublishedInID;
-  private String taxonConceptID;
-  private String scientificName;
-  // deprecated private String binomial;
-  private String acceptedNameUsage; // was private String acceptedTaxon;
-  private String parentNameUsage;
-  private String originalNameUsage; // was private String basionym;
-  private String nameAccordingTo; // was private String taxonAccordingTo;
-  private String namePublishedIn;
-  private String higherClassification; // was private String higherTaxon;
-  private String kingdom;
-  private String phylum;
-  private String classs;
-  private String order;
-  private String family;
-  private String genus;
-  private String subgenus;
-  private String specificEpithet;
+  private String identifiedBy;
+  private String individualCount;
+  private String individualID;
+  private String informationWithheld;
   private String infraspecificEpithet;
-  private String taxonRank;
-  private String verbatimTaxonRank;
-  private String scientificNameAuthorship;
-  private String vernacularName;
+  private String institutionCode;
+  private String institutionId;
+  private String island;
+  private String islandGroup;
+  private String kingdom;
+  private String language;
+  private String latestAgeOrHighestStage;
+  private String latestEonOrHighestEonothem;
+  private String latestEpochOrHighestSeries;
+  private String latestEraOrHighestErathem;
+  private String latestPeriodOrHighestSystem;
+  private String lifeStage;
+  private String lithostratigraphicTerms;
+  private String locality;
+  private String locationAccordingTo;
+  private String locationId;
+  private String locationRemarks;
+  private String lowestBiostratigraphicZone;
+  private String maximumDepthInMeters;
+  private String maximumDistanceAboveSurfaceInMeters;
+  private String maximumElevationInMeters;
+  private String member;
+  private String minimumDepthInMeters;
+  private String minimumDistanceAboveSurfaceInMeters;
+  private String minimumElevationInMeters;
+  private String modified;
+  private String month;
+  private String municipality;
+  private String nameAccordingTo;
+  private String nameAccordingToId;
+  private String namePublishedIn;
+  private String namePublishedInId;
   private String nomenclaturalCode;
-  private String taxonomicStatus;
   private String nomenclaturalStatus;
+  private String occurrenceDetails;
+  private String occurrenceId;
+  private String occurrenceRemarks;
+  private String occurrenceStatus;
+  private String order;
+  private String originalNameUsage;
+  private String originalNameUsageId;
+  private String otherCatalogNumbers;
+  private String ownerInstitutionCode;
+  private String parentNameUsage;
+  private String parentNameUsageId;
+  private String phylum;
+  private String pointRadiusSpatialFit;
+  private String preparations;
+  private String previousIdentifications;
+  private String recordNumber;
+  private String recordedBy;
+  private String reproductiveCondition;
+  private String rights;
+  private String rightsHolder;
+  private String samplingEffort;
+  private String samplingProtocol;
+  private String scientificName;
+  private String scientificNameAuthorship;
+  private String scientificNameId;
+  private String sex;
+  private String specificEpithet;
+  private String startDayOfYear;
+  private String stateProvince;
+  private String subgenus;
+  private String taxonConceptId;
+  private String taxonID;
+  private String taxonRank;
   private String taxonRemarks;
+  private String taxonomicStatus;
+  private String type;
+  private String typeStatus;
+  private String verbatimCoordinateSystem;
+  private String verbatimCoordinates;
+  private String verbatimDepth;
+  private String verbatimElevation;
+  private String verbatimEventDate;
+  private String verbatimLatitude;
+  private String verbatimLocality;
+  private String verbatimLongitude;
+  private String verbatimSRS;
+  private String verbatimTaxonRank;
+  private String vernacularName;
+  private String waterbody;
 
-  // ResourceRelationship terms omitted - not part of Simple Darwin Core
-  // MeasurementOrFact terms omitted - not part of Simple Darwin Core
+  private String year;
 
+  /**
+   * Note: This class has a natural ordering that is inconsistent with equals.
+   */
   public int compareTo(DarwinCore myClass) {
     return new CompareToBuilder().append(this.institutionCode,
         myClass.institutionCode).append(this.collectionCode,
         myClass.collectionCode).append(this.catalogNumber,
         myClass.catalogNumber).append(this.getScientificName(),
-        myClass.getScientificName()).append(this.sourceId, myClass.sourceId)
-        .append(this.guid, myClass.guid).toComparison();
+        myClass.getScientificName()).append(this.sourceId, myClass.sourceId).append(
+        this.guid, myClass.guid).toComparison();
   }
 
   /**
+   * Checks equality on {@link CoreRecord} properties (guid, link, sourceId) and
+   * all Darwin Core properties.
+   * 
    * @see java.lang.Object#equals(Object)
    */
   @Override
@@ -351,33 +556,191 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     if (!(object instanceof DarwinCore)) {
       return false;
     }
-    DarwinCore dwc = (DarwinCore) object;
-    return this.hashCode() == dwc.hashCode();
+    DarwinCore dc = (DarwinCore) object;
+    return Objects.equal(guid, dc.guid)
+        && Objects.equal(link, dc.link)
+        && Objects.equal(sourceId, dc.sourceId)
+        && Objects.equal(acceptedNameUsage, dc.acceptedNameUsage)
+        && Objects.equal(acceptedNameUsageId, dc.acceptedNameUsageId)
+        && Objects.equal(accessRights, dc.accessRights)
+        && Objects.equal(associatedMedia, dc.associatedMedia)
+        && Objects.equal(associatedOccurrences, dc.associatedOccurrences)
+        && Objects.equal(associatedReferences, dc.associatedReferences)
+        && Objects.equal(associatedSequences, dc.associatedSequences)
+        && Objects.equal(associatedTaxa, dc.associatedTaxa)
+        && Objects.equal(basisOfRecord, dc.basisOfRecord)
+        && Objects.equal(bed, dc.bed)
+        && Objects.equal(behavior, dc.behavior)
+        && Objects.equal(bibliographicCitation, dc.bibliographicCitation)
+        && Objects.equal(catalogNumber, dc.catalogNumber)
+        && Objects.equal(collectionCode, dc.collectionCode)
+        && Objects.equal(collectionID, dc.collectionID)
+        && Objects.equal(continent, dc.continent)
+        && Objects.equal(coordinatePrecision, dc.coordinatePrecision)
+        && Objects.equal(coordinateUncertaintyInMeters,
+            dc.coordinateUncertaintyInMeters)
+        && Objects.equal(country, dc.country)
+        && Objects.equal(countryCode, dc.countryCode)
+        && Objects.equal(county, dc.county)
+        && Objects.equal(dataGeneralizations, dc.dataGeneralizations)
+        && Objects.equal(datasetID, dc.datasetID)
+        && Objects.equal(datasetName, dc.datasetName)
+        && Objects.equal(dateIdentified, dc.dateIdentified)
+        && Objects.equal(day, dc.day)
+        && Objects.equal(decimalLatitude, dc.decimalLatitude)
+        && Objects.equal(decimalLongitude, dc.decimalLongitude)
+        && Objects.equal(disposition, dc.disposition)
+        && Objects.equal(dynamicProperties, dc.dynamicProperties)
+        && Objects.equal(earliestAgeOrLowestStage, dc.earliestAgeOrLowestStage)
+        && Objects.equal(earliestEonOrLowestEonothem,
+            dc.earliestEonOrLowestEonothem)
+        && Objects.equal(earliestEpochOrLowestSeries,
+            dc.earliestEpochOrLowestSeries)
+        && Objects.equal(earliestEraOrLowestErathem,
+            dc.earliestEraOrLowestErathem)
+        && Objects.equal(earliestPeriodOrLowestSystem,
+            dc.earliestPeriodOrLowestSystem)
+        && Objects.equal(endDayOfYear, dc.endDayOfYear)
+        && Objects.equal(establishmentMeans, dc.establishmentMeans)
+        && Objects.equal(eventDate, dc.eventDate)
+        && Objects.equal(eventId, dc.eventId)
+        && Objects.equal(eventRemarks, dc.eventRemarks)
+        && Objects.equal(eventTime, dc.eventTime)
+        && Objects.equal(family, dc.family)
+        && Objects.equal(fieldNotes, dc.fieldNotes)
+        && Objects.equal(fieldNumber, dc.fieldNumber)
+        && Objects.equal(footprintSRS, dc.footprintSRS)
+        && Objects.equal(footprintSpatialFit, dc.footprintSpatialFit)
+        && Objects.equal(footprintWKT, dc.footprintWKT)
+        && Objects.equal(formation, dc.formation)
+        && Objects.equal(genus, dc.genus)
+        && Objects.equal(geodeticDatum, dc.geodeticDatum)
+        && Objects.equal(geologicalContextId, dc.geologicalContextId)
+        && Objects.equal(georeferenceProtocol, dc.georeferenceProtocol)
+        && Objects.equal(georeferenceRemarks, dc.georeferenceRemarks)
+        && Objects.equal(georeferenceSources, dc.georeferenceSources)
+        && Objects.equal(georeferenceVerificationStatus,
+            dc.georeferenceVerificationStatus)
+        && Objects.equal(georeferencedBy, dc.georeferencedBy)
+        && Objects.equal(group, dc.group)
+        && Objects.equal(habitat, dc.habitat)
+        && Objects.equal(higherClassification, dc.higherClassification)
+        && Objects.equal(higherGeography, dc.higherGeography)
+        && Objects.equal(higherGeographyID, dc.higherGeographyID)
+        && Objects.equal(highestBiostratigraphicZone,
+            dc.highestBiostratigraphicZone)
+        && Objects.equal(identificationID, dc.identificationID)
+        && Objects.equal(identificationQualifier, dc.identificationQualifier)
+        && Objects.equal(identificationReferences, dc.identificationReferences)
+        && Objects.equal(identificationRemarks, dc.identificationRemarks)
+        && Objects.equal(identifiedBy, dc.identifiedBy)
+        && Objects.equal(individualCount, dc.individualCount)
+        && Objects.equal(individualID, dc.individualID)
+        && Objects.equal(informationWithheld, dc.informationWithheld)
+        && Objects.equal(infraspecificEpithet, dc.infraspecificEpithet)
+        && Objects.equal(institutionCode, dc.institutionCode)
+        && Objects.equal(institutionId, dc.institutionId)
+        && Objects.equal(island, dc.island)
+        && Objects.equal(islandGroup, dc.islandGroup)
+        && Objects.equal(kingdom, dc.kingdom)
+        && Objects.equal(language, dc.language)
+        && Objects.equal(latestAgeOrHighestStage, dc.latestAgeOrHighestStage)
+        && Objects.equal(latestEonOrHighestEonothem,
+            dc.latestEonOrHighestEonothem)
+        && Objects.equal(latestEpochOrHighestSeries,
+            dc.latestEpochOrHighestSeries)
+        && Objects.equal(latestEraOrHighestErathem,
+            dc.latestEraOrHighestErathem)
+        && Objects.equal(latestPeriodOrHighestSystem,
+            dc.latestPeriodOrHighestSystem)
+        && Objects.equal(lifeStage, dc.lifeStage)
+        && Objects.equal(lithostratigraphicTerms, dc.lithostratigraphicTerms)
+        && Objects.equal(locality, dc.locality)
+        && Objects.equal(locationAccordingTo, dc.locationAccordingTo)
+        && Objects.equal(locationId, dc.locationId)
+        && Objects.equal(locationRemarks, dc.locationRemarks)
+        && Objects.equal(lowestBiostratigraphicZone,
+            dc.lowestBiostratigraphicZone)
+        && Objects.equal(maximumDepthInMeters, dc.maximumDepthInMeters)
+        && Objects.equal(maximumDistanceAboveSurfaceInMeters,
+            dc.maximumDistanceAboveSurfaceInMeters)
+        && Objects.equal(maximumElevationInMeters, dc.maximumElevationInMeters)
+        && Objects.equal(member, dc.member)
+        && Objects.equal(minimumDepthInMeters, dc.minimumDepthInMeters)
+        && Objects.equal(minimumDistanceAboveSurfaceInMeters,
+            dc.minimumDistanceAboveSurfaceInMeters)
+        && Objects.equal(minimumElevationInMeters, dc.minimumElevationInMeters)
+        && Objects.equal(modified, dc.modified)
+        && Objects.equal(month, dc.month)
+        && Objects.equal(municipality, dc.municipality)
+        && Objects.equal(nameAccordingTo, dc.nameAccordingTo)
+        && Objects.equal(nameAccordingToId, dc.nameAccordingToId)
+        && Objects.equal(namePublishedIn, dc.namePublishedIn)
+        && Objects.equal(namePublishedInId, dc.namePublishedInId)
+        && Objects.equal(nomenclaturalCode, dc.nomenclaturalCode)
+        && Objects.equal(nomenclaturalStatus, dc.nomenclaturalStatus)
+        && Objects.equal(occurrenceDetails, dc.occurrenceDetails)
+        && Objects.equal(occurrenceId, dc.occurrenceId)
+        && Objects.equal(occurrenceRemarks, dc.occurrenceRemarks)
+        && Objects.equal(occurrenceStatus, dc.occurrenceStatus)
+        && Objects.equal(order, dc.order)
+        && Objects.equal(originalNameUsage, dc.originalNameUsage)
+        && Objects.equal(originalNameUsageId, dc.originalNameUsageId)
+        && Objects.equal(otherCatalogNumbers, dc.otherCatalogNumbers)
+        && Objects.equal(ownerInstitutionCode, dc.ownerInstitutionCode)
+        && Objects.equal(parentNameUsage, dc.parentNameUsage)
+        && Objects.equal(parentNameUsageId, dc.parentNameUsageId)
+        && Objects.equal(phylum, dc.phylum)
+        && Objects.equal(pointRadiusSpatialFit, dc.pointRadiusSpatialFit)
+        && Objects.equal(preparations, dc.preparations)
+        && Objects.equal(previousIdentifications, dc.previousIdentifications)
+        && Objects.equal(recordNumber, dc.recordNumber)
+        && Objects.equal(recordedBy, dc.recordedBy)
+        && Objects.equal(reproductiveCondition, dc.reproductiveCondition)
+        && Objects.equal(rights, dc.rights)
+        && Objects.equal(rightsHolder, dc.rightsHolder)
+        && Objects.equal(samplingEffort, dc.samplingEffort)
+        && Objects.equal(samplingProtocol, dc.samplingProtocol)
+        && Objects.equal(scientificName, dc.scientificName)
+        && Objects.equal(scientificNameAuthorship, dc.scientificNameAuthorship)
+        && Objects.equal(scientificNameId, dc.scientificNameId)
+        && Objects.equal(sex, dc.sex)
+        && Objects.equal(specificEpithet, dc.specificEpithet)
+        && Objects.equal(startDayOfYear, dc.startDayOfYear)
+        && Objects.equal(stateProvince, dc.stateProvince)
+        && Objects.equal(subgenus, dc.subgenus)
+        && Objects.equal(taxonConceptId, dc.taxonConceptId)
+        && Objects.equal(taxonID, dc.taxonID)
+        && Objects.equal(taxonRank, dc.taxonRank)
+        && Objects.equal(taxonRemarks, dc.taxonRemarks)
+        && Objects.equal(taxonomicStatus, dc.taxonomicStatus)
+        && Objects.equal(type, dc.type)
+        && Objects.equal(typeStatus, dc.typeStatus)
+        && Objects.equal(verbatimCoordinateSystem, dc.verbatimCoordinateSystem)
+        && Objects.equal(verbatimCoordinates, dc.verbatimCoordinates)
+        && Objects.equal(verbatimDepth, dc.verbatimDepth)
+        && Objects.equal(verbatimElevation, dc.verbatimElevation)
+        && Objects.equal(verbatimEventDate, dc.verbatimEventDate)
+        && Objects.equal(verbatimLatitude, dc.verbatimLatitude)
+        && Objects.equal(verbatimLocality, dc.verbatimLocality)
+        && Objects.equal(verbatimLongitude, dc.verbatimLongitude)
+        && Objects.equal(verbatimSRS, dc.verbatimSRS)
+        && Objects.equal(verbatimTaxonRank, dc.verbatimTaxonRank)
+        && Objects.equal(vernacularName, dc.vernacularName)
+        && Objects.equal(waterbody, dc.waterbody)
+        && Objects.equal(year, dc.year);
   }
 
-  // deprecated in favor of acceptedNameUsage
-  // public String getAcceptedTaxon() {
-  // return acceptedTaxon;
-  // }
+  @Lob
   public String getAcceptedNameUsage() {
     return acceptedNameUsage;
   }
 
-  // deprecated in favor of acceptedNameUsageID
-  // @Column(length = 128)
-  // public String getAcceptedTaxonID() {
-  // return acceptedTaxonID;
-  // }
-  @Column(length = 128)
-  public String getAcceptedNameUsageID() {
-    return acceptedNameUsageID;
+  @Lob
+  public String getAcceptedNameUsageId() {
+    return acceptedNameUsageId;
   }
 
-  // deprecated in favor of accessRights
-  // @Lob
-  // public String getAccessConstraints() {
-  // return accessConstraints;
-  // }
   @Lob
   public String getAccessRights() {
     return accessRights;
@@ -388,11 +751,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return associatedMedia;
   }
 
-  // deprecated in favor of associatedOccurrences
-  // @Lob
-  // public String getAssociatedSamples() {
-  // return associatedSamples;
-  // }
   @Lob
   public String getAssociatedOccurrences() {
     return associatedOccurrences;
@@ -419,24 +777,23 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return basisOfRecord;
   }
 
+  @Lob
   public String getBed() {
     return bed;
   }
 
+  // SampleEvent
   public String getBehavior() {
     return behavior;
   }
 
-  // deprecated in favor of bibliographicCitation
-  // public String getCitation() {
-  // return citation;
-  // }
+  @Lob
   public String getBibliographicCitation() {
     return bibliographicCitation;
   }
 
   @Column(length = 64)
-  @org.hibernate.annotations.Index(name = "idx_dwc_catalog_number")
+  @Index(name = "idx_dwc_catalog_number")
   public String getCatalogNumber() {
     return catalogNumber;
   }
@@ -446,13 +803,13 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return classs;
   }
 
-  @org.hibernate.annotations.Index(name = "dwc_date_collected")
+  @Index(name = "dwc_date_collected")
   public Date getCollected() {
     return collected;
   }
 
   @Column(length = 128)
-  @org.hibernate.annotations.Index(name = "idx_dwc_collection_code")
+  @Index(name = "idx_dwc_collection_code")
   public String getCollectionCode() {
     return collectionCode;
   }
@@ -483,7 +840,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   }
 
   @Column(length = 128)
-  @org.hibernate.annotations.Index(name = "idx_dwc_country")
+  @Index(name = "idx_dwc_country")
   public String getCountry() {
     return country;
   }
@@ -497,10 +854,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return county;
   }
 
-  // deprecated in favor of dataGeneralizations
-  // public String getGeneralizations() {
-  // return generalizations;
-  // }
+  @Lob
   public String getDataGeneralizations() {
     return dataGeneralizations;
   }
@@ -510,9 +864,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return datasetID;
   }
 
-  // TODO: Should datasetName have an index, as collectionCode does?
-  @Column(length = 128)
-  // @org.hibernate.annotations.Index(name = "idx_dwc_dataset_name")
+  @Lob
   public String getDatasetName() {
     return datasetName;
   }
@@ -522,12 +874,11 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return dateIdentified;
   }
 
-  // deprecated in favor of day
-  // @Column(length = 16)
-  // public String getDayOfMonth() {
-  // return dayOfMonth;
-  // }
-  @Column(length = 16)
+  public Date getDateModified() {
+    return dateModified;
+  }
+
+  @Lob
   public String getDay() {
     return day;
   }
@@ -546,43 +897,37 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return depth;
   }
 
-  // deprecated
-  // @Column(length = 128)
-  // public String getBinomial() {
-  // return binomial;
-  // }
-
   @Column(length = 128)
   public String getDisposition() {
     return disposition;
   }
 
-  // deprecated
-  // @Column(length = 64)
-  // public String getCatalogNumberNumeric() {
-  // return catalogNumberNumeric;
-  // }
-
+  @Lob
   public String getDynamicProperties() {
     return dynamicProperties;
   }
 
+  @Lob
   public String getEarliestAgeOrLowestStage() {
     return earliestAgeOrLowestStage;
   }
 
+  @Lob
   public String getEarliestEonOrLowestEonothem() {
     return earliestEonOrLowestEonothem;
   }
 
+  @Lob
   public String getEarliestEpochOrLowestSeries() {
     return earliestEpochOrLowestSeries;
   }
 
+  @Lob
   public String getEarliestEraOrLowestErathem() {
     return earliestEraOrLowestErathem;
   }
 
+  @Lob
   public String getEarliestPeriodOrLowestSystem() {
     return earliestPeriodOrLowestSystem;
   }
@@ -600,50 +945,22 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return establishmentMeans;
   }
 
-  // deprecated in favor of eventDate
-  // @Column(length = 64)
-  // public String getEarliestDateCollected() {
-  // return earliestDateCollected;
-  // }
-  // @Column(length = 64)
-  // public String getLatestDateCollected() {
-  // return latestDateCollected;
-  // }
-  @Column(length = 64)
+  @Lob
   public String getEventDate() {
     return eventDate;
   }
 
-  // deprecated in favor of eventID
-  // @Column(length = 64)
-  // public String getSamplingEventID() {
-  // return samplingEventID;
-  // }
-  @Column(length = 64)
-  public String getEventID() {
-    return eventID;
+  @Lob
+  public String getEventId() {
+    return eventId;
   }
 
-  // deprecated in favor of eventRemarks
-  // @Lob
-  // public String getSamplingEventRemarks() {
-  // return samplingEventRemarks;
-  // }
   @Lob
   public String getEventRemarks() {
     return eventRemarks;
   }
 
-  // deprecated in favor of eventTime
-  // @Column(length = 32)
-  // public String getEndTimeOfDay() {
-  // return endTimeOfDay;
-  // }
-  // @Column(length = 32)
-  // public String getStartTimeOfDay() {
-  // return startTimeOfDay;
-  // }
-  @Column(length = 32)
+  @Lob
   public String getEventTime() {
     return eventTime;
   }
@@ -668,7 +985,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return footprintSpatialFit;
   }
 
-  @Column(length = 128)
+  @Lob
   public String getFootprintSRS() {
     return footprintSRS;
   }
@@ -677,6 +994,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return footprintWKT;
   }
 
+  @Lob
   public String getFormation() {
     return formation;
   }
@@ -686,49 +1004,24 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return genus;
   }
 
-  @Column(length = 128)
+  @Column(length = 64)
   public String getGeodeticDatum() {
     return geodeticDatum;
   }
 
   @Transient
   public String getGeographyPath() {
-    return getGeographyPath(RegionType.Locality);
+    return geographicPath(this, RegionType.Locality);
   }
 
   @Transient
-  public String getGeographyPath(RegionType regionType) {
-    // String path = StringUtils.trimToEmpty(getKingdom()); // jrw - assumed bug
-    String path = StringUtils.trimToEmpty(getContinent());
-    if (regionType.compareTo(RegionType.Continent) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getContinent());
-    }
-    if (regionType.compareTo(RegionType.Waterbody) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getWaterBody());
-    }
-    if (regionType.compareTo(RegionType.IslandGroup) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getIslandGroup());
-    }
-    if (regionType.compareTo(RegionType.Island) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getIsland());
-    }
-    if (regionType.compareTo(RegionType.Country) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getCountry());
-    }
-    if (regionType.compareTo(RegionType.State) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getStateProvince());
-    }
-    if (regionType.compareTo(RegionType.County) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getCounty());
-    }
-    if (regionType.compareTo(RegionType.Locality) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getLocality());
-    }
-    return path;
+  public String getGeographyPath(RegionType type) {
+    return geographicPath(this, type);
   }
 
-  public String getGeologicalContextID() {
-    return geologicalContextID;
+  @Lob
+  public String getGeologicalContextId() {
+    return geologicalContextId;
   }
 
   @Column(length = 128)
@@ -755,12 +1048,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return georeferenceVerificationStatus;
   }
 
+  @Lob
+  @Column(name = "group_")
   public String getGroup() {
     return group;
   }
 
   @Column(length = 128, unique = true)
-  @org.hibernate.annotations.Index(name = "guid")
+  @Index(name = "guid")
   public String getGuid() {
     return guid;
   }
@@ -769,10 +1064,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return habitat;
   }
 
-  // deprecated in favor of higherClassification
-  // public String getHigherTaxon() {
-  // return higherTaxon;
-  // }
+  @Lob
   public String getHigherClassification() {
     return higherClassification;
   }
@@ -788,34 +1080,17 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
 
   @Transient
   public String getHigherGeographyName(RegionType regionType) {
-    return StringUtils.trimToNull(getPropertyValue(StringUtils
-        .capitalise(regionType.columnName)));
+    return StringUtils.trimToNull(propertyValue(this,
+        StringUtils.capitalize(regionType.columnName)));
   }
 
   @Transient
   public String getHigherTaxonName(Rank rank) {
-    if (rank == Rank.Species) {
-      if (getSpecificEpithet() != null) {
-        return StringUtils.trimToNull(String.format("%s %s", getGenus(),
-            getSpecificEpithet()));
-      } else {
-        return null;
-      }
-    } else if (rank == Rank.InfraSpecies) {
-      if (getInfraspecificEpithet() != null) {
-        return StringUtils.trimToNull(String.format("%s %s %s %s", getGenus(),
-            getSpecificEpithet(), getTaxonRank(), getInfraspecificEpithet()));
-      } else {
-        return null;
-      }
-    } else if (rank == Rank.TerminalTaxon) {
-      return getScientificName();
-    } else {
-      return StringUtils.trimToNull(getPropertyValue(StringUtils
-          .capitalise(rank.columnName)));
-    }
+    Preconditions.checkNotNull(rank);
+    return higherTaxonName(this, rank);
   }
 
+  @Lob
   public String getHighestBiostratigraphicZone() {
     return highestBiostratigraphicZone;
   }
@@ -872,14 +1147,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   }
 
   @Column(length = 128)
-  @org.hibernate.annotations.Index(name = "idx_dwc_institution_code")
+  @Index(name = "idx_dwc_institution_code")
   public String getInstitutionCode() {
     return institutionCode;
   }
 
-  @Column(length = 128)
-  public String getInstitutionID() {
-    return institutionID;
+  @Lob
+  public String getInstitutionId() {
+    return institutionId;
   }
 
   public String getIsland() {
@@ -901,22 +1176,27 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return language;
   }
 
+  @Lob
   public String getLatestAgeOrHighestStage() {
     return latestAgeOrHighestStage;
   }
 
+  @Lob
   public String getLatestEonOrHighestEonothem() {
     return latestEonOrHighestEonothem;
   }
 
+  @Lob
   public String getLatestEpochOrHighestSeries() {
     return latestEpochOrHighestSeries;
   }
 
+  @Lob
   public String getLatestEraOrHighestErathem() {
     return latestEraOrHighestErathem;
   }
 
+  @Lob
   public String getLatestPeriodOrHighestSystem() {
     return latestPeriodOrHighestSystem;
   }
@@ -935,6 +1215,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return link;
   }
 
+  @Lob
   public String getLithostratigraphicTerms() {
     return lithostratigraphicTerms;
   }
@@ -946,7 +1227,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
 
   @AttributeOverrides( {
       @AttributeOverride(name = "latitude", column = @Column(name = "lat")),
-      @AttributeOverride(name = "longitude", column = @Column(name = "lon")) })
+      @AttributeOverride(name = "longitude", column = @Column(name = "lon"))})
   public Point getLocation() {
     // to prevent NPE create new empty point in case it doesn't exist yet
     if (location == null) {
@@ -955,25 +1236,16 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return location;
   }
 
+  @Lob
   public String getLocationAccordingTo() {
     return locationAccordingTo;
   }
 
-  // deprecated in favor of locationID
-  // @Column(length = 128)
-  // public String getSamplingLocationID() {
-  // return samplingLocationID;
-  // }
-  @Column(length = 128)
-  public String getLocationID() {
-    return locationID;
+  @Lob
+  public String getLocationId() {
+    return locationId;
   }
 
-  // deprecated in favor of locationRemarks
-  // @Lob
-  // public String getSamplingLocationRemarks() {
-  // return samplingLocationRemarks;
-  // }
   @Lob
   public String getLocationRemarks() {
     return locationRemarks;
@@ -984,6 +1256,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return location.getLongitude();
   }
 
+  @Lob
   public String getLowestBiostratigraphicZone() {
     return lowestBiostratigraphicZone;
   }
@@ -993,12 +1266,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return maximumDepthInMeters;
   }
 
-  // deprecated in favor of maximumDistanceAboveSurfaceInMeters
-  // @Column(length = 32)
-  // public String getDistanceAboveSurfaceInMetersMaximum() {
-  // return distanceAboveSurfaceInMetersMaximum;
-  // }
-  @Column(length = 32)
+  @Lob
   public String getMaximumDistanceAboveSurfaceInMeters() {
     return maximumDistanceAboveSurfaceInMeters;
   }
@@ -1008,6 +1276,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return maximumElevationInMeters;
   }
 
+  @Lob
   public String getMember() {
     return member;
   }
@@ -1017,12 +1286,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return minimumDepthInMeters;
   }
 
-  // deprecated in favor of minimumDistanceAboveSurfaceInMeters
-  // @Column(length = 32)
-  // public String getDistanceAboveSurfaceInMetersMinimum() {
-  // return distanceAboveSurfaceInMetersMinimum;
-  // }
-  @Column(length = 32)
+  @Lob
   public String getMinimumDistanceAboveSurfaceInMeters() {
     return minimumDistanceAboveSurfaceInMeters;
   }
@@ -1032,44 +1296,38 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return minimumElevationInMeters;
   }
 
-  public Date getModified() {
+  @Lob
+  public String getModified() {
     return modified;
   }
 
-  // deprecated in favor of month
-  // @Column(length = 16)
-  // public String getMonthOfYear() {
-  // return monthOfYear;
-  // }
-  @Column(length = 16)
+  @Lob
   public String getMonth() {
     return month;
   }
 
+  @Lob
   public String getMunicipality() {
     return municipality;
   }
 
-  // deprecated in favor of nameAccordingTo
-  // public String getTaxonAccordingTo() {
-  // return taxonAccordingTo;
-  // }
+  @Lob
   public String getNameAccordingTo() {
     return nameAccordingTo;
   }
 
-  @Column(length = 128)
-  public String getNameAccordingToID() {
-    return nameAccordingToID;
+  @Lob
+  public String getNameAccordingToId() {
+    return nameAccordingToId;
   }
 
   public String getNamePublishedIn() {
     return namePublishedIn;
   }
 
-  @Column(length = 128)
-  public String getNamePublishedInID() {
-    return namePublishedInID;
+  @Lob
+  public String getNamePublishedInId() {
+    return namePublishedInId;
   }
 
   @Column(length = 64)
@@ -1082,24 +1340,22 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return nomenclaturalStatus;
   }
 
-  // deprecated in favor of occurrenceDetails
-  // public String getSampleDetails() {
-  // return sampleDetails;
-  // }
+  @Lob
   public String getOccurrenceDetails() {
     return occurrenceDetails;
   }
 
-  // deprecated in favor of OccurrenceRemarks
-  // @Lob
-  // public String getSampleRemarks() {
-  // return sampleRemarks;
-  // }
+  @Lob
+  public String getOccurrenceId() {
+    return occurrenceId;
+  }
+
   @Lob
   public String getOccurrenceRemarks() {
     return occurrenceRemarks;
   }
 
+  @Lob
   public String getOccurrenceStatus() {
     return occurrenceStatus;
   }
@@ -1109,45 +1365,33 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return order;
   }
 
-  // deprecated in favor of originalNameUsage
-  // public String getBasionym() {
-  // return basionym;
-  // }
+  @Lob
   public String getOriginalNameUsage() {
     return originalNameUsage;
   }
 
-  // deprecated in favor of originalNameUsageID
-  // @Column(length = 128)
-  // public String getBasionymID() {
-  // return basionymID;
-  // }
-  @Column(length = 128)
-  public String getOriginalNameUsageID() {
-    return originalNameUsageID;
+  @Lob
+  public String getOriginalNameUsageId() {
+    return originalNameUsageId;
   }
 
   public String getOtherCatalogNumbers() {
     return otherCatalogNumbers;
   }
 
-  @Column(length = 128)
+  @Lob
   public String getOwnerInstitutionCode() {
     return ownerInstitutionCode;
   }
 
+  @Lob
   public String getParentNameUsage() {
     return parentNameUsage;
   }
 
-  // deprecated in favor of parentNameUsageID
-  // @Column(length = 128)
-  // public String getHigherTaxonID() {
-  // return higherTaxonID;
-  // }
-  @Column(length = 128)
-  public String getParentNameUsageID() {
-    return parentNameUsageID;
+  @Lob
+  public String getParentNameUsageId() {
+    return parentNameUsageId;
   }
 
   @Column(length = 128)
@@ -1171,31 +1415,15 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
 
   @Transient
   public String getPropertyValue(ExtensionProperty property) {
-    return getPropertyValue(property.getName());
+    return propertyValue(this, property.getName());
   }
 
-  // deprecated in favor of recordedBy
-  // @Column(length = 128)
-  // public String getCollector() {
-  // return collector;
-  // }
-  @Column(length = 128)
+  @Lob
   public String getRecordedBy() {
     return recordedBy;
   }
 
-  // deprecated
-  // @Lob
-  // public String getSampleAttributes() {
-  // return sampleAttributes;
-  // }
-
-  // deprecated in favor of recordNumber
-  // @Column(length = 64)
-  // public String getCollectorNumber() {
-  // return collectorNumber;
-  // }
-  @Column(length = 64)
+  @Lob
   public String getRecordNumber() {
     return recordNumber;
   }
@@ -1208,12 +1436,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   public String getReproductiveCondition() {
     return reproductiveCondition;
   }
-
-  // deprecated
-  // @Lob
-  // public String getSamplingEventAttributes() {
-  // return samplingEventAttributes;
-  // }
 
   @ManyToOne
   public DataResource getResource() {
@@ -1240,6 +1462,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return guid;
   }
 
+  @Lob
   public String getSamplingEffort() {
     return samplingEffort;
   }
@@ -1248,7 +1471,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return samplingProtocol;
   }
 
-  @org.hibernate.annotations.Index(name = "idx_dwc_scientific_name")
+  @Index(name = "idx_dwc_scientific_name")
   public String getScientificName() {
     return scientificName;
   }
@@ -1257,9 +1480,9 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return scientificNameAuthorship;
   }
 
-  @Column(length = 128)
-  public String getScientificNameID() {
-    return scientificNameID;
+  @Lob
+  public String getScientificNameId() {
+    return scientificNameId;
   }
 
   @Column(length = 128)
@@ -1268,7 +1491,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   }
 
   @Column(length = 64)
-  @org.hibernate.annotations.Index(name = "dwc_source_id")
+  @Index(name = "dwc_source_id")
   public String getSourceId() {
     return sourceId;
   }
@@ -1297,11 +1520,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return taxon;
   }
 
-  @Column(length = 128)
-  public String getTaxonConceptID() {
-    return taxonConceptID;
+  @Lob
+  public String getTaxonConceptId() {
+    return taxonConceptId;
   }
 
+  // Taxon => this.taxon
   @Column(length = 128)
   public String getTaxonID() {
     return taxonID;
@@ -1312,46 +1536,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return taxonomicStatus;
   }
 
-  /**
-   * 9 rank strings joined by | pipe symbol, starting with kingdom, ending in
-   * Genus, SpeciesEpi, InfraSpeciesEpi and finally ScientificName
-   * 
-   * @return
-   */
   @Transient
   public String getTaxonomyPath() {
-    return getTaxonomyPath(Rank.TerminalTaxon);
+    return taxonomyPath(this, Rank.TerminalTaxon);
   }
 
   @Transient
   public String getTaxonomyPath(Rank rank) {
-    String path = StringUtils.trimToEmpty(getKingdom());
-    if (rank.compareTo(Rank.Phylum) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getPhylum());
-    }
-    if (rank.compareTo(Rank.Class) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getClasss());
-    }
-    if (rank.compareTo(Rank.Order) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getOrder());
-    }
-    if (rank.compareTo(Rank.Family) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getFamily());
-    }
-    if (rank.compareTo(Rank.Genus) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getGenus());
-    }
-    if (rank.compareTo(Rank.Species) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getSpecificEpithet());
-    }
-    if (rank.compareTo(Rank.InfraSpecies) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getInfraspecificEpithet());
-    }
-    if (rank.compareTo(Rank.TerminalTaxon) >= 0) {
-      path += "|" + StringUtils.trimToEmpty(getScientificName()) + " sec "
-          + StringUtils.trimToEmpty(getNameAccordingTo());
-    }
-    return path;
+    return taxonomyPath(this, rank);
   }
 
   @Column(length = 128)
@@ -1359,13 +1551,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return taxonRank;
   }
 
+  @Lob
   public String getTaxonRemarks() {
     return taxonRemarks;
   }
 
-  // TODO: Does type need an index, as basisOfRecord does?
-  @Column(length = 64)
-  // @org.hibernate.annotations.Index(name = "idx_dwc_type")
+  @Lob
   public String getType() {
     return type;
   }
@@ -1394,12 +1585,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return verbatimElevation;
   }
 
-  // deprecated in favor of verbatimEventDate
-  // @Column(length = 128)
-  // public String getVerbatimCollectingDate() {
-  // return verbatimCollectingDate;
-  // }
-  @Column(length = 128)
+  @Lob
   public String getVerbatimEventDate() {
     return verbatimEventDate;
   }
@@ -1419,406 +1605,105 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     return verbatimLongitude;
   }
 
-  @Column(length = 128)
+  @Lob
   public String getVerbatimSRS() {
     return verbatimSRS;
   }
 
+  @Lob
   public String getVerbatimTaxonRank() {
     return verbatimTaxonRank;
   }
 
+  @Lob
   public String getVernacularName() {
     return vernacularName;
   }
 
   @Column(length = 128)
-  public String getWaterBody() {
-    return waterBody;
+  public String getWaterbody() {
+    return waterbody;
   }
 
-  // deprecated in favor of year
-  // @Column(length = 16)
-  // public String getYearSampled() {
-  // return yearSampled;
-  // }
-  @Column(length = 16)
+  @Lob
   public String getYear() {
     return year;
   }
 
   /**
-   * Works on the raw imported properties and Ignores all secondary derived
-   * properties. Therefore id, isDeleted, lat/longAsFloat, modified, created,
-   * location, region, taxon, collected, elevation, depth are ignored in the
-   * hashing.
+   * Calculates hashcode based on imported properties only and ignores all
+   * secondary derived properties. Therefore id, deleted, lat/lon, modified,
+   * created, region & taxon are ignored in the hashing.
+   * 
+   * Note: The hashcode value is calculated once and then cached.
    * 
    * @see java.lang.Object#hashCode()
    */
   @Override
   public int hashCode() {
-    // TODO: This is a faulty hashCode. Two records with different content can
-    // have the same code. In fact, at least two records are guaranteed to have
-    // the same code if there is a number of records equal to the size of int.
-    // Change to long.
-    int result = 17;
-    result = 31 * result + (guid != null ? guid.hashCode() : 0);
-    result = 31 * result + (link != null ? link.hashCode() : 0);
-    result = 31 * result + (sourceId != null ? sourceId.hashCode() : 0);
-
-    // Dublin Core terms - all record-level
-    result = 31 * result + (type != null ? type.hashCode() : 0);
-    result = 31 * result + (language != null ? language.hashCode() : 0);
-    result = 31 * result + (rights != null ? rights.hashCode() : 0);
-    result = 31 * result + (rightsHolder != null ? rightsHolder.hashCode() : 0);
-    result = 31 * result + (accessRights != null ? accessRights.hashCode() : 0);
-    result = 31
-        * result
-        + (bibliographicCitation != null ? bibliographicCitation.hashCode() : 0);
-
-    // Other record-level terms
-    result = 31 * result
-        + (institutionID != null ? institutionID.hashCode() : 0);
-    result = 31 * result + (collectionID != null ? collectionID.hashCode() : 0);
-    result = 31 * result + (datasetID != null ? datasetID.hashCode() : 0);
-    result = 31 * result
-        + (institutionCode != null ? institutionCode.hashCode() : 0);
-    result = 31 * result
-        + (collectionCode != null ? collectionCode.hashCode() : 0);
-    result = 31 * result + (datasetName != null ? datasetName.hashCode() : 0);
-    result = 31 * result
-        + (ownerInstitutionCode != null ? ownerInstitutionCode.hashCode() : 0);
-    result = 31 * result
-        + (basisOfRecord != null ? basisOfRecord.hashCode() : 0);
-    result = 31 * result
-        + (informationWithheld != null ? informationWithheld.hashCode() : 0);
-    result = 31 * result
-        + (dataGeneralizations != null ? dataGeneralizations.hashCode() : 0);
-    result = 31 * result
-        + (dynamicProperties != null ? dynamicProperties.hashCode() : 0);
-
-    // Occurrence
-    // occurrenceID = this.guid
-    result = 31 * result
-        + (catalogNumber != null ? catalogNumber.hashCode() : 0);
-    result = 31 * result
-        + (occurrenceDetails != null ? occurrenceDetails.hashCode() : 0);
-    result = 31 * result
-        + (occurrenceRemarks != null ? occurrenceRemarks.hashCode() : 0);
-    result = 31 * result + (recordNumber != null ? recordNumber.hashCode() : 0);
-    result = 31 * result + (recordedBy != null ? recordedBy.hashCode() : 0);
-    result = 31 * result + (individualID != null ? individualID.hashCode() : 0);
-    result = 31 * result
-        + (individualCount != null ? individualCount.hashCode() : 0);
-    result = 31 * result + (sex != null ? sex.hashCode() : 0);
-    result = 31 * result + (lifeStage != null ? lifeStage.hashCode() : 0);
-    result = 31
-        * result
-        + (reproductiveCondition != null ? reproductiveCondition.hashCode() : 0);
-    result = 31 * result + (behavior != null ? behavior.hashCode() : 0);
-    result = 31 * result
-        + (establishmentMeans != null ? establishmentMeans.hashCode() : 0);
-    result = 31 * result
-        + (occurrenceStatus != null ? occurrenceStatus.hashCode() : 0);
-    result = 31 * result + (preparations != null ? preparations.hashCode() : 0);
-    result = 31 * result + (disposition != null ? disposition.hashCode() : 0);
-    result = 31 * result
-        + (otherCatalogNumbers != null ? otherCatalogNumbers.hashCode() : 0);
-    result = 31
-        * result
-        + (previousIdentifications != null ? previousIdentifications.hashCode()
-            : 0);
-    result = 31 * result
-        + (associatedMedia != null ? associatedMedia.hashCode() : 0);
-    result = 31 * result
-        + (associatedReferences != null ? associatedReferences.hashCode() : 0);
-    result = 31
-        * result
-        + (associatedOccurrences != null ? associatedOccurrences.hashCode() : 0);
-    result = 31 * result
-        + (associatedSequences != null ? associatedSequences.hashCode() : 0);
-    result = 31 * result
-        + (associatedTaxa != null ? associatedTaxa.hashCode() : 0);
-
-    // Event
-    result = 31 * result + (eventID != null ? eventID.hashCode() : 0);
-    result = 31 * result
-        + (samplingProtocol != null ? samplingProtocol.hashCode() : 0);
-    result = 31 * result
-        + (samplingEffort != null ? samplingEffort.hashCode() : 0);
-    result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
-    result = 31 * result + (eventTime != null ? eventTime.hashCode() : 0);
-    result = 31 * result
-        + (startDayOfYear != null ? startDayOfYear.hashCode() : 0);
-    result = 31 * result + (endDayOfYear != null ? endDayOfYear.hashCode() : 0);
-    result = 31 * result + (year != null ? year.hashCode() : 0);
-    result = 31 * result + (month != null ? month.hashCode() : 0);
-    result = 31 * result + (day != null ? day.hashCode() : 0);
-    result = 31 * result
-        + (verbatimEventDate != null ? verbatimEventDate.hashCode() : 0);
-    result = 31 * result + (habitat != null ? habitat.hashCode() : 0);
-    result = 31 * result + (fieldNumber != null ? fieldNumber.hashCode() : 0);
-    result = 31 * result + (fieldNotes != null ? fieldNotes.hashCode() : 0);
-    result = 31 * result + (eventRemarks != null ? eventRemarks.hashCode() : 0);
-
-    // Location => this.region
-    result = 31 * result + (locationID != null ? locationID.hashCode() : 0);
-    result = 31 * result
-        + (higherGeographyID != null ? higherGeographyID.hashCode() : 0);
-    result = 31 * result
-        + (higherGeography != null ? higherGeography.hashCode() : 0);
-    result = 31 * result + (continent != null ? continent.hashCode() : 0);
-    result = 31 * result + (waterBody != null ? waterBody.hashCode() : 0);
-    result = 31 * result + (islandGroup != null ? islandGroup.hashCode() : 0);
-    result = 31 * result + (island != null ? island.hashCode() : 0);
-    result = 31 * result + (country != null ? country.hashCode() : 0);
-    result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
-    result = 31 * result
-        + (stateProvince != null ? stateProvince.hashCode() : 0);
-    result = 31 * result + (county != null ? county.hashCode() : 0);
-    result = 31 * result + (municipality != null ? municipality.hashCode() : 0);
-    result = 31 * result + (locality != null ? locality.hashCode() : 0);
-    result = 31 * result
-        + (verbatimLocality != null ? verbatimLocality.hashCode() : 0);
-    result = 31 * result
-        + (verbatimElevation != null ? verbatimElevation.hashCode() : 0);
-    result = 31
-        * result
-        + (minimumElevationInMeters != null ? minimumElevationInMeters
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (maximumElevationInMeters != null ? maximumElevationInMeters
-            .hashCode() : 0);
-    result = 31 * result
-        + (verbatimDepth != null ? verbatimDepth.hashCode() : 0);
-    result = 31 * result
-        + (minimumDepthInMeters != null ? minimumDepthInMeters.hashCode() : 0);
-    result = 31 * result
-        + (maximumDepthInMeters != null ? maximumDepthInMeters.hashCode() : 0);
-    result = 31
-        * result
-        + (minimumDistanceAboveSurfaceInMeters != null ? minimumDistanceAboveSurfaceInMeters
-            .hashCode()
-            : 0);
-    result = 31
-        * result
-        + (maximumDistanceAboveSurfaceInMeters != null ? maximumDistanceAboveSurfaceInMeters
-            .hashCode()
-            : 0);
-    result = 31 * result
-        + (locationAccordingTo != null ? locationAccordingTo.hashCode() : 0);
-    result = 31 * result
-        + (locationRemarks != null ? locationRemarks.hashCode() : 0);
-    result = 31 * result
-        + (verbatimCoordinates != null ? verbatimCoordinates.hashCode() : 0);
-    result = 31 * result
-        + (verbatimLatitude != null ? verbatimLatitude.hashCode() : 0);
-    result = 31 * result
-        + (verbatimLongitude != null ? verbatimLongitude.hashCode() : 0);
-    result = 31
-        * result
-        + (verbatimCoordinateSystem != null ? verbatimCoordinateSystem
-            .hashCode() : 0);
-    result = 31 * result + (verbatimSRS != null ? verbatimSRS.hashCode() : 0);
-    result = 31 * result
-        + (decimalLatitude != null ? decimalLatitude.hashCode() : 0);
-    result = 31 * result
-        + (decimalLongitude != null ? decimalLongitude.hashCode() : 0);
-    result = 31 * result
-        + (geodeticDatum != null ? geodeticDatum.hashCode() : 0);
-    result = 31
-        * result
-        + (coordinateUncertaintyInMeters != null ? coordinateUncertaintyInMeters
-            .hashCode()
-            : 0);
-    result = 31 * result
-        + (coordinatePrecision != null ? coordinatePrecision.hashCode() : 0);
-    result = 31
-        * result
-        + (pointRadiusSpatialFit != null ? pointRadiusSpatialFit.hashCode() : 0);
-    result = 31 * result + (footprintWKT != null ? footprintWKT.hashCode() : 0);
-    result = 31 * result + (footprintSRS != null ? footprintSRS.hashCode() : 0);
-    result = 31 * result
-        + (footprintSpatialFit != null ? footprintSpatialFit.hashCode() : 0);
-    result = 31 * result
-        + (georeferencedBy != null ? georeferencedBy.hashCode() : 0);
-    result = 31 * result
-        + (georeferenceProtocol != null ? georeferenceProtocol.hashCode() : 0);
-    result = 31 * result
-        + (georeferenceSources != null ? georeferenceSources.hashCode() : 0);
-    result = 31
-        * result
-        + (georeferenceVerificationStatus != null ? georeferenceVerificationStatus
-            .hashCode()
-            : 0);
-    result = 31 * result
-        + (georeferenceRemarks != null ? georeferenceRemarks.hashCode() : 0);
-
-    // GeologicalContext
-    result = 31 * result
-        + (geologicalContextID != null ? geologicalContextID.hashCode() : 0);
-    result = 31
-        * result
-        + (earliestEonOrLowestEonothem != null ? earliestEonOrLowestEonothem
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (latestEonOrHighestEonothem != null ? latestEonOrHighestEonothem
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (earliestEraOrLowestErathem != null ? earliestEraOrLowestErathem
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (latestEraOrHighestErathem != null ? latestEraOrHighestErathem
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (earliestPeriodOrLowestSystem != null ? earliestPeriodOrLowestSystem
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (latestPeriodOrHighestSystem != null ? latestPeriodOrHighestSystem
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (earliestEpochOrLowestSeries != null ? earliestEpochOrLowestSeries
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (latestEpochOrHighestSeries != null ? latestEpochOrHighestSeries
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (earliestAgeOrLowestStage != null ? earliestAgeOrLowestStage
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (latestAgeOrHighestStage != null ? latestAgeOrHighestStage.hashCode()
-            : 0);
-    result = 31
-        * result
-        + (lowestBiostratigraphicZone != null ? lowestBiostratigraphicZone
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (highestBiostratigraphicZone != null ? highestBiostratigraphicZone
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (lithostratigraphicTerms != null ? lithostratigraphicTerms.hashCode()
-            : 0);
-    result = 31 * result + (group != null ? group.hashCode() : 0);
-    result = 31 * result + (formation != null ? formation.hashCode() : 0);
-    result = 31 * result + (member != null ? member.hashCode() : 0);
-    result = 31 * result + (bed != null ? bed.hashCode() : 0);
-
-    // Identification
-    result = 31 * result
-        + (identificationID != null ? identificationID.hashCode() : 0);
-    result = 31 * result + (identifiedBy != null ? identifiedBy.hashCode() : 0);
-    result = 31 * result
-        + (dateIdentified != null ? dateIdentified.hashCode() : 0);
-    result = 31
-        * result
-        + (identificationReferences != null ? identificationReferences
-            .hashCode() : 0);
-    result = 31
-        * result
-        + (identificationRemarks != null ? identificationRemarks.hashCode() : 0);
-    result = 31
-        * result
-        + (identificationQualifier != null ? identificationQualifier.hashCode()
-            : 0);
-    result = 31 * result + (typeStatus != null ? typeStatus.hashCode() : 0);
-
-    // Taxon => this.taxon
-    result = 31 * result + (taxonID != null ? taxonID.hashCode() : 0);
-    result = 31 * result
-        + (scientificNameID != null ? scientificNameID.hashCode() : 0);
-    result = 31 * result
-        + (acceptedNameUsageID != null ? acceptedNameUsageID.hashCode() : 0);
-    result = 31 * result
-        + (parentNameUsageID != null ? parentNameUsageID.hashCode() : 0);
-    result = 31 * result
-        + (originalNameUsageID != null ? originalNameUsageID.hashCode() : 0);
-    result = 31 * result
-        + (nameAccordingToID != null ? nameAccordingToID.hashCode() : 0);
-    result = 31 * result
-        + (namePublishedInID != null ? namePublishedInID.hashCode() : 0);
-    result = 31 * result
-        + (taxonConceptID != null ? taxonConceptID.hashCode() : 0);
-    result = 31 * result
-        + (scientificName != null ? scientificName.hashCode() : 0);
-    result = 31 * result
-        + (acceptedNameUsage != null ? acceptedNameUsage.hashCode() : 0);
-    result = 31 * result
-        + (parentNameUsage != null ? parentNameUsage.hashCode() : 0);
-    result = 31 * result
-        + (originalNameUsage != null ? originalNameUsage.hashCode() : 0);
-    result = 31 * result
-        + (nameAccordingTo != null ? nameAccordingTo.hashCode() : 0);
-    result = 31 * result
-        + (namePublishedIn != null ? namePublishedIn.hashCode() : 0);
-    result = 31 * result
-        + (higherClassification != null ? higherClassification.hashCode() : 0);
-    result = 31 * result + (kingdom != null ? kingdom.hashCode() : 0);
-    result = 31 * result + (phylum != null ? phylum.hashCode() : 0);
-    result = 31 * result + (classs != null ? classs.hashCode() : 0);
-    result = 31 * result + (order != null ? order.hashCode() : 0);
-    result = 31 * result + (family != null ? family.hashCode() : 0);
-    result = 31 * result + (genus != null ? genus.hashCode() : 0);
-    result = 31 * result + (subgenus != null ? subgenus.hashCode() : 0);
-    result = 31 * result
-        + (specificEpithet != null ? specificEpithet.hashCode() : 0);
-    result = 31 * result
-        + (infraspecificEpithet != null ? infraspecificEpithet.hashCode() : 0);
-    result = 31 * result + (taxonRank != null ? taxonRank.hashCode() : 0);
-    result = 31 * result
-        + (verbatimTaxonRank != null ? verbatimTaxonRank.hashCode() : 0);
-    result = 31
-        * result
-        + (scientificNameAuthorship != null ? scientificNameAuthorship
-            .hashCode() : 0);
-    result = 31 * result
-        + (vernacularName != null ? vernacularName.hashCode() : 0);
-    result = 31 * result
-        + (nomenclaturalCode != null ? nomenclaturalCode.hashCode() : 0);
-    result = 31 * result
-        + (taxonomicStatus != null ? taxonomicStatus.hashCode() : 0);
-    result = 31 * result
-        + (nomenclaturalStatus != null ? nomenclaturalStatus.hashCode() : 0);
-    result = 31 * result + (taxonRemarks != null ? taxonRemarks.hashCode() : 0);
-    return result;
+    if (cachedHashCode == -1) {
+      cachedHashCode = Objects.hashCode(guid, link, sourceId,
+          acceptedNameUsage, acceptedNameUsageId, accessRights,
+          associatedMedia, associatedOccurrences, associatedReferences,
+          associatedSequences, associatedTaxa, basisOfRecord, bed, behavior,
+          bibliographicCitation, catalogNumber, collectionCode, collectionID,
+          continent, coordinatePrecision, coordinateUncertaintyInMeters,
+          country, countryCode, county, dataGeneralizations, datasetID,
+          datasetName, dateIdentified, day, decimalLatitude, decimalLongitude,
+          disposition, dynamicProperties, earliestAgeOrLowestStage,
+          earliestEonOrLowestEonothem, earliestEpochOrLowestSeries,
+          earliestEraOrLowestErathem, earliestPeriodOrLowestSystem,
+          endDayOfYear, establishmentMeans, eventDate, eventId, eventRemarks,
+          eventTime, family, fieldNotes, fieldNumber, footprintSRS,
+          footprintSpatialFit, footprintWKT, formation, genus, geodeticDatum,
+          geologicalContextId, georeferenceProtocol, georeferenceRemarks,
+          georeferenceSources, georeferenceVerificationStatus, georeferencedBy,
+          group, habitat, higherClassification, higherGeography,
+          higherGeographyID, highestBiostratigraphicZone, identificationID,
+          identificationQualifier, identificationReferences,
+          identificationRemarks, identifiedBy, individualCount, individualID,
+          informationWithheld, infraspecificEpithet, institutionCode,
+          institutionId, island, islandGroup, kingdom, language,
+          latestAgeOrHighestStage, latestEonOrHighestEonothem,
+          latestEpochOrHighestSeries, latestEraOrHighestErathem,
+          latestPeriodOrHighestSystem, lifeStage, lithostratigraphicTerms,
+          locality, locationAccordingTo, locationId, locationRemarks,
+          lowestBiostratigraphicZone, maximumDepthInMeters,
+          maximumDistanceAboveSurfaceInMeters, maximumElevationInMeters,
+          member, minimumDepthInMeters, minimumDistanceAboveSurfaceInMeters,
+          minimumElevationInMeters, modified, month, municipality,
+          nameAccordingTo, nameAccordingToId, namePublishedIn,
+          namePublishedInId, nomenclaturalCode, nomenclaturalStatus,
+          occurrenceDetails, occurrenceId, occurrenceRemarks, occurrenceStatus,
+          order, originalNameUsage, originalNameUsageId, otherCatalogNumbers,
+          ownerInstitutionCode, parentNameUsage, parentNameUsageId, phylum,
+          pointRadiusSpatialFit, preparations, previousIdentifications,
+          recordNumber, recordedBy, reproductiveCondition, rights,
+          rightsHolder, samplingEffort, samplingProtocol, scientificName,
+          scientificNameAuthorship, scientificNameId, sex, specificEpithet,
+          startDayOfYear, stateProvince, subgenus, taxonConceptId, taxonID,
+          taxonRank, taxonRemarks, taxonomicStatus, type, typeStatus,
+          verbatimCoordinateSystem, verbatimCoordinates, verbatimDepth,
+          verbatimElevation, verbatimEventDate, verbatimLatitude,
+          verbatimLocality, verbatimLongitude, verbatimSRS, verbatimTaxonRank,
+          vernacularName, waterbody, year);
+    }
+    return cachedHashCode;
   }
 
-  @org.hibernate.annotations.Index(name = "deleted")
+  @Index(name = "deleted")
   public boolean isDeleted() {
     return isDeleted;
   }
 
-  // deprecated in favor of acceptedNameUsage
-  // public void setAcceptedTaxon(String acceptedTaxon) {
-  // this.acceptedTaxon = acceptedTaxon;
-  // }
   public void setAcceptedNameUsage(String acceptedNameUsage) {
     this.acceptedNameUsage = acceptedNameUsage;
   }
 
-  // deprecated in favor of acceptedNameUsageID
-  // public void setAcceptedTaxonID(String acceptedTaxonID) {
-  // this.acceptedTaxonID = acceptedTaxonID;
-  // }
-  public void setAcceptedNameUsageID(String acceptedNameUsageID) {
-    this.acceptedNameUsageID = acceptedNameUsageID;
+  public void setAcceptedNameUsageId(String acceptedNameUsageId) {
+    this.acceptedNameUsageId = acceptedNameUsageId;
   }
 
-  // depreacted in favor of accessRights
-  // public void setAccessConstraints(String accessConstraints) {
-  // this.accessConstraints = accessConstraints;
-  // }
   public void setAccessRights(String accessRights) {
     this.accessRights = accessRights;
   }
@@ -1827,10 +1712,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.associatedMedia = associatedMedia;
   }
 
-  // deprecated in favor of associatedOccurrences
-  // public void setAssociatedSamples(String associatedSamples) {
-  // this.associatedSamples = associatedSamples;
-  // }
   public void setAssociatedOccurrences(String associatedOccurrences) {
     this.associatedOccurrences = associatedOccurrences;
   }
@@ -1859,10 +1740,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.behavior = behavior;
   }
 
-  // deprecated in favor of bibliographicCitation
-  // public void setCitation(String citation) {
-  // this.citation = citation;
-  // }
   public void setBibliographicCitation(String bibliographicCitation) {
     this.bibliographicCitation = bibliographicCitation;
   }
@@ -1871,19 +1748,9 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.catalogNumber = catalogNumber;
   }
 
-  // depreacted
-  // public void setBinomial(String binomial) {
-  // this.binomial = binomial;
-  // }
-
   public void setClasss(String classs) {
     this.classs = classs;
   }
-
-  // depreacted
-  // public void setCatalogNumberNumeric(String catalogNumberNumeric) {
-  // this.catalogNumberNumeric = catalogNumberNumeric;
-  // }
 
   public void setCollected(Date dateCollected) {
     this.collected = dateCollected;
@@ -1922,10 +1789,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.county = county;
   }
 
-  // deprecated in favor of dataGeneralizations
-  // public void setGeneralizations(String generalizations) {
-  // this.generalizations = generalizations;
-  // }
   public void setDataGeneralizations(String dataGeneralizations) {
     this.dataGeneralizations = dataGeneralizations;
   }
@@ -1942,10 +1805,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.dateIdentified = dateIdentified;
   }
 
-  // deprecated in favor of day
-  // public void setDayOfMonth(String dayOfMonth) {
-  // this.dayOfMonth = dayOfMonth;
-  // }
+  public void setDateModified(Date modifiedDate) {
+    this.dateModified = modifiedDate;
+  }
+
   public void setDay(String day) {
     this.day = day;
   }
@@ -2007,42 +1870,18 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.establishmentMeans = establishmentMeans;
   }
 
-  // deprecated in favor of eventDate
-  // public void setEarliestDateCollected(String earliestDateCollected) {
-  // this.earliestDateCollected = earliestDateCollected;
-  // }
-  // deprecated in favor of eventDate
-  // public void setLatestDateCollected(String latestDateCollected) {
-  // this.latestDateCollected = latestDateCollected;
-  // }
   public void setEventDate(String eventDate) {
     this.eventDate = eventDate;
   }
 
-  // deprecated in favor of eventID
-  // public void setSamplingEventID(String samplingEventID) {
-  // this.samplingEventID = samplingEventID;
-  // }
-  public void setEventID(String eventID) {
-    this.eventID = eventID;
+  public void setEventId(String eventId) {
+    this.eventId = eventId;
   }
 
-  // deprecated in favor of eventRemarks
-  // public void setSamplingEventRemarks(String samplingEventRemarks) {
-  // this.samplingEventRemarks = samplingEventRemarks;
-  // }
   public void setEventRemarks(String eventRemarks) {
     this.eventRemarks = eventRemarks;
   }
 
-  // deprecated in favor of eventTime
-  // public void setEndTimeOfDay(String endTimeOfDay) {
-  // this.endTimeOfDay = endTimeOfDay;
-  // }
-  // deprecated in favor of eventTime
-  // public void setStartTimeOfDay(String startTimeOfDay) {
-  // this.startTimeOfDay = startTimeOfDay;
-  // }
   public void setEventTime(String eventTime) {
     this.eventTime = eventTime;
   }
@@ -2083,8 +1922,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.geodeticDatum = geodeticDatum;
   }
 
-  public void setGeologicalContextID(String geologicalContextID) {
-    this.geologicalContextID = geologicalContextID;
+  public void setGeologicalContextId(String geologicalContextId) {
+    this.geologicalContextId = geologicalContextId;
   }
 
   public void setGeoreferencedBy(String georeferencedBy) {
@@ -2120,10 +1959,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.habitat = habitat;
   }
 
-  // deprecated in favor of higherClassification
-  // public void setHigherTaxon(String higherTaxon) {
-  // this.higherTaxon = higherTaxon;
-  // }
   public void setHigherClassification(String higherClassification) {
     this.higherClassification = higherClassification;
   }
@@ -2184,8 +2019,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.institutionCode = institutionCode;
   }
 
-  public void setInstitutionID(String institutionID) {
-    this.institutionID = institutionID;
+  public void setInstitutionId(String institutionId) {
+    this.institutionId = institutionId;
   }
 
   public void setIsland(String island) {
@@ -2248,18 +2083,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.locationAccordingTo = locationAccordingTo;
   }
 
-  // deprecated in favor of locationID
-  // public void setSamplingLocationID(String samplingLocationID) {
-  // this.samplingLocationID = samplingLocationID;
-  // }
-  public void setLocationID(String locationID) {
-    this.locationID = locationID;
+  public void setLocationId(String locationId) {
+    this.locationId = locationId;
   }
 
-  // deprecated in favor of locationRemarks
-  // public void setSamplingLocationRemarks(String samplingLocationRemarks) {
-  // this.samplingLocationRemarks = samplingLocationRemarks;
-  // }
   public void setLocationRemarks(String locationRemarks) {
     this.locationRemarks = locationRemarks;
   }
@@ -2272,12 +2099,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.maximumDepthInMeters = maximumDepthInMeters;
   }
 
-  // deprecated in favor of maximumDistanceAboveSurfaceInMeters
-  // public void setDistanceAboveSurfaceInMetersMaximum(
-  // String distanceAboveSurfaceInMetersMaximum) {
-  // this.distanceAboveSurfaceInMetersMaximum =
-  // distanceAboveSurfaceInMetersMaximum;
-  // }
   public void setMaximumDistanceAboveSurfaceInMeters(
       String maximumDistanceAboveSurfaceInMeters) {
     this.maximumDistanceAboveSurfaceInMeters = maximumDistanceAboveSurfaceInMeters;
@@ -2295,12 +2116,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.minimumDepthInMeters = minimumDepthInMeters;
   }
 
-  // deprecated in favor of maximumDistanceAboveSurfaceInMeters
-  // public void setDistanceAboveSurfaceInMetersMinimum(
-  // String distanceAboveSurfaceInMetersMinimum) {
-  // this.distanceAboveSurfaceInMetersMinimum =
-  // distanceAboveSurfaceInMetersMinimum;
-  // }
   public void setMinimumDistanceAboveSurfaceInMeters(
       String minimumDistanceAboveSurfaceInMeters) {
     this.minimumDistanceAboveSurfaceInMeters = minimumDistanceAboveSurfaceInMeters;
@@ -2310,14 +2125,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.minimumElevationInMeters = minimumElevationInMeters;
   }
 
-  public void setModified(Date modified) {
+  public void setModified(String modified) {
     this.modified = modified;
   }
 
-  // deprecated in favor of month
-  // public void setMonthOfYear(String monthOfYear) {
-  // this.monthOfYear = monthOfYear;
-  // }
   public void setMonth(String month) {
     this.month = month;
   }
@@ -2326,24 +2137,20 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.municipality = municipality;
   }
 
-  // deprecated in favor of nameAccordingTo
-  // public void setTaxonAccordingTo(String taxonAccordingTo) {
-  // this.taxonAccordingTo = taxonAccordingTo;
-  // }
   public void setNameAccordingTo(String nameAccordingTo) {
     this.nameAccordingTo = nameAccordingTo;
   }
 
-  public void setNameAccordingToID(String nameAccordingToID) {
-    this.nameAccordingToID = nameAccordingToID;
+  public void setNameAccordingToId(String nameAccordingToId) {
+    this.nameAccordingToId = nameAccordingToId;
   }
 
   public void setNamePublishedIn(String namePublishedIn) {
     this.namePublishedIn = namePublishedIn;
   }
 
-  public void setNamePublishedInID(String namePublishedInID) {
-    this.namePublishedInID = namePublishedInID;
+  public void setNamePublishedInId(String namePublishedInId) {
+    this.namePublishedInId = namePublishedInId;
   }
 
   public void setNomenclaturalCode(String nomenclaturalCode) {
@@ -2354,18 +2161,14 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.nomenclaturalStatus = nomenclaturalStatus;
   }
 
-  // deprecated in favor of occurrenceDetails
-  // public void setSampleDetails(String sampleDetails) {
-  // this.sampleDetails = sampleDetails;
-  // }
   public void setOccurrenceDetails(String occurrenceDetails) {
     this.occurrenceDetails = occurrenceDetails;
   }
 
-  // deprecated in favor of occurrenceRemarks
-  // public void setSampleRemarks(String sampleRemarks) {
-  // this.sampleRemarks = sampleRemarks;
-  // }
+  public void setOccurrenceId(String occurrenceId) {
+    this.occurrenceId = occurrenceId;
+  }
+
   public void setOccurrenceRemarks(String occurrenceRemarks) {
     this.occurrenceRemarks = occurrenceRemarks;
   }
@@ -2378,20 +2181,12 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.order = order;
   }
 
-  // deprecated in favor of originalNameUsage
-  // public void setBasionym(String basionym) {
-  // this.basionym = basionym;
-  // }
   public void setOriginalNameUsage(String originalNameUsage) {
     this.originalNameUsage = originalNameUsage;
   }
 
-  // deprecated in favor of originalNameUsageID
-  // public void setBasionymID(String basionymID) {
-  // this.basionymID = basionymID;
-  // }
-  public void setOriginalNameUsageID(String originalNameUsageID) {
-    this.originalNameUsageID = originalNameUsageID;
+  public void setOriginalNameUsageId(String originalNameUsageId) {
+    this.originalNameUsageId = originalNameUsageId;
   }
 
   public void setOtherCatalogNumbers(String otherCatalogNumbers) {
@@ -2406,12 +2201,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.parentNameUsage = parentNameUsage;
   }
 
-  // deprecated in favor of parentNameUsageID
-  // public void setHigherTaxonID(String higherTaxonID) {
-  // this.higherTaxonID = higherTaxonID;
-  // }
-  public void setParentNameUsageID(String parentNameUsageID) {
-    this.parentNameUsageID = parentNameUsageID;
+  public void setParentNameUsageId(String parentNameUsageId) {
+    this.parentNameUsageId = parentNameUsageId;
   }
 
   public void setPhylum(String phylum) {
@@ -2435,42 +2226,16 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
       Method m = this.getClass().getMethod(
           String.format("set%s", property.getName()), String.class);
       m.invoke(this, value);
-    } catch (SecurityException e) {
-      e.printStackTrace();
-      return false;
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-      return false;
-    } catch (IllegalArgumentException e) {
-      e.printStackTrace();
-      return false;
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-      return false;
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
-      return false;
+    } catch (Exception e) {
+      log.info(String.format("Unable to set property ", property.getName()));
     }
     return true;
   }
 
-  // deprecated in favor of recordedBy
-  // public void setCollector(String collector) {
-  // this.collector = collector;
-  // }
   public void setRecordedBy(String recordedBy) {
     this.recordedBy = recordedBy;
   }
 
-  // deprecated
-  // public void setSampleAttributes(String sampleAttributes) {
-  // this.sampleAttributes = sampleAttributes;
-  // }
-
-  // deprecated in favor of recordNumber
-  // public void setCollectorNumber(String collectorNumber) {
-  // this.collectorNumber = collectorNumber;
-  // }
   public void setRecordNumber(String recordNumber) {
     this.recordNumber = recordNumber;
   }
@@ -2482,11 +2247,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   public void setReproductiveCondition(String reproductiveCondition) {
     this.reproductiveCondition = reproductiveCondition;
   }
-
-  // deprecated
-  // public void setSamplingEventAttributes(String samplingEventAttributes) {
-  // this.samplingEventAttributes = samplingEventAttributes;
-  // }
 
   public void setResource(DataResource resource) {
     this.resource = resource;
@@ -2520,8 +2280,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.scientificNameAuthorship = scientificNameAuthorship;
   }
 
-  public void setScientificNameID(String scientificNameID) {
-    this.scientificNameID = scientificNameID;
+  public void setScientificNameId(String scientificNameId) {
+    this.scientificNameId = scientificNameId;
   }
 
   public void setSex(String sex) {
@@ -2552,8 +2312,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.taxon = taxon;
   }
 
-  public void setTaxonConceptID(String taxonConceptID) {
-    this.taxonConceptID = taxonConceptID;
+  public void setTaxonConceptId(String taxonConceptId) {
+    this.taxonConceptId = taxonConceptId;
   }
 
   public void setTaxonID(String taxonID) {
@@ -2584,6 +2344,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.verbatimCoordinates = verbatimCoordinates;
   }
 
+  public void setVerbatimCoordinateSystem(String verbatimCoordinateSystem) {
+    this.verbatimCoordinateSystem = verbatimCoordinateSystem;
+  }
+
   public void setVerbatimDepth(String verbatimDepth) {
     this.verbatimDepth = verbatimDepth;
   }
@@ -2592,10 +2356,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.verbatimElevation = verbatimElevation;
   }
 
-  // deprecated in favor of verbatimEventDate
-  // public void setVerbatimCollectingDate(String verbatimCollectingDate) {
-  // this.verbatimCollectingDate = verbatimCollectingDate;
-  // }
   public void setVerbatimEventDate(String verbatimEventDate) {
     this.verbatimEventDate = verbatimEventDate;
   }
@@ -2624,14 +2384,10 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
     this.vernacularName = vernacularName;
   }
 
-  public void setWaterBody(String waterBody) {
-    this.waterBody = waterBody;
+  public void setWaterbody(String waterbody) {
+    this.waterbody = waterbody;
   }
 
-  // deprecated in favor of year
-  // public void setYearSampled(String yearSampled) {
-  // this.yearSampled = yearSampled;
-  // }
   public void setYear(String year) {
     this.year = year;
   }
@@ -2645,35 +2401,8 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
         "basisOfRecord", this.basisOfRecord).append("scientificName",
         this.getScientificName()).append("localID", this.getSourceId()).append(
         "deleted", this.isDeleted()).append("institutionCode",
-        this.institutionCode).append("collectionCode", this.collectionCode)
-        .append("catalogNumber", this.catalogNumber).append("country",
-            this.getCountry()).append("guid", this.guid).toString();
-  }
-
-  @Transient
-  private String getPropertyValue(String propName) {
-    if (propName.equals("Class")) {
-      propName = "Classs";
-    }
-    String getter = String.format("get%s", propName);
-    String value = null;
-    try {
-      Method m = this.getClass().getMethod(getter);
-      Object obj = m.invoke(this);
-      if (obj != null) {
-        value = obj.toString();
-      }
-    } catch (SecurityException e) {
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
-    }
-    return value;
+        this.institutionCode).append("collectionCode", this.collectionCode).append(
+        "catalogNumber", this.catalogNumber).append("country",
+        this.getCountry()).append("guid", this.guid).toString();
   }
 }

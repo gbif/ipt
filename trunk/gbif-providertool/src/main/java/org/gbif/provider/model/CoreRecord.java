@@ -27,7 +27,7 @@ public interface CoreRecord extends ResourceRelatedObject, Record {
 
   String getLink();
 
-  Date getModified();
+  Date getDateModified();
 
   String getPropertyValue(ExtensionProperty property);
 
@@ -41,7 +41,7 @@ public interface CoreRecord extends ResourceRelatedObject, Record {
 
   void setLink(String link);
 
-  void setModified(Date modified);
+  void setDateModified(Date modified);
 
   void setSourceId(String sourceId);
 }

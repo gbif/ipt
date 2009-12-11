@@ -33,7 +33,9 @@ import javax.persistence.Transient;
  * @param <T>
  */
 public class ModelBaseFactory<T extends BaseObject> {
+
   protected final Log log = LogFactory.getLog(getClass());
+
   @Autowired
   protected AnnotationManager annotationManager;
 
