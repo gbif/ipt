@@ -15,6 +15,11 @@
  */
 package org.gbif.provider.model;
 
+import org.gbif.provider.datasource.ImportRecord;
+import org.gbif.provider.datasource.ImportSource;
+import org.gbif.provider.datasource.ImportSourceException;
+import org.gbif.provider.datasource.ImportSourceFactory;
+import org.gbif.provider.model.factory.DarwinCoreFactory;
 import org.gbif.provider.service.DarwinCoreManager;
 import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.RegionManager;
@@ -23,6 +28,7 @@ import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResourceTestBase;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 
 import junit.framework.Assert;
 
@@ -31,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Unit tests for DarwinCore.
@@ -215,7 +222,13 @@ public class DarwinCoreTest extends ResourceTestBase {
   private TaxonManager taxonManager;
 
   @Autowired
+  private ImportSourceFactory importSourceFactory;
+
+  @Autowired
   private RegionManager regionManager;
+
+  @Autowired
+  private DarwinCoreFactory darwinCoreFactory;
 
   @Test
   public void consistentWithEquals() {
@@ -265,6 +278,36 @@ public class DarwinCoreTest extends ResourceTestBase {
 
     // Verifies entity no longer exists:
     Assert.assertFalse(entityManager.exists(id));
+  }
+
+  /**
+   * Loads a source data set, saves each entity, then deletes each entity.
+   * 
+   * @throws ImportSourceException
+   */
+  @Test
+  public void loadDataset() throws ImportSourceException {
+    OccurrenceResource resource = resourceManager.get(TEST_RESOURCE_ID);
+    ImportSource source;
+    source = importSourceFactory.newInstance(resource,
+        resource.getCoreMapping());
+    Set<Annotation> annotations = Sets.newHashSet();
+    DarwinCore entity;
+    double i = Double.MAX_VALUE;
+    for (ImportRecord ir : source) {
+      if (ir != null) {
+        entity = darwinCoreFactory.build(resource, ir, annotations);
+        entity.setSourceId(i-- + "");
+        entity.setCatalogNumber(i-- + "");
+        entity.setGuid(i-- + "");
+        entityManager.save(entity);
+        entityManager.flush();
+        Assert.assertTrue(entityManager.exists(entity.getId()));
+        entityManager.remove(entity);
+        entityManager.flush();
+        Assert.assertFalse(entityManager.exists(entity.getId()));
+      }
+    }
   }
 
   @Test

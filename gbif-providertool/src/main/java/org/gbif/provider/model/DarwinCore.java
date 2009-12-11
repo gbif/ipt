@@ -351,25 +351,26 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
 
   // Calculating the hashCode is expensive so we cache it:
   private int cachedHashCode = -1;
+
   // CoreRecord properties:
   private Long id;
   private String sourceId;
-  @NotNull
-  private String guid;
   private String link;
   private boolean isDeleted;
   private Date dateModified;
-
+  @NotNull
+  private String guid;
   @NotNull
   private DataResource resource;
+
   // Derived properties:
   private Point location = new Point();
   private Taxon taxon;
   private Region region;
   private Date collected;
   private Double elevation;
-
   private Double depth;
+
   // Simple DarwinCore properties from:
   // http://code.google.com/p/darwincore/source/browse/trunk/xsd/tdwg_dwc_simple.xsd
   private String acceptedNameUsage;
@@ -527,7 +528,6 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
   private String verbatimTaxonRank;
   private String vernacularName;
   private String waterbody;
-
   private String year;
 
   /**
