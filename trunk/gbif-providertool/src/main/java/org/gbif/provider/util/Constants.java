@@ -28,7 +28,7 @@ public class Constants {
   public static final String MANAGER_ROLE = "ROLE_MANAGER";
   public static final DateFormat datetime_iso_format = new SimpleDateFormat(
       "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-  public static final Long TEST_OCC_RESOURCE_ID = 11L;
+  public static final Long TEST_OCC_RESOURCE_ID = 13L;
   public static final Long TEST_CHECKLIST_RESOURCE_ID = 10L;
   public static final Long TEST_USER_ID = 1L;
   public static final Long TEST_TAXON_ID = 666L;
