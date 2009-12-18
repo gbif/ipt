@@ -47,9 +47,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 /**
- * A generic resource describing any digitial, online and non digital available
- * biological resources Only keeps the basic properties, but links to a far more
- * expressive EML file via the embedded ResourceMetadata type.
+ * A generic resource describing any digital, online and non digital available
+ * biological resources. Only keeps the basic properties, but links to a far
+ * more expressive EML file via the embedded ResourceMetadata type.
  * 
  */
 @Entity

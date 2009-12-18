@@ -16,12 +16,14 @@
 package org.gbif.provider.service.impl;
 
 import org.gbif.provider.service.CacheManager;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * TODO: Documentation.
@@ -33,7 +35,7 @@ public class CacheManagerTest extends ContextAwareTestBase {
 
   @Test
   public void testRunUpload() throws ExecutionException, InterruptedException {
-    // Future f = cacheManager.runUpload(Constants.TEST_OCC_RESOURCE_ID);
-    // f.get();
+    Future f = cacheManager.runUpload(Constants.TEST_OCC_RESOURCE_ID);
+    f.get();
   }
 }
