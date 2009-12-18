@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+                        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
+                        default-lazy-init="true"
+                        default-init-method="init"
+                        default-destroy-method="destroy">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="org.gbif.provider" /> 
+
+    <!-- Enable @Transactional support -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    
+    <!-- APPLICATION CONFIGURATION -->
+    
+    <!-- For application settings and future properties files. This custom resolver exposes 2 dynamic properties datadir & webappdir -->
+    <bean id="propertyConfigurer" class="org.gbif.provider.util.WebContextPropertyResolver">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="testWebappDir" value="${project.build.testOutputDirectory}/test-webapp"/>
+        <property name="locations">
+            <list>
+                <value>classpath:application.properties</value>
+                <value>classpath:ipt.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="providerCfgManager" class="org.gbif.provider.service.impl.ProviderCfgManagerHibernate" parent="abstractManager"/>
+    <bean id="cfg" class="org.gbif.provider.util.AppConfig">        
+        <constructor-arg ref="providerCfgManager"/>
+        <constructor-arg value="${webappDir}"/>
+        <constructor-arg value="${dataDir}"/>
+        <constructor-arg value="${registryUrl}"/>
+        <constructor-arg value="${gbif.analytics.key}"/>
+    </bean>
+    
+    
+    <!-- Utility singletons -->
+    <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
+    <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
+    
+    <!-- Parsing freemarker templates other than struts2 -->
+    <bean id="freemarkerCfg" class="freemarker.template.Configuration">
+        <property name="defaultEncoding" value="utf8"/>
+        <property name="directoryForTemplateLoading" value="${webappDir}"></property>
+    </bean>
+    
+    
+    
+    <!-- Struts Interceptors -->
+    <bean id="managerInterceptor" class="org.gbif.provider.webapp.ManagerInterceptor"/>
+    
+    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
+    
+    
+    <!-- MODEL FACTORIES -->
+    <bean id="extensionFactory" class="org.gbif.provider.model.factory.ExtensionFactory"/>
+    
+    <bean id="resourceFactory" class="org.gbif.provider.model.factory.ResourceFactory">        
+        <constructor-arg ref="extensionManager"/>
+    </bean>
+    
+    <bean id="darwinCoreFactory" class="org.gbif.provider.model.factory.DarwinCoreFactory"/>        
+    
+    <bean id="taxonFactory" class="org.gbif.provider.model.factory.TaxonFactory"/>        
+
+    <bean id="regionFactory" class="org.gbif.provider.model.factory.RegionFactory"/>        
+    
+    <!-- IMPORT SOURCE -->
+    <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
+        <lookup-method name="newFileImportSource" bean="fileImportSource"/>
+        <lookup-method name="newSqlImportSource" bean="sqlImportSource"/>        
+    </bean>
+    <bean id="fileImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.FileImportSource" />
+    <bean id="sqlImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.SqlImportSource" />
+    
+
+    <!-- TASK EXECUTOR -->
+
+    <bean id="uploadExecutor" factory-method="newSingleThreadExecutor" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent uploads -->
+        <!--constructor-arg value="1"/-->
+    </bean>
+    <bean id="processingExecutor" factory-method="newFixedThreadPool" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent processing threads. Default is 2x max concurrent uploads -->
+        <constructor-arg value="2"/>
+    </bean>
+	
+	<!-- All tasks are non-singleton (prototype) -->
+    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
+    
+</beans>

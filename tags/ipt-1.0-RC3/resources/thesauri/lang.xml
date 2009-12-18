@@ -1,0 +1,1849 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thesaurus 
+	dc:URI="http://iso.org/639-1" 
+	dc:description="" 
+	dc:title="ISO 639-1 Languages" 
+	xmlns="http://data.gbif.org/thesaurus" 
+	xmlns:dc="http://purl.org/dc/terms/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://data.gbif.org/thesaurus  http://gbrds.gbif.org/resources/schemas/thesaurus.xsd">
+<concept dc:identifier="aa" dc:URI="http://iso.org/639-1#aa"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Afar" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="aar" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="aa" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="aar" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ab" dc:URI="http://iso.org/639-1#ab"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Abkhazian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="abk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="abk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ab" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ae" dc:URI="http://iso.org/639-1#ae"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Avestan" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ae" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ave" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ave" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="af" dc:URI="http://iso.org/639-1#af"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Afrikaans" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="afr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="afr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="af" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ak" dc:URI="http://iso.org/639-1#ak"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Akan" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="aka" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ak" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="aka" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="am" dc:URI="http://iso.org/639-1#am"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Amharic" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="amh" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="am" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="amh" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="an" dc:URI="http://iso.org/639-1#an"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Aragonese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="arg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="arg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="an" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ar" dc:URI="http://iso.org/639-1#ar"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Arabic" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ara" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ar" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ara" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="as" dc:URI="http://iso.org/639-1#as"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Assamese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="as" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="asm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="asm" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="av" dc:URI="http://iso.org/639-1#av"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Avaric" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ava" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="av" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ava" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ay" dc:URI="http://iso.org/639-1#ay"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Aymara" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="aym" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ay" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="aym" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="az" dc:URI="http://iso.org/639-1#az"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Azerbaijani" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="aze" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="az" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="aze" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ba" dc:URI="http://iso.org/639-1#ba"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Bashkir" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bak" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bak" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ba" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="be" dc:URI="http://iso.org/639-1#be"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Belarusian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bel" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bel" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="be" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bg" dc:URI="http://iso.org/639-1#bg"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Bulgarian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bul" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bul" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="bg" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bi" dc:URI="http://iso.org/639-1#bi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Bislama" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="bi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bis" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bis" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bm" dc:URI="http://iso.org/639-1#bm"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Bambara" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="bm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bam" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bam" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bn" dc:URI="http://iso.org/639-1#bn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Bengali" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ben" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ben" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="bn" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bo" dc:URI="http://iso.org/639-1#bo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tibetan" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tib" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="bo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bod" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="br" dc:URI="http://iso.org/639-1#br"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Breton" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bre" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="br" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bre" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bs" dc:URI="http://iso.org/639-1#bs"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Bosnian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="bs" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="bos" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bos" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ca" dc:URI="http://iso.org/639-1#ca"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Catalan" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ca" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="cat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="cat" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ce" dc:URI="http://iso.org/639-1#ce"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Chechen" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="che" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="che" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ce" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ch" dc:URI="http://iso.org/639-1#ch"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Chamorro" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="cha" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="cha" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ch" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="co" dc:URI="http://iso.org/639-1#co"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Corsican" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="cos" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="cos" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="co" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cr" dc:URI="http://iso.org/639-1#cr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Cree" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="cr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="cre" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="cre" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cs" dc:URI="http://iso.org/639-1#cs"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Czech" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="cze" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="cs" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ces" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cu" dc:URI="http://iso.org/639-1#cu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Church Slavic" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="cu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="chu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="chu" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cv" dc:URI="http://iso.org/639-1#cv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Chuvash" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="cv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="chv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="chv" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cy" dc:URI="http://iso.org/639-1#cy"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Welsh" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="wel" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="cym" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="cy" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="da" dc:URI="http://iso.org/639-1#da"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Danish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="da" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="dan" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="dan" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="de" dc:URI="http://iso.org/639-1#de"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="German" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="de" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ger" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="deu" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="dv" dc:URI="http://iso.org/639-1#dv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Dhivehi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="div" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="dv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="div" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="dz" dc:URI="http://iso.org/639-1#dz"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Dzongkha" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="dzo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="dz" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="dzo" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ee" dc:URI="http://iso.org/639-1#ee"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ewe" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ee" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ewe" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ewe" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="el" dc:URI="http://iso.org/639-1#el"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Modern Greek (1453-)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="el" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="gre" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ell" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="en" dc:URI="http://iso.org/639-1#en"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="English" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="eng" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="en" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="eng" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="eo" dc:URI="http://iso.org/639-1#eo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Esperanto" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="eo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="epo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="epo" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="es" dc:URI="http://iso.org/639-1#es"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Spanish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="es" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="spa" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="spa" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="et" dc:URI="http://iso.org/639-1#et"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Estonian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="et" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="est" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="est" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="eu" dc:URI="http://iso.org/639-1#eu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Basque" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="eu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="eus" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="baq" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fa" dc:URI="http://iso.org/639-1#fa"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Persian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="fas" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="fa" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="per" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ff" dc:URI="http://iso.org/639-1#ff"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Fulah" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ff" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ful" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ful" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fi" dc:URI="http://iso.org/639-1#fi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Finnish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="fin" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="fin" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="fi" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fj" dc:URI="http://iso.org/639-1#fj"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Fijian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="fj" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="fij" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="fij" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fo" dc:URI="http://iso.org/639-1#fo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Faroese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="fo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="fao" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="fao" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fr" dc:URI="http://iso.org/639-1#fr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="French" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="fre" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="fra" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="fr" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="fy" dc:URI="http://iso.org/639-1#fy"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Western Frisian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="fry" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="fy" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="fry" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ga" dc:URI="http://iso.org/639-1#ga"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Irish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ga" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="gle" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="gle" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gd" dc:URI="http://iso.org/639-1#gd"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Scottish Gaelic" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="gd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="gla" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="gla" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gl" dc:URI="http://iso.org/639-1#gl"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Galician" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="glg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="glg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="gl" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gn" dc:URI="http://iso.org/639-1#gn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Guarani" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="gn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="grn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="grn" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gu" dc:URI="http://iso.org/639-1#gu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Gujarati" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="gu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="guj" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="guj" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gv" dc:URI="http://iso.org/639-1#gv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Manx" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="gv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="glv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="glv" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ha" dc:URI="http://iso.org/639-1#ha"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Hausa" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ha" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hau" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="hau" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="he" dc:URI="http://iso.org/639-1#he"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Hebrew" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="heb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="heb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="he" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hi" dc:URI="http://iso.org/639-1#hi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Hindi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="hin" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="hi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hin" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ho" dc:URI="http://iso.org/639-1#ho"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Hiri Motu" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hmo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="hmo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ho" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hr" dc:URI="http://iso.org/639-1#hr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Croatian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="scr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hrv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="hr" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ht" dc:URI="http://iso.org/639-1#ht"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Haitian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ht" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="hat" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hu" dc:URI="http://iso.org/639-1#hu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Hungarian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="hu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hun" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="hun" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hy" dc:URI="http://iso.org/639-1#hy"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Armenian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="hy" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="arm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hye" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hz" dc:URI="http://iso.org/639-1#hz"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Herero" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="hz" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="her" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="her" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ia" dc:URI="http://iso.org/639-1#ia"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Interlingua" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ia" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ina" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ina" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="id" dc:URI="http://iso.org/639-1#id"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Indonesian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ind" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ind" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="id" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ie" dc:URI="http://iso.org/639-1#ie"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Interlingue" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ile" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ie" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ile" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ig" dc:URI="http://iso.org/639-1#ig"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Igbo" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ibo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ibo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ig" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ii" dc:URI="http://iso.org/639-1#ii"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sichuan Yi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ii" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="iii" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="iii" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ik" dc:URI="http://iso.org/639-1#ik"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Inupiaq" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ipk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ipk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ik" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="io" dc:URI="http://iso.org/639-1#io"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ido" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="io" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ido" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ido" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="is" dc:URI="http://iso.org/639-1#is"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Icelandic" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="isl" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="is" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ice" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="it" dc:URI="http://iso.org/639-1#it"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Italian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ita" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="it" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ita" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="iu" dc:URI="http://iso.org/639-1#iu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Inuktitut" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="iku" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="iku" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="iu" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ja" dc:URI="http://iso.org/639-1#ja"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Japanese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="jpn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ja" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="jpn" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="jv" dc:URI="http://iso.org/639-1#jv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Javanese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="jv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="jav" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="jav" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ka" dc:URI="http://iso.org/639-1#ka"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Georgian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="geo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ka" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kg" dc:URI="http://iso.org/639-1#kg"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kongo" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kon" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kon" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ki" dc:URI="http://iso.org/639-1#ki"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kikuyu" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kik" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kik" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ki" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kj" dc:URI="http://iso.org/639-1#kj"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kuanyama" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kua" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kua" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kj" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kk" dc:URI="http://iso.org/639-1#kk"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kazakh" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kaz" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kaz" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kk" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kl" dc:URI="http://iso.org/639-1#kl"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kalaallisut" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kal" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kl" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kal" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="km" dc:URI="http://iso.org/639-1#km"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Central Khmer" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="khm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="khm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="km" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kn" dc:URI="http://iso.org/639-1#kn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kannada" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kan" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kan" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ko" dc:URI="http://iso.org/639-1#ko"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Korean" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kor" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kor" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ko" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kr" dc:URI="http://iso.org/639-1#kr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kanuri" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kau" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kau" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ks" dc:URI="http://iso.org/639-1#ks"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kashmiri" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ks" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kas" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kas" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ku" dc:URI="http://iso.org/639-1#ku"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kurdish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ku" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kur" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kur" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kv" dc:URI="http://iso.org/639-1#kv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Komi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kom" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kom" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="kw" dc:URI="http://iso.org/639-1#kw"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Cornish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="cor" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="kw" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="cor" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ky" dc:URI="http://iso.org/639-1#ky"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kirghiz" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kir" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kir" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ky" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="la" dc:URI="http://iso.org/639-1#la"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Latin" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="la" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="lb" dc:URI="http://iso.org/639-1#lb"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Luxembourgish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ltz" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="lb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ltz" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="lg" dc:URI="http://iso.org/639-1#lg"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ganda" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lug" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lug" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="lg" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="li" dc:URI="http://iso.org/639-1#li"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Limburgan" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="li" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lim" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lim" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ln" dc:URI="http://iso.org/639-1#ln"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Lingala" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lin" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ln" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lin" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="lo" dc:URI="http://iso.org/639-1#lo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Lao" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="lo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lao" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lao" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="lt" dc:URI="http://iso.org/639-1#lt"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Lithuanian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lit" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lit" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="lt" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="lu" dc:URI="http://iso.org/639-1#lu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Luba-Katanga" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="lu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lub" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lub" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="lv" dc:URI="http://iso.org/639-1#lv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Latvian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="lav" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="lv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="lav" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mg" dc:URI="http://iso.org/639-1#mg"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Malagasy" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mlg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mlg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mg" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mh" dc:URI="http://iso.org/639-1#mh"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Marshallese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mh" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mah" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mah" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mi" dc:URI="http://iso.org/639-1#mi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Maori" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mao" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mri" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mk" dc:URI="http://iso.org/639-1#mk"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Macedonian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mkd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mac" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ml" dc:URI="http://iso.org/639-1#ml"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Malayalam" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ml" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mal" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mal" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mn" dc:URI="http://iso.org/639-1#mn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Mongolian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mon" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mon" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mr" dc:URI="http://iso.org/639-1#mr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Marathi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mar" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mar" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ms" dc:URI="http://iso.org/639-1#ms"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Malay (macrolanguage)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ms" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="may" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="msa" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mt" dc:URI="http://iso.org/639-1#mt"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Maltese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="mt" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="mlt" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mlt" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="my" dc:URI="http://iso.org/639-1#my"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Burmese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="mya" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="my" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="bur" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="na" dc:URI="http://iso.org/639-1#na"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Nauru" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nau" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nau" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="na" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nb" dc:URI="http://iso.org/639-1#nb"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Norwegian Bokm√•l" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="nb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nob" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nob" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nd" dc:URI="http://iso.org/639-1#nd"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="North Ndebele" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="nd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nde" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nde" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ne" dc:URI="http://iso.org/639-1#ne"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Nepali" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nep" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ne" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nep" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ng" dc:URI="http://iso.org/639-1#ng"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ndonga" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ndo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ng" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ndo" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nl" dc:URI="http://iso.org/639-1#nl"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Dutch" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nld" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="nl" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="dut" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nn" dc:URI="http://iso.org/639-1#nn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Norwegian Nynorsk" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nno" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nno" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="nn" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="no" dc:URI="http://iso.org/639-1#no"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Norwegian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nor" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="no" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nor" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nr" dc:URI="http://iso.org/639-1#nr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="South Ndebele" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nbl" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="nr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nbl" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nv" dc:URI="http://iso.org/639-1#nv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Navajo" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="nv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nav" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nav" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ny" dc:URI="http://iso.org/639-1#ny"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Nyanja" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="nya" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ny" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="nya" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="oc" dc:URI="http://iso.org/639-1#oc"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Occitan (post 1500)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="oc" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="oci" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="oci" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="oj" dc:URI="http://iso.org/639-1#oj"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ojibwa" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="oj" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="oji" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="oji" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="om" dc:URI="http://iso.org/639-1#om"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Oromo" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="orm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="om" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="orm" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="or" dc:URI="http://iso.org/639-1#or"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Oriya" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="or" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ori" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ori" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="os" dc:URI="http://iso.org/639-1#os"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ossetian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="oss" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="os" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="oss" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="pa" dc:URI="http://iso.org/639-1#pa"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Panjabi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="pa" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="pan" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="pan" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="pi" dc:URI="http://iso.org/639-1#pi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Pali" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="pli" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="pi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="pli" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="pl" dc:URI="http://iso.org/639-1#pl"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Polish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="pol" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="pol" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="pl" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ps" dc:URI="http://iso.org/639-1#ps"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Pushto" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ps" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="pus" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="pus" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="pt" dc:URI="http://iso.org/639-1#pt"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Portuguese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="por" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="pt" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="por" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="qu" dc:URI="http://iso.org/639-1#qu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Quechua" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="qu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="que" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="que" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="rm" dc:URI="http://iso.org/639-1#rm"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Romansh" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="roh" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="rm" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="roh" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="rn" dc:URI="http://iso.org/639-1#rn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Rundi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="rn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="run" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="run" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ro" dc:URI="http://iso.org/639-1#ro"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Romanian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ro" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="rum" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ron" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ru" dc:URI="http://iso.org/639-1#ru"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Russian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="rus" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ru" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="rus" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="rw" dc:URI="http://iso.org/639-1#rw"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Kinyarwanda" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="kin" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="rw" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="kin" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sa" dc:URI="http://iso.org/639-1#sa"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sanskrit" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="san" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sa" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="san" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sc" dc:URI="http://iso.org/639-1#sc"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sardinian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="srd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sc" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="srd" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sd" dc:URI="http://iso.org/639-1#sd"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sindhi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="snd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="snd" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="se" dc:URI="http://iso.org/639-1#se"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Northern Sami" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="sme" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="se" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sme" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sg" dc:URI="http://iso.org/639-1#sg"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sango" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sg" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="sag" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sag" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sh" dc:URI="http://iso.org/639-1#sh"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Serbo-Croatian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="hbs" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sh" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="si" dc:URI="http://iso.org/639-1#si"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sinhala" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sin" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="si" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="sin" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sk" dc:URI="http://iso.org/639-1#sk"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Slovak" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="slk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="slo" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sl" dc:URI="http://iso.org/639-1#sl"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Slovenian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="slv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="slv" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sl" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sm" dc:URI="http://iso.org/639-1#sm"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Samoan" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="smo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="smo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sm" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sn" dc:URI="http://iso.org/639-1#sn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Shona" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sna" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="sna" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="so" dc:URI="http://iso.org/639-1#so"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Somali" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="so" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="som" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="som" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sq" dc:URI="http://iso.org/639-1#sq"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Albanian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="alb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sq" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sqi" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sr" dc:URI="http://iso.org/639-1#sr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Serbian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="scc" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="srp" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ss" dc:URI="http://iso.org/639-1#ss"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Swati" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ss" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ssw" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ssw" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="st" dc:URI="http://iso.org/639-1#st"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Southern Sotho" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sot" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="st" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="sot" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="su" dc:URI="http://iso.org/639-1#su"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Sundanese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="su" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="sun" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="sun" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sv" dc:URI="http://iso.org/639-1#sv"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Swedish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="swe" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="swe" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sv" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sw" dc:URI="http://iso.org/639-1#sw"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Swahili (macrolanguage)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="swa" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="sw" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="swa" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ta" dc:URI="http://iso.org/639-1#ta"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tamil" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tam" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tam" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ta" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="te" dc:URI="http://iso.org/639-1#te"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Telugu" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="te" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tel" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tel" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tg" dc:URI="http://iso.org/639-1#tg"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tajik" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tgk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tgk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tg" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="th" dc:URI="http://iso.org/639-1#th"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Thai" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tha" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="th" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tha" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ti" dc:URI="http://iso.org/639-1#ti"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tigrinya" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ti" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tir" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tir" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tk" dc:URI="http://iso.org/639-1#tk"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Turkmen" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tuk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tuk" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tl" dc:URI="http://iso.org/639-1#tl"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tagalog" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tl" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tgl" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tgl" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tn" dc:URI="http://iso.org/639-1#tn"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tswana" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tsn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tn" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tsn" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="to" dc:URI="http://iso.org/639-1#to"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tonga (Tonga Islands)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ton" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ton" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="to" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tr" dc:URI="http://iso.org/639-1#tr"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Turkish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tur" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tur" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ts" dc:URI="http://iso.org/639-1#ts"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tsonga" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tso" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ts" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tso" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tt" dc:URI="http://iso.org/639-1#tt"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tatar" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tat" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tt" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tw" dc:URI="http://iso.org/639-1#tw"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Twi" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="tw" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="twi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="twi" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ty" dc:URI="http://iso.org/639-1#ty"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Tahitian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ty" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="tah" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="tah" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ug" dc:URI="http://iso.org/639-1#ug"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Uighur" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ug" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="uig" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="uig" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="uk" dc:URI="http://iso.org/639-1#uk"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Ukrainian" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="uk" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ukr" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ukr" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ur" dc:URI="http://iso.org/639-1#ur"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Urdu" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="urd" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ur" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="urd" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="uz" dc:URI="http://iso.org/639-1#uz"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Uzbek" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="uzb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="uzb" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="uz" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ve" dc:URI="http://iso.org/639-1#ve"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Venda" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="ven" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="ve" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="ven" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="vi" dc:URI="http://iso.org/639-1#vi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Vietnamese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="vi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="vie" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="vie" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="vo" dc:URI="http://iso.org/639-1#vo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Volap√ºk" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="vo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="vol" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="vol" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="wa" dc:URI="http://iso.org/639-1#wa"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Walloon" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="wln" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="wln" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="wa" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="wo" dc:URI="http://iso.org/639-1#wo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Wolof" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="wol" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="wol" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="wo" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="xh" dc:URI="http://iso.org/639-1#xh"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Xhosa" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="xh" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="xho" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="xho" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="yi" dc:URI="http://iso.org/639-1#yi"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Yiddish" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="yid" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="yid" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="yi" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="yo" dc:URI="http://iso.org/639-1#yo"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Yoruba" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="yor" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="yo" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="yor" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="za" dc:URI="http://iso.org/639-1#za"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Zhuang" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="zha" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="zha" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="za" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="zh" dc:URI="http://iso.org/639-1#zh"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Chinese" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="chi" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="zho" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="zh" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="zu" dc:URI="http://iso.org/639-1#zu"  dc:issued="2008-12-18T04:51:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:55:56+00:00" dc:source="" dc:title="Zulu" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:55:27+00:00" dc:source="" dc:title="zul" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:45+00:00" dc:source="" dc:title="zu" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:55:31+00:00" dc:source="" dc:title="zul" xml:lang="en"/>
+  </alternative>
+ </concept>
+</thesaurus>

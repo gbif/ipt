@@ -1,0 +1,233 @@
+/******************************************************************************* 
+ * Tree container
+ */
+div.ui-dynatree-container
+{
+	font-family: tahoma, arial, helvetica;
+	font-size: 10pt; /* font size should not be too big */
+	white-space: nowrap; 
+	padding: 3px;
+	
+	background-color: white; 
+	border: 1px dotted gray;
+}
+
+/* Style, when control is disabled */
+.ui-dynatree-disabled div.ui-dynatree-container
+{
+	opacity: 0.5;
+/*	filter: alpha(opacity=50); /* Yields a css warning */
+	background-color: silver; 
+}
+
+
+/******************************************************************************* 
+ * Vertical line image
+ */
+div.ui-dynatree-container img
+{
+	width: 16px;
+	height: 16px;
+	margin-left: 3px;
+	vertical-align: top;
+}
+
+/******************************************************************************* 
+ * Common icon definitions
+ */
+span.ui-dynatree-empty,
+span.ui-dynatree-vline,
+span.ui-dynatree-connector,
+span.ui-dynatree-expander,
+span.ui-dynatree-icon,
+span.ui-dynatree-checkbox
+{
+	width: 16px;
+	height: 16px;
+	display: -moz-inline-box; /* @ FF 1+2 */
+	display: inline-block; /* Required, to make a span sizeable */
+	vertical-align: top;
+	background-repeat: no-repeat;
+	background-position: left;
+}
+
+/******************************************************************************* 
+ * Lines and connectors
+ */
+span.ui-dynatree-empty
+{
+}
+span.ui-dynatree-vline
+{
+}
+span.ui-dynatree-connector
+{
+}
+.ui-dynatree-lastsib span.ui-dynatree-connector
+{
+}
+
+/******************************************************************************* 
+ * Expander icon
+ */
+span.ui-dynatree-expander
+{
+	background-image: url("collapsed.gif");
+}
+span.ui-dynatree-expander:hover
+{
+	background-image: url("collapsed_hover.gif");
+}
+.ui-dynatree-lastsib span.ui-dynatree-expander
+{
+}
+.ui-dynatree-lazy span.ui-dynatree-expander
+{
+}
+.ui-dynatree-lazy.ui-dynatree-lastsib span.ui-dynatree-expander
+{
+}
+.ui-dynatree-expanded span.ui-dynatree-expander
+{
+	background-image: url("expanded.gif");
+}
+.ui-dynatree-expanded span.ui-dynatree-expander:hover
+{
+	background-image: url("expanded_hover.gif");
+}
+.ui-dynatree-expanded.ui-dynatree-lastsib span.ui-dynatree-expander
+{
+}
+
+/******************************************************************************* 
+ * Checkbox icon
+ */
+span.ui-dynatree-checkbox
+{
+	margin-left: 3px;
+	background-image: url("cbUnchecked.gif");
+}
+span.ui-dynatree-checkbox:hover
+{
+	background-image: url("cbUnchecked_hover.gif");
+}
+
+.ui-dynatree-partsel span.ui-dynatree-checkbox
+{
+	background-image: url("cbIntermediate.gif");
+}
+.ui-dynatree-partsel span.ui-dynatree-checkbox:hover
+{
+	background-image: url("cbIntermediate_hover.gif");
+}
+
+.ui-dynatree-selected span.ui-dynatree-checkbox
+{
+	background-image: url("cbChecked.gif");
+}
+.ui-dynatree-selected span.ui-dynatree-checkbox:hover
+{
+	background-image: url("cbChecked_hover.gif");
+}
+
+
+/******************************************************************************* 
+ * Node type icon
+ */
+span.ui-dynatree-icon
+{
+	margin-left: 3px;
+/*	margin-right: 3px; */
+	background-image: url("document.gif");
+}
+
+.ui-dynatree-folder span.ui-dynatree-icon
+{
+	background-image: url("folder.gif");
+}
+
+.ui-dynatree-folder.ui-dynatree-expanded  span.ui-dynatree-icon
+{
+}
+
+
+/* Status node icons */
+
+.ui-dynatree-statusnode-wait span.ui-dynatree-icon
+{
+	background-image: url("ltWait.gif");
+}
+
+.ui-dynatree-statusnode-error span.ui-dynatree-icon
+{
+	background-image: url("ltError.gif");
+}
+
+
+/******************************************************************************* 
+ * Node titles
+ */
+
+/* Remove blue color and underline from title links */
+div.ui-dynatree-container a 
+{
+	color: black; /* inherit doesn't work on IE */
+	text-decoration: none;
+	vertical-align: top;
+	margin: 0px;
+	margin-left: 3px;
+	/* Set transparent border to prevent jumping when active node gets a border (we can do this, because this theme doesn_'t use vertical lines) */
+	border: 1px solid transparent;
+}
+
+div.ui-dynatree-container a:hover
+{
+	text-decoration: underline;
+}
+
+span.ui-dynatree-document a,
+span.ui-dynatree-folder a
+{
+	display: inline-block; /* Better alignment, when title contains <br> */  
+	padding-left: 3px;
+	padding-right: 3px; /* Otherwise italic font will  */
+}
+span.ui-dynatree-folder a
+{
+}
+
+
+div.ui-dynatree-container a:focus,
+span.ui-dynatree-focused a:link  /* @IE */
+{
+	background-color: #EFEBDE; /* gray */
+}
+
+
+span.ui-dynatree-expanded a
+{
+}
+
+span.ui-dynatree-selected a 
+{
+	color: green; 
+	font-style: italic;
+}
+
+span.ui-dynatree-active a
+{
+	border: 1px solid #99DEFD;
+	background-color: #D8F0FA;
+/*	color: white !important; /* @ IE6 */
+}
+
+
+/******************************************************************************* 
+ * Custom node classes
+ */
+
+span.custom1 a
+{
+	background-color: maroon;
+	color: yellow;
+}
