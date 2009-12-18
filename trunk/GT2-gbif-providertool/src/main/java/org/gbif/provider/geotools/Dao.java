@@ -33,17 +33,17 @@ public class Dao extends JdbcDaoSupport {
 	@SuppressWarnings("unchecked")
 	public List<DwcRecord> getRecords(Long resourceId, String guid, Long taxonId, Long taxonLft, Long taxonRgt, Long regionId, Long regionLft, Long regionRgt, 
 			String scientificName, String locality, String family, String typeStatus,
-			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
+			String institutionCode, String collectionCode, String catalogNumber, String collector, String eventDate, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, int maxResults) {
 		
 		// select is always the same
-		String select = "SELECT dwc.guid as guid, taxon_fk, t.lft as taxon_lft, t.rgt as taxon_rgt, region_fk, r.lft as region_lft, r.rgt as region_rgt, scientific_name, family, type_status, locality, institution_code, collection_code, catalog_number, collector, earliest_date_collected, basis_of_record, lat, lon  " +
+		String select = "SELECT dwc.guid as guid, taxon_fk, t.lft as taxon_lft, t.rgt as taxon_rgt, region_fk, r.lft as region_lft, r.rgt as region_rgt, scientific_name, family, type_status, locality, institution_code, collection_code, catalog_number, recorded_by, event_date, basis_of_record, lat, lon  " +
 				" FROM darwin_core dwc  join taxon t on dwc.taxon_fk=t.id  join region r on dwc.region_fk=r.id";
 		// build the where clause
 		List<Object> params = new LinkedList<Object>();
 		String where = buildWhere(resourceId, guid, taxonId, taxonLft, taxonRgt, regionId, regionLft, regionRgt, 
 				scientificName, locality, family, typeStatus,
-				institutionCode, collectionCode, catalogNumber, collector, earliestDateCollected, basisOfRecord, 
+				institutionCode, collectionCode, catalogNumber, collector, eventDate, basisOfRecord, 
 				minLatitude, maxLatitude, minLongitude, maxLongitude, params);
 		
 		// and the limit
@@ -68,7 +68,7 @@ public class Dao extends JdbcDaoSupport {
 	 */
 	private String buildWhere(Long resourceId, String guid, Long taxonId, Long taxonLft, Long taxonRgt, Long regionId, Long regionLft, Long regionRgt, 
 			String scientificName, String locality, String family, String typeStatus, 
-			String institutionCode, String collectionCode, String catalogNumber, String collector, String earliestDateCollected, String basisOfRecord, 
+			String institutionCode, String collectionCode, String catalogNumber, String collector, String eventDate, String basisOfRecord, 
 			Double minLatitude,	Double maxLatitude, Double minLongitude, Double maxLongitude, 
 			List<Object> params) {
 		StringBuffer where = new StringBuffer(" where dwc.resource_fk = ? and dwc.deleted=false");
@@ -118,9 +118,9 @@ public class Dao extends JdbcDaoSupport {
 			where.append(" and dwc.locality = ?");
 			params.add(locality);
 		}
-		if (earliestDateCollected != null) {
-			where.append(" and dwc.earliest_date_collected = ?");
-			params.add(earliestDateCollected);
+		if (eventDate != null) {
+			where.append(" and dwc.event_date = ?");
+			params.add(eventDate);
 		}
 		if (institutionCode != null) {
 			where.append(" and dwc.institution_code = ?");
@@ -135,7 +135,7 @@ public class Dao extends JdbcDaoSupport {
 			params.add(catalogNumber);
 		}
 		if (collector != null) {
-			where.append(" and dwc.collector = ?");
+			where.append(" and dwc.recorded_by = ?");
 			params.add(collector);
 		}
 		if (basisOfRecord != null) {
@@ -181,8 +181,8 @@ public class Dao extends JdbcDaoSupport {
 					rs.getString("institution_code"),
 					rs.getString("collection_code"),
 					rs.getString("catalog_number"),
-					rs.getString("collector"),
-					rs.getString("earliest_date_collected"),
+					rs.getString("recorded_by"),
+					rs.getString("event_date"),
 					rs.getString("basis_of_record"),
 					rs.getDouble("lat"),
 					rs.getDouble("lon"));
