@@ -119,7 +119,7 @@ public class DarwinCore implements CoreRecord, Comparable<DarwinCore> {
 
   // Darwin Core terms from:
   // http://code.google.com/p/darwincore/source/browse/trunk/xsd/tdwg_dwc_simple.xsd
-  private final static Set<String> DARWIN_CORE_TERMS = ImmutableSet.of(
+  public final static Set<String> DARWIN_CORE_TERMS = ImmutableSet.of(
       "acceptednameusage", "acceptednameusageid", "accessrights",
       "associatedmedia", "associatedoccurrences", "associatedreferences",
       "associatedsequences", "associatedtaxa", "basisofrecord", "bed",
