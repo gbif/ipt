@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thesaurus dc:URI="http://rs.tdwg.org/ontology/voc/TaxonName.rdf#NomenclaturalCodeTerm" dc:description="" dc:title="TDWG Nomenclatural Codes" numConcepts="5" xmlns="http://data.gbif.org/thesaurus" xmlns:dc="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://data.gbif.org/thesaurus  http://gbrds.gbif.org/resources/schemas/thesaurus.xsd">
+ <concept dc:identifier="icbn" dc:URI="http://rs.tdwg.org/dwc/dwctype/ICBN"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ICBN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="iczn" dc:URI="http://rs.tdwg.org/dwc/dwctype/ICZN"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ICZN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bc" dc:URI="http://rs.tdwg.org/dwc/dwctype/BC"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BC" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="icncp" dc:URI="http://rs.tdwg.org/dwc/dwctype/ICNCP"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ICNCP" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+ <concept dc:identifier="biocode" dc:URI="http://rs.tdwg.org/dwc/dwctype/BioCode"  dc:issued="2008-12-17T04:31:07+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BioCode" xml:lang="en"/>
+  </preferred>
+  <alternative>
+  </alternative>
+ </concept>
+</thesaurus>
