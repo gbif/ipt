@@ -22,6 +22,19 @@ scheduled for November 2009
 
 
 = Release 1.1 =
+== cleanup ==
+ * remove appfuse framework: Issue253
+== prepare IPT to be used as a repository in a hosting environment ==
+ * support different organisations for each resource: Issue252
+ * update IPT lite to be build via war overlay based on the regular IPT: Issue254
+
+
+= Release 1.2 =
+== native occurrence maps without geosever ==
+== optional geoserver 2.0 with configuration via REST services ==
+
+
+= Release 1.x =
 == Mapping Improvements ==
  * Intuitiveness of mapping section
    * Logged as issues tagged with "Configuration" in Issues list
