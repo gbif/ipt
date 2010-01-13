@@ -6,8 +6,7 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 <wiki:toc max_depth="2" />
 
 = Release 1.0 =
-scheduled for November 2009
-
+scheduled for 31-01-2010
 == Internationalisation (r1646) ==
  * Ensure application is fully internationalised
    * check all actions and templates for hard coded values
@@ -22,19 +21,28 @@ scheduled for November 2009
 
 
 = Release 1.1 =
+scheduled for 31-03-2010
+[http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=label%3AMilestone-Release1.1&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles All issues]
 == cleanup ==
  * remove appfuse framework: Issue253
 == prepare IPT to be used as a repository in a hosting environment ==
  * support different organisations for each resource: Issue252
  * update IPT lite to be build via war overlay based on the regular IPT: Issue254
+== Simplified & improved publication process ==
+ * organisation metadata managed externally only (not in ipt admin UI), picklist of available organisations provided by registry REST API
+ * resource can have 2 states only: private or public: Issue
+ * Changing the base URL for the IPT updates registered services: Issue159
 
 
 = Release 1.2 =
+scheduled for 31-05-2010
+[http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=label%3AMilestone-Release1.2&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles All issues]
 == native occurrence maps without geosever ==
 == optional geoserver 2.0 with configuration via REST services ==
 
 
 = Release 1.x =
+not yet scheduled but planned for 2010
 == Mapping Improvements ==
  * Intuitiveness of mapping section
    * Logged as issues tagged with "Configuration" in Issues list
@@ -63,12 +71,3 @@ see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label: Performa
 == new data types ==
  * new core record type Publication allows to share publication metadata with link to full body text
  * new core record type Site allows to share hierarchical site definitions incl polygon based shapes
-
-= GBIF registry interaction (as soon as registry is stable) =
-   * Issues relating to this section are tagged with "Registry"
-   * The GBIF registry (a component of the GBRDS) is under active development
-   * The registry will allows for managing the extensions including the tagging of extensions (e.g. gisin.org:Invasive extensions)
-   * The IPT must support the outcomes of the extension registration and tagging work
- * simplified registry interaction:
-   * organisation registration only done externally (not in ipt admin UI)
-   * write resource tags (= metadata keywords) to registry
