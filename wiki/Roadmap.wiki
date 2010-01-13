@@ -19,7 +19,7 @@ scheduled for 31-01-2010
 == Darwin Core update (in progress) ==
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
-
+-----
 = Release 1.1 =
 scheduled for 31-03-2010
 [http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=label%3AMilestone-Release1.1&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles All issues]
