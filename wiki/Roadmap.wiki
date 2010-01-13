@@ -5,6 +5,8 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 
 <wiki:toc max_depth="2" />
 
+
+-----
 = Release 1.0 =
 scheduled for 31-01-2010
 == Internationalisation (r1646) ==
@@ -19,11 +21,12 @@ scheduled for 31-01-2010
 == Darwin Core update (in progress) ==
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
+
 -----
 = Release 1.1 =
 scheduled for 31-03-2010
 [http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=label%3AMilestone-Release1.1&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles All issues]
-== cleanup ==
+== code cleanup ==
  * remove appfuse framework: Issue253
 == prepare IPT to be used as a repository in a hosting environment ==
  * support different organisations for each resource: Issue252
@@ -34,6 +37,8 @@ scheduled for 31-03-2010
  * Changing the base URL for the IPT updates registered services: Issue159
 
 
+
+-----
 = Release 1.2 =
 scheduled for 31-05-2010
 [http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=label%3AMilestone-Release1.2&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles All issues]
@@ -41,6 +46,8 @@ scheduled for 31-05-2010
 == optional geoserver 2.0 with configuration via REST services ==
 
 
+
+-----
 = Release 1.x =
 not yet scheduled but planned for 2010
 == Mapping Improvements ==
@@ -67,6 +74,9 @@ see [http://code.google.com/p/gbif-providertoolkit/issues/list?q=label: Performa
    * Consider simplifying main page markup and CSS (lower priority)
 
 
+
+
+-----
 = Release 2.0 =
 == new data types ==
  * new core record type Publication allows to share publication metadata with link to full body text
