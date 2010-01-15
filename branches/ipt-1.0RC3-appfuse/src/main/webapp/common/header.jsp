@@ -14,7 +14,7 @@
 	<ul class="sepmenu">
 	  <c:if test="${pageContext.request.remoteUser != null}">
 	  	<li><s:text name="user.status"/> <a href='<s:url value="/editProfile.html"/>'>${pageContext.request.remoteUser}</a></li>
-	  	<li><a href='<s:url value="/logout.jsp"/>'><s:text name="user.logout"/></a></li>
+	  	<li><a href='<s:url value="/logout.html"/>'><s:text name="user.logout"/></a></li>
 	  </c:if>
 	</ul>
 </div>

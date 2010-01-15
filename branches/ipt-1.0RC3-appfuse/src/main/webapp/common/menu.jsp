@@ -11,7 +11,7 @@
 		name="menu.explorer" /></a></li>
 	<c:choose>
 		<c:when test="${empty pageContext.request.remoteUser}">
-			<li><a href="<c:url value="/login.jsp"/>"><s:text
+			<li><a href="<c:url value="/login.html"/>"><s:text
 				name="login.title" /></a></li>
 		</c:when>
 		<c:otherwise>

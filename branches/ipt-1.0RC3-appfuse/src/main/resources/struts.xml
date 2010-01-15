@@ -109,14 +109,17 @@
         <action name="login" class="org.gbif.provider.webapp.action.SignupAction">
             <result>/WEB-INF/pages/login.jsp</result>
         </action>
-
+        <action name="logout" class="org.gbif.provider.webapp.action.SignupAction">
+            <result>/WEB-INF/pages/logout.jsp</result>
+        </action>
+        
         <action name="signup" class="org.gbif.provider.webapp.action.SignupAction">
             <result name="cancel" type="redirect">/</result>
             <result name="input">/WEB-INF/pages/signup.jsp</result>
             <result name="success" type="chain">saveSignup</result>
         </action>
 
-        <action name="saveSignup" class="signupAction" method="save">
+        <action name="saveSignup" class="org.gbif.provider.webapp.action.SignupAction" method="save">
             <result name="input">/WEB-INF/pages/signup.jsp</result>
             <result name="success" type="redirect-action">index</result>
         </action>
@@ -126,14 +129,14 @@
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="error">/WEB-INF/pages/index.jsp</result>
         </action>
-        <action name="saveUser" class="userAction" method="save">
+        <action name="saveUser" class="org.gbif.provider.webapp.action.UserAction" method="save">
             <result name="cancel" type="redirect-action">users</result>
             <result name="input">/WEB-INF/pages/userForm.jsp</result>
             <result name="success" type="redirect-action">index</result>
         </action>
         
 
-        <action name="passwordHint" class="passwordHintAction">
+        <action name="passwordHint" class="org.gbif.provider.webapp.action.PasswordHintAction">
             <result name="input">/</result>
             <result name="success">/</result>
         </action>
@@ -737,14 +740,14 @@
         <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
             <result>/WEB-INF/pages/admin/activeUsers.jsp</result>
         </action>
-        <action name="users" class="userAction" method="list">
+        <action name="users" class="org.gbif.provider.webapp.action.UserAction" method="list">
             <result>/WEB-INF/pages/admin/userList.jsp</result>
         </action>
-        <action name="editUser" class="userAction" method="edit">
+        <action name="editUser" class="org.gbif.provider.webapp.action.UserAction" method="edit">
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="input">/WEB-INF/pages/admin/userList.jsp</result>
         </action>
-        <action name="saveUser" class="userAction" method="save">
+        <action name="saveUser" class="org.gbif.provider.webapp.action.UserAction" method="save">
             <result name="cancel" type="redirect-action">users</result>
             <result name="input">/WEB-INF/pages/userForm.jsp</result>
             <result name="success" type="redirect-action">users</result>

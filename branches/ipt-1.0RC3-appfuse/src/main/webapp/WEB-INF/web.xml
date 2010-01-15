@@ -37,7 +37,6 @@
             classpath:/applicationContext-i18n-maps.xml
             classpath:/applicationContext-resources.xml
             classpath:/applicationContext-service.xml
-            classpath:/applicationContext-struts.xml
             /WEB-INF/security.xml
         </param-value>
     </context-param>
@@ -214,7 +213,7 @@
     </session-config>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
 </web-app>
