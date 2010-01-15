@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.LookupDao;
-import org.appfuse.model.LabelValue;
-import org.appfuse.model.Role;
 import org.appfuse.service.LookupManager;
+import org.gbif.provider.model.LabelValue;
+import org.gbif.provider.model.Role;
 
 
 /**

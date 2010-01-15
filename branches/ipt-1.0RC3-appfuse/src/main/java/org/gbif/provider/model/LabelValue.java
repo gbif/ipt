@@ -1,4 +1,4 @@
-package org.appfuse.model;
+package org.gbif.provider.model;
 
 import java.io.Serializable;
 import java.util.Comparator;

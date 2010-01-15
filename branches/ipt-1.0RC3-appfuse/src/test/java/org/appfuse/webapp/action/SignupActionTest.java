@@ -1,13 +1,14 @@
 package org.appfuse.webapp.action;
 
 import org.appfuse.Constants;
-import org.appfuse.model.Address;
-import org.appfuse.model.User;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import org.subethamail.wiser.Wiser;
 import org.apache.struts2.ServletActionContext;
+import org.gbif.provider.model.Address;
+import org.gbif.provider.model.User;
+import org.gbif.provider.webapp.action.SignupAction;
 import org.springframework.security.context.SecurityContextHolder;
 
 public class SignupActionTest extends BaseActionTestCase {

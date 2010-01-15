@@ -3,7 +3,7 @@ package org.appfuse.service;
 import java.util.List;
 
 import org.appfuse.dao.UserDao;
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 

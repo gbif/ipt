@@ -6,10 +6,10 @@ import javax.jws.WebService;
 import javax.persistence.EntityExistsException;
 
 import org.appfuse.dao.UserDao;
-import org.appfuse.model.User;
 import org.appfuse.service.UserExistsException;
 import org.appfuse.service.UserManager;
 import org.appfuse.service.UserService;
+import org.gbif.provider.model.User;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.providers.encoding.PasswordEncoder;

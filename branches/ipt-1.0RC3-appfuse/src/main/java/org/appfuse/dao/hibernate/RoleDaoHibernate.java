@@ -3,7 +3,7 @@ package org.appfuse.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.RoleDao;
-import org.appfuse.model.Role;
+import org.gbif.provider.model.Role;
 
 
 /**

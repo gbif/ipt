@@ -1,5 +1,6 @@
 package org.appfuse.webapp.action;
 
+import org.gbif.provider.webapp.action.PasswordHintAction;
 import org.subethamail.wiser.Wiser;
 
 public class PasswordHintActionTest extends BaseActionTestCase {

@@ -15,13 +15,13 @@
  */
 package org.gbif.provider.webapp.action;
 
+import org.gbif.provider.model.LabelValue;
+import org.gbif.provider.model.User;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.util.AppConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.appfuse.Constants;
-import org.appfuse.model.LabelValue;
-import org.appfuse.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContext;
@@ -41,7 +41,7 @@ import java.util.Map;
  * TODO: Documentation.
  * 
  */
-public class BaseAction extends org.appfuse.webapp.action.BaseAction {
+public class BaseAction extends org.gbif.provider.webapp.action.BaseAppfuseAction {
   public static final String OCCURRENCE = ExtensionType.Occurrence.alias;
   public static final String CHECKLIST = ExtensionType.Checklist.alias;
   public static final String METADATA = ExtensionType.Metadata.alias;

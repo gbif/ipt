@@ -15,8 +15,6 @@
         <property name="hibernate.search.autoregister_listeners">false</property>
 
         
-        <mapping class="org.appfuse.model.User"/>
-        <mapping class="org.appfuse.model.Role"/>
         <mapping class="org.gbif.provider.model.Annotation"/>
         <mapping class="org.gbif.provider.model.ChecklistResource"/>
         <mapping class="org.gbif.provider.model.CoreRecord"/>
@@ -32,6 +30,7 @@
         <mapping class="org.gbif.provider.model.Region"/>
         <mapping class="org.gbif.provider.model.Resource"/>
         <mapping class="org.gbif.provider.model.ResourceMetadata"/>
+        <mapping class="org.gbif.provider.model.Role"/>
         <mapping class="org.gbif.provider.model.SourceBase"/>
         <mapping class="org.gbif.provider.model.SourceSql"/>
         <mapping class="org.gbif.provider.model.SourceFile"/>
@@ -42,6 +41,7 @@
         <mapping class="org.gbif.provider.model.ThesaurusVocabulary"/>
         <mapping class="org.gbif.provider.model.Transformation"/>
         <mapping class="org.gbif.provider.model.UploadEvent"/>
+        <mapping class="org.gbif.provider.model.User"/>
         <!-- embeddable -->
         <mapping class="org.gbif.provider.model.BBox"/>
         <mapping class="org.gbif.provider.model.Point"/>

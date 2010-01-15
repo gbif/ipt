@@ -59,10 +59,13 @@
     
     
     <!-- Struts Interceptors -->
-    <bean id="managerInterceptor" class="org.gbif.provider.webapp.ManagerInterceptor"/>
+    <bean id="managerInterceptor" class="org.gbif.provider.webapp.interceptor.ManagerInterceptor"/>
     
-    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
+    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.interceptor.ResourceInterceptor"/>
     
+    <bean id="adminInterceptor" class="org.gbif.provider.webapp.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN"/>
+    </bean>
     
     <!-- MODEL FACTORIES -->
     <bean id="extensionFactory" class="org.gbif.provider.model.factory.ExtensionFactory"/>

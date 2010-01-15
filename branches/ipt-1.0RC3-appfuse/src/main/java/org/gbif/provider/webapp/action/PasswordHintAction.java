@@ -1,10 +1,10 @@
-package org.appfuse.webapp.action;
+package org.gbif.provider.webapp.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.appfuse.model.User;
 import org.appfuse.webapp.util.RequestUtil;
+import org.gbif.provider.model.User;
 import org.springframework.mail.MailException;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
@@ -13,7 +13,7 @@ import org.springframework.security.userdetails.UsernameNotFoundException;
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public class PasswordHintAction extends BaseAction {
+public class PasswordHintAction extends BaseAppfuseAction {
     private static final long serialVersionUID = -4037514607101222025L;
     private String username;
 

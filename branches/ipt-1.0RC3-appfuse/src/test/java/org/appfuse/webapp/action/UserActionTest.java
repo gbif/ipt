@@ -1,10 +1,11 @@
 package org.appfuse.webapp.action;
 
-import org.appfuse.model.User;
 import org.appfuse.service.UserManager;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
+import org.gbif.provider.model.User;
+import org.gbif.provider.webapp.action.UserAction;
 
 public class UserActionTest extends BaseActionTestCase {
     private UserAction action;

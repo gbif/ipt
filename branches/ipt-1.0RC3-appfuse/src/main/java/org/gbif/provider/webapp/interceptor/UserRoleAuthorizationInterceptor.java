@@ -1,4 +1,4 @@
-package org.appfuse.webapp.interceptor;
+package org.gbif.provider.webapp.interceptor;
 
 import java.io.IOException;
 

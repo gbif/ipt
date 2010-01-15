@@ -1,4 +1,4 @@
-package org.appfuse.model;
+package org.gbif.provider.model;
 
 import java.io.Serializable;
 
@@ -36,7 +36,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * TODO: Documentation.
  * 
  */
-public class Role extends BaseObject implements Serializable, GrantedAuthority {
+public class Role implements BaseObject, Serializable, GrantedAuthority {
     private static final long serialVersionUID = 3690197650654049848L;
     private Long id;
     private String name;

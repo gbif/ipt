@@ -1,8 +1,8 @@
 package org.appfuse.dao;
 
 import org.appfuse.Constants;
-import org.appfuse.model.Role;
-import org.appfuse.model.User;
+import org.gbif.provider.model.Role;
+import org.gbif.provider.model.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 

@@ -1,4 +1,4 @@
-package org.appfuse.webapp.action;
+package org.gbif.provider.util;
 
 import java.text.ParseException;
 import java.util.Date;

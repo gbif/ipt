@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.Table;
 
 import org.appfuse.dao.UserDao;
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;

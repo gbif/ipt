@@ -2,7 +2,7 @@ package org.appfuse.dao;
 
 import java.util.List;
 
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;

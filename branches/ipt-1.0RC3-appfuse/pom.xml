@@ -277,23 +277,12 @@
         <repository>
             <id>gbif</id>
             <url>http://tools.gbif.org/maven/repository/</url>
-        </repository>        
+        </repository>     
         <repository>
             <id>repository.jboss.org</id>
             <name>JBoss Maven Repository</name>
             <url>http://repository.jboss.org/maven2</url>
             <layout>default</layout>
-        </repository>
-        <!-- for the JSON struts2 plugin -->
-        <repository>
-            <id>Maven Plugin Repository</id>
-            <url>http://struts2plugin-maven-repo.googlecode.com/svn/trunk/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
         </repository>
         <!-- geotools -->
         <repository>
@@ -303,25 +292,11 @@
         </repository>
     </repositories>
 
+
+    
+    
     <dependencies>
 
-<!-- dependencies from appfuse -->
-<dependency>
-    <groupId>org.appfuse</groupId>
-    <artifactId>appfuse-hibernate</artifactId>
-    <version>${appfuse.version}</version>
-    <exclusions>
-        <!-- remove SLF4j as it converts all logs into strings -->
-        <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-        <exclusion>
-            <groupId>org.appfuse</groupId>
-            <artifactId>appfuse-data-common</artifactId>
-        </exclusion>
-    </exclusions>	
-</dependency>
 <dependency>
     <groupId>commons-beanutils</groupId>
     <artifactId>commons-beanutils</artifactId>
@@ -548,6 +523,12 @@
     <version>${hibernate.annotations.version}</version>
 </dependency>
 <dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>3.0.0.GA</version>
+</dependency>
+        
+<dependency>
     <groupId>org.jmock</groupId>
     <artifactId>jmock</artifactId>
     <version>${jmock.version}</version>
@@ -714,7 +695,6 @@
             <scope>test</scope>
         </dependency>
         
-        <!-- non appfuse archetype ones -->
         <dependency>
             <groupId>com.googlecode</groupId>
             <artifactId>jsonplugin</artifactId>
@@ -732,12 +712,6 @@
             <artifactId>gchartjava</artifactId>
             <version>0.5.1</version>
             <type>jar</type>
-        </dependency>
-        <!-- Hibernate 3.2.6GA used by appfuse -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>3.0.0.GA</version>
         </dependency>
         <!-- Spring -->
         <dependency>
@@ -879,7 +853,6 @@
         <!-- Framework dependency versions -->
         <spring.version>2.5.5</spring.version>
         <gt.version>2.5.1</gt.version>
-        <appfuse.version>2.0.2</appfuse.version>
         <aspectj.version>1.6.0</aspectj.version>
         <clickstream.version>1.0.2</clickstream.version>
         <commons.beanutils.version>1.7.0</commons.beanutils.version>

@@ -16,6 +16,7 @@
 package org.gbif.provider.webapp.action;
 
 import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ExtensionType;
@@ -25,7 +26,6 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.util.Constants;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.appfuse.model.LabelValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

@@ -3,8 +3,8 @@ package org.appfuse.service.impl;
 import java.util.List;
 
 import org.appfuse.dao.RoleDao;
-import org.appfuse.model.Role;
 import org.appfuse.service.RoleManager;
+import org.gbif.provider.model.Role;
 
 /**
  * Implementation of RoleManager interface.

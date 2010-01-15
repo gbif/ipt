@@ -106,6 +106,10 @@
         </global-exception-mappings>
 
 
+        <action name="login" class="org.gbif.provider.webapp.action.SignupAction">
+            <result>/WEB-INF/pages/login.jsp</result>
+        </action>
+
         <action name="signup" class="org.gbif.provider.webapp.action.SignupAction">
             <result name="cancel" type="redirect">/</result>
             <result name="input">/WEB-INF/pages/signup.jsp</result>

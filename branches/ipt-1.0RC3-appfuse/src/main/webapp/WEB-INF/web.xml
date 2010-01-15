@@ -185,9 +185,6 @@
     <listener>
         <listener-class>org.appfuse.webapp.listener.StartupListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>org.appfuse.webapp.listener.UserCounterListener</listener-class>
-    </listener>
     
     <servlet>
         <servlet-name>JspSupportServlet</servlet-name>

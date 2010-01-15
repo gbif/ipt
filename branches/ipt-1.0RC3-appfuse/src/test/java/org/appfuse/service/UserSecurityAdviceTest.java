@@ -7,8 +7,8 @@ import static org.junit.Assert.fail;
 
 import org.appfuse.Constants;
 import org.appfuse.dao.UserDao;
-import org.appfuse.model.Role;
-import org.appfuse.model.User;
+import org.gbif.provider.model.Role;
+import org.gbif.provider.model.User;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;

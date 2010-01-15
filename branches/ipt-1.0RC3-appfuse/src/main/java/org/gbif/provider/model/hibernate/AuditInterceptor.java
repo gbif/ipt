@@ -17,7 +17,7 @@ package org.gbif.provider.model.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 import org.springframework.security.Authentication;

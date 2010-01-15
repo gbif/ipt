@@ -1,4 +1,4 @@
-package org.appfuse.model;
+package org.gbif.provider.model;
 
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
@@ -31,7 +31,7 @@ import java.util.Set;
  * TODO: Documentation.
  * 
  */
-public class User extends BaseObject implements Serializable, UserDetails {
+public class User implements BaseObject, Serializable, UserDetails {
     private static final long serialVersionUID = 3832626162173359411L;
 
     private Long id;

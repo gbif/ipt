@@ -1,4 +1,4 @@
-package org.appfuse.webapp.action;
+package org.gbif.provider.webapp.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +13,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.appfuse.Constants;
-import org.appfuse.model.User;
 import org.appfuse.service.MailEngine;
 import org.appfuse.service.RoleManager;
 import org.appfuse.service.UserManager;
+import org.gbif.provider.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -30,9 +31,8 @@ import com.opensymphony.xwork2.ActionSupport;
  * 
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public class BaseAction extends ActionSupport {
+public class BaseAppfuseAction extends ActionSupport {
     private static final long serialVersionUID = 3525445612504421307L;
-
     /**
      * Constant for cancel result String
      */
@@ -43,15 +43,17 @@ public class BaseAction extends ActionSupport {
      */
     protected transient final Log log = LogFactory.getLog(getClass());
 
-    /**
-     * The UserManager
-     */
+    @Autowired
     protected UserManager userManager;
-
-    /**
-     * The RoleManager
-     */
+    @Autowired
     protected RoleManager roleManager;
+    @Autowired
+    protected MailEngine mailEngine;
+    /**
+     * A message pre-populated with default data
+     */
+    @Autowired
+    protected SimpleMailMessage mailMessage;
 
     /**
      * Indicator if the user clicked cancel
@@ -73,15 +75,6 @@ public class BaseAction extends ActionSupport {
      */
     protected String save;
 
-    /**
-     * MailEngine for sending e-mail
-     */
-    protected MailEngine mailEngine;
-
-    /**
-     * A message pre-populated with default data
-     */
-    protected SimpleMailMessage mailMessage;
 
     /**
      * Velocity template to use for e-mailing
@@ -169,18 +162,6 @@ public class BaseAction extends ActionSupport {
         model.put("message", msg);
         model.put("applicationURL", url);
         mailEngine.sendMessage(mailMessage, templateName, model);
-    }
-
-    public void setUserManager(UserManager userManager) {
-        this.userManager = userManager;
-    }
-
-    public void setRoleManager(RoleManager roleManager) {
-        this.roleManager = roleManager;
-    }
-
-    public void setMailEngine(MailEngine mailEngine) {
-        this.mailEngine = mailEngine;
     }
 
     public void setMailMessage(SimpleMailMessage mailMessage) {

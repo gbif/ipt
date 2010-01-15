@@ -3,7 +3,7 @@ package org.appfuse.service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.Constants;
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 
 public class UserManagerTest extends BaseManagerTestCase {
     //~ Instance fields ========================================================

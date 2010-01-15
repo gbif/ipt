@@ -2,7 +2,7 @@ package org.appfuse.service;
 
 import java.util.List;
 
-import org.appfuse.model.Role;
+import org.gbif.provider.model.Role;
 
 /**
  * Business Service Interface to handle communication between web and

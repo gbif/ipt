@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.appfuse.Constants;
 import org.appfuse.dao.LookupDao;
-import org.appfuse.model.LabelValue;
-import org.appfuse.model.Role;
+import org.gbif.provider.model.LabelValue;
+import org.gbif.provider.model.Role;
 import org.jmock.Expectations;
 import org.junit.Before;
 import org.junit.Test;

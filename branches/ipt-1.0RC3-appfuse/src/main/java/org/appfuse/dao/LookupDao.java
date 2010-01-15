@@ -2,7 +2,7 @@ package org.appfuse.dao;
 
 import java.util.List;
 
-import org.appfuse.model.Role;
+import org.gbif.provider.model.Role;
 
 /**
  * Lookup Data Access Object (GenericDao) interface.  This is used to lookup values in

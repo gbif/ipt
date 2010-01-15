@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.jws.WebService;
 
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 /**

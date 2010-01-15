@@ -1,4 +1,4 @@
-package org.appfuse.model;
+package org.gbif.provider.model;
 
 import java.io.Serializable;
 
@@ -19,7 +19,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * TODO: Documentation.
  * 
  */
-public class Address extends BaseObject implements Serializable {
+public class Address implements Serializable {
     private static final long serialVersionUID = 3617859655330969141L;
     private String address;
     private String city;

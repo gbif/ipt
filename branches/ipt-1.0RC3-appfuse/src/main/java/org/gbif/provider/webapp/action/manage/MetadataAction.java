@@ -16,6 +16,7 @@
 package org.gbif.provider.webapp.action.manage;
 
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
@@ -28,7 +29,6 @@ import com.opensymphony.xwork2.Preparable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.appfuse.model.LabelValue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;

@@ -2,7 +2,7 @@ package org.appfuse.service;
 
 import java.util.List;
 
-import org.appfuse.model.LabelValue;
+import org.gbif.provider.model.LabelValue;
 
 /**
  * Business Service Interface to talk to persistence layer and

@@ -3,7 +3,7 @@ package org.appfuse.service.impl;
 import static org.junit.Assert.assertTrue;
 
 import org.appfuse.dao.UniversalDao;
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 import org.jmock.Expectations;
 import org.junit.After;
 import org.junit.Before;
