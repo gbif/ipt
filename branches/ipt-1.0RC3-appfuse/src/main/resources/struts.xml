@@ -106,10 +106,10 @@
         </global-exception-mappings>
 
 
-        <action name="login" class="org.gbif.provider.webapp.action.SignupAction">
+        <action name="login" class="org.gbif.provider.webapp.action.BaseAction">
             <result>/WEB-INF/pages/login.jsp</result>
         </action>
-        <action name="logout" class="org.gbif.provider.webapp.action.SignupAction">
+        <action name="logout" class="org.gbif.provider.webapp.action.BaseAction">
             <result>/WEB-INF/pages/logout.jsp</result>
         </action>
         

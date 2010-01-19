@@ -803,7 +803,7 @@
         <profile>
             <id>markus</id>
             <properties>
-                <ipt.datadir>/Users/markus/Desktop/data</ipt.datadir>
+                <ipt.datadir>/Users/markus/Desktop/iptdata</ipt.datadir>
                 <ipt.mail.from>IPT &lt;m.doering@mac.com&gt;</ipt.mail.from>
                 <ipt.dev>true</ipt.dev>
             </properties>
