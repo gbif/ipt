@@ -15,7 +15,7 @@
    * [DwcExtensions]
  * Developers
    * [HowToContribute How to contribute]
-   * Dev Environment Setup
+   * Development Setup
      * [DevelopersGettingStarted Getting Started]
      * [DevelopersGettingStartedAlt Getting Started (command line setup)]
      * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
