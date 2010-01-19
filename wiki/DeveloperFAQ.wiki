@@ -55,6 +55,17 @@ Internationalisation is done on templates (.ftl, .jsp) and action classes using 
 A nice tool to help translation is Attesoro. It will mean we have to work with valid property files from the beginning though, removing the native2ascii plugin and utf8 bundles:
  * http://attesoro.org/screenshot.html
 
+== Authentication & Security ==
+IPT makes use of the spring security framework introduced by the original appfuse framework. User accounts and roles are kept locally in the H2 database via hibernate persistence - just as any other data.
+=== Login / Logout ===
+Login and logout makes use of the native java application server features, j_security_check, j_username, j_password
+Both jsp pages are wired in struts, default package, so they can access all struts variables and i18N.
+=== Restricting acccess to pages ===
+The security.xml file defines URL patterns that can define required roles for visiting those pages. For examples:
+{{{
+        <intercept-url pattern="/manage/*" access="ROLE_ADMIN,ROLE_MANAGER"/>
+}}}
+
 == Registry and Publication Process ==
 
 == Lucene ==
