@@ -55,7 +55,7 @@ We use [http://www.opensymphony.com/sitemesh/ sitemesh] to do the basic page lay
 
 ==URL rewrite and pretty URLs==
 Struts2 doesnt provide simple native means to create pretty URLs with parameters as part of the URL.
-We use urlrewrite for those URLs, e.g.  http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f/archive-dwc.zip get rewritten into http://localhost/archive.do?guid= 91c20216-1d89-4201-87cc-143e1655f44f&format=dwc
+We use urlrewrite for those URLs, e.g.  http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f/archive-dwc.zip get rewritten into http://localhost/archive.do?guid=91c20216-1d89-4201-87cc-143e1655f44f&format=dwc
 
 The resource file urlrewrite.xml defines the rewrite patterns in a very readable way. Notice that URL rewrites take place before the request is even dispatched to struts2! 
 
