@@ -1,6 +1,5 @@
 <%@ include file="/common/taglibs.jsp" %>
 
-  <div id="divider"></div>
     <ul class="sepmenu">
       <li><s:text name="webapp.version"/></li>
       <li><a href="http://code.google.com/p/gbif-providertoolkit/"><s:text name="footer.ipthome"/></a></li>
