@@ -20,8 +20,8 @@
      * [DevelopersGettingStartedAlt Getting Started (command line setup)]
      * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
      * [EclipseSetupOSX OS X Developers]
-   * Implementation Documentation
-     * [DeveloperFAQ]
+   * [DeveloperFAQ]
+   * Implementation Details
      * [Database]
      * [DataTransformations]
      * [TapirImplementation]
