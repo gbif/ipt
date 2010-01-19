@@ -10,7 +10,7 @@
     <head>
         <%@ include file="/common/meta.jsp" %>
         <!-- the 2 column layout -->
-		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/layout-navtop-subright.css'/>" />
+		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/gbifn/layout-navtop-subright.css'/>" />
         <decorator:head/>
     </head>
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/><decorator:getProperty property="body.onload" writeEntireProperty="true"/> >

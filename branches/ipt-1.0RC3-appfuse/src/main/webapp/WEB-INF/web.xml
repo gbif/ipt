@@ -5,12 +5,6 @@
     <display-name>providertool</display-name>
     <distributable/>
 
-    <!-- Define the default CSS Theme -->
-    <context-param>
-        <param-name>csstheme</param-name>
-        <param-value>gbifn</param-value>
-    </context-param>
-
     <!--
         As soon as we got rid of the pure JSP pages and integrated them into struts2
         we can get rid of the following 2 non struts exceptions
@@ -181,10 +175,11 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
+    <!-- 
     <listener>
         <listener-class>org.appfuse.webapp.listener.StartupListener</listener-class>
     </listener>
-    
+    -->
     <servlet>
         <servlet-name>JspSupportServlet</servlet-name>
         <servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>

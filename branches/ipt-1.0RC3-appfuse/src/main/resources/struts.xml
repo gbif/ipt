@@ -107,10 +107,16 @@
 
 
         <action name="login" class="org.gbif.provider.webapp.action.BaseAction">
+            <result type="freemarker">/WEB-INF/pages/login.ftl</result>
+        </action>
+        <action name="login2" class="org.gbif.provider.webapp.action.BaseAction">
             <result>/WEB-INF/pages/login.jsp</result>
         </action>
         <action name="logout" class="org.gbif.provider.webapp.action.BaseAction">
             <result>/WEB-INF/pages/logout.jsp</result>
+        </action>
+        <action name="denied" class="org.gbif.provider.webapp.action.BaseAction">
+            <result type="freemarker">/WEB-INF/pages/denied.ftl</result>
         </action>
         
         <action name="signup" class="org.gbif.provider.webapp.action.SignupAction">
@@ -737,9 +743,6 @@
             </result>
         </global-results>
         
-        <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
-            <result>/WEB-INF/pages/admin/activeUsers.jsp</result>
-        </action>
         <action name="users" class="org.gbif.provider.webapp.action.UserAction" method="list">
             <result>/WEB-INF/pages/admin/userList.jsp</result>
         </action>

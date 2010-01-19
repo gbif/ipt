@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.appfuse.Constants;
+import org.appfuse.service.LookupManager;
 import org.appfuse.service.UserExistsException;
 import org.appfuse.webapp.util.RequestUtil;
+import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Role;
 import org.gbif.provider.model.User;
 import org.gbif.provider.util.AppConfig;
@@ -33,7 +35,9 @@ public class UserAction extends BaseAction implements Preparable {
     private List users;
     private User user;
     private String id;
-    
+    @Autowired
+    private LookupManager mgr;
+
     public UserAction() {
 		super();
 		templateName="accountCreated.vm";
@@ -50,6 +54,8 @@ public class UserAction extends BaseAction implements Preparable {
                 user = userManager.getUser(getRequest().getParameter("user.id"));
             }
         }
+        
+        List<LabelValue> roles = mgr.getAllRoles();
     }
 
 	public AppConfig getIptCfg() {
