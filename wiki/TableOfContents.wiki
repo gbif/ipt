@@ -15,13 +15,15 @@
    * [DwcExtensions]
  * Developers
    * [HowToContribute How to contribute]
-   * [DevelopersGettingStarted Getting Started]
-   * [DevelopersGettingStartedAlt Getting Started (command line setup)]
-   * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
-   * [EclipseSetupOSX OS X Developers]
-   * [DeveloperFAQ]
+   * Dev Environment Setup
+     * [DevelopersGettingStarted Getting Started]
+     * [DevelopersGettingStartedAlt Getting Started (command line setup)]
+     * [EclipseEnvironmentAndCheckstyles Eclipse Setup]
+     * [EclipseSetupOSX OS X Developers]
+   * Implementation Documentation
+     * [DeveloperFAQ]
+     * [Database]
+     * [DataTransformations]
+     * [TapirImplementation]
    * [Roadmap]
    * [VersionHistory]
-   * [Database]
-   * [DataTransformations]
-   * [TapirImplementation]
