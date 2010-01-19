@@ -50,10 +50,10 @@ We use [http://www.opensymphony.com/sitemesh/ sitemesh] to do the basic page lay
 
 === Main templates used in page layout ===
  * src/main/webapp/decorators/default.jsp
- * src/main/webapp/common/*.jsp
+ * src/main/webapp/common/xxx.jsp
 
 
-== URL rewrite and pretty URLs ==
+==URL rewrite and pretty URLs==
 Struts2 doesnt provide simple native means to create pretty URLs with parameters as part of the URL.
 We use urlrewrite for those URLs, e.g.  http://localhost/resource/91c20216-1d89-4201-87cc-143e1655f44f/archive-dwc.zip get rewritten into http://localhost/archive.do?guid= 91c20216-1d89-4201-87cc-143e1655f44f&format=dwc
 
