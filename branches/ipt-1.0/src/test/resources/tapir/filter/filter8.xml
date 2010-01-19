@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tapir:template xmlns:dc="http://purl.org/dc/terms/"
+ xmlns:tapir="http://rs.tdwg.org/tapir/1.0"
+ xmlns:dce="http://purl.org/dc/elements/1.1/"
+ xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+ xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#"
+ xmlns:dcmi="http://purl.org/dc/dcmitype/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<tapir:filter>
+		<tapir:not>
+			<tapir:and>
+				<tapir:isNull>
+					<tapir:concept id="http://rs.tdwg.org/dwc/terms/country"/>
+				</tapir:isNull>
+				<tapir:like>
+					<tapir:concept id="http://rs.tdwg.org/dwc/terms/scientificName"/>
+					<tapir:parameter name="lower"/>
+				</tapir:like>
+			</tapir:and>
+		</tapir:not>
+	</tapir:filter>
+</tapir:template>

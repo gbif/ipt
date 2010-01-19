@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://purl.org/dc/terms/">
+    <xs:attribute name="identifier" type="xs:string"/>
+    <xs:attribute name="URI" type="xs:anyURI"/>
+    <xs:attribute name="issued" type="xs:dateTime"/>
+    <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="source" type="xs:string" />
+    <xs:attribute name="relation" type="xs:string" />
+    <xs:attribute name="description" type="xs:anyURI" />
+    <xs:attribute name="created" type="xs:dateTime" />
+    <xs:attribute name="modified" type="xs:dateTime" />
+</xs:schema>
