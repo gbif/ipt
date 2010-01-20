@@ -1,8 +1,8 @@
-package org.appfuse.dao.hibernate;
+package org.gbif.provider.dao.hibernate;
 
 import java.util.List;
 
-import org.appfuse.dao.LookupDao;
+import org.gbif.provider.dao.LookupDao;
 import org.gbif.provider.model.Role;
 
 /**

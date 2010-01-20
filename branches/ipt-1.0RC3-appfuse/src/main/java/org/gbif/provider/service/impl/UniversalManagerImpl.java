@@ -1,12 +1,12 @@
-package org.appfuse.service.impl;
+package org.gbif.provider.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.dao.UniversalDao;
-import org.appfuse.service.UniversalManager;
+import org.gbif.provider.dao.UniversalDao;
+import org.gbif.provider.service.UniversalManager;
 
 /**
  * Base class for Business Services - use this class for utility methods and

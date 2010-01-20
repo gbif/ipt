@@ -1,4 +1,4 @@
-package org.appfuse.dao;
+package org.gbif.provider.dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * they are part of the constructor in the GenericDao, hence you'll have to do 
  * some casting if you use this one.
  * 
- * @see org.appfuse.dao.GenericDao
+ * @see org.gbif.provider.dao.GenericDao
  */
 public interface UniversalDao {
 

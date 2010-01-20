@@ -1,12 +1,12 @@
-package org.appfuse.service.impl;
+package org.gbif.provider.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.appfuse.dao.LookupDao;
-import org.appfuse.service.LookupManager;
+import org.gbif.provider.dao.LookupDao;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Role;
+import org.gbif.provider.service.LookupManager;
 
 
 /**

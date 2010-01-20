@@ -1,10 +1,10 @@
-package org.appfuse.service.impl;
+package org.gbif.provider.service.impl;
 
 import java.util.List;
 
-import org.appfuse.dao.RoleDao;
-import org.appfuse.service.RoleManager;
+import org.gbif.provider.dao.RoleDao;
 import org.gbif.provider.model.Role;
+import org.gbif.provider.service.RoleManager;
 
 /**
  * Implementation of RoleManager interface.

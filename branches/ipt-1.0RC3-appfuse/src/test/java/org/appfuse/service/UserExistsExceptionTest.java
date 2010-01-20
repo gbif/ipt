@@ -1,6 +1,8 @@
 package org.appfuse.service;
 
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.UserExistsException;
+import org.gbif.provider.service.UserManager;
 import org.springframework.beans.BeanUtils;
 
 public class UserExistsExceptionTest extends BaseManagerTestCase {

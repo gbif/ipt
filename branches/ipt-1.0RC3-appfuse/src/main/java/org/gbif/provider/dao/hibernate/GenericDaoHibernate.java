@@ -1,4 +1,4 @@
-package org.appfuse.dao.hibernate;
+package org.gbif.provider.dao.hibernate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.dao.GenericDao;
+import org.gbif.provider.dao.GenericDao;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 

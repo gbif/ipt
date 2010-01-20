@@ -1,4 +1,4 @@
-package org.appfuse.service;
+package org.gbif.provider.service;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;

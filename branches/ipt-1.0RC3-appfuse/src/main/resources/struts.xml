@@ -3,28 +3,10 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <!-- Constants -->
-    <constant name="struts.i18n.encoding" value="UTF-8"/>
-    <!-- default locale -->
-    <constant name="struts.locale" value="en_US"/>
-    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
-    <constant name="struts.action.extension" value="html,xml,do"/>
-    <constant name="struts.objectFactory" value="spring"/>
-    <!-- See the 2 references of fileUpload interceptor below and make sure it is also set to the  
-		 same value as this mulitpart in BOTH 
-		 Additionally see SoureAction which ALSO checks the size... -->
-	<constant name="struts.multipart.maxSize" value="104857600"/>
-													 
-    <constant name="struts.ui.theme" value="css_xhtml"/>
-    <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
-    <constant name="struts.enable.SlashesInActionNames" value="true"/>
-    <!-- by default dont append existing parameters -->
-    <constant name="struts.url.includeParams" value="none" />
-    
-    <constant name="struts.devMode" value="${ipt.dev}"/>
-    
-    <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
-
+    <!-- Constants see struts.properties
+        some constants, i.e. struts.locale dont work in struts.xml:
+        http://issues.apache.org/struts/browse/WW-2068
+    -->
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default">        
         <interceptors>

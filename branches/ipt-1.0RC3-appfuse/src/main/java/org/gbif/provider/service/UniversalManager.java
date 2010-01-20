@@ -1,4 +1,4 @@
-package org.appfuse.service;
+package org.gbif.provider.service;
 
 import java.io.Serializable;
 import java.util.List;

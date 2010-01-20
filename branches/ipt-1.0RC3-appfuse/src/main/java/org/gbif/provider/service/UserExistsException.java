@@ -1,4 +1,4 @@
-package org.appfuse.service;
+package org.gbif.provider.service;
 
 
 /**

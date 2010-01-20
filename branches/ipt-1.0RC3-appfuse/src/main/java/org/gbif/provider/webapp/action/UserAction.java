@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.appfuse.Constants;
-import org.appfuse.service.LookupManager;
-import org.appfuse.service.UserExistsException;
-import org.appfuse.webapp.util.RequestUtil;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Role;
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.LookupManager;
+import org.gbif.provider.service.UserExistsException;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.security.AccessDeniedException;

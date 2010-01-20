@@ -1,5 +1,6 @@
 package org.appfuse.dao;
 
+import org.gbif.provider.dao.UniversalDao;
 import org.gbif.provider.model.User;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.ObjectRetrievalFailureException;

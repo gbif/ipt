@@ -1,8 +1,8 @@
-package org.appfuse.service;
+package org.gbif.provider.service;
 
 import java.util.List;
 
-import org.appfuse.dao.UserDao;
+import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.User;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 

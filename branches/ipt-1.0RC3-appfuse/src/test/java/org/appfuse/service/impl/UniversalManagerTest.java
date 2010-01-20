@@ -2,8 +2,9 @@ package org.appfuse.service.impl;
 
 import static org.junit.Assert.assertTrue;
 
-import org.appfuse.dao.UniversalDao;
+import org.gbif.provider.dao.UniversalDao;
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.impl.UniversalManagerImpl;
 import org.jmock.Expectations;
 import org.junit.After;
 import org.junit.Before;

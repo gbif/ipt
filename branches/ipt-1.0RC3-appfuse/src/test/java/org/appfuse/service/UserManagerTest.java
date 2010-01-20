@@ -4,6 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.appfuse.Constants;
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.RoleManager;
+import org.gbif.provider.service.UserManager;
 
 public class UserManagerTest extends BaseManagerTestCase {
     //~ Instance fields ========================================================

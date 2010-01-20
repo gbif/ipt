@@ -1,15 +1,15 @@
-package org.appfuse.service.impl;
+package org.gbif.provider.service.impl;
 
 import java.util.List;
 
 import javax.jws.WebService;
 import javax.persistence.EntityExistsException;
 
-import org.appfuse.dao.UserDao;
-import org.appfuse.service.UserExistsException;
-import org.appfuse.service.UserManager;
-import org.appfuse.service.UserService;
+import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.UserExistsException;
+import org.gbif.provider.service.UserManager;
+import org.gbif.provider.service.UserService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.providers.encoding.PasswordEncoder;

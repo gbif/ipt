@@ -3,8 +3,8 @@ package org.gbif.provider.webapp.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.appfuse.webapp.util.RequestUtil;
 import org.gbif.provider.model.User;
+import org.gbif.provider.util.RequestUtil;
 import org.springframework.mail.MailException;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 

@@ -1,4 +1,4 @@
-package org.appfuse.dao;
+package org.gbif.provider.dao;
 
 import org.gbif.provider.model.Role;
 

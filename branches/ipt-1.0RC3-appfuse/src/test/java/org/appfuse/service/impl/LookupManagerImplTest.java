@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.Constants;
-import org.appfuse.dao.LookupDao;
+import org.gbif.provider.dao.LookupDao;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Role;
+import org.gbif.provider.service.impl.LookupManagerImpl;
 import org.jmock.Expectations;
 import org.junit.Before;
 import org.junit.Test;

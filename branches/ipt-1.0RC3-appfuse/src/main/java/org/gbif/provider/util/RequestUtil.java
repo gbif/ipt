@@ -1,4 +1,4 @@
-package org.appfuse.webapp.util;
+package org.gbif.provider.util;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;

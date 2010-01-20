@@ -1,4 +1,4 @@
-package org.appfuse.dao.spring;
+package org.gbif.provider.dao.spring;
 
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;

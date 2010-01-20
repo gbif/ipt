@@ -1,10 +1,10 @@
-package org.appfuse.dao.hibernate;
+package org.gbif.provider.dao.hibernate;
 
 import java.util.List;
 
 import javax.persistence.Table;
 
-import org.appfuse.dao.UserDao;
+import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.User;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;

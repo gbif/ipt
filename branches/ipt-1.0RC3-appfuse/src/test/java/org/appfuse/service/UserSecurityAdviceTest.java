@@ -6,9 +6,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.appfuse.Constants;
-import org.appfuse.dao.UserDao;
+import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.Role;
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.UserManager;
+import org.gbif.provider.service.UserSecurityAdvice;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;

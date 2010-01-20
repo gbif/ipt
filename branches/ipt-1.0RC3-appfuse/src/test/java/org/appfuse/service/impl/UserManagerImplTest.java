@@ -6,11 +6,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.appfuse.Constants;
-import org.appfuse.dao.RoleDao;
-import org.appfuse.dao.UserDao;
-import org.appfuse.service.UserExistsException;
+import org.gbif.provider.dao.RoleDao;
+import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.Role;
 import org.gbif.provider.model.User;
+import org.gbif.provider.service.UserExistsException;
+import org.gbif.provider.service.impl.RoleManagerImpl;
+import org.gbif.provider.service.impl.UserManagerImpl;
 import org.jmock.Expectations;
 import org.junit.Before;
 import org.junit.Test;
