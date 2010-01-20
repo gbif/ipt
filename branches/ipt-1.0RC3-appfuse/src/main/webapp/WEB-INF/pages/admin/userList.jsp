@@ -33,7 +33,7 @@
 	        onclick="location.href='<c:url value="/admin/editUser.html?method=Add&from=list"/>'"
 	        value="<fmt:message key="button.add"/>"/>
 	    
-	    <input type="button" onclick="location.href='<c:url value="/mainMenu.html"/>'"
+	    <input type="button" onclick="location.href='<c:url value="/index.html"/>'"
 	        value="<fmt:message key="button.done"/>"/>
 	</c:set>
 	<c:out value="${buttons}" escapeXml="false" />

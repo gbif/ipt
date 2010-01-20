@@ -30,11 +30,6 @@ public class Constants {
     public static final String USER_HOME = System.getProperty("user.home") + FILE_SEP;
 
     /**
-     * The name of the configuration hashmap stored in application scope.
-     */
-    public static final String CONFIG = "appConfig";
-
-    /**
      * Session scope attribute that holds the locale set by the user. By setting this key
      * to the same one that Struts uses, we get synchronization in Struts w/o having
      * to do extra work or have two session-level variables.

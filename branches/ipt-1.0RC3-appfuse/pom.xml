@@ -389,11 +389,6 @@
 </dependency>
 <dependency>
     <groupId>opensymphony</groupId>
-    <artifactId>clickstream</artifactId>
-    <version>${clickstream.version}</version>
-</dependency>
-<dependency>
-    <groupId>opensymphony</groupId>
     <artifactId>oscache</artifactId>
     <version>${oscache.version}</version>
 </dependency>
@@ -624,17 +619,6 @@
     </exclusions>
 </dependency>
 <dependency>
-    <groupId>struts-menu</groupId>
-    <artifactId>struts-menu</artifactId>
-    <version>${struts.menu.version}</version>
-    <exclusions>
-        <exclusion>
-            <artifactId>xml-apis</artifactId>
-            <groupId>xml-apis</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
     <groupId>taglibs</groupId>
     <artifactId>standard</artifactId>
     <version>${jstl.version}</version>
@@ -854,7 +838,6 @@
         <spring.version>2.5.5</spring.version>
         <gt.version>2.5.1</gt.version>
         <aspectj.version>1.6.0</aspectj.version>
-        <clickstream.version>1.0.2</clickstream.version>
         <commons.beanutils.version>1.7.0</commons.beanutils.version>
         <commons.collections.version>3.2</commons.collections.version>
         <commons.dbcp.version>1.2.1</commons.dbcp.version>
@@ -872,13 +855,12 @@
         <oscache.version>2.3</oscache.version>
         <sitemesh.version>2.2.1</sitemesh.version>
         <spring.security.version>2.0.1</spring.security.version>
-        <struts.menu.version>2.4.3</struts.menu.version>
-        <struts.version>2.0.11.1</struts.version>
+        <struts.version>2.0.14</struts.version>
         <urlrewrite.version>3.0.4</urlrewrite.version>
         <velocity.version>1.4</velocity.version>
         <xfire.version>1.2.6</xfire.version>
 		<lucene.version>2.4.0</lucene.version>
-        <displaytag.version>1.1.1</displaytag.version>
+        <displaytag.version>1.2</displaytag.version>
         
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>

@@ -32,11 +32,6 @@
         <level value="WARN"/>
     </logger>
 
-    <!-- net.sf.navigator, net.sf.ehcache -->
-    <logger name="net.sf">
-        <level value="ERROR"/>
-    </logger>
-
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
     <logger name="org.springframework.security">
         <level value="ERROR"/>

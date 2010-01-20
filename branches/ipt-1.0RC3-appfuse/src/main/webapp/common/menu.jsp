@@ -49,18 +49,14 @@
 					<li><a title='<s:text name="menu.admin.thesaurus"/>'
 						href='<c:url value="/admin/vocabularies.html"/>'><s:text
 						name="menu.admin.thesaurus" /></a></li>
-					<li><a title='<s:text name="menu.admin.users"/>'
+					<!--
+					<li>
+						<a title='<s:text name="menu.admin.resources"/>' href='<c:url value="/admin/resources.html"/>'><s:text name="menu.admin.resources"/></a>	    
+		    		</li>
+		    		-->
+					<li class="last"><a title='<s:text name="menu.admin.users"/>'
 						href='<c:url value="/admin/users.html"/>'><s:text
 						name="menu.admin.users" /></a></li>
-					<!--
-			<li>
-				<a title='<s:text name="menu.admin.resources"/>' href='<c:url value="/admin/resources.html"/>'><s:text name="menu.admin.resources"/></a>	    
-    		</li>
-    		-->
-					<li class="last"><a
-						title='<s:text name="menu.admin.activeUsers"/>'
-						href='<c:url value="/admin/activeUsers.html"/>'><s:text
-						name="menu.admin.activeUsers" /></a></li>
 				</ul>
 				</li>
 			</s:if>

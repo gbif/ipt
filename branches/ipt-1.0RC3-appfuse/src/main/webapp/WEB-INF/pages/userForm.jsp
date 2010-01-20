@@ -87,7 +87,6 @@
 		    <li>
 		        <fieldset>
 		            <legend><fmt:message key="userProfile.accountSettings"/></legend>
-<%-- 		            <div class="horizontal_dotted_line_graph"></div> --%>
 		            <s:checkbox key="user.enabled" id="user.enabled" fieldValue="true" theme="simple"/>
 		            <label for="user.enabled" class="choice"><fmt:message key="user.enabled"/></label>
 		
@@ -104,7 +103,6 @@
 		    <li>
 		        <fieldset>
 		            <legend><fmt:message key="userProfile.assignRoles"/></legend>
-					<%-- <div class="horizontal_dotted_line_graph"></div> --%>
 		            <table class="pickList">
 		                <tr>
 		                    <th class="pickLabel">
@@ -117,11 +115,47 @@
 		                </tr>
 		                <c:set var="leftList" value="${availableRoles}" scope="request"/>
 		                <s:set name="rightList" value="user.roleList" scope="request"/>
-		                <c:import url="/WEB-INF/pages/pickList.jsp">
-		                    <c:param name="listCount" value="1"/>
-		                    <c:param name="leftId" value="availableRoles"/>
-		                    <c:param name="rightId" value="userRoles"/>
-		                </c:import>
+
+<tr>
+    <td>
+        <select name="availableRoles" multiple="multiple" id="availableRoles" size="5"
+            onDblClick="Selectbox.moveSelectedOptions(this, this.form.userRoles,true)" >
+    <c:if test="${leftList != null}">
+        <c:forEach var="list" items="${leftList}" varStatus="status">
+            <option value="<c:out value="${list.value}"/>">
+                <c:out value="${list.label}" escapeXml="false" />
+            </option>
+        </c:forEach>
+    </c:if>
+        </select>
+    </td>
+    <td class="moveOptions">
+        <button name="moveRight" id="moveRight1" type="button" 
+            onclick="Selectbox.moveSelectedOptions(this.form.availableRoles,this.form.userRoles,true)">
+            &gt;&gt;</button><br />
+        <button name="moveAllRight" id="moveAllRight1" type="button"
+            onclick="Selectbox.moveAllOptions(this.form.availableRoles, this.form.userRoles, true)">
+            All &gt;&gt;</button><br />
+        <button name="moveLeft" id="moveLeft1" type="button"
+            onclick="Selectbox.moveSelectedOptions(this.form.userRoles, this.form.availableRoles, true)">
+            &lt;&lt;</button><br />
+        <button name="moveAllLeft" id="moveAllLeft1" type="button"
+            onclick="Selectbox.moveAllOptions(this.form.userRoles, this.form.availableRoles, true)">
+            All &lt;&lt;</button>
+    </td>
+    <td>
+        <select name="userRoles" multiple="multiple" id="userRoles" size="5">
+    <c:if test="${rightList != null}">
+        <c:forEach var="list" items="${rightList}" varStatus="status">
+            <option value="<c:out value="${list.value}"/>">
+                <c:out value="${list.label}" escapeXml="false"/>
+            </option>
+        </c:forEach>
+    </c:if>
+        </select>
+    </td>
+</tr>
+
 		            </table>
 		        </fieldset>
 		    </li>
@@ -139,7 +173,7 @@
 		        <s:hidden name="user.credentialsExpired" value="%{user.credentialsExpired}"/>
 		    </li>
 		    <li><p>
-			<s:text name="userform.instructions"/> <i><s:property value="%{iptCfg.contactName}"/> &lt;<s:property value="%{iptCfg.contactEmail}"/>&gt;</i>
+			<s:text name="userform.instructions"/> <i><s:property value="%{cfg.contactName}"/> &lt;<s:property value="%{cfg.contactEmail}"/>&gt;</i>
 			</p>
 		    </li>
 		    </c:otherwise>

@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -70,6 +71,7 @@ public class BaseAction extends org.gbif.provider.webapp.action.BaseAppfuseActio
   }
 
   public String getLocaleLanguage() {
+	// struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor
     return this.getLocale().getLanguage();
   }
 

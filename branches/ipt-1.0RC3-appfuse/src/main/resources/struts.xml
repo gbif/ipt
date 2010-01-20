@@ -97,7 +97,7 @@
             </result>
             <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
             <result name="mainMenu" type="redirect-action">/index</result>
-            <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
+            <result name="dataAccessFailure" type="freemarker">/WEB-INF/pages/dataAccessFailure.ftl</result>
             <result name="cancel" type="redirect">/</result>
         </global-results>
 
@@ -756,10 +756,6 @@
             <result name="success" type="redirect-action">users</result>
         </action>
         
-        <action name="flushCache" class="com.opensymphony.xwork2.ActionSupport">
-            <result>/WEB-INF/pages/admin/flushCache.jsp</result>
-        </action>
-
         <action name="config" class="org.gbif.provider.webapp.action.admin.ConfigAction">
             <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>

@@ -37,6 +37,7 @@ public class UserAction extends BaseAction implements Preparable {
     private String id;
     @Autowired
     private LookupManager mgr;
+	private List<LabelValue> availableRoles;
 
     public UserAction() {
 		super();
@@ -53,9 +54,8 @@ public class UserAction extends BaseAction implements Preparable {
             if (!"".equals(getRequest().getParameter("user.id"))) {
                 user = userManager.getUser(getRequest().getParameter("user.id"));
             }
-        }
-        
-        List<LabelValue> roles = mgr.getAllRoles();
+        }        
+        availableRoles = mgr.getAllRoles();
     }
 
 	public AppConfig getIptCfg() {
@@ -246,4 +246,9 @@ public class UserAction extends BaseAction implements Preparable {
         users = userManager.getUsers(new User());
         return SUCCESS;
     }
+
+	public List<LabelValue> getAvailableRoles() {
+		return availableRoles;
+	}
+    
 }

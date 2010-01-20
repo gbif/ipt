@@ -104,21 +104,6 @@ public class BaseAppfuseAction extends ActionSupport {
     }
 
     /**
-     * Convenience method to get the Configuration HashMap
-     * from the servlet context.
-     *
-     * @return the user's populated form from the session
-     */
-    protected Map getConfiguration() {
-        Map config = (HashMap) getSession().getServletContext().getAttribute(Constants.CONFIG);
-        // so unit tests don't puke when nothing's been set
-        if (config == null) {
-            return new HashMap();
-        }
-        return config;
-    }
-
-    /**
      * Convenience method to get the request
      * @return current request
      */
