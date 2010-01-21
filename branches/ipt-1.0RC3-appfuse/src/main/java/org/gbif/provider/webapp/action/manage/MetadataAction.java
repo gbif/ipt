@@ -51,8 +51,7 @@ import javax.sql.DataSource;
  * TODO: Documentation.
  * 
  */
-public class MetadataAction extends BaseMetadataResourceAction implements
-    Preparable, ServletRequestAware {
+public class MetadataAction extends BaseMetadataResourceAction implements Preparable, ServletRequestAware {
   private static final String OTHER = "other";
   protected HttpServletRequest request;
 
@@ -76,8 +75,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       put(OTHER, "Other");
     }
   };
-  private Map<String, String> resourceTypeMap = translateI18nMap(
-      new HashMap<String, String>(ResourceType.htmlSelectMap), true);
+  private Map<String, String> resourceTypeMap;
 
   private String jdbcDriverClass;
 
@@ -173,6 +171,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   @Override
   public void prepare() {
     super.prepare();
+    resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap), true);
     if (resource == null && resourceType != null) {
       // create new empty resource
       if (resourceType.equalsIgnoreCase(OCCURRENCE)) {

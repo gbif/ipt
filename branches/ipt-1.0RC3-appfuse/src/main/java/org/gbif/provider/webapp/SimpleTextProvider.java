@@ -77,7 +77,14 @@ public class SimpleTextProvider{
     private String findText(ResourceBundle bundle, String aTextName, String defaultMessage, Object[] args) {
         try {
 			String message = bundle.getString(aTextName);
-			return MessageFormat.format(message, args);
+			String text;
+			try {
+				text = MessageFormat.format(message, args);
+			} catch (IllegalArgumentException e) {
+				// message and arguments dont match?
+				text=message;
+			} 
+			return text;
 		} catch (MissingResourceException e) {
 			// return default message
 		}
