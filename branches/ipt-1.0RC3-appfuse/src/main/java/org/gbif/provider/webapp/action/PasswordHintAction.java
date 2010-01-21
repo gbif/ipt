@@ -13,7 +13,7 @@ import org.springframework.security.userdetails.UsernameNotFoundException;
  *
  * @author <a href="mailto:matt@raibledesigns.com">Matt Raible</a>
  */
-public class PasswordHintAction extends BaseAppfuseAction {
+public class PasswordHintAction extends BaseAction {
     private static final long serialVersionUID = -4037514607101222025L;
     private String username;
 

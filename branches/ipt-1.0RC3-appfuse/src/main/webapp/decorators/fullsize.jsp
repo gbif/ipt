@@ -13,7 +13,7 @@
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/><decorator:getProperty property="body.onload" writeEntireProperty="true"/> > 
     <div id="page">
         <div id="header" class="clearfix">
-            <jsp:include page="/common/header.jsp"/>
+             <jsp:include page="/common/header.jsp"/>
         </div>
         <div style="height: 65px; clear: both"><%-- spacer --%></div>      
 
@@ -30,11 +30,7 @@
             </div><!-- end mainfull -->
 
             <div id="nav">
-<%--                 <div class="wrapper"> --%>
-<%--                     <h2 class="accessibility"></h2> --%>
                     <jsp:include page="/common/menu.jsp"/>
-<%--                 </div> --%>
-                <!-- <hr/> -->
             </div><!-- end nav -->
         </div>
 

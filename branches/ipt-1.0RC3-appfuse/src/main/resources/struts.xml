@@ -14,7 +14,8 @@
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
             <interceptor name="resource-watcher" class="resourceInterceptor"/>
-
+            <interceptor name="i18n-custom" class="localeInterceptor"/>
+            
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
@@ -22,7 +23,8 @@
                 <interceptor-ref name="params"/>
                 <interceptor-ref name="servlet-config"/>                
                 <interceptor-ref name="prepare"/>
-                <interceptor-ref name="i18n"/>
+                <!-- custom version of the struts i18n interceptor -->
+                <interceptor-ref name="i18n-custom"/>
                 <interceptor-ref name="chain"/>
                 <interceptor-ref name="debugging"/>
                 <interceptor-ref name="profiling"/>
@@ -100,12 +102,12 @@
         
         <action name="signup" class="org.gbif.provider.webapp.action.SignupAction">
             <result name="cancel" type="redirect">/</result>
-            <result name="input">/WEB-INF/pages/signup.jsp</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/signup.ftl</result>
             <result name="success" type="chain">saveSignup</result>
         </action>
 
         <action name="saveSignup" class="org.gbif.provider.webapp.action.SignupAction" method="save">
-            <result name="input">/WEB-INF/pages/signup.jsp</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/signup.ftl</result>
             <result name="success" type="redirect-action">index</result>
         </action>
 
@@ -799,4 +801,9 @@
         
     </package>
 
+    <package name="test" extends="default" namespace="/test">
+        <action name="login" class="org.gbif.provider.webapp.action.BaseAction">
+            <result type="freemarker">/WEB-INF/pages/login.ftl</result>
+        </action>        
+    </package>
 </struts>

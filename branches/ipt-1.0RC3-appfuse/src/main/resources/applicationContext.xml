@@ -43,6 +43,13 @@
         <constructor-arg value="${dataDir}"/>
         <constructor-arg value="${registryUrl}"/>
         <constructor-arg value="${gbif.analytics.key}"/>
+        <constructor-arg value="${pom.version}"/>
+        <constructor-arg value="${copyright.year}"/>
+    </bean>
+    
+    <bean id="textProvider" class="org.gbif.provider.webapp.SimpleTextProvider">
+        <property name="baseBundleName" value="ApplicationResources"/>
+        <property name="defaultLocale" value="${defaultLocale}"/>
     </bean>
     
     
@@ -65,6 +72,10 @@
     
     <bean id="adminInterceptor" class="org.gbif.provider.webapp.interceptor.UserRoleAuthorizationInterceptor">
         <property name="authorizedRoles" value="ROLE_ADMIN"/>
+    </bean>
+    
+    <bean id="localeInterceptor" class="org.gbif.provider.webapp.interceptor.LocaleInterceptor">
+        <property name="defaultLocale" value="${defaultLocale}"/>
     </bean>
     
     <!-- MODEL FACTORIES -->

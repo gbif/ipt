@@ -6,9 +6,6 @@
 	<#include "/scripts/login.js">
 </head>
 
-<style>
-</style>
-
 <body id="login">
 <h1><@s.text name='login.heading'/></h1>
 <div class="horizontal_dotted_line_xlarge_foo"></div>

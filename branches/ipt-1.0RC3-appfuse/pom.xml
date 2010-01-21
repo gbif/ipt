@@ -6,7 +6,7 @@
     <artifactId>gbif-ipt</artifactId>
     <packaging>war</packaging>
     <!-- -SNAPSHOT -->
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <name>GBIF Integrated Publishing Toolkit</name>
     <description>
         The GBIF IPT is an open source, Java (TM) based web application that connects and serves three types of biodiversity data: taxon primary occurrence data, taxon checklists and general resource metadata.
@@ -837,8 +837,6 @@
 
     <properties>
         <googlecode.project>gbif-providertoolkit</googlecode.project>
-        <!-- Application settings -->
-        <copyright.year>2010</copyright.year>
         
         <!-- Framework dependency versions -->
         <spring.version>2.5.5</spring.version>
@@ -888,7 +886,7 @@
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
         
         <!-- IPT settings -->
-        <copyright.year>2009</copyright.year>
+        <copyright.year>2010</copyright.year>
         <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>
         <ipt.datadir></ipt.datadir>
         <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>

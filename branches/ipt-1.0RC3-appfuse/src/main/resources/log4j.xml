@@ -68,7 +68,7 @@
 
     <!-- Turn off all webwork2 stuff -->
     <logger name="com.opensymphony.xwork2">
-        <level value="ERROR"/>
+        <level value="WARN"/>
     </logger>
 
     <!-- http://issues.appfuse.org/browse/APF-736#action_11786 -->
@@ -107,7 +107,7 @@
     
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
-        <level value="WARN" />
+        <level value="DEBUG" />
     </logger>
     
     <root>

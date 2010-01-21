@@ -29,6 +29,8 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.opensymphony.xwork2.Preparable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -39,8 +41,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * 
  * @param <T>
  */
-public class BaseResourceAction<T extends Resource> extends BaseAction
-    implements SessionAware {
+public class BaseResourceAction<T extends Resource> extends BaseAction implements SessionAware, Preparable {
   private static final long serialVersionUID = 1643640896L;
   @Autowired
   protected ChecklistResourceManager checklistResourceManager;
@@ -56,8 +57,9 @@ public class BaseResourceAction<T extends Resource> extends BaseAction
   protected T resource;
   protected Map session;
   protected String resourceType;
-  private Map<String, String> resourceTypes = translateI18nMap(new HashMap<String, String>(
-      ExtensionType.htmlSelectMap));
+  private Map<String, String> resourceTypes;
+
+
 
   public String getGuid() {
     return guid;
@@ -80,6 +82,8 @@ public class BaseResourceAction<T extends Resource> extends BaseAction
   }
 
   public void prepare() {
+	  this.resourceTypes = this.translateI18nMap(new HashMap<String, String>(ExtensionType.htmlSelectMap));
+		      
     if (resourceId != null) {
       resource = resourceManager.get(resourceId);
     } else if (guid != null) {
