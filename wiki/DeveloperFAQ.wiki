@@ -84,6 +84,13 @@ The security.xml file defines URL patterns that can define required roles for vi
 
 
 
+-----
+= Javascipt & AJAX =
+we use [http://docs.jquery.com/ jQuery] for all javascript. Please *dont't* use Dojo which comes bundled with Struts2.0.x, but which is removed from the core of Struts2.1 to which we will hope to upgrade eventually. Please also refrain from using any other javascript framework!
+
+== jQuery ==
+== autocomplete ==
+
 
 -----
 = IPT Business Logic =
