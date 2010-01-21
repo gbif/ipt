@@ -224,7 +224,6 @@ public class BaseAction extends ActionSupport {
   }
   public String getLocaleLanguage() {
 	  // struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor
-	  System.out.println(getLocale().getLanguage());
       return getLocale().getLanguage();
   }
 
