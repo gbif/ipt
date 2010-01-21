@@ -1,4 +1,4 @@
-package org.appfuse.util;
+package org.gbif.provider.util;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;

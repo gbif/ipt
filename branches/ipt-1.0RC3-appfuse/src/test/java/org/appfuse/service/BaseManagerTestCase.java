@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.util.ConvertUtil;
+import org.gbif.provider.util.ConvertUtil;
 import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
 
 

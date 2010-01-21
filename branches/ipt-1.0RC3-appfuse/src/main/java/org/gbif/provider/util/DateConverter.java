@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.struts2.util.StrutsTypeConverter;
-import org.appfuse.util.DateUtil;
 
 import com.opensymphony.xwork2.util.TypeConversionException;
 
