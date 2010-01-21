@@ -71,6 +71,9 @@ Internationalisation is done on templates (.ftl, .jsp) and action classes using 
 A nice tool to help translation is Attesoro. It will mean we have to work with valid property files from the beginning though, removing the native2ascii plugin and utf8 bundles:
  * http://attesoro.org/screenshot.html
 
+=== SimpleTextProvider ===
+The default struts2 text provider has been replaced by a very simple one that does not traverse the classpathes to find several resource bundles, but always picks the fixed, single ApplicationResources.properties. This is much more efficient and gives us more control about the default locale being used. It hooks into the BaseAction TextProvider interface.
+
 == Authentication & Security ==
 IPT makes use of the spring security framework introduced by the original appfuse framework. User accounts and roles are kept locally in the H2 database via hibernate persistence - just as any other data.
 === Login / Logout ===
