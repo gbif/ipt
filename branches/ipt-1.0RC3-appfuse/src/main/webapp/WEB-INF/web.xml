@@ -5,30 +5,12 @@
     <display-name>providertool</display-name>
     <distributable/>
 
-    <!--
-        As soon as we got rid of the pure JSP pages and integrated them into struts2
-        we can get rid of the following 2 non struts exceptions
-    -->
-    <!-- Define the basename for a resource bundle for I18N -->
-    <context-param>
-        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-        <param-value>ApplicationResources</param-value>
-    </context-param>
-    <!-- Fallback locale if no bundles found for browser's preferred locale -->
-    <!-- Force a single locale using param-name 'javax.servlet.jsp.jstl.fmt.locale' -->
-    <context-param>
-        <param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>
-        <param-value>en</param-value>
-    </context-param>
-
-
     <!-- Context Configuration locations for Spring XML files -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:/applicationContext.xml
             classpath:/applicationContext-dao.xml
-            classpath:/applicationContext-i18n-maps.xml
             classpath:/applicationContext-resources.xml
             classpath:/applicationContext-service.xml
             /WEB-INF/security.xml
@@ -83,16 +65,6 @@
         <filter-name>sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
     </filter>
-    <!-- 
-    <filter>
-        <filter-name>staticFilter</filter-name>
-        <filter-class>org.appfuse.webapp.filter.StaticFilter</filter-class>
-        <init-param>
-            <param-name>includes</param-name>
-            <param-value>/scripts/dojo/*,/dwr/*</param-value>
-        </init-param>
-    </filter>
-    -->
     <filter>
         <filter-name>struts-cleanup</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>

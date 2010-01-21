@@ -50,7 +50,6 @@ public class BaseAction extends org.gbif.provider.webapp.action.BaseAppfuseActio
   public static final String RESOURCE404 = "resource404";
   @Autowired
   protected AppConfig cfg;
-  private List<String> supportedLocales = new ArrayList<String>();
 
   public AppConfig getCfg() {
     return cfg;
@@ -75,10 +74,6 @@ public class BaseAction extends org.gbif.provider.webapp.action.BaseAppfuseActio
     return this.getLocale().getLanguage();
   }
 
-  public List<String> getSupportedLocales() {
-    return supportedLocales;
-  }
-
   public boolean isAdminUser() {
     User user = getCurrentUser();
     for (LabelValue val : user.getRoleList()) {
@@ -96,10 +91,6 @@ public class BaseAction extends org.gbif.provider.webapp.action.BaseAppfuseActio
   @Override
   public void setDelete(String delete) {
     this.delete = delete;
-  }
-
-  public void setSupportedLocales(List<String> supportedLocales) {
-    this.supportedLocales = supportedLocales;
   }
 
   protected List<String> splitMultiValueParameter(String value) {

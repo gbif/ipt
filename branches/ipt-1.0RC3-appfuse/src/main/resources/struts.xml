@@ -91,11 +91,8 @@
         <action name="login" class="org.gbif.provider.webapp.action.BaseAction">
             <result type="freemarker">/WEB-INF/pages/login.ftl</result>
         </action>
-        <action name="login2" class="org.gbif.provider.webapp.action.BaseAction">
-            <result>/WEB-INF/pages/login.jsp</result>
-        </action>
-        <action name="logout" class="org.gbif.provider.webapp.action.BaseAction">
-            <result>/WEB-INF/pages/logout.jsp</result>
+        <action name="logout" class="org.gbif.provider.webapp.action.LogoutAction">
+            <result type="redirect-action">index</result>
         </action>
         <action name="denied" class="org.gbif.provider.webapp.action.BaseAction">
             <result type="freemarker">/WEB-INF/pages/denied.ftl</result>
@@ -128,13 +125,6 @@
             <result name="input">/</result>
             <result name="success">/</result>
         </action>
-
-        <!--action name="uploadFile" class="org.appfuse.webapp.action.FileUploadAction">
-            <interceptor-ref name="fileUploadStack"/>
-            <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
-            <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
-            <result name="cancel" type="redirect-action">index</result>
-        </action-->
         
         <!-- Application Home -->
         <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
