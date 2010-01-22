@@ -801,9 +801,4 @@
         
     </package>
 
-    <package name="test" extends="default" namespace="/test">
-        <action name="login" class="org.gbif.provider.webapp.action.BaseAction">
-            <result type="freemarker">/WEB-INF/pages/login.ftl</result>
-        </action>        
-    </package>
 </struts>
