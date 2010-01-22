@@ -74,6 +74,9 @@ A nice tool to help translation is Attesoro. It will mean we have to work with v
 === SimpleTextProvider ===
 The default struts2 text provider has been replaced by a very simple one that does not traverse the classpathes to find several resource bundles, but always picks the fixed, single ApplicationResources.properties. This is much more efficient and gives us more control about the default locale being used. It hooks into the BaseAction TextProvider interface.
 
+== Form validation ==
+For validation native struts2 validation is used. An action or model class can define validation rules encoded as xml resource files, e.g. [http://gbif-providertoolkit.googlecode.com/svn/branches/ipt-1.0RC3-appfuse/src/main/resources/org/gbif/provider/model/User-validation.xml /main/resources/org/gbif/provider/model/User-validation.xml]. See [http://struts.apache.org/2.0.14/docs/validation.html struts2 documentation].
+
 == Authentication & Security ==
 IPT makes use of the spring security framework introduced by the original appfuse framework. User accounts and roles are kept locally in the H2 database via hibernate persistence - just as any other data.
 === Login / Logout ===
