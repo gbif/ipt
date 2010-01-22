@@ -15,23 +15,22 @@
  */
 package org.gbif.provider.webapp.interceptor;
 
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.GenericResourceManager;
-import org.gbif.provider.util.Constants;
-
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.Interceptor;
-
-import org.apache.struts2.ServletActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import java.io.IOException;
 import java.security.Principal;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * TODO: Documentation.
@@ -52,7 +51,7 @@ public class ManagerInterceptor implements Interceptor {
     HttpServletRequest request = ServletActionContext.getRequest();
 
     // admin users are allowed anything
-    if (request.isUserInRole(org.appfuse.Constants.ADMIN_ROLE)) {
+    if (request.isUserInRole(Constants.ADMIN_ROLE)) {
       return invocation.invoke();
     }
 

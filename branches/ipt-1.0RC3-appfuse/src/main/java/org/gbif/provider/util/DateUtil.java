@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.appfuse.Constants;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 
@@ -25,6 +24,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 public class DateUtil {
     private static Log log = LogFactory.getLog(DateUtil.class);
     private static final String TIME_PATTERN = "HH:mm";
+    private static final String DEFAULT_DATE_PATTERN = "MM/dd/yyyy";
 
     /**
      * Checkstyle rule: utility classes should not have public constructor
@@ -37,13 +37,14 @@ public class DateUtil {
      * @return a string representing the date pattern on the UI
      */
     public static String getDatePattern() {
+    	//Do we need to set the context locale via the LocaleInterceptor??? Is it user session, i.e threadLocal bound?
         Locale locale = LocaleContextHolder.getLocale();
         String defaultDatePattern;
         try {
             defaultDatePattern = ResourceBundle.getBundle(Constants.BUNDLE_KEY, locale)
                 .getString("date.format");
         } catch (MissingResourceException mse) {
-            defaultDatePattern = "MM/dd/yyyy";
+            defaultDatePattern = DEFAULT_DATE_PATTERN;
         }
 
         return defaultDatePattern;

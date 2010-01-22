@@ -78,12 +78,12 @@ public class SimpleTextProvider implements I18nResourceProvider{
      * @param locale       the locale.
      * @return  the bundle, <tt>MissingResourceException</tt> if not found.
      */
-    private ResourceBundle findResourceBundle(String aBundleName, Locale locale) {
+    public ResourceBundle findResourceBundle(String aBundleName, Locale locale) {
         return ResourceBundle.getBundle(aBundleName, locale, Thread.currentThread().getContextClassLoader());
     }
 
     
-    private String findText(ResourceBundle bundle, String aTextName, String defaultMessage, Object[] args) {
+    public String findText(ResourceBundle bundle, String aTextName, String defaultMessage, Object[] args) {
         try {
 			String message = bundle.getString(aTextName);
 			String text;

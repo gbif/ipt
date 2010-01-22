@@ -15,31 +15,6 @@
  */
 package org.gbif.provider.webapp.action;
 
-import org.gbif.provider.localization.SimpleTextProvider;
-import org.gbif.provider.model.LabelValue;
-import org.gbif.provider.model.User;
-import org.gbif.provider.model.voc.ExtensionType;
-import org.gbif.provider.service.MailEngine;
-import org.gbif.provider.service.RoleManager;
-import org.gbif.provider.service.UserManager;
-import org.gbif.provider.util.AppConfig;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.struts2.ServletActionContext;
-import org.appfuse.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContext;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.util.ValueStack;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,13 +23,35 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
+import org.gbif.provider.localization.SimpleTextProvider;
+import org.gbif.provider.model.LabelValue;
+import org.gbif.provider.model.User;
+import org.gbif.provider.model.voc.ExtensionType;
+import org.gbif.provider.service.MailEngine;
+import org.gbif.provider.service.RoleManager;
+import org.gbif.provider.service.UserManager;
+import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
+
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.util.ValueStack;
 
 /**
  * Base action that all UI actions should extend.

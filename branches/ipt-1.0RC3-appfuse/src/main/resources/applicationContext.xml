@@ -57,7 +57,8 @@
     <!-- Utility singletons -->
     <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
     <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
-    
+
+
     <!-- Parsing freemarker templates other than struts2 -->
     <bean id="freemarkerCfg" class="freemarker.template.Configuration">
         <property name="defaultEncoding" value="utf8"/>
