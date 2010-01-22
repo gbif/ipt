@@ -9,7 +9,7 @@
     <!-- Tue, 10 Jun 2003 04:00:00 GMT -->
     <pubDate>${resources[0].modified?datetime?string.medium}</pubDate>
     <lastBuildDate>${resources[0].modified?datetime?string.medium}</lastBuildDate>
-    <generator>GBIF IPT <@s.text name="webapp.version"/></generator>
+    <generator>GBIF IPT ${cfg.version}</generator>
     <#if admin??>
     <webMaster>${cfg.contactEmail}</webMaster>
 	</#if>  

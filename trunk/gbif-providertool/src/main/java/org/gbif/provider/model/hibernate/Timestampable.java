@@ -15,7 +15,7 @@
  */
 package org.gbif.provider.model.hibernate;
 
-import org.appfuse.model.User;
+import org.gbif.provider.model.User;
 
 import java.util.Date;
 

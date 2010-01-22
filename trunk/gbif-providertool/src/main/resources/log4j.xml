@@ -37,11 +37,6 @@
         <level value="WARN"/>
     </logger>
 
-    <!-- net.sf.navigator, net.sf.ehcache -->
-    <logger name="net.sf">
-        <level value="ERROR"/>
-    </logger>
-
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
     <logger name="org.springframework.security">
         <level value="ERROR"/>
@@ -73,9 +68,9 @@
 
     <!-- Turn off all webwork2 stuff -->
     <logger name="com.opensymphony.xwork2">
-        <level value="ERROR"/>
+        <level value="WARN"/>
     </logger>
-
+    
     <!-- http://issues.appfuse.org/browse/APF-736#action_11786 -->
     <logger name="com.opensymphony.xwork2.util.XWorkConverter">
         <level value="FATAL"/>
@@ -112,11 +107,11 @@
     
     <!-- GBIF things -->
     <logger name="org.gbif.provider">
-        <level value="WARN" />
+        <level value="DEBUG" />
     </logger>
     
     <root>
-        <level value="WARN"/>
+        <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

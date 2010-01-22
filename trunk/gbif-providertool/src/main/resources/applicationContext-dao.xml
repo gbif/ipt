@@ -35,19 +35,19 @@
     <!-- UniversalDao - can be used when doing standard CRUD - made available 
         for those who don't mind casting.  If you don't want to cast, look at 
         'fooDao' below. -->
-    <bean id="universalDao" class="org.appfuse.dao.hibernate.UniversalDaoHibernate">
+    <bean id="universalDao" class="org.gbif.provider.dao.hibernate.UniversalDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="lookupDao" class="org.appfuse.dao.hibernate.LookupDaoHibernate">
+    <bean id="lookupDao" class="org.gbif.provider.dao.hibernate.LookupDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="userDao" class="org.appfuse.dao.hibernate.UserDaoHibernate">
+    <bean id="userDao" class="org.gbif.provider.dao.hibernate.UserDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="roleDao" class="org.appfuse.dao.hibernate.RoleDaoHibernate">
+    <bean id="roleDao" class="org.gbif.provider.dao.hibernate.RoleDaoHibernate">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     

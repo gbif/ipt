@@ -4,7 +4,7 @@
     <div class="error" id="errorMessages">    
       <s:iterator value="actionErrors">
         <img src="<c:url value="/images/iconWarning.gif"/>"
-            alt="<fmt:message key="icon.warning"/>" class="icon" />
+            alt="<s:text name="icon.warning"/>" class="icon" />
         <s:property/><br />
       </s:iterator>
    </div>
@@ -16,7 +16,7 @@
       <s:iterator value="fieldErrors">
           <s:iterator value="value">
             <img src="<c:url value="/images/iconWarning.gif"/>"
-                alt="<fmt:message key="icon.warning"/>" class="icon" />
+                alt="<s:text name="icon.warning"/>" class="icon" />
              <s:property/><br />
           </s:iterator>
       </s:iterator>
@@ -29,7 +29,7 @@
     <div class="message" id="successMessages">    
         <c:forEach var="msg" items="${messages}">
             <img src="<c:url value="/images/iconInformation.gif"/>"
-                alt="<fmt:message key="icon.information"/>" class="icon" />
+                alt="<s:text name="icon.information"/>" class="icon" />
             <c:out value="${msg}"/><br />
         </c:forEach>
     </div>
@@ -41,7 +41,7 @@
     <div class="error" id="errorMessages">
         <c:forEach var="error" items="${errors}">
             <img src="<c:url value="/images/iconWarning.gif"/>"
-                alt="<fmt:message key="icon.warning"/>" class="icon" />
+                alt="<s:text name="icon.warning"/>" class="icon" />
             <c:out value="${error}"/><br />
         </c:forEach>
     </div>

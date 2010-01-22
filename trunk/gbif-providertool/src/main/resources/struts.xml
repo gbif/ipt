@@ -3,28 +3,10 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <!-- Constants -->
-    <constant name="struts.i18n.encoding" value="UTF-8"/>
-    <!-- default locale -->
-    <constant name="struts.locale" value="en_US"/>
-    <constant name="struts.custom.i18n.resources" value="ApplicationResources,errors"/>
-    <constant name="struts.action.extension" value="html,xml,do"/>
-    <constant name="struts.objectFactory" value="spring"/>
-    <!-- See the 2 references of fileUpload interceptor below and make sure it is also set to the  
-		 same value as this mulitpart in BOTH 
-		 Additionally see SoureAction which ALSO checks the size... -->
-	<constant name="struts.multipart.maxSize" value="104857600"/>
-													 
-    <constant name="struts.ui.theme" value="css_xhtml"/>
-    <constant name="struts.codebehind.pathPrefix" value="/WEB-INF/pages/"/>
-    <constant name="struts.enable.SlashesInActionNames" value="true"/>
-    <!-- by default dont append existing parameters -->
-    <constant name="struts.url.includeParams" value="none" />
-    
-    <constant name="struts.devMode" value="${ipt.dev}"/>
-    
-    <!--constant name="struts.objectFactory.spring.autoWire" value="type" /--> 
-
+    <!-- Constants see struts.properties
+        some constants, i.e. struts.locale dont work in struts.xml:
+        http://issues.apache.org/struts/browse/WW-2068
+    -->
     <!-- Configuration for the default package. -->
     <package name="default" extends="struts-default">        
         <interceptors>
@@ -32,7 +14,8 @@
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
             <interceptor name="resource-watcher" class="resourceInterceptor"/>
-
+            <interceptor name="i18n-custom" class="localeInterceptor"/>
+            
             <!-- Copied from struts-default.xml, changed validation exclude methods plus added second params interceptor for preparable() -->
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="exception"/>
@@ -40,7 +23,8 @@
                 <interceptor-ref name="params"/>
                 <interceptor-ref name="servlet-config"/>                
                 <interceptor-ref name="prepare"/>
-                <interceptor-ref name="i18n"/>
+                <!-- custom version of the struts i18n interceptor -->
+                <interceptor-ref name="i18n-custom"/>
                 <interceptor-ref name="chain"/>
                 <interceptor-ref name="debugging"/>
                 <interceptor-ref name="profiling"/>
@@ -97,7 +81,7 @@
             </result>
             <!-- appfuse actions use mainMenu to redirect to the application homepage --> 
             <result name="mainMenu" type="redirect-action">/index</result>
-            <result name="dataAccessFailure">/WEB-INF/pages/dataAccessFailure.jsp</result>
+            <result name="dataAccessFailure" type="freemarker">/WEB-INF/pages/dataAccessFailure.ftl</result>
             <result name="cancel" type="redirect">/</result>
         </global-results>
 
@@ -106,14 +90,24 @@
         </global-exception-mappings>
 
 
+        <action name="login" class="org.gbif.provider.webapp.action.BaseAction">
+            <result type="freemarker">/WEB-INF/pages/login.ftl</result>
+        </action>
+        <action name="logout" class="org.gbif.provider.webapp.action.LogoutAction">
+            <result type="redirect-action">index</result>
+        </action>
+        <action name="denied" class="org.gbif.provider.webapp.action.BaseAction">
+            <result type="freemarker">/WEB-INF/pages/denied.ftl</result>
+        </action>
+        
         <action name="signup" class="org.gbif.provider.webapp.action.SignupAction">
             <result name="cancel" type="redirect">/</result>
-            <result name="input">/WEB-INF/pages/signup.jsp</result>
+            <result name="input" type="freemarker">/WEB-INF/pages/signup.ftl</result>
             <result name="success" type="chain">saveSignup</result>
         </action>
 
-        <action name="saveSignup" class="signupAction" method="save">
-            <result name="input">/WEB-INF/pages/signup.jsp</result>
+        <action name="saveSignup" class="org.gbif.provider.webapp.action.SignupAction" method="save">
+            <result name="input" type="freemarker">/WEB-INF/pages/signup.ftl</result>
             <result name="success" type="redirect-action">index</result>
         </action>
 
@@ -122,24 +116,17 @@
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="error">/WEB-INF/pages/index.jsp</result>
         </action>
-        <action name="saveUser" class="userAction" method="save">
+        <action name="saveUser" class="org.gbif.provider.webapp.action.UserAction" method="save">
             <result name="cancel" type="redirect-action">users</result>
             <result name="input">/WEB-INF/pages/userForm.jsp</result>
             <result name="success" type="redirect-action">index</result>
         </action>
         
 
-        <action name="passwordHint" class="passwordHintAction">
+        <action name="passwordHint" class="org.gbif.provider.webapp.action.PasswordHintAction">
             <result name="input">/</result>
             <result name="success">/</result>
         </action>
-
-        <!--action name="uploadFile" class="org.appfuse.webapp.action.FileUploadAction">
-            <interceptor-ref name="fileUploadStack"/>
-            <result name="input">/WEB-INF/pages/uploadForm.jsp</result>
-            <result name="success">/WEB-INF/pages/uploadDisplay.jsp</result>
-            <result name="cancel" type="redirect-action">index</result>
-        </action-->
         
         <!-- Application Home -->
         <action name="index" class="org.gbif.provider.webapp.action.IndexAction">
@@ -730,26 +717,19 @@
             </result>
         </global-results>
         
-        <action name="activeUsers" class="com.opensymphony.xwork2.ActionSupport">
-            <result>/WEB-INF/pages/admin/activeUsers.jsp</result>
-        </action>
-        <action name="users" class="userAction" method="list">
+        <action name="users" class="org.gbif.provider.webapp.action.UserAction" method="list">
             <result>/WEB-INF/pages/admin/userList.jsp</result>
         </action>
-        <action name="editUser" class="userAction" method="edit">
+        <action name="editUser" class="org.gbif.provider.webapp.action.UserAction" method="edit">
             <result name="success">/WEB-INF/pages/userForm.jsp</result>
             <result name="input">/WEB-INF/pages/admin/userList.jsp</result>
         </action>
-        <action name="saveUser" class="userAction" method="save">
+        <action name="saveUser" class="org.gbif.provider.webapp.action.UserAction" method="save">
             <result name="cancel" type="redirect-action">users</result>
             <result name="input">/WEB-INF/pages/userForm.jsp</result>
             <result name="success" type="redirect-action">users</result>
         </action>
         
-        <action name="flushCache" class="com.opensymphony.xwork2.ActionSupport">
-            <result>/WEB-INF/pages/admin/flushCache.jsp</result>
-        </action>
-
         <action name="config" class="org.gbif.provider.webapp.action.admin.ConfigAction">
             <result type="freemarker">/WEB-INF/pages/admin/config.ftl</result>
         </action>

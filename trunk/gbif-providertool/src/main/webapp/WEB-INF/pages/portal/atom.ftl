@@ -21,7 +21,7 @@
 	    <name>${cfg.contactName!}</name>
 	    <email>${cfg.contactEmail!}</email>
     </author>
-    <generator>GBIF IPT <@s.text name="webapp.version"/></generator>
+    <generator>GBIF IPT ${cfg.version}</generator>
     <id>urn:uuid:${cfg.ipt.uddiID!"not issued yet"}</id>
     <#if (cfg.ipt.location)?? && cfg.ipt.location.latitude?? && cfg.ipt.location.longitude??>
     <#-- single latitude-longitude pair, separated by whitespace: http://georss.org/simple -->

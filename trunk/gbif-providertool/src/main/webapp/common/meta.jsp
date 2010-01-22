@@ -15,7 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link rel="icon" href="<c:url value="/images/favicon.ico"/>"/>
 		<link href="<s:url value='/atom.xml'/>" rel="alternate" type="application/atom+xml" title="<s:text name="meta.rss"/>" />
-		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/${appConfig["csstheme"]}/theme.css'/>" />
+		<link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/gbifn/theme.css'/>" />
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/jquery-1.3.min.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/effects.core.min.js'/>"></script>
 		<script type="text/javascript" src="<c:url value='/scripts/jquery/effects.highlight.min.js'/>"></script>

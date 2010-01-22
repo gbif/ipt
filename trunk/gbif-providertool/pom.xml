@@ -6,7 +6,7 @@
     <artifactId>gbif-ipt</artifactId>
     <packaging>war</packaging>
     <!-- -SNAPSHOT -->
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <name>GBIF Integrated Publishing Toolkit</name>
     <description>
         The GBIF IPT is an open source, Java (TM) based web application that connects and serves three types of biodiversity data: taxon primary occurrence data, taxon checklists and general resource metadata.
@@ -277,23 +277,12 @@
         <repository>
             <id>gbif</id>
             <url>http://tools.gbif.org/maven/repository/</url>
-        </repository>        
+        </repository>     
         <repository>
             <id>repository.jboss.org</id>
             <name>JBoss Maven Repository</name>
             <url>http://repository.jboss.org/maven2</url>
             <layout>default</layout>
-        </repository>
-        <!-- for the JSON struts2 plugin -->
-        <repository>
-            <id>Maven Plugin Repository</id>
-            <url>http://struts2plugin-maven-repo.googlecode.com/svn/trunk/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
         </repository>
         <!-- geotools -->
         <repository>
@@ -303,39 +292,25 @@
         </repository>
     </repositories>
 
-    <dependencies>
 
-<!-- dependencies from appfuse -->
-<dependency>
-    <groupId>org.appfuse</groupId>
-    <artifactId>appfuse-hibernate</artifactId>
-    <version>${appfuse.version}</version>
-    <exclusions>
-        <!-- remove SLF4j as it converts all logs into strings -->
-        <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-        <exclusion>
-            <groupId>org.appfuse</groupId>
-            <artifactId>appfuse-data-common</artifactId>
-        </exclusion>
-    </exclusions>	
-</dependency>
+    
+    
+    <dependencies>
+        
 <dependency>
     <groupId>commons-beanutils</groupId>
     <artifactId>commons-beanutils</artifactId>
-    <version>${commons.beanutils.version}</version>
+    <version>1.8.0</version>
 </dependency>
 <dependency>
     <groupId>commons-collections</groupId>
     <artifactId>commons-collections</artifactId>
-    <version>${commons.collections.version}</version>
+    <version>3.2</version>
 </dependency>
 <dependency>
     <groupId>commons-dbcp</groupId>
     <artifactId>commons-dbcp</artifactId>
-    <version>${commons.dbcp.version}</version>
+    <version>1.2.1</version>
     <exclusions>
         <exclusion>
             <artifactId>xercesImpl</artifactId>
@@ -344,9 +319,14 @@
     </exclusions>
 </dependency>
 <dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>1.3.2</version>
+</dependency>
+<dependency>
     <groupId>commons-fileupload</groupId>
     <artifactId>commons-fileupload</artifactId>
-    <version>${commons.fileupload.version}</version>
+    <version>1.2.1</version>
     <exclusions>
         <exclusion>
             <artifactId>commons-io</artifactId>
@@ -355,9 +335,19 @@
     </exclusions>
 </dependency>
 <dependency>
+    <groupId>commons-httpclient</groupId>
+    <artifactId>commons-httpclient</artifactId>
+    <version>3.1</version>
+</dependency>        
+<dependency>
     <groupId>commons-lang</groupId>
     <artifactId>commons-lang</artifactId>
-    <version>${commons.lang.version}</version>
+    <version>2.3</version>
+</dependency>
+<dependency>
+    <groupId>commons-digester</groupId>
+    <artifactId>commons-digester</artifactId>
+    <version>1.8.1</version>
 </dependency>
 <dependency>
     <groupId>displaytag</groupId>
@@ -414,11 +404,6 @@
 </dependency>
 <dependency>
     <groupId>opensymphony</groupId>
-    <artifactId>clickstream</artifactId>
-    <version>${clickstream.version}</version>
-</dependency>
-<dependency>
-    <groupId>opensymphony</groupId>
     <artifactId>oscache</artifactId>
     <version>${oscache.version}</version>
 </dependency>
@@ -426,11 +411,6 @@
     <groupId>opensymphony</groupId>
     <artifactId>sitemesh</artifactId>
     <version>${sitemesh.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-io</artifactId>
-    <version>${commons.io.version}</version>
 </dependency>
 <dependency>
     <groupId>org.apache.struts</groupId>
@@ -475,6 +455,7 @@
     <artifactId>aspectjrt</artifactId>
     <version>${aspectj.version}</version>
 </dependency>
+<!--
 <dependency>
     <groupId>org.codehaus.xfire</groupId>
     <artifactId>xfire-java5</artifactId>
@@ -522,6 +503,7 @@
     <artifactId>dwr</artifactId>
     <version>${dwr.version}</version>
 </dependency>
+-->
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate</artifactId>
@@ -547,6 +529,12 @@
     <artifactId>hibernate-commons-annotations</artifactId>
     <version>${hibernate.annotations.version}</version>
 </dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>3.0.0.GA</version>
+</dependency>
+        
 <dependency>
     <groupId>org.jmock</groupId>
     <artifactId>jmock</artifactId>
@@ -643,17 +631,6 @@
     </exclusions>
 </dependency>
 <dependency>
-    <groupId>struts-menu</groupId>
-    <artifactId>struts-menu</artifactId>
-    <version>${struts.menu.version}</version>
-    <exclusions>
-        <exclusion>
-            <artifactId>xml-apis</artifactId>
-            <groupId>xml-apis</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
     <groupId>taglibs</groupId>
     <artifactId>standard</artifactId>
     <version>${jstl.version}</version>
@@ -714,7 +691,6 @@
             <scope>test</scope>
         </dependency>
         
-        <!-- non appfuse archetype ones -->
         <dependency>
             <groupId>com.googlecode</groupId>
             <artifactId>jsonplugin</artifactId>
@@ -732,12 +708,6 @@
             <artifactId>gchartjava</artifactId>
             <version>0.5.1</version>
             <type>jar</type>
-        </dependency>
-        <!-- Hibernate 3.2.6GA used by appfuse -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>3.0.0.GA</version>
         </dependency>
         <!-- Spring -->
         <dependency>
@@ -806,16 +776,10 @@
 			<version>${lucene.version}</version>
 		</dependency>
         
-        <!-- commons HTTP client -->
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-        </dependency>        
         <dependency>
         	<groupId>com.google.collections</groupId>
         	<artifactId>google-collections</artifactId>
-        	<version>1.0-rc4</version>
+        	<version>1.0</version>
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
@@ -829,7 +793,7 @@
         <profile>
             <id>markus</id>
             <properties>
-                <ipt.datadir>/Users/markus/Desktop/data</ipt.datadir>
+                <ipt.datadir>/Users/markus/Desktop/iptdata</ipt.datadir>
                 <ipt.mail.from>IPT &lt;m.doering@mac.com&gt;</ipt.mail.from>
                 <ipt.dev>true</ipt.dev>
             </properties>
@@ -873,39 +837,28 @@
 
     <properties>
         <googlecode.project>gbif-providertoolkit</googlecode.project>
-        <!-- Application settings -->
-        <copyright.year>2008</copyright.year>
         
         <!-- Framework dependency versions -->
         <spring.version>2.5.5</spring.version>
+        <spring.security.version>2.0.1</spring.security.version>
+        <struts.version>2.0.14</struts.version>
+        <log4j.version>1.2.13</log4j.version>
+        <oscache.version>2.3</oscache.version>
         <gt.version>2.5.1</gt.version>
-        <appfuse.version>2.0.2</appfuse.version>
         <aspectj.version>1.6.0</aspectj.version>
-        <clickstream.version>1.0.2</clickstream.version>
-        <commons.beanutils.version>1.7.0</commons.beanutils.version>
-        <commons.collections.version>3.2</commons.collections.version>
-        <commons.dbcp.version>1.2.1</commons.dbcp.version>
-        <commons.fileupload.version>1.2.1</commons.fileupload.version>
-        <commons.io.version>1.3.2</commons.io.version>
-        <commons.lang.version>2.3</commons.lang.version>
         <dwr.version>2.0.1</dwr.version>
         <ehcache.version>1.4.1</ehcache.version>
         <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
         <hibernate.version>3.2.6.ga</hibernate.version>
-        <javamail.version>1.4</javamail.version>
         <jpa.version>1.0</jpa.version>
-        <jstl.version>1.1.2</jstl.version>
-        <log4j.version>1.2.13</log4j.version>
-        <oscache.version>2.3</oscache.version>
+        <javamail.version>1.4</javamail.version>
         <sitemesh.version>2.2.1</sitemesh.version>
-        <spring.security.version>2.0.1</spring.security.version>
-        <struts.menu.version>2.4.3</struts.menu.version>
-        <struts.version>2.0.11.1</struts.version>
         <urlrewrite.version>3.0.4</urlrewrite.version>
+        <jstl.version>1.1.2</jstl.version>
         <velocity.version>1.4</velocity.version>
+        <displaytag.version>1.2</displaytag.version>
         <xfire.version>1.2.6</xfire.version>
 		<lucene.version>2.4.0</lucene.version>
-        <displaytag.version>1.1.1</displaytag.version>
         
         <!-- Testing dependency versions -->
         <jmock.version>2.4.0</jmock.version>
@@ -933,7 +886,7 @@
         <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
         
         <!-- IPT settings -->
-        <copyright.year>2009</copyright.year>
+        <copyright.year>2010</copyright.year>
         <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>
         <ipt.datadir></ipt.datadir>
         <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>

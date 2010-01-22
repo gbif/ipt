@@ -33,14 +33,19 @@ import javax.servlet.http.HttpServletRequest;
  * TODO: Documentation.
  * 
  */
-public class MetadataAction extends BaseMetadataResourceAction implements
-    Preparable, ServletRequestAware {
+public class MetadataAction extends BaseMetadataResourceAction implements Preparable, ServletRequestAware {
   protected HttpServletRequest request;
   protected List<? extends Resource> resources;
-  private final Map<String, String> resourceTypeMap = translateI18nMap(new HashMap<String, String>(
-      ResourceType.htmlSelectMap));
+  private Map<String, String> resourceTypeMap;
 
+  
   @Override
+public void prepare() {
+	super.prepare();
+	resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap));
+}
+
+@Override
   public String execute() {
     if (resource == null) {
       return RESOURCE404;

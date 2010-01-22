@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.appfuse.model.User;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.validator.NotNull;
 

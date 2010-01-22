@@ -18,7 +18,6 @@ package org.gbif.provider.util;
 import com.opensymphony.xwork2.util.TypeConversionException;
 
 import org.apache.struts2.util.StrutsTypeConverter;
-import org.appfuse.util.DateUtil;
 
 import java.text.ParseException;
 import java.util.Map;
@@ -53,6 +52,6 @@ public class SqlDateConverter extends StrutsTypeConverter {
    */
   @Override
   public String convertToString(Map ctx, Object data) {
-    return org.appfuse.util.DateUtil.convertDateToString((java.sql.Date) data);
+    return org.gbif.provider.util.DateUtil.convertDateToString((java.sql.Date) data);
   }
 }

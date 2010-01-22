@@ -23,6 +23,8 @@ import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.opensymphony.xwork2.Preparable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,18 +33,23 @@ import java.util.Map;
  * TODO: Documentation.
  * 
  */
-public class AnnotationAction extends BaseMetadataResourceAction {
+public class AnnotationAction extends BaseMetadataResourceAction implements Preparable{
   @Autowired
   private AnnotationManager annotationManager;
   private List<Annotation> annotations;
   private Annotation annotation;
-  private final Map<String, String> annotationTypes = translateI18nMap(new HashMap<String, String>(
-      AnnotationType.htmlSelectMap));
+  private Map<String, String> annotationTypes;
   // request parameters
   private Long id;
   private String annotationType;
 
   @Override
+public void prepare() {
+	super.prepare();
+	annotationTypes = translateI18nMap(new HashMap<String, String>(AnnotationType.htmlSelectMap));
+}
+
+@Override
   public String execute() {
     prepare();
     if (resourceId != null && guid != null) {
