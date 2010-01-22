@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="userList.title"/></title>
-    <meta name="heading" content="<fmt:message key='userList.heading'/>"/>
+    <title><s:text name="userList.title"/></title>
+    <meta name="heading" content="<s:text name='userList.heading'/>"/>
     <meta name="decorator" content="fullsize"/>
     <meta name="menu" content="AdminMenu"/>
 </head>
@@ -31,10 +31,10 @@
 	<c:set var="buttons">
 	    <input type="button" style="margin-right: 5px"
 	        onclick="location.href='<c:url value="/admin/editUser.html?method=Add&from=list"/>'"
-	        value="<fmt:message key="button.add"/>"/>
+	        value="<s:text name="button.add"/>"/>
 	    
 	    <input type="button" onclick="location.href='<c:url value="/index.html"/>'"
-	        value="<fmt:message key="button.done"/>"/>
+	        value="<s:text name="button.done"/>"/>
 	</c:set>
 	<c:out value="${buttons}" escapeXml="false" />
 </div>	

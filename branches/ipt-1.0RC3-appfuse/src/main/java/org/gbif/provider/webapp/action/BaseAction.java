@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.webapp.action;
 
+import org.gbif.provider.localization.SimpleTextProvider;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.User;
 import org.gbif.provider.model.voc.ExtensionType;
@@ -22,7 +23,6 @@ import org.gbif.provider.service.MailEngine;
 import org.gbif.provider.service.RoleManager;
 import org.gbif.provider.service.UserManager;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.webapp.SimpleTextProvider;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -62,6 +62,7 @@ import javax.servlet.http.HttpSession;
  * 
  */
 public class BaseAction extends ActionSupport {
+	public static boolean useSimpleTextProvider = true;
   public static final String OCCURRENCE = ExtensionType.Occurrence.alias;
   public static final String CHECKLIST = ExtensionType.Checklist.alias;
   public static final String METADATA = ExtensionType.Metadata.alias;
@@ -217,11 +218,7 @@ public class BaseAction extends ActionSupport {
     return null;
   }
 
-  public String execute() throws Exception{
-	  String x;
-		x = super.execute();
-	  return x;
-  }
+
   public String getLocaleLanguage() {
 	  // struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor
       return getLocale().getLanguage();
@@ -312,58 +309,90 @@ public boolean isAdminUser() {
   	
 	@Override
 	public String getText(String key, List args) {
-		return textProvider.getText(this, key, null, args);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, null, args);
+		}
+		return super.getText(key, args);
 	}
 
 	@Override
 	public String getText(String key, String defaultValue, List args, ValueStack stack) {
-		return textProvider.getText(this, key, defaultValue, args);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, defaultValue, args);
+		}
+		return super.getText(key, defaultValue, args, stack);
 	}
 
 	@Override
 	public String getText(String key, String defaultValue, List args) {
-		return textProvider.getText(this, key, defaultValue, args);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, defaultValue, args);
+		}
+		return super.getText(key, defaultValue, args);
 	}
 
 	@Override
 	public String getText(String key, String defaultValue, String obj) {
-		return textProvider.getText(this, key, defaultValue, new String[0]);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, defaultValue, new String[0]);
+		}
+		return super.getText(key, defaultValue, obj);
 	}
 
 	@Override
 	public String getText(String key, String defaultValue, String[] args, ValueStack stack) {
-		return textProvider.getText(this, key, defaultValue, args);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, defaultValue, args);
+		}
+		return super.getText(key, defaultValue, args, stack);
 	}
 
 	@Override
 	public String getText(String key, String defaultValue, String[] args) {
-		return textProvider.getText(this, key, defaultValue, args);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, defaultValue, args);
+		}
+		return super.getText(key, defaultValue, args);
 	}
 
 	@Override
 	public String getText(String key, String defaultValue) {
-		return textProvider.getText(this, key, defaultValue, new String[0]);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, defaultValue, new String[0]);
+		}
+		return super.getText(key, defaultValue);
 	}
 
 	@Override
 	public String getText(String key, String[] args) {
-		return textProvider.getText(this, key, null, args);
-
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, null, args);
+		}
+		return super.getText(key, args);
 	}
 
 	@Override
 	public String getText(String key) {
-		return textProvider.getText(this, key, null, new String[0]);
+		if (useSimpleTextProvider){
+			return textProvider.getText(this, key, null, new String[0]);
+		}
+		return super.getText(key);
 	}
 
 	@Override
 	public ResourceBundle getTexts() {
-		return textProvider.getTexts(getLocale());
+		if (useSimpleTextProvider){
+			return textProvider.getTexts(getLocale());
+		}
+		return super.getTexts();
 	}
 
 	@Override
 	public ResourceBundle getTexts(String bundleName) {
-		return textProvider.getTexts(bundleName, getLocale());
+		if (useSimpleTextProvider){
+			return textProvider.getTexts(bundleName, getLocale());
+		}
+		return super.getTexts(bundleName);
 	}
   	
   	

@@ -32,6 +32,28 @@
 	<a href="<c:url value='/index.html'/>"><img src="<c:url value='/images/logo.jpg'/>" /></a>
 </div>
 
+<!-- FOR GBIF DEMO SITE ONLY -->
+<%-- 
+<div id="jsalert">
+ <img src="<c:url value='/images/assets/bigWarning.png'/>"/>
+ <div class="textColumn">
+	 <h2>Demo Site</h2>
+	 <p>This is a demo IPT installation only and not meant for production use. 
+	 It can be removed at any time without further notice - with all data hosted being lost.
+	 <a id="closeAlert" href="">[CLOSE]</a>
+	 </p>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#closeAlert").click(function(e){
+		e.preventDefault();
+		$(this).parent().parent().parent().remove();
+	});
+});
+</script>
+--%>
+
 <noscript>
 <!-- test for javascript -->
 <div id="jsalert">

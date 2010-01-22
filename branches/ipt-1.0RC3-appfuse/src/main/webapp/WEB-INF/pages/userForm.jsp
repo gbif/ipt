@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="userProfile.title"/></title>
-    <meta name="heading" content="<fmt:message key='userProfile.heading'/>"/>
+    <title><s:text name="userProfile.title"/></title>
+    <meta name="heading" content="<s:text name='userProfile.heading'/>"/>
     <meta name="menu" content="UserMenu"/>
     <script type="text/javascript" src="<c:url value='/scripts/selectbox.min.js'/>"></script>
 	<script>
@@ -86,31 +86,31 @@
 		    <c:when test="${param.from == 'list'}">
 		    <li>
 		        <fieldset>
-		            <legend><fmt:message key="userProfile.accountSettings"/></legend>
+		            <legend><s:text name="userProfile.accountSettings"/></legend>
 		            <s:checkbox key="user.enabled" id="user.enabled" fieldValue="true" theme="simple"/>
-		            <label for="user.enabled" class="choice"><fmt:message key="user.enabled"/></label>
+		            <label for="user.enabled" class="choice"><s:text name="user.enabled"/></label>
 		
 		            <s:checkbox key="user.accountExpired" id="user.accountExpired" fieldValue="true" theme="simple"/>
-		            <label for="user.accountExpired" class="choice"><fmt:message key="user.accountExpired"/></label>
+		            <label for="user.accountExpired" class="choice"><s:text name="user.accountExpired"/></label>
 		
 		            <s:checkbox key="user.accountLocked" id="user.accountLocked" fieldValue="true" theme="simple"/>
-		            <label for="user.accountLocked" class="choice"><fmt:message key="user.accountLocked"/></label>
+		            <label for="user.accountLocked" class="choice"><s:text name="user.accountLocked"/></label>
 		
 		            <s:checkbox key="user.credentialsExpired" id="user.credentialsExpired" fieldValue="true" theme="simple"/>
-		            <label for="user.credentialsExpired" class="choice"><fmt:message key="user.credentialsExpired"/></label>
+		            <label for="user.credentialsExpired" class="choice"><s:text name="user.credentialsExpired"/></label>
 		        </fieldset>
 		    </li>
 		    <li>
 		        <fieldset>
-		            <legend><fmt:message key="userProfile.assignRoles"/></legend>
+		            <legend><s:text name="userProfile.assignRoles"/></legend>
 		            <table class="pickList">
 		                <tr>
 		                    <th class="pickLabel">
-		                        <label class="required"><fmt:message key="user.availableRoles"/></label>
+		                        <label class="required"><s:text name="user.availableRoles"/></label>
 		                    </th>
 		                    <td></td>
 		                    <th class="pickLabel">
-		                        <label class="required"><fmt:message key="user.roles"/></label>
+		                        <label class="required"><s:text name="user.roles"/></label>
 		                    </th>
 		                </tr>
 		                <c:set var="leftList" value="${availableRoles}" scope="request"/>
@@ -162,7 +162,7 @@
 		    </c:when>
 		    <c:otherwise>
 		    <li>
-		        <strong><fmt:message key="user.roles"/>:</strong>
+		        <strong><s:text name="user.roles"/>:</strong>
 		        <s:iterator value="user.roleList" status="status">
 		          <s:property value="label"/><s:if test="!#status.last">,</s:if>
 		          <input type="hidden" name="userRoles" value="<s:property value="value"/>"/>

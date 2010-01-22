@@ -70,7 +70,7 @@
     <logger name="com.opensymphony.xwork2">
         <level value="WARN"/>
     </logger>
-
+    
     <!-- http://issues.appfuse.org/browse/APF-736#action_11786 -->
     <logger name="com.opensymphony.xwork2.util.XWorkConverter">
         <level value="FATAL"/>
@@ -111,7 +111,7 @@
     </logger>
     
     <root>
-        <level value="WARN"/>
+        <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

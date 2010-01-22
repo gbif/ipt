@@ -1,4 +1,4 @@
-package org.gbif.provider.webapp;
+package org.gbif.provider.localization;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -6,22 +6,22 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.Tag;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.displaytag.localization.I18nResourceProvider;
+import org.displaytag.localization.I18nWebworkAdapter;
+import org.gbif.provider.webapp.action.BaseAction;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.LocaleProvider;
-import com.opensymphony.xwork2.TextProvider;
-import com.opensymphony.xwork2.TextProviderSupport;
 import com.opensymphony.xwork2.util.LocalizedTextUtil;
-import com.opensymphony.xwork2.util.TextParseUtil;
-import com.opensymphony.xwork2.util.ValueStack;
 
-public class SimpleTextProvider{
+public class SimpleTextProvider implements I18nResourceProvider{
     protected static Log log = LogFactory.getLog(SimpleTextProvider.class);
 	private String baseBundleName = "ApplicationResources";
-	
+	private boolean useSimpleProvider = true;
 	
 	public void setDefaultLocale(String defaultLocale) {
 		Locale newLocale = LocalizedTextUtil.localeFromString(defaultLocale, null);
@@ -35,8 +35,17 @@ public class SimpleTextProvider{
 		this.baseBundleName = baseBundleName;
 		log.debug("Using base resource bundle name "+baseBundleName);
 	}
-
 	
+	public void setUseSimpleProvider(boolean useSimpleProvider) {
+		this.useSimpleProvider = useSimpleProvider;
+		BaseAction.useSimpleTextProvider=useSimpleProvider;
+		if (useSimpleProvider){
+			log.debug("Enabling SimpleTextProvider for struts actions");
+		}else{
+			log.debug("Using standard struts2 TextProvider for struts actions");
+		}
+	}
+
 	/**
      * Gets a message based on a key using the supplied args, as defined in
      * {@link java.text.MessageFormat}, or, if the message is not found, a supplied
@@ -98,5 +107,13 @@ public class SimpleTextProvider{
 
 	public ResourceBundle getTexts(String bundleName, Locale locale) {
 		return findResourceBundle(bundleName, locale);
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see org.displaytag.localization.I18nResourceProvider#getResource(java.lang.String, java.lang.String, javax.servlet.jsp.tagext.Tag, javax.servlet.jsp.PageContext)
+	 */
+	public String getResource(String resourceKey, String defaultValue, Tag tag, PageContext context) {
+		return null;
 	}
 }

@@ -1,0 +1,11 @@
+
+ ####################
+ ### BUILDING IPT ###
+ ####################
+ 
+Before building a new IPT release please follow these steps:
+
+ - make sure version in POM is correct
+ - make sure ipt.dev=false in POM
+ 
+  

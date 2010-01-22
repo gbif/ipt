@@ -8,7 +8,7 @@
 
 <html>
 <head>
-    <title><fmt:message key="errorPage.title"/></title>
+    <title><s:text name="errorPage.title"/></title>
     <link rel="stylesheet" type="text/css" media="all" href="<c:url value='/styles/gbifn/theme.css'/>" />
 </head>
 
@@ -16,7 +16,7 @@
     <div id="page">
         <div id="content" class="clearfix">
             <div id="main">
-                <h1><fmt:message key="errorPage.heading"/></h1>
+                <h1><s:text name="errorPage.heading"/></h1>
                 <% if (exception != null) { %>
                     <pre><% exception.printStackTrace(new java.io.PrintWriter(out)); %></pre>
                 <% } else if (request.getAttribute("javax.servlet.error.exception") != null) { %>

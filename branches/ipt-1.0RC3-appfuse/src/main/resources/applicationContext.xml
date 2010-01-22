@@ -43,13 +43,14 @@
         <constructor-arg value="${dataDir}"/>
         <constructor-arg value="${registryUrl}"/>
         <constructor-arg value="${gbif.analytics.key}"/>
-        <constructor-arg value="${pom.version}"/>
+        <constructor-arg value="${project.version}"/>
         <constructor-arg value="${copyright.year}"/>
     </bean>
     
-    <bean id="textProvider" class="org.gbif.provider.webapp.SimpleTextProvider">
+    <bean id="textProvider" class="org.gbif.provider.localization.SimpleTextProvider">
         <property name="baseBundleName" value="ApplicationResources"/>
         <property name="defaultLocale" value="${defaultLocale}"/>
+        <property name="useSimpleProvider" value="${textprovider.simple}"/>
     </bean>
     
     

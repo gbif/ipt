@@ -20,7 +20,7 @@
 	</div>
 	<div>
 	  <div class="leftMedium">
-		<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml','ipt-developer.xml'}" cssClass="text medium"/>
+		<@s.select key="config.log4jFilename" list="{'production.xml','debug.xml'}" cssClass="text medium"/>
 	  </div>
 	  <div class="leftMedium" style="padding-left:10px">
 		<li id="wwgrp_providerCfg_config_gbifAnalytics" class="wwgrp">
