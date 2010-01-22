@@ -172,14 +172,17 @@ public class AppConfig {
 
   private final ProviderCfgManager providerCfgManager;
   private ProviderCfg cfg;
+  private String version;
+  private String copyrightYear;
 
-  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir,
-      String dataDir, String registryUrl, String gbifAnalyticsKey) {
+  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl, String gbifAnalyticsKey, String iptVersion, String copyrightYear) {
     super();
     AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
     AppConfig.webappDIR = new File(webappDir);
     AppConfig.registryURL = registryUrl;
     AppConfig.gbifAnalyticsKey = gbifAnalyticsKey;
+    this.version=iptVersion;
+    this.copyrightYear=copyrightYear;
     this.providerCfgManager = providerCfgManager;
     cfg = providerCfgManager.load();
     setBaseUrl(cfg.getBaseUrl());
@@ -208,7 +211,6 @@ public class AppConfig {
   public File getArchiveTcsFile(Long resourceId) {
     return new File(getResourceDataDir(resourceId), "archive-tcs.zip");
   }
-
   public String getArchiveTcsUrl(String guid) {
     return String.format("%sarchive-tcs.zip", getResourceUrl(guid));
   }
@@ -410,7 +412,15 @@ public class AppConfig {
     return true;
   }
 
-  // MANAGER "DELEGATE" METHODS
+  public String getVersion() {
+	return version;
+}
+
+public String getCopyrightYear() {
+	return copyrightYear;
+}
+
+// MANAGER "DELEGATE" METHODS
   public void load() {
     cfg = providerCfgManager.load();
   }

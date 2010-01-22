@@ -22,10 +22,6 @@ import java.text.SimpleDateFormat;
  * Constant values used throughout the application.
  */
 public class Constants {
-  /**
-   * The name of the Administrator role, as specified in web.xml
-   */
-  public static final String MANAGER_ROLE = "ROLE_MANAGER";
   public static final DateFormat datetime_iso_format = new SimpleDateFormat(
       "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
   public static final Long TEST_OCC_RESOURCE_ID = 13L;
@@ -57,4 +53,30 @@ public class Constants {
   public static String indexName(Class klas, String suffix) {
     return klas.getSimpleName() + suffix;
   }
+
+  /**
+   * The name of the ResourceBundle used in this application
+   */
+  public static final String BUNDLE_KEY = "ApplicationResources";
+
+  /**
+   * The request scope attribute for indicating a newly-registered user
+   */
+  public static final String REGISTERED = "registered";
+
+  /**
+   * The name of the manager role, as specified in web.xml
+   */
+  public static final String MANAGER_ROLE = "ROLE_MANAGER";
+
+  /**
+   * The name of the Administrator role, as specified in web.xml
+   */
+  public static final String ADMIN_ROLE = "ROLE_ADMIN";
+
+  /**
+   * The name of the User role, as specified in web.xml
+   */
+  public static final String USER_ROLE = "ROLE_USER";
+
 }

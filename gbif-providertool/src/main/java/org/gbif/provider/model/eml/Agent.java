@@ -15,7 +15,7 @@
  */
 package org.gbif.provider.model.eml;
 
-import org.appfuse.model.Address;
+import org.gbif.provider.model.Address;
 
 import java.io.Serializable;
 

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.appfuse.Constants;
-import org.appfuse.model.Role;
+import org.gbif.provider.dao.RoleDao;
+import org.gbif.provider.model.Role;
 
 public class RoleDaoTest extends BaseDaoTestCase {
     private RoleDao dao;

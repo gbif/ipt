@@ -14,8 +14,6 @@
         width: 940px;
         margin: 0 auto;
         padding-top: 15px;
-        padding-right: 5px;
-        padding-left: 5px;
         text-align: center;
         background-color: #FFF;
     }
@@ -119,28 +117,13 @@
         div#footer {
             color: #444;
 			margin-top: 40px;
-            padding-top: 30px;
-			width: 940px;
+            padding-top: 20px;
+            padding-bottom: 10px;
             text-align: center;
             clear: both;
             background-color: #e6e6e6;
-            height: 80px;
             margin-bottom: 0px;
         }
-
-            div#footer div#divider {
-				/*
-        		margin-bottom: 20px;
-                border-top: 1px solid #ccc;
-				*/
-            }
-
-            div#footer div#divider div {
-				/*
-                margin: 1px 0 0 0;
-                border-top: 6px solid #ebf5fc;
-				*/
-            }
 
             div#footer .left {
                 float: left;

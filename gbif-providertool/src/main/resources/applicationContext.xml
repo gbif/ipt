@@ -43,13 +43,22 @@
         <constructor-arg value="${dataDir}"/>
         <constructor-arg value="${registryUrl}"/>
         <constructor-arg value="${gbif.analytics.key}"/>
+        <constructor-arg value="${project.version}"/>
+        <constructor-arg value="${copyright.year}"/>
+    </bean>
+    
+    <bean id="textProvider" class="org.gbif.provider.localization.SimpleTextProvider">
+        <property name="baseBundleName" value="ApplicationResources"/>
+        <property name="defaultLocale" value="${defaultLocale}"/>
+        <property name="useSimpleProvider" value="${textprovider.simple}"/>
     </bean>
     
     
     <!-- Utility singletons -->
     <bean id="mapUtil" class="org.gbif.provider.geo.MapUtil"/>
     <bean id="wgs84Util" class="org.gbif.provider.geo.TransformationUtils"/>
-    
+
+
     <!-- Parsing freemarker templates other than struts2 -->
     <bean id="freemarkerCfg" class="freemarker.template.Configuration">
         <property name="defaultEncoding" value="utf8"/>
@@ -59,10 +68,17 @@
     
     
     <!-- Struts Interceptors -->
-    <bean id="managerInterceptor" class="org.gbif.provider.webapp.ManagerInterceptor"/>
+    <bean id="managerInterceptor" class="org.gbif.provider.webapp.interceptor.ManagerInterceptor"/>
     
-    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.ResourceInterceptor"/>
+    <bean id="resourceInterceptor" class="org.gbif.provider.webapp.interceptor.ResourceInterceptor"/>
     
+    <bean id="adminInterceptor" class="org.gbif.provider.webapp.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN"/>
+    </bean>
+    
+    <bean id="localeInterceptor" class="org.gbif.provider.webapp.interceptor.LocaleInterceptor">
+        <property name="defaultLocale" value="${defaultLocale}"/>
+    </bean>
     
     <!-- MODEL FACTORIES -->
     <bean id="extensionFactory" class="org.gbif.provider.model.factory.ExtensionFactory"/>

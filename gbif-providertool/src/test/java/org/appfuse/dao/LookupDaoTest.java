@@ -2,6 +2,8 @@ package org.appfuse.dao;
 
 import java.util.List;
 
+import org.gbif.provider.dao.LookupDao;
+
 /**
  * This class tests the current LookupDao implementation class
  * @author mraible

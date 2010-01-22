@@ -40,12 +40,12 @@
     
     
     
-    <bean id="userSecurityAdvice" class="org.appfuse.service.UserSecurityAdvice"/>
+    <bean id="userSecurityAdvice" class="org.gbif.provider.service.UserSecurityAdvice"/>
     
     <!-- =================================================================== -->
     <!-- Mail: Sender and Velocity configuration                             -->
     <!-- =================================================================== -->
-    <bean id="mailEngine" class="org.appfuse.service.MailEngine">
+    <bean id="mailEngine" class="org.gbif.provider.service.MailEngine">
         <property name="mailSender" ref="mailSender"/>
         <property name="velocityEngine" ref="velocityEngine"/>
         <property name="from" value="${mail.default.from}"/>
@@ -90,20 +90,20 @@
     <!-- =================================================================== -->
     <!-- Managers: For accessing DAOs                                        -->
     <!-- =================================================================== -->
-    <bean id="manager" class="org.appfuse.service.impl.UniversalManagerImpl">
+    <bean id="manager" class="org.gbif.provider.service.impl.UniversalManagerImpl">
         <property name="dao" ref="universalDao"/>
     </bean>
     
-    <bean id="lookupManager" class="org.appfuse.service.impl.LookupManagerImpl">
+    <bean id="lookupManager" class="org.gbif.provider.service.impl.LookupManagerImpl">
         <property name="lookupDao" ref="lookupDao"/>
     </bean>
 
-    <bean id="userManager" class="org.appfuse.service.impl.UserManagerImpl">
+    <bean id="userManager" class="org.gbif.provider.service.impl.UserManagerImpl">
         <property name="userDao" ref="userDao"/>
         <property name="passwordEncoder" ref="passwordEncoder"/>
     </bean>
 
-    <bean id="roleManager" class="org.appfuse.service.impl.RoleManagerImpl">
+    <bean id="roleManager" class="org.gbif.provider.service.impl.RoleManagerImpl">
         <property name="roleDao" ref="roleDao"/>
     </bean>
 

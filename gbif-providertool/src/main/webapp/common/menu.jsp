@@ -11,7 +11,7 @@
 		name="menu.explorer" /></a></li>
 	<c:choose>
 		<c:when test="${empty pageContext.request.remoteUser}">
-			<li><a href="<c:url value="/login.jsp"/>"><s:text
+			<li><a href="<c:url value="/login.html"/>"><s:text
 				name="login.title" /></a></li>
 		</c:when>
 		<c:otherwise>
@@ -49,18 +49,14 @@
 					<li><a title='<s:text name="menu.admin.thesaurus"/>'
 						href='<c:url value="/admin/vocabularies.html"/>'><s:text
 						name="menu.admin.thesaurus" /></a></li>
-					<li><a title='<s:text name="menu.admin.users"/>'
+					<!--
+					<li>
+						<a title='<s:text name="menu.admin.resources"/>' href='<c:url value="/admin/resources.html"/>'><s:text name="menu.admin.resources"/></a>	    
+		    		</li>
+		    		-->
+					<li class="last"><a title='<s:text name="menu.admin.users"/>'
 						href='<c:url value="/admin/users.html"/>'><s:text
 						name="menu.admin.users" /></a></li>
-					<!--
-			<li>
-				<a title='<s:text name="menu.admin.resources"/>' href='<c:url value="/admin/resources.html"/>'><s:text name="menu.admin.resources"/></a>	    
-    		</li>
-    		-->
-					<li class="last"><a
-						title='<s:text name="menu.admin.activeUsers"/>'
-						href='<c:url value="/admin/activeUsers.html"/>'><s:text
-						name="menu.admin.activeUsers" /></a></li>
 				</ul>
 				</li>
 			</s:if>

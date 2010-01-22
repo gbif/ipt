@@ -1,8 +1,8 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <head>
-    <title><fmt:message key="userProfile.title"/></title>
-    <meta name="heading" content="<fmt:message key='userProfile.heading'/>"/>
+    <title><s:text name="userProfile.title"/></title>
+    <meta name="heading" content="<s:text name='userProfile.heading'/>"/>
     <meta name="menu" content="UserMenu"/>
     <script type="text/javascript" src="<c:url value='/scripts/selectbox.min.js'/>"></script>
 	<script>
@@ -86,49 +86,83 @@
 		    <c:when test="${param.from == 'list'}">
 		    <li>
 		        <fieldset>
-		            <legend><fmt:message key="userProfile.accountSettings"/></legend>
-<%-- 		            <div class="horizontal_dotted_line_graph"></div> --%>
+		            <legend><s:text name="userProfile.accountSettings"/></legend>
 		            <s:checkbox key="user.enabled" id="user.enabled" fieldValue="true" theme="simple"/>
-		            <label for="user.enabled" class="choice"><fmt:message key="user.enabled"/></label>
+		            <label for="user.enabled" class="choice"><s:text name="user.enabled"/></label>
 		
 		            <s:checkbox key="user.accountExpired" id="user.accountExpired" fieldValue="true" theme="simple"/>
-		            <label for="user.accountExpired" class="choice"><fmt:message key="user.accountExpired"/></label>
+		            <label for="user.accountExpired" class="choice"><s:text name="user.accountExpired"/></label>
 		
 		            <s:checkbox key="user.accountLocked" id="user.accountLocked" fieldValue="true" theme="simple"/>
-		            <label for="user.accountLocked" class="choice"><fmt:message key="user.accountLocked"/></label>
+		            <label for="user.accountLocked" class="choice"><s:text name="user.accountLocked"/></label>
 		
 		            <s:checkbox key="user.credentialsExpired" id="user.credentialsExpired" fieldValue="true" theme="simple"/>
-		            <label for="user.credentialsExpired" class="choice"><fmt:message key="user.credentialsExpired"/></label>
+		            <label for="user.credentialsExpired" class="choice"><s:text name="user.credentialsExpired"/></label>
 		        </fieldset>
 		    </li>
 		    <li>
 		        <fieldset>
-		            <legend><fmt:message key="userProfile.assignRoles"/></legend>
-					<%-- <div class="horizontal_dotted_line_graph"></div> --%>
+		            <legend><s:text name="userProfile.assignRoles"/></legend>
 		            <table class="pickList">
 		                <tr>
 		                    <th class="pickLabel">
-		                        <label class="required"><fmt:message key="user.availableRoles"/></label>
+		                        <label class="required"><s:text name="user.availableRoles"/></label>
 		                    </th>
 		                    <td></td>
 		                    <th class="pickLabel">
-		                        <label class="required"><fmt:message key="user.roles"/></label>
+		                        <label class="required"><s:text name="user.roles"/></label>
 		                    </th>
 		                </tr>
 		                <c:set var="leftList" value="${availableRoles}" scope="request"/>
 		                <s:set name="rightList" value="user.roleList" scope="request"/>
-		                <c:import url="/WEB-INF/pages/pickList.jsp">
-		                    <c:param name="listCount" value="1"/>
-		                    <c:param name="leftId" value="availableRoles"/>
-		                    <c:param name="rightId" value="userRoles"/>
-		                </c:import>
+
+<tr>
+    <td>
+        <select name="availableRoles" multiple="multiple" id="availableRoles" size="5"
+            onDblClick="Selectbox.moveSelectedOptions(this, this.form.userRoles,true)" >
+    <c:if test="${leftList != null}">
+        <c:forEach var="list" items="${leftList}" varStatus="status">
+            <option value="<c:out value="${list.value}"/>">
+                <c:out value="${list.label}" escapeXml="false" />
+            </option>
+        </c:forEach>
+    </c:if>
+        </select>
+    </td>
+    <td class="moveOptions">
+        <button name="moveRight" id="moveRight1" type="button" 
+            onclick="Selectbox.moveSelectedOptions(this.form.availableRoles,this.form.userRoles,true)">
+            &gt;&gt;</button><br />
+        <button name="moveAllRight" id="moveAllRight1" type="button"
+            onclick="Selectbox.moveAllOptions(this.form.availableRoles, this.form.userRoles, true)">
+            All &gt;&gt;</button><br />
+        <button name="moveLeft" id="moveLeft1" type="button"
+            onclick="Selectbox.moveSelectedOptions(this.form.userRoles, this.form.availableRoles, true)">
+            &lt;&lt;</button><br />
+        <button name="moveAllLeft" id="moveAllLeft1" type="button"
+            onclick="Selectbox.moveAllOptions(this.form.userRoles, this.form.availableRoles, true)">
+            All &lt;&lt;</button>
+    </td>
+    <td>
+        <select name="userRoles" multiple="multiple" id="userRoles" size="5">
+    <c:if test="${rightList != null}">
+        <c:forEach var="list" items="${rightList}" varStatus="status">
+            <option value="<c:out value="${list.value}"/>">
+                <c:out value="${list.label}" escapeXml="false"/>
+            </option>
+        </c:forEach>
+    </c:if>
+        </select>
+    </td>
+</tr>
+
 		            </table>
 		        </fieldset>
 		    </li>
 		    </c:when>
 		    <c:otherwise>
 		    <li>
-		        <strong><fmt:message key="user.roles"/>:</strong>
+		        <strong><s:text name="user.roles"/>:</strong>
 		        <s:iterator value="user.roleList" status="status">
 		          <s:property value="label"/><s:if test="!#status.last">,</s:if>
 		          <input type="hidden" name="userRoles" value="<s:property value="value"/>"/>
@@ -139,7 +173,7 @@
 		        <s:hidden name="user.credentialsExpired" value="%{user.credentialsExpired}"/>
 		    </li>
 		    <li><p>
-			<s:text name="userform.instructions"/> <i><s:property value="%{iptCfg.contactName}"/> &lt;<s:property value="%{iptCfg.contactEmail}"/>&gt;</i>
+			<s:text name="userform.instructions"/> <i><s:property value="%{cfg.contactName}"/> &lt;<s:property value="%{cfg.contactEmail}"/>&gt;</i>
 			</p>
 		    </li>
 		    </c:otherwise>

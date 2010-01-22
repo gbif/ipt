@@ -4,7 +4,7 @@
     <header>
 <#escape x as x?xml>
         <source accesspoint="${cfg.getTapirEndpoint(resourceId)}" sendtime="${now?datetime?string(xmlDateFormat)}">
-          <software name="GBIF Integrated Publishing Toolkit" version="<@s.text name="webapp.version"/>"/>
+          <software name="GBIF Integrated Publishing Toolkit" version="${cfg.version}"/>
         </source>
 </#escape>
     </header>
