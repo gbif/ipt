@@ -48,10 +48,10 @@
     </logger>
 
     <logger name="org.apache.velocity">
-        <level value="FATAL"/>
+        <level value="WARN"/>
     </logger>
     <logger name="velocity">
-        <level value="FATAL"/>
+        <level value="WARN"/>
     </logger>
   
     <logger name="org.hibernate">
@@ -73,7 +73,7 @@
 
     <!-- http://issues.appfuse.org/browse/APF-736#action_11786 -->
     <logger name="com.opensymphony.xwork2.util.XWorkConverter">
-        <level value="FATAL"/>
+        <level value="ERROR"/>
     </logger>
 
     <!-- http://issues.appfuse.org/browse/APF-852 -->
@@ -85,20 +85,7 @@
     <logger name="com.opensymphony.xwork2.util.OgnlValueStack">
         <level value="ERROR"/>
     </logger>    
-    
-    <!-- Turn off warnings from VelocityMenuDisplayer -->
-    <logger name="net.sf.navigator.displayer">
-        <level value="ERROR"/>
-    </logger>    
 
-    <logger name="org.appfuse">
-        <level value="WARN"/>
-    </logger>
-
-    <!-- org.codehaus.xfire.aegis, org.codehaus.xfire.spring.remoting.Jsr181HandlerMapping -->
-    <logger name="org.codehaus">
-        <level value="WARN"/>
-    </logger>
     <!-- org.tuckey.web.filters.urlrewrite.UrlRewriter -->
     <logger name="org.tuckey">
         <level value="WARN"/>
@@ -106,7 +93,7 @@
 
     
     <!-- GBIF things -->
-    <logger name="org.gbif.provider">
+    <logger name="org.gbif">
         <level value="DEBUG" />
     </logger>
     

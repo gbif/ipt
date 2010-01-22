@@ -80,20 +80,7 @@
     <logger name="com.opensymphony.xwork2.util.OgnlValueStack">
         <level value="ERROR"/>
     </logger>    
-    
-    <!-- Turn off warnings from VelocityMenuDisplayer -->
-    <logger name="net.sf.navigator.displayer">
-        <level value="ERROR"/>
-    </logger>    
 
-    <logger name="org.appfuse">
-        <level value="WARN"/>
-    </logger>
-
-    <!-- org.codehaus.xfire.aegis, org.codehaus.xfire.spring.remoting.Jsr181HandlerMapping -->
-    <logger name="org.codehaus">
-        <level value="WARN"/>
-    </logger>
     <!-- org.tuckey.web.filters.urlrewrite.UrlRewriter -->
     <logger name="org.tuckey">
         <level value="WARN"/>
