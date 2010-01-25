@@ -1,6 +1,6 @@
 package org.appfuse.dao;
 
-import org.appfuse.Constants;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.dao.RoleDao;
 import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.Role;
