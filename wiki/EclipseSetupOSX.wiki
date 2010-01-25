@@ -4,12 +4,12 @@
 
 The following describes a typical Eclipse development setup for working with IPT source code in the following environment:
  * OS X 10.5.8
- * Java 1.5.0_19 
- * Eclipse 3.5
+ * Java 1.6.0_15 
+ * Eclipse Galileo 64 bit
  * Subclipse 1.6 (Eclipse Plugin)
  * Web Tools Platform 3.1 (Eclipse Plugin)
- * M2Eclipse [http://m2eclipse.sonatype.org/update-dev development build] (Eclipse Plugin)
- * Maven 2.0.9
+ * M2Eclipse (Eclipse Plugin with embedded Maven)
+ * FreeMarker (Eclipse Plugin)
 
 === Check out source code ===
 Using Subclipse, *check out as a project in the workspace* the main line of IPT development and name the project *ipt*:
