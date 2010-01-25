@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.appfuse.Constants;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.dao.UserDao;
 import org.gbif.provider.model.Role;
 import org.gbif.provider.model.User;
