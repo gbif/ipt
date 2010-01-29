@@ -7,23 +7,23 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 
 
 -----
-= Release 1.0 =
-scheduled for 31-01-2010
-== Internationalisation (r1646) ==
+= Release 1.0 (Release Candidate 03 in testing)=
+Full release scheduled for 31-01-2010
+== Internationalisation (done by r1646) ==
  * Ensure application is fully internationalised
    * check all actions and templates for hard coded values
    * explore options of web app to allow collaborative translations
    * GBIF to solicit help in translations through nodes
 
-== Delete bug (r1646) ==
+== Delete bug (done in r1646) ==
  * Issue155
 
-== Darwin Core update (in progress) ==
+== Darwin Core update (done by r1670) ==
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
 
 -----
-= Release 1.1 =
+= Release 1.1 (in progress)=
 scheduled for 31-03-2010
 [http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=label%3AMilestone-Release1.1&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles All issues]
 
