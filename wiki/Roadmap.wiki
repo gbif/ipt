@@ -9,16 +9,16 @@ Estimated release dates can vary considerably and are shown mainly to indicate f
 -----
 = Release 1.0 (Release Candidate 03 in testing)=
 Full release scheduled for 31-01-2010
-== Internationalisation (done by r1646) ==
+== Internationalisation (done by `r1646`) ==
  * Ensure application is fully internationalised
    * check all actions and templates for hard coded values
    * explore options of web app to allow collaborative translations
    * GBIF to solicit help in translations through nodes
 
-== Delete bug (done in r1646) ==
+== Delete bug (done in `r1646`) ==
  * Issue155
 
-== Darwin Core update (done by r1670) ==
+== Darwin Core update (done by `r1670`) ==
  * adapt cache data model to ratified [http://rs.tdwg.org/dwc/terms/index.htm darwin core terms]
 
 
