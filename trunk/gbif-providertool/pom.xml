@@ -455,55 +455,6 @@
     <artifactId>aspectjrt</artifactId>
     <version>${aspectj.version}</version>
 </dependency>
-<!--
-<dependency>
-    <groupId>org.codehaus.xfire</groupId>
-    <artifactId>xfire-java5</artifactId>
-    <version>${xfire.version}</version>
-    <exclusions>
-        <exclusion>
-            <artifactId>commons-attributes-api</artifactId>
-            <groupId>commons-attributes</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>jaxen</artifactId>
-            <groupId>jaxen</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>xmlParserAPIs</artifactId>
-            <groupId>xerces</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>xercesImpl</artifactId>
-            <groupId>xerces</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>XmlSchema</artifactId>
-            <groupId>org.apache.ws.commons</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
-    <groupId>org.codehaus.xfire</groupId>
-    <artifactId>xfire-spring</artifactId>
-    <version>${xfire.version}</version>
-    <exclusions>
-        <exclusion>
-            <artifactId>spring</artifactId>
-            <groupId>org.springframework</groupId>
-        </exclusion>
-        <exclusion>
-            <artifactId>spring-remoting</artifactId>
-            <groupId>org.springframework</groupId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
-    <groupId>org.directwebremoting</groupId>
-    <artifactId>dwr</artifactId>
-    <version>${dwr.version}</version>
-</dependency>
--->
 <dependency>
     <groupId>org.hibernate</groupId>
     <artifactId>hibernate</artifactId>
@@ -846,7 +797,6 @@
         <oscache.version>2.3</oscache.version>
         <gt.version>2.5.1</gt.version>
         <aspectj.version>1.6.0</aspectj.version>
-        <dwr.version>2.0.1</dwr.version>
         <ehcache.version>1.4.1</ehcache.version>
         <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
         <hibernate.version>3.2.6.ga</hibernate.version>
@@ -857,7 +807,6 @@
         <jstl.version>1.1.2</jstl.version>
         <velocity.version>1.4</velocity.version>
         <displaytag.version>1.2</displaytag.version>
-        <xfire.version>1.2.6</xfire.version>
 		<lucene.version>2.4.0</lucene.version>
         
         <!-- Testing dependency versions -->
