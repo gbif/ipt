@@ -43,6 +43,10 @@ scheduled for 31-03-2010
 == Enhanced resource metadata ==
  * update resource metadata / EML persistence and editor to support the gbif metadata profile
 
+
+== ??? FIX Critical Bugs ??? ==
+http://code.google.com/p/gbif-providertoolkit/issues/list?can=2&q=priority%3ACritical&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles
+
 == DwC-A import ==
  * allow upload of entire existing dwc archives reading its metadata, individual data files and mapping information
    * relevant/similar issues: Issue186, Issue202, Issue209, Issue235
