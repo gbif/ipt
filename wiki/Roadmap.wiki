@@ -44,7 +44,7 @@ scheduled for 31-03-2010
  * update resource metadata / EML persistence and editor to support the gbif metadata profile
 
 == DwC-A import ==
- * allow upload of entire existing dwc archives reading its metadata, individual data files and mapping information
+ * allow upload of entire existing dwc archives reading its metadata, individual data files and mapping information: Issue264
    * relevant/similar issues: Issue186, Issue202, Issue209, Issue235
  * Issue258 ??? Alternatively allow upload of external metadata document
 
