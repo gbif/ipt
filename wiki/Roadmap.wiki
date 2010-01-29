@@ -36,7 +36,7 @@ scheduled for 31-03-2010
 
 == Simplified & improved publication process ==
  * organisation metadata managed externally only (not in ipt admin UI), picklist of available organisations provided by registry REST API
- * resource can have 2 states only: private or public: Issue255
+ * resource can have 2 states only: private or public. Requires resource watcher in the background: Issue255
  * Changing the base URL for the IPT updates registered services: Issue159
  * default to dev registry and allow switching to production registry in admin config: Issue207
 
