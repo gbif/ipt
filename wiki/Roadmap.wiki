@@ -45,6 +45,8 @@ scheduled for 31-03-2010
 
 == DwC-A import ==
  * allow upload of entire existing dwc archives reading its metadata, individual data files and mapping information
+ * Issue258 ??? Alternatively allow upload of external metadata document
+
 
 
 -----
