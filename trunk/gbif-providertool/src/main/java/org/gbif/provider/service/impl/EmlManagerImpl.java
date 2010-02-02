@@ -121,7 +121,7 @@ public class EmlManagerImpl implements EmlManager {
         eml.getResourceCreator().setEmail(resource.getContactEmail());
         eml.getResourceCreator().setLastName(resource.getContactName());
         eml.setPubDate(new Date());
-        writeEmlXmlFile(cfg.getEmlFile(resource.getId()), freemarker, eml);
+        writeEmlXmlFile(cfg.getEmlFile(rid), freemarker, eml);
       }
     }
     return eml;
