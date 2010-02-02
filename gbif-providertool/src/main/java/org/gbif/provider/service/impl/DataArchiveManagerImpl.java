@@ -27,10 +27,6 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.XmlFileUtils;
 import org.gbif.provider.util.ZipUtil;
 
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
@@ -41,6 +37,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -135,10 +135,10 @@ public class DataArchiveManagerImpl extends BaseManager implements
     return archive;
   }
 
-  private String buildPropertySelect(ExtensionMapping view) {
+  private String buildPropertySelect(String prefix, ExtensionMapping view) {
     String select = "";
     for (ExtensionProperty p : view.getMappedProperties()) {
-      select += "," + getColumnName(p.getName());
+      select += "," + prefix + getColumnName(p.getName());
     }
     return select;
   }
@@ -184,7 +184,7 @@ public class DataArchiveManagerImpl extends BaseManager implements
     File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
     String select = String.format(
         "SELECT c.guid %s FROM %s e join darwin_core c on c.id=e.coreid where e.resource_fk=%s",
-        buildPropertySelect(view),
+        buildPropertySelect("e.", view),
         namingStrategy.extensionTableName(view.getExtension()),
         view.getResourceId());
     return dumpFile(file, select);
@@ -205,7 +205,7 @@ public class DataArchiveManagerImpl extends BaseManager implements
     File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
     String select = String.format(
         "SELECT c.guid %s FROM %s e join taxon c on c.id=e.coreid where e.resource_fk=%s",
-        buildPropertySelect(view),
+        buildPropertySelect("e.", view),
         namingStrategy.extensionTableName(view.getExtension()),
         view.getResourceId());
     return dumpFile(file, select);
