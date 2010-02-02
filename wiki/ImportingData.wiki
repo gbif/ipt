@@ -5,7 +5,7 @@ While working on issue 263, we worked through the data import request lifecycle.
 
 [http://www.websequencediagrams.com/cgi-bin/cdraw?lz=Q2xpZW50LT5TZXJ2ZXI6IEltcG9ydCBuZXcgcmVzb3VyY2UKYWN0aXZhdGUgAB8GCgAmBi0-ACYGVGFzazogY2FsbCgAKggpACkKABoKCgAlCi0-RW1sTWFuYWdlcjogbG9hZAAnFAAaCgpub3RlIHJpZ2h0IG9mAA0MICBDcmVhdGVzAIEtBUVtbCBvYmplY3QuCiAgV3JpdGVzIGVtbC54bWwgdG8gZmlsZXN5c3RlbS4KZW5kIG5vdGUKAIEBCi0AgUUOAEQKCmRlAIECFACBRQxSAIImBwCBTQlzYXZlAIF9FAAaDwoAKg8AdQ9yZXR1cm4AdAwAMBAAgksLAIM8CgAlEgCCfQsAgzgHLT4Ag3YGAFEUAIQIBg&s=mscgen&format=.png]
 
-The sequence diagram above was created via [http://www.websequencediagrams.com] using the following code:
+The sequence diagram above was created via [http://www.websequencediagrams.com] using the following code rendered using the mscgen style:
 {{{
 Client->Server: Import new resource
 activate Server
