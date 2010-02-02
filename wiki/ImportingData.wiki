@@ -4,3 +4,27 @@
 While working on issue 263, we worked through the data import request lifecycle. The following high level sequence diagram illustrates a simplified view of where in the lifecycle the eml.xml file is first written to the filesystem while importing new resources. 
 
 [http://www.websequencediagrams.com/cgi-bin/cdraw?lz=Q2xpZW50LT5TZXJ2ZXI6IEltcG9ydCBuZXcgcmVzb3VyY2UKYWN0aXZhdGUgAB8GCgAmBi0-ACYGVGFzazogY2FsbCgAKggpACkKABoKCgAlCi0-RW1sTWFuYWdlcjogbG9hZAAnFAAaCgpub3RlIHJpZ2h0IG9mAA0MICBDcmVhdGVzAIEtBUVtbCBvYmplY3QuCiAgV3JpdGVzIGVtbC54bWwgdG8gZmlsZXN5c3RlbS4KZW5kIG5vdGUKAIEBCi0AgUUOAEQKCmRlAIECFACBRQxSAIImBwCBTQlzYXZlAIF9FAAaDwoAKg8AdQ9yZXR1cm4AdAwAMBAAgksLAIM8CgAlEgCCfQsAgzgHLT4Ag3YGAFEUAIQIBg&s=mscgen&format=.png]
+
+The sequence diagram above was created via [http://www.websequencediagrams.com] using the following code:
+{{{
+Client->Server: Import new resource
+activate Server
+Server->ImportTask: call(resource)
+activate ImportTask
+ImportTask->EmlManager: load(resource)
+activate EmlManager
+note right of EmlManager
+  Creates new Eml object.
+  Writes eml.xml to filesystem.
+end note
+EmlManager-->ImportTask: Eml object
+deactivate EmlManager
+ImportTask->ResourceManager: save(resource)
+activate ResourceManager
+ResourceManager-->ImportTask: return
+deactivate ResourceManager
+ImportTask-->Server: return
+deactivate ImportTask
+Server-->Client: return
+deactivate Server
+}}}
