@@ -29,13 +29,14 @@
       <type>war</type>
       <scope>runtime</scope>
     </dependency>
-
+    <!-- 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    -->
   </dependencies>
   
   <build>
@@ -76,9 +77,14 @@
         <artifactId>maven-war-plugin</artifactId>
         <version>2.0.2</version>
         <configuration>
-          <dependentWarExcludes>
+          <!-- 
+            <dependentWarExcludes>
             WEB-INF/lib/*, **/jdbc.properties, **/application.properties, **/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**,
             admin/**
+            </dependentWarExcludes>
+          -->
+          <dependentWarExcludes>
+            **/web.xml,WEB-INF/classes/META-INF/**
           </dependentWarExcludes>
         </configuration>
       </plugin>
