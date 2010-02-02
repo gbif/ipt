@@ -100,6 +100,13 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1-beta-1</version>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
             
 <!--
             <plugin>
@@ -174,18 +181,6 @@
                 </configuration>
             </plugin>
 
-<!--
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <dependentWarExcludes>
-                        WEB-INF/lib/*, **/jdbc.properties, **/application.properties, **/hibernate.cfg.xml,**/sql-map-config.xml,**/web.xml,**/struts.xml,WEB-INF/classes/META-INF/**,
-                        admin/**
-                    </dependentWarExcludes>
-                </configuration>
-            </plugin>
--->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>native2ascii-maven-plugin</artifactId>
