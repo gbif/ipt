@@ -3,8 +3,33 @@
 
 == Quick Overview ==
 
-Properties from the GMP (GBIF Metadata Profile) will be added to the metadata currently supported by the IPT that describe data resources. IPT modifications will include an XML system for describing these metadata using different schemas and also modifications to the UI that allow users to view, edit, and search these metadata.
+Properties from the GMP (GBIF Metadata Profile) will be added to the metadata currently supported by the IPT that describe data resources. IPT modifications will include an XML system (for viewing and downloading these metadata using different schemas) and UI modifications that support user viewing, editing, and searching these metadata.
+
+_Note: This spec is simply a distilled version of the GBIF "Extended IPT Metadata Design Document"._
 
 == Use Cases ==
 
+=== Editing ===
+Users need forms to edit new resource metadata that are grouped into categories:
+  * Primary
+  * Geographic
+  * Taxonomic
+  * Project and methods
+  * Physical data
+  * Keywords
+  * Temporal
+
+=== Viewing ===
+Users need to view a one page summary of all metadata available for a given resource. This summary needs to be viewable and downloadable in any of the following formats:
+  * Internal GBIF Metadata Schema Profile
+  * EML
+  * GBIF Global Strategy and Action Plan for mobilization of Natural History Collections data (GSAP NHC) NCD profile
+  * Dublin Core
+  * NAP/ISO 19115
+
+=== Transformations ===
+Is there a use case for mapping one format to another? Unless we're missing something, the _viewing_ use case above accounts for viewing and downloading metadata in any of the supported formats. It's not entirely clear why a transformation from one format to another would be needed.
+
 == Key Design Concerns ==
+
+=== XML Generation ===
