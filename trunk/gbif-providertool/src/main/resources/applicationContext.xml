@@ -45,6 +45,7 @@
         <constructor-arg value="${gbif.analytics.key}"/>
         <constructor-arg value="${project.version}"/>
         <constructor-arg value="${copyright.year}"/>
+        <constructor-arg value="${full.text.search.hit.count}"/>
     </bean>
     
     <bean id="textProvider" class="org.gbif.provider.localization.SimpleTextProvider">
@@ -115,6 +116,7 @@
 	
 	<!-- All tasks are non-singleton (prototype) -->
     <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="emlEditorAction" scope="prototype" class="org.gbif.provider.webapp.action.manage.EmlEditorAction" />
     <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
     
 </beans>

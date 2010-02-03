@@ -24,6 +24,18 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.CSVReader;
 import org.gbif.provider.util.XmlContentHandler;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -46,18 +58,6 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.xml.sax.SAXException;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * A Lucene based version of the full text manager.
@@ -218,7 +218,8 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
       query.add(new TermQuery(new Term(FIELD_ACCESS, PUBLIC_ACCESS)),
           BooleanClause.Occur.MUST);
 
-      TopDocCollector collector = new TopDocCollector(10);
+      TopDocCollector collector = new TopDocCollector(
+          cfg.getFullTextSearchHitCount());
       s.search(wild, collector);
       ScoreDoc[] hits = collector.topDocs().scoreDocs;
       int numTotalHits = collector.getTotalHits();

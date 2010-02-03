@@ -23,6 +23,11 @@ import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ProviderCfgManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,16 +35,13 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * TODO: Documentation.
  * 
  */
 public class AppConfig {
+  private static final int DEFAULT_FULL_TEXT_SEARCH_HIT_COUNT = 10;
+
   // need some static fields to create static methods that can be used outside
   // of spring managed contexts, e.g. for hibernate objects
   // fields are managed by regular instance setters thanks to singleton
@@ -174,15 +176,23 @@ public class AppConfig {
   private ProviderCfg cfg;
   private String version;
   private String copyrightYear;
+  private int fullTextSearchHitCount = DEFAULT_FULL_TEXT_SEARCH_HIT_COUNT;
 
-  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir, String dataDir, String registryUrl, String gbifAnalyticsKey, String iptVersion, String copyrightYear) {
+  private AppConfig(ProviderCfgManager providerCfgManager, String webappDir,
+      String dataDir, String registryUrl, String gbifAnalyticsKey,
+      String iptVersion, String copyrightYear, String fullTextSearchHitCount) {
     super();
     AppConfig.dataDIR = dataDir; // new File(dataDir).getAbsolutePath();
     AppConfig.webappDIR = new File(webappDir);
     AppConfig.registryURL = registryUrl;
     AppConfig.gbifAnalyticsKey = gbifAnalyticsKey;
-    this.version=iptVersion;
-    this.copyrightYear=copyrightYear;
+    try {
+      this.fullTextSearchHitCount = Integer.parseInt(fullTextSearchHitCount);
+    } catch (NumberFormatException e) {
+      log.error("Setting full text search hit count to default 10");
+    }
+    this.version = iptVersion;
+    this.copyrightYear = copyrightYear;
     this.providerCfgManager = providerCfgManager;
     cfg = providerCfgManager.load();
     setBaseUrl(cfg.getBaseUrl());
@@ -211,6 +221,7 @@ public class AppConfig {
   public File getArchiveTcsFile(Long resourceId) {
     return new File(getResourceDataDir(resourceId), "archive-tcs.zip");
   }
+
   public String getArchiveTcsUrl(String guid) {
     return String.format("%sarchive-tcs.zip", getResourceUrl(guid));
   }
@@ -229,6 +240,10 @@ public class AppConfig {
 
   public String getBaseUrl() {
     return cfg.getBaseUrl();
+  }
+
+  public String getCopyrightYear() {
+    return copyrightYear;
   }
 
   // ALL ESSENTIAL DATA DIR
@@ -261,6 +276,10 @@ public class AppConfig {
 
   public String getEmlUrl(String guid, int version) {
     return String.format("%sv%s/eml", getResourceUrl(guid), version);
+  }
+
+  public int getFullTextSearchHitCount() {
+    return fullTextSearchHitCount;
   }
 
   public String getGeoserverDataDir() {
@@ -369,6 +388,10 @@ public class AppConfig {
     return String.format("%s/tapir/%s/", base, resourceId.toString());
   }
 
+  public String getVersion() {
+    return version;
+  }
+
   public URL getWebappURL(String relPath) {
     if (relPath.startsWith("/")) {
       relPath = relPath.substring(1);
@@ -412,15 +435,7 @@ public class AppConfig {
     return true;
   }
 
-  public String getVersion() {
-	return version;
-}
-
-public String getCopyrightYear() {
-	return copyrightYear;
-}
-
-// MANAGER "DELEGATE" METHODS
+  // MANAGER "DELEGATE" METHODS
   public void load() {
     cfg = providerCfgManager.load();
   }
