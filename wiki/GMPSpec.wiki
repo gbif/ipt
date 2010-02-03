@@ -1,0 +1,8 @@
+#summary A GMP spec that includes key design concerns and use cases
+#labels Deprecated
+
+== Quick Overview ==
+
+Properties from the GMP (GBIF Metadata Profile) will be added to the metadata currently supported by the IPT that describe data resources. IPT modifications will include an XML system for describing these metadata using different schemas and also modifications to the UI that allow users to view, edit, and search these metadata.
+
+== Use Cases ==
