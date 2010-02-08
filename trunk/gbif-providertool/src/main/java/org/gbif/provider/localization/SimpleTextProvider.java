@@ -1,10 +1,12 @@
 package org.gbif.provider.localization;
 
 import java.text.MessageFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.Tag;
@@ -20,9 +22,16 @@ import com.opensymphony.xwork2.util.LocalizedTextUtil;
 
 public class SimpleTextProvider implements I18nResourceProvider{
     protected static Log log = LogFactory.getLog(SimpleTextProvider.class);
-	private String baseBundleName = "ApplicationResources";
+	private Set<String> baseBundleNames = new HashSet<String>();
 	private boolean useSimpleProvider = true;
+	private static final String defaultBundle = "ApplicationResources";
 	
+	
+	private SimpleTextProvider() {
+		super();
+		baseBundleNames.add(defaultBundle);
+	}
+
 	public void setDefaultLocale(String defaultLocale) {
 		Locale newLocale = LocalizedTextUtil.localeFromString(defaultLocale, null);
 		if (newLocale != null){
@@ -31,9 +40,9 @@ public class SimpleTextProvider implements I18nResourceProvider{
 		}
 	}
 
-	public void setBaseBundleName(String baseBundleName) {
-		this.baseBundleName = baseBundleName;
-		log.debug("Using base resource bundle name "+baseBundleName);
+	public void setBaseBundleNames(Set<String> baseBundleNames) {
+		this.baseBundleNames = baseBundleNames;
+		log.debug("Using base resource bundle names "+baseBundleNames);
 	}
 	
 	public void setUseSimpleProvider(boolean useSimpleProvider) {
@@ -65,8 +74,15 @@ public class SimpleTextProvider implements I18nResourceProvider{
     
     public String getText(LocaleProvider localeProvider, String key, String defaultValue, Object[] args) {
         Locale locale = localeProvider.getLocale();
-        ResourceBundle bundle=findResourceBundle(baseBundleName, locale);
-        return findText(bundle, key, defaultValue, args);
+        String text=null;
+        for (String resName : baseBundleNames){
+            ResourceBundle bundle=findResourceBundle(resName, locale);
+            text = findText(bundle, key, defaultValue, args);
+            if (text!=null){
+            	break;
+            }
+        }
+        return text;
     }	
 	
     /**
@@ -102,7 +118,7 @@ public class SimpleTextProvider implements I18nResourceProvider{
     
     
 	public ResourceBundle getTexts(Locale locale) {
-		return findResourceBundle(baseBundleName, locale);
+		return findResourceBundle(defaultBundle, locale);
 	}
 
 	public ResourceBundle getTexts(String bundleName, Locale locale) {

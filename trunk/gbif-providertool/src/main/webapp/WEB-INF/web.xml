@@ -10,9 +10,8 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:/applicationContext.xml
-            classpath:/applicationContext-dao.xml
-            classpath:/applicationContext-resources.xml
-            classpath:/applicationContext-service.xml
+            classpath:/applicationContext-filtered.xml
+            classpath:/applicationContext-IPTfullOnly.xml
             /WEB-INF/security.xml
         </param-value>
     </context-param>
