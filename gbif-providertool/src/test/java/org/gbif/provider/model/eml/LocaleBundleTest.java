@@ -55,7 +55,7 @@ public class LocaleBundleTest {
 
   @Test
   public final void testCreate() {
-    Charset charset = LocaleBundle.Charsets.UTF_8;
+    Charset charset = Charsets.UTF_8;
     create("Should fail with null params", null, null, null);
     create("Should fail with null language", null, "country", charset);
     create("Should fail with null country", "language", null, charset);
@@ -67,20 +67,20 @@ public class LocaleBundleTest {
 
   @Test
   public final void testEqualsObject() {
-    assertEquals(LocaleBundle.create("l", "c", LocaleBundle.Charsets.UTF_8),
-        LocaleBundle.create("l", "c", LocaleBundle.Charsets.UTF_8));
+    assertEquals(LocaleBundle.create("l", "c", Charsets.UTF_8),
+        LocaleBundle.create("l", "c", Charsets.UTF_8));
   }
 
   @Test
   public final void testGetCharset() {
-    Charset charset = LocaleBundle.Charsets.UTF_8;
+    Charset charset = Charsets.UTF_8;
     LocaleBundle lb = LocaleBundle.create("l", "c", charset);
     assertEquals(charset.displayName(), lb.getCharset());
   }
 
   @Test
   public final void testGetCountry() {
-    Charset charset = LocaleBundle.Charsets.UTF_8;
+    Charset charset = Charsets.UTF_8;
     String country = "C";
     LocaleBundle lb = LocaleBundle.create("l", country, charset);
     assertEquals(country, lb.getCountry());
@@ -88,7 +88,7 @@ public class LocaleBundleTest {
 
   @Test
   public final void testGetLanguage() {
-    Charset charset = LocaleBundle.Charsets.UTF_8;
+    Charset charset = Charsets.UTF_8;
     String language = "l";
     LocaleBundle lb = LocaleBundle.create(language, "c", charset);
     assertEquals(language, lb.getLanguage());
@@ -96,14 +96,13 @@ public class LocaleBundleTest {
 
   @Test
   public final void testHashCode() {
-    assertEquals(
-        LocaleBundle.create("l", "c", LocaleBundle.Charsets.UTF_8).hashCode(),
-        LocaleBundle.create("l", "c", LocaleBundle.Charsets.UTF_8).hashCode());
+    assertEquals(LocaleBundle.create("l", "c", Charsets.UTF_8).hashCode(),
+        LocaleBundle.create("l", "c", Charsets.UTF_8).hashCode());
   }
 
   @Test
   public final void testToString() {
     assertEquals("Country=C, Language=l, Charset=UTF-8", LocaleBundle.create(
-        "l", "c", LocaleBundle.Charsets.UTF_8).toString());
+        "l", "c", Charsets.UTF_8).toString());
   }
 }
