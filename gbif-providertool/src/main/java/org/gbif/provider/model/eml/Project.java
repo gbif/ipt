@@ -15,6 +15,10 @@
  */
 package org.gbif.provider.model.eml;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.common.base.Objects;
+
 import java.io.Serializable;
 
 /**
@@ -27,10 +31,12 @@ public class Project implements Serializable {
 
   // Added to support the GBIF Extended Metadata Profile:
   private String id;
+
   private String uuid;
 
   private String title;
   private String projectAbstract;
+
   private String funding;
   private String studyAreaDescription;
   private String designDescription;
@@ -40,6 +46,24 @@ public class Project implements Serializable {
   public Project() {
     super();
     this.personnelOriginator.setRole(Role.ORIGINATOR);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof Project)) {
+      return false;
+    }
+    Project o = (Project) other;
+    return equal(id, o.id) && equal(uuid, o.uuid) && equal(title, o.title)
+        && equal(projectAbstract, o.projectAbstract)
+        && equal(funding, o.funding)
+        && equal(studyAreaDescription, o.studyAreaDescription)
+        && equal(designDescription, o.designDescription)
+        && equal(personnelOriginator, o.personnelOriginator)
+        && equal(personnel, o.personnel);
   }
 
   public String getAbstract() {
@@ -76,6 +100,12 @@ public class Project implements Serializable {
 
   public String getUuid() {
     return uuid;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id, uuid, title, projectAbstract, funding,
+        studyAreaDescription, designDescription, personnelOriginator, personnel);
   }
 
   public void setAbstract(String projectAbstract) {
