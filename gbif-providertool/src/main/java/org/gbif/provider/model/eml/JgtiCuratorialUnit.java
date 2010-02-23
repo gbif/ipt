@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
+
 /**
  * This class can be used to encapsulate information about a JGTI curatorial
  * unit.
@@ -29,7 +31,9 @@ import com.google.common.base.Objects;
  * create method.
  * 
  */
-public class JgtiCuratorialUnit {
+public class JgtiCuratorialUnit implements Serializable {
+
+  private static final long serialVersionUID = 4302214747473277031L;
 
   /**
    * Creates a new JgtiCuratorialUnit instance. Throws

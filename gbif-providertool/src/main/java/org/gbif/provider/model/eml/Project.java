@@ -22,17 +22,17 @@ import java.io.Serializable;
  * 
  */
 public class Project implements Serializable {
+
+  private static final long serialVersionUID = 2224956553560612242L;
+
+  // Added to support the GBIF Extended Metadata Profile:
   private String id;
   private String uuid;
 
   private String title;
-
   private String projectAbstract;
-
   private String funding;
-
   private String studyAreaDescription;
-
   private String designDescription;
   private Agent personnelOriginator = new Agent();
   private Agent personnel = new Agent();

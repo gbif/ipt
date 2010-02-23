@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
+
 /**
  * This class can be used to encapsulate information about a sampling method.
  * 
@@ -28,7 +30,9 @@ import com.google.common.base.Objects;
  * create method.
  * 
  */
-public class Method {
+public class Method implements Serializable {
+
+  private static final long serialVersionUID = 2725055780405284137L;
 
   /**
    * Creates a new Method instance. Throws {@link NullPointerException} if any
