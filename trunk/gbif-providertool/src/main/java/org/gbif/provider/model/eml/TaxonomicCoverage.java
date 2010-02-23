@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -30,13 +31,14 @@ import java.util.Set;
  * create method.
  * 
  */
-public class TaxonomicCoverage {
+public class TaxonomicCoverage implements Serializable {
+
+  private static final long serialVersionUID = 6440261277409707797L;
 
   /**
    * Creates a new instance of TaxonomicCoverage. Throws
-   * {@link NullPointerException} if the description or idReference arguments
-   * are null. Throws {@link IllegalArgumentException} if the description or
-   * idReference arguments are empty.
+   * {@link NullPointerException} if the description argument is null. Throws
+   * {@link IllegalArgumentException} if the description argument is empty.
    * 
    * @param description the description
    * @param idReference the identification reference
