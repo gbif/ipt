@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -49,15 +50,21 @@ public class TaxonomicCoverage implements Serializable {
       String idReference, Set<TaxonKeyword> keywords) {
     checkNotNull(description, "Description was null");
     checkArgument(!description.isEmpty(), "Description was empty");
-    return new TaxonomicCoverage(description, idReference, keywords);
+    ImmutableSet<TaxonKeyword> kw;
+    if (keywords == null) {
+      kw = ImmutableSet.of();
+    } else {
+      kw = ImmutableSet.copyOf(keywords);
+    }
+    return new TaxonomicCoverage(description, idReference, kw);
   }
 
   private final String description;
   private final String idReference;
-  private Set<TaxonKeyword> keywords;
+  private final ImmutableSet<TaxonKeyword> keywords;
 
   private TaxonomicCoverage(String description, String idReference,
-      Set<TaxonKeyword> keywords) {
+      ImmutableSet<TaxonKeyword> keywords) {
     this.description = description;
     this.idReference = idReference;
     this.keywords = keywords;
@@ -84,7 +91,7 @@ public class TaxonomicCoverage implements Serializable {
     return idReference;
   }
 
-  public Set<TaxonKeyword> getKeywords() {
+  public ImmutableSet<TaxonKeyword> getKeywords() {
     return keywords;
   }
 
