@@ -15,18 +15,73 @@
  */
 package org.gbif.provider.model.eml;
 
+import org.gbif.provider.model.Point;
 import org.gbif.provider.model.Resource;
+
+import com.google.common.collect.Sets;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * TODO: Documentation.
  * 
  */
 public class Eml implements Serializable {
+
+  // New properties to support GBIF Extended Metadata Profile:
+  private String resourceAbstract;
+  private Set<String> citations = Sets.newHashSet();
+  private String collectionId;
+  private LocaleBundle dataLocale;
+  private Date dateStamp; // TODO: What does this date represent?
+  private String description;
+  private String formationPeriod;
+  private String hierarchyLevel;
+  private String homepage;
+  private Set<JgtiCuratorialUnit> jgtiCuratorialUnits = Sets.newHashSet();
+  private Set<String> kingdomCoverages = Sets.newHashSet();
+  private String livingTimePeriod;
+  private LocaleBundle resourceLocale;
+  private Point location;
+  private LocaleBundle metadataLocale;
+  private Set<Method> samplingMethods;
+  private String parentCollectionId;
+  private Set<PhysicalData> physicalData = Sets.newHashSet();
+  private String placenameCoverageDescription;
+  private Set<Agent> primaryContacts = Sets.newHashSet();
+  private Set<Project> projects = Sets.newHashSet();
+  private Set<Attribute> resourceAttributes = Sets.newHashSet();
+  private String specimenPreservationMethod;
+  private Set<TaxonomicCoverage> taxonomicCoverages = Sets.newHashSet();
+  private Set<GeoSpatialCoverage> geoSpatialCoverages = Sets.newHashSet();
+  private Set<TemporalCoverage> temporalCoverages = Sets.newHashSet();
+  private String title;
+  private String type;
+
+  // Proposed properties to deprecate in support of the GBIF Extended Metadata
+  // Profile:
+
+  // Replace by geoSpatialCoverages:
+  private GeoSpatialCoverage geographicCoverage;
+
+  // Replace by taxonomicCoverages:
+  private String taxonomicCoverageDescription;
+
+  // Replace by temporalCoverages:
+  private TimeKeyword temporalCoverage = new TimeKeyword();
+
+  // Replace by samplingMethods:
+  private String methods;
+
+  // Replace by projects:
+  private Project researchProject = new Project();
+
+  // Properties unaffected by GBIF Extended Metadata Profile integration:
+
   private static final long serialVersionUID = 770733523572837495L;
   private transient Resource resource;
   // serialised data
@@ -37,20 +92,12 @@ public class Eml implements Serializable {
   private String intellectualRights;
   // keywords
   private List<String> keywords = new ArrayList<String>();
-  private GeoKeyword geographicCoverage = new GeoKeyword(); // should be a list
-                                                            // really
-  private TimeKeyword temporalCoverage = new TimeKeyword(); // should be a list
-                                                            // really
-  // taxonomy
-  private String taxonomicCoverageDescription;
-  private TaxonKeyword lowestCommonTaxon = new TaxonKeyword();
+  private TaxonKeyword lowestCommonTaxon;// TODO: verify: = new TaxonKeyword();
   private List<TaxonKeyword> taxonomicClassification = new ArrayList<TaxonKeyword>();
   // methods
-  private String methods;
   private String samplingDescription;
   private String qualityControl;
   // other
-  private Project researchProject = new Project();
   private String purpose;
   private String maintenance;
 
@@ -59,10 +106,6 @@ public class Eml implements Serializable {
     this.pubDate = new Date();
     this.resourceCreator.setRole(Role.ORIGINATOR);
   }
-
-  //
-  // DELEGATOR METHODS for resource
-  //
 
   public void addKeyword(String keyword) {
     this.keywords.add(keyword);
@@ -76,7 +119,7 @@ public class Eml implements Serializable {
     return emlVersion;
   }
 
-  public GeoKeyword getGeographicCoverage() {
+  public GeoSpatialCoverage getGeographicCoverage() {
     return geographicCoverage;
   }
 
@@ -180,7 +223,7 @@ public class Eml implements Serializable {
     this.emlVersion = emlVersion;
   }
 
-  public void setGeographicCoverage(GeoKeyword geographicCoverage) {
+  public void setGeographicCoverage(GeoSpatialCoverage geographicCoverage) {
     this.geographicCoverage = geographicCoverage;
   }
 
