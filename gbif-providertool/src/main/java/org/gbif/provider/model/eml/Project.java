@@ -22,10 +22,17 @@ import java.io.Serializable;
  * 
  */
 public class Project implements Serializable {
+  private String id;
+  private String uuid;
+
   private String title;
+
   private String projectAbstract;
+
   private String funding;
+
   private String studyAreaDescription;
+
   private String designDescription;
   private Agent personnelOriginator = new Agent();
   private Agent personnel = new Agent();
@@ -47,6 +54,10 @@ public class Project implements Serializable {
     return funding;
   }
 
+  public String getId() {
+    return id;
+  }
+
   public Agent getPersonnel() {
     return personnel;
   }
@@ -63,6 +74,10 @@ public class Project implements Serializable {
     return title;
   }
 
+  public String getUuid() {
+    return uuid;
+  }
+
   public void setAbstract(String projectAbstract) {
     this.projectAbstract = projectAbstract;
   }
@@ -73,6 +88,10 @@ public class Project implements Serializable {
 
   public void setFunding(String funding) {
     this.funding = funding;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public void setPersonnel(Agent personnel) {
@@ -89,6 +108,10 @@ public class Project implements Serializable {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
 }
