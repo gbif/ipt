@@ -15,26 +15,57 @@
  */
 package org.gbif.provider.model.eml;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.common.base.Objects;
+
 import java.io.Serializable;
 
 /**
- * TODO: Documentation.
+ * This class can be used to encapsulate taxonomic keyword information.
+ * 
+ * Note that this class is immuatable. New instances can be created using the
+ * create method.
  * 
  */
 public class TaxonKeyword implements Serializable {
-  private String scientificName;
-  private String rank;
-  private String commonName;
 
-  public TaxonKeyword() {
-    super();
+  private static final long serialVersionUID = -7870655444855755937L;
+
+  /**
+   * Creates a new instance of TaxonKeyword.
+   * 
+   * @param scientificName the scientific name
+   * @param rank the rank
+   * @param commonName the common name
+   * @return new instance of TaxonKeyword
+   */
+  public static TaxonKeyword create(String scientificName, String rank,
+      String commonName) {
+    return new TaxonKeyword(scientificName, rank, commonName);
   }
 
-  public TaxonKeyword(String scientificName, String rank, String commonName) {
-    super();
+  private final String scientificName;
+  private final String rank;
+  private final String commonName;
+
+  private TaxonKeyword(String scientificName, String rank, String commonName) {
     this.scientificName = scientificName;
     this.rank = rank;
     this.commonName = commonName;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof TaxonKeyword)) {
+      return false;
+    }
+    TaxonKeyword o = (TaxonKeyword) other;
+    return equal(scientificName, o.scientificName) && equal(rank, o.rank)
+        && equal(commonName, o.commonName);
   }
 
   public String getCommonName() {
@@ -49,16 +80,14 @@ public class TaxonKeyword implements Serializable {
     return scientificName;
   }
 
-  public void setCommonName(String commonName) {
-    this.commonName = commonName;
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(scientificName, rank, commonName);
   }
 
-  public void setRank(String rank) {
-    this.rank = rank;
+  @Override
+  public String toString() {
+    return String.format("ScientificName=%s, Rank=%s, CommonName=%s",
+        scientificName, rank, commonName);
   }
-
-  public void setScientificName(String scientificName) {
-    this.scientificName = scientificName;
-  }
-
 }

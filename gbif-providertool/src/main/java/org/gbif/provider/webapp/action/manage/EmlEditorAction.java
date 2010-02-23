@@ -24,14 +24,14 @@ import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 
-import com.opensymphony.xwork2.Preparable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.opensymphony.xwork2.Preparable;
 
 /**
  * TODO: Documentation.
@@ -159,7 +159,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     for (String k : StringUtils.split(taxonomicCoverage, ",")) {
       k = StringUtils.trimToNull(k);
       if (k != null) {
-        keywords.add(new TaxonKeyword(k, null, null));
+        keywords.add(TaxonKeyword.create(k, null, null));
       }
     }
     eml.setTaxonomicClassification(keywords);
