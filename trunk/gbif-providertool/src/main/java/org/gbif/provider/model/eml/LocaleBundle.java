@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
@@ -32,7 +33,9 @@ import java.util.Locale;
  * static create method.
  * 
  */
-public class LocaleBundle {
+public class LocaleBundle implements Serializable {
+
+  private static final long serialVersionUID = 4602721372582246629L;
 
   /**
    * Creates a new LocaleBundle instance. Throws {@link NullPointerException} or

@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
 import java.nio.charset.Charset;
 
 /**
@@ -30,7 +31,7 @@ import java.nio.charset.Charset;
  * pattern via the builder method. The charset and name properties are required.
  * 
  */
-public class PhysicalData {
+public class PhysicalData implements Serializable {
 
   /**
    * This class can be used to build a PhysicalData instance using the builder
@@ -103,6 +104,8 @@ public class PhysicalData {
       return this;
     }
   }
+
+  private static final long serialVersionUID = 1209461796079665955L;
 
   /**
    * Returns an instance of Builder initialized with a charset and name.
