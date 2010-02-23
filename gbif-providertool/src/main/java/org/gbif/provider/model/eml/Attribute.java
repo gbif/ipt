@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 
+import java.io.Serializable;
+
 /**
  * This class can be used to encapsulate generic attribute information. Each
  * attribute has a category, a name, and a type within the context of a
@@ -30,7 +32,9 @@ import com.google.common.base.Objects;
  * create method.
  * 
  */
-public class Attribute {
+public class Attribute implements Serializable {
+
+  private static final long serialVersionUID = 8805087340650428951L;
 
   /**
    * Creates a new Attribute instance. Throws {@link NullPointerException} if
