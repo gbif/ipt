@@ -61,14 +61,14 @@ the managed Resource is associated, during creation or modification of the Resou
    * Agreement: Support import of ratified DwC and extensions.
      * Open question: What action should be taken on mal-formed archive?
    * Agreement: Report warning for any unmapped extension.
-   * References: Issue186, Issue202, Issue209, Issue235, Issue271
+   * References: Issue186, Issue202, Issue209, Issue235, Issue271 [http://code.google.com/p/darwincore/source/browse/trunk/dwc-archive-reader/ DwC Archive Reader]
  * Requirement: allow upload of external metadata document
    * Agreement: Support reading of any metadata standard. Non-GBIF metadata will be retained as read only, with user providing fields required by IPT operation if not found, e.g., Title). 
      * Open question: What action should be taken on mal-formed metadata?
    * Agreement: Read-only metadata can be replaced by the user and updated into IPT on demand.
      * Open question: What are the exceptions to look out for here?
      * Open question: Treat a change of metadata the same as when creating a resource?
-   * References: Issue258, Issue264
+   * References: Issue258, Issue264, [http://code.google.com/p/darwincore/source/browse/trunk/dwc-archive-reader/src/main/java/org/gbif/dwc/metadata/MetadataFactory.java MetaDataFactory]
 
 == code cleanup ==
  * Timeline: complete by 2010-03-31
