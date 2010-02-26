@@ -29,15 +29,14 @@ import com.google.common.collect.Multimap;
  * 
  * <pre>
  * Builder b = KeywordSet.builder();
- * b.add("Thesaurus1", "Insect").("Thesaurus1", "Fly");
- * b.add("Thesaurus2", "Spider").("Thesaurus2", "Bee");
+ * b.add("Thesaurus1", "Insect").add("Thesaurus1", "Fly");
+ * b.add("Thesaurus2", "Spider").add("Thesaurus2", "Bee");
  * b.add("Thesaurus2", "Spider"); // Adding a duplicate has no effect.
  * KeywordSet ks = b.build(); 
  * ks.getKeywords("Thesaurus1"); // ["Insect", "Fly"]
  * ks.getKeywords("Thesaurus2"); // ["Spider", "Bee"]
  * ks.getAllKeywords(); // ["Insect", "Fly", "Spider", "Bee"]
  * ks.getAllThesauri(); // ["Thesaurus1", "Thesaurus2"]
- * b.build().getKeywords("Thesaurus2"); // ["Spider", "Bee"]
  * </pre>
  * 
  * Note that this class is immutable. Instances can be created using the builder
@@ -53,12 +52,7 @@ public class KeywordSet {
    * 
    * Usage example:
    * 
-   * <pre>
-   * Builder b = KeywordSet.builder();
-   * b.add("Thesaurus1", "Insect").("Thesaurus1", "Fly");
-   * b.add("Thesaurus2", "Spider").("Thesaurus2", "Bee");
-   * KeywordSet ks = b.build(); 
-   * </pre>
+   * KeywordSet ks = KeywordSet.builder().add("T1", "X").add("T2", "Z").build();
    * 
    */
   public static class Builder {
@@ -99,24 +93,24 @@ public class KeywordSet {
     return new Builder();
   }
 
-  private final ImmutableSetMultimap<String, String> keywords;
+  private final ImmutableSetMultimap<String, String> multimap;
 
-  private KeywordSet(ImmutableSetMultimap<String, String> keywords) {
-    this.keywords = keywords;
+  private KeywordSet(ImmutableSetMultimap<String, String> multimap) {
+    this.multimap = multimap;
   }
 
   /**
    * Returns an immutable collection of all keywords in this KeyWord set.
    */
   public ImmutableCollection<String> getAllKeywords() {
-    return keywords.values();
+    return multimap.values();
   }
 
   /**
    * Returns an immutable set of all thesauri in this keyword set.
    */
   public ImmutableSet<String> getAllThesauri() {
-    return keywords.keySet();
+    return multimap.keySet();
   }
 
   /**
@@ -126,6 +120,6 @@ public class KeywordSet {
    * @return immutable set of keywords for the thesauri
    */
   public ImmutableSet<String> getKeywords(String thesauri) {
-    return keywords.get(thesauri);
+    return multimap.get(thesauri);
   }
 }
