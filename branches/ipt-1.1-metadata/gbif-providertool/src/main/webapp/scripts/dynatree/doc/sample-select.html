@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Dynatree - Example</title>
+
+	<script src='../jquery/jquery.js' type='text/javascript'></script>
+	<script src='../jquery/ui.core.js' type='text/javascript'></script>
+    <script src='../jquery/jquery.cookie.js' type='text/javascript'></script>
+
+	<link href='../src/skin/ui.dynatree.css' rel='stylesheet' type='text/css'>
+	<script src='../src/jquery.dynatree.js' type='text/javascript'></script>
+
+	<link href='sample.css' rel='stylesheet' type='text/css'>
+    <script src='sample.js' type='text/javascript'></script>
+    
+<script type='text/javascript'>
+	$(function(){
+		
+		// --- Initialize sample trees
+		$("#tree1").dynatree({
+//			persist: true,
+			checkbox: true,
+			selectMode: 1,
+			onActivate: function(dtnode) {
+				$("#echoActive1").text(dtnode.data.title);
+			},
+			onSelect: function(select, dtnode) {
+				// Display list of selected nodes
+				var s = dtnode.tree.getSelectedNodes().join(", ");
+				$("#echoSelection1").text(s);
+			},
+			onDblClick: function(dtnode, event) {
+				dtnode.toggleSelect();
+			},
+			onKeydown: function(dtnode, event) {
+				if( event.which == 32 ) {
+					dtnode.toggleSelect();
+					return false;
+				}
+			},
+			// The following options are only required, if we have more than one tree on one page: 
+			initId: "treeData",
+			cookieId: "ui-dynatree-Cb1",
+			idPrefix: "ui-dynatree-Cb1-"
+		});
+
+		$("#tree2").dynatree({
+//			persist: true,
+			checkbox: false,
+			selectMode: 2,
+			onQuerySelect: function(select, dtnode) {
+				if( dtnode.data.isFolder )
+					return false;
+			},
+			onSelect: function(select, dtnode) {
+				// Display list of selected nodes
+				var s = dtnode.tree.getSelectedNodes().join(", ");
+				$("#echoSelection2").text(s);
+			},
+			onClick: function(dtnode, event) {
+				if( ! dtnode.data.isFolder )
+					dtnode.toggleSelect();
+			},
+			onDblClick: function(dtnode, event) {
+				dtnode.toggleExpand();
+			},
+			onKeydown: function(dtnode, event) {
+				if( event.which == 32 ) {
+					dtnode.toggleSelect();
+					return false;
+				}
+			},
+			// The following options are only required, if we have more than one tree on one page: 
+			initId: "treeData",
+			cookieId: "ui-dynatree-Cb2",
+			idPrefix: "ui-dynatree-Cb2-"
+		});
+
+		$("#tree3").dynatree({
+//			persist: true,
+			checkbox: true,
+			selectMode: 3,
+			onSelect: function(select, dtnode) {
+				// Display list of selected nodes
+				var s = dtnode.tree.getSelectedNodes().join(", ");
+				$("#echoSelection3").text(s);
+				s = dtnode.tree.getSelectedNodes(true).join(", ");
+				$("#echoSelectionRoots3").text(s);
+			},
+			onDblClick: function(dtnode, event) {
+				dtnode.toggleSelect();
+			},
+			onKeydown: function(dtnode, event) {
+				if( event.which == 32 ) {
+					dtnode.toggleSelect();
+					return false;
+				}
+			},
+			// The following options are only required, if we have more than one tree on one page: 
+			initId: "treeData",
+			cookieId: "ui-dynatree-Cb3",
+			idPrefix: "ui-dynatree-Cb3-"
+		});
+	});
+</script>
+</head>
+
+<body class="example">
+	<h1>Example: Selection and checkbox</h1>
+	
+	<!-- Shared initialization data for select/checkbox examples -->
+	
+	<ul id="treeData" style="display: none;">
+		<li id="id1" title="Look, a tool tip!">item1 with key and tooltip
+		<li id="id2" class="selected">item2: selected on init
+		<li id="id3" class="folder">Folder with some children
+			<ul>
+				<li id="id3.1">Sub-item 3.1
+					<ul>
+						<li id="id3.1.1">Sub-item 3.1.1
+						<li id="id3.1.2">Sub-item 3.1.2
+					</ul>
+				<li id="id3.2">Sub-item 3.2
+					<ul>
+						<li id="id3.2.1">Sub-item 3.2.1
+						<li id="id3.2.2">Sub-item 3.2.2
+					</ul>
+			</ul>
+
+		<li id="id4" class="expanded">Document with some children (expanded on init)
+			<ul>
+				<li id="id4.1"  class="active">Sub-item 4.1 (active on init)
+					<ul>
+						<li id="id4.1.1">Sub-item 4.1.1
+						<li id="id4.1.2">Sub-item 4.1.2
+					</ul>
+				<li id="id4.2" class="selected">Sub-item 4.2 (selected on init)
+					<ul>
+						<li id="id4.2.1">Sub-item 4.2.1
+						<li id="id4.2.2">Sub-item 4.2.2
+					</ul>
+			</ul>
+	</ul>
+
+	<!-- Tree containers -->
+		
+	<p class="description">
+		This tree has <b>checkoxes and single-selection</b> enabled.<br>
+		A double-click handler selects the node. A keydown handler selects on [space].<br>
+	</p>
+	<div id="tree1"></div>
+	<div>Active node: <span id="echoActive1">-</span></div>
+	<div>Selection: <span id="echoSelection1">-</span></div>
+	
+	
+	<p class="description">
+		This tree has <b>multi-selection</b> enabled, but no checkboxes.<br>
+		A single-click handler selects the node. A keydown handler selects on [space].<br>
+		A double-click handler expands documents.<br>
+		A onQuerySelect handler prevents selection of folders.
+	</p>
+	<div id="tree2"></div>
+	<div>Selection: <span id="echoSelection2">-</span></div>
+	
+		
+	<p class="description">
+		This tree has <b>checkoxes and hierarchical multi-selection</b> enabled.<br>
+		A double-click handler selects the node. A keydown handler selects on [space].
+	</p>
+	<div id="tree3"></div>
+	<div>Selected nodes: <span id="echoSelection3">-</span></div>
+	<div>Selected root nodes: <span id="echoSelectionRoots3">-</span></div>
+		
+	<hr>
+	<p class="sample-links">
+		<a class="hideInsideFS" href="http://dynatree.googlecode.com">jquery.dynatree.js project home</a>
+		&nbsp; <a class="hideOutsideFS" href="#">Link to this page</a>
+		&nbsp; <a class="hideInsideFS" href="samples.html">Example Browser</a>
+	 </p>
+</body>
+</html>

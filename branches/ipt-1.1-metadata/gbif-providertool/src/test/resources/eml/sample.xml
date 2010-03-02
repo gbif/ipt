@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This is a complete sample of the GBIF Extended Metadata Profile for the IPT 1.1
+	represented as EML
+	
+	This is the reference sample for Unit testing on consumption and output of the IPT
+	
+	The content of this metadata are NOT real data, but drafted just for this sample
+	-->
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.0"  
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:res="eml://ecoinformatics.org/resource-2.1.0" 
+    xmlns:acc="eml://ecoinformatics.org/access-2.1.0" 
+    xmlns:doc="eml://ecoinformatics.org/documentation-2.1.0" 
+    xmlns:prot="eml://ecoinformatics.org/protocol-2.1.0" 
+    xmlns:ds="eml://ecoinformatics.org/dataset-2.1.0" 
+    xmlns:cit="eml://ecoinformatics.org/literature-2.1.0" 
+    xmlns:sw="eml://ecoinformatics.org/software-2.1.0"
+    xmlns:physical="eml://ecoinformatics.org/physical-2.1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:dc="http://purl.org/dc/terms/" 
+    xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0 https://code.ecoinformatics.org/code/eml/tags/RELEASE_EML_2_1_0/eml.xsd"
+    packageId="619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml" system="GBIF-IPT" scope="system">
+    
+	<!-- The IPT is concerned with descriptions of datasets only -->
+	<dataset>
+        <!-- IPT has only 1 identifier -->
+		<alternateIdentifier>619a4b95-1a82-4006-be6a-7dbe3c9b33c5</alternateIdentifier>
+		
+		<title>Tanzanian Entomological Collection</title>
+		        
+		<!-- The creator is the person who created the resource (not necessarily the 
+			author of this metadata about the resource) -->
+		<creator>
+            <individualName>
+                <givenName>David</givenName>
+                <surName>Remsen</surName>
+            </individualName>
+            <organizationName>GBIF</organizationName>
+            <positionName>ECAT Programme Officer</positionName>
+            <address>
+                <city>Copenhagen</city>
+                <administrativeArea>Sjaelland</administrativeArea>
+                <postalCode>2100</postalCode>
+                <country>dk</country>
+            </address>
+            <phone>+4528261487</phone>
+			<electronicMailAddress>dremsen@gbif.org</electronicMailAddress>
+			<onlineUrl>http://www.gbif.org</onlineUrl>
+        </creator>
+        
+		<!-- The responsible party for the creation of the metadata -->
+        <metadataProvider>
+            <individualName>
+                <surName>Robertson</surName>
+            </individualName>
+            <address>
+                <deliveryPoint>Universitestparken 15</deliveryPoint>
+                <city>Copenhagen</city>
+                <administrativeArea>Copenhagen</administrativeArea>
+                <postalCode>2100</postalCode>
+                <country>Denmark</country>
+            </address>
+            <electronicMailAddress>trobertson@gbif.org</electronicMailAddress>
+        </metadataProvider>
+        
+        <!-- Note that associated parties have roles -->
+        <associatedParty>
+            <individualName>
+                <surName>Doering</surName>
+            </individualName>
+            <phone>4535321487</phone>
+			<!-- The IPT will define a controlled vocabulary for this term -->
+            <role>principleInvestigator</role>
+        </associatedParty>
+        <associatedParty>
+            <individualName>
+                <surName>Hahn</surName>
+            </individualName>
+            <phone>4535321478</phone>
+			<!-- The IPT will define a controlled vocabulary for this term -->
+            <role>pointOfContact</role>
+        </associatedParty>
+        
+		<!-- Identified in the Other section of the GBIF Extended Metadata Doc -->
+        <pubDate>2010-02-02</pubDate>
+    
+		<!-- Identified in the Other section of the GBIF Extended Metadata Doc -->
+		<!-- This is the RESOURCE language and not the metadata language which is at the bottom -->
+		<language>en_US</language>
+        
+		<!-- The brief overview -->    
+        <abstract><para>Specimens in jars</para></abstract>
+        
+        <!-- Keywords can optionally reference a thesaurus -->
+        <keywordSet>
+            <keyword>Insect</keyword>
+            <keyword>Fly</keyword>
+            <keyword>Bee</keyword>
+            <keywordThesaurus>
+                Zoology Vocabulary Version 1
+            </keywordThesaurus>
+        </keywordSet>
+        <keywordSet>
+            <keyword>Spider</keyword>
+            <keywordThesaurus>
+                Zoology Vocabulary Version 1
+            </keywordThesaurus>
+        </keywordSet>
+        
+		<!-- Not mentioned in the GBIF Extended Metadata Doc but seems sensible to keep this element -->
+        <additionalInfo><para>Where can the additional information possibly come from?!</para></additionalInfo>
+        
+		<!-- Identified in the Other section of the GBIF Extended Metadata Doc -->
+        <intellectualRights>
+			<para>Owner grants XXX a worldwide, non-exclusive right to: 
+                (i) use, reproduce, perform, display, archive, transmit and distribute the Content 
+                (including any trademarks, tradenames and logos in the Content) in electronic form in connection with the Site, 
+                (ii) allow users of the Site to use, search, copy, download and transmit the Content, and 
+                (iii) modify and reformat the Content, but solely to the extent necessary and for the purposes of: 
+                (a) conforming to the format and "look and feel" of the Site, and 
+                (b) creating snippets, headlines or teasers consisting of selected lines or sections from the 
+                Content to be displayed on the Site 
+                (or displayed on other websites owned by XXX for the purposes of directing traffic to the Site).
+            </para>
+        </intellectualRights>
+        
+		<!-- 3 types of coverage are supported with example repetition -->
+        <coverage>
+            <geographicCoverage>
+				<geographicDescription>Bounding Box 1</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>0.703</westBoundingCoordinate>
+                    <eastBoundingCoordinate>-1.564</eastBoundingCoordinate>
+                    <northBoundingCoordinate>23.975</northBoundingCoordinate>
+                    <southBoundingCoordinate>-22.745</southBoundingCoordinate>
+                </boundingCoordinates>
+            </geographicCoverage>
+			<geographicCoverage>
+				<geographicDescription>Bounding Box 2</geographicDescription>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>-10.703</westBoundingCoordinate>
+                    <eastBoundingCoordinate>11.564</eastBoundingCoordinate>
+                    <northBoundingCoordinate>43.975</northBoundingCoordinate>
+                    <southBoundingCoordinate>-32.745</southBoundingCoordinate>
+                </boundingCoordinates>
+			</geographicCoverage>
+            <temporalCoverage>
+				<rangeOfDates>
+					<beginDate><calendarDate>2009-12-01</calendarDate></beginDate>
+                    <endDate><calendarDate>2009-12-30</calendarDate></endDate>
+                </rangeOfDates>              
+            </temporalCoverage>
+            <temporalCoverage>
+				<singleDateTime>
+					<calendarDate>2008-06-01</calendarDate>					
+				</singleDateTime>
+            </temporalCoverage>
+            <taxonomicCoverage>
+				<generalTaxonomicCoverage>This is a general taxon coverage</generalTaxonomicCoverage>
+				<taxonomicClassification>
+					<taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Mammalia</taxonRankValue>
+                    <commonName>Mammals</commonName>
+                </taxonomicClassification>
+            </taxonomicCoverage>
+			<taxonomicCoverage>
+				<generalTaxonomicCoverage>This is a second taxon coverage</generalTaxonomicCoverage>
+				<taxonomicClassification>
+					<taxonRankName>Class</taxonRankName>
+                    <taxonRankValue>Aves</taxonRankValue>
+                    <commonName>Birds</commonName>
+				</taxonomicClassification>
+			</taxonomicCoverage>
+        </coverage>
+        
+		<!-- Not mentioned in the GBIF Extended Metadata Doc but seems sensible to keep this element -->
+        <purpose><para>Provide data to the whole world.</para></purpose>
+        
+		<!-- This is mandatory in EML
+			In terms of the IPT, propose this be the same as the and should be the same as the <creator/> 
+			Therefore, it can be ignored in Parsing, but needs to be created in the output rendering
+			-->
+        <contact>
+            <individualName>
+                <givenName>David</givenName>
+                <surName>Remsen</surName>
+            </individualName>
+            <organizationName>GBIF</organizationName>
+            <positionName>ECAT Programme Officer</positionName>
+            <address>
+                <city>Copenhagen</city>
+                <administrativeArea>Sjaelland</administrativeArea>
+                <postalCode>2100</postalCode>
+                <country>dk</country>
+            </address>
+            <phone>+4528261487</phone>
+			<electronicMailAddress>dremsen@gbif.org</electronicMailAddress>
+			<onlineUrl>http://www.gbif.org</onlineUrl>
+        </contact>
+        
+		<!-- Methods used -->
+        <methods>
+            <methodStep>
+                <description>
+                    <para>Took picture, identified</para>
+                </description>
+            </methodStep>
+			<sampling>
+                <studyExtent><description>Daily Obersevation of Pigeons Eating Habits</description></studyExtent>
+                <samplingDescription><para>44KHz is what a CD has... I was more like one a day if I felt like it</para></samplingDescription>
+            </sampling>
+			<qualityControl>
+                <description><para>None</para></description>
+            </qualityControl>      
+            <!-- This step deliberately has no QC-->
+			<methodStep>
+                <description>
+                    <para>Themometer based test</para>
+                </description>
+            </methodStep>
+			<sampling>
+                <studyExtent><description>In the lab</description></studyExtent>
+                <samplingDescription><para>Once a day</para></samplingDescription>
+            </sampling>
+            <!-- This step deliberately has no Sampling or QC -->
+			<methodStep>
+                <description>
+                    <para>Visual based test</para>
+                </description>
+            </methodStep>
+        </methods>
+        
+        
+        <project>
+            <title>Documenting Some Asian Birds and Insects</title>
+            <personnel>
+                <individualName>
+                    <surName>Remsen</surName>
+                </individualName>
+                <role>publisher</role>
+            </personnel>
+            <funding>
+                    <para>My Deep Pockets</para>
+            </funding>
+            <studyAreaDescription>
+                <descriptor name="climate" citableClassificationSystem="true">
+                    <descriptorValue>Turkish Mountains</descriptorValue>
+                </descriptor>
+            </studyAreaDescription>
+            <designDescription>
+                <description>
+                    This was done in Avian Migration patterns
+                </description>
+            </designDescription>
+        </project>
+    </dataset>
+
+    <!-- Seems strange that there is no obvious place for citation in the /eml/dataset
+		 Could be this can find a better home in the future -->
+	<additionalMetadata>
+        <metadata>
+            <citation>
+                Please site me as: Tim Robertson
+            </citation>
+        </metadata>
+    </additionalMetadata>
+
+    <additionalMetadata>
+        <metadata>
+             <metadataLanguage>
+                 en_UK
+             </metadataLanguage>
+         </metadata>
+    </additionalMetadata>	
+		
+    <additionalMetadata>
+        <metadata>
+            <hierarchyLevel>
+                dataset
+            </hierarchyLevel>
+        </metadata>
+    </additionalMetadata>
+    
+	<!-- Note the repetition -->
+    <additionalMetadata>
+        <metadata>
+            <physical:physical>
+                <objectName>INV-GCEM-0305a1_1_1.shp</objectName>
+                <characterEncoding>ASCII</characterEncoding>
+                <dataFormat>
+                    <externallyDefinedFormat>
+                        <formatName>shapefile</formatName>
+                        <formatVersion>2.0</formatVersion>
+                    </externallyDefinedFormat>
+                </dataFormat>
+                <distribution>
+                    <online>
+                        <url function="download">http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&amp;urlTail=accession=INV-GCEM-0305a1&amp;filename=INV-GCEM-0305a1_1_1.TXT</url>
+                    </online>
+                </distribution>
+            </physical:physical>
+        </metadata>
+    </additionalMetadata>
+    <additionalMetadata>
+        <metadata>
+            <physical:physical>
+                <objectName>INV-GCEM-0305a1_1_2.shp</objectName>
+                <characterEncoding>ASCII</characterEncoding>
+                <dataFormat>
+                    <externallyDefinedFormat>
+                        <formatName>shapefile</formatName>
+                        <formatVersion>2.0</formatVersion>
+                    </externallyDefinedFormat>
+                </dataFormat>
+                <distribution>
+                    <online>
+                        <url function="download">http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&amp;urlTail=accession=INV-GCEM-0305a1&amp;filename=INV-GCEM-0305a1_1_2.TXT</url>
+                    </online>
+                </distribution>
+            </physical:physical>
+        </metadata>
+    </additionalMetadata>
+    
+    <additionalMetadata>
+        <metadata>
+            <jgtiCuratorialUnit>
+                <!-- a choice of jgtiUnits or jgtiUnitRange -->
+				<!-- TODO: add a second test case with this one -->
+                <!--jgtiUnits uncertaintyMeasure="50">2000</jgtiUnits-->
+                <jgtiUnitRange>
+                    <beginRange>500</beginRange>
+                    <endRange>600</endRange>
+                </jgtiUnitRange>
+            </jgtiCuratorialUnit>
+        </metadata>
+    </additionalMetadata>
+    
+    <!-- The IPT will provide a controlled vocabulary for this -->
+    <additionalMetadata>
+        <metadata>
+            <specimenPreservationMethod> 
+                alcohol 
+            </specimenPreservationMethod>
+        </metadata>
+    </additionalMetadata>
+    
+    <additionalMetadata>
+        <metadata>
+            <livingTimePeriod> 
+                Jurassic 
+            </livingTimePeriod>
+        </metadata>
+    </additionalMetadata>
+    
+    <additionalMetadata>
+        <metadata>
+            <formationPeriod>
+                During the 70s  
+            </formationPeriod>
+        </metadata>
+    </additionalMetadata>
+    
+	<!-- This combines 3 optional fields in one section, and dictates the format output by the IPT -->
+    <additionalMetadata>
+        <metadata>
+            <collection>
+				<parentCollectionIdentifier>urn:lsid:tim.org:12:1</parentCollectionIdentifier>
+				<collectionIdentifier>urn:lsid:tim.org:12:2</collectionIdentifier>
+				<collectionName>Mammals</collectionName>
+            </collection>
+        </metadata>
+    </additionalMetadata>
+</eml:eml>

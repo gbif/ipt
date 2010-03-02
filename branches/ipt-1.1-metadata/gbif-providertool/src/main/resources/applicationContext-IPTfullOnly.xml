@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
+    default-lazy-init="true"
+    default-init-method="init"
+    default-destroy-method="destroy">
+
+
+    <bean id="textProvider" class="org.gbif.provider.localization.SimpleTextProvider">
+        <property name="baseBundleNames">
+            <set>
+                <value>ApplicationResources</value>
+            </set>
+        </property>
+        <property name="defaultLocale" value="${defaultLocale}"/>
+        <property name="useSimpleProvider" value="${textprovider.simple}"/>
+    </bean>
+    
+
+    <bean id="darwinCoreFactory" class="org.gbif.provider.model.factory.DarwinCoreFactory"/>        
+    
+    <bean id="taxonFactory" class="org.gbif.provider.model.factory.TaxonFactory"/>        
+    
+    <bean id="regionFactory" class="org.gbif.provider.model.factory.RegionFactory"/>        
+
+
+    <!-- IMPORT SOURCE -->
+    <bean id="importSourceFactory" class="org.gbif.provider.datasource.impl.ImportSourceFactoryImpl">
+        <lookup-method name="newFileImportSource" bean="fileImportSource"/>
+        <lookup-method name="newSqlImportSource" bean="sqlImportSource"/>        
+    </bean>
+    <bean id="fileImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.FileImportSource" />
+    <bean id="sqlImportSource" scope="prototype" class="org.gbif.provider.datasource.impl.SqlImportSource" />
+    
+    
+    <!-- TASK EXECUTOR -->
+    
+    <bean id="uploadExecutor" factory-method="newSingleThreadExecutor" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent uploads -->
+        <!--constructor-arg value="1"/-->
+    </bean>
+    <bean id="processingExecutor" factory-method="newFixedThreadPool" class="java.util.concurrent.Executors" >
+        <!-- max number of concurrent processing threads. Default is 2x max concurrent uploads -->
+        <constructor-arg value="2"/>
+    </bean>
+    
+    <!-- All tasks are non-singleton (prototype) -->
+    <bean id="occUploadTask" scope="prototype" class="org.gbif.provider.task.OccUploadTask" />
+    <bean id="checklistUploadTask" scope="prototype" class="org.gbif.provider.task.ChecklistUploadTask" />
+    
+    
+    
+    <bean id="occStatManager" class="org.gbif.provider.service.impl.OccStatManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="darwinCoreManager" class="org.gbif.provider.service.impl.DarwinCoreManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="taxonManager" class="org.gbif.provider.service.impl.TaxonManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="regionManager" class="org.gbif.provider.service.impl.RegionManagerHibernate" parent="abstractManager"/>        
+    
+    <bean id="hqlTester" class="org.gbif.provider.service.impl.HqlTesterHibernate" parent="abstractManager"/>        
+    
+    <bean id="geoserverManager" class="org.gbif.provider.service.impl.GeoserverManagerImpl" />
+    
+</beans>

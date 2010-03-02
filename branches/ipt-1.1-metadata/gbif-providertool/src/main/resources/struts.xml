@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- The actions shared with IPT-lite -->
+    <include file = "struts-common.xml"/>    
+    
+    <!-- TAPIR Actions -->
+    <package name="tapir" namespace="/tapir" extends="default-freemarker">
+        <default-interceptor-ref name="portalStack" />
+        
+        <action name="service" class="org.gbif.provider.webapp.action.tapir.TapirAction">
+            <result name="ping">
+                <param name="location">/WEB-INF/pages/tapir/ping.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="metadata">
+                <param name="location">/WEB-INF/pages/tapir/metadata.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="capabilities">
+                <param name="location">/WEB-INF/pages/tapir/capabilities.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="inventory">
+                <param name="location">/WEB-INF/pages/tapir/inventory.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="search">
+                <param name="location">/WEB-INF/pages/tapir/search.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+            <result name="error">
+                <param name="location">/WEB-INF/pages/tapir/error.ftl</param>                
+                <param name="contentType">text/xml</param>
+            </result>
+        </action>
+    </package>
+
+</struts>

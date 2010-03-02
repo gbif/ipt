@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>gbif-ipt</artifactId>
+    <packaging>war</packaging>
+    <!-- -SNAPSHOT -->
+    <version>1.1-SNAPSHOT</version>
+    <name>GBIF Integrated Publishing Toolkit</name>
+    <description>
+        The GBIF IPT is an open source, Java (TM) based web application that connects and serves three types of biodiversity data: taxon primary occurrence data, taxon checklists and general resource metadata.
+        The data registered in a GBIF IPT instance is connected to the GBIF distributed network and made available for public consultation and use.
+    </description>
+
+    <parent>
+        <groupId>org.gbif</groupId>
+        <artifactId>motherpom</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <developers>
+        <developer>
+            <id>mdoering</id>
+            <name>Markus Döring</name>
+            <email>mdoering@gbif.org</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>aaron</id>
+            <name>Aaron Steele</name>
+            <email>eightysteele@gmail.com</email>
+            <timezone>-8</timezone>
+        </developer>
+        <developer>
+            <id>timrobertson100</id>
+            <name>Tim Robertson</name>
+            <email>trobertson@gbif.org</email>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>saleiva</id>
+            <name>Sergio Alvarez Leiva</name>
+            <email>saleiva@gmail.com</email>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Javier de la Torre</name>
+            <email>jatorre@vizzuality.com</email>
+            <timezone>+1</timezone>
+        </contributor>
+    </contributors>
+    
+    <build>
+        <defaultGoal>jetty:run-war</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <source>1.5</source>
+                    <verbose>true</verbose>
+                    <complianceLevel>1.5</complianceLevel>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>1.6.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>1.6.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1-beta-1</version>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <wtpversion>1.5</wtpversion>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <components>
+                        <component>
+                            <name>hbm2ddl</name>
+                            <implementation>annotationconfiguration</implementation>
+                            <outputDirectory>target</outputDirectory>
+                        </component>
+                    </components>
+                    <componentProperties>
+                        <jdk5>true</jdk5>
+                        <drop>true</drop>
+                        <create>true</create>
+                        <format>true</format>
+                        <export>false</export>
+                        <propertyfile>target/classes/application.properties</propertyfile>
+                        <outputfilename>ipt-ddl.sql</outputfilename>
+                        <namingstrategy>${hibernate.namingStrategy}</namingstrategy>                    
+                    </componentProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>${jdbc.groupId}</groupId>
+                        <artifactId>${jdbc.artifactId}</artifactId>
+                        <version>${jdbc.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.9</version>
+                <configuration>
+		            <port>80</port>
+                    <contextPath>/</contextPath>
+                    <scanIntervalSeconds>3</scanIntervalSeconds>
+                    <scanTargetPatterns>
+                        <scanTargetPattern>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <excludes>
+                                <exclude>**/*.jsp</exclude>
+                            </excludes>
+                            <includes>
+                                <include>**/*.properties</include>
+                                <include>**/*.xml</include>
+                            </includes>
+                        </scanTargetPattern>
+                    </scanTargetPatterns>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>native2ascii-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <configuration>
+                    <dest>target/classes</dest>
+                    <src>src/main/resources</src>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>native2ascii-utf8</id>
+                        <goals>
+                            <goal>native2ascii</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF8</encoding>
+                            <includes>
+                                ApplicationResources_ko.properties,
+                                ApplicationResources_no.properties,
+                                ApplicationResources_tr.properties,
+                                ApplicationResources_zh*.properties
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>native2ascii-8859_1</id>
+                        <goals>
+                            <goal>native2ascii</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>8859_1</encoding>
+                            <includes>
+                                ApplicationResources_de.properties,
+                                ApplicationResources_fr.properties,
+                                ApplicationResources_nl.properties,
+                                ApplicationResources_pt*.properties
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>ApplicationResources_*.properties</exclude>
+                    <exclude>applicationContext-resources.xml</exclude>
+                    <exclude>struts.xml</exclude>
+                </excludes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>applicationContext-resources.xml</include>
+                    <include>struts.xml</include>
+                    <include>ApplicationResources_de.properties</include>
+                    <include>ApplicationResources_es.properties</include>
+                    <include>ApplicationResources_fr.properties</include>
+                    <include>ApplicationResources_kr.properties</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/main/webapp/data</directory>
+                <targetPath>test-webapp/data</targetPath>
+                <filtering>false</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/main/webapp/WEB-INF/pages</directory>
+                <targetPath>test-webapp/WEB-INF/pages</targetPath>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <id>gbif</id>
+            <url>http://tools.gbif.org/maven/repository/</url>
+        </repository>     
+        <repository>
+            <id>repository.jboss.org</id>
+            <name>JBoss Maven Repository</name>
+            <url>http://repository.jboss.org/maven2</url>
+            <layout>default</layout>
+        </repository>
+        <!-- geotools -->
+        <repository>
+            <id>geotools</id>
+            <name>Geotools repository</name>
+            <url>http://maven.geotools.fr/repository</url>
+        </repository>
+    </repositories>
+
+
+    
+    
+    <dependencies>
+        
+<dependency>
+    <groupId>commons-beanutils</groupId>
+    <artifactId>commons-beanutils</artifactId>
+    <version>1.8.0</version>
+</dependency>
+<dependency>
+    <groupId>commons-collections</groupId>
+    <artifactId>commons-collections</artifactId>
+    <version>3.2</version>
+</dependency>
+<dependency>
+    <groupId>commons-dbcp</groupId>
+    <artifactId>commons-dbcp</artifactId>
+    <version>1.2.1</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>xercesImpl</artifactId>
+            <groupId>xerces</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>1.3.2</version>
+</dependency>
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>1.2.1</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>commons-io</artifactId>
+            <groupId>commons-io</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>commons-httpclient</groupId>
+    <artifactId>commons-httpclient</artifactId>
+    <version>3.1</version>
+</dependency>        
+<dependency>
+    <groupId>commons-lang</groupId>
+    <artifactId>commons-lang</artifactId>
+    <version>2.3</version>
+</dependency>
+<dependency>
+    <groupId>commons-digester</groupId>
+    <artifactId>commons-digester</artifactId>
+    <version>1.8.1</version>
+</dependency>
+<dependency>
+    <groupId>displaytag</groupId>
+    <artifactId>displaytag</artifactId>
+    <version>${displaytag.version}</version>
+</dependency>
+<dependency>
+    <groupId>displaytag</groupId>
+    <artifactId>displaytag-export-poi</artifactId>
+    <version>${displaytag.version}</version>
+</dependency>
+<dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>mail</artifactId>
+    <version>${javamail.version}</version>
+</dependency>
+<dependency>
+    <groupId>javax.persistence</groupId>
+    <artifactId>persistence-api</artifactId>
+    <version>${jpa.version}</version>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jsp-api</artifactId>
+    <version>${jsp.version}</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>${servlet.version}</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>jstl</artifactId>
+    <version>${jstl.version}</version>
+</dependency>
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>${junit.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+<dependency>
+    <groupId>net.sf.ehcache</groupId>
+    <artifactId>ehcache</artifactId>
+    <version>${ehcache.version}</version>
+</dependency>
+<dependency>
+    <groupId>opensymphony</groupId>
+    <artifactId>oscache</artifactId>
+    <version>${oscache.version}</version>
+</dependency>
+<dependency>
+    <groupId>opensymphony</groupId>
+    <artifactId>sitemesh</artifactId>
+    <version>${sitemesh.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-core</artifactId>
+    <version>${struts.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-codebehind-plugin</artifactId>
+    <version>${struts.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.struts</groupId>
+    <artifactId>struts2-spring-plugin</artifactId>
+    <version>${struts.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring-beans</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-core</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-context</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>${aspectj.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>${aspectj.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate</artifactId>
+    <version>${hibernate.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>ehcache</artifactId>
+            <groupId>net.sf.ehcache</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>commons-collections</artifactId>
+            <groupId>commons-collections</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-annotations</artifactId>
+    <version>${hibernate.annotations.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-commons-annotations</artifactId>
+    <version>${hibernate.annotations.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>3.0.0.GA</version>
+</dependency>
+        
+<dependency>
+    <groupId>org.jmock</groupId>
+    <artifactId>jmock</artifactId>
+    <version>${jmock.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.jmock</groupId>
+    <artifactId>jmock-junit4</artifactId>
+    <version>${jmock.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>${spring.version}</version>
+    <optional>true</optional>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-orm</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aop</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-aspects</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core-tiger</artifactId>
+    <version>${spring.security.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring-core</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-support</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-taglibs</artifactId>
+    <version>${spring.security.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+        <exclusion>
+            <artifactId>spring-support</artifactId>
+            <groupId>org.springframework</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.subethamail</groupId>
+    <artifactId>subethasmtp-wiser</artifactId>
+    <version>${wiser.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.tuckey</groupId>
+    <artifactId>urlrewritefilter</artifactId>
+    <version>${urlrewrite.version}</version>
+    <exclusions>
+        <exclusion>
+            <artifactId>ant</artifactId>
+            <groupId>ant</groupId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>taglibs</groupId>
+    <artifactId>standard</artifactId>
+    <version>${jstl.version}</version>
+</dependency>
+<dependency>
+    <groupId>velocity</groupId>
+    <artifactId>velocity</artifactId>
+    <version>${velocity.version}</version>
+</dependency>
+
+<!-- other -->
+        <dependency>
+            <groupId>${jdbc.groupId}</groupId>
+            <artifactId>${jdbc.artifactId}</artifactId>
+            <version>${jdbc.version}</version>
+        </dependency>
+        <!-- Dependencies with scope=provided aren't picked up from dependent JARs-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>${jsp.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.subethamail</groupId>
+            <artifactId>subethasmtp-wiser</artifactId>
+            <version>${wiser.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>${xmlunit.version}</version>
+            <scope>test</scope>
+        </dependency>
+ 
+        <dependency>
+            <groupId>com.googlecode</groupId>
+            <artifactId>jsonplugin</artifactId>
+            <version>0.30</version>
+            <!-- uses struts2-core 2.06 instead of newer 2.0.11.1 one -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.struts</groupId>
+                    <artifactId>struts2-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode</groupId>
+            <artifactId>gchartjava</artifactId>
+            <version>0.5.1</version>
+            <type>jar</type>
+        </dependency>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- JDBC driver to support a variety of external datasources -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.2-504.jdbc3</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>ojdbc</groupId>
+            <artifactId>ojdbc</artifactId>
+            <version>14</version>
+        </dependency> 
+        
+        <!-- JAI is used for logo processing -->
+        <dependency>
+            <groupId>javax.media</groupId>
+            <artifactId>jai-core</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.media</groupId>
+            <artifactId>jai-codec</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+        
+        <!-- Geotools -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-referencing</artifactId>
+            <version>${gt.version}</version>
+        </dependency>
+        
+        <!-- XStream -->
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.3</version>
+        </dependency>
+		
+		<!-- Lucene -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+        
+        <dependency>
+        	<groupId>com.google.collections</groupId>
+        	<artifactId>google-collections</artifactId>
+        	<version>1.0</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
+    </dependencies>
+    
+
+    <profiles>
+        <!-- ================= Production Settings Profile ================= -->
+        <!-- Use "-P prod" when you want to use the settings in this profile -->
+        <!-- =============================================================== -->
+        <profile>
+            <id>markus</id>
+            <properties>
+                <ipt.datadir>/Users/markus/Desktop/iptdata</ipt.datadir>
+                <ipt.mail.from>IPT &lt;m.doering@mac.com&gt;</ipt.mail.from>
+                <ipt.dev>true</ipt.dev>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>gbif</id>
+            <properties>
+                <ipt.datadir>/usr/share/tomcat5/ipt-data/current</ipt.datadir>
+                <ipt.mail.from>IPT-GBIFS &lt;support@gbif.org&gt;</ipt.mail.from>
+                <ipt.dev>false</ipt.dev>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>bgbm</id>
+            <properties>
+                <ipt.datadir>/usr/local/jakarta-tomcat/ipt_data</ipt.datadir>
+                <ipt.mail.from>IPT-BGBM &lt;ipt@bgbm.org&gt;</ipt.mail.from>
+                <ipt.dev>false</ipt.dev>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <ipt.registry.url>http://gbrds.gbif.org/registry</ipt.registry.url>
+                <ipt.dev>false</ipt.dev>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+                <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>                
+                <ipt.dev>false</ipt.dev>
+            </properties>
+        </profile>        
+        
+    </profiles>
+
+    <properties>
+        <googlecode.project>gbif-providertoolkit</googlecode.project>
+        
+        <!-- Framework dependency versions -->
+        <spring.version>2.5.5</spring.version>
+        <spring.security.version>2.0.1</spring.security.version>
+        <struts.version>2.0.14</struts.version>
+        <log4j.version>1.2.13</log4j.version>
+        <oscache.version>2.3</oscache.version>
+        <gt.version>2.5.1</gt.version>
+        <aspectj.version>1.6.0</aspectj.version>
+        <ehcache.version>1.4.1</ehcache.version>
+        <hibernate.annotations.version>3.3.0.ga</hibernate.annotations.version>
+        <hibernate.version>3.2.6.ga</hibernate.version>
+        <jpa.version>1.0</jpa.version>
+        <javamail.version>1.4</javamail.version>
+        <sitemesh.version>2.2.1</sitemesh.version>
+        <urlrewrite.version>3.0.4</urlrewrite.version>
+        <jstl.version>1.1.2</jstl.version>
+        <velocity.version>1.4</velocity.version>
+        <displaytag.version>1.2</displaytag.version>
+		<lucene.version>2.4.0</lucene.version>
+        
+        <!-- Testing dependency versions -->
+        <jmock.version>2.4.0</jmock.version>
+        <jsp.version>2.0</jsp.version>
+        <junit.version>4.4</junit.version>
+        <servlet.version>2.4</servlet.version>
+        <wiser.version>1.2</wiser.version>
+		<xmlunit.version>1.3</xmlunit.version>
+
+        <!-- Cargo settings -->
+        <cargo.container>tomcat5x</cargo.container>
+        <cargo.container.home>${env.CATALINA_HOME}</cargo.container.home>
+        <cargo.container.url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.14/bin/apache-tomcat-6.0.14.zip</cargo.container.url>
+        <cargo.host>localhost</cargo.host>
+        <cargo.port>8081</cargo.port>
+        <cargo.wait>false</cargo.wait>
+        
+        <!-- Database settings -->
+        <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
+        <jdbc.groupId>com.h2database</jdbc.groupId>
+        <jdbc.artifactId>h2</jdbc.artifactId>
+        <jdbc.version>1.1.104</jdbc.version>
+        <jdbc.driverClassName>org.h2.Driver</jdbc.driverClassName>
+        <jdbc.username>sa</jdbc.username>
+        <jdbc.password></jdbc.password>
+        <hibernate.namingStrategy>org.gbif.provider.model.hibernate.GbifNamingStrategy</hibernate.namingStrategy>
+        
+        <!-- IPT settings -->
+        <copyright.year>2010</copyright.year>
+        <ipt.registry.url>http://gbrds.gbif.org/registrydev</ipt.registry.url>
+        <ipt.datadir></ipt.datadir>
+        <ipt.mail.from>IPT &lt;ipt@gbif.org&gt;</ipt.mail.from>
+        <ipt.dev>true</ipt.dev>
+        
+        <!-- Maven build settings -->
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
+</project>
