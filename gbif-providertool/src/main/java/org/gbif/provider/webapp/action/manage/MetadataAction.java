@@ -21,15 +21,11 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ResourceType;
+import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
-
-import com.opensymphony.xwork2.Preparable;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,13 +43,23 @@ import java.util.Queue;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Preparable;
+
 /**
  * TODO: Documentation.
  * 
  */
-public class MetadataAction extends BaseMetadataResourceAction implements Preparable, ServletRequestAware {
+public class MetadataAction extends BaseMetadataResourceAction implements
+    Preparable, ServletRequestAware {
   private static final String OTHER = "other";
   protected HttpServletRequest request;
+
+  @Autowired
+  private RegistryManager registryManager;
 
   @Autowired
   protected ResourceFactory resourceFactory;
@@ -125,6 +131,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     return SUCCESS;
   }
 
+  public AppConfig getConfig() {
+    return this.cfg;
+  }
+
   public File getFile() {
     return file;
   }
@@ -149,6 +159,18 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     return OTHER;
   }
 
+  public String getRegistryNodeUrl() {
+    return AppConfig.getRegistryNodeUrl();
+  }
+
+  public String getRegistryOrgTitle() {
+    return cfg.getOrg().getTitle();
+  }
+
+  public String getRegistryOrgUrl() {
+    return AppConfig.getRegistryOrgUrl();
+  }
+
   public List<?> getResources() {
     return resources;
   }
@@ -171,7 +193,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
   @Override
   public void prepare() {
     super.prepare();
-    resourceTypeMap = translateI18nMap(new HashMap<String, String>(ResourceType.htmlSelectMap), true);
+    resourceTypeMap = translateI18nMap(new HashMap<String, String>(
+        ResourceType.htmlSelectMap), true);
     if (resource == null && resourceType != null) {
       // create new empty resource
       if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
@@ -237,6 +260,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     }
 
     boolean isNew = (resource.getId() == null);
+    validateResource();
     resource.setDirty();
     resource = resourceManager.save(resource);
     String key = (isNew) ? "resource.added" : "resource.updated";
@@ -346,5 +370,12 @@ public class MetadataAction extends BaseMetadataResourceAction implements Prepar
     log.info(String.format("Logo %s uploaded and resized for resource %s",
         logoFile.getAbsolutePath(), resourceId));
     return true;
+  }
+
+  private void validateResource() {
+    if (!registryManager.testLogin()) {
+      saveMessage(getText("config.check.orgLogin"));
+      resource.setOrgPassword(null);
+    }
   }
 }
