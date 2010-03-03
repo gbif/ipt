@@ -97,11 +97,6 @@
         <url>http://repository.jboss.org/maven2</url>
         <layout>default</layout>
       </repository>
-        <repository>
-            <id>appfuse</id>
-            <url>http://static.appfuse.org/repository</url>
-        </repository>
-        
     </repositories>
 
     <distributionManagement> 
