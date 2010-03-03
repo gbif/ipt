@@ -22,13 +22,6 @@ import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.util.AppConfig;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.validator.NotNull;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +37,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.validator.NotNull;
 
 /**
  * A generic resource describing any digital, online and non digital available
@@ -69,6 +69,9 @@ public class Resource implements BaseObject, Comparable<Resource>,
   protected Date created = new Date();
   protected User modifier;
   protected Date modified;
+  protected String orgPassword;
+  protected String orgTitle;
+  protected String orgUuid;
 
   public int compareTo(Resource object) {
     if (this.getTitle() != null) {
@@ -160,6 +163,21 @@ public class Resource implements BaseObject, Comparable<Resource>,
     return modifier;
   }
 
+  @Column(length = 128)
+  public String getOrgPassword() {
+    return orgPassword;
+  }
+
+  @Column(length = 128)
+  public String getOrgTitle() {
+    return orgTitle;
+  }
+
+  @Column(length = 128)
+  public String getOrgUuid() {
+    return orgUuid;
+  }
+
   @Transient
   public String getRegistryUrl() {
     if (StringUtils.trimToNull(getUddiID()) != null) {
@@ -219,6 +237,11 @@ public class Resource implements BaseObject, Comparable<Resource>,
       return true;
     }
     return getStatus().compareTo(PublicationStatus.published) < 0;
+  }
+
+  @Transient
+  public boolean isOrgRegistered() {
+    return orgUuid != null && orgTitle != null && orgPassword != null;
   }
 
   @Transient
@@ -293,6 +316,18 @@ public class Resource implements BaseObject, Comparable<Resource>,
 
   public void setModifier(User modifier) {
     this.modifier = modifier;
+  }
+
+  public void setOrgPassword(String orgPassword) {
+    this.orgPassword = orgPassword;
+  }
+
+  public void setOrgTitle(String orgTitle) {
+    this.orgTitle = orgTitle;
+  }
+
+  public void setOrgUuid(String orgUuid) {
+    this.orgUuid = orgUuid;
   }
 
   public void setServices(Map<String, String> services) {
