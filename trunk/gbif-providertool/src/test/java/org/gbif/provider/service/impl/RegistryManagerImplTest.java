@@ -44,6 +44,7 @@ public class RegistryManagerImplTest extends ContextAwareTestBase {
     try {
       org = registryManager.registerOrganization(org);
       assertTrue(registryManager.isOrganizationRegistered(org));
+      assertTrue(!registryManager.isOrganizationRegistered(Organization.builder().build()));
       org.setDescription("Example description");
       registryManager.updateOrganization(org);
       System.out.println(String.format("Success=%s", org));
