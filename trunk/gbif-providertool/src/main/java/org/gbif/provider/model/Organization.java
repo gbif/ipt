@@ -59,6 +59,11 @@ public class Organization {
       return this;
     }
 
+    public Builder descriptionLanguage(String val) {
+      descriptionLanguage = val;
+      return this;
+    }
+
     public Builder homepageUrl(String val) {
       homepageUrl = val;
       return this;
@@ -124,7 +129,6 @@ public class Organization {
       return this;
     }
   }
-
   private static class PrimaryContact {
     private String type;
     private String name;

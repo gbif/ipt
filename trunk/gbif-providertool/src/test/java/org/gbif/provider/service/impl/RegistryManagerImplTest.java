@@ -15,6 +15,8 @@
  */
 package org.gbif.provider.service.impl;
 
+import org.gbif.provider.model.Organization;
+import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.ContextAwareTestBase;
 
@@ -22,16 +24,32 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * TODO: Documentation.
+ * This class can be used for unit testing {@link RegistryManagerImpl}.
  * 
  */
 public class RegistryManagerImplTest extends ContextAwareTestBase {
+
   @Autowired
   private RegistryManager registryManager;
 
+  /**
+   * Tests registering an {@link Organization} and then verifying it's
+   * credentials.
+   */
   @Test
-  public void testLogin() {
-    boolean result = registryManager.testLogin();
-    assertTrue(result);
+  public void testRegisterOrganization() {
+    Organization org = Organization.builder().name(
+        "IPT Test Organization Version 3.0").nodeKey("sp2000").primaryContactEmail(
+        "eightysteele@gmail.com").build();
+    try {
+      org = registryManager.registerOrganization(org);
+      assertTrue(registryManager.isOrganizationRegistered(org));
+      org.setDescription("Example description");
+      registryManager.updateOrganization(org);
+      System.out.println(String.format("Success=%s", org));
+    } catch (RegistryException e) {
+      System.out.println(String.format("Error=%s, Org=%s", e.getMessage(), org));
+      fail();
+    }
   }
 }

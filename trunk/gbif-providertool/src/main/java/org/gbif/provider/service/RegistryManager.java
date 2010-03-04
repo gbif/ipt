@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.service;
 
+import org.gbif.provider.model.Organization;
 import org.gbif.provider.model.Resource;
 
 import java.util.Collection;
@@ -25,6 +26,14 @@ import java.util.Collection;
  */
 public interface RegistryManager {
   void deleteResource(Resource resource) throws RegistryException;
+
+  /**
+   * Verifies {@link Organization} credentials against the GBIF Registry.
+   * 
+   * @param org the organization
+   * @return true if the organization credentials are valid, false otherwise
+   */
+  boolean isOrganizationRegistered(Organization org);
 
   /**
    * Calls the central registry to receive a list of the Extensions that are
@@ -44,7 +53,28 @@ public interface RegistryManager {
 
   String registerIPT() throws RegistryException;
 
-  String registerOrg() throws RegistryException;
+  /**
+   * Registers the {@link Organization} associated with the IPT instance with
+   * the GBIF Registry.
+   * 
+   * @see http://goo.gl/H17q
+   * 
+   * @return the registered organization
+   * @throws RegistryException
+   */
+  Organization registerIptInstanceOrganization() throws RegistryException;
+
+  /**
+   * Registers an {@link Organization} with the GBIF Registry.
+   * 
+   * @see http://goo.gl/H17q
+   * 
+   * @param organization the organization to register
+   * @return the registered organization
+   * @throws RegistryException
+   */
+  Organization registerOrganization(Organization organization)
+      throws RegistryException;
 
   String registerResource(Resource resource) throws RegistryException;
 
@@ -52,7 +82,24 @@ public interface RegistryManager {
 
   void updateIPT() throws RegistryException;
 
-  void updateOrg() throws RegistryException;
+  /**
+   * Updates the organization associated with the IPT instance with the GBIF
+   * Registry.
+   * 
+   * @return the updated IPT organization
+   * @throws RegistryException
+   */
+  Organization updateIptInstanceOrganization() throws RegistryException;
+
+  /**
+   * Updates an organization with the GBIF Registry.
+   * 
+   * @param organization the organization to update.
+   * @return the updated organization
+   * @throws RegistryException
+   */
+  Organization updateOrganization(Organization organization)
+      throws RegistryException;
 
   void updateResource(Resource resource) throws RegistryException;
 }
