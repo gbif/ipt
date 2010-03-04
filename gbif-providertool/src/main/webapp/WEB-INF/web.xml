@@ -11,7 +11,6 @@
         <param-value>
             classpath:/applicationContext.xml
             classpath:/applicationContext-filtered.xml
-            classpath:/applicationContext-IPTfullOnly.xml
             /WEB-INF/security.xml
         </param-value>
     </context-param>
