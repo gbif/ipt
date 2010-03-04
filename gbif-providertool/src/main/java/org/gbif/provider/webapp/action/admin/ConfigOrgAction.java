@@ -59,7 +59,7 @@ public class ConfigOrgAction extends BasePostAction {
     } else {
       // register new organisation
       try {
-        registryManager.registerOrg();
+        registryManager.registerIptInstanceOrganization();
         saveMessage(getText("register.org.success"));
         this.cfg.save();
       } catch (RegistryException e) {
@@ -80,7 +80,7 @@ public class ConfigOrgAction extends BasePostAction {
     // check if already registered. If yes, also update GBIF registry
     if (cfg.isOrgRegistered()) {
       try {
-        registryManager.updateOrg();
+        registryManager.updateIptInstanceOrganization();
         saveMessage(getText("registry.updated"));
       } catch (RegistryException e) {
         saveMessage(getText("registry.problem"));
@@ -99,20 +99,25 @@ public class ConfigOrgAction extends BasePostAction {
   }
 
   public void setOrganisationKey(String organisationKey) {
-    this.organisationKey = StringUtils.trimToNull(organisationKey);
+    this.organisationKey = !check() ? null
+        : StringUtils.trimToNull(organisationKey);
   }
 
-  private void check() {
-    // tests
+  private boolean check() {
+    boolean isValid = true;
     if (!cfg.isOrgRegistered()) {
       saveMessage(getText("config.check.orgRegistered"));
+      isValid = false;
     } else if (StringUtils.trimToNull(cfg.getOrgPassword()) == null) {
       saveMessage(getText("config.check.orgPassword"));
+      isValid = false;
     } else {
       if (!registryManager.testLogin()) {
         // authorization error
         saveMessage(getText("config.check.orgLogin"));
+        isValid = false;
       }
     }
+    return isValid;
   }
 }
