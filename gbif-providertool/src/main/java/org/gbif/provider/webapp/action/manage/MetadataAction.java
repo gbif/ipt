@@ -17,6 +17,7 @@ package org.gbif.provider.webapp.action.manage;
 
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
+import org.gbif.provider.model.Organization;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
@@ -373,7 +374,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   }
 
   private void validateResource() {
-    if (!registryManager.testLogin()) {
+    Organization org = Organization.builder().password(
+        resource.getOrgPassword()).organizationKey(resource.getOrgUuid()).build();
+    if (!registryManager.isOrganizationRegistered(org)) {
       saveMessage(getText("config.check.orgLogin"));
       resource.setOrgPassword(null);
     }
