@@ -20,20 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.apache.commons.lang.StringUtils.trimToNull;
 
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Organization;
-import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ResourceMetadata;
-import org.gbif.provider.model.voc.ContactType;
-import org.gbif.provider.model.voc.ServiceType;
-import org.gbif.provider.model.xml.NewRegistryEntryHandler;
-import org.gbif.provider.model.xml.ResourceMetadataHandler;
-import org.gbif.provider.service.RegistryException;
-import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.util.AppConfig;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -47,6 +33,19 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.gbif.provider.model.ChecklistResource;
+import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Organization;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.ResourceMetadata;
+import org.gbif.provider.model.voc.ContactType;
+import org.gbif.provider.model.voc.ServiceType;
+import org.gbif.provider.model.xml.NewRegistryEntryHandler;
+import org.gbif.provider.model.xml.ResourceMetadataHandler;
+import org.gbif.provider.service.RegistryException;
+import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.util.AppConfig;
 import org.xml.sax.SAXException;
 
 import com.googlecode.jsonplugin.JSONUtil;
@@ -114,7 +113,9 @@ public class RegistryManagerImpl extends HttpBaseManager implements
 
   public boolean isOrganizationRegistered(Organization org) {
     checkNotNull(org, "Organization was null");
-    if (org.getOrganizationKey() == null || org.getPassword() == null) {
+    String key = org.getOrganizationKey();
+    String password = org.getPassword();
+    if (key == null || key.isEmpty() || password == null || password.isEmpty()) {
       return false;
     }
     NameValuePair[] params = {new NameValuePair("op", "login")};
