@@ -110,7 +110,6 @@
         <#if org.nodeKey??>
           $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}/${org.nodeKey}.json'/>", function(data){
             $("#orgNodeName").val(data.nodeName);
-            alert(data.nodeName);
           });
         </#if>
       </#if>
@@ -160,7 +159,7 @@
             <@s.textfield key="org.organizationKey" value="${org.organizationKey!}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
-            <@s.textfield id="orgNodeName" key="foo" required="true" cssClass="text medium external required"/>
+            <@s.textfield id="orgNodeName" key="org.nodeName" required="true" cssClass="text medium external required"/>
             <span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
            <@s.hidden id="orgNodeKey" key="org.nodeKey" cssClass="external"/>
         </div>
