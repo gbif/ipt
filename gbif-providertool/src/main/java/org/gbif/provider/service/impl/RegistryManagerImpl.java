@@ -114,6 +114,9 @@ public class RegistryManagerImpl extends HttpBaseManager implements
 
   public boolean isOrganizationRegistered(Organization org) {
     checkNotNull(org, "Organization was null");
+    if (org.getOrganizationKey() == null || org.getPassword() == null) {
+      return false;
+    }
     NameValuePair[] params = {new NameValuePair("op", "login")};
     String registryUrl = AppConfig.getRegistryOrgUrl();
     String url = String.format("%s/%s", registryUrl, org.getOrganizationKey());
@@ -470,7 +473,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
    * @param org void
    */
   private void setCredentials(Organization org) {
-    String registryServiceUrl = cfg.getRegistryOrgUrl();
+    String registryServiceUrl = AppConfig.getRegistryOrgUrl();
     URI uri;
     try {
       uri = new URI(registryServiceUrl);
