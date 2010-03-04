@@ -187,7 +187,7 @@
         <a id="btnNew" href="#">Clear form</a> &nbsp;&nbsp;&nbsp;
       </#if>
       -->
-       <a id="btnResend" target="_blank" href="#">Resend Password</a>-->
+       <a id="btnResend" target="_blank" href="#">Resend Password</a>
     </div>
   </fieldset>
 
