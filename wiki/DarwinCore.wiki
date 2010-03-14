@@ -22,12 +22,11 @@ e.g. the ISO 2 letter country codes for the `dwc:countryCode` term.
 
 == Patterns ==
 === ID terms ===
-DwC provides a number of terms to assign identifiers to a record. 
-These can be used to define an identifier (e.g. `occurrenceID`) but also to refer to an identifier defined somewhere else. 
-For example `higherTaxonID` is used to refer to the `taxonID` of the parent taxon of the classification while `taxonID` itself is used to define a taxon in a checklist.
-On the other hand `taxonID` used within an occurrence dataset generally points to a taxon defined somewhere else, such as a checklist datasets.
+DwC provides many of terms for identifiers. Some can be used to define a record (such as occurrenceID for an Occurrence record; taxonID for a Taxon record), while others (such as higherGeographyID) refer to an identifier for information stored outside the record.
+For example `namePublishedInID` is used to refer to an identifier (perhaps a DOI or other resolvable identifier) for the publication in which a scientificName was originally established.
+Note that `taxonID` used within an occurrence dataset would function as a pointer to a taxon defined somewhere else, such as in a checklist dataset, while `taxonID` within a Taxon record would act as the identifier for that record.
 
-Most ID terms have a corresponding full text term, e.g. `acceptedTaxonID` and `acceptedTaxon`.
+Most ID terms have a corresponding full text term, e.g. `acceptedNameUsageID` and `acceptedNameUsage`.
 These serve two purposes: 
 
  # In the absence of an identifier they can be used to refer to another record, in this case the accepted/valid taxon.
