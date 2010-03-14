@@ -35,12 +35,12 @@ These serve two purposes:
 It therefore makes sense to provide both if possible.
 
 === Denormalised Hierarchies ===
-The geography and taxonomy can be expressed as a flexible hierarchy of places or taxa through the terms `higherTaxon(ID)` and `higherGeography(ID)`.
+The geography and taxonomy can be expressed as a flexible hierarchy of places or taxa through the terms `higherParentNameUsage(ID)` and `higherGeography(ID)`.
 In addition to this _adjencency list_ , the most popular ranks can be published as a denormalised hierarchy for each record, effectively repeating
 this information across many records. But it does provide a quick, short and human readble classification for each record in isolation of the entire dataset.
 
  * Taxonomic denormalised classification: `kingdom`, `phylum`, `class`, `order`, `family`, `genus`, `subgenus`
- * Geographic denormalised classification:  `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`
+ * Geographic denormalised classification:  `continent`, `waterBody`, `islandGroup`, `island`, `country` / `countryCode`, `stateProvince`, `county`, `municipality`
 
 As with full text ID terms above this introduces the possibility of _data integrity problems_, as the ID term might resolve into something different
 than the denormalised hierarchy. In this case the IPT follows the recommendation of the following precedence of terms for resolving the hierarchy:
