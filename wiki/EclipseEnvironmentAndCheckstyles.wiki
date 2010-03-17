@@ -61,7 +61,7 @@ Third, within a category/visibility combination, members should be sorted alphab
 === Compiler settings ===
 {{{
 Window->Preferences->Java->Compiler
-# Set the compiler compliance level to 1.5.
+# Set the compiler compliance level to 1.6.
 }}}
 
 === Compiler errors & warnings ===
