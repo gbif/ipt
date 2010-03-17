@@ -73,19 +73,18 @@ The following warnings are suggested:
  * Code Style - Method with a constructor name
  * Potential programming problems:
   # Assignment has no effect
-  # Accidental boolean assignment
+  # Possible accidental boolean assignment
   # 'finally' does not complete normally
   # Using a char array in string concatentation
   # Hidden catch block
   # Inexact type match for vararg arguments
  * Name shadowing and conflicts - all except "Local variable" hiding
- *Deprecated and restricted API - all
+ * Deprecated and restricted API - all
  * Unnecessary code - all except "Unnecessary 'else' statement"
  * Generic types - all except "Generic type parameter declared with final type bound"
-
-Annotations:
- * Annotation is used as super interface
- * Enable @SuppressWarnings annotations
+ * Annotations:
+  # Annotation is used as super interface
+  # Enable @SuppressWarnings annotations
 
 === Checkstyle ===
 
