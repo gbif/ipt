@@ -6,37 +6,37 @@ These instructions describe how to configure the Eclipse environment for IPT dev
 
 === Required IPT variables ===
 {{{
-Window->Preferences->General->Workspace->Linked Resources
+Eclipse (Window)->Preferences->General->Workspace->Linked Resources
 # Create a variable named "M2_REPOS" pointing to your local Maven repository (i.e. ~/.m2/repository).
 }}}
 
 === Spelling ===
 {{{
-Window->Preferences->General->Editors->Text Editors->Spelling
+Eclipse (Window)->Preferences->General->Editors->Text Editors->Spelling
 # Enable spell checking and use "eclipse/settings/english.dictionary".
 }}}
 
 === Output Filtering ===
 {{{
-Window->Preferences->Java->Compiler->Building
+Eclipse (Window)->Preferences->Java->Compiler->Building
 # Make sure "Filtered Resources" includes ".svn/"
 }}}
 
 === Code style/formatting ===
 {{{
-Window->Preferences->Java->Code Style->Formatter->Import
+Eclipse (Window)->Preferences->Java->Code Style->Formatter->Import
 # Use eclipse/settings/code-style/ipt-format.xml
 }}}
 
 === Import organization ===
 {{{
-Window->Preferences->Java->Code Style->Organize Imports->Import
+Eclipse (Window)->Preferences->Java->Code Style->Organize Imports->Import
 # Use eclipse/settings/code-style/ipt.importorder
 }}}
 
 === Member sort order ===
 {{{
-Window->Preferences->Java->Appearance->Members Sort Order
+Eclipse (Window)->Preferences->Java->Appearance->Members Sort Order
 # There is no import here, so make your settings match eclipse/settings/code-style/ipt-sort-order.png
 }}}
 
@@ -60,13 +60,13 @@ Third, within a category/visibility combination, members should be sorted alphab
  
 === Compiler settings ===
 {{{
-Window->Preferences->Java->Compiler
+Eclipse (Window)->Preferences->Java->Compiler
 # Set the compiler compliance level to 1.6.
 }}}
 
 === Compiler errors & warnings ===
 {{{
-Window->Preferences->Java->Compiler->Errors/Warnings
+Eclipse (Window)->Preferences->Java->Compiler->Errors/Warnings
 }}}
 
 The following warnings are suggested:
@@ -95,7 +95,7 @@ Checkstyle is an Eclipse plugin that's used to enforce good programming style.
 
 Import IPT Checks:
 {{{
-Window->Preferences->Checkstyle->New...
+Eclipse (Window)->Preferences->Checkstyle->New...
 }}}
  # Set the Type to "External Configuration File"
  # Set the Name to "IPT Checks" (important)
