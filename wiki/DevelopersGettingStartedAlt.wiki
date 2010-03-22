@@ -3,19 +3,22 @@
 Getting started as a developer
 
 # Prerequisites:
-  - install Java SDK 1.6+
-  - install apache maven
-  - install svn client
+  * install Java SDK 1.6+
+  * install apache maven
+  * install svn client
 
 
 http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/motherpom
 
 # Get the code
-- create a project folder
-- in a terminal:
-  - cd into the project folder
-  - $ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom motherpom
-  - $ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool gbif-providertool
+  * create a project folder
+  * in a terminal:
+    - cd into the project folder
+
+    - $ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/motherpom motherpom
+
+    - $ svn checkout http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-providertool gbif-providertool
+
 
 # build the projects
 cd motherpom/
