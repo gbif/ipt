@@ -3,9 +3,9 @@
 Getting started as a developer
 
 # Prerequisites:
-- install Java SDK 1.6+
-- install apache maven
-- install svn client
+  - install Java SDK 1.6+
+  - install apache maven
+  - install svn client
 
 
 http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/motherpom
