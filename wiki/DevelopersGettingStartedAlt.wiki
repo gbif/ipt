@@ -7,6 +7,7 @@ Getting started as a developer
 - install apache maven
 - install svn client
 
+
 http://code.google.com/p/gbif-providertoolkit/source/browse/#svn/trunk/motherpom
 
 # Get the code
@@ -44,5 +45,3 @@ mvn org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse
 
 # open eclipse and do an "import existing project into the workspace" 
 # select the project folder as the root and it should show the gbif-providertool
-
-
