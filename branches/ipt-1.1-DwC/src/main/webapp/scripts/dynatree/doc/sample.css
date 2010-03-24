@@ -1,0 +1,34 @@
+body.example
+{
+	margin: 15px;
+	font-family: sans-serif;
+}
+
+body.example h1
+{
+	font-size: 1.2em;
+}
+body.example h2
+{
+	font-size: 1em;
+}
+
+body.example p.description,
+body.example p.sample-links
+{
+/*	border: thin solid gray; */
+	background-color: #d0d0f0;
+	padding: 5px;
+	font-size: small;
+}
+
+p.sample-links a,
+p.sample-links a:visited
+{
+	color: navy;
+	text-decoration: none;
+}
+p.sample-links a:hover
+{
+	text-decoration: underline;
+}
