@@ -105,14 +105,14 @@
                 TO DEPLOY THE JAR TO THE REPOSITORY PLEASE USE: mvn deploy
             -->
             <id>gbif</id> 
-            <url>sftp://kiwaia.gbif.org/var/www/html/tools/maven/repository/</url> 
+            <url>sftp://b1g3.gbif.org/var/www/html/tools/maven/repository/</url> 
         </repository> 
         <site>
             <!-- 
                 TO CREATE & DEPLOY THE WEBSITE PLEASE USE: mvn site-deploy
             -->
             <id>gbif</id>
-            <url>sftp://kiwaia.gbif.org/var/www/html/tools/maven/sites/</url>
+            <url>sftp://b1g3.gbif.org/var/www/html/tools/maven/sites/</url>
         </site>
     </distributionManagement>
     
@@ -171,6 +171,6 @@
     </reporting>
 
     <properties>
-        <copyright.year>2009</copyright.year>
+        <copyright.year>2010</copyright.year>
     </properties>
 </project>
