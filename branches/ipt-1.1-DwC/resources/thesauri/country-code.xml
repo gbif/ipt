@@ -1,0 +1,2229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thesaurus 
+	dc:URI="http://iso.org/iso3166" 
+	dc:description="" 
+	dc:title="ISO 3166 Country Codes" 
+	numConcepts="246" 
+	xmlns="http://data.gbif.org/thesaurus" 
+	xmlns:dc="http://purl.org/dc/terms/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://data.gbif.org/thesaurus  http://gbrds.gbif.org/resources/schemas/thesaurus.xsd">
+ <concept dc:identifier="AD" dc:URI="http://iso.org/iso3166#AD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ANDORRA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AND" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AD" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AE" dc:URI="http://iso.org/iso3166#AE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UNITED ARAB EMIRATES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ARE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AF" dc:URI="http://iso.org/iso3166#AF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="AFGHANISTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AFG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AG" dc:URI="http://iso.org/iso3166#AG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ANTIGUA AND BARBUDA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ATG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AI" dc:URI="http://iso.org/iso3166#AI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ANGUILLA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AIA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AL" dc:URI="http://iso.org/iso3166#AL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ALBANIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ALB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AM" dc:URI="http://iso.org/iso3166#AM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ARMENIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ARM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AN" dc:URI="http://iso.org/iso3166#AN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NETHERLANDS ANTILLES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ANT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AO" dc:URI="http://iso.org/iso3166#AO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ANGOLA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AGO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AQ" dc:URI="http://iso.org/iso3166#AQ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ANTARCTICA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ATA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AQ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AR" dc:URI="http://iso.org/iso3166#AR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ARGENTINA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ARG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AS" dc:URI="http://iso.org/iso3166#AS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="AMERICAN SAMOA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ASM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AT" dc:URI="http://iso.org/iso3166#AT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="AUSTRIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AUT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AU" dc:URI="http://iso.org/iso3166#AU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="AUSTRALIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AUS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AW" dc:URI="http://iso.org/iso3166#AW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ARUBA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AW" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ABW" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AX" dc:URI="http://iso.org/iso3166#AX"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ALAND ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="AX" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ALA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="AZ" dc:URI="http://iso.org/iso3166#AZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="AZERBAIJAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="AZE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="A+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BA" dc:URI="http://iso.org/iso3166#BA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BOSNIA AND HERZEGOVINA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BIH" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BB" dc:URI="http://iso.org/iso3166#BB"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BARBADOS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BRB" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BD" dc:URI="http://iso.org/iso3166#BD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BANGLADESH" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BGD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BD" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BE" dc:URI="http://iso.org/iso3166#BE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BELGIUM" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BEL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BF" dc:URI="http://iso.org/iso3166#BF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BURKINA FASO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BFA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BG" dc:URI="http://iso.org/iso3166#BG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BULGARIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BGR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BH" dc:URI="http://iso.org/iso3166#BH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BAHRAIN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BHR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BH" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BI" dc:URI="http://iso.org/iso3166#BI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BURUNDI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BDI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BJ" dc:URI="http://iso.org/iso3166#BJ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BENIN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BEN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BJ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BL" dc:URI="http://iso.org/iso3166#BL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAINT BARTHELEMY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BLM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BM" dc:URI="http://iso.org/iso3166#BM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BERMUDA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BMU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BN" dc:URI="http://iso.org/iso3166#BN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BRUNEI DARUSSALAM" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BRN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BO" dc:URI="http://iso.org/iso3166#BO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BOLIVIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BOL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BR" dc:URI="http://iso.org/iso3166#BR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BRAZIL" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BRA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BS" dc:URI="http://iso.org/iso3166#BS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BAHAMAS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BHS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BT" dc:URI="http://iso.org/iso3166#BT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BHUTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BTN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BV" dc:URI="http://iso.org/iso3166#BV"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BOUVET ISLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BV" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BVT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BW" dc:URI="http://iso.org/iso3166#BW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BOTSWANA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BWA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BW" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BY" dc:URI="http://iso.org/iso3166#BY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BELARUS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="BY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BLR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="BZ" dc:URI="http://iso.org/iso3166#BZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BELIZE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="BL+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="B+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CA" dc:URI="http://iso.org/iso3166#CA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CANADA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CAN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CC" dc:URI="http://iso.org/iso3166#CC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="COCOS (KEELING) ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CCK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CC" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CD" dc:URI="http://iso.org/iso3166#CD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CONGO, THE DEMOCRATIC REPUBLIC OF THE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="COD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CD" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CF" dc:URI="http://iso.org/iso3166#CF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CENTRAL AFRICAN REPUBLIC" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CAF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CG" dc:URI="http://iso.org/iso3166#CG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CONGO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="COG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CH" dc:URI="http://iso.org/iso3166#CH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SWITZERLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CHE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CH" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CI" dc:URI="http://iso.org/iso3166#CI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="COTE D&apos;IVOIRE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CIV" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CK" dc:URI="http://iso.org/iso3166#CK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="COOK ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="COK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CL" dc:URI="http://iso.org/iso3166#CL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CHILE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CHL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CM" dc:URI="http://iso.org/iso3166#CM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CAMEROON" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CMR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CN" dc:URI="http://iso.org/iso3166#CN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CHINA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CHN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CO" dc:URI="http://iso.org/iso3166#CO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="COLOMBIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="COL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CR" dc:URI="http://iso.org/iso3166#CR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="COSTA RICA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CRI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CU" dc:URI="http://iso.org/iso3166#CU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CUBA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CUB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CV" dc:URI="http://iso.org/iso3166#CV"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CAPE VERDE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CV" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CPV" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CX" dc:URI="http://iso.org/iso3166#CX"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CHRISTMAS ISLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CX" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CXR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CY" dc:URI="http://iso.org/iso3166#CY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CYPRUS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CYP" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="CY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="CZ" dc:URI="http://iso.org/iso3166#CZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CZECH REPUBLIC" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CZE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="C+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="DE" dc:URI="http://iso.org/iso3166#DE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GERMANY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="DE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="DEU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="DJ" dc:URI="http://iso.org/iso3166#DJ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="DJIBOUTI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="DJ" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="DJI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="DK" dc:URI="http://iso.org/iso3166#DK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="DENMARK" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="DNK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="DK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="DM" dc:URI="http://iso.org/iso3166#DM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="DOMINICA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="DM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="DMA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="DO" dc:URI="http://iso.org/iso3166#DO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="DOMINICAN REPUBLIC" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="DOM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="DO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="DZ" dc:URI="http://iso.org/iso3166#DZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ALGERIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="D+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="DZA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="EC" dc:URI="http://iso.org/iso3166#EC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ECUADOR" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ECU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="EC" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="EE" dc:URI="http://iso.org/iso3166#EE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ESTONIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="EST" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="EE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="EG" dc:URI="http://iso.org/iso3166#EG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="EGYPT" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="EGY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="EG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="EH" dc:URI="http://iso.org/iso3166#EH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="WESTERN SAHARA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ESH" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="EH" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ER" dc:URI="http://iso.org/iso3166#ER"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ERITREA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ER" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ERI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ES" dc:URI="http://iso.org/iso3166#ES"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SPAIN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ES" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ESP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ET" dc:URI="http://iso.org/iso3166#ET"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ETHIOPIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ET" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ETH" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="FI" dc:URI="http://iso.org/iso3166#FI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FINLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="FIN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="FI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="FJ" dc:URI="http://iso.org/iso3166#FJ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FIJI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="FJI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="FJ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="FK" dc:URI="http://iso.org/iso3166#FK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FALKLAND ISLANDS (MALVINAS)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="FK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="FLK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="FM" dc:URI="http://iso.org/iso3166#FM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MICRONESIA, FEDERATED STATES OF" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="FSM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="FM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="FO" dc:URI="http://iso.org/iso3166#FO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FAROE ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="FRO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="FO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="FR" dc:URI="http://iso.org/iso3166#FR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FRANCE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="FRA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="FR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GA" dc:URI="http://iso.org/iso3166#GA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GABON" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GAB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GB" dc:URI="http://iso.org/iso3166#GB"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UNITED KINGDOM" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GBR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GD" dc:URI="http://iso.org/iso3166#GD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GRENADA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GRD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GD" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GE" dc:URI="http://iso.org/iso3166#GE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GEORGIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GEO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GF" dc:URI="http://iso.org/iso3166#GF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FRENCH GUIANA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GUF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GG" dc:URI="http://iso.org/iso3166#GG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUERNSEY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GGY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GH" dc:URI="http://iso.org/iso3166#GH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GHANA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GH" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GHA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GI" dc:URI="http://iso.org/iso3166#GI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GIBRALTAR" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GIB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GL" dc:URI="http://iso.org/iso3166#GL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GREENLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GRL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GM" dc:URI="http://iso.org/iso3166#GM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GAMBIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GMB" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GN" dc:URI="http://iso.org/iso3166#GN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUINEA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GIN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GP" dc:URI="http://iso.org/iso3166#GP"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUADELOUPE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GP" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GLP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GQ" dc:URI="http://iso.org/iso3166#GQ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="EQUATORIAL GUINEA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GQ" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GNQ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GR" dc:URI="http://iso.org/iso3166#GR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GREECE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GRC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GS" dc:URI="http://iso.org/iso3166#GS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SGS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GT" dc:URI="http://iso.org/iso3166#GT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUATEMALA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GTM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GU" dc:URI="http://iso.org/iso3166#GU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUAM" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GUM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GW" dc:URI="http://iso.org/iso3166#GW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUINEA-BISSAU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GNB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GW" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="GY" dc:URI="http://iso.org/iso3166#GY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="GUYANA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="GY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="GUY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="HK" dc:URI="http://iso.org/iso3166#HK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="HONG KONG" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="HK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="HKG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="HM" dc:URI="http://iso.org/iso3166#HM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="HEARD ISLAND AND MCDONALD ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="HM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="HMD" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="HN" dc:URI="http://iso.org/iso3166#HN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="HONDURAS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="HN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="HND" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="HR" dc:URI="http://iso.org/iso3166#HR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CROATIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="HRV" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="HR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="HT" dc:URI="http://iso.org/iso3166#HT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="HAITI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="HT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="HTI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="HU" dc:URI="http://iso.org/iso3166#HU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="HUNGARY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="HUN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="HU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ID" dc:URI="http://iso.org/iso3166#ID"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="INDONESIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ID" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IDN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IE" dc:URI="http://iso.org/iso3166#IE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="IRELAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IRL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IL" dc:URI="http://iso.org/iso3166#IL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ISRAEL" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ISR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IM" dc:URI="http://iso.org/iso3166#IM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ISLE OF MAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IMM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IN" dc:URI="http://iso.org/iso3166#IN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="INDIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IND" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IO" dc:URI="http://iso.org/iso3166#IO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="BRITISH INDIAN OCEAN TERRITORY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IOT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IQ" dc:URI="http://iso.org/iso3166#IQ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="IRAQ" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IRQ" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IQ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IR" dc:URI="http://iso.org/iso3166#IR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="IRAN (ISLAMIC REPUBLIC OF)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="IRN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IS" dc:URI="http://iso.org/iso3166#IS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ICELAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ISL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="IT" dc:URI="http://iso.org/iso3166#IT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ITALY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="IT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ITA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="JE" dc:URI="http://iso.org/iso3166#JE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="JERSEY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="JE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="JEY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="JM" dc:URI="http://iso.org/iso3166#JM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="JAMAICA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="JM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="JAM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="JO" dc:URI="http://iso.org/iso3166#JO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="JORDAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="JOR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="JO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="JP" dc:URI="http://iso.org/iso3166#JP"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="JAPAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="JPN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="JP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KE" dc:URI="http://iso.org/iso3166#KE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KENYA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KEN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KG" dc:URI="http://iso.org/iso3166#KG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KYRGYZSTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KG+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KH" dc:URI="http://iso.org/iso3166#KH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CAMBODIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KHM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KH" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KI" dc:URI="http://iso.org/iso3166#KI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KIRIBATI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KIR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KM" dc:URI="http://iso.org/iso3166#KM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="COMOROS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="COM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KN" dc:URI="http://iso.org/iso3166#KN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAINT KITTS AND NEVIS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KNA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KP" dc:URI="http://iso.org/iso3166#KP"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KOREA, DEMOCRATIC PEOPLE&apos;S REPUBLIC OF" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PRK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KR" dc:URI="http://iso.org/iso3166#KR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KOREA, REPUBLIC OF" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KOR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KW" dc:URI="http://iso.org/iso3166#KW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KUWAIT" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KWT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KW" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KY" dc:URI="http://iso.org/iso3166#KY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CAYMAN ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="CYM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="KY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="KZ" dc:URI="http://iso.org/iso3166#KZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="KAZAKHSTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="K+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="KA+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LA" dc:URI="http://iso.org/iso3166#LA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LAO PEOPLE&apos;S DEMOCRATIC REPUBLIC" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LAO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LB" dc:URI="http://iso.org/iso3166#LB"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LEBANON" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LBN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LC" dc:URI="http://iso.org/iso3166#LC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAINT LUCIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LCA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LC" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LI" dc:URI="http://iso.org/iso3166#LI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LIECHTENSTEIN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LIE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LK" dc:URI="http://iso.org/iso3166#LK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SRI LANKA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LKA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LR" dc:URI="http://iso.org/iso3166#LR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LIBERIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LBR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LS" dc:URI="http://iso.org/iso3166#LS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LESOTHO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LSO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LT" dc:URI="http://iso.org/iso3166#LT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LITHUANIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LTU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LU" dc:URI="http://iso.org/iso3166#LU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LUXEMBOURG" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LUX" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LV" dc:URI="http://iso.org/iso3166#LV"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LATVIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LVA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LV" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="LY" dc:URI="http://iso.org/iso3166#LY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="LIBYAN ARAB JAMAHIRIYA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="LBY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="LY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MA" dc:URI="http://iso.org/iso3166#MA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MOROCCO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MAR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MC" dc:URI="http://iso.org/iso3166#MC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MONACO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MCO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MD" dc:URI="http://iso.org/iso3166#MD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MOLDOVA, REPUBLIC OF" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MDA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ME" dc:URI="http://iso.org/iso3166#ME"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MONTENEGRO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ME" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MNE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MG" dc:URI="http://iso.org/iso3166#MG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MADAGASCAR" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MDG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MH" dc:URI="http://iso.org/iso3166#MH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MARSHALL ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MH" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MHL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MK" dc:URI="http://iso.org/iso3166#MK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MKD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ML" dc:URI="http://iso.org/iso3166#ML"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MALI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MLI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ML" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MM" dc:URI="http://iso.org/iso3166#MM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MYANMAR" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MMR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MN" dc:URI="http://iso.org/iso3166#MN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MONGOLIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MNG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MO" dc:URI="http://iso.org/iso3166#MO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MACAO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MAC" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MP" dc:URI="http://iso.org/iso3166#MP"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NORTHERN MARIANA ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MP" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MNP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MQ" dc:URI="http://iso.org/iso3166#MQ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MARTINIQUE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MQ" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MTQ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MR" dc:URI="http://iso.org/iso3166#MR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MAURITANIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MRT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MS" dc:URI="http://iso.org/iso3166#MS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MONTSERRAT" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MSR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MT" dc:URI="http://iso.org/iso3166#MT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MALTA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MLT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MAF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MU" dc:URI="http://iso.org/iso3166#MU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MAURITIUS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MUS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MV" dc:URI="http://iso.org/iso3166#MV"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MALDIVES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MV" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MDV" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MW" dc:URI="http://iso.org/iso3166#MW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MALAWI" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MW" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MWI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MX" dc:URI="http://iso.org/iso3166#MX"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MEXICO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MEX" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MX" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MY" dc:URI="http://iso.org/iso3166#MY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MALAYSIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="MY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MYS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="MZ" dc:URI="http://iso.org/iso3166#MZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MOZAMBIQUE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MO+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="M+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NA" dc:URI="http://iso.org/iso3166#NA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NAMIBIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NAM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NC" dc:URI="http://iso.org/iso3166#NC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NEW CALEDONIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NCL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NE" dc:URI="http://iso.org/iso3166#NE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NIGER" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NER" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NF" dc:URI="http://iso.org/iso3166#NF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NORFOLK ISLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NFK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NG" dc:URI="http://iso.org/iso3166#NG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NIGERIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NGA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NI" dc:URI="http://iso.org/iso3166#NI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NICARAGUA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NIC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NL" dc:URI="http://iso.org/iso3166#NL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NETHERLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NLD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NO" dc:URI="http://iso.org/iso3166#NO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NORWAY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NOR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NP" dc:URI="http://iso.org/iso3166#NP"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NEPAL" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NPL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NR" dc:URI="http://iso.org/iso3166#NR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NAURU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NRU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NU" dc:URI="http://iso.org/iso3166#NU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NIUE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NIU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="NU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="NZ" dc:URI="http://iso.org/iso3166#NZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="NEW ZEALAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="N+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="NZL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="OM" dc:URI="http://iso.org/iso3166#OM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="OMAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="OMN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="OM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PA" dc:URI="http://iso.org/iso3166#PA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PANAMA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PAN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PE" dc:URI="http://iso.org/iso3166#PE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PERU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PER" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PF" dc:URI="http://iso.org/iso3166#PF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FRENCH POLYNESIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PYF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PG" dc:URI="http://iso.org/iso3166#PG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PAPUA NEW GUINEA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PNG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PH" dc:URI="http://iso.org/iso3166#PH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PHILIPPINES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PH" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PHL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PK" dc:URI="http://iso.org/iso3166#PK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PAKISTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PAK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PL" dc:URI="http://iso.org/iso3166#PL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="POLAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="POL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PM" dc:URI="http://iso.org/iso3166#PM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAINT PIERRE AND MIQUELON" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SPM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PN" dc:URI="http://iso.org/iso3166#PN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PITCAIRN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PCN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PR" dc:URI="http://iso.org/iso3166#PR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PUERTO RICO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PRI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PS" dc:URI="http://iso.org/iso3166#PS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PALESTINIAN TERRITORY, OCCUPIED" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PSE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PT" dc:URI="http://iso.org/iso3166#PT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PORTUGAL" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PRT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PW" dc:URI="http://iso.org/iso3166#PW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PALAU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PW" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PLW" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="PY" dc:URI="http://iso.org/iso3166#PY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="PARAGUAY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="PRY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="PY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="QA" dc:URI="http://iso.org/iso3166#QA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="QATAR" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="QA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="QAT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="RE" dc:URI="http://iso.org/iso3166#RE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="REUNION" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="REU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="RE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="RO" dc:URI="http://iso.org/iso3166#RO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ROMANIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ROU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="RO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="RS" dc:URI="http://iso.org/iso3166#RS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SERBIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SRB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="RS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="RU" dc:URI="http://iso.org/iso3166#RU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="RUSSIAN FEDERATION" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="RUS" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="RU" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="RW" dc:URI="http://iso.org/iso3166#RW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="RWANDA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="RWA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="RW" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SA" dc:URI="http://iso.org/iso3166#SA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAUDI ARABIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SAU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SB" dc:URI="http://iso.org/iso3166#SB"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SOLOMON ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SLB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SB" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SC" dc:URI="http://iso.org/iso3166#SC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SEYCHELLES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SYC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SC" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SD" dc:URI="http://iso.org/iso3166#SD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SUDAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SDN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SE" dc:URI="http://iso.org/iso3166#SE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SWEDEN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SWE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SG" dc:URI="http://iso.org/iso3166#SG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SINGAPORE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SGP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SH" dc:URI="http://iso.org/iso3166#SH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAINT HELENA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SH" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SHN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SI" dc:URI="http://iso.org/iso3166#SI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SLOVENIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SI" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SVN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SJ" dc:URI="http://iso.org/iso3166#SJ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SVALBARD AND JAN MAYEN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SJM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SJ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SK" dc:URI="http://iso.org/iso3166#SK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SLOVAKIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SVK" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SL" dc:URI="http://iso.org/iso3166#SL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SIERRA LEONE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SLE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SM" dc:URI="http://iso.org/iso3166#SM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAN MARINO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SMR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SN" dc:URI="http://iso.org/iso3166#SN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SENEGAL" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SEN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SO" dc:URI="http://iso.org/iso3166#SO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SOMALIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SOM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SO" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SR" dc:URI="http://iso.org/iso3166#SR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SURINAME" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SUR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ST" dc:URI="http://iso.org/iso3166#ST"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAO TOME AND PRINCIPE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ST" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="STP" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SV" dc:URI="http://iso.org/iso3166#SV"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="EL SALVADOR" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SV" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SLV" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SY" dc:URI="http://iso.org/iso3166#SY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SYRIAN ARAB REPUBLIC" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SYR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="SY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="SZ" dc:URI="http://iso.org/iso3166#SZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SWAZILAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="S+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="SW+00:00" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TC" dc:URI="http://iso.org/iso3166#TC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TURKS AND CAICOS ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TCA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TD" dc:URI="http://iso.org/iso3166#TD"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="CHAD" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TCD" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TD" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TF" dc:URI="http://iso.org/iso3166#TF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="FRENCH SOUTHERN TERRITORIES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ATF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TG" dc:URI="http://iso.org/iso3166#TG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TOGO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TGO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TH" dc:URI="http://iso.org/iso3166#TH"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="THAILAND" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="THA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TH" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TJ" dc:URI="http://iso.org/iso3166#TJ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TAJIKISTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TJK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TJ" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TK" dc:URI="http://iso.org/iso3166#TK"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TOKELAU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TK" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TKL" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TL" dc:URI="http://iso.org/iso3166#TL"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TIMOR-LESTE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TL" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TLS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TM" dc:URI="http://iso.org/iso3166#TM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TURKMENISTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TKM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TN" dc:URI="http://iso.org/iso3166#TN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TUNISIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TUN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TO" dc:URI="http://iso.org/iso3166#TO"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TONGA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TON" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TR" dc:URI="http://iso.org/iso3166#TR"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TURKEY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TUR" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TT" dc:URI="http://iso.org/iso3166#TT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TRINIDAD AND TOBAGO" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TTO" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TV" dc:URI="http://iso.org/iso3166#TV"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TUVALU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TV" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TUV" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TW" dc:URI="http://iso.org/iso3166#TW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TAIWAN, PROVINCE OF CHINA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="TW" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TWN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="TZ" dc:URI="http://iso.org/iso3166#TZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="TANZANIA, UNITED REPUBLIC OF" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="T+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="TZA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="UA" dc:URI="http://iso.org/iso3166#UA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UKRAINE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="UKR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="UA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="UG" dc:URI="http://iso.org/iso3166#UG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UGANDA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="UGA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="UG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="UM" dc:URI="http://iso.org/iso3166#UM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UNITED STATES MINOR OUTLYING ISLANDS" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="UM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="UMI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="US" dc:URI="http://iso.org/iso3166#US"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UNITED STATES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="USA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="US" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="UY" dc:URI="http://iso.org/iso3166#UY"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="URUGUAY" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="URY" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="UY" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="UZ" dc:URI="http://iso.org/iso3166#UZ"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="UZBEKISTAN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="U+00:00" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="UZB" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VA" dc:URI="http://iso.org/iso3166#VA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="VATICAN CITY STATE (HOLY SEE)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VAT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VA" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VAT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VC" dc:URI="http://iso.org/iso3166#VC"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAINT VINCENT AND THE GRENADINES" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VC" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VCT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VE" dc:URI="http://iso.org/iso3166#VE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="VENEZUELA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VEN" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VE" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VG" dc:URI="http://iso.org/iso3166#VG"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="VIRGIN ISLANDS (BRITISH)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VG" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VGB" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VI" dc:URI="http://iso.org/iso3166#VI"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="VIRGIN ISLANDS (U.S.)" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VIR" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VI" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VN" dc:URI="http://iso.org/iso3166#VN"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="VIET NAM" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VNM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VN" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="VU" dc:URI="http://iso.org/iso3166#VU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="VANUATU" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="VU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="VUT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="WF" dc:URI="http://iso.org/iso3166#WF"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="WALLIS AND FUTUNA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="WLF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="WF" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="WS" dc:URI="http://iso.org/iso3166#WS"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SAMOA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="WSM" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="WS" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="YE" dc:URI="http://iso.org/iso3166#YE"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="YEMEN" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="YE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="YEM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="YT" dc:URI="http://iso.org/iso3166#YT"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="MAYOTTE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="YT" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="MYT" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="YU" dc:URI="http://iso.org/iso3166#YU"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="YUGOSLAVIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="YU" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="YUG" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ZA" dc:URI="http://iso.org/iso3166#ZA"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="SOUTH AFRICA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ZAF" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ZA" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ZM" dc:URI="http://iso.org/iso3166#ZM"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ZAMBIA" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ZMB" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ZM" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="ZW" dc:URI="http://iso.org/iso3166#ZW"  dc:issued="2008-12-18T04:39:51+00:00">
+  <preferred>
+   <term dc:modified="2008-12-18T04:54:28+00:00" dc:source="" dc:title="ZIMBABWE" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-12-18T04:54:58+00:00" dc:source="" dc:title="ZWE" xml:lang="en"/>
+   <term dc:modified="2008-12-18T04:54:54+00:00" dc:source="" dc:title="ZW" xml:lang="en"/>
+  </alternative>
+ </concept>
+</thesaurus>

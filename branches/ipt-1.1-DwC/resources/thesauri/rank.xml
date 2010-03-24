@@ -1,0 +1,1472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thesaurus dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank" dc:description="" dc:title="Taxonomic Ranks" numConcepts="126" 
+	xmlns="http://data.gbif.org/thesaurus" xmlns:dc="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://data.gbif.org/thesaurus  http://gbrds.gbif.org/resources/schemas/thesaurus.xsd">
+ <concept dc:identifier="kingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Kingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="kingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="rike" xml:lang="no"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Kr__lestwo" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="kingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="regnum" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="reino" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="reg." xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="_Ú___∞e" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¡ÔÂ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="carstvo" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="kraljestvo" xml:lang="sl"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="r_©gne" xml:lang="fr"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="phylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Phylum"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="phylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="avdeling" xml:lang="no"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="phly." xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Typ" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="»Òƒ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="Tips" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="filo" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="koljeno" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="phylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="embranchement" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="deblo" xml:lang="sl"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Kmen" xml:lang="cs"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="division" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Division"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="division" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="divisio" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="division" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Gromada" xml:lang="pl"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="class" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Class"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="class" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="classe" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="klass" xml:lang="sv"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="clase" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñˆñ™ñ_ó≈ó≈" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="T_Ù__da" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="classis" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="class" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="klasse" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="klasse" xml:lang="no"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="razred" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="cl." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="Klase" xml:lang="lv"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subclass" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subclass"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="subclass" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="sub-class" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_˙¡_±" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Podgromada" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="podrazred" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="subclassis" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subclass" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="Apak_∞klase" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subcalssis" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Szczep" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ¸ñÊñ•ñ_ñ™ñ_ó≈ó≈" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="subcl." xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="order" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Order"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="order" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="ordnung" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="order" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="orden" xml:lang="no"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="red" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="KÉ≈rta" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="orden" xml:lang="no"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ˚ó«óƒóËñ•" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¡ı∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="orden" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="_Ú_∞d" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="ordre" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="ordo" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="ordning" xml:lang="sv"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="ordem" xml:lang="ita"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="ord" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="RzÉ÷d" xml:lang="pl"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="family" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Family"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="family" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="fam" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="porodica" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="fam." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="family" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="f" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="Familjj" xml:lang="sv"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="familie" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="familio" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="ÉÂeleÉË" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="famfam" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="familia" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="AF" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ∞ñµñ∫ñµñ_ó≈ó«ñ_ñÊ" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="famille" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="druzina" xml:lang="sl"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Dzimta" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Rodzina" xml:lang="pl"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="genus" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="genus" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="gattung" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothogen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothogenus" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="rod" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñÜñÊñ•" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Rod" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="g" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="É¢ints" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="genus" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="g_©nero" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="gen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¬±˚" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="Sl_ßkte" xml:lang="sv"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="genre" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="gen." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Rodzaj" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="AG" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="genere" xml:lang="ita"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="genro" xml:lang="cs"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subgenus" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subgenus"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="subgenus" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="subgenere" xml:lang="ita"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosubgenus" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subgengen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="â_˙¬±˚" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="subgen." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Apak_∞É£ints" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sg" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothosubgeen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="podrod" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sub-genus" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothosubg" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="subgenus" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="untergattung" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothosubgen" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="tribe" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Tribe"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="tribe" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="tribe" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="tribus" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="»ƒ£" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Triba" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="trib" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="trib." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ¢óƒñ_ñ±ñ_" xml:lang="ru"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="species" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Species"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="species" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="notho species" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="c.f." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Gatunek" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="vrsta" xml:lang="sl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="species" xml:lang="ita"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="especie" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Suga" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="SP" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="ASP" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="sp." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="art" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="species" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="specio" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¡Æ∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="Art" xml:lang="sv"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="binomial" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="esp_©ce" xml:lang="fr"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="aggregate" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Aggregate"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="aggregate" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="cluster" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="aggr." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="aggregate" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subspecies" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subspecies"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="subspecies" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_˙¡Æ∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="podgatunek" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="ssp." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="nothosupsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subs" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosubspecies" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="podvrsta" xml:lang="hu"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="susbp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="nothosubsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Pasuga" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subspecies" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subsp" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="nohtosubsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="infra-species" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="subspecific" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="sebsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="Stirp" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="unterart" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infraspecies" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="suhsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="sous-esp_Æce" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="stirps" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="susp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="ssp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sub-species" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subspsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="subsp." xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="variety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Variety"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="variety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="nothovar" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¬ß‚" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="varsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="nothomorph" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="var." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="variatio" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="vel" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="typus" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="type" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="variant" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="variety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothovarietas" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="odmiana" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="varietas" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="vari_©t_©" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="var" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cultivar" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Cultivar"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="cultivar" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="cultivar" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gigafamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Gigafamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="gigafamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="gigafamily" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="microorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Microorder"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="microorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="microorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="parvorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Parvorder"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="parvorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="parv-order" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="parvorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="nanorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Nanorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="nanorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nanorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="suborder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Suborder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="suborder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subord" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="â_˙¡ı∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="sous-ordre" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="podred" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Pod_Ù_∞d" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="unterordnung" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="suborder" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="subordo" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="minorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Minorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="minorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="minorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hypoorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Hypoorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="hypoorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="hypoorder" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hyperfamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Hyperfamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="hyperfamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="hyperfamily" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="above family" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraorder"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="infraorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="infraorder" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="InfrakÉ≈rta" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="Infraordo" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-order" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superfamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superfamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="superfamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_‰¡ﬂÎ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="superfamilio" xml:lang="cs"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sf" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Virsdzimta" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="superfamille" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-family" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="superfamily" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ˘ñ_ñ•ó≈ñµñ∫ñµñ_ó≈ó«ñ_ñÊ" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="superfamilia" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="_∫berfamilie" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="natporodica" xml:lang="pl"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infratribe" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infratribe"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="infratribe" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-tribe" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="infratribus" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="infratribe" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="family-group" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Family-group"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="family group" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="family group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="genus-group" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Genus-group"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="genus group" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="rod" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="genus group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="supergenus" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Supergenus"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="supergenus" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-genus" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="nadrod" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="supergenus" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mirorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Mirorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="mirorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="mir-order" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subtribe" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subtribe"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="subtribe" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="subtrib." xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subtribsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subtribegen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subtrib" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subtribgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subtr" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Apak_∞triba" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sub-tribe" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="podtribus" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="subtribus" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subtribe" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subfamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subfamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="subfamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="subfamilia" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subfamily" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="potporodica" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Podrodzina" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sub-family" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subfamgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ¸ñÊñ•ó≈ñµñ∫ñµñ_ó≈ó«ñ_ñÊ" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subfamsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Apak_∞dzimta" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="subfam." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sf" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_˙¡ﬂÎ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="sous-famille" xml:lang="fr"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subfam" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="supertribe" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Supertribe"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="supertribe" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="supertrib" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="supertribe" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-tribe" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infrafamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infrafamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="infrafamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infrafamily" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-family" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="epifamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Epifamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="epifamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="epifamily" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subfamily-group" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subfamily-group"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="subfamily group" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="subfamily group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="domain" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Domain"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="domain" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Domena" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="domain" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subseries" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subseries"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="subseries" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="sub-series" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosubseries" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subseries" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="subser." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subser" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="series" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Series"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="series" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="serie" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="series" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothoseries" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="SÉÏrija" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="¬‡Û" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothoser" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="seria" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="ser." xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="superorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ñ˘ñ_ñ•ñÊó«óƒóËñ•" xml:lang="ru"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-order" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="nadred" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="superordo" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="superorder" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="superorden" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_‰¡ı∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="VirskÉ≈rta" xml:lang="lv"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subdivision" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subdivision"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="subdivision" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="subdivisio" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="subdivision" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="sub-division" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="subdiv" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superdivision" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superdivision"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="superdivision" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superdivision" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="super-division" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="morph" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Morph"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="morph" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="notho morph" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="morph" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="race" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Race"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="race" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="race" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="rac" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="race" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="near" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Near"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="near" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="near" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="approaching" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="nr." xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superform" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superform"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="superform" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="superform" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="grandorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Grandorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="grandorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="grandorder" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="grand-order" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraform" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraform"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="infraform" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="infraform" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="infra-form" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infragenus" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infragenus"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="infragenus" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infragenus" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-genus" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="incertae-sedie" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Incertae-sedie"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="incertae sedie" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="unknown" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="incert. sed." xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="xxx" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="incertae cedis" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="bio-variety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Bio-Variety"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Bio-Variety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="biovar" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Bio-Variety" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="mutant" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Mutant"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="mutant" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="mut" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="ab." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="mutant" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="aberration" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="mut." xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="serovar" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Serovar"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="serovar" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="serovar" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraseries" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraseries"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="infraseries" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="infra-series" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="infraseries" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superseries" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superseries"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="superseries" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="superseries" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-series" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sub-sub-variety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Sub-sub-variety"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="sub sub variety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="sub-sub-variety" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="morphovar" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Morphovar"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="morphovar" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="morphovar" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="patho-variety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Patho-variety"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Patho-variety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Patho-variety" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraspecific-taxon" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraspecific-Taxon"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Infraspecific Taxon" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Infraspecific Taxon" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="species-aggregate" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Species-Aggregate"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Species Aggregate" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Species Aggregate" xml:lang="end"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infragenerictaxon" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#InfragenericTaxon"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="InfragenericTaxon" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Infrageneric Taxon" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="denominationclass" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#DenominationClass"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="DenominationClass" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Denomination Class" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="grex" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Grex"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Grex" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="grex" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="graft-chimaera" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Graft-chimaera"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Graft-chimaera" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="Graft-chimaera" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="special-form" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Special-Form"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Special Form" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="f.sp." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="species forma" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Special Form" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="forma specialis" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="forma spec." xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraspecies" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraspecies"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="infraspecies" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="infraspecies" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="supersection" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Supersection"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="supersection" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="supersection" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-section" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="legion" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Legion"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="legion" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="legion" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infrasection" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infrasection"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="infrasection" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="infrasection" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-section" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraclass" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraclass"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="infraclass" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infraclass" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="Infraklase" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-class" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="infraclassis" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="grade" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Grade"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="grade" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="grade" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superclass" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superclass"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="superclass" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="superclase" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_‰¡_±" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="Virsklase" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superclass" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="super-class" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="razred" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="superclassis" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="microphylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Microphylum"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="microphylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="microphylum" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subphylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subphylum"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="subphylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="underavdeling" xml:lang="no"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="poddeblo" xml:lang="sl"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="sub-phylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:50+00:00" dc:source="scratchpads" dc:title="Apak_∞tips" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_˙»Òƒ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subphylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="subfilo" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Podtyp" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="potkoljeno" xml:lang="pl"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="parvclass" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Parvclass"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="parvclass" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="parvclass" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="parv-class" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="midphylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Midphylum"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="midphylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="mid-phylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="midphylum" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="branch" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Branch"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="branch" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="branch" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superphylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superphylum"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="superphylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_‰»Òƒ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="super-phylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="natkoljeno" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superphylum" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infraphylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infraphylum"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="infraphylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infraphylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="infra-phylum" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="section" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Section"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="section" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¡ÿƒ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sectio" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="section" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="nothosect" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="sect" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="sect." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosectio" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="supraphylum" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Supraphylum"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="supraphylum" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="supraphylum" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="supra-phylum" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subgroup" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subgroup"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="subgroup" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subgroup" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sub-group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hyperorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Hyperorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="hyperorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="hyperorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="capaxorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Capaxorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="capaxorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="capaxorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="megaorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Megaorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="megaorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="megaorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="gigaorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Gigaorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="gigaorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="gigaorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infracohort" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infracohort"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="infracohort" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infracohort" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subcohort" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subcohort"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="subcohort" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subcohort" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="subcohort" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infralegion" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infralegion"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="infralegion" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="infra-legion" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infralegion" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="supercohort" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Supercohort"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="supercohort" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="natkohorta" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="supercohort" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="supercohors" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="group" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Group"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="group" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="Gruppe" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="sublegion" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Sublegion"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="sublegion" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="sublegion" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sub-legion" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cultivar-group" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Cultivar-group"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="cultivar group" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="cultivar group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superlegion" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superlegion"  dc:issued="2008-10-13T06:44:53+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:53+00:00" dc:source="scratchpads" dc:title="superlegion" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superlegion" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="super-legion" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="cohort" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Cohort"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="cohort" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="kohorta" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="cohort" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="cohors" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Kohorta" xml:lang="lv"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infrakingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infrakingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="infrakingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="infra-kingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infrakingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="infraregnum" xml:lang="la"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="monster" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Monster"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="monster" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="mstr" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="mstr." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="mnstr" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¡ô≈¡—_¬ß‚¡Ô_â_Ï" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="monster" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="mutation" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subkingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subkingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="subkingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_˙¡ÔÂ" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="subregnum" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="subreino" xml:lang="es"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subkingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sub.reg" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="potcarstvo" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="sub-kingdom" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subform" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subform"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="Subform" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="subforma" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="subf." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="sub-forma" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosubforma" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="subform" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sub-form" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="prole" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Prole"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Prole" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="proles" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T04:22:54+00:00" dc:source="scratchpads" dc:title="pr" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="prol" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="prole" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="suprageneric-taxon" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Suprageneric-Taxon"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Suprageneric Taxon" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Suprageneric Taxon" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subvariety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subvariety"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="subvariety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subvariety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosubvarietas" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="subvarietas" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="sub-variety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="subvar. [?]" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subvar" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="subvar." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subvarsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subv" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="uncatalogued-ranks" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#UnCatalogued-ranks"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="UnCatalogued ranks" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="set" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="substirps" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="cor" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="trinomial" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nm." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="e" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="mon" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="subap" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="Tribgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="Unterguppe" xml:lang="de"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="gr. var" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="lusus" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="quadrinomial" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="hirta" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nopthosubsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="cv." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="monstr" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="sre" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="flus" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="grupo" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="ordord" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="pars" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="not specified" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="fo" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="sub" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="famsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="hort. fo" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="I" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="NO RANK" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="sbsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="lus" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="nm" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="ser" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="?var" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="superordsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="sabgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="supersect" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="oblvar" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="par" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothof" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="nsubsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nssp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="unrankedgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="sectsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="sport" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="nrasp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="species subgroup" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="fosp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="subset" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="cv" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="s" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="unrankedsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="unranked" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="d" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="groupa" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="groupe" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="tax" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="pv." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="vargen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="famgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="modification" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="nothsect" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="(unranked)" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="tribsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="mf" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="c." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="sectgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="Unspecified" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subf" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="susbsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="sp.-group" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="f. s" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="fogen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subfo" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="a" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="divis" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="sufam" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="agsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="ecad" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="a." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:54+00:00" dc:source="scratchpads" dc:title="II" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="microgen" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="b." xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="_¸" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:55+00:00" dc:source="scratchpads" dc:title="supsp" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:52+00:00" dc:source="scratchpads" dc:title="t.i" xml:lang="zxx"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subfsp" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="convar" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Convar"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="convar" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="convarietas" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="con-variety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="convariety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="convar." xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="strain" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Strain"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="strain" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title=" Üô" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="strain" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="supervariety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Supervariety"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="supervariety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="super-variety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="supervariety" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subsection" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subsection"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="subsection" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothosubsectio" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:46+00:00" dc:source="scratchpads" dc:title="sub-section" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="subsect." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="nodaÉ∫a" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:42+00:00" dc:source="scratchpads" dc:title="subsection" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="Sekcija" xml:lang="lv"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="diviso" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="subsectio" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="subsect" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="hybrid" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Hybrid"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="hybrid" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="hybrid" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="»ıÎ¡Æ∆" xml:lang="ja"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="species-group" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Species-group"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="species group" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="species group" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="complex" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Complex"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="complex" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="complex" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superspecies" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superspecies"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="superspecies" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="â_‰¡Æ∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="nadvrsta" xml:lang="pl"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="super-species" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superspecies" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="candidate" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Candidate"  dc:issued="2008-10-13T06:44:57+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:57+00:00" dc:source="scratchpads" dc:title="Candidate" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:57+00:00" dc:source="scratchpads" dc:title="Candidate" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="interkingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Interkingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="interkingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="interkingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="inter-kingdom" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superdomain" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superdomain"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="superdomain" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superdomain" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="super-domain" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="microspecies" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Microspecies"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="microspecies" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="microsp." xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="micro-species" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="microspecies" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infravariety" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infravariety"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="infravariety" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:44+00:00" dc:source="scratchpads" dc:title="infravariety" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="infra-variety" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="midkingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Midkingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="midkingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="mid-kingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="midkingdom" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="suprakingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Suprakingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="suprakingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="suprakingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="supra-kingdom" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="superkingdom" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Superkingdom"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="superkingdom" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="super-kingdom" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="superkingdom" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="infradomain" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Infradomain"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="infradomain" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="infra-domain" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="infradomain" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="subdomain" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Subdomain"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="subdomain" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:43+00:00" dc:source="scratchpads" dc:title="subdomain" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="sub-domain" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="empire" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Empire"  dc:issued="2008-10-13T06:44:52+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:52+00:00" dc:source="scratchpads" dc:title="empire" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:45+00:00" dc:source="scratchpads" dc:title="empire" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="magnorder" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Magnorder"  dc:issued="2008-10-13T06:44:54+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:54+00:00" dc:source="scratchpads" dc:title="magnorder" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="magnorder" xml:lang="en"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="megafamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Megafamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="megafamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="megafamily" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="grandfamily" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Grandfamily"  dc:issued="2008-10-13T06:44:55+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:55+00:00" dc:source="scratchpads" dc:title="grandfamily" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="grandfamily" xml:lang="zxx"/>
+  </alternative>
+ </concept>
+ <concept dc:identifier="form" dc:URI="http://rs.tdwg.org/ontology/voc/TaxonRank#Form"  dc:issued="2008-10-13T06:44:56+00:00">
+  <preferred>
+   <term dc:modified="2008-10-13T06:44:56+00:00" dc:source="scratchpads" dc:title="form" xml:lang="en"/>
+  </preferred>
+  <alternative>
+   <term dc:modified="2008-10-15T11:39:56+00:00" dc:source="scratchpads" dc:title="nothoforma" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:47+00:00" dc:source="scratchpads" dc:title="form" xml:lang="en"/>
+   <term dc:modified="2008-10-15T11:39:51+00:00" dc:source="scratchpads" dc:title="¡‚_¬‡ï¬Ï≈¡Æ∆" xml:lang="ja"/>
+   <term dc:modified="2008-10-15T11:39:53+00:00" dc:source="scratchpads" dc:title="forma" xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:49+00:00" dc:source="scratchpads" dc:title="f. spec." xml:lang="la"/>
+   <term dc:modified="2008-10-15T11:39:48+00:00" dc:source="scratchpads" dc:title="f." xml:lang="en"/>
+  </alternative>
+ </concept>
+</thesaurus>
