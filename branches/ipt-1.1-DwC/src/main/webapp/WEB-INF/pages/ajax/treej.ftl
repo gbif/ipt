@@ -5,8 +5,8 @@
         key: "${n.id?c}",
         isLazy: ${n.isLeafNode()?string('false','true')},
         icon: false,
-        title: "${limit(n.label)}",
-        tooltip: "${n.label}",
+        title: "${limit(n.label!"???")}",
+        tooltip: "${n.label!"???"}",
       <#if (focus!0)==n.id>
         focus: true,
         activate: true,

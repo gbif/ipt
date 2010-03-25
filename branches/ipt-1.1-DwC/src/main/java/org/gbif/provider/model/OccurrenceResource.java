@@ -27,7 +27,7 @@ import javax.persistence.Transient;
  */
 @Entity
 public class OccurrenceResource extends DataResource {
-  public static final String DWC_GUID_PROPERTY = "SampleID";
+  public static final String DWC_GUID_PROPERTY = "occurrenceID";
   private BBox bbox = new BBox();
   private Integer featureHash;
   // cached statistics
