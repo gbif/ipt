@@ -594,6 +594,7 @@
             <version>${jdbc.version}</version>
         </dependency>
         <!-- Dependencies with scope=provided aren't picked up from dependent JARs-->
+<!-- JRW to test removal of redundant dependencies.
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jsp-api</artifactId>
@@ -636,6 +637,7 @@
             <version>${wiser.version}</version>
             <scope>test</scope>
         </dependency>
+-->
         
         <dependency>
             <groupId>com.googlecode</groupId>
@@ -656,12 +658,13 @@
             <type>jar</type>
         </dependency>
         <!-- Spring -->
+<!-- JRW to test removal of redundant dependencies.
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
+-->
         <!-- JDBC driver to support a variety of external datasources -->
         <dependency>
             <groupId>mysql</groupId>
