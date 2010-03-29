@@ -44,17 +44,15 @@
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 </div>
 
-<!--
 <h1 class="modifiedh1Secondary"><@s.text name="eml.keywords"/></h1>
 <div class="horizontal_dotted_line_large_foo"></div>
 <fieldset style="padding-top:13px;">
-    <p>Keywords separated by comma</p>
+    <p>Keyword:Thesaurus pairs separated by comma (e.g., Animal:Bird, Insect:spider)</p>
     <@s.textarea key="keywords" label="" required="false" cssClass="text xlarge"/>
 </fieldset>
+
     <div class="breakRightButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-    </div>
--->
-        
+    </div>    
 </@s.form>
