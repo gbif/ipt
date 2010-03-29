@@ -19,6 +19,7 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Organization;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ResourceType;
@@ -82,7 +83,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       put(OTHER, "Other");
     }
   };
+
   private Map<String, String> resourceTypeMap;
+  private Map<String, String> agentRoleMap;
 
   private String jdbcDriverClass;
 
@@ -130,6 +133,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       return RESOURCE404;
     }
     return SUCCESS;
+  }
+
+  public Map<String, String> getAgentRoleMap() {
+    return agentRoleMap;
   }
 
   public AppConfig getConfig() {
@@ -196,6 +203,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     super.prepare();
     resourceTypeMap = translateI18nMap(new HashMap<String, String>(
         ResourceType.htmlSelectMap), true);
+    agentRoleMap = translateI18nMap(new HashMap<String, String>(
+        Role.htmlSelectMap), true);
     if (resource == null && resourceType != null) {
       // create new empty resource
       if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
@@ -288,6 +297,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     save();
     testDbConnection();
     return SUCCESS;
+  }
+
+  public void setAgentRoleMap(Map<String, String> agentRoleMap) {
+    this.agentRoleMap = agentRoleMap;
   }
 
   public void setFile(File file) {
