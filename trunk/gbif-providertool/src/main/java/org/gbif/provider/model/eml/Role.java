@@ -16,11 +16,40 @@
 package org.gbif.provider.model.eml;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO: Documentation.
  * 
  */
 public enum Role implements Serializable {
-  ORIGINATOR, AUTHOR, CONTENT_PROVIDER, CUSTODIAN_STEWARD, DISTRIBUTOR, EDITOR, METADATA_PROVIDER, OWNER, POINT_OF_CONTACT, PRINCIPAL_INVESTIGATOR, PROCESSOR, PUBLISHER, USER, FIELD_STATION_MANAGER, INFORMATION_MANAGER;
+
+  ORIGINATOR,
+  AUTHOR,
+  CONTENT_PROVIDER,
+  CUSTODIAN_STEWARD,
+  DISTRIBUTOR,
+  EDITOR,
+  METADATA_PROVIDER,
+  OWNER,
+  POINT_OF_CONTACT,
+  PRINCIPAL_INVESTIGATOR,
+  PROCESSOR,
+  PUBLISHER,
+  USER,
+  FIELD_STATION_MANAGER,
+  INFORMATION_MANAGER;
+
+  public static final Map<String, String> htmlSelectMap;
+
+  static {
+    Map<String, String> map = new HashMap<String, String>();
+    for (Role rt : Role.values()) {
+      map.put(rt.name(), "roleType." + rt.name());
+    }
+    htmlSelectMap = Collections.unmodifiableMap(map);
+  }
+
 }

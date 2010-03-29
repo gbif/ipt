@@ -23,10 +23,12 @@
   <meta name="submenu" content="manage_resource"/>  
   <meta name="heading" content="<@s.text name='metadata.heading'/>"/> 
   
-  <script type="text/javascript" src="<@s.url value='/scripts/metadata.js'/>"></script>
+  <script type="text/javascript" src="<@s.url value='/scripts/metadata.js'/>"></script>  
+  <script type="text/javascript" src="http://jquery-domec.googlecode.com/svn/trunk/jquery.domec.js"></script>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script type="text/javascript" src="<@s.url value='/scripts/jquery.autocomplete.min.js'/>"></script>
   <link rel="stylesheet" type="text/css" href="<@s.url value='/scripts/jquery.autocomplete.css'/>" />
+  <script type="text/javascript" src="http://jquery-dynamic-form.googlecode.com/svn/trunk/jquery-dynamic-form.js"></script>
 
   <script>
     
@@ -119,6 +121,18 @@
       orgPasswordDiv.setVisible(false);
       orgResendPasswordDiv.setVisible(false);
     });
+    
+    <#--
+      - Enables dynamic form element creation for:
+      - 
+      - Creators
+      - Metadata Providers
+      - Associated Parties
+      -->
+    $(document).ready(function() {   
+      $("#associatedPartyDiv").dynamicForm("#plus", "#minus", {limit:5});
+    });
+    
   </script>
   
   <style>
@@ -164,6 +178,73 @@
                         required="true" 
                         cssClass="text large-foo"/>
         </td>
+      </tr>
+      <tr>
+        <td>
+          <!-- Resource abstract textbox. -->
+          <@s.textfield id="abstractTextBox"
+                        key="resource.abstract"          
+                        value="${(resource.description)!}"               
+                        required="true" 
+                        cssClass="text large-foo"/>
+        </td>
+      </tr>
+      <div id="creatorDiv">
+      <tr>        
+        <td>        
+          <!-- Creator name textbox. -->
+          <@s.textfield id="creatorNameTextBox"
+                        key="resource.creatorName"          
+                        value="${(resourceCreator.name)!}"               
+                        required="true"           
+                        cssClass="text medium"/>
+          <!-- Creator role textbox. -->
+          <@s.select id="creatorRoleSelectBox"
+                        key="resource.creatorRole"          
+                        list="agentRoleMap"             
+                        required="true" 
+                        cssClass="text medium"/>                        
+        </td>
+      </tr>
+      </div>
+      <tr>       
+        <td>
+          <!-- Metadata provider name textbox. -->
+          <@s.textfield id="metadataProviderNameTextBox"
+                        key="resource.metadataProviderName"          
+                        value="${(metadataProvider.name)!}"               
+                        required="true" 
+                        cssClass="text medium"/>   
+          <!-- Metadata provider role textbox. -->
+          <@s.select id="metadataProviderRoleSelectBox"
+                        key="resource.metadataProviderRole"          
+                        list="agentRoleMap"             
+                        required="true" 
+                        cssClass="text medium"/>                             
+        </td>
+      <tr>       
+        <td>
+        <div id="associatedPartyDiv">
+          <!-- Associated party name textbox. -->
+          <@s.textfield id="asscociatedPartyNameTextBox"
+                        key="resource.associatedPartyName"          
+                        value="${(metadataProvider.name)!}"               
+                        required="true" 
+                        cssClass="text mediumÅ"/>
+          <!-- Associated party role select box. -->
+          <@s.select id="associatedPartyRoleSelectBox"
+                        key="resource.associatedPartyRole"          
+                        list="agentRoleMap"             
+                        required="true" 
+                        cssClass="text medium"/>                        
+
+          <span>
+            <a id="minus" href="" onclick="return false;">[-]</a> 
+            <a id="plus" href="" onclick="return false;">[+]</a>
+          </span>
+        </div>
+        </td>
+      </tr>
       </tr>
       <tr>
         <td>
