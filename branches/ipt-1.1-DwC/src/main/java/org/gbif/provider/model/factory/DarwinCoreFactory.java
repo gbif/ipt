@@ -132,7 +132,9 @@ public class DarwinCoreFactory extends ModelBaseFactory<DarwinCore> {
 
       // now just check types and potentially annotate
       if (propVal != null && DarwinCore.isDarwinCoreTerm(propName)) {
-        switch (DarwinCore.dataType(propName)) {
+        DarwinCore.Type t = DarwinCore.dataType(propName);
+        switch (t) {
+//          switch (DarwinCore.dataType(propName)) {
           case INTEGER:
             try {
               Integer.valueOf(propVal);

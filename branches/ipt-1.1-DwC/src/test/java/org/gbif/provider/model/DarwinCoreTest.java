@@ -55,7 +55,7 @@ public class DarwinCoreTest extends ResourceTestBase {
   private static DarwinCore getTestEntity(DarwinCore e) {
     DarwinCore entity = e == null ? new DarwinCore() : e;
     int i = 1;
-    entity.setAcceptedNameUsageId(i++ + "");
+    entity.setAcceptedNameUsageID(i++ + "");
     entity.setAccessRights(i++ + "");
     entity.setAssociatedMedia(i++ + "");
     entity.setAssociatedOccurrences(i++ + "");
@@ -92,7 +92,7 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setEndDayOfYear(i++ + "");
     entity.setEstablishmentMeans(i++ + "");
     entity.setEventDate(i++ + "");
-    entity.setEventId(i++ + "");
+    entity.setEventID(i++ + "");
     entity.setEventRemarks(i++ + "");
     entity.setEventTime(i++ + "");
     entity.setFamily(i++ + "");
@@ -104,7 +104,7 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setFormation(i++ + "");
     entity.setGenus(i++ + "");
     entity.setGeodeticDatum(i++ + "");
-    entity.setGeologicalContextId(i++ + "");
+    entity.setGeologicalContextID(i++ + "");
     entity.setGeoreferenceProtocol(i++ + "");
     entity.setGeoreferenceRemarks(i++ + "");
     entity.setGeoreferenceSources(i++ + "");
@@ -126,7 +126,7 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setInformationWithheld(i++ + "");
     entity.setInfraspecificEpithet(i++ + "");
     entity.setInstitutionCode(i++ + "");
-    entity.setInstitutionId(i++ + "");
+    entity.setInstitutionID(i++ + "");
     entity.setIsland(i++ + "");
     entity.setIslandGroup(i++ + "");
     entity.setKingdom(i++ + "");
@@ -140,7 +140,7 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setLithostratigraphicTerms(i++ + "");
     entity.setLocality(i++ + "");
     entity.setLocationAccordingTo(i++ + "");
-    entity.setLocationId(i++ + "");
+    entity.setLocationID(i++ + "");
     entity.setLocationRemarks(i++ + "");
     entity.setLowestBiostratigraphicZone(i++ + "");
     entity.setMaximumDepthInMeters(i++ + "");
@@ -154,22 +154,22 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setMonth(i++ + "");
     entity.setMunicipality(i++ + "");
     entity.setNameAccordingTo(i++ + "");
-    entity.setNameAccordingToId(i++ + "");
+    entity.setNameAccordingToID(i++ + "");
     entity.setNamePublishedIn(i++ + "");
-    entity.setNamePublishedInId(i++ + "");
+    entity.setNamePublishedInID(i++ + "");
     entity.setNomenclaturalCode(i++ + "");
     entity.setNomenclaturalStatus(i++ + "");
     entity.setOccurrenceDetails(i++ + "");
-    entity.setOccurrenceId(i++ + "");
+    entity.setOccurrenceID(i++ + "");
     entity.setOccurrenceRemarks(i++ + "");
     entity.setOccurrenceStatus(i++ + "");
     entity.setOrder(i++ + "");
     entity.setOriginalNameUsage(i++ + "");
-    entity.setOriginalNameUsageId(i++ + "");
+    entity.setOriginalNameUsageID(i++ + "");
     entity.setOtherCatalogNumbers(i++ + "");
     entity.setOwnerInstitutionCode(i++ + "");
     entity.setParentNameUsage(i++ + "");
-    entity.setParentNameUsageId(i++ + "");
+    entity.setParentNameUsageID(i++ + "");
     entity.setPhylum(i++ + "");
     entity.setPointRadiusSpatialFit(i++ + "");
     entity.setPreparations(i++ + "");
@@ -183,13 +183,13 @@ public class DarwinCoreTest extends ResourceTestBase {
     entity.setSamplingProtocol(i++ + "");
     entity.setScientificName(i++ + "");
     entity.setScientificNameAuthorship(i++ + "");
-    entity.setScientificNameId(i++ + "");
+    entity.setScientificNameID(i++ + "");
     entity.setSex(i++ + "");
     entity.setSpecificEpithet(i++ + "");
     entity.setStartDayOfYear(i++ + "");
     entity.setStateProvince(i++ + "");
     entity.setSubgenus(i++ + "");
-    entity.setTaxonConceptId(i++ + "");
+    entity.setTaxonConceptID(i++ + "");
     entity.setTaxonID(i++ + "");
     entity.setTaxonRank(i++ + "");
     entity.setTaxonRemarks(i++ + "");

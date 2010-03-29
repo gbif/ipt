@@ -8,26 +8,26 @@
     <field index="1" term="http://purl.org/dc/terms/modified"/>
     <field index="2" term="http://purl.org/dc/terms/source"/>
     <field index="3" term="http://ipt.gbif.org/terms/sourceID"/>
-    <field index="4" term="http://rs.tdwg.org/dwc/terms/NomenclaturalCode"/>
-    <field index="5" term="http://rs.tdwg.org/dwc/terms/ScientificName"/>
-    <field index="6" term="http://rs.tdwg.org/dwc/terms/Locality"/>
-    <field index="7" term="http://rs.tdwg.org/dwc/terms/Order"/>
-    <field index="8" term="http://rs.tdwg.org/dwc/terms/CatalogNumber"/>
-    <field index="9" term="http://rs.tdwg.org/dwc/terms/Genus"/>
-    <field index="10" term="http://rs.tdwg.org/dwc/terms/Continent"/>
-    <field index="11" term="http://rs.tdwg.org/dwc/terms/BasisOfRecord"/>
-    <field index="12" term="http://rs.tdwg.org/dwc/terms/InfraspecificEpithet"/>
-    <field index="13" term="http://rs.tdwg.org/dwc/terms/Family"/>
-    <field index="14" term="http://rs.tdwg.org/dwc/terms/Country"/>
-    <field index="15" term="http://rs.tdwg.org/dwc/terms/Kingdom"/>
-    <field index="16" term="http://rs.tdwg.org/dwc/terms/StateProvince"/>
-    <field index="17" term="http://rs.tdwg.org/dwc/terms/MinimumElevationInMeters"/>
-    <field index="18" term="http://rs.tdwg.org/dwc/terms/Phylum"/>
-    <field index="19" term="http://rs.tdwg.org/dwc/terms/InstitutionCode"/>
-    <field index="20" term="http://rs.tdwg.org/dwc/terms/DecimalLatitude"/>
-    <field index="21" term="http://rs.tdwg.org/dwc/terms/Class"/>
-    <field index="22" term="http://rs.tdwg.org/dwc/terms/SpecificEpithet"/>
-    <field index="23" term="http://rs.tdwg.org/dwc/terms/CollectionCode"/>
-    <field index="24" term="http://rs.tdwg.org/dwc/terms/DecimalLongitude"/>
+    <field index="4" term="http://rs.tdwg.org/dwc/terms/nomenclaturalCode"/>
+    <field index="5" term="http://rs.tdwg.org/dwc/terms/scientificName"/>
+    <field index="6" term="http://rs.tdwg.org/dwc/terms/locality"/>
+    <field index="7" term="http://rs.tdwg.org/dwc/terms/oprder"/>
+    <field index="8" term="http://rs.tdwg.org/dwc/terms/catalogNumber"/>
+    <field index="9" term="http://rs.tdwg.org/dwc/terms/genus"/>
+    <field index="10" term="http://rs.tdwg.org/dwc/terms/continent"/>
+    <field index="11" term="http://rs.tdwg.org/dwc/terms/basisOfRecord"/>
+    <field index="12" term="http://rs.tdwg.org/dwc/terms/infraspecificEpithet"/>
+    <field index="13" term="http://rs.tdwg.org/dwc/terms/family"/>
+    <field index="14" term="http://rs.tdwg.org/dwc/terms/country"/>
+    <field index="15" term="http://rs.tdwg.org/dwc/terms/kingdom"/>
+    <field index="16" term="http://rs.tdwg.org/dwc/terms/stateProvince"/>
+    <field index="17" term="http://rs.tdwg.org/dwc/terms/minimumElevationInMeters"/>
+    <field index="18" term="http://rs.tdwg.org/dwc/terms/phylum"/>
+    <field index="19" term="http://rs.tdwg.org/dwc/terms/institutionCode"/>
+    <field index="20" term="http://rs.tdwg.org/dwc/terms/decimalLatitude"/>
+    <field index="21" term="http://rs.tdwg.org/dwc/terms/class"/>
+    <field index="22" term="http://rs.tdwg.org/dwc/terms/specificEpithet"/>
+    <field index="23" term="http://rs.tdwg.org/dwc/terms/collectionCode"/>
+    <field index="24" term="http://rs.tdwg.org/dwc/terms/decimalLongitude"/>
   </core>
 </archive>
