@@ -44,7 +44,7 @@
         </intellectualRights>
         <coverage>
             <geographicCoverage>
-                <geographicDescription>${eml.getGeographicCoverage().description!}</geographicDescription>
+                <geographicDescription>${(eml.getGeographicCoverage().description)!}</geographicDescription>
 	            <#if (eml.getGeographicCoverage().boundingCoordinates.min)??>
                 <boundingCoordinates>
                     <westBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.min.longitude!}</westBoundingCoordinate>
@@ -68,12 +68,13 @@
             </#if>
             <taxonomicCoverage>
                 <generalTaxonomicCoverage>${eml.taxonomicCoverageDescription!}</generalTaxonomicCoverage>
+                <#if eml.lowestCommonTaxon()?exists>
                 <taxonomicClassification>
                     <taxonRankName>${eml.lowestCommonTaxon().rank!}</taxonRankName>
                     <taxonRankValue>${eml.lowestCommonTaxon().scientificName!}</taxonRankValue>
                     <commonName>${eml.lowestCommonTaxon().commonName!}</commonName>
                 </taxonomicClassification>
-                
+                </#if>
 	        	<#list eml.getTaxonomicClassification() as k>
                 <taxonomicClassification>
                     <taxonRankName>${k.rank!}</taxonRankName>

@@ -58,7 +58,8 @@ public class DataArchiveManagerImpl extends BaseManager implements
   // CALL CSVWRITE('/Users/markus/Desktop/test.txt', 'select id, label from
   // taxon order by label', 'utf8', ' ', '')
 
-  public static final String OCC_SKIP_COLUMNS = "|SampleID|";
+  public static final String OCC_SKIP_COLUMNS = "|occurrenceID|";
+//  TODO: amend TAX_SKIP_COLUMNS for ratified DwC
   public static final String TAX_SKIP_COLUMNS = "|ScientificName|TaxonID|Kingdom|Phylum|Class|Order|Family|Genus|Subgenus|HigherTaxonID|HigherTaxon|AcceptedTaxonID|AcceptedTaxon|BasionymID|Basionym|";
   private static final String CSVWRITE = "CALL CSVWRITE('%s', '%s', 'utf8')";
   private static final String DESCRIPTOR_TEMPLATE = "/WEB-INF/pages/dwcarchive-meta.ftl";
@@ -194,6 +195,7 @@ public class DataArchiveManagerImpl extends BaseManager implements
       SQLException {
     File file = cfg.getArchiveFile(view.getResourceId(), view.getExtension());
     List<ExtensionProperty> properties = getChecklistProperties(view);
+    // TODO: Modified SELECT statement for ratified DwC output.
     String select = String.format(
         "SELECT t.guid, t.modified, t.link, t.source_id, t.label as ScientificName, acc.guid as AcceptedTaxonID,acc.label AcceptedTaxon, p.guid as HigherTaxonID,p.label as HigherTaxon, bas.guid as BasionymID,bas.label as Basionym %s FROM taxon t left join taxon p on t.parent_fk=p.id left join taxon acc on t.acc_fk=acc.id left join taxon bas on t.bas_fk=bas.id WHERE t.resource_fk=%s",
         buildPropertySelect("t.", properties), view.getResourceId());
@@ -229,6 +231,8 @@ public class DataArchiveManagerImpl extends BaseManager implements
       col = "orderrr as \"ORDER\" ";
     } else if (col.equalsIgnoreCase("class")) {
       col = "classs as \"CLASS\" ";
+    } else if( col.equalsIgnoreCase("group")){
+      col = "grouppp as \"GROUP\" ";
     }
     return col;
   }
