@@ -63,11 +63,14 @@ public class EmlFactory {
 		digester.addBeanPropertySetter("eml/dataset/abstract/para", "abstract");
 		digester.addBeanPropertySetter("eml/dataset/additionalInfo/para", "additionalInfo");
 		digester.addBeanPropertySetter("eml/dataset/intellectualRights/para", "intellectualRights");
-		digester.addBeanPropertySetter("eml/dataset/distribution/online/url", "distributionUrl");
 		digester.addBeanPropertySetter("eml/dataset/purpose/para", "purpose");
-		digester.addBeanPropertySetter("eml/dataset/pubPlace", "publishPlace");
-		digester.addCallMethod("eml/dataset/pubDate", "setPubDate", 1);
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/specimenPreservationMethod", "specimenPreservationMethod");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/metadataLanguage", "metadataLanguage");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/hierarchyLevel", "hierarchyLevel");
+
+    digester.addCallMethod("eml/dataset/pubDate", "setPubDate", 1);
 		digester.addCallParam("eml/dataset/pubDate", 0);
+		
 		addAgentRules(digester, "eml/dataset/creator", "setResourceCreator");
 		addAgentRules(digester, "eml/dataset/metadataProvider", "setMetadataProvider");
 		addAgentRules(digester, "eml/dataset/associatedParty", "addAssociatedParty");
@@ -77,8 +80,15 @@ public class EmlFactory {
 		addTaxonomicCoverageRules(digester);
 		addMethodRules(digester);
 		addProjectRules(digester);
-		
-		// now parse and return the EML 
+		addPhysicalDataRules(digester);
+		addJGTICuratorialIUnit(digester);
+
+	  // rule to call "addCitation" on last stack object, with 1 param
+		digester.addCallMethod("eml/additionalMetadata/metadata/citation", "addCitation", 1);
+	  // set the parameter to pass in to the method as the citation content
+	  digester.addCallParam("eml/additionalMetadata/metadata/citation", 0);
+
+    // now parse and return the EML 
 		try {
 			digester.parse(xml);
 		} finally {
@@ -87,10 +97,36 @@ public class EmlFactory {
 
 		return eml;
 	}
+	
+  /**
+   * Add rules to extract the jgtiCuratorialUnit
+   * @param digester to add the rules to
+   */
+  private static void addJGTICuratorialIUnit(Digester digester) {
+    digester.addObjectCreate("eml/additionalMetadata/metadata/jgtiCuratorialUnit", JGTICuratorialUnit.class);
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnitRange/beginRange", "rangeStart");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnitRange/endRange", "rangeEnd");
+    digester.addSetNext("eml/additionalMetadata/metadata/jgtiCuratorialUnit", "setJgtiCuratorialUnit"); // add the addJGTICuratorialIUnit to the list in EML    
+  }
+  
+  /**
+   * Add rules to extract the physicalData
+   * @param digester to add the rules to
+   */
+  private static void addPhysicalDataRules(Digester digester) {
+    digester.addObjectCreate("eml/additionalMetadata/metadata/physical", PhysicalData.class);
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/physical/objectName", "name");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/physical/characterEncoding", "charset");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/physical/dataFormat/externallyDefinedFormat/formatName", "format");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/physical/dataFormat/externallyDefinedFormat/formatVersion", "formatVersion");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/physical/distribution/online/url", "distributionUrl");
+    digester.addSetNext("eml/additionalMetadata/metadata/physical", "addPhysicalData"); // add the PhysicalData to the list in EML    
+  }
+	
 
 	/**
 	 * Add rules for pulling the project details
-	 * @param digester To add the rules to
+	 * @param digester to add the rules to
 	 */
 	private static void addProjectRules(Digester digester) {
 		digester.addObjectCreate("eml/dataset/project", Project.class);
@@ -106,7 +142,7 @@ public class EmlFactory {
 
 	/**
 	 * Adds rules to extract the taxonomic coverage 
-	 * @param digester To add the rules to
+	 * @param digester to add the rules to
 	 */
 	private static void addTaxonomicCoverageRules(Digester digester) {
 		digester.addObjectCreate("eml/dataset/coverage/taxonomicCoverage", TaxonomicCoverage.class);
@@ -121,7 +157,7 @@ public class EmlFactory {
 
 	/**
 	 * Adds rules to extract the temporal coverage
-	 * @param digester To add the rules to
+	 * @param digester to add the rules to
 	 */
 	private static void addTemporalCoverageRules(Digester digester) {
 		digester.addObjectCreate("eml/dataset/coverage/temporalCoverage", TemporalCoverage.class);
@@ -138,8 +174,8 @@ public class EmlFactory {
 	}
 
 	/**
-	 * Adds rules to get the geographics coverage
-	 * @param digester To add the rules to
+	 * Adds rules to get the geographic coverage
+	 * @param digester to add the rules to
 	 */
 	private static void addGeographicCoverageRules(Digester digester) {
 		digester.addObjectCreate("eml/dataset/coverage/geographicCoverage", GeospatialCoverage.class);
@@ -155,7 +191,7 @@ public class EmlFactory {
 
 	/**
 	 * Add rules to extract the keywords
-	 * @param digester To add the rules to
+	 * @param digester to add the rules to
 	 */
 	private static void addKeywordRules(Digester digester) {
 		digester.addObjectCreate("eml/dataset/keywordSet", KeywordSet.class);
@@ -170,7 +206,7 @@ public class EmlFactory {
 	 * In the EML, it will always be a repetition of [methodStep, ?sampling, ?qualityControl]
 	 * (sampling and quality control are optional)
 	 * to handle this, the utility object MethodsParseUtil is used to collect the methods
-	 * @param digester To add the rules to
+	 * @param digester to add the rules to
 	 */
 	private static void addMethodRules(Digester digester) {
 		digester.addObjectCreate("eml/dataset/methods", MethodParseUtil.class);
@@ -189,7 +225,7 @@ public class EmlFactory {
 	 * This is a reusable set of rules to build Agents and their Addresses, and add the Agent to the
 	 * predecessor object on the Stack
 	 * Note that we are ignoring the userId as there have been no requests for the IPT to support this
-	 * @param digester To add the rules to
+	 * @param digester to add the rules to
 	 * @param prefix The XPath prefix to prepend for extracting the Agent information
 	 * @param parentMethod Of the previous stack object to call and add the Agent to 
 	 */
@@ -213,5 +249,5 @@ public class EmlFactory {
 		// TODO handle ROLE
 		
 		digester.addSetNext(prefix + "", parentMethod); // method called on parent object which is the previous stack object
-	}
+	}  
 }

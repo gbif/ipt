@@ -285,7 +285,7 @@
 	<!-- Note the repetition -->
     <additionalMetadata>
         <metadata>
-            <physical:physical>
+            <physical>
                 <objectName>INV-GCEM-0305a1_1_1.shp</objectName>
                 <characterEncoding>ASCII</characterEncoding>
                 <dataFormat>
@@ -299,12 +299,12 @@
                         <url function="download">http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&amp;urlTail=accession=INV-GCEM-0305a1&amp;filename=INV-GCEM-0305a1_1_1.TXT</url>
                     </online>
                 </distribution>
-            </physical:physical>
+            </physical>
         </metadata>
     </additionalMetadata>
     <additionalMetadata>
         <metadata>
-            <physical:physical>
+            <physical>
                 <objectName>INV-GCEM-0305a1_1_2.shp</objectName>
                 <characterEncoding>ASCII</characterEncoding>
                 <dataFormat>
@@ -318,7 +318,7 @@
                         <url function="download">http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&amp;urlTail=accession=INV-GCEM-0305a1&amp;filename=INV-GCEM-0305a1_1_2.TXT</url>
                     </online>
                 </distribution>
-            </physical:physical>
+            </physical>
         </metadata>
     </additionalMetadata>
     

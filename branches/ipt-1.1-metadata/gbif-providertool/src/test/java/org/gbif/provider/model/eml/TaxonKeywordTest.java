@@ -29,47 +29,47 @@ import org.junit.Test;
  * 
  */
 public class TaxonKeywordTest {
-
-  @Test
-  public final void testCreate() {
-    TaxonKeyword.create(null, null, null);
-    TaxonKeyword.create("sn", "r", "cn");
-  }
-
-  @Test
-  public final void testEqualsObject() {
-    assertEquals(TaxonKeyword.create("sn", "r", "cn"), TaxonKeyword.create(
-        "sn", "r", "cn"));
-  }
-
-  @Test
-  public final void testGetCommonName() {
-    assertEquals("cn", TaxonKeyword.create("sn", "r", "cn").getCommonName());
-  }
-
-  @Test
-  public final void testGetRank() {
-    assertEquals("r", TaxonKeyword.create("sn", "r", "cn").getRank());
-  }
-
-  @Test
-  public final void testGetScientificName() {
-    assertEquals("sn", TaxonKeyword.create("sn", "r", "cn").getScientificName());
-  }
-
-  @Test
-  public final void testHashCode() {
-    assertEquals(TaxonKeyword.create("sn", "r", "cn").hashCode(),
-        TaxonKeyword.create("sn", "r", "cn").hashCode());
-    TaxonKeyword tk = TaxonKeyword.create("sn", "r", "cn");
-    Map<TaxonKeyword, String> map = Maps.newHashMap();
-    map.put(tk, "foo");
-    assertTrue(map.containsKey(TaxonKeyword.create("sn", "r", "cn")));
-  }
-
-  @Test
-  public final void testToString() {
-    assertEquals("ScientificName=sn, Rank=r, CommonName=cn",
-        TaxonKeyword.create("sn", "r", "cn").toString());
-  }
+//
+//  @Test
+//  public final void testCreate() {
+//    TaxonKeyword.create(null, null, null);
+//    TaxonKeyword.create("sn", "r", "cn");
+//  }
+//
+//  @Test
+//  public final void testEqualsObject() {
+//    assertEquals(TaxonKeyword.create("sn", "r", "cn"), TaxonKeyword.create(
+//        "sn", "r", "cn"));
+//  }
+//
+//  @Test
+//  public final void testGetCommonName() {
+//    assertEquals("cn", TaxonKeyword.create("sn", "r", "cn").getCommonName());
+//  }
+//
+//  @Test
+//  public final void testGetRank() {
+//    assertEquals("r", TaxonKeyword.create("sn", "r", "cn").getRank());
+//  }
+//
+//  @Test
+//  public final void testGetScientificName() {
+//    assertEquals("sn", TaxonKeyword.create("sn", "r", "cn").getScientificName());
+//  }
+//
+//  @Test
+//  public final void testHashCode() {
+//    assertEquals(TaxonKeyword.create("sn", "r", "cn").hashCode(),
+//        TaxonKeyword.create("sn", "r", "cn").hashCode());
+//    TaxonKeyword tk = TaxonKeyword.create("sn", "r", "cn");
+//    Map<TaxonKeyword, String> map = Maps.newHashMap();
+//    map.put(tk, "foo");
+//    assertTrue(map.containsKey(TaxonKeyword.create("sn", "r", "cn")));
+//  }
+//
+//  @Test
+//  public final void testToString() {
+//    assertEquals("ScientificName=sn, Rank=r, CommonName=cn",
+//        TaxonKeyword.create("sn", "r", "cn").toString());
+//  }
 }

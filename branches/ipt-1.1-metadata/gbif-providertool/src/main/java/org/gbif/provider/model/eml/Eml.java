@@ -342,18 +342,27 @@ public class Eml implements Serializable {
 	 * utility to add Agents to the primary contacts This method was introduced
 	 * to ease the Digester rules for parsing of EML
 	 * 
-	 * @param agent To add
+	 * @param agent to add
 	 */
 	public void addAssociatedParty(Agent agent) {
 		agent.setRole(Role.ASSOCIATED_PARTY);
 		associatedParties.add(agent);
 	}
+	
+  /**
+   * utility to add a citation to the citations.
+   * This method was introduced to ease the Digester rules for parsing of EML
+   * @param citation to add
+   */
+  public void addCitation(String citation) {
+    citations.add(citation);
+  }
 
 	/**
 	 * utility to add keywords to the keyword sets This method was introduced to
 	 * ease the Digester rules for parsing of EML
 	 * 
-	 * @param agent To add
+	 * @param agent to add
 	 */
 	public void addKeywordSet(KeywordSet keywordSet) {
 		keywords.add(keywordSet);
@@ -363,7 +372,7 @@ public class Eml implements Serializable {
 	 * utility to add a coverage to the coverages This method was introduced to
 	 * ease the Digester rules for parsing of EML
 	 * 
-	 * @param coverage To add
+	 * @param coverage to add
 	 */
 	public void addGeospatialCoverage(GeospatialCoverage geospatialCoverage) {
 		geospatialCoverages.add(geospatialCoverage);
@@ -373,7 +382,7 @@ public class Eml implements Serializable {
 	 * utility to add a coverage to the coverages This method was introduced to
 	 * ease the Digester rules for parsing of EML
 	 * 
-	 * @param coverage To add
+	 * @param coverage to add
 	 */
 	public void addTemporalCoverage(TemporalCoverage coverage) {
 		temporalCoverages.add(coverage);
@@ -383,11 +392,21 @@ public class Eml implements Serializable {
 	 * utility to add a coverage to the coverages This method was introduced to
 	 * ease the Digester rules for parsing of EML
 	 * 
-	 * @param coverage To add
+	 * @param coverage to add
 	 */
 	public void addTaxonomicCoverage(TaxonomicCoverage coverage) {
 		taxonomicCoverages.add(coverage);
 	}
+
+  /**
+   * utility to add a PhysicalData instance to the physicalData list. This method was introduced to
+   * ease the Digester rules for parsing of EML
+   * 
+   * @param PhysicalData to add
+   */
+  public void addPhysicalData(PhysicalData physicalData) {
+    this.physicalData.add(physicalData);
+  }
 
 	/**
 	 * Utility to set the date with a textual format The date that the resource
@@ -494,9 +513,13 @@ public class Eml implements Serializable {
 		return metadataLanguage;
 	}
 
-	public void setMetadataLanguage(String metadataLanguage) {
-		this.metadataLanguage = metadataLanguage;
-	}
+  public void setMetadataLanguage(String language) {
+    this.metadataLanguage = language;
+  }
+
+//  public void addSpecimenPreservationMethod(String level) {
+//    this.specimenPreservationMethod = level;
+//  }
 
 	public Date getDateStamp() {
 		return dateStamp;
