@@ -30,7 +30,7 @@ import javax.persistence.Transient;
 /**
  * Bounding box representation with 2 points. P1 has maximum latitude and
  * longitude, while p2 represents the minimum ones, i.e. p1 is NorthEast, p2 is
- * SoutWest
+ * SouthWest
  * 
  */
 @Embeddable
@@ -59,26 +59,58 @@ public class BBox implements Serializable {
 
   public BBox(Double minY, Double minX, Double maxY, Double maxX) {
     super();
-    setMax(new Point(maxY, maxX));
-    setMin(new Point(minY, minX));
+    this.min=new Point(minY, minX);
+    this.max=new Point(maxY, maxX);
+    setOrderedBounds(minY, minX, maxY, maxX);
   }
 
   public BBox(Point min, Point max) {
     super();
-    setMax(max);
-    setMin(min);
+    this.min=new Point(min);
+    this.max=new Point(max);
+    setOrderedBounds(min.getLatitude(), min.getLongitude(), max.getLatitude(), max.getLongitude());
   }
   
+  // Insure p1 is NE (max lat and long) and p2 is SW (min lat and long)
+  public void setOrderedBounds(Double minY, Double minX, Double maxY, Double maxX){
+    setOrderedX(minX, maxX);
+    setOrderedY(minY, maxY);
+  }
+
+  // Insure that the greater of the x values goes in max and the lesser in min
+  public void setOrderedX(Double x1, Double x2){
+    if (max == null) max=new Point(x2,0d);
+    if (min == null) min=new Point(x1,0d);
+    if(x1>x2){
+      min.setLongitude(x2);
+      max.setLongitude(x1);
+    } else {
+      min.setLongitude(x1);
+      max.setLongitude(x2);
+    }
+  }
+
+  // Insure that the greater of the y values goes in max and the lesser in min
+  public void setOrderedY(Double y1, Double y2){
+    if (max == null) max=new Point(0d,y2);
+    if (min == null) min=new Point(0d,y1);
+    if(y1>y2){
+      min.setLatitude(y2);
+      max.setLatitude(y1);
+    } else {
+      min.setLatitude(y1);
+      max.setLatitude(y2);
+    }
+  }
+
   /**
    * Sets the westing coordinate
    */
   public void setMaxX(String s) {
-	  Point p = getMax();
 	  try {
-		p.setX(Double.parseDouble(s));
-		setMax(p);
+		setOrderedX(max.getLongitude(),Double.parseDouble(s));
 	  } catch (NumberFormatException e) {
-		// not much can be done really, it is bad, so do not update
+		// not a Double, so not much can be done really
 		  e.printStackTrace();
 	  }
   }
@@ -87,12 +119,10 @@ public class BBox implements Serializable {
    * Sets the easting coordinate
    */
   public void setMinX(String s) {
-	  Point p = getMin();
 	  try {
-		p.setX(Double.parseDouble(s));
-		setMin(p);
+	    setOrderedX(min.getLongitude(),Double.parseDouble(s));
 	  } catch (NumberFormatException e) {
-		// not much can be done really, it is bad, so do not update
+	    // not a Double, so not much can be done really
 	  }
   }
 
@@ -100,12 +130,10 @@ public class BBox implements Serializable {
    * Sets the northing coordinate
    */
   public void setMaxY(String s) {
-	  Point p = getMax();
 	  try {
-		p.setY(Double.parseDouble(s));
-		setMax(p);
+	    setOrderedY(max.getLatitude(),Double.parseDouble(s));
 	  } catch (NumberFormatException e) {
-		// not much can be done really, it is bad, so do not update
+      // not a Double, so not much can be done really
 	  }
   }
 
@@ -113,12 +141,10 @@ public class BBox implements Serializable {
    * Sets the southing coordinate
    */
   public void setMinY(String s) {
-	  Point p = getMin();
 	  try {
-		p.setY(Double.parseDouble(s));
-		setMin(p);
+      setOrderedY(min.getLatitude(),Double.parseDouble(s));
 	  } catch (NumberFormatException e) {
-		// not much can be done really, it is bad, so do not update
+      // not a Double, so not much can be done really
 	  }
   }
 
@@ -300,8 +326,9 @@ public class BBox implements Serializable {
     }
     Point c1 = this.centre();
     Point c2 = bbox.centre();
-    // if distance of centre points is smaller than sum of width/2 and height/2
-    // for the 2 boxes we overlap!
+    // If distance between centre X's is smaller than the sum of half the widths  of the two boxes and
+    // the distance between centre Y's is smaller than the sum of half the heights of the two boxes,
+    // then the two boxes overlap! A shared boundary is not considered an overlap here.
     if (c1.distanceX(c2) < (this.width() / 2.0 + bbox.width() / 2.0)
         && (c1.distanceY(c2) < (this.height() / 2.0 + bbox.height() / 2.0))) {
       return true;
@@ -351,18 +378,22 @@ public class BBox implements Serializable {
   public void setMax(Point max) {
     if (max == null) {
       this.max = null;
+      return;
     } else {
-      // dont want to reference the same object. make copy
-      this.max = new Point(max);
+      if (this.min == null) this.min=new Point(max.getX(),max.getY());
+      setOrderedX(this.min.getX(),max.getX());
+      setOrderedY(this.min.getY(),max.getY());
     }
   }
 
   public void setMin(Point min) {
     if (min == null) {
       this.min = null;
+      return;
     } else {
-      // dont want to reference the same object. make copy
-      this.min = new Point(min);
+      if (this.max == null) this.max=new Point(min.getX(), min.getY());
+      setOrderedX(this.min.getX(),max.getX());
+      setOrderedY(this.min.getY(),max.getY());
     }
   }
 
@@ -373,9 +404,7 @@ public class BBox implements Serializable {
    */
   @Transient
   public double surface() {
-    double width = max.getLongitude() - min.getLongitude();
-    double height = max.getLatitude() - min.getLatitude();
-    return width * height;
+    return width() * height();
   }
 
   @Override
