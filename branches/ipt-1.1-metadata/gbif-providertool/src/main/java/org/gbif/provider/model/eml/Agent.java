@@ -16,6 +16,9 @@
 package org.gbif.provider.model.eml;
 
 import org.gbif.provider.model.Address;
+import org.gbif.provider.model.DarwinCore.Type;
+
+import com.google.common.base.Preconditions;
 
 import java.io.Serializable;
 
@@ -65,9 +68,9 @@ public class Agent implements Serializable {
 		return position;
 	}
 
-	public Role getRole() {
-		return role;
-	}
+  public Role getRole() {
+    return role;
+  }
 
 	public void setAddress(Address address) {
 		this.address = address;
@@ -104,4 +107,19 @@ public class Agent implements Serializable {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
+  // TODO: Need to do better than this.
+  public void setRole(String rolestring) {
+    Preconditions.checkNotNull(rolestring);
+    Preconditions.checkArgument(rolestring.length() > 0);
+    String property = rolestring.toLowerCase();
+    if (property.equals("principleinvestigator")) {
+      this.role=Role.PRINCIPAL_INVESTIGATOR;
+    } else if (property.equals("publisher")) {
+      this.role=Role.PUBLISHER;
+    } else if (property.equals("pointofcontact")) {
+      this.role=Role.POINT_OF_CONTACT;
+    }
+  }
+
 }

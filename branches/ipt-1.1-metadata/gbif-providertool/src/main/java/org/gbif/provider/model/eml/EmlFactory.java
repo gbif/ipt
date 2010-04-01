@@ -67,6 +67,9 @@ public class EmlFactory {
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/specimenPreservationMethod", "specimenPreservationMethod");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/metadataLanguage", "metadataLanguage");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/hierarchyLevel", "hierarchyLevel");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/collection/parentCollectionIdentifier", "parentCollectionId");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/collection/collectionIdentifier", "collectionId");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/collection/collectionName", "collectionName");
 
     digester.addCallMethod("eml/dataset/pubDate", "setPubDate", 1);
 		digester.addCallParam("eml/dataset/pubDate", 0);
@@ -77,7 +80,9 @@ public class EmlFactory {
 		addKeywordRules(digester);
 		addGeographicCoverageRules(digester);
 		addTemporalCoverageRules(digester);
-		addTaxonomicCoverageRules(digester);
+    addLivingTimePeriodRules(digester);
+    addFormationPeriodRules(digester);
+    addTaxonomicCoverageRules(digester);
 		addMethodRules(digester);
 		addProjectRules(digester);
 		addPhysicalDataRules(digester);
@@ -164,6 +169,9 @@ public class EmlFactory {
 		digester.addCallMethod("eml/dataset/coverage/temporalCoverage/singleDateTime/calendarDate", "setStart", 2);
 		digester.addCallParam("eml/dataset/coverage/temporalCoverage/singleDateTime/calendarDate", 0);
 		digester.addObjectParam("eml/dataset/coverage/temporalCoverage/singleDateTime/calendarDate", 1, "yyyy-MM-dd");
+    digester.addCallMethod("eml/dataset/coverage/temporalCoverage/singleDateTime/calendarDate", "setEnd", 2);
+    digester.addCallParam("eml/dataset/coverage/temporalCoverage/singleDateTime/calendarDate", 0);
+    digester.addObjectParam("eml/dataset/coverage/temporalCoverage/singleDateTime/calendarDate", 1, "yyyy-MM-dd");
 		digester.addCallMethod("eml/dataset/coverage/temporalCoverage/rangeOfDates/beginDate/calendarDate", "setStart", 2);
 		digester.addCallParam("eml/dataset/coverage/temporalCoverage/rangeOfDates/beginDate/calendarDate", 0);
 		digester.addObjectParam("eml/dataset/coverage/temporalCoverage/rangeOfDates/beginDate/calendarDate", 1, "yyyy-MM-dd");
@@ -171,9 +179,31 @@ public class EmlFactory {
 		digester.addCallParam("eml/dataset/coverage/temporalCoverage/rangeOfDates/endDate/calendarDate", 0);
 		digester.addObjectParam("eml/dataset/coverage/temporalCoverage/rangeOfDates/endDate/calendarDate", 1, "yyyy-MM-dd");
 		digester.addSetNext("eml/dataset/coverage/temporalCoverage", "addTemporalCoverage"); // add the TemporalCoverage to the list in EML
-	}
+}
 
-	/**
+  /**
+   * Adds rules to extract the livingTimePeriod temporal coverage
+   * @param digester to add the rules to
+   */
+  private static void addLivingTimePeriodRules(Digester digester) {
+    digester.addObjectCreate("eml/additionalMetadata/metadata/livingTimePeriod", TemporalCoverage.class);
+    digester.addCallMethod("eml/additionalMetadata/metadata/livingTimePeriod", "setLivingTimePeriod", 1);
+    digester.addCallParam("eml/additionalMetadata/metadata/livingTimePeriod", 0);
+    digester.addSetNext("eml/additionalMetadata/metadata/livingTimePeriod", "addTemporalCoverage"); // add the TemporalCoverage to the list in EML
+  }
+
+  /**
+   * Adds rules to extract the livingTimePeriod temporal coverage
+   * @param digester to add the rules to
+   */
+  private static void addFormationPeriodRules(Digester digester) {
+    digester.addObjectCreate("eml/additionalMetadata/metadata/formationPeriod", TemporalCoverage.class);
+    digester.addCallMethod("eml/additionalMetadata/metadata/formationPeriod", "setFormationPeriod", 1);
+    digester.addCallParam("eml/additionalMetadata/metadata/formationPeriod", 0);
+    digester.addSetNext("eml/additionalMetadata/metadata/formationPeriod", "addTemporalCoverage"); // add the TemporalCoverage to the list in EML
+  }
+
+  /**
 	 * Adds rules to get the geographic coverage
 	 * @param digester to add the rules to
 	 */
@@ -235,9 +265,13 @@ public class EmlFactory {
 		digester.addBeanPropertySetter(prefix + "/individualName/surName", "lastName");
 		digester.addBeanPropertySetter(prefix + "/organizationName", "organisation");
 		digester.addBeanPropertySetter(prefix + "/positionName", "position");
-		digester.addBeanPropertySetter(prefix + "/phone", "phone");
+    digester.addBeanPropertySetter(prefix + "/phone", "phone");
 		digester.addBeanPropertySetter(prefix + "/electronicMailAddress", "email");
 		digester.addBeanPropertySetter(prefix + "/onlineUrl", "homepage");
+
+		digester.addCallMethod(prefix + "/role", "setRole", 1);
+    digester.addCallParam(prefix + "/role", 0);
+
 		digester.addObjectCreate(prefix + "/address", Address.class);
 		digester.addBeanPropertySetter(prefix + "/address/city", "city");
 		digester.addBeanPropertySetter(prefix + "/address/administrativeArea", "province");
@@ -245,9 +279,6 @@ public class EmlFactory {
 		digester.addBeanPropertySetter(prefix + "/address/country", "country");
 		digester.addBeanPropertySetter(prefix + "/address/deliveryPoint", "address");
 		digester.addSetNext(prefix + "/address", "setAddress"); // called on </address> to set on parent Agent
-		
-		// TODO handle ROLE
-		
 		digester.addSetNext(prefix + "", parentMethod); // method called on parent object which is the previous stack object
 	}  
 }

@@ -130,8 +130,8 @@
             <geographicCoverage>
 				<geographicDescription>Bounding Box 1</geographicDescription>
                 <boundingCoordinates>
-                    <westBoundingCoordinate>0.703</westBoundingCoordinate>
-                    <eastBoundingCoordinate>-1.564</eastBoundingCoordinate>
+                    <westBoundingCoordinate>-1.564</westBoundingCoordinate>
+                    <eastBoundingCoordinate>0.703</eastBoundingCoordinate>
                     <northBoundingCoordinate>23.975</northBoundingCoordinate>
                     <southBoundingCoordinate>-22.745</southBoundingCoordinate>
                 </boundingCoordinates>

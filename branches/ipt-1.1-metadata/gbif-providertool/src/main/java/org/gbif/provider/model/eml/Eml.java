@@ -345,7 +345,7 @@ public class Eml implements Serializable {
 	 * @param agent to add
 	 */
 	public void addAssociatedParty(Agent agent) {
-		agent.setRole(Role.ASSOCIATED_PARTY);
+	  if ( agent.getRole() == null ) agent.setRole(Role.ASSOCIATED_PARTY);
 		associatedParties.add(agent);
 	}
 	
