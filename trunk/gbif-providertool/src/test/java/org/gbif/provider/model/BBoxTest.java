@@ -38,7 +38,7 @@ public class BBoxTest {
     p2 = new Point(31.243, -13.9883);
     p3 = new Point(41.1, -3.9);
     p4 = new Point(41.1, -33.9);
-    bbox = new BBox(p2, p1);
+    bbox = new BBox(p1, p2);
   }
 
   @Test
@@ -69,8 +69,7 @@ public class BBoxTest {
     bbox.expandBox(p4);
     assertTrue(bbox.contains(p4));
 
-    // test with null values in bbox
-    bbox = new BBox();
+    bbox = new BBox(0d,0d,0d,0d);
     assertFalse(bbox.contains(p4));
     bbox.expandBox(p4);
     assertTrue(bbox.contains(p4));

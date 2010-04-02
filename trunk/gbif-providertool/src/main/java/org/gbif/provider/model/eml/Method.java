@@ -15,102 +15,107 @@
  */
 package org.gbif.provider.model.eml;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.Objects;
-
 import java.io.Serializable;
 
 /**
- * This class can be used to encapsulate information about a sampling method.
- * 
- * Note that this class is immuatable. New instances can be created using the
- * create method.
- * 
+ * Encapsulates the description of the sampling methods employed
  */
 public class Method implements Serializable {
+	/**
+	 * Generated 
+	 */
+	private static final long serialVersionUID = 8272714768039859733L;
 
-  private static final long serialVersionUID = 2725055780405284137L;
+	/**
+	 * Default constructor required by Struts2
+	 */
+	public Method() {
+	}
 
-  /**
-   * Creates a new Method instance. Throws {@link NullPointerException} if any
-   * of the arguments are null. Throws {@link IllegalArgumentException} if any
-   * of the arguments are the empty string.
-   * 
-   * @param maintenance the maintenance
-   * @param purpose the purpose
-   * @param qualityControl the quality control
-   * @param sampleDescription the sample description
-   * @return new instance of Method
-   */
-  public static Method create(String maintenance, String purpose,
-      String qualityControl, String sampleDescription) {
-    checkNotNull(maintenance, "Maintenance was null");
-    checkArgument(!maintenance.isEmpty(), "Maintenance was empty");
-    checkNotNull(purpose, "Purpose was null");
-    checkArgument(!purpose.isEmpty(), "Purpose was empty");
-    checkNotNull(qualityControl, "Quality control was null");
-    checkArgument(!qualityControl.isEmpty(), "Quality control was empty");
-    checkNotNull(sampleDescription, "Sample description was null");
-    checkArgument(!sampleDescription.isEmpty(), "Sample description was empty");
-    return new Method(maintenance, purpose, qualityControl, sampleDescription);
-  }
+	/**
+	 * "The methodStep field allows for repeated sets of elements that document a series of procedures followed to produce a data object. 
+	 * These include text descriptions of the procedures, relevant literature, software, instrumentation, source data 
+	 * and any quality control measures taken."
+	 * This implementation allows only the declaration of the step description 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-methods.html#methodStep
+	 */
+	private String stepDescription;
+	
+	/**
+	 * "The coverage field allows for a textual description of the specific sampling area, the sampling frequency (temporal boundaries, 
+	 * frequency of occurrence), and groups of living organisms sampled (taxonomic coverage)."
+	 * This implementation allows only the declaration of the extent description   
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-methods.html#studyExtent
+	 */
+	private String studyExtent;
+	
+	/**
+	 * The samplingDescription field allows for a text-based/human readable description of the sampling procedures used in the research project. 
+	 * The content of this element would be similar to a description of sampling procedures found in the methods section of a journal article. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-methods.html#samplingDescription
+	 */
+	private String sampleDescription;
+	
+	/**
+	 * The qualityControl field provides a location for the description of actions taken to either control or assess the quality of 
+	 * data resulting from the associated method step. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-methods.html#qualityControl
+	 */
+	private String qualityControl;
 
-  private final String maintenance;
-  private final String purpose;
-  private final String qualityControl;
-  private final String sampleDescription;
+	/**
+	 * @return the stepDescription
+	 */
+	public String getStepDescription() {
+		return stepDescription;
+	}
 
-  private Method(String maintenance, String purpose, String qualityControl,
-      String sampleDescription) {
-    this.maintenance = maintenance;
-    this.purpose = purpose;
-    this.qualityControl = qualityControl;
-    this.sampleDescription = sampleDescription;
-  }
+	/**
+	 * @param stepDescription the stepDescription to set
+	 */
+	public void setStepDescription(String stepDescription) {
+		this.stepDescription = stepDescription;
+	}
 
-  @Override
-  public boolean equals(Object other) {
-    if (this == other) {
-      return true;
-    }
-    if (!(other instanceof Method)) {
-      return false;
-    }
-    Method o = (Method) other;
-    return equal(maintenance, o.maintenance) && equal(purpose, o.purpose)
-        && equal(qualityControl, o.qualityControl)
-        && equal(sampleDescription, o.sampleDescription);
-  }
+	/**
+	 * @return the studyExtent
+	 */
+	public String getStudyExtent() {
+		return studyExtent;
+	}
 
-  public String getMaintenance() {
-    return maintenance;
-  }
+	/**
+	 * @param studyExtent the studyExtent to set
+	 */
+	public void setStudyExtent(String studyExtent) {
+		this.studyExtent = studyExtent;
+	}
 
-  public String getPurpose() {
-    return purpose;
-  }
+	/**
+	 * @return the sampleDescription
+	 */
+	public String getSampleDescription() {
+		return sampleDescription;
+	}
 
-  public String getQualityControl() {
-    return qualityControl;
-  }
+	/**
+	 * @param sampleDescription the sampleDescription to set
+	 */
+	public void setSampleDescription(String sampleDescription) {
+		this.sampleDescription = sampleDescription;
+	}
 
-  public String getSampleDescription() {
-    return sampleDescription;
-  }
+	/**
+	 * @return the qualityControl
+	 */
+	public String getQualityControl() {
+		return qualityControl;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(maintenance, purpose, qualityControl,
-        sampleDescription);
-  }
-
-  @Override
-  public String toString() {
-    return String.format(
-        "Maintenance=%s, Purpose=%s, QualityControl=%s, SampleDescription=%s",
-        maintenance, purpose, qualityControl, sampleDescription);
-  }
+	/**
+	 * @param qualityControl the qualityControl to set
+	 */
+	public void setQualityControl(String qualityControl) {
+		this.qualityControl = qualityControl;
+	}
 }

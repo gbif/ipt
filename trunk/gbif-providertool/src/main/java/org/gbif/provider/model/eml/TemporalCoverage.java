@@ -16,105 +16,127 @@
 package org.gbif.provider.model.eml;
 
 import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
+
+import com.google.common.base.Objects;
 
 /**
- * This class can be used to encapsulate temporal converage information.
- * 
- * Note that this class is immutable. New instances can be created using the
- * create method.
- * 
+ * This class can be used to encapsulate temporal coverage information.
  */
 public class TemporalCoverage implements Serializable {
+	/**
+	 * Generated
+	 */
+	private static final long serialVersionUID = 898101764914677290L;
 
-  private static final long serialVersionUID = 898101764914677290L;
+	/**
+	 * A single time stamp signifying the beginning of some time period. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#beginDate
+	 */
+	private Date startDate;
 
-  /**
-   * Creates a new instance of TemporalCovereage. Throws
-   * {@link NullPointerException} if the description, endDate, or startDate
-   * arguments are null. Throws an {@link IllegalArgumentException} if the
-   * description argument is the empty string.
-   * 
-   * @param description the description
-   * @param endDate the end date
-   * @param keywords the keywords
-   * @param startDate the start date
-   * @return new instance of TemporalConverage
-   */
-  public static TemporalCoverage create(String description, Date endDate,
-      Set<String> keywords, Date startDate) {
-    checkNotNull(description, "Description was null");
-    checkArgument(!description.isEmpty(), "Description was empty");
-    checkNotNull(endDate, "EndDate was null");
-    checkNotNull(startDate, "StartDate was null");
-    ImmutableSet<String> kw;
-    if (keywords == null) {
-      kw = ImmutableSet.of();
-    } else {
-      kw = ImmutableSet.copyOf(keywords);
-    }
-    return new TemporalCoverage(description, endDate, kw, startDate);
-  }
+	/**
+	 * A single time stamp signifying the end of some time period. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#endDate
+	 */
+	private Date endDate;
 
-  private final String description;
-  private final Date endDate;
-  private final ImmutableSet<String> keywords;
-  private final Date startDate;
+	/**
+	 * Text description of the time period during which the collection was assembled e.g. "Victorian", 
+	 * or "1922 - 1932", or "c. 1750". 
+	 * @see http://rs.tdwg.org/ontology/voc/Collection#formationPeriod 
+	 */
+	private String formationPeriod;
 
-  private TemporalCoverage(String description, Date endDate,
-      ImmutableSet<String> keywords, Date startDate) {
-    this.description = description;
-    this.endDate = endDate;
-    this.keywords = keywords;
-    this.startDate = startDate;
-  }
+	/**
+	 * Time period during which biological material was alive. (for palaeontological collections).
+	 * @see http://rs.tdwg.org/ontology/voc/Collection#livingTimePeriodCoverage 
+	 */
+	private String livingTimePeriod;
 
-  @Override
-  public boolean equals(Object other) {
-    if (this == other) {
-      return true;
-    }
-    if (!(other instanceof TemporalCoverage)) {
-      return false;
-    }
-    TemporalCoverage o = (TemporalCoverage) other;
-    return equal(description, o.description) && equal(endDate, o.endDate)
-        && equal(keywords, o.keywords) && equal(startDate, o.startDate);
-  }
+	/**
+	 * Required by Struts2
+	 */
+	public TemporalCoverage() {
+	}
 
-  public String getDescription() {
-    return description;
-  }
+	/**
+	 * Utility to set the date with a textual format
+	 * @param dateString To set
+	 * @param format That the string is in
+	 * @throws ParseException Should it be an erroneous format
+	 */
+	public void setStart(String start, String format) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		startDate = sdf.parse(start);
+	}
 
-  public Date getEndDate() {
-    return new Date(endDate.getTime());
-  }
+	/**
+	 * Utility to set the date with a textual format
+	 * @param dateString To set
+	 * @param format That the string is in
+	 * @throws ParseException Should it be an erroneous format
+	 */
+	public void setEnd(String start, String format) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		endDate = sdf.parse(start);
+	}
 
-  public ImmutableSet<String> getKeywords() {
-    return keywords;
-  }
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof TemporalCoverage)) {
+			return false;
+		}
+		TemporalCoverage o = (TemporalCoverage) other;
+		return equal(formationPeriod, o.formationPeriod) && equal(endDate, o.endDate) && equal(livingTimePeriod, o.livingTimePeriod) && equal(startDate, o.startDate);
+	}
 
-  public Date getStartDate() {
-    return new Date(startDate.getTime());
-  }
+	public Date getEndDate() {
+		return new Date(endDate.getTime());
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(description, endDate, keywords, startDate);
-  }
+	public Date getStartDate() {
+		return new Date(startDate.getTime());
+	}
 
-  @Override
-  public String toString() {
-    return String.format(
-        "Descriptioin=%s, EndDate=%s, Keywords=%s, StartDate=%s", description,
-        endDate, keywords, startDate);
-  }
+	public String getFormationPeriod() {
+		return formationPeriod;
+	}
+
+	public void setFormationPeriod(String formationPeriod) {
+		this.formationPeriod = formationPeriod;
+	}
+
+	public String getLivingTimePeriod() {
+		return livingTimePeriod;
+	}
+
+	public void setLivingTimePeriod(String livingTimePeriod) {
+		this.livingTimePeriod = livingTimePeriod;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(livingTimePeriod, endDate, formationPeriod, startDate);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Descriptioin=%s, EndDate=%s, Keywords=%s, StartDate=%s", formationPeriod, endDate, livingTimePeriod, startDate);
+	}
 }

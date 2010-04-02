@@ -22,126 +22,140 @@ import com.google.common.base.Objects;
 import java.io.Serializable;
 
 /**
- * TODO: Documentation.
- * 
+ * A class encapsulating the project information
  */
 public class Project implements Serializable {
+	/**
+	 * Generated
+	 */
+	private static final long serialVersionUID = 2224956553560612242L;
 
-  private static final long serialVersionUID = 2224956553560612242L;
+	/**
+	 * A descriptive title for the research project. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-project.html#title
+	 */
+	private String title;
+	
+	/**
+	 * The Personnel field extends ResponsibleParty with role information and is used to document 
+	 * people involved in a research project by providing contact information and their role in the project. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-project.html#personnel
+	 */
+	private Agent personnel = new Agent();
+	
+	/**
+	 * The funding field is used to provide information about funding sources for the project such as: grant and 
+	 * contract numbers; names and addresses of funding sources. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-project.html#funding
+	 */
+	private String funding;
+	
+	/**
+	 * The studyAreaDescription field documents the physical area associated with the research project. It can include 
+	 * descriptions of the geographic, temporal, and taxonomic coverage of the research location.
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-project.html#descriptor
+	 */
+	private String studyAreaDescription;
+	
+	/**
+	 * A general description in textual form describing some aspect of the study area
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-project.html#designDescription
+	 */
+	private String designDescription;
 
-  // Added to support the GBIF Extended Metadata Profile:
-  private String id;
+	/**
+	 * Required by Struts2
+	 */
+	public Project() {
+		personnel.setRole(Role.RESPONSIBLE_PARTY);
+	}
 
-  private String uuid;
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof Project)) {
+			return false;
+		}
+		Project o = (Project) other;
+		return equal(title, o.title) && equal(funding, o.funding)
+				&& equal(studyAreaDescription, o.studyAreaDescription) && equal(designDescription, o.designDescription) 
+				&& equal(personnel, o.personnel);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(title, funding, studyAreaDescription, designDescription, personnel);
+	}
 
-  private String title;
-  private String projectAbstract;
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
 
-  private String funding;
-  private String studyAreaDescription;
-  private String designDescription;
-  private Agent personnelOriginator = new Agent();
-  private Agent personnel = new Agent();
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-  public Project() {
-    super();
-    this.personnelOriginator.setRole(Role.ORIGINATOR);
-  }
+	/**
+	 * @return the personnel
+	 */
+	public Agent getPersonnel() {
+		return personnel;
+	}
 
-  @Override
-  public boolean equals(Object other) {
-    if (this == other) {
-      return true;
-    }
-    if (!(other instanceof Project)) {
-      return false;
-    }
-    Project o = (Project) other;
-    return equal(id, o.id) && equal(uuid, o.uuid) && equal(title, o.title)
-        && equal(projectAbstract, o.projectAbstract)
-        && equal(funding, o.funding)
-        && equal(studyAreaDescription, o.studyAreaDescription)
-        && equal(designDescription, o.designDescription)
-        && equal(personnelOriginator, o.personnelOriginator)
-        && equal(personnel, o.personnel);
-  }
+	/**
+	 * @param personnel the personnel to set
+	 */
+	public void setPersonnel(Agent personnel) {
+		this.personnel = personnel;
+	}
 
-  public String getAbstract() {
-    return projectAbstract;
-  }
+	/**
+	 * @return the funding
+	 */
+	public String getFunding() {
+		return funding;
+	}
 
-  public String getDesignDescription() {
-    return designDescription;
-  }
+	/**
+	 * @param funding the funding to set
+	 */
+	public void setFunding(String funding) {
+		this.funding = funding;
+	}
 
-  public String getFunding() {
-    return funding;
-  }
+	/**
+	 * @return the studyAreaDescription
+	 */
+	public String getStudyAreaDescription() {
+		return studyAreaDescription;
+	}
 
-  public String getId() {
-    return id;
-  }
+	/**
+	 * @param studyAreaDescription the studyAreaDescription to set
+	 */
+	public void setStudyAreaDescription(String studyAreaDescription) {
+		this.studyAreaDescription = studyAreaDescription;
+	}
 
-  public Agent getPersonnel() {
-    return personnel;
-  }
+	/**
+	 * @return the designDescription
+	 */
+	public String getDesignDescription() {
+		return designDescription;
+	}
 
-  public Agent getPersonnelOriginator() {
-    return personnelOriginator;
-  }
-
-  public String getStudyAreaDescription() {
-    return studyAreaDescription;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public String getUuid() {
-    return uuid;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(id, uuid, title, projectAbstract, funding,
-        studyAreaDescription, designDescription, personnelOriginator, personnel);
-  }
-
-  public void setAbstract(String projectAbstract) {
-    this.projectAbstract = projectAbstract;
-  }
-
-  public void setDesignDescription(String designDescription) {
-    this.designDescription = designDescription;
-  }
-
-  public void setFunding(String funding) {
-    this.funding = funding;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setPersonnel(Agent personnel) {
-    this.personnel = personnel;
-  }
-
-  public void setPersonnelOriginator(Agent personnelOriginator) {
-    this.personnelOriginator = personnelOriginator;
-  }
-
-  public void setStudyAreaDescription(String studyAreaDescription) {
-    this.studyAreaDescription = studyAreaDescription;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
-  }
-
+	/**
+	 * @param designDescription the designDescription to set
+	 */
+	public void setDesignDescription(String designDescription) {
+		this.designDescription = designDescription;
+	}
 }

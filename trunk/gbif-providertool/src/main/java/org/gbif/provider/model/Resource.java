@@ -16,11 +16,19 @@
 package org.gbif.provider.model;
 
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.KeywordSet;
 import org.gbif.provider.model.eml.TaxonKeyword;
+import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.util.AppConfig;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.validator.NotNull;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,13 +45,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.validator.NotNull;
 
 /**
  * A generic resource describing any digital, online and non digital available
@@ -370,14 +371,19 @@ public class Resource implements BaseObject, Comparable<Resource>,
   public void updateWithMetadata(Eml eml) {
     // keywords
     Set<String> keys = new HashSet<String>();
-    keys.addAll(eml.getKeywords());
-    for (TaxonKeyword k : eml.getTaxonomicClassification()) {
-      keys.add(k.getCommonName());
-      keys.add(k.getScientificName());
+    
+    for (KeywordSet kws : eml.getKeywords()) {
+      keys.addAll(kws.getKeywords());
+    }
+    for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
+      for (TaxonKeyword tk : tc.getKeywords()) {
+        keys.add(tk.getCommonName());
+        keys.add(tk.getScientificName());
+      }
     }
     this.keywords = keys;
-    // geoCoverage
-    this.geoCoverage = eml.getGeographicCoverage().getBoundingCoordinates();
+    // geoCoverage - TODO... this is now jsut taking the first one
+    this.geoCoverage = eml.getGeospatialCoverages().get(0).getBoundingCoordinates();
   }
 
   /**

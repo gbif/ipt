@@ -15,111 +15,90 @@
  */
 package org.gbif.provider.model.eml;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.Multimap;
+import java.io.Serializable;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 /**
- * This class can be used to associate multiple keywords with a single
- * thesaurus. It cannot hold duplicate thesaurus-keyword pairs. Adding a
- * thesaurus-keyword pair that's already in the KeywordSet has no effect.
- * 
- * Usage example:
- * 
- * <pre>
- * Builder b = KeywordSet.builder();
- * b.add("Thesaurus1", "Insect").add("Thesaurus1", "Fly");
- * b.add("Thesaurus2", "Spider").add("Thesaurus2", "Bee");
- * b.add("Thesaurus2", "Spider"); // Adding a duplicate has no effect.
- * KeywordSet ks = b.build(); 
- * ks.getKeywords("Thesaurus1"); // ["Insect", "Fly"]
- * ks.getKeywords("Thesaurus2"); // ["Spider", "Bee"]
- * ks.getAllKeywords(); // ["Insect", "Fly", "Spider", "Bee"]
- * ks.getAllThesauri(); // ["Thesaurus1", "Thesaurus2"]
- * </pre>
- * 
- * Note that this class is immutable. Instances can be created using the builder
- * pattern via the builder method.
- * 
+ * Simple POJO container for an ordered list of keywords and optionally,
+ * a thesaurus to which those keywords are associated
  */
-public class KeywordSet {
+public class KeywordSet implements Serializable {
+	/**
+	 * Generated 
+	 */
+	private static final long serialVersionUID = -421915165032215809L;
+	
+	/**
+	 * The name of the official keyword thesaurus from which keyword was derived. 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#keywordThesaurus
+	 */
+	protected String keywordThesaurus;
+	
+	/**
+	 * A keyword or key phrase that concisely describes the resource or is related to the resource. 
+	 * Each keyword field should contain one and only one keyword (i.e., keywords should not be separated by commas or other delimiters). 
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#keyword
+	 */	
+	protected List<String> keywords = Lists.newArrayList();
+	
+	/**
+	 * Default constructor required by Struts2
+	 */
+	public KeywordSet() {
+	}	
+	
+	/**
+	 * @param keywords To initialise with
+	 */
+	public KeywordSet(List<String> keywords) {
+		this.keywords = keywords;
+	}
+	
+	/**
+	 * @param keywords To initialise with
+	 * @param thesaurus To initialise with
+	 */
+	public KeywordSet(List<String> keywords, String thesaurus) {
+		this.keywords = keywords;
+		keywordThesaurus = thesaurus;
+	}
+	
+	/**
+	 * Adds a keyword to the list.  
+	 * This was added to simplify the Digester based rules definitions
+	 * @param keyword To add
+	 */
+	public void add(String keyword) {
+		keywords.add(keyword);
+	}
 
-  /**
-   * This class can be used to build a KeywordSet instance using the builder
-   * pattern. Instances of this class are created using KeywordSet's builder
-   * method.
-   * 
-   * Usage example:
-   * 
-   * KeywordSet ks = KeywordSet.builder().add("T1", "X").add("T2", "Z").build();
-   * 
-   */
-  public static class Builder {
-    private final ImmutableSetMultimap.Builder<String, String> builder = ImmutableSetMultimap.builder();
+	/**
+	 * @return the keywordThesaurus
+	 */
+	public String getKeywordThesaurus() {
+		return keywordThesaurus;
+	}
 
-    private Builder() {
-    }
+	/**
+	 * @param keywordThesaurus the keywordThesaurus to set
+	 */
+	public void setKeywordThesaurus(String keywordThesaurus) {
+		this.keywordThesaurus = keywordThesaurus;
+	}
 
-    public Builder add(String thesaurus, String keyword) {
-      builder.put(thesaurus, keyword);
-      return this;
-    }
+	/**
+	 * @return the keywords
+	 */
+	public List<String> getKeywords() {
+		return keywords;
+	}
 
-    public Builder addAll(Multimap<String, String> multimap) {
-      builder.putAll(multimap);
-      return this;
-    }
-
-    public Builder addAll(String thesaurus, Iterable<String> keywords) {
-      builder.putAll(thesaurus, keywords);
-      return this;
-    }
-
-    public Builder addAll(String thesaurus, String... keywords) {
-      builder.putAll(thesaurus, keywords);
-      return this;
-    }
-
-    public KeywordSet build() {
-      return new KeywordSet(builder.build());
-    }
-  }
-
-  /**
-   * Returns a KeywordSet builder.
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  private final ImmutableSetMultimap<String, String> multimap;
-
-  private KeywordSet(ImmutableSetMultimap<String, String> multimap) {
-    this.multimap = multimap;
-  }
-
-  /**
-   * Returns an immutable collection of all keywords in this KeyWord set.
-   */
-  public ImmutableCollection<String> getAllKeywords() {
-    return multimap.values();
-  }
-
-  /**
-   * Returns an immutable set of all thesauri in this keyword set.
-   */
-  public ImmutableSet<String> getAllThesauri() {
-    return multimap.keySet();
-  }
-
-  /**
-   * Returns an immutable set of keywords for a given thesauri.
-   * 
-   * @param thesauri the thesauri
-   * @return immutable set of keywords for the thesauri
-   */
-  public ImmutableSet<String> getKeywords(String thesauri) {
-    return multimap.get(thesauri);
-  }
+	/**
+	 * @param keywords the keywords to set
+	 */
+	public void setKeywords(List<String> keywords) {
+		this.keywords = keywords;
+	}
 }
