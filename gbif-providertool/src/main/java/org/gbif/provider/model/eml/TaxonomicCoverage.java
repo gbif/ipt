@@ -15,94 +15,70 @@
  */
 package org.gbif.provider.model.eml;
 
-import static com.google.common.base.Objects.equal;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableSet;
-
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 /**
- * This class can be used to encapsulate taxonomic coverage information.
- * 
- * Note that this class is immuatable. New instances can be created using the
- * create method.
- * 
+ * The description of the Taxonomic scope that the resource covers 
  */
 public class TaxonomicCoverage implements Serializable {
+	/**
+	 * Generated 
+	 */
+	private static final long serialVersionUID = -1550877218411220807L;
+	
+	/**
+	 * A description of the range of taxa addressed in the data set or collection
+	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#generalTaxonomicCoverage
+	 */
+	private String description;
+	
+	/**
+	 * Structures keywords for coverage
+	 */
+	private List<TaxonKeyword> keywords = Lists.newArrayList();
 
-  private static final long serialVersionUID = 6440261277409707797L;
+	/**
+	 * Required for struts2 params-interceptor, Digester and deserializing from XML
+	 */
+	public TaxonomicCoverage() {
+	}
 
-  /**
-   * Creates a new instance of TaxonomicCoverage. Throws
-   * {@link NullPointerException} if the description argument is null. Throws
-   * {@link IllegalArgumentException} if the description argument is empty.
-   * 
-   * @param description the description
-   * @param idReference the identification reference
-   * @param keywords the keywords
-   * @return a new instance of TaxonomicCoverage
-   */
-  public static TaxonomicCoverage create(String description,
-      String idReference, Set<TaxonKeyword> keywords) {
-    checkNotNull(description, "Description was null");
-    checkArgument(!description.isEmpty(), "Description was empty");
-    ImmutableSet<TaxonKeyword> kw;
-    if (keywords == null) {
-      kw = ImmutableSet.of();
-    } else {
-      kw = ImmutableSet.copyOf(keywords);
-    }
-    return new TaxonomicCoverage(description, idReference, kw);
-  }
+	/**
+	 * Utility to add a keyword to the encapsulated keywords
+	 * @param keyword to add
+	 */
+	public void addTaxonKeyword(TaxonKeyword keyword) {
+		keywords.add(keyword);
+	}
 
-  private final String description;
-  private final String idReference;
-  private final ImmutableSet<TaxonKeyword> keywords;
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-  private TaxonomicCoverage(String description, String idReference,
-      ImmutableSet<TaxonKeyword> keywords) {
-    this.description = description;
-    this.idReference = idReference;
-    this.keywords = keywords;
-  }
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  @Override
-  public boolean equals(Object other) {
-    if (this == other) {
-      return true;
-    }
-    if (!(other instanceof TaxonomicCoverage)) {
-      return false;
-    }
-    TaxonomicCoverage o = (TaxonomicCoverage) other;
-    return equal(description, o.description)
-        && equal(idReference, o.idReference) && equal(keywords, o.keywords);
-  }
+	/**
+	 * @return the keywords
+	 */
+	public List<TaxonKeyword> getKeywords() {
+		return keywords;
+	}
 
-  public String getDescription() {
-    return description;
-  }
-
-  public String getIdReference() {
-    return idReference;
-  }
-
-  public ImmutableSet<TaxonKeyword> getKeywords() {
-    return keywords;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(description, idReference, keywords);
-  }
-
-  @Override
-  public String toString() {
-    return String.format("Description=%s, IdReference=%s, Keywords=[%s]",
-        description, idReference, keywords);
-  }
+	/**
+	 * @param keywords the keywords to set
+	 */
+	public void setKeywords(List<TaxonKeyword> keywords) {
+		this.keywords = keywords;
+	}
 }

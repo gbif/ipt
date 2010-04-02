@@ -32,82 +32,82 @@ import org.junit.Test;
  * 
  */
 public class TemporalCoverageTest {
-
-  @Test
-  public final void testCreate() {
-    TemporalCoverage.create("d", new Date(), null, new Date());
-    try {
-      TemporalCoverage.create(null, new Date(), null, new Date());
-      fail("Description is required");
-    } catch (Exception e) {
-    }
-    try {
-      TemporalCoverage.create("", new Date(), null, new Date());
-      fail("Description is required");
-    } catch (Exception e) {
-    }
-    try {
-      TemporalCoverage.create("d", new Date(), null, null);
-      fail("StartDate is required");
-    } catch (Exception e) {
-    }
-    try {
-      TemporalCoverage.create("d", null, null, new Date());
-      fail("EndDate is required");
-    } catch (Exception e) {
-    }
-  }
-
-  @Test
-  public final void testEqualsObject() {
-    assertEquals(TemporalCoverage.create("d", new Date(), null, new Date()),
-        TemporalCoverage.create("d", new Date(), null, new Date()));
-  }
-
-  @Test
-  public final void testGetDescription() {
-    assertEquals(
-        "d",
-        TemporalCoverage.create("d", new Date(), null, new Date()).getDescription());
-  }
-
-  @Test
-  public final void testGetEndDate() {
-    Date d = new Date();
-    assertEquals(d,
-        TemporalCoverage.create("d", d, null, new Date()).getEndDate());
-  }
-
-  @Test
-  public final void testGetKeywords() {
-    assertEquals(ImmutableSet.of(), TemporalCoverage.create("d", new Date(),
-        null, new Date()).getKeywords());
-  }
-
-  @Test
-  public final void testGetStartDate() {
-    Date d = new Date();
-    assertEquals(d,
-        TemporalCoverage.create("d", new Date(), null, d).getStartDate());
-  }
-
-  @Test
-  public final void testHashCode() {
-    assertEquals(
-        TemporalCoverage.create("d", new Date(), null, new Date()).hashCode(),
-        TemporalCoverage.create("d", new Date(), null, new Date()).hashCode());
-    Date d = new Date();
-    TemporalCoverage tc = TemporalCoverage.create("d", d, null, d);
-    Map<TemporalCoverage, String> map = Maps.newHashMap();
-    map.put(tc, "foo");
-    assertTrue(map.containsKey(TemporalCoverage.create("d", d, null, d)));
-  }
-
-  @Test
-  public final void testToString() {
-    Date d = new Date();
-    assertEquals(String.format(
-        "Descriptioin=d, EndDate=%s, Keywords=[], StartDate=%s", d, d),
-        TemporalCoverage.create("d", d, null, d).toString());
-  }
+//
+//  @Test
+//  public final void testCreate() {
+//    TemporalCoverage.create("d", new Date(), null, new Date());
+//    try {
+//      TemporalCoverage.create(null, new Date(), null, new Date());
+//      fail("Description is required");
+//    } catch (Exception e) {
+//    }
+//    try {
+//      TemporalCoverage.create("", new Date(), null, new Date());
+//      fail("Description is required");
+//    } catch (Exception e) {
+//    }
+//    try {
+//      TemporalCoverage.create("d", new Date(), null, null);
+//      fail("StartDate is required");
+//    } catch (Exception e) {
+//    }
+//    try {
+//      TemporalCoverage.create("d", null, null, new Date());
+//      fail("EndDate is required");
+//    } catch (Exception e) {
+//    }
+//  }
+//
+//  @Test
+//  public final void testEqualsObject() {
+//    assertEquals(TemporalCoverage.create("d", new Date(), null, new Date()),
+//        TemporalCoverage.create("d", new Date(), null, new Date()));
+//  }
+//
+//  @Test
+//  public final void testGetDescription() {
+//    assertEquals(
+//        "d",
+//        TemporalCoverage.create("d", new Date(), null, new Date()).getDescription());
+//  }
+//
+//  @Test
+//  public final void testGetEndDate() {
+//    Date d = new Date();
+//    assertEquals(d,
+//        TemporalCoverage.create("d", d, null, new Date()).getEndDate());
+//  }
+//
+//  @Test
+//  public final void testGetKeywords() {
+//    assertEquals(ImmutableSet.of(), TemporalCoverage.create("d", new Date(),
+//        null, new Date()).getKeywords());
+//  }
+//
+//  @Test
+//  public final void testGetStartDate() {
+//    Date d = new Date();
+//    assertEquals(d,
+//        TemporalCoverage.create("d", new Date(), null, d).getStartDate());
+//  }
+//
+//  @Test
+//  public final void testHashCode() {
+//    assertEquals(
+//        TemporalCoverage.create("d", new Date(), null, new Date()).hashCode(),
+//        TemporalCoverage.create("d", new Date(), null, new Date()).hashCode());
+//    Date d = new Date();
+//    TemporalCoverage tc = TemporalCoverage.create("d", d, null, d);
+//    Map<TemporalCoverage, String> map = Maps.newHashMap();
+//    map.put(tc, "foo");
+//    assertTrue(map.containsKey(TemporalCoverage.create("d", d, null, d)));
+//  }
+//
+//  @Test
+//  public final void testToString() {
+//    Date d = new Date();
+//    assertEquals(String.format(
+//        "Descriptioin=d, EndDate=%s, Keywords=[], StartDate=%s", d, d),
+//        TemporalCoverage.create("d", d, null, d).toString());
+//  }
 }
