@@ -19,10 +19,12 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Organization;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ResourceType;
+import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
@@ -61,14 +63,21 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   protected HttpServletRequest request;
 
   @Autowired
+  private EmlManager emlManager;
+
+  private Eml eml;
+
+  @Autowired
   private RegistryManager registryManager;
 
   @Autowired
   protected ResourceFactory resourceFactory;
 
   protected List<? extends Resource> resources;
+
   // file/logo upload
   protected File file;
+
   protected String fileContentType;
   protected String fileFileName;
   private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>() {
@@ -83,7 +92,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       put(OTHER, "Other");
     }
   };
-
   private Map<String, String> resourceTypeMap;
   private Map<String, String> agentRoleMap;
 
@@ -141,6 +149,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
   public AppConfig getConfig() {
     return this.cfg;
+  }
+
+  public Eml getEml() {
+    return eml;
   }
 
   public File getFile() {
@@ -220,6 +232,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       } else {
         resource = resourceFactory.newMetadataResourceInstance();
       }
+    }
+    if (resource != null) {
+      eml = emlManager.load(resource);
     }
   }
 
@@ -301,6 +316,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
   public void setAgentRoleMap(Map<String, String> agentRoleMap) {
     this.agentRoleMap = agentRoleMap;
+  }
+
+  public void setEml(Eml eml) {
+    this.eml = eml;
   }
 
   public void setFile(File file) {
