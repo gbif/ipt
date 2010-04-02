@@ -288,6 +288,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     validateResource();
     resource.setDirty();
     resource = resourceManager.save(resource);
+    emlManager.save(eml);
     String key = (isNew) ? "resource.added" : "resource.updated";
     saveMessage(getText(key));
     if (isNew) {
