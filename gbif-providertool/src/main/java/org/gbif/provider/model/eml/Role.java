@@ -54,10 +54,18 @@ public enum Role implements Serializable {
     htmlSelectMap = Collections.unmodifiableMap(map);
   }
 
+  /**
+   * Returns a role created from a string description of the role. If the
+   * description is null or if it's not a valid role name, null is returned.
+   * 
+   * @param role the role description
+   * @return Role
+   */
   public static Role fromString(String role) {
     if (role == null) {
       return null;
     }
+    role = role.trim();
     for (Role r : Role.values()) {
       if (r.name().equalsIgnoreCase(role)) {
         return r;
