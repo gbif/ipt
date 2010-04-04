@@ -15,10 +15,11 @@
  */
 package org.gbif.provider.model.eml;
 
-import org.gbif.provider.model.Address;
-import org.gbif.provider.model.DarwinCore.Type;
+import static com.google.common.base.Objects.equal;
 
-import com.google.common.base.Preconditions;
+import org.gbif.provider.model.Address;
+
+import com.google.common.base.Objects;
 
 import java.io.Serializable;
 
@@ -26,100 +27,119 @@ import java.io.Serializable;
  * Encapsulates all the information for an Agent
  */
 public class Agent implements Serializable {
-	private String firstName;
-	private String lastName;
-	private String organisation;
-	private String position;
-	private Address address = new Address();
-	private String phone;
-	private String email;
-	private Role role;
-	private String homepage;
+  private static final long serialVersionUID = 7028536657833651816L;
 
-	public Address getAddress() {
-		return address;
-	}
+  private String firstName;
+  private String lastName;
+  private String organisation;
+  private String position;
+  private Address address = new Address();
+  private String phone;
+  private String email;
+  private Role role;
+  private String homepage;
 
-	public String getEmail() {
-		return email;
-	}
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof Agent)) {
+      return false;
+    }
+    Agent o = (Agent) other;
+    return equal(firstName, o.firstName) && equal(lastName, o.lastName)
+        && equal(organisation, o.organisation) && equal(position, o.position)
+        && equal(address, o.address) && equal(phone, o.phone)
+        && equal(email, o.email) && equal(role, o.role)
+        && equal(homepage, o.homepage);
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public Address getAddress() {
+    return address;
+  }
 
-	public String getHomepage() {
-		return homepage;
-	}
+  public String getEmail() {
+    return email;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public String getOrganisation() {
-		return organisation;
-	}
+  public String getHomepage() {
+    return homepage;
+  }
 
-	public String getPhone() {
-		return phone;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public String getPosition() {
-		return position;
-	}
+  public String getOrganisation() {
+    return organisation;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public String getPosition() {
+    return position;
+  }
 
   public Role getRole() {
     return role;
   }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(firstName, lastName, organisation, position,
+        address, phone, email, role);
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public void setAddress(Address address) {
+    this.address = address;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-	public void setHomepage(String homepage) {
-		this.homepage = homepage;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public void setHomepage(String homepage) {
+    this.homepage = homepage;
+  }
 
-	public void setOrganisation(String organisation) {
-		this.organisation = organisation;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+  public void setOrganisation(String organisation) {
+    this.organisation = organisation;
+  }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+  public void setPosition(String position) {
+    this.position = position;
+  }
 
-  // TODO: Need to do better than this.
-  public void setRole(String rolestring) {
-    Preconditions.checkNotNull(rolestring);
-    Preconditions.checkArgument(rolestring.length() > 0);
-    String property = rolestring.toLowerCase();
-    if (property.equals("principleinvestigator")) {
-      this.role=Role.PRINCIPAL_INVESTIGATOR;
-    } else if (property.equals("publisher")) {
-      this.role=Role.PUBLISHER;
-    } else if (property.equals("pointofcontact")) {
-      this.role=Role.POINT_OF_CONTACT;
-    }
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
+  public void setRole(String roleStr) {
+    role = Role.fromString(roleStr);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("FirstName=%s, Role=%s", firstName, role);
   }
 
 }
