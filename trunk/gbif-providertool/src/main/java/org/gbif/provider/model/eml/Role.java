@@ -15,9 +15,10 @@
  */
 package org.gbif.provider.model.eml;
 
+import com.google.common.collect.Maps;
+
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,32 +26,44 @@ import java.util.Map;
  * 
  */
 public enum Role implements Serializable {
-  ORIGINATOR, 
-  AUTHOR, 
-  CONTENT_PROVIDER, 
-  CUSTODIAN_STEWARD, 
-  DISTRIBUTOR, 
-  EDITOR, 
-  METADATA_PROVIDER, 
-  OWNER, 
-  POINT_OF_CONTACT, 
-  PRINCIPAL_INVESTIGATOR, 
-  PROCESSOR, 
-  PUBLISHER, 
-  USER, 
-  FIELD_STATION_MANAGER, 
-  INFORMATION_MANAGER, 
-  RESPONSIBLE_PARTY, 
+  ORIGINATOR,
+  AUTHOR,
+  CONTENT_PROVIDER,
+  CUSTODIAN_STEWARD,
+  DISTRIBUTOR,
+  EDITOR,
+  METADATA_PROVIDER,
+  OWNER,
+  POINT_OF_CONTACT,
+  PRINCIPAL_INVESTIGATOR,
+  PROCESSOR,
+  PUBLISHER,
+  USER,
+  FIELD_STATION_MANAGER,
+  INFORMATION_MANAGER,
+  RESPONSIBLE_PARTY,
   ASSOCIATED_PARTY;
 
   public static final Map<String, String> htmlSelectMap;
 
   static {
-    Map<String, String> map = new HashMap<String, String>();
+    Map<String, String> map = Maps.newHashMap();
     for (Role rt : Role.values()) {
       map.put(rt.name(), "roleType." + rt.name());
     }
     htmlSelectMap = Collections.unmodifiableMap(map);
+  }
+
+  public static Role fromString(String role) {
+    if (role == null) {
+      return null;
+    }
+    for (Role r : Role.values()) {
+      if (r.name().equalsIgnoreCase(role)) {
+        return r;
+      }
+    }
+    return null;
   }
 
 }
