@@ -26,30 +26,31 @@ import java.util.Map;
  * 
  */
 public enum Role implements Serializable {
-  ORIGINATOR,
-  AUTHOR,
-  CONTENT_PROVIDER,
-  CUSTODIAN_STEWARD,
-  DISTRIBUTOR,
-  EDITOR,
-  METADATA_PROVIDER,
-  OWNER,
-  POINT_OF_CONTACT,
-  PRINCIPAL_INVESTIGATOR,
-  PROCESSOR,
-  PUBLISHER,
-  USER,
-  FIELD_STATION_MANAGER,
-  INFORMATION_MANAGER,
-  RESPONSIBLE_PARTY,
-  ASSOCIATED_PARTY;
+  ORIGINATOR("Originator"),
+  AUTHOR("Author"),
+  CONTENT_PROVIDER("ContentProvider"),
+  CUSTODIAN_STEWARD("CustodianSteward"),
+  DISTRIBUTOR("Distributor"),
+  EDITOR("Editor"),
+  METADATA_PROVIDER("MetadataProvider"),
+  OWNER("Owner"),
+  POINT_OF_CONTACT("PointOfContact"),
+  PRINCIPAL_INVESTIGATOR("PrincipleInvestigator"),
+  PROCESSOR("Processor"),
+  PUBLISHER("Publisher"),
+  USER("User"),
+  FIELD_STATION_MANAGER("FieldStationManager"),
+  INFORMATION_MANAGER("InformationManager"),
+  RESPONSIBLE_PARTY("ResponsibleParty"),
+  ASSOCIATED_PARTY("AssociatedParty");
 
   public static final Map<String, String> htmlSelectMap;
+  private final String name;
 
   static {
     Map<String, String> map = Maps.newHashMap();
     for (Role rt : Role.values()) {
-      map.put(rt.name(), "roleType." + rt.name());
+      map.put(rt.name, "roleType." + rt.name);
     }
     htmlSelectMap = Collections.unmodifiableMap(map);
   }
@@ -67,11 +68,27 @@ public enum Role implements Serializable {
     }
     role = role.trim();
     for (Role r : Role.values()) {
-      if (r.name().equalsIgnoreCase(role)) {
+      if (r.name.equalsIgnoreCase(role)) {
         return r;
       }
     }
     return null;
+  }
+
+  public static void main(String[] args) {
+    for (Role rt : Role.values()) {
+      System.out.printf("Name=%s, Role=%s\n", rt.getName(),
+          Role.fromString(rt.getName()));
+    }
+
+  }
+
+  private Role(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
   }
 
 }
