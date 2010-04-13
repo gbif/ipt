@@ -50,7 +50,7 @@ public enum Role implements Serializable {
   static {
     Map<String, String> map = Maps.newHashMap();
     for (Role rt : Role.values()) {
-      map.put(rt.name, "roleType." + rt.name);
+      map.put(rt.name(), "roleType." + rt.name());
     }
     htmlSelectMap = Collections.unmodifiableMap(map);
   }
