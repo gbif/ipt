@@ -29,12 +29,6 @@ import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.TransformationManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 
-import com.opensymphony.xwork2.Preparable;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,6 +36,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.opensymphony.xwork2.Preparable;
 
 /**
  * TODO: Documentation.
@@ -315,7 +315,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
   }
 
   private void automap() {
-    // if this mapping is still empty try to automap
+    // if this mapping is still exty try to automap
     if (view != null && view.getMappedProperties() != null
         && view.getMappedProperties().size() < 1) {
       // regex pattern to normalise property names
