@@ -15,70 +15,75 @@
  */
 package org.gbif.provider.model.eml;
 
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 /**
- * The description of the Taxonomic scope that the resource covers 
+ * The description of the Taxonomic scope that the resource covers
  */
 public class TaxonomicCoverage implements Serializable {
-	/**
-	 * Generated 
-	 */
-	private static final long serialVersionUID = -1550877218411220807L;
-	
-	/**
-	 * A description of the range of taxa addressed in the data set or collection
-	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#generalTaxonomicCoverage
-	 */
-	private String description;
-	
-	/**
-	 * Structures keywords for coverage
-	 */
-	private List<TaxonKeyword> keywords = Lists.newArrayList();
+  /**
+   * Generated
+   */
+  private static final long serialVersionUID = -1550877218411220807L;
 
-	/**
-	 * Required for struts2 params-interceptor, Digester and deserializing from XML
-	 */
-	public TaxonomicCoverage() {
-	}
+  /**
+   * A description of the range of taxa addressed in the data set or collection
+   * 
+   * @see http
+   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#
+   *      generalTaxonomicCoverage
+   */
+  private String description;
 
-	/**
-	 * Utility to add a keyword to the encapsulated keywords
-	 * @param keyword to add
-	 */
-	public void addTaxonKeyword(TaxonKeyword keyword) {
-		keywords.add(keyword);
-	}
+  /**
+   * Structures keywords for coverage
+   */
+  private List<TaxonKeyword> keywords = Lists.newArrayList();
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+  /**
+   * Required for struts2 params-interceptor, Digester and deserializing from
+   * XML
+   */
+  public TaxonomicCoverage() {
+  }
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  /**
+   * Utility to add a keyword to the encapsulated keywords
+   * 
+   * @param keyword to add
+   */
+  public void addTaxonKeyword(TaxonKeyword keyword) {
+    keywords.add(keyword);
+  }
 
-	/**
-	 * @return the keywords
-	 */
-	public List<TaxonKeyword> getKeywords() {
-		return keywords;
-	}
+  /**
+   * @return the description
+   */
+  public String getDescription() {
+    return description;
+  }
 
-	/**
-	 * @param keywords the keywords to set
-	 */
-	public void setKeywords(List<TaxonKeyword> keywords) {
-		this.keywords = keywords;
-	}
+  /**
+   * @return the keywords
+   */
+  public List<TaxonKeyword> getKeywords() {
+    return keywords;
+  }
+
+  /**
+   * @param description the description to set
+   */
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  /**
+   * @param keywords the keywords to set
+   */
+  public void setKeywords(List<TaxonKeyword> keywords) {
+    this.keywords = keywords;
+  }
 }
