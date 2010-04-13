@@ -19,17 +19,21 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Organization;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ResourceType;
+import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
+
+import com.google.common.collect.Lists;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,6 +64,53 @@ import com.opensymphony.xwork2.Preparable;
 public class MetadataAction extends BaseMetadataResourceAction implements
     Preparable, ServletRequestAware {
   private static final String OTHER = "other";
+  private static final String EML_ASSOCIATED_PARTIES_NAMES = "eml.associatedParties.fname";
+  private static final String EML_ASSOCIATED_PARTIES_ROLES = "eml.associatedParties.roleName";
+
+  /**
+   * @param req
+   * @return List<Agent>
+   */
+  private static List<Agent> associatedPartiesFromRequest(HttpServletRequest req) {
+    List<Agent> agents = Lists.newArrayList();
+    if (req == null) {
+      return agents;
+    }
+    List<String> names;
+    if (req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES) == null) {
+      if (req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES + "[]") == null) {
+        return agents;
+      } else {
+        names = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES
+            + "[]"));
+      }
+    } else {
+      names = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES));
+    }
+    List<String> roles;
+    if (req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES) == null) {
+      if (req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES + "[]") == null) {
+        return agents;
+      } else {
+        roles = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES
+            + "[]"));
+      }
+    } else {
+      roles = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES));
+    }
+    if (names.size() != roles.size()) {
+      return agents;
+    }
+    Agent a;
+    for (int i = 0; i < names.size(); i++) {
+      a = new Agent();
+      a.setFirstName(names.get(i));
+      a.setRole(roles.get(i));
+      agents.add(a);
+    }
+    return agents;
+  }
+
   protected HttpServletRequest request;
 
   @Autowired
@@ -77,7 +128,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
   // file/logo upload
   protected File file;
-
   protected String fileContentType;
   protected String fileFileName;
   private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>() {
@@ -93,6 +143,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     }
   };
   private Map<String, String> resourceTypeMap;
+
   private Map<String, String> agentRoleMap;
 
   private String jdbcDriverClass;
@@ -151,6 +202,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     return this.cfg;
   }
 
+  public String getCountryVocUri() {
+    return Vocabulary.Country.uri;
+  }
+
   public Eml getEml() {
     return eml;
   }
@@ -173,6 +228,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
   public Map<String, String> getJdbcDriverClasses() {
     return jdbcDriverClasses;
+  }
+
+  public String getLanguageVocUri() {
+    return Vocabulary.Language.uri;
   }
 
   public String getOther() {
@@ -213,6 +272,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   @Override
   public void prepare() {
     super.prepare();
+    System.out.println(request.getParameterMap());
     resourceTypeMap = translateI18nMap(new HashMap<String, String>(
         ResourceType.htmlSelectMap), true);
     agentRoleMap = translateI18nMap(new HashMap<String, String>(
@@ -235,6 +295,16 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     }
     if (resource != null) {
       eml = emlManager.load(resource);
+      if (eml == null) {
+        eml = new Eml();
+      }
+    }
+    List<Agent> associatedParties = eml.getAssociatedParties();
+    for (Agent a : associatedPartiesFromRequest(request)) {
+      if (associatedParties.contains(a)) {
+        continue;
+      }
+      eml.addAssociatedParty(a);
     }
   }
 
@@ -288,7 +358,17 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     validateResource();
     resource.setDirty();
     resource = resourceManager.save(resource);
+
+    List<Agent> associatedParties = eml.getAssociatedParties();
+    for (Agent a : associatedPartiesFromRequest(request)) {
+      if (associatedParties.contains(a)) {
+        continue;
+      }
+      eml.addAssociatedParty(a);
+    }
+    validateEml();
     emlManager.save(eml);
+
     String key = (isNew) ? "resource.added" : "resource.updated";
     saveMessage(getText(key));
     if (isNew) {
@@ -404,6 +484,21 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     log.info(String.format("Logo %s uploaded and resized for resource %s",
         logoFile.getAbsolutePath(), resourceId));
     return true;
+  }
+
+  /**
+   * 
+   * void
+   */
+  private void validateEml() {
+
+    List<Agent> agents = eml.getAssociatedParties();
+    for (Agent a : eml.getAssociatedParties()) {
+      if (a.getFirstName() == null || a.getFirstName().isEmpty()) {
+        agents.remove(a);
+      }
+    }
+    eml.setAssociatedParties(agents);
   }
 
   private void validateResource() {
