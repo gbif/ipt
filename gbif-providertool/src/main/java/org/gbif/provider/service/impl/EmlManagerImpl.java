@@ -110,9 +110,11 @@ public class EmlManagerImpl implements EmlManager {
     Eml eml = null;
     Long rid = resource.getId();
     if (rid != null) {
-      File f = cfg.getMetadataFile(rid);
+      File f = null;
       try {
+        f = cfg.getMetadataFile(rid);
         eml = (Eml) xstream.fromXML(getUtf8Reader(f));
+        eml.setResource(resource);
       } catch (FileNotFoundException e) {
         log.error(String.format("%s not found for resource %s", f, rid));
         log.info(String.format("Creating new Eml object for resource %s", rid));
@@ -121,7 +123,8 @@ public class EmlManagerImpl implements EmlManager {
         eml.getResourceCreator().setEmail(resource.getContactEmail());
         eml.getResourceCreator().setLastName(resource.getContactName());
         eml.setPubDate(new Date());
-        writeEmlXmlFile(cfg.getEmlFile(rid), freemarker, eml);
+        save(eml);
+        // writeEmlXmlFile(cfg.getEmlFile(rid), freemarker, eml);
       }
     }
     return eml;
@@ -163,6 +166,9 @@ public class EmlManagerImpl implements EmlManager {
    */
   @SuppressWarnings("static-access")
   public void save(Eml metadata) {
+    if (metadata == null) {
+      return;
+    }
     // update persistent EML properties on resource
     Resource res = metadata.getResource();
     // now persist EML file (resource must have ID now)
