@@ -15,100 +15,111 @@
  */
 package org.gbif.provider.model.eml;
 
-import java.io.Serializable;
+import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
-import static com.google.common.base.Objects.equal;
+
+import java.io.Serializable;
 
 /**
  * This class can be used to encapsulate taxonomic keyword information
  */
 public class TaxonKeyword implements Serializable {
-	/**
-	 * Generated
-	 */
-	private static final long serialVersionUID = -7870655444855755937L;
+  /**
+   * Generated
+   */
+  private static final long serialVersionUID = -7870655444855755937L;
 
-	/**
-	 * Required by Struts2
-	 */
-	public TaxonKeyword() {
-	}
+  /**
+   * The name representing the taxonomic rank of the taxon being described ,
+   * e.g., Orca
+   * 
+   * @see http
+   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#
+   *      taxonRankValue
+   */
+  private String scientificName;
 
-	/**
-	 * The name representing the taxonomic rank of the taxon being described , e.g., Orca
-	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#taxonRankValue
-	 */
-	private String scientificName;
+  /**
+   * the name of the taxonomic rank for which the Taxon rank value is provided,
+   * e.g., Genus
+   * 
+   * @see http
+   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#
+   *      taxonRankName
+   */
+  private String rank;
 
-	/**
-	 * the name of the taxonomic rank for which the Taxon rank value is provided, e.g., Genus
-	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#taxonRankName
-	 */
-	private String rank;
+  /**
+   * The common/vernacular name(s) for the organisms in the dataset/collection @
+   * http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#
+   * commonName
+   */
+  private String commonName;
 
-	/**
-	 * The common/vernacular name(s) for the organisms in the dataset/collection
-	 * @ http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-coverage.html#commonName
-	 */
-	private String commonName;
+  /**
+   * Required by Struts2
+   */
+  public TaxonKeyword() {
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(scientificName, rank, commonName);
-	}
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof TaxonKeyword)) {
+      return false;
+    }
+    TaxonKeyword o = (TaxonKeyword) other;
+    return equal(scientificName, o.scientificName) && equal(rank, o.rank)
+        && equal(commonName, o.commonName);
+  }
 
-	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof TaxonKeyword)) {
-			return false;
-		}
-		TaxonKeyword o = (TaxonKeyword) other;
-		return equal(scientificName, o.scientificName) && equal(rank, o.rank) && equal(commonName, o.commonName);
-	}
+  /**
+   * @return the commonName
+   */
+  public String getCommonName() {
+    return commonName;
+  }
 
-	/**
-	 * @return the scientificName
-	 */
-	public String getScientificName() {
-		return scientificName;
-	}
+  /**
+   * @return the rank
+   */
+  public String getRank() {
+    return rank;
+  }
 
-	/**
-	 * @param scientificName the scientificName to set
-	 */
-	public void setScientificName(String scientificName) {
-		this.scientificName = scientificName;
-	}
+  /**
+   * @return the scientificName
+   */
+  public String getScientificName() {
+    return scientificName;
+  }
 
-	/**
-	 * @return the rank
-	 */
-	public String getRank() {
-		return rank;
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(scientificName, rank, commonName);
+  }
 
-	/**
-	 * @param rank the rank to set
-	 */
-	public void setRank(String rank) {
-		this.rank = rank;
-	}
+  /**
+   * @param commonName the commonName to set
+   */
+  public void setCommonName(String commonName) {
+    this.commonName = commonName;
+  }
 
-	/**
-	 * @return the commonName
-	 */
-	public String getCommonName() {
-		return commonName;
-	}
+  /**
+   * @param rank the rank to set
+   */
+  public void setRank(String rank) {
+    this.rank = rank;
+  }
 
-	/**
-	 * @param commonName the commonName to set
-	 */
-	public void setCommonName(String commonName) {
-		this.commonName = commonName;
-	}
+  /**
+   * @param scientificName the scientificName to set
+   */
+  public void setScientificName(String scientificName) {
+    this.scientificName = scientificName;
+  }
 }
