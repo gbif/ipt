@@ -30,7 +30,7 @@
 	<#list resources as res>
     <entry>
       <title>${res.title}</title>
-      <dc:subject>GBIF<#list res.keywords as k> ${k}</#list></dc:subject>
+      <dc:subject>${res.type!} <#list res.keywords as k> ${k}</#list></dc:subject>
       <#if res.type??>
       <category term="${res.type}"/>
       </#if>
@@ -40,6 +40,9 @@
 	  <#if res.link??>
       <link title="Homepage" type="text/html" rel="alternate" href="${res.link}"/>
 	  </#if>
+      <#if res.recTotal??>
+      <link title="DarwinCore archive" type="application/zip" rel="alternate" href="${cfg.getArchiveUrl(res.guid)}"/>
+      </#if>
       <#-- 2003-12-13T18:30:02Z -->      
       <updated>${res.modified?datetime?string(xmlDateFormat)}</updated>
 	  <#if res.contactName??>
