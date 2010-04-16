@@ -63,8 +63,10 @@ public class EmlFactory {
 		digester.addBeanPropertySetter("eml/dataset/abstract/para", "abstract");
 		digester.addBeanPropertySetter("eml/dataset/additionalInfo/para", "additionalInfo");
 		digester.addBeanPropertySetter("eml/dataset/intellectualRights/para", "intellectualRights");
+    digester.addBeanPropertySetter("eml/dataset/distribution/online/url", "distributionUrl");
 		digester.addBeanPropertySetter("eml/dataset/purpose/para", "purpose");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/specimenPreservationMethod", "specimenPreservationMethod");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/logoUrl", "logoUrl");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/metadataLanguage", "metadataLanguage");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/hierarchyLevel", "hierarchyLevel");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/collection/parentCollectionIdentifier", "parentCollectionId");
@@ -77,7 +79,8 @@ public class EmlFactory {
 		addAgentRules(digester, "eml/dataset/creator", "setResourceCreator");
 		addAgentRules(digester, "eml/dataset/metadataProvider", "setMetadataProvider");
 		addAgentRules(digester, "eml/dataset/associatedParty", "addAssociatedParty");
-		addKeywordRules(digester);
+    addKeywordRules(digester);
+    addBibliographicCitations(digester);
 		addGeographicCoverageRules(digester);
 		addTemporalCoverageRules(digester);
     addLivingTimePeriodRules(digester);
@@ -86,7 +89,7 @@ public class EmlFactory {
 		addMethodRules(digester);
 		addProjectRules(digester);
 		addPhysicalDataRules(digester);
-		addJGTICuratorialIUnit(digester);
+    addJGTICuratorialIUnit(digester);
 
 	  // rule to call "addCitation" on last stack object, with 1 param
 		digester.addCallMethod("eml/additionalMetadata/metadata/citation", "addCitation", 1);
@@ -219,17 +222,28 @@ public class EmlFactory {
 		digester.addSetNext("eml/dataset/coverage/geographicCoverage", "addGeospatialCoverage"); // add the GeospatialCoverage to the list in EML
 	}
 
-	/**
-	 * Add rules to extract the keywords
-	 * @param digester to add the rules to
-	 */
-	private static void addKeywordRules(Digester digester) {
-		digester.addObjectCreate("eml/dataset/keywordSet", KeywordSet.class);
-		digester.addCallMethod("eml/dataset/keywordSet/keyword", "add", 1);
-		digester.addCallParam("eml/dataset/keywordSet/keyword", 0);
-		digester.addBeanPropertySetter("eml/dataset/keywordSet/keywordThesaurus", "keywordThesaurus");
-		digester.addSetNext("eml/dataset/keywordSet", "addKeywordSet"); // add the KeywordSet to the list in EML
-	}
+  /**
+   * Add rules to extract the keywords
+   * @param digester to add the rules to
+   */
+  private static void addKeywordRules(Digester digester) {
+    digester.addObjectCreate("eml/dataset/keywordSet", KeywordSet.class);
+    digester.addCallMethod("eml/dataset/keywordSet/keyword", "add", 1);
+    digester.addCallParam("eml/dataset/keywordSet/keyword", 0);
+    digester.addBeanPropertySetter("eml/dataset/keywordSet/keywordThesaurus", "keywordThesaurus");
+    digester.addSetNext("eml/dataset/keywordSet", "addKeywordSet"); // add the KeywordSet to the list in EML
+  }
+
+  /**
+   * Add rules to extract the bibliographic citations
+   * @param digester to add the rules to
+   */
+  private static void addBibliographicCitations(Digester digester) {
+    digester.addObjectCreate("eml/additionalMetadata/metadata/bibliographicCitations", BibliographicCitationSet.class);
+    digester.addCallMethod("eml/additionalMetadata/metadata/bibliographicCitations/bibliographicCitation", "add", 1);
+    digester.addCallParam("eml/additionalMetadata/metadata/bibliographicCitations/bibliographicCitation", 0);
+    digester.addSetNext("eml/additionalMetadata/metadata/bibliographicCitations", "addBibliographicCitationSet"); // add the BibliographicCitationSet to the list in EML
+  }
 
 	/**
 	 * Adds rules to extract the methods
@@ -280,5 +294,7 @@ public class EmlFactory {
 		digester.addBeanPropertySetter(prefix + "/address/deliveryPoint", "address");
 		digester.addSetNext(prefix + "/address", "setAddress"); // called on </address> to set on parent Agent
 		digester.addSetNext(prefix + "", parentMethod); // method called on parent object which is the previous stack object
-	}  
+	}
+
+
 }

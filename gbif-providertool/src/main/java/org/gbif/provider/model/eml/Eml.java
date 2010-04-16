@@ -52,9 +52,9 @@ public class Eml implements Serializable {
   // used to preserve ordering. A Set implementation that respects ordering
   // would also suffice
   // please refer to typed classes for descriptions of the properties and how
-  // they
-  // map to EML
+  // they map to EML
   private List<KeywordSet> keywords = Lists.newArrayList();
+  private List<BibliographicCitationSet> bibliographicCitations = Lists.newArrayList();
   private List<Method> samplingMethods = Lists.newArrayList();
   private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
@@ -113,6 +113,13 @@ public class Eml implements Serializable {
   private String intellectualRights;
 
   /**
+   * The distributionType URL is generally meant for informational purposes, 
+   * and the "function" attribute should be set to "information".
+   * 
+   */
+  private String distributionUrl;
+
+  /**
    * The language in which the resource is written. This can be a well-known
    * language name, or one of the ISO language codes to be more precise.
    * 
@@ -121,6 +128,12 @@ public class Eml implements Serializable {
    *      language The IPT will always use ISO language codes
    */
   private String language = "en";
+
+  /**
+   * URL of the logo associated with a resource.
+   * 
+   */
+  private String logoUrl;
 
   /**
    * Language of the metadata composed of an ISO639-2/T three letter language
@@ -306,6 +319,16 @@ public class Eml implements Serializable {
   }
 
   /**
+   * utility to add a bibliographic citation to the bibliographicCitations. This 
+   * method was introduced to ease the Digester rules for parsing of EML.
+   * 
+   * @param bibliographic citation to add
+   */
+  public void addBibliographicCitationSet(BibliographicCitationSet bibliographicCitationSet) {
+    bibliographicCitations.add(bibliographicCitationSet);
+  }
+
+  /**
    * utility to add a PhysicalData instance to the physicalData list. This
    * method was introduced to ease the Digester rules for parsing of EML
    * 
@@ -351,6 +374,10 @@ public class Eml implements Serializable {
     return citations;
   }
 
+  public List<BibliographicCitationSet> getBibliographicCitationSet() {
+    return bibliographicCitations;
+  }
+
   public String getCollectionId() {
     return collectionId;
   }
@@ -383,6 +410,10 @@ public class Eml implements Serializable {
     return intellectualRights;
   }
 
+  public String getDistributionUrl() {
+    return distributionUrl;
+  }
+
   public JGTICuratorialUnit getJgtiCuratorialUnit() {
     return jgtiCuratorialUnit;
   }
@@ -397,6 +428,10 @@ public class Eml implements Serializable {
 
   public String getLink() {
     return resource.getLink();
+  }
+
+  public String getLogoUrl() {
+    return logoUrl;
   }
 
   public String getMetadataLanguage() {
@@ -484,6 +519,10 @@ public class Eml implements Serializable {
     this.citations = citations;
   }
 
+  public void setBibliographicCitations(List<BibliographicCitationSet> bibliographicCitations) {
+    this.bibliographicCitations = bibliographicCitations;
+  }
+
   public void setCollectionId(String collectionId) {
     this.collectionId = collectionId;
   }
@@ -513,12 +552,12 @@ public class Eml implements Serializable {
     this.hierarchyLevel = hierarchyLevel;
   }
 
-  // public void addSpecimenPreservationMethod(String level) {
-  // this.specimenPreservationMethod = level;
-  // }
-
   public void setIntellectualRights(String intellectualRights) {
     this.intellectualRights = intellectualRights;
+  }
+
+  public void setDistributionUrl(String distributionUrl) {
+    this.distributionUrl = distributionUrl;
   }
 
   public void setJgtiCuratorialUnit(JGTICuratorialUnit jgtiCuratorialUnit) {
@@ -533,12 +572,20 @@ public class Eml implements Serializable {
     this.keywords = keywords;
   }
 
+  public void setBibliographicCitationSet(List<BibliographicCitationSet> citations) {
+    this.bibliographicCitations = citations;
+  }
+
   public void setLanguage(String language) {
     this.language = language;
   }
 
   public void setLink(String link) {
     resource.setLink(link);
+  }
+
+  public void setLogoUrl(String logoUrl) {
+    this.logoUrl = logoUrl;
   }
 
   public void setMetadataLanguage(String language) {
