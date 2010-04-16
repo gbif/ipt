@@ -37,11 +37,19 @@ public class EmlFactoryTest extends TestCase {
 			assertEquals("dremsen@gbif.org",eml.getResourceCreator().getEmail());
 			assertEquals("http://www.gbif.org",eml.getResourceCreator().getHomepage());
 	        
-			// limited agent test
+			// agent test with some null values
 			assertNotNull(eml.getMetadataProvider());
+      assertNull(eml.getMetadataProvider().getFirstName());
 			assertEquals("Robertson",eml.getMetadataProvider().getLastName());
+      assertEquals("Copenhagen",eml.getMetadataProvider().getAddress().getCity());
+      assertEquals("Copenhagen",eml.getMetadataProvider().getAddress().getProvince());
+      assertEquals("2100",eml.getMetadataProvider().getAddress().getPostalCode());
+      assertEquals("Denmark",eml.getMetadataProvider().getAddress().getCountry());
+      assertNull(eml.getMetadataProvider().getPhone());
+      assertEquals("trobertson@gbif.org",eml.getMetadataProvider().getEmail());
+      assertNull(eml.getMetadataProvider().getHomepage());
 			
-			// limited agent test
+			// limited agent with role tests
 			assertNotNull(eml.getAssociatedParties());
 			assertEquals(2, eml.getAssociatedParties().size());
 			assertEquals(Role.PRINCIPAL_INVESTIGATOR, eml.getAssociatedParties().get(0).getRole());
@@ -50,7 +58,8 @@ public class EmlFactoryTest extends TestCase {
       assertEquals(sdf.parse("2010-02-02"), eml.getPubDate());
       assertEquals("en_US", eml.getLanguage());
       assertEquals("Specimens in jars", eml.getAbstract());
-	        
+	    
+      // multiple KeywordSets tests
       assertNotNull(eml.getKeywords());
       assertEquals(2, eml.getKeywords().size());
       assertNotNull(eml.getKeywords().get(0).keywords);
@@ -64,10 +73,15 @@ public class EmlFactoryTest extends TestCase {
       assertEquals("Zoology Vocabulary Version 1", eml.getKeywords().get(1).getKeywordThesaurus());
       
       assertEquals("Where can the additional information possibly come from?!", eml.getAdditionalInfo());
+
+      // intellectual rights tests
       assertNotNull(eml.getIntellectualRights());
       assertTrue(eml.getIntellectualRights().startsWith("Owner grants"));
       assertTrue(eml.getIntellectualRights().endsWith("Site)."));
-       
+      assertNotNull(eml.getDistributionUrl());
+      assertEquals("http://www.any.org/fauna/coleoptera/beetleList.html", eml.getDistributionUrl());
+      
+      // geospatial covereages tests
       assertNotNull(eml.getGeospatialCoverages());
       assertEquals(2, eml.getGeospatialCoverages().size());
       assertEquals("Bounding Box 1", eml.getGeospatialCoverages().get(0).getDescription());
@@ -81,6 +95,7 @@ public class EmlFactoryTest extends TestCase {
       assertEquals(new Double("-32.745"), eml.getGeospatialCoverages().get(1).getBoundingCoordinates().getMin().getLatitude());
       assertEquals(new Double("-10.703"), eml.getGeospatialCoverages().get(1).getBoundingCoordinates().getMin().getLongitude());
  
+      // temporal coverages tests
       assertEquals(4, eml.getTemporalCoverages().size());
       assertEquals(sdf.parse("2009-12-01"), eml.getTemporalCoverages().get(0).getStartDate());
       assertEquals(sdf.parse("2009-12-30"), eml.getTemporalCoverages().get(0).getEndDate());
@@ -89,6 +104,7 @@ public class EmlFactoryTest extends TestCase {
       assertEquals("Jurassic", eml.getTemporalCoverages().get(2).getLivingTimePeriod());
       assertEquals("During the 70s", eml.getTemporalCoverages().get(3).getFormationPeriod());
 
+      // taxonomic coverages tests
       assertEquals(2, eml.getTaxonomicCoverages().size());
       assertEquals("This is a general taxon coverage", eml.getTaxonomicCoverages().get(0).getDescription());
       assertEquals("Class", eml.getTaxonomicCoverages().get(0).getKeywords().get(0).getRank());
@@ -101,7 +117,8 @@ public class EmlFactoryTest extends TestCase {
       assertEquals("Birds", eml.getTaxonomicCoverages().get(1).getKeywords().get(0).getCommonName());
 	        
       assertEquals("Provide data to the whole world.", eml.getPurpose());
-	        
+
+      // sampling methods tests
       assertNotNull(eml.getSamplingMethods());
       assertEquals(3, eml.getSamplingMethods().size());
       assertEquals("Took picture, identified", eml.getSamplingMethods().get(0).getStepDescription());
@@ -119,18 +136,32 @@ public class EmlFactoryTest extends TestCase {
       assertNull(eml.getSamplingMethods().get(2).getSampleDescription());
       assertNull(eml.getSamplingMethods().get(2).getQualityControl());
 
+      // project tests
       assertNotNull(eml.getProject());
       assertEquals("Documenting Some Asian Birds and Insects", eml.getProject().getTitle());
       assertNotNull(eml.getProject().getPersonnel());
       assertEquals("My Deep Pockets", eml.getProject().getFunding());
       assertEquals("Turkish Mountains", eml.getProject().getStudyAreaDescription());
       assertEquals("This was done in Avian Migration patterns", eml.getProject().getDesignDescription());
+
+      // citations tests
       assertNotNull(eml.getCitations());
       assertEquals(1, eml.getCitations().size());
-	    assertEquals("Please site me as: Tim Robertson", eml.getCitations().get(0));
+	    assertEquals("Tims assembled checklist", eml.getCitations().get(0));
+	    
 	    assertEquals("en_UK", eml.getMetadataLanguage());
+
+      // bibliographic citations tests
+	    assertNotNull(eml.getBibliographicCitationSet());
+      assertEquals(1, eml.getBibliographicCitationSet().size());
+      assertNotNull(eml.getBibliographicCitationSet().get(0));
+      assertEquals("title 1", eml.getBibliographicCitationSet().get(0).bibliographicCitations.get(0));
+      assertEquals("title 2", eml.getBibliographicCitationSet().get(0).bibliographicCitations.get(1));
+      assertEquals("title 3", eml.getBibliographicCitationSet().get(0).bibliographicCitations.get(2));
+
 	    assertEquals("dataset", eml.getHierarchyLevel());	        
 
+	    // physical data tests
 	    assertNotNull(eml.getPhysicalData());
 	    assertEquals(2, eml.getPhysicalData().size());
 	    assertEquals("INV-GCEM-0305a1_1_1.shp", eml.getPhysicalData().get(0).getName());
@@ -145,12 +176,14 @@ public class EmlFactoryTest extends TestCase {
       assertEquals("2.0", eml.getPhysicalData().get(1).getFormatVersion());
       assertEquals("http://metacat.lternet.edu/knb/dataAccessServlet?docid=knb-lter-gce.109.10&urlTail=accession=INV-GCEM-0305a1&filename=INV-GCEM-0305a1_1_2.TXT", 
 	        		eml.getPhysicalData().get(1).getDistributionUrl());
-	    
+
+      // JGTI curatorial unit tests
       assertNotNull(eml.getJgtiCuratorialUnit());
       assertEquals("500", eml.getJgtiCuratorialUnit().getRangeStart());
 	    assertEquals("600", eml.getJgtiCuratorialUnit().getRangeEnd());
 	        
-	    assertEquals("alcohol", eml.getSpecimenPreservationMethod());
+      assertEquals("alcohol", eml.getSpecimenPreservationMethod());
+      assertEquals("http://www.tim.org/logo.jpg", eml.getLogoUrl());
 	        
 	    assertEquals("urn:lsid:tim.org:12:1", eml.getParentCollectionId());
 	    assertEquals("urn:lsid:tim.org:12:2", eml.getCollectionId());
