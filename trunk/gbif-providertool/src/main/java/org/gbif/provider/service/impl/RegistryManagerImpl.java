@@ -20,19 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.apache.commons.lang.StringUtils.trimToNull;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
@@ -46,6 +33,20 @@ import org.gbif.provider.model.xml.ResourceMetadataHandler;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.xml.sax.SAXException;
 
 import com.googlecode.jsonplugin.JSONUtil;
@@ -379,7 +380,8 @@ public class RegistryManagerImpl extends HttpBaseManager implements
         cfg.getOrg().getLink()).name(cfg.getOrg().getTitle()).nodeKey(
         cfg.getOrgNode()).primaryContactType(ContactType.technical.name()).primaryContactName(
         cfg.getOrg().getContactName()).primaryContactEmail(
-        cfg.getOrg().getContactEmail()).build();
+        cfg.getOrg().getContactEmail()).password(cfg.getOrgPassword()).organizationKey(
+        cfg.getOrgNode()).build();
   }
 
   private String getIptUri() {
