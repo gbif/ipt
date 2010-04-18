@@ -33,8 +33,6 @@ import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 
-import com.google.common.collect.Lists;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -67,50 +65,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   private static final String EML_ASSOCIATED_PARTIES_NAMES = "eml.associatedParties.fname";
   private static final String EML_ASSOCIATED_PARTIES_ROLES = "eml.associatedParties.roleName";
 
-  /**
-   * @param req
-   * @return List<Agent>
-   */
-  private static List<Agent> associatedPartiesFromRequest(HttpServletRequest req) {
-    List<Agent> agents = Lists.newArrayList();
-    if (req == null) {
-      return agents;
-    }
-    List<String> names;
-    if (req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES) == null) {
-      if (req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES + "[]") == null) {
-        return agents;
-      } else {
-        names = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES
-            + "[]"));
-      }
-    } else {
-      names = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_NAMES));
-    }
-    List<String> roles;
-    if (req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES) == null) {
-      if (req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES + "[]") == null) {
-        return agents;
-      } else {
-        roles = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES
-            + "[]"));
-      }
-    } else {
-      roles = Lists.newArrayList(req.getParameterValues(EML_ASSOCIATED_PARTIES_ROLES));
-    }
-    if (names.size() != roles.size()) {
-      return agents;
-    }
-    Agent a;
-    for (int i = 0; i < names.size(); i++) {
-      a = new Agent();
-      a.setFirstName(names.get(i));
-      a.setRole(roles.get(i));
-      agents.add(a);
-    }
-    return agents;
-  }
-
   protected HttpServletRequest request;
 
   @Autowired
@@ -128,7 +82,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
   // file/logo upload
   protected File file;
+
   protected String fileContentType;
+
   protected String fileFileName;
   private final Map<String, String> jdbcDriverClasses = new HashMap<String, String>() {
     {
@@ -143,9 +99,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     }
   };
   private Map<String, String> resourceTypeMap;
-
   private Map<String, String> agentRoleMap;
-
   private String jdbcDriverClass;
 
   public String connection() {
@@ -299,13 +253,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         eml = new Eml();
       }
     }
-    List<Agent> associatedParties = eml.getAssociatedParties();
-    for (Agent a : associatedPartiesFromRequest(request)) {
-      if (associatedParties.contains(a)) {
-        continue;
-      }
-      eml.addAssociatedParty(a);
-    }
+
   }
 
   public String publish() {
@@ -359,13 +307,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     resource.setDirty();
     resource = resourceManager.save(resource);
 
-    List<Agent> associatedParties = eml.getAssociatedParties();
-    for (Agent a : associatedPartiesFromRequest(request)) {
-      if (associatedParties.contains(a)) {
-        continue;
-      }
-      eml.addAssociatedParty(a);
-    }
     validateEml();
     emlManager.save(eml);
 

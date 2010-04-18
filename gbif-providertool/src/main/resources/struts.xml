@@ -528,6 +528,12 @@
 			class="org.gbif.provider.webapp.action.manage.MetadataAction">
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
 		</action>
+		<!-- TODO 
+        <action name="associatedParties"
+            class="org.gbif.provider.webapp.action.manage.MetadataAction">
+            <result>/WEB-INF/pages/manage/AssociatedParties.ftl</result>
+        </action>
+        -->		
 		<action name="saveResource"
 			class="org.gbif.provider.webapp.action.manage.MetadataAction" method="save">
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
@@ -879,7 +885,7 @@
 		<action name="resources"
 			class="org.gbif.provider.webapp.action.admin.MetadataAction" method="list">
 			<result type="freemarker">/WEB-INF/pages/admin/resourceList.ftl</result>
-		</action>
+		</action>		
 		<action name="resource"
 			class="org.gbif.provider.webapp.action.admin.MetadataAction">
 			<result type="freemarker">/WEB-INF/pages/admin/resourceForm.ftl</result>
