@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
+import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
@@ -24,11 +25,17 @@ import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Preparable;
@@ -38,18 +45,48 @@ import com.opensymphony.xwork2.Preparable;
  * 
  */
 public class EmlEditorAction extends BaseMetadataResourceAction implements
-    Preparable {
+    Preparable, ServletRequestAware {
+
+  /**
+   * Enumeration of method types.
+   * 
+   */
+  private enum RequestMethod {
+    ASSOCIATED_PARTIES, NO_OP;
+  }
+
+  /**
+   * Returns the {@link RequestMethod} corresponding to the method parameter
+   * value in the request. If the request doesn't have the method parameter or
+   * if it is unrecognized, the NO_OP method is returned.
+   */
+  private static RequestMethod method(HttpServletRequest r) {
+    Preconditions.checkNotNull(r);
+    if (r.getParameterValues("method") == null) {
+      return RequestMethod.NO_OP;
+    }
+    String method = r.getParameterValues("method")[0];
+    if (method.trim().equalsIgnoreCase("associatedParties")) {
+      return RequestMethod.ASSOCIATED_PARTIES;
+    }
+    return RequestMethod.NO_OP;
+  }
 
   protected String next;
+
   protected String nextPage;
 
   @Autowired
   private EmlManager emlManager;
-
   @Autowired
   private ThesaurusManager thesaurusManager;
-
   private Eml eml;
+  private HttpServletRequest request;
+  private boolean isSubmittedAssoParties;
+
+  private List<Agent> submittedAssociatedParties = Lists.newArrayList();
+
+  private static List<Agent> deletedAgents = Lists.newArrayList();
 
   @Override
   public String execute() {
@@ -112,7 +149,19 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   @Override
   public void prepare() {
     super.prepare();
-    if (resource != null) {
+    switch (method(request)) {
+      case ASSOCIATED_PARTIES:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero agents.
+          eml = emlManager.load(resource);
+          eml.getAssociatedParties().clear();
+        } else {
+          // eml was populated via Struts but it doesn't have it's resource yet.
+          eml.setResource(resource);
+        }
+        break;
+    }
+    if (eml == null && resource != null) {
       eml = emlManager.load(resource);
     }
   }
@@ -154,6 +203,17 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public void setNextPage(String nextPage) {
     this.nextPage = nextPage;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.apache.struts2.interceptor.ServletRequestAware#setServletRequest(javax
+   * .servlet.http.HttpServletRequest)
+   */
+  public void setServletRequest(HttpServletRequest request) {
+    this.request = request;
   }
 
   public void setTaxonomicClassification(String taxonomicCoverage) {
