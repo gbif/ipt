@@ -43,6 +43,7 @@ public class Organization {
     private String descriptionLanguage;
     private PrimaryContact primaryContact = new PrimaryContact();
     private String nodeKey;
+    private String nodeName;
     private String user;
     private String organizationKey;
     private String password;
@@ -81,6 +82,11 @@ public class Organization {
 
     public Builder nodeKey(String val) {
       nodeKey = val;
+      return this;
+    }
+
+    public Builder nodeName(String val) {
+      nodeName = val;
       return this;
     }
 
@@ -178,7 +184,9 @@ public class Organization {
   private String descriptionLanguage;
   private PrimaryContact primaryContact = new PrimaryContact();
   private String nodeKey;
+  private String nodeName;
   private String user;
+
   private String organizationKey;
   private String password;
 
@@ -193,6 +201,7 @@ public class Organization {
     descriptionLanguage = builder.descriptionLanguage;
     primaryContact = builder.primaryContact;
     nodeKey = builder.nodeKey;
+    nodeName = builder.nodeName;
     user = builder.user;
     organizationKey = builder.organizationKey;
     password = builder.password;
@@ -212,7 +221,8 @@ public class Organization {
         && equal(nameLanguage, o.nameLanguage)
         && equal(descriptionLanguage, o.descriptionLanguage)
         && equal(primaryContact, o.primaryContact) && equal(nodeKey, o.nodeKey)
-        && equal(user, o.user) && equal(organizationKey, o.organizationKey)
+        && equal(nodeName, o.nodeName) && equal(user, o.user)
+        && equal(organizationKey, o.organizationKey)
         && equal(password, o.password);
   }
 
@@ -238,6 +248,10 @@ public class Organization {
 
   public String getNodeKey() {
     return nodeKey;
+  }
+
+  public String getNodeName() {
+    return nodeName;
   }
 
   public String getOrganizationKey() {
@@ -279,8 +293,8 @@ public class Organization {
   @Override
   public int hashCode() {
     return Objects.hashCode(name, description, homepageUrl, nameLanguage,
-        descriptionLanguage, primaryContact, nodeKey, user, organizationKey,
-        password);
+        descriptionLanguage, primaryContact, nodeKey, nodeName, user,
+        organizationKey, password);
   }
 
   public boolean isRegistered() {
@@ -350,8 +364,8 @@ public class Organization {
   @Override
   public String toString() {
     return String.format(
-        "Name=%s, Description=%s, HomepageUrl=%s, NameLanugage=%s, DescriptionLanguage=%s, PrimaryContact=[%s], NodeKey=%s, User=%s, OrganizationKey=%s, Password=%s",
+        "Name=%s, Description=%s, HomepageUrl=%s, NameLanugage=%s, DescriptionLanguage=%s, PrimaryContact=[%s], NodeKey=%s, NodeName=%s, User=%s, OrganizationKey=%s, Password=%s",
         name, description, homepageUrl, nameLanguage, descriptionLanguage,
-        primaryContact, nodeKey, user, organizationKey, password);
+        primaryContact, nodeKey, nodeName, user, organizationKey, password);
   }
 }
