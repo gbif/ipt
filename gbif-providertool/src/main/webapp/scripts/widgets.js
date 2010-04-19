@@ -27,14 +27,30 @@ function AgentWidget(agent) {
   this._agent = agent;
   var isAgent = agent instanceof Agent;
   var agentProps = Agent.propertyNames();
+  var addressNames = Address.propertyNames();
   for (p in agentProps) {
     var name = agentProps[p];
     var val = '';
     if (isAgent) {
       val = eval('agent.' + name + '()');
     } 
-    e.find('#' + name).attr('name', 'eml.associatedParties[' + agentCount + '].'+ name);
-    e.find('#' + name).attr('value', val);         
+    if (name == 'country') {      
+      var select = countriesSelect.clone();
+      $(e).find('#' + name).replaceWith(select);
+      $(select).attr('name', 'eml.associatedParties[' + agentCount + '].address.country');
+      $(select).attr('value', val);
+      $(select).attr('id', name);
+    } else {       
+      var isAddress = jQuery.inArray(name, addressNames);
+      isAddress = isAddress >= 0 ? true : false;
+      if (isAddress) {
+        e.find('#' + name).attr('name', 'eml.associatedParties[' + agentCount + '].address.'+ name);
+        e.find('#' + name).attr('value', val);
+      } else {
+        e.find('#' + name).attr('name', 'eml.associatedParties[' + agentCount + '].'+ name);
+        e.find('#' + name).attr('value', val);
+      }
+    }
   }  
   this._elementId = '';
   this.element = element;
