@@ -30,7 +30,9 @@ import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -88,12 +90,18 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   private static List<Agent> deletedAgents = Lists.newArrayList();
 
+  private Map<String, String> agentRoleMap;
+
   @Override
   public String execute() {
     if (resource == null) {
       return RESOURCE404;
     }
     return SUCCESS;
+  }
+
+  public Map<String, String> getAgentRoleMap() {
+    return agentRoleMap;
   }
 
   public String getCountryVocUri() {
@@ -149,6 +157,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   @Override
   public void prepare() {
     super.prepare();
+    agentRoleMap = translateI18nMap(new HashMap<String, String>(
+        Role.htmlSelectMap), true);
     switch (method(request)) {
       case ASSOCIATED_PARTIES:
         if (eml == null && resource != null) {

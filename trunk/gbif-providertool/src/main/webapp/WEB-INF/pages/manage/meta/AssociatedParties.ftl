@@ -54,28 +54,51 @@ function HideAgentClone() {
 function GetAgents() {
   var agents = new Array();
   <#if (eml.associatedParties ? size > 0)>
-    <@s.iterator value="eml.associatedParties" status="stat">      
+    <@s.iterator value="eml.associatedParties" status="stat">     
       agents[${stat.index}] = new Agent()
         .firstName("<@s.property value="firstName"/>")
         .lastName("<@s.property value="lastName"/>")
-        .position("<@s.property value="position"/>");
+        .address("<@s.property value="address.address"/>")
+        .email("<@s.property value="email"/>")
+        .homePage("<@s.property value="homepage"/>")
+        .organization("<@s.property value="organisation"/>")
+        .phone("<@s.property value="phone"/>")
+        .position("<@s.property value="position"/>")
+        .role("<@s.property value="role"/>")
+        .city("<@s.property value="address.city"/>")
+        .province("<@s.property value="address.province"/>")
+        .country("<@s.property value="address.country"/>")
+        .postalCode("<@s.property value="address.postalCode"/>");
     </@s.iterator>
   </#if>
   return agents;
 }
 
-function OnLoad() {
-  HideAgentClone();
-  var agentPanel = new AgentPanel();
-  var agentWidget;
-  $('#plus').click(function() {
-    agentPanel.add(new AgentWidget());
+var countriesSelect;
+
+function LoadCountriesAsync(callback) {
+  var url = '<@s.url value="/ajax/vocSelect.html"/>';
+  params = {uri:"${countryVocUri}",alpha:true,empty:true};
+  $.get(url, params, function(data) { 
+    countriesSelect = $(data);
+    callback();
   });
-  var agents = GetAgents();
-  for (agent in agents) {
-    agentWidget = new AgentWidget(agents[agent]);
-    agentPanel.add(agentWidget);
-  }
+}
+
+function OnLoad() {  
+  HideAgentClone();
+  LoadCountriesAsync(function() {
+    var agentPanel = new AgentPanel();
+    var agentWidget;
+    $('#plus').click(function() {
+      agentPanel.add(new AgentWidget());
+    });
+    var agents = GetAgents();
+    for (agent in agents) {
+      agentWidget = new AgentWidget(agents[agent]);
+      agentPanel.add(agentWidget);
+    }
+  });
 }
 
 google.setOnLoadCallback(OnLoad);
@@ -119,20 +142,71 @@ google.setOnLoadCallback(OnLoad);
       <a id="removeLink" href="" onclick="return false;">[ Remove this person ]</a>
     </div>
     <div class="newline"></div>
-    <div class="leftMedium">
+    <div class="leftxhalf">
       <@s.textfield id="firstName" key="" 
         label="%{getText('agent.firstName')}" required="true" 
-        cssClass="text medium"/>
+        cssClass="text xhalf"/>
     </div>
-    <div class="leftMedium">
+    <div class="leftxhalf">
       <@s.textfield id="lastName" key="" 
         label="%{getText('agent.lastName')}" required="true" 
-        cssClass="text medium"/>
+        cssClass="text xhalf"/>
     </div>
-    <div class="leftMedium">
+    <div class="newline"></div>
+    <div class="leftxhalf">
       <@s.textfield id="position" key=""  
-        label="%{getText('agent.position')}" required="true" cssClass="text medium"/>
+        label="%{getText('agent.position')}" cssClass="text xhalf"/>
+    </div>       
+    <div class="leftxhalf">
+       <@s.select id="role" key="" label="%{getText('agent.role')}"           
+         list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
+         listValue="value"/>
     </div>
+    <div class="newline"></div>
+    <div>
+      <@s.textfield id="organization" key=""  
+        label="%{getText('agent.organization')}" cssClass="text xlarge"/>
+    </div>
+    <div class="newline"></div>
+    <div class="leftxhalf">
+      <@s.textfield id="phone" key=""  
+        label="%{getText('agent.phone')}" cssClass="text xhalf"/>
+    </div>
+    <div class="leftxhalf">
+      <@s.textfield id="email" key=""  
+        label="%{getText('agent.email')}" required="true" cssClass="text xhalf"/>
+    </div>
+    <div class="newline"></div>
+    <div>
+      <@s.textfield id="homepage" key=""  
+        label="%{getText('agent.homepage')}" cssClass="text xlarge"/>
+    </div>
+    <div class="newline"></div>
+    <div>
+      <@s.textfield id="address" key=""  
+        label="%{getText('agent.address')}" cssClass="text xlarge"/>
+    </div>
+    <div class="newline"></div>
+    <div class="leftxhalf">
+      <@s.textfield id="postalCode" key=""  
+        label="%{getText('agent.postalCode')}" cssClass="text xhalf"/>
+    </div>
+    <div class="leftxhalf">
+      <@s.textfield id="city" key=""  
+        label="%{getText('agent.city')}" cssClass="text xhalf"/>
+    </div>
+    <div class="newline"></div>
+    <div class="leftxhalf">
+      <@s.textfield id="province" key=""  
+        label="%{getText('agent.province')}" cssClass="text xhalf"/>
+    </div>
+    <div class="leftxhalf">
+      <@s.select id="country" key="" list=""
+        label="%{getText('agent.country')}" required="true" cssClass="text xhalf"/>
+    </div>    
+    <div class="newline"></div>
+    <div class="newline"></div>
+    <div class="newline"></div>
     <div class="newline"></div>
   </div>
 </div>

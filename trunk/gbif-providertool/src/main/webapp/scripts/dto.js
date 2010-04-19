@@ -28,7 +28,7 @@ function Address() {
   this.postalCode = postalCode;
   
   function address(val) {
-    if (!val) {
+    if (val == null) {
       return this._address;
     } else { 
       this._address = val;
@@ -37,7 +37,7 @@ function Address() {
   }
   
   function city(val) {
-    if (!val) {
+    if (val == null) {
       return this._city;
     } else { 
       this._city = val;
@@ -46,7 +46,7 @@ function Address() {
   }
   
   function province(val) {
-    if (!val) {
+    if (val == null) {
       return this._province;
     } else { 
       this._province = val;
@@ -55,7 +55,7 @@ function Address() {
   }
   
   function country(val) {
-    if (!val) {
+    if (val == null) {
       return this._country;
     } else { 
       this._country = val;
@@ -64,13 +64,17 @@ function Address() {
   }
   
   function postalCode(val) {
-    if (!val) {
+    if (val == null) {
       return this._postalCode;
     } else { 
       this._postalCode = val;
       return this;
     }
   }
+}
+
+Address.propertyNames = function() {
+  return ['address', 'city', 'country', 'postalCode', 'province'];
 }
 
 function Agent() {
@@ -100,7 +104,7 @@ function Agent() {
   this.postalCode = postalCode;
   
   function firstName(val) {
-    if (!val) {
+    if (val == null) {
       return this._firstName;
     } else { 
       this._firstName = val;
@@ -109,7 +113,7 @@ function Agent() {
   }
   
   function lastName(val) {
-    if (!val) {
+    if (val == null) {
       return this._lastName;
     } else { 
       this._lastName = val;
@@ -118,7 +122,7 @@ function Agent() {
   }
   
   function address(val) {
-    if (!val) {
+    if (val == null) {
       return this._address;
     } else { 
       this._address = val;
@@ -127,7 +131,7 @@ function Agent() {
   }
 
   function email(val) {
-    if (!val) {
+    if (val == null) {
       return this._email;
     } else { 
       this._email = val;
@@ -136,7 +140,7 @@ function Agent() {
   }
   
   function homePage(val) {
-    if (!val) {
+    if (val == null) {
       return this._homePage;
     } else { 
       this._homePage = val;
@@ -145,7 +149,7 @@ function Agent() {
   }
   
   function organization(val) {
-    if (!val) {
+    if (val == null) {
       return this._organization;
     } else { 
       this._organization = val;
@@ -154,7 +158,7 @@ function Agent() {
   }
   
   function phone(val) {
-    if (!val) {
+    if (val == null) {
       return this._phone;
     } else { 
       this._phone = val;
@@ -163,7 +167,7 @@ function Agent() {
   }
   
   function position(val) {
-    if (!val) {
+    if (val == null) {
       return this._position;
     } else { 
       this._position = val;
@@ -172,7 +176,7 @@ function Agent() {
   }
   
   function role(val) {
-    if (!val) {
+    if (val == null) {
       return this._role;
     } else { 
       this._role = val;
@@ -181,7 +185,7 @@ function Agent() {
   }
   
   function address(val) {
-    if (!val) {
+    if (val == null) {
       return this._address.address();
     } else { 
       this._address.address(val);
@@ -190,7 +194,7 @@ function Agent() {
   }
   
   function city(val) {
-    if (!val) {
+    if (val == null) {
       return this._address.city();
     } else { 
       this._address.city(val);
@@ -199,7 +203,7 @@ function Agent() {
   }
   
   function province(val) {
-    if (!val) {
+    if (val == null) {
       return this._address.province();
     } else { 
       this._address.province(val);
@@ -208,7 +212,7 @@ function Agent() {
   }
   
   function country(val) {
-    if (!val) {
+    if (val == null) {
       return this._address.country();
     } else { 
       this._address.country(val);
@@ -217,7 +221,7 @@ function Agent() {
   }
   
   function postalCode(val) {
-    if (!val) {
+    if (val == null) {
       return this._address.postalCode();
     } else { 
       this._address.postalCode(val);
