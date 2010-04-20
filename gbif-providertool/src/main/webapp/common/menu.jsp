@@ -37,9 +37,9 @@
                     <li><a title='<s:text name="menu.manager.resources"/>'
                         href='<c:url value="/manage/resources.html?resourceType=meta"/>'><s:text
                         name="menu.manager.resources" /></a></li>
-                    <li><a title='<s:text name="menu.manager.organizations"/>'
+                    <li><a title='<s:text name="menu.manager.organisations"/>'
                         href='<c:url value="/manage/createOrg.html"/>'><s:text
-                        name="menu.manager.organizations" /></a></li>
+                        name="menu.manager.organisations" /></a></li>
                 </ul>   
                 </li>
             </s:if>

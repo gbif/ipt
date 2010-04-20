@@ -48,18 +48,18 @@ public class ConfigOrgAction extends BasePostAction {
   public String read() {
     check();
     if (cfg.isIptRegistered()) {
-      saveMessage("The IPT is already registered with this organisation. You can only update its metadata, not switch to another organisation");
+      saveMessage(getText("register.org.ipt.already")); // "The IPT is already registered with this organisation. You can only update its metadata, not switch to another organisation"
     }
     return SUCCESS;
   }
 
   public String register() {
     if (cfg.isOrgRegistered()) {
-      saveMessage("The organisation is already registered with GBIF");
+      saveMessage(getText("register.org.already")); // "The organisation is already registered with GBIF"
     } else {
       // register new organisation
       try {
-        registryManager.registerIptInstanceOrganization();
+        registryManager.registerIptInstanceOrganisation();
         saveMessage(getText("register.org.success"));
         this.cfg.save();
       } catch (RegistryException e) {
@@ -80,7 +80,7 @@ public class ConfigOrgAction extends BasePostAction {
     // check if already registered. If yes, also update GBIF registry
     if (cfg.isOrgRegistered()) {
       try {
-        registryManager.updateIptInstanceOrganization();
+        registryManager.updateIptInstanceOrganisation();
         saveMessage(getText("registry.updated"));
       } catch (RegistryException e) {
         saveMessage(getText("registry.problem"));
@@ -106,10 +106,10 @@ public class ConfigOrgAction extends BasePostAction {
   private boolean check() {
     boolean isValid = true;
     if (!cfg.isOrgRegistered()) {
-      saveMessage(getText("config.check.orgRegistered"));
+      saveMessage(getText("config.check.orgRegistered")); // "Please register your organisation first"
       isValid = false;
     } else if (StringUtils.trimToNull(cfg.getOrgPassword()) == null) {
-      saveMessage(getText("config.check.orgPassword"));
+      saveMessage(getText("config.check.orgPassword")); // "The GBIF organisation password is missing or not correct"
       isValid = false;
     } else {
       if (!registryManager.testLogin()) {

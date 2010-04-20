@@ -15,7 +15,7 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
-import org.gbif.provider.model.Organization;
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
@@ -34,13 +34,13 @@ public class CreateOrgAction extends BasePostAction {
   @Autowired
   private RegistryManager registryManager;
 
-  private Organization org = new Organization();
+  private Organisation org = new Organisation();
 
   public AppConfig getConfig() {
     return this.cfg;
   }
 
-  public Organization getOrg() {
+  public Organisation getOrg() {
     return org;
   }
 
@@ -53,16 +53,16 @@ public class CreateOrgAction extends BasePostAction {
   }
 
   /**
-   * Registers an organization with the GBIF Registry if it has not already been
+   * Registers an organisation with the GBIF Registry if it has not already been
    * registered.
    */
   public String register() {
-    if (registryManager.isOrganizationRegistered(org)) {
+    if (registryManager.isOrganisationRegistered(org)) {
       saveMessage("The organisation is already registered with GBIF");
     } else {
-      // Register a new organization:
+      // Register a new organisation:
       try {
-        registryManager.registerOrganization(org);
+        registryManager.registerOrganisation(org);
         saveMessage(getText("register.org.success"));
       } catch (RegistryException e) {
         saveMessage(getText("register.org.problem"));
@@ -72,13 +72,13 @@ public class CreateOrgAction extends BasePostAction {
   }
 
   /**
-   * Saves changes to an existing organization by updating the GBIF Registry.
+   * Saves changes to an existing organisation by updating the GBIF Registry.
    */
   @Override
   public String save() {
-    if (registryManager.isOrganizationRegistered(org)) {
+    if (registryManager.isOrganisationRegistered(org)) {
       try {
-        registryManager.updateIptInstanceOrganization();
+        registryManager.updateIptInstanceOrganisation();
         saveMessage(getText("registry.updated"));
       } catch (RegistryException e) {
         saveMessage(getText("registry.problem"));
@@ -94,7 +94,7 @@ public class CreateOrgAction extends BasePostAction {
     this.cfg = cfg;
   }
 
-  public void setOrg(Organization org) {
+  public void setOrg(Organisation org) {
     this.org = org;
   }
 }

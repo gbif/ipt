@@ -593,7 +593,7 @@
             <artifactId>${jdbc.artifactId}</artifactId>
             <version>${jdbc.version}</version>
         </dependency>
-        <!-- Dependencies with scope=provided aren't picked up from dependent JARs-->
+        <!-- Dependencies with scope=provided aren't picked up from dependent JARs
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jsp-api</artifactId>
@@ -636,7 +636,7 @@
             <version>${wiser.version}</version>
             <scope>test</scope>
         </dependency>
-        
+-->        
         <dependency>
             <groupId>com.googlecode</groupId>
             <artifactId>jsonplugin</artifactId>
@@ -656,12 +656,14 @@
             <type>jar</type>
         </dependency>
         <!-- Spring -->
-        <dependency>
+<!--
+    <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-
+-->
+        
         <!-- JDBC driver to support a variety of external datasources -->
         <dependency>
             <groupId>mysql</groupId>

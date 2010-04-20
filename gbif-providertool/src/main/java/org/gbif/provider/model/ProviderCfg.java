@@ -34,6 +34,7 @@ public class ProviderCfg {
   private ResourceMetadata org = new ResourceMetadata();
   private String orgPassword;
   private String orgNode;
+  private String orgNodeName;
   private ResourceMetadata ipt = new ResourceMetadata();
   private String descriptionImage;
   private String baseUrl;
@@ -115,6 +116,11 @@ public class ProviderCfg {
     return orgNode;
   }
 
+  @Column(length = 255)
+  public String getOrgNodeName() {
+    return orgNodeName;
+  }
+
   @Column(length = 128)
   public String getOrgPassword() {
     return orgPassword;
@@ -179,6 +185,10 @@ public class ProviderCfg {
 
   public void setOrgNode(String orgNode) {
     this.orgNode = orgNode;
+  }
+
+  public void setOrgNodeName(String orgNodeName) {
+    this.orgNodeName = orgNodeName;
   }
 
   public void setOrgPassword(String orgPassword) {

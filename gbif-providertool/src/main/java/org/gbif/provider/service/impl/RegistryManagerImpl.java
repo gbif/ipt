@@ -23,7 +23,7 @@ import static org.apache.commons.lang.StringUtils.trimToNull;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Organization;
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ContactType;
@@ -59,13 +59,13 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     RegistryManager {
 
   /**
-   * Private utility method that returns an {@link Organization} converted to an
+   * Private utility method that returns an {@link Organisation} converted to an
    * array of {@link NameValuePair} objects.
    * 
-   * @param org the organization
+   * @param org the organisation
    * @return NameValuePair[]
    */
-  private static NameValuePair[] nameValuePairs(Organization org) {
+  private static NameValuePair[] nameValuePairs(Organisation org) {
     checkNotNull(org);
     NameValuePair[] nvp = {
         new NameValuePair("name", org.getName()),
@@ -83,7 +83,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
         new NameValuePair("primaryContactPhone", org.getPrimaryContactPhone()),
         new NameValuePair("nodeKey", org.getNodeKey()),
         new NameValuePair("user", org.getUser()),
-        new NameValuePair("organizationKey", org.getOrganizationKey()),
+        new NameValuePair("organisationKey", org.getOrganisationKey()),
         new NameValuePair("password", org.getPassword()),};
     return nvp;
   }
@@ -112,16 +112,16 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     }
   }
 
-  public boolean isOrganizationRegistered(Organization org) {
-    checkNotNull(org, "Organization was null");
-    String key = org.getOrganizationKey();
+  public boolean isOrganisationRegistered(Organisation org) {
+    checkNotNull(org, "Organisation was null");
+    String key = org.getOrganisationKey();
     String password = org.getPassword();
     if (key == null || key.isEmpty() || password == null || password.isEmpty()) {
       return false;
     }
     NameValuePair[] params = {new NameValuePair("op", "login")};
     String registryUrl = AppConfig.getRegistryOrgUrl();
-    String url = String.format("%s/%s", registryUrl, org.getOrganizationKey());
+    String url = String.format("%s/%s", registryUrl, org.getOrganisationKey());
     setCredentials(org);
     return executeGet(url, params, true) != null;
   }
@@ -163,17 +163,17 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     throw new RegistryException("No registry response or no key returned");
   }
 
-  public Organization registerIptInstanceOrganization()
+  public Organisation registerIptInstanceOrganisation()
       throws RegistryException {
-    return registerOrganization(getIptOrganization());
+    return registerOrganisation(getIptOrganisation());
   }
 
-  public Organization registerOrganization(Organization org)
+  public Organisation registerOrganisation(Organisation org)
       throws RegistryException {
-    checkNotNull(org, "Organization was null");
-    String orgKey = org.getOrganizationKey();
+    checkNotNull(org, "Organisation was null");
+    String orgKey = org.getOrganisationKey();
     checkArgument(trimToNull(orgKey) == null, String.format(
-        "Organization alread registered: %s", orgKey));
+        "Organisation already registered: %s", orgKey));
     try {
       String registryUrl = AppConfig.getRegistryOrgUrl();
       setCredentials(org);
@@ -186,7 +186,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
         if (trimToNull(key) == null) {
           key = newRegistryEntryHandler.organisationKey;
         }
-        org.setOrganizationKey(key);
+        org.setOrganisationKey(key);
         log.info("A new organisation has been registered with GBIF under node "
             + org.getNodeKey() + " and with key " + key);
         return org;
@@ -291,16 +291,16 @@ public class RegistryManagerImpl extends HttpBaseManager implements
   }
 
   /**
-   * Updates the organization associated with the IPT instance.
+   * Updates the organisation associated with the IPT instance.
    */
-  public Organization updateIptInstanceOrganization() throws RegistryException {
-    return updateOrganization(getIptOrganization());
+  public Organisation updateIptInstanceOrganisation() throws RegistryException {
+    return updateOrganisation(getIptOrganisation());
   }
 
-  public Organization updateOrganization(Organization org)
+  public Organisation updateOrganisation(Organisation org)
       throws RegistryException {
-    checkNotNull(org, "Organization was null");
-    if (!isOrganizationRegistered(org)) {
+    checkNotNull(org, "Organisation was null");
+    if (!isOrganisationRegistered(org)) {
       log.warn(String.format(
           "Organisation is not registered and cannot be updated: %s", org));
       return org;
@@ -375,13 +375,13 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     return new LinkedList<String>();
   }
 
-  private Organization getIptOrganization() {
-    return Organization.builder().description(cfg.getOrg().getDescription()).homepageUrl(
+  public Organisation getIptOrganisation() {
+    return Organisation.builder().description(cfg.getOrg().getDescription()).homepageUrl(
         cfg.getOrg().getLink()).name(cfg.getOrg().getTitle()).nodeKey(
         cfg.getOrgNode()).primaryContactType(ContactType.technical.name()).primaryContactName(
         cfg.getOrg().getContactName()).primaryContactEmail(
-        cfg.getOrg().getContactEmail()).password(cfg.getOrgPassword()).organizationKey(
-        cfg.getOrgNode()).build();
+        cfg.getOrg().getContactEmail()).password(cfg.getOrgPassword()).organisationKey(
+        cfg.getOrg().getUddiID()).build();
   }
 
   private String getIptUri() {
@@ -475,7 +475,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
   /**
    * @param org void
    */
-  private void setCredentials(Organization org) {
+  private void setCredentials(Organisation org) {
     String registryServiceUrl = AppConfig.getRegistryOrgUrl();
     URI uri;
     try {
@@ -484,7 +484,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
       e.printStackTrace();
       return;
     }
-    setCredentials(uri.getHost(), org.getOrganizationKey(), org.getPassword());
+    setCredentials(uri.getHost(), org.getOrganisationKey(), org.getPassword());
   }
 
   private void setRegistryCredentials() {

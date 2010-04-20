@@ -328,6 +328,10 @@ public class Organisation {
     this.nodeKey = nodeKey;
   }
 
+  public void setNodeName(String nodeName) {
+    this.nodeName = nodeName;
+  }
+
   public void setOrganisationKey(String organisationKey) {
     this.organisationKey = organisationKey;
   }

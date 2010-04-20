@@ -15,7 +15,7 @@
  */
 package org.gbif.provider.service;
 
-import org.gbif.provider.model.Organization;
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
 
 import java.util.Collection;
@@ -28,12 +28,12 @@ public interface RegistryManager {
   void deleteResource(Resource resource) throws RegistryException;
 
   /**
-   * Verifies {@link Organization} credentials against the GBIF Registry.
+   * Verifies {@link Organisation} credentials against the GBIF Registry.
    * 
-   * @param org the organization
-   * @return true if the organization credentials are valid, false otherwise
+   * @param org the organisation
+   * @return true if the organisation credentials are valid, false otherwise
    */
-  boolean isOrganizationRegistered(Organization org);
+  boolean isOrganisationRegistered(Organisation org);
 
   /**
    * Calls the central registry to receive a list of the Extensions that are
@@ -54,26 +54,26 @@ public interface RegistryManager {
   String registerIPT() throws RegistryException;
 
   /**
-   * Registers the {@link Organization} associated with the IPT instance with
+   * Registers the {@link Organisation} associated with the IPT instance with
    * the GBIF Registry.
    * 
    * @see http://goo.gl/H17q
    * 
-   * @return the registered organization
+   * @return the registered organisation
    * @throws RegistryException
    */
-  Organization registerIptInstanceOrganization() throws RegistryException;
+  Organisation registerIptInstanceOrganisation() throws RegistryException;
 
   /**
-   * Registers an {@link Organization} with the GBIF Registry.
+   * Registers an {@link Organisation} with the GBIF Registry.
    * 
    * @see http://goo.gl/H17q
    * 
-   * @param organization the organization to register
-   * @return the registered organization
+   * @param organisation the organisation to register
+   * @return the registered organisation
    * @throws RegistryException
    */
-  Organization registerOrganization(Organization organization)
+  Organisation registerOrganisation(Organisation organisation)
       throws RegistryException;
 
   String registerResource(Resource resource) throws RegistryException;
@@ -83,22 +83,22 @@ public interface RegistryManager {
   void updateIPT() throws RegistryException;
 
   /**
-   * Updates the organization associated with the IPT instance with the GBIF
+   * Updates the organisation associated with the IPT instance with the GBIF
    * Registry.
    * 
-   * @return the updated IPT organization
+   * @return the updated IPT organisation
    * @throws RegistryException
    */
-  Organization updateIptInstanceOrganization() throws RegistryException;
+  Organisation updateIptInstanceOrganisation() throws RegistryException;
 
   /**
-   * Updates an organization with the GBIF Registry.
+   * Updates an organisation with the GBIF Registry.
    * 
-   * @param organization the organization to update.
-   * @return the updated organization
+   * @param organisation the organisation to update.
+   * @return the updated organisation
    * @throws RegistryException
    */
-  Organization updateOrganization(Organization organization)
+  Organisation updateOrganisation(Organisation organisation)
       throws RegistryException;
 
   void updateResource(Resource resource) throws RegistryException;
