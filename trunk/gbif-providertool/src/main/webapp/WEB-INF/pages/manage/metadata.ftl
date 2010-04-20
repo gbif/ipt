@@ -66,11 +66,11 @@
     var orgPasswordTextBox = new TextBox('orgPasswordTextBox');
     
     <#--
-      - Configures the organization title textbox to support autocomplete selections
-      - of organization titles. If a title is selected, it loads the organization
-      - from the registry and updates the UUID textbox with the organization key.
+      - Configures the organisation title textbox to support autocomplete selections
+      - of organisation titles. If a title is selected, it loads the organisation
+      - from the registry and updates the UUID textbox with the organisation key.
       - 
-      - @param orgs collection of JSON encoded organizations
+      - @param orgs collection of JSON encoded organisations
       -->
     function configOrgTitle(orgs) {    
       selectionSuccess = function(selection) {    
@@ -94,9 +94,9 @@
     }
       
     <#--
-      - Handles the change organization click event by showing the organization
-      - UUID and password textboxes in the UI. Loads all organizations from the 
-      - registry and configures the organization title textbox to support 
+      - Handles the change organisation click event by showing the organisation
+      - UUID and password textboxes in the UI. Loads all organisations from the 
+      - registry and configures the organisation title textbox to support 
       - autocomplete selections.
       -->
     function handleChangeOrgClick() {
@@ -221,7 +221,7 @@
           </div>
           <div class="newline">            
             <div id="orgTitleDiv">             
-                <!-- Resource organization title textbox. -->
+                <!-- Resource organisation title textbox. -->
                 <@s.textfield id="orgTitleTextBox"
                     key="resource.orgTitle"                         
                     required="true" 
@@ -233,14 +233,14 @@
                 <img src="<@s.url value="/images/ajax-loader.gif"/>"/>
             </div>
             <div id="orgChangeLinkDiv"> 
-                <!-- Link for changing organization. -->
+                <!-- Link for changing organisation. -->
                 <a id="changeOrgLink" 
                     onclick="handleChangeOrgClick(); return false;"  
-                    class="desc" href="">Change organization
+                    class="desc" href="">Change organisation
                 </a>
             </div> 
             <div id="orgUuidDiv"> 
-                <!-- Resource organization UUID textbox. -->
+                <!-- Resource organisation UUID textbox. -->
                 <@s.textfield id="orgUuidTextBox" 
                     key="resource.orgUuid" 
                     value="${(resource.orgUuid)!}" 
@@ -249,7 +249,7 @@
                     cssClass="text large organisationKey"/>
             </div>
             <div id="orgPasswordDiv">    
-                <!-- Resource organization password textbox. -->   
+                <!-- Resource organisation password textbox. -->   
                 <@s.textfield id="orgPasswordTextBox"
                     key="resource.orgPassword"
                     value="${(resource.orgPassword)!}" 
@@ -258,7 +258,7 @@
             </div>
             <div  id="orgResendPasswordDiv">                        
                 <a id="btnResend" target="_blank" href="#">
-                    <!-- Resource organization password reset Link. -->
+                    <!-- Resource organisation password reset Link. -->
                     <@s.text name='configorg.password.resend'/>
                 </a>
             </div>            

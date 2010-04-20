@@ -31,7 +31,7 @@
                 return row.name;
             }
         }).result( function(event, data, formatted) {
-            //console.debug(data);
+            console.debug(data);
             $("#orgNodeKey").val(data.key);
             $("#orgNodeName").val(data.name);
         });
@@ -57,11 +57,12 @@
         });
     }
     function udpateOrg(data){
-        //console.debug(data);
+        console.debug(data);
         $(".organisationKey").val(data.key);
         updateResendLink(data.key);
         $("#orgTitle").val(data.name);
-        $("#orgNodeKey").val(data.endorsingNodeKey);
+<#--        $("#orgNodeKey").val(data.endorsingNodeKey); -->
+        $("#orgNodeKey").val(data.nodeKey);
         if (data.nodeName.length>0){
             $("#orgNodeName").val(data.nodeName);
         }else{
@@ -78,13 +79,13 @@
     function showWithKey(){
         $(".btnWithoutKey").hide();
         $(".btnWithKey").show();
-        $("#orgNodeName").attr("readonly","readonly");
+<#--        $("#orgNodeName").attr("readonly","readonly"); -->
         updateResendLink( $("#orgKey").val() );
     }
     function showWithoutKey(){
         $(".btnWithoutKey").show();
         $(".btnWithKey").hide();
-        $("#orgNodeName").removeAttr("readonly");
+<#--         $("#orgNodeName").removeAttr("readonly"); -->
     }
     $(document).ready(function(){
 
@@ -103,7 +104,7 @@
         });
 
       <#if org.isRegistered()>
-        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${org.organizationKey}.json'/>", udpateOrg);
+        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${org.organisationKey}.json'/>", udpateOrg);
         showWithKey();
       <#else>        
         showWithoutKey();
@@ -144,24 +145,24 @@
 
 <p>
 <@s.text name='configorg.password.help'/>
-<a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a>
+<!-- <p><a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a> -->
 <p>
 
 <@s.form id="providerCfg" method="post">
 <fieldset>
-    <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/>
+<#--    <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/> -->
     <div class="leftxLarge">
         <@s.textfield id="orgTitle" key="org.name" required="true" cssClass="text xlarge external required"/>
         <span id="orgLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
     </div>  
     <div>
         <div class="leftxhalf">
-            <@s.textfield key="org.organizationKey" value="${org.organizationKey!}" readonly="true" cssClass="text large organisationKey"/>
+            <@s.textfield key="org.organisationKey" value="${org.organisationKey!}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
             <@s.textfield id="orgNodeName" key="org.nodeName" required="true" cssClass="text medium external required"/>
             <span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
-           <@s.hidden id="orgNodeKey" key="org.nodeKey" cssClass="external"/>
+          <@s.hidden id="orgNodeKey" key="org.nodeKey" cssClass="external"/>
         </div>
         <div>
             <@s.textfield id="orgPassword" key="org.password" required="false" cssClass="text medium"/>           

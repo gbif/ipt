@@ -15,7 +15,7 @@
  */
 package org.gbif.provider.service.impl;
 
-import org.gbif.provider.model.Organization;
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.ContextAwareTestBase;
@@ -33,24 +33,31 @@ public class RegistryManagerImplTest extends ContextAwareTestBase {
   private RegistryManager registryManager;
 
   /**
-   * Tests registering an {@link Organization} and then verifying it's
+   * Tests registering an {@link Organisation} and then verifying it's
    * credentials.
    */
   @Test
-  public void testRegisterOrganization() {
-    Organization org = Organization.builder().name(
+  public void testRegisterOrganisation() {
+    Organisation org = Organisation.builder().name(
         "IPT Test Organization Version 3.0").nodeKey("sp2000").primaryContactEmail(
-        "eightysteele@gmail.com").build();
+        "tuco@berkeley.edu").build();
     try {
-      org = registryManager.registerOrganization(org);
-      assertTrue(registryManager.isOrganizationRegistered(org));
-      assertTrue(!registryManager.isOrganizationRegistered(Organization.builder().build()));
+      org = registryManager.registerOrganisation(org);
+      assertTrue(registryManager.isOrganisationRegistered(org));
+      assertTrue(!registryManager.isOrganisationRegistered(Organisation.builder().build()));
       org.setDescription("Example description");
-      registryManager.updateOrganization(org);
+      registryManager.updateOrganisation(org);
       System.out.println(String.format("Success=%s", org));
     } catch (RegistryException e) {
       System.out.println(String.format("Error=%s, Org=%s", e.getMessage(), org));
       fail();
     }
+  }
+  @Test
+  public void testIsOrgRegistered() {
+    
+    Organisation org = Organisation.builder().organisationKey("DB03E430-304B-11DF-A430-CB15FDE703B2").password("73QVMX8lE5R").build();
+      assertTrue(registryManager.isOrganisationRegistered(org));
+      System.out.println(String.format("Success=%s", org));
   }
 }

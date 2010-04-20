@@ -32,7 +32,7 @@
                 return row.name;
             }
         }).result( function(event, data, formatted) {
-            //console.debug(data);
+            // console.debug(data);
             $("#orgNodeKey").val(data.key);
             $("#orgNodeName").val(data.name);
         });
@@ -58,11 +58,11 @@
         });
     }
     function udpateOrg(data){
-        //console.debug(data);
+        // console.debug(data);
         $(".organisationKey").val(data.key);
         updateResendLink(data.key);
         $("#orgTitle").val(data.name);
-        $("#orgNodeKey").val(data.endorsingNodeKey);
+        $("#orgNodeKey").val(data.nodeKey);
         if (data.nodeName.length>0){
             $("#orgNodeName").val(data.nodeName);
         }else{
@@ -79,16 +79,19 @@
     function showWithKey(){
         $(".btnWithoutKey").hide();
         $(".btnWithKey").show();
-        $("#orgNodeName").attr("readonly","readonly");
+ <#--       $("#orgNodeName").attr("readonly","readonly"); -->
         updateResendLink( $("#orgKey").val() );
     }
     function showWithoutKey(){
         $(".btnWithoutKey").show();
         $(".btnWithKey").hide();
-        $("#orgNodeName").removeAttr("readonly");
+<!--        $("#orgNodeName").removeAttr("readonly"); -->
     }
     $(document).ready(function(){
       <#if config.isIptRegistered()>
+        $("#orgLoading").hide();
+        $("#nodeLoading").hide();
+        
         <#-- the IPT is already registered. No way to change the organisation again -->
       <#else>
         <#-- the IPT is not registered. Provide autocompletes for node & org selection -->
@@ -151,24 +154,23 @@
 
 <p>
 <@s.text name='configorg.password.help'/>
-<a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a>
+<#-- <p><a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a> -->
 <p>
 
 <@s.form id="providerCfg" method="post">
 <fieldset>
-    <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/>
     <div class="leftxLarge">
         <@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external required"/>
         <span id="orgLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
     </div>  
     <div>
         <div class="leftxhalf">
-            <@s.textfield key="config.org.uddi" name="config.gibts.nicht" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
+            <@s.textfield key="config.org.uddiID" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
             <@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external required"/>
             <span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
-            <@s.hidden id="orgNodeKey" key="config.orgNode" cssClass="external"/>
+           <@s.hidden id="orgNodeKey" key="config.orgNode" cssClass="external"/>
         </div>
         <div>
             <@s.textfield id="orgPassword" key="config.orgPassword" required="false" cssClass="text medium"/>           
@@ -184,7 +186,7 @@
     </div>
     <@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
     <@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
-
+    
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
     <@s.submit id="btnRegister" cssClass="button btnWithoutKey" key="button.register" method="register" theme="simple"/>
@@ -193,7 +195,7 @@
         <#-- the IPT is already registered. No way to change the organisation again -->
         <a id="btnNew" href="#">Clear form</a> &nbsp;&nbsp;&nbsp;
       </#if>
-        <!--<a id="btnResend" target="_blank" href="#">Resend Password</a>-->
+        <a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a>
     </div>
   </fieldset>
 

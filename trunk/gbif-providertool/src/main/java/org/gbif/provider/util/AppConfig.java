@@ -17,11 +17,14 @@ package org.gbif.provider.util;
 
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.ProviderCfg;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ProviderCfgManager;
+import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.service.impl.RegistryManagerImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +54,9 @@ public class AppConfig {
 
   private static File webappDIR;
 
+  @Autowired
+  private RegistryManager registryManager;
+  
   private static String registryURL;
 
   private static String gbifAnalyticsKey;
@@ -348,6 +354,10 @@ public class AppConfig {
     return cfg.getOrgNode();
   }
 
+  public String getOrgNodeName() {
+    return cfg.getOrgNodeName();
+  }
+
   public String getOrgPassword() {
     return cfg.getOrgPassword();
   }
@@ -422,17 +432,24 @@ public class AppConfig {
   }
 
   public boolean isIptRegistered() {
-    if (StringUtils.trimToNull(cfg.getIptMeta().getUddiID()) == null) {
-      return false;
-    }
-    return true;
+    Organisation o=((RegistryManagerImpl)registryManager).getIptOrganisation();
+    boolean isregd=registryManager.isOrganisationRegistered(o);
+    return isregd;
+
+//    if (StringUtils.trimToNull(cfg.getIptMeta().getUddiID()) == null) {
+//      return false;
+//    }
+//    return true;
   }
 
   public boolean isOrgRegistered() {
-    if (StringUtils.trimToNull(cfg.getOrgMeta().getUddiID()) == null) {
-      return false;
-    }
-    return true;
+    Organisation o = Organisation.builder().organisationKey(cfg.getOrgMeta().getUddiID()).password(cfg.getOrgPassword()).build();
+    return registryManager.isOrganisationRegistered(o);
+    
+//    if (StringUtils.trimToNull(cfg.getOrgMeta().getUddiID()) == null) {
+//      return false;
+//    }
+//    return true;
   }
 
   // MANAGER "DELEGATE" METHODS
@@ -505,6 +522,10 @@ public class AppConfig {
 
   public void setOrgNode(String orgNode) {
     cfg.setOrgNode(orgNode);
+  }
+
+  public void setOrgNodeName(String orgNodeName) {
+    cfg.setOrgNodeName(orgNodeName);
   }
 
   public void setOrgPassword(String orgPassword) {

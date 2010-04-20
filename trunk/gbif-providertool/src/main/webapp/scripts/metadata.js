@@ -134,9 +134,9 @@ function RegistryServiceAsync(registryUrl) {
   this.cachedOrgs = null;
 
   /**
-   * Asynchronously loads an organization by key.
+   * Asynchronously loads an organisation by key.
    * 
-   * @param orgKey the organization key
+   * @param orgKey the organisation key
    * @param callback the AsyncCallback
    */
   function loadOrgAsync(orgKey, callback) {
@@ -151,7 +151,7 @@ function RegistryServiceAsync(registryUrl) {
   }
 
   /**
-   * Asynchronously loads all organizations.
+   * Asynchronously loads all organisations.
    * 
    * @param callback the AsyncCallback
    */
