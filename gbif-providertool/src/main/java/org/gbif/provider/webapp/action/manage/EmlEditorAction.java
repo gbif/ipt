@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
@@ -22,7 +23,9 @@ import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 
 import com.google.common.base.Preconditions;
@@ -54,7 +57,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
    * 
    */
   private enum RequestMethod {
-    ASSOCIATED_PARTIES, NO_OP;
+    ASSOCIATED_PARTIES, NO_OP, ORGANISATION;
   }
 
   /**
@@ -70,9 +73,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     String method = r.getParameterValues("method")[0];
     if (method.trim().equalsIgnoreCase("associatedParties")) {
       return RequestMethod.ASSOCIATED_PARTIES;
+    } else if (method.trim().equalsIgnoreCase("organisation")) {
+      return RequestMethod.ORGANISATION;
     }
     return RequestMethod.NO_OP;
   }
+
+  @Autowired
+  private RegistryManager registryManager;
 
   protected String next;
 
@@ -93,7 +101,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   private Map<String, String> agentRoleMap;
 
   private String method;
-  
+
   @Override
   public String execute() {
     if (resource == null) {
@@ -106,16 +114,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     return agentRoleMap;
   }
 
+  public AppConfig getConfig() {
+    return this.cfg;
+  }
+
   public String getCountryVocUri() {
     return Vocabulary.Country.uri;
-  }
-
-  public String getMethod() {
-    return method;
-  }
-
-  public void setMethod(String method) {
-    this.method=method;
   }
 
   public Eml getEml() {
@@ -138,6 +142,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     return Vocabulary.Language.uri;
   }
 
+  public String getMethod() {
+    return method;
+  }
+
   public String getNext() {
     return next;
   }
@@ -148,6 +156,18 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public String getRankVocUri() {
     return Rank.URI;
+  }
+
+  public String getRegistryNodeUrl() {
+    return AppConfig.getRegistryNodeUrl();
+  }
+
+  public String getRegistryOrgTitle() {
+    return cfg.getOrg().getTitle();
+  }
+
+  public String getRegistryOrgUrl() {
+    return AppConfig.getRegistryOrgUrl();
   }
 
   public List getRoles() {
@@ -196,6 +216,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     if (next == null) {
       return INPUT;
     }
+    if (resource.getOrgTitle() == null || resource.getOrgTitle().isEmpty()) {
+      resource.setOrgPassword("");
+      resource.setOrgUuid("");
+    } else {
+      validateResource();
+    }
     resource.setDirty();
     emlManager.save(eml);
     resourceManager.save(resource);
@@ -215,6 +241,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       }
     }
     // eml.setKeywords(keywords);
+  }
+
+  public void setMethod(String method) {
+    this.method = method;
   }
 
   public void setNext(String next) {
@@ -245,5 +275,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       }
     }
     // eml.setTaxonomicClassification(keywords);
+  }
+
+  private void validateResource() {
+    Organisation org = Organisation.builder().password(
+        resource.getOrgPassword()).organisationKey(resource.getOrgUuid()).build();
+    if (!registryManager.isOrganisationRegistered(org)) {
+      saveMessage(getText("config.check.orgLogin"));
+      resource.setOrgPassword(null);
+    }
   }
 }
