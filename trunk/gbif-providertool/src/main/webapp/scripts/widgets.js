@@ -98,10 +98,6 @@ function AgentPanel() {
     return $(this._element).find(this._agentSelector).size();
   }
 
-  /**
-   * Renumbers all agent element ids and name attribute values sequentially
-   * starting from 0.
-   */
 function _resize() {
    this._element.find(this._agentSelector).each(function(i) {
      var id =  $(this).attr('id');
@@ -124,6 +120,7 @@ function _resize() {
    });
  }
  
+
   /**
    * Removes the element from the DOM.
    */
