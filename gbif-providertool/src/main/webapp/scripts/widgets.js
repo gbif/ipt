@@ -111,7 +111,7 @@ function _resize() {
          var isAddress = jQuery.inArray(prop, addressNames);
          isAddress = isAddress >= 0 ? true : false;
          if (isAddress) {
-           $(this).find('#' + name).attr('name', 'eml.associatedParties[' + i + '].address.'+ prop);
+           $(this).find('#' + prop).attr('name', 'eml.associatedParties[' + i + '].address.'+ prop);
          } else {
            $(this).find('#' + prop).attr('name', name + prop);
          }
