@@ -5,6 +5,9 @@
     href="<s:url action="resource" namespace="/manage"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="eml.basic" /> </a></li>
   <li><a
+    href="<s:url action="OrganisationForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+  > <s:text name="eml.organisation" /> </a></li>
+  <li><a
     href="<s:url action="creatorForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="eml.resourceCreator" /> </a></li>
   <li><a

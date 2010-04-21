@@ -23,8 +23,6 @@
   <meta name="submenu" content="manage_resource"/>  
   <meta name="heading" content="<@s.text name='metadata.heading'/>"/> 
   
-  <script src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ" type="text/javascript"></script>
-  
   <script type="text/javascript" src="<@s.url value='/scripts/metadata.js'/>"></script>  
   <script type="text/javascript" src="http://jquery-domec.googlecode.com/svn/trunk/jquery.domec.js"></script>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -33,22 +31,6 @@
   <script type="text/javascript" src="http://jquery-dynamic-form.googlecode.com/svn/trunk/jquery-dynamic-form.js"></script>
 
   <script>
-    google.load("jqueryui", "1.8.0");
-    $(function() {
-        $("#accordion").accordion();
-    });
-
-    $(document).ready(function(){
-        var url = '<@s.url value="/ajax/vocSelect.html"/>';
-        // load language codes
-        var params = {uri:"${languageVocUri}",alpha:true,empty:true};
-        var id = "languageSelect";
-        ajaxSelectVocabulary(url, id, params);
-        // load country codes
-        params = {uri:"${countryVocUri}",alpha:true,empty:true};
-        id = "countrySelect";
-        ajaxSelectVocabulary(url, id, params);
-    });
     
     <#-- UI Services. -->
     var registryUrl = "<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/'/>";
@@ -151,7 +133,6 @@
       $("#associatedPartyDiv").dynamicForm("#plus", "#minus", {limit:5});
     });
     
-    
   </script>
   
   <style>
@@ -165,8 +146,8 @@
     }
   </style>
   </head>
-    
-      
+
+
 <p class="explMt"><@s.text name='metadata.describe'/></p>
                  
 <@s.form id="resourceForm" 
@@ -179,46 +160,113 @@
     <@s.hidden name="resourceType" value="${(resourceType)!}"/>
     <@s.hidden name="guid" value="${(resource.guid)!}"/>    
     
-    <div id="accordion">
-    
-        <h4><a href="#">About the Resource</a></h4>
-        <div>
-          <div>
-            <div class="leftxhalf">
-                <!-- Resource title textbox. -->
-                <@s.textfield id="resourceTitleTextBox" 
-                    key="resource.title"                         
-                    required="true" 
-                    cssClass="text xhalf"/>
-            </div>
-            <div class="leftxhalf">            
-                <!-- Resource abstract textbox. -->
-                <@s.textfield id="abstractTextBox"
-                    key="resource.abstract"          
-                    value="${(resource.description)!}"               
-                    required="true" 
-                    cssClass="text xhalf"/>
-            </div>
-          </div>
-          <div class="newline">
-            <div class="leftxhalf">
-                <!-- Resource type selectbox. -->
-                <@s.select id="resourceTypeSelectBox"
+    <table>
+      <tr>
+        <td>
+          <!-- Resource logo image. 
+          <#if resourceId??>
+            <img class="rightf" src="${cfg.getResourceLogoUrl(resourceId)}" />
+          </#if>
+          -->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <!-- Resource title textbox. -->
+          <@s.textfield id="resourceTitleTextBox"
+                        key="resource.title"                         
+                        required="true" 
+                        cssClass="text large-foo"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <!-- Resource abstract textbox. -->
+          <@s.textfield id="abstractTextBox"
+                        key="resource.abstract"          
+                        value="${(resource.description)!}"               
+                        required="true" 
+                        cssClass="text large-foo"/>
+        </td>
+      </tr>
+      <div id="creatorDiv">
+      <tr>        
+        <td>        
+          <!-- Creator name textbox. -->
+          <@s.textfield id="creatorNameTextBox"
+                        key="resource.creatorName"          
+                        value="${(resourceCreator.name)!}"               
+                        required="true"           
+                        cssClass="text medium"/>
+          <!-- Creator role textbox. -->
+          <@s.select id="creatorRoleSelectBox"
+                        key="resource.creatorRole"          
+                        list="agentRoleMap"             
+                        required="true" 
+                        cssClass="text medium"/>                        
+        </td>
+      </tr>
+      </div>
+      <tr>       
+        <td>
+          <!-- Metadata provider name textbox. -->
+          <@s.textfield id="metadataProviderNameTextBox"
+                        key="resource.metadataProviderName"          
+                        value="${(metadataProvider.name)!}"               
+                        required="true" 
+                        cssClass="text medium"/>   
+          <!-- Metadata provider role textbox. -->
+          <@s.select id="metadataProviderRoleSelectBox"
+                        key="resource.metadataProviderRole"          
+                        list="agentRoleMap"             
+                        required="true" 
+                        cssClass="text medium"/>                             
+        </td>
+      <tr>       
+        <td>
+        <div id="associatedPartyDiv">
+          <!-- Associated party name textbox. -->
+          <@s.textfield id="asscociatedPartyNameTextBox"
+                        key="resource.associatedPartyName"          
+                        value="${(metadataProvider.name)!}"               
+                        required="true" 
+                        cssClass="text mediumÅ"/>
+          <!-- Associated party role select box. -->
+          <@s.select id="associatedPartyRoleSelectBox"
+                        key="resource.associatedPartyRole"          
+                        list="agentRoleMap"             
+                        required="true" 
+                        cssClass="text medium"/>                        
+
+          <span>
+            <a id="minus" href="" onclick="return false;">[-]</a> 
+            <a id="plus" href="" onclick="return false;">[+]</a>
+          </span>
+        </div>
+        </td>
+      </tr>
+      </tr>
+      <tr>
+        <td>
+          <!-- Resource type selectbox. -->
+          <@s.select id="resourceTypeSelectBox"
                      key="resource.type" 
                      list="resourceTypeMap" 
                      required="true" 
                      cssClass="text medium"/>
-
-            </div>
-            <div class="leftxhalf">
-                <!-- Resource logo file box. -->
-                <@s.file id="selectLogoFile"
-                    key="resource.selectLogoFile" 
-                    name="file"                    
-                    cssClass="text file" 
-                    required="false" />
-            </div>
+        </td>
+      </tr>
+      <tr>
+        <td>          
+          <div id="orgTitleDiv">             
+            <!-- Resource organization title textbox. -->
+            <@s.textfield id="orgTitleTextBox"
+                          key="resource.orgTitle"                         
+                          required="true" 
+                          readonly="true" 
+                          cssClass="text large-foo"/>
           </div>
+
           <div class="newline">            
             <div id="orgTitleDiv">             
                 <!-- Resource organisation title textbox. -->
@@ -262,414 +310,96 @@
                     <@s.text name='configorg.password.resend'/>
                 </a>
             </div>            
+
           </div>
-          <div class="newline>
-             <!-- Resource description textarea. -->
-             <@s.textarea id="descriptionTextBox"
-                key="resource.description" 
-                cssClass="text xlarge"/>
-          </div>                    
-        </div>
-        
-    <h4><a href="#">Resource Creator</a></h4> 
-    <div>
-    <div class="newline">
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.firstName" 
-            label="%{getText('agent.firstName')}" required="true" 
-            cssClass="text xhalf" />
-        </div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.lastName" 
-            label="%{getText('agent.lastName')}" required="true" 
-            cssClass="text xhalf" />
-        </div>
-    </div>
-    <div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.organisation" 
-            label="%{getText('agent.organisation')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.position" 
-            label="%{getText('agent.position')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-    </div>
-    <div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.phone" 
-            label="%{getText('agent.phone')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.email" 
-            label="%{getText('agent.email')}" required="true" 
-            cssClass="text xhalf"/>
-        </div>
-    </div>
-    <div>
-    <div>
-        <@s.textfield key="eml.resourceCreator.homepage" 
-        label="%{getText('agent.homepage')}" required="false" 
-        cssClass="text xlarge"/>
-    </div>
-    <div>   
-        <@s.textfield key="eml.resourceCreator.address.address" 
-        label="%{getText('agent.address.address')}" required="false" 
-        cssClass="text xlarge"/>
-    </div>  
-    <div>
-        <div class="leftMedium">
-            <@s.textfield key="eml.resourceCreator.address.postalCode" 
-            label="%{getText('agent.address.postalCode')}" required="false" 
-            cssClass="text medium"/>
-        </div>
-        <div class="leftLarge">
-            <@s.textfield key="eml.resourceCreator.address.city" 
-            label="%{getText('agent.address.city')}" required="false" 
-            cssClass="text large"/>
-        </div>
-    </div>
-    <div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.resourceCreator.address.province" 
-            label="%{getText('agent.address.province')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-        <div class="leftxhalf">
-            <@s.select id="countrySelect" 
-            key="eml.resourceCreator.address.country" 
-            list="{'${(eml.getResourceCreator().address.country)!}'}" 
-            required="true" cssClass="text xhalf"/>
-        </div>
-    </div>
-    <div>
-        <!-- Associated party role select box. -->
-        <@s.select id="associatedPartyRoleSelectBox"
-            key="eml.associatedParties.roleName"           
-            list="agentRoleMap.entrySet()"
-            value="role.name()"
-            listKey="key"
-            listValue="value"  
-            required="true"                              
-            cssClass="text medium"/>
-    </div>
-    <div class="breakRight"></div>
-    </div>
-    </div>
-    
-    <h4><a href="#">Metadata Provider</a></h4> 
-    <div>
-    <div class="newline">
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.firstName" 
-            label="%{getText('agent.firstName')}" required="true" 
-            cssClass="text xhalf" />
-        </div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.lastName" 
-            label="%{getText('agent.lastName')}" required="true" 
-            cssClass="text xhalf" />
-        </div>
-    </div>
-    <div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.organisation" 
-            label="%{getText('agent.organisation')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.position" 
-            label="%{getText('agent.position')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-    </div>
-    <div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.phone" 
-            label="%{getText('agent.phone')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.email" 
-            label="%{getText('agent.email')}" required="true" 
-            cssClass="text xhalf"/>
-        </div>
-    </div>
-    <div>
-    <div>
-        <@s.textfield key="eml.metadataProvider.homepage" 
-        label="%{getText('agent.homepage')}" required="false" 
-        cssClass="text xlarge"/>
-    </div>
-    <div>   
-        <@s.textfield key="eml.metadataProvider.address.address" 
-        label="%{getText('agent.address.address')}" required="false" 
-        cssClass="text xlarge"/>
-    </div>  
-    <div>
-        <div class="leftMedium">
-            <@s.textfield key="eml.metadataProvider.address.postalCode" 
-            label="%{getText('agent.address.postalCode')}" required="false" 
-            cssClass="text medium"/>
-        </div>
-        <div class="leftLarge">
-            <@s.textfield key="eml.metadataProvider.address.city" 
-            label="%{getText('agent.address.city')}" required="false" 
-            cssClass="text large"/>
-        </div>
-    </div>
-    <div>
-        <div class="leftxhalf">
-            <@s.textfield key="eml.metadataProvider.address.province" 
-            label="%{getText('agent.address.province')}" required="false" 
-            cssClass="text xhalf"/>
-        </div>
-        <div class="leftxhalf">
-            <@s.select id="countrySelect" 
-            key="eml.metadataProvider.address.country" 
-            list="{'${(eml.getResourceCreator().address.country)!}'}" 
-            required="true" cssClass="text xhalf"/>
-        </div>
-    </div>
-    <div>
-        <!-- Associated party role select box. -->
-        <@s.select id="associatedPartyRoleSelectBox"
-            key="eml.associatedParties.roleName"           
-            list="agentRoleMap.entrySet()"
-            value="role.name()"
-            listKey="key"
-            listValue="value"  
-            required="true"                              
-            cssClass="text medium"/>
-    </div>
-    <div class="breakRight"></div>
-    </div>
-    </div>
-    
-    <h4><a href="#">Associated Parites</a></h4>
-    <div>
-        <#if (eml.associatedParties ? size > 0)>
-            <@s.iterator value="eml.associatedParties" status="agent">
-                <div id="associatedPartyDiv">
-                
-                    <div class="newline">
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.firstName" 
-                                label="%{getText('agent.firstName')}" 
-                                required="true" cssClass="text xhalf" />
-                        </div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.lastName" 
-                                label="%{getText('agent.lastName')}" 
-                                required="true" cssClass="text xhalf" />
-                        </div>
-                    </div>
-                
-                    <div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.organisation" 
-                                label="%{getText('agent.organisation')}" 
-                                required="false" cssClass="text xhalf"/>
-                        </div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.position" 
-                                label="%{getText('agent.position')}" 
-                                required="false" cssClass="text xhalf"/>
-                        </div>
-                    </div>
-                
-                    <div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.phone" 
-                                label="%{getText('agent.phone')}" 
-                                required="false" cssClass="text xhalf"/>
-                        </div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.email" 
-                                label="%{getText('agent.email')}" required="true" 
-                                cssClass="text xhalf"/>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div>
-                            <@s.textfield key="eml.resourceCreator.homepage" 
-                                label="%{getText('agent.homepage')}" 
-                                required="false" cssClass="text xlarge"/>
-                        </div>
-                        <div>   
-                            <@s.textfield key="eml.resourceCreator.address.address" 
-                                label="%{getText('agent.address.address')}" 
-                                required="false" cssClass="text xlarge"/>
-                        </div>  
-                        <div>
-                            <div class="leftMedium">
-                                <@s.textfield key="eml.resourceCreator.address.postalCode" 
-                                    label="%{getText('agent.address.postalCode')}" 
-                                    required="false" cssClass="text medium"/>
-                            </div>
-                            <div class="leftLarge">
-                                <@s.textfield key="eml.resourceCreator.address.city" 
-                                    label="%{getText('agent.address.city')}" 
-                                    required="false" cssClass="text large"/>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="leftxhalf">
-                                <@s.textfield key="eml.resourceCreator.address.province" 
-                                    label="%{getText('agent.address.province')}" 
-                                    required="false" cssClass="text xhalf"/>
-                            </div>
-                            <div class="leftxhalf">
-                                <@s.select id="countrySelect" 
-                                    key="eml.resourceCreator.address.country" 
-                                    list="{'${(eml.getResourceCreator().address.country)!}'}" 
-                                    required="true" cssClass="text xhalf"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <!-- Associated party role select box. -->
-                        <@s.select id="associatedPartyRoleSelectBox"
-                            key="eml.associatedParties.roleName"           
-                            list="agentRoleMap.entrySet()"
-                            value="role.name()"
-                            listKey="key"
-                            listValue="value"  
-                            required="true"                              
-                            cssClass="text medium"/>
-                    </div>
-                    <#if agent.last == true>
-                    <div>
-                        <span>
-                            <a id="minus" href="" onclick="return false;">[-]</a> 
-                            <a id="plus" href="" onclick="return false;">[+]</a>
-                        </span>
-                    </div>
-                    </#if>     
-            </@s.iterator>
-            <div class="breakRight"></div> 
-            <div class="newline"></div>                                
-        <#else>      
-          <div id="associatedPartyDiv">
-                    <div class="newline">
-                    <p>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.firstName" 
-                                label="%{getText('agent.firstName')}" 
-                                required="true" cssClass="text xhalf" />
-                        </div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.lastName" 
-                                label="%{getText('agent.lastName')}" 
-                                required="true" cssClass="text xhalf" />
-                        </div>
-                    </div>
-                
-                    <div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.organisation" 
-                                label="%{getText('agent.organisation')}" 
-                                required="false" cssClass="text xhalf"/>
-                        </div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.position" 
-                                label="%{getText('agent.position')}" 
-                                required="false" cssClass="text xhalf"/>
-                        </div>
-                    </div>
-                
-                    <div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.phone" 
-                                label="%{getText('agent.phone')}" 
-                                required="false" cssClass="text xhalf"/>
-                        </div>
-                        <div class="leftxhalf">
-                            <@s.textfield key="eml.resourceCreator.email" 
-                                label="%{getText('agent.email')}" required="true" 
-                                cssClass="text xhalf"/>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div>
-                            <@s.textfield key="eml.resourceCreator.homepage" 
-                                label="%{getText('agent.homepage')}" 
-                                required="false" cssClass="text xlarge"/>
-                        </div>
-                        <div>   
-                            <@s.textfield key="eml.resourceCreator.address.address" 
-                                label="%{getText('agent.address.address')}" 
-                                required="false" cssClass="text xlarge"/>
-                        </div>  
-                        <div>
-                            <div class="leftMedium">
-                                <@s.textfield key="eml.resourceCreator.address.postalCode" 
-                                    label="%{getText('agent.address.postalCode')}" 
-                                    required="false" cssClass="text medium"/>
-                            </div>
-                            <div class="leftLarge">
-                                <@s.textfield key="eml.resourceCreator.address.city" 
-                                    label="%{getText('agent.address.city')}" 
-                                    required="false" cssClass="text large"/>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="leftxhalf">
-                                <@s.textfield key="eml.resourceCreator.address.province" 
-                                    label="%{getText('agent.address.province')}" 
-                                    required="false" cssClass="text xhalf"/>
-                            </div>
-                            <div class="leftxhalf">
-                                <@s.select id="countrySelect" 
-                                    key="eml.resourceCreator.address.country" 
-                                    list="{'${(eml.getResourceCreator().address.country)!}'}" 
-                                    required="true" cssClass="text xhalf"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                 <div>
-                        <!-- Associated party role select box. -->
-                        <@s.select id="associatedPartyRoleSelectBox"
-                            key="eml.associatedParties.roleName"           
-                            list="agentRoleMap.entrySet()"
-                            value="role.name()"
-                            listKey="key"
-                            listValue="value"  
-                            required="true"                              
-                            cssClass="text medium"/>
-                </div>
-                <div class="breakRight"></div>                    
-                <div>
-                <span>
-                    <a id="minus" href="" onclick="return false;">[-]</a> 
-                    <a id="plus" href="" onclick="return false;">[+]</a>
-                </span>
-           </div>
-           <div class="breakRight"></div>                    
-        </#if>       
-        <div class="breakRight"></div>                    
-    </div>    
-</div>
-
-
-  <#if resource.modified??>
-    <div class="linebreak">
-    <div class="modifiedDate">
-      <@s.text name="dataResource.lastModified"/> 
-        ${resource.modified?datetime?string} 
-        <#if resource.modifier??>
-          by ${resource.modifier.getFullName()}
-        </#if>
-    </div>
-  </#if> 
-  <div class="newline">
-   <@s.submit id="saveButton"
+        </td>  
+      </tr>
+      <tr>
+        <td>          
+          <div id="orgChangeLinkDiv"> 
+            <!-- Link for changing organization. -->
+            <a id="changeOrgLink" 
+               onclick="handleChangeOrgClick(); return false;"  
+               class="desc" href="">Change organization
+            </a>
+          </div> 
+        </td>
+      <tr>
+        <td>           
+          <div id="orgUuidDiv"> 
+            <!-- Resource organization UUID textbox. -->
+            <@s.textfield id="orgUuidTextBox" 
+                          key="resource.orgUuid" 
+                          value="${(resource.orgUuid)!}" 
+                          required="true" 
+                          readonly="true" 
+                          cssClass="text large organisationKey"/>
+          </div>
+        </td>
+      </tr>          
+      <tr>
+        <td>          
+          <div id="orgPasswordDiv">    
+            <!-- Resource organization password textbox. -->   
+            <@s.textfield id="orgPasswordTextBox"
+                          key="resource.orgPassword"
+                          value="${(resource.orgPassword)!}" 
+                          required="true" 
+                          cssClass="text medium"/>
+          </div>
+        </td>           
+      </tr>
+      <tr>
+        <td padding="8">          
+          <div id="orgResendPasswordDiv">                        
+            <a id="btnResend" target="_blank" href="#">
+              <!-- Resource organization password reset Link. -->
+              <@s.text name='configorg.password.resend'/>
+            </a>
+          </div>
+        </td>            
+      </tr>    
+      <tr>
+        <td>
+          <!-- Resource contact name textbox. -->
+          <@s.textfield id="contactNameTextBox"
+                        key="resource.contactName" 
+                        required="true" 
+                        cssClass="text medium"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <!-- Resource contact email textbox. -->
+          <@s.textfield id="contactEmailTextBox"
+                        key="resource.contactEmail" 
+                        required="true" 
+                        cssClass="text medium"/>
+        </td>
+      </tr>
+      <tr>
+      <tr>
+        <td>
+          <!-- Resource logo file box. -->
+          <@s.file id="selectLogoFile"
+                   key="resource.selectLogoFile" 
+                   name="file"                    
+                   cssClass="text file" 
+                   required="false" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <!-- Resource description textarea. -->
+          <@s.textarea id="descriptionTextBox"
+                       key="resource.description" 
+                       cssClass="text xlarge"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <!-- Form buttons. -->
+          <@s.submit id="saveButton"
                      key="button.save" 
                      cssClass="button" 
                      name="save"                      
@@ -687,6 +417,18 @@
                        onclick="return confirmDelete('resource')" 
                        theme="simple"/>
           </#if>
-   
-</fieldset>  
+        </td>
+      </tr>                                      
+    </table>                        
+  </fieldset>
+
+  <#if resource.modified??>
+    <div class="modifiedDate">
+      <@s.text name="dataResource.lastModified"/> 
+        ${resource.modified?datetime?string} 
+        <#if resource.modifier??>
+          by ${resource.modifier.getFullName()}
+        </#if>
+    </div>
+  </#if>  
 </@s.form>

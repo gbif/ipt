@@ -33,7 +33,8 @@ function handleError(errorMsg) {
 function Widget(elementId) {
   this.elementId = '#' + elementId;
   this.setVisible = setVisible;
-
+  this.addClickHandler = addClickHandler;
+  
   /**
    * Sets the visibility of the widget.
    * 
@@ -45,6 +46,10 @@ function Widget(elementId) {
     } else {
       $(this.elementId).hide();
     }
+  }
+  
+  function addClickHandler(handler) {
+    $(this.elementId).click(handler);
   }
 }
 
@@ -108,6 +113,11 @@ function TextBox(elementId) {
   function setReadOnly(readOnly) {
     $(this.elementId).attr("readOnly", readOnly);
   }
+  
+  function addClickHandler(handler) {
+    $(this.elementId).click(handler);
+  }
+  
 }
 
 /**
