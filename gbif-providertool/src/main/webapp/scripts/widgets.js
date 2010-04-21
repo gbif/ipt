@@ -102,21 +102,28 @@ function AgentPanel() {
    * Renumbers all agent element ids and name attribute values sequentially
    * starting from 0.
    */
-  function _resize() {
-    this._element.find(this._agentSelector).each(function(index) {
-      var id =  $(this).attr('id');
-      if (id.match(this._agentIdPattern)) {
-        $(this).attr('id', 'agent' + index);
-        name = 'eml.associatedParties[' + index + '].';
-        props = Agent.propertyNames();
-        for (p in props) {
-          var prop = props[p];
-          $(this).find('#' + prop).attr('name', name + prop);
-        }
-      }    
-    });
-  }
-
+function _resize() {
+   this._element.find(this._agentSelector).each(function(i) {
+     var id =  $(this).attr('id');
+     if (id.match(this._agentIdPattern)) {
+       $(this).attr('id', 'agent' + i);
+       name = 'eml.associatedParties[' + i + '].';
+       props = Agent.propertyNames();
+       var addressNames = Address.propertyNames();
+       for (p in props) {
+         var prop = props[p];
+         var isAddress = jQuery.inArray(prop, addressNames);
+         isAddress = isAddress >= 0 ? true : false;
+         if (isAddress) {
+           $(this).find('#' + name).attr('name', 'eml.associatedParties[' + i + '].address.'+ prop);
+         } else {
+           $(this).find('#' + prop).attr('name', name + prop);
+         }
+       }
+     }    
+   });
+ }
+ 
   /**
    * Removes the element from the DOM.
    */
