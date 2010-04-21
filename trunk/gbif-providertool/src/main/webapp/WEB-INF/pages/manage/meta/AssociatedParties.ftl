@@ -60,8 +60,8 @@ function GetAgents() {
         .lastName("<@s.property value="lastName"/>")
         .address("<@s.property value="address.address"/>")
         .email("<@s.property value="email"/>")
-        .homePage("<@s.property value="homepage"/>")
-        .organization("<@s.property value="organisation"/>")
+        .homepage("<@s.property value="homepage"/>")
+        .organisation("<@s.property value="organisation"/>")
         .phone("<@s.property value="phone"/>")
         .position("<@s.property value="position"/>")
         .role("<@s.property value="role"/>")
@@ -164,8 +164,8 @@ google.setOnLoadCallback(OnLoad);
     </div>
     <div class="newline"></div>
     <div>
-      <@s.textfield id="organization" key=""  
-        label="%{getText('agent.organization')}" cssClass="text xlarge"/>
+      <@s.textfield id="organisation" key=""  
+        label="%{getText('agent.organisation')}" cssClass="text xlarge"/>
     </div>
     <div class="newline"></div>
     <div class="leftxhalf">
@@ -189,20 +189,20 @@ google.setOnLoadCallback(OnLoad);
     <div class="newline"></div>
     <div class="leftxhalf">
       <@s.textfield id="postalCode" key=""  
-        label="%{getText('agent.postalCode')}" cssClass="text xhalf"/>
+        label="%{getText('agent.address.postalCode')}" cssClass="text xhalf"/>
     </div>
     <div class="leftxhalf">
       <@s.textfield id="city" key=""  
-        label="%{getText('agent.city')}" cssClass="text xhalf"/>
+        label="%{getText('agent.address.city')}" cssClass="text xhalf"/>
     </div>
     <div class="newline"></div>
     <div class="leftxhalf">
       <@s.textfield id="province" key=""  
-        label="%{getText('agent.province')}" cssClass="text xhalf"/>
+        label="%{getText('agent.address.province')}" cssClass="text xhalf"/>
     </div>
     <div class="leftxhalf">
       <@s.select id="country" key="" list=""
-        label="%{getText('agent.country')}" required="true" cssClass="text xhalf"/>
+        label="%{getText('agent.address.country')}" required="true" cssClass="text xhalf"/>
     </div>    
     <div class="newline"></div>
     <div class="newline"></div>

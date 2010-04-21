@@ -92,6 +92,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   private Map<String, String> agentRoleMap;
 
+  private String method;
+  
   @Override
   public String execute() {
     if (resource == null) {
@@ -106,6 +108,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public String getCountryVocUri() {
     return Vocabulary.Country.uri;
+  }
+
+  public String getMethod() {
+    return method;
+  }
+
+  public void setMethod(String method) {
+    this.method=method;
   }
 
   public Eml getEml() {

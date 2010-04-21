@@ -80,20 +80,20 @@ Address.propertyNames = function() {
 function Agent() {
   this._firstName = '';
   this._lastName = '';
-  this._organization = '';
+  this._organisation = '';
   this._position = '';
   this._address = new Address();
   this._phone = '';
   this._email = '';
   this._role = '';
-  this._homePage = '';
+  this._homepage = '';
   
   this.firstName = firstName;
   this.lastName = lastName;
   this.address = address;
   this.email = email;
-  this.homePage = homePage;
-  this.organization = organization;
+  this.homepage = homepage;
+  this.organisation = organisation;
   this.phone = phone;
   this.position = position;
   this.role = role;
@@ -139,20 +139,20 @@ function Agent() {
     }
   }
   
-  function homePage(val) {
+  function homepage(val) {
     if (val == null) {
-      return this._homePage;
+      return this._homepage;
     } else { 
-      this._homePage = val;
+      this._homepage = val;
       return this;
     }
   }
   
-  function organization(val) {
+  function organisation(val) {
     if (val == null) {
-      return this._organization;
+      return this._organisation;
     } else { 
-      this._organization = val;
+      this._organisation = val;
       return this;
     }
   }
@@ -231,7 +231,7 @@ function Agent() {
 }
 
 Agent.propertyNames = function() {
-  return ['address', 'city', 'country', 'email', 'firstName', 'homePage', 'lastName', 'organization', 'phone', 'position', 'postalCode', 'province', 'role'];
+  return ['address', 'city', 'country', 'email', 'firstName', 'homepage', 'lastName', 'organisation', 'phone', 'position', 'postalCode', 'province', 'role'];
 }
   
 
