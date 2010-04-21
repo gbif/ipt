@@ -191,7 +191,7 @@ google.setOnLoadCallback(OnModuleLoaded);
 <@s.hidden name="resourceId" value="${(resource.id)!}"/>
 <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 <@s.hidden name="guid" value="${(resource.guid)!}"/>    
-<@s.hidden name="nextPage" value="associatedParties"/>
+<@s.hidden name="nextPage" value="creator"/>
 <@s.hidden name="method" value="organisation"/>    
 
 <div class="newline"></div>
