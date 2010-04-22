@@ -316,8 +316,8 @@
            <!-- for quantifying natural history collections datasets  -->
             <jgtiCuratorialUnit>
                 <!-- a choice of jgtiUnits or jgtiUnitRange -->
-                                <!-- TODO: add a second test case with this one -->
-                <!--jgtiUnits uncertaintyMeasure="50">2000</jgtiUnits-->
+               <!-- TODO: add a second test case with this one -->
+                <jgtiUnitType>jars</jgtiUnitType>
                 <jgtiUnitRange>
                     <beginRange>500</beginRange>
                     <endRange>600</endRange>
