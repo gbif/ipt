@@ -251,9 +251,16 @@
         <xs:element ref="descriptorValue"/>
       </xs:sequence>
       <xs:attribute name="citableClassificationSystem" use="optional" type="xs:boolean"/>
-      <xs:attribute name="name" use="optional" type="xs:NCName"/>
+      <xs:attribute name="name" use="optional" type="descriptorEnum"/>
     </xs:complexType>
   </xs:element>
+  <xs:simpleType name="descriptorEnum">
+    <xs:restriction base="xs:NCName">
+      <xs:enumeration value="thematic" />
+      <xs:enumeration value="geographic" />
+      <xs:enumeration value="generic" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="descriptorValue" type="xs:string"/>
   <xs:element name="designDescription" type="description"/>
   <xs:element name="additionalMetadata">
@@ -316,6 +323,7 @@
   <xs:element name="jgtiCuratorialUnit">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="jgtiUnitType" type="xs:string"/>
         <xs:element ref="jgtiUnitRange"/>
       </xs:sequence>
     </xs:complexType>
