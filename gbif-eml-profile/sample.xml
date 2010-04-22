@@ -9,7 +9,7 @@
 <eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.0"  
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:dc="http://purl.org/dc/terms/"
-    xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0 eml.xsd"
+    xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0 eml-gbif-profile.xsd"
     packageId="619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml" system="GBIF-IPT" scope="system">
    
         <!-- The IPT is concerned with descriptions of datasets only -->
@@ -245,7 +245,7 @@
                     <para>My Deep Pockets</para>
             </funding>
             <studyAreaDescription>
-                <descriptor name="climate" citableClassificationSystem="true">
+                <descriptor name="generic" citableClassificationSystem="false">
                     <descriptorValue>Turkish Mountains</descriptorValue>
                 </descriptor>
             </studyAreaDescription>
