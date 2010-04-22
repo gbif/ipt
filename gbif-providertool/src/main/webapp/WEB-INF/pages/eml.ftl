@@ -10,6 +10,7 @@
     <dataset>
         <alternateIdentifier>${eml.getResource().guid}</alternateIdentifier>
         <title>${eml.title}</title>
+
         <creator>
             <individualName>
                 <givenName>${eml.getResourceCreator().firstName!}</givenName>
@@ -27,11 +28,51 @@
             <electronicMailAddress>${eml.getResourceCreator().email!}</electronicMailAddress>
             <onlineUrl>${eml.getResource().link!}</onlineUrl>
         </creator>
+
+        <metadataProvider>
+            <individualName>
+                <givenName>${eml.getMetadataProvider().firstName!}</givenName>
+                <surName>${eml.getMetadataProvider().lastName!}</surName>
+            </individualName>
+            <address>
+                <deliveryPoint>${eml.getMetadataProvider().address.address!}</deliveryPoint>
+                <city>${eml.getMetadataProvider().address.city!}</city>
+                <administrativeArea>${eml.getMetadataProvider().address.province!}</administrativeArea>
+                <postalCode>${eml.getMetadataProvider().address.postalCode!}</postalCode>
+                <country>${eml.getMetadataProvider().address.country!}</country>
+            </address>
+            <electronicMailAddress>${eml.getMetadataProvider().email!}</electronicMailAddress>
+        </metadataProvider>
+       
+        <#if (eml.associatedParties ? size > 0)>
+        <@s.iterator value="eml.associatedParties" status="stat">     
+        <associatedParty>
+            <individualName>
+                <givenName><@s.property value="firstName"/></givenName>
+                <surName><@s.property value="lastName"/></surName>
+            </individualName>
+            <organizationName><@s.property value="organisation"/></organizationName>
+            <positionName><@s.property value="position"/></positionName>
+            <address>
+                <city><@s.property value="address.city"/></city>
+                <administrativeArea><@s.property value="address.province"/></administrativeArea>
+                <postalCode><@s.property value="address.postalCode"/></postalCode>
+                <country><@s.property value="address.country"/></country>
+            </address>
+            <phone><@s.property value="phone"/></phone>
+            <electronicMailAddress><@s.property value="phone"/></electronicMailAddress>
+            <onlineUrl><@s.property value="email"/></onlineUrl>
+            <role><@s.property value="role"/></role>
+        </associatedParty>
+        </@s.iterator>
+        </#if>
+        
         <pubDate>${eml.pubDate?date?string("yyyy-MM-dd")}</pubDate>
         <language>${eml.language!}</language>
         <abstract>
             <para>${eml.abstract!}</para>
         </abstract>
+        
         <keywordSet>
         	<keyword>IPT</keyword>
         	<keyword>GBIF</keyword>
@@ -39,43 +80,73 @@
             <keyword>${k!""}</keyword>
             </#list>
         </keywordSet>
+        
+        <additionalInfo>
+            <para>${eml.additionalInfo!}</para>
+        </additionalInfo>
+        
         <intellectualRights>
             <para>${eml.intellectualRights!}</para>
         </intellectualRights>
+        
+        <distribution scope="document">
+            <online>
+                <url function="information">${eml.distributionUrl!}</url>
+            </online>
+        </distribution>
+        
         <coverage>
+            <#if (eml.geospatialCoverages ? size > 0)>
+            <#list eml.getGeospatialCoverages() as geocoverage>
             <geographicCoverage>
-                <geographicDescription>${(eml.getGeographicCoverage().description)!}</geographicDescription>
-	            <#if (eml.getGeographicCoverage().boundingCoordinates.min)??>
+                <geographicDescription>${geocoverage.description!}</geographicDescription>
+	            <#if geocoverage.boundingCoordinates.min?exists>
                 <boundingCoordinates>
-                    <westBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.min.longitude!}</westBoundingCoordinate>
-                    <eastBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.max.longitude!}</eastBoundingCoordinate>
-                    <northBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.max.latitude!}</northBoundingCoordinate>
-                    <southBoundingCoordinate>${eml.getGeographicCoverage().boundingCoordinates.min.latitude!}</southBoundingCoordinate>
+                    <westBoundingCoordinate>${geocoverage.boundingCoordinates.min.longitude"!}</westBoundingCoordinate>
+                    <eastBoundingCoordinate>${geocoverage.boundingCoordinates.max.longitude"!}</eastBoundingCoordinate>
+                    <northBoundingCoordinate>${geocoverage.boundingCoordinates.max.latitude"!}</northBoundingCoordinate>
+                    <southBoundingCoordinate>${geocoverage.boundingCoordinates.min.latitude"!}</southBoundingCoordinate>
                 </boundingCoordinates>
                 </#if>
             </geographicCoverage>
-            <#if eml.getTemporalCoverage().start??>
+            </#list>
+            </#if>
+
+            <#if (eml.temporalCoverages ? size > 0)>
+            <#list eml.getTemporalCoverages() as tempcoverage>
             <temporalCoverage>
-	            <#if eml.getTemporalCoverage().end??>
-                <rangeOfDates>
-                    <beginDate><calendarDate>${eml.getTemporalCoverage().start?date?string("yyyy-MM-dd")}</calendarDate></beginDate>
-                    <endDate><calendarDate>${eml.getTemporalCoverage().end?date?string("yyyy-MM-dd")}</calendarDate></endDate>
-                </rangeOfDates>
-                <#else>
-                <singleDateTime><calendarDate>${eml.getTemporalCoverage().start?date?string("yyyy-MM-dd")}</calendarDate></singleDateTime>
+	            <#if (tempcoverage.end)?? || (tempcoverage.start)??>
+	              <#if (tempcoverage.end)?? && (tempcoverage.start)??>
+	                <#if (tempcoverage.end) == (tempcoverage.start)>
+                      <singleDateTime><calendarDate>tempcoverage.start?date?string("yyyy-MM-dd")}</calendarDate></singleDateTime>
+                    <#else>
+                      <rangeOfDates>
+                        <beginDate><calendarDate>tempcoverage.start?date?string("yyyy-MM-dd")</calendarDate></beginDate>
+                        <endDate><calendarDate>tempcoverage.end?date?string("yyyy-MM-dd")}</calendarDate></endDate>
+                       </rangeOfDates>
+                    </#if>
+                  </#if>
+                  <#if (tempcoverage.end)??>
+                    <rangeOfDates>
+                      <beginDate><calendarDate></calendarDate></beginDate>
+                      <endDate><calendarDate>tempcoverage.end?date?string("yyyy-MM-dd")}</calendarDate></endDate>
+                    </rangeOfDates>
+                  <#else>
+                    <rangeOfDates>
+                      <beginDate><calendarDate></calendarDate></beginDate>
+                      <endDate><calendarDate>tempcoverage.end?date?string("yyyy-MM-dd")}</calendarDate></endDate>
+                    </rangeOfDates>
+                  </#if>
                 </#if>
             </temporalCoverage>
+            </#list>
             </#if>
+
+            <#if (eml.taxonomicCoverages ? size > 0)>
+            <#list eml.getTaxonomicCoverages() as taxoncoverage>
             <taxonomicCoverage>
-                <generalTaxonomicCoverage>${eml.taxonomicCoverageDescription!}</generalTaxonomicCoverage>
-                <#if eml.lowestCommonTaxon()?exists>
-                <taxonomicClassification>
-                    <taxonRankName>${eml.lowestCommonTaxon().rank!}</taxonRankName>
-                    <taxonRankValue>${eml.lowestCommonTaxon().scientificName!}</taxonRankValue>
-                    <commonName>${eml.lowestCommonTaxon().commonName!}</commonName>
-                </taxonomicClassification>
-                </#if>
-	        	<#list eml.getTaxonomicClassification() as k>
+                <generalTaxonomicCoverage>${taxoncoverage.description!}</generalTaxonomicCoverage>
+	        	<#list taxoncoverage.keywords as k>
                 <taxonomicClassification>
                     <taxonRankName>${k.rank!}</taxonRankName>
                     <taxonRankValue>${k.scientificName!}</taxonRankValue>
@@ -83,75 +154,226 @@
                 </taxonomicClassification>
 	            </#list>
             </taxonomicCoverage>
+            </#list>
+            </#if>
         </coverage>
+
+        <purpose>
+            <para>${eml.purpose!}</para>
+        </purpose>
+        
         <contact>
             <individualName>
-                <surName>${eml.getResource().contactName!}</surName>
+                <givenName>${eml.getResourceCreator().firstName!}</givenName>
+                <surName>${eml.getResourceCreator().lastName!}</surName>
             </individualName>
-            <electronicMailAddress>${eml.getResource().contactEmail!}</electronicMailAddress>
+            <organizationName>${eml.getResourceCreator().organisation!}</organizationName>
+            <positionName>${eml.getResourceCreator().position!}</positionName>
+            <address>
+                <city>${eml.getResourceCreator().address.city!}</city>
+                <administrativeArea>${eml.getResourceCreator().address.province!}</administrativeArea>
+                <postalCode>${eml.getResourceCreator().address.postalCode!}</postalCode>
+                <country>${eml.getResourceCreator().address.country!}</country>
+            </address>
+            <phone>${eml.getResourceCreator().phone!}</phone>
+            <electronicMailAddress>${eml.getResourceCreator().email!}</electronicMailAddress>
+            <onlineUrl>${eml.getResource().link!}</onlineUrl>
         </contact>
+
         <methods>
-            <#if eml.methods??>
+            <#if (eml.getSamplingMethods() ? size > 0)>
+            <#list eml.getSamplingMethods() as samplemethod>
             <methodStep>
-                <description>
-                    <para>${eml.methods!}</para>
-                </description>
+              <description><para>${samplemethod.sampleDescription!}</para></description>
             </methodStep>
-            </#if>
-            <#if eml.samplingDescription??>
+            <#if (samplemethod.studyExtent)??>
             <sampling>
-				<studyExtent><description><para></para></description></studyExtent>
-                <samplingDescription><para>${eml.samplingDescription!}</para></samplingDescription>
+              <studyExtent><description>${samplemethod.studyExtent!}</description></studyExtent>
             </sampling>
             </#if>
-            <#if eml.qualityControl??>
+            <#if (samplemethod.qualityControl)??>
             <qualityControl>
-                <description><para>${eml.qualityControl!}</para></description>
-            </qualityControl>            
+              <description><para>${samplemethod.qualityControl!}</para></description>
+            </qualityControl>
+            </#if>
+            </#list>
             </#if>
         </methods>
+
         <project>
-            <title>${eml.researchProject.title!}</title>
-            <#if eml.researchProject.personnelOriginator.organisation??>
+            <title>${eml.project.title!}</title>
+            <#if (eml.project.personnel)??>
             <personnel>
-                <organizationName>${eml.researchProject.personnelOriginator.organisation!}</organizationName>
-                <role></role>
+              <individualName>
+                <givenName>${eml.project.personnel.firstName!}</givenName>
+                <surName>${eml.project.personnel.lastName!}</surName>
+              </individualName>
+              <organizationName>${eml.project.personnel.organisation!}</organizationName>
+              <positionName>${eml.project.personnel.position!}</positionName>
+              <address>
+                <city>${eml.project.personnel.address.city!}</city>
+                <administrativeArea>${eml.project.personnel.address.province!}</administrativeArea>
+                <postalCode>${eml.project.personnel.address.postalCode!}</postalCode>
+                <country>${eml.project.personnel.address.country!}</country>
+              </address>
+              <phone>${eml.project.personnel.phone!}</phone>
+              <electronicMailAddress>${eml.project.personnel.email!}</electronicMailAddress>
+              <onlineUrl>${eml.project.personnel.homepage!}</onlineUrl>
             </personnel>
             </#if>
-            <#if eml.researchProject.abstract??>
+            <#if eml.project.funding??>
             <abstract>
-                <para>${eml.researchProject.abstract!}</para>
+                <para>${eml.project.funding!}</para>
             </abstract>
             </#if>
-            <#if eml.researchProject.funding??>
-            <funding>
-                <para>${eml.researchProject.funding!}</para>
-            </funding>
-            </#if>
-            <#if eml.researchProject.studyAreaDescription??>
+            <#if eml.project.studyAreaDescription??>
             <studyAreaDescription>
-                <coverage>
-                    <geographicCoverage>
-                        <geographicDescription>${eml.researchProject.studyAreaDescription!}</geographicDescription>
-                        <boundingCoordinates>
-                            <westBoundingCoordinate></westBoundingCoordinate>
-                            <eastBoundingCoordinate></eastBoundingCoordinate>
-                            <northBoundingCoordinate></northBoundingCoordinate>
-                            <southBoundingCoordinate></southBoundingCoordinate>
-                        </boundingCoordinates>
-                    </geographicCoverage>
-                </coverage>
+              <descriptor name="climate"  citableClassificationSystem="true">
+                 <descriptorValue>${eml.project.studyAreaDesctription!}</descriptorValue>
+              </descriptor>
             </studyAreaDescription>            
             </#if>
-            <#if eml.researchProject.designDescription??>
-            <designDescription><description><para>${eml.researchProject.designDescription!}</para></description></designDescription>
+            <#if eml.project.designDescription??>
+            <designDescription><description><para>${eml.project.designDescription!}</para></description></designDescription>
             </#if>
         </project>
     </dataset>
+
+    <#if (eml.citations ? size > 0)>
+    <#list eml.getCitations() as cit>
     <additionalMetadata>
-	    <#if (eml.getEmlVersion()>1)>
+      <metadata>
+        <citation>${cit!}</citation>
+      </metadata>
+	</additionalMetadata>
+	</#list>
+	</#if>
+
+    <#if (eml.bibliographicCitations ? size > 0)>
+    <#list eml.getCitations() as bcitset>
+    <additionalMetadata>
+      <metadata>
+      <#list bcitset.bibliographicCitations as bcit>
+        <bibliographicCitation>${bcit!}</bibliographicCitation>
+	  </#list>
+      </metadata>
+	</additionalMetadata>
+	</#list>
+	</#if>
+
+    <#if (eml.metadataLanguage)??)>
+    <additionalMetadata>
+      <metadata>
+        <metadataLanguage>${eml.metadataLanguage!}</metadataLanguage>
+      </metadata>
+	</additionalMetadata>
+    </#if>    
+
+    <#if (eml.hierarchyLevel)??)>
+    <additionalMetadata>
+      <metadata>
+        <hierarchyLevel>${eml.hierarchyLevel!}</hierarchyLevel>
+      </metadata>
+	</additionalMetadata>
+    </#if>
+    
+    <#if (eml.PhysicalData ? size > 0)>
+    <#list eml.getPhysicalData() as pdata>
+    <additionalMetadata>
+      <metadata>
+        <physical>
+        <objectName>pdata.name</objectName>
+        <characterEncoding>pdata.name</characterEncoding>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>pdata.format</formatName>
+            <formatVersion>pdata.formatVersion</formatVersion>
+          </externallyDefinedFormat>
+        </dataFormat>
+        <distribution>
+          <online>
+            <url function="download">pdata.distributionUrl</url>
+          </online>
+        </distribution>
+        </physical>
+      </metadata>
+	</additionalMetadata>
+	</#list>
+	</#if>
+
+    <#if (eml.jgtiCuratorialUnit)??)>
+    <additionalMetadata>
+      <metadata>
+        <jgtiCuratorialUnit>
+          <#if (eml.jgtiCuratorialUnit.rangeStart)?? && (eml.jgtiCuratorialUnit.rangeEnd)??>
+            <jgtoUnitRange>
+               <beginRange>${eml.jgtiCuratorialUnit.rangeStart!}</beginRange>
+               <endRange>${eml.jgtiCuratorialUnit.rangeStart!}</endRange>
+            </jgtoUnitRange>
+          <#else>
+            <jgtiUnits uncertaintyMeasure="${eml.jgtiCuratorialUnit.uncertaintyMeasure!}">${eml.jgtiCuratorialUnit.beginRange!}</jgtiUnits>
+          </#if>
+          <unit>${eml.jgtiCuratorialUnit.unit!}</unit>
+        </jgtiCuratorialUnit>
+      </metadata>
+	</additionalMetadata>
+    </#if>
+    
+    <#if (eml.specimenPreservationMethod)??)>
+    <additionalMetadata>
+      <metadata>
+        <specimenPreservationMethod>${eml.specimenPreservationMethod!}</specimenPreservationMethod>
+      </metadata>
+	</additionalMetadata>
+    </#if>
+    
+    <#if (eml.temporalCoverages ? size > 0)>
+    <#list eml.getTemporalCoverages() as tcoverage>
+    <#if (tempcoverage.livingTimePeriod)??>
+    <additionalMetadata>
+      <metadata>
+        <livingTimePeriod>${tcoverage.livingTimePeriod!}</livingTimePeriod>
+      </metadata>
+	</additionalMetadata>
+	</#if>
+    <#if (tempcoverage.formationPeriod)??>
+    <additionalMetadata>
+      <metadata>
+        <formationPeriod>${tcoverage.formationPeriod!}</formationPeriod>
+      </metadata>
+	</additionalMetadata>
+    </#if>
+    </#list>
+    </#if>
+    
+    <#if (eml.parentCollectionId)?? || (eml.collectionId)?? || (eml.collectionName)??)>
+    <additionalMetadata>
+      <collection>
+      <#if (eml.parentCollectionId)??>
+        <parentCollectionIdentifier>${eml.parentCollectionId!}</parentCollectionIdentifier>
+      </#if>
+      <#if (eml.collectionId)??>
+        <collectionIdentifier>${eml.collectionId!}</collectionIdentifier>
+      </#if>
+      <#if (eml.collectionName)??>
+        <collectionName>${eml.collectionName!}</collectionName>
+      </#if>
+      </collection>
+	</additionalMetadata>
+    </#if>
+
+    <#if (eml.logoUrl)??)>
+    <additionalMetadata>
+      <metadata>
+        <logoUrl>${eml.logoUrl!}</logoUrl>
+      </metadata>
+	</additionalMetadata>
+    </#if>
+    
+    <#if (eml.getEmlVersion()>1)>
+    <additionalMetadata>
 	    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
-	    </#if>
     </additionalMetadata>
+    </#if>
 </eml:eml>
 </#escape>
