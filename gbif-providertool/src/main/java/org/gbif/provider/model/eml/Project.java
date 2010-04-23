@@ -55,7 +55,7 @@ public class Project implements Serializable {
 	 * descriptions of the geographic, temporal, and taxonomic coverage of the research location.
 	 * @see http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-project.html#descriptor
 	 */
-	private String studyAreaDescription;
+	private StudyAreaDescription studyAreaDescription;
 	
 	/**
 	 * A general description in textual form describing some aspect of the study area
@@ -134,14 +134,14 @@ public class Project implements Serializable {
 	/**
 	 * @return the studyAreaDescription
 	 */
-	public String getStudyAreaDescription() {
+	public StudyAreaDescription getStudyAreaDescription() {
 		return studyAreaDescription;
 	}
 
 	/**
 	 * @param studyAreaDescription the studyAreaDescription to set
 	 */
-	public void setStudyAreaDescription(String studyAreaDescription) {
+	public void setStudyAreaDescription(StudyAreaDescription studyAreaDescription) {
 		this.studyAreaDescription = studyAreaDescription;
 	}
 

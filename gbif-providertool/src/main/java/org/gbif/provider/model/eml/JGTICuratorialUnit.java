@@ -22,7 +22,12 @@ import java.io.Serializable;
 import com.google.common.base.Objects;
 
 /**
- * This class can be used to encapsulate information about a curatorial unit.
+ * Joint GeoTaxonomic Index (JGTI) Curatorial Unit
+ * A quantitative descriptor (number of specimens, samples or batches). The
+ * actual quantification could be covered by 1) an exact number of “JGI-units”
+ * in the collection plus a measure of uncertainty (+/- x); 2) a range of
+ * numbers (x to x), with the lower value representing an exact number, when
+ * the higher value is omitted.
  */
 public class JGTICuratorialUnit implements Serializable {
 	/**
@@ -30,10 +35,11 @@ public class JGTICuratorialUnit implements Serializable {
 	 */
 	private static final long serialVersionUID = 4302214747473277031L;
 
-	private String rangeEnd;
-	private String rangeStart;
-	private String uncertaintyMeasure;
-	private Integer unit;
+	private String unitType;
+	private Integer rangeEnd;
+	private Integer rangeStart;
+	private Integer uncertaintyMeasure;
+//	private Integer unit;
 	
 	/**
 	 * Required by Struts2
@@ -50,48 +56,59 @@ public class JGTICuratorialUnit implements Serializable {
 			return false;
 		}
 		JGTICuratorialUnit o = (JGTICuratorialUnit) other;
-		return equal(rangeEnd, o.rangeEnd) && equal(rangeStart, o.rangeStart) && equal(uncertaintyMeasure, o.uncertaintyMeasure) && equal(unit, o.unit);
+  return equal(rangeEnd, o.rangeEnd) && equal(rangeStart, o.rangeStart) && equal(uncertaintyMeasure, o.uncertaintyMeasure) && equal(unitType, o.unitType);
+//    return equal(rangeEnd, o.rangeEnd) && equal(rangeStart, o.rangeStart) && equal(uncertaintyMeasure, o.uncertaintyMeasure) && equal(unit, o.unit);
 	}
 
-	public String getRangeEnd() {
-		return rangeEnd;
-	}
+  public String getUnitType() {
+    return unitType;
+  }
 
-	public String getRangeStart() {
+  public Integer getRangeEnd() {
+    return rangeEnd;
+  }
+
+	public Integer getRangeStart() {
 		return rangeStart;
 	}
 
-	public String getUncertaintyMeasure() {
+	public Integer getUncertaintyMeasure() {
 		return uncertaintyMeasure;
 	}
 
-	public Integer getUnit() {
-		return unit;
-	}
+//	public Integer getUnit() {
+//		return unit;
+//	}
 	
-	public void setRangeEnd(String rangeEnd) {
-		this.rangeEnd = rangeEnd;
-	}
+  public void setUnitType(String unittype) {
+    this.unitType = unittype;
+  }
 
-	public void setRangeStart(String rangeStart) {
+  public void setRangeEnd(Integer rangeEnd) {
+    this.rangeEnd = rangeEnd;
+  }
+
+	public void setRangeStart(Integer rangeStart) {
 		this.rangeStart = rangeStart;
 	}
 
-	public void setUncertaintyMeasure(String uncertaintyMeasure) {
+	public void setUncertaintyMeasure(Integer uncertaintyMeasure) {
 		this.uncertaintyMeasure = uncertaintyMeasure;
 	}
 
-	public void setUnit(Integer unit) {
-		this.unit = unit;
-	}
+//	public void setUnit(Integer unit) {
+//		this.unit = unit;
+//	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(rangeEnd, rangeStart, uncertaintyMeasure, unit);
+    return Objects.hashCode(rangeEnd, rangeStart, uncertaintyMeasure);
+//    return Objects.hashCode(rangeEnd, rangeStart, uncertaintyMeasure, unit);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("RangeEnd=%s, RangeStart=%s, UncertaintyMeasure=%s, Unit=%d", rangeEnd, rangeStart, uncertaintyMeasure, unit);
+    return String.format("RangeEnd=%s, RangeStart=%s, UncertaintyMeasure=%s, UnitType=%s", rangeEnd, rangeStart, uncertaintyMeasure, unitType);
+//    return String.format("RangeEnd=%s, RangeStart=%s, UncertaintyMeasure=%s, Unit=%d", rangeEnd, rangeStart, uncertaintyMeasure, unit);
 	}
 }
