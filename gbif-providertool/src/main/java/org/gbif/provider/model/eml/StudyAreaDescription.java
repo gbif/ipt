@@ -31,7 +31,7 @@ public class StudyAreaDescription implements Serializable {
    */
   private static final long serialVersionUID = -625087801176596735L;
   private StudyAreaDescriptor name;
-  private String citableClassificationSystem;
+  private String citableClassificationSystem="false";
   private String descriptorValue;
 
   @Override
@@ -65,9 +65,9 @@ public class StudyAreaDescription implements Serializable {
     return Objects.hashCode(name, citableClassificationSystem, descriptorValue);
   }
 
-//  public void setName(StudyAreaDescriptor name) {
-//    this.name = name;
-//  }
+  public void setName(StudyAreaDescriptor name) {
+    this.name = name;
+  }
 
   public void setName(String nameStr) {
     name = StudyAreaDescriptor.fromString(nameStr);
