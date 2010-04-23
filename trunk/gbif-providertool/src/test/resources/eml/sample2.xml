@@ -5,6 +5,9 @@
         This is the reference sample for Unit testing on consumption and output of the IPT
        
         The content of this metadata are NOT real data, but drafted just for this sample
+        
+        This sample differs from the sample.xml file in that it is meant to demonstrate the alternate formation
+        of the JGTICuratorialUnit using rangeStart and uncertainty.
         -->
 <eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.0"  
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -319,10 +322,13 @@
                 <!-- a choice of jgtiUnits or jgtiUnitRange -->
                <!-- TODO: add a second test case with this one -->
                 <jgtiUnitType>jars</jgtiUnitType>
+                <jgtiUnits uncertaintyMeasure="50">2000</jgtiUnits>  
+<!--
                 <jgtiUnitRange>
                     <beginRange>500</beginRange>
                     <endRange>600</endRange>
                 </jgtiUnitRange>
+-->
             </jgtiCuratorialUnit>
             <!-- The IPT will provide a controlled vocabulary for this -->
              <!-- derived from NHC  -->

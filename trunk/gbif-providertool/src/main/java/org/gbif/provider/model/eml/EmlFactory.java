@@ -65,8 +65,9 @@ public class EmlFactory {
 		digester.addBeanPropertySetter("eml/dataset/intellectualRights/para", "intellectualRights");
     digester.addBeanPropertySetter("eml/dataset/distribution/online/url", "distributionUrl");
 		digester.addBeanPropertySetter("eml/dataset/purpose/para", "purpose");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/citation", "citation");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/specimenPreservationMethod", "specimenPreservationMethod");
-    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/logoUrl", "logoUrl");
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/resourceLogoUrl", "logoUrl");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/metadataLanguage", "metadataLanguage");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/hierarchyLevel", "hierarchyLevel");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/collection/parentCollectionIdentifier", "parentCollectionId");
@@ -91,11 +92,6 @@ public class EmlFactory {
 		addPhysicalDataRules(digester);
     addJGTICuratorialIUnit(digester);
 
-	  // rule to call "addCitation" on last stack object, with 1 param
-		digester.addCallMethod("eml/additionalMetadata/metadata/citation", "addCitation", 1);
-	  // set the parameter to pass in to the method as the citation content
-	  digester.addCallParam("eml/additionalMetadata/metadata/citation", 0);
-
     // now parse and return the EML 
 		try {
 			digester.parse(xml);
@@ -112,9 +108,14 @@ public class EmlFactory {
    */
   private static void addJGTICuratorialIUnit(Digester digester) {
     digester.addObjectCreate("eml/additionalMetadata/metadata/jgtiCuratorialUnit", JGTICuratorialUnit.class);
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnitType", "unitType");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnitRange/beginRange", "rangeStart");
     digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnitRange/endRange", "rangeEnd");
-    digester.addSetNext("eml/additionalMetadata/metadata/jgtiCuratorialUnit", "setJgtiCuratorialUnit"); // add the addJGTICuratorialIUnit to the list in EML    
+    digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnits", "rangeStart");
+    // sets attributes of jgtiUnits (uncertaintyMeasure)
+    digester.addSetProperties("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnits");
+    digester.addSetNext("eml/additionalMetadata/metadata/jgtiCuratorialUnit", "setJgtiCuratorialUnit"); // add the JGTICuratorialIUnit to the list in EML
+   
   }
   
   /**
@@ -142,8 +143,7 @@ public class EmlFactory {
 		addAgentRules(digester, "eml/dataset/project/personnel", "setPersonnel");
 		digester.addBeanPropertySetter("eml/dataset/project/abstract/para", "projectAbstract");
 		digester.addBeanPropertySetter("eml/dataset/project/funding/para", "funding");
-		// skipping the descriptor attributes 
-		digester.addBeanPropertySetter("eml/dataset/project/studyAreaDescription/descriptor/descriptorValue", "studyAreaDescription");
+		addStudyAreaDescriptionRules(digester);
 		digester.addBeanPropertySetter("eml/dataset/project/designDescription/description", "designDescription");
 		digester.addSetNext("eml/dataset/project", "setProject"); // add the Project to the list in EML
 	}
@@ -239,10 +239,10 @@ public class EmlFactory {
    * @param digester to add the rules to
    */
   private static void addBibliographicCitations(Digester digester) {
-    digester.addObjectCreate("eml/additionalMetadata/metadata/bibliographicCitations", BibliographicCitationSet.class);
-    digester.addCallMethod("eml/additionalMetadata/metadata/bibliographicCitations/bibliographicCitation", "add", 1);
-    digester.addCallParam("eml/additionalMetadata/metadata/bibliographicCitations/bibliographicCitation", 0);
-    digester.addSetNext("eml/additionalMetadata/metadata/bibliographicCitations", "addBibliographicCitationSet"); // add the BibliographicCitationSet to the list in EML
+    digester.addObjectCreate("eml/additionalMetadata/metadata/bibliography", BibliographicCitationSet.class);
+    digester.addCallMethod("eml/additionalMetadata/metadata/bibliography/citation", "add", 1);
+    digester.addCallParam("eml/additionalMetadata/metadata/bibliography/citation", 0);
+    digester.addSetNext("eml/additionalMetadata/metadata/bibliography", "addBibliographicCitationSet"); // add the BibliographicCitationSet to the list in EML
   }
 
 	/**
@@ -296,5 +296,16 @@ public class EmlFactory {
 		digester.addSetNext(prefix + "", parentMethod); // method called on parent object which is the previous stack object
 	}
 
+  private static void addStudyAreaDescriptionRules(Digester digester) {
+    digester.addObjectCreate("eml/dataset/project/studyAreaDescription", StudyAreaDescription.class);
+//    digester.addCallMethod("eml/dataset/project/studyAreaDescription/descriptor", "setDescriptor", 1);
+//    digester.addCallParam("eml/dataset/project/studyAreaDescription/descriptor", 0);
+//    digester.addBeanPropertySetter("eml/dataset/project/studyAreaDescription/descriptor", "descriptor");
+    // sets attributes of descriptor (name, citableClassificationSystem)
+    digester.addSetProperties("eml/dataset/project/studyAreaDescription/descriptor");
+    digester.addBeanPropertySetter("eml/dataset/project/studyAreaDescription/descriptor/descriptorValue", "descriptorValue");
+    // add the StudyAreaDescription to the project
+    digester.addSetNext("eml/dataset/project/studyAreaDescription", "setStudyAreaDescription");
+  }
 
 }

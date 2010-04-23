@@ -62,14 +62,13 @@ public class Eml implements Serializable {
   private List<PhysicalData> physicalData = Lists.newArrayList();
 
   /**
-   * A resource that describes a literature citation that one might find in a
-   * bibliography. We cannot use
+   * A resource that describes a literature citation for the resource, one that 
+   * might be found in a bibliography. We cannot use
    * http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml.html#citation
    * because the IPT deals with /eml/dataset and not /eml/citation therefore
-   * these are found in the additionalMetadata section of the EML until a more
-   * appropriate place is identified
+   * these are found in the additionalMetadata section of the EML.
    */
-  private List<String> citations = Lists.newArrayList();
+  private String citation;
 
   /**
    * The 'creator' element provides the full name of the person, organization,
@@ -237,34 +236,6 @@ public class Eml implements Serializable {
    */
   private Project project;
 
-  // private LocaleBundle dataLocale;
-  // private String description;
-  // private String formationPeriod;
-  // private String homepage;
-  // private String distributionUrl;
-  // private Set<String> kingdomCoverages = Sets.newHashSet();
-  // private String livingTimePeriod;
-  // private LocaleBundle resourceLocale;
-  // private Point location;
-  // private String placenameCoverageDescription;
-  // private List<Agent> primaryContacts = Lists.newArrayList();
-  // private Set<Attribute> resourceAttributes = Sets.newHashSet();
-  // private String type;
-  // private String publishPlace;
-  // private GeospatialCoverage geographicCoverage;
-  // private String taxonomicCoverageDescription;
-  // private TimeKeyword temporalCoverage = new TimeKeyword();
-  // private String methods;
-  // private Project researchProject = new Project();
-  // private TaxonKeyword lowestCommonTaxon;// TODO: verify: = new
-  // TaxonKeyword();
-  // private List<TaxonKeyword> taxonomicClassification = new
-  // ArrayList<TaxonKeyword>();
-  // private String samplingDescription;
-  // private String qualityControl;
-  // private String purpose;
-  // private String maintenance;
-
   /**
    * Default constructor needed by Struts2
    */
@@ -288,15 +259,15 @@ public class Eml implements Serializable {
     associatedParties.add(agent);
   }
 
-  /**
-   * utility to add a citation to the citations. This method was introduced to
-   * ease the Digester rules for parsing of EML
-   * 
-   * @param citation to add
-   */
-  public void addCitation(String citation) {
-    citations.add(citation);
-  }
+//  /**
+//   * utility to add a citation to the citations. This method was introduced to
+//   * ease the Digester rules for parsing of EML
+//   * 
+//   * @param citation to add
+//   */
+//  public void addCitation(String citation) {
+//    this.citation=citation;
+//  }
 
   /**
    * utility to add a coverage to the coverages This method was introduced to
@@ -370,8 +341,8 @@ public class Eml implements Serializable {
     return associatedParties;
   }
 
-  public List<String> getCitations() {
-    return citations;
+  public String getCitation() {
+    return citation;
   }
 
   public List<BibliographicCitationSet> getBibliographicCitationSet() {
@@ -515,8 +486,8 @@ public class Eml implements Serializable {
     this.associatedParties = associatedParties;
   }
 
-  public void setCitations(List<String> citations) {
-    this.citations = citations;
+  public void setCitation(String citation) {
+    this.citation = citation;
   }
 
   public void setBibliographicCitations(List<BibliographicCitationSet> bibliographicCitations) {

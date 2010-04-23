@@ -81,7 +81,7 @@ public class EmlFactoryTest extends TestCase {
       assertNotNull(eml.getDistributionUrl());
       assertEquals("http://www.any.org/fauna/coleoptera/beetleList.html", eml.getDistributionUrl());
       
-      // geospatial covereages tests
+      // geospatial coverages tests
       assertNotNull(eml.getGeospatialCoverages());
       assertEquals(2, eml.getGeospatialCoverages().size());
       assertEquals("Bounding Box 1", eml.getGeospatialCoverages().get(0).getDescription());
@@ -141,14 +141,11 @@ public class EmlFactoryTest extends TestCase {
       assertEquals("Documenting Some Asian Birds and Insects", eml.getProject().getTitle());
       assertNotNull(eml.getProject().getPersonnel());
       assertEquals("My Deep Pockets", eml.getProject().getFunding());
-      assertEquals("Turkish Mountains", eml.getProject().getStudyAreaDescription());
+      assertEquals(StudyAreaDescriptor.GENERIC, eml.getProject().getStudyAreaDescription().getName());
+      assertEquals("false", eml.getProject().getStudyAreaDescription().getCitableClassificationSystem());
+      assertEquals("Turkish Mountains", eml.getProject().getStudyAreaDescription().getDescriptorValue());
       assertEquals("This was done in Avian Migration patterns", eml.getProject().getDesignDescription());
-
-      // citations tests
-      assertNotNull(eml.getCitations());
-      assertEquals(1, eml.getCitations().size());
-	    assertEquals("Tims assembled checklist", eml.getCitations().get(0));
-	    
+	    assertEquals("Tims assembled checklist", eml.getCitation());	    
 	    assertEquals("en_UK", eml.getMetadataLanguage());
 
       // bibliographic citations tests
@@ -178,9 +175,11 @@ public class EmlFactoryTest extends TestCase {
 	        		eml.getPhysicalData().get(1).getDistributionUrl());
 
       // JGTI curatorial unit tests
+      // A separate for the alternate JGTI structure that includes uncertainty is in sample2.xml
       assertNotNull(eml.getJgtiCuratorialUnit());
-      assertEquals("500", eml.getJgtiCuratorialUnit().getRangeStart());
-	    assertEquals("600", eml.getJgtiCuratorialUnit().getRangeEnd());
+      assertEquals("jars", eml.getJgtiCuratorialUnit().getUnitType());
+      assertEquals(new Integer("500"), eml.getJgtiCuratorialUnit().getRangeStart());
+	    assertEquals(new Integer("600"), eml.getJgtiCuratorialUnit().getRangeEnd());
 	        
       assertEquals("alcohol", eml.getSpecimenPreservationMethod());
       assertEquals("http://www.tim.org/logo.jpg", eml.getLogoUrl());
@@ -194,5 +193,25 @@ public class EmlFactoryTest extends TestCase {
 			fail();
 		}
 	}
+
+//	 @Test
+//	  public void testAlternateJGTIBuild() {
+//	    try {
+//	      Eml eml = EmlFactory.build(new FileInputStream("./src/test/resources/eml/sample2.xml"));
+//	      
+//	      assertNotNull(eml);
+//
+//	      // JGTI curatorial unit tests
+//	      // A separate for the alternate JGTI structure that includes uncertainty is in sample2.xml
+//	      assertNotNull(eml.getJgtiCuratorialUnit());
+//	      assertEquals("jars", eml.getJgtiCuratorialUnit().getUnitType());
+//	      assertEquals(new Integer("2000"), eml.getJgtiCuratorialUnit().getRangeStart());
+//	      assertEquals(new Integer("50"), eml.getJgtiCuratorialUnit().getUncertaintyMeasure());
+//	    
+//	    } catch (Exception e) {
+//	      e.printStackTrace();
+//	      fail();
+//	    }
+//	  }
 
 }

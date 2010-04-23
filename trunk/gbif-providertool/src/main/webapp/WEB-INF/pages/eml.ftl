@@ -228,7 +228,7 @@
             </#if>
             <#if eml.project.studyAreaDescription??>
             <studyAreaDescription>
-              <descriptor name="climate"  citableClassificationSystem="true">
+              <descriptor name="generic"  citableClassificationSystem="false">
                  <descriptorValue>${eml.project.studyAreaDesctription!}</descriptorValue>
               </descriptor>
             </studyAreaDescription>            
@@ -239,141 +239,116 @@
         </project>
     </dataset>
 
-    <#if (eml.citations ? size > 0)>
-    <#list eml.getCitations() as cit>
+    <#if (eml.citation)?? || 
+         (eml.bibliographicCitations ? size > 0) || 
+         (eml.metadataLanguage)?? || 
+         (eml.hierarchyLevel)?? ||
+         (eml.PhysicalData ? size > 0) ||
+         (eml.jgtiCuratorialUnit)??) ||
+         (eml.specimenPreservationMethod)?? ||
+         (eml.temporalCoverages ? size > 0) ||
+         (eml.parentCollectionId)?? || 
+         (eml.collectionId)?? || 
+         (eml.collectionName)?? ||
+         (eml.logoUrl)?? ||
+         (eml.getEmlVersion()>1)>
     <additionalMetadata>
       <metadata>
-        <citation>${cit!}</citation>
-      </metadata>
-	</additionalMetadata>
-	</#list>
-	</#if>
+       <#if (eml.citation)??>
+        <citation>${eml.citation!}</citation>
+       </#if>
 
-    <#if (eml.bibliographicCitations ? size > 0)>
-    <#list eml.getCitations() as bcitset>
-    <additionalMetadata>
-      <metadata>
-      <#list bcitset.bibliographicCitations as bcit>
-        <bibliographicCitation>${bcit!}</bibliographicCitation>
-	  </#list>
-      </metadata>
-	</additionalMetadata>
-	</#list>
-	</#if>
+       <#if (eml.bibliographicCitations ? size > 0)>
+        <bibliography>
+        <#list eml.getCitations() as bcitset>
+        <#list bcitset.bibliographicCitations as bcit>
+          <citation>${bcit!}</citation>
+        </#list>
+        </#list>
+        </bibliography>
+       </#if>
 
-    <#if (eml.metadataLanguage)??)>
-    <additionalMetadata>
-      <metadata>
+       <#if (eml.metadataLanguage)??>
         <metadataLanguage>${eml.metadataLanguage!}</metadataLanguage>
-      </metadata>
-	</additionalMetadata>
-    </#if>    
+       </#if>    
 
-    <#if (eml.hierarchyLevel)??)>
-    <additionalMetadata>
-      <metadata>
+       <#if (eml.hierarchyLevel)??>
         <hierarchyLevel>${eml.hierarchyLevel!}</hierarchyLevel>
-      </metadata>
-	</additionalMetadata>
-    </#if>
-    
-    <#if (eml.PhysicalData ? size > 0)>
-    <#list eml.getPhysicalData() as pdata>
-    <additionalMetadata>
-      <metadata>
-        <physical>
-        <objectName>pdata.name</objectName>
-        <characterEncoding>pdata.name</characterEncoding>
-        <dataFormat>
-          <externallyDefinedFormat>
-            <formatName>pdata.format</formatName>
-            <formatVersion>pdata.formatVersion</formatVersion>
-          </externallyDefinedFormat>
-        </dataFormat>
-        <distribution>
-          <online>
-            <url function="download">pdata.distributionUrl</url>
-          </online>
-        </distribution>
-        </physical>
-      </metadata>
-	</additionalMetadata>
-	</#list>
-	</#if>
+       </#if>
 
-    <#if (eml.jgtiCuratorialUnit)??)>
-    <additionalMetadata>
-      <metadata>
+       <#if (eml.PhysicalData ? size > 0)>
+       <#list eml.getPhysicalData() as pdata>
+        <physical>
+          <objectName>pdata.name</objectName>
+          <characterEncoding>pdata.name</characterEncoding>
+          <dataFormat>
+            <externallyDefinedFormat>
+              <formatName>pdata.format</formatName>
+              <formatVersion>pdata.formatVersion</formatVersion>
+            </externallyDefinedFormat>
+          </dataFormat>
+          <distribution>
+            <online>
+              <url function="download">pdata.distributionUrl</url>
+            </online>
+          </distribution>
+        </physical>
+       </#list>
+       </#if>
+
+       <#if (eml.jgtiCuratorialUnit)??>
         <jgtiCuratorialUnit>
-          <#if (eml.jgtiCuratorialUnit.rangeStart)?? && (eml.jgtiCuratorialUnit.rangeEnd)??>
-            <jgtoUnitRange>
-               <beginRange>${eml.jgtiCuratorialUnit.rangeStart!}</beginRange>
-               <endRange>${eml.jgtiCuratorialUnit.rangeStart!}</endRange>
-            </jgtoUnitRange>
+          <jgtoUnitType>${eml.jgtiCuratorialUnit.unitType!}</jgtiUnitType>
+          <#if (eml.jgtiCuratorialUnit.rangeEnd)??>
+          <jgtoUnitRange>
+             <beginRange>${eml.jgtiCuratorialUnit.rangeStart!}</beginRange>
+             <endRange>${eml.jgtiCuratorialUnit.rangeEnd!}</endRange>
+          </jgtoUnitRange>
           <#else>
             <jgtiUnits uncertaintyMeasure="${eml.jgtiCuratorialUnit.uncertaintyMeasure!}">${eml.jgtiCuratorialUnit.beginRange!}</jgtiUnits>
           </#if>
           <unit>${eml.jgtiCuratorialUnit.unit!}</unit>
         </jgtiCuratorialUnit>
-      </metadata>
-	</additionalMetadata>
-    </#if>
-    
-    <#if (eml.specimenPreservationMethod)??)>
-    <additionalMetadata>
-      <metadata>
+       </#if>
+
+       <#if (eml.specimenPreservationMethod)??>
         <specimenPreservationMethod>${eml.specimenPreservationMethod!}</specimenPreservationMethod>
-      </metadata>
-	</additionalMetadata>
-    </#if>
+       </#if>
     
-    <#if (eml.temporalCoverages ? size > 0)>
-    <#list eml.getTemporalCoverages() as tcoverage>
-    <#if (tempcoverage.livingTimePeriod)??>
-    <additionalMetadata>
-      <metadata>
+       <#if (eml.temporalCoverages ? size > 0)>
+       <#list eml.getTemporalCoverages() as tcoverage>
+       <#if (tcoverage.livingTimePeriod)??>
         <livingTimePeriod>${tcoverage.livingTimePeriod!}</livingTimePeriod>
+       </#if>
+       <#if (tcoverage.formationPeriod)??>
+        <formationPeriod>${tcoverage.formationPeriod!}</formationPeriod>
+       </#if>
+       </#list>
+       </#if>
+    
+       <#if (eml.parentCollectionId)?? || (eml.collectionId)?? || (eml.collectionName)??>
+        <collection>
+        <#if (eml.parentCollectionId)??>
+          <parentCollectionIdentifier>${eml.parentCollectionId!}</parentCollectionIdentifier>
+        </#if>
+        <#if (eml.collectionId)??>
+          <collectionIdentifier>${eml.collectionId!}</collectionIdentifier>
+        </#if>
+        <#if (eml.collectionName)??>
+          <collectionName>${eml.collectionName!}</collectionName>
+        </#if>
+        </collection>
+       </#if>
+       <#if (eml.logoUrl)??>
+        <resourceLogoUrl>${eml.logoUrl!}</resourceLogoUrl>
+       </#if>
+
+       <#if (eml.getEmlVersion()>1)>
+	    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
+       </#if>
       </metadata>
 	</additionalMetadata>
 	</#if>
-    <#if (tempcoverage.formationPeriod)??>
-    <additionalMetadata>
-      <metadata>
-        <formationPeriod>${tcoverage.formationPeriod!}</formationPeriod>
-      </metadata>
-	</additionalMetadata>
-    </#if>
-    </#list>
-    </#if>
     
-    <#if (eml.parentCollectionId)?? || (eml.collectionId)?? || (eml.collectionName)??)>
-    <additionalMetadata>
-      <collection>
-      <#if (eml.parentCollectionId)??>
-        <parentCollectionIdentifier>${eml.parentCollectionId!}</parentCollectionIdentifier>
-      </#if>
-      <#if (eml.collectionId)??>
-        <collectionIdentifier>${eml.collectionId!}</collectionIdentifier>
-      </#if>
-      <#if (eml.collectionName)??>
-        <collectionName>${eml.collectionName!}</collectionName>
-      </#if>
-      </collection>
-	</additionalMetadata>
-    </#if>
-
-    <#if (eml.logoUrl)??)>
-    <additionalMetadata>
-      <metadata>
-        <logoUrl>${eml.logoUrl!}</logoUrl>
-      </metadata>
-	</additionalMetadata>
-    </#if>
-    
-    <#if (eml.getEmlVersion()>1)>
-    <additionalMetadata>
-	    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
-    </additionalMetadata>
-    </#if>
 </eml:eml>
 </#escape>
