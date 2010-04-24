@@ -46,6 +46,23 @@
 google.load("jquery", "1.4.2");
 
 var countriesSelect = null;
+var langSelect = null;
+
+/**
+ * Loads language asynchronously.
+ */
+function LoadLangAsync(callback) {
+  if (langSelect != null) {
+    callback(langSelect);
+    return;
+  }
+  var url = '<@s.url value="/ajax/vocSelect.html"/>';  
+  params = {uri:"${languageVocUri}",alpha:true,empty:true};
+  $.get(url, params, function(data) { 
+    langSelect = $(data);
+    callback(langSelect);
+  });
+}
 
 function LoadCountriesAsync(callback) {
   if (countriesSelect != null) {
@@ -60,8 +77,21 @@ function LoadCountriesAsync(callback) {
   });
 }
 
+
 function OnLoad() {  
-  LoadCountriesAsync(function(elem) {
+  LoadLangAsync(function(elem) {
+    var e = elem.clone();
+    var id = 'langSelect';
+    var idElem = $('#' + id);
+    var name = idElem.attr('name');
+    var value = idElem.attr('value');
+    e.attr('name', 'eml.resourceCreator.address.country');
+    e.attr('value', value)
+    e.attr('id', id);
+    $('#' + id).replaceWith(e);
+  });
+  
+   LoadCountriesAsync(function(elem) {
     var e = elem.clone();
     var id = 'creatorCountry';
     var idElem = $('#' + id);
@@ -77,7 +107,7 @@ function OnLoad() {
     idElem = $('#' + id);
     name = idElem.attr('name');
     value = idElem.attr('value');
-    e.attr('name', 'eml.resourceCreator.address.country');
+    e.attr('name', 'eml.metadataProvider.address.country');
     e.attr('value', value)
     e.attr('id', id);
     $('#' + id).replaceWith(e);
@@ -109,6 +139,11 @@ google.setOnLoadCallback(OnLoad);
     cssClass="text xhalf"/>
 </div>
 <div class="leftxhalf">
+  <@s.select id="langSelect" key="eml.language" list="{'${eml.language!}'}" 
+    required="true" cssClass="text xhalf"/>
+</div>
+<!--
+<div class="leftxhalf">
   <@s.select id="type" key="resource.type" list="resourceTypeMap" 
     required="true" cssClass="text xhalf"/>
 </div>
@@ -116,11 +151,143 @@ google.setOnLoadCallback(OnLoad);
   <@s.file id="logo" key="resource.selectLogoFile" name="file"                    
     cssClass="text xhalf"/>
 </div>
+-->
 <div class="newline">
   <@s.textarea id="abstract" key="eml.resource.meta.description" required="true" 
     cssClass="text xlarge"/>
 </div>
 <div class="newline"></div>
+<h2 class="explMt">Resource Creator</h2>
+<div id="creator">    
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="firstName" key="eml.resourceCreator.firstName" 
+      required="true" cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="lastName" key="eml.resourceCreator.lastName" 
+      required="true" cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="position" key="eml.resourceCreator.position"  
+      cssClass="text xhalf"/>
+  </div>       
+  <div class="leftxhalf">
+     <@s.select id="role" key="eml.resourceCreator.role"           
+       list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
+       listValue="value"/>
+  </div>
+  <div class="newline"></div>
+  <div>
+    <@s.textfield id="organization" key="eml.resourceCreator.organisation"  
+      cssClass="text xlarge"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="phone" key="eml.resourceCreator.phone"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="email" key="eml.resourceCreator.email"  
+      required="true" cssClass="text xhalf"/> 
+  </div>
+  <div class="newline"></div>
+  <div>
+    <@s.textfield id="homepage" key="eml.resourceCreator.homepage"  
+      cssClass="text xlarge"/>
+  </div>
+  <div class="newline"></div>
+  <div>
+    <@s.textfield id="address" key="eml.resourceCreator.address.address"  
+      cssClass="text xlarge"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="postalCode" key="eml.resourceCreator.address.postalCode"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="city" key="eml.resourceCreator.address.city"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="province" key="eml.resourceCreator.address.province"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.select id="creatorCountry" key="" list="eml.resourceCreator.address.country"
+      required="true" cssClass="text xhalf"/>
+  </div>    
+</div>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div>
+<h2 class="explMt">Metadata Provider</h2>
+<div id="metadataProvider">    
+<div class="newline"></div>
+<div class="leftxhalf">
+  <@s.textfield id="firstName" key="eml.metadataProvider.firstName" 
+    required="true" cssClass="text xhalf"/>
+</div>
+<div class="leftxhalf">
+  <@s.textfield id="lastName" key="eml.metadataProvider.lastName" 
+    required="true" cssClass="text xhalf"/>
+</div>
+<div class="newline"></div>
+<div class="leftxhalf">
+  <@s.textfield id="position" key="eml.metadataProvider.position"  
+    cssClass="text xhalf"/>
+</div>       
+<div class="leftxhalf">
+   <@s.select id="role" key="eml.metadataProvider.role"           
+     list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
+     listValue="value"/>
+</div>
+<div class="newline"></div>
+<div>
+  <@s.textfield id="organization" key="eml.metadataProvider.organisation"  
+    cssClass="text xlarge"/>
+</div>
+<div class="newline"></div>
+<div class="leftxhalf">
+  <@s.textfield id="phone" key="eml.metadataProvider.phone"  
+    cssClass="text xhalf"/>
+</div>
+<div class="leftxhalf">
+  <@s.textfield id="email" key="eml.metadataProvider.email"  
+    required="true" cssClass="text xhalf"/>
+</div>
+<div class="newline"></div>
+<div>
+  <@s.textfield id="homepage" key="eml.metadataProvider.homepage"  
+    cssClass="text xlarge"/>
+</div>
+<div class="newline"></div>
+<div>
+  <@s.textfield id="address" key="eml.metadataProvider.address.address"  
+    cssClass="text xlarge"/>
+</div>
+<div class="newline"></div>
+<div class="leftxhalf">
+  <@s.textfield id="postalCode" key="eml.metadataProvider.address.postalCode"  
+    cssClass="text xhalf"/>
+</div>
+<div class="leftxhalf">
+  <@s.textfield id="city" key="eml.metadataProvider.address.city"  
+    cssClass="text xhalf"/>
+</div>
+<div class="newline"></div>
+<div class="leftxhalf">
+  <@s.textfield id="province" key="eml.metadataProvider.address.province"  
+    cssClass="text xhalf"/>
+</div>
+<div class="leftxhalf">
+  <@s.select id="metadataProviderCountry" key="" list="eml.resourceCreator.address.country"
+    required="true" cssClass="text xhalf"/>
+</div>    
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div>
