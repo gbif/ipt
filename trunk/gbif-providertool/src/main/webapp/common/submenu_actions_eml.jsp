@@ -1,5 +1,5 @@
 <%@ include file="/common/taglibs.jsp"%>
-<div id="actions"><label>Resource Metadata</label>
+<div id="actions"><label><s:text name="eml.submenu.title"/></label>
 <ul class="plain">
   <li><a
     href="<s:url action="resource" namespace="/manage"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
@@ -7,9 +7,6 @@
   <li><a
     href="<s:url action="OrganisationForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="eml.organisation" /> </a></li>
-  <li><a
-    href="<s:url action="creatorForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.resourceCreator" /> </a></li>
   <li><a
     href="<s:url action="AssociatedPartiesForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="eml.associatedParties" /> </a></li>

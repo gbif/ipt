@@ -22,6 +22,7 @@ import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processT
 
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
@@ -120,8 +121,10 @@ public class EmlManagerImpl implements EmlManager {
         log.info(String.format("Creating new Eml object for resource %s", rid));
         eml = new Eml();
         eml.setResource(resource);
-        eml.getResourceCreator().setEmail(resource.getContactEmail());
-        eml.getResourceCreator().setLastName(resource.getContactName());
+//        eml.getResourceCreator().setEmail(resource.getContactEmail());
+//        eml.getResourceCreator().setLastName(resource.getContactName());
+        eml.getResourceCreator().setRole(Role.ORIGINATOR);
+        eml.getMetadataProvider().setRole(Role.METADATA_PROVIDER);
         eml.setPubDate(new Date());
         save(eml);
         // writeEmlXmlFile(cfg.getEmlFile(rid), freemarker, eml);

@@ -228,8 +228,8 @@
             </#if>
             <#if eml.project.studyAreaDescription??>
             <studyAreaDescription>
-              <descriptor name="generic"  citableClassificationSystem="false">
-                 <descriptorValue>${eml.project.studyAreaDesctription!}</descriptorValue>
+              <descriptor name=${eml.project.studyAreaDescription.name.name!}  citableClassificationSystem=${eml.project.studyAreaDescription.citableClassificationSystem!}>
+                 <descriptorValue>${eml.project.studyAreaDescription.descriptorValue!}</descriptorValue>
               </descriptor>
             </studyAreaDescription>            
             </#if>

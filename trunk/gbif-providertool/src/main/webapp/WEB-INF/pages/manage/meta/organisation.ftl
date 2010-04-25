@@ -21,7 +21,7 @@
 <meta name="resource" content="${resource.title!}"/>
 <meta name="menu" content="ManagerMenu"/>
 <meta name="submenu" content="manage_resource"/>  
-<meta name="heading" content="<@s.text name='metadata.heading'/>"/> 
+<meta name="heading" content="<@s.text name='eml.organisation'/>"/> 
   
 <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
@@ -191,7 +191,7 @@ google.setOnLoadCallback(OnModuleLoaded);
 <@s.hidden name="resourceId" value="${(resource.id)!}"/>
 <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 <@s.hidden name="guid" value="${(resource.guid)!}"/>    
-<@s.hidden name="nextPage" value="creator"/>
+<@s.hidden name="nextPage" value="AssociatedParties"/>
 <@s.hidden name="method" value="organisation"/>    
 
 <div class="newline"></div>
