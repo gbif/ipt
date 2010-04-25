@@ -234,33 +234,32 @@ Agent.propertyNames = function() {
   return ['address', 'city', 'country', 'email', 'firstName', 'homepage', 'lastName', 'organisation', 'phone', 'position', 'postalCode', 'province', 'role'];
 }
   
+function TemporalCoverage() {
+  this._startDate = '';
+  this._endDate = '';
+  
+  this.startDate = startDate;
+  this.endDate = endDate;
+  
+  function startDate(val) {
+    if (val == null) {
+      return this._startDate;
+    } else { 
+      this._startDate = val;
+      return this;
+    }
+  }
+  
+  function endDate(val) {
+    if (val == null) {
+      return this._endDate;
+    } else { 
+      this._endDate = val;
+      return this;
+    }
+  }
+}
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+TemporalCoverage.propertyNames = function() {
+  return ['startDate', 'endDate'];
+}
