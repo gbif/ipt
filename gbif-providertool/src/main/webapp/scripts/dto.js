@@ -233,7 +233,7 @@ function Agent() {
 Agent.propertyNames = function() {
   return ['address', 'city', 'country', 'email', 'firstName', 'homepage', 'lastName', 'organisation', 'phone', 'position', 'postalCode', 'province', 'role'];
 }
-  
+
 function TemporalCoverage() {
   this._startDate = '';
   this._endDate = '';
@@ -262,4 +262,152 @@ function TemporalCoverage() {
 
 TemporalCoverage.propertyNames = function() {
   return ['startDate', 'endDate'];
+}
+
+function GeospatialCoverage() {
+  this._description = '';
+  this._taxonomicSystem = '';
+  this._minLatitude = '';
+  this._minLongitude = '';
+  this._maxLatitude = '';
+  this._maxLongitude = '';
+  
+  this.description = description;
+  this.taxonomicSystem = taxonomicSystem;
+  this.minLatitude = minLatitude;
+  this.minLongitude = minLongitude;
+  this.maxLatitude = maxLatitude;
+  this.maxLongitude = maxLongitude;
+  
+  function description(val) {
+    if (val == null) {
+      return this._description;
+    } else { 
+      this._description = val;
+      return this;
+    }
+  }
+  
+  function taxonomicSystem(val) {
+    if (val == null) {
+      return this._taxonomicSystem;
+    } else { 
+      this._taxonomicSystem = val;
+      return this;
+    }
+  }
+
+  function minLatitude(val) {
+    if (val == null) {
+      return this._minLatitude;
+    } else { 
+      this._minLatitude = val;
+      return this;
+    }
+  }
+
+  function minLongitude(val) {
+    if (val == null) {
+      return this._minLongitude;
+    } else { 
+      this._minLongitude = val;
+      return this;
+    }
+  }
+
+  function maxLatitude(val) {
+    if (val == null) {
+      return this._maxLatitude;
+    } else { 
+      this._maxLatitude = val;
+      return this;
+    }
+  }
+
+  function maxLongitude(val) {
+    if (val == null) {
+      return this._maxLongitude;
+    } else { 
+      this._maxLongitude = val;
+      return this;
+    }
+  }
+
+}
+
+GeospatialCoverage.propertyNames = function() {
+  return ['description', 'taxonomicSystem', 'minLatitude', 'minLongitude', 'maxLatitude', 'maxLongitude'];
+}
+
+function TaxonomicCoverage() {
+  this._description = '';
+  
+  this.description = description;
+  
+  function description(val) {
+    if (val == null) {
+      return this._description;
+    } else { 
+      this._description = val;
+      return this;
+    }
+  }
+  
+}
+
+TaxonomicCoverage.propertyNames = function() {
+  return ['description'];
+}
+
+function SamplingMethod() {
+  this._stepDescription = '';
+  this._studyExtent = '';
+  this._sampleDescription = '';
+  this._qualityControl = '';
+  
+  this.stepDescription = stepDescription;
+  this.studyExtent = studyExtent;
+  this.sampleDescription = sampleDescription;
+  this.qualityControl = qualityControl;
+  
+  function stepDescription(val) {
+    if (val == null) {
+      return this._stepDescription;
+    } else { 
+      this._stepDescription = val;
+      return this;
+    }
+  }
+  
+  function studyExtent(val) {
+    if (val == null) {
+      return this._studyExtent;
+    } else { 
+      this._studyExtent = val;
+      return this;
+    }
+  }
+  
+  function sampleDescription(val) {
+    if (val == null) {
+      return this._sampleDescription;
+    } else { 
+      this._sampleDescription = val;
+      return this;
+    }
+  }
+  
+  function qualityControl(val) {
+    if (val == null) {
+      return this._qualityControl;
+    } else { 
+      this._qualityControl = val;
+      return this;
+    }
+  }
+  
+}
+
+TaxonomicCoverage.propertyNames = function() {
+  return ['description'];
 }

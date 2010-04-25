@@ -72,22 +72,8 @@ google.load("jquery", "1.4.2");
     return coverages;
   }
 
-var countriesSelect;
-
-function LoadCountriesAsync(callback) {
-  var url = '<@s.url value="/ajax/vocSelect.html"/>';
-  params = {uri:"${countryVocUri}",alpha:true,empty:true};
-  $.get(url, params, function(data) { 
-    countriesSelect = $(data);
-    callback();
-  });
-}
-
   function OnLoad() {  
     HideCoverageClone();
-
-  LoadCountriesAsync(function() {
-
     var coveragePanel = new TemporalCoveragePanel();
     var coverageWidget;
     $('#plus').click(function() {
@@ -98,9 +84,6 @@ function LoadCountriesAsync(callback) {
       coverageWidget = new TemporalCoverageWidget(coverages[coverage]);
       coveragePanel.add(coverageWidget);
     }
-
-  });
-    
   }
 
   google.setOnLoadCallback(OnLoad);
@@ -114,18 +97,18 @@ function LoadCountriesAsync(callback) {
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.temporalCoverageDescription'/></p>
 
-<@s.form id="emlForm" action="tempcoverage" enctype="multipart/form-data" method="post">
+<@s.form id="emlForm" action="temporalCoverage" enctype="multipart/form-data" method="post">
 
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="rights"/>
-  <@s.hidden name="method" value="tempcoverage"/>
+  <@s.hidden name="method" value="temporalCoverage"/>
   <div id="coveragePanel" class="newline">
-  <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
+    <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
        for cloning temporalCoverage UI widgets. 
-  -->
+    -->
     <div id="cloneTemporalCoverage">
       <div id="separator" class="horizontal_dotted_line_large_foo"></div>
       <div class="newline"></div>
@@ -133,19 +116,14 @@ function LoadCountriesAsync(callback) {
         <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='eml.temporalCoverage'/> ]</a>
       </div>
       <div class="newline"></div>
-      <div class="leftxhalf">
-        <@s.textfield id="firstName" key="" 
-          label="%{getText('agent.firstName')}" required="true" cssClass="text xhalf"/>
-      </div>
-
       <div>
         <div class="leftMedium">
           <@s.textfield id="beginDate" key="" 
-          label="%{getText('coverage.beginDate')}" required="true" cssClass="text medium"/>
+          label="%{getText('coverage.beginDate')}" required="false" cssClass="text medium"/>
         </div>
         <div class="leftMedium" id="endDateDiv">
           <@s.textfield id="endDate" key="" 
-          label="%{getText('coverage.endDate')}" required="true" cssClass="text medium"/>
+          label="%{getText('coverage.endDate')}" required="false" cssClass="text medium"/>
         </div>
         <div class="left">
 <!-- Check that this will work -->
