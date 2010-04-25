@@ -14,6 +14,7 @@
  * the License.
  */
 
+/*==== Agent ====*/
 /**
  * The AgentWidget class can be used to encapsulate and display an Agent.
  * 
@@ -39,8 +40,8 @@ function AgentWidget(agent) {
       $(e).find('#' + name).replaceWith(select);
       $(select).attr('name', 'eml.associatedParties[' + agentCount + '].address.country');
       $(select).attr('value', val);
-      $(select).attr('id', name);
     } else {       
+      $(select).attr('id', name);
       var isAddress = jQuery.inArray(name, addressNames);
       isAddress = isAddress >= 0 ? true : false;
       if (isAddress) {
@@ -63,7 +64,7 @@ function AgentWidget(agent) {
       return this;
     }
   }
-}
+} 
 
 /**
  * The AgentPanel can be used to display a group of agent widgets.
@@ -153,4 +154,124 @@ function _resize() {
 
 AgentPanel.agentCount = function() {
   return $('#agentPanel').find("div[id^='agent']").size();
+}
+
+/*==== TemporalCoverage ====*/
+
+/**
+ * The TemporalCoverageWidget class can be used to encapsulate and display a TemporalCoverage.
+ * 
+ */
+function TemporalCoverageWidget(temporalCoverage) {
+  var e = $('#cloneTemporalCoverage').clone();
+  var temporalCoverageCount = TemporalCoveragePanel.temporalCoverageCount();
+  e.attr('id', 'temporalCoverage' + temporalCoverageCount);
+  this._element = e;
+  e.find('#removeLink').show();
+  this._temporalCoverage = temporalCoverage;
+  var isTemporalCoverage = temporalCoverage instanceof TemporalCoverage;
+  var temporalCoverageProps = TemporalCoverage.propertyNames();
+  for (p in temporalCoverageProps) {
+    var name = temporalCoverageProps[p];
+    var val = '';
+    if (isTemporalCoverage) {
+      val = eval('temporalCoverage.' + name + '()');
+    } 
+    e.find('#' + name).attr('name', 'eml.temporalCoverages[' + temporalCoverageCount + '].'+ name);
+    e.find('#' + name).attr('value', val);
+  }  
+  this._elementId = '';
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+}
+
+/**
+ * The TemporalCoveragePanel can be used to display a group of temporal coverage widgets.
+ * 
+ */
+function TemporalCoveragePanel() {
+  this._elementId = '#temporalCoveragePanel';
+  this._element = $(this._elementId);
+  this._temporalCoverageSelector = "div[id^='temporalCoverage']";
+  this._temporalCoverageIdPattern = /temporalCoverage\d+/;
+  this.add = add;
+  this._remove = _remove;
+  this._resize = _resize;
+  this.size = size;
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+  
+  /**
+   * Returns the number of temporalCoverage div elements in this temporalCoverage panel.
+   * 
+   * @return number of temporalCoverage div elements
+   */
+  function size() {
+    return $(this._element).find(this._temporalCoverageSelector).size();
+  }
+
+  function _resize() {
+   this._element.find(this._temporalCoverageSelector).each(function(i) {
+     var id =  $(this).attr('id');
+     if (id.match(this._temporalCoverageIdPattern)) {
+       $(this).attr('id', 'temporalCoverage' + i);
+       name = 'eml.temporalCoverages[' + i + '].';
+       props = TemporalCoverage.propertyNames();
+       for (p in props) {
+         var prop = props[p];
+         $(this).find('#' + prop).attr('name', name + prop);
+       }
+     }    
+   });
+  }
+ 
+
+  /**
+   * Removes the element from the DOM.
+   */
+  function _remove(element) {
+    $(element).remove();    
+  }
+  
+  /**
+   * Adds and displays a temporalCoverage widget and adds a click handler for deleting it.
+   */
+  function add(widget) {
+    if (!(widget instanceof TemporalCoverageWidget)) {
+      alert('Illegal Argument ' + widget + ': Instance of TemporalCoverageWidget expected');
+      return;
+    }
+    var count = this.size();
+    var e = widget.element();
+    e.attr('id', 'temporalCoverage' + count);
+    var _this = this;
+    e.find('#removeLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this._remove($(id));
+      _this._resize();
+    });
+    e.appendTo(this._element);
+    e.show();
+    return false;
+  }
+}
+
+TemporalCoveragePanel.temporalCoverageCount = function() {
+  return $('#temporalCoveragePanel').find("div[id^='temporalCoverage']").size();
 }
