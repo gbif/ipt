@@ -54,7 +54,7 @@ public class Eml implements Serializable {
   // please refer to typed classes for descriptions of the properties and how
   // they map to EML
   private List<KeywordSet> keywords = Lists.newArrayList();
-  private List<BibliographicCitationSet> bibliographicCitations = Lists.newArrayList();
+  private List<String> bibliographicCitations = Lists.newArrayList();
   private List<Method> samplingMethods = Lists.newArrayList();
   private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
@@ -62,7 +62,7 @@ public class Eml implements Serializable {
   private List<PhysicalData> physicalData = Lists.newArrayList();
 
   /**
-   * A resource that describes a literature citation for the resource, one that 
+   * A resource that describes a literature citation for the resource, one that
    * might be found in a bibliography. We cannot use
    * http://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml.html#citation
    * because the IPT deals with /eml/dataset and not /eml/citation therefore
@@ -112,8 +112,8 @@ public class Eml implements Serializable {
   private String intellectualRights;
 
   /**
-   * The distributionType URL is generally meant for informational purposes, 
-   * and the "function" attribute should be set to "information".
+   * The distributionType URL is generally meant for informational purposes, and
+   * the "function" attribute should be set to "information".
    * 
    */
   private String distributionUrl;
@@ -259,15 +259,25 @@ public class Eml implements Serializable {
     associatedParties.add(agent);
   }
 
-//  /**
-//   * utility to add a citation to the citations. This method was introduced to
-//   * ease the Digester rules for parsing of EML
-//   * 
-//   * @param citation to add
-//   */
-//  public void addCitation(String citation) {
-//    this.citation=citation;
-//  }
+  // /**
+  // * utility to add a citation to the citations. This method was introduced to
+  // * ease the Digester rules for parsing of EML
+  // *
+  // * @param citation to add
+  // */
+  // public void addCitation(String citation) {
+  // this.citation=citation;
+  // }
+
+  /**
+   * utility to add a bibliographic citation to the bibliographicCitations. This
+   * method was introduced to ease the Digester rules for parsing of EML.
+   * 
+   * @param bibliographic citation to add
+   */
+  public void addBibliographicCitations(List<String> citations) {
+    bibliographicCitations.addAll(citations);
+  }
 
   /**
    * utility to add a coverage to the coverages This method was introduced to
@@ -287,16 +297,6 @@ public class Eml implements Serializable {
    */
   public void addKeywordSet(KeywordSet keywordSet) {
     keywords.add(keywordSet);
-  }
-
-  /**
-   * utility to add a bibliographic citation to the bibliographicCitations. This 
-   * method was introduced to ease the Digester rules for parsing of EML.
-   * 
-   * @param bibliographic citation to add
-   */
-  public void addBibliographicCitationSet(BibliographicCitationSet bibliographicCitationSet) {
-    bibliographicCitations.add(bibliographicCitationSet);
   }
 
   /**
@@ -341,12 +341,12 @@ public class Eml implements Serializable {
     return associatedParties;
   }
 
-  public String getCitation() {
-    return citation;
+  public List<String> getBibliographicCitations() {
+    return bibliographicCitations;
   }
 
-  public List<BibliographicCitationSet> getBibliographicCitationSet() {
-    return bibliographicCitations;
+  public String getCitation() {
+    return citation;
   }
 
   public String getCollectionId() {
@@ -359,6 +359,10 @@ public class Eml implements Serializable {
 
   public Date getDateStamp() {
     return dateStamp;
+  }
+
+  public String getDistributionUrl() {
+    return distributionUrl;
   }
 
   public int getEmlVersion() {
@@ -379,10 +383,6 @@ public class Eml implements Serializable {
 
   public String getIntellectualRights() {
     return intellectualRights;
-  }
-
-  public String getDistributionUrl() {
-    return distributionUrl;
   }
 
   public JGTICuratorialUnit getJgtiCuratorialUnit() {
@@ -486,12 +486,12 @@ public class Eml implements Serializable {
     this.associatedParties = associatedParties;
   }
 
-  public void setCitation(String citation) {
-    this.citation = citation;
+  public void setBibliographicCitations(List<String> bibliographicCitations) {
+    this.bibliographicCitations = bibliographicCitations;
   }
 
-  public void setBibliographicCitations(List<BibliographicCitationSet> bibliographicCitations) {
-    this.bibliographicCitations = bibliographicCitations;
+  public void setCitation(String citation) {
+    this.citation = citation;
   }
 
   public void setCollectionId(String collectionId) {
@@ -504,6 +504,10 @@ public class Eml implements Serializable {
 
   public void setDateStamp(Date dateStamp) {
     this.dateStamp = dateStamp;
+  }
+
+  public void setDistributionUrl(String distributionUrl) {
+    this.distributionUrl = distributionUrl;
   }
 
   public void setEmlVersion(int emlVersion) {
@@ -527,10 +531,6 @@ public class Eml implements Serializable {
     this.intellectualRights = intellectualRights;
   }
 
-  public void setDistributionUrl(String distributionUrl) {
-    this.distributionUrl = distributionUrl;
-  }
-
   public void setJgtiCuratorialUnit(JGTICuratorialUnit jgtiCuratorialUnit) {
     this.jgtiCuratorialUnit = jgtiCuratorialUnit;
   }
@@ -541,10 +541,6 @@ public class Eml implements Serializable {
 
   public void setKeywordSet(List<KeywordSet> keywords) {
     this.keywords = keywords;
-  }
-
-  public void setBibliographicCitationSet(List<BibliographicCitationSet> citations) {
-    this.bibliographicCitations = citations;
   }
 
   public void setLanguage(String language) {
