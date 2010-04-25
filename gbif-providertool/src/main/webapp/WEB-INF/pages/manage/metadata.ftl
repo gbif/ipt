@@ -21,7 +21,7 @@
   <meta name="resource" content="${resource.title!}"/>
   <meta name="menu" content="ManagerMenu"/>
   <meta name="submenu" content="manage_resource"/>  
-  <meta name="heading" content="<@s.text name='metadata.heading'/>"/> 
+  <meta name="heading" content="<@s.text name='eml.basic'/>"/> 
   <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
   type="text/javascript">
@@ -174,9 +174,8 @@ google.setOnLoadCallback(OnLoad);
       cssClass="text xhalf"/>
   </div>       
   <div class="leftxhalf">
-     <@s.select id="role" key="eml.resourceCreator.role"           
-       list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
-       listValue="value"/>
+    <@s.textfield id="role" key="eml.resourceCreator.role.name" disabled="true"
+      cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
   <div>
@@ -242,10 +241,9 @@ google.setOnLoadCallback(OnLoad);
     cssClass="text xhalf"/>
 </div>       
 <div class="leftxhalf">
-   <@s.select id="role" key="eml.metadataProvider.role"           
-     list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
-     listValue="value"/>
-</div>
+  <@s.textfield id="role" key="eml.metadataProvider.role.name" disabled="true"
+    cssClass="text xhalf"/>
+</div>       
 <div class="newline"></div>
 <div>
   <@s.textfield id="organization" key="eml.metadataProvider.organisation"  

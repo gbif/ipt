@@ -194,24 +194,24 @@ public class EmlFactoryTest extends TestCase {
 		}
 	}
 
-//	 @Test
-//	  public void testAlternateJGTIBuild() {
-//	    try {
-//	      Eml eml = EmlFactory.build(new FileInputStream("./src/test/resources/eml/sample2.xml"));
-//	      
-//	      assertNotNull(eml);
-//
-//	      // JGTI curatorial unit tests
-//	      // A separate for the alternate JGTI structure that includes uncertainty is in sample2.xml
-//	      assertNotNull(eml.getJgtiCuratorialUnit());
-//	      assertEquals("jars", eml.getJgtiCuratorialUnit().getUnitType());
-//	      assertEquals(new Integer("2000"), eml.getJgtiCuratorialUnit().getRangeStart());
-//	      assertEquals(new Integer("50"), eml.getJgtiCuratorialUnit().getUncertaintyMeasure());
-//	    
-//	    } catch (Exception e) {
-//	      e.printStackTrace();
-//	      fail();
-//	    }
-//	  }
+	 @Test
+	  public void testAlternateJGTIBuild() {
+	    try {
+	      Eml eml = EmlFactory.build(new FileInputStream("./src/test/resources/eml/sample2.xml"));
+	      
+	      assertNotNull(eml);
+
+	      // JGTI curatorial unit tests
+	      // A separate test for the alternate JGTI structure, which includes uncertainty is in sample2.xml
+	      assertNotNull(eml.getJgtiCuratorialUnit());
+	      assertEquals("jars", eml.getJgtiCuratorialUnit().getUnitType());
+	      assertEquals(new Integer("2000"), eml.getJgtiCuratorialUnit().getRangeStart());
+	      assertEquals(new Integer("50"), eml.getJgtiCuratorialUnit().getUncertaintyMeasure());
+	    
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	      fail();
+	    }
+	  }
 
 }
