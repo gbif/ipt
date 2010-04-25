@@ -275,3 +275,91 @@ function TemporalCoveragePanel() {
 TemporalCoveragePanel.temporalCoverageCount = function() {
   return $('#temporalCoveragePanel').find("div[id^='temporalCoverage']").size();
 }
+
+/*==== GeospatialCoverage ====*/
+
+/*==== TaxonomicCoverage ====*/
+
+/*==== Sampling Method ====*/
+/**
+ * The MethodPanel can be used to display a group of sampling method widgets.
+ * 
+ */
+function SamplingMethodPanel() {
+  this._elementId = '#samplingMethodPanel';
+  this._element = $(this._elementId);
+  this._samplingMethodSelector = "div[id^='samplingMethod']";
+  this._samplingMethodIdPattern = /samplingMethod\d+/;
+  this.add = add;
+  this._remove = _remove;
+  this._resize = _resize;
+  this.size = size;
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+  
+  /**
+   * Returns the number of samplingMethod div elements in this samplingMethod panel.
+   * 
+   * @return number of samplingMethod div elements
+   */
+  function size() {
+    return $(this._element).find(this._samplingMethodSelector).size();
+  }
+
+  function _resize() {
+   this._element.find(this._samplingMethodSelector).each(function(i) {
+     var id =  $(this).attr('id');
+     if (id.match(this._samplingMethodIdPattern)) {
+       $(this).attr('id', 'samplingMethod' + i);
+       name = 'eml.samplingMethods[' + i + '].';
+       props = SamplingMethod.propertyNames();
+       for (p in props) {
+         var prop = props[p];
+         $(this).find('#' + prop).attr('name', name + prop);
+       }
+     }    
+   });
+  }
+ 
+
+  /**
+   * Removes the element from the DOM.
+   */
+  function _remove(element) {
+    $(element).remove();    
+  }
+  
+  /**
+   * Adds and displays a samplingMethod widget and adds a click handler for deleting it.
+   */
+  function add(widget) {
+    if (!(widget instanceof SamplingMethodWidget)) {
+      alert('Illegal Argument ' + widget + ': Instance of SamplingMethodWidget expected');
+      return;
+    }
+    var count = this.size();
+    var e = widget.element();
+    e.attr('id', 'samplingMethod' + count);
+    var _this = this;
+    e.find('#removeLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this._remove($(id));
+      _this._resize();
+    });
+    e.appendTo(this._element);
+    e.show();
+    return false;
+  }
+}
+
+SamplingMethodPanel.samplingMethodCount = function() {
+  return $('#samplingMethodPanel').find("div[id^='samplingMethod']").size();
+}
