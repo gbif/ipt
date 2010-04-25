@@ -54,7 +54,8 @@ public class Eml implements Serializable {
   // please refer to typed classes for descriptions of the properties and how
   // they map to EML
   private List<KeywordSet> keywords = Lists.newArrayList();
-  private List<String> bibliographicCitations = Lists.newArrayList();
+//  private List<String> bibliographicCitations = Lists.newArrayList();
+  private BibliographicCitationSet bibliographicCitations = new BibliographicCitationSet();
   private List<Method> samplingMethods = Lists.newArrayList();
   private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
@@ -276,7 +277,11 @@ public class Eml implements Serializable {
    * @param bibliographic citation to add
    */
   public void addBibliographicCitations(List<String> citations) {
-    bibliographicCitations.addAll(citations);
+    bibliographicCitations.getBibliographicCitations().addAll(citations);
+  }
+
+  public void setBibliographicCitationSet(BibliographicCitationSet bibliographicCitationSet) {    
+    bibliographicCitations = bibliographicCitationSet;   
   }
 
   /**
@@ -342,7 +347,7 @@ public class Eml implements Serializable {
   }
 
   public List<String> getBibliographicCitations() {
-    return bibliographicCitations;
+    return bibliographicCitations.getBibliographicCitations();
   }
 
   public String getCitation() {
@@ -487,7 +492,7 @@ public class Eml implements Serializable {
   }
 
   public void setBibliographicCitations(List<String> bibliographicCitations) {
-    this.bibliographicCitations = bibliographicCitations;
+    this.bibliographicCitations.setBibliographicCitations(bibliographicCitations);
   }
 
   public void setCitation(String citation) {
