@@ -242,8 +242,8 @@ public class EmlFactoryTest extends TestCase {
 
       // bibliographic citations tests
       assertNotNull(eml.getBibliographicCitations());
-      assertEquals(1, eml.getBibliographicCitations().size());
-      assertNotNull(eml.getBibliographicCitations().get(0));
+      assertEquals(3, eml.getBibliographicCitations().size());
+//      assertNotNull(eml.getBibliographicCitations().get(0));
       assertEquals("title 1", eml.getBibliographicCitations().get(0));
       assertEquals("title 2", eml.getBibliographicCitations().get(1));
       assertEquals("title 3", eml.getBibliographicCitations().get(2));

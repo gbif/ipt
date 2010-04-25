@@ -241,7 +241,8 @@ public class EmlFactory {
 		digester.addObjectCreate("eml/additionalMetadata/metadata/bibliography", BibliographicCitationSet.class);
 		digester.addCallMethod("eml/additionalMetadata/metadata/bibliography/citation", "add", 1);
 		digester.addCallParam("eml/additionalMetadata/metadata/bibliography/citation", 0);
-		digester.addSetNext("eml/additionalMetadata/metadata/bibliography", "addBibliographicCitationSet"); // add the BibliographicCitationSet to the list in EML
+    // add the BibliographicCitations to the list in EML
+		digester.addSetNext("eml/additionalMetadata/metadata/bibliography", "setBibliographicCitationSet");
 	}
 
 	/**
