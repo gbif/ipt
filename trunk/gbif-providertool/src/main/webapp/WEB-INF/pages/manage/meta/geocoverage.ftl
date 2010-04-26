@@ -17,11 +17,11 @@
 -->
 
 <head>
-    <title><@s.text name="eml.geographicCoverage"/></title>
+    <title><@s.text name="metadata.heading.geocoverages"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-	<meta name="heading" content="<@s.text name='eml.geographicCoverage'/>"/>    
+	<meta name="heading" content="<@s.text name='metadata.heading.geocoverages'/>"/>    
 	
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script type="text/javascript">  
@@ -45,13 +45,12 @@
 	</script>
 </head>
 
-<!--<h1><@s.text name="eml.geographicCoverage"/></h1>
-<div class="horizontal_dotted_line_large_foo"></div>-->
 <div class="break10"></div>
 
 <div id="map">
 </div>
 
+<p class="explMt"><@s.text name='metadata.description.geocoverage'/></p>
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
 <fieldset>
 	<@s.hidden name="resourceId" value="${resourceId?c}"/>

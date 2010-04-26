@@ -1,9 +1,9 @@
 <head>
-    <title>EML - <@s.text name="eml.taxonomicCoverage"/></title>
+    <title>EML - <@s.text name="metadata.heading.taxcoverages"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-    <meta name="heading" content="<@s.text name='eml.taxonomicMetadata'/>"/>    
+    <meta name="heading" content="<@s.text name='metadata.heading.taxcoverages'/>"/>    
      <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript" src="http://jquery-dynamic-form.googlecode.com/svn/trunk/jquery-dynamic-form.js"></script>   
     <script>
@@ -22,10 +22,11 @@
 </head>
 
 <div class="break10"></div>
+<p class="explMt"><@s.text name='metadata.description.taxcoverage'/></p>
 <@s.form id="emlForm" action="taxcoverage" method="post" validate="false">
 <fieldset>
     <@s.hidden name="resourceId" value="${resourceId?c}"/>
-    <@s.hidden name="nextPage" value="temporalCoverage"/>
+    <@s.hidden name="nextPage" value="tempcoverage"/>
     
 <fieldset style="padding-top:10px;">
     <legend><!--<@s.text name="eml.lowestCommonTaxon"/>--></legend>

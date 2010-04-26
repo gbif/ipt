@@ -16,11 +16,11 @@
  */
 -->
 <head>
-<title><@s.text name="dataResource.metadata"/></title>
+<title><@s.text name="metadata.heading.citations"/></title>
 <meta name="resource" content="${resource.title!}"/>
 <meta name="menu" content="ManagerMenu"/>
 <meta name="submenu" content="manage_resource"/>  
-<meta name="heading" content="<@s.text name='metadata.citation.heading'/>"/> 
+<meta name="heading" content="<@s.text name='metadata.heading.citations'/>"/> 
 
 <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
@@ -61,10 +61,6 @@ function OnModuleLoaded() {
   $('#addCitationLink').click(function() {
     citationPanel.add(new CitationWidget());
   }); 
-  var citations = GetCitations();
-  for (c in citations) {
-    citationPanel.add(new CitationWidget(citations[c]));
-  }
 }
 
 google.setOnLoadCallback(OnModuleLoaded);
@@ -73,21 +69,21 @@ google.setOnLoadCallback(OnModuleLoaded);
 
 </script>  
 </head>
-<p class="explMt"><@s.text name='metadata.describe'/></p>
+<p class="explMt"><@s.text name='metadata.description.citations'/></p>
 <@s.form id="emlForm" action="citations" enctype="multipart/form-data" 
   method="post">  
 <fieldset>
 <@s.hidden name="resourceId" value="${(resource.id)!}"/>
 <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 <@s.hidden name="guid" value="${(resource.guid)!}"/>
-<@s.hidden name="nextPage" value="citations"/>
+<@s.hidden name="nextPage" value="rights"/>
 <@s.hidden name="method" value="citations"/>
 
 <div class="newline"></div>
 <div>
   <@s.textfield id="citation" key="eml.citation"  cssClass="text xlarge"/>
 </div>
-<h2 class="explMt">Bibliography</h2>
+<h2 class="explMt"><@s.text name="metadata.heading.citations.bibliography"/></h2>
 <div id="citationsPanel" class="newline">
   <div id="cloneCitation">
     <div id="separator" class="horizontal_dotted_line_large_foo"></div>
@@ -106,7 +102,7 @@ google.setOnLoadCallback(OnModuleLoaded);
   </div>
 </div>
 <div class="left">
-  <a id="addCitationLink" href="" onclick="return false;">Add new citation</a>
+  <a id="addCitationLink" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.citations'/></a>
 </div>
 <div class="newline"></div>
 <div class="newline"></div>

@@ -17,11 +17,11 @@
 -->
 
 <head>
-<title><@s.text name="dataResource.metadata"/></title>
+<title><@s.text name="metadata.heading.associatedParties"/></title>
 <meta name="resource" content="${resource.title!}"/>
 <meta name="menu" content="ManagerMenu"/>
 <meta name="submenu" content="manage_resource"/>  
-<meta name="heading" content="<@s.text name='metadata.associatedPartiesHeading'/>"/> 
+<meta name="heading" content="<@s.text name='metadata.heading.associatedParties'/>"/> 
  
 <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
@@ -119,7 +119,7 @@ google.setOnLoadCallback(OnLoad);
 </style>
 
 </head>
-<p class="explMt"><@s.text name='metadata.associatedPartiesDescription'/></p>
+<p class="explMt"><@s.text name='metadata.description.associatedParties'/></p>
 
 <@s.form id="emlForm" action="associatedParties" enctype="multipart/form-data" 
   method="post">
@@ -212,7 +212,7 @@ google.setOnLoadCallback(OnLoad);
 </div>
 
 <div class="left">
-  <a id="plus" href="" onclick="return false;">Add new person</a>
+  <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.associatedParties'/></a>
 </div>
 
 <div class="newline"></div>

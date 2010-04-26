@@ -17,11 +17,11 @@
 -->
 
 <head>
-  <title><@s.text name="eml.methods"/></title>
+  <title><@s.text name="metadata.heading.methods"/></title>
   <meta name="resource" content="${eml.title!}"/>
   <meta name="menu" content="ManagerMenu"/>
   <meta name="submenu" content="manage_resource"/>
-  <meta name="heading" content="<@s.text name='eml.methods'/>"/>  
+  <meta name="heading" content="<@s.text name='metadata.heading.methods'/>"/>  
 
   <script
     src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
@@ -87,9 +87,7 @@
 </head>
 
 <div class="break10"></div>
-<p class="explMt"><@s.text name='metadata.methodsDescription'/></p>
-
-<!-- Check Me -->
+<p class="explMt"><@s.text name='metadata.description.methods'/></p>
 <@s.form id="emlForm" action="methods" enctype="multipart/form-data" method="post">
 
 <fieldset>
