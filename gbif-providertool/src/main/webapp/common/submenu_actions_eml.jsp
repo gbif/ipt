@@ -31,5 +31,8 @@
   <li><a
     href="<s:url action="methodsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="eml.methods" /> </a></li>
+  <li><a
+    href="<s:url action="citationsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+  > <s:text name="eml.citations" /> </a></li>  
 </ul>
 </div>

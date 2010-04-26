@@ -351,8 +351,7 @@ function TaxonomicCoverage() {
       this._description = val;
       return this;
     }
-  }
-  
+  }  
 }
 
 TaxonomicCoverage.propertyNames = function() {
