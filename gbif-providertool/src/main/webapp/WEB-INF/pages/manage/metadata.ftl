@@ -77,9 +77,7 @@ function LoadCountriesAsync(callback) {
   });
 }
 
-function OnLoad() { 
-  // The elem parameter is a DOM element.
-  // Here we clone elem, update it, and replace the lang select with it. 
+function OnLoad() {  
   LoadLangAsync(function(elem) {
     var e = elem.clone();
     var id = 'langSelect';
@@ -276,7 +274,7 @@ google.setOnLoadCallback(OnLoad);
     cssClass="text xhalf"/>
 </div>
 <div class="leftxhalf">
-  <@s.select id="metadataProviderCountry" key="" list="eml.resourceCreator.address.country"
+  <@s.select id="metadataProviderCountry" key="" list="eml.metadataProvider.address.country"
     required="true" cssClass="text xhalf"/>
 </div>    
 <div class="newline"></div>
