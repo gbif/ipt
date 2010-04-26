@@ -14,7 +14,81 @@
  * the License.
  */
 
-/*==== Agent ====*/
+
+
+function CitationWidget(citation) {
+  this.elem = $('#cloneCitation').clone();
+  var elem = this.elem;
+  var citationCount = CitationPanel.size();
+  elem.attr('id', 'citation' + citationCount);
+  elem.find('#removeLink').show();
+  $(elem).find('#citation').attr('name', 'eml.bibliographicCitations[' + citationCount + ']');
+  $(elem).find('#citation').attr('value', citation);
+}
+
+function CitationPanel() {
+  this.id = '#citationPanel';
+  this.elem = $(this.id);
+  this.citationSelector = "div[id^='citation']";
+  this.citationIdPattern = /citation\d+/;
+  this.add = add;
+  this.resize = resize;
+  
+  function add(widget) {
+    if (!(widget instanceof CitationWidget)) {
+      alert('Illegal argument. Expected a CitationWidget');
+      return;
+    }
+    var size = CitationPanel.size();
+    var elem = $(widget.elem);
+    elem.attr('id', 'citation' + size);
+    var _this = this;
+    elem.find('#removeLink').click(function() {
+      var id = '#' + $(this).parent().parent().attr('id');
+      $($(id)).remove();
+      _this.resize();
+    });
+    elem.appendTo(this.elem);
+    elem.show();
+    return false;
+  }
+  
+  function resize() {
+    var index = 0;
+    var citations = CitationPanel.citations();
+    for (c in citations) {
+      var elem = $(citations[c]);
+      $(elem).attr('id', 'citation' + index);
+      var name = 'eml.bibliographicCitations[' + index + ']';
+      $(elem).attr('name', name);
+    }
+  }
+}
+
+CitationPanel.citations = function() {
+  var citations = $('#citationPanel').find("div[id^='citation']").size();
+  var index = 0; 
+  var result = new Array();
+  for (c in citations) {
+    if (citations[c].match(/citation\d+/)) {
+      result[index] = citations[c];
+      index += 1;
+    }
+  }
+  return result;
+}
+
+CitationPanel.size = function() {
+  var citations = $('#citationPanel').find("div[id^='citation']").size();
+  var size = 0; 
+  for (c in citations) {
+    if (citations[c].match(/citation\d+/)) {
+      size += 1;
+    }
+  }
+  return size;
+}
+
 /**
  * The AgentWidget class can be used to encapsulate and display an Agent.
  * 
