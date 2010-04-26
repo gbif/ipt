@@ -60,7 +60,11 @@ function OnModuleLoaded() {
   var citationPanel = new CitationPanel();
   $('#addCitationLink').click(function() {
     citationPanel.add(new CitationWidget());
-  }); 
+  });
+  var citations = GetCitations();		
+  for (c in citations) {		
+    citationPanel.add(new CitationWidget(citations[c]));		
+  } 
 }
 
 google.setOnLoadCallback(OnModuleLoaded);
