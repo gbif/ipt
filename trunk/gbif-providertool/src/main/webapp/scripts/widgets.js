@@ -286,7 +286,7 @@ TemporalCoveragePanel.temporalCoverageCount = function() {
  * 
  */
 function SamplingMethodWidget(samplingMethod) {
-  var e = $('#cloneSamplingMethod').clone();
+  var e = $('#cloneSamplingMethods').clone();
   var samplingMethodCount = SamplingMethodPanel.samplingMethodCount();
   e.attr('id', 'samplingMethod' + samplingMethodCount);
   this._element = e;
