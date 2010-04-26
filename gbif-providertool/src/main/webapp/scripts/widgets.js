@@ -282,7 +282,42 @@ TemporalCoveragePanel.temporalCoverageCount = function() {
 
 /*==== Sampling Method ====*/
 /**
- * The MethodPanel can be used to display a group of sampling method widgets.
+ * The SamplingMethodWidget class can be used to encapsulate and display an SamplingMethod.
+ * 
+ */
+function SamplingMethodWidget(samplingMethod) {
+  var e = $('#cloneSamplingMethod').clone();
+  var samplingMethodCount = SamplingMethodPanel.samplingMethodCount();
+  e.attr('id', 'samplingMethod' + samplingMethodCount);
+  this._element = e;
+  e.find('#removeLink').show();
+  this._samplingMethod = samplingMethod;
+  var isSamplingMethod = samplingMethod instanceof SamplingMethod;
+  var samplingMethodProps = SamplingMethod.propertyNames();
+  for (p in samplingMethodProps) {
+    var name = samplingMethodProps[p];
+    var val = '';
+    if (isSamplingMethod) {
+      val = eval('samplingMethod.' + name + '()');
+    } 
+    e.find('#' + name).attr('name', 'eml.samplingMethods[' + samplingMethodCount + '].'+ name);
+    e.find('#' + name).attr('value', val);
+  }  
+  this._elementId = '';
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+} 
+
+/**
+ * The SamplingMethodPanel can be used to display a group of sampling method widgets.
  * 
  */
 function SamplingMethodPanel() {

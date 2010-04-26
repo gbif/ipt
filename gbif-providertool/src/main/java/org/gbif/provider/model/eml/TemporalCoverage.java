@@ -137,6 +137,6 @@ public class TemporalCoverage implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("Descriptioin=%s, EndDate=%s, Keywords=%s, StartDate=%s", formationPeriod, endDate, livingTimePeriod, startDate);
+		return String.format("Formation Period=%s, StartDate=%s, EndDate=%s, ", startDate, endDate, formationPeriod, livingTimePeriod);
 	}
 }

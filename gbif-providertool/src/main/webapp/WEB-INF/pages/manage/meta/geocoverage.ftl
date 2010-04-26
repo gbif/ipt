@@ -1,17 +1,37 @@
+<!--
+/*
+ * Copyright 2009 GBIF.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+-->
+
 <head>
-    <title>EML - <@s.text name="eml.geographicCoverage"/></title>
+    <title><@s.text name="eml.geographicCoverage"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='eml.geographicCoverage'/>"/>    
+	
 	<script type="text/javascript" src="<@s.url value="/scripts/swfobject.js"/>" ></script>
 	<script type="text/javascript">  
-	 function selectBoundigBox(minx,miny,maxx,maxy){
-		$("#maxy").val(maxy);
-		$("#miny").val(miny);
-		$("#minx").val(minx);
-		$("#maxx").val(maxx);
-	 }
+	
+	function selectBoundigBox(minx,miny,maxx,maxy){
+      $("#maxy").val(maxy);
+      $("#miny").val(miny);
+      $("#minx").val(minx);
+      $("#maxx").val(maxx);
+	}
 
 	 $(document).ready(function(){
 		var so = new SWFObject("<@s.url value="/scripts/IptGeoCoverageMap.swf"/>", "swf", "690", "250", "9"); 
