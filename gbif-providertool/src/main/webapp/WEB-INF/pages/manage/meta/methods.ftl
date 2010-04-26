@@ -50,7 +50,7 @@
       $('#cloneSamplingMethod').hide();
     }
   
-    function GetSamplingM<ethods() {
+    function GetSamplingMethods() {
       var samplingMethods = new Array();
       <#if (eml.samplingMethods ? size > 0)>
         <@s.iterator value="eml.samplingMethods" status="stat">     
@@ -86,14 +86,14 @@
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.methodsDescription'/></p>
 
-<@s.form id="emlForm" action="samplingMethod" enctype="multipart/form-data" method="post">
+<@s.form id="emlForm" action="samplingMethods" enctype="multipart/form-data" method="post">
 
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="rights"/>
-  <@s.hidden name="method" value="samplingMethod"/>
+  <@s.hidden name="method" value="samplingMethods"/>
   <div id="samplingMethodPanel" class="newline">
     <!-- The cloneMethods DIV is not attached to the DOM. It's used as a template
        for cloning sampling method UI widgets. 
@@ -132,7 +132,7 @@
   </div>
 
   <div class="left">
-    <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='eml.temporalCoverage'/></a>
+    <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='eml.methods'/></a>
   </div>
   <div class="newline"></div>
   <div class="newline"></div>
