@@ -16,11 +16,11 @@
  */
 -->
 <head>
-    <title><@s.text name="eml.project"/></title>
+    <title><@s.text name="metadata.heading.projects"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-	<meta name="heading" content="<@s.text name='eml.project'/>"/>
+	<meta name="heading" content="<@s.text name='metadata.heading.projects'/>"/>
 	<script src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
       type="text/javascript">
     </script>
@@ -56,7 +56,8 @@
 </head>
 
 <div class="break10"></div>
-<@s.form id="emlForm" action="projects" method="post" validate="false">
+<p class="explMt"><@s.text name='metadata.description.projects'/></p>
+<@s.form id="emlForm" action="projects" enctype="multipart/form-data" method="post"> 
 <fieldset>
 	<@s.hidden name="resourceId" value="${resourceId?c}"/>
 	<@s.hidden name="nextPage" value="methods"/>

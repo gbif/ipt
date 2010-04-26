@@ -17,11 +17,11 @@
 -->
 
 <head>
-    <title><@s.text name="eml.temporalCoverage"/></title>
+    <title><@s.text name="metadata.heading.tempcoverages"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-    <meta name="heading" content="<@s.text name='eml.temporalCoverage'/>"/>        
+    <meta name="heading" content="<@s.text name='metadata.heading.tempcoverages'/>"/>        
     
 <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
@@ -97,15 +97,14 @@ google.load("jquery", "1.4.2");
 </head>
 
 <div class="break10"></div>
-<p class="explMt"><@s.text name='metadata.temporalCoverageDescription'/></p>
-
+<p class="explMt"><@s.text name='metadata.description.tempcoverage'/></p>
 <@s.form id="emlForm" action="tempcoverage" enctype="multipart/form-data" method="post">
 
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="rights"/>
+  <@s.hidden name="nextPage" value="projects"/>
   <@s.hidden name="method" value="temporalCoverages"/>
   <div id="temporalCoveragePanel" class="newline">
     <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
@@ -145,7 +144,7 @@ google.load("jquery", "1.4.2");
     </div>
   </div>
   <div class="left">
-    <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='eml.temporalCoverage'/></a>
+    <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.tempcoverages'/></a>
   </div>
   <div class="newline"></div>
   <div class="newline"></div>

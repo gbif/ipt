@@ -17,11 +17,11 @@
 -->
 
 <head>
-<title><@s.text name="dataResource.metadata"/></title>
+<title><@s.text name="metadata.heading.organisation"/></title>
 <meta name="resource" content="${resource.title!}"/>
 <meta name="menu" content="ManagerMenu"/>
 <meta name="submenu" content="manage_resource"/>  
-<meta name="heading" content="<@s.text name='eml.organisation'/>"/> 
+<meta name="heading" content="<@s.text name='metadata.heading.organisation'/>"/> 
   
 <script
   src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"

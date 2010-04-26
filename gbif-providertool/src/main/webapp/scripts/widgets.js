@@ -14,7 +14,7 @@
  * the License.
  */
 
-
+/*==== Citations ====*/
 
 function CitationWidget(citation) {
   this.elem = $('#cloneCitation').clone();
@@ -70,6 +70,8 @@ function CitationPanel() {
 CitationPanel.size = function() {
   return $('#citationsPanel').find("div[id^='citation']").size();
 }
+
+/*==== Agents ====*/
 
 /**
  * The AgentWidget class can be used to encapsulate and display an Agent.

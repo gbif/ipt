@@ -3,36 +3,33 @@
 <ul class="plain">
   <li><a
     href="<s:url action="resource" namespace="/manage"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.basic" /> </a></li>
+  > <s:text name="metadata.heading.basic" /> </a></li>
   <li><a
-    href="<s:url action="OrganisationForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.organisation" /> </a></li>
+    href="<s:url action="organisationForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+  > <s:text name="metadata.heading.organisation" /> </a></li>
   <li><a
     href="<s:url action="AssociatedPartiesForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.associatedParties" /> </a></li>
+  > <s:text name="metadata.heading.associatedParties" /> </a></li>
   <li><a
     href="<s:url action="geocoverageForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.geographicCoverage" /> </a></li>
+  > <s:text name="metadata.heading.geocoverages" /> </a></li>
   <li><a
     href="<s:url action="taxcoverageForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.taxonomicCoverage" /> </a></li>
+  > <s:text name="metadata.heading.taxcoverages" /> </a></li>
   <li><a
     href="<s:url action="tempcoverageForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.temporalCoverage" /> </a></li>
-  <li><a
-    href="<s:url action="tempcoverageForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.keywords" /> </a></li>
-  <li><a
-    href="<s:url action="rightsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.intellectualRights" /> </a></li>
+  > <s:text name="metadata.heading.tempcoverages" /> </a></li>
   <li><a
     href="<s:url action="projectForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.researchProject" /> </a></li>
+  > <s:text name="metadata.heading.projects" /> </a></li>
   <li><a
     href="<s:url action="methodsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.methods" /> </a></li>
+  > <s:text name="metadata.heading.methods" /> </a></li>
   <li><a
     href="<s:url action="citationsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="eml.citations" /> </a></li>  
+  > <s:text name="metadata.heading.citations" /> </a></li>
+  <li><a
+    href="<s:url action="rightsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+  > <s:text name="metadata.heading.additionalMetadata" /> </a></li>
 </ul>
 </div>
