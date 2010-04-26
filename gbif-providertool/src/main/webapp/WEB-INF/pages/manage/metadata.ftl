@@ -77,20 +77,16 @@ function LoadCountriesAsync(callback) {
   });
 }
 
-function OnLoad() {  
-      $('#langDiv').hide();
-      $('#langSelect').attr('value', $('#langEnum').attr('value'));
-  
+function OnLoad() { 
+  // The elem parameter is a DOM element.
+  // Here we clone elem, update it, and replace the lang select with it. 
   LoadLangAsync(function(elem) {
     var e = elem.clone();
     var id = 'langSelect';
     var idElem = $('#' + id);
     var name = idElem.attr('name');
     var value = idElem.attr('value');
-    var ename = e.attr('name');
-    var eval = e.attr('val');
-    e.attr('name', 'eml.resourceCreator.address.country');
-//    e.attr('name', 'eml.language');
+    e.attr('name', name);
     e.attr('value', value)
     e.attr('id', id);
     $('#' + id).replaceWith(e);
@@ -139,27 +135,16 @@ google.setOnLoadCallback(OnLoad);
 <@s.hidden name="method" value="associatedParties"/>
 
 <div class="newline"></div>
+<!-- Title -->
 <div class="leftxhalf">
   <@s.textfield id="title" key="eml.resource.meta.title" required="true" 
     cssClass="text xhalf"/>
 </div>
+<!-- Language -->
 <div class="leftxhalf">
-  <@s.select id="langSelect" key="eml.language" list="{'${eml.language!}'}" 
+  <@s.select id="langSelect" key="eml.language" list="eml.language" 
     required="true" cssClass="text xhalf"/>
 </div>
-    <div id="langDiv">
-	  <@s.textfield id="langEnum" key="eml.language"/>
-	</div>
-<!--
-<div class="leftxhalf">
-  <@s.select id="type" key="resource.type" list="resourceTypeMap" 
-    required="true" cssClass="text xhalf"/>
-</div>
-<div class="leftxhalf">
-  <@s.file id="logo" key="resource.selectLogoFile" name="file"                    
-    cssClass="text xhalf"/>
-</div>
--->
 <div class="newline">
   <@s.textarea id="abstract" key="eml.resource.meta.description" required="true" 
     cssClass="text xlarge"/>
