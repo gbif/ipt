@@ -54,14 +54,14 @@ public class Eml implements Serializable {
   // please refer to typed classes for descriptions of the properties and how
   // they map to EML
   private List<KeywordSet> keywords = Lists.newArrayList();
-//  private List<String> bibliographicCitations = Lists.newArrayList();
+  // private List<String> bibliographicCitations = Lists.newArrayList();
   private BibliographicCitationSet bibliographicCitations = new BibliographicCitationSet();
   private List<Method> samplingMethods = Lists.newArrayList();
   private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
   private List<TemporalCoverage> temporalCoverages = Lists.newArrayList();
   private List<PhysicalData> physicalData = Lists.newArrayList();
-
+  private List<String> citations = Lists.newArrayList();
   /**
    * A resource that describes a literature citation for the resource, one that
    * might be found in a bibliography. We cannot use
@@ -280,10 +280,6 @@ public class Eml implements Serializable {
     bibliographicCitations.getBibliographicCitations().addAll(citations);
   }
 
-  public void setBibliographicCitationSet(BibliographicCitationSet bibliographicCitationSet) {    
-    bibliographicCitations = bibliographicCitationSet;   
-  }
-
   /**
    * utility to add a coverage to the coverages This method was introduced to
    * ease the Digester rules for parsing of EML
@@ -352,6 +348,10 @@ public class Eml implements Serializable {
 
   public String getCitation() {
     return citation;
+  }
+
+  public List<String> getCitations() {
+    return citations;
   }
 
   public String getCollectionId() {
@@ -495,8 +495,17 @@ public class Eml implements Serializable {
     this.bibliographicCitations.setBibliographicCitations(bibliographicCitations);
   }
 
+  public void setBibliographicCitationSet(
+      BibliographicCitationSet bibliographicCitationSet) {
+    bibliographicCitations = bibliographicCitationSet;
+  }
+
   public void setCitation(String citation) {
     this.citation = citation;
+  }
+
+  public void setCitations(List<String> citations) {
+    this.citations = citations;
   }
 
   public void setCollectionId(String collectionId) {
