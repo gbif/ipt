@@ -27,7 +27,7 @@ function CitationWidget(citation) {
 }
 
 function CitationPanel() {
-  this.id = '#citationPanel';
+  this.id = '#citationsPanel';
   this.elem = $(this.id);
   this.citationSelector = "div[id^='citation']";
   this.citationIdPattern = /citation\d+/;
@@ -54,39 +54,21 @@ function CitationPanel() {
   }
   
   function resize() {
-    var index = 0;
-    var citations = CitationPanel.citations();
-    for (c in citations) {
-      var elem = $(citations[c]);
-      $(elem).attr('id', 'citation' + index);
-      var name = 'eml.bibliographicCitations[' + index + ']';
-      $(elem).attr('name', name);
-    }
-  }
+    this.elem.find(this.citationSelector).each(function(i) {
+      var id =  $(this).attr('id');
+      if (id.match(this.citationIdPattern)) {
+        var elem = $(this);
+        $(elem).attr('id', 'citation' + i);
+        var name = 'eml.bibliographicCitations[' + i + ']';
+        $(elem).attr('name', name);
+      }
+    });
+  }  
 }
 
-CitationPanel.citations = function() {
-  var citations = $('#citationPanel').find("div[id^='citation']").size();
-  var index = 0; 
-  var result = new Array();
-  for (c in citations) {
-    if (citations[c].match(/citation\d+/)) {
-      result[index] = citations[c];
-      index += 1;
-    }
-  }
-  return result;
-}
 
 CitationPanel.size = function() {
-  var citations = $('#citationPanel').find("div[id^='citation']").size();
-  var size = 0; 
-  for (c in citations) {
-    if (citations[c].match(/citation\d+/)) {
-      size += 1;
-    }
-  }
-  return size;
+  return $('#citationsPanel').find("div[id^='citation']").size();
 }
 
 /**

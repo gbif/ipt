@@ -47,8 +47,8 @@ google.load("jquery", "1.4.2");
 
 function GetCitations() {
   var citations = new Array();
-  <#if (eml.citations ? size > 0)>
-    <@s.iterator value="eml.citations" status="stat">     
+  <#if (eml.bibliographicCitationSet.bibliographicCitations ? size > 0)>
+    <@s.iterator value="eml.bibliographicCitationSet.bibliographicCitations" status="stat">     
       citations[${stat.index}] = "<@s.property value="toString()"/>";
     </@s.iterator>
   </#if>
@@ -61,6 +61,10 @@ function OnModuleLoaded() {
   $('#addCitationLink').click(function() {
     citationPanel.add(new CitationWidget());
   }); 
+  var citations = GetCitations();
+  for (c in citations) {
+    citationPanel.add(new CitationWidget(citations[c]));
+  }
 }
 
 google.setOnLoadCallback(OnModuleLoaded);
@@ -76,7 +80,7 @@ google.setOnLoadCallback(OnModuleLoaded);
 <@s.hidden name="resourceId" value="${(resource.id)!}"/>
 <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 <@s.hidden name="guid" value="${(resource.guid)!}"/>
-<@s.hidden name="nextPage" value="organisation"/>
+<@s.hidden name="nextPage" value="citations"/>
 <@s.hidden name="method" value="citations"/>
 
 <div class="newline"></div>
