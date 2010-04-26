@@ -97,14 +97,14 @@ google.load("jquery", "1.4.2");
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.temporalCoverageDescription'/></p>
 
-<@s.form id="emlForm" action="temporalCoverage" enctype="multipart/form-data" method="post">
+<@s.form id="emlForm" action="temporalCoverages" enctype="multipart/form-data" method="post">
 
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="rights"/>
-  <@s.hidden name="method" value="temporalCoverage"/>
+  <@s.hidden name="method" value="temporalCoverages"/>
   <div id="coveragePanel" class="newline">
     <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
        for cloning temporalCoverage UI widgets. 

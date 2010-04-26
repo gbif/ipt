@@ -57,7 +57,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
    * 
    */
   private enum RequestMethod {
-    ASSOCIATED_PARTIES, NO_OP, ORGANISATION;
+    ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, TEMPORAL_COVERAGES;
   }
 
   /**
@@ -75,6 +75,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.ASSOCIATED_PARTIES;
     } else if (method.trim().equalsIgnoreCase("organisation")) {
       return RequestMethod.ORGANISATION;
+    } else if (method.trim().equalsIgnoreCase("samplingMethods")) {
+      return RequestMethod.SAMPLING_METHODS;
+    } else if (method.trim().equalsIgnoreCase("temporalCoverages")) {
+      return RequestMethod.TEMPORAL_COVERAGES;
     }
     return RequestMethod.NO_OP;
   }
@@ -195,6 +199,26 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           // eml equals null means that the form was submitted with zero agents.
           eml = emlManager.load(resource);
           eml.getAssociatedParties().clear();
+        } else {
+          // eml was populated via Struts but it doesn't have it's resource yet.
+          eml.setResource(resource);
+        }
+        break;
+      case SAMPLING_METHODS:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero sampling methods.
+          eml = emlManager.load(resource);
+          eml.getSamplingMethods().clear();
+        } else {
+          // eml was populated via Struts but it doesn't have it's resource yet.
+          eml.setResource(resource);
+        }
+        break;
+      case TEMPORAL_COVERAGES:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero sampling methods.
+          eml = emlManager.load(resource);
+          eml.getTemporalCoverages().clear();
         } else {
           // eml was populated via Struts but it doesn't have it's resource yet.
           eml.setResource(resource);
