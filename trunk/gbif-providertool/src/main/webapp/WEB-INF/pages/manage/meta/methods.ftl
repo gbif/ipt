@@ -47,14 +47,14 @@
 
     function HideSamplingMethodClone() {
       $('#removeLink').hide();
-      $('#cloneSamplingMethod').hide();
+      $('#cloneSamplingMethods').hide();
     }
   
     function GetSamplingMethods() {
       var samplingMethods = new Array();
       <#if (eml.samplingMethods ? size > 0)>
         <@s.iterator value="eml.samplingMethods" status="stat">     
-          samplingMethods[${stat.index}] = new Method()
+          samplingMethods[${stat.index}] = new SamplingMethod()
             .stepDescription("<@s.property value="stepDescription"/>")
             .studyExtent("<@s.property value="studyExtent"/>")
             .sampleDescription("<@s.property value="sampleDescription"/>")
@@ -96,7 +96,7 @@
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="metadata"/>
+  <@s.hidden name="nextPage" value="citations"/>
   <@s.hidden name="method" value="samplingMethods"/>
   <div id="samplingMethodPanel" class="newline">
     <!-- The cloneSamplingMethods DIV is not attached to the DOM. It's used as a template
@@ -149,8 +149,4 @@
   </div>
 </fieldset>
 
-<div class="breakRightButtons">
-    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.done" name="next" theme="simple"/>
-</div>    
 </@s.form>
