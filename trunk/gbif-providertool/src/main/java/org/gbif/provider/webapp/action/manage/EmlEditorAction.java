@@ -66,6 +66,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     SAMPLING_METHODS,
     TEMPORAL_COVERAGES,
     PROJECTS,
+    CITATIONS,
     RESOURCE_FORM;
   }
 
@@ -92,6 +93,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.PROJECTS;
     } else if (method.trim().equalsIgnoreCase("resourceForm")) {
       return RequestMethod.RESOURCE_FORM;
+    } else if (method.trim().equalsIgnoreCase("citations")) {
+      return RequestMethod.CITATIONS;
     }
     return RequestMethod.NO_OP;
   }
@@ -217,6 +220,22 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<Agent> agents = eml.getAssociatedParties();
           eml = emlManager.load(resource);
           eml.setAssociatedParties(agents);
+        }
+        break;
+      case CITATIONS:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // citations.
+          eml = emlManager.load(resource);
+          eml.getBibliographicCitations().clear();
+          eml.setCitation("");
+        } else {
+          // eml was populated via Struts.
+          List<String> citations = eml.getBibliographicCitations();
+          String citation = eml.getCitation();
+          eml = emlManager.load(resource);
+          eml.setBibliographicCitations(citations);
+          eml.setCitation(citation);
         }
         break;
       case TEMPORAL_COVERAGES:
