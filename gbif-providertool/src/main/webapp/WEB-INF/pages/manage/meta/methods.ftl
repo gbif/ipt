@@ -79,26 +79,30 @@
     }
 
     google.setOnLoadCallback(OnLoad);
+    
 //]]>
+
   </script>
+
 </head>
 
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.methodsDescription'/></p>
 
-<@s.form id="emlForm" action="samplingMethods" enctype="multipart/form-data" method="post">
+<!-- Check Me -->
+<@s.form id="emlForm" action="methods" enctype="multipart/form-data" method="post">
 
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="rights"/>
+  <@s.hidden name="nextPage" value="metadata"/>
   <@s.hidden name="method" value="samplingMethods"/>
   <div id="samplingMethodPanel" class="newline">
-    <!-- The cloneMethods DIV is not attached to the DOM. It's used as a template
+    <!-- The cloneSamplingMethods DIV is not attached to the DOM. It's used as a template
        for cloning sampling method UI widgets. 
     -->
-    <div id="cloneMethods">
+    <div id="cloneSamplingMethods">
       <div id="separator" class="horizontal_dotted_line_large_foo"></div>
       <div class="newline"></div>
       <div class="right">
@@ -106,21 +110,21 @@
       </div>
       <div class="newline"></div>
 
-      <div id="methodDiv">
+      <div id="SamplingMethodDiv">
         <div id="stepDescriptiopnDiv">
           <@s.textarea id="stepDescription" key="" 
           label="%{getText('method.stepDescription')}" required="false" cssClass="text xlarge slim"/>
         </div>
         <div id="studyExtentDiv">
-          <@s.textfield id="studyExtent" key="" 
+          <@s.textarea id="studyExtent" key="" 
           label="%{getText('method.studyExtent')}" required="false" cssClass="text text xlarge slim"/>
         </div>
         <div id="sampleDescriptionDiv">
-          <@s.textfield id="sampleDescription" key="" 
+          <@s.textarea id="sampleDescription" key="" 
           label="%{getText('method.sampleDescription')}" required="false" cssClass="text text xlarge slim"/>
         </div>
         <div id="qualityControlDiv">
-          <@s.textfield id="qualityControl" key="" 
+          <@s.textarea id="qualityControl" key="" 
           label="%{getText('method.qualityControl')}" required="false" cssClass="text text xlarge slim"/>
         </div>
       </div>

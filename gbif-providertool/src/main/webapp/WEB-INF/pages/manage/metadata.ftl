@@ -77,15 +77,20 @@ function LoadCountriesAsync(callback) {
   });
 }
 
-
 function OnLoad() {  
+      $('#langDiv').hide();
+      $('#langSelect').attr('value', $('#langEnum').attr('value'));
+  
   LoadLangAsync(function(elem) {
     var e = elem.clone();
     var id = 'langSelect';
     var idElem = $('#' + id);
     var name = idElem.attr('name');
     var value = idElem.attr('value');
+    var ename = e.attr('name');
+    var eval = e.attr('val');
     e.attr('name', 'eml.resourceCreator.address.country');
+//    e.attr('name', 'eml.language');
     e.attr('value', value)
     e.attr('id', id);
     $('#' + id).replaceWith(e);
@@ -142,6 +147,9 @@ google.setOnLoadCallback(OnLoad);
   <@s.select id="langSelect" key="eml.language" list="{'${eml.language!}'}" 
     required="true" cssClass="text xhalf"/>
 </div>
+    <div id="langDiv">
+	  <@s.textfield id="langEnum" key="eml.language"/>
+	</div>
 <!--
 <div class="leftxhalf">
   <@s.select id="type" key="resource.type" list="resourceTypeMap" 

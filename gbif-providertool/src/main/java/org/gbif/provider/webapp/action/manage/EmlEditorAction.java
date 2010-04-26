@@ -57,7 +57,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
    * 
    */
   private enum RequestMethod {
-    ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, TEMPORAL_COVERAGES;
+    ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, TEMPORAL_COVERAGES, PROJECTS, RESOURCE_FORM;
   }
 
   /**
@@ -79,6 +79,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.SAMPLING_METHODS;
     } else if (method.trim().equalsIgnoreCase("temporalCoverages")) {
       return RequestMethod.TEMPORAL_COVERAGES;
+    } else if (method.trim().equalsIgnoreCase("projects")) {
+      return RequestMethod.PROJECTS;
+    } else if (method.trim().equalsIgnoreCase("resourceForm")) {
+      return RequestMethod.RESOURCE_FORM;
     }
     return RequestMethod.NO_OP;
   }
@@ -204,6 +208,16 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml.setResource(resource);
         }
         break;
+      case TEMPORAL_COVERAGES:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero sampling methods.
+          eml = emlManager.load(resource);
+          eml.getTemporalCoverages().clear();
+        } else {
+          // eml was populated via Struts but it doesn't have it's resource yet.
+          eml.setResource(resource);
+        }
+        break;
       case SAMPLING_METHODS:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero sampling methods.
@@ -214,11 +228,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml.setResource(resource);
         }
         break;
-      case TEMPORAL_COVERAGES:
+      case PROJECTS:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero sampling methods.
           eml = emlManager.load(resource);
-          eml.getTemporalCoverages().clear();
         } else {
           // eml was populated via Struts but it doesn't have it's resource yet.
           eml.setResource(resource);
