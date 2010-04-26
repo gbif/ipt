@@ -18,8 +18,11 @@ package org.gbif.provider.webapp.action.manage;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.Method;
+import org.gbif.provider.model.eml.Project;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
+import org.gbif.provider.model.eml.TemporalCoverage;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
@@ -57,7 +60,13 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
    * 
    */
   private enum RequestMethod {
-    ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, TEMPORAL_COVERAGES, PROJECTS, RESOURCE_FORM;
+    ASSOCIATED_PARTIES,
+    NO_OP,
+    ORGANISATION,
+    SAMPLING_METHODS,
+    TEMPORAL_COVERAGES,
+    PROJECTS,
+    RESOURCE_FORM;
   }
 
   /**
@@ -204,37 +213,48 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml = emlManager.load(resource);
           eml.getAssociatedParties().clear();
         } else {
-          // eml was populated via Struts but it doesn't have it's resource yet.
-          eml.setResource(resource);
+          // eml was populated via Struts.
+          List<Agent> agents = eml.getAssociatedParties();
+          eml = emlManager.load(resource);
+          eml.setAssociatedParties(agents);
         }
         break;
       case TEMPORAL_COVERAGES:
         if (eml == null && resource != null) {
-          // eml equals null means that the form was submitted with zero sampling methods.
+          // eml equals null means that the form was submitted with zero
+          // temporal coverages.
           eml = emlManager.load(resource);
           eml.getTemporalCoverages().clear();
         } else {
-          // eml was populated via Struts but it doesn't have it's resource yet.
-          eml.setResource(resource);
+          // eml was populated via Struts.
+          List<TemporalCoverage> coverages = eml.getTemporalCoverages();
+          eml = emlManager.load(resource);
+          eml.setTemporalCoverages(coverages);
         }
         break;
       case SAMPLING_METHODS:
         if (eml == null && resource != null) {
-          // eml equals null means that the form was submitted with zero sampling methods.
+          // eml equals null means that the form was submitted with zero
+          // sampling methods.
           eml = emlManager.load(resource);
           eml.getSamplingMethods().clear();
         } else {
-          // eml was populated via Struts but it doesn't have it's resource yet.
-          eml.setResource(resource);
+          // eml was populated via Struts.
+          List<Method> methods = eml.getSamplingMethods();
+          eml = emlManager.load(resource);
+          eml.setSamplingMethods(methods);
         }
         break;
       case PROJECTS:
         if (eml == null && resource != null) {
-          // eml equals null means that the form was submitted with zero sampling methods.
+          // eml equals null means that the form was submitted with zero
+          // projects.
           eml = emlManager.load(resource);
         } else {
-          // eml was populated via Struts but it doesn't have it's resource yet.
-          eml.setResource(resource);
+          // eml was populated via Struts.
+          Project project = eml.getProject();
+          eml = emlManager.load(resource);
+          eml.setProject(project);
         }
         break;
     }
