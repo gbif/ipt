@@ -47,42 +47,44 @@
 google.load("jquery", "1.4.2");
 
   function toggleSingleDate(checkbox){
-    Effect.toggle('endDateDiv', 'appear', { duration: 0.3 });
-                
+//    Effect.toggle('endDateDiv', 'appear', { duration: 0.3 });
         if(checkbox.checked){
-            // $('beginDate').focus();
-            $('endDate').value="";
+            // $('startDate').focus();
+            $('endDate').value=$('startDate').value;
+            $('endDate').hide();
+        } else {
+            $('endDate').show();
         }
   }
 
-  function HideCoverageClone() {
+  function HideTemporalCoverageClone() {
     $('#removeLink').hide();
     $('#cloneTemporalCoverage').hide();
   }
   
-  function GetCoverages() {
-    var coverages = new Array();
+  function GetTemporalCoverages() {
+    var temporalCoverages = new Array();
     <#if (eml.temporalCoverages ? size > 0)>
       <@s.iterator value="eml.temporalCoverages" status="stat">     
-        coverages[${stat.index}] = new TemporalCoverage()
+        temporalCoverages[${stat.index}] = new TemporalCoverage()
           .startDate("<@s.property value="startDate"/>")
           .endDate("<@s.property value="endDate"/>");
       </@s.iterator>
     </#if>
-    return coverages;
+    return temporalCoverages;
   }
 
   function OnLoad() {  
-    HideCoverageClone();
-    var coveragePanel = new TemporalCoveragePanel();
-    var coverageWidget;
+    HideTemporalCoverageClone();
+    var temporalCoveragePanel = new TemporalCoveragePanel();
+    var temporalCoverageWidget;
     $('#plus').click(function() {
-      coveragePanel.add(new TemporalCoverageWidget());
+      temporalCoveragePanel.add(new TemporalCoverageWidget());
     });
-    var coverages = GetCoverages();
-    for (coverage in coverages) {
-      coverageWidget = new TemporalCoverageWidget(coverages[coverage]);
-      coveragePanel.add(coverageWidget);
+    var temporalCoverages = GetTemporalCoverages();
+    for (temporalCoverage in temporalCoverages) {
+      temporalCoverageWidget = new TemporalCoverageWidget(temporalCoverages[temporalCoverage]);
+      temporalCoveragePanel.add(temporalCoverageWidget);
     }
   }
 
@@ -97,7 +99,7 @@ google.load("jquery", "1.4.2");
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.temporalCoverageDescription'/></p>
 
-<@s.form id="emlForm" action="temporalCoverages" enctype="multipart/form-data" method="post">
+<@s.form id="emlForm" action="tempcoverage" enctype="multipart/form-data" method="post">
 
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
@@ -105,7 +107,7 @@ google.load("jquery", "1.4.2");
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="rights"/>
   <@s.hidden name="method" value="temporalCoverages"/>
-  <div id="coveragePanel" class="newline">
+  <div id="temporalCoveragePanel" class="newline">
     <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
        for cloning temporalCoverage UI widgets. 
     -->
@@ -117,20 +119,23 @@ google.load("jquery", "1.4.2");
       </div>
       <div class="newline"></div>
       <div>
-        <div class="leftMedium">
-          <@s.textfield id="beginDate" key="" 
-          label="%{getText('coverage.beginDate')}" required="false" cssClass="text medium"/>
+        <div class="leftMedium" id="startDateDiv">
+          <@s.textfield id="startDate" key="" 
+          label="%{getText('temporalCoverage.startDate')}" required="true" cssClass="text medium"/>
         </div>
         <div class="leftMedium" id="endDateDiv">
           <@s.textfield id="endDate" key="" 
-          label="%{getText('coverage.endDate')}" required="false" cssClass="text medium"/>
+          label="%{getText('temporalCoverage.endDate')}" required="false" cssClass="text medium"/>
         </div>
-        <div class="left">
-<!-- Check that this will work -->
+<!--  Check that this will work -->
+<!-- It doesn't. Needs to be a checkbox for every temporalCoverage, controlling the correct dates. -->
+<!--
+       <div class="left">
           <@s.checkbox key="" value="false" onclick="javascript:toggleSingleDate(this);" />
         </div>
+-->
         <div class="left">
-          <span><@s.text name='metadata.temporalCoverageExample'/> 1999-07-21</span>
+          <span><@s.text name='metadata.temporalCoverageExample'/> 1999/07/21</span>
         </div>
       </div>
       <div class="newline"></div>

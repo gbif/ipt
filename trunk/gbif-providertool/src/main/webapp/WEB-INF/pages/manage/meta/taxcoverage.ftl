@@ -25,7 +25,7 @@
 <@s.form id="emlForm" action="taxcoverage" method="post" validate="false">
 <fieldset>
     <@s.hidden name="resourceId" value="${resourceId?c}"/>
-    <@s.hidden name="nextPage" value="tempcoverage"/>
+    <@s.hidden name="nextPage" value="temporalCoverage"/>
     
 <fieldset style="padding-top:10px;">
     <legend><!--<@s.text name="eml.lowestCommonTaxon"/>--></legend>

@@ -408,6 +408,6 @@ function SamplingMethod() {
   
 }
 
-TaxonomicCoverage.propertyNames = function() {
-  return ['description'];
+SamplingMethod.propertyNames = function() {
+  return ['stepDescription', 'studyExtent', 'sampleDescription', 'qualityControl'];
 }
