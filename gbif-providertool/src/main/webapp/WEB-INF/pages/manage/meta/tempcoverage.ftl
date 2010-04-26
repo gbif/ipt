@@ -104,7 +104,7 @@ google.load("jquery", "1.4.2");
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="projects"/>
+  <@s.hidden name="nextPage" value="project"/>
   <@s.hidden name="method" value="temporalCoverages"/>
   <div id="temporalCoveragePanel" class="newline">
     <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
@@ -157,11 +157,7 @@ google.load("jquery", "1.4.2");
   </div>
 </fieldset>
 
-<div class="breakRightButtons">
-    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-</div>
-
+<!--
 <h1 class="modifiedh1Secondary"><@s.text name="eml.keywords"/></h1>
 <div class="horizontal_dotted_line_large_foo"></div>
 <fieldset style="padding-top:13px;">
@@ -172,5 +168,6 @@ google.load("jquery", "1.4.2");
     <div class="breakRightButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-    </div>    
+    </div>
+-->    
 </@s.form>
