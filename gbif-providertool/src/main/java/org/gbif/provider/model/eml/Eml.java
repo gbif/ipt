@@ -55,13 +55,13 @@ public class Eml implements Serializable {
   // they map to EML
   private List<KeywordSet> keywords = Lists.newArrayList();
   // private List<String> bibliographicCitations = Lists.newArrayList();
-  private BibliographicCitationSet bibliographicCitations = new BibliographicCitationSet();
+  private BibliographicCitationSet bibliographicCitationSet = new BibliographicCitationSet();
   private List<Method> samplingMethods = Lists.newArrayList();
+
   private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
   private List<TemporalCoverage> temporalCoverages = Lists.newArrayList();
   private List<PhysicalData> physicalData = Lists.newArrayList();
-  private List<String> citations = Lists.newArrayList();
   /**
    * A resource that describes a literature citation for the resource, one that
    * might be found in a bibliography. We cannot use
@@ -70,7 +70,6 @@ public class Eml implements Serializable {
    * these are found in the additionalMetadata section of the EML.
    */
   private String citation;
-
   /**
    * The 'creator' element provides the full name of the person, organization,
    * or position who created the resource.
@@ -260,6 +259,16 @@ public class Eml implements Serializable {
     associatedParties.add(agent);
   }
 
+  /**
+   * utility to add a bibliographic citation to the bibliographicCitations. This
+   * method was introduced to ease the Digester rules for parsing of EML.
+   * 
+   * @param bibliographic citation to add
+   */
+  public void addBibliographicCitations(List<String> citations) {
+    bibliographicCitationSet.getBibliographicCitations().addAll(citations);
+  }
+
   // /**
   // * utility to add a citation to the citations. This method was introduced to
   // * ease the Digester rules for parsing of EML
@@ -269,16 +278,6 @@ public class Eml implements Serializable {
   // public void addCitation(String citation) {
   // this.citation=citation;
   // }
-
-  /**
-   * utility to add a bibliographic citation to the bibliographicCitations. This
-   * method was introduced to ease the Digester rules for parsing of EML.
-   * 
-   * @param bibliographic citation to add
-   */
-  public void addBibliographicCitations(List<String> citations) {
-    bibliographicCitations.getBibliographicCitations().addAll(citations);
-  }
 
   /**
    * utility to add a coverage to the coverages This method was introduced to
@@ -343,15 +342,15 @@ public class Eml implements Serializable {
   }
 
   public List<String> getBibliographicCitations() {
-    return bibliographicCitations.getBibliographicCitations();
+    return bibliographicCitationSet.getBibliographicCitations();
+  }
+
+  public BibliographicCitationSet getBibliographicCitationSet() {
+    return bibliographicCitationSet;
   }
 
   public String getCitation() {
     return citation;
-  }
-
-  public List<String> getCitations() {
-    return citations;
   }
 
   public String getCollectionId() {
@@ -491,21 +490,16 @@ public class Eml implements Serializable {
     this.associatedParties = associatedParties;
   }
 
-  public void setBibliographicCitations(List<String> bibliographicCitations) {
-    this.bibliographicCitations.setBibliographicCitations(bibliographicCitations);
+  public void setBibliographicCitations(List<String> val) {
+    bibliographicCitationSet.setBibliographicCitations(val);
   }
 
-  public void setBibliographicCitationSet(
-      BibliographicCitationSet bibliographicCitationSet) {
-    bibliographicCitations = bibliographicCitationSet;
+  public void setBibliographicCitationSet(BibliographicCitationSet val) {
+    bibliographicCitationSet = val;
   }
 
   public void setCitation(String citation) {
     this.citation = citation;
-  }
-
-  public void setCitations(List<String> citations) {
-    this.citations = citations;
   }
 
   public void setCollectionId(String collectionId) {
