@@ -259,6 +259,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       eml = emlManager.load(resource);
       if (eml == null) {
         eml = new Eml();
+        eml.setResource(resource);
       }
       // Some properties in resource are the same as what's required in eml, so
       // we copy them over here:
