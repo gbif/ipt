@@ -109,7 +109,7 @@
       <div class="newline"></div>
 
       <div id="SamplingMethodDiv">
-        <div id="stepDescriptiopnDiv">
+        <div id="stepDescriptionDiv">
           <@s.textarea id="stepDescription" key="" 
           label="%{getText('method.stepDescription')}" required="false" cssClass="text xlarge slim"/>
         </div>

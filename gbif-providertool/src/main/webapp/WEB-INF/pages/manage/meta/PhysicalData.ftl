@@ -96,7 +96,7 @@
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="rights"/>
+  <@s.hidden name="nextPage" value="keywords"/>
   <@s.hidden name="method" value="physicalData"/>
   <div id="physicalDataPanel" class="newline">
     <!-- The clonePhysicalData DIV is not attached to the DOM. It's used as a template
