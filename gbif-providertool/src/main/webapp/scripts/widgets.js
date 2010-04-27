@@ -92,14 +92,16 @@ function AgentWidget(agent) {
     var val = '';
     if (isAgent) {
       val = eval('agent.' + name + '()');
-    } 
+    }     
     if (name == 'country') {      
-      var select = countriesSelect.clone();
-      $(e).find('#' + name).replaceWith(select);
-      $(select).attr('name', 'eml.associatedParties[' + agentCount + '].address.country');
-      $(select).attr('value', val);
-    } else {       
-      $(select).attr('id', name);
+      var select = countriesSelect.clone(); 
+      select.attr('id', name);
+      select.attr('name', 'eml.associatedParties[' + agentCount + '].address.country');
+      select.attr('value', val);
+      var oldSelect = e.find('#' + name);
+      oldSelect.replaceWith(select);
+    } else {
+      $(e).attr('id', name);
       var isAddress = jQuery.inArray(name, addressNames);
       isAddress = isAddress >= 0 ? true : false;
       if (isAddress) {
