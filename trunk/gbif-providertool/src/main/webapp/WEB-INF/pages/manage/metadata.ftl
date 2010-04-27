@@ -125,7 +125,6 @@
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="organisation"/>
-  <@s.hidden name="method" value="associatedParties"/>
 
   <div class="newline"></div>
   <#if resourceId??>
@@ -144,20 +143,20 @@
       required="true" cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
-  <div class="leftMedium">
-    <@s.select key="resource.type" list="resourceTypeMap" required="true" cssClass="text medium"/>
+  <div class="leftxhalf">
+    <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false" />
+  </div>
+  <div class="leftxhalf">
+    <@s.select key="resource.type" list="resourceTypeMap" required="true" cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
-       <div class="leftMedium">
-			<@s.textfield key="resource.contactName" required="true" cssClass="text medium"/>
-        </div>
-        <div class="leftMedium">
-			<@s.textfield key="resource.contactEmail" required="true" cssClass="text medium"/>
-        </div>
-        <div>
-		    <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false" />
-        </div>
-    <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield key="resource.contactName" required="true" cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield key="resource.contactEmail" required="true" cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
 
 <div class="newline">
   <@s.textarea id="abstract" key="eml.resource.meta.description" required="true" 

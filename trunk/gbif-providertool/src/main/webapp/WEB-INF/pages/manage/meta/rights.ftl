@@ -44,7 +44,7 @@
 //    google.load("jquery", "1.4.2");
 
     function OnLoad() { 
-      $('#pubDate').attr("disabled", "disabled");
+//      $('#pubDate').attr("disabled", "disabled");
       $('#role').attr('value', $('#roleEnum').attr('value'));
     };
 
@@ -59,22 +59,24 @@
 <@s.form id="emlForm" action="additionalMetadata" enctype="multipart/form-data" method="post"> 
 <fieldset>
 	<@s.hidden name="resourceId" value="${resourceId?c}"/>
-	<@s.hidden name="nextPage" value="resources"/>
+	<@s.hidden name="nextPage" value="rights"/>
 
+    <div class="leftxhalf">
+      <@s.textfield key="eml.hierarchyLevel" disabled="true"
+        required="true" cssClass="text xhalf"/>
+    </div>
     <div class="leftxhalf">
       <@s.textfield id="pubDate" key="eml.pubDate" 
         required="true" cssClass="text xhalf"/>
     </div>
-    <div>
-      <@s.file name="file" key="resource.selectLogoFile" cssClass="text file" required="false" />
+    <div class="newline"></div>
+    <div class="leftxhalf">
+      <@s.textfield key="eml.distributionUrl"
+        required="true" cssClass="text xlarge"/>
     </div>
-	<@s.textfield key="eml.distributionUrl" required="false" cssClass="text xlarge slim"/>
+    <div class="newline"></div>
 	<@s.textarea key="eml.purpose" required="false" cssClass="text xlarge slim"/>
 	<@s.textarea key="eml.intellectualRights" required="false" cssClass="text xlarge slim"/>
-    <div class="leftxhalf">
-      <@s.textfield key="eml.hierarchyLevel" 
-        required="true" cssClass="text xhalf"/>
-    </div>
     <div class="newline"></div>
 	<@s.textarea key="eml.additionalInfo" required="false" cssClass="text xlarge slim"/>
 </fieldset>
