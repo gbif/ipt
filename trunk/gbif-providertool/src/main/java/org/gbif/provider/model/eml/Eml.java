@@ -43,6 +43,7 @@ public class Eml implements Serializable {
    */
   private int emlVersion = 0;
 
+  private String alternateIdentifier;
   /**
    * The IPT resource (note is transient)
    */
@@ -217,7 +218,7 @@ public class Eml implements Serializable {
    * the higher value is omitted.
    */
   private List<JGTICuratorialUnit> jgtiCuratorialUnits = Lists.newArrayList();
-//  private JGTICuratorialUnit jgtiCuratorialUnit;
+  // private JGTICuratorialUnit jgtiCuratorialUnit;
 
   /**
    * This is not in the GBIF extended metadata document, but seems like a
@@ -336,6 +337,10 @@ public class Eml implements Serializable {
 
   public String getAdditionalInfo() {
     return additionalInfo;
+  }
+
+  public String getAlternateIdentifier() {
+    return alternateIdentifier;
   }
 
   public List<Agent> getAssociatedParties() {
@@ -485,6 +490,10 @@ public class Eml implements Serializable {
 
   public void setAdditionalInfo(String additionalInfo) {
     this.additionalInfo = additionalInfo;
+  }
+
+  public void setAlternateIdentifier(String alternateIdentifier) {
+    this.alternateIdentifier = alternateIdentifier;
   }
 
   public void setAssociatedParties(List<Agent> associatedParties) {
