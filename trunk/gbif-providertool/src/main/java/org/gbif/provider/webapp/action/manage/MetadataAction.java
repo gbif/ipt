@@ -314,6 +314,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     validateResource();
     resource.setDirty();
     resource = resourceManager.save(resource);
+    eml.setResource(resource);
 
     // validateEml();
     emlManager.save(eml);

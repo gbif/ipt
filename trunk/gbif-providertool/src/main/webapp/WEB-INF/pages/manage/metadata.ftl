@@ -134,7 +134,7 @@
 
   <!-- Title -->
   <div class="leftxhalf">
-    <@s.textfield id="title" key="eml.resource.meta.title" required="true" 
+    <@s.textfield id="title" key="resource.title" required="true" 
       cssClass="text xhalf"/>
   </div>
   <!-- Language -->
