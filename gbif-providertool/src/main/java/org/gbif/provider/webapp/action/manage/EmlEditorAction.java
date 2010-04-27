@@ -18,6 +18,7 @@ package org.gbif.provider.webapp.action.manage;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.JGTICuratorialUnit;
 import org.gbif.provider.model.eml.Method;
 import org.gbif.provider.model.eml.PhysicalData;
 import org.gbif.provider.model.eml.Project;
@@ -68,6 +69,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     TEMPORAL_COVERAGES,
     PROJECTS,
     CITATIONS,
+    COLLECTIONS,
     PHYSICAL_DATA,
     RESOURCE_FORM;
   }
@@ -97,6 +99,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.RESOURCE_FORM;
     } else if (method.trim().equalsIgnoreCase("citations")) {
       return RequestMethod.CITATIONS;
+    } else if (method.trim().equalsIgnoreCase("collections")) {
+      return RequestMethod.COLLECTIONS;
     } else if (method.trim().equalsIgnoreCase("physicalData")) {
       return RequestMethod.PHYSICAL_DATA;
     }
@@ -240,6 +244,19 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml = emlManager.load(resource);
           eml.setBibliographicCitations(citations);
           eml.setCitation(citation);
+        }
+        break;
+      case COLLECTIONS:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // CuratorialUnits.
+          eml = emlManager.load(resource);
+          eml.getJgtiCuratorialUnits().clear();
+        } else {
+          // eml was populated via Struts.
+          List<JGTICuratorialUnit> curatorialUnits = eml.getJgtiCuratorialUnits();
+          eml = emlManager.load(resource);
+          eml.setJgtiCuratorialUnits(curatorialUnits);
         }
         break;
       case TEMPORAL_COVERAGES:

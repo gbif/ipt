@@ -20,12 +20,12 @@ public class EmlFactoryTest extends TestCase {
       // JGTI curatorial unit tests
       // A separate test for the alternate JGTI structure, which includes
       // uncertainty is in sample2.xml
-      assertNotNull(eml.getJgtiCuratorialUnit());
-      assertEquals("jars", eml.getJgtiCuratorialUnit().getUnitType());
+      assertNotNull(eml.getJgtiCuratorialUnits());
+      assertEquals("jars", eml.getJgtiCuratorialUnits().get(0).getUnitType());
       assertEquals(new Integer("2000"),
-          eml.getJgtiCuratorialUnit().getRangeStart());
+          eml.getJgtiCuratorialUnits().get(0).getRangeStart());
       assertEquals(new Integer("50"),
-          eml.getJgtiCuratorialUnit().getUncertaintyMeasure());
+          eml.getJgtiCuratorialUnits().get(0).getUncertaintyMeasure());
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -273,12 +273,12 @@ public class EmlFactoryTest extends TestCase {
       // JGTI curatorial unit tests
       // A separate for the alternate JGTI structure that includes uncertainty
       // is in sample2.xml
-      assertNotNull(eml.getJgtiCuratorialUnit());
-      assertEquals("jars", eml.getJgtiCuratorialUnit().getUnitType());
+      assertNotNull(eml.getJgtiCuratorialUnits());
+      assertEquals("jars", eml.getJgtiCuratorialUnits().get(0).getUnitType());
       assertEquals(new Integer("500"),
-          eml.getJgtiCuratorialUnit().getRangeStart());
+          eml.getJgtiCuratorialUnits().get(0).getRangeStart());
       assertEquals(new Integer("600"),
-          eml.getJgtiCuratorialUnit().getRangeEnd());
+          eml.getJgtiCuratorialUnits().get(0).getRangeEnd());
 
       assertEquals("alcohol", eml.getSpecimenPreservationMethod());
       assertEquals("http://www.tim.org/logo.jpg", eml.getLogoUrl());

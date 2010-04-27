@@ -80,7 +80,7 @@ google.setOnLoadCallback(OnModuleLoaded);
 <@s.hidden name="resourceId" value="${(resource.id)!}"/>
 <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 <@s.hidden name="guid" value="${(resource.guid)!}"/>
-<@s.hidden name="nextPage" value="physicalData"/>
+<@s.hidden name="nextPage" value="collections"/>
 <@s.hidden name="method" value="citations"/>
 
 <div class="newline"></div>
@@ -93,7 +93,7 @@ google.setOnLoadCallback(OnModuleLoaded);
     <div id="separator" class="horizontal_dotted_line_large_foo"></div>
     <div class="newline"></div>
     <div class="right">
-      <a id="removeLink" href="" onclick="return false;">[ Remove this citation ]</a>
+      <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='eml.citations'/> ]</a>
     </div>
     <div class="newline"></div>
     <div>

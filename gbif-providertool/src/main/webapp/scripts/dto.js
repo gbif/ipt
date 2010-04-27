@@ -474,3 +474,56 @@ function PhysicalData() {
 PhysicalData.propertyNames = function() {
   return ['charset', 'distributionUrl', 'format', 'formatVersion', 'name'];
 }
+
+function CuratorialUnit() {
+  this._unitType = '';
+  this._rangeEnd = '';
+  this._rangeStart = '';
+  this._undertaintyMeasure = '';
+  
+  this.unitType = unitType;
+  this.rangeEnd = rangeEnd;
+  this.rangeStart = rangeStart;
+  this.uncertaintyMeasure = uncertaintyMeasure;
+  
+  function unitType(val) {
+    if (val == null) {
+      return this._unitType;
+    } else { 
+      this._unitType = val;
+      return this;
+    }
+  }
+  
+  function rangeEnd(val) {
+    if (val == null) {
+      return this._rangeEnd;
+    } else { 
+      this._rangeEnd = val;
+      return this;
+    }
+  }
+  
+  function rangeStart(val) {
+    if (val == null) {
+      return this._rangeStart;
+    } else { 
+      this._rangeStart = val;
+      return this;
+    }
+  }
+  
+  function uncertaintyMeasure(val) {
+    if (val == null) {
+      return this._uncertaintyMeasure;
+    } else { 
+      this._uncertaintyMeasure = val;
+      return this;
+    }
+  }
+  
+}
+
+CuratorialUnit.propertyNames = function() {
+  return ['unitType', 'rangeEnd', 'rangeStart', 'uncertaintyMeasure'];
+}

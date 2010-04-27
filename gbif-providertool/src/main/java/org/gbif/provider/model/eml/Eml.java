@@ -216,7 +216,8 @@ public class Eml implements Serializable {
    * numbers (x to x), with the lower value representing an exact number, when
    * the higher value is omitted.
    */
-  private JGTICuratorialUnit jgtiCuratorialUnit;
+  private List<JGTICuratorialUnit> jgtiCuratorialUnits = Lists.newArrayList();
+//  private JGTICuratorialUnit jgtiCuratorialUnit;
 
   /**
    * This is not in the GBIF extended metadata document, but seems like a
@@ -389,8 +390,8 @@ public class Eml implements Serializable {
     return intellectualRights;
   }
 
-  public JGTICuratorialUnit getJgtiCuratorialUnit() {
-    return jgtiCuratorialUnit;
+  public List<JGTICuratorialUnit> getJgtiCuratorialUnits() {
+    return jgtiCuratorialUnits;
   }
 
   public List<KeywordSet> getKeywords() {
@@ -539,8 +540,8 @@ public class Eml implements Serializable {
     this.intellectualRights = intellectualRights;
   }
 
-  public void setJgtiCuratorialUnit(JGTICuratorialUnit jgtiCuratorialUnit) {
-    this.jgtiCuratorialUnit = jgtiCuratorialUnit;
+  public void setJgtiCuratorialUnits(List<JGTICuratorialUnit> jgtiCuratorialUnit) {
+    this.jgtiCuratorialUnits = jgtiCuratorialUnit;
   }
 
   public void setKeywords(List<KeywordSet> keywords) {
