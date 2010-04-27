@@ -19,6 +19,7 @@ import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.JGTICuratorialUnit;
+import org.gbif.provider.model.eml.KeywordSet;
 import org.gbif.provider.model.eml.Method;
 import org.gbif.provider.model.eml.PhysicalData;
 import org.gbif.provider.model.eml.Project;
@@ -66,6 +67,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     NO_OP,
     ORGANISATION,
     SAMPLING_METHODS,
+    KEYWORD_SETS,
     TEMPORAL_COVERAGES,
     PROJECTS,
     CITATIONS,
@@ -91,6 +93,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.ORGANISATION;
     } else if (method.trim().equalsIgnoreCase("samplingMethods")) {
       return RequestMethod.SAMPLING_METHODS;
+    } else if (method.trim().equalsIgnoreCase("keywordSets")) {
+      return RequestMethod.KEYWORD_SETS;
     } else if (method.trim().equalsIgnoreCase("temporalCoverages")) {
       return RequestMethod.TEMPORAL_COVERAGES;
     } else if (method.trim().equalsIgnoreCase("projects")) {
@@ -283,6 +287,19 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<Method> methods = eml.getSamplingMethods();
           eml = emlManager.load(resource);
           eml.setSamplingMethods(methods);
+        }
+        break;
+      case KEYWORD_SETS:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // keyword sets.
+          eml = emlManager.load(resource);
+          eml.getKeywords().clear();
+        } else {
+          // eml was populated via Struts.
+          List<KeywordSet> keywords = eml.getKeywords();
+          eml = emlManager.load(resource);
+          eml.setKeywords(keywords);
         }
         break;
       case PHYSICAL_DATA:

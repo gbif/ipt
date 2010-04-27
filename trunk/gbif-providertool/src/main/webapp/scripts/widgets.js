@@ -580,7 +580,7 @@ PhysicalDataPanel.physicalDataCount = function() {
 /*==== Curatorial Units ====*/
 
 /**
- * The CuratorialUnitWidget class can be used to encapsulate and display a Curatorial Unit Data grouping.
+ * The CuratorialUnitWidget class can be used to encapsulate and display a CuratorialUnit grouping.
  * 
  */
 function CuratorialUnitWidget(curatorialUnit) {
@@ -615,7 +615,7 @@ function CuratorialUnitWidget(curatorialUnit) {
 } 
 
 /**
- * The CuratorialUnitPanel can be used to display a group of curatorialUnit widgets.
+ * The CuratorialUnitPanel can be used to display a group of CuratorialUnit widgets.
  * 
  */
 function CuratorialUnitPanel() {
@@ -639,9 +639,9 @@ function CuratorialUnitPanel() {
   }
   
   /**
-   * Returns the number of curatorialUnit div elements in this curatorialUnit panel.
+   * Returns the number of CuratorialUnit div elements in this CuratorialUnit panel.
    * 
-   * @return number of curatorialUnit div elements
+   * @return number of CuratorialUnit div elements
    */
   function size() {
     return $(this._element).find(this._curatorialUnitSelector).size();
@@ -670,7 +670,7 @@ function CuratorialUnitPanel() {
   }
   
   /**
-   * Adds and displays a curatorialUnit widget and adds a click handler for deleting it.
+   * Adds and displays a CuratorialUnit widget and adds a click handler for deleting it.
    */
   function add(widget) {
     if (!(widget instanceof CuratorialUnitWidget)) {
@@ -694,4 +694,126 @@ function CuratorialUnitPanel() {
 
 CuratorialUnitPanel.curatorialUnitCount = function() {
   return $('#curatorialUnitPanel').find("div[id^='curatorialUnit']").size();
+}
+
+/*==== Keyword Sets ====*/
+
+/**
+ * The KeywordSetWidget class can be used to encapsulate and display a Keyword Set grouping.
+ * 
+ */
+function KeywordSetWidget(keywordSet) {
+  var e = $('#cloneKeywordSet').clone();
+  var keywordSetCount = KeywordSetPanel.keywordSetCount();
+  e.attr('id', 'keywordSet' + keywordSetCount);
+  this._element = e;
+  e.find('#removeLink').show();
+  this._keywordSet = keywordSet;
+  var isKeywordSet = keywordSet instanceof KeywordSet;
+  var keywordSetProps = KeywordSet.propertyNames();
+  for (p in keywordSetProps) {
+    var name = keywordSetProps[p];
+    var val = '';
+    if (isKeywordSet) {
+      /* 
+       * get the name of the attribute for the prameter passed to the widget 
+       */ 
+      val = eval('keywordSet.' + name + '()');
+    } 
+    e.find('#' + name).attr('name', 'eml.keywords[' + keywordSetCount + '].'+ name);
+    e.find('#' + name).attr('value', val);
+  }  
+  this._elementId = '';
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+} 
+
+/**
+ * The KeywordSetPanel can be used to display a group of KeywordSet widgets.
+ * 
+ */
+function KeywordSetPanel() {
+  this._elementId = '#keywordSetPanel';
+  this._element = $(this._elementId);
+  this._keywordSetSelector = "div[id^='keywordSet']";
+  this._keywordSetIdPattern = /keywordSet\d+/;
+  this.add = add;
+  this._remove = _remove;
+  this._resize = _resize;
+  this.size = size;
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+  
+  /**
+   * Returns the number of keywordSet div elements in this KeywordSetPanel.
+   * 
+   * @return number of keywordSet div elements
+   */
+  function size() {
+    return $(this._element).find(this._keywordSetSelector).size();
+  }
+
+  function _resize() {
+   this._element.find(this._keywordSetSelector).each(function(i) {
+     var id =  $(this).attr('id');
+     if (id.match(this._keywordSetIdPattern)) {
+       $(this).attr('id', 'keywordSet' + i);
+       name = 'eml.keywords[' + i + '].';
+       props = KeywordSet.propertyNames();
+       for (p in props) {
+         var prop = props[p];
+         $(this).find('#' + prop).attr('name', name + prop);
+       }
+     }    
+   });
+  }
+ 
+  /**
+   * Removes the element from the DOM.
+   */
+  function _remove(element) {
+    $(element).remove();    
+  }
+  
+  /**
+   * Adds and displays a keywordSet widget and adds a click handler for deleting it.
+   */
+  function add(widget) {
+    if (!(widget instanceof KeywordSetWidget)) {
+      alert('Illegal Argument ' + widget + ': Instance of KeywordSetWidget expected');
+      return;
+    }
+    var count = this.size();
+    var e = widget.element();
+    e.attr('id', 'keywordSet' + count);
+    var _this = this;
+    e.find('#removeLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this._remove($(id));
+      _this._resize();
+    });
+    e.appendTo(this._element);
+    e.show();
+    return false;
+  }
+}
+
+KeywordSetPanel.keywordSetCount = function() {
+  return $('#keywordSetPanel').find("div[id^='keywordSet']").size();
 }

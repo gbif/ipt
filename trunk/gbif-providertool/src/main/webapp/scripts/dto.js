@@ -527,3 +527,34 @@ function CuratorialUnit() {
 CuratorialUnit.propertyNames = function() {
   return ['unitType', 'rangeEnd', 'rangeStart', 'uncertaintyMeasure'];
 }
+
+function KeywordSet() {
+  this._keywordThesaurus = '';
+  this._keywordsList = '';
+  
+  this.keywordThesaurus = keywordThesaurus;
+  this.keywordsList = keywordsList;
+  
+  function keywordThesaurus(val) {
+    if (val == null) {
+      return this._keywordThesaurus;
+    } else { 
+      this._keywordThesaurus = val;
+      return this;
+    }
+  }
+  
+  function keywordsList(val) {
+    if (val == null) {
+      return this._keywordsList;
+    } else { 
+      this._keywordsList = val;
+      return this;
+    }
+  }
+    
+}
+
+KeywordSet.propertyNames = function() {
+  return ['keywordThesaurus', 'keywordsList'];
+}
