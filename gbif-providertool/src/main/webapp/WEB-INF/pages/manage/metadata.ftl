@@ -118,7 +118,7 @@
 </head>
     
 <p class="explMt"><@s.text name='metadata.description.basic'/></p>
-<@s.form id="emlForm" action="saveResource" enctype="multipart/form-data" method="post">
+<@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   
 <fieldset>
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
