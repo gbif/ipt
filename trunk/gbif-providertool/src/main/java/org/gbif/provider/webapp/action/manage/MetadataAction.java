@@ -19,7 +19,6 @@ import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.factory.ResourceFactory;
@@ -62,8 +61,9 @@ import com.opensymphony.xwork2.Preparable;
 public class MetadataAction extends BaseMetadataResourceAction implements
     Preparable, ServletRequestAware {
   private static final String OTHER = "other";
-  private static final String EML_ASSOCIATED_PARTIES_NAMES = "eml.associatedParties.fname";
-  private static final String EML_ASSOCIATED_PARTIES_ROLES = "eml.associatedParties.roleName";
+
+  private String next;
+  private String nextPage;
 
   protected HttpServletRequest request;
 
@@ -188,6 +188,14 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     return Vocabulary.Language.uri;
   }
 
+  public String getNext() {
+    return next;
+  }
+
+  public String getNextPage() {
+    return nextPage;
+  }
+
   public String getOther() {
     return OTHER;
   }
@@ -307,7 +315,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     resource.setDirty();
     resource = resourceManager.save(resource);
 
-    validateEml();
+    // validateEml();
     emlManager.save(eml);
 
     String key = (isNew) ? "resource.added" : "resource.updated";
@@ -358,6 +366,14 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
   public void setJdbcDriverClass(String jdbcDriverClass) {
     this.jdbcDriverClass = jdbcDriverClass;
+  }
+
+  public void setNext(String next) {
+    this.next = next;
+  }
+
+  public void setNextPage(String nextPage) {
+    this.nextPage = nextPage;
   }
 
   public void setServletRequest(HttpServletRequest request) {
@@ -431,16 +447,16 @@ public class MetadataAction extends BaseMetadataResourceAction implements
    * 
    * void
    */
-  private void validateEml() {
-
-    List<Agent> agents = eml.getAssociatedParties();
-    for (Agent a : eml.getAssociatedParties()) {
-      if (a.getFirstName() == null || a.getFirstName().isEmpty()) {
-        agents.remove(a);
-      }
-    }
-    eml.setAssociatedParties(agents);
-  }
+  // private void validateEml() {
+  //
+  // List<Agent> agents = eml.getAssociatedParties();
+  // for (Agent a : eml.getAssociatedParties()) {
+  // if (a.getFirstName() == null || a.getFirstName().isEmpty()) {
+  // agents.remove(a);
+  // }
+  // }
+  // eml.setAssociatedParties(agents);
+  // }
 
   private void validateResource() {
     Organisation org = Organisation.builder().password(
