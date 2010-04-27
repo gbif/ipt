@@ -29,6 +29,9 @@
     href="<s:url action="citationsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.citations" /> </a></li>
   <li><a
+    href="<s:url action="physicalDataForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+  > <s:text name="metadata.heading.physicalData" /> </a></li>
+  <li><a
     href="<s:url action="rightsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.additionalMetadata" /> </a></li>
 </ul>

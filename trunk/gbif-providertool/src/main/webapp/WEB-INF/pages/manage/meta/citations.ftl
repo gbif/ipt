@@ -80,7 +80,7 @@ google.setOnLoadCallback(OnModuleLoaded);
 <@s.hidden name="resourceId" value="${(resource.id)!}"/>
 <@s.hidden name="resourceType" value="${(resourceType)!}"/>
 <@s.hidden name="guid" value="${(resource.guid)!}"/>
-<@s.hidden name="nextPage" value="rights"/>
+<@s.hidden name="nextPage" value="physicalData"/>
 <@s.hidden name="method" value="citations"/>
 
 <div class="newline"></div>

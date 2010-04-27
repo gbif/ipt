@@ -19,6 +19,7 @@ import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Method;
+import org.gbif.provider.model.eml.PhysicalData;
 import org.gbif.provider.model.eml.Project;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
@@ -67,6 +68,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     TEMPORAL_COVERAGES,
     PROJECTS,
     CITATIONS,
+    PHYSICAL_DATA,
     RESOURCE_FORM;
   }
 
@@ -95,6 +97,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.RESOURCE_FORM;
     } else if (method.trim().equalsIgnoreCase("citations")) {
       return RequestMethod.CITATIONS;
+    } else if (method.trim().equalsIgnoreCase("physicalData")) {
+      return RequestMethod.PHYSICAL_DATA;
     }
     return RequestMethod.NO_OP;
   }
@@ -262,6 +266,19 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<Method> methods = eml.getSamplingMethods();
           eml = emlManager.load(resource);
           eml.setSamplingMethods(methods);
+        }
+        break;
+      case PHYSICAL_DATA:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // physicalData.
+          eml = emlManager.load(resource);
+          eml.getPhysicalData().clear();
+        } else {
+          // eml was populated via Struts.
+          List<PhysicalData> physicalData = eml.getPhysicalData();
+          eml = emlManager.load(resource);
+          eml.setPhysicalData(physicalData);
         }
         break;
       case PROJECTS:

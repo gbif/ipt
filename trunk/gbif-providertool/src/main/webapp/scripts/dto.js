@@ -410,3 +410,67 @@ function SamplingMethod() {
 SamplingMethod.propertyNames = function() {
   return ['stepDescription', 'studyExtent', 'sampleDescription', 'qualityControl'];
 }
+
+function PhysicalData() {
+  this._charset = '';
+  this._distributionUrl = '';
+  this._format = '';
+  this._formatVersion = '';
+  this._name = '';
+  
+  this.charset = charset;
+  this.distributionUrl = distributionUrl;
+  this.format = format;
+  this.formatVersion = formatVersion;
+  this.name = name;
+  
+  function charset(val) {
+    if (val == null) {
+      return this._charset;
+    } else { 
+      this._charset = val;
+      return this;
+    }
+  }
+  
+  function distributionUrl(val) {
+    if (val == null) {
+      return this._distributionUrl;
+    } else { 
+      this._distributionUrl = val;
+      return this;
+    }
+  }
+  
+  function format(val) {
+    if (val == null) {
+      return this._format;
+    } else { 
+      this._format = val;
+      return this;
+    }
+  }
+  
+  function formatVersion(val) {
+    if (val == null) {
+      return this._formatVersion;
+    } else { 
+      this._formatVersion = val;
+      return this;
+    }
+  }
+  
+  function name(val) {
+    if (val == null) {
+      return this._name;
+    } else { 
+      this._name = val;
+      return this;
+    }
+  }
+  
+}
+
+PhysicalData.propertyNames = function() {
+  return ['charset', 'distributionUrl', 'format', 'formatVersion', 'name'];
+}
