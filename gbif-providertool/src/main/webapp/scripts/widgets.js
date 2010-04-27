@@ -458,3 +458,121 @@ function SamplingMethodPanel() {
 SamplingMethodPanel.samplingMethodCount = function() {
   return $('#samplingMethodPanel').find("div[id^='samplingMethod']").size();
 }
+
+/*==== Physical Data ====*/
+/**
+ * The PhysicalDataWidget class can be used to encapsulate and display a Physcial Data grouping.
+ * 
+ */
+function PhysicalDataWidget(physicalData) {
+  var e = $('#clonePhysicalData').clone();
+  var physicalDataCount = PhysicalDataPanel.physicalDataCount();
+  e.attr('id', 'physicalData' + physicalDataCount);
+  this._element = e;
+  e.find('#removeLink').show();
+  this._physicalData = physicalData;
+  var isPhysicalData = physicalData instanceof PhysicalData;
+  var physicalDataProps = PhysicalData.propertyNames();
+  for (p in physicalDataProps) {
+    var name = physicalDataProps[p];
+    var val = '';
+    if (isPhysicalData) {
+      val = eval('physicalData.' + name + '()');
+    } 
+    e.find('#' + name).attr('name', 'eml.physicalData[' + physicalDataCount + '].'+ name);
+    e.find('#' + name).attr('value', val);
+  }  
+  this._elementId = '';
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+} 
+
+/**
+ * The PhysicalDataPanel can be used to display a group of physicalData widgets.
+ * 
+ */
+function PhysicalDataPanel() {
+  this._elementId = '#physicalDataPanel';
+  this._element = $(this._elementId);
+  this._physicalDataSelector = "div[id^='physicalData']";
+  this._physicalDataIdPattern = /physicalData\d+/;
+  this.add = add;
+  this._remove = _remove;
+  this._resize = _resize;
+  this.size = size;
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+  
+  /**
+   * Returns the number of physicalData div elements in this physicalData panel.
+   * 
+   * @return number of physicalData div elements
+   */
+  function size() {
+    return $(this._element).find(this._physicalDataSelector).size();
+  }
+
+  function _resize() {
+   this._element.find(this._physicalDataSelector).each(function(i) {
+     var id =  $(this).attr('id');
+     if (id.match(this._physicalDataIdPattern)) {
+       $(this).attr('id', 'physicalData' + i);
+       name = 'eml.physicalData[' + i + '].';
+       props = PhysicalData.propertyNames();
+       for (p in props) {
+         var prop = props[p];
+         $(this).find('#' + prop).attr('name', name + prop);
+       }
+     }    
+   });
+  }
+ 
+  /**
+   * Removes the element from the DOM.
+   */
+  function _remove(element) {
+    $(element).remove();    
+  }
+  
+  /**
+   * Adds and displays a physicalData widget and adds a click handler for deleting it.
+   */
+  function add(widget) {
+    if (!(widget instanceof PhysicalDataWidget)) {
+      alert('Illegal Argument ' + widget + ': Instance of PhysicalDataWidget expected');
+      return;
+    }
+    var count = this.size();
+    var e = widget.element();
+    e.attr('id', 'physicalData' + count);
+    var _this = this;
+    e.find('#removeLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this._remove($(id));
+      _this._resize();
+    });
+    e.appendTo(this._element);
+    e.show();
+    return false;
+  }
+}
+
+PhysicalDataPanel.physicalDataCount = function() {
+  return $('#physicalDataPanel').find("div[id^='physicalData']").size();
+}
