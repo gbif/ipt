@@ -576,3 +576,122 @@ function PhysicalDataPanel() {
 PhysicalDataPanel.physicalDataCount = function() {
   return $('#physicalDataPanel').find("div[id^='physicalData']").size();
 }
+
+/*==== Curatorial Units ====*/
+
+/**
+ * The CuratorialUnitWidget class can be used to encapsulate and display a Curatorial Unit Data grouping.
+ * 
+ */
+function CuratorialUnitWidget(curatorialUnit) {
+  var e = $('#cloneCuratorialUnit').clone();
+  var curatorialUnitCount = CuratorialUnitPanel.curatorialUnitCount();
+  e.attr('id', 'curatorialUnit' + curatorialUnitCount);
+  this._element = e;
+  e.find('#removeLink').show();
+  this._curatorialUnit = curatorialUnit;
+  var isCuratorialUnit = curatorialUnit instanceof CuratorialUnit;
+  var curatorialUnitProps = CuratorialUnit.propertyNames();
+  for (p in curatorialUnitProps) {
+    var name = curatorialUnitProps[p];
+    var val = '';
+    if (isCuratorialUnit) {
+      val = eval('curatorialUnit.' + name + '()');
+    } 
+    e.find('#' + name).attr('name', 'eml.jgtiCuratorialUnits[' + curatorialUnitCount + '].'+ name);
+    e.find('#' + name).attr('value', val);
+  }  
+  this._elementId = '';
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+} 
+
+/**
+ * The CuratorialUnitPanel can be used to display a group of curatorialUnit widgets.
+ * 
+ */
+function CuratorialUnitPanel() {
+  this._elementId = '#curatorialUnitPanel';
+  this._element = $(this._elementId);
+  this._curatorialUnitSelector = "div[id^='curatorialUnit']";
+  this._curatorialUnitIdPattern = /curatorialUnit\d+/;
+  this.add = add;
+  this._remove = _remove;
+  this._resize = _resize;
+  this.size = size;
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+  
+  /**
+   * Returns the number of curatorialUnit div elements in this curatorialUnit panel.
+   * 
+   * @return number of curatorialUnit div elements
+   */
+  function size() {
+    return $(this._element).find(this._curatorialUnitSelector).size();
+  }
+
+  function _resize() {
+   this._element.find(this._curatorialUnitSelector).each(function(i) {
+     var id =  $(this).attr('id');
+     if (id.match(this._curatorialUnitIdPattern)) {
+       $(this).attr('id', 'curatorialUnit' + i);
+       name = 'eml.jgtiCuratorialUnits[' + i + '].';
+       props = CuratorialUnit.propertyNames();
+       for (p in props) {
+         var prop = props[p];
+         $(this).find('#' + prop).attr('name', name + prop);
+       }
+     }    
+   });
+  }
+ 
+  /**
+   * Removes the element from the DOM.
+   */
+  function _remove(element) {
+    $(element).remove();    
+  }
+  
+  /**
+   * Adds and displays a curatorialUnit widget and adds a click handler for deleting it.
+   */
+  function add(widget) {
+    if (!(widget instanceof CuratorialUnitWidget)) {
+      alert('Illegal Argument ' + widget + ': Instance of CuratorialUnitWidget expected');
+      return;
+    }
+    var count = this.size();
+    var e = widget.element();
+    e.attr('id', 'curatorialUnit' + count);
+    var _this = this;
+    e.find('#removeLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this._remove($(id));
+      _this._resize();
+    });
+    e.appendTo(this._element);
+    e.show();
+    return false;
+  }
+}
+
+CuratorialUnitPanel.curatorialUnitCount = function() {
+  return $('#curatorialUnitPanel').find("div[id^='curatorialUnit']").size();
+}
