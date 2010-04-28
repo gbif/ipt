@@ -20,6 +20,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Simple POJO container for an ordered list of keywords and optionally,
  * a thesaurus to which those keywords are associated
@@ -101,4 +103,37 @@ public class KeywordSet implements Serializable {
 	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
 	}
+
+  public void setKeywordsString(String keywords) {
+    setKeywordsString(keywords, ", ");
+  }
+
+	/**
+   * @param seperator the seperator to use between keywords
+   */
+  public void setKeywordsString(String keywords, String seperator) {
+    this.keywords.clear();
+    for (String k : StringUtils.split(keywords, seperator)) {
+      k = StringUtils.trimToNull(k);
+      this.keywords.add(k);
+    }
+  }
+ 
+  public String getKeywordsString() {
+    return getKeywordsString(", ");
+  }
+  
+  public String getKeywordsString(String seperator) {
+    String kstring = "";
+    boolean b=false;
+    for(String keyword : keywords){
+      if(b && seperator!=null){
+        kstring=kstring.concat(seperator).concat(keyword);
+      } else {
+        kstring=kstring.concat(keyword);
+        b=true;
+      }
+    }
+    return kstring;
+  }
 }
