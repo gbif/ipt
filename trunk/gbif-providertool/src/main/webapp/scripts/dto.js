@@ -530,10 +530,10 @@ CuratorialUnit.propertyNames = function() {
 
 function KeywordSet() {
   this._keywordThesaurus = '';
-  this._keywordsList = '';
+  this._keywordsString = '';
   
   this.keywordThesaurus = keywordThesaurus;
-  this.keywordsList = keywordsList;
+  this.keywordsString = keywordsString;
   
   function keywordThesaurus(val) {
     if (val == null) {
@@ -544,11 +544,11 @@ function KeywordSet() {
     }
   }
   
-  function keywordsList(val) {
+  function keywordsString(val) {
     if (val == null) {
-      return this._keywordsList;
+      return this._keywordsString;
     } else { 
-      this._keywordsList = val;
+      this._keywordsString = val;
       return this;
     }
   }
@@ -556,5 +556,5 @@ function KeywordSet() {
 }
 
 KeywordSet.propertyNames = function() {
-  return ['keywordThesaurus', 'keywordsList'];
+  return ['keywordThesaurus', 'keywordsString'];
 }

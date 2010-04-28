@@ -53,10 +53,10 @@
     function GetKeywordSets() {
       var keywordSets = new Array();
       <#if (eml.keywords ? size > 0)>
-        <@s.iterator value="eml.keywords" status="stat">     
+        <@s.iterator value="eml.keywords" status="stat">
           keywordSets[${stat.index}] = new KeywordSet()
             .keywordThesaurus("<@s.property value="keywordThesaurus"/>")
-            .keywordsString("<@s.property value="toString()"/>");
+            .keywordsString("<@s.property value="keywordsString"/>");
         </@s.iterator>
       </#if>
       return keywordSets;
@@ -111,9 +111,9 @@
           <@s.textfield id="keywordThesaurus" key="" 
           label="%{getText('keywordSet.keywordThesaurus')}" required="false" cssClass="text xlarge slim"/>
         </div>
-        <div id="keywordsListDiv">
-          <@s.textarea id="keywordsList" key="" 
-          label="%{getText('keywordSet.keywordsList')}" required="false" cssClass="text text xlarge slim"/>
+        <div id="keywordsStringDiv">
+          <@s.textarea id="keywordsString" key="" 
+          label="%{getText('keywordSet.keywordsString')}" required="false" cssClass="text text xlarge slim"/>
         </div>
       </div>
       <div class="newline"></div>
