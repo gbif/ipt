@@ -755,10 +755,10 @@
 			</result>
 		</action>
 		<!-- the last action in the EML editing workflow -->
-		<action name="methods"
+		<action name="additionalMetadata"
 			class="org.gbif.provider.webapp.action.manage.EmlEditorAction"
 			method="save">
-			<result name="input" type="freemarker">/WEB-INF/pages/manage/meta/methods.ftl
+			<result name="input" type="freemarker">/WEB-INF/pages/manage/meta/additionalMetadata.ftl
 			</result>
 			<result name="success" type="redirect-action">
 				<param name="actionName">resource</param>

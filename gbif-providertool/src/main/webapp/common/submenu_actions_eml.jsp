@@ -38,7 +38,7 @@
     href="<s:url action="keywordsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.keywordSet" /> </a></li>
   <li><a
-    href="<s:url action="rightsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+    href="<s:url action="additionalMetadataForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.additionalMetadata" /> </a></li>
 </ul>
 </div>

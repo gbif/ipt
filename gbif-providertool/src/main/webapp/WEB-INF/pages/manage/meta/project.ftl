@@ -59,8 +59,11 @@
 <p class="explMt"><@s.text name='metadata.description.projects'/></p>
 <@s.form id="emlForm" action="projects" enctype="multipart/form-data" method="post"> 
 <fieldset>
-	<@s.hidden name="resourceId" value="${resourceId?c}"/>
-	<@s.hidden name="nextPage" value="methods"/>
+    <@s.hidden name="resourceId" value="${(resource.id)!}"/>
+    <@s.hidden name="resourceType" value="${(resourceType)!}"/>
+    <@s.hidden name="guid" value="${(resource.guid)!}"/>
+    <@s.hidden name="nextPage" value="methods"/>
+    <@s.hidden name="method" value="projects"/>
 
 	<@s.textfield key="eml.project.title" cssClass="text xlarge" />
     <div class="leftxhalf">

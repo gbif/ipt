@@ -92,7 +92,7 @@
   <@s.hidden name="resourceId" value="${(resource.id)!}"/>
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="rights"/>
+  <@s.hidden name="nextPage" value="additionalMetadata"/>
   <@s.hidden name="method" value="keywordSets"/>
   <div id="keywordSetPanel" class="newline">
     <!-- The cloneKeywordSet DIV is not attached to the DOM. It's used as a template

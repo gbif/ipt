@@ -96,6 +96,7 @@
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="citations"/>
   <@s.hidden name="method" value="samplingMethods"/>
+  
   <div id="samplingMethodPanel" class="newline">
     <!-- The cloneSamplingMethods DIV is not attached to the DOM. It's used as a template
        for cloning sampling method UI widgets. 
