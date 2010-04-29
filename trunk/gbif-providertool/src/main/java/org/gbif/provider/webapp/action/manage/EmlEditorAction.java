@@ -37,8 +37,10 @@ import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +75,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     CITATIONS,
     COLLECTIONS,
     PHYSICAL_DATA,
-    RESOURCE_FORM;
+    RESOURCE_FORM,
+    ADDITIONAL_METADATA;
   }
 
   /**
@@ -107,6 +110,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.COLLECTIONS;
     } else if (method.trim().equalsIgnoreCase("physicalData")) {
       return RequestMethod.PHYSICAL_DATA;
+    } else if (method.trim().equalsIgnoreCase("additionalMetaData")) {
+      return RequestMethod.ADDITIONAL_METADATA;
     }
     return RequestMethod.NO_OP;
   }
@@ -222,6 +227,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     agentRoleMap = translateI18nMap(new HashMap<String, String>(
         Role.htmlSelectMap), true);
     switch (method(request)) {
+      case ORGANISATION:
+        // Nothing to do here unless the Organisation form has elements whose values are destined for eml.
+        break;
       case ASSOCIATED_PARTIES:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero agents.
@@ -232,35 +240,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<Agent> agents = eml.getAssociatedParties();
           eml = emlManager.load(resource);
           eml.setAssociatedParties(agents);
-        }
-        break;
-      case CITATIONS:
-        if (eml == null && resource != null) {
-          // eml equals null means that the form was submitted with zero
-          // citations.
-          eml = emlManager.load(resource);
-          eml.getBibliographicCitations().clear();
-          eml.setCitation("");
-        } else {
-          // eml was populated via Struts.
-          List<String> citations = eml.getBibliographicCitations();
-          String citation = eml.getCitation();
-          eml = emlManager.load(resource);
-          eml.setBibliographicCitations(citations);
-          eml.setCitation(citation);
-        }
-        break;
-      case COLLECTIONS:
-        if (eml == null && resource != null) {
-          // eml equals null means that the form was submitted with zero
-          // CuratorialUnits.
-          eml = emlManager.load(resource);
-          eml.getJgtiCuratorialUnits().clear();
-        } else {
-          // eml was populated via Struts.
-          List<JGTICuratorialUnit> curatorialUnits = eml.getJgtiCuratorialUnits();
-          eml = emlManager.load(resource);
-          eml.setJgtiCuratorialUnits(curatorialUnits);
         }
         break;
       case TEMPORAL_COVERAGES:
@@ -276,6 +255,21 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml.setTemporalCoverages(coverages);
         }
         break;
+      case PROJECTS:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // projects.
+          eml = emlManager.load(resource);
+          // Clear out the project and make way for a new one.
+          Project project = new Project();
+          eml.setProject(project);
+        } else {
+          // eml was populated via Struts.
+          Project project = eml.getProject();
+          eml = emlManager.load(resource);
+          eml.setProject(project);
+        }
+        break;
       case SAMPLING_METHODS:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
@@ -289,17 +283,47 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml.setSamplingMethods(methods);
         }
         break;
-      case KEYWORD_SETS:
+      case CITATIONS:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
-          // keyword sets.
+          // citations.
           eml = emlManager.load(resource);
-          eml.getKeywords().clear();
+          eml.getBibliographicCitations().clear();
+          eml.setCitation("");
         } else {
           // eml was populated via Struts.
-          List<KeywordSet> keywords = eml.getKeywords();
+          List<String> citations = eml.getBibliographicCitations();
+          String citation = eml.getCitation();
+          
           eml = emlManager.load(resource);
-          eml.setKeywords(keywords);
+          
+          eml.setBibliographicCitations(citations);
+          eml.setCitation(citation);
+        }
+        break;
+      case COLLECTIONS:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // CuratorialUnits.
+          eml = emlManager.load(resource);
+          
+          eml.setCollectionName("");
+          eml.setCollectionId("");
+          eml.setParentCollectionId("");
+          eml.getJgtiCuratorialUnits().clear();
+        } else {
+          // eml was populated via Struts.
+          String collectionName = eml.getCollectionName();
+          String collectionId = eml.getCollectionId();
+          String parentCollectionId = eml.getParentCollectionId();
+          List<JGTICuratorialUnit> curatorialUnits = eml.getJgtiCuratorialUnits();
+          
+          eml = emlManager.load(resource);
+          
+          eml.setCollectionName(collectionName);
+          eml.setCollectionId(collectionId);
+          eml.setParentCollectionId(parentCollectionId);
+          eml.setJgtiCuratorialUnits(curatorialUnits);
         }
         break;
       case PHYSICAL_DATA:
@@ -315,16 +339,50 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           eml.setPhysicalData(physicalData);
         }
         break;
-      case PROJECTS:
+      case KEYWORD_SETS:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
-          // projects.
+          // keyword sets.
           eml = emlManager.load(resource);
+          eml.getKeywords().clear();
         } else {
           // eml was populated via Struts.
-          Project project = eml.getProject();
+          List<KeywordSet> keywords = eml.getKeywords();
           eml = emlManager.load(resource);
-          eml.setProject(project);
+          eml.setKeywords(keywords);
+        }
+        break;
+      case ADDITIONAL_METADATA:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // additionalMetadata.
+          eml = emlManager.load(resource);
+          eml.setHierarchyLevel("");
+          eml.setDistributionUrl("");
+          eml.setPurpose("");
+          eml.setIntellectualRights("");
+          eml.setAdditionalInfo("");
+          try {
+            eml.setPubDate("");
+          } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        } else {
+          // eml was populated via Struts.
+          Date pubDate = eml.getPubDate();
+          String distributionUrl = eml.getDistributionUrl();
+          String purpose = eml.getPurpose();
+          String intellectualRights = eml.getIntellectualRights();
+          String additionalInfo = eml.getAdditionalInfo();
+          
+          eml = emlManager.load(resource);
+          
+          eml.setPubDate(pubDate);
+          eml.setDistributionUrl(distributionUrl);
+          eml.setPurpose(purpose);
+          eml.setIntellectualRights(intellectualRights);
+          eml.setAdditionalInfo(additionalInfo);
         }
         break;
     }

@@ -17,11 +17,12 @@
 -->
 <head>
     <title><@s.text name="metadata.heading.additionalMetadata"/></title>
-    <meta name="resource" content="${eml.title!}"/>
+    <meta name="resource" content="${resource.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
 	<meta name="heading" content="<@s.text name='metadata.heading.additionalMetadata'/>"/>      
-	<script src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
+	<script 
+	  src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
       type="text/javascript">
     </script>
 
@@ -55,11 +56,17 @@
 
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.description.additionalMetadata'/></p>
-
 <@s.form id="emlForm" action="additionalMetadata" enctype="multipart/form-data" method="post"> 
+
 <fieldset>
-	<@s.hidden name="resourceId" value="${resourceId?c}"/>
-	<@s.hidden name="nextPage" value="rights"/>
+  <@s.hidden name="resourceId" value="${(resource.id)!}"/>
+  <@s.hidden name="resourceType" value="${(resourceType)!}"/>
+  <@s.hidden name="guid" value="${(resource.guid)!}"/>
+  <!-- NOTE: As the presumed last page in the work flow sequence of EML metadata forms
+       this form invokes the action <action name="additionalMetadata"... in struts.xml to go the the Basic Metadata form. 
+    -->
+  <@s.hidden name="nextPage" value="additionalMetadata"/>
+  <@s.hidden name="method" value="additionalMetadata"/>    
 
     <div class="leftxhalf">
       <@s.textfield key="eml.hierarchyLevel" disabled="true"
