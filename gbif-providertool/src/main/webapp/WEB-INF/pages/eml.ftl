@@ -102,10 +102,10 @@
                 <geographicDescription>${geocoverage.description!}</geographicDescription>
 	            <#if geocoverage.boundingCoordinates.min?exists>
                 <boundingCoordinates>
-                    <westBoundingCoordinate>${geocoverage.boundingCoordinates.min.longitude"!}</westBoundingCoordinate>
-                    <eastBoundingCoordinate>${geocoverage.boundingCoordinates.max.longitude"!}</eastBoundingCoordinate>
-                    <northBoundingCoordinate>${geocoverage.boundingCoordinates.max.latitude"!}</northBoundingCoordinate>
-                    <southBoundingCoordinate>${geocoverage.boundingCoordinates.min.latitude"!}</southBoundingCoordinate>
+                    <westBoundingCoordinate>${geocoverage.boundingCoordinates.min.longitude!}</westBoundingCoordinate>
+                    <eastBoundingCoordinate>${geocoverage.boundingCoordinates.max.longitude!}</eastBoundingCoordinate>
+                    <northBoundingCoordinate>${geocoverage.boundingCoordinates.max.latitude!}</northBoundingCoordinate>
+                    <southBoundingCoordinate>${geocoverage.boundingCoordinates.min.latitude!}</southBoundingCoordinate>
                 </boundingCoordinates>
                 </#if>
             </geographicCoverage>
@@ -244,7 +244,7 @@
          (eml.metadataLanguage)?? || 
          (eml.hierarchyLevel)?? ||
          (eml.PhysicalData ? size > 0) ||
-         (eml.jgtiCuratorialUnit)??) ||
+         ((eml.jgtiCuratorialUnit)??) ||
          (eml.specimenPreservationMethod)?? ||
          (eml.temporalCoverages ? size > 0) ||
          (eml.parentCollectionId)?? || 
