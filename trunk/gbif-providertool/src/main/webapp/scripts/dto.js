@@ -237,9 +237,15 @@ Agent.propertyNames = function() {
 function TemporalCoverage() {
   this._startDate = '';
   this._endDate = '';
+  this._formationPeriod = '';
+  this._livingTimePeriod = '';
+  this._type = '';
   
   this.startDate = startDate;
   this.endDate = endDate;
+  this.formationPeriod = formationPeriod;
+  this.livingTimePeriod = livingTimePeriod;
+  this.type = type;
   
   function startDate(val) {
     if (val == null) {
@@ -258,10 +264,38 @@ function TemporalCoverage() {
       return this;
     }
   }
+
+  function formationPeriod(val) {
+    if (val == null) {
+      return this._formationPeriod;
+    } else { 
+      this._formationPeriod = val;
+      return this;
+    }
+  }
+
+  function livingTimePeriod(val) {
+    if (val == null) {
+      return this._livingTimePeriod;
+    } else { 
+      this._livingTimePeriod = val;
+      return this;
+    }
+  }
+
+  function type(val) {
+    if (val == null) {
+      return this._type;
+    } else { 
+      this._type = val;
+      return this;
+    }
+  }
+
 }
 
 TemporalCoverage.propertyNames = function() {
-  return ['startDate', 'endDate'];
+  return ['startDate', 'endDate', 'formationPeriod', 'livingTimePeriod', 'type'];
 }
 
 function GeospatialCoverage() {

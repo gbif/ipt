@@ -27,6 +27,7 @@ import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.eml.TemporalCoverage;
+import org.gbif.provider.model.eml.TemporalCoverageType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
@@ -140,8 +141,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   private static List<Agent> deletedAgents = Lists.newArrayList();
 
   private Map<String, String> agentRoleMap;
+  private Map<String, String> temporalCoverageTypeMap;
   private List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
-
+  
   private String method;
 
   @Override
@@ -154,6 +156,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public Map<String, String> getAgentRoleMap() {
     return agentRoleMap;
+  }
+
+  public Map<String, String> getTemporalCoverageTypeMap() {
+    return temporalCoverageTypeMap;
   }
 
   public List<Rank> getTaxonHigherRankList() {
@@ -235,6 +241,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     super.prepare();
     agentRoleMap = translateI18nMap(new HashMap<String, String>(
         Role.htmlSelectMap), true);
+    temporalCoverageTypeMap = translateI18nMap(new HashMap<String, String>(
+        TemporalCoverageType.htmlSelectMap), true);
     switch (method(request)) {
       case ORGANISATION:
         // Nothing to do here unless the Organisation form has elements whose values are destined for eml.

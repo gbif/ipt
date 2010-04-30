@@ -263,6 +263,7 @@ function TemporalCoveragePanel() {
   this._temporalCoverageSelector = "div[id^='temporalCoverage']";
   this._temporalCoverageIdPattern = /temporalCoverage\d+/;
   this.add = add;
+  this.clear = clear;
   this._remove = _remove;
   this._resize = _resize;
   this.size = size;
@@ -301,6 +302,21 @@ function TemporalCoveragePanel() {
    });
   }
  
+  function clear(element) {
+    var temporalCoverageProps = TemporalCoverage.propertyNames();
+    for (p in temporalCoverageProps) {
+      var name = temporalCoverageProps[p];
+      var val = '';
+      if( name = 'type' ){
+        var wasvalue = element.find('#' + name).attr('value');
+        element.find('#' + name).attr('value', 'singleDateTime');
+        element.show();
+      } else {
+        element.find('#' + name).attr('value', '');
+        element.hide();
+      }
+    }  
+  }
 
   /**
    * Removes the element from the DOM.
@@ -325,6 +341,10 @@ function TemporalCoveragePanel() {
       var id = '#' + $(this).parent().parent().attr('id');
       _this._remove($(id));
       _this._resize();
+    });
+    e.find('#clearLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this.clear($(id));
     });
     e.appendTo(this._element);
     e.show();
