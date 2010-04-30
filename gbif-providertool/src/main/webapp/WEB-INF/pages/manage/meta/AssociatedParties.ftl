@@ -139,7 +139,7 @@ google.setOnLoadCallback(OnLoad);
     <div id="separator" class="horizontal_dotted_line_large_foo"></div>
     <div class="newline"></div>
     <div class="right">
-      <a id="removeLink" href="" onclick="return false;">[ Remove this person ]</a>
+      <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='metadata.heading.associatedParty'/> ]</a>
     </div>
     <div class="newline"></div>
     <div class="leftxhalf">

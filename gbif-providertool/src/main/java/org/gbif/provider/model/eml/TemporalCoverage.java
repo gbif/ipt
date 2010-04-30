@@ -123,11 +123,31 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public void setStartDate(Date startDate) {
+	  if(this.endDate != null && startDate.compareTo(this.endDate)>0){
+	    this.endDate = startDate;
+	  }
 		this.startDate = startDate;
 	}
 
 	public void setEndDate(Date endDate) {
+	  if(this.startDate != null && endDate.compareTo(this.startDate)<0){
+	    this.startDate = endDate;
+	  }
 		this.endDate = endDate;
+	}
+
+	public TemporalCoverageType getType() {
+	  if(this.formationPeriod!=null){
+	    return TemporalCoverageType.FORMATION_PERIOD;
+	  }
+	  if(this.livingTimePeriod!=null){
+	    return TemporalCoverageType.LIVING_TIME_PERIOD;
+	  }
+	  if(this.startDate!=null && this.endDate!=null
+	      && this.startDate.compareTo(endDate)==0){
+	    return TemporalCoverageType.DATE_RANGE;
+	  }
+    return TemporalCoverageType.SINGLE_DATE;	    
 	}
 
 	@Override
