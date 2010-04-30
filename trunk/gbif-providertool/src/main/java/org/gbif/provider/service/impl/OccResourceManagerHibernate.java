@@ -24,12 +24,12 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.RegionManager;
 import org.gbif.provider.util.StatsUtils;
 
-import com.googlecode.gchartjava.GeographicalArea;
+import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.util.List;
+import com.googlecode.gchartjava.GeographicalArea;
 
 /**
  * TODO: Documentation.

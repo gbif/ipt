@@ -74,9 +74,9 @@
         </abstract>
         
         <keywordSet>
-        	<keyword>IPT</keyword>
-        	<keyword>GBIF</keyword>
-        	<#list eml.keywords as k>
+            <keyword>IPT</keyword>
+            <keyword>GBIF</keyword>
+            <#list eml.keywords as k>
             <keyword>${k!""}</keyword>
             </#list>
         </keywordSet>
@@ -100,7 +100,7 @@
             <#list eml.getGeospatialCoverages() as geocoverage>
             <geographicCoverage>
                 <geographicDescription>${geocoverage.description!}</geographicDescription>
-	            <#if geocoverage.boundingCoordinates.min?exists>
+                <#if geocoverage.boundingCoordinates.min?exists>
                 <boundingCoordinates>
                     <westBoundingCoordinate>${geocoverage.boundingCoordinates.min.longitude!}</westBoundingCoordinate>
                     <eastBoundingCoordinate>${geocoverage.boundingCoordinates.max.longitude!}</eastBoundingCoordinate>
@@ -115,9 +115,9 @@
             <#if (eml.temporalCoverages ? size > 0)>
             <#list eml.getTemporalCoverages() as tempcoverage>
             <temporalCoverage>
-	            <#if (tempcoverage.end)?? || (tempcoverage.start)??>
-	              <#if (tempcoverage.end)?? && (tempcoverage.start)??>
-	                <#if (tempcoverage.end) == (tempcoverage.start)>
+                <#if (tempcoverage.end)?? || (tempcoverage.start)??>
+                  <#if (tempcoverage.end)?? && (tempcoverage.start)??>
+                    <#if (tempcoverage.end) == (tempcoverage.start)>
                       <singleDateTime><calendarDate>tempcoverage.start?date?string("yyyy-MM-dd")}</calendarDate></singleDateTime>
                     <#else>
                       <rangeOfDates>
@@ -146,13 +146,13 @@
             <#list eml.getTaxonomicCoverages() as taxoncoverage>
             <taxonomicCoverage>
                 <generalTaxonomicCoverage>${taxoncoverage.description!}</generalTaxonomicCoverage>
-	        	<#list taxoncoverage.keywords as k>
+                <#list taxoncoverage.keywords as k>
                 <taxonomicClassification>
                     <taxonRankName>${k.rank!}</taxonRankName>
                     <taxonRankValue>${k.scientificName!}</taxonRankValue>
                     <commonName>${k.commonName!}</commonName>
                 </taxonomicClassification>
-	            </#list>
+                </#list>
             </taxonomicCoverage>
             </#list>
             </#if>
@@ -180,6 +180,7 @@
             <onlineUrl>${eml.getResource().link!}</onlineUrl>
         </contact>
 
+        <#if (eml.samplingMethods)??>
         <methods>
             <#if (eml.getSamplingMethods() ? size > 0)>
             <#list eml.getSamplingMethods() as samplemethod>
@@ -199,7 +200,9 @@
             </#list>
             </#if>
         </methods>
+        </#if>
 
+        <#if (eml.project)??>
         <project>
             <title>${eml.project.title!}</title>
             <#if (eml.project.personnel)??>
@@ -237,6 +240,7 @@
             <designDescription><description><para>${eml.project.designDescription!}</para></description></designDescription>
             </#if>
         </project>
+        </#if>
     </dataset>
 
     <#if (eml.citation)?? || 
@@ -276,7 +280,8 @@
         <hierarchyLevel>${eml.hierarchyLevel!}</hierarchyLevel>
        </#if>
 
-       <#if (eml.PhysicalData ? size > 0)>
+       <#if (eml.physicalData)??>
+       <#if (eml.physicalData ? size > 0)>
        <#list eml.getPhysicalData() as pdata>
         <physical>
           <objectName>pdata.name</objectName>
@@ -295,7 +300,7 @@
         </physical>
        </#list>
        </#if>
-
+       </#if>
        <#if (eml.jgtiCuratorialUnit)??>
         <jgtiCuratorialUnit>
           <jgtoUnitType>${eml.jgtiCuratorialUnit.unitType!}</jgtiUnitType>
@@ -344,11 +349,11 @@
        </#if>
 
        <#if (eml.getEmlVersion()>1)>
-	    <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
+        <dc:replaces>${eml.getResource().guid}/eml-${eml.getEmlVersion()-1}.xml</dc:replaces>
        </#if>
       </metadata>
-	</additionalMetadata>
-	</#if>
+    </additionalMetadata>
+    </#if>
     
 </eml:eml>
 </#escape>
