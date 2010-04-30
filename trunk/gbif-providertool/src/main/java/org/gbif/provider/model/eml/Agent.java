@@ -139,7 +139,7 @@ public class Agent implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("FirstName=%s, Role=%s", firstName, role);
+    return String.format("FirstName=%s, LastName=%s, Role=%s", firstName, lastName, role);
   }
 
 }

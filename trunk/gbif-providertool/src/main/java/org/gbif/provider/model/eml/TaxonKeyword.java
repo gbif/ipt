@@ -122,4 +122,9 @@ public class TaxonKeyword implements Serializable {
   public void setScientificName(String scientificName) {
     this.scientificName = scientificName;
   }
+
+  @Override
+  public String toString() {
+    return String.format("scientificName=%s, rank=%s, commonName=%s", scientificName, rank, commonName);
+  }
 }

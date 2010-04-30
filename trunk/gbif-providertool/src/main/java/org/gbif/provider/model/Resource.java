@@ -375,13 +375,13 @@ public class Resource implements BaseObject, Comparable<Resource>,
     for (KeywordSet kws : eml.getKeywords()) {
       keys.addAll(kws.getKeywords());
     }
-    for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
-      for (TaxonKeyword tk : tc.getKeywords()) {
-        keys.add(tk.getCommonName());
-        keys.add(tk.getScientificName());
-      }
-    }
-    this.keywords = keys;
+//    for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
+//      for (TaxonKeyword tk : tc.getKeywords()) {
+//        keys.add(tk.getCommonName());
+//        keys.add(tk.getScientificName());
+//      }
+//    }
+//    this.keywords = keys;
     // geoCoverage - TODO... this is now jsut taking the first one
     this.geoCoverage = eml.getGeospatialCoverages().get(0).getBoundingCoordinates();
   }

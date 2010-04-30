@@ -15,7 +15,10 @@
  */
 package org.gbif.provider.model.eml;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+
+import static com.google.common.base.Objects.equal;
 
 import java.io.Serializable;
 import java.util.List;
@@ -41,22 +44,26 @@ public class TaxonomicCoverage implements Serializable {
   /**
    * Structures keywords for coverage
    */
-  private List<TaxonKeyword> keywords = Lists.newArrayList();
+  private TaxonKeyword taxonKeyword = new TaxonKeyword();
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof TaxonomicCoverage)) {
+      return false;
+    }
+    TaxonomicCoverage o = (TaxonomicCoverage) other;
+    return equal(description, o.description) 
+        && equal(taxonKeyword, o.taxonKeyword);
+  }
 
   /**
    * Required for struts2 params-interceptor, Digester and deserializing from
    * XML
    */
   public TaxonomicCoverage() {
-  }
-
-  /**
-   * Utility to add a keyword to the encapsulated keywords
-   * 
-   * @param keyword to add
-   */
-  public void addTaxonKeyword(TaxonKeyword keyword) {
-    keywords.add(keyword);
   }
 
   /**
@@ -69,8 +76,13 @@ public class TaxonomicCoverage implements Serializable {
   /**
    * @return the keywords
    */
-  public List<TaxonKeyword> getKeywords() {
-    return keywords;
+  public TaxonKeyword getTaxonKeyword() {
+    return taxonKeyword;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(description, taxonKeyword);
   }
 
   /**
@@ -83,7 +95,13 @@ public class TaxonomicCoverage implements Serializable {
   /**
    * @param keywords the keywords to set
    */
-  public void setKeywords(List<TaxonKeyword> keywords) {
-    this.keywords = keywords;
+  public void setTaxonKeyword(TaxonKeyword keyword) {
+    this.taxonKeyword = keyword;
   }
+  
+  @Override
+  public String toString() {
+    return String.format("Description=%s, %s", description, taxonKeyword.toString());
+  }
+
 }

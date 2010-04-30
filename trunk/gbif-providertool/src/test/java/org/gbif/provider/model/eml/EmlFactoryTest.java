@@ -175,24 +175,24 @@ public class EmlFactoryTest extends TestCase {
       assertEquals("This is a general taxon coverage",
           eml.getTaxonomicCoverages().get(0).getDescription());
       assertEquals("Class",
-          eml.getTaxonomicCoverages().get(0).getKeywords().get(0).getRank());
+          eml.getTaxonomicCoverages().get(0).getTaxonKeyword().getRank());
       assertEquals(
           "Mammalia",
-          eml.getTaxonomicCoverages().get(0).getKeywords().get(0).getScientificName());
+          eml.getTaxonomicCoverages().get(0).getTaxonKeyword().getScientificName());
       assertEquals(
           "Mammals",
-          eml.getTaxonomicCoverages().get(0).getKeywords().get(0).getCommonName());
+          eml.getTaxonomicCoverages().get(0).getTaxonKeyword().getCommonName());
 
       assertEquals("This is a second taxon coverage",
           eml.getTaxonomicCoverages().get(1).getDescription());
       assertEquals("Class",
-          eml.getTaxonomicCoverages().get(1).getKeywords().get(0).getRank());
+          eml.getTaxonomicCoverages().get(1).getTaxonKeyword().getRank());
       assertEquals(
           "Aves",
-          eml.getTaxonomicCoverages().get(1).getKeywords().get(0).getScientificName());
+          eml.getTaxonomicCoverages().get(1).getTaxonKeyword().getScientificName());
       assertEquals(
           "Birds",
-          eml.getTaxonomicCoverages().get(1).getKeywords().get(0).getCommonName());
+          eml.getTaxonomicCoverages().get(1).getTaxonKeyword().getCommonName());
 
       assertEquals("Provide data to the whole world.", eml.getPurpose());
 

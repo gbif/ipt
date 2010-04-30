@@ -25,6 +25,7 @@ import org.gbif.provider.model.eml.PhysicalData;
 import org.gbif.provider.model.eml.Project;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonKeyword;
+import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.eml.TemporalCoverage;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
@@ -71,6 +72,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     SAMPLING_METHODS,
     KEYWORD_SETS,
     TEMPORAL_COVERAGES,
+    TAXONOMIC_COVERAGES,
     PROJECTS,
     CITATIONS,
     COLLECTIONS,
@@ -98,6 +100,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return RequestMethod.SAMPLING_METHODS;
     } else if (method.trim().equalsIgnoreCase("keywordSets")) {
       return RequestMethod.KEYWORD_SETS;
+    } else if (method.trim().equalsIgnoreCase("taxonomicCoverages")) {
+      return RequestMethod.TAXONOMIC_COVERAGES;
     } else if (method.trim().equalsIgnoreCase("temporalCoverages")) {
       return RequestMethod.TEMPORAL_COVERAGES;
     } else if (method.trim().equalsIgnoreCase("projects")) {
@@ -136,6 +140,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   private static List<Agent> deletedAgents = Lists.newArrayList();
 
   private Map<String, String> agentRoleMap;
+  private List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
 
   private String method;
 
@@ -149,6 +154,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public Map<String, String> getAgentRoleMap() {
     return agentRoleMap;
+  }
+
+  public List<Rank> getTaxonHigherRankList() {
+    return taxonHigherRankList;
   }
 
   public AppConfig getConfig() {
@@ -211,15 +220,15 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     return Arrays.asList(Role.values());
   }
 
-  public String getTaxonomicClassification() {
-    String coverage = "";
-    // for (TaxonKeyword k : eml.getTaxonomicClassification()) {
-    // if (k != null) {
-    // coverage += k.getScientificName() + ", ";
-    // }
-    // }
-    return coverage.substring(0, coverage.lastIndexOf(","));
-  }
+//  public String getTaxonomicClassification() {
+//    String coverage = "";
+//    // for (TaxonKeyword k : eml.getTaxonomicClassification()) {
+//    // if (k != null) {
+//    // coverage += k.getScientificName() + ", ";
+//    // }
+//    // }
+//    return coverage.substring(0, coverage.lastIndexOf(","));
+//  }
 
   @Override
   public void prepare() {
@@ -240,6 +249,19 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<Agent> agents = eml.getAssociatedParties();
           eml = emlManager.load(resource);
           eml.setAssociatedParties(agents);
+        }
+        break;
+      case TAXONOMIC_COVERAGES:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // taxonomic coverages.
+          eml = emlManager.load(resource);
+          eml.getTaxonomicCoverages().clear();
+        } else {
+          // eml was populated via Struts.
+          List<TaxonomicCoverage> coverages = eml.getTaxonomicCoverages();
+          eml = emlManager.load(resource);
+          eml.setTaxonomicCoverages(coverages);
         }
         break;
       case TEMPORAL_COVERAGES:
@@ -454,16 +476,16 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     this.request = request;
   }
 
-  public void setTaxonomicClassification(String taxonomicCoverage) {
-    List<TaxonKeyword> keywords = new ArrayList<TaxonKeyword>();
-    for (String k : StringUtils.split(taxonomicCoverage, ",")) {
-      k = StringUtils.trimToNull(k);
-      if (k != null) {
-        // keywords.add(TaxonKeyword.create(k, null, null));
-      }
-    }
-    // eml.setTaxonomicClassification(keywords);
-  }
+//  public void setTaxonomicClassification(String taxonomicCoverage) {
+//    List<TaxonKeyword> keywords = new ArrayList<TaxonKeyword>();
+//    for (String k : StringUtils.split(taxonomicCoverage, ",")) {
+//      k = StringUtils.trimToNull(k);
+//      if (k != null) {
+//        // keywords.add(TaxonKeyword.create(k, null, null));
+//      }
+//    }
+//    // eml.setTaxonomicClassification(keywords);
+//  }
 
   private void validateResource() {
     Organisation org = Organisation.builder().password(

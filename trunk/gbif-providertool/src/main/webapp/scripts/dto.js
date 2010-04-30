@@ -558,3 +558,111 @@ function KeywordSet() {
 KeywordSet.propertyNames = function() {
   return ['keywordThesaurus', 'keywordsString'];
 }
+
+function TaxonKeyword() {
+  this._scientificName = '';
+  this._rank = '';
+  this._commonName = '';
+  
+  this.scientificName = scientificName;
+  this.rank = rank;
+  this.commonName = commonName;
+  
+  function scientificName(val) {
+    if (val == null) {
+      return this._scientificName;
+    } else { 
+      this._scientificName = val;
+      return this;
+    }
+  }
+  
+  function rank(val) {
+    if (val == null) {
+      return this._rank;
+    } else { 
+      this._rank = val;
+      return this;
+    }
+  }
+  
+  function commonName(val) {
+    if (val == null) {
+      return this._commonName;
+    } else { 
+      this._commonName = val;
+      return this;
+    }
+  }
+  
+}
+
+TaxonKeyword.propertyNames = function() {
+  return ['scientificName', 'rank', 'commonName'];
+}
+
+function TaxonomicCoverage() {
+  this._description = '';
+  this._taxonKeyword = new TaxonKeyword();
+  /* Taxon Keyword properties */
+  this._scientificName = '';
+  this._rank = '';
+  this._commonName = '';
+  
+  this.description = description;
+  this.taxonKeyword = taxonKeyword;
+  /* Taxon Keyword properties */
+  this.scientificName = scientificName;
+  this.rank = rank;
+  this.commonName = commonName;
+  
+  function description(val) {
+    if (val == null) {
+      return this._description;
+    } else { 
+      this._description = val;
+      return this;
+    }
+  }
+  
+  function taxonKeyword(val) {
+    if (val == null) {
+      return this._taxonKeyword;
+    } else { 
+      this._taxonKeyword = val;
+      return this;
+    }
+  }
+  
+  function scientificName(val) {
+    if (val == null) {
+      return this._taxonKeyword.scientificName();
+    } else { 
+      this._taxonKeyword.scientificName(val);
+      return this;
+    }
+  }
+  
+   function rank(val) {
+    if (val == null) {
+      return this._taxonKeyword.rank();
+    } else { 
+      this._taxonKeyword.rank(val);
+      return this;
+    }
+  }
+
+  function commonName(val) {
+    if (val == null) {
+      return this._taxonKeyword.commonName();
+    } else { 
+      this._taxonKeyword.commonName(val);
+      return this;
+    }
+  }
+    
+}
+
+TaxonomicCoverage.propertyNames = function() {
+  return ['description', 'scientificName', 'commonName', 'rank'];
+}

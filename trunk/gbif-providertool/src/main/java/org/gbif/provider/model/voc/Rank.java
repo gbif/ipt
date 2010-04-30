@@ -18,6 +18,7 @@ package org.gbif.provider.model.voc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: Documentation.
@@ -25,17 +26,17 @@ import java.util.List;
  */
 public enum Rank {
 
-  Kingdom("kingdom", "http://rs.tdwg.org/ontology/voc/TaxonRank#Kingdom"), Phylum(
-      "phylum", "http://rs.tdwg.org/ontology/voc/TaxonRank#Phylum"), Class(
-      "classs", "http://rs.tdwg.org/ontology/voc/TaxonRank#Class"), Order(
-      "order", "http://rs.tdwg.org/ontology/voc/TaxonRank#Order"), Family(
-      "family", "http://rs.tdwg.org/ontology/voc/TaxonRank#Family"), Genus(
-      "genus", "http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"), Species(
-      null, "http://rs.tdwg.org/ontology/voc/TaxonRank#Species"), SubSpecies(
-      null, "http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"), Variety(
-      null, "http://rs.tdwg.org/ontology/voc/TaxonRank#Variety"), InfraSpecies(
-      null, "http://rs.tdwg.org/ontology/voc/TaxonRank#InfraSpecies"), TerminalTaxon(
-      "scientific_name", "");
+  Kingdom("kingdom", "http://rs.tdwg.org/ontology/voc/TaxonRank#Kingdom"), 
+  Phylum("phylum", "http://rs.tdwg.org/ontology/voc/TaxonRank#Phylum"), 
+  Class("classs", "http://rs.tdwg.org/ontology/voc/TaxonRank#Class"), 
+  Order("order", "http://rs.tdwg.org/ontology/voc/TaxonRank#Order"), 
+  Family("family", "http://rs.tdwg.org/ontology/voc/TaxonRank#Family"), 
+  Genus("genus", "http://rs.tdwg.org/ontology/voc/TaxonRank#Genus"), 
+  Species(null, "http://rs.tdwg.org/ontology/voc/TaxonRank#Species"), 
+  SubSpecies(null, "http://rs.tdwg.org/ontology/voc/TaxonRank#SubSpecies"), 
+  Variety(null, "http://rs.tdwg.org/ontology/voc/TaxonRank#Variety"), 
+  InfraSpecies(null, "http://rs.tdwg.org/ontology/voc/TaxonRank#InfraSpecies"), 
+  TerminalTaxon("scientific_name", "");
 
   public static final String URI = "http://rs.tdwg.org/ontology/voc/TaxonRank";
   public static final List<Rank> DARWIN_CORE_HIGHER_RANKS;
