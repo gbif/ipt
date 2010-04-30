@@ -264,6 +264,7 @@ function TemporalCoveragePanel() {
   this._temporalCoverageIdPattern = /temporalCoverage\d+/;
   this.add = add;
   this.clear = clear;
+  this.reselect = reselect;
   this._remove = _remove;
   this._resize = _resize;
   this.size = size;
@@ -302,13 +303,21 @@ function TemporalCoveragePanel() {
    });
   }
  
+  function reselect(element) {
+    var s = element.attr('id');
+    var n = element.attr('name');
+    var v = element.attr('value');
+    alert("You selected " + n + " (id=" + s + ") with value " + v);
+  }
+  
   function clear(element) {
     var temporalCoverageProps = TemporalCoverage.propertyNames();
+
     for (p in temporalCoverageProps) {
       var name = temporalCoverageProps[p];
       var val = '';
       if( name = 'type' ){
-        var wasvalue = element.find('#' + name).attr('value');
+        var wasvalue = element.attr('value');
         element.find('#' + name).attr('value', 'singleDateTime');
         element.show();
       } else {
@@ -345,6 +354,10 @@ function TemporalCoveragePanel() {
     e.find('#clearLink').click(function() {      
       var id = '#' + $(this).parent().parent().attr('id');
       _this.clear($(id));
+    });
+    e.find('#temporalCoverageType').change(function() {      
+      var id = '#' + $(this).parent().attr('id');
+      _this.reselect($(id));
     });
     e.appendTo(this._element);
     e.show();

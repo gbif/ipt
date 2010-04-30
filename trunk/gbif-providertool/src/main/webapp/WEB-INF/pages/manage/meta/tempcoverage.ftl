@@ -83,9 +83,6 @@
     $('#plus').click(function() {
       temporalCoveragePanel.add(new TemporalCoverageWidget());
     });
-    $('#clearLink').click(function() {
-      temporalCoveragePanel.clear();
-    });
     var temporalCoverages = GetTemporalCoverages();
     for (temporalCoverage in temporalCoverages) {
       temporalCoverageWidget = new TemporalCoverageWidget(temporalCoverages[temporalCoverage]);
