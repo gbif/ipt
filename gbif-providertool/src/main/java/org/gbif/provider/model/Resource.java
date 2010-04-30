@@ -16,6 +16,7 @@
 package org.gbif.provider.model;
 
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.GeospatialCoverage;
 import org.gbif.provider.model.eml.KeywordSet;
 import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.eml.TaxonomicCoverage;
@@ -23,16 +24,12 @@ import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.util.AppConfig;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.validator.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -45,6 +42,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.validator.NotNull;
 
 /**
  * A generic resource describing any digital, online and non digital available
@@ -371,7 +375,7 @@ public class Resource implements BaseObject, Comparable<Resource>,
   public void updateWithMetadata(Eml eml) {
     // keywords
     Set<String> keys = new HashSet<String>();
-    
+
     for (KeywordSet kws : eml.getKeywords()) {
       keys.addAll(kws.getKeywords());
     }
@@ -383,7 +387,9 @@ public class Resource implements BaseObject, Comparable<Resource>,
 //    }
 //    this.keywords = keys;
     // geoCoverage - TODO... this is now jsut taking the first one
-    this.geoCoverage = eml.getGeospatialCoverages().get(0).getBoundingCoordinates();
+    List<GeospatialCoverage> gc = eml.getGeospatialCoverages() != null
+        ? eml.getGeospatialCoverages() : new ArrayList<GeospatialCoverage>();
+    this.geoCoverage = gc.isEmpty() ? null : gc.get(0).getBoundingCoordinates();
   }
 
   /**

@@ -270,6 +270,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   }
 
   public String publish() {
+    log.info("Publish method called");
     // publish only when POSTed, not with ordinary GET
     if (request.getMethod().equalsIgnoreCase("post")) {
       Resource res = getResourceTypeMatchingManager().publish(resourceId);
