@@ -303,11 +303,11 @@ function TemporalCoveragePanel() {
    });
   }
  
-  function reselect(element) {
-    var s = element.attr('id');
-    var n = element.attr('name');
-    var v = element.attr('value');
-    alert("You selected " + n + " (id=" + s + ") with value " + v);
+  function reselect(element, type) {
+    var id = element.attr('id');
+    $(element).find('#formationPeriod').attr('disabled', 'disabled');
+    $(element).find('#livingTimePeriod').attr('disabled', 'disabled');
+    alert("You selected " + type + " (id=" + id + ") - disabled formation and living time period boxes");    
   }
   
   function clear(element) {
@@ -355,9 +355,12 @@ function TemporalCoveragePanel() {
       var id = '#' + $(this).parent().parent().attr('id');
       _this.clear($(id));
     });
-    e.find('#temporalCoverageType').change(function() {      
-      var id = '#' + $(this).parent().attr('id');
-      _this.reselect($(id));
+    e.find('#temporalCoverageType').change(function(e) {  
+      // Careful: In the change() callback, 'this' refers to the select event.
+      var s = this.options[this.selectedIndex];
+      var sText = s.text;
+      var id = '#' + $(this).parent().parent().parent().parent().attr('id');
+      _this.reselect($(id), sText);
     });
     e.appendTo(this._element);
     e.show();
