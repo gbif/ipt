@@ -716,7 +716,7 @@ function KeywordSetWidget(keywordSet) {
     var val = '';
     if (isKeywordSet) {
       /* 
-       * get the name of the attribute for the prameter passed to the widget 
+       * get the name of the attribute for the parameter passed to the widget 
        */ 
       val = eval('keywordSet.' + name + '()');
     } 
@@ -816,4 +816,142 @@ function KeywordSetPanel() {
 
 KeywordSetPanel.keywordSetCount = function() {
   return $('#keywordSetPanel').find("div[id^='keywordSet']").size();
+}
+
+/*==== Taxonomic Coverages ====*/
+
+/**
+ * The TaxonomicCoverageWidget class can be used to encapsulate and display a TaxonomicCoverage grouping.
+ * 
+ */
+function TaxonomicCoverageWidget(taxonomicCoverage) {
+  var e = $('#cloneTaxonomicCoverage').clone();
+  var taxonomicCoverageCount = TaxonomicCoveragePanel.taxonomicCoverageCount();
+  e.attr('id', 'taxonomicCoverage' + taxonomicCoverageCount);
+  this._element = e;
+  e.find('#removeLink').show();
+  this._taxonomicCoverage = taxonomicCoverage;
+  var isTaxonomicCoverage = taxonomicCoverage instanceof TaxonomicCoverage;
+  var taxonomicCoverageProps = TaxonomicCoverage.propertyNames();
+  var taxonKeywordNames = TaxonKeyword.propertyNames();
+  for (p in taxonomicCoverageProps) {
+    var name = taxonomicCoverageProps[p];
+    var val = '';
+    if (isTaxonomicCoverage) {
+      /* 
+       * get the name of the attribute for the parameter passed to the widget 
+       */ 
+      val = eval('taxonomicCoverage.' + name + '()');
+    } 
+    $(e).attr('id', name);
+    var isTaxonKeyword = jQuery.inArray(name, taxonKeywordNames);
+      isTaxonKeyword = isTaxonKeyword >= 0 ? true : false;
+      if (isTaxonKeyword) {
+        e.find('#' + name).attr('name', 'eml.taxonomicCoverages[' + taxonomicCoverageCount + '].taxonKeyword.'+ name);
+        e.find('#' + name).attr('value', val);
+      } else {
+        e.find('#' + name).attr('name', 'eml.taxonomicCoverages[' + taxonomicCoverageCount + '].'+ name);
+        e.find('#' + name).attr('value', val);
+      }
+  }  
+  this._elementId = '';
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+} 
+
+/**
+ * The TaxonomicCoveragePanel can be used to display a group of TaxonomicCoverage widgets.
+ * 
+ */
+function TaxonomicCoveragePanel() {
+  this._elementId = '#taxonomicCoveragePanel';
+  this._element = $(this._elementId);
+  this._taxonomicCoverageSelector = "div[id^='taxonomicCoverage']";
+  this._taxonomicCoverageIdPattern = /taxonomicCoverage\d+/;
+  this.add = add;
+  this._remove = _remove;
+  this._resize = _resize;
+  this.size = size;
+  this.element = element;
+  
+  function element(val) {
+    if (!val) {
+      return this._element;
+    } else { 
+      this._element = val;
+      return this;
+    }
+  }
+  
+  /**
+   * Returns the number of taxonomicCoverage div elements in this TaxonomicCoveragePanel.
+   * 
+   * @return number of taxonomicCoverage div elements
+   */
+  function size() {
+    return $(this._element).find(this._taxonomicCoverageSelector).size();
+  }
+
+  function _resize() {
+    this._element.find(this._taxonomicCoverageSelector).each(function(i) {
+      var id =  $(this).attr('id');
+      if (id.match(this._taxonomicCoverageIdPattern)) {
+        $(this).attr('id', 'taxonomicCoverage' + i);
+        name = 'eml.taxonomicCoverages[' + i + '].';
+        props = TaxonomicCoverage.propertyNames();
+        var taxonKeywordNames = TaxonKeyword.propertyNames();
+        for (p in props) {
+          var prop = props[p];
+          var isTaxonKeyword = jQuery.inArray(prop, taxonKeywordNames);
+          isTaxonKeyword = isTaxonKeyword >= 0 ? true : false;
+          if (isTaxonKeyword) {
+            $(this).find('#' + prop).attr('name', 'eml.taxonomicCoverages[' + i + '].taxonKeyword.'+ prop);
+          } else {
+            $(this).find('#' + prop).attr('name', name + prop);
+          }
+        }
+      }    
+    });
+  }
+ 
+  /**
+   * Removes the element from the DOM.
+   */
+  function _remove(element) {
+    $(element).remove();    
+  }
+  
+  /**
+   * Adds and displays a taxonomicCoverage widget and adds a click handler for deleting it.
+   */
+  function add(widget) {
+    if (!(widget instanceof TaxonomicCoverageWidget)) {
+      alert('Illegal Argument ' + widget + ': Instance of TaxonomicCoverageWidget expected');
+      return;
+    }
+    var count = this.size();
+    var e = widget.element();
+    e.attr('id', 'taxonomicCoverage' + count);
+    var _this = this;
+    e.find('#removeLink').click(function() {      
+      var id = '#' + $(this).parent().parent().attr('id');
+      _this._remove($(id));
+      _this._resize();
+    });
+    e.appendTo(this._element);
+    e.show();
+    return false;
+  }
+}
+
+TaxonomicCoveragePanel.taxonomicCoverageCount = function() {
+  return $('#taxonomicCoveragePanel').find("div[id^='taxonomicCoverage']").size();
 }
