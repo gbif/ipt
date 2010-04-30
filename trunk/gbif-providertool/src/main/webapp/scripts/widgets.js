@@ -303,11 +303,40 @@ function TemporalCoveragePanel() {
    });
   }
  
+  /**
+   * Modifies a widget based on a type of selection.
+   * 
+   * @param element a widget element
+   * @param type the selection type
+   */
   function reselect(element, type) {
     var id = element.attr('id');
-    $(element).find('#formationPeriod').attr('disabled', 'disabled');
-    $(element).find('#livingTimePeriod').attr('disabled', 'disabled');
-    alert("You selected " + type + " (id=" + id + ") - disabled formation and living time period boxes");    
+    alert("Type " + type + " was selected for element " + id);
+    if (type == 'Single Date') {
+      // TODO: Update UI for Single Date selection.
+      // $(element).find('#startDate').hide();
+      // $(element).find('#endDate').hid();
+      // $(element).find('#formationPeriod').hide();
+      // $(element).find('#livingTimePeriod').hide();
+    } else if (type == 'Date Range') {
+      // TODO: Update UI for Date Range selection.
+      // $(element).find('#startDate').hide();
+      // $(element).find('#endDate').hid();
+      // $(element).find('#formationPeriod').hide();
+      // $(element).find('#livingTimePeriod').hide();      
+    } else if (type == 'Formation Period') {
+      // TODO: Update UI for Formation Period selection.
+      // $(element).find('#startDate').hide();
+      // $(element).find('#endDate').hid();
+      // $(element).find('#formationPeriod').hide();
+      // $(element).find('#livingTimePeriod').hide();      
+    } else if (type == 'Living Time Period') {
+      // TODO: Update UI for Living Time Period selection.
+      // $(element).find('#startDate').hide();
+      // $(element).find('#endDate').hid();
+      // $(element).find('#formationPeriod').hide();
+      // $(element).find('#livingTimePeriod').hide();      
+    }
   }
   
   function clear(element) {
