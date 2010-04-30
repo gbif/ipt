@@ -18,14 +18,12 @@ package org.gbif.provider.model;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.GeospatialCoverage;
 import org.gbif.provider.model.eml.KeywordSet;
-import org.gbif.provider.model.eml.TaxonKeyword;
-import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.util.AppConfig;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,6 +47,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.validator.NotNull;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * A generic resource describing any digital, online and non digital available
@@ -379,17 +379,35 @@ public class Resource implements BaseObject, Comparable<Resource>,
     for (KeywordSet kws : eml.getKeywords()) {
       keys.addAll(kws.getKeywords());
     }
-//    for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
-//      for (TaxonKeyword tk : tc.getKeywords()) {
-//        keys.add(tk.getCommonName());
-//        keys.add(tk.getScientificName());
-//      }
-//    }
-//    this.keywords = keys;
-    // geoCoverage - TODO... this is now jsut taking the first one
-    List<GeospatialCoverage> gc = eml.getGeospatialCoverages() != null
-        ? eml.getGeospatialCoverages() : new ArrayList<GeospatialCoverage>();
-    this.geoCoverage = gc.isEmpty() ? null : gc.get(0).getBoundingCoordinates();
+    // for (TaxonomicCoverage tc : eml.getTaxonomicCoverages()) {
+    // for (TaxonKeyword tk : tc.getKeywords()) {
+    // keys.add(tk.getCommonName());
+    // keys.add(tk.getScientificName());
+    // }
+    // }
+    // this.keywords = keys;
+
+    // GeoCovereage is the min min and max max of all coverages:
+    List<GeospatialCoverage> gc = eml.getGeospatialCoverages();
+    GeospatialCoverage min, max;
+    if (gc != null && !gc.isEmpty()) {
+      min = (GeospatialCoverage) Collections.min(gc,
+          new Comparator<GeospatialCoverage>() {
+            public int compare(GeospatialCoverage o1, GeospatialCoverage o2) {
+              return o1.getBoundingCoordinates().getMin().getCoordinate().compareTo(
+                  o2.getBoundingCoordinates().getMin().getCoordinate());
+            }
+          });
+      max = (GeospatialCoverage) Collections.max(gc,
+          new Comparator<GeospatialCoverage>() {
+            public int compare(GeospatialCoverage o1, GeospatialCoverage o2) {
+              return o1.getBoundingCoordinates().getMax().getCoordinate().compareTo(
+                  o2.getBoundingCoordinates().getMax().getCoordinate());
+            }
+          });
+      geoCoverage.setMin(min.getBoundingCoordinates().getMin());
+      geoCoverage.setMax(max.getBoundingCoordinates().getMax());
+    }
   }
 
   /**
