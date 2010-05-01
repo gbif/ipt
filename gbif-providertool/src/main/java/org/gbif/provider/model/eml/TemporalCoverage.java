@@ -111,7 +111,11 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public void setFormationPeriod(String formationPeriod) {
-		this.formationPeriod = formationPeriod;
+	  if(formationPeriod != null && formationPeriod.length() == 0 )
+	    this.formationPeriod=null;
+	  else {
+		  this.formationPeriod = formationPeriod;
+	  }
 	}
 
 	public String getLivingTimePeriod() {
@@ -119,7 +123,11 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public void setLivingTimePeriod(String livingTimePeriod) {
-		this.livingTimePeriod = livingTimePeriod;
+    if(livingTimePeriod != null && livingTimePeriod.length() == 0 )
+      this.livingTimePeriod=null;
+    else {
+      this.livingTimePeriod = livingTimePeriod;
+    }
 	}
 
 	public void setStartDate(Date startDate) {
@@ -137,14 +145,14 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public TemporalCoverageType getType() {
-	  if(this.formationPeriod!=null){
+	  if(this.formationPeriod!=null && this.formationPeriod.length()>0){
 	    return TemporalCoverageType.FORMATION_PERIOD;
 	  }
-	  if(this.livingTimePeriod!=null){
+	  if(this.livingTimePeriod!=null && this.livingTimePeriod.length()>0){
 	    return TemporalCoverageType.LIVING_TIME_PERIOD;
 	  }
 	  if(this.startDate!=null && this.endDate!=null
-	      && this.startDate.compareTo(endDate)==0){
+	      && this.startDate.compareTo(endDate)!=0){
 	    return TemporalCoverageType.DATE_RANGE;
 	  }
     return TemporalCoverageType.SINGLE_DATE;	    
@@ -157,6 +165,6 @@ public class TemporalCoverage implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("Formation Period=%s, StartDate=%s, EndDate=%s, ", startDate, endDate, formationPeriod, livingTimePeriod);
+		return String.format("StartDate=%s, EndDate=%s, Formation Period=%s, Living Time Period=%s", startDate, endDate, formationPeriod, livingTimePeriod);
 	}
 }

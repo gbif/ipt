@@ -46,16 +46,16 @@
 
   google.load("jquery", "1.4.2");
 
-  function toggleSingleDate(checkbox){
+//  function toggleSingleDate(checkbox){
 //    Effect.toggle('endDateDiv', 'appear', { duration: 0.3 });
-        if(checkbox.checked){
-            // $('startDate').focus();
-            $('endDate').value=$('startDate').value;
-            $('endDate').hide();
-        } else {
-            $('endDate').show();
-        }
-  }
+//        if(checkbox.checked){
+//            // $('startDate').focus();
+//            $('endDate').value=$('startDate').value;
+//            $('endDate').hide();
+//        } else {
+//            $('endDate').show();
+//        }
+//  }
 
   function HideTemporalCoverageClone() {
     $('#removeLink').hide();
@@ -70,7 +70,8 @@
           .startDate("<@s.property value="startDate"/>")
           .endDate("<@s.property value="endDate"/>")
           .formationPeriod("<@s.property value="formationPeriod"/>")
-          .livingTimePeriod("<@s.property value="livingTimePeriod"/>");
+          .livingTimePeriod("<@s.property value="livingTimePeriod"/>")
+          .type("<@s.property value="type"/>");
       </@s.iterator>
     </#if>
     return temporalCoverages;
@@ -79,6 +80,7 @@
   function OnLoad() {  
     HideTemporalCoverageClone();
     var temporalCoveragePanel = new TemporalCoveragePanel();
+    var size = temporalCoveragePanel.size();
     var temporalCoverageWidget;
     $('#plus').click(function() {
       temporalCoveragePanel.add(new TemporalCoverageWidget());
@@ -117,30 +119,30 @@
           <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='eml.temporalCoverage'/> ]</a>
         </div>
         <div class="newline"></div>
-        <div class="leftxhalf">
-          <@s.select id="temporalCoverageType" key="" label="%{getText('temporalCoverage.type')}"
+        <div class="leftxhalf" id="typeDiv">
+          <@s.select id="type" key="" label="%{getText('temporalCoverage.type')}"
             list="temporalCoverageTypeMap.entrySet()" value="temporalCoverageType.name()" listKey="key"
             listValue="value" required="true"/>
         </div>
         <div class="newline"></div>
         <div>
-          <div class="leftMedium" id="startDateDiv">
+          <div class="leftMedium" id="startDateDiv" visible='false'>
             <@s.textfield id="startDate" key="" 
             label="%{getText('temporalCoverage.startDate')}" required="true" cssClass="text medium"/>
           </div>
-          <div class="leftMedium" id="endDateDiv">
+          <div class="leftMedium" id="endDateDiv" visible='false'>
             <@s.textfield id="endDate" key="" 
             label="%{getText('temporalCoverage.endDate')}" required="false" cssClass="text medium"/>
           </div>
-          <div class="left">
+          <div class="left" id='exampleDiv' visible='false'>
             <span><@s.text name='metadata.temporalCoverageExample'/> 1999/07/21</span>
           </div>
           <div class="newline"></div>
-          <div class="leftMedium" id="formationPeriodDiv">
+          <div class="leftMedium" id="formationPeriodDiv" visible='false'>
             <@s.textfield id="formationPeriod" key="" 
             label="%{getText('temporalCoverage.formationPeriod')}" required="false" cssClass="text medium"/>
           </div>
-          <div class="leftMedium" id="livingTimePeriodDiv">
+          <div class="leftMedium" id="livingTimePeriodDiv" visible='false'>
             <@s.textfield id="livingTimePeriod" key="" 
             label="%{getText('temporalCoverage.livingTimePeriod')}" required="false" cssClass="text medium"/>
           </div>
@@ -153,9 +155,6 @@
     </div>
     <div class="left">
       <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='metadata.heading.tempcoverage'/></a>
-    </div>
-    <div class="right">
-      <a id="clearLink" href="" onclick="return false;"><@s.text name='temporalCoverage.clear'/> <@s.text name='metadata.heading.tempcoverage'/></a>
     </div>
     <div class="newline"></div>
     <div class="newline"></div>
