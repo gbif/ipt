@@ -511,20 +511,33 @@ PhysicalData.propertyNames = function() {
 
 function CuratorialUnit() {
   this._unitType = '';
-  this._rangeEnd = '';
   this._rangeStart = '';
+  this._rangeEnd = '';
+  this._rangeMean = '';
   this._undertaintyMeasure = '';
+  this._type = '';
   
   this.unitType = unitType;
-  this.rangeEnd = rangeEnd;
   this.rangeStart = rangeStart;
+  this.rangeEnd = rangeEnd;
+  this.rangeMean = rangeMean;
   this.uncertaintyMeasure = uncertaintyMeasure;
+  this.type=type;
   
   function unitType(val) {
     if (val == null) {
       return this._unitType;
     } else { 
       this._unitType = val;
+      return this;
+    }
+  }
+
+  function rangeStart(val) {
+    if (val == null) {
+      return this._rangeStart;
+    } else { 
+      this._rangeStart = val;
       return this;
     }
   }
@@ -538,11 +551,11 @@ function CuratorialUnit() {
     }
   }
   
-  function rangeStart(val) {
+  function rangeMean(val) {
     if (val == null) {
-      return this._rangeStart;
+      return this._rangeMean;
     } else { 
-      this._rangeStart = val;
+      this._rangeMean = val;
       return this;
     }
   }
@@ -556,10 +569,18 @@ function CuratorialUnit() {
     }
   }
   
+  function type(val) {
+    if (val == null) {
+      return this._type;
+    } else { 
+      this._type = val;
+      return this;
+    }
+  }
 }
 
 CuratorialUnit.propertyNames = function() {
-  return ['unitType', 'rangeEnd', 'rangeStart', 'uncertaintyMeasure'];
+  return ['unitType', 'rangeStart', 'rangeEnd', 'rangeMean', 'uncertaintyMeasure', 'type'];
 }
 
 function KeywordSet() {

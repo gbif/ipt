@@ -259,7 +259,7 @@ function TemporalCoverageWidget(temporalCoverage) {
     var id = element.attr('id');
     var evalue = element.attr('value');
     if (type == 'SINGLE_DATE') {
-      // TODO: Update UI for Single Date selection.
+      // Update UI for Single Date selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').hide();
       $(element).find('#endDate').attr('value', null);
@@ -269,7 +269,7 @@ function TemporalCoverageWidget(temporalCoverage) {
       $(element).find('#livingTimePeriodDiv').hide();
       $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'DATE_RANGE') {
-      // TODO: Update UI for Date Range selection.
+      // Update UI for Date Range selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').show();
       $(element).find('#exampleDiv').show();
@@ -278,7 +278,7 @@ function TemporalCoverageWidget(temporalCoverage) {
       $(element).find('#livingTimePeriodDiv').hide();      
       $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'FORMATION_PERIOD') {
-      // TODO: Update UI for Formation Period selection.
+      // Update UI for Formation Period selection.
       $(element).find('#startDateDiv').hide();
       $(element).find('#startDate').attr('value', null);
       $(element).find('#endDateDiv').hide();
@@ -288,7 +288,7 @@ function TemporalCoverageWidget(temporalCoverage) {
       $(element).find('#livingTimePeriodDiv').hide();      
       $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'LIVING_TIME_PERIOD') {
-      // TODO: Update UI for Living Time Period selection.
+      // Update UI for Living Time Period selection.
       $(element).find('#startDateDiv').hide();
       $(element).find('#startDate').attr('value', null);
       $(element).find('#endDateDiv').hide();
@@ -361,7 +361,7 @@ function TemporalCoveragePanel() {
   function reselect(element, type) {
     var id = element.attr('id');
     if (type == 'SINGLE_DATE') {
-      // TODO: Update UI for Single Date selection.
+      // Update UI for Single Date selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').hide();
       $(element).find('#endDate').attr('value', null);
@@ -371,7 +371,7 @@ function TemporalCoveragePanel() {
       $(element).find('#livingTimePeriodDiv').hide();
       $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'DATE_RANGE') {
-      // TODO: Update UI for Date Range selection.
+      // Update UI for Date Range selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').show();
       $(element).find('#exampleDiv').show();
@@ -380,7 +380,7 @@ function TemporalCoveragePanel() {
       $(element).find('#livingTimePeriodDiv').hide();      
       $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'FORMATION_PERIOD') {
-      // TODO: Update UI for Formation Period selection.
+      // Update UI for Formation Period selection.
       $(element).find('#startDateDiv').hide();
       $(element).find('#endDateDiv').hide();
       $(element).find('#endDate').attr('value','');
@@ -389,7 +389,7 @@ function TemporalCoveragePanel() {
       $(element).find('#livingTimePeriodDiv').hide();      
       $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'LIVING_TIME_PERIOD') {
-      // TODO: Update UI for Living Time Period selection.
+      // Update UI for Living Time Period selection.
       $(element).find('#startDateDiv').hide();
       $(element).find('#endDateDiv').hide();
       $(element).find('#endDate').attr('value', null);
@@ -443,10 +443,6 @@ function TemporalCoveragePanel() {
 TemporalCoveragePanel.temporalCoverageCount = function() {
   return $('#temporalCoveragePanel').find("div[id^='temporalCoverage']").size();
 }
-
-/*==== GeospatialCoverage ====*/
-
-/*==== TaxonomicCoverage ====*/
 
 /*==== Sampling Method ====*/
 /**
@@ -711,6 +707,10 @@ function CuratorialUnitWidget(curatorialUnit) {
   }  
   this._elementId = '';
   this.element = element;
+  this.showType = showType;
+  var whatthe = e.find('#type');
+  var curatorialUnitType = e.find('#type').attr('value');
+  this.showType(e, curatorialUnitType);
   
   function element(val) {
     if (!val) {
@@ -720,7 +720,34 @@ function CuratorialUnitWidget(curatorialUnit) {
       return this;
     }
   }
+
+  /* Show and hide elements as appropriate based on type */
+  function showType(element, type) {
+    var id = element.attr('id');
+    var evalue = element.attr('value');
+    var startval =  $(element).find('#rangeStart').attr('value');
+    var endval =  $(element).find('#rangeEnd').attr('value');
+    var meanval =  $(element).find('#rangeMean').attr('value');
+    if (type == 'COUNT_WITH_UNCERTAINTY') {
+      // Update UI for Count with uncertainty selection.
+      $(element).find('#rangeStartDiv').hide();
+      $(element).find('#rangeStart').attr('value', null);
+      $(element).find('#rangeEndDiv').hide();
+      $(element).find('#rangeEnd').attr('value', null);
+      $(element).find('#rangeMeanDiv').show();
+      $(element).find('#uncertaintyMeasureDiv').show();
+    } else if (type == 'COUNT_RANGE') {
+      // Update UI for Count Range selection.
+      $(element).find('#rangeStartDiv').show();
+      $(element).find('#rangeEndDiv').show();
+      $(element).find('#rangeMeanDiv').hide();
+      $(element).find('#rangeMean').attr('value', null);
+      $(element).find('#uncertaintyMeasureDiv').hide();
+      $(element).find('#uncertaintyMeasure').attr('value', null);
+    }
+  }
 } 
+
 
 /**
  * The CuratorialUnitPanel can be used to display a group of CuratorialUnit widgets.
@@ -732,6 +759,7 @@ function CuratorialUnitPanel() {
   this._curatorialUnitSelector = "div[id^='curatorialUnit']";
   this._curatorialUnitIdPattern = /curatorialUnit\d+/;
   this.add = add;
+  this.reselect = reselect;
   this._remove = _remove;
   this._resize = _resize;
   this.size = size;
@@ -770,6 +798,32 @@ function CuratorialUnitPanel() {
    });
   }
  
+  /* Show and hide elements as appropriate based on type */
+  function reselect(element, type) {
+    var id = element.attr('id');
+    var evalue = element.attr('value');
+    var startval =  $(element).find('#rangeStart').attr('value');
+    var endval =  $(element).find('#rangeEnd').attr('value');
+    var meanval =  $(element).find('#rangeMean').attr('value');
+    if (type == 'COUNT_WITH_UNCERTAINTY') {
+      // Update UI for Count with uncertainty selection.
+      $(element).find('#rangeStartDiv').hide();
+      $(element).find('#rangeStart').attr('value', null);
+      $(element).find('#rangeEndDiv').hide();
+      $(element).find('#rangeEnd').attr('value', null);
+      $(element).find('#rangeMeanDiv').show();
+      $(element).find('#uncertaintyMeasureDiv').show();
+    } else if (type == 'COUNT_RANGE') {
+      // Update UI for Count Range selection.
+      $(element).find('#rangeStartDiv').show();
+      $(element).find('#rangeEndDiv').show();
+      $(element).find('#rangeMeanDiv').hide();
+      $(element).find('#rangeMean').attr('value', null);
+      $(element).find('#uncertaintyMeasureDiv').hide();
+      $(element).find('#uncertaintyMeasure').attr('value', null);
+    }
+  }
+
   /**
    * Removes the element from the DOM.
    */
@@ -788,11 +842,21 @@ function CuratorialUnitPanel() {
     var count = this.size();
     var e = widget.element();
     e.attr('id', 'curatorialUnit' + count);
+
     var _this = this;
     e.find('#removeLink').click(function() {      
       var id = '#' + $(this).parent().parent().attr('id');
       _this._remove($(id));
       _this._resize();
+    });
+    e.find('#type').change(function(e) {  
+      // Careful: In the change() callback, 'this' refers to the select element.
+      // e is the event.
+      var s = this.options[this.selectedIndex];
+      var sText = s.text;
+      var sValue = s.value;
+      var id = '#' + $(this).parent().parent().parent().parent().attr('id');
+      _this.reselect($(id), sValue);
     });
     e.appendTo(this._element);
     e.show();
