@@ -135,7 +135,7 @@
             label="%{getText('temporalCoverage.endDate')}" required="false" cssClass="text medium"/>
           </div>
           <div class="left" id='exampleDiv' visible='false'>
-            <span><@s.text name='metadata.temporalCoverageExample'/> 1999/07/21</span>
+            <span><@s.text name='metadata.temporalCoverageExample'/> <@s.text name='date.format'/></span>
           </div>
           <div class="newline"></div>
           <div class="leftMedium" id="formationPeriodDiv" visible='false'>

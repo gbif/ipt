@@ -57,7 +57,7 @@ public class TemporalCoverage implements Serializable {
 	 * @see http://rs.tdwg.org/ontology/voc/Collection#livingTimePeriodCoverage 
 	 */
 	private String livingTimePeriod;
-
+	
 	/**
 	 * Required by Struts2
 	 */
@@ -99,10 +99,12 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public Date getEndDate() {
+	  if(endDate == null) return endDate; 
 		return new Date(endDate.getTime());
 	}
 
 	public Date getStartDate() {
+	  if(startDate == null) return startDate;
 		return new Date(startDate.getTime());
 	}
 
@@ -131,16 +133,10 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public void setStartDate(Date startDate) {
-	  if(this.endDate != null && startDate.compareTo(this.endDate)>0){
-	    this.endDate = startDate;
-	  }
 		this.startDate = startDate;
 	}
 
 	public void setEndDate(Date endDate) {
-	  if(this.startDate != null && endDate.compareTo(this.startDate)<0){
-	    this.startDate = endDate;
-	  }
 		this.endDate = endDate;
 	}
 
@@ -158,6 +154,14 @@ public class TemporalCoverage implements Serializable {
     return TemporalCoverageType.SINGLE_DATE;	    
 	}
 
+  public void correctDateOrder() {
+    if(startDate != null && endDate != null && startDate.compareTo(endDate)>0) {
+      Date d = startDate;
+      startDate = endDate;
+      endDate = d;
+    }
+  }
+  
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(livingTimePeriod, endDate, formationPeriod, startDate);
