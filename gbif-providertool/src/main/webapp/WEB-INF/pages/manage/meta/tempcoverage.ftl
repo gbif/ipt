@@ -46,17 +46,6 @@
 
   google.load("jquery", "1.4.2");
 
-//  function toggleSingleDate(checkbox){
-//    Effect.toggle('endDateDiv', 'appear', { duration: 0.3 });
-//        if(checkbox.checked){
-//            // $('startDate').focus();
-//            $('endDate').value=$('startDate').value;
-//            $('endDate').hide();
-//        } else {
-//            $('endDate').show();
-//        }
-//  }
-
   function HideTemporalCoverageClone() {
     $('#removeLink').hide();
     $('#cloneTemporalCoverage').hide();
@@ -108,6 +97,7 @@
     <@s.hidden name="guid" value="${(resource.guid)!}"/>
     <@s.hidden name="nextPage" value="project"/>
     <@s.hidden name="method" value="temporalCoverages"/>
+
     <div id="temporalCoveragePanel" class="newline">
       <!-- The cloneTemporalCoverage DIV is not attached to the DOM. It's used as a template
            for cloning temporalCoverage UI widgets. 
@@ -119,32 +109,40 @@
           <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='eml.temporalCoverage'/> ]</a>
         </div>
         <div class="newline"></div>
+
         <div class="leftxhalf" id="typeDiv">
-          <@s.select id="type" key="" label="%{getText('temporalCoverage.type')}"
-            list="temporalCoverageTypeMap.entrySet()" value="temporalCoverageType.name()" listKey="key"
+          <@s.select id="type" key="" 
+            label="%{getText('temporalCoverage.type')}"
+            list="temporalCoverageTypeMap.entrySet()" 
+            value="temporalCoverageType.name()" listKey="key"
             listValue="value" required="true"/>
         </div>
         <div class="newline"></div>
+        
         <div>
-          <div class="leftMedium" id="startDateDiv" visible='false'>
+          <div class="leftMedium" id="startDateDiv">
             <@s.textfield id="startDate" key="" 
-            label="%{getText('temporalCoverage.startDate')}" required="true" cssClass="text medium"/>
+              label="%{getText('temporalCoverage.startDate')}" 
+              required="true" cssClass="text medium"/>
           </div>
-          <div class="leftMedium" id="endDateDiv" visible='false'>
+          <div class="leftMedium" id="endDateDiv">
             <@s.textfield id="endDate" key="" 
-            label="%{getText('temporalCoverage.endDate')}" required="false" cssClass="text medium"/>
+              label="%{getText('temporalCoverage.endDate')}" 
+              required="false" cssClass="text medium"/>
           </div>
-          <div class="left" id='exampleDiv' visible='false'>
-            <span><@s.text name='metadata.temporalCoverageExample'/> <@s.text name='date.format'/></span>
+          <div class="left" id='exampleDiv'>
+            <span><@s.text name='metadata.termporalCoverageExample'/> <@s.text name='date.format'/></span>
           </div>
           <div class="newline"></div>
-          <div class="leftMedium" id="formationPeriodDiv" visible='false'>
+          <div class="leftMedium" id="formationPeriodDiv">
             <@s.textfield id="formationPeriod" key="" 
-            label="%{getText('temporalCoverage.formationPeriod')}" required="false" cssClass="text medium"/>
+            label="%{getText('temporalCoverage.formationPeriod')}" 
+            required="false" cssClass="text medium"/>
           </div>
-          <div class="leftMedium" id="livingTimePeriodDiv" visible='false'>
+          <div class="leftMedium" id="livingTimePeriodDiv">
             <@s.textfield id="livingTimePeriod" key="" 
-            label="%{getText('temporalCoverage.livingTimePeriod')}" required="false" cssClass="text medium"/>
+            label="%{getText('temporalCoverage.livingTimePeriod')}" 
+            required="false" cssClass="text medium"/>
           </div>
         </div>
         <div class="newline"></div>

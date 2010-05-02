@@ -36,10 +36,10 @@ public class JGTICuratorialUnit implements Serializable {
 	private static final long serialVersionUID = 4302214747473277031L;
 
 	private String unitType;
+  private Integer rangeStart;
 	private Integer rangeEnd;
-	private Integer rangeStart;
+  private Integer rangeMean;
 	private Integer uncertaintyMeasure;
-//	private Integer unit;
 	
 	/**
 	 * Required by Struts2
@@ -56,59 +56,63 @@ public class JGTICuratorialUnit implements Serializable {
 			return false;
 		}
 		JGTICuratorialUnit o = (JGTICuratorialUnit) other;
-  return equal(rangeEnd, o.rangeEnd) && equal(rangeStart, o.rangeStart) && equal(uncertaintyMeasure, o.uncertaintyMeasure) && equal(unitType, o.unitType);
-//    return equal(rangeEnd, o.rangeEnd) && equal(rangeStart, o.rangeStart) && equal(uncertaintyMeasure, o.uncertaintyMeasure) && equal(unit, o.unit);
+    return equal(rangeStart, o.rangeStart) && equal(rangeEnd, o.rangeEnd) && equal(rangeMean, o.rangeMean) && equal(uncertaintyMeasure, o.uncertaintyMeasure) && equal(unitType, o.unitType);
 	}
 
   public String getUnitType() {
     return unitType;
   }
 
+  public Integer getRangeStart() {
+    return rangeStart;
+  }
+
   public Integer getRangeEnd() {
     return rangeEnd;
   }
 
-	public Integer getRangeStart() {
-		return rangeStart;
-	}
+  public Integer getRangeMean() {
+    return rangeMean;
+  }
 
 	public Integer getUncertaintyMeasure() {
 		return uncertaintyMeasure;
 	}
 
-//	public Integer getUnit() {
-//		return unit;
-//	}
-	
   public void setUnitType(String unittype) {
     this.unitType = unittype;
-  }
-
-  public void setRangeEnd(Integer rangeEnd) {
-    this.rangeEnd = rangeEnd;
   }
 
 	public void setRangeStart(Integer rangeStart) {
 		this.rangeStart = rangeStart;
 	}
 
+  public void setRangeEnd(Integer rangeEnd) {
+    this.rangeEnd = rangeEnd;
+  }
+
+  public void setRangeMean(Integer rangeMean) {
+    this.rangeMean = rangeMean;
+  }
+
 	public void setUncertaintyMeasure(Integer uncertaintyMeasure) {
 		this.uncertaintyMeasure = uncertaintyMeasure;
 	}
 
-//	public void setUnit(Integer unit) {
-//		this.unit = unit;
-//	}
+	 public JGTICuratorialUnitType getType() {
+	    if(this.uncertaintyMeasure != null){
+	      return JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY;
+	    }
+	    return JGTICuratorialUnitType.COUNT_RANGE;
+	  }
 
 	@Override
 	public int hashCode() {
-    return Objects.hashCode(rangeEnd, rangeStart, uncertaintyMeasure);
-//    return Objects.hashCode(rangeEnd, rangeStart, uncertaintyMeasure, unit);
+    return Objects.hashCode(rangeStart, rangeEnd, rangeMean, uncertaintyMeasure, unitType);
 	}
 
 	@Override
 	public String toString() {
-    return String.format("RangeEnd=%s, RangeStart=%s, UncertaintyMeasure=%s, UnitType=%s", rangeEnd, rangeStart, uncertaintyMeasure, unitType);
-//    return String.format("RangeEnd=%s, RangeStart=%s, UncertaintyMeasure=%s, Unit=%d", rangeEnd, rangeStart, uncertaintyMeasure, unit);
+    return String.format("RangeStart=%s, RangeEnd=%s, RangeMean=%s, UncertaintyMeasure=%s, UnitType=%s", rangeStart, rangeEnd, rangeMean, uncertaintyMeasure, unitType);
 	}
 }
