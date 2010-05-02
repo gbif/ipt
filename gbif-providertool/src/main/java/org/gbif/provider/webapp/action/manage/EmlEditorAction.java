@@ -441,6 +441,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       validateResource();
     }
     resource.setDirty();
+    for(TemporalCoverage t : eml.getTemporalCoverages()){
+      t.correctDateOrder();
+    }
     emlManager.save(eml);
     resourceManager.save(resource);
     return SUCCESS;

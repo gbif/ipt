@@ -24,7 +24,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 public class DateUtil {
     private static Log log = LogFactory.getLog(DateUtil.class);
     private static final String TIME_PATTERN = "HH:mm";
-    private static final String DEFAULT_DATE_PATTERN = "MM/dd/yyyy";
+//    private static final String DEFAULT_DATE_PATTERN = "MM/dd/yyyy";
+    private static final String DEFAULT_DATE_PATTERN = "yyyy-mm-dd";
 
     /**
      * Checkstyle rule: utility classes should not have public constructor

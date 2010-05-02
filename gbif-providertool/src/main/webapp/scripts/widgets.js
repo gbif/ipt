@@ -258,38 +258,39 @@ function TemporalCoverageWidget(temporalCoverage) {
   function showType(element, type) {
     var id = element.attr('id');
     var evalue = element.attr('value');
-//    $(element).find('#typeDiv').hide();
     if (type == 'SINGLE_DATE') {
       // TODO: Update UI for Single Date selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').hide();
-      $(element).find('#endDateDiv').attr('value', null);
+      $(element).find('#endDate').attr('value', null);
       $(element).find('#exampleDiv').show();
       $(element).find('#formationPeriodDiv').hide();
-      $(element).find('#formationPeriodDiv').attr('value', null);
+      $(element).find('#formationPeriod').attr('value', null);
       $(element).find('#livingTimePeriodDiv').hide();
-      $(element).find('#livingTimePeriodDiv').attr('value', null);
+      $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'DATE_RANGE') {
       // TODO: Update UI for Date Range selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').show();
       $(element).find('#exampleDiv').show();
       $(element).find('#formationPeriodDiv').hide();
-      $(element).find('#formationPeriodDiv').attr('value', null);
+      $(element).find('#formationPeriod').attr('value', null);
       $(element).find('#livingTimePeriodDiv').hide();      
-      $(element).find('#livingTimePeriodDiv').attr('value', null);
+      $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'FORMATION_PERIOD') {
       // TODO: Update UI for Formation Period selection.
       $(element).find('#startDateDiv').hide();
+      $(element).find('#startDate').attr('value', null);
       $(element).find('#endDateDiv').hide();
-      $(element).find('#endDateDiv').attr('value', null);
+      $(element).find('#endDate').attr('value', null);
       $(element).find('#exampleDiv').hide();
       $(element).find('#formationPeriodDiv').show();
       $(element).find('#livingTimePeriodDiv').hide();      
-      $(element).find('#livingTimePeriodDiv').attr('value', null);
+      $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'LIVING_TIME_PERIOD') {
       // TODO: Update UI for Living Time Period selection.
       $(element).find('#startDateDiv').hide();
+      $(element).find('#startDate').attr('value', null);
       $(element).find('#endDateDiv').hide();
       $(element).find('#endDateDiv').attr('value', null);
       $(element).find('#exampleDiv').hide();
@@ -359,43 +360,42 @@ function TemporalCoveragePanel() {
    */
   function reselect(element, type) {
     var id = element.attr('id');
-//    $(element).find('#typeDiv').hide();
     if (type == 'SINGLE_DATE') {
       // TODO: Update UI for Single Date selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').hide();
-      $(element).find('#endDateDiv').attr('value', null);
+      $(element).find('#endDate').attr('value', null);
       $(element).find('#exampleDiv').show();
       $(element).find('#formationPeriodDiv').hide();
-      $(element).find('#formationPeriodDiv').attr('value', null);
+      $(element).find('#formationPeriod').attr('value', null);
       $(element).find('#livingTimePeriodDiv').hide();
-      $(element).find('#livingTimePeriodDiv').attr('value', null);
+      $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'DATE_RANGE') {
       // TODO: Update UI for Date Range selection.
       $(element).find('#startDateDiv').show();
       $(element).find('#endDateDiv').show();
       $(element).find('#exampleDiv').show();
-      $(element).find('#formationPeriodDiv').hide();
-      $(element).find('#formationPeriodDiv').attr('value', null);
+      $(element).find('#formationPeriod').hide();
+      $(element).find('#formationPeriod').attr('value', null);
       $(element).find('#livingTimePeriodDiv').hide();      
-      $(element).find('#livingTimePeriodDiv').attr('value', null);
+      $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'FORMATION_PERIOD') {
       // TODO: Update UI for Formation Period selection.
       $(element).find('#startDateDiv').hide();
       $(element).find('#endDateDiv').hide();
-      $(element).find('#endDateDiv').attr('value','');
+      $(element).find('#endDate').attr('value','');
       $(element).find('#exampleDiv').hide();
       $(element).find('#formationPeriodDiv').show();
       $(element).find('#livingTimePeriodDiv').hide();      
-      $(element).find('#livingTimePeriodDiv').attr('value', null);
+      $(element).find('#livingTimePeriod').attr('value', null);
     } else if (type == 'LIVING_TIME_PERIOD') {
       // TODO: Update UI for Living Time Period selection.
       $(element).find('#startDateDiv').hide();
       $(element).find('#endDateDiv').hide();
-      $(element).find('#endDateDiv').attr('value', null);
+      $(element).find('#endDate').attr('value', null);
       $(element).find('#exampleDiv').hide();
       $(element).find('#formationPeriodDiv').hide();
-      $(element).find('#formationPeriodDiv').attr('value', null);
+      $(element).find('#formationPeriod').attr('value', null);
       $(element).find('#livingTimePeriodDiv').show();      
     }
   }
