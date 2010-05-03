@@ -94,8 +94,23 @@
                 <url function="information">${eml.distributionUrl!}</url>
             </online>
         </distribution>
-        
-        <coverage>
+                    
+        <coverage>        
+            <#if (eml.geographicCoverage)??>
+            <geographicCoverage>
+                <geographicDescription>${eml.geographicCoverage.description!}</geographicDescription>
+                <#if eml.geographicCoverage.boundingCoordinates.min?exists>
+                <boundingCoordinates>
+                    <westBoundingCoordinate>${eml.geographicCoverage.boundingCoordinates.min.longitude!}</westBoundingCoordinate>
+                    <eastBoundingCoordinate>${eml.geographicCoverage.boundingCoordinates.max.longitude!}</eastBoundingCoordinate>
+                    <northBoundingCoordinate>${eml.geographicCoverage.boundingCoordinates.max.latitude!}</northBoundingCoordinate>
+                    <southBoundingCoordinate>${eml.geographicCoverage.boundingCoordinates.min.latitude!}</southBoundingCoordinate>
+                </boundingCoordinates>    
+                </#if>            
+            </geographicCoverage>
+            </#if>
+
+            <!-- For supporting multiple geocovereages        
             <#if (eml.geospatialCoverages ? size > 0)>
             <#list eml.getGeospatialCoverages() as geocoverage>
             <geographicCoverage>
@@ -111,7 +126,8 @@
             </geographicCoverage>
             </#list>
             </#if>
-
+            -->
+            
             <#if (eml.temporalCoverages ? size > 0)>
             <#list eml.getTemporalCoverages() as tempcoverage>
             <temporalCoverage>
