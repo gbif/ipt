@@ -144,7 +144,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   private Map<String, String> agentRoleMap;
   private Map<String, String> temporalCoverageTypeMap;
   private Map<String, String> curatorialUnitTypeMap;
+
   private Map<String, String> methodTypeMap;
+
   private List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
 
   private String method;
@@ -167,6 +169,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public String getCountryVocUri() {
     return Vocabulary.Country.uri;
+  }
+
+  public Map<String, String> getCuratorialUnitTypeMap() {
+    return curatorialUnitTypeMap;
   }
 
   public Eml getEml() {
@@ -223,6 +229,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public List getRoles() {
     return Arrays.asList(Role.values());
+  }
+
+  public List<Rank> getTaxonHigherRankList() {
+    return taxonHigherRankList;
+  }
+
+  public Map<String, String> getTemporalCoverageTypeMap() {
+    return temporalCoverageTypeMap;
   }
 
   @Override
