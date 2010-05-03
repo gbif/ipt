@@ -104,31 +104,56 @@ public class Method implements Serializable {
     return studyExtent;
   }
 
+  public MethodType getType() {
+    if(this.stepDescription != null && this.stepDescription.length()>0){
+      return MethodType.METHOD_STEP;
+    } else if(this.qualityControl != null && this.qualityControl.length()>0) {
+      return MethodType.QUALITY_CONTROL;
+    }
+    return MethodType.SAMPLING;
+  }
+
   /**
    * @param qualityControl the qualityControl to set
    */
   public void setQualityControl(String qualityControl) {
-    this.qualityControl = qualityControl;
+    if(qualityControl != null && qualityControl.length() == 0 )
+      this.qualityControl=null;
+    else {
+      this.qualityControl = qualityControl;
+    }
   }
 
   /**
    * @param sampleDescription the sampleDescription to set
    */
   public void setSampleDescription(String sampleDescription) {
-    this.sampleDescription = sampleDescription;
+    if(sampleDescription != null && sampleDescription.length() == 0 )
+      this.sampleDescription=null;
+    else {
+      this.sampleDescription = sampleDescription;
+    }
   }
 
   /**
    * @param stepDescription the stepDescription to set
    */
   public void setStepDescription(String stepDescription) {
-    this.stepDescription = stepDescription;
+    if(stepDescription != null && stepDescription.length() == 0 )
+      this.stepDescription=null;
+    else {
+      this.stepDescription = stepDescription;
+    }
   }
 
   /**
    * @param studyExtent the studyExtent to set
    */
   public void setStudyExtent(String studyExtent) {
-    this.studyExtent = studyExtent;
+    if(studyExtent != null && studyExtent.length() == 0 )
+      this.studyExtent=null;
+    else {
+      this.studyExtent = studyExtent;
+    }
   }
 }

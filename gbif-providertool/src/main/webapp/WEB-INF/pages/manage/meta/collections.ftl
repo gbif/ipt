@@ -134,7 +134,7 @@
 
         <div class="leftxhalf" id="typeDiv">
           <@s.select id="type" key="" 
-            label="%{getText('jgtiCuratorialUnit.type')}"
+            label="%{getText('samplingmethod.type')}"
             list="curatorialUnitTypeMap.entrySet()" 
             value="curatorialUnitType.name()" listKey="key"
             listValue="value" required="true"/>
@@ -144,8 +144,6 @@
         <div>
           <div class="leftMedium" id="rangeStartDiv">
             <@s.textfield id="rangeStart" key="" 
-              rangelabel="%{getText('jgtiCuratorialUnit.rangeMean')}"
-              countlabel="%{getText('jgtiCuratorialUnit.rangeStart')}"
               label="%{getText('jgtiCuratorialUnit.rangeStart')}"
               required="false" cssClass="text medium"/>
           </div>
@@ -189,4 +187,4 @@
       <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
     </div>
   </fieldset>
-</@s.form>  
+</@s.form>

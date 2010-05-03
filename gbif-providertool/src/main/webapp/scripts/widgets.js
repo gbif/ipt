@@ -469,6 +469,9 @@ function SamplingMethodWidget(samplingMethod) {
   }  
   this._elementId = '';
   this.element = element;
+  this.showType = showType;
+  var methodType = e.find('#type').attr('value');
+  this.showType(e, methodType);
   
   function element(val) {
     if (!val) {
@@ -476,6 +479,42 @@ function SamplingMethodWidget(samplingMethod) {
     } else { 
       this._element = val;
       return this;
+    }
+  }
+
+  /* Show and hide elements as appropriate based on type */
+  function showType(element, type) {
+    var id = element.attr('id');
+    var evalue = element.attr('value');
+    var startval =  $(element).find('#rangeStart').attr('value');
+    var endval =  $(element).find('#rangeEnd').attr('value');
+    var meanval =  $(element).find('#rangeMean').attr('value');
+    if (type == 'METHOD_STEP') {
+      // Update UI for Method Step selection
+      $(element).find('#stepDescriptionDiv').show();
+      $(element).find('#studyExtentDiv').hide();
+      $(element).find('#studyExtent').attr('value', null);
+      $(element).find('#sampleDescriptionDiv').hide();
+      $(element).find('#sampleDescription').attr('value', null);
+      $(element).find('#qualityControlDiv').hide();
+      $(element).find('#qualityControl').attr('value', null);
+    } else if (type == 'SAMPLING') {
+      // Update UI for Sampling selection
+      $(element).find('#stepDescriptionDiv').hide();
+      $(element).find('#stepDescription').attr('value', null);
+      $(element).find('#studyExtentDiv').show();
+      $(element).find('#sampleDescriptionDiv').show();
+      $(element).find('#qualityControlDiv').hide();
+      $(element).find('#qualityControl').attr('value', null);
+    } else if (type == 'QUALITY_CONTROL') {
+      // Update UI for Quality Control selection
+      $(element).find('#stepDescriptionDiv').hide();
+      $(element).find('#stepDescription').attr('value', null);
+      $(element).find('#studyExtentDiv').hide();
+      $(element).find('#studyExtent').attr('value', null);
+      $(element).find('#sampleDescriptionDiv').hide();
+      $(element).find('#sampleDescription').attr('value', null);
+      $(element).find('#qualityControlDiv').show();
     }
   }
 } 
@@ -490,6 +529,7 @@ function SamplingMethodPanel() {
   this._samplingMethodSelector = "div[id^='samplingMethod']";
   this._samplingMethodIdPattern = /samplingMethod\d+/;
   this.add = add;
+  this.reselect = reselect;
   this._remove = _remove;
   this._resize = _resize;
   this.size = size;
@@ -528,6 +568,36 @@ function SamplingMethodPanel() {
    });
   }
  
+   /* Show and hide elements as appropriate based on type */
+  function reselect(element, type) {
+    if (type == 'METHOD_STEP') {
+      // Update UI for Method Step selection
+      $(element).find('#stepDescriptionDiv').show();
+      $(element).find('#studyExtentDiv').hide();
+      $(element).find('#studyExtent').attr('value', null);
+      $(element).find('#sampleDescriptionDiv').hide();
+      $(element).find('#sampleDescription').attr('value', null);
+      $(element).find('#qualityControlDiv').hide();
+      $(element).find('#qualityControl').attr('value', null);
+    } else if (type == 'SAMPLING') {
+      // Update UI for Sampling selection
+      $(element).find('#stepDescriptionDiv').hide();
+      $(element).find('#stepDescription').attr('value', null);
+      $(element).find('#studyExtentDiv').show();
+      $(element).find('#sampleDescriptionDiv').show();
+      $(element).find('#qualityControlDiv').hide();
+      $(element).find('#qualityControl').attr('value', null);
+    } else if (type == 'QUALITY_CONTROL') {
+      // Update UI for Quality Control selection
+      $(element).find('#stepDescriptionDiv').hide();
+      $(element).find('#stepDescription').attr('value', null);
+      $(element).find('#studyExtentDiv').hide();
+      $(element).find('#studyExtent').attr('value', null);
+      $(element).find('#sampleDescriptionDiv').hide();
+      $(element).find('#sampleDescription').attr('value', null);
+      $(element).find('#qualityControlDiv').show();
+    }
+  }
 
   /**
    * Removes the element from the DOM.
@@ -547,11 +617,21 @@ function SamplingMethodPanel() {
     var count = this.size();
     var e = widget.element();
     e.attr('id', 'samplingMethod' + count);
+    
     var _this = this;
     e.find('#removeLink').click(function() {      
       var id = '#' + $(this).parent().parent().attr('id');
       _this._remove($(id));
       _this._resize();
+    });
+    e.find('#type').change(function(e) {  
+      // Careful: In the change() callback, 'this' refers to the select element.
+      // e is the event.
+      var s = this.options[this.selectedIndex];
+      var sText = s.text;
+      var sValue = s.value;
+      var id = '#' + $(this).parent().parent().parent().parent().attr('id');
+      _this.reselect($(id), sValue);
     });
     e.appendTo(this._element);
     e.show();

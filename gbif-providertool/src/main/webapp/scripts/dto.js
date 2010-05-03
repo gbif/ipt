@@ -396,13 +396,15 @@ function SamplingMethod() {
   this._stepDescription = '';
   this._studyExtent = '';
   this._sampleDescription = '';
-  this._qualityControl = '';
+  this._qualityControl = ''
+  this._type = '';
   
   this.stepDescription = stepDescription;
   this.studyExtent = studyExtent;
   this.sampleDescription = sampleDescription;
   this.qualityControl = qualityControl;
-  
+  this.type = type;
+    
   function stepDescription(val) {
     if (val == null) {
       return this._stepDescription;
@@ -439,10 +441,18 @@ function SamplingMethod() {
     }
   }
   
+  function type(val) {
+    if (val == null) {
+      return this._type;
+    } else { 
+      this._type = val;
+      return this;
+    }
+  }
 }
 
 SamplingMethod.propertyNames = function() {
-  return ['stepDescription', 'studyExtent', 'sampleDescription', 'qualityControl'];
+  return ['stepDescription', 'studyExtent', 'sampleDescription', 'qualityControl', 'type'];
 }
 
 function PhysicalData() {
