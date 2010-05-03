@@ -26,7 +26,6 @@ import org.gbif.provider.model.eml.MethodType;
 import org.gbif.provider.model.eml.PhysicalData;
 import org.gbif.provider.model.eml.Project;
 import org.gbif.provider.model.eml.Role;
-import org.gbif.provider.model.eml.TaxonKeyword;
 import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.eml.TemporalCoverage;
 import org.gbif.provider.model.eml.TemporalCoverageType;
@@ -65,7 +64,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     Preparable, ServletRequestAware {
 
   /**
-   * Enumeration of method types.
+   * Enumeration of method type.
    * 
    */
   private enum RequestMethod {
@@ -147,7 +146,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   private Map<String, String> curatorialUnitTypeMap;
   private Map<String, String> methodTypeMap;
   private List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
-  
+
   private String method;
 
   @Override
@@ -160,22 +159,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public Map<String, String> getAgentRoleMap() {
     return agentRoleMap;
-  }
-
-  public Map<String, String> getTemporalCoverageTypeMap() {
-    return temporalCoverageTypeMap;
-  }
-
-  public Map<String, String> getCuratorialUnitTypeMap() {
-    return curatorialUnitTypeMap;
-  }
-
-  public Map<String, String> getMethodTypeMap() {
-    return methodTypeMap;
-  }
-
-  public List<Rank> getTaxonHigherRankList() {
-    return taxonHigherRankList;
   }
 
   public AppConfig getConfig() {
@@ -210,6 +193,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     return method;
   }
 
+  public Map<String, String> getMethodTypeMap() {
+    return methodTypeMap;
+  }
+
   public String getNext() {
     return next;
   }
@@ -238,16 +225,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     return Arrays.asList(Role.values());
   }
 
-//  public String getTaxonomicClassification() {
-//    String coverage = "";
-//    // for (TaxonKeyword k : eml.getTaxonomicClassification()) {
-//    // if (k != null) {
-//    // coverage += k.getScientificName() + ", ";
-//    // }
-//    // }
-//    return coverage.substring(0, coverage.lastIndexOf(","));
-//  }
-
   @Override
   public void prepare() {
     super.prepare();
@@ -261,7 +238,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         MethodType.htmlSelectMap), true);
     switch (method(request)) {
       case ORGANISATION:
-        // Nothing to do here unless the Organisation form has elements whose values are destined for eml.
+        // Nothing to do here unless the Organisation form has elements whose
+        // values are destined for eml.
         break;
       case ASSOCIATED_PARTIES:
         if (eml == null && resource != null) {
@@ -340,9 +318,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           // eml was populated via Struts.
           List<String> citations = eml.getBibliographicCitations();
           String citation = eml.getCitation();
-          
+
           eml = emlManager.load(resource);
-          
+
           eml.setBibliographicCitations(citations);
           eml.setCitation(citation);
         }
@@ -352,7 +330,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           // eml equals null means that the form was submitted with zero
           // CuratorialUnits.
           eml = emlManager.load(resource);
-          
+
           eml.setCollectionName("");
           eml.setCollectionId("");
           eml.setParentCollectionId("");
@@ -363,9 +341,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           String collectionId = eml.getCollectionId();
           String parentCollectionId = eml.getParentCollectionId();
           List<JGTICuratorialUnit> curatorialUnits = eml.getJgtiCuratorialUnits();
-          
+
           eml = emlManager.load(resource);
-          
+
           eml.setCollectionName(collectionName);
           eml.setCollectionId(collectionId);
           eml.setParentCollectionId(parentCollectionId);
@@ -421,9 +399,9 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           String purpose = eml.getPurpose();
           String intellectualRights = eml.getIntellectualRights();
           String additionalInfo = eml.getAdditionalInfo();
-          
+
           eml = emlManager.load(resource);
-          
+
           eml.setPubDate(pubDate);
           eml.setDistributionUrl(distributionUrl);
           eml.setPurpose(purpose);
@@ -457,7 +435,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       validateResource();
     }
     resource.setDirty();
-    for(TemporalCoverage t : eml.getTemporalCoverages()){
+    for (TemporalCoverage t : eml.getTemporalCoverages()) {
       t.correctDateOrder();
     }
     emlManager.save(eml);
@@ -503,16 +481,16 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     this.request = request;
   }
 
-//  public void setTaxonomicClassification(String taxonomicCoverage) {
-//    List<TaxonKeyword> keywords = new ArrayList<TaxonKeyword>();
-//    for (String k : StringUtils.split(taxonomicCoverage, ",")) {
-//      k = StringUtils.trimToNull(k);
-//      if (k != null) {
-//        // keywords.add(TaxonKeyword.create(k, null, null));
-//      }
-//    }
-//    // eml.setTaxonomicClassification(keywords);
-//  }
+  // public void setTaxonomicClassification(String taxonomicCoverage) {
+  // List<TaxonKeyword> keywords = new ArrayList<TaxonKeyword>();
+  // for (String k : StringUtils.split(taxonomicCoverage, ",")) {
+  // k = StringUtils.trimToNull(k);
+  // if (k != null) {
+  // // keywords.add(TaxonKeyword.create(k, null, null));
+  // }
+  // }
+  // // eml.setTaxonomicClassification(keywords);
+  // }
 
   private void validateResource() {
     Organisation org = Organisation.builder().password(
