@@ -58,7 +58,8 @@
             .stepDescription("<@s.property value="stepDescription"/>")
             .studyExtent("<@s.property value="studyExtent"/>")
             .sampleDescription("<@s.property value="sampleDescription"/>")
-            .qualityControl("<@s.property value="qualityControl"/>");
+            .qualityControl("<@s.property value="qualityControl"/>")
+            .type("<@s.property value="type"/>");
         </@s.iterator>
       </#if>
       return samplingMethods;
@@ -83,69 +84,75 @@
 //]]>
 
   </script>
-
 </head>
 
 <div class="break10"></div>
 <p class="explMt"><@s.text name='metadata.description.methods'/></p>
 <@s.form id="emlForm" action="methods" enctype="multipart/form-data" method="post">
-
-<fieldset>
-  <@s.hidden name="resourceId" value="${(resource.id)!}"/>
-  <@s.hidden name="resourceType" value="${(resourceType)!}"/>
-  <@s.hidden name="guid" value="${(resource.guid)!}"/>
-  <@s.hidden name="nextPage" value="citations"/>
-  <@s.hidden name="method" value="samplingMethods"/>
+  <fieldset>
+    <@s.hidden name="resourceId" value="${(resource.id)!}"/>
+    <@s.hidden name="resourceType" value="${(resourceType)!}"/>
+    <@s.hidden name="guid" value="${(resource.guid)!}"/>
+    <@s.hidden name="nextPage" value="citations"/>
+    <@s.hidden name="method" value="samplingMethods"/>
   
-  <div id="samplingMethodPanel" class="newline">
-    <!-- The cloneSamplingMethods DIV is not attached to the DOM. It's used as a template
-       for cloning sampling method UI widgets. 
-    -->
-    <div id="cloneSamplingMethods">
-      <div id="separator" class="horizontal_dotted_line_large_foo"></div>
-      <div class="newline"></div>
-      <div class="right">
-        <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='eml.methods'/> ]</a>
-      </div>
-      <div class="newline"></div>
+    <div id="samplingMethodPanel" class="newline">
+      <!-- The cloneSamplingMethods DIV is not attached to the DOM. It's used as a template
+           for cloning sampling method UI widgets. 
+      -->
+      <div id="cloneSamplingMethods">
+        <div id="separator" class="horizontal_dotted_line_large_foo"></div>
+        <div class="newline"></div>
+        <div class="right">
+          <a id="removeLink" href="" onclick="return false;">[ <@s.text name='metadata.removethis'/> <@s.text name='eml.methods'/> ]</a>
+        </div>
+        <div class="newline"></div>
 
-      <div id="SamplingMethodDiv">
-        <div id="stepDescriptionDiv">
-          <@s.textarea id="stepDescription" key="" 
-          label="%{getText('method.stepDescription')}" required="false" cssClass="text xlarge slim"/>
+        <div class="leftxhalf" id="typeDiv">
+          <@s.select id="type" key="" 
+            label="%{getText('method.type')}"
+            list="methodTypeMap.entrySet()" 
+            value="methodType.name()" listKey="key"
+            listValue="value" required="true"/>
         </div>
-        <div id="studyExtentDiv">
-          <@s.textarea id="studyExtent" key="" 
-          label="%{getText('method.studyExtent')}" required="false" cssClass="text text xlarge slim"/>
+        <div class="newline"></div>
+
+        <div id="SamplingMethodDiv">
+          <div id="stepDescriptionDiv">
+            <@s.textarea id="stepDescription" key="" 
+            label="%{getText('method.stepDescription')}" required="false" cssClass="text xlarge slim"/>
+          </div>
+          <div id="studyExtentDiv">
+            <@s.textarea id="studyExtent" key="" 
+            label="%{getText('method.studyExtent')}" required="false" cssClass="text text xlarge slim"/>
+          </div>
+          <div id="sampleDescriptionDiv">
+            <@s.textarea id="sampleDescription" key="" 
+            label="%{getText('method.sampleDescription')}" required="false" cssClass="text text xlarge slim"/>
+          </div>
+          <div id="qualityControlDiv">
+            <@s.textarea id="qualityControl" key="" 
+            label="%{getText('method.qualityControl')}" required="false" cssClass="text text xlarge slim"/>
+          </div>
         </div>
-        <div id="sampleDescriptionDiv">
-          <@s.textarea id="sampleDescription" key="" 
-          label="%{getText('method.sampleDescription')}" required="false" cssClass="text text xlarge slim"/>
-        </div>
-        <div id="qualityControlDiv">
-          <@s.textarea id="qualityControl" key="" 
-          label="%{getText('method.qualityControl')}" required="false" cssClass="text text xlarge slim"/>
-        </div>
+        <div class="newline"></div>
+        <div class="newline"></div>
+        <div class="newline"></div>
+        <div class="newline"></div>
       </div>
-      <div class="newline"></div>
-      <div class="newline"></div>
-      <div class="newline"></div>
-      <div class="newline"></div>
     </div>
-  </div>
 
-  <div class="left">
-    <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='eml.methods'/></a>
-  </div>
-  <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="newline"></div>
-  <div class="breakLeftButtons">
-    <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
-    <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
-  </div>
-</fieldset>
-
+    <div class="left">
+      <a id="plus" href="" onclick="return false;"><@s.text name='metadata.addnew'/> <@s.text name='eml.methods'/></a>
+    </div>
+    <div class="newline"></div>
+    <div class="newline"></div>
+    <div class="newline"></div>
+    <div class="newline"></div>
+    <div class="newline"></div>
+    <div class="breakLeftButtons">
+      <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
+      <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+    </div>
+  </fieldset>
 </@s.form>

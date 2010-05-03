@@ -264,7 +264,7 @@
 
        <#if (eml.bibliographicCitations ? size > 0)>
         <bibliography>
-        <#list eml.getCitations() as bcitset>
+        <#list eml.getBibliographicCitations() as bcitset>
         <#list bcitset.bibliographicCitations as bcit>
           <citation>${bcit!}</citation>
         </#list>

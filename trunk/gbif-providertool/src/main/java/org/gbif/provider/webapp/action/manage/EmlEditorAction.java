@@ -22,6 +22,7 @@ import org.gbif.provider.model.eml.JGTICuratorialUnit;
 import org.gbif.provider.model.eml.JGTICuratorialUnitType;
 import org.gbif.provider.model.eml.KeywordSet;
 import org.gbif.provider.model.eml.Method;
+import org.gbif.provider.model.eml.MethodType;
 import org.gbif.provider.model.eml.PhysicalData;
 import org.gbif.provider.model.eml.Project;
 import org.gbif.provider.model.eml.Role;
@@ -144,6 +145,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   private Map<String, String> agentRoleMap;
   private Map<String, String> temporalCoverageTypeMap;
   private Map<String, String> curatorialUnitTypeMap;
+  private Map<String, String> methodTypeMap;
   private List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
   
   private String method;
@@ -166,6 +168,10 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   public Map<String, String> getCuratorialUnitTypeMap() {
     return curatorialUnitTypeMap;
+  }
+
+  public Map<String, String> getMethodTypeMap() {
+    return methodTypeMap;
   }
 
   public List<Rank> getTaxonHigherRankList() {
@@ -251,6 +257,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         TemporalCoverageType.htmlSelectMap), true);
     curatorialUnitTypeMap = translateI18nMap(new HashMap<String, String>(
         JGTICuratorialUnitType.htmlSelectMap), true);
+    methodTypeMap = translateI18nMap(new HashMap<String, String>(
+        MethodType.htmlSelectMap), true);
     switch (method(request)) {
       case ORGANISATION:
         // Nothing to do here unless the Organisation form has elements whose values are destined for eml.

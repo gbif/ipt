@@ -39,30 +39,23 @@ public class Eml implements Serializable {
   private static final long serialVersionUID = 770733523572837495L;
 
   /**
-   * Serialised data
+   * This is not in the GBIF extended metadata document, but seems like a
+   * sensible placeholder that can be used to capture anything missing, and maps
+   * nicely in EML, therefore is added
    */
-  private int emlVersion = 0;
+  private String additionalInfo;
 
   private String alternateIdentifier;
   /**
-   * The IPT resource (note is transient)
+   * The 'associatedParty' element provides the full name of other people,
+   * organizations, or positions who should be associated with the resource.
+   * These parties might play various roles in the creation or maintenance of
+   * the resource, and these roles should be indicated in the "role" element.
    */
-  private transient Resource resource;
+  private List<Agent> associatedParties = Lists.newArrayList();
 
-  // Note that while Sets would be fine, to ease testing, Lists are
-  // used to preserve ordering. A Set implementation that respects ordering
-  // would also suffice
-  // please refer to typed classes for descriptions of the properties and how
-  // they map to EML
-  private List<KeywordSet> keywords = Lists.newArrayList();
   // private List<String> bibliographicCitations = Lists.newArrayList();
   private BibliographicCitationSet bibliographicCitationSet = new BibliographicCitationSet();
-  private List<Method> samplingMethods = Lists.newArrayList();
-
-  private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
-  private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
-  private List<TemporalCoverage> temporalCoverages = Lists.newArrayList();
-  private List<PhysicalData> physicalData = Lists.newArrayList();
   /**
    * A resource that describes a literature citation for the resource, one that
    * might be found in a bibliography. We cannot use
@@ -72,32 +65,48 @@ public class Eml implements Serializable {
    */
   private String citation;
   /**
-   * The 'creator' element provides the full name of the person, organization,
-   * or position who created the resource.
+   * The URI (LSID or URL) of the collection. In RDF, used as URI of the
+   * collection resource.
    * 
-   * @see http
-   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#
-   *      creator
+   * @see http://rs.tdwg.org/ontology/voc/Collection#collectionId
    */
-  private Agent resourceCreator = new Agent();
+  private String collectionId;
 
   /**
-   * The 'metadataProvider' element provides the full name of the person,
-   * organization, or position who created documentation for the resource.
+   * Official name of the Collection in the local language.
+   * 
+   * @see http://purl.org/dc/elements/1.1/title Note: this could potentially be
+   *      sourced from the resource title, but this is declared explicitly in
+   *      the GBIF IPT metadata profile, so must assume that this is required
+   *      for a title in a different language, presumably to aid free text
+   *      discovery in original language
+   */
+  private String collectionName;
+  /**
+   * Date of metadata creation or the last metadata update Default to now(), but
+   * can be overridden
+   */
+  private Date dateStamp = new Date();
+  /**
+   * The distributionType URL is generally meant for informational purposes, and
+   * the "function" attribute should be set to "information".
+   * 
+   */
+  private String distributionUrl;
+  /**
+   * Serialised data
+   */
+  private int emlVersion = 0;
+  private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
+  /**
+   * Dataset level to which the metadata applies. The default value for GBIF is
+   * “dataset”
    * 
    * @see http
-   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#
-   *      metadataProvider
+   *      ://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP
+   *      -Metadata/napMetadataProfileV101.pdf
    */
-  private Agent metadataProvider = new Agent();
-
-  /**
-   * The 'associatedParty' element provides the full name of other people,
-   * organizations, or positions who should be associated with the resource.
-   * These parties might play various roles in the creation or maintenance of
-   * the resource, and these roles should be indicated in the "role" element.
-   */
-  private List<Agent> associatedParties = Lists.newArrayList();
+  private String hierarchyLevel = "dataset";
 
   /**
    * A rights management statement for the resource, or reference a service
@@ -113,11 +122,21 @@ public class Eml implements Serializable {
   private String intellectualRights;
 
   /**
-   * The distributionType URL is generally meant for informational purposes, and
-   * the "function" attribute should be set to "information".
-   * 
+   * A quantitative descriptor (number of specimens, samples or batches). The
+   * actual quantification could be covered by 1) an exact number of “JGI-units”
+   * in the collection plus a measure of uncertainty (+/- x); 2) a range of
+   * numbers (x to x), with the lower value representing an exact number, when
+   * the higher value is omitted.
    */
-  private String distributionUrl;
+  private List<JGTICuratorialUnit> jgtiCuratorialUnits = Lists.newArrayList();
+  // private JGTICuratorialUnit jgtiCuratorialUnit;
+
+  // Note that while Sets would be fine, to ease testing, Lists are
+  // used to preserve ordering. A Set implementation that respects ordering
+  // would also suffice
+  // please refer to typed classes for descriptions of the properties and how
+  // they map to EML
+  private List<KeywordSet> keywords = Lists.newArrayList();
 
   /**
    * The language in which the resource is written. This can be a well-known
@@ -142,6 +161,38 @@ public class Eml implements Serializable {
   private String metadataLanguage = "en";
 
   /**
+   * The GBIF metadata profile states "Describes other languages used in
+   * metadata free text description. Consists of language, country and
+   * characterEncoding" In Java world, a LocaleBundle handles this concisely
+   */
+  private LocaleBundle metadataLocale;
+
+  /**
+   * The 'metadataProvider' element provides the full name of the person,
+   * organization, or position who created documentation for the resource.
+   * 
+   * @see http
+   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#
+   *      metadataProvider
+   */
+  private Agent metadataProvider = new Agent();
+
+  /**
+   * Identifier for the parent collection for this sub-collection. Enables a
+   * hierarchy of collections and sub collections to be built.
+   * 
+   * @see http://rs.tdwg.org/ontology/voc/Collection#isPartOfCollection
+   */
+  private String parentCollectionId;
+
+  private List<PhysicalData> physicalData = Lists.newArrayList();
+
+  /**
+   * The project this resource is associated with
+   */
+  private Project project;
+
+  /**
    * The date that the resource was published. The format should be represented
    * as: CCYY, which represents a 4 digit year, or as CCYY-MM-DD, which denotes
    * the full year, month, and day. Note that month and day are optional
@@ -152,54 +203,27 @@ public class Eml implements Serializable {
   private Date pubDate;
 
   /**
-   * Date of metadata creation or the last metadata update Default to now(), but
-   * can be overridden
+   * This is not in the GBIF extended metadata document, but seems like a
+   * sensible field to maintain, and maps nicely in EML, therefore is added
    */
-  private Date dateStamp = new Date();
+  private String purpose;
 
   /**
-   * Dataset level to which the metadata applies. The default value for GBIF is
-   * “dataset”
+   * The IPT resource (note is transient)
+   */
+  private transient Resource resource;
+
+  /**
+   * The 'creator' element provides the full name of the person, organization,
+   * or position who created the resource.
    * 
    * @see http
-   *      ://www.fgdc.gov/standards/projects/incits-l1-standards-projects/NAP
-   *      -Metadata/napMetadataProfileV101.pdf
+   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#
+   *      creator
    */
-  private String hierarchyLevel = "dataset";
+  private Agent resourceCreator = new Agent();
 
-  /**
-   * The GBIF metadata profile states "Describes other languages used in
-   * metadata free text description. Consists of language, country and
-   * characterEncoding" In Java world, a LocaleBundle handles this concisely
-   */
-  private LocaleBundle metadataLocale;
-
-  /**
-   * Identifier for the parent collection for this sub-collection. Enables a
-   * hierarchy of collections and sub collections to be built.
-   * 
-   * @see http://rs.tdwg.org/ontology/voc/Collection#isPartOfCollection
-   */
-  private String parentCollectionId;
-
-  /**
-   * Official name of the Collection in the local language.
-   * 
-   * @see http://purl.org/dc/elements/1.1/title Note: this could potentially be
-   *      sourced from the resource title, but this is declared explicitly in
-   *      the GBIF IPT metadata profile, so must assume that this is required
-   *      for a title in a different language, presumably to aid free text
-   *      discovery in original language
-   */
-  private String collectionName;
-
-  /**
-   * The URI (LSID or URL) of the collection. In RDF, used as URI of the
-   * collection resource.
-   * 
-   * @see http://rs.tdwg.org/ontology/voc/Collection#collectionId
-   */
-  private String collectionId;
+  private List<Method> samplingMethods = Lists.newArrayList();
 
   /**
    * Picklist keyword indicating the process or technique used to prevent
@@ -210,33 +234,9 @@ public class Eml implements Serializable {
    */
   private String specimenPreservationMethod;
 
-  /**
-   * A quantitative descriptor (number of specimens, samples or batches). The
-   * actual quantification could be covered by 1) an exact number of “JGI-units”
-   * in the collection plus a measure of uncertainty (+/- x); 2) a range of
-   * numbers (x to x), with the lower value representing an exact number, when
-   * the higher value is omitted.
-   */
-  private List<JGTICuratorialUnit> jgtiCuratorialUnits = Lists.newArrayList();
-  // private JGTICuratorialUnit jgtiCuratorialUnit;
+  private List<TaxonomicCoverage> taxonomicCoverages = Lists.newArrayList();
 
-  /**
-   * This is not in the GBIF extended metadata document, but seems like a
-   * sensible placeholder that can be used to capture anything missing, and maps
-   * nicely in EML, therefore is added
-   */
-  private String additionalInfo;
-
-  /**
-   * This is not in the GBIF extended metadata document, but seems like a
-   * sensible field to maintain, and maps nicely in EML, therefore is added
-   */
-  private String purpose;
-
-  /**
-   * The project this resource is associated with
-   */
-  private Project project;
+  private List<TemporalCoverage> temporalCoverages = Lists.newArrayList();
 
   /**
    * Default constructor needed by Struts2
