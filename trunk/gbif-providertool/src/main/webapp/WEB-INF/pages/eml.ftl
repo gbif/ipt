@@ -243,7 +243,7 @@
         </#if>
     </dataset>
 
-    <#if (eml.citation)?? || 
+    <#if ((eml.citation)??) || 
          (eml.bibliographicCitations ? size > 0) || 
          (eml.metadataLanguage)?? || 
          (eml.hierarchyLevel)?? ||
