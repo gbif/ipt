@@ -98,6 +98,10 @@ public class Eml implements Serializable {
    */
   private int emlVersion = 0;
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
+
+  // Support for a single geocoverage until multiple is enabled.
+  private GeospatialCoverage geographicCoverage;
+
   /**
    * Dataset level to which the metadata applies. The default value for GBIF is
    * “dataset”
@@ -379,6 +383,10 @@ public class Eml implements Serializable {
     return emlVersion;
   }
 
+  public GeospatialCoverage getGeographicCoverage() {
+    return geographicCoverage;
+  }
+
   public List<GeospatialCoverage> getGeospatialCoverages() {
     return geospatialCoverages;
   }
@@ -530,6 +538,10 @@ public class Eml implements Serializable {
 
   public void setEmlVersion(int emlVersion) {
     this.emlVersion = emlVersion;
+  }
+
+  public void setGeographicCoverage(GeospatialCoverage geospatialCoverage) {
+    this.geographicCoverage = geospatialCoverage;
   }
 
   public void setGeospatialCoverages(
