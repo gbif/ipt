@@ -226,7 +226,11 @@ public abstract class DataResource extends Resource {
 
   @Transient
   public int getRecTotal() {
-    return getCoreMapping().getRecTotal();
+	  ExtensionMapping core = getCoreMapping();
+	  if (core!=null){
+		    return core.getRecTotal();
+	  }
+	  return 0;
   }
 
   @Transient
