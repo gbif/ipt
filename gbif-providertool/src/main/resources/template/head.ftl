@@ -1,4 +1,5 @@
 <script language="JavaScript" type="text/javascript">
+
     // Dojo configuration
     djConfig = {
         baseRelativePath: "<@s.url includeParams='none' value='/struts/dojo' includeParams="none" encode='false'/>",
