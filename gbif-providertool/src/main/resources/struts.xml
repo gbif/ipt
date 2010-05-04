@@ -539,7 +539,7 @@
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
 			<result name="input">/WEB-INF/pages/manage/metadata.ftl</result>
 			<result name="occ" type="redirect-action">
-				<param name="actionName">meta/organisation</param>
+				<param name="actionName">sources</param>
 				<param name="resourceId">${resource.id}</param>
 			</result>
 			<result name="tax" type="redirect-action">
@@ -547,8 +547,7 @@
 				<param name="resourceId">${resource.id}</param>
 			</result>
 			<result name="meta" type="redirect-action">
-				<param name="actionName">creatorForm</param>
-				<param name="namespace">/manage/meta</param>
+				<param name="actionName">meta/organisation</param>
 				<param name="resourceId">${resource.id}</param>
 			</result>
 			<result name="cancel" type="redirect-action">
