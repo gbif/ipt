@@ -144,5 +144,5 @@
 <h2><@s.text name='mappings.dwc'/></h2>
 <div class="horizontal_dotted_line_large_soft_nm"></div>
 
-<a name="star" />
+<a name="star"></a>
 <img src="<@s.url value='/images/star_scheme.png'/>"/>
