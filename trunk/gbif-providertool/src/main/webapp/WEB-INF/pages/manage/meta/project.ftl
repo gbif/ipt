@@ -16,11 +16,11 @@
  */
 -->
 <head>
-    <title><@s.text name="metadata.heading.projects"/></title>
+    <title><@s.text name="metadata.heading.project"/></title>
     <meta name="resource" content="${eml.title!}"/>
     <meta name="menu" content="ManagerMenu"/>
     <meta name="submenu" content="manage_resource"/>
-	<meta name="heading" content="<@s.text name='metadata.heading.projects'/>"/>
+	<meta name="heading" content="<@s.text name='metadata.heading.project'/>"/>
 	<script src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
       type="text/javascript">
     </script>
@@ -92,7 +92,7 @@
 
 </fieldset>
 
-	<div class="breakRightButtons">
+	<div class="breakLeftButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
  	</div>

@@ -340,6 +340,7 @@ public class Eml implements Serializable {
   }
 
   public String getAdditionalInfo() {
+    if(additionalInfo==null || additionalInfo.length()==0) return null;
     return additionalInfo;
   }
 
@@ -360,14 +361,17 @@ public class Eml implements Serializable {
   }
 
   public String getCitation() {
+    if(citation == null || citation.length() == 0) return null;
     return citation;
   }
 
   public String getCollectionId() {
+    if(collectionId == null || collectionId.length() == 0) return null;
     return collectionId;
   }
 
   public String getCollectionName() {
+    if(collectionName == null || collectionName.length() == 0) return null;
     return collectionName;
   }
 
@@ -376,6 +380,7 @@ public class Eml implements Serializable {
   }
 
   public String getDistributionUrl() {
+    if(distributionUrl==null || distributionUrl.length()==0) return null;
     return distributionUrl;
   }
 
@@ -396,10 +401,12 @@ public class Eml implements Serializable {
   }
 
   public String getHierarchyLevel() {
+    if(hierarchyLevel == null || hierarchyLevel.length() == 0) return null;
     return hierarchyLevel;
   }
 
   public String getIntellectualRights() {
+    if(intellectualRights==null || intellectualRights.length()==0) return null;
     return intellectualRights;
   }
 
@@ -412,6 +419,7 @@ public class Eml implements Serializable {
   }
 
   public String getLanguage() {
+    if(language == null || language.length() == 0) return null;
     return language;
   }
 
@@ -420,10 +428,12 @@ public class Eml implements Serializable {
   }
 
   public String getLogoUrl() {
+    if(logoUrl == null || logoUrl.length() == 0) return null;
     return logoUrl;
   }
 
   public String getMetadataLanguage() {
+    if(metadataLanguage == null || metadataLanguage.length() == 0) return null;
     return metadataLanguage;
   }
 
@@ -436,6 +446,7 @@ public class Eml implements Serializable {
   }
 
   public String getParentCollectionId() {
+    if(parentCollectionId == null || parentCollectionId.length() == 0) return null;
     return parentCollectionId;
   }
 
@@ -452,6 +463,7 @@ public class Eml implements Serializable {
   }
 
   public String getPurpose() {
+    if(purpose == null || purpose.length() == 0) return null;
     return purpose;
   }
 
@@ -468,6 +480,7 @@ public class Eml implements Serializable {
   }
 
   public String getSpecimenPreservationMethod() {
+    if(specimenPreservationMethod == null || specimenPreservationMethod.length() == 0) return null;
     return specimenPreservationMethod;
   }
 

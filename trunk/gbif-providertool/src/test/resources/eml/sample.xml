@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
         This is a complete sample of the GBIF Extended Metadata Profile for the IPT 1.1 represented as EML
-       
         This is the reference sample for Unit testing on consumption and output of the IPT
-       
         The content of this metadata are NOT real data, but drafted just for this sample
         -->
 <eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.1.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://purl.org/dc/terms/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:dc="http://purl.org/dc/terms/"
     xsi:schemaLocation="eml://ecoinformatics.org/eml-2.1.0 eml-gbif-profile.xsd"
     packageId="619a4b95-1a82-4006-be6a-7dbe3c9b33c5/eml-1.xml" system="GBIF-IPT" scope="system">
 

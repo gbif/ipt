@@ -85,7 +85,17 @@ function LoadCountriesAsync(callback) {
   });
 }
 
-function OnLoad() {  
+function OnLoad() {
+  $('#positionDiv').hide();
+  $('#organisationDiv').hide();
+  $('#emailDiv').hide();
+  $('#homepageDiv').hide();
+  $('#addressDiv').hide();
+  $('#postalCodeDiv').hide();
+  $('#cityDiv').hide();
+  $('#provinceDiv').hide();
+  $('#countryDiv').hide();
+  
   HideAgentClone();
   LoadCountriesAsync(function() {
     var agentPanel = new AgentPanel();
@@ -153,54 +163,54 @@ google.setOnLoadCallback(OnLoad);
         cssClass="text xhalf"/>
     </div>
     <div class="newline"></div>
-    <div class="leftxhalf">
+    <div id="positionDiv" class="leftxhalf">
       <@s.textfield id="position" key=""  
         label="%{getText('agent.position')}" cssClass="text xhalf"/>
     </div>       
-    <div class="leftxhalf">
-       <@s.select id="role" key="" label="%{getText('agent.role')}"           
-         list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
-         listValue="value"/>
-    </div>
-    <div class="newline"></div>
-    <div>
-      <@s.textfield id="organisation" key=""  
-        label="%{getText('agent.organisation')}" cssClass="text xlarge"/>
-    </div>
     <div class="newline"></div>
     <div class="leftxhalf">
       <@s.textfield id="phone" key=""  
         label="%{getText('agent.phone')}" cssClass="text xhalf"/>
     </div>
     <div class="leftxhalf">
+       <@s.select id="role" key="" label="%{getText('agent.role')}"           
+         list="agentRoleMap.entrySet()" value="role.name()" listKey="key"
+         listValue="value"/>
+    </div>
+    <div class="newline"></div>
+    <div id="organisationDiv">
+      <@s.textfield id="organisation" key=""  
+        label="%{getText('agent.organisation')}" cssClass="text xlarge"/>
+    </div>
+    <div id="emailDiv" class="leftxhalf">
       <@s.textfield id="email" key=""  
         label="%{getText('agent.email')}" required="true" cssClass="text xhalf"/>
     </div>
     <div class="newline"></div>
-    <div>
+    <div id="homepageDiv">
       <@s.textfield id="homepage" key=""  
         label="%{getText('agent.homepage')}" cssClass="text xlarge"/>
     </div>
     <div class="newline"></div>
-    <div>
+    <div id="addressDiv">
       <@s.textfield id="address" key=""  
         label="%{getText('agent.address')}" cssClass="text xlarge"/>
     </div>
     <div class="newline"></div>
-    <div class="leftxhalf">
+    <div id="postalCodeDiv" class="leftxhalf">
       <@s.textfield id="postalCode" key=""  
         label="%{getText('agent.address.postalCode')}" cssClass="text xhalf"/>
     </div>
-    <div class="leftxhalf">
+    <div id="cityDiv" class="leftxhalf">
       <@s.textfield id="city" key=""  
         label="%{getText('agent.address.city')}" cssClass="text xhalf"/>
     </div>
     <div class="newline"></div>
-    <div class="leftxhalf">
+    <div id="provinceDiv" class="leftxhalf">
       <@s.textfield id="province" key=""  
         label="%{getText('agent.address.province')}" cssClass="text xhalf"/>
     </div>
-    <div class="leftxhalf">
+    <div id="countryDiv" class="leftxhalf">
       <@s.select id="country" key="" list=""
         label="%{getText('agent.address.country')}" required="true" cssClass="text xhalf"/>
     </div>    

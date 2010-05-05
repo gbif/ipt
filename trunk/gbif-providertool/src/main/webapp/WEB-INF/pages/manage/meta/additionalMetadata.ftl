@@ -88,7 +88,7 @@
 	<@s.textarea key="eml.additionalInfo" required="false" cssClass="text xlarge slim"/>
 </fieldset>
 
-	<div class="breakRightButtons">
+	<div class="breakLeftButtons">
     <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
     <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
 	</div>

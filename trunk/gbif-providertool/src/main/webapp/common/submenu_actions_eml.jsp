@@ -21,7 +21,7 @@
   > <s:text name="metadata.heading.tempcoverages" /> </a></li>
   <li><a
     href="<s:url action="projectForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
-  > <s:text name="metadata.heading.projects" /> </a></li>
+  > <s:text name="metadata.heading.project" /> </a></li>
   <li><a
     href="<s:url action="methodsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.methods" /> </a></li>

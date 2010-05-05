@@ -48,21 +48,25 @@ public class Address implements Serializable {
 
   @Column(length = 50)
   public String getCity() {
+    if(city==null || city.length()==0) return null;
     return city;
   }
 
   @Column(length = 100)
   public String getCountry() {
+    if(country==null || country.length()==0) return null;
     return country;
   }
 
   @Column(name = "postal_code", length = 15)
   public String getPostalCode() {
+    if(postalCode==null || postalCode.length()==0) return null;
     return postalCode;
   }
 
   @Column(length = 100)
   public String getProvince() {
+    if(province==null || province.length()==0) return null;
     return province;
   }
 

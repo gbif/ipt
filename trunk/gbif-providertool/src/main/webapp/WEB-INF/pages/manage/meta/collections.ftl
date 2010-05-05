@@ -134,7 +134,7 @@
 
         <div class="leftxhalf" id="typeDiv">
           <@s.select id="type" key="" 
-            label="%{getText('samplingmethod.type')}"
+            label="%{getText('method.type')}"
             list="curatorialUnitTypeMap.entrySet()" 
             value="curatorialUnitType.name()" listKey="key"
             listValue="value" required="true"/>
