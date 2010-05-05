@@ -18,6 +18,7 @@ package org.gbif.provider.webapp.action.manage;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.GeospatialCoverage;
 import org.gbif.provider.model.eml.JGTICuratorialUnit;
 import org.gbif.provider.model.eml.JGTICuratorialUnitType;
 import org.gbif.provider.model.eml.KeywordSet;
@@ -73,6 +74,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     ORGANISATION,
     SAMPLING_METHODS,
     KEYWORD_SETS,
+    GEOGRAPHIC_COVERAGES,
     TEMPORAL_COVERAGES,
     TAXONOMIC_COVERAGES,
     PROJECTS,
@@ -103,6 +105,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     } else if (method.trim().equalsIgnoreCase("keywordSets")) {
       return RequestMethod.KEYWORD_SETS;
     } else if (method.trim().equalsIgnoreCase("taxonomicCoverages")) {
+      return RequestMethod.GEOGRAPHIC_COVERAGES;
+    } else if (method.trim().equalsIgnoreCase("geographicCoverages")) {
       return RequestMethod.TAXONOMIC_COVERAGES;
     } else if (method.trim().equalsIgnoreCase("temporalCoverages")) {
       return RequestMethod.TEMPORAL_COVERAGES;
@@ -265,6 +269,24 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<Agent> agents = eml.getAssociatedParties();
           eml = emlManager.load(resource);
           eml.setAssociatedParties(agents);
+        }
+        break;
+      case GEOGRAPHIC_COVERAGES:
+        if (eml == null && resource != null) {
+          // eml equals null means that the form was submitted with zero
+          // geographic coverages.
+          eml = emlManager.load(resource);
+          eml.getGeospatialCoverages().clear();
+          //  This should go away when refactored for one geocoverage
+          eml.setGeographicCoverage(null);
+        } else {
+          // eml was populated via Struts.
+          List<GeospatialCoverage> coverages = eml.getGeospatialCoverages();
+          GeospatialCoverage singlecoverage = eml.getGeographicCoverage();
+          eml = emlManager.load(resource);
+          eml.setGeospatialCoverages(coverages);
+          //  This should go away when refactored for one geocoverage
+          eml.setGeographicCoverage(singlecoverage);
         }
         break;
       case TAXONOMIC_COVERAGES:

@@ -83,12 +83,16 @@ google.setOnLoadCallback(OnModuleLoaded);
 </head>
 
 <div class="break10"></div>
-
 <p class="explMt"><@s.text name='metadata.description.geocoverage'/></p>
 <@s.form id="geoForm" action="geocoverage" method="post" validate="false">
+
 <fieldset>
-<@s.hidden name="resourceId" value="${resourceId?c}"/>
-<@s.hidden name="nextPage" value="taxcoverage"/>
+  <@s.hidden name="resourceId" value="${(resource.id)!}"/>
+  <@s.hidden name="resourceType" value="${(resourceType)!}"/>
+  <@s.hidden name="guid" value="${(resource.guid)!}"/>
+  <@s.hidden name="nextPage" value="taxcoverage"/>
+  <@s.hidden name="method" value="taxonomicCoverages"/>
+
 <div id="clone">
   <@s.hidden id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
   <@s.hidden id="maxx" key="eml.geographicCoverage.boundingCoordinates.max.longitude" />

@@ -109,6 +109,7 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public String getFormationPeriod() {
+	  if(formationPeriod == null || formationPeriod.length() == 0) return null;
 		return formationPeriod;
 	}
 
@@ -121,6 +122,7 @@ public class TemporalCoverage implements Serializable {
 	}
 
 	public String getLivingTimePeriod() {
+    if(livingTimePeriod == null || livingTimePeriod.length() == 0) return null;
 		return livingTimePeriod;
 	}
 
@@ -155,6 +157,10 @@ public class TemporalCoverage implements Serializable {
 	}
 
   public void correctDateOrder() {
+    if(startDate == null && endDate != null){
+      startDate = endDate;
+      endDate = null;
+    }
     if(startDate != null && endDate != null && startDate.compareTo(endDate)>0) {
       Date d = startDate;
       startDate = endDate;

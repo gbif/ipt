@@ -80,6 +80,7 @@ public class Method implements Serializable {
    * @return the qualityControl
    */
   public String getQualityControl() {
+    if(qualityControl == null || qualityControl.length() == 0) return null;
     return qualityControl;
   }
 
@@ -87,6 +88,7 @@ public class Method implements Serializable {
    * @return the sampleDescription
    */
   public String getSampleDescription() {
+    if(sampleDescription == null || sampleDescription.length() == 0) return null;
     return sampleDescription;
   }
 
@@ -94,6 +96,7 @@ public class Method implements Serializable {
    * @return the stepDescription
    */
   public String getStepDescription() {
+    if(stepDescription == null || stepDescription.length() == 0) return null;
     return stepDescription;
   }
 
@@ -101,6 +104,7 @@ public class Method implements Serializable {
    * @return the studyExtent
    */
   public String getStudyExtent() {
+    if(studyExtent == null || studyExtent.length() == 0) return null;
     return studyExtent;
   }
 

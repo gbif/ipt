@@ -78,6 +78,13 @@
   }
 
   function OnLoad() {  
+    $('#mpOrganisationDiv').hide();
+    $('#mpPositionDiv').hide();
+    $('#mpPhoneDiv').hide();
+    $('#mpHomepageDiv').hide();
+    $('#mpRoleDiv').hide();
+    $('#cRoleDiv').hide();
+    
     LoadLangAsync(function(elem) {
       var e = elem.clone();
       var id = 'langSelect';
@@ -180,13 +187,12 @@
       cssClass="text xhalf"/>
   </div>       
   <div class="leftxhalf">
-    <@s.textfield id="role" key="eml.resourceCreator.role.name" disabled="true"
+    <@s.textfield id="organization" key="eml.resourceCreator.organisation"  
       cssClass="text xhalf"/>
   </div>
-  <div class="newline"></div>
-  <div>
-    <@s.textfield id="organization" key="eml.resourceCreator.organisation"  
-      cssClass="text xlarge"/>
+  <div id="cRoleDiv" class="leftxhalf">
+    <@s.textfield id="role" key="eml.resourceCreator.role.name" disabled="true"
+      cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
   <div class="leftxhalf">
@@ -198,14 +204,13 @@
       required="true" cssClass="text xhalf"/> 
   </div>
   <div class="newline"></div>
-  <div>
-    <@s.textfield id="homepage" key="eml.resourceCreator.homepage"  
-      cssClass="text xlarge"/>
-  </div>
-  <div class="newline"></div>
-  <div>
+  <div class="leftxhalf">
     <@s.textfield id="address" key="eml.resourceCreator.address.address"  
-      cssClass="text xlarge"/>
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="homepage" key="eml.resourceCreator.homepage"  
+      cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
   <div class="leftxhalf">
@@ -243,37 +248,37 @@
     required="true" cssClass="text xhalf"/>
 </div>
 <div class="newline"></div>
-<div class="leftxhalf">
+<div id="mpPositionDiv" class="leftxhalf">
   <@s.textfield id="position" key="eml.metadataProvider.position"  
     cssClass="text xhalf"/>
 </div>       
-<div class="leftxhalf">
+<div id="mpRoleDiv" class="leftxhalf">
   <@s.textfield id="role" key="eml.metadataProvider.role.name" disabled="true"
     cssClass="text xhalf"/>
 </div>       
 <div class="newline"></div>
-<div>
+<div id="mpOrganisationDiv">
   <@s.textfield id="organization" key="eml.metadataProvider.organisation"  
     cssClass="text xlarge"/>
 </div>
 <div class="newline"></div>
-<div class="leftxhalf">
+<div id="mpPhoneDiv" class="leftxhalf">
   <@s.textfield id="phone" key="eml.metadataProvider.phone"  
+    cssClass="text xhalf"/>
+</div>
+<div class="newline"></div>
+<div id="mpHomepageDiv">
+  <@s.textfield id="homepage" key="eml.metadataProvider.homepage"  
+    cssClass="text xlarge"/>
+</div>
+<div class="newline"></div>
+<div class="leftxhalf">
+  <@s.textfield id="address" key="eml.metadataProvider.address.address"  
     cssClass="text xhalf"/>
 </div>
 <div class="leftxhalf">
   <@s.textfield id="email" key="eml.metadataProvider.email"  
     required="true" cssClass="text xhalf"/>
-</div>
-<div class="newline"></div>
-<div>
-  <@s.textfield id="homepage" key="eml.metadataProvider.homepage"  
-    cssClass="text xlarge"/>
-</div>
-<div class="newline"></div>
-<div>
-  <@s.textfield id="address" key="eml.metadataProvider.address.address"  
-    cssClass="text xlarge"/>
 </div>
 <div class="newline"></div>
 <div class="leftxhalf">

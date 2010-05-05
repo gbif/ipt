@@ -60,30 +60,37 @@ public class Agent implements Serializable {
   }
 
   public String getEmail() {
+    if(email == null || email.length()==0) return null;
     return email;
   }
 
   public String getFirstName() {
+    if(firstName == null || firstName.length()==0) return null;
     return firstName;
   }
 
   public String getHomepage() {
+    if(homepage == null || homepage.length()==0) return null;
     return homepage;
   }
 
   public String getLastName() {
+    if(lastName == null || lastName.length()==0) return null;
     return lastName;
   }
 
   public String getOrganisation() {
+    if(organisation == null || organisation.length()==0) return null;
     return organisation;
   }
 
   public String getPhone() {
+    if(phone == null || phone.length()==0) return null;
     return phone;
   }
 
   public String getPosition() {
+    if(position == null || position.length()==0) return null;
     return position;
   }
 
