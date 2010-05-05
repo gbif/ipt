@@ -56,7 +56,7 @@ public class AppConfig {
 
   @Autowired
   private RegistryManager registryManager;
-  
+
   private static String registryURL;
 
   private static String gbifAnalyticsKey;
@@ -338,6 +338,18 @@ public class AppConfig {
     return cfg.getIptMeta();
   }
 
+  public ResourceMetadata getIptOrgMetadata() {
+    return getOrg();
+  }
+
+  public String getIptOrgPassword() {
+    return getOrgPassword();
+  }
+
+  public ResourceMetadata getIptResourceMetadata() {
+    return getIpt();
+  }
+
   public File getLog4jFile() {
     return new File(this.getDataDir(), "logging/" + cfg.getLog4jFilename());
   }
@@ -431,25 +443,32 @@ public class AppConfig {
     return cfg.isGbifAnalytics();
   }
 
+  /**
+   * Returns true if the IPT as a resource is registered with the GBIF Registry,
+   * otherwise returns fealse;
+   * 
+   * @return boolean
+   */
   public boolean isIptRegistered() {
-    Organisation o=((RegistryManagerImpl)registryManager).getIptOrganisation();
-    boolean isregd=registryManager.isOrganisationRegistered(o);
+    Organisation o = ((RegistryManagerImpl) registryManager).getIptOrganisation();
+    boolean isregd = registryManager.isOrganisationRegistered(o);
     return isregd;
 
-//    if (StringUtils.trimToNull(cfg.getIptMeta().getUddiID()) == null) {
-//      return false;
-//    }
-//    return true;
+    // if (StringUtils.trimToNull(cfg.getIptMeta().getUddiID()) == null) {
+    // return false;
+    // }
+    // return true;
   }
 
   public boolean isOrgRegistered() {
-    Organisation o = Organisation.builder().organisationKey(cfg.getOrgMeta().getUddiID()).password(cfg.getOrgPassword()).build();
+    Organisation o = Organisation.builder().organisationKey(
+        cfg.getOrgMeta().getUddiID()).password(cfg.getOrgPassword()).build();
     return registryManager.isOrganisationRegistered(o);
-    
-//    if (StringUtils.trimToNull(cfg.getOrgMeta().getUddiID()) == null) {
-//      return false;
-//    }
-//    return true;
+
+    // if (StringUtils.trimToNull(cfg.getOrgMeta().getUddiID()) == null) {
+    // return false;
+    // }
+    // return true;
   }
 
   // MANAGER "DELEGATE" METHODS

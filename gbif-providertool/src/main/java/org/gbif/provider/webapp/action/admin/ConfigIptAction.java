@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
+import org.gbif.provider.model.Organisation;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
@@ -41,17 +42,26 @@ public class ConfigIptAction extends BasePostAction {
     return SUCCESS;
   }
 
+  /**
+   * Registers IPT as a resource with the GBIF registry API.
+   * 
+   * @return String
+   */
   public String register() {
-    if (cfg.isIptRegistered()) {
+    Organisation iptOrg = Organisation.builder().organisationKey(
+        cfg.getIptOrgMetadata().getUddiID()).password(cfg.getIptOrgPassword()).build();
+    String iptResourceKey = cfg.getIptResourceMetadata().getUddiID();
+
+    if (registryManager.isResourceRegistered(iptResourceKey)) {
       saveMessage(getText("register.ipt.already"));
-    } else if (!cfg.isOrgRegistered()) {
+    } else if (!registryManager.isOrganisationRegistered(iptOrg)) {
       saveMessage(getText("register.org.missing"));
-    } else if (StringUtils.trimToNull(cfg.getOrgPassword()) == null) {
+    } else if (StringUtils.trimToNull(iptOrg.getPassword()) == null) {
       saveMessage(getText("register.org.password.missing"));
     } else {
-      // register IPT with organisation
+      // Register IPT as a resource
       try {
-        registryManager.registerIPT();
+        registryManager.registerResource(cfg.getIptResourceMetadata());
         saveMessage(getText("register.ipt.success"));
         this.cfg.save();
       } catch (RegistryException e) {
@@ -86,13 +96,13 @@ public class ConfigIptAction extends BasePostAction {
 
   private void check() {
     // tests
-    if (StringUtils.trimToNull(cfg.getIpt().getContactEmail()) == null
-        || StringUtils.trimToNull(cfg.getIpt().getContactName()) == null) {
+    if (StringUtils.trimToNull(cfg.getIptResourceMetadata().getContactEmail()) == null
+        || StringUtils.trimToNull(cfg.getIptResourceMetadata().getContactName()) == null) {
       saveMessage(getText("config.check.contact"));
     }
-    if (StringUtils.trimToNull(cfg.getOrg().getUddiID()) == null) {
+    if (StringUtils.trimToNull(cfg.getIptOrgMetadata().getUddiID()) == null) {
       saveMessage(getText("config.check.orgRegistered"));
-    } else if (StringUtils.trimToNull(cfg.getOrgPassword()) == null) {
+    } else if (StringUtils.trimToNull(cfg.getIptOrgPassword()) == null) {
       saveMessage(getText("config.check.orgPassword"));
     } else {
       if (!registryManager.testLogin()) {

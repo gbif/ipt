@@ -17,6 +17,7 @@ package org.gbif.provider.service;
 
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.ResourceMetadata;
 
 import java.util.Collection;
 
@@ -34,6 +35,14 @@ public interface RegistryManager {
    * @return true if the organisation credentials are valid, false otherwise
    */
   boolean isOrganisationRegistered(Organisation org);
+
+  /**
+   * Verifies {@link Organisation} credentials against the GBIF Registry.
+   * 
+   * @param org the organisation
+   * @return true if the organisation credentials are valid, false otherwise
+   */
+  boolean isResourceRegistered(String resourceUuid);
 
   /**
    * Calls the central registry to receive a list of the Extensions that are
@@ -77,6 +86,9 @@ public interface RegistryManager {
       throws RegistryException;
 
   String registerResource(Resource resource) throws RegistryException;
+
+  String registerResource(ResourceMetadata resourceMetadata)
+      throws RegistryException;
 
   boolean testLogin();
 

@@ -75,7 +75,7 @@ public class ConfigOrgAction extends BasePostAction {
   public String save() {
     // cannot change the organisation once an IPT has been registered. So test!
     if (!cfg.isIptRegistered()) {
-      cfg.getOrg().setUddiID(organisationKey);
+      cfg.getIptOrgMetadata().setUddiID(organisationKey);
     }
     // check if already registered. If yes, also update GBIF registry
     if (cfg.isOrgRegistered()) {
@@ -108,7 +108,7 @@ public class ConfigOrgAction extends BasePostAction {
     if (!cfg.isOrgRegistered()) {
       saveMessage(getText("config.check.orgRegistered")); // "Please register your organisation first"
       isValid = false;
-    } else if (StringUtils.trimToNull(cfg.getOrgPassword()) == null) {
+    } else if (StringUtils.trimToNull(cfg.getIptOrgPassword()) == null) {
       saveMessage(getText("config.check.orgPassword")); // "The GBIF organisation password is missing or not correct"
       isValid = false;
     } else {
