@@ -112,6 +112,18 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     }
   }
 
+  public Organisation getIptOrganisation() {
+    return Organisation.builder().description(
+        cfg.getIptOrgMetadata().getDescription()).homepageUrl(
+        cfg.getIptOrgMetadata().getLink()).name(
+        cfg.getIptOrgMetadata().getTitle()).nodeKey(cfg.getOrgNode()).primaryContactType(
+        ContactType.technical.name()).primaryContactName(
+        cfg.getIptOrgMetadata().getContactName()).primaryContactEmail(
+        cfg.getIptOrgMetadata().getContactEmail()).password(
+        cfg.getIptOrgPassword()).organisationKey(
+        cfg.getIptOrgMetadata().getUddiID()).build();
+  }
+
   public boolean isOrganisationRegistered(Organisation org) {
     checkNotNull(org, "Organisation was null");
     String key = org.getOrganisationKey();
@@ -124,6 +136,22 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     String url = String.format("%s/%s", registryUrl, org.getOrganisationKey());
     setCredentials(org);
     return executeGet(url, params, true) != null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#isResourceRegistered(java.lang
+   * .String)
+   */
+  public boolean isResourceRegistered(String resourceUuid) {
+    if (resourceUuid == null || resourceUuid.isEmpty()) {
+      return false;
+    }
+    String registryUrl = AppConfig.getRegistryOrgUrl();
+    String url = String.format("%s/%s", registryUrl, resourceUuid);
+    return executeGet(url, false) != null;
   }
 
   public Collection<String> listAllExtensions() {
@@ -144,17 +172,17 @@ public class RegistryManagerImpl extends HttpBaseManager implements
    * @see org.gbif.provider.service.RegistryManager#registerIPT()
    */
   public String registerIPT() throws RegistryException {
-    if (trimToNull(cfg.getIpt().getUddiID()) != null) {
+    if (trimToNull(cfg.getIptResourceMetadata().getUddiID()) != null) {
       String msg = "IPT is already registered";
       log.warn(msg);
       throw new IllegalArgumentException(msg);
     }
     setRegistryCredentials();
     // registering IPT resource
-    String key = registerResource(cfg.getIpt());
+    String key = registerResourceMetadata(cfg.getIptResourceMetadata());
     if (key != null) {
       log.info("The IPT has been registered with GBIF as resource "
-          + cfg.getIpt().getUddiID());
+          + cfg.getIptResourceMetadata().getUddiID());
       // RSS resource feed service
       registerService(key, ServiceType.RSS, cfg.getAtomFeedURL());
       return key;
@@ -214,7 +242,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
       log.error(msg);
       throw new IllegalArgumentException(msg);
     }
-    String resourceKey = registerResource(resource.getMeta());
+    String resourceKey = registerResourceMetadata(resource.getMeta());
     log.info("Resource " + resource.getId()
         + " has been registered with GBIF. Key = " + resource.getUddiID());
     try {
@@ -262,6 +290,18 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     return resourceKey;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#registerResource(org.gbif.provider
+   * .model.ResourceMetadata)
+   */
+  public String registerResource(ResourceMetadata resourceMetadata)
+      throws RegistryException {
+    return registerResourceMetadata(resourceMetadata);
+  }
+
   public boolean testLogin() {
     setRegistryCredentials();
     NameValuePair[] params = {new NameValuePair("op", "login")};
@@ -275,14 +315,18 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     } else {
       setRegistryCredentials();
       NameValuePair[] data = {
-          new NameValuePair("name", trimToEmpty(cfg.getIpt().getTitle())),
+          new NameValuePair("name",
+              trimToEmpty(cfg.getIptResourceMetadata().getTitle())),
           new NameValuePair("description",
-              trimToEmpty(cfg.getIpt().getDescription())),
-          new NameValuePair("homepageURL", trimToEmpty(cfg.getIpt().getLink())),
+              trimToEmpty(cfg.getIptResourceMetadata().getDescription())),
+          new NameValuePair("homepageURL",
+              trimToEmpty(cfg.getIptResourceMetadata().getLink())),
           new NameValuePair("primaryContactName",
-              trimToEmpty(cfg.getIpt().getContactName())),
+              trimToEmpty(cfg.getIptResourceMetadata().getContactName())),
+          new NameValuePair("primaryContactType",
+              ContactType.technical.toString()),
           new NameValuePair("primaryContactEmail",
-              trimToEmpty(cfg.getIpt().getContactEmail()))};
+              trimToEmpty(cfg.getIptResourceMetadata().getContactEmail()))};
       String result = executePost(getIptUri(), data, true);
       if (result == null) {
         throw new RegistryException("Bad registry response");
@@ -306,7 +350,9 @@ public class RegistryManagerImpl extends HttpBaseManager implements
       return org;
     }
     setCredentials(org);
-    String result = executePost(getOrganisationUri(), nameValuePairs(org), true);
+    String uri = getOrganisationUri();
+    NameValuePair[] nvp = nameValuePairs(org);
+    String result = executePost(uri, nvp, true);
     if (result == null) {
       throw new RegistryException("Bad registry response");
     }
@@ -321,7 +367,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
       setRegistryCredentials();
       NameValuePair[] data = {
           new NameValuePair("organisationKey",
-              trimToEmpty(cfg.getOrg().getUddiID())),
+              trimToEmpty(cfg.getIptOrgMetadata().getUddiID())),
           new NameValuePair("name", trimToEmpty(resource.getTitle())),
           new NameValuePair("description",
               trimToEmpty(resource.getDescription())),
@@ -375,28 +421,21 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     return new LinkedList<String>();
   }
 
-  public Organisation getIptOrganisation() {
-    return Organisation.builder().description(cfg.getOrg().getDescription()).homepageUrl(
-        cfg.getOrg().getLink()).name(cfg.getOrg().getTitle()).nodeKey(
-        cfg.getOrgNode()).primaryContactType(ContactType.technical.name()).primaryContactName(
-        cfg.getOrg().getContactName()).primaryContactEmail(
-        cfg.getOrg().getContactEmail()).password(cfg.getOrgPassword()).organisationKey(
-        cfg.getOrg().getUddiID()).build();
-  }
-
   private String getIptUri() {
     return String.format("%s/%s", cfg.getRegistryResourceUrl(),
-        cfg.getIpt().getUddiID());
+        cfg.getIptResourceMetadata().getUddiID());
   }
 
   private String getOrganisationUri() {
     return String.format("%s/%s", cfg.getRegistryOrgUrl(),
-        cfg.getOrg().getUddiID());
+        cfg.getIptOrgMetadata().getUddiID());
   }
 
-  private String registerResource(ResourceMetadata meta)
+  private String registerResourceMetadata(ResourceMetadata meta)
       throws RegistryException {
-    if (!cfg.isOrgRegistered()) {
+    Organisation iptOrg = Organisation.builder().organisationKey(
+        cfg.getIptOrgMetadata().getUddiID()).password(cfg.getIptOrgPassword()).build();
+    if (!isOrganisationRegistered(iptOrg)) {
       String msg = "Organisation is not registered. Cannot register resources";
       log.warn(msg);
       throw new RegistryException(msg);
@@ -404,7 +443,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     // registering IPT resource
     NameValuePair[] data = {
         new NameValuePair("organisationKey",
-            trimToEmpty(cfg.getOrg().getUddiID())),
+            trimToEmpty(cfg.getIptOrgMetadata().getUddiID())),
         new NameValuePair("name", trimToEmpty(meta.getTitle())), // name
         new NameValuePair("description", trimToEmpty(meta.getDescription())), // description
         new NameValuePair("homepageURL", trimToEmpty(meta.getLink())),
@@ -484,14 +523,15 @@ public class RegistryManagerImpl extends HttpBaseManager implements
       e.printStackTrace();
       return;
     }
-    setCredentials(uri.getHost(), org.getOrganisationKey(), org.getPassword());
+    super.setCredentials(uri.getHost(), org.getOrganisationKey(),
+        org.getPassword());
   }
 
   private void setRegistryCredentials() {
     try {
       URI geoURI = new URI(cfg.getRegistryOrgUrl());
-      setCredentials(geoURI.getHost(), cfg.getOrg().getUddiID(),
-          cfg.getOrgPassword());
+      super.setCredentials(geoURI.getHost(),
+          cfg.getIptOrgMetadata().getUddiID(), cfg.getIptOrgPassword());
     } catch (URISyntaxException e) {
       log.error("Exception setting the registry credentials", e);
     }
