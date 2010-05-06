@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,6 +15,11 @@
  */
 package org.gbif.provider.service.impl;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.text.ArchiveFactory;
+import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionMapping;
@@ -59,7 +64,7 @@ public class DataArchiveManagerImpl extends BaseManager implements
   // taxon order by label', 'utf8', ' ', '')
 
   public static final String OCC_SKIP_COLUMNS = "|occurrenceID|";
-//  TODO: amend TAX_SKIP_COLUMNS for ratified DwC
+  // TODO: amend TAX_SKIP_COLUMNS for ratified DwC
   public static final String TAX_SKIP_COLUMNS = "|ScientificName|TaxonID|Kingdom|Phylum|Class|Order|Family|Genus|Subgenus|HigherTaxonID|HigherTaxon|AcceptedTaxonID|AcceptedTaxon|BasionymID|Basionym|";
   private static final String CSVWRITE = "CALL CSVWRITE('%s', '%s', 'utf8')";
   private static final String DESCRIPTOR_TEMPLATE = "/WEB-INF/pages/dwcarchive-meta.ftl";
@@ -134,6 +139,17 @@ public class DataArchiveManagerImpl extends BaseManager implements
     ZipUtil.zipFiles(files, archive);
 
     return archive;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File)
+   */
+  public Archive openArchive(File location) throws IOException,
+      UnsupportedArchiveException {
+    checkNotNull(location, "File location can't be null");
+    return ArchiveFactory.openArchive(location);
   }
 
   private String buildPropertySelect(String prefix, ExtensionMapping view) {
@@ -231,7 +247,7 @@ public class DataArchiveManagerImpl extends BaseManager implements
       col = "orderrr as \"ORDER\" ";
     } else if (col.equalsIgnoreCase("class")) {
       col = "classs as \"CLASS\" ";
-    } else if( col.equalsIgnoreCase("group")){
+    } else if (col.equalsIgnoreCase("group")) {
       col = "grouppp as \"GROUP\" ";
     }
     return col;
