@@ -91,7 +91,7 @@ google.setOnLoadCallback(OnModuleLoaded);
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="taxcoverage"/>
-  <@s.hidden name="method" value="taxonomicCoverages"/>
+  <@s.hidden name="method" value="geographicCoverages"/>
 
 <div id="clone">
   <@s.hidden id="minx" key="eml.geographicCoverage.boundingCoordinates.min.longitude"/>
