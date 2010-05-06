@@ -80,10 +80,6 @@
 
     <repositories>
       <repository>
-        <id>central</id>
-        <url>http://repo1.maven.org/maven2</url>
-      </repository>
-      <repository>
         <id>gbif</id>
         <url>http://tools.gbif.org/maven/repository/</url>
         <snapshots>
@@ -91,7 +87,11 @@
           <updatePolicy>always</updatePolicy>
         </snapshots>
       </repository>        
-      <repository>
+        <repository>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
         <id>repository.jboss.org</id>
         <name>JBoss Maven Repository</name>
         <url>http://repository.jboss.org/maven2</url>
