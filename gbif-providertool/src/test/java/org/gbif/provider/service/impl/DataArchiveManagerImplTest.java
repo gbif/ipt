@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,28 +15,51 @@
  */
 package org.gbif.provider.service.impl;
 
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
+import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.util.ResourceTestBase;
+
+import java.io.File;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * TODO: Documentation.
+ * This class can be used for unit testing {@link DataArchiveManagerImpl}.
  * 
  */
 public class DataArchiveManagerImplTest extends ResourceTestBase {
-  @Autowired
-  private DataArchiveManager dataArchiveManager;
 
+  @Autowired
+  private DataArchiveManager dam;
+
+  /**
+   * Tests creating and opening an archive without extensions containing a
+   * single data file with a header row and a meta.xml file describing the data
+   * file.
+   */
   @Test
-  public void testArchiving() {
+  public void archive() {
     this.setupOccResource();
     try {
-      dataArchiveManager.createArchive(resource);
+      File location = dam.createArchive(resource);
+      assertNotNull(location);
+      assertTrue(location.isFile());
+      assertTrue(location.canRead());
+      Archive archive = dam.openArchive(location);
+      assertNotNull(archive);
+      ArchiveFile core = archive.getCore();
+      assertNotNull(core);
+      Set<ArchiveFile> extensions = archive.getExtensions();
+      assertTrue(extensions.isEmpty());
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      fail();
     }
   }
 }
