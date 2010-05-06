@@ -16,12 +16,13 @@
  */
 -->
 
- <head>
+<head>
   <title><@s.text name="metadata.heading.basic"/></title>
   <meta name="resource" content="${resource.title!}"/>
   <meta name="menu" content="ManagerMenu"/>
   <meta name="submenu" content="manage_resource"/>  
   <meta name="heading" content="<@s.text name='metadata.heading.basic'/>"/> 
+  
   <script
     src="http://www.google.com/jsapi?key=ABQIAAAAQmTfPsuZgXDEr012HM6trBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQTBMMPM0apn-CWBZ8nUq7oUL6nMQ"
     type="text/javascript">
@@ -45,78 +46,56 @@
 
    google.load("jquery", "1.4.2");
 
-   var countriesSelect = null;
-   var langSelect = null;
-
 /**
  * Loads language asynchronously.
  */
   function LoadLangAsync(callback) {
-    if (langSelect != null) {
-      callback(langSelect);
-      return;
-    }
-    var url = '<@s.url value="/ajax/vocSelect.html"/>';  
-    params = {uri:"${languageVocUri}",alpha:true,empty:true};
-    $.get(url, params, function(data) { 
-      langSelect = $(data);
-      callback(langSelect);
-    });
+    var url = '/ajax/vocSelect.html';
+    // load language codes
+    var params = {uri:"http://iso.org/639-1",alpha:true,empty:true};
+    var id = "langSelect";
+    ajaxSelectVocabulary(url, id, params, callback);
   }
 
-  function LoadCountriesAsync(callback) {
-    if (countriesSelect != null) {
-      callback(countriesSelect);
-      return;
-    }
-    var url = '<@s.url value="/ajax/vocSelect.html"/>';
-    params = {uri:"${countryVocUri}",alpha:true,empty:true};
-    $.get(url, params, function(data) { 
-      countriesSelect = $(data);
-      callback(countriesSelect);
-    });
+/**
+ * Loads countries asynchronously.
+ */
+  function LoadCreatorCountriesAsync(callback) {
+    var url = '/ajax/vocSelect.html';
+    // load country codes
+    var params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
+    var id = "creatorCountry";
+    ajaxSelectVocabulary(url, id, params, callback);
   }
 
-  function OnLoad() {  
+/**
+ * Loads metadataProvider countries asynchronously.
+ */
+  function LoadMetadataProviderCountriesAsync(callback) {
+    var url = '/ajax/vocSelect.html';
+    // load country codes
+    var params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
+    var id = "metadataProviderCountry";
+    ajaxSelectVocabulary(url, id, params, callback);
+  }
+
+  <!-- Turn off agent properties not used for metadataProvider or creator -->
+  function HideUnusedDivs(){
     $('#mpOrganisationDiv').hide();
     $('#mpPositionDiv').hide();
     $('#mpPhoneDiv').hide();
     $('#mpHomepageDiv').hide();
     $('#mpRoleDiv').hide();
     $('#cRoleDiv').hide();
-    
+  }
+
+  function OnLoad() {  
+    HideUnusedDivs();    
     LoadLangAsync(function(elem) {
-      var e = elem.clone();
-      var id = 'langSelect';
-      var idElem = $('#' + id);
-      var name = idElem.attr('name');
-      var value = idElem.attr('value');
-      e.attr('name', name);
-      e.attr('value', value)
-      e.attr('id', id);
-      $('#' + id).replaceWith(e);
+    });  
+    LoadCreatorCountriesAsync(function(elem) {
     });
-  
-    LoadCountriesAsync(function(elem) {
-      var e = elem.clone();
-      var id = 'creatorCountry';
-      var idElem = $('#' + id);
-      var name = idElem.attr('name');
-      var value = idElem.attr('value');
-      e.attr('name', 'eml.resourceCreator.address.country');
-      e.attr('value', value)
-      e.attr('id', id);
-      $('#' + id).replaceWith(e);
-    
-      e = elem.clone();
-      id = 'metadataProviderCountry';
-      idElem = $('#' + id);
-      name = idElem.attr('name');
-      value = idElem.attr('value');
-      e.attr('name', 'eml.metadataProvider.address.country');
-      e.attr('value', value)
-      e.attr('id', id);
-      $('#' + id).replaceWith(e);
+    LoadMetadataProviderCountriesAsync(function(elem) {
     });
   }
   google.setOnLoadCallback(OnLoad);
@@ -145,7 +124,7 @@
       cssClass="text xhalf"/>
   </div>
   <!-- Language -->
-  <div class="leftxhalf">
+  <div id="langSelectDiv" class="leftxhalf">
     <@s.select id="langSelect" key="eml.language" list="eml.language" 
       required="true" cssClass="text xhalf"/>
   </div>
@@ -171,7 +150,7 @@
 </div>
 <div class="newline"></div>
 <h2 class="explMt"><@s.text name="metadata.heading.basic.creator"/></h2>
-<div id="creator">    
+
   <div class="newline"></div>
   <div class="leftxhalf">
     <@s.textfield id="firstName" key="eml.resourceCreator.firstName" 
@@ -226,18 +205,18 @@
     <@s.textfield id="province" key="eml.resourceCreator.address.province"  
       cssClass="text xhalf"/>
   </div>
-  <div class="leftxhalf">
+  <div id="creatorCountryDiv" class="leftxhalf">
     <@s.select id="creatorCountry" key="" list="eml.resourceCreator.address.country" 
       label="%{getText('eml.resourceCreator.address.country')}"
       required="true" cssClass="text xhalf"/>
   </div>    
-</div>
+
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div>
 <h2 class="explMt"><@s.text name="metadata.heading.basic.metadataProvider"/></h2>
-<div id="metadataProvider">    
+
 <div class="newline"></div>
 <div class="leftxhalf">
   <@s.textfield id="firstName" key="eml.metadataProvider.firstName" 
@@ -294,11 +273,13 @@
   <@s.textfield id="province" key="eml.metadataProvider.address.province"  
     cssClass="text xhalf"/>
 </div>
-<div class="leftxhalf">
+<div id="metadataProviderCountryDiv" class="leftxhalf">
   <@s.select id="metadataProviderCountry" key="" list="eml.metadataProvider.address.country"
     label="%{getText('eml.metadataProvider.address.country')}"
     required="true" cssClass="text xhalf"/>
 </div>    
+
+
 <div class="newline"></div>
 <div class="newline"></div>
 <div class="newline"></div>

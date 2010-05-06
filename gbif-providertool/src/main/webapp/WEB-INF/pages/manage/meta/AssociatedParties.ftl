@@ -49,6 +49,7 @@ google.load("jquery", "1.4.2");
 function HideAgentClone() {
   $('#removeLink').hide();
   $('#cloneAgent').hide();
+  $('#countrySelectClone').hide();
 }
   
 function GetAgents() {
@@ -74,18 +75,21 @@ function GetAgents() {
   return agents;
 }
 
-var countriesSelect;
+// var countriesSelect;
 
+/**
+ * Loads countries asynchronously.
+ */
 function LoadCountriesAsync(callback) {
-  var url = '<@s.url value="/ajax/vocSelect.html"/>';
-  params = {uri:"${countryVocUri}",alpha:true,empty:true};
-  $.get(url, params, function(data) { 
-    countriesSelect = $(data);
-    callback();
-  });
+  var url = '/ajax/vocSelect.html';
+  // load country codes
+  params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
+  id = "countrySelectClone";
+  ajaxSelectVocabulary(url, id, params, callback);
 }
 
-function OnLoad() {
+<!-- Turn off agent properties not used for AssociatedParties -->
+function HideUnusedDivs(){
   $('#positionDiv').hide();
   $('#organisationDiv').hide();
   $('#emailDiv').hide();
@@ -95,7 +99,10 @@ function OnLoad() {
   $('#cityDiv').hide();
   $('#provinceDiv').hide();
   $('#countryDiv').hide();
-  
+}
+
+function OnLoad() {
+  HideUnusedDivs();
   HideAgentClone();
   LoadCountriesAsync(function() {
     var agentPanel = new AgentPanel();
@@ -145,6 +152,10 @@ google.setOnLoadCallback(OnLoad);
   <!-- The cloneAgent DIV is not attached to the DOM. It's used as a template
        for cloning agent UI widgets. 
   -->
+		<div id="countrySelectClone" class="leftxhalf">
+			<@s.select id="countrySelect" key="eml.resourceCreator.address.country" list="{'${(eml.getResourceCreator().address.country)!}'}" required="true" cssClass="text xhalf"/>
+		</div>
+
   <div id="cloneAgent">
     <div id="separator" class="horizontal_dotted_line_large_foo"></div>
     <div class="newline"></div>

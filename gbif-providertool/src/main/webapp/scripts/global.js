@@ -4,7 +4,7 @@ function ajaxHtmlUpdate(url, target, params) {
 		$(target).html(data);
 	});
 }
-function ajaxSelectVocabulary(url, id, params){
+function ajaxSelectVocabulary(url, id, params, callback){
 	$.get(url, params, function(data) { 
 		var v = $("select#"+id).val();
 		var name = $("select#"+id).attr("name");
@@ -13,6 +13,7 @@ function ajaxSelectVocabulary(url, id, params){
 		d.attr("id",id);
 		d.val(v);
 		$("select#"+id).replaceWith(d);
+		if(callback != null) callback(d);
 	});
 }
 function listenToChange(selector, handler) {

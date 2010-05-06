@@ -94,7 +94,7 @@ function AgentWidget(agent) {
       val = eval('agent.' + name + '()');
     }     
     if (name == 'country') {      
-      var select = countriesSelect.clone(); 
+      var select = $('#countrySelectClone').clone(); 
       select.attr('id', name);
       select.attr('name', 'eml.associatedParties[' + agentCount + '].address.country');
       select.attr('value', val);
