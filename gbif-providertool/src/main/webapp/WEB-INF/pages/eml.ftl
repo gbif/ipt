@@ -89,7 +89,7 @@
           ${eml.abstract!}
         </para>
       </abstract>
-<!-- Zero or more sets of keywords and an associted thesaurus for each. -->        
+<!-- Zero or more sets of keywords and an associated thesaurus for each. -->        
     <#if (eml.keywords ? size > 0)>
       <#list eml.keywords as keyword>
       <keywordSet>

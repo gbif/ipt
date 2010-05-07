@@ -206,7 +206,7 @@
       cssClass="text xhalf"/>
   </div>
   <div id="creatorCountryDiv" class="leftxhalf">
-    <@s.select id="creatorCountry" key="" list="eml.resourceCreator.address.country" 
+    <@s.select id="creatorCountry" key="eml.resourceCreator.address.country" list="eml.resourceCreator.address.country" 
       label="%{getText('eml.resourceCreator.address.country')}"
       required="true" cssClass="text xhalf"/>
   </div>    
@@ -274,7 +274,7 @@
     cssClass="text xhalf"/>
 </div>
 <div id="metadataProviderCountryDiv" class="leftxhalf">
-  <@s.select id="metadataProviderCountry" key="" list="eml.metadataProvider.address.country"
+  <@s.select id="metadataProviderCountry" key="eml.metadataProvider.address.country" list="eml.metadataProvider.address.country"
     label="%{getText('eml.metadataProvider.address.country')}"
     required="true" cssClass="text xhalf"/>
 </div>    
