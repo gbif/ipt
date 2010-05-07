@@ -128,7 +128,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     checkNotNull(org, "Organisation was null");
     String key = org.getOrganisationKey();
     String password = org.getPassword();
-    if (key == null || key.isEmpty() || password == null || password.isEmpty()) {
+    if (key == null || key.trim().length()==0 || password == null || password.trim().length()==0) {
       return false;
     }
     NameValuePair[] params = {new NameValuePair("op", "login")};
@@ -146,7 +146,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
    * .String)
    */
   public boolean isResourceRegistered(String resourceUuid) {
-    if (resourceUuid == null || resourceUuid.isEmpty()) {
+    if (resourceUuid == null || resourceUuid.trim().length()==0) {
       return false;
     }
     String registryUrl = AppConfig.getRegistryOrgUrl();
