@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.0.1">
+    <dataset>
+        <alternateIdentifier>76</alternateIdentifier>
+        <title>Checklist of the Vascular Plants of Big Lagoon Bog, Big Lagoon County Park, Humboldt
+            County, California</title>
+        <creator>
+            <individualName>
+                <givenName>Gordon</givenName>
+                <surName>Leppig</surName>
+            </individualName>
+            <organizationName/>
+            <address>              <city/>               <postalCode/>               <country/>           </address>
+            <phone/>
+            <electronicMailAddress/>
+        </creator>
+        <pubDate/>
+        <language/>
+        <abstract>
+            <abstract/>
+        </abstract>
+        <keywordSet>
+            <keyword>GBIF</keyword>
+            <keyword/>
+        </keywordSet>
+        <intellectualRights>
+            <para/>
+        </intellectualRights>
+        <coverage>
+            <geographicCoverage>
+                <geographicDescription/>
+            </geographicCoverage>
+            <taxonomicCoverage>
+                <generalTaxonomicCoverage/>
+            </taxonomicCoverage>
+        </coverage>
+        <contact>
+            <individualName>
+                <givenName>David</givenName>
+                <surName>Remsen</surName>
+            </individualName>
+            <electronicMailAddress>dremsen@gbif.org</electronicMailAddress>
+        </contact>
+    </dataset>
+</eml:eml>

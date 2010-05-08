@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<starArchive xmlns="http://rs.tdwg.org/dwc/terms/xsd/archive/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://rs.tdwg.org/dwc/terms/xsd/archive/ http://darwincore.googlecode.com/svn/trunk/text/tdwg_dwc_text.xsd"
+    fileRoot=".">
+    
+    <core location="darwin_core.txt" encoding="UTF-8" fieldsTerminatedBy="\t" linesTerminatedBy="\n" rowType="http://rs.tdwg.org/dwc/terms/Taxon">
+        <!-- the name identifier used in source, if existing a globally unique one -->
+        <id term="http://rs.tdwg.org/dwc/terms/TaxonID" index="1"/>
+        <field term="http://rs.tdwg.org/dwc/terms/ScientificName" index="2"/>
+        <field term="http://rs.tdwg.org/dwc/terms/TaxonRank" index="3"/>
+        <!-- enumeration as defined by dwc -->
+        <field term="http://rs.tdwg.org/dwc/terms/NomenclaturalCode" index="4"/>
+        <field term="http://rs.tdwg.org/dwc/terms/Kingdom" index="5"/>
+        <field term="http://purl.org/dc/terms/modified" index="6"/>
+    </core>
+    
+    <extension location="links.txt">
+        <!-- foreign key pointing to the id of the corresponding core record -->
+        <coreid term="http://rs.tdwg.org/dwc/terms/TaxonID" index="1"/>
+        <!-- the link as a URL -->
+        <field term="http://purl.org/dc/terms/source" index="2"/>
+        <!-- the MIME type or for xml the full namespace of the most important namespace, e.g. http://rs.tdwg.org/dwc/terms -->
+        <field term="http://purl.org/dc/terms/format" index="3"/>
+    </extension>
+    
+    <extension location="lexical_groups.txt">
+        <!-- foreign key pointing to the id of the corresponding core record -->
+        <coreid term="http://rs.tdwg.org/dwc/terms/TaxonID" index="1"/>
+        <!-- the lexical group ID -->
+        <field term="http://purl.org/dc/terms/identifier" index="2"/>
+        <!-- qualifier why this name belongs to this lexical group. e.g. orthographical variant -->
+        <field term="http://globalnames.org/gni/qualifier" index="3"/>
+    </extension>
+    
+</starArchive>

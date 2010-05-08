@@ -1,0 +1,100 @@
+1||Lophopsittacus bensoni Holyoak, 1973|Animalia|Chordata|Aves|Psittaciformes|Psittacidae
+3||Aaadonta angaurana|Animalia|Mollusca|Gastropoda|Stylommatophora|Endodontidae
+4||Aaadonta constricta|Animalia|Mollusca|Gastropoda|Stylommatophora|Endodontidae
+5||Aaadonta fuscozonata|Animalia|Mollusca|Gastropoda|Stylommatophora|Endodontidae
+6||Aaadonta irregularis|Animalia|Mollusca|Gastropoda|Stylommatophora|Endodontidae
+7||Aaadonta kinlochi|Animalia|Mollusca|Gastropoda|Stylommatophora|Endodontidae
+8||Aaadonta pelewana|Animalia|Mollusca|Gastropoda|Stylommatophora|Endodontidae
+9||Aaptosyax grypus Rainboth, 1991|Animalia|Chordata|Actinopterygii|Cypriniformes|Cyprinidae
+16||Abrawayaomys ruschii Cunha & Cruz, 1979|Animalia|Chordata|Mammalia|Rodentia|Muridae
+18||Abrocoma boliviensis Glanz & Anderson, 1990|Animalia|Chordata|Mammalia|Rodentia|Abrocomidae
+20||Abronia montecristoi Hidalgo, 1983|Animalia|Chordata|Reptilia|Squamata|Anguidae
+40||Aburria aburri (Lesson, 1828)|Animalia|Chordata|Aves|Galliformes|Cracidae
+43||Acanthaeshna victoria Martin, 1901|Animalia|Arthropoda|Insecta|Odonata|Aeshnidae
+59||Acanthinula spinifera Mousson, 1872|Animalia|Mollusca|Gastropoda|Stylommatophora|Valloniidae
+73||Acanthobrama hulensis (Goren, Fishelson & Trewavas, 1973)|Animalia|Chordata|Actinopterygii|Cypriniformes|Cyprinidae
+74||Acanthochelys macrocephala (Rhodin, Mittermeier & McMorris, 1984)|Animalia|Chordata|Reptilia|Testudines|Chelidae
+75||Acanthochelys pallidipectoris (Freiberg, 1945)|Animalia|Chordata|Reptilia|Testudines|Chelidae
+76||Acanthochelys spixii (Duméril & Bibron, 1835)|Animalia|Chordata|Reptilia|Testudines|Chelidae
+78||Acanthochelys radiolata (Mikan, 1820)|Animalia|Chordata|Reptilia|Testudines|Chelidae
+79||Acanthocobitis urophthalmus (Günther, 1868)|Animalia|Chordata|Actinopterygii|Cypriniformes|Balitoridae
+80||Acanthocyclops hypogeus|Animalia|Arthropoda|Crustacea|Cyclopoida|Cyclopidae
+81||Acantholingua ohridana (Steindachner, 1892)|Animalia|Chordata|Actinopterygii|Salmoniformes|Salmonidae
+82||Acanthometropus pecatonica|Animalia|Arthropoda|Insecta|Ephemeroptera|Siphlonuridae
+83||Acanthomyops latipes (Walsh, 1863)|Animalia|Arthropoda|Insecta|Hymenoptera|Formicidae
+91||Accipiter brachyurus (Ramsay, 1879)|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+93||Accipiter butleri (Gurney, 1898)|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+97||Accipiter collaris Sclater, 1860|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+110||Accipiter henstii (Schlegel, 1873)|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+111||Accipiter imitator Hartert, 1926|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+112||Accipiter luteoschistaceus Rothschild & Hartert, 1926|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+113||Accipiter madagascariensis Smith, 1834|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+118||Accipiter nanus (Blasius, 1897)|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+124||Accipiter princeps Mayr, 1934|Animalia|Chordata|Aves|Falconiformes|Accipitridae
+137||Acerodon celebensis (Peters, 1867)|Animalia|Chordata|Mammalia|Chiroptera|Pteropodidae
+138||Acerodon humilis K. Andersen, 1909|Animalia|Chordata|Mammalia|Chiroptera|Pteropodidae
+139||Acerodon jubatus (Eschscholtz, 1831)|Animalia|Chordata|Mammalia|Chiroptera|Pteropodidae
+140||Acerodon leucotis (Sanborn, 1950)|Animalia|Chordata|Mammalia|Chiroptera|Pteropodidae
+141||Acerodon lucifer Elliot, 1896|Animalia|Chordata|Mammalia|Chiroptera|Pteropodidae
+146||Aceros corrugatus (Temminck, 1832)|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+147||Aceros everetti Rothschild, 1897|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+148||Aceros leucocephalus (Vieillot, 1816)|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+149||Aceros narcondami Hume, 1873|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+150||Aceros nipalensis (Hodgson, 1829)|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+152||Aceros subruficollis (Blyth, 1843)|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+154||Aceros waldeni (Sharpe, 1877)|Animalia|Chordata|Aves|Coraciiformes|Bucerotidae
+157||Acestrura berlepschi (Simon, 1889)|Animalia|Chordata|Aves|Apodiformes|Trochilidae
+158||Acestrura bombus (Gould, 1871)|Animalia|Chordata|Aves|Apodiformes|Trochilidae
+161||Achalinus werneri Van Denburgh, 1912|Animalia|Chordata|Reptilia|Squamata|Colubridae
+166||Achatina vignoniana Morelet , 1874|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinidae
+167||Achatinella abbreviata Reeve, 1850|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+168||Achatinella apexfulva (Dixon, 1789)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+169||Achatinella bellula Smith, 1873|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+170||Achatinella buddii Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+171||Achatinella bulimoides Swainson, 1828|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+172||Achatinella byronii (Wood, 1828)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+173||Achatinella caesia Gulick, 1858|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+174||Achatinella casta Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+175||Achatinella cestus Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+176||Achatinella concavospira Pfeiffer, 1859|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+177||Achatinella curta Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+178||Achatinella decipiens Newcomb, 1854|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+179||Achatinella decora (Fúrussac, 1821)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+180||Achatinella dimorpha Gulick, 1858|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+181||Achatinella elegans Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+182||Achatinella fulgens Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+183||Achatinella fuscobasis (Smith, 1873)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+184||Achatinella juddii Baldwin, 1895|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+185||Achatinella juncea Gulick, 1856|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+186||Achatinella lehuiensis Smith, 1873|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+188||Achatinella lila Pilsbry, 1914|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+189||Achatinella livida Swainson, 1828|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+190||Achatinella lorata (Fúrussac, 1824)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+191||Achatinella mustelina Mighels, 1845|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+192||Achatinella papyracea Gulick, 1856|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+193||Achatinella phaeozona Gulick, 1856|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+194||Achatinella pulcherrima Swainson, 1828|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+195||Achatinella pupukanioe Pilsbry & Cooke, 1914|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+197||Achatinella sowerbyana Pfeiffer, 1855|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+198||Achatinella spaldingi Pilsbry & Cooke, 1914|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+199||Achatinella stewartii Green, 1827|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+200||Achatinella swiftii Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+201||Achatinella taeniolata Pfeiffer, 1846|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+202||Achatinella thaanumi Pilsbry & Cooke, 1914|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+203||Achatinella turgida Newcomb, 1853|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+204||Achatinella valida Pfeiffer, 1855|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+205||Achatinella viridans Mighels, 1845|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+207||Achatinella vulpina (Fúrussac, 1824)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+209||Achatinella leucorrhaphe (Gulick, 1873)|Animalia|Mollusca|Gastropoda|Stylommatophora|Achatinellidae
+212||Acheilognathus elongatus (Regan, 1908)|Animalia|Chordata|Actinopterygii|Cypriniformes|Cyprinidae
+213||Acheilognathus longipinnis (Regan, 1905)|Animalia|Chordata|Actinopterygii|Cypriniformes|Cyprinidae
+214||Aciagrion rarum (Longfield, 1945)|Animalia|Arthropoda|Insecta|Odonata|Coenagrionidae
+215||Acicula norrisi Gittenberger & Boeters, 1977|Animalia|Mollusca|Gastropoda|Mesogastropoda|Aciculidae
+216||Acicula palaestinensis Forcart, 1981|Animalia|Mollusca|Gastropoda|Mesogastropoda|Aciculidae
+217||Acicula hausdorfi Boeters, Gittenberger & Subai, 1989|Animalia|Mollusca|Gastropoda|Mesogastropoda|Aciculidae
+218||Acilius duvergeri Dettner, 1982|Animalia|Arthropoda|Insecta|Coleoptera|Dytiscidae
+219||Acinonyx jubatus (Schreber, 1775)|Animalia|Chordata|Mammalia|Carnivora|Felidae
+222||Acipenser brevirostrum Lesueur, 1818|Animalia|Chordata|Actinopterygii|Acipenseriformes|Acipenseridae
+224||Acipenser naccarii Bonaparte, 1836|Animalia|Chordata|Actinopterygii|Acipenseriformes|Acipenseridae
+225||Acipenser nudiventris Lovetsky, 1828|Animalia|Chordata|Actinopterygii|Acipenseriformes|Acipenseridae
+227||Acipenser ruthenus Linnaeus, 1758|Animalia|Chordata|Actinopterygii|Acipenseriformes|Acipenseridae
