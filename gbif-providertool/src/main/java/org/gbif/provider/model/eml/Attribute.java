@@ -50,12 +50,12 @@ public class Attribute implements Serializable {
   public static Attribute create(String category, LocaleBundle localeBundle,
       String name, String value) {
     checkNotNull(category, "Category was null");
-    checkArgument(!category.isEmpty(), "Category was empty");
+    checkArgument(category.trim().length()!=0, "Category was empty");
     checkNotNull(localeBundle, "LocaleBundle was null");
     checkNotNull(name, "Name was null");
-    checkArgument(!name.isEmpty(), "Name was empty");
+    checkArgument(name.trim().length()!=0, "Name was empty");
     checkNotNull(value, "Value was null");
-    checkArgument(!value.isEmpty(), "Value was empty");
+    checkArgument(value.trim().length()!=0, "Value was empty");
     return new Attribute(category, localeBundle, name, value);
   }
 

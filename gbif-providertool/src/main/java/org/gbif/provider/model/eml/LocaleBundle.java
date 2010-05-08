@@ -50,9 +50,9 @@ public class LocaleBundle implements Serializable {
   public static LocaleBundle create(String language, String country,
       Charset charset) {
     checkNotNull(language, "Language was null");
-    checkArgument(!language.isEmpty(), "Language was empty");
+    checkArgument(language.trim().length()!=0, "Language was empty");
     checkNotNull(country, "Country was null");
-    checkArgument(!country.isEmpty(), "Country was empty");
+    checkArgument(country.trim().length()!=0, "Country was empty");
     checkNotNull(charset, "Charset was null");
     return new LocaleBundle(language, country, charset);
   }

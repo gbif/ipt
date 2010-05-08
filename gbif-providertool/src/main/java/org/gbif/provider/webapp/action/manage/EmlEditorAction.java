@@ -464,7 +464,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     if (next == null) {
       return INPUT;
     }
-    if (resource.getOrgTitle() == null || resource.getOrgTitle().isEmpty()) {
+    if (resource.getOrgTitle() == null || resource.getOrgTitle().trim().length()==0) {
       resource.setOrgPassword("");
       resource.setOrgUuid("");
     } else {
