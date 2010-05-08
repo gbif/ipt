@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8'?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.0.1">
+    <dataset>
+        <title>ITIS</title>
+        <creator>
+            <individualName>
+                <givenName></givenName>
+                <surName></surName>
+            </individualName>
+            <organizationName>Integrated Taxonomic Information System</organizationName>
+            <address>
+                <city></city>
+                <administrativeArea></administrativeArea>
+                <postalCode></postalCode>
+                <country></country>
+            </address>
+            <electronicMailAddress></electronicMailAddress>
+            <onlineUrl>http://www.itis.gov/</onlineUrl>
+            <logoUrl></logoUrl>
+        </creator>
+        <pubDate>2010/02/24</pubDate>
+        <language>en</language>
+        <abstract>
+            <para></para>
+        </abstract>
+        <keywordSet>
+        	<keyword></keyword>
+        	<keyword></keyword>
+        	<keyword></keyword>
+        </keywordSet>
+        <intellectualRights>
+            <para></para>
+            <para></para>
+        </intellectualRights>
+        <contact>
+            <individualName>
+                <givenName></givenName>
+                <surName></surName>
+            </individualName>
+            <electronicMailAddress></electronicMailAddress>
+        </contact>
+    </dataset>
+    
+    <additionalMetadata>
+        <metadata>
+        </metadata>
+    </additionalMetadata>
+    
+</eml:eml>

@@ -15,22 +15,28 @@
  */
 package org.gbif.provider.service.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
+import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
+import org.gbif.file.CompressionUtil;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.XmlFileUtils;
 import org.gbif.provider.util.ZipUtil;
+
+import com.google.common.collect.ImmutableSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -51,30 +58,65 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 /**
- * TODO: Documentation.
+ * H2 supports tab file dumps out of the box Apart from the default CSV, it
+ * allows to override delimiters so pure tab files can be created like this:
+ * CALL CSVWRITE('/Users/markus/Desktop/test.txt', 'select id, label from taxon
+ * order by label', 'utf8', ' ', '')
  * 
  */
 public class DataArchiveManagerImpl extends BaseManager implements
     DataArchiveManager {
 
-  // H2 supports tab file dumps out of the box
-  // Apart from the default CSV, it allows to override delimiters so pure tab
-  // files can be created like this:
-  // CALL CSVWRITE('/Users/markus/Desktop/test.txt', 'select id, label from
-  // taxon order by label', 'utf8', ' ', '')
+  private static class ArchiveUtil {
+
+    /**
+     * If the file location is compressed as a ZIP or GZIP archive, it is
+     * expanded into a new folder (named after the archive but without the
+     * extension) and the folder is returned.
+     * 
+     * For example, /foo/bar/baz.zip would be expanded into the /foo/bar/baz
+     * directory.
+     * 
+     * If the file location is not an archive, null is returned.
+     * 
+     * @param location the file location
+     * @return expanded archive directory or null if the file wasn't an archive
+     * @throws IOException
+     */
+    static File expandIfCompressed(File location) throws IOException {
+      File directory = null;
+      String name = location.getName(), path = null, parent = location.getParent();
+      if (location.getName().endsWith(".zip")) {
+        name = name.split(".zip")[0];
+        path = String.format("%s/%s", parent, name);
+        directory = new File(path);
+        directory.mkdir();
+        CompressionUtil.decompressFile(directory, location);
+      } else if (GzipUtils.isCompressedFilename(name)) {
+        name = GzipUtils.getUncompressedFilename(name);
+        path = String.format("%s/%s", parent, name);
+        directory = new File(path);
+        directory.mkdir();
+        CompressionUtil.decompressFile(directory, location);
+      }
+      return directory;
+    }
+  }
 
   public static final String OCC_SKIP_COLUMNS = "|occurrenceID|";
   // TODO: amend TAX_SKIP_COLUMNS for ratified DwC
   public static final String TAX_SKIP_COLUMNS = "|ScientificName|TaxonID|Kingdom|Phylum|Class|Order|Family|Genus|Subgenus|HigherTaxonID|HigherTaxon|AcceptedTaxonID|AcceptedTaxon|BasionymID|Basionym|";
+
   private static final String CSVWRITE = "CALL CSVWRITE('%s', '%s', 'utf8')";
   private static final String DESCRIPTOR_TEMPLATE = "/WEB-INF/pages/dwcarchive-meta.ftl";
-
   @Autowired
   protected AppConfig cfg;
   @Autowired
   protected AnnotationManager annotationManager;
+
   @Autowired
   private IptNamingStrategy namingStrategy;
+
   @Autowired
   private Configuration freemarker;
 
@@ -144,12 +186,38 @@ public class DataArchiveManagerImpl extends BaseManager implements
   /*
    * (non-Javadoc)
    * 
+   * @see
+   * org.gbif.provider.service.DataArchiveManager#getCoreSourceFiles(org.gbif
+   * .dwc.text.Archive)
+   */
+  public ImmutableSet<SourceFile> getCoreSourceFiles(Archive archive) {
+    checkNotNull(archive, "Archive can't be null");
+    // The dwc-archive-reader currently supports 0 or 1 core files per archive:
+    ArchiveFile core = archive.getCore();
+    if (core == null) {
+      // A null core here means that there are no core files in the archive:
+      return ImmutableSet.of();
+    }
+    // There exists a single core file in the archive:
+    File location = new File(core.getLocation());
+    SourceFile source = new SourceFile(location);
+    return ImmutableSet.of(source);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File)
    */
-  public Archive openArchive(File location) throws IOException,
-      UnsupportedArchiveException {
-    checkNotNull(location, "File location can't be null");
-    return ArchiveFactory.openArchive(location);
+  public Archive openArchive(File location, boolean normaliseExtension)
+      throws IOException, UnsupportedArchiveException {
+    checkNotNull(location, "Location cannot be null");
+    checkArgument(location.canRead(), "Location cannot be read: " + location);
+    File directory = ArchiveUtil.expandIfCompressed(location);
+    if (directory != null) {
+      return ArchiveFactory.openArchive(directory, normaliseExtension);
+    }
+    return ArchiveFactory.openArchive(location, normaliseExtension);
   }
 
   private String buildPropertySelect(String prefix, ExtensionMapping view) {

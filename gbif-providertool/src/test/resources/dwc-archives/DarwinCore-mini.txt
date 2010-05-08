@@ -1,0 +1,1 @@
+TaxonID	TaxonomicStatus	TaxonRank	ScientificName	HigherTaxonID1	a	kingdom	Animalia	15	a	genus	Delphinus	110	a	species	Delphinus delphis	512	a	infraspecificname	Delphinus delphis subsp. ponticus Barabash 1935	1014	a	variety	Delphinus delphis var. delphis	1020	a	species	Delphinus robertiana Robertson 2009	5
