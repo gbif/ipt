@@ -24,7 +24,7 @@
 	<td><a href="${cfg.getEmlUrl(resource.guid)}">${cfg.getEmlUrl(resource.guid)}</a></td>
  </tr>
  <tr>
-	<th><@s.text name="meta.resource.annotatations"/></th>
+	<th><@s.text name="meta.resource.annotations"/></th>
 	<td><a href="annotations.html?resourceId=${resourceId}">annotations.html?resourceId=${resourceId}</a></td>
  </tr>
 </table>
@@ -97,6 +97,7 @@
 <!-- temporalCoverage was here -->
 
 <!-- keywords were here -->
+<#if eml.project??>
 <div>
 	<fieldset>
 		<h2><@s.text name="metadata.heading.project"/></h2>
@@ -109,14 +110,14 @@
 	</fieldset>
 	<div class="horizontal_dotted_line_large_soft"></div>
 </div>
-
+</#if>
 <!-- Sampling Method was here -->
 
 <div>
 	<fieldset>
 		<h2><@s.text name="metadata.heading.additionalMetadata"/></h2>
 		<table>
-			<@trow label="eml.pubdate" val=eml.pubdate!/>
+			<@trow label="eml.pubDate" val=eml.pubDate?datetime?string("yyyy-MM-dd")!/>
 			<@trow label="eml.purpose" val=eml.purpose!/>
 			<@trow label="eml.hierarchyLevel" val=eml.hierarchyLevel!/>
 			<@trow label="eml.distributionUrl" val=eml.distributionUrl!/>  

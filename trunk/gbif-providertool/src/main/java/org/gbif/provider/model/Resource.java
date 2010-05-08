@@ -113,7 +113,8 @@ public class Resource implements BaseObject, Comparable<Resource>,
   }
 
   public Date getCreated() {
-    return created;
+    if(created==null) return created;
+    return new Date(created.getTime());
   }
 
   @ManyToOne
@@ -160,7 +161,8 @@ public class Resource implements BaseObject, Comparable<Resource>,
   }
 
   public Date getModified() {
-    return modified;
+    if(modified==null) return modified;
+    return new Date(modified.getTime());
   }
 
   @ManyToOne

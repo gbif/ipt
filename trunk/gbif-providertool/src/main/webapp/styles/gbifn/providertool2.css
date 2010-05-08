@@ -288,7 +288,7 @@ div.usersButtons{
 #statusContainer div.arrow {
 	float: right;
 	position: relative;
-	bottom: 36px;
+	top: 1px;
 }
 #statusContainer .publishButton{
 	width: 80px;
@@ -296,13 +296,13 @@ div.usersButtons{
 	bottom: 12px;
 }
 .unpublished{
-	background-color: #fdd8d6;
-}
-.modified{
 	background-color: #feffe6;
 }
+.modified{
+	background-color: #f06666;
+}
 .published{
-	background-color: #e2f9d7;
+	background-color: #03b034;
 }
 #registryDetails {
 	width: 300px;

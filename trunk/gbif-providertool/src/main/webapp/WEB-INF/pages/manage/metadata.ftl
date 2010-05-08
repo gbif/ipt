@@ -291,12 +291,5 @@
 </div>
 
 </fieldset>
-<!--
-	<#if resource.modified??>
-	<div class="modifiedDate">
-		<@s.text name="dataResource.lastModified"/> ${resource.modified?datetime?string} <#if resource.modifier??>by ${resource.modifier.getFullName()}</#if>
-	</div>
-	</#if>  
--->
 </@s.form>
   
