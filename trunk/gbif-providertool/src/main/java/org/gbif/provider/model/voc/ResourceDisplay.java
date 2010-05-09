@@ -21,8 +21,6 @@ public class ResourceDisplay {
   PublicationStatusForDisplay status;
   String type;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   public Long getId() {
     return id;
   }
@@ -43,27 +41,22 @@ public class ResourceDisplay {
     type = r.getType();
   }
   
-  @Transient
   public PublicationStatusForDisplay getStatus(){
     return status;
   }
   
-  @Transient
   public String getTitle(){
     return title;
   }
 
-  @Transient
   public Date getModified(){
     return modified;
   }
   
-  @Transient
   public String getCreatorFullName(){
     return creatorFullName;
   }
 
-  @Transient
   public String getType(){
     return type;
   }
@@ -98,4 +91,3 @@ public class ResourceDisplay {
         type, status, title, modified, creatorFullName);
   }
 }
-
