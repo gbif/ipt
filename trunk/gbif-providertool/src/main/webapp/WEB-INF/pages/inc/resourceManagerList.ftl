@@ -5,7 +5,7 @@
     <@display.column property="title" sortable=true title='${struts.getText("resource.title")}' href="resource.html" media="html" paramId="resourceId" paramProperty="id"/>
     <@display.column property="modified" sortable=true title='${struts.getText("resource.modified")}' format="{0,date,${datePattern}}"/>
     <@display.column property="creatorFullName" sortable=true title='${struts.getText("resource.creator")}'/>
-    <@display.column property="status" sortable=true title='${struts.getText("resource.status")}'/>
+    <@display.column property="status.name" sortable=true title='${struts.getText("resource.status")}'/>
     <@display.column property="type" sortable=true title='${struts.getText("resource.type")}'/>
 
     <@display.setProperty name="paging.banner.item_name"><@s.text name="resourceList.resource"/></@display.setProperty>
