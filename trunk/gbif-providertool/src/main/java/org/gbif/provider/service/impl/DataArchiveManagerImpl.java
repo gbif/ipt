@@ -25,6 +25,7 @@ import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CompressionUtil;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
@@ -32,6 +33,7 @@ import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.AnnotationManager;
 import org.gbif.provider.service.DataArchiveManager;
+import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.XmlFileUtils;
 import org.gbif.provider.util.ZipUtil;
@@ -51,6 +53,7 @@ import java.util.Set;
 
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FileUtils;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -120,6 +123,9 @@ public class DataArchiveManagerImpl extends BaseManager implements
   @Autowired
   private Configuration freemarker;
 
+  @Autowired
+  private ExtensionManager extensionManager;
+
   public File createArchive(DataResource resource) throws IOException,
       IllegalStateException {
     if (resource.getCoreMapping() == null) {
@@ -187,21 +193,43 @@ public class DataArchiveManagerImpl extends BaseManager implements
    * (non-Javadoc)
    * 
    * @see
+   * org.gbif.provider.service.DataArchiveManager#getCoreSourceFile(org.gbif
+   * .dwc.text.Archive)
+   */
+  public SourceFile getCoreSourceFile(Archive archive) throws IOException {
+    checkNotNull(archive, "Archive is null");
+    checkNotNull(archive.getCore(), "Archive core is null");
+    SourceFile core = new SourceFile(new File(archive.getCore().getTitle()));
+    return core;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.gbif.provider.service.DataArchiveManager#getCoreSourceFiles(org.gbif
    * .dwc.text.Archive)
    */
-  public ImmutableSet<SourceFile> getCoreSourceFiles(Archive archive) {
-    checkNotNull(archive, "Archive can't be null");
-    // The dwc-archive-reader currently supports 0 or 1 core files per archive:
-    ArchiveFile core = archive.getCore();
-    if (core == null) {
-      // A null core here means that there are no core files in the archive:
+  public ImmutableSet<Extension> getExtensions(Archive archive)
+      throws IOException {
+    checkNotNull(archive, "Archive is null");
+    checkNotNull(archive.getExtensions(), "Archive extensions are null");
+    if (archive.getExtensions().isEmpty()) {
       return ImmutableSet.of();
     }
-    // There exists a single core file in the archive:
-    File location = new File(core.getLocation());
-    SourceFile source = new SourceFile(location);
-    return ImmutableSet.of(source);
+    Extension extension;
+    ImmutableSet.Builder<Extension> b = ImmutableSet.builder();
+    for (ArchiveFile f : archive.getExtensions()) {
+      try {
+        extension = extensionManager.getExtensionByUri(f.getRowType());
+        if (extension != null) {
+          b.add(extension);
+        }
+      } catch (NonUniqueResultException e) {
+        log.warn("Duplicate extension namespace was found: " + f.getRowType());
+      }
+    }
+    return b.build();
   }
 
   /*

@@ -18,6 +18,7 @@ package org.gbif.provider.service;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.SourceFile;
 
 import com.google.common.collect.ImmutableSet;
@@ -46,13 +47,22 @@ public interface DataArchiveManager {
   File createArchive(DataResource resource) throws IOException;
 
   /**
-   * Returns an immutable set of core {@link SourceFile} associated with an
+   * Returns the core {@link SourceFile} of the archive.
+   * 
+   * @param archive the archive
+   * @return the core source file of the archive
+   * @throws IOException SourceFile
+   */
+  SourceFile getCoreSourceFile(Archive archive) throws IOException;
+
+  /**
+   * Returns an immutable set of {@link Extension}s associated with an
    * {@link Archive}.
    * 
    * @param archive the archive
    * @return SourceFile an immutable set of core source files
    */
-  ImmutableSet<SourceFile> getCoreSourceFiles(Archive archive);
+  ImmutableSet<Extension> getExtensions(Archive archive) throws IOException;
 
   /**
    * Opens an existing archive file that is stored on disk using the Darwin Core
