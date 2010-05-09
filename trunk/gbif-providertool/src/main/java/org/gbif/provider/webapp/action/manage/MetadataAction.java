@@ -23,6 +23,7 @@ import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
+import org.gbif.provider.model.voc.PublicationStatusForDisplay;
 import org.gbif.provider.model.voc.ResourceType;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
@@ -40,11 +41,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.google.common.base.Objects.equal;
+
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
@@ -52,6 +58,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Objects;
 import com.opensymphony.xwork2.Preparable;
 
 /**
@@ -60,6 +67,84 @@ import com.opensymphony.xwork2.Preparable;
  */
 public class MetadataAction extends BaseMetadataResourceAction implements
     Preparable, ServletRequestAware {
+  
+  private static class ResourceDisplay {
+    String title;
+    Date modified;
+    String creatorFullName;
+    PublicationStatusForDisplay status;
+    String type;
+
+    public ResourceDisplay(Resource r) {
+      if(r.isRegistered()){
+        if(r.isDirty()){
+          status=PublicationStatusForDisplay.UNPUBLISHED_CHANGES;
+        } else {
+          status=PublicationStatusForDisplay.PUBLISHED;
+        }
+      } else {
+        status=PublicationStatusForDisplay.PRIVATE;
+      }
+      title = r.getTitle();
+      modified = r.getModified();
+      creatorFullName = r.getCreator().getFullName();
+      type = r.getType();
+    }
+    
+    @Transient
+    public PublicationStatusForDisplay getStatus(){
+      return status;
+    }
+    
+    @Transient
+    public String getTitle(){
+      return title;
+    }
+
+    @Transient
+    public Date getModified(){
+      return modified;
+    }
+    
+    @Transient
+    public String getCreatorFullName(){
+      return creatorFullName;
+    }
+
+    @Transient
+    public String getType(){
+      return type;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (!(obj instanceof ResourceDisplay)) {
+        return false;
+      }
+      ResourceDisplay o = (ResourceDisplay) obj;
+      return equal(type, o.type) && equal(status, o.status)
+          && equal(title, o.title)
+          && equal(modified, o.modified) && equal(creatorFullName, o.creatorFullName);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(type, status, title, modified, creatorFullName);
+    }
+
+    @Override
+    public String toString() {
+      return String.format(
+          "Type=%s, Status=%s, Title=%s, Modified=%s, CreatorFullName=%s",
+          type, status, title, modified, creatorFullName);
+    }
+  }
+  
+  public List<ResourceDisplay> resourcesForDisplay = new ArrayList<ResourceDisplay>();
+   
   private static final String OTHER = "other";
 
   private String next;
@@ -100,6 +185,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   };
   private Map<String, String> resourceTypeMap;
   private Map<String, String> agentRoleMap;
+  private Map<String, String> publicationStatusMap;
   private String jdbcDriverClass;
 
   public String connection() {
@@ -228,6 +314,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       resources = getResourceTypeMatchingManager().getResourcesByUser(
           getCurrentUser().getId());
     }
+    for (Resource r : resources) {
+      resourcesForDisplay.add(new ResourceDisplay(r));
+      }
     return SUCCESS;
   }
 
@@ -239,6 +328,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         ResourceType.htmlSelectMap), true);
     agentRoleMap = translateI18nMap(new HashMap<String, String>(
         Role.htmlSelectMap), true);
+    publicationStatusMap = translateI18nMap(new HashMap<String, String>(
+        PublicationStatusForDisplay.htmlSelectMap), true);
     if (resource == null && resourceType != null) {
       // create new empty resource
       if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
