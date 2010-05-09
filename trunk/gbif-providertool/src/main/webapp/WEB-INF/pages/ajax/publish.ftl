@@ -1,16 +1,14 @@
 <#if resource.id??>
   <div id="statusContainer" class="${resource.status}">
-    <b><@s.text name="publish.status.heading"/></b>
+    <b><@s.text name="publish.status.heading"/></b><p></p>
 
     <#if resource.isRegistered()>
       <div class="arrow"><img src="<@s.url value='/images/arrow_right.png'/>" /></div>
       <div class="arrow" style="display:none"><img src="<@s.url value='/images/arrow_down.png'/>" /></div>
       <#if resource.isDirty()>
-        <@s.text name="publish.status.public"/><br>
         <@s.text name="publish.status.dirty"/><p></p>
   	  <#else>
-        <@s.text name="publish.status.public"/><br>
-        <@s.text name="publish.status.clean"/><p></p>
+        <@s.text name="publish.status.published"/><br>
       </#if>
     <#else>
       <@s.text name="publish.status.private"/><p></p>
@@ -23,7 +21,6 @@
           <@s.hidden name="resourceType" value="${resourceType}"/>
           <@s.submit id="btnPublish" cssClass="publishButton" key="publish.button.dirty" theme="simple"/>
         </@s.form>
-        <@s.text name="publish.status.public"/><br>
 	  </#if>
     <#else>
       <@s.form id="publishForm" action="publish" namespace="/ajax" method="post">
@@ -36,13 +33,13 @@
     <@s.text name="dataResource.lastModified"/><br>
     ${resource.modified?datetime?string("yyyy-MM-dd'T'HH:mm:ss")} 
     <#if resource.modifier??>
-      <@s.text name="dataResource.lastModifiedby"/> ${resource.modifier.getFullName()}
+      <br><@s.text name="dataResource.lastModifiedBy"/> ${resource.modifier.getFullName()}
     </#if>
     <p></p>
     <@s.text name="dataResource.createdDate"/><br>
     ${resource.created?datetime?string("yyyy-MM-dd'T'HH:mm:ss")}
     <#if resource.creator??>
-      <@s.text name="dataResource.createdBy"/> ${resource.creator.getFullName()}
+      <br><@s.text name="dataResource.createdBy"/> ${resource.creator.getFullName()}
     </#if>
 
     <div id="registryDetails" style="display:none" class="${resource.status}">
