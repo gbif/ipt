@@ -133,7 +133,6 @@ public class Eml implements Serializable {
    * the higher value is omitted.
    */
   private List<JGTICuratorialUnit> jgtiCuratorialUnits = Lists.newArrayList();
-  // private JGTICuratorialUnit jgtiCuratorialUnit;
 
   // Note that while Sets would be fine, to ease testing, Lists are
   // used to preserve ordering. A Set implementation that respects ordering
@@ -333,6 +332,16 @@ public class Eml implements Serializable {
    */
   public void addTemporalCoverage(TemporalCoverage coverage) {
     temporalCoverages.add(coverage);
+  }
+
+  /**
+   * utility to add a jgtiCuratorialUnit to the list. This method was introduced to
+   * ease the Digester rules for parsing of EML
+   * 
+   * @param jgtiCuratorialUnit to add
+   */
+  public void addJgtiCuratorialUnit(JGTICuratorialUnit unit) {
+    jgtiCuratorialUnits.add(unit);
   }
 
   public String getAbstract() {
@@ -599,10 +608,6 @@ public class Eml implements Serializable {
 
   public void setIntellectualRights(String intellectualRights) {
     this.intellectualRights = intellectualRights;
-  }
-
-  public void setJgtiCuratorialUnit(JGTICuratorialUnit unit) {
-    // TODO(JRW)
   }
 
   public void setJgtiCuratorialUnits(List<JGTICuratorialUnit> jgtiCuratorialUnit) {
