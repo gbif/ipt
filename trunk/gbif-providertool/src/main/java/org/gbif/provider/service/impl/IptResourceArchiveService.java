@@ -29,18 +29,26 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.EmlFactory;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.AnnotationManager;
-import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.ResourceArchiveService;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.XmlFileUtils;
 import org.gbif.provider.util.ZipUtil;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
@@ -56,6 +64,7 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.xml.sax.SAXException;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -67,10 +76,45 @@ import freemarker.template.TemplateException;
  * order by label', 'utf8', ' ', '')
  * 
  */
-public class DataArchiveManagerImpl extends BaseManager implements
-    DataArchiveManager {
+public class IptResourceArchiveService extends BaseManager implements
+    ResourceArchiveService {
 
   private static class ArchiveUtil {
+
+    /**
+     * @param location
+     * @return Eml
+     * @throws IOException
+     */
+    public static Eml getEmlIfExists(File location) throws IOException {
+      Eml eml = null;
+      String path = null;
+      File directory = null;
+      final String emlFileName = "eml.xml";
+      if (location.isFile()) {
+        directory = location.getParentFile();
+      } else {
+        directory = location;
+      }
+      String[] list = directory.list(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+          return name.equalsIgnoreCase(emlFileName);
+        }
+      });
+      if (list != null && list.length > 0) {
+        try {
+          path = String.format("%s/%s", directory.getPath(), emlFileName);
+          eml = EmlFactory.build(new FileInputStream(new File(path)));
+        } catch (SAXException e) {
+          throw new IOException(e.toString());
+        } catch (FileNotFoundException e) {
+          throw new IOException(e.toString());
+        } catch (IOException e) {
+          throw e;
+        }
+      }
+      return eml;
+    }
 
     /**
      * If the file location is compressed as a ZIP or GZIP archive, it is
@@ -87,9 +131,9 @@ public class DataArchiveManagerImpl extends BaseManager implements
      * @throws IOException
      */
     static File expandIfCompressed(File location) throws IOException {
-      File directory = null;
+      File directory = location;
       String name = location.getName(), path = null, parent = location.getParent();
-      if (location.getName().endsWith(".zip")) {
+      if (name.endsWith(".zip")) {
         name = name.split(".zip")[0];
         path = String.format("%s/%s", parent, name);
         directory = new File(path);
@@ -103,6 +147,80 @@ public class DataArchiveManagerImpl extends BaseManager implements
         CompressionUtil.decompressFile(directory, location);
       }
       return directory;
+    }
+  }
+
+  private static class ResourceArchiveImpl implements ResourceArchive {
+
+    static ResourceArchiveImpl create(File file,
+        ImmutableMultimap<SourceFile, Extension> sources, Eml eml) {
+      return new ResourceArchiveImpl(file, sources, eml);
+    }
+
+    final File file;
+    final Eml eml;
+    final ImmutableMultimap<SourceFile, Extension> sources;
+
+    /**
+     * @param type2
+     * @param file2
+     * @param dataSources2
+     * @param eml2
+     */
+    ResourceArchiveImpl(File file,
+        ImmutableMultimap<SourceFile, Extension> sources, Eml eml) {
+      this.file = file;
+      this.sources = sources;
+      this.eml = eml;
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.gbif.provider.service.impl.ResourceArchive#getArchiveFile()
+     */
+    public File getArchiveFile() {
+      return file;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.gbif.provider.service.impl.ResourceArchive#getDataSources()
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends SourceFile> ImmutableSet<T> getSourceFiles() {
+      return (ImmutableSet<T>) sources.keySet();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.gbif.provider.service.impl.ResourceArchive#getEml()
+     */
+    public Eml getEml() {
+      return eml;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.gbif.provider.service.impl.ResourceArchive#getExtensions()
+     */
+    public ImmutableSet<Extension> getExtensions() {
+      return ImmutableSet.copyOf(sources.values());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.gbif.provider.service.impl.ResourceArchive#getExtensions(org.gbif
+     * .provider.model.SourceBase)
+     */
+    public <T extends SourceFile> ImmutableSet<Extension> getExtensions(T source) {
+      return ImmutableSet.copyOf(sources.get(source));
     }
   }
 
@@ -193,12 +311,56 @@ public class DataArchiveManagerImpl extends BaseManager implements
    * (non-Javadoc)
    * 
    * @see
+   * org.gbif.provider.service.DataArchiveManager#createArchive(org.gbif.provider
+   * .model.Resource)
+   */
+  public <R extends Resource, A extends ResourceArchive> A createArchive(
+      R resource) throws IOException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.DataArchiveManager#createResource(org.gbif.provider
+   * .service.ResourceArchive)
+   */
+  public <R extends Resource, A extends ResourceArchive> R createResource(
+      A archive) throws IOException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  // /*
+  // * (non-Javadoc)
+  // *
+  // * @see
+  // org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File)
+  // */
+  // public Archive openArchive(File location, boolean normaliseExtension)
+  // throws IOException, UnsupportedArchiveException {
+  // checkNotNull(location, "Archive is null");
+  // checkArgument(location.canRead(), "Archive is not readable: " + location);
+  // File directory = ArchiveUtil.expandIfCompressed(location);
+  // if (directory != null) {
+  // return ArchiveFactory.openArchive(directory, normaliseExtension);
+  // }
+  // return ArchiveFactory.openArchive(location, normaliseExtension);
+  // }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.gbif.provider.service.DataArchiveManager#getCoreSourceFile(org.gbif
    * .dwc.text.Archive)
    */
   public SourceFile getCoreSourceFile(Archive archive) throws IOException {
     checkNotNull(archive, "Archive is null");
     checkNotNull(archive.getCore(), "Archive core is null");
+    checkNotNull(archive.getCore().getTitle(), "Archive core title is null");
     SourceFile core = new SourceFile(new File(archive.getCore().getTitle()));
     return core;
   }
@@ -224,6 +386,8 @@ public class DataArchiveManagerImpl extends BaseManager implements
         extension = extensionManager.getExtensionByUri(f.getRowType());
         if (extension != null) {
           b.add(extension);
+        } else {
+          log.warn("Null extension returned for namespace: " + f.getRowType());
         }
       } catch (NonUniqueResultException e) {
         log.warn("Duplicate extension namespace was found: " + f.getRowType());
@@ -235,17 +399,38 @@ public class DataArchiveManagerImpl extends BaseManager implements
   /*
    * (non-Javadoc)
    * 
-   * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File)
+   * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File,
+   * boolean)
    */
-  public Archive openArchive(File location, boolean normaliseExtension)
-      throws IOException, UnsupportedArchiveException {
+  @SuppressWarnings("unchecked")
+  public <A extends ResourceArchive> A openArchive(File location,
+      boolean normaliseExtension) throws IOException,
+      UnsupportedArchiveException {
     checkNotNull(location, "Location cannot be null");
     checkArgument(location.canRead(), "Location cannot be read: " + location);
     File directory = ArchiveUtil.expandIfCompressed(location);
+    Archive a;
+    Eml eml = null;
     if (directory != null) {
-      return ArchiveFactory.openArchive(directory, normaliseExtension);
+      a = ArchiveFactory.openArchive(directory, normaliseExtension);
+      eml = ArchiveUtil.getEmlIfExists(directory);
+    } else {
+      a = ArchiveFactory.openArchive(location, normaliseExtension);
     }
-    return ArchiveFactory.openArchive(location, normaliseExtension);
+    ImmutableMultimap.Builder<SourceFile, Extension> sources = ImmutableMultimap.builder();
+    ImmutableSet<Extension> extensions = getExtensions(a);
+
+    // Extensions can be empty when the archive contains *only* a data file. The
+    // assumption is that ArchiveFactory is returning a valid archive, so in the
+    // absence of extensions, we associate the core source file with Darwin
+    // Core.
+    if (extensions.isEmpty()) {
+      extensions = ImmutableSet.of(extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID));
+    }
+
+    SourceFile coreSourceFile = getCoreSourceFile(a);
+    sources.putAll(coreSourceFile, extensions);
+    return (A) ResourceArchiveImpl.create(a.getLocation(), sources.build(), eml);
   }
 
   private String buildPropertySelect(String prefix, ExtensionMapping view) {
@@ -397,5 +582,4 @@ public class DataArchiveManagerImpl extends BaseManager implements
     }
     return descriptor;
   }
-
 }
