@@ -51,10 +51,6 @@ public class TaxonomicCoverage implements Serializable {
   public TaxonomicCoverage() {
   }
 
-  public void addTaxonKeyword(TaxonKeyword keyword) {
-    // TODO
-  }
-
   @Override
   public boolean equals(Object other) {
     if (this == other) {

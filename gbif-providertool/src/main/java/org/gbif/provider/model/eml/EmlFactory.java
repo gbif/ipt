@@ -114,7 +114,7 @@ public class EmlFactory {
 		digester.addBeanPropertySetter("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnits", "rangeStart");
 		// sets attributes of jgtiUnits (uncertaintyMeasure)
 		digester.addSetProperties("eml/additionalMetadata/metadata/jgtiCuratorialUnit/jgtiUnits");
-		digester.addSetNext("eml/additionalMetadata/metadata/jgtiCuratorialUnit", "setJgtiCuratorialUnit"); // add the JGTICuratorialIUnit to the list in EML
+		digester.addSetNext("eml/additionalMetadata/metadata/jgtiCuratorialUnit", "addJgtiCuratorialUnit"); // add the JGTICuratorialIUnit to the list in EML
 
 	}
 
@@ -158,7 +158,7 @@ public class EmlFactory {
 		digester.addBeanPropertySetter("eml/dataset/coverage/taxonomicCoverage/taxonomicClassification/taxonRankName", "rank");
 		digester.addBeanPropertySetter("eml/dataset/coverage/taxonomicCoverage/taxonomicClassification/taxonRankValue", "scientificName");
 		digester.addBeanPropertySetter("eml/dataset/coverage/taxonomicCoverage/taxonomicClassification/commonName", "commonName");
-		digester.addSetNext("eml/dataset/coverage/taxonomicCoverage/taxonomicClassification", "addTaxonKeyword"); // add the TaxonKeyword to the list in the coverage
+		digester.addSetNext("eml/dataset/coverage/taxonomicCoverage/taxonomicClassification", "setTaxonKeyword"); // set the TaxonKeyword part of the TaxonomicCoverage
 		digester.addSetNext("eml/dataset/coverage/taxonomicCoverage", "addTaxonomicCoverage"); // add the TaxonomicCoverage to the list in EML
 	}
 

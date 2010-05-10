@@ -160,8 +160,7 @@
                 </singleDateTime>
             </temporalCoverage>
             <taxonomicCoverage>
-                <generalTaxonomicCoverage>This is a general taxon
-                    coverage</generalTaxonomicCoverage>
+                <generalTaxonomicCoverage>This is a general taxon coverage</generalTaxonomicCoverage>
                 <taxonomicClassification>
                     <taxonRankName>Class</taxonRankName>
                     <taxonRankValue>Mammalia</taxonRankValue>
@@ -217,8 +216,7 @@
                     <description>Daily Obersevation of Pigeons Eating Habits</description>
                 </studyExtent>
                 <samplingDescription>
-                    <para>44KHz is what a CD has... I was more like one a day if I felt like
-                        it</para>
+                    <para>44KHz is what a CD has... I was more like one a day if I felt like it</para>
                 </samplingDescription>
             </sampling>
             <qualityControl>
