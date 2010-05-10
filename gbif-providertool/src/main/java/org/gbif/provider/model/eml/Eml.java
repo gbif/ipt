@@ -46,6 +46,7 @@ public class Eml implements Serializable {
   private String additionalInfo;
 
   private String alternateIdentifier;
+
   /**
    * The 'associatedParty' element provides the full name of other people,
    * organizations, or positions who should be associated with the resource.
@@ -53,9 +54,9 @@ public class Eml implements Serializable {
    * the resource, and these roles should be indicated in the "role" element.
    */
   private List<Agent> associatedParties = Lists.newArrayList();
-
   // private List<String> bibliographicCitations = Lists.newArrayList();
   private BibliographicCitationSet bibliographicCitationSet = new BibliographicCitationSet();
+
   /**
    * A resource that describes a literature citation for the resource, one that
    * might be found in a bibliography. We cannot use
@@ -71,7 +72,6 @@ public class Eml implements Serializable {
    * @see http://rs.tdwg.org/ontology/voc/Collection#collectionId
    */
   private String collectionId;
-
   /**
    * Official name of the Collection in the local language.
    * 
@@ -82,6 +82,7 @@ public class Eml implements Serializable {
    *      discovery in original language
    */
   private String collectionName;
+
   /**
    * Date of metadata creation or the last metadata update Default to now(), but
    * can be overridden
@@ -98,7 +99,6 @@ public class Eml implements Serializable {
    */
   private int emlVersion = 0;
   private List<GeospatialCoverage> geospatialCoverages = Lists.newArrayList();
-
   // Support for a single geocoverage until multiple is enabled.
   private GeospatialCoverage geographicCoverage;
 
@@ -275,16 +275,6 @@ public class Eml implements Serializable {
     bibliographicCitationSet.getBibliographicCitations().addAll(citations);
   }
 
-  // /**
-  // * utility to add a citation to the citations. This method was introduced to
-  // * ease the Digester rules for parsing of EML
-  // *
-  // * @param citation to add
-  // */
-  // public void addCitation(String citation) {
-  // this.citation=citation;
-  // }
-
   /**
    * utility to add a coverage to the coverages This method was introduced to
    * ease the Digester rules for parsing of EML
@@ -294,6 +284,16 @@ public class Eml implements Serializable {
   public void addGeospatialCoverage(GeospatialCoverage geospatialCoverage) {
     geospatialCoverages.add(geospatialCoverage);
   }
+
+  // /**
+  // * utility to add a citation to the citations. This method was introduced to
+  // * ease the Digester rules for parsing of EML
+  // *
+  // * @param citation to add
+  // */
+  // public void addCitation(String citation) {
+  // this.citation=citation;
+  // }
 
   /**
    * utility to add keywords to the keyword sets This method was introduced to
@@ -340,7 +340,9 @@ public class Eml implements Serializable {
   }
 
   public String getAdditionalInfo() {
-    if(additionalInfo==null || additionalInfo.length()==0) return null;
+    if (additionalInfo == null || additionalInfo.length() == 0) {
+      return null;
+    }
     return additionalInfo;
   }
 
@@ -361,17 +363,23 @@ public class Eml implements Serializable {
   }
 
   public String getCitation() {
-    if(citation == null || citation.length() == 0) return null;
+    if (citation == null || citation.length() == 0) {
+      return null;
+    }
     return citation;
   }
 
   public String getCollectionId() {
-    if(collectionId == null || collectionId.length() == 0) return null;
+    if (collectionId == null || collectionId.length() == 0) {
+      return null;
+    }
     return collectionId;
   }
 
   public String getCollectionName() {
-    if(collectionName == null || collectionName.length() == 0) return null;
+    if (collectionName == null || collectionName.length() == 0) {
+      return null;
+    }
     return collectionName;
   }
 
@@ -380,7 +388,9 @@ public class Eml implements Serializable {
   }
 
   public String getDistributionUrl() {
-    if(distributionUrl==null || distributionUrl.length()==0) return null;
+    if (distributionUrl == null || distributionUrl.length() == 0) {
+      return null;
+    }
     return distributionUrl;
   }
 
@@ -401,12 +411,16 @@ public class Eml implements Serializable {
   }
 
   public String getHierarchyLevel() {
-    if(hierarchyLevel == null || hierarchyLevel.length() == 0) return null;
+    if (hierarchyLevel == null || hierarchyLevel.length() == 0) {
+      return null;
+    }
     return hierarchyLevel;
   }
 
   public String getIntellectualRights() {
-    if(intellectualRights==null || intellectualRights.length()==0) return null;
+    if (intellectualRights == null || intellectualRights.length() == 0) {
+      return null;
+    }
     return intellectualRights;
   }
 
@@ -419,7 +433,9 @@ public class Eml implements Serializable {
   }
 
   public String getLanguage() {
-    if(language == null || language.length() == 0) return null;
+    if (language == null || language.length() == 0) {
+      return null;
+    }
     return language;
   }
 
@@ -428,12 +444,16 @@ public class Eml implements Serializable {
   }
 
   public String getLogoUrl() {
-    if(logoUrl == null || logoUrl.length() == 0) return null;
+    if (logoUrl == null || logoUrl.length() == 0) {
+      return null;
+    }
     return logoUrl;
   }
 
   public String getMetadataLanguage() {
-    if(metadataLanguage == null || metadataLanguage.length() == 0) return null;
+    if (metadataLanguage == null || metadataLanguage.length() == 0) {
+      return null;
+    }
     return metadataLanguage;
   }
 
@@ -446,7 +466,9 @@ public class Eml implements Serializable {
   }
 
   public String getParentCollectionId() {
-    if(parentCollectionId == null || parentCollectionId.length() == 0) return null;
+    if (parentCollectionId == null || parentCollectionId.length() == 0) {
+      return null;
+    }
     return parentCollectionId;
   }
 
@@ -463,7 +485,9 @@ public class Eml implements Serializable {
   }
 
   public String getPurpose() {
-    if(purpose == null || purpose.length() == 0) return null;
+    if (purpose == null || purpose.length() == 0) {
+      return null;
+    }
     return purpose;
   }
 
@@ -480,7 +504,10 @@ public class Eml implements Serializable {
   }
 
   public String getSpecimenPreservationMethod() {
-    if(specimenPreservationMethod == null || specimenPreservationMethod.length() == 0) return null;
+    if (specimenPreservationMethod == null
+        || specimenPreservationMethod.length() == 0) {
+      return null;
+    }
     return specimenPreservationMethod;
   }
 
@@ -572,6 +599,10 @@ public class Eml implements Serializable {
 
   public void setIntellectualRights(String intellectualRights) {
     this.intellectualRights = intellectualRights;
+  }
+
+  public void setJgtiCuratorialUnit(JGTICuratorialUnit unit) {
+    // TODO(JRW)
   }
 
   public void setJgtiCuratorialUnits(List<JGTICuratorialUnit> jgtiCuratorialUnit) {

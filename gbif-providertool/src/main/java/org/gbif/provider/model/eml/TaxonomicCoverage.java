@@ -15,13 +15,11 @@
  */
 package org.gbif.provider.model.eml;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-
 import static com.google.common.base.Objects.equal;
 
+import com.google.common.base.Objects;
+
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * The description of the Taxonomic scope that the resource covers
@@ -46,6 +44,17 @@ public class TaxonomicCoverage implements Serializable {
    */
   private TaxonKeyword taxonKeyword = new TaxonKeyword();
 
+  /**
+   * Required for struts2 params-interceptor, Digester and deserializing from
+   * XML
+   */
+  public TaxonomicCoverage() {
+  }
+
+  public void addTaxonKeyword(TaxonKeyword keyword) {
+    // TODO
+  }
+
   @Override
   public boolean equals(Object other) {
     if (this == other) {
@@ -55,15 +64,8 @@ public class TaxonomicCoverage implements Serializable {
       return false;
     }
     TaxonomicCoverage o = (TaxonomicCoverage) other;
-    return equal(description, o.description) 
+    return equal(description, o.description)
         && equal(taxonKeyword, o.taxonKeyword);
-  }
-
-  /**
-   * Required for struts2 params-interceptor, Digester and deserializing from
-   * XML
-   */
-  public TaxonomicCoverage() {
   }
 
   /**
@@ -98,10 +100,11 @@ public class TaxonomicCoverage implements Serializable {
   public void setTaxonKeyword(TaxonKeyword keyword) {
     this.taxonKeyword = keyword;
   }
-  
+
   @Override
   public String toString() {
-    return String.format("Description=%s, %s", description, taxonKeyword.toString());
+    return String.format("Description=%s, %s", description,
+        taxonKeyword.toString());
   }
 
 }
