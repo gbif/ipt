@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -33,6 +33,7 @@ import org.gbif.provider.model.eml.TemporalCoverageType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
+import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.AppConfig;
@@ -58,7 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.opensymphony.xwork2.Preparable;
 
 /**
- * TODO: Documentation.
+ * This class provides action support for editing EML metadata forms.
  * 
  */
 public class EmlEditorAction extends BaseMetadataResourceAction implements
@@ -84,6 +85,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     RESOURCE_FORM,
     ADDITIONAL_METADATA;
   }
+
+  private static final long serialVersionUID = -843256914689939746L;
 
   /**
    * Returns the {@link RequestMethod} corresponding to the method parameter
@@ -224,7 +227,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   }
 
   public String getRegistryOrgTitle() {
-    return cfg.getOrg().getTitle();
+    return cfg.getIptOrgMetadata().getTitle();
   }
 
   public String getRegistryOrgUrl() {
@@ -256,6 +259,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         MethodType.htmlSelectMap), true);
     switch (method(request)) {
       case ORGANISATION:
+        resource.getMeta().setUddiID(resource.getOrgUuid());
+        try {
+          registryManager.registerResource(resource);
+        } catch (RegistryException e) {
+          e.printStackTrace();
+        }
         // Nothing to do here unless the Organisation form has elements whose
         // values are destined for eml.
         break;
@@ -277,7 +286,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           // geographic coverages.
           eml = emlManager.load(resource);
           eml.getGeospatialCoverages().clear();
-          //  This should go away when refactored for one geocoverage
+          // This should go away when refactored for one geocoverage
           eml.setGeographicCoverage(null);
         } else {
           // eml was populated via Struts.
@@ -285,7 +294,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           GeospatialCoverage singlecoverage = eml.getGeographicCoverage();
           eml = emlManager.load(resource);
           eml.setGeospatialCoverages(coverages);
-          //  This should go away when refactored for one geocoverage
+          // This should go away when refactored for one geocoverage
           eml.setGeographicCoverage(singlecoverage);
         }
         break;
@@ -464,7 +473,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     if (next == null) {
       return INPUT;
     }
-    if (resource.getOrgTitle() == null || resource.getOrgTitle().trim().length()==0) {
+    if (resource.getOrgTitle() == null
+        || resource.getOrgTitle().trim().length() == 0) {
       resource.setOrgPassword("");
       resource.setOrgUuid("");
     } else {

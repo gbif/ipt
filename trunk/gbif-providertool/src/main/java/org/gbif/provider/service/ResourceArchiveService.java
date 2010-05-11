@@ -70,12 +70,11 @@ public interface ResourceArchiveService {
    * 
    * @param <A> the archive type
    * @param location the archive location on disk
-   * @param normaliseExtension
+   * @param normalise normalise extension names
    * @return the archive
    * @throws IOException
    * @throws UnsupportedArchiveException A
    */
-  <A extends ResourceArchive> A openArchive(File location,
-      boolean normaliseExtension) throws IOException,
-      UnsupportedArchiveException;
+  <A extends ResourceArchive> A openArchive(File location, boolean normalise)
+      throws IOException, UnsupportedArchiveException;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -37,7 +37,6 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.RegionType;
 import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.DarwinCoreManager;
-import org.gbif.provider.service.DataArchiveManager;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ExtensionRecordManager;
 import org.gbif.provider.service.FullTextSearchManager;
@@ -45,16 +44,11 @@ import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
+import org.gbif.provider.service.ResourceArchiveService;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.service.impl.GeoserverManagerImpl;
 import org.gbif.provider.util.CacheMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +61,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Tha main task responsible for importing raw data into the cache and doing
@@ -132,7 +132,7 @@ public abstract class ImportTask<R extends DataResource> extends
   @Autowired
   private CacheManager cacheManager;
   @Autowired
-  private DataArchiveManager dataArchiveManager;
+  private ResourceArchiveService dataArchiveManager;
   @Autowired
   private DarwinCoreFactory dwcFactory;
   @Autowired

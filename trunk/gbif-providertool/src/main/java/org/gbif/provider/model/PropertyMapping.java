@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,8 +15,7 @@
  */
 package org.gbif.provider.model;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import com.google.common.base.Preconditions;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +23,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  * A mapping between a single extension property (concept) and a resource
@@ -34,6 +36,7 @@ import javax.persistence.Transient;
  */
 @Entity
 public class PropertyMapping implements BaseObject, Comparable<PropertyMapping> {
+
   public static PropertyMapping newInstance() {
     PropertyMapping pm = new PropertyMapping();
     return pm;
@@ -45,13 +48,38 @@ public class PropertyMapping implements BaseObject, Comparable<PropertyMapping> 
     return pm;
   }
 
+  /**
+   * This static factory method returns a new instance of
+   * {@link PropertyMapping} configured with an {@link ExtensionProperty},
+   * column, and default value.
+   * 
+   * @param ep the extension property
+   * @param column the column
+   * @param value the default value
+   */
+  public static PropertyMapping with(ExtensionProperty ep, String column,
+      String value) {
+    Preconditions.checkNotNull(ep, "Extension property is null");
+    Preconditions.checkNotNull(column, "Column is null");
+    Preconditions.checkArgument(column.length() > 0, "Column has no value");
+    return new PropertyMapping(ep, column, value);
+  }
+
   private Long id;
   private ExtensionMapping viewMapping;
   private ExtensionProperty property;
   private String column;
-
   private Transformation termTransformation;
   private String value;
+
+  public PropertyMapping() {
+  }
+
+  private PropertyMapping(ExtensionProperty ep, String column, String value) {
+    property = ep;
+    this.column = column;
+    this.value = value;
+  }
 
   /**
    * Natural sort order is by viewMapping, then extension property

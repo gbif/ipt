@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -382,6 +382,8 @@ public class BaseAction extends ActionSupport {
       String i18Key = map.get(key);
       map.put(key, getText(i18Key));
     }
+    // TODO: i8ln
+    // map.put("Select...", "Select...");
     if (!sortByValues) {
       return map;
     } else {
