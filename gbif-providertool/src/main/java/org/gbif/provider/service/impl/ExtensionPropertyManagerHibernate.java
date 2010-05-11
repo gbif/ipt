@@ -57,6 +57,21 @@ public class ExtensionPropertyManagerHibernate extends
     // a qualified concept name
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.ExtensionPropertyManager#getPropertyByQualName
+   * (java.lang.String)
+   */
+  public ExtensionProperty getPropertyByQualName(String qName) {
+    ExtensionProperty prop = new ExtensionProperty(qName);
+    return (ExtensionProperty) getSession().createQuery(
+        "select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and (p.namespace=:namespace or p.namespace=:namespace2)) ").setParameter(
+        "name", prop.getName()).setParameter("namespace", prop.getNamespace()).setParameter(
+        "namespace2", prop.getNamespace() + "/").uniqueResult();
+  }
+
   public Set<ExtensionProperty> lookupFilterCoreProperties(Filter filter)
       throws ParseException {
     Set<ExtensionProperty> props = new HashSet<ExtensionProperty>();

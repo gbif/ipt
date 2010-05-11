@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -113,7 +113,9 @@ public class Resource implements BaseObject, Comparable<Resource>,
   }
 
   public Date getCreated() {
-    if(created==null) return created;
+    if (created == null) {
+      return created;
+    }
     return new Date(created.getTime());
   }
 
@@ -161,7 +163,9 @@ public class Resource implements BaseObject, Comparable<Resource>,
   }
 
   public Date getModified() {
-    if(modified==null) return modified;
+    if (modified == null) {
+      return modified;
+    }
     return new Date(modified.getTime());
   }
 

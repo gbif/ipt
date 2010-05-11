@@ -16,7 +16,7 @@
 package org.gbif.provider.service.impl;
 
 import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.Extension;
+import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.eml.Eml;
@@ -49,27 +49,26 @@ public interface ResourceArchive {
   Eml getEml();
 
   /**
-   * Returns an {@link ImmutableSet} of all {@link Extension}s.
    * 
-   * @return ImmutableSet<Extension> all extensions
+   * @param <M>
+   * @param <S>
+   * @param source
+   * @return M
    */
-  ImmutableSet<Extension> getExtensions();
+  <M extends ExtensionMapping, S extends SourceFile> M getExtensionMapping(
+      S source);
 
   /**
-   * Returns an {@link ImmutableSet} of all {@link Extension}s for a given
-   * {@link SourceFile}.
    * 
-   * @param <T> the type of source file
-   * @param source the source file
-   * @return ImmutableSet<Extension> source file extensions
+   * @param <S>
+   * @return S
    */
-  <T extends SourceFile> ImmutableSet<Extension> getExtensions(T source);
+  <S extends SourceFile> S getSourceFileForCore();
 
   /**
-   * Returns an {@link ImmutableSet} of all {@link SourceFile}s.
    * 
-   * @param <T> the type of source file
-   * @return ImmutableSet<T> source files
+   * @param <S>
+   * @return ImmutableSet<S>
    */
-  <T extends SourceFile> ImmutableSet<T> getSourceFiles();
+  <S extends SourceFile> ImmutableSet<S> getSourceFilesForExtensions();
 }

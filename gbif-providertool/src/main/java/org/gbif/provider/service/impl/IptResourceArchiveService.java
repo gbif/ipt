@@ -18,8 +18,10 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
+import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CompressionUtil;
@@ -29,20 +31,28 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
+import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.EmlFactory;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.AnnotationManager;
+import org.gbif.provider.service.ChecklistResourceManager;
+import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.ExtensionPropertyManager;
+import org.gbif.provider.service.GenericResourceManager;
+import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceArchiveService;
+import org.gbif.provider.service.SourceManager;
+import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.XmlFileUtils;
 import org.gbif.provider.util.ZipUtil;
 
-import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import java.io.File;
@@ -58,11 +68,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.xml.sax.SAXException;
 
@@ -70,8 +82,11 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 /**
- * H2 supports tab file dumps out of the box Apart from the default CSV, it
- * allows to override delimiters so pure tab files can be created like this:
+ * 
+ * TODO: Amend TAX_SKIP_COLUMNS for ratified DwC.
+ * 
+ * Note: H2 supports tab file dumps out of the box Apart from the default CSV,
+ * it allows to override delimiters so pure tab files can be created like this:
  * CALL CSVWRITE('/Users/markus/Desktop/test.txt', 'select id, label from taxon
  * order by label', 'utf8', ' ', '')
  * 
@@ -79,42 +94,15 @@ import freemarker.template.TemplateException;
 public class IptResourceArchiveService extends BaseManager implements
     ResourceArchiveService {
 
-  private static class ArchiveUtil {
+  /**
+   * This class can be used for transforming an {@link ArchiveFile} into
+   * corresponding {@link SourceFile} and {@link ExtensionMapping} objects.
+   * 
+   */
+  private static class ArchiveAdapter {
 
-    /**
-     * @param location
-     * @return Eml
-     * @throws IOException
-     */
-    public static Eml getEmlIfExists(File location) throws IOException {
-      Eml eml = null;
-      String path = null;
-      File directory = null;
-      final String emlFileName = "eml.xml";
-      if (location.isFile()) {
-        directory = location.getParentFile();
-      } else {
-        directory = location;
-      }
-      String[] list = directory.list(new FilenameFilter() {
-        public boolean accept(File dir, String name) {
-          return name.equalsIgnoreCase(emlFileName);
-        }
-      });
-      if (list != null && list.length > 0) {
-        try {
-          path = String.format("%s/%s", directory.getPath(), emlFileName);
-          eml = EmlFactory.build(new FileInputStream(new File(path)));
-        } catch (SAXException e) {
-          throw new IOException(e.toString());
-        } catch (FileNotFoundException e) {
-          throw new IOException(e.toString());
-        } catch (IOException e) {
-          throw e;
-        }
-      }
-      return eml;
-    }
+    static ExtensionManager extensionManager;
+    static ExtensionPropertyManager propertyManager;
 
     /**
      * If the file location is compressed as a ZIP or GZIP archive, it is
@@ -145,95 +133,275 @@ public class IptResourceArchiveService extends BaseManager implements
         directory = new File(path);
         directory.mkdir();
         CompressionUtil.decompressFile(directory, location);
+      } else if (name.equalsIgnoreCase("eml.xml")) {
+        directory = new File(location.getParentFile().getPath());
       }
       return directory;
     }
+
+    /**
+     * Returns the core {@link SourceFile} from an {@link Archive}.
+     * 
+     * @param archive the archive
+     * @return SourceFile the source file
+     */
+    static SourceFile getCoreSourceFile(Archive archive) {
+      checkNotNull(archive, "Archive is null");
+      checkNotNull(archive.getCore(), "Archive core is null");
+      checkNotNull(archive.getCore().getTitle(), "Archive core title is null");
+      SourceFile core = new SourceFile(new File(archive.getCore().getTitle()));
+      return core;
+    }
+
+    /**
+     * If a valid eml.xml exists at a given location, creates an {@link Eml}
+     * instance and returns it. Otherwise returns null.
+     * 
+     * @param location the eml.xml file or a directory containing it
+     * @return Eml
+     * @throws IOException
+     */
+    static Eml getEmlIfExists(File location) throws IOException {
+      Eml eml = null;
+      String path = null;
+      File directory = null;
+      final String emlFileName = "eml.xml";
+      if (location.isFile()) {
+        directory = location.getParentFile();
+      } else {
+        directory = location;
+      }
+      String[] list = directory.list(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+          return name.equalsIgnoreCase(emlFileName);
+        }
+      });
+      if (list != null && list.length > 0) {
+        try {
+          path = String.format("%s/%s", directory.getPath(), emlFileName);
+          eml = EmlFactory.build(new FileInputStream(new File(path)));
+        } catch (SAXException e) {
+          throw new IOException(e.toString());
+        } catch (FileNotFoundException e) {
+          throw new IOException(e.toString());
+        } catch (IOException e) {
+          throw e;
+        }
+      }
+      return eml;
+    }
+
+    /**
+     * Returns an {@link ExtensionMapping} for an {@link ArchiveFile}.
+     * 
+     * Note: If an {@link Extension} or {@link ExtensionProperty} cannot be
+     * created from the archive file, this method returns null.
+     * 
+     * Note: If an extension cannot be created but isCore is true, an extension
+     * mapping for Darwin Core will be created and returned.
+     * 
+     * @param f the archive file
+     * @param isCore true if the archive file represents the core
+     * @return ExtensionMapping
+     */
+    static ExtensionMapping getExtensionMapping(ArchiveFile f, boolean isCore) {
+      Extension extension = getExtension(f.getRowType(), isCore);
+      if (extension == null) {
+        // TODO?
+        return null;
+      }
+      ExtensionMapping em = ExtensionMapping.with(extension);
+      ExtensionProperty ep;
+      PropertyMapping pm;
+      ConceptTerm ct;
+      ArchiveField af;
+      for (Entry<ConceptTerm, ArchiveField> entry : f.getFields().entrySet()) {
+        ct = entry.getKey();
+        af = entry.getValue();
+        ep = getExtensionProperty(ct.qualifiedName());
+        if (ep == null) {
+          // TODO?
+          continue;
+        }
+        extension.addProperty(ep);
+        pm = PropertyMapping.with(ep, ct.simpleName(), af.getDefaultValue());
+        pm.setProperty(ep);
+        pm.setViewMapping(em);
+        em.addPropertyMapping(pm);
+      }
+      return em;
+    }
+
+    /**
+     * Returns an {@link ImmutableMap} mapping of {@link SourceFile} to its
+     * {@link ExtensionMapping} for all extensions in an {@link ArchiveFile}
+     * (excluding core).
+     * 
+     * Note: If an extension mapping cannot be created for a source file, the
+     * source file is ignored.
+     * 
+     * @param archive the archive
+     * @return ImmutableMap<SourceFile, ExtensionMapping>
+     */
+    static ImmutableMap<SourceFile, ExtensionMapping> getExtensionMappings(
+        Archive archive) {
+      checkNotNull(archive, "Archive is null");
+      checkNotNull(archive.getExtensions(), "Archive extensions are null");
+      if (archive.getExtensions().isEmpty()) {
+        return ImmutableMap.of();
+      }
+      ImmutableMap.Builder<SourceFile, ExtensionMapping> b = ImmutableMap.builder();
+      ExtensionMapping em;
+      SourceFile source;
+      for (ArchiveFile f : archive.getExtensions()) {
+        em = getExtensionMapping(f, false);
+        if (em == null) {
+          // TODO?
+          continue;
+        }
+        source = new SourceFile(new File(f.getTitle()));
+        b.put(source, em);
+      }
+      return b.build();
+    }
+
+    /**
+     * This method returns an {@link ExtensionProperty} given a qualified name.
+     * 
+     * Note: This method returns null if duplicate properties are found in H2 or
+     * if H2 does not contain the property.
+     * 
+     * @param qualifiedName the qualified name
+     * @return ExtensionProperty
+     */
+    static ExtensionProperty getExtensionProperty(String qualifiedName) {
+      ExtensionProperty ep = null;
+      try {
+        ep = propertyManager.getPropertyByQualName(qualifiedName);
+      } catch (NonUniqueResultException e) {
+        // TODO: Duplicate extension properties in H2. What action to take?
+      }
+      if (ep == null) {
+        // TODO: No matching ExtensionProperties in H2. What action to take?
+      }
+      return ep;
+    }
+
+    /**
+     * Gives {@link ArchiveAdapter} a reference to services.
+     * 
+     * @param extensionManager
+     * @param propertyManager void
+     */
+    static void init(ExtensionManager extensionManager,
+        ExtensionPropertyManager propertyManager) {
+      ArchiveAdapter.extensionManager = extensionManager;
+      ArchiveAdapter.propertyManager = propertyManager;
+    }
+
+    /**
+     * This method returns an {@link Extension} given a row type attribute (an
+     * URI) from the <core> or <extension> element of a metafile.
+     * 
+     * Note: This method returns null if duplicate extensions are found in H2 or
+     * if H2 doesn't contain the extension.
+     * 
+     * Note: If an extension cannot be created but isCore is true, an extension
+     * for Darwin Core will be returned.
+     * 
+     * @param rowType the extension URI
+     * @param isCore true if the rowType is from a <core> element in a metafile
+     * @return Extension
+     */
+    private static Extension getExtension(String rowType, boolean isCore) {
+      Extension extension = null;
+      try {
+        extension = extensionManager.getExtensionByUri(rowType);
+      } catch (NonUniqueResultException e) {
+        // TODO: Duplicate extensions in H2. What action to take?
+      }
+      if (extension == null) {
+        if (isCore) {
+          extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+        } else {
+          // TODO: No matching extensions in H2. What action to take?
+        }
+      }
+      return extension;
+    }
   }
 
+  /**
+   * This class is an internal implementation of {@link ResourceArchive}.
+   * 
+   */
   private static class ResourceArchiveImpl implements ResourceArchive {
 
     static ResourceArchiveImpl create(File file,
-        ImmutableMultimap<SourceFile, Extension> sources, Eml eml) {
-      return new ResourceArchiveImpl(file, sources, eml);
+        ImmutableMap<SourceFile, ExtensionMapping> coreMapping,
+        ImmutableMap<SourceFile, ExtensionMapping> mappings, Eml eml) {
+      return new ResourceArchiveImpl(file, coreMapping, mappings, eml);
     }
 
     final File file;
     final Eml eml;
-    final ImmutableMultimap<SourceFile, Extension> sources;
+    final ImmutableMap<SourceFile, ExtensionMapping> coreMapping;
+    final ImmutableMap<SourceFile, ExtensionMapping> extensionMappings;
 
-    /**
-     * @param type2
-     * @param file2
-     * @param dataSources2
-     * @param eml2
-     */
     ResourceArchiveImpl(File file,
-        ImmutableMultimap<SourceFile, Extension> sources, Eml eml) {
+        ImmutableMap<SourceFile, ExtensionMapping> coreMapping,
+        ImmutableMap<SourceFile, ExtensionMapping> extensionMappings, Eml eml) {
       this.file = file;
-      this.sources = sources;
+      this.coreMapping = coreMapping;
+      this.extensionMappings = extensionMappings;
       this.eml = eml;
-
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.gbif.provider.service.impl.ResourceArchive#getArchiveFile()
-     */
     public File getArchiveFile() {
       return file;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.gbif.provider.service.impl.ResourceArchive#getDataSources()
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends SourceFile> ImmutableSet<T> getSourceFiles() {
-      return (ImmutableSet<T>) sources.keySet();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.gbif.provider.service.impl.ResourceArchive#getEml()
-     */
     public Eml getEml() {
       return eml;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.gbif.provider.service.impl.ResourceArchive#getExtensions()
-     */
-    public ImmutableSet<Extension> getExtensions() {
-      return ImmutableSet.copyOf(sources.values());
+    @SuppressWarnings("unchecked")
+    public <M extends ExtensionMapping, S extends SourceFile> M getExtensionMapping(
+        S source) {
+      M mapping = null;
+      if (coreMapping.containsKey(source)) {
+        mapping = (M) coreMapping.get(source);
+      } else if (extensionMappings.containsKey(source)) {
+        mapping = (M) extensionMappings.get(source);
+      }
+      return mapping;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.gbif.provider.service.impl.ResourceArchive#getExtensions(org.gbif
-     * .provider.model.SourceBase)
-     */
-    public <T extends SourceFile> ImmutableSet<Extension> getExtensions(T source) {
-      return ImmutableSet.copyOf(sources.get(source));
+    @SuppressWarnings("unchecked")
+    public <S extends SourceFile> S getSourceFileForCore() {
+      return coreMapping.isEmpty() ? null
+          : (S) coreMapping.keySet().iterator().next();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <S extends SourceFile> ImmutableSet<S> getSourceFilesForExtensions() {
+      return (ImmutableSet<S>) extensionMappings.keySet();
     }
   }
 
   public static final String OCC_SKIP_COLUMNS = "|occurrenceID|";
-  // TODO: amend TAX_SKIP_COLUMNS for ratified DwC
   public static final String TAX_SKIP_COLUMNS = "|ScientificName|TaxonID|Kingdom|Phylum|Class|Order|Family|Genus|Subgenus|HigherTaxonID|HigherTaxon|AcceptedTaxonID|AcceptedTaxon|BasionymID|Basionym|";
-
   private static final String CSVWRITE = "CALL CSVWRITE('%s', '%s', 'utf8')";
   private static final String DESCRIPTOR_TEMPLATE = "/WEB-INF/pages/dwcarchive-meta.ftl";
+
   @Autowired
   protected AppConfig cfg;
+
   @Autowired
   protected AnnotationManager annotationManager;
+
+  @Autowired
+  private SourceManager sourceManager;
 
   @Autowired
   private IptNamingStrategy namingStrategy;
@@ -242,7 +410,27 @@ public class IptResourceArchiveService extends BaseManager implements
   private Configuration freemarker;
 
   @Autowired
+  private EmlManager emlManager;
+
+  @Autowired
+  private ChecklistResourceManager checklistResourceManager;
+
+  @Autowired
+  private OccResourceManager occResourceManager;
+
+  @Autowired
+  private ViewMappingManager extensionMappingManager;
+
+  @Autowired
+  @Qualifier("resourceManager")
+  private GenericResourceManager<Resource> metaResourceManager;
+  private GenericResourceManager<Resource> resourceManager;
+
+  @Autowired
   private ExtensionManager extensionManager;
+
+  @Autowired
+  private ExtensionPropertyManager extensionPropertyManager;
 
   public File createArchive(DataResource resource) throws IOException,
       IllegalStateException {
@@ -327,73 +515,43 @@ public class IptResourceArchiveService extends BaseManager implements
    * org.gbif.provider.service.DataArchiveManager#createResource(org.gbif.provider
    * .service.ResourceArchive)
    */
+  @SuppressWarnings("unchecked")
   public <R extends Resource, A extends ResourceArchive> R createResource(
       A archive) throws IOException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  // /*
-  // * (non-Javadoc)
-  // *
-  // * @see
-  // org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File)
-  // */
-  // public Archive openArchive(File location, boolean normaliseExtension)
-  // throws IOException, UnsupportedArchiveException {
-  // checkNotNull(location, "Archive is null");
-  // checkArgument(location.canRead(), "Archive is not readable: " + location);
-  // File directory = ArchiveUtil.expandIfCompressed(location);
-  // if (directory != null) {
-  // return ArchiveFactory.openArchive(directory, normaliseExtension);
-  // }
-  // return ArchiveFactory.openArchive(location, normaliseExtension);
-  // }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.DataArchiveManager#getCoreSourceFile(org.gbif
-   * .dwc.text.Archive)
-   */
-  public SourceFile getCoreSourceFile(Archive archive) throws IOException {
-    checkNotNull(archive, "Archive is null");
-    checkNotNull(archive.getCore(), "Archive core is null");
-    checkNotNull(archive.getCore().getTitle(), "Archive core title is null");
-    SourceFile core = new SourceFile(new File(archive.getCore().getTitle()));
-    return core;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.DataArchiveManager#getCoreSourceFiles(org.gbif
-   * .dwc.text.Archive)
-   */
-  public ImmutableSet<Extension> getExtensions(Archive archive)
-      throws IOException {
-    checkNotNull(archive, "Archive is null");
-    checkNotNull(archive.getExtensions(), "Archive extensions are null");
-    if (archive.getExtensions().isEmpty()) {
-      return ImmutableSet.of();
-    }
-    Extension extension;
-    ImmutableSet.Builder<Extension> b = ImmutableSet.builder();
-    for (ArchiveFile f : archive.getExtensions()) {
-      try {
-        extension = extensionManager.getExtensionByUri(f.getRowType());
-        if (extension != null) {
-          b.add(extension);
-        } else {
-          log.warn("Null extension returned for namespace: " + f.getRowType());
-        }
-      } catch (NonUniqueResultException e) {
-        log.warn("Duplicate extension namespace was found: " + f.getRowType());
+    R resource = null;
+    if (archive.getSourceFileForCore() == null) {
+      // Handles an EML-only archive:
+      resource = (R) new Resource();
+      metaResourceManager.save(resource);
+      Eml eml = archive.getEml();
+      eml.setResource(resource);
+      emlManager.save(eml);
+    } else {
+      // Handles a normal DwC archive:
+      OccurrenceResource r = new OccurrenceResource();
+      r.setDirty();
+      occResourceManager.save(r);
+      SourceFile source = archive.getSourceFileForCore();
+      source.setResource(r);
+      sourceManager.save(source);
+      ExtensionMapping mapping = archive.getExtensionMapping(source);
+      mapping.setResource(r);
+      mapping.setSource(source);
+      extensionMappingManager.save(mapping);
+      ExtensionMapping em;
+      for (SourceFile s : archive.getSourceFilesForExtensions()) {
+        s.setResource(r);
+        sourceManager.save(s);
+        em = archive.getExtensionMapping(s);
+        em.setResource(r);
+        em.setSource(s);
+        extensionMappingManager.save(em);
+        r.addExtensionMapping(em);
       }
+      occResourceManager.save(r);
+      resource = (R) r;
     }
-    return b.build();
+    return resource;
   }
 
   /*
@@ -404,33 +562,46 @@ public class IptResourceArchiveService extends BaseManager implements
    */
   @SuppressWarnings("unchecked")
   public <A extends ResourceArchive> A openArchive(File location,
-      boolean normaliseExtension) throws IOException,
-      UnsupportedArchiveException {
+      boolean normalise) throws IOException, UnsupportedArchiveException {
     checkNotNull(location, "Location cannot be null");
     checkArgument(location.canRead(), "Location cannot be read: " + location);
-    File directory = ArchiveUtil.expandIfCompressed(location);
-    Archive a;
+    ArchiveAdapter.init(extensionManager, extensionPropertyManager);
+    Archive a = null;
     Eml eml = null;
-    if (directory != null) {
-      a = ArchiveFactory.openArchive(directory, normaliseExtension);
-      eml = ArchiveUtil.getEmlIfExists(directory);
-    } else {
-      a = ArchiveFactory.openArchive(location, normaliseExtension);
-    }
-    ImmutableMultimap.Builder<SourceFile, Extension> sources = ImmutableMultimap.builder();
-    ImmutableSet<Extension> extensions = getExtensions(a);
 
-    // Extensions can be empty when the archive contains *only* a data file. The
-    // assumption is that ArchiveFactory is returning a valid archive, so in the
-    // absence of extensions, we associate the core source file with Darwin
-    // Core.
-    if (extensions.isEmpty()) {
-      extensions = ImmutableSet.of(extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID));
+    // Expands and opens the archive:
+    File archiveLocation = ArchiveAdapter.expandIfCompressed(location);
+    try {
+      a = ArchiveFactory.openArchive(archiveLocation, normalise);
+    } catch (UnsupportedArchiveException e) {
+      // He we check for eml.xml:
+      eml = ArchiveAdapter.getEmlIfExists(archiveLocation);
+      if (eml != null) {
+        ImmutableMap<SourceFile, ExtensionMapping> coreMapping = ImmutableMap.of();
+        ImmutableMap<SourceFile, ExtensionMapping> extensionMappings = ImmutableMap.of();
+        return (A) ResourceArchiveImpl.create(location, coreMapping,
+            extensionMappings, eml);
+      }
+      // TODO: Check for multiple data files supported by IPT
+      throw e;
     }
 
-    SourceFile coreSourceFile = getCoreSourceFile(a);
-    sources.putAll(coreSourceFile, extensions);
-    return (A) ResourceArchiveImpl.create(a.getLocation(), sources.build(), eml);
+    // Gets extension mapping for core:
+    ImmutableMap<SourceFile, ExtensionMapping> coreMapping;
+    SourceFile source = ArchiveAdapter.getCoreSourceFile(a);
+    coreMapping = ImmutableMap.of(source, ArchiveAdapter.getExtensionMapping(
+        a.getCore(), true));
+
+    // Gets extension mappings for extensions:
+    ImmutableMap<SourceFile, ExtensionMapping> extensionMappings;
+    extensionMappings = ArchiveAdapter.getExtensionMappings(a);
+
+    // Gets Eml if it exists:
+    eml = ArchiveAdapter.getEmlIfExists(archiveLocation);
+
+    // Returns our internal ResourceArchive implementation:
+    return (A) ResourceArchiveImpl.create(a.getLocation(), coreMapping,
+        extensionMappings, eml);
   }
 
   private String buildPropertySelect(String prefix, ExtensionMapping view) {

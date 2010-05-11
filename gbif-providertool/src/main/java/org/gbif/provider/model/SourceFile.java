@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -12,13 +12,9 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */
-package org.gbif.provider.model;
+ */package org.gbif.provider.model;
 
 import org.gbif.provider.util.AppConfig;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.util.Date;
@@ -27,12 +23,12 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 /**
- * TODO: Documentation.
+ * This class can be used as an entity to encapsulate information about source
+ * files.
  * 
  */
 @Entity
 public class SourceFile extends SourceBase {
-  private static Log log = LogFactory.getLog(SourceFile.class);
   private Date dateUploaded;
   private long fileSize;
   private boolean headers = false;

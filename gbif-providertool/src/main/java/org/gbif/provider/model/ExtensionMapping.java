@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,9 +15,7 @@
  */
 package org.gbif.provider.model;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.MapKey;
+import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +34,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.MapKey;
+
 /**
  * A mapping between a resource and an extension (incl darwincore itself). The
  * ExtensionMapping defines the sql statement used to upload data for a certain
@@ -47,6 +49,19 @@ import javax.persistence.Transient;
 public class ExtensionMapping implements BaseObject,
     Comparable<ExtensionMapping>, ResourceRelatedObject {
   public static final String TEMPLATE_ID_PLACEHOLDER = "<ID>";
+
+  /**
+   * This static factory method returns a new instance of
+   * {@link ExtensionMapping} configured with an {@link Extension}.
+   * 
+   * @param extension the extension
+   * @return ExtensionMapping
+   */
+  public static ExtensionMapping with(Extension extension) {
+    Preconditions.checkNotNull(extension, "Extension is null");
+    return new ExtensionMapping(extension);
+  }
+
   private Long id;
   private DataResource resource;
   private Extension extension;
@@ -56,6 +71,13 @@ public class ExtensionMapping implements BaseObject,
   private int recTotal = 0;
   private String linkColumn;
   private String linkTemplate;
+
+  public ExtensionMapping() {
+  }
+
+  private ExtensionMapping(Extension extension) {
+    this.extension = extension;
+  }
 
   public void addPropertyMapping(PropertyMapping propertyMapping) {
     propertyMapping.setViewMapping(this);

@@ -188,7 +188,7 @@
     
     <bean id="imageCacheManager" class="org.gbif.provider.service.impl.ImageCacheManagerImpl" />
     
-    <bean id="dataArchiveManager" class="org.gbif.provider.service.impl.DataArchiveManagerImpl" parent="abstractManager"/>
+    <bean id="dataArchiveManager" class="org.gbif.provider.service.impl.IptResourceArchiveService" parent="abstractManager"/>
     
     <bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerJDBC"  parent="abstractJDBCManager" lazy-init="true">
         <lookup-method name="newOccUploadTask" bean="occUploadTask"/>

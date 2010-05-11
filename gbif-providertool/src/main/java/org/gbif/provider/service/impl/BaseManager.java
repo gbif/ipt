@@ -15,6 +15,8 @@
  */
 package org.gbif.provider.service.impl;
 
+import java.sql.Connection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -24,8 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.Connection;
 
 /**
  * TODO: Documentation.
@@ -41,7 +41,7 @@ public abstract class BaseManager {
    * Log variable for all child classes. Uses LogFactory.getLog(getClass()) from
    * Commons Logging
    */
-  protected final Log log = LogFactory.getLog(getClass());
+  protected final static Log log = LogFactory.getLog(BaseManager.class);
 
   public void flush() {
     getSession().flush();

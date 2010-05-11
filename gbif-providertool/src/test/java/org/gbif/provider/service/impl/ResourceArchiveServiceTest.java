@@ -18,9 +18,12 @@ package org.gbif.provider.service.impl;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.FileUtils;
+import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.service.ResourceArchiveService;
 import org.gbif.provider.util.ResourceTestBase;
 
@@ -37,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ResourceArchiveServiceTest extends ResourceTestBase {
 
   @Autowired
-  private ResourceArchiveService dam;
+  private ResourceArchiveService ras;
 
   /**
    * Test method for
@@ -53,10 +56,28 @@ public class ResourceArchiveServiceTest extends ResourceTestBase {
    * Test method for
    * {@link IptResourceArchiveService#createResource(org.gbif.provider.service.impl.ResourceArchive)}
    * 
+   * @throws UnsupportedArchiveException
+   * @throws IOException
+   * 
    */
   @Test
-  public final void testCreateResource() {
-    // TODO
+  public final void testCreateResource() throws IOException,
+      UnsupportedArchiveException {
+
+    // EML only:
+    ResourceArchive a = doOpenArchive("dwc-archives/eml/eml.xml");
+    assertNotNull(a.getEml());
+    Resource resource = ras.createResource(a);
+    assertNotNull(resource);
+    assertNotNull(resource.getId());
+
+    // EML only:
+    a = doOpenArchive("dwc-archives/zip/archive-dwc.zip");
+    assertNotNull(a.getEml());
+    DataResource dr = ras.createResource(a);
+    assertNotNull(dr);
+    assertNotNull(dr.getId());
+    assertNotNull(dr.getExtensionMappingsMap());
   }
 
   /**
@@ -71,51 +92,54 @@ public class ResourceArchiveServiceTest extends ResourceTestBase {
       UnsupportedArchiveException {
     ResourceArchive a;
 
-    // ZIP archive with eml, meta, and data files
+    // ZIP archive with eml, meta, and data file
     a = doOpenArchive("dwc-archives/zip/archive-dwc.zip");
     assertNotNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
-    // GZIP archive with eml, meta, and data files
+    // GZIP archive with eml, meta, and data file
     a = doOpenArchive("dwc-archives/gzip/archive-dwc.tar.gz");
     assertNotNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
-    // Directory with eml, meta, and data files
+    // Directory with eml, meta, and data file
     a = doOpenArchive("dwc-archives/archive-dwc");
     assertNotNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
     // Directory with data file
     a = doOpenArchive("dwc-archives/dwca");
     assertNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    assertTrue(a.getSourceFilesForExtensions().isEmpty());
 
-    // Single meta file in a directory containing eml, meta, and data files
+    // Single meta file in a directory containing eml, meta, and data file
     a = doOpenArchive("dwc-archives/archive-dwc/meta.xml");
     assertNotNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
-    // Single data file in a directory containing eml and meta files
+    // Single data file in a directory containing eml and meta file
     a = doOpenArchive("dwc-archives/archive-dwc/DarwinCore.txt");
     assertNotNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    // FIXME(duplicate H2 issue):
+    // assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
     // Single data file
     a = doOpenArchive("dwc-archives/DarwinCore-mini.txt");
     assertNull(a.getEml());
-    assertFalse(a.getSourceFiles().isEmpty());
-    assertFalse(a.getExtensions().isEmpty());
+    assertNotNull(a.getSourceFileForCore());
+    // FIXME(duplicate H2 issue):
+    // assertFalse(a.getSourceFilesForExtensions().isEmpty());
+
   }
 
   private <T extends ResourceArchive> T doOpenArchive(String location)
       throws IOException, UnsupportedArchiveException {
-    return dam.openArchive(FileUtils.getClasspathFile(location), true);
+    return ras.openArchive(FileUtils.getClasspathFile(location), true);
   }
 }

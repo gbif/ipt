@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -22,11 +22,13 @@ import org.gbif.provider.tapir.filter.Filter;
 import java.util.Set;
 
 /**
- * TODO: Documentation.
+ * This class provides a service interface that extends {@link GenericManager}
+ * for services that are specific to {@link ExtensionProperty} objects.
  * 
  */
 public interface ExtensionPropertyManager extends
     GenericManager<ExtensionProperty> {
+
   /**
    * Get a single ExtensionProeprty by its simple name. As there might be more
    * than one core extension using the same name, the ExtensionType narrows down
@@ -51,7 +53,21 @@ public interface ExtensionPropertyManager extends
    * @return
    */
 
+  /**
+   * Gets a core {@link ExtensionProperty} by its qualified name.
+   * 
+   * @param qName the qualified name of the extension
+   * @return ExtensionProperty
+   */
   ExtensionProperty getCorePropertyByQualName(String qName);
+
+  /**
+   * Gets a {@link ExtensionProperty} by its qualified name.
+   * 
+   * @param qName the qualified name of the extension
+   * @return ExtensionProperty
+   */
+  ExtensionProperty getPropertyByQualName(String qName);
 
   /**
    * Iterates through all ComparisonOperators and replaces the existing

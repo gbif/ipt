@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 GBIF.
+ * Copyright 2010 Global Biodiversity Informatics Facility.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,8 +15,6 @@
  */
 package org.gbif.provider.model;
 
-import org.hibernate.validator.NotNull;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,8 +24,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.NotNull;
+
 /**
- * TODO: Documentation.
+ * This abstract class can be used as an entity to encapsulate information about
+ * data sources, including {@link SourceFile} and {@link SourceSql}.
  * 
  */
 @Entity
@@ -74,5 +75,4 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   public void setResource(DataResource resource) {
     this.resource = resource;
   }
-
 }
