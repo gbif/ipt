@@ -12,7 +12,6 @@
     <@display.setProperty name="paging.banner.items_name"><@s.text name="resourceList.resources"/></@display.setProperty>
 </@display.table>
 
-
 <script type="text/javascript">
     highlightTableRows("resourceList");
 </script>
