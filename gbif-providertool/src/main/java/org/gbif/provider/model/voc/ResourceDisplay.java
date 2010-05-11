@@ -35,6 +35,7 @@ public class ResourceDisplay {
     } else {
       status=PublicationStatusForDisplay.PRIVATE;
     }
+    id=r.getId();
     title = r.getTitle();
     modified = r.getModified();
     creatorFullName = r.getCreator().getFullName();
