@@ -95,44 +95,44 @@ public class ResourceArchiveServiceTest extends ResourceTestBase {
     // ZIP archive with eml, meta, and data file
     a = doOpenArchive("dwc-archives/zip/archive-dwc.zip");
     assertNotNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
-    assertFalse(a.getSourceFilesForExtensions().isEmpty());
+    assertNotNull(a.getCoreSourceFile());
+    assertFalse(a.getExtensionSourceFiles().isEmpty());
 
     // GZIP archive with eml, meta, and data file
     a = doOpenArchive("dwc-archives/gzip/archive-dwc.tar.gz");
     assertNotNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
-    assertFalse(a.getSourceFilesForExtensions().isEmpty());
+    assertNotNull(a.getCoreSourceFile());
+    assertFalse(a.getExtensionSourceFiles().isEmpty());
 
     // Directory with eml, meta, and data file
     a = doOpenArchive("dwc-archives/archive-dwc");
     assertNotNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
-    assertFalse(a.getSourceFilesForExtensions().isEmpty());
+    assertNotNull(a.getCoreSourceFile());
+    assertFalse(a.getExtensionSourceFiles().isEmpty());
 
     // Directory with data file
     a = doOpenArchive("dwc-archives/dwca");
     assertNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
-    assertTrue(a.getSourceFilesForExtensions().isEmpty());
+    assertNotNull(a.getCoreSourceFile());
+    assertTrue(a.getExtensionSourceFiles().isEmpty());
 
     // Single meta file in a directory containing eml, meta, and data file
     a = doOpenArchive("dwc-archives/archive-dwc/meta.xml");
     assertNotNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
-    assertFalse(a.getSourceFilesForExtensions().isEmpty());
+    assertNotNull(a.getCoreSourceFile());
+    assertFalse(a.getExtensionSourceFiles().isEmpty());
 
     // Single data file in a directory containing eml and meta file
     a = doOpenArchive("dwc-archives/archive-dwc/DarwinCore.txt");
     assertNotNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
+    assertNotNull(a.getCoreSourceFile());
     // FIXME(duplicate H2 issue):
     // assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
     // Single data file
     a = doOpenArchive("dwc-archives/DarwinCore-mini.txt");
     assertNull(a.getEml());
-    assertNotNull(a.getSourceFileForCore());
+    assertNotNull(a.getCoreSourceFile());
     // FIXME(duplicate H2 issue):
     // assertFalse(a.getSourceFilesForExtensions().isEmpty());
 
