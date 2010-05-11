@@ -288,7 +288,9 @@ public class IptResourceArchiveService extends BaseManager implements
     }
 
     /**
-     * Gives {@link ArchiveAdapter} a reference to services.
+     * Gives {@link ArchiveAdapter} a reference to services. Ideally services
+     * would be static, but Spring DI via @Autowired doesn't support static
+     * injection.
      * 
      * @param extensionManager
      * @param propertyManager void
@@ -361,6 +363,12 @@ public class IptResourceArchiveService extends BaseManager implements
       return file;
     }
 
+    @SuppressWarnings("unchecked")
+    public <S extends SourceFile> S getCoreSourceFile() {
+      return coreMapping.isEmpty() ? null
+          : (S) coreMapping.keySet().iterator().next();
+    }
+
     public Eml getEml() {
       return eml;
     }
@@ -378,13 +386,7 @@ public class IptResourceArchiveService extends BaseManager implements
     }
 
     @SuppressWarnings("unchecked")
-    public <S extends SourceFile> S getSourceFileForCore() {
-      return coreMapping.isEmpty() ? null
-          : (S) coreMapping.keySet().iterator().next();
-    }
-
-    @SuppressWarnings("unchecked")
-    public <S extends SourceFile> ImmutableSet<S> getSourceFilesForExtensions() {
+    public <S extends SourceFile> ImmutableSet<S> getExtensionSourceFiles() {
       return (ImmutableSet<S>) extensionMappings.keySet();
     }
   }
@@ -519,7 +521,7 @@ public class IptResourceArchiveService extends BaseManager implements
   public <R extends Resource, A extends ResourceArchive> R createResource(
       A archive) throws IOException {
     R resource = null;
-    if (archive.getSourceFileForCore() == null) {
+    if (archive.getCoreSourceFile() == null) {
       // Handles an EML-only archive:
       resource = (R) new Resource();
       metaResourceManager.save(resource);
@@ -531,15 +533,15 @@ public class IptResourceArchiveService extends BaseManager implements
       OccurrenceResource r = new OccurrenceResource();
       r.setDirty();
       occResourceManager.save(r);
-      SourceFile source = archive.getSourceFileForCore();
-      source.setResource(r);
-      sourceManager.save(source);
-      ExtensionMapping mapping = archive.getExtensionMapping(source);
-      mapping.setResource(r);
-      mapping.setSource(source);
-      extensionMappingManager.save(mapping);
+      SourceFile coreSource = archive.getCoreSourceFile();
+      coreSource.setResource(r);
+      sourceManager.save(coreSource);
+      ExtensionMapping coreMapping = archive.getExtensionMapping(coreSource);
+      coreMapping.setResource(r);
+      coreMapping.setSource(coreSource);
+      extensionMappingManager.save(coreMapping);
       ExtensionMapping em;
-      for (SourceFile s : archive.getSourceFilesForExtensions()) {
+      for (SourceFile s : archive.getExtensionSourceFiles()) {
         s.setResource(r);
         sourceManager.save(s);
         em = archive.getExtensionMapping(s);

@@ -42,6 +42,13 @@ public interface ResourceArchive {
   File getArchiveFile();
 
   /**
+   * 
+   * @param <S>
+   * @return S
+   */
+  <S extends SourceFile> S getCoreSourceFile();
+
+  /**
    * Returns the {@link Eml}.
    * 
    * @return Eml the eml
@@ -61,14 +68,7 @@ public interface ResourceArchive {
   /**
    * 
    * @param <S>
-   * @return S
-   */
-  <S extends SourceFile> S getSourceFileForCore();
-
-  /**
-   * 
-   * @param <S>
    * @return ImmutableSet<S>
    */
-  <S extends SourceFile> ImmutableSet<S> getSourceFilesForExtensions();
+  <S extends SourceFile> ImmutableSet<S> getExtensionSourceFiles();
 }
