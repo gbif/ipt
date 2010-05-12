@@ -267,6 +267,9 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
           log.warn("No extension found for: " + rowType);
         }
       }
+      if (isCore) {
+        extension.setCore(true);
+      }
       return extension;
     }
 
@@ -299,7 +302,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
       for (Entry<ConceptTerm, ArchiveField> entry : f.getFields().entrySet()) {
         ct = entry.getKey();
         af = entry.getValue();
-        ep = getExtensionProperty(ct.qualifiedName());
+        ep = getExtensionProperty(extension, ct.qualifiedName());
         if (ep == null) {
           // TODO?
           log.warn("Unable to load ExtensionProperty for: "
@@ -356,13 +359,16 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * Note: This method returns null if duplicate properties are found in H2 or
      * if H2 does not contain the property.
      * 
+     * @param extension
+     * 
      * @param qualifiedName the qualified name
      * @return ExtensionProperty
      */
-    static ExtensionProperty getExtensionProperty(String qualifiedName) {
+    static ExtensionProperty getExtensionProperty(Extension extension,
+        String qualifiedName) {
       ExtensionProperty ep = null;
       try {
-        ep = propertyManager.getPropertyByQualName(qualifiedName);
+        ep = propertyManager.getProperty(extension, qualifiedName);
       } catch (NonUniqueResultException e) {
         // TODO: Duplicate extension properties in H2. What action to take?
       }
@@ -455,6 +461,10 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
       A archive) {
     ArchiveAdapter.init(extensionManager, extensionPropertyManager,
         archive.getArchiveFile());
+
+    // TODO: Infer resource type from rowType. If rowType for core source is
+    // http://rs.tdwg.org/dwc/terms/Taxon, then it's a ChecklistResource.
+
     if (archive.getCoreSourceFile() == null && archive.getEml() != null) {
       // Handles an EML-only archive:
       Eml eml = archive.getEml();

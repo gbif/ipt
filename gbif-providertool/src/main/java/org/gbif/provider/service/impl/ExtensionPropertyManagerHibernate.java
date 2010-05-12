@@ -15,6 +15,10 @@
  */
 package org.gbif.provider.service.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.tapir.ParseException;
@@ -24,6 +28,8 @@ import org.gbif.provider.tapir.filter.Filter;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.hibernate.Query;
 
 /**
  * TODO: Documentation.
@@ -49,12 +55,33 @@ public class ExtensionPropertyManagerHibernate extends
     return (ExtensionProperty) getSession().createQuery(
         "select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and (p.namespace=:namespace or p.namespace=:namespace2) and e.core=true) ").setParameter(
         "name", prop.getName()).setParameter("namespace", prop.getNamespace()).setParameter(
-        "namespace2", prop.getNamespace() + "/").uniqueResult(); // some
-    // namespaces
-    // like darwin
-    // core use a trailing slash
-    // which gets lost when parsing
-    // a qualified concept name
+        "namespace2", prop.getNamespace() + "/").uniqueResult();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.ExtensionPropertyManager#getProperty(org.gbif
+   * .provider.model.Extension, java.lang.String)
+   */
+  public ExtensionProperty getProperty(Extension extension, String name) {
+    checkNotNull(extension, "Extension is null");
+    checkNotNull(name, "Extension property name is null");
+    checkArgument(name.length() > 0, "Extension property name is empty");
+    ExtensionProperty prop = new ExtensionProperty(name);
+    String query = "SELECT p " + "FROM ExtensionProperty p "
+        + "JOIN p.extension e " + "WHERE p.extension.id=:eid "
+        + "AND p.name=:name "
+        + "AND (p.namespace=:namespace or p.namespace=:namespace2)) ";
+    if (extension.isCore()) {
+      query += "AND e.core = true";
+    }
+    Query q = getSession().createQuery(query).setParameter("eid",
+        extension.getId()).setParameter("name", prop.getName()).setParameter(
+        "namespace", prop.getNamespace()).setParameter("namespace2",
+        prop.getNamespace() + "/");
+    return (ExtensionProperty) q.uniqueResult();
   }
 
   /*
