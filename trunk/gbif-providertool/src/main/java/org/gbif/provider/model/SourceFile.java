@@ -39,7 +39,7 @@ public class SourceFile extends SourceBase {
 
   public SourceFile(File targetFile) {
     super();
-    setFile(targetFile);
+    name = targetFile.getPath();
   }
 
   @Transient
@@ -47,9 +47,17 @@ public class SourceFile extends SourceBase {
     return dateUploaded;
   }
 
+  /**
+   * @return File
+   */
+  @Transient
+  public File getFile() {
+    return new File(name);
+  }
+
   @Transient
   public String getFilename() {
-    return name;
+    return new File(name).getName();
   }
 
   @Transient
@@ -84,18 +92,6 @@ public class SourceFile extends SourceBase {
 
   public void setDateUploaded(Date dateUploaded) {
     this.dateUploaded = dateUploaded;
-  }
-
-  public void setFile(File file) {
-    if (file != null) {
-      setFilename(file.getName());
-    } else {
-      setFilename(null);
-    }
-  }
-
-  public void setFilename(String filename) {
-    this.name = filename;
   }
 
   public void setFileSize(long fileSize) {

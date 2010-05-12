@@ -28,7 +28,19 @@ import java.io.IOException;
  * {@link ResourceArchive}s.
  * 
  */
-public interface ResourceArchiveService {
+public interface ResourceArchiveManager {
+
+  /**
+   * Binds an existing resource with an existing archive by replacing the
+   * resource core source file and extension mappings with those in the archive.
+   * 
+   * @param <R> the resource type
+   * @param <A> the archive type
+   * @param resource the resource
+   * @param archive the archive
+   * @return R the resource bound with the archive
+   */
+  <R extends Resource, A extends ResourceArchive> R bind(R resource, A archive);
 
   /**
    * 

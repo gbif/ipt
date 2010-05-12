@@ -29,6 +29,8 @@ import org.gbif.provider.model.voc.ResourceType;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.service.ResourceArchiveManager;
+import org.gbif.provider.service.impl.ResourceArchive;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
@@ -79,6 +81,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   private EmlManager emlManager;
 
   private Eml eml;
+
+  @Autowired
+  private ResourceArchiveManager resourceArchiveService;
 
   @Autowired
   private RegistryManager registryManager;
@@ -419,6 +424,36 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     return SUCCESS;
   }
 
+  public String upload() throws Exception {
+    if (resource.getId() == null) {
+      resourceManager.save(resource);
+    }
+
+    // Receives the uploaded file and save it to disk:
+    File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
+    log.debug(String.format("Uploading source file for resource %s to file %s",
+        resource.getId(), targetFile.getAbsolutePath()));
+    InputStream stream = new FileInputStream(file);
+    OutputStream bos = new FileOutputStream(targetFile);
+    int bytesRead;
+    byte[] buffer = new byte[8192];
+    while ((bytesRead = stream.read(buffer, 0, 8192)) != -1) {
+      bos.write(buffer, 0, bytesRead);
+    }
+    bos.close();
+    stream.close();
+
+    // Creates a resource archive from the uploaded file:
+    File location = targetFile;
+    ResourceArchive archive = resourceArchiveService.openArchive(location, true);
+    // Eml now comes from the archive:
+    eml = archive.getEml();
+    // Binds the resource with the archive:
+    resource = resourceArchiveService.bind(resource, archive);
+    resourceManager.save(resource);
+    return SUCCESS;
+  }
+
   private void testDbConnection() {
     if (resource != null) {
       DataResource res = (DataResource) resource;
@@ -473,21 +508,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         logoFile.getAbsolutePath(), resourceId));
     return true;
   }
-
-  /**
-   * 
-   * void
-   */
-  // private void validateEml() {
-  //
-  // List<Agent> agents = eml.getAssociatedParties();
-  // for (Agent a : eml.getAssociatedParties()) {
-  // if (a.getFirstName() == null || a.getFirstName().isEmpty()) {
-  // agents.remove(a);
-  // }
-  // }
-  // eml.setAssociatedParties(agents);
-  // }
 
   private void validateResource() {
     Organisation org = Organisation.builder().password(

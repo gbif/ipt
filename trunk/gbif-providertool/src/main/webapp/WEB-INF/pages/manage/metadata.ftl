@@ -104,6 +104,26 @@
 </head>
     
 <p class="explMt"><@s.text name='metadata.description.basic'/></p>
+
+<fieldset class="noBottomMargin">
+    <div class="break2">
+      <@s.form action="uploadArchive" enctype="multipart/form-data" method="post">
+      <@s.hidden name="resourceId" value="${(resource.id)!}"/>
+      <@s.hidden name="resourceType" value="${(resourceType)!}"/>
+
+        <div class="left">
+            <@s.file name="file" key="Select a Darwin Core Archive" cssClass="file tablefile" required="false"/>
+        </div>
+        <div class="right">
+            <li class="wwgrp">
+                <div class="wwlbl">&nbsp;</div>
+                <@s.submit cssClass="button" key="button.upload" />
+            </li>
+        </div>
+      </@s.form>
+    </div>
+</fieldset>
+
 <@s.form id="resourceForm" action="saveResource" enctype="multipart/form-data" method="post">
   
 <fieldset>
@@ -111,6 +131,7 @@
   <@s.hidden name="resourceType" value="${(resourceType)!}"/>
   <@s.hidden name="guid" value="${(resource.guid)!}"/>
   <@s.hidden name="nextPage" value="organisation"/>
+
 
   <div class="newline"></div>
   <#if resourceId??>

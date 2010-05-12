@@ -42,8 +42,9 @@ public class ResourceFactory {
     return resource;
   }
 
-  public Resource newMetadataResourceInstance() {
-    Resource resource = new Resource();
+  @SuppressWarnings("unchecked")
+  public <R extends Resource> R newMetadataResourceInstance() {
+    R resource = (R) new Resource();
     return resource;
   }
 
