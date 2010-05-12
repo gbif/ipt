@@ -93,8 +93,8 @@ import freemarker.template.TemplateException;
  * order by label', 'utf8', ' ', '')
  * 
  */
-public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
-    implements ResourceArchiveManager {
+public class ResourceArchiveManagerImpl extends BaseManager implements
+    ResourceArchiveManager {
 
   /**
    * This class is an internal implementation of {@link ResourceArchive}.
@@ -160,9 +160,25 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
    */
   private static class ArchiveAdapter {
 
-    static ExtensionManager extensionManager;
-    static ExtensionPropertyManager propertyManager;
-    static File archiveLocation;
+    ExtensionManager extensionManager;
+    ExtensionPropertyManager propertyManager;
+    File archiveLocation;
+
+    /**
+     * Gives {@link ArchiveAdapter} a reference to services. Ideally services
+     * would be static, but Spring DI via @Autowired doesn't support static
+     * injection.
+     * 
+     * @param extensionManager
+     * @param propertyManager void
+     * @param archiveLocation
+     */
+    ArchiveAdapter(ExtensionManager extensionManager,
+        ExtensionPropertyManager propertyManager, File archiveLocation) {
+      this.extensionManager = extensionManager;
+      this.propertyManager = propertyManager;
+      this.archiveLocation = archiveLocation;
+    }
 
     /**
      * If the file location is compressed as a ZIP or GZIP archive, it is
@@ -178,7 +194,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @return expanded archive directory or null if the file wasn't an archive
      * @throws IOException
      */
-    static File expandIfCompressed(File location) throws IOException {
+    File expandIfCompressed(File location) throws IOException {
       File directory = location;
       String name = location.getName(), path = null, parent = location.getParent();
       if (name.endsWith(".zip")) {
@@ -207,7 +223,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @return Eml
      * @throws IOException
      */
-    static Eml getEmlIfExists(File location) throws IOException {
+    Eml getEmlIfExists(File location) throws IOException {
       Eml eml = null;
       String path = null;
       File directory = null;
@@ -251,7 +267,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @param isCore true if the rowType is from a <core> element in a metafile
      * @return Extension
      */
-    static Extension getExtension(String rowType, boolean isCore) {
+    Extension getExtension(String rowType, boolean isCore) {
       Extension extension = null;
       try {
         extension = extensionManager.getExtensionByUri(rowType);
@@ -286,7 +302,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @param isCore true if the archive file represents the core
      * @return ExtensionMapping
      */
-    static ExtensionMapping getExtensionMapping(ArchiveFile f, boolean isCore) {
+    ExtensionMapping getExtensionMapping(ArchiveFile f, boolean isCore) {
       Extension extension = getExtension(f.getRowType(), isCore);
       if (extension == null) {
         // TODO?
@@ -329,7 +345,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @param archive the archive
      * @return ImmutableMap<SourceFile, ExtensionMapping>
      */
-    static ImmutableMap<SourceFile, ExtensionMapping> getExtensionMappings(
+    ImmutableMap<SourceFile, ExtensionMapping> getExtensionMappings(
         Archive archive) {
       checkNotNull(archive, "Archive is null");
       checkNotNull(archive.getExtensions(), "Archive extensions are null");
@@ -364,7 +380,7 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @param qualifiedName the qualified name
      * @return ExtensionProperty
      */
-    static ExtensionProperty getExtensionProperty(Extension extension,
+    ExtensionProperty getExtensionProperty(Extension extension,
         String qualifiedName) {
       ExtensionProperty ep = null;
       try {
@@ -384,25 +400,9 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
      * @param f
      * @return SourceFile
      */
-    static SourceFile getSourceFile(ArchiveFile f) {
+    SourceFile getSourceFile(ArchiveFile f) {
       String p = String.format("%s/%s", archiveLocation.getPath(), f.getTitle());
       return new SourceFile(new File(p));
-    }
-
-    /**
-     * Gives {@link ArchiveAdapter} a reference to services. Ideally services
-     * would be static, but Spring DI via @Autowired doesn't support static
-     * injection.
-     * 
-     * @param extensionManager
-     * @param propertyManager void
-     * @param archiveLocation
-     */
-    static void init(ExtensionManager extensionManager,
-        ExtensionPropertyManager propertyManager, File archiveLocation) {
-      ArchiveAdapter.extensionManager = extensionManager;
-      ArchiveAdapter.propertyManager = propertyManager;
-      ArchiveAdapter.archiveLocation = archiveLocation;
     }
   }
 
@@ -459,8 +459,6 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
   @SuppressWarnings("unchecked")
   public <R extends Resource, A extends ResourceArchive> R bind(R resource,
       A archive) {
-    ArchiveAdapter.init(extensionManager, extensionPropertyManager,
-        archive.getArchiveFile());
 
     // TODO: Infer resource type from rowType. If rowType for core source is
     // http://rs.tdwg.org/dwc/terms/Taxon, then it's a ChecklistResource.
@@ -584,8 +582,6 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
   @SuppressWarnings("unchecked")
   public <R extends Resource, A extends ResourceArchive> R createResource(
       A archive) throws IOException {
-    ArchiveAdapter.init(extensionManager, extensionPropertyManager,
-        archive.getArchiveFile());
     R resource = null;
     if (archive.getCoreSourceFile() == null && archive.getEml() != null) {
       // Handles an EML-only archive:
@@ -637,15 +633,18 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
     Archive a = null;
     Eml eml = null;
 
+    ArchiveAdapter adapter = new ArchiveAdapter(extensionManager,
+        extensionPropertyManager, location);
+
     // Expands and opens the archive:
-    File archiveLocation = ArchiveAdapter.expandIfCompressed(location);
-    ArchiveAdapter.init(extensionManager, extensionPropertyManager,
-        archiveLocation);
+    File archiveLocation = adapter.expandIfCompressed(location);
+    adapter.archiveLocation = archiveLocation;
+
     try {
       a = ArchiveFactory.openArchive(archiveLocation, normalise);
     } catch (UnsupportedArchiveException e) {
       // Before giving up we check for eml.xml:
-      eml = ArchiveAdapter.getEmlIfExists(archiveLocation);
+      eml = adapter.getEmlIfExists(archiveLocation);
       if (eml != null) {
         ImmutableMap<SourceFile, ExtensionMapping> coreMapping = ImmutableMap.of();
         ImmutableMap<SourceFile, ExtensionMapping> extensionMappings = ImmutableMap.of();
@@ -659,16 +658,16 @@ public class ResourceArchiveManagerImpl extends BaseManagerNoTransactions
 
     // Gets extension mapping for core:
     ImmutableMap<SourceFile, ExtensionMapping> coreMapping;
-    SourceFile source = ArchiveAdapter.getSourceFile(a.getCore());
-    coreMapping = ImmutableMap.of(source, ArchiveAdapter.getExtensionMapping(
+    SourceFile source = adapter.getSourceFile(a.getCore());
+    coreMapping = ImmutableMap.of(source, adapter.getExtensionMapping(
         a.getCore(), true));
 
     // Gets extension mappings for extensions:
     ImmutableMap<SourceFile, ExtensionMapping> extensionMappings;
-    extensionMappings = ArchiveAdapter.getExtensionMappings(a);
+    extensionMappings = adapter.getExtensionMappings(a);
 
     // Gets Eml if it exists:
-    eml = ArchiveAdapter.getEmlIfExists(archiveLocation);
+    eml = adapter.getEmlIfExists(archiveLocation);
 
     // Returns our internal ResourceArchive implementation:
     A ra = (A) ResourceArchiveImpl.create(a.getLocation(), coreMapping,
