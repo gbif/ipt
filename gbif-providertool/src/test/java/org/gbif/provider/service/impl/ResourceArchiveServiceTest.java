@@ -23,8 +23,10 @@ import static org.junit.Assert.assertTrue;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.FileUtils;
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.ExtensionMapping;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.service.ResourceArchiveService;
+import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.util.ResourceTestBase;
 
 import java.io.IOException;
@@ -33,18 +35,33 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * This class can be used for unit testing {@link ResourceArchiveService}
+ * This class can be used for unit testing {@link ResourceArchiveManager}
  * implementations.
  * 
  */
 public class ResourceArchiveServiceTest extends ResourceTestBase {
 
   @Autowired
-  private ResourceArchiveService ras;
+  private ResourceArchiveManager ras;
+
+  @Test
+  public final void testBind() throws IOException, UnsupportedArchiveException {
+    OccurrenceResource resource = getResourceMock();
+    resource.setId(null);
+    ResourceArchive archive = doOpenArchive("dwc-archives/zip/archive-dwc.zip");
+    resource = ras.bind(resource, archive);
+    assertNotNull(resource.getCoreMapping());
+    assertNotNull(resource.getCoreMapping().getSource());
+    assertNotNull(resource.getExtensionMappings());
+    for (ExtensionMapping m : resource.getExtensionMappings()) {
+      assertNotNull(m.getSource());
+    }
+    assertFalse(resource.getExtensionMappings().isEmpty());
+  }
 
   /**
    * Test method for
-   * {@link IptResourceArchiveService#createArchive(org.gbif.provider.model.Resource)}
+   * {@link ResourceArchiveManagerImpl#createArchive(org.gbif.provider.model.Resource)}
    * 
    */
   @Test
@@ -54,7 +71,7 @@ public class ResourceArchiveServiceTest extends ResourceTestBase {
 
   /**
    * Test method for
-   * {@link IptResourceArchiveService#createResource(org.gbif.provider.service.impl.ResourceArchive)}
+   * {@link ResourceArchiveManagerImpl#createResource(org.gbif.provider.service.impl.ResourceArchive)}
    * 
    * @throws UnsupportedArchiveException
    * @throws IOException
@@ -82,7 +99,7 @@ public class ResourceArchiveServiceTest extends ResourceTestBase {
 
   /**
    * Test method for
-   * {@link IptResourceArchiveService#openArchive(java.io.File, boolean)}
+   * {@link ResourceArchiveManagerImpl#openArchive(java.io.File, boolean)}
    * 
    * @throws UnsupportedArchiveException
    * @throws IOException

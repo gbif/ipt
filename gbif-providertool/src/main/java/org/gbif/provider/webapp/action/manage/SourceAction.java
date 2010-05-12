@@ -18,16 +18,12 @@ package org.gbif.provider.webapp.action.manage;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
+import org.gbif.provider.model.factory.ResourceFactory;
+import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.ZipUtil;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
-
-import com.opensymphony.xwork2.Preparable;
-
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +36,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Preparable;
+
 /**
  * TODO: Documentation.
  * 
@@ -48,6 +50,8 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   private static final long serialVersionUID = -3698917712584074200L;
   @Autowired
   private SourceInspectionManager sourceInspectionManager;
+  @Autowired
+  private ResourceArchiveManager resourceArchiveService;
   @Autowired
   private SourceManager sourceManager;
   private final List<SourceFile> fileSources = new ArrayList<SourceFile>();
@@ -61,6 +65,9 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   // preview only
   private List<String> previewHeader;
   private List<List<? extends Object>> preview;
+
+  @Autowired
+  protected ResourceFactory resourceFactory;
 
   public String delete() {
     if (sid != null) {
@@ -140,6 +147,9 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
         SourceFile sf = (SourceFile) s;
         File f = cfg.getSourceFile(resourceId, sf.getFilename());
         if (!f.exists() || !f.isFile()) {
+          f = sf.getFile();
+        }
+        if (!f.exists() || !f.isFile()) {
           log.warn(String.format(
               "SourceFile %s for resource %s doesn't exist.", sf.getFilename(),
               resourceId));
@@ -161,6 +171,17 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   @Override
   public void prepare() {
     super.prepare();
+    if (resource == null && resourceType != null) {
+      // create new empty resource
+      if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
+        resource = resourceFactory.newOccurrenceResourceInstance();
+      } else if (resourceType.equalsIgnoreCase(CHECKLIST)) {
+        resource = resourceFactory.newChecklistResourceInstance();
+      } else {
+        resource = resourceFactory.newMetadataResourceInstance();
+      }
+    }
+    resource = resourceManager.save(resource);
     if (sid != null) {
       source = sourceManager.get(sid);
     } else {
@@ -240,6 +261,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
    * @return String with result (cancel, input or sucess)
    * @throws Exception if something goes wrong
    */
+  @SuppressWarnings("static-access")
   public String upload() throws Exception {
     // the file to upload to
     File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
@@ -314,13 +336,14 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   }
 
   private void insertSourceFile(File srcFile) {
-    SourceFile fsource = sourceManager.getSourceByFilename(resourceId,
+    SourceFile fsource = sourceManager.getSourceByFilename(resource.getId(),
         srcFile.getName());
     if (fsource == null) {
       // new source
       fsource = new SourceFile();
       fsource.setResource(resource);
-      fsource.setFilename(srcFile.getName());
+      // fsource.setFilename(srcFile.getName());
+      fsource.setName(srcFile.getPath());
     }
     // set new upload timestamp
     fsource.setDateUploaded(new Date());
@@ -365,5 +388,4 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
       saveMessage(getText("sources.sourceFileBroken", params));
     }
   }
-
 }

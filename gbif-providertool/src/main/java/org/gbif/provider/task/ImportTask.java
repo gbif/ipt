@@ -44,7 +44,7 @@ import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.OccStatManager;
 import org.gbif.provider.service.RegionManager;
-import org.gbif.provider.service.ResourceArchiveService;
+import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.TaxonManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.service.impl.GeoserverManagerImpl;
@@ -132,7 +132,7 @@ public abstract class ImportTask<R extends DataResource> extends
   @Autowired
   private CacheManager cacheManager;
   @Autowired
-  private ResourceArchiveService dataArchiveManager;
+  private ResourceArchiveManager dataArchiveManager;
   @Autowired
   private DarwinCoreFactory dwcFactory;
   @Autowired
