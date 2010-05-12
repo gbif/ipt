@@ -15,8 +15,7 @@
  */
 package org.gbif.provider.model;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import com.google.common.base.Preconditions;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +26,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+
 /**
  * TODO: Documentation.
  * 
@@ -34,6 +36,16 @@ import javax.persistence.Transient;
 @Entity
 public class ExtensionProperty implements BaseObject,
     Comparable<ExtensionProperty> {
+  public static ExtensionProperty with(Extension extension, String name) {
+    Preconditions.checkNotNull(extension, "Extension is null");
+    Preconditions.checkNotNull(name, "Name is null");
+    Preconditions.checkArgument(name.length() > 0, "Name is empty");
+    ExtensionProperty p = new ExtensionProperty();
+    p.setExtension(extension);
+    p.setName(name);
+    return p;
+  }
+
   private Long id;
   private Extension extension;
   private String name;
@@ -42,6 +54,7 @@ public class ExtensionProperty implements BaseObject,
   private int columnLength = 255; // sensible default
   private String link;
   private boolean required;
+
   private ThesaurusVocabulary vocabulary;
 
   public ExtensionProperty() {

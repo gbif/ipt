@@ -15,7 +15,9 @@
  */
 package org.gbif.provider.service.impl;
 
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
+import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.tapir.filter.Filter;
 import org.gbif.provider.tapir.filter.Like;
@@ -33,6 +35,9 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase 
   @Autowired
   private ExtensionPropertyManager extensionPropertyManager;
 
+  @Autowired
+  private ExtensionManager extensionManager;
+
   @Test
   public void testFindProperty() throws Exception {
     ExtensionProperty p = extensionPropertyManager.getCorePropertyByQualName(Constants.SCIENTIFIC_NAME_QUALNAME);
@@ -40,6 +45,20 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase 
 
     p = extensionPropertyManager.getCorePropertyByName("ScientificName");
     assertTrue(p != null);
+  }
+
+  /**
+   * Test getting a property by {@link Exception} and qualified name.
+   * 
+   * void
+   */
+  @Test
+  public void testGetProperty() {
+    Extension extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+    String name = "http://rs.tdwg.org/dwc/terms/scientificName";
+    ExtensionProperty p = extensionPropertyManager.getProperty(extension, name);
+    assertNotNull(p);
+    assertEquals(p.getExtension(), extension);
   }
 
   @Test

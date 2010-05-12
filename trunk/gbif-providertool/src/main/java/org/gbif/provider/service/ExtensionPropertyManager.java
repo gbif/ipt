@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.service;
 
+import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.tapir.ParseException;
 import org.gbif.provider.tapir.filter.Filter;
@@ -60,6 +61,16 @@ public interface ExtensionPropertyManager extends
    * @return ExtensionProperty
    */
   ExtensionProperty getCorePropertyByQualName(String qName);
+
+  /**
+   * Returns an {@link ExtensionProperty} for a given {@link Extension} and
+   * qualified property name.
+   * 
+   * @param extension the extension to which the extension property belongs
+   * @param name the qualified property name
+   * @return ExtensionProperty
+   */
+  ExtensionProperty getProperty(Extension extension, String name);
 
   /**
    * Gets a {@link ExtensionProperty} by its qualified name.

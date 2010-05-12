@@ -16,6 +16,8 @@
 
 import org.gbif.provider.util.AppConfig;
 
+import com.google.common.base.Objects;
+
 import java.io.File;
 import java.util.Date;
 
@@ -30,7 +32,9 @@ import javax.persistence.Transient;
 @Entity
 public class SourceFile extends SourceBase {
   private Date dateUploaded;
+
   private long fileSize;
+
   private boolean headers = false;
 
   public SourceFile() {
@@ -40,6 +44,18 @@ public class SourceFile extends SourceBase {
   public SourceFile(File targetFile) {
     super();
     name = targetFile.getPath();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof SourceFile)) {
+      return false;
+    }
+    SourceFile o = (SourceFile) obj;
+    return Objects.equal(name, o.name);
   }
 
   @Transient
@@ -68,6 +84,11 @@ public class SourceFile extends SourceBase {
   @Transient
   public long getFileSizeInKB() {
     return fileSize / 1024;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(name);
   }
 
   @Transient
@@ -100,6 +121,11 @@ public class SourceFile extends SourceBase {
 
   public void setHeaders(boolean headers) {
     this.headers = headers;
+  }
+
+  @Override
+  public String toString() {
+    return name;
   }
 
 }
