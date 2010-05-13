@@ -15,8 +15,10 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
+import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
@@ -446,6 +448,26 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     // Creates a resource archive from the uploaded file:
     File location = targetFile;
     ResourceArchive archive = resourceArchiveService.openArchive(location, true);
+    switch (archive.getType()) {
+      case OCCURRENCE:
+        if (!(resource instanceof OccurrenceResource)) {
+          saveMessage("Wrong type of archive.");
+          return ERROR;
+        }
+        break;
+      case CHECKLIST:
+        if (!(resource instanceof ChecklistResource)) {
+          saveMessage("Wrong type of archive.");
+          return ERROR;
+        }
+        break;
+      case METADATA:
+        if (!(resource instanceof Resource)) {
+          saveMessage("Wrong type of archive");
+          return ERROR;
+        }
+        break;
+    }
     // Eml now comes from the archive:
     eml = archive.getEml();
     // Binds the resource with the archive:
