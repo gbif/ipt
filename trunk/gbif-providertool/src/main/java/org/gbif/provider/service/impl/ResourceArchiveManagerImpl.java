@@ -47,6 +47,7 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
+import org.gbif.provider.service.impl.ResourceArchive.Type;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.XmlFileUtils;
@@ -102,20 +103,22 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
    */
   static class ResourceArchiveImpl implements ResourceArchive {
 
-    static ResourceArchiveImpl create(File file,
+    static ResourceArchiveImpl create(Type type, File file,
         ImmutableMap<SourceFile, ExtensionMapping> coreMapping,
         ImmutableMap<SourceFile, ExtensionMapping> mappings, Eml eml) {
-      return new ResourceArchiveImpl(file, coreMapping, mappings, eml);
+      return new ResourceArchiveImpl(type, file, coreMapping, mappings, eml);
     }
 
     final File file;
     final Eml eml;
     final ImmutableMap<SourceFile, ExtensionMapping> coreMapping;
     final ImmutableMap<SourceFile, ExtensionMapping> extensionMappings;
+    final Type type;
 
-    ResourceArchiveImpl(File file,
+    ResourceArchiveImpl(Type type, File file,
         ImmutableMap<SourceFile, ExtensionMapping> coreMapping,
         ImmutableMap<SourceFile, ExtensionMapping> extensionMappings, Eml eml) {
+      this.type = type;
       this.file = file;
       this.coreMapping = coreMapping;
       this.extensionMappings = extensionMappings;
@@ -152,6 +155,15 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     public <S extends SourceFile> ImmutableSet<S> getExtensionSourceFiles() {
       return (ImmutableSet<S>) extensionMappings.keySet();
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.gbif.provider.service.impl.ResourceArchive#getType()
+     */
+    public Type getType() {
+      return type;
+    }
   }
   /**
    * This class can be used for transforming an {@link ArchiveFile} into
@@ -178,6 +190,39 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
       this.extensionManager = extensionManager;
       this.propertyManager = propertyManager;
       this.archiveLocation = archiveLocation;
+    }
+
+    /**
+     * Returns the {@link Type} of resource archive a given {@link Archive} is.
+     * If the archive is null, the archive is assumed to be an invalid Darwin
+     * Core Archive. In this case, there are two cases to check. First, the
+     * archive could have contained just an eml.xml file in which case it's a
+     * metadata type. Second, the archive could have contained multiple data
+     * files without a metafile.
+     * 
+     * @param a the archive
+     * @return Type type of archive
+     */
+    public Type getType(Archive a) {
+      Type archiveType = null;
+      if (a == null) {
+        try {
+          if (getEmlIfExists(archiveLocation) != null) {
+            archiveType = Type.METADATA;
+          }
+        } catch (IOException e) {
+          // TODO: Look for multiple data files.
+        }
+        return archiveType;
+      }
+      String coreRowType = a.getCore().getRowType().toLowerCase();
+      if (CHECKLIST_ROW_TYPES.contains(coreRowType)) {
+        archiveType = Type.CHECKLIST;
+      } else if (OCCURRENCE_ROW_TYPES.contains(coreRowType)
+          || a.getCore() != null) { // Handles single data file archive.
+        archiveType = Type.OCCURRENCE;
+      }
+      return archiveType;
     }
 
     /**
@@ -450,6 +495,16 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
   private ExtensionPropertyManager extensionPropertyManager;
 
   /*
+   * These properties are used to check the core rowType of an archive metafile.
+   * Note that the values are all lower case.
+   */
+  private static final ImmutableSet<String> CHECKLIST_ROW_TYPES = ImmutableSet.of("http://rs.tdwg.org/dwc/terms/taxon");
+  private static final ImmutableSet<String> OCCURRENCE_ROW_TYPES = ImmutableSet.of(
+      "http://rs.tdwg.org/dwc/xsd/simpledarwincore/simpledarwinrecord",
+      "http://rs.tdwg.org/dwc/terms/occurrence",
+      "http://rs.tdwg.org/dwc/terms/darwincore");
+
+  /*
    * (non-Javadoc)
    * 
    * @see
@@ -459,40 +514,51 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
   @SuppressWarnings("unchecked")
   public <R extends Resource, A extends ResourceArchive> R bind(R resource,
       A archive) {
+    checkNotNull(resource, "Resource is null");
+    checkNotNull(archive, "Archive is null");
+    checkNotNull(archive.getType(), "Archive type is null");
+    String errorMsg = "Resource type does not match archive type";
+    switch (archive.getType()) {
+      case CHECKLIST:
+        checkArgument(resource instanceof ChecklistResource, errorMsg);
+        // TODO
+      case OCCURRENCE:
+        checkArgument(resource instanceof OccurrenceResource, errorMsg);
+        OccurrenceResource r = (OccurrenceResource) resource;
+        occResourceManager.save(r);
+        SourceFile coreSource = archive.getCoreSourceFile();
+        coreSource.setResource(r);
+        sourceManager.save(coreSource);
+        ExtensionMapping coreMapping = archive.getExtensionMapping(coreSource);
+        coreMapping.setResource(r);
+        coreMapping.setSource(coreSource);
+        r.addExtensionMapping(coreMapping);
+        extensionMappingManager.save(coreMapping);
+        ExtensionMapping em;
+        for (SourceFile s : archive.getExtensionSourceFiles()) {
+          s.setResource(r);
+          sourceManager.save(s);
+          em = archive.getExtensionMapping(s);
+          em.setResource(r);
+          em.setSource(s);
+          extensionMappingManager.save(em);
+          r.addExtensionMapping(em);
+        }
+        occResourceManager.save(r);
+        resource = (R) r;
+        break;
+      case METADATA:
+        // We bind eml with the resource after this switch statement...
+        break;
+    }
 
-    // TODO: Infer resource type from rowType. If rowType for core source is
-    // http://rs.tdwg.org/dwc/terms/Taxon, then it's a ChecklistResource.
-
-    if (archive.getCoreSourceFile() == null && archive.getEml() != null) {
-      // Handles an EML-only archive:
-      Eml eml = archive.getEml();
+    // Binds eml with the resource and saves it to metadata.xml file:
+    Eml eml = archive.getEml();
+    if (eml != null) {
       eml.setResource(resource);
       emlManager.save(eml);
-    } else {
-      // Handles a normal DwC archive:
-      OccurrenceResource r = (OccurrenceResource) resource;
-      occResourceManager.save(r);
-      SourceFile coreSource = archive.getCoreSourceFile();
-      coreSource.setResource(r);
-      sourceManager.save(coreSource);
-      ExtensionMapping coreMapping = archive.getExtensionMapping(coreSource);
-      coreMapping.setResource(r);
-      coreMapping.setSource(coreSource);
-      r.addExtensionMapping(coreMapping);
-      extensionMappingManager.save(coreMapping);
-      ExtensionMapping em;
-      for (SourceFile s : archive.getExtensionSourceFiles()) {
-        s.setResource(r);
-        sourceManager.save(s);
-        em = archive.getExtensionMapping(s);
-        em.setResource(r);
-        em.setSource(s);
-        extensionMappingManager.save(em);
-        r.addExtensionMapping(em);
-      }
-      occResourceManager.save(r);
-      resource = (R) r;
     }
+
     return resource;
   }
 
@@ -630,50 +696,79 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
       boolean normalise) throws IOException, UnsupportedArchiveException {
     checkNotNull(location, "Location cannot be null");
     checkArgument(location.canRead(), "Location cannot be read: " + location);
-    Archive a = null;
-    Eml eml = null;
 
+    // We create an adapter on each request to mitigate concurrency issues:
     ArchiveAdapter adapter = new ArchiveAdapter(extensionManager,
         extensionPropertyManager, location);
 
-    // Expands and opens the archive:
+    // Expands the archive if it's compressed:
     File archiveLocation = adapter.expandIfCompressed(location);
     adapter.archiveLocation = archiveLocation;
+    log.info("Archive location opened: " + archiveLocation);
 
+    Type archiveType = null;
+    Archive a = null;
+
+    /*
+     * Tries to open the archive. This might fail if the archive is not a valid
+     * Darwin Core Archive (i.e., if it has a single eml.xml file or multiple
+     * data files without a metafile). These are cases that we must support for
+     * the IPT since it allows users to upload multiple data files or a single
+     * eml file.
+     */
     try {
       a = ArchiveFactory.openArchive(archiveLocation, normalise);
     } catch (UnsupportedArchiveException e) {
-      // Before giving up we check for eml.xml:
-      eml = adapter.getEmlIfExists(archiveLocation);
-      if (eml != null) {
-        ImmutableMap<SourceFile, ExtensionMapping> coreMapping = ImmutableMap.of();
-        ImmutableMap<SourceFile, ExtensionMapping> extensionMappings = ImmutableMap.of();
-        // TODO: Serialize eml to metadata.xml
-        return (A) ResourceArchiveImpl.create(location, coreMapping,
-            extensionMappings, eml);
-      }
-      // TODO: Check for multiple data files supported by IPT
-      throw e;
+      // Ignore this exception until we investigate the archive type.
+      log.warn("Invalid Darwin Core Archive: " + archiveLocation);
     }
 
-    // Gets extension mapping for core:
+    // Note that the archive might be null here, but getType() handles that:
+    archiveType = adapter.getType(a);
+    if (archiveType == null) {
+      // Now we know for sure that this is definitely not a supported archive:
+      throw new UnsupportedArchiveException("Unknown type: "
+          + a.getCore().getRowType());
+    }
+
+    log.info(String.format("Archive %s is type %s", archiveLocation,
+        archiveType));
+
     ImmutableMap<SourceFile, ExtensionMapping> coreMapping;
-    SourceFile source = adapter.getSourceFile(a.getCore());
-    coreMapping = ImmutableMap.of(source, adapter.getExtensionMapping(
-        a.getCore(), true));
-
-    // Gets extension mappings for extensions:
     ImmutableMap<SourceFile, ExtensionMapping> extensionMappings;
-    extensionMappings = adapter.getExtensionMappings(a);
+    A resourceArchive = null;
 
-    // Gets Eml if it exists:
-    eml = adapter.getEmlIfExists(archiveLocation);
+    // Creates the eml if it exits in the archive:
+    Eml eml = adapter.getEmlIfExists(archiveLocation);
+    log.info("Eml was found in the archive: " + archiveLocation);
 
-    // Returns our internal ResourceArchive implementation:
-    A ra = (A) ResourceArchiveImpl.create(a.getLocation(), coreMapping,
-        extensionMappings, eml);
+    // Creates the resulting resource archive based on the archive type:
+    switch (archiveType) {
+      case OCCURRENCE:
+        // Gets extension mapping for core:
+        SourceFile source = adapter.getSourceFile(a.getCore());
+        coreMapping = ImmutableMap.of(source, adapter.getExtensionMapping(
+            a.getCore(), true));
+        // Gets extension mappings for extensions:
+        extensionMappings = adapter.getExtensionMappings(a);
+        resourceArchive = (A) ResourceArchiveImpl.create(archiveType,
+            a.getLocation(), coreMapping, extensionMappings, eml);
+        break;
+      case METADATA:
+        // Metadata archive doesn't have core or extension mappings:
+        coreMapping = ImmutableMap.of();
+        extensionMappings = ImmutableMap.of();
+        resourceArchive = (A) ResourceArchiveImpl.create(Type.METADATA,
+            location, coreMapping, extensionMappings, eml);
+        break;
+      case CHECKLIST:
+        // TODO: Handle checklist resource.
+        break;
+      default:
+        // TODO: Check for multiple data files supported by IPT
+    }
 
-    return ra;
+    return resourceArchive;
   }
 
   private String buildPropertySelect(String prefix, ExtensionMapping view) {

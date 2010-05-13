@@ -35,6 +35,14 @@ import java.io.File;
 public interface ResourceArchive {
 
   /**
+   * An enumeration of resource archive types.
+   * 
+   */
+  static enum Type {
+    OCCURRENCE, METADATA, CHECKLIST;
+  }
+
+  /**
    * Returns the archive file.
    * 
    * @return File the archive file
@@ -71,4 +79,11 @@ public interface ResourceArchive {
    * @return ImmutableSet<S>
    */
   <S extends SourceFile> ImmutableSet<S> getExtensionSourceFiles();
+
+  /**
+   * Returns the type of resource that this archive represents.
+   * 
+   * @return Type
+   */
+  Type getType();
 }
