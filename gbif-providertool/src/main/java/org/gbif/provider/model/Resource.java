@@ -79,11 +79,7 @@ public class Resource implements BaseObject, Comparable<Resource>,
   protected String orgUuid;
 
   public int compareTo(Resource object) {
-    if (this.getTitle() != null) {
-      return this.getTitle().compareToIgnoreCase(object.getTitle());
-    } else {
-      return "".compareToIgnoreCase(object.getTitle());
-    }
+    return 0;
   }
 
   /**
@@ -411,6 +407,9 @@ public class Resource implements BaseObject, Comparable<Resource>,
                   o2.getBoundingCoordinates().getMax().getCoordinate());
             }
           });
+      if (geoCoverage == null) {
+        geoCoverage = new BBox();
+      }
       geoCoverage.setMin(min.getBoundingCoordinates().getMin());
       geoCoverage.setMax(max.getBoundingCoordinates().getMax());
     }

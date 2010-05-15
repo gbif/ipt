@@ -238,6 +238,7 @@ public class ExtensionProperty implements BaseObject,
     }
     if (StringUtils.trimToNull(this.name) == null) {
       this.name = n;
+      this.name = n.substring(0, 1).toLowerCase() + n.substring(1, n.length());
     }
     if (StringUtils.trimToNull(this.namespace) == null) {
       this.namespace = ns;

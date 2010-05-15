@@ -73,9 +73,24 @@ public interface ExtensionPropertyManager extends
   ExtensionProperty getProperty(Extension extension, String name);
 
   /**
-   * Gets a {@link ExtensionProperty} by its qualified name.
+   * Gets extension property by its name.
    * 
-   * @param qName the qualified name of the extension
+   * For example, for a given qualified name such as
+   * 'http://rs.tdwg.org/dwc/terms/scientificName', the name would be
+   * 'scientificName'.
+   * 
+   * @param name
+   * @return ExtensionProperty
+   */
+  ExtensionProperty getPropertyByName(String name);
+
+  /**
+   * Gets an extension property by querying for its qualified name, such as
+   * 'http://rs.tdwg.org/dwc/terms/scientificName'. It splits the qualified name
+   * into name (scientificName) and namespace (http://rs.tdwg.org/dwc/terms/)
+   * for the query.
+   * 
+   * @param qName
    * @return ExtensionProperty
    */
   ExtensionProperty getPropertyByQualName(String qName);
