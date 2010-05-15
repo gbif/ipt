@@ -26,9 +26,12 @@ import org.gbif.provider.tapir.filter.BooleanOperator;
 import org.gbif.provider.tapir.filter.ComparisonOperator;
 import org.gbif.provider.tapir.filter.Filter;
 
+import com.google.common.base.Preconditions;
+
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 
 /**
@@ -50,38 +53,104 @@ public class ExtensionPropertyManagerHibernate extends
   }
 
   public ExtensionProperty getCorePropertyByQualName(String qName) {
+    Preconditions.checkNotNull(qName, "Qualified name is null");
+    // Extracts everything after the last / in qName:
+    String name = qName.substring(qName.lastIndexOf("/") + 1, qName.length());
+    // Namespace is qName less the name:
+    String namespace = qName.replace(name, "");
     // use ExtensionProperty to parse qualname intp pieces for querying
     ExtensionProperty prop = new ExtensionProperty(qName);
     return (ExtensionProperty) getSession().createQuery(
         "select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and (p.namespace=:namespace or p.namespace=:namespace2) and e.core=true) ").setParameter(
-        "name", prop.getName()).setParameter("namespace", prop.getNamespace()).setParameter(
-        "namespace2", prop.getNamespace() + "/").uniqueResult();
+        "name", name).setParameter("namespace", namespace).setParameter(
+        "namespace2", namespace + "/").uniqueResult();
+  }
+
+  /**
+   * Gets an extension property by its qualified name. Note that qualified name
+   * is case sensitive. For example:
+   * 
+   * http://rs.tdwg.org/dwc/terms/ScientificName
+   * 
+   * is different from:
+   * 
+   * http://rs.tdwg.org/dwc/terms/scientificName
+   * 
+   * The latter is what's expected.
+   * 
+   * @see org.gbif.provider.service.ExtensionPropertyManager#getProperty(org.gbif
+   *      .provider.model.Extension, java.lang.String)
+   */
+  public ExtensionProperty getProperty(Extension extension, String qName) {
+    checkNotNull(extension, "Extension is null");
+    checkNotNull(qName, "Extension property name is null");
+    checkArgument(qName.length() > 0, "Extension property name is empty");
+    Preconditions.checkNotNull(qName, "Qualified name is null");
+
+    // Extracts everything after the last / in qName:
+    String name = qName.substring(qName.lastIndexOf("/") + 1, qName.length());
+
+    // Namespace is qName less the name:
+    String namespace = qName.replace(name, "");
+    String namespaceNoSlash = qName.replace("/" + name, "");
+
+    // Queries on name + namespace first:
+    String query = "SELECT p " + "FROM ExtensionProperty p "
+        + "JOIN p.extension e " + "WHERE p.name=:name "
+        + "AND p.extension.id=:eid "
+        + "AND (p.namespace=:namespace OR p.namespace=:namespace2))";
+    if (extension.isCore()) {
+      query += "AND e.core = true";
+    }
+    Query q = getSession().createQuery(query).setParameter("name", name).setParameter(
+        "eid", extension.getId()).setParameter("namespace", namespace).setParameter(
+        "namespace2", namespaceNoSlash);
+    ExtensionProperty p = null;
+    try {
+      p = (ExtensionProperty) q.uniqueResult();
+    } catch (NonUniqueResultException e) {
+      log.warn("Duplicate matches for " + namespace + " + " + name);
+    }
+
+    // The query on name + namespace was successfull:
+    if (p != null) {
+      return p;
+    }
+    log.warn("No match for " + namespace + " + " + name);
+
+    // Otherwise we query just on the name:
+    query = "SELECT p " + "FROM ExtensionProperty p " + "JOIN p.extension e "
+        + "WHERE p.name=:name " + "AND p.extension.id=:eid ";
+    if (extension.isCore()) {
+      query += "AND e.core = true";
+    }
+    q = getSession().createQuery(query).setParameter("name", name).setParameter(
+        "eid", extension.getId());
+    try {
+      p = (ExtensionProperty) q.uniqueResult();
+    } catch (NonUniqueResultException e) {
+      log.warn("Duplicate matches for " + name);
+    }
+    if (p == null) {
+      log.warn("No matches for " + name);
+    }
+
+    return p;
   }
 
   /*
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.ExtensionPropertyManager#getProperty(org.gbif
-   * .provider.model.Extension, java.lang.String)
+   * org.gbif.provider.service.ExtensionPropertyManager#getPropertyByName(java
+   * .lang.String)
    */
-  public ExtensionProperty getProperty(Extension extension, String name) {
-    checkNotNull(extension, "Extension is null");
-    checkNotNull(name, "Extension property name is null");
-    checkArgument(name.length() > 0, "Extension property name is empty");
-    ExtensionProperty prop = new ExtensionProperty(name);
-    String query = "SELECT p " + "FROM ExtensionProperty p "
-        + "JOIN p.extension e " + "WHERE p.extension.id=:eid "
-        + "AND p.name=:name "
-        + "AND (p.namespace=:namespace or p.namespace=:namespace2)) ";
-    if (extension.isCore()) {
-      query += "AND e.core = true";
-    }
-    Query q = getSession().createQuery(query).setParameter("eid",
-        extension.getId()).setParameter("name", prop.getName()).setParameter(
-        "namespace", prop.getNamespace()).setParameter("namespace2",
-        prop.getNamespace() + "/");
-    return (ExtensionProperty) q.uniqueResult();
+  public ExtensionProperty getPropertyByName(String name) {
+    Preconditions.checkNotNull(name, "Name is null");
+    ExtensionProperty prop = (ExtensionProperty) getSession().createQuery(
+        "SELECT p " + "FROM ExtensionProperty p " + "JOIN p.extension e "
+            + "WHERE p.name=:name").setParameter("name", name).uniqueResult();
+    return prop;
   }
 
   /*
@@ -92,11 +161,20 @@ public class ExtensionPropertyManagerHibernate extends
    * (java.lang.String)
    */
   public ExtensionProperty getPropertyByQualName(String qName) {
-    ExtensionProperty prop = new ExtensionProperty(qName);
-    return (ExtensionProperty) getSession().createQuery(
-        "select p FROM ExtensionProperty p join p.extension e WHERE p.name=:name and (p.namespace=:namespace or p.namespace=:namespace2)) ").setParameter(
-        "name", prop.getName()).setParameter("namespace", prop.getNamespace()).setParameter(
-        "namespace2", prop.getNamespace() + "/").uniqueResult();
+    Preconditions.checkNotNull(qName, "Qualified name is null");
+    // Extracts everything after the last / in qName:
+    String name = qName.substring(qName.lastIndexOf("/") + 1, qName.length());
+    // Namespace is qName less the name:
+    String namespace = qName.replace(name, "");
+    String namespaceNoSlash = qName.replace("/" + name, "");
+    // use ExtensionProperty to parse qualname intp pieces for querying
+    ExtensionProperty prop = (ExtensionProperty) getSession().createQuery(
+        "SELECT p " + "FROM ExtensionProperty p " + "JOIN p.extension e "
+            + "WHERE p.name=:name "
+            + "AND (p.namespace=:namespace OR p.namespace=:namespace2))").setParameter(
+        "name", name).setParameter("namespace", namespace).setParameter(
+        "namespace2", namespaceNoSlash).uniqueResult();
+    return prop;
   }
 
   public Set<ExtensionProperty> lookupFilterCoreProperties(Filter filter)

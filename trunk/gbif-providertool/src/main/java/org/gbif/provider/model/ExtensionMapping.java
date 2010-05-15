@@ -345,7 +345,7 @@ public class ExtensionMapping implements BaseObject,
   public String toString() {
     return new ToStringBuilder(this).append("id", this.id).append("source",
         this.source).append("coreIdColumn", this.coreIdColumn).append(
-        "extension", this.extension).toString();
+        "extension", this.extension).append("properties", propertyMappings).toString();
   }
 
 }

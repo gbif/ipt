@@ -23,12 +23,12 @@ import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * TODO: Documentation.
@@ -220,6 +220,11 @@ public class ThesaurusManagerHibernate extends
   }
 
   public void synchroniseThesauriWithRepository() {
+    getSession().createSQLQuery(
+        "delete from thesaurus_vocabulary where id != 13 and id != 14 and id != 15 and id != 18").executeUpdate();
+    getSession().createSQLQuery("delete from thesaurus_term").executeUpdate();
+    getSession().createSQLQuery("delete from thesaurus_concept").executeUpdate();
+
     Collection<String> urls = registryManager.listAllThesauri();
 
     Collection<ThesaurusVocabulary> vocabularies = ThesaurusFactory.build(urls);

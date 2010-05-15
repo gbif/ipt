@@ -22,15 +22,17 @@ import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.RegistryManager;
 
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import com.google.common.base.Preconditions;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * TODO: Documentation
@@ -62,10 +64,18 @@ public class ExtensionManagerHibernate extends
         String.format("from Extension where core=true")).uniqueResult();
   }
 
-  public Extension getExtensionByUri(String uri) {
-    return (Extension) getSession().createQuery(
-        String.format("from Extension where namespace=:uri")).setParameter(
-        "uri", uri).uniqueResult();
+  public Extension getExtensionByRowType(String rowType) {
+    Preconditions.checkNotNull(rowType, "RowType is null");
+    Preconditions.checkArgument(rowType.length() > 0, "RowType is empty");
+    // Extracts everything after the last / in rowType:
+    String name = rowType.substring(rowType.lastIndexOf("/") + 1,
+        rowType.length());
+    // Namespace is rowType less the name:
+    String namespace = rowType.replace(name, "");
+    Extension e = (Extension) getSession().createQuery(
+        String.format("FROM Extension WHERE namespace=:namespace AND name=:name")).setParameter(
+        "namespace", namespace).setParameter("name", name).uniqueResult();
+    return e;
   }
 
   @SuppressWarnings("unchecked")
@@ -192,7 +202,18 @@ public class ExtensionManagerHibernate extends
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void synchroniseExtensionsWithRepository() {
+    List<Extension> all = getSession().createQuery(
+        "from Extension where core=false").list();
+    for (Extension e : all) {
+      try {
+        removeExtensionCompletely(e);
+      } catch (SQLException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+    }
     Collection<String> urls = registryManager.listAllExtensions();
     Collection<Extension> extensions = extensionFactory.build(urls);
     for (Extension e : extensions) {

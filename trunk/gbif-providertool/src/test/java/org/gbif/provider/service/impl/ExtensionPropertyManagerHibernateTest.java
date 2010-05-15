@@ -19,8 +19,6 @@ import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
-import org.gbif.provider.tapir.filter.Filter;
-import org.gbif.provider.tapir.filter.Like;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ContextAwareTestBase;
 
@@ -38,38 +36,17 @@ public class ExtensionPropertyManagerHibernateTest extends ContextAwareTestBase 
   @Autowired
   private ExtensionManager extensionManager;
 
-  @Test
-  public void testFindProperty() throws Exception {
-    ExtensionProperty p = extensionPropertyManager.getCorePropertyByQualName(Constants.SCIENTIFIC_NAME_QUALNAME);
-    assertTrue(p != null);
-
-    p = extensionPropertyManager.getCorePropertyByName("ScientificName");
-    assertTrue(p != null);
-  }
-
   /**
    * Test getting a property by {@link Exception} and qualified name.
    * 
    * void
    */
   @Test
-  public void testGetProperty() {
+  public void testGetPropertyByName() {
     Extension extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
     String name = "http://rs.tdwg.org/dwc/terms/scientificName";
     ExtensionProperty p = extensionPropertyManager.getProperty(extension, name);
     assertNotNull(p);
     assertEquals(p.getExtension(), extension);
   }
-
-  @Test
-  public void testPropertyReplace() throws Exception {
-    Filter f = new Filter();
-    Like like = new Like();
-    like.setProperty(Constants.SCIENTIFIC_NAME_QUALNAME);
-    like.setValue("Abies*");
-    f.setRoot(like);
-    extensionPropertyManager.lookupFilterCoreProperties(f);
-    System.out.println(f);
-  }
-
 }

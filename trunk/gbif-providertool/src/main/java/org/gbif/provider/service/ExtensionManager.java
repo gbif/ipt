@@ -28,7 +28,7 @@ public interface ExtensionManager extends GenericManager<Extension> {
 
   Extension getCore() throws SQLException;
 
-  Extension getExtensionByUri(String uri);
+  Extension getExtensionByRowType(String uri);
 
   /**
    * Get all installed extensions for a certain core entity extension type (i.e.
