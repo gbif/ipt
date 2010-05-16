@@ -447,7 +447,20 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
     // Creates a resource archive from the uploaded file:
     File location = targetFile;
-    ResourceArchive archive = resourceArchiveService.openArchive(location, true);
+    ResourceArchive archive = null;
+    String errorMsg = null;
+
+    try {
+      archive = resourceArchiveService.openArchive(location, true);
+    } catch (Exception e) {
+      errorMsg = "Unable to process the archive: " + e.toString();
+    }
+    if (archive == null) {
+      saveMessage(errorMsg == null ? "Unable to process the archive" : errorMsg);
+      resourceManager.remove(resource);
+      return ERROR;
+    }
+
     switch (archive.getType()) {
       case OCCURRENCE:
         if (!(resource instanceof OccurrenceResource)) {
@@ -462,10 +475,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         }
         break;
       case METADATA:
-        if (!(resource instanceof Resource)) {
-          saveMessage("Wrong type of archive");
-          return ERROR;
-        }
         break;
     }
     // Eml now comes from the archive:
