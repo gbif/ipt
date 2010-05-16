@@ -112,7 +112,7 @@ public class ExtensionPropertyManagerHibernate extends
       log.warn("Duplicate matches for " + namespace + " + " + name);
     }
 
-    // The query on name + namespace was successfull:
+    // The query on name + namespace was successful:
     if (p != null) {
       return p;
     }

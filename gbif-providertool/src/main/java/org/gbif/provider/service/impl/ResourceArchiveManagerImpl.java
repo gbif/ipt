@@ -205,17 +205,18 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     }
 
     /**
-     * Returns the {@link Type} of resource archive a given {@link Archive} is.
-     * If the archive is null, the archive is assumed to be an invalid Darwin
-     * Core Archive. In this case, there are two cases to check. First, the
-     * archive could have contained just an eml.xml file in which case it's a
-     * metadata type. Second, the archive could have contained multiple data
-     * files without a metafile.
+     * Returns the {@link Type} of an {@link Archive}. If the archive is null,
+     * the archive is assumed to be an invalid Darwin Core Archive. In this
+     * case, there are two cases to check. First, the archive could have
+     * contained just an eml.xml file in which case it's a metadata type.
+     * Second, the archive could have contained multiple data files without a
+     * metafile.
      * 
      * @param a the archive
      * @return Type type of archive
+     * @throws UnsupportedArchiveException
      */
-    public Type getType(Archive a) {
+    public Type getType(Archive a) throws UnsupportedArchiveException {
       Type archiveType = null;
       if (a == null) {
         try {
@@ -227,11 +228,20 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         }
         return archiveType;
       }
+      // Sanity check:
+      if (a.getCore() == null || a.getCore().getRowType() == null) {
+        throw new UnsupportedArchiveException(
+            "The core archive file or its rowType is null or empty: "
+                + archiveLocation);
+      }
       String coreRowType = a.getCore().getRowType().toLowerCase();
       if (CHECKLIST_ROW_TYPES.contains(coreRowType)) {
         archiveType = Type.CHECKLIST;
       } else if (OCCURRENCE_ROW_TYPES.contains(coreRowType)
-          || a.getCore() != null) { // Handles single data file archive.
+          || (a.getExtensions().isEmpty() && coreRowType.trim().length() == 0)) {
+        // We checked for empty archive extensions and rowType in the predicate
+        // because if there are none, it's a single data file (not eml since we
+        // already checked for that) which is clearly an occurrence type:
         archiveType = Type.OCCURRENCE;
       }
       return archiveType;
@@ -239,26 +249,23 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
 
     /**
      * If the file location is compressed as a ZIP or GZIP archive, it is
-     * expanded into a new folder (named after the archive but without the
-     * extension) and the folder is returned.
+     * expanded into the same location as the archive itself. Otherwise no
+     * action is taken.
      * 
-     * For example, /foo/bar/baz.zip would be expanded into the /foo/bar/baz
-     * directory.
-     * 
-     * If the file location is not an archive, null is returned.
-     * 
-     * @param location the file location
-     * @return expanded archive directory or null if the file wasn't an archive
+     * @param location the file location of the archive.
+     * @return
      * @throws IOException
      */
     File expandIfCompressed(File location) throws IOException {
-      File directory = location;
       String name = location.getName();
-      directory = location.getParentFile();
       if (name.endsWith(".zip") || GzipUtils.isCompressedFilename(name)) {
+        File directory = location.getParentFile();
         CompressionUtil.decompressFile(directory, location);
+        location = directory;
+      } else if (location.isFile()) {
+        location = location.getParentFile();
       }
-      return directory;
+      return location;
     }
 
     /**
@@ -266,14 +273,17 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
      * instance and returns it. Otherwise returns null.
      * 
      * @param location the eml.xml file or a directory containing it
-     * @return Eml
+     * @return Eml if it exists, null otherwise
      * @throws IOException
      */
     Eml getEmlIfExists(File location) throws IOException {
       Eml eml = null;
       String path = null;
       File directory = null;
+
+      // TODO: Can we infer the eml filename from an archive?
       final String emlFileName = "eml.xml";
+
       if (location.isFile()) {
         directory = location.getParentFile();
       } else {
@@ -315,6 +325,18 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
      */
     Extension getExtension(String rowType, boolean isCore) {
       Extension extension = null;
+      if (rowType == null || rowType.trim().length() == 0) {
+        if (isCore) {
+          extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+          extension.setCore(true);
+          return extension;
+        } else {
+          // TODO: No matching extensions in H2. What action to take?
+          log.warn("No extension found since rowType is missing");
+          return null;
+        }
+      }
+
       try {
         extension = extensionManager.getExtensionByRowType(rowType);
       } catch (NonUniqueResultException e) {
@@ -322,14 +344,8 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         log.warn("Duplicate extension found: " + rowType);
       }
       if (extension == null) {
-        if (isCore) {
-          extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
-        } else {
-          // TODO: No matching extensions in H2. What action to take?
-          log.warn("No extension found for: " + rowType);
-        }
-      }
-      if (isCore) {
+        log.warn("No extension found for: " + rowType);
+      } else if (isCore) {
         extension.setCore(true);
       }
       return extension;
@@ -352,13 +368,19 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
      * @param f the archive file
      * @param isCore true if the archive file represents the core
      * @return ExtensionMapping
+     * @throws UnsupportedArchiveException
      */
-    ExtensionMapping getExtensionMapping(ArchiveFile f, boolean isCore) {
-      Extension extension = getExtension(f.getRowType(), isCore);
+    ExtensionMapping getExtensionMapping(ArchiveFile f, boolean isCore)
+        throws UnsupportedArchiveException {
+      Extension extension;
+
+      extension = getExtension(f.getRowType(), isCore);
       if (extension == null) {
-        log.warn("Unsupported extention: " + f.getRowType());
+        log.warn("Unsupported extention: " + f.getRowType()
+            + ". Ignoring the entire archive file " + f.getLocation());
         return null;
       }
+
       ExtensionMapping em = ExtensionMapping.with(extension);
       SourceFile source = getSourceFile(f);
       boolean hasHeader = f.getIgnoreHeaderLines() > 0;
@@ -382,6 +404,15 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
       for (Entry<ConceptTerm, ArchiveField> entry : f.getFields().entrySet()) {
         ct = entry.getKey();
         af = entry.getValue();
+
+        if (ct == null || af == null) {
+          log.warn("ConceptTerm or ArchiveField is null in " + f.getLocation());
+          continue;
+        }
+        if (ct.qualifiedName() == null) {
+          log.warn("ConceptTerm.qualifiedName is null in " + ct.simpleName());
+          continue;
+        }
 
         // Looks up an existing extension property:
         ep = propertyManager.getProperty(extension, ct.qualifiedName());
@@ -433,9 +464,10 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
      * 
      * @param archive the archive
      * @return ImmutableMap<SourceFile, ExtensionMapping>
+     * @throws UnsupportedArchiveException
      */
     ImmutableMap<SourceFile, ExtensionMapping> getExtensionMappings(
-        Archive archive) {
+        Archive archive) throws UnsupportedArchiveException {
       checkNotNull(archive, "Archive is null");
       checkNotNull(archive.getExtensions(), "Archive extensions are null");
       if (archive.getExtensions().isEmpty()) {
@@ -487,17 +519,25 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     }
 
     /**
-     * Returns a new {@link SourceFile} from an {@link ArchiveFile}.
+     * Returns a new {@link SourceFile} from an {@link ArchiveFile}. If the
+     * archive file in unreadable, an {@link UnsupportedArchiveException} is
+     * thrown.
      * 
-     * FIXME: set headers base don af
-     * 
-     * @param f
+     * @param af the archive file
      * @return SourceFile
+     * @throws UnsupportedArchiveException
      */
-    SourceFile getSourceFile(ArchiveFile f) {
-      String p = String.format("%s/%s", archiveLocation.getPath(), f.getTitle());
-      SourceFile s = new SourceFile(new File(p));
-      s.setHeaders(f.getIgnoreHeaderLines() > 0);
+    SourceFile getSourceFile(ArchiveFile af) throws UnsupportedArchiveException {
+      File file = new File(af.getLocation());
+      if (!file.exists() || !file.isFile() || !file.canRead()) {
+        throw new UnsupportedArchiveException("Unable to read archive file: "
+            + file);
+      }
+      SourceFile s = new SourceFile(file);
+
+      // Important for when we create the PropertyMapping for this source file!
+      s.setHeaders(af.getIgnoreHeaderLines() > 0);
+
       return s;
     }
   }
@@ -735,31 +775,35 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
   public <R extends Resource, A extends ResourceArchive> R createResource(
       A archive) throws IOException {
     // TODO: Just create a new resource and return bind(resource, archive)?
+    // TODO: Use case for this?
     R resource = null;
     return resource;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Opens the archive using the dwc-archive-reader project.
    * 
    * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File,
-   * boolean)
+   *      boolean)
    */
   @SuppressWarnings("unchecked")
   public <A extends ResourceArchive> A openArchive(File location,
       boolean normalise) throws IOException, UnsupportedArchiveException {
+
     checkNotNull(location, "Location cannot be null");
     checkArgument(location.canRead(), "Location cannot be read: " + location);
 
-    // We create an adapter on each request to mitigate concurrency issues:
+    // We create an archive adapter on each request to mitigate any concurrency
+    // issues:
     ArchiveAdapter adapter = new ArchiveAdapter(extensionManager,
         extensionPropertyManager, sourceInspectionManager, sourceManager,
         location);
 
-    // Expands the archive if it's compressed:
+    // Expands the archive if it's compressed. The files are stored in the same
+    // directory as the archive:
     File archiveLocation = adapter.expandIfCompressed(location);
     adapter.archiveLocation = archiveLocation;
-    log.info("Archive location opened: " + archiveLocation);
+    log.info("Archive opened: " + location);
 
     Type archiveType = null;
     Archive archive = null;
@@ -775,19 +819,18 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
       archive = ArchiveFactory.openArchive(archiveLocation, normalise);
     } catch (UnsupportedArchiveException e) {
       // Ignore this exception until we investigate the archive type.
-      log.warn("Invalid Darwin Core Archive: " + archiveLocation);
+      log.warn("Invalid Darwin Core Archive: " + location);
     }
 
-    // Note that the archive might be null here, but getType() handles that:
+    // Note that the archive might be null here, but getType() handles that for
+    // us:
     archiveType = adapter.getType(archive);
     if (archiveType == null) {
       // Now we know for sure that this is definitely not a supported archive:
-      throw new UnsupportedArchiveException("Unknown type: "
-          + archive.getCore().getRowType());
+      throw new UnsupportedArchiveException("Unknown archive type: " + location);
     }
 
-    log.info(String.format("Archive %s is type %s", archiveLocation,
-        archiveType));
+    log.info(String.format("Archive %s is type %s", location, archiveType));
 
     ImmutableMap<SourceFile, ExtensionMapping> coreMapping;
     ImmutableMap<SourceFile, ExtensionMapping> extensionMappings;
@@ -795,13 +838,21 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
 
     // Creates the eml if it exits in the archive:
     Eml eml = adapter.getEmlIfExists(archiveLocation);
-    log.info("Eml was found in the archive: " + archiveLocation);
+    if (eml != null) {
+      log.info("Eml was found in the archive: " + location);
+    } else {
+      log.info("Eml was not found in the archive: " + location);
+    }
 
-    // Creates the resulting resource archive based on the archive type:
+    SourceFile source = null;
+
+    // Creates the resulting resource archive based on the archive type, which
+    // is the same for both occurrence and checklist:
     switch (archiveType) {
       case OCCURRENCE:
+      case CHECKLIST:
         // Gets extension mapping for core:
-        SourceFile source = adapter.getSourceFile(archive.getCore());
+        source = adapter.getSourceFile(archive.getCore());
         coreMapping = ImmutableMap.of(source, adapter.getExtensionMapping(
             archive.getCore(), true));
         // Gets extension mappings for extensions:
@@ -814,10 +865,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         coreMapping = ImmutableMap.of();
         extensionMappings = ImmutableMap.of();
         resourceArchive = (A) ResourceArchiveImpl.create(Type.METADATA,
-            location, coreMapping, extensionMappings, eml);
-        break;
-      case CHECKLIST:
-        // TODO: Handle checklist resource.
+            archiveLocation, coreMapping, extensionMappings, eml);
         break;
       default:
         // TODO: Check for multiple data files supported by IPT

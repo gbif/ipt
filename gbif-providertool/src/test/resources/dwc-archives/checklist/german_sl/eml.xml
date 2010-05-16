@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<eml:eml xmlns:eml="eml://ecoinformatics.org/eml-2.0.1">
+    <dataset>
+        <title>German Standard List</title>
+        <creator>
+            <individualName>
+                <givenName></givenName>
+                <surName></surName>
+            </individualName>
+            <organizationName></organizationName>
+            <address>
+                <city></city>
+                <administrativeArea></administrativeArea>
+                <postalCode></postalCode>
+                <country></country>
+            </address>
+            <electronicMailAddress></electronicMailAddress>
+            <onlineUrl></onlineUrl>
+            <logoUrl></logoUrl>
+        </creator>
+        <pubDate>2009-04-21</pubDate>
+        <language>en</language>
+        <abstract>
+            <para></para>
+            <para></para>
+        </abstract>
+        <keywordSet>
+        	<keyword></keyword>
+        	<keyword></keyword>
+        	<keyword></keyword>
+        </keywordSet>
+        <intellectualRights>
+            <para></para>
+            <para></para>
+        </intellectualRights>
+        <contact>
+            <individualName>
+                <givenName></givenName>
+                <surName></surName>
+            </individualName>
+            <electronicMailAddress></electronicMailAddress>
+        </contact>
+    </dataset>
+</eml:eml>
