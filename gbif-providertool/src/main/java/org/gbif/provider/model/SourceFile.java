@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Global Biodiversity Informatics Facility.
+ * Copyright 2009 GBIF.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -12,11 +12,10 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */package org.gbif.provider.model;
+ */
+package org.gbif.provider.model;
 
 import org.gbif.provider.util.AppConfig;
-
-import com.google.common.base.Objects;
 
 import java.io.File;
 import java.util.Date;
@@ -24,17 +23,18 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- * This class can be used as an entity to encapsulate information about source
- * files.
+ * TODO: Documentation.
  * 
  */
 @Entity
 public class SourceFile extends SourceBase {
+  private static Log log = LogFactory.getLog(SourceFile.class);
   private Date dateUploaded;
-
   private long fileSize;
-
   private boolean headers = false;
 
   public SourceFile() {
@@ -43,19 +43,7 @@ public class SourceFile extends SourceBase {
 
   public SourceFile(File targetFile) {
     super();
-    name = targetFile.getPath();
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof SourceFile)) {
-      return false;
-    }
-    SourceFile o = (SourceFile) obj;
-    return Objects.equal(name, o.name);
+    setFile(targetFile);
   }
 
   @Transient
@@ -63,17 +51,9 @@ public class SourceFile extends SourceBase {
     return dateUploaded;
   }
 
-  /**
-   * @return File
-   */
-  @Transient
-  public File getFile() {
-    return new File(name);
-  }
-
   @Transient
   public String getFilename() {
-    return new File(name).getName();
+    return name;
   }
 
   @Transient
@@ -84,11 +64,6 @@ public class SourceFile extends SourceBase {
   @Transient
   public long getFileSizeInKB() {
     return fileSize / 1024;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(name);
   }
 
   @Transient
@@ -115,17 +90,24 @@ public class SourceFile extends SourceBase {
     this.dateUploaded = dateUploaded;
   }
 
+  public void setFile(File file) {
+    if (file != null) {
+      setFilename(file.getName());
+    } else {
+      setFilename(null);
+    }
+  }
+
+  public void setFilename(String filename) {
+    this.name = filename;
+  }
+
   public void setFileSize(long fileSize) {
     this.fileSize = fileSize;
   }
 
   public void setHeaders(boolean headers) {
     this.headers = headers;
-  }
-
-  @Override
-  public String toString() {
-    return name;
   }
 
 }

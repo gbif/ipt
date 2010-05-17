@@ -20,17 +20,31 @@ import org.gbif.provider.service.CacheManager;
 import org.gbif.provider.service.UploadEventManager;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
 
-import com.opensymphony.xwork2.Preparable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import com.opensymphony.xwork2.Preparable;
 
 /**
  * TODO: Documentation.
  * 
  */
 public class ImportAction extends BaseDataResourceAction implements Preparable {
+  class Dojo {
+    private String preventCache;
+
+    public String getPreventCache() {
+      return preventCache;
+    }
+
+    public void setPreventCache(String preventCache) {
+      this.preventCache = preventCache;
+    }
+  }
+
+  private Dojo dojo = new Dojo();
+
   private static final String BUSY = "resource-busy";
   private static final String READY = "resource-ready";
   @Autowired
@@ -61,6 +75,10 @@ public class ImportAction extends BaseDataResourceAction implements Preparable {
     return SUCCESS;
   }
 
+  public Dojo getDojo() {
+    return dojo;
+  }
+
   public String getGChartData() {
     return gChartData;
   }
@@ -87,6 +105,10 @@ public class ImportAction extends BaseDataResourceAction implements Preparable {
     if (resourceId != null) {
       busy = cacheManager.isBusy(resourceId);
     }
+  }
+
+  public void setDojo(Dojo dojo) {
+    this.dojo = dojo;
   }
 
   public String status() {

@@ -71,7 +71,9 @@ public class OccStatByRegionAndTaxon implements ResourceRelatedObject {
     this.taxon = taxon;
     this.region = region;
     this.numOcc = numOcc.intValue();
-    this.bbox = new BBox(minY, minX, maxY, maxX);
+    if (minY != null && minX != null && maxY != null && maxX != null) {
+      this.bbox = new BBox(minY, minX, maxY, maxX);
+    }
   }
 
   public BBox getBbox() {
