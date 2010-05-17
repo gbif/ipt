@@ -18,8 +18,6 @@ package org.gbif.provider.webapp.action.manage;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
-import org.gbif.provider.model.factory.ResourceFactory;
-import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.ZipUtil;
@@ -51,8 +49,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   @Autowired
   private SourceInspectionManager sourceInspectionManager;
   @Autowired
-  private ResourceArchiveManager resourceArchiveService;
-  @Autowired
   private SourceManager sourceManager;
   private final List<SourceFile> fileSources = new ArrayList<SourceFile>();
   private final List<SourceSql> sqlSources = new ArrayList<SourceSql>();
@@ -65,9 +61,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   // preview only
   private List<String> previewHeader;
   private List<List<? extends Object>> preview;
-
-  @Autowired
-  protected ResourceFactory resourceFactory;
 
   public String delete() {
     if (sid != null) {
@@ -147,9 +140,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
         SourceFile sf = (SourceFile) s;
         File f = cfg.getSourceFile(resourceId, sf.getFilename());
         if (!f.exists() || !f.isFile()) {
-          f = sf.getFile();
-        }
-        if (!f.exists() || !f.isFile()) {
           log.warn(String.format(
               "SourceFile %s for resource %s doesn't exist.", sf.getFilename(),
               resourceId));
@@ -171,17 +161,17 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   @Override
   public void prepare() {
     super.prepare();
-    if (resource == null && resourceType != null) {
-      // create new empty resource
-      if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
-        resource = resourceFactory.newOccurrenceResourceInstance();
-      } else if (resourceType.equalsIgnoreCase(CHECKLIST)) {
-        resource = resourceFactory.newChecklistResourceInstance();
-      } else {
-        resource = resourceFactory.newMetadataResourceInstance();
-      }
-    }
-    resource = resourceManager.save(resource);
+    // if (resource == null && resourceType != null) {
+    // // create new empty resource
+    // if (resourceType.equalsIgnoreCase(OCCURRENCE)) {
+    // resource = resourceFactory.newOccurrenceResourceInstance();
+    // } else if (resourceType.equalsIgnoreCase(CHECKLIST)) {
+    // resource = resourceFactory.newChecklistResourceInstance();
+    // } else {
+    // resource = resourceFactory.newMetadataResourceInstance();
+    // }
+    // }
+    // resource = resourceManager.save(resource);
     if (sid != null) {
       source = sourceManager.get(sid);
     } else {
@@ -261,7 +251,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
    * @return String with result (cancel, input or sucess)
    * @throws Exception if something goes wrong
    */
-  @SuppressWarnings("static-access")
   public String upload() throws Exception {
     // the file to upload to
     File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
@@ -336,14 +325,13 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   }
 
   private void insertSourceFile(File srcFile) {
-    SourceFile fsource = sourceManager.getSourceByFilename(resource.getId(),
+    SourceFile fsource = sourceManager.getSourceByFilename(resourceId,
         srcFile.getName());
     if (fsource == null) {
       // new source
       fsource = new SourceFile();
       fsource.setResource(resource);
-      // fsource.setFilename(srcFile.getName());
-      fsource.setName(srcFile.getPath());
+      fsource.setFilename(srcFile.getName());
     }
     // set new upload timestamp
     fsource.setDateUploaded(new Date());
@@ -388,4 +376,5 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
       saveMessage(getText("sources.sourceFileBroken", params));
     }
   }
+
 }

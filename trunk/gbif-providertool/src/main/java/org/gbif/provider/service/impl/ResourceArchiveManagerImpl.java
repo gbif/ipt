@@ -70,6 +70,7 @@ import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -178,25 +179,32 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
    */
   private static class ArchiveAdapter {
 
+    AppConfig appConfig;
     ExtensionManager extensionManager;
     ExtensionPropertyManager propertyManager;
     File archiveLocation;
     SourceInspectionManager sourceInspectionManager;
     SourceManager sourceManager;
+    private Long resourceId;
 
     /**
      * Gives {@link ArchiveAdapter} a reference to services. Ideally services
      * would be static, but Spring DI via @Autowired doesn't support static
      * injection.
      * 
+     * @param resourceId
+     * 
      * @param extensionManager
      * @param propertyManager void
      * @param archiveLocation
      */
-    ArchiveAdapter(ExtensionManager extensionManager,
+    ArchiveAdapter(Long resourceId, AppConfig appConfig,
+        ExtensionManager extensionManager,
         ExtensionPropertyManager propertyManager,
         SourceInspectionManager sourceInspectionManager,
         SourceManager sourceManager, File archiveLocation) {
+      this.resourceId = resourceId;
+      this.appConfig = appConfig;
       this.extensionManager = extensionManager;
       this.propertyManager = propertyManager;
       this.sourceInspectionManager = sourceInspectionManager;
@@ -343,8 +351,10 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         // TODO: Duplicate extensions in H2. What action to take?
         log.warn("Duplicate extension found: " + rowType);
       }
-      if (extension == null) {
+      if (isCore && extension == null) {
         log.warn("No extension found for: " + rowType);
+        extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+        extension.setCore(true);
       } else if (isCore) {
         extension.setCore(true);
       }
@@ -426,6 +436,10 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         String column = null;
         if (!hasHeader) {
           column = ct.simpleName();
+          // If this is <coreid>, set the ExtensionMappings coreIdColumn:
+          // if (af.getIndex() != null && af.getIndex() == 0) {
+          // em.setCoreIdColumn(column);
+          // }
         } else {
           if (af.getIndex() == null) {
             if (af.getDefaultValue() != null) {
@@ -439,6 +453,10 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
             // Handles a dynamic mapping:
             try {
               column = header.get(af.getIndex());
+              // If this is <coreid>, set the ExtensionMappings coreIdColumn:
+              // if (af.getIndex() != null && af.getIndex() == 0) {
+              // em.setCoreIdColumn(column);
+              // }
             } catch (IndexOutOfBoundsException e) {
               // The index and header didn't match up so we skip this property:
               continue;
@@ -450,6 +468,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         pm.setProperty(ep);
         pm.setViewMapping(em);
         em.addPropertyMapping(pm);
+
       }
       return em;
     }
@@ -498,9 +517,11 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
      * @throws IOException
      * @throws MalformedTabFileException List<String>
      */
+    @SuppressWarnings("static-access")
     List<String> getHeader(SourceFile source) throws IOException,
         MalformedTabFileException {
-      TabFileReader reader = new TabFileReader(source.getFile(), true);
+      File f = appConfig.getResourceSourceFile(resourceId, source.getName());
+      TabFileReader reader = new TabFileReader(f, true);
       List<String> headers;
       if (source.hasHeaders()) {
         headers = Arrays.asList(reader.getHeader());
@@ -533,11 +554,17 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         throw new UnsupportedArchiveException("Unable to read archive file: "
             + file);
       }
-      SourceFile s = new SourceFile(file);
+      SourceFile s = sourceManager.getSourceByFilename(resourceId,
+          file.getName());
+      if (s == null) {
+        s = new SourceFile();
+        s.setFilename(file.getName());
+        s.setDateUploaded(new Date());
+      }
 
       // Important for when we create the PropertyMapping for this source file!
       s.setHeaders(af.getIgnoreHeaderLines() > 0);
-
+      sourceManager.save(s);
       return s;
     }
   }
@@ -784,20 +811,21 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
    * Opens the archive using the dwc-archive-reader project.
    * 
    * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File,
-   *      boolean)
+   *      Long, boolean)
    */
   @SuppressWarnings("unchecked")
   public <A extends ResourceArchive> A openArchive(File location,
-      boolean normalise) throws IOException, UnsupportedArchiveException {
+      Long resourceId, boolean normalise) throws IOException,
+      UnsupportedArchiveException {
 
     checkNotNull(location, "Location cannot be null");
     checkArgument(location.canRead(), "Location cannot be read: " + location);
 
     // We create an archive adapter on each request to mitigate any concurrency
     // issues:
-    ArchiveAdapter adapter = new ArchiveAdapter(extensionManager,
-        extensionPropertyManager, sourceInspectionManager, sourceManager,
-        location);
+    ArchiveAdapter adapter = new ArchiveAdapter(resourceId, cfg,
+        extensionManager, extensionPropertyManager, sourceInspectionManager,
+        sourceManager, location);
 
     // Expands the archive if it's compressed. The files are stored in the same
     // directory as the archive:

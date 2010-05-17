@@ -451,7 +451,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     String errorMsg = null;
 
     try {
-      archive = resourceArchiveService.openArchive(location, true);
+      archive = resourceArchiveService.openArchive(location, null, true);
     } catch (Exception e) {
       errorMsg = "Unable to process the archive: " + e.toString();
     }

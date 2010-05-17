@@ -2,7 +2,7 @@
 <#include "/WEB-INF/pages/inc/globalVars.ftl">  
 
 <@display.table name="resourcesForDisplay" class="table" requestURI="" id="resourceList" export=false pagesize=25>
-    <@display.column property="title" sortable=true title='${struts.getText("resource.title")}' href="resource.html" media="html" paramId="resourceId" paramProperty="id"/>
+    <@display.column property="title" sortable=true title='${struts.getText("resource.title")}' href='resource.html?resourceId=${struts.getText("resource.id")}' media="html" paramId="resourceId" paramProperty="id"/>
     <@display.column property="modified" sortable=true title='${struts.getText("resource.modified")}' format="{0,date,${datePattern}}"/>
     <@display.column property="creatorFullName" sortable=true title='${struts.getText("resource.creator")}'/>
     <@display.column property="status.name" sortable=true title='${struts.getText("resource.status")}'/>

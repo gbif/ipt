@@ -19,13 +19,13 @@ import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.TreeNode;
 import org.gbif.provider.service.TreeNodeManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO: Documentation.
@@ -45,15 +45,21 @@ public class TreeNodeSupportHibernate<T extends TreeNode<T, E>, E extends Enum> 
   }
 
   public void buildNestedSet(Long resourceId, Session session) {
-    List<T> rootNodes = this.getRoots(resourceId, session, null);
-    log.info(String.format("Building nested set for %s isolated trees",
-        rootNodes.size()));
-    Long idx = 1L;
-    for (T node : rootNodes) {
-      idx = crawlChildren(resourceId, node, idx, session);
-      log.debug(String.format("Nested set indices for tree %s are %s to %s",
-          node.getLabel(), node.getLft(), node.getRgt()));
-      treeNodeManager.flush();
+    List<T> rootNodes = null;
+    try {
+      rootNodes = this.getRoots(resourceId, session, null);
+      log.info(String.format("Building nested set for %s isolated trees",
+          rootNodes.size()));
+      Long idx = 1L;
+      for (T node : rootNodes) {
+        idx = crawlChildren(resourceId, node, idx, session);
+        log.debug(String.format("Nested set indices for tree %s are %s to %s",
+            node.getLabel(), node.getLft(), node.getRgt()));
+        treeNodeManager.flush();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      log.error("Unable to build nested set: " + e.toString());
     }
   }
 
