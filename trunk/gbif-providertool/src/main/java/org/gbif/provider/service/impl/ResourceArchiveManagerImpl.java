@@ -185,25 +185,25 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     File archiveLocation;
     SourceInspectionManager sourceInspectionManager;
     SourceManager sourceManager;
-    private Long resourceId;
+    private Resource resource;
 
     /**
      * Gives {@link ArchiveAdapter} a reference to services. Ideally services
      * would be static, but Spring DI via @Autowired doesn't support static
      * injection.
      * 
-     * @param resourceId
+     * @param resource
      * 
      * @param extensionManager
      * @param propertyManager void
      * @param archiveLocation
      */
-    ArchiveAdapter(Long resourceId, AppConfig appConfig,
+    ArchiveAdapter(Resource resource, AppConfig appConfig,
         ExtensionManager extensionManager,
         ExtensionPropertyManager propertyManager,
         SourceInspectionManager sourceInspectionManager,
         SourceManager sourceManager, File archiveLocation) {
-      this.resourceId = resourceId;
+      this.resource = resource;
       this.appConfig = appConfig;
       this.extensionManager = extensionManager;
       this.propertyManager = propertyManager;
@@ -520,7 +520,8 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     @SuppressWarnings("static-access")
     List<String> getHeader(SourceFile source) throws IOException,
         MalformedTabFileException {
-      File f = appConfig.getResourceSourceFile(resourceId, source.getName());
+      File f = appConfig.getResourceSourceFile(resource.getId(),
+          source.getName());
       TabFileReader reader = new TabFileReader(f, true);
       List<String> headers;
       if (source.hasHeaders()) {
@@ -554,7 +555,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
         throw new UnsupportedArchiveException("Unable to read archive file: "
             + file);
       }
-      SourceFile s = sourceManager.getSourceByFilename(resourceId,
+      SourceFile s = sourceManager.getSourceByFilename(resource.getId(),
           file.getName());
       if (s == null) {
         s = new SourceFile();
@@ -564,6 +565,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
 
       // Important for when we create the PropertyMapping for this source file!
       s.setHeaders(af.getIgnoreHeaderLines() > 0);
+      s.setResource((DataResource) resource);
       sourceManager.save(s);
       return s;
     }
@@ -811,11 +813,11 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
    * Opens the archive using the dwc-archive-reader project.
    * 
    * @see org.gbif.provider.service.DataArchiveManager#openArchive(java.io.File,
-   *      Long, boolean)
+   *      Resource, boolean)
    */
   @SuppressWarnings("unchecked")
   public <A extends ResourceArchive> A openArchive(File location,
-      Long resourceId, boolean normalise) throws IOException,
+      Resource resource, boolean normalise) throws IOException,
       UnsupportedArchiveException {
 
     checkNotNull(location, "Location cannot be null");
@@ -823,7 +825,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
 
     // We create an archive adapter on each request to mitigate any concurrency
     // issues:
-    ArchiveAdapter adapter = new ArchiveAdapter(resourceId, cfg,
+    ArchiveAdapter adapter = new ArchiveAdapter(resource, cfg,
         extensionManager, extensionPropertyManager, sourceInspectionManager,
         sourceManager, location);
 

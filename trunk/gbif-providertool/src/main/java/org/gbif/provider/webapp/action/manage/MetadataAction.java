@@ -451,13 +451,13 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     String errorMsg = null;
 
     try {
-      archive = resourceArchiveService.openArchive(location, null, true);
+      archive = resourceArchiveService.openArchive(location, resource, true);
     } catch (Exception e) {
       errorMsg = "Unable to process the archive: " + e.toString();
     }
     if (archive == null) {
       saveMessage(errorMsg == null ? "Unable to process the archive" : errorMsg);
-      resourceManager.remove(resource);
+      // resourceManager.remove(resource);
       return ERROR;
     }
 
@@ -483,6 +483,18 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     resource = resourceArchiveService.bind(resource, archive);
     resourceManager.save(resource);
     return SUCCESS;
+  }
+
+  public void validateUpload() {
+    if (getRequest().getMethod().equalsIgnoreCase("post")) {
+      getFieldErrors().clear();
+      if ("".equals(fileFileName) || file == null) {
+        super.addFieldError("file", getText("errors.requiredField",
+            new String[] {getText("uploadForm.file")}));
+      } else if (file.length() > 104857600) {
+        addActionError(getText("maxLengthExceeded"));
+      }
+    }
   }
 
   private void testDbConnection() {
