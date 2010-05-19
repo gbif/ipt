@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<archive xmlns="http://rs.tdwg.org/dwc/text/">
+  <core>
+    <files>
+      <location>data.txt</location>
+    </files>
+ <id index="0" />
+  </core>
+</archive>
