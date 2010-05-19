@@ -239,6 +239,11 @@
 		class="org.gbif.provider.service.impl.ResourceArchiveManagerImpl"
 		parent="abstractManager" />
 
+    <bean id="archiveUtil"
+        class="org.gbif.provider.util.ArchiveUtil"
+        parent="abstractManager" />
+
+
 	<bean id="cacheManager" class="org.gbif.provider.service.impl.CacheManagerJDBC"
 		parent="abstractJDBCManager" lazy-init="true">
 		<lookup-method name="newOccUploadTask" bean="occUploadTask" />

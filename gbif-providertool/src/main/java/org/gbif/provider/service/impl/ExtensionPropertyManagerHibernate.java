@@ -138,6 +138,31 @@ public class ExtensionPropertyManagerHibernate extends
     return p;
   }
 
+  public ExtensionProperty getPropertyByName(Extension extension, String name) {
+    checkNotNull(extension, "Extension is null");
+    checkNotNull(name, "Extension property name is null");
+    checkArgument(name.length() > 0, "Extension property name is empty");
+    // Otherwise we query just on the name:
+    String query = "SELECT p " + "FROM ExtensionProperty p "
+        + "JOIN p.extension e " + "WHERE p.name=:name "
+        + "AND p.extension.id=:eid ";
+    if (extension.isCore()) {
+      query += "AND e.core = true";
+    }
+    Query q = getSession().createQuery(query).setParameter("name", name).setParameter(
+        "eid", extension.getId());
+    ExtensionProperty p = null;
+    try {
+      p = (ExtensionProperty) q.uniqueResult();
+    } catch (NonUniqueResultException e) {
+      log.warn("Duplicate matches for " + name);
+    }
+    if (p == null) {
+      log.warn("No matches for " + name);
+    }
+    return p;
+  }
+
   /*
    * (non-Javadoc)
    * 

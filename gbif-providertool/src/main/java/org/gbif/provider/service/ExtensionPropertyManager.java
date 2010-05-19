@@ -31,6 +31,19 @@ public interface ExtensionPropertyManager extends
     GenericManager<ExtensionProperty> {
 
   /**
+   * Get a single ExtensionProeprty by its qualified concept name. As there
+   * might be more than one core extension using the same qualified concept
+   * name, the ExtensionType narrows down the search to just one core type.
+   * Extensions other than the core are not being searched.
+   * 
+   * @param qName
+   * @param type
+   * @return
+   */
+
+  public ExtensionProperty getPropertyByName(Extension extension, String name);
+
+  /**
    * Get a single ExtensionProeprty by its simple name. As there might be more
    * than one core extension using the same name, the ExtensionType narrows down
    * the search to just one core type. In case there are multiple matches a
@@ -42,17 +55,6 @@ public interface ExtensionPropertyManager extends
    * @return
    */
   ExtensionProperty getCorePropertyByName(String name);
-
-  /**
-   * Get a single ExtensionProeprty by its qualified concept name. As there
-   * might be more than one core extension using the same qualified concept
-   * name, the ExtensionType narrows down the search to just one core type.
-   * Extensions other than the core are not being searched.
-   * 
-   * @param qName
-   * @param type
-   * @return
-   */
 
   /**
    * Gets a core {@link ExtensionProperty} by its qualified name.
