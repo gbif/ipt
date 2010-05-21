@@ -30,6 +30,7 @@ The GBIF IPT is an open source, Java (TM) based web application that connects an
 
 The GBIF IPT, as an open source project, is made freely available for both those who wish to use it to publish their data and those who wish to participate in its development, documentation and helpdesk. This is a list of the current online resources related to the GBIF IPT:
 
-  * the GBIF IPT mailing list: http://lists.gbif.org/mailman/listinfo/ipt/;
+  * the GBIF IPT general mailing list: http://lists.gbif.org/mailman/listinfo/ipt/;
+  * the GBIF IPT contributors mailing list: http://groups.google.com/group/gbif-ipt-contributors/;
   * the GBIF IPT test installation (for testing purposes): http://ipt.gbif.org/;
   * the GBIF IPT code site: http://gbif-providertoolkit.googlecode.com/svn/trunk/gbif-ipt-docs/screenshots/.
