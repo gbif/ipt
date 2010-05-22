@@ -15,7 +15,10 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
-import org.gbif.provider.model.ChecklistResource;
+import com.opensymphony.xwork2.Preparable;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.OccurrenceResource;
@@ -32,11 +35,14 @@ import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ResourceArchiveManager;
-import org.gbif.provider.service.impl.ResourceArchive;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.ArchiveUtil;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
+import org.gbif.provider.util.ArchiveUtil.Request;
+import org.gbif.provider.util.ArchiveUtil.Response;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,12 +60,6 @@ import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Preparable;
 
 /**
  * TODO: Documentation.
@@ -119,6 +119,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   private Map<String, String> agentRoleMap;
   private Map<String, String> publicationStatusMap;
   private String jdbcDriverClass;
+
+  @Autowired
+  private ArchiveUtil<OccurrenceResource> archiveUtil;
 
   public String connection() {
     if (resource == null) {
@@ -445,43 +448,51 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     bos.close();
     stream.close();
 
-    // Creates a resource archive from the uploaded file:
-    File location = targetFile;
-    ResourceArchive archive = null;
-    String errorMsg = null;
+    OccurrenceResource r = (OccurrenceResource) resource;
+    occResourceManager.save(r);
+    // resource.getExtensionMappingsMap().clear();
+    Request<OccurrenceResource> req = Request.with(targetFile, r);
+    Response<OccurrenceResource> res = archiveUtil.init(req).process();
+    resource = res.getResource();
 
-    try {
-      archive = resourceArchiveService.openArchive(location, resource, true);
-    } catch (Exception e) {
-      errorMsg = "Unable to process the archive: " + e.toString();
-    }
-    if (archive == null) {
-      saveMessage(errorMsg == null ? "Unable to process the archive" : errorMsg);
-      // resourceManager.remove(resource);
-      return ERROR;
-    }
-
-    switch (archive.getType()) {
-      case OCCURRENCE:
-        if (!(resource instanceof OccurrenceResource)) {
-          saveMessage("Wrong type of archive.");
-          return ERROR;
-        }
-        break;
-      case CHECKLIST:
-        if (!(resource instanceof ChecklistResource)) {
-          saveMessage("Wrong type of archive.");
-          return ERROR;
-        }
-        break;
-      case METADATA:
-        break;
-    }
-    // Eml now comes from the archive:
-    eml = archive.getEml();
-    // Binds the resource with the archive:
-    resource = resourceArchiveService.bind(resource, archive);
-    resourceManager.save(resource);
+    // // Creates a resource archive from the uploaded file:
+    // File location = targetFile;
+    // ResourceArchive archive = null;
+    // String errorMsg = null;
+    //
+    // try {
+    // archive = resourceArchiveService.openArchive(location, resource, true);
+    // } catch (Exception e) {
+    // errorMsg = "Unable to process the archive: " + e.toString();
+    // }
+    // if (archive == null) {
+    // saveMessage(errorMsg == null ? "Unable to process the archive" :
+    // errorMsg);
+    // // resourceManager.remove(resource);
+    // return ERROR;
+    // }
+    //
+    // switch (archive.getType()) {
+    // case OCCURRENCE:
+    // if (!(resource instanceof OccurrenceResource)) {
+    // saveMessage("Wrong type of archive.");
+    // return ERROR;
+    // }
+    // break;
+    // case CHECKLIST:
+    // if (!(resource instanceof ChecklistResource)) {
+    // saveMessage("Wrong type of archive.");
+    // return ERROR;
+    // }
+    // break;
+    // case METADATA:
+    // break;
+    // }
+    // // Eml now comes from the archive:
+    // eml = archive.getEml();
+    // // Binds the resource with the archive:
+    // resource = resourceArchiveService.bind(resource, archive);
+    // resourceManager.save(resource);
     return SUCCESS;
   }
 
@@ -490,7 +501,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       getFieldErrors().clear();
       if ("".equals(fileFileName) || file == null) {
         super.addFieldError("file", getText("errors.requiredField",
-            new String[] {getText("uploadForm.file")}));
+            new String[]{getText("uploadForm.file")}));
       } else if (file.length() > 104857600) {
         addActionError(getText("maxLengthExceeded"));
       }

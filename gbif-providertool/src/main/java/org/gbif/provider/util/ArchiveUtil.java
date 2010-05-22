@@ -18,7 +18,15 @@ package org.gbif.provider.util;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.io.Files;
+
+import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
@@ -40,24 +48,16 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.service.impl.BaseManager;
-
-import com.google.common.base.Charsets;
-import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Files;
+import org.hibernate.NonUniqueResultException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.compress.compressors.gzip.GzipUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  *
@@ -79,7 +79,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     }
 
     private final File location;
-    private final T resource;
+    private T resource;
 
     private Request(File location, T resource) {
       this.location = location;
@@ -119,30 +119,22 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   }
 
   private static enum Core {
-    NO_ROW_TYPE,
-    HAS_ROW_TYPE,
-    NO_FIELDS,
-    NO_FIELDS_NO_HEADER,
-    NO_FIELDS_HAS_HEADER,
-    HAS_FIELDS,
-    NO_ID,
-    HAS_ID,
-    INVALID,
-    DONE,
-    CREATE_PROPERTY_MAPPINGS,
-    INITIAL,
-    SAVE;
+    NO_ROW_TYPE, HAS_ROW_TYPE, NO_FIELDS, NO_FIELDS_NO_HEADER, NO_FIELDS_HAS_HEADER, HAS_FIELDS, NO_ID, HAS_ID, INVALID, DONE, CREATE_PROPERTY_MAPPINGS, INITIAL, SAVE, HAS_FIELDS_HAS_HEADER, HAS_FIELDS_NO_HEADER;
   }
 
   private class CoreStateMachine {
     Core state = Core.INITIAL;
+    ArchiveFile core;
     String rowType;
     Extension extension;
-    Map<ConceptTerm, ArchiveField> fields;
     ExtensionMapping mapping;
     SourceFile sourceFile;
 
-    ImmutableMap<SourceFile, ExtensionMapping> process(ArchiveFile core)
+    private CoreStateMachine(ArchiveFile core) {
+      this.core = core;
+    }
+
+    ImmutableMap<SourceFile, ExtensionMapping> process()
         throws IllegalStateException {
       try {
         sourceFile = getSourceFile(core);
@@ -152,6 +144,14 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               rowType = core.getRowType();
               state = hasRowType() ? Core.HAS_ROW_TYPE : Core.NO_ROW_TYPE;
               break;
+            case HAS_ROW_TYPE:
+              // TODO
+              try {
+                extension = extensionManager.getExtensionByRowType(rowType);
+              } catch (NonUniqueResultException e) {
+
+              }
+              break;
             case NO_ROW_TYPE:
               extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
               mapping = ExtensionMapping.with(extension);
@@ -160,62 +160,33 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
                     + request.resource.getClass().getSimpleName();
                 haltOnIllegalState(msg);
               }
-              fields = core.getFields();
               if (!hasFields() && hasHeader(core)) {
                 state = Core.NO_FIELDS_HAS_HEADER;
+              } else if (!hasFields() && !hasHeader(core)) {
+                state = Core.NO_FIELDS_NO_HEADER;
+              } else if (hasFields() && hasHeader(core)) {
+                state = Core.HAS_FIELDS_HAS_HEADER;
+              } else {
+                state = Core.HAS_FIELDS_NO_HEADER;
               }
               break;
+            case NO_FIELDS_NO_HEADER:
+              if (request.resource instanceof OccurrenceResource) {
+                saveOccurrenceResourceExtensionMappings();
+              }
+              state = Core.DONE;
+              break;
             case NO_FIELDS_HAS_HEADER:
-              List<String> header = getHeader(core);
-              ExtensionProperty ep;
-              PropertyMapping pm;
-              for (String concept : header) {
-                ep = epManager.getPropertyByName(extension, concept);
-                // TODO: Confirm that we skip this extension property:
-                if (ep == null) {
-                  log.warn("No extension property found for extension "
-                      + extension.getName() + " with property name " + concept);
-                  continue;
-                }
-                extension.addProperty(ep);
-                // TODO: Confirm that this default value is correct:
-                String defaultValue = "";
-                pm = PropertyMapping.with(ep, concept, defaultValue);
-                pm.setProperty(ep);
-                pm.setViewMapping(mapping);
-                mapping.addPropertyMapping(pm);
-                // TODO: Confirm this is correct:
-                if (hasIdIndex(core)) {
-                  mapping.setCoreIdColumn(header.get(getIdIndex(core)));
-                } else {
-                  mapping.setCoreIdColumn(getHeader(core).get(0));
-                }
+              buildExtensionMappings();
+              if (request.resource instanceof OccurrenceResource) {
+                saveOccurrenceResourceExtensionMappings();
               }
-
-              // Save resource:
-              OccurrenceResource r = (OccurrenceResource) request.resource;
-              occResourceManager.save(r);
-
-              // Save source file:
-              SourceFile source = getSourceFile(core);
-              source.setResource(r);
-              sourceManager.save(source);
-
-              // Save mapping:
-              mapping.setResource(r);
-              mapping.setSource(source);
-              r.addExtensionMapping(mapping);
-              extensionMappingManager.save(mapping);
-              for (PropertyMapping p : mapping.getPropertyMappingsSorted()) {
-                propertyMappingManager.save(p);
-              }
-              extensionMappingManager.save(mapping);
-              occResourceManager.save(r);
               state = Core.DONE;
               break;
           }
         }
       } catch (Exception e) {
+        e.printStackTrace();
         String msg = "Unable to process core: " + e.toString();
         haltOnIllegalState(msg);
       }
@@ -223,11 +194,41 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     }
 
     /**
-     * @param core
-     * @return Object
+     * 
+     * void
+     * 
+     * @throws IOException
      */
+    private void buildExtensionMappings() throws IOException {
+      List<String> header = getHeader(core);
+      ExtensionProperty ep;
+      PropertyMapping pm;
+      for (String concept : header) {
+        ep = epManager.getPropertyByName(extension, concept);
+        // TODO: Confirm that we skip this extension property:
+        if (ep == null) {
+          log.warn("No extension property found for extension "
+              + extension.getName() + " with property name " + concept);
+          continue;
+        }
+        extension.addProperty(ep);
+        // TODO: Confirm that this default value is correct:
+        String defaultValue = "";
+        pm = PropertyMapping.with(ep, concept, defaultValue);
+        pm.setProperty(ep);
+        pm.setViewMapping(mapping);
+        mapping.addPropertyMapping(pm);
+        // TODO: Confirm this is correct:
+        if (hasIdIndex()) {
+          mapping.setCoreIdColumn(header.get(getIdIndex(core)));
+        } else {
+          mapping.setCoreIdColumn(getHeader(core).get(0));
+        }
+      }
+    }
+
     private Integer getIdIndex(ArchiveFile core) {
-      if (hasIdIndex(core)) {
+      if (hasIdIndex()) {
         return core.getId().getIndex();
       }
       log.warn("Returning a null core id index");
@@ -240,29 +241,61 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     }
 
     private boolean hasFields() {
-      return fields != null && !fields.isEmpty();
+      return core.getFields() != null && !core.getFields().isEmpty();
     }
 
     /**
+     * In a metafile, the ignoreHeaderLines property of <core> specifies the
+     * number lines to ignore from the beginning of the file. So if it's zero,
+     * that means there are no lines to ignore and we don't have a header. The
+     * default value is zero, so if it's null then we also don't have a header.
+     * 
+     * TODO: What if it's greater than 1?
+     * 
      * @param core
      * @return boolean
      */
     private boolean hasHeader(ArchiveFile core) {
       Integer ignoreHeaderLine = core.getIgnoreHeaderLines();
-      return ignoreHeaderLine == null || ignoreHeaderLine == 0;
+      boolean result = ignoreHeaderLine == null ? false : ignoreHeaderLine == 1;
+      return result;
     }
 
     /**
      * @param core
      * @return boolean
      */
-    private boolean hasIdIndex(ArchiveFile core) {
+    private boolean hasIdIndex() {
       ArchiveField coreId = core.getId();
       return coreId != null && coreId.getIndex() != null;
     }
 
     private boolean hasRowType() {
       return rowType != null && rowType.trim().length() > 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void saveOccurrenceResourceExtensionMappings() throws IOException {
+      // Save resource:
+      OccurrenceResource r = (OccurrenceResource) request.resource;
+      occResourceManager.save(r);
+
+      // Save source file:
+      SourceFile source = getSourceFile(core);
+
+      // Save mapping:
+      mapping.setResource(r);
+      mapping.setSource(source);
+      r.addExtensionMapping(mapping);
+      extensionMappingManager.save(mapping);
+      for (PropertyMapping p : mapping.getPropertyMappingsSorted()) {
+        extensionPropertyManager.save(p.getProperty());
+        propertyMappingManager.save(p);
+      }
+      extensionMappingManager.save(mapping);
+      occResourceManager.save(r);
+
+      request.resource = (T) r;
     }
   }
 
@@ -282,6 +315,9 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
   @Autowired
   protected AppConfig cfg;
+
+  @Autowired
+  private ExtensionPropertyManager extensionPropertyManager;
 
   @Autowired
   private SourceManager sourceManager;
@@ -328,17 +364,28 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
    * @throws IOException
    * @throws MalformedTabFileException List<String>
    */
-  private ImmutableList<String> getHeader(ArchiveFile af) throws IOException,
-      MalformedTabFileException {
+  private ImmutableList<String> getHeader(ArchiveFile af) throws IOException {
     File f = new File(af.getLocation());
-    Charset charset = Charsets.ISO_8859_1;
-    if (af.getEncoding() != null || af.getEncoding().length() > 0) {
-      // TODO
+    String separator = String.valueOf(af.getFieldsTerminatedBy());
+    if (separator == null || separator.trim().length() == 0) {
+      separator = ",";
     }
-    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(",").trimResults().split(
+    Charset charset = null;
+    try {
+      charset = Charset.forName(af.getEncoding());
+    } catch (IllegalCharsetNameException e) {
+    } catch (IllegalArgumentException e) {
+    }
+    if (charset == null) {
+      log.warn("Setting charset to " + charset + " for file "
+          + af.getLocation());
+      charset = Charsets.ISO_8859_1;
+    }
+    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults().split(
         Files.readFirstLine(f, charset)));
     if (!hasHeader(af)) {
       ImmutableList.Builder<String> b = ImmutableList.builder();
+      // TODO: Confirm this appraoch.
       for (int i = 0; i < header.size(); i++) {
         b.add(String.format("col%03d", i));
       }
@@ -349,24 +396,33 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
   private SourceFile getSourceFile(ArchiveFile af) throws IOException {
     File file = null;
-    SourceFile s = new SourceFile();
+    SourceFile s = null;
     try {
       file = new File(af.getLocation());
-      s = new SourceFile();
-      s.setName(file.getName());
-      s.setDateUploaded(new Date());
-      s.setHeaders(hasHeader(af));
-      s.setResource((DataResource) request.resource);
+      s = sourceManager.getSourceByFilename(request.resource.getId(),
+          file.getName());
+      if (s == null) {
+        s = new SourceFile();
+        s.setName(file.getName());
+        s.setDateUploaded(new Date());
+        s.setHeaders(hasHeader(af));
+        s.setResource((DataResource) request.resource);
+      }
+      s.setCsvFileHeader(Joiner.on(',').skipNulls().join(getHeader(af)));
       sourceManager.save(s);
     } catch (Exception e) {
       throw new IOException("Unable to open " + file + " - " + e.toString());
+    }
+    if (s == null) {
+      throw new NullPointerException(
+          "Unable to create SourceFile from ArchiveFile: " + af.getLocation());
     }
     return s;
   }
 
   private boolean hasHeader(ArchiveFile af) {
     Integer ignoreHeaderLine = af.getIgnoreHeaderLines();
-    return ignoreHeaderLine == null || ignoreHeaderLine == 0;
+    return ignoreHeaderLine == null ? false : ignoreHeaderLine == 1;
   }
 
   private Response<T> transform() {
@@ -382,7 +438,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     } catch (IOException e) {
       return new Response<T>(request.resource, ImmutableSet.of(e.toString()));
     }
-    new CoreStateMachine().process(archive.getCore());
+    new CoreStateMachine(archive.getCore()).process();
     return new Response<T>(request.resource, ImmutableSet.of("Success!"));
   }
 }
