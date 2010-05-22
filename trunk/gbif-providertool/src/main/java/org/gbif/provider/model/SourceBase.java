@@ -15,16 +15,17 @@
  */
 package org.gbif.provider.model;
 
+import org.hibernate.validator.NotNull;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
-
-import org.hibernate.validator.NotNull;
 
 /**
  * This abstract class can be used as an entity to encapsulate information about
@@ -38,6 +39,13 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   protected DataResource resource;
   @NotNull
   protected String name;
+
+  protected String csvFileHeader;
+
+  @Lob
+  public String getCsvFileHeader() {
+    return csvFileHeader;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,6 +71,10 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
 
   @Transient
   public abstract boolean isValid();
+
+  public void setCsvFileHeader(String firstLineFile) {
+    this.csvFileHeader = firstLineFile;
+  }
 
   public void setId(Long id) {
     this.id = id;

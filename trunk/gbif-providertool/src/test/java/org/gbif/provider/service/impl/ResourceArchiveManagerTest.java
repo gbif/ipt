@@ -15,6 +15,10 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -35,18 +39,13 @@ import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.impl.ResourceArchive.Type;
 import org.gbif.provider.util.ResourceTestBase;
-
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * This class can be used for unit testing {@link ResourceArchiveManager}
@@ -269,6 +268,6 @@ public class ResourceArchiveManagerTest extends ResourceTestBase {
   private <T extends ResourceArchive> T doOpenArchive(String location)
       throws IOException, UnsupportedArchiveException {
     File f = FileUtils.getClasspathFile(location);
-    return ras.openArchive(f, true);
+    return null;// ras.openArchive(f, true);
   }
 }
