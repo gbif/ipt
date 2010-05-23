@@ -13,6 +13,7 @@ import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.service.ExtensionManager;
+import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.ArchiveUtil.Request;
 import org.gbif.provider.util.ArchiveUtil.Response;
@@ -20,6 +21,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,6 +37,9 @@ public class ArchiveUtilTest extends ResourceTestBase {
 
   @Autowired
   private SourceManager sourceManager;
+
+  @Autowired
+  private ResourceArchiveManager ram;
 
   /**
    * Metafile:
@@ -59,9 +64,11 @@ public class ArchiveUtilTest extends ResourceTestBase {
    * 2, bufo
    * </pre>
    * 
+   * @throws IOException
+   * 
    */
   @Test
-  public void testProcess() {
+  public void testProcess() throws IOException {
     File location = FileUtils.getClasspathFile("dwc-archives/unit-testing/1.zip");
     OccurrenceResource resource = new OccurrenceResource();
     occResourceManager.save(resource);
@@ -106,5 +113,7 @@ public class ArchiveUtilTest extends ResourceTestBase {
 
     // There should be exactly one SourceFile asscociated with the resource:
     assertEquals(1, sourceManager.getAll(resource.getId()).size());
+
+    ram.createArchive(resource);
   }
 }

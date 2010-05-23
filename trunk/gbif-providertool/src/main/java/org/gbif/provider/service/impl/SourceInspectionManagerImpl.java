@@ -15,6 +15,10 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
@@ -23,8 +27,6 @@ import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.MalformedTabFileException;
 import org.gbif.provider.util.TabFileReader;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -119,7 +121,7 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     Connection conn = getResourceConnection(resource);
     DatabaseMetaData dbmd = conn.getMetaData();
     List<String> tableNames = new ArrayList<String>();
-    ResultSet rs = dbmd.getTables(null, null, null, new String[] {"TABLE"});
+    ResultSet rs = dbmd.getTables(null, null, null, new String[]{"TABLE"});
     while (rs.next()) {
       tableNames.add((String) rs.getObject(3));
     }
@@ -180,22 +182,24 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 
   private List<String> getHeader(SourceFile source) throws IOException,
       MalformedTabFileException {
-    TabFileReader reader = new TabFileReader(getSourceFile(source), true);
-    List<String> headers;
-    if (source.hasHeaders()) {
-      headers = Arrays.asList(reader.getHeader());
-    } else {
-      // create numbered column names if no headers are present
-      int numCols = reader.getHeader().length;
-      headers = new ArrayList<String>();
-      int i = 1;
-      while (i <= numCols) {
-        headers.add(String.format("col%03d", i));
-        i++;
-      }
-    }
-    reader.close();
-    return headers;
+
+    return Lists.newArrayList(Splitter.on(',').split(source.getCsvFileHeader()));
+    // TabFileReader reader = new TabFileReader(getSourceFile(source), true);
+    // List<String> headers;
+    // if (source.hasHeaders()) {
+    // headers = Arrays.asList(reader.getHeader());
+    // } else {
+    // // create numbered column names if no headers are present
+    // int numCols = reader.getHeader().length;
+    // headers = new ArrayList<String>();
+    // int i = 1;
+    // while (i <= numCols) {
+    // headers.add(String.format("col%03d", i));
+    // i++;
+    // }
+    // }
+    // reader.close();
+    // return headers;
   }
 
   private List<String> getHeader(SourceSql source) throws SQLException {

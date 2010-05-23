@@ -366,10 +366,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
    */
   private ImmutableList<String> getHeader(ArchiveFile af) throws IOException {
     File f = new File(af.getLocation());
-    String separator = String.valueOf(af.getFieldsTerminatedBy());
-    if (separator == null || separator.trim().length() == 0) {
-      separator = ",";
-    }
+    String separator = getSeparator(af);
     Charset charset = null;
     try {
       charset = Charset.forName(af.getEncoding());
@@ -394,6 +391,18 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     return header;
   }
 
+  /**
+   * @param af
+   * @return String
+   */
+  private String getSeparator(ArchiveFile af) {
+    String separator = String.valueOf(af.getFieldsTerminatedBy());
+    if (separator == null || separator.trim().length() == 0) {
+      separator = ",";
+    }
+    return separator;
+  }
+
   private SourceFile getSourceFile(ArchiveFile af) throws IOException {
     File file = null;
     SourceFile s = null;
@@ -409,6 +418,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         s.setResource((DataResource) request.resource);
       }
       s.setCsvFileHeader(Joiner.on(',').skipNulls().join(getHeader(af)));
+      s.setSeparator(getSeparator(af));
       sourceManager.save(s);
     } catch (Exception e) {
       throw new IOException("Unable to open " + file + " - " + e.toString());
