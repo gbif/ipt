@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.datasource.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.datasource.ImportRecord;
 import org.gbif.provider.datasource.ImportSourceException;
 import org.gbif.provider.model.DataResource;
@@ -24,10 +25,9 @@ import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.TabFileReader;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -79,8 +79,10 @@ public class FileImportSource extends ImportSourceBase {
         this.headerMap.put(h, i);
         i++;
       }
-      this.reader = new TabFileReader(AppConfig.getResourceSourceFile(
-          resource.getId(), src.getFilename()), !src.hasHeaders());
+      File source = AppConfig.getResourceSourceFile(resource.getId(),
+          src.getFilename());
+      String separator = src.getSeparator();
+      this.reader = new TabFileReader(source, !src.hasHeaders(), separator);
     } catch (Exception e) {
       throw new ImportSourceException("Cant read source file "
           + src.getFilename(), e);

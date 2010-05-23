@@ -454,6 +454,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     Request<OccurrenceResource> req = Request.with(targetFile, r);
     Response<OccurrenceResource> res = archiveUtil.init(req).process();
     resource = res.getResource();
+    occResourceManager.save((OccurrenceResource) resource);
 
     // // Creates a resource archive from the uploaded file:
     // File location = targetFile;

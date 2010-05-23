@@ -15,6 +15,9 @@
  */
 package org.gbif.provider.util;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang.ArrayUtils;
@@ -47,6 +50,7 @@ public class TabFileReader implements Iterator<String[]> {
   private final File file;
   private String[] header;
   private boolean returnHeaderRow;
+  private String separator;
 
   public TabFileReader(File file, boolean returnHeaderRow) throws IOException,
       MalformedTabFileException {
@@ -57,6 +61,28 @@ public class TabFileReader implements Iterator<String[]> {
     if (it.hasNext()) {
       String line = it.nextLine();
       header = tabPattern.split(line);
+    } else {
+      throw new MalformedTabFileException();
+    }
+  }
+
+  /**
+   * @param source
+   * @param b
+   * @param separator
+   * @throws IOException
+   * @throws MalformedTabFileException
+   */
+  public TabFileReader(File file, boolean returnHeaderRow, String separator)
+      throws IOException, MalformedTabFileException {
+    this.it = FileUtils.lineIterator(file, "UTF-8");
+    this.file = file;
+    this.separator = separator;
+    // read header
+    this.returnHeaderRow = returnHeaderRow;
+    if (it.hasNext()) {
+      String line = it.nextLine();
+      header = lineAsArray(line, separator);
     } else {
       throw new MalformedTabFileException();
     }
@@ -85,7 +111,7 @@ public class TabFileReader implements Iterator<String[]> {
       returnHeaderRow = false;
     } else {
       String line = it.nextLine();
-      columns = tabPattern.split(line);
+      columns = lineAsArray(line, separator);
     }
     if (columns.length > header.length) {
       List<String> cl = Arrays.asList(columns);
@@ -102,6 +128,22 @@ public class TabFileReader implements Iterator<String[]> {
 
   public void remove() {
     it.remove();
+  }
+
+  /**
+   * @param line
+   * @param separator
+   * @return String[]
+   */
+  private String[] lineAsArray(String line, String separator) {
+    List<String> list = Lists.newArrayList(Splitter.on(separator).trimResults().split(
+        line));
+    String[] array = new String[list.size()];
+    int i = 0;
+    for (String s : list) {
+      array[i++] = s;
+    }
+    return array;
   }
 
 }

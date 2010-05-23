@@ -88,6 +88,6 @@ public interface ResourceArchiveManager {
    * @throws IOException
    * @throws UnsupportedArchiveException A
    */
-  <A extends ResourceArchive> A openArchive(File location, Resource resource, boolean normalise)
-      throws IOException, UnsupportedArchiveException;
+  <A extends ResourceArchive> A openArchive(File location, Resource resource,
+      boolean normalise) throws IOException, UnsupportedArchiveException;
 }

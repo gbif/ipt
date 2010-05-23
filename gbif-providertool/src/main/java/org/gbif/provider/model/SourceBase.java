@@ -41,6 +41,7 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   protected String name;
 
   protected String csvFileHeader;
+  protected String separator;
 
   @Lob
   public String getCsvFileHeader() {
@@ -69,6 +70,10 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
     return resource.getId();
   }
 
+  public String getSeparator() {
+    return separator;
+  }
+
   @Transient
   public abstract boolean isValid();
 
@@ -86,5 +91,9 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
 
   public void setResource(DataResource resource) {
     this.resource = resource;
+  }
+
+  public void setSeparator(String separator) {
+    this.separator = separator;
   }
 }
