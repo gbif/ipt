@@ -69,7 +69,7 @@ public class ArchiveUtilTest extends ResourceTestBase {
    */
   @Test
   public void testProcess() throws IOException {
-    File location = FileUtils.getClasspathFile("dwc-archives/unit-testing/1.zip");
+    File location = FileUtils.getClasspathFile("dwc-archives/unit-testing/Tim.zip");
     OccurrenceResource resource = new OccurrenceResource();
     occResourceManager.save(resource);
     resource.getExtensionMappingsMap().clear();

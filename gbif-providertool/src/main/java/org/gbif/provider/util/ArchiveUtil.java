@@ -397,9 +397,11 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
    */
   private String getSeparator(ArchiveFile af) {
     String separator = String.valueOf(af.getFieldsTerminatedBy());
-    if (separator == null || separator.trim().length() == 0) {
+    if (separator == null || separator.length() == 0) {
       separator = ",";
     }
+    log.info("Found separator " + separator + " for ArchiveFile "
+        + af.getLocation());
     return separator;
   }
 
