@@ -48,7 +48,6 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.service.impl.BaseManager;
-import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -141,18 +140,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         while (state != Core.DONE) {
           switch (state) {
             case INITIAL:
-              rowType = core.getRowType();
-              state = hasRowType() ? Core.HAS_ROW_TYPE : Core.NO_ROW_TYPE;
-              break;
-            case HAS_ROW_TYPE:
-              // TODO
-              try {
-                extension = extensionManager.getExtensionByRowType(rowType);
-              } catch (NonUniqueResultException e) {
-
-              }
-              break;
-            case NO_ROW_TYPE:
+              // We are processing core so we assume rowType corresponds to
+              // Darwin Core:
               extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
               mapping = ExtensionMapping.with(extension);
               if (!(request.resource instanceof OccurrenceResource)) {

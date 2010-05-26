@@ -156,8 +156,23 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.9</version>
 				<configuration>
+				                <port>8080</port>
+				            <contextPath>/</contextPath>
+					<scanTargetPatterns>
+						<scanTargetPattern>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</scanTargetPattern>
+					</scanTargetPatterns>
+					<scanIntervalSeconds>2</scanIntervalSeconds>
+				</configuration>
+
+<!-- 
+				<configuration>
 					<port>80</port>
-					<contextPath>/</contextPath>
+		          <contextPath>/</contextPath>
 					<scanIntervalSeconds>3</scanIntervalSeconds>
 					<scanTargetPatterns>
 						<scanTargetPattern>
@@ -171,7 +186,8 @@
 							</includes>
 						</scanTargetPattern>
 					</scanTargetPatterns>
-				</configuration>
+	 			</configuration>
+ -->
 			</plugin>
 
 			<plugin>
@@ -316,11 +332,6 @@
 					<groupId>commons-io</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.gbif</groupId>
-			<artifactId>dwc-archive</artifactId>
-			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
@@ -718,6 +729,12 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.gbif</groupId>
+			<artifactId>dwc-archive</artifactId>
+			<version>1.2.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

@@ -41,6 +41,10 @@ public class ArchiveUtilTest extends ResourceTestBase {
   @Autowired
   private ResourceArchiveManager ram;
 
+  @Test
+  public void testIt() {
+  }
+
   /**
    * Metafile:
    * 
@@ -69,11 +73,11 @@ public class ArchiveUtilTest extends ResourceTestBase {
    */
   @Test
   public void testProcess() throws IOException {
-    File location = FileUtils.getClasspathFile("dwc-archives/unit-testing/Tim.zip");
+    File archive = FileUtils.getClasspathFile("dwc-archives/unit-testing/1.zip");
     OccurrenceResource resource = new OccurrenceResource();
     occResourceManager.save(resource);
     resource.getExtensionMappingsMap().clear();
-    Request<OccurrenceResource> request = Request.with(location, resource);
+    Request<OccurrenceResource> request = Request.with(archive, resource);
     Response<OccurrenceResource> response = archiveUtil.init(request).process();
     resource = response.getResource();
 

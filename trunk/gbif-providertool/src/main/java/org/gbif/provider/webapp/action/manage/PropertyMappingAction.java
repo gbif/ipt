@@ -26,6 +26,7 @@ import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.Transformation;
 import org.gbif.provider.model.voc.TransformationType;
 import org.gbif.provider.service.ExtensionManager;
@@ -147,104 +148,117 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
     return view;
   }
 
-  // @Override
-  // public void prepare() {
-  // super.prepare();
-  // if (resource != null) {
-  // if (mid != null) {
-  // // get existing view mapping
-  // view = viewMappingManager.get(mid);
-  // if (view != null && view.getSource() == null && sid != null) {
-  // // this is probably the default core mapping without a source assigned
-  // // yet.
-  // view.setSource(sourceManager.get(sid));
-  // viewMappingManager.save(view);
-  // }
-  // } else if (eid != null && sid != null) {
-  // // create new view mapping
-  // view = new ExtensionMapping();
-  // view.setResource(resource);
-  // view.setExtension(extensionManager.get(eid));
-  // view.setSource(sourceManager.get(sid));
-  // viewMappingManager.save(view);
-  // mid = view.getId();
-  // } else {
-  // log.warn("No view mapping could be loaded or created");
-  // return;
-  // }
-  // // generate basic column mapping options
-  // try {
-  // sourceColumns = sourceInspectionManager.getHeader(view.getSource());
-  // } catch (Exception e) {
-  // sourceColumns = new ArrayList<String>();
-  // log.debug("Cant read datasource column headers", e);
-  // }
-  //
-  // // try to automap columns in case there aint no mapping yet
-  // automap();
-  //
-  // // the property name used as GUID depending on resource type
-  // guidPropertyName = resourceType.equals(CHECKLIST)
-  // ? ChecklistResource.DWC_GUID_PROPERTY
-  // : OccurrenceResource.DWC_GUID_PROPERTY;
-  // // prepare list of property mappings to create form with and to be filled
-  // // by params interceptor
-  // // parse list of newly mapped properties
-  // List<String> newIdList = Arrays.asList(StringUtils.split(newProperties,
-  // " "));
-  // for (ExtensionProperty prop : view.getExtension().getProperties()) {
-  // if (prop == null) {
-  // continue;
-  // }
-  // // for the darwin core mapping filter some properties
-  // if (view.isCore()) {
-  // // for checklists only show the taxon group of darwin core
-  // if (resourceType.equals(CHECKLIST)
-  // && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())) {
-  // continue;
-  // }
-  // // remove the GUID identifier for DarwinCore
-  // if (prop.getName().equalsIgnoreCase(guidPropertyName)) {
-  // // setup GUID property depending upon resource type
-  // guidProperty = view.getPropertyMapping(prop.getId());
-  // if (guidProperty == null) {
-  // // setup empty one
-  // guidProperty = new PropertyMapping();
-  // guidProperty.setProperty(prop);
-  // view.addPropertyMapping(guidProperty);
-  // }
-  // continue;
-  // }
-  // }
-  // String group = prop.getGroup() == null ? view.getExtension().getName()
-  // : prop.getGroup();
-  // // is this property mapped already?
-  // if (!view.hasMappedProperty(prop)) {
-  // // no, not yet. was it just added or is it required?
-  // if (newIdList.contains(prop.getId().toString()) || prop.isRequired()) {
-  // PropertyMapping pMap = new PropertyMapping();
-  // pMap.setProperty(prop);
-  // view.addPropertyMapping(pMap);
-  // } else {
-  // // no, so add to available properties
-  // if (!availProperties.containsKey(group)) {
-  // availProperties.put(group, new ArrayList<ExtensionProperty>());
-  // }
-  // availProperties.get(group).add(prop);
-  // }
-  // }
-  // }
-  // }
-  // }
-
   @Override
   public void prepare() {
     super.prepare();
     if (resource != null) {
+      if (resource.getCoreMapping() != null) {
+        log.info("Resource contains core mapping: " + resource);
+        view = resource.getCoreMapping();
+        if (view != null && view.getSource() == null && sid != null) {
+          // this is probably the default core mapping without a source assigned
+          // yet.
+          SourceFile source = (SourceFile) sourceManager.get(sid);
+          view.setSource(source);
+          viewMappingManager.save(view);
+        }
+      } else if (mid != null) {
+        // get existing view mapping
+        view = viewMappingManager.get(mid);
+        if (view != null && view.getSource() == null && sid != null) {
+          // this is probably the default core mapping without a source assigned
+          // yet.
+          SourceFile source = (SourceFile) sourceManager.get(sid);
+          view.setSource(source);
+          viewMappingManager.save(view);
+        }
+      } else if (eid != null && sid != null) {
+        // create new view mapping
+        view = new ExtensionMapping();
+        view.setResource(resource);
+        view.setExtension(extensionManager.get(eid));
+        view.setSource(sourceManager.get(sid));
+        viewMappingManager.save(view);
+        mid = view.getId();
+      } else {
+        log.warn("No view mapping could be loaded or created");
+        return;
+      }
+      // generate basic column mapping options
+      try {
+        sourceColumns = Lists.newArrayList(Splitter.on(',').split(
+            view.getSource().getCsvFileHeader()));
+        // sourceColumns = sourceInspectionManager.getHeader(view.getSource());
+      } catch (Exception e) {
+        sourceColumns = new ArrayList<String>();
+        log.debug("Cant read datasource column headers", e);
+      }
+
+      // try to automap columns in case there aint no mapping yet
+      automap();
+
+      // the property name used as GUID depending on resource type
+      guidPropertyName = resourceType.equals(CHECKLIST)
+          ? ChecklistResource.DWC_GUID_PROPERTY
+          : OccurrenceResource.DWC_GUID_PROPERTY;
+      // prepare list of property mappings to create form with and to be filled
+      // by params interceptor
+      // parse list of newly mapped properties
+      List<String> newIdList = Arrays.asList(StringUtils.split(newProperties,
+          " "));
+      for (ExtensionProperty prop : view.getExtension().getProperties()) {
+        if (prop == null) {
+          continue;
+        }
+        // for the darwin core mapping filter some properties
+        if (view.isCore()) {
+          // for checklists only show the taxon group of darwin core
+          if (resourceType.equals(CHECKLIST)
+              && !ChecklistResource.DWC_GROUPS.contains(prop.getGroup())) {
+            continue;
+          }
+          // remove the GUID identifier for DarwinCore
+          if (prop.getName().equalsIgnoreCase(guidPropertyName)) {
+            // setup GUID property depending upon resource type
+            guidProperty = view.getPropertyMapping(prop.getId());
+            if (guidProperty == null) {
+              // setup empty one
+              guidProperty = new PropertyMapping();
+              guidProperty.setProperty(prop);
+              view.addPropertyMapping(guidProperty);
+            }
+            continue;
+          }
+        }
+        String group = prop.getGroup() == null ? view.getExtension().getName()
+            : prop.getGroup();
+        // is this property mapped already?
+        if (!view.hasMappedProperty(prop)) {
+          // no, not yet. was it just added or is it required?
+          if (newIdList.contains(prop.getId().toString()) || prop.isRequired()) {
+            PropertyMapping pMap = new PropertyMapping();
+            pMap.setProperty(prop);
+            view.addPropertyMapping(pMap);
+          } else {
+            // no, so add to available properties
+            if (!availProperties.containsKey(group)) {
+              availProperties.put(group, new ArrayList<ExtensionProperty>());
+            }
+            availProperties.get(group).add(prop);
+          }
+        }
+      }
+    }
+  }
+
+  // @Override
+  public void prepareD() {
+    super.prepare();
+    if (resource != null) {
       view = resource.getCoreMapping();
+
       sourceColumns = Lists.newArrayList(Splitter.on(',').split(
           view.getSource().getCsvFileHeader()));
-
       // try to automap columns in case there aint no mapping yet
       automap();
 

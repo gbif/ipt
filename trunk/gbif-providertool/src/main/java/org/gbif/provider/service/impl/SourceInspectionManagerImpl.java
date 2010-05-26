@@ -15,8 +15,12 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.DataResource;
@@ -24,6 +28,7 @@ import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.service.SourceInspectionManager;
+import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.MalformedTabFileException;
 import org.gbif.provider.util.TabFileReader;
@@ -31,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -112,6 +118,9 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     }
   }
 
+  @Autowired
+  private SourceManager sourceManager;
+
   private static final int PREVIEW_SIZE = 5;
 
   @Autowired
@@ -155,7 +164,6 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     if (source == null) {
       throw new NullPointerException();
     }
-
     if (source instanceof SourceFile) {
       SourceFile src = (SourceFile) source;
       return getHeader(src);
@@ -180,26 +188,17 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     }
   }
 
-  private List<String> getHeader(SourceFile source) throws IOException,
-      MalformedTabFileException {
-
-    return Lists.newArrayList(Splitter.on(',').split(source.getCsvFileHeader()));
-    // TabFileReader reader = new TabFileReader(getSourceFile(source), true);
-    // List<String> headers;
-    // if (source.hasHeaders()) {
-    // headers = Arrays.asList(reader.getHeader());
-    // } else {
-    // // create numbered column names if no headers are present
-    // int numCols = reader.getHeader().length;
-    // headers = new ArrayList<String>();
-    // int i = 1;
-    // while (i <= numCols) {
-    // headers.add(String.format("col%03d", i));
-    // i++;
-    // }
-    // }
-    // reader.close();
-    // return headers;
+  private List<String> getHeader(SourceFile source) throws IOException {
+    String separator = null;
+    if (source.getSeparator() == null) {
+      source.setSeparator(",");
+    }
+    ImmutableList<String> header = null;
+    if (source.getCsvFileHeader() == null) {
+      header = header(source);
+      source.setCsvFileHeader(Joiner.on(',').skipNulls().join(header));
+    }
+    return Lists.newArrayList(Splitter.on(",").split(source.getCsvFileHeader()));
   }
 
   private List<String> getHeader(SourceSql source) throws SQLException {
@@ -299,6 +298,16 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     File sourceFile = cfg.getResourceSourceFile(source.getResource().getId(),
         source.getFilename());
     return sourceFile;
+  }
+
+  private ImmutableList<String> header(SourceFile af) throws IOException {
+    File f = cfg.getSourceFile(af.getResourceId(), af.getName());
+    String separator = af.getSeparator() == null ? "," : af.getSeparator();
+    Charset charset = null;
+    charset = Charsets.UTF_8;
+    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults().split(
+        Files.readFirstLine(f, charset)));
+    return header;
   }
 
   private Iterator<Object> iterSourceColumn(SourceBase source, String column)

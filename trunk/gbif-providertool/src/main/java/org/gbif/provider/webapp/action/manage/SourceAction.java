@@ -15,6 +15,12 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
+import com.google.common.base.Joiner;
+
+import com.opensymphony.xwork2.Preparable;
+
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
@@ -22,6 +28,7 @@ import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.ZipUtil;
 import org.gbif.provider.webapp.action.BaseDataResourceAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,12 +40,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Preparable;
 
 /**
  * TODO: Documentation.
@@ -317,7 +318,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
       getFieldErrors().clear();
       if ("".equals(fileFileName) || file == null) {
         super.addFieldError("file", getText("errors.requiredField",
-            new String[] {getText("uploadForm.file")}));
+            new String[]{getText("uploadForm.file")}));
       } else if (file.length() > 104857600) {
         addActionError(getText("maxLengthExceeded"));
       }
@@ -332,6 +333,13 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
       fsource = new SourceFile();
       fsource.setResource(resource);
       fsource.setFilename(srcFile.getName());
+      fsource.setSeparator(",");
+      try {
+        fsource.setCsvFileHeader(Joiner.on(',').skipNulls().join(
+            sourceInspectionManager.getHeader(fsource)));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     // set new upload timestamp
     fsource.setDateUploaded(new Date());
@@ -363,7 +371,7 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
         "Source file %s uploaded with %s columns and %s header row",
         srcFile.getAbsolutePath(), headers.size(), fsource.hasHeaders() ? "one"
             : "no"));
-    if (headers != null && headers.size() > 1) {
+    if (headers.size() > 1) {
       // save file in view mapping
       sourceManager.save(fsource);
       msgParams.add(String.valueOf(headers.size()));
