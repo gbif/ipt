@@ -189,7 +189,6 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
   }
 
   private List<String> getHeader(SourceFile source) throws IOException {
-    String separator = null;
     if (source.getSeparator() == null) {
       source.setSeparator(",");
     }
@@ -300,13 +299,23 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     return sourceFile;
   }
 
-  private ImmutableList<String> header(SourceFile af) throws IOException {
-    File f = cfg.getSourceFile(af.getResourceId(), af.getName());
-    String separator = af.getSeparator() == null ? "," : af.getSeparator();
+  private ImmutableList<String> header(SourceFile source) throws IOException {
+    File f = cfg.getSourceFile(source.getResourceId(), source.getName());
+    String separator = source.getSeparator() == null ? ","
+        : source.getSeparator();
     Charset charset = null;
     charset = Charsets.UTF_8;
-    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults().split(
+    ImmutableList<String> header = null;
+    header = ImmutableList.copyOf(Splitter.on(separator).trimResults().split(
         Files.readFirstLine(f, charset)));
+    if (!source.hasHeaders()) {
+      int size = header.size();
+      ImmutableList.Builder<String> b = ImmutableList.builder();
+      for (int i = 0; i < size; i++) {
+        b.add("Column-00" + i);
+      }
+      header = b.build();
+    }
     return header;
   }
 
