@@ -186,9 +186,9 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
       }
       // generate basic column mapping options
       try {
-        sourceColumns = Lists.newArrayList(Splitter.on(',').split(
-            view.getSource().getCsvFileHeader()));
-        // sourceColumns = sourceInspectionManager.getHeader(view.getSource());
+        // sourceColumns = Lists.newArrayList(Splitter.on(',').split(
+        // view.getSource().getCsvFileHeader()));
+        sourceColumns = sourceInspectionManager.getHeader(view.getSource());
       } catch (Exception e) {
         sourceColumns = new ArrayList<String>();
         log.debug("Cant read datasource column headers", e);

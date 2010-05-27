@@ -15,12 +15,9 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
-import com.google.common.base.Joiner;
-
 import com.opensymphony.xwork2.Preparable;
 
 import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
@@ -37,9 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * TODO: Documentation.
@@ -334,12 +329,13 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
       fsource.setResource(resource);
       fsource.setFilename(srcFile.getName());
       fsource.setSeparator(",");
-      try {
-        fsource.setCsvFileHeader(Joiner.on(',').skipNulls().join(
-            sourceInspectionManager.getHeader(fsource)));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+      fsource.setHeaders(false);
+      // try {
+      // fsource.setCsvFileHeader(Joiner.on(',').skipNulls().join(
+      // sourceInspectionManager.getHeader(fsource)));
+      // } catch (Exception e) {
+      // e.printStackTrace();
+      // }
     }
     // set new upload timestamp
     fsource.setDateUploaded(new Date());
@@ -347,42 +343,46 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
     List<String> headers = null;
     ArrayList<Object> msgParams = new ArrayList<Object>();
     msgParams.add(srcFile.getName());
-    try {
-      fsource.setHeaders(true);
-      headers = sourceInspectionManager.getHeader(fsource);
-      // see if first row columns are unique and do not contain empty fields
-      Set<String> tmp = new HashSet<String>();
-      for (String h : headers) {
-        h = StringUtils.trimToNull(h);
-        // check for unique columns, allowing 1 NULL header (often the last
-        // column)
-        if (tmp.contains(h)) {
-          // non unique columns. Set header to false by default
-          fsource.setHeaders(false);
-          break;
-        } else {
-          tmp.add(h);
-        }
-      }
-    } catch (Exception e) {
-      log.error("Error inspecting source file " + fsource.getName(), e);
-    }
-    log.info(String.format(
-        "Source file %s uploaded with %s columns and %s header row",
-        srcFile.getAbsolutePath(), headers.size(), fsource.hasHeaders() ? "one"
-            : "no"));
-    if (headers.size() > 1) {
-      // save file in view mapping
-      sourceManager.save(fsource);
-      msgParams.add(String.valueOf(headers.size()));
-      saveMessage(getText("sources.sourceFileUploaded", msgParams));
-    } else {
-      fsource.setResource(null);
-      ArrayList<Object> params = new ArrayList<Object>();
-      params.add(srcFile.getName());
-      params.add(String.valueOf(headers.size()));
-      saveMessage(getText("sources.sourceFileBroken", params));
-    }
+    sourceManager.save(fsource);
+    // msgParams.add(String.valueOf(headers.size()));
+    saveMessage(getText("sources.sourceFileUploaded", msgParams));
+
+    // try {
+    // fsource.setHeaders(true);
+    // headers = sourceInspectionManager.getHeader(fsource);
+    // // see if first row columns are unique and do not contain empty fields
+    // Set<String> tmp = new HashSet<String>();
+    // for (String h : headers) {
+    // h = StringUtils.trimToNull(h);
+    // // check for unique columns, allowing 1 NULL header (often the last
+    // // column)
+    // if (tmp.contains(h)) {
+    // // non unique columns. Set header to false by default
+    // fsource.setHeaders(false);
+    // break;
+    // } else {
+    // tmp.add(h);
+    // }
+    // }
+    // } catch (Exception e) {
+    // log.error("Error inspecting source file " + fsource.getName(), e);
+    // }
+    // log.info(String.format(
+    // "Source file %s uploaded with %s columns and %s header row",
+    // srcFile.getAbsolutePath(), headers.size(), fsource.hasHeaders() ? "one"
+    // : "no"));
+    // if (headers.size() > 1) {
+    // // save file in view mapping
+    // sourceManager.save(fsource);
+    // msgParams.add(String.valueOf(headers.size()));
+    // saveMessage(getText("sources.sourceFileUploaded", msgParams));
+    // } else {
+    // fsource.setResource(null);
+    // ArrayList<Object> params = new ArrayList<Object>();
+    // params.add(srcFile.getName());
+    // params.add(String.valueOf(headers.size()));
+    // saveMessage(getText("sources.sourceFileBroken", params));
+    // }
   }
 
 }
