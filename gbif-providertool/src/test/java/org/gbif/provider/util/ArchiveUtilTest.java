@@ -3,6 +3,9 @@
  */
 package org.gbif.provider.util;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -12,8 +15,10 @@ import org.gbif.provider.model.ExtensionMapping;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
+import org.gbif.provider.model.eml.Charsets;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ResourceArchiveManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.ArchiveUtil.Request;
 import org.gbif.provider.util.ArchiveUtil.Response;
@@ -22,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -40,6 +46,9 @@ public class ArchiveUtilTest extends ResourceTestBase {
 
   @Autowired
   private ResourceArchiveManager ram;
+
+  @Autowired
+  private SourceInspectionManager sourceInspector;
 
   /**
    * Metafile:
@@ -116,6 +125,35 @@ public class ArchiveUtilTest extends ResourceTestBase {
     assertEquals(1, sourceManager.getAll(resource.getId()).size());
 
     ram.createArchive(resource);
+  }
+
+  @Test
+  public void testHeader() throws IOException {
+    File file;
+    Charset encoding;
+    char separator;
+    ImmutableList<String> expectedHeader;
+    ImmutableList<String> header;
+    String path = "dwc-archives/unit-testing/headers/";
+    expectedHeader = ImmutableList.of("MyLocalID", "Kingdom", "Name",
+        "Latitude", "Longitude");
+    encoding = Charsets.UTF_8;
+
+    separator = '\t';
+    for (String name : Lists.newArrayList("header-tab.txt",
+        "header-tab-quotes.txt")) {
+      file = FileUtils.getClasspathFile(path + name);
+      header = sourceInspector.getHeader(file, encoding, separator);
+      assertEquals(expectedHeader, header);
+    }
+
+    separator = ',';
+    for (String name : Lists.newArrayList("header-comma.csv",
+        "header-comma-quotes.csv")) {
+      file = FileUtils.getClasspathFile(path + name);
+      header = sourceInspector.getHeader(file, encoding, separator);
+      assertEquals(expectedHeader, header);
+    }
   }
 
   @Test

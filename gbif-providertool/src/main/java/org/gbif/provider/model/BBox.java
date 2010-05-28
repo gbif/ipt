@@ -15,6 +15,9 @@
  */
 package org.gbif.provider.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -23,9 +26,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Bounding box representation with 2 points. P1 has maximum latitude and
@@ -43,12 +43,12 @@ public class BBox implements Serializable {
 
   // x = east/west=longitude, -180/180
   // y = north/south = latitude, -90/90
-  @AttributeOverrides( {
+  @AttributeOverrides({
       @AttributeOverride(name = "latitude", column = @Column(name = "max_lat")),
       @AttributeOverride(name = "longitude", column = @Column(name = "max_long"))})
   private Point max;
 
-  @AttributeOverrides( {
+  @AttributeOverrides({
       @AttributeOverride(name = "latitude", column = @Column(name = "min_lat")),
       @AttributeOverride(name = "longitude", column = @Column(name = "min_long"))})
   private Point min;
@@ -59,6 +59,10 @@ public class BBox implements Serializable {
 
   public BBox(Double minY, Double minX, Double maxY, Double maxX) {
     super();
+    minY = minY == null ? -90 : minY;
+    minX = minX == null ? -180 : minX;
+    maxY = maxY == null ? 90 : maxY;
+    maxX = maxX == null ? 180 : maxX;
     this.min = new Point(minY, minX);
     this.max = new Point(maxY, maxX);
     setOrderedBounds(minY, minX, maxY, maxX);

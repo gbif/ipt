@@ -15,9 +15,14 @@
  */
 package org.gbif.provider.service;
 
+import com.google.common.collect.ImmutableList;
+
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.SourceBase;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -41,12 +46,15 @@ public interface SourceInspectionManager {
   Set<String> getDistinctValues(SourceBase source, String column)
       throws Exception;
 
+  ImmutableList<String> getHeader(File file, Charset encoding, char separator)
+      throws IOException;
+
   /**
-   * @param source source either to file or SQL statement
+   * @param sourceBase source either to file or SQL statement
    * @return list of column headers only (same first row in getPreview())
    * @throws Exception
    */
-  List<String> getHeader(SourceBase source) throws Exception;
+  List<String> getHeader(SourceBase sourceBase) throws Exception;
 
   /**
    * @param source either to file or SQL statement.

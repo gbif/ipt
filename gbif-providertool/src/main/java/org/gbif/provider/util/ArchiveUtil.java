@@ -20,11 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Files;
 
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.gbif.dwc.terms.ConceptTerm;
@@ -46,6 +44,7 @@ import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.GenericManager;
 import org.gbif.provider.service.OccResourceManager;
+import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.service.impl.BaseManager;
@@ -407,6 +406,9 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   private ExtensionPropertyManager extensionPropertyManager;
 
   @Autowired
+  private SourceInspectionManager sourceInspector;
+
+  @Autowired
   private SourceManager sourceManager;
 
   @Autowired
@@ -453,7 +455,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
    */
   private ImmutableList<String> getHeader(ArchiveFile af) throws IOException {
     File f = new File(af.getLocation());
-    String separator = getSeparator(af);
+    char separator = getSeparator(af).charAt(0);
     Charset charset = null;
     try {
       charset = Charset.forName(af.getEncoding());
@@ -465,16 +467,19 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
           + af.getLocation());
       charset = Charsets.ISO_8859_1;
     }
-    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults().split(
-        Files.readFirstLine(f, charset)));
-    if (!hasHeader(af)) {
-      ImmutableList.Builder<String> b = ImmutableList.builder();
-      // TODO: Confirm this appraoch.
-      for (int i = 0; i < header.size(); i++) {
-        b.add(String.format("col%03d", i));
-      }
-      header = b.build();
-    }
+    ImmutableList<String> header = sourceInspector.getHeader(f, charset,
+        separator);
+    //      
+    // ImmutableList.copyOf(Splitter.on(separator).trimResults().split(
+    // Files.readFirstLine(f, charset)));
+    // if (!hasHeader(af)) {
+    // ImmutableList.Builder<String> b = ImmutableList.builder();
+    // // TODO: Confirm this appraoch.
+    // for (int i = 0; i < header.size(); i++) {
+    // b.add(String.format("col%03d", i));
+    // }
+    // header = b.build();
+    // }
     return header;
   }
 
