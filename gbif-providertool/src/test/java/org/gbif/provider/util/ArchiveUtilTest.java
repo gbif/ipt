@@ -41,6 +41,83 @@ public class ArchiveUtilTest extends ResourceTestBase {
   @Autowired
   private ResourceArchiveManager ram;
 
+  /**
+   * Metafile:
+   * 
+   * <pre>
+   * <?xml version='1.0' encoding='utf-8'?>
+   * <archive xmlns="http://rs.tdwg.org/dwc/text/">
+   *   <core>
+   *     <files>
+   *       <location>data.txt</location>
+   *     </files>
+   *     <id index="0" term="http://rs.tdwg.org/dwc/terms/taxonID"/>
+   *     <field index="1" term="http://rs.tdwg.org/dwc/terms/scientificName" type="xs:integer"/>
+   *   </core>
+   * </archive>
+   * </pre>
+   * 
+   * Data file:
+   * 
+   * <pre>
+   * TaxonID, scientificName
+   * 1, tuco
+   * 2, bufo
+   * </pre>
+   * 
+   * @throws IOException
+   * 
+   */
+  @Test
+  public void test2() throws IOException {
+    File archive = FileUtils.getClasspathFile("dwc-archives/unit-testing/1-archive.zip");
+    OccurrenceResource resource = new OccurrenceResource();
+    occResourceManager.save(resource);
+    resource.getExtensionMappingsMap().clear();
+    Request<OccurrenceResource> request = Request.with(archive, resource);
+    Response<OccurrenceResource> response = archiveUtil.init(request).process();
+    resource = response.getResource();
+
+    assertNotNull(resource);
+
+    // The metafile defines no extensions.
+    List<ExtensionMapping> mapping = resource.getExtensionMappings();
+    assertEquals(mapping.size(), 0);
+
+    // The metafile doesn't define a rowType for core. The default rowType is
+    // http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord which
+    // should correspond to the Darwin Core extension:
+    ExtensionMapping coreMapping = resource.getCoreMapping();
+    assertNotNull(coreMapping);
+    assertNotNull(coreMapping.getExtension());
+    Extension dwc = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+    assertEquals(coreMapping.getExtension(), dwc);
+
+    // <id index="0" /> in the metafile <core> element should correspond to
+    // TaxonId in the data file.
+    assertEquals("TaxonID", coreMapping.getCoreIdColumn());
+
+    // The datafile has two columns, so we expect two
+    // extension properties corresponding to TaxonID and scientificName:
+    List<ExtensionProperty> props = coreMapping.getMappedProperties();
+    assertEquals(props.size(), 1);
+    ExtensionProperty scientificNameProp = props.get(0);
+    assertEquals("scientificName", scientificNameProp.getName());
+
+    // Similarly, we expect only a single property mapping that maps the
+    // scientificName column to the scientificName extension property:
+    List<PropertyMapping> propMappings = coreMapping.getPropertyMappingsSorted();
+    assertEquals(propMappings.size(), 1);
+    PropertyMapping propMap = propMappings.get(0);
+    assertEquals(propMap.getColumn(), "scientificName");
+    assertEquals(scientificNameProp, propMap.getProperty());
+
+    // There should be exactly one SourceFile asscociated with the resource:
+    assertEquals(1, sourceManager.getAll(resource.getId()).size());
+
+    ram.createArchive(resource);
+  }
+
   @Test
   public void testIt() {
   }
