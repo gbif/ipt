@@ -27,6 +27,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Files;
 
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
+import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveField;
@@ -48,6 +49,7 @@ import org.gbif.provider.service.OccResourceManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
 import org.gbif.provider.service.impl.BaseManager;
+import org.hibernate.NonUniqueResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -57,6 +59,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  *
@@ -118,7 +121,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   }
 
   private static enum Core {
-    NO_ROW_TYPE, HAS_ROW_TYPE, NO_FIELDS, NO_FIELDS_NO_HEADER, NO_FIELDS_HAS_HEADER, HAS_FIELDS, NO_ID, HAS_ID, INVALID, DONE, CREATE_PROPERTY_MAPPINGS, INITIAL, SAVE, HAS_FIELDS_HAS_HEADER, HAS_FIELDS_NO_HEADER;
+    NO_ROW_TYPE, HAS_ROW_TYPE, NO_FIELDS, HAS_EXTENSION, NO_FIELDS_NO_HEADER, NO_FIELDS_HAS_HEADER, HAS_FIELDS, NO_ID, HAS_ID, INVALID, DONE, CREATE_PROPERTY_MAPPINGS, INITIAL, SAVE, HAS_FIELDS_HAS_HEADER, HAS_FIELDS_NO_HEADER;
   }
 
   private class CoreStateMachine {
@@ -139,32 +142,127 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         sourceFile = getSourceFile(core);
         while (state != Core.DONE) {
           switch (state) {
+
             case INITIAL:
-              // We are processing core so we assume rowType corresponds to
-              // Darwin Core:
+              rowType = core.getRowType();
+              state = hasRowType() ? Core.HAS_ROW_TYPE : Core.NO_ROW_TYPE;
+              break;
+
+            case NO_ROW_TYPE:
               extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+              state = Core.HAS_EXTENSION;
+              break;
+
+            case HAS_ROW_TYPE:
+              if (rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord")
+                  || rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/Occurrence")) {
+                extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
+              } else {
+                try {
+                  extension = extensionManager.getExtensionByRowType(rowType);
+                } catch (NonUniqueResultException e) {
+                }
+              }
+              if (extension == null) {
+                String msg = String.format(
+                    "Unrecognized rowType %s (skipping)", rowType);
+                log.warn(msg);
+                haltOnIllegalState(msg);
+              }
+              state = Core.HAS_EXTENSION;
+              break;
+
+            case HAS_EXTENSION:
               mapping = ExtensionMapping.with(extension);
               if (!(request.resource instanceof OccurrenceResource)) {
                 String msg = "Tried to upload an occurrence archive to a "
                     + request.resource.getClass().getSimpleName();
                 haltOnIllegalState(msg);
               }
-              if (!hasFields() && hasHeader(core)) {
+              boolean hasFields = hasFields();
+              boolean hasHeader = hasHeader(core);
+              if (!hasFields && hasHeader) {
                 state = Core.NO_FIELDS_HAS_HEADER;
-              } else if (!hasFields() && !hasHeader(core)) {
+              } else if (!hasFields && !hasHeader) {
                 state = Core.NO_FIELDS_NO_HEADER;
-              } else if (hasFields() && hasHeader(core)) {
+              } else if (hasFields && hasHeader) {
                 state = Core.HAS_FIELDS_HAS_HEADER;
               } else {
                 state = Core.HAS_FIELDS_NO_HEADER;
               }
               break;
-            case NO_FIELDS_NO_HEADER:
+
+            case HAS_FIELDS_HAS_HEADER:
+              ExtensionProperty ep = null;
+              PropertyMapping pm;
+              ConceptTerm concept;
+              ArchiveField field;
+              String conceptName = null;
+              for (Entry<ConceptTerm, ArchiveField> entry : core.getFields().entrySet()) {
+                concept = entry.getKey();
+                field = entry.getValue();
+
+                if (concept == null || field == null) {
+                  log.warn("ConceptTerm or ArchiveField is null in "
+                      + core.getLocation());
+                  continue;
+                }
+                if (concept.qualifiedName() == null) {
+                  log.warn("ConceptTerm.qualifiedName is null in "
+                      + concept.simpleName());
+                  continue;
+                }
+
+                // Looks up an existing extension property:
+                ep = extensionPropertyManager.getProperty(extension,
+                    concept.qualifiedName());
+                if (ep == null) {
+                  log.warn("Unsupported ExtensionProperty: "
+                      + concept.qualifiedName());
+                  continue;
+                }
+                extension.addProperty(ep);
+
+                // Static mapping:
+                if (field.getIndex() == null) {
+                  if (field.getDefaultValue() != null) {
+                    conceptName = field.getDefaultValue();
+                  }
+                } else {
+                  try {
+                    conceptName = getHeader(core).get(field.getIndex());
+                  } catch (Exception e) {
+                    log.warn("Unable to determine concept name for " + field);
+                    continue;
+                  }
+                }
+
+                pm = PropertyMapping.with(ep, conceptName, "");
+                pm.setProperty(ep);
+                pm.setViewMapping(mapping);
+                mapping.addPropertyMapping(pm);
+
+                // TODO: Confirm this is correct:
+                if (hasIdIndex()) {
+                  mapping.setCoreIdColumn(getHeader(core).get(getIdIndex(core)));
+                } else {
+                  mapping.setCoreIdColumn(getHeader(core).get(0));
+                }
+              }
               if (request.resource instanceof OccurrenceResource) {
                 saveOccurrenceResourceExtensionMappings();
               }
               state = Core.DONE;
               break;
+
+            case NO_FIELDS_NO_HEADER:
+              // TODO: How to handle index (<core index=0) here?
+              if (request.resource instanceof OccurrenceResource) {
+                saveOccurrenceResourceExtensionMappings();
+              }
+              state = Core.DONE;
+              break;
+
             case NO_FIELDS_HAS_HEADER:
               buildExtensionMappings();
               if (request.resource instanceof OccurrenceResource) {
