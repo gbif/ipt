@@ -39,7 +39,6 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   protected DataResource resource;
   @NotNull
   protected String name;
-
   protected String csvFileHeader;
   protected String separator;
 

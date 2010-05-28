@@ -15,8 +15,10 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -160,15 +162,42 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     return terms;
   }
 
-  public List<String> getHeader(SourceBase source) throws Exception {
-    if (source == null) {
-      throw new NullPointerException();
-    }
-    if (source instanceof SourceFile) {
-      SourceFile src = (SourceFile) source;
-      return getHeader(src);
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.SourceInspectionManager#getHeader(java.io.File,
+   * java.nio.charset.Charset, char)
+   */
+  public ImmutableList<String> getHeader(File file, Charset encoding,
+      char separator) throws IOException {
+    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults(
+        CharMatcher.is('"')).split(Files.readFirstLine(file, encoding)));
+    return header;
+  }
+
+  public List<String> getHeader(SourceBase sourceBase) throws Exception {
+    Preconditions.checkNotNull(sourceBase);
+    if (sourceBase instanceof SourceFile) {
+      ImmutableList<String> header;
+      SourceFile sf = (SourceFile) sourceBase;
+      File file = cfg.getSourceFile(sf.getResourceId(), sf.getName());
+      Charset charset = Charsets.UTF_8;
+      String separatorValue = sf.getSeparator();
+      char separator = separatorValue == null ? ',' : separatorValue.charAt(0);
+      header = getHeader(file, charset, separator);
+      if (!sf.hasHeaders()) {
+        int size = header.size();
+        ImmutableList.Builder<String> b = ImmutableList.builder();
+        String format = "Column-00%d (Example value: %s)";
+        for (int i = 0; i < size; i++) {
+          b.add(String.format(format, i, header.get(i)));
+        }
+        header = b.build();
+      }
+      return header;
     } else {
-      SourceSql src = (SourceSql) source;
+      SourceSql src = (SourceSql) sourceBase;
       return getHeader(src);
     }
   }

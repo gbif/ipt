@@ -237,6 +237,13 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
   }
 
   public String updateFile() {
+    if (source.getSeparator() != null
+        && source.getSeparator().equalsIgnoreCase("true")) {
+      source.setSeparator("\t");
+    } else if (source.getSeparator() != null
+        && source.getSeparator().equalsIgnoreCase("false")) {
+      source.setSeparator(",");
+    }
     sourceManager.save(source);
     return SUCCESS;
   }

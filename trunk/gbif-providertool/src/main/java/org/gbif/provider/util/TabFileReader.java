@@ -15,6 +15,7 @@
  */
 package org.gbif.provider.util;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
@@ -136,12 +137,12 @@ public class TabFileReader implements Iterator<String[]> {
    * @return String[]
    */
   private String[] lineAsArray(String line, String separator) {
-    List<String> list = Lists.newArrayList(Splitter.on(separator).trimResults().split(
-        line));
+    List<String> list = Lists.newArrayList(Splitter.on(separator).trimResults(
+        CharMatcher.is('"')).split(line));
     String[] array = new String[list.size()];
     int i = 0;
     for (String s : list) {
-      array[i++] = s;
+      array[i++] = s.trim();
     }
     return array;
   }
