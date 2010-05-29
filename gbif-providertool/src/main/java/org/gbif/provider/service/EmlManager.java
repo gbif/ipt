@@ -17,7 +17,9 @@ package org.gbif.provider.service;
 
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.xml.sax.SAXException;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -25,9 +27,13 @@ import java.io.IOException;
  * 
  */
 public interface EmlManager {
-  Eml load(Resource resource);
+  Eml deserialize(Resource resource);
+
+  Eml fromXml(File xmlFile) throws IOException, SAXException;
 
   Eml publishNewEmlVersion(Resource resource) throws IOException;
 
-  void save(Eml eml);
+  void serialize(Eml eml);
+
+  void toXmlFile(Eml eml) throws IOException;
 }

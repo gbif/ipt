@@ -271,12 +271,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       case ASSOCIATED_PARTIES:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero agents.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getAssociatedParties().clear();
         } else {
           // eml was populated via Struts.
           List<Agent> agents = eml.getAssociatedParties();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setAssociatedParties(agents);
         }
         break;
@@ -284,7 +284,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // geographic coverages.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getGeospatialCoverages().clear();
           // This should go away when refactored for one geocoverage
           eml.setGeographicCoverage(null);
@@ -292,7 +292,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           // eml was populated via Struts.
           List<GeospatialCoverage> coverages = eml.getGeospatialCoverages();
           GeospatialCoverage singlecoverage = eml.getGeographicCoverage();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setGeospatialCoverages(coverages);
           // This should go away when refactored for one geocoverage
           eml.setGeographicCoverage(singlecoverage);
@@ -302,12 +302,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // taxonomic coverages.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getTaxonomicCoverages().clear();
         } else {
           // eml was populated via Struts.
           List<TaxonomicCoverage> coverages = eml.getTaxonomicCoverages();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setTaxonomicCoverages(coverages);
         }
         break;
@@ -315,12 +315,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // temporal coverages.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getTemporalCoverages().clear();
         } else {
           // eml was populated via Struts.
           List<TemporalCoverage> coverages = eml.getTemporalCoverages();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setTemporalCoverages(coverages);
         }
         break;
@@ -328,14 +328,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // projects.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           // Clear out the project and make way for a new one.
           Project project = new Project();
           eml.setProject(project);
         } else {
           // eml was populated via Struts.
           Project project = eml.getProject();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setProject(project);
         }
         break;
@@ -343,12 +343,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // sampling methods.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getSamplingMethods().clear();
         } else {
           // eml was populated via Struts.
           List<Method> methods = eml.getSamplingMethods();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setSamplingMethods(methods);
         }
         break;
@@ -356,7 +356,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // citations.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getBibliographicCitations().clear();
           eml.setCitation("");
         } else {
@@ -364,7 +364,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           List<String> citations = eml.getBibliographicCitations();
           String citation = eml.getCitation();
 
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
 
           eml.setBibliographicCitations(citations);
           eml.setCitation(citation);
@@ -374,7 +374,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // CuratorialUnits.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
 
           eml.setCollectionName("");
           eml.setCollectionId("");
@@ -387,7 +387,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           String parentCollectionId = eml.getParentCollectionId();
           List<JGTICuratorialUnit> curatorialUnits = eml.getJgtiCuratorialUnits();
 
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
 
           eml.setCollectionName(collectionName);
           eml.setCollectionId(collectionId);
@@ -399,12 +399,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // physicalData.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getPhysicalData().clear();
         } else {
           // eml was populated via Struts.
           List<PhysicalData> physicalData = eml.getPhysicalData();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setPhysicalData(physicalData);
         }
         break;
@@ -412,12 +412,12 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // keyword sets.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.getKeywords().clear();
         } else {
           // eml was populated via Struts.
           List<KeywordSet> keywords = eml.getKeywords();
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setKeywords(keywords);
         }
         break;
@@ -425,7 +425,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero
           // additionalMetadata.
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
           eml.setHierarchyLevel("");
           eml.setDistributionUrl("");
           eml.setPurpose("");
@@ -445,7 +445,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           String intellectualRights = eml.getIntellectualRights();
           String additionalInfo = eml.getAdditionalInfo();
 
-          eml = emlManager.load(resource);
+          eml = emlManager.deserialize(resource);
 
           eml.setPubDate(pubDate);
           eml.setDistributionUrl(distributionUrl);
@@ -456,7 +456,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         break;
     }
     if (eml == null && resource != null) {
-      eml = emlManager.load(resource);
+      eml = emlManager.deserialize(resource);
     }
     if (eml.getResource() == null) {
       eml.setResource(resource);
@@ -484,7 +484,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     for (TemporalCoverage t : eml.getTemporalCoverages()) {
       t.correctDateOrder();
     }
-    emlManager.save(eml);
+    emlManager.serialize(eml);
     resourceManager.save(resource);
     return SUCCESS;
   }

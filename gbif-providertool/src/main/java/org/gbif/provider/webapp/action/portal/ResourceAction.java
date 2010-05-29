@@ -65,7 +65,7 @@ public class ResourceAction extends BaseMetadataResourceAction implements
   @Override
   public String execute() {
     if (resource != null) {
-      eml = emlManager.load(resource);
+      eml = emlManager.deserialize(resource);
       tagcloud = keywordManager.getCloud();
       return SUCCESS;
     }

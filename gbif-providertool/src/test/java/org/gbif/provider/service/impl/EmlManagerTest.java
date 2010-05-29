@@ -42,13 +42,13 @@ public class EmlManagerTest extends ResourceTestBase {
   @Test
   public void testLoadResource() {
     resource = this.getResourceMock();
-    Eml eml = emlManager.load(resource);
+    Eml eml = emlManager.deserialize(resource);
     Agent a = new Agent();
     a.setFirstName("Aaron");
     a.setRole(Role.ASSOCIATED_PARTY);
     eml.addAssociatedParty(a);
-    emlManager.save(eml);
-    Eml loadedEml = emlManager.load(resource);
+    emlManager.serialize(eml);
+    Eml loadedEml = emlManager.deserialize(resource);
     Assert.assertTrue(loadedEml.getAssociatedParties().size() == 1);
     Assert.assertEquals(loadedEml.getAssociatedParties().get(0), a);
   }
@@ -69,7 +69,7 @@ public class EmlManagerTest extends ResourceTestBase {
     resource = this.getResourceMock();
     Eml eml = new Eml();
     eml.setResource(resource);
-    emlManager.save(eml);
+    emlManager.serialize(eml);
   }
 
 }

@@ -16,32 +16,37 @@
 package org.gbif.provider.service.impl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Preconditions;
+
+import com.thoughtworks.xstream.XStream;
+
 import static org.gbif.provider.util.XmlFileUtils.getUtf8Reader;
 import static org.gbif.provider.util.XmlFileUtils.startNewUtf8XmlFile;
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.EmlFactory;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
-import com.thoughtworks.xstream.XStream;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -106,7 +111,7 @@ public class EmlManagerImpl implements EmlManager {
    * XML file, a new Eml object is created, written to XML, and then returned.
    */
   @SuppressWarnings("static-access")
-  public Eml load(Resource resource) {
+  public Eml deserialize(Resource resource) {
     checkNotNull(resource, "Resource was null");
     Eml eml = null;
     Long rid = resource.getId();
@@ -121,21 +126,31 @@ public class EmlManagerImpl implements EmlManager {
         log.info(String.format("Creating new Eml object for resource %s", rid));
         eml = new Eml();
         eml.setResource(resource);
-//        eml.getResourceCreator().setEmail(resource.getContactEmail());
-//        eml.getResourceCreator().setLastName(resource.getContactName());
+        // eml.getResourceCreator().setEmail(resource.getContactEmail());
+        // eml.getResourceCreator().setLastName(resource.getContactName());
         eml.getResourceCreator().setRole(Role.ORIGINATOR);
         eml.getMetadataProvider().setRole(Role.METADATA_PROVIDER);
         eml.setPubDate(new Date());
-        save(eml);
+        serialize(eml);
         // writeEmlXmlFile(cfg.getEmlFile(rid), freemarker, eml);
       }
     }
     return eml;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.provider.service.EmlManager#fromXml(java.io.File)
+   */
+  public Eml fromXml(File xmlFile) throws IOException, SAXException {
+    Eml eml = EmlFactory.build(new FileInputStream(xmlFile));
+    return eml;
+  }
+
   @SuppressWarnings("static-access")
   public Eml publishNewEmlVersion(Resource resource) throws IOException {
-    Eml metadata = load(resource);
+    Eml metadata = deserialize(resource);
     int version = metadata.increaseEmlVersion();
     metadata.setPubDate(new Date());
     try {
@@ -152,7 +167,7 @@ public class EmlManagerImpl implements EmlManager {
       File versionedEmlFile = cfg.getEmlFile(resource.getId(), version);
       FileUtils.copyFile(currEmlFile, versionedEmlFile);
       // persist EML with new version
-      save(metadata);
+      serialize(metadata);
       log.info("Published new EML version " + metadata.getEmlVersion()
           + " for resource " + resource.getTitle());
     } catch (TemplateException e) {
@@ -168,20 +183,34 @@ public class EmlManagerImpl implements EmlManager {
    * 
    */
   @SuppressWarnings("static-access")
-  public void save(Eml metadata) {
-    if (metadata == null) {
-      return;
-    }
+  public void serialize(Eml eml) {
+    Preconditions.checkNotNull(eml);
+    Preconditions.checkArgument(eml.getResource() != null,
+        "Eml resource is null");
+    Preconditions.checkArgument(eml.getResource().getId() != null,
+        "Eml resource id is null");
     // update persistent EML properties on resource
-    Resource res = metadata.getResource();
+    Resource res = eml.getResource();
     // now persist EML file (resource must have ID now)
     try {
       File metadataFile = cfg.getMetadataFile(res.getId());
       Writer writer = startNewUtf8XmlFile(metadataFile);
-      xstream.toXML(metadata, writer);
+      xstream.toXML(eml, writer);
       writer.close();
     } catch (IOException ex) {
       ex.printStackTrace();
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.EmlManager#toXml(org.gbif.provider.model.eml.Eml)
+   */
+  public void toXmlFile(Eml eml) throws IOException {
+    Preconditions.checkNotNull(eml, "Eml is null");
+    Preconditions.checkNotNull(eml.getResource(), "Eml resource is null");
+    publishNewEmlVersion(eml.getResource());
   }
 }
