@@ -25,6 +25,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.eml.EmlFactory;
 import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.factory.ResourceFactory;
 import org.gbif.provider.model.voc.PublicationStatus;
@@ -43,10 +44,13 @@ import org.gbif.provider.util.ArchiveUtil.Request;
 import org.gbif.provider.util.ArchiveUtil.Response;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -285,16 +289,17 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         resource = resourceFactory.newMetadataResourceInstance();
       }
     }
-    if (resource != null) {
-      eml = emlManager.load(resource);
+    if (resource != null && eml == null) {
+      eml = emlManager.deserialize(resource);
       if (eml == null) {
         eml = new Eml();
         eml.setResource(resource);
       }
       // Some properties in resource are the same as what's required in eml, so
       // we copy them over here:
-      eml.setTitle(resource.getTitle());
-      eml.setAlternateIdentifier(resource.getGuid());
+      // eml.setTitle(resource.getTitle());
+      // eml.setAlternateIdentifier(resource.getGuid());
+      // emlManager.save(eml);
     }
 
   }
@@ -353,7 +358,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     eml.setResource(resource);
 
     // validateEml();
-    emlManager.save(eml);
+    emlManager.serialize(eml);
 
     String key = (isNew) ? "resource.added" : "resource.updated";
     saveMessage(getText(key));
@@ -455,6 +460,11 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     Response<OccurrenceResource> res = archiveUtil.init(req).process();
     resource = res.getResource();
     occResourceManager.save((OccurrenceResource) resource);
+    eml = getEmlIfExists(targetFile.getParentFile());
+    if (eml != null) {
+      eml.setResource(resource);
+      emlManager.serialize(eml);
+    }
 
     // // Creates a resource archive from the uploaded file:
     // File location = targetFile;
@@ -507,6 +517,35 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         addActionError(getText("maxLengthExceeded"));
       }
     }
+  }
+
+  Eml getEmlIfExists(File location) throws IOException {
+    Eml eml = null;
+    String path = null;
+    File directory = null;
+    if (location.isFile()) {
+      directory = location.getParentFile();
+    } else {
+      directory = location;
+    }
+    String[] list = directory.list(new FilenameFilter() {
+      public boolean accept(File dir, String name) {
+        return name.equalsIgnoreCase("eml.xml");
+      }
+    });
+    if (list != null && list.length > 0) {
+      try {
+        path = String.format("%s/%s", directory.getPath(), "eml.xml");
+        eml = EmlFactory.build(new FileInputStream(new File(path)));
+      } catch (SAXException e) {
+        throw new IOException(e.toString());
+      } catch (FileNotFoundException e) {
+        throw new IOException(e.toString());
+      } catch (IOException e) {
+        throw e;
+      }
+    }
+    return eml;
   }
 
   private void testDbConnection() {

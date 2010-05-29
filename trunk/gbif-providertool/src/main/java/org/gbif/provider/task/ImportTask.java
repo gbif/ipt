@@ -437,7 +437,7 @@ public abstract class ImportTask<R extends DataResource> extends
     // update resource and upload event statistics
     currentActivity = "Generating resource statistics";
     event.setResource(resource);
-    Eml eml = emlManager.load(resource);
+    Eml eml = emlManager.deserialize(resource);
     event.setEmlVersion(eml.getEmlVersion());
     event.setRecordsAdded(recordsAdded);
     event.setRecordsChanged(recordsChanged);

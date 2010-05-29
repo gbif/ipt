@@ -18,6 +18,14 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+
+import org.apache.commons.compress.compressors.gzip.GzipUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
@@ -56,10 +64,11 @@ import org.gbif.provider.util.MalformedTabFileException;
 import org.gbif.provider.util.TabFileReader;
 import org.gbif.provider.util.XmlFileUtils;
 import org.gbif.provider.util.ZipUtil;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
+import org.hibernate.NonUniqueResultException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -77,16 +86,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-
-import org.apache.commons.compress.compressors.gzip.GzipUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.NonUniqueResultException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.xml.sax.SAXException;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -712,7 +711,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     Eml eml = archive.getEml();
     if (eml != null) {
       eml.setResource(resource);
-      emlManager.save(eml);
+      emlManager.serialize(eml);
     }
 
     return resource;
@@ -770,9 +769,12 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
 
     // zip archive
     File archive = cfg.getArchiveFile(resource.getId());
-    File eml = cfg.getEmlFile(resource.getId());
-    if (eml.exists()) {
-      files.add(eml);
+
+    Eml eml = emlManager.deserialize(resource);
+    emlManager.toXmlFile(eml);
+    File emlFile = cfg.getEmlFile(resource.getId());
+    if (emlFile.exists()) {
+      files.add(emlFile);
     } else {
       log.warn("No EML file existing to include in archive");
     }

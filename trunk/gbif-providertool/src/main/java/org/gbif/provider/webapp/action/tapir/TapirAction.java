@@ -575,7 +575,7 @@ public class TapirAction extends BaseOccurrenceResourceAction implements
 
   private String metadata() {
     addMetaNamespaces();
-    eml = emlManager.load(resource);
+    eml = emlManager.deserialize(resource);
     return METADATA;
   }
 

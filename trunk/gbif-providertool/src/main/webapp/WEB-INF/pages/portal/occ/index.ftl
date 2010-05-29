@@ -62,12 +62,12 @@
 </head>
 	
 <@s.form>
-<h1 style="margin-bottom: 13px;"><@s.text name="resource.description"/></h1>
+<h1 style="margin-bottom: 13px;"><@s.text name="Resource Description"/></h1>
 <div class="horizontal_dotted_line_large"></div>
 <fieldset>
 	<div id="metadata">
 		<img class="right" src="${cfg.getResourceLogoUrl(resourceId)}" />
-		<span>${resource.description}</span>
+		<span>${resource.description!}</span>
 		<p style="margin-left: 0px;">
 		<label><@s.text name="dataResource.cache"/></label>
 		<label>${(resource.lastUpload.recordsUploaded)!0} <@s.text name='occ.index.recordsloaded'/> ${(resource.lastUpload.executionDate)!}</label>
