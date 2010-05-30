@@ -131,7 +131,7 @@
               required="false" cssClass="text medium"/>
           </div>
           <div class="left" id='exampleDiv'>
-            <span><@s.text name='metadata.termporalCoverageExample'/> <@s.text name='date.format'/></span>
+            <span><@s.text name='metadata.temporalCoverageExample'/> <@s.text name='date.format'/></span>
           </div>
           <div class="newline"></div>
           <div class="leftMedium" id="formationPeriodDiv">
