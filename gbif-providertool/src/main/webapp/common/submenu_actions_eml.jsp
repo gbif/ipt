@@ -32,7 +32,7 @@
     href="<s:url action="collectionsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.collections" /> </a></li>
   <li><a
-    href="<s:url action="physicalDataForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
+    href="<s:url action="PhysicalDataForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
   > <s:text name="metadata.heading.physicalData" /> </a></li>
   <li><a
     href="<s:url action="keywordsForm" namespace="/manage/meta"><s:param name="resourceId" value="%{resourceId}" /></s:url>"
