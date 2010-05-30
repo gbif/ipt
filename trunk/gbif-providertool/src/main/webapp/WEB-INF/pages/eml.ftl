@@ -37,11 +37,11 @@
       <#if (eml.getResourceCreator().getEmail())??>
         <electronicMailAddress>${eml.getResourceCreator().email!}</electronicMailAddress>
       </#if>
-      <#if (eml.getResource().link)??>
-        <onlineUrl>${eml.getResource().link!}</onlineUrl>
+      <#if (eml.getResourceCreator().getHomepage())??>
+        <onlineUrl>${eml.getResourceCreator().homepage!}</onlineUrl>
       </#if>
       </creator>
-<!-- The responsible party for the creation of the metadata -->
+<!-- The agent responsible for the creation of the metadata. -->
       <metadataProvider>
         <individualName>
           <givenName>${eml.getMetadataProvider().firstName!}</givenName>

@@ -101,7 +101,7 @@ public class Agent implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hashCode(firstName, lastName, organisation, position,
-        address, phone, email, role);
+        address, phone, email, role, homepage);
   }
 
   public void setAddress(Address address) {
