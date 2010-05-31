@@ -151,8 +151,14 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
   @Override
   public void prepare() {
     super.prepare();
+    // if (resource == null && resourceId != null) {
+    // resource = resourceManager.get(resourceId);
+    // }
     if (resource != null) {
-      if (resource.getCoreMapping() != null) {
+      Long coreMid = resource.getCoreMapping() == null ? null
+          : resource.getCoreMapping().getId();
+      if (resource.getCoreMapping() != null && coreMid != null
+          && coreMid.equals(mid)) {
         log.info("Resource contains core mapping: " + resource);
         view = resource.getCoreMapping();
         if (view != null && view.getSource() == null && sid != null) {
@@ -404,7 +410,7 @@ public class PropertyMappingAction extends BaseDataResourceAction implements
       Matcher m = null;
       int autoCount = 0;
       for (ExtensionProperty prop : view.getExtension().getProperties()) {
-        if(prop != null){
+        if (prop != null) {
           if (resourceType.equals(CHECKLIST)
               && !ChecklistResource.DWC_GROUPS.contains(StringUtils.trimToEmpty(prop.getGroup()))) {
             // for checklists only show the taxon group of darwin core

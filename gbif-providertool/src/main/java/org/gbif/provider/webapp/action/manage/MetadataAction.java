@@ -19,6 +19,7 @@ import com.opensymphony.xwork2.Preparable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.OccurrenceResource;
@@ -125,7 +126,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   private String jdbcDriverClass;
 
   @Autowired
-  private ArchiveUtil<OccurrenceResource> archiveUtil;
+  private ArchiveUtil<OccurrenceResource> occResourceArchiveUtil;
+
+  @Autowired
+  private ArchiveUtil<ChecklistResource> checklistResourceArchiveUtil;
 
   public String connection() {
     if (resource == null) {
@@ -453,19 +457,49 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     bos.close();
     stream.close();
 
-    OccurrenceResource r = (OccurrenceResource) resource;
-    occResourceManager.save(r);
+    // OccurrenceResource r = (OccurrenceResource) resource;
+    // occResourceManager.save(r);
     // resource.getExtensionMappingsMap().clear();
-    Request<OccurrenceResource> req = Request.with(targetFile, r);
-    Response<OccurrenceResource> res = archiveUtil.init(req).process();
-    resource = res.getResource();
-    occResourceManager.save((OccurrenceResource) resource);
+    resourceManager.save(resource);
+
+    boolean success = false;
+    if (resource instanceof OccurrenceResource) {
+      Request<OccurrenceResource> req = Request.with(targetFile,
+          (OccurrenceResource) resource);
+      Response<OccurrenceResource> res = occResourceArchiveUtil.init(req).process();
+      resource = res.getResource();
+      occResourceManager.save((OccurrenceResource) resource);
+      success = res.isSuccess();
+      for (String msg : res.getMessages()) {
+        saveMessage(msg);
+      }
+    } else if (resource instanceof ChecklistResource) {
+      Request<ChecklistResource> req = Request.with(targetFile,
+          (ChecklistResource) resource);
+      Response<ChecklistResource> res = checklistResourceArchiveUtil.init(req).process();
+      resource = res.getResource();
+      checklistResourceManager.save((ChecklistResource) resource);
+      success = res.isSuccess();
+      for (String msg : res.getMessages()) {
+        saveMessage(msg);
+      }
+    }
     eml = getEmlIfExists(targetFile.getParentFile());
     if (eml != null) {
       eml.setResource(resource);
       emlManager.serialize(eml);
+      saveMessage("Loaded existing metadtaa from eml.xml in the archive.");
+    } else {
+      saveMessage("No existing metadata found in the archive.");
     }
 
+    if (success) {
+      return SUCCESS;
+    } else if (!success && eml != null) {
+      return SUCCESS;
+    } else {
+      return ERROR;
+    }
     // // Creates a resource archive from the uploaded file:
     // File location = targetFile;
     // ResourceArchive archive = null;
@@ -504,7 +538,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     // // Binds the resource with the archive:
     // resource = resourceArchiveService.bind(resource, archive);
     // resourceManager.save(resource);
-    return SUCCESS;
+    // return SUCCESS;
   }
 
   public void validateUpload() {

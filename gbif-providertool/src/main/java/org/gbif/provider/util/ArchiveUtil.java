@@ -32,6 +32,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.file.CompressionUtil;
+import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionMapping;
@@ -40,6 +41,7 @@ import org.gbif.provider.model.OccurrenceResource;
 import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.SourceFile;
+import org.gbif.provider.service.ChecklistResourceManager;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ExtensionPropertyManager;
 import org.gbif.provider.service.GenericManager;
@@ -99,10 +101,12 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   public static class Response<T> {
     private final T resource;
     private final ImmutableSet<String> messages;
+    private final boolean success;
 
-    private Response(T resource, ImmutableSet<String> messages) {
+    private Response(T resource, ImmutableSet<String> messages, boolean success) {
       this.resource = resource;
       this.messages = messages;
+      this.success = success;
     }
 
     public ImmutableSet<String> getMessages() {
@@ -111,6 +115,10 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
     public T getResource() {
       return resource;
+    }
+
+    public boolean isSuccess() {
+      return success;
     }
 
   }
@@ -130,9 +138,14 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     Extension extension;
     ExtensionMapping mapping;
     SourceFile sourceFile;
+    ImmutableSet.Builder<String> msgBuilder = ImmutableSet.builder();
 
     private CoreStateMachine(ArchiveFile core) {
       this.core = core;
+    }
+
+    ImmutableSet<String> getMessages() {
+      return msgBuilder.build();
     }
 
     ImmutableMap<SourceFile, ExtensionMapping> process()
@@ -164,20 +177,42 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               }
               if (extension == null) {
                 String msg = String.format(
-                    "Unrecognized rowType %s (skipping)", rowType);
+                    "Unable to process archive %s: Unrecognized core rowType %s for file %s. Check that the extension is installed.",
+                    request.location.getName(), rowType, new File(
+                        core.getLocation()).getName());
                 log.warn(msg);
+                msgBuilder.add(msg);
                 haltOnIllegalState(msg);
               }
+              if (extension.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)
+                  && !(request.resource instanceof OccurrenceResource)) {
+                String msg = "Unable to process archive because it represents an OccurrenceResource but you are creating a "
+                    + request.resource.getClass().getSimpleName();
+                msgBuilder.add(msg);
+                haltOnIllegalState(msg);
+              }
+              if (!extension.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)
+                  && (request.resource instanceof OccurrenceResource)) {
+                String msg = String.format(
+                    "Unable to process archive %s because it doesn't represent an OccurrenceResource but the rowType is %s",
+                    request.resource.getClass().getSimpleName(), rowType);
+                msgBuilder.add(msg);
+                haltOnIllegalState(msg);
+              }
+              msgBuilder.add(String.format("Processed %s with core rowType %s",
+                  new File(core.getLocation()).getName(), rowType));
               state = Core.HAS_EXTENSION;
               break;
 
+            // TODO: handle checklist.
             case HAS_EXTENSION:
               mapping = ExtensionMapping.with(extension);
-              if (!(request.resource instanceof OccurrenceResource)) {
-                String msg = "Tried to upload an occurrence archive to a "
-                    + request.resource.getClass().getSimpleName();
-                haltOnIllegalState(msg);
-              }
+              // if (!(request.resource instanceof OccurrenceResource)) {
+              // String msg = "Tried to upload an occurrence archive to a "
+              // + request.resource.getClass().getSimpleName();
+              // msgBuilder.add(msg);
+              // haltOnIllegalState(msg);
+              // }
               boolean hasFields = hasFields();
               boolean hasHeader = hasHeader(core);
               if (!hasFields && hasHeader) {
@@ -202,13 +237,17 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
                 field = entry.getValue();
 
                 if (concept == null || field == null) {
-                  log.warn("ConceptTerm or ArchiveField is null in "
-                      + core.getLocation());
+                  String msg = "Warning: ConceptTerm or ArchiveField is null in "
+                      + core.getLocation();
+                  log.warn(msg);
+                  msgBuilder.add(msg);
                   continue;
                 }
                 if (concept.qualifiedName() == null) {
-                  log.warn("ConceptTerm.qualifiedName is null in "
-                      + concept.simpleName());
+                  String msg = "Warning: ConceptTerm.qualifiedName is null in "
+                      + concept.simpleName();
+                  log.warn(msg);
+                  msgBuilder.add(msg);
                   continue;
                 }
 
@@ -216,8 +255,10 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
                 ep = extensionPropertyManager.getProperty(extension,
                     concept.qualifiedName());
                 if (ep == null) {
-                  log.warn("Unsupported ExtensionProperty: "
-                      + concept.qualifiedName());
+                  String msg = "Warning: Unsupported ExtensionProperty: "
+                      + concept.qualifiedName();
+                  log.warn(msg);
+                  msgBuilder.add(msg);
                   continue;
                 }
                 extension.addProperty(ep);
@@ -231,7 +272,10 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
                   try {
                     conceptName = getHeader(core).get(field.getIndex());
                   } catch (Exception e) {
-                    log.warn("Unable to determine concept name for " + field);
+                    String msg = "Warning: Unable to determine concept name for "
+                        + field;
+                    log.warn(msg);
+                    msgBuilder.add(msg);
                     continue;
                   }
                 }
@@ -250,6 +294,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               }
               if (request.resource instanceof OccurrenceResource) {
                 saveOccurrenceResourceExtensionMappings();
+              } else if (request.resource instanceof ChecklistResource) {
+                saveChecklistResourceExtensionMappings();
               }
               state = Core.DONE;
               break;
@@ -266,13 +312,14 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               buildExtensionMappings();
               if (request.resource instanceof OccurrenceResource) {
                 saveOccurrenceResourceExtensionMappings();
+              } else if (request.resource instanceof ChecklistResource) {
+                saveChecklistResourceExtensionMappings();
               }
               state = Core.DONE;
               break;
           }
         }
       } catch (Exception e) {
-        e.printStackTrace();
         String msg = "Unable to process core: " + e.toString();
         haltOnIllegalState(msg);
       }
@@ -293,7 +340,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         ep = epManager.getPropertyByName(extension, concept);
         // TODO: Confirm that we skip this extension property:
         if (ep == null) {
-          log.warn("No extension property found for extension "
+          log.warn("Warning: No extension property found for extension "
               + extension.getName() + " with property name " + concept);
           continue;
         }
@@ -322,7 +369,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     }
 
     private void haltOnIllegalState(String msg) {
-      log.error(msg);
+      String error = "Unable to process archive: " + msg;
+      log.error(error);
       throw new IllegalStateException(msg);
     }
 
@@ -348,7 +396,7 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
     }
 
     /**
-     * @param core
+     * @param extensionArchiveFile
      * @return boolean
      */
     private boolean hasIdIndex() {
@@ -358,6 +406,30 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
     private boolean hasRowType() {
       return rowType != null && rowType.trim().length() > 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void saveChecklistResourceExtensionMappings() throws IOException {
+      // Save resource:
+      ChecklistResource r = (ChecklistResource) request.resource;
+      checklistResourceManager.save(r);
+
+      // Save source file:
+      SourceFile source = getSourceFile(core);
+
+      // Save mapping:
+      mapping.setResource(r);
+      mapping.setSource(source);
+      r.addExtensionMapping(mapping);
+      extensionMappingManager.save(mapping);
+      for (PropertyMapping p : mapping.getPropertyMappingsSorted()) {
+        extensionPropertyManager.save(p.getProperty());
+        propertyMappingManager.save(p);
+      }
+      extensionMappingManager.save(mapping);
+      checklistResourceManager.save(r);
+
+      request.resource = (T) r;
     }
 
     @SuppressWarnings("unchecked")
@@ -384,6 +456,320 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
       request.resource = (T) r;
     }
   }
+
+  private static enum ExtensionState {
+    NO_ROW_TYPE, HAS_ROW_TYPE, NO_FIELDS, HAS_EXTENSION, NO_FIELDS_NO_HEADER, NO_FIELDS_HAS_HEADER, HAS_FIELDS, NO_ID, HAS_ID, INVALID, DONE, CREATE_PROPERTY_MAPPINGS, INITIAL, SAVE, HAS_FIELDS_HAS_HEADER, HAS_FIELDS_NO_HEADER;
+  }
+
+  private class ExtensionStateMachine {
+    ExtensionState state = ExtensionState.INITIAL;
+    ArchiveFile extensionArchiveFile;
+    String rowType;
+    Extension extension;
+    ExtensionMapping mapping;
+    SourceFile sourceFile;
+    ImmutableSet.Builder<String> msgBuilder = ImmutableSet.builder();
+
+    private ExtensionStateMachine(ArchiveFile extensionArchiveFile) {
+      this.extensionArchiveFile = extensionArchiveFile;
+    }
+
+    ImmutableSet<String> getMessages() {
+      return msgBuilder.build();
+    }
+
+    ImmutableMap<SourceFile, ExtensionMapping> process()
+        throws IllegalStateException {
+      try {
+        sourceFile = getSourceFile(extensionArchiveFile);
+        while (state != ExtensionState.DONE) {
+          switch (state) {
+
+            case INITIAL:
+              rowType = extensionArchiveFile.getRowType();
+              state = hasRowType() ? ExtensionState.HAS_ROW_TYPE
+                  : ExtensionState.NO_ROW_TYPE;
+              break;
+
+            case NO_ROW_TYPE:
+              String msg = "Archive file didn't have a rowType: "
+                  + extensionArchiveFile.getLocation();
+              log.warn(msg);
+              msgBuilder.add(msg);
+              state = ExtensionState.DONE;
+              break;
+
+            case HAS_ROW_TYPE:
+              try {
+                extension = extensionManager.getExtensionByRowType(rowType);
+              } catch (NonUniqueResultException e) {
+              }
+              if (extension == null) {
+                msg = String.format(
+                    "Unrecognized rowType %s for archive file %s", rowType,
+                    new File(extensionArchiveFile.getLocation()).getName());
+                log.warn(msg);
+                msgBuilder.add(msg);
+                state = ExtensionState.DONE;
+                break;
+              }
+              state = ExtensionState.HAS_EXTENSION;
+              msgBuilder.add(String.format("Processed %s with extension %s",
+                  new File(extensionArchiveFile.getLocation()).getName(),
+                  rowType));
+              break;
+
+            case HAS_EXTENSION:
+              mapping = ExtensionMapping.with(extension);
+              boolean hasFields = hasFields();
+              boolean hasHeader = hasHeader(extensionArchiveFile);
+              if (!hasFields && hasHeader) {
+                state = ExtensionState.NO_FIELDS_HAS_HEADER;
+              } else if (!hasFields && !hasHeader) {
+                state = ExtensionState.NO_FIELDS_NO_HEADER;
+              } else if (hasFields && hasHeader) {
+                state = ExtensionState.HAS_FIELDS_HAS_HEADER;
+              } else {
+                state = ExtensionState.HAS_FIELDS_NO_HEADER;
+              }
+              break;
+
+            case HAS_FIELDS_HAS_HEADER:
+              ExtensionProperty ep = null;
+              PropertyMapping pm;
+              ConceptTerm concept;
+              ArchiveField field;
+              String conceptName = null;
+              for (Entry<ConceptTerm, ArchiveField> entry : extensionArchiveFile.getFields().entrySet()) {
+                concept = entry.getKey();
+                field = entry.getValue();
+
+                if (concept == null || field == null) {
+                  msg = "Warning: ConceptTerm or ArchiveField is null in "
+                      + extensionArchiveFile.getLocation();
+                  log.warn(msg);
+                  msgBuilder.add(msg);
+                  continue;
+                }
+                if (concept.qualifiedName() == null) {
+                  msg = "Warning: ConceptTerm.qualifiedName is null in "
+                      + concept.simpleName();
+                  log.warn(msg);
+                  msgBuilder.add(msg);
+                  continue;
+                }
+
+                // Looks up an existing extension property:
+                ep = extensionPropertyManager.getProperty(extension,
+                    concept.qualifiedName());
+                if (ep == null) {
+                  msg = "Warning: Unsupported ExtensionProperty: "
+                      + concept.qualifiedName();
+                  log.warn(msg);
+                  msgBuilder.add(msg);
+                  continue;
+                }
+                extension.addProperty(ep);
+
+                // Static mapping:
+                if (field.getIndex() == null) {
+                  if (field.getDefaultValue() != null) {
+                    conceptName = field.getDefaultValue();
+                  }
+                } else {
+                  try {
+                    conceptName = getHeader(extensionArchiveFile).get(
+                        field.getIndex());
+                  } catch (Exception e) {
+                    msg = "Warning: Unable to determine concept name for "
+                        + field;
+                    log.warn(msg);
+                    msgBuilder.add(msg);
+                    continue;
+                  }
+                }
+
+                pm = PropertyMapping.with(ep, conceptName, "");
+                pm.setProperty(ep);
+                pm.setViewMapping(mapping);
+                mapping.addPropertyMapping(pm);
+
+                // TODO: Confirm this is correct:
+                if (hasIdIndex()) {
+                  mapping.setCoreIdColumn(getHeader(extensionArchiveFile).get(
+                      getIdIndex(extensionArchiveFile)));
+                } else {
+                  mapping.setCoreIdColumn(getHeader(extensionArchiveFile).get(0));
+                }
+              }
+              if (request.resource instanceof OccurrenceResource) {
+                saveOccurrenceResourceExtensionMappings();
+              }
+              state = ExtensionState.DONE;
+              break;
+
+            case NO_FIELDS_NO_HEADER:
+              // TODO: How to handle index (<core index=0) here?
+              if (request.resource instanceof OccurrenceResource) {
+                saveOccurrenceResourceExtensionMappings();
+              } else if (request.resource instanceof ChecklistResource) {
+                saveChecklistResourceExtensionMappings();
+              }
+              state = ExtensionState.DONE;
+              break;
+
+            case NO_FIELDS_HAS_HEADER:
+              buildExtensionMappings();
+              if (request.resource instanceof OccurrenceResource) {
+                saveOccurrenceResourceExtensionMappings();
+              } else if (request.resource instanceof ChecklistResource) {
+                saveChecklistResourceExtensionMappings();
+              }
+              state = ExtensionState.DONE;
+              break;
+          }
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        String msg = "Unable to process core: " + e.toString();
+        haltOnIllegalState(msg);
+      }
+      return ImmutableMap.of(sourceFile, mapping);
+    }
+
+    /**
+     * 
+     * void
+     * 
+     * @throws IOException
+     */
+    private void buildExtensionMappings() throws IOException {
+      List<String> header = getHeader(extensionArchiveFile);
+      ExtensionProperty ep;
+      PropertyMapping pm;
+      for (String concept : header) {
+        ep = epManager.getPropertyByName(extension, concept);
+        // TODO: Confirm that we skip this extension property:
+        if (ep == null) {
+          log.warn("No extension property found for extension "
+              + extension.getName() + " with property name " + concept);
+          continue;
+        }
+        extension.addProperty(ep);
+        // TODO: Confirm that this default value is correct:
+        String defaultValue = "";
+        pm = PropertyMapping.with(ep, concept, defaultValue);
+        pm.setProperty(ep);
+        pm.setViewMapping(mapping);
+        mapping.addPropertyMapping(pm);
+        // TODO: Confirm this is correct:
+        if (hasIdIndex()) {
+          mapping.setCoreIdColumn(header.get(getIdIndex(extensionArchiveFile)));
+        } else {
+          mapping.setCoreIdColumn(getHeader(extensionArchiveFile).get(0));
+        }
+      }
+    }
+
+    private Integer getIdIndex(ArchiveFile core) {
+      if (hasIdIndex()) {
+        return core.getId().getIndex();
+      }
+      log.warn("Returning a null core id index");
+      return null;
+    }
+
+    private void haltOnIllegalState(String msg) {
+      log.error("Unable to process archive: " + msg);
+      throw new IllegalStateException(msg);
+    }
+
+    private boolean hasFields() {
+      return extensionArchiveFile.getFields() != null
+          && !extensionArchiveFile.getFields().isEmpty();
+    }
+
+    /**
+     * In a metafile, the ignoreHeaderLines property of <core> specifies the
+     * number lines to ignore from the beginning of the file. So if it's zero,
+     * that means there are no lines to ignore and we don't have a header. The
+     * default value is zero, so if it's null then we also don't have a header.
+     * 
+     * TODO: What if it's greater than 1?
+     * 
+     * @param core
+     * @return boolean
+     */
+    private boolean hasHeader(ArchiveFile core) {
+      Integer ignoreHeaderLine = core.getIgnoreHeaderLines();
+      boolean result = ignoreHeaderLine == null ? false : ignoreHeaderLine == 1;
+      return result;
+    }
+
+    /**
+     * @param extensionArchiveFile
+     * @return boolean
+     */
+    private boolean hasIdIndex() {
+      ArchiveField coreId = extensionArchiveFile.getId();
+      return coreId != null && coreId.getIndex() != null;
+    }
+
+    private boolean hasRowType() {
+      return rowType != null && rowType.trim().length() > 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void saveChecklistResourceExtensionMappings() throws IOException {
+      // Save resource:
+      ChecklistResource r = (ChecklistResource) request.resource;
+      checklistResourceManager.save(r);
+
+      // Save source file:
+      SourceFile source = getSourceFile(extensionArchiveFile);
+
+      // Save mapping:
+      mapping.setResource(r);
+      mapping.setSource(source);
+      r.addExtensionMapping(mapping);
+      extensionMappingManager.save(mapping);
+      for (PropertyMapping p : mapping.getPropertyMappingsSorted()) {
+        extensionPropertyManager.save(p.getProperty());
+        propertyMappingManager.save(p);
+      }
+      extensionMappingManager.save(mapping);
+      checklistResourceManager.save(r);
+
+      request.resource = (T) r;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void saveOccurrenceResourceExtensionMappings() throws IOException {
+      // Save resource:
+      OccurrenceResource r = (OccurrenceResource) request.resource;
+      occResourceManager.save(r);
+
+      // Save source file:
+      SourceFile source = getSourceFile(extensionArchiveFile);
+
+      // Save mapping:
+      mapping.setResource(r);
+      mapping.setSource(source);
+      r.addExtensionMapping(mapping);
+      extensionMappingManager.save(mapping);
+      for (PropertyMapping p : mapping.getPropertyMappingsSorted()) {
+        extensionPropertyManager.save(p.getProperty());
+        propertyMappingManager.save(p);
+      }
+      extensionMappingManager.save(mapping);
+      occResourceManager.save(r);
+
+      request.resource = (T) r;
+    }
+  }
+
+  @Autowired
+  private ChecklistResourceManager checklistResourceManager;
 
   @Autowired
   private OccResourceManager occResourceManager;
@@ -535,14 +921,35 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
       File archiveLocation = expandIfCompressed(request.location);
       archive = ArchiveFactory.openArchive(archiveLocation, true);
       if (archive == null) {
+        // TODO: check for EML only or multiple data files.
         throw new UnsupportedArchiveException("Archive is null");
       }
     } catch (UnsupportedArchiveException e) {
-      return new Response<T>(request.resource, ImmutableSet.of(e.toString()));
+      return new Response<T>(request.resource, ImmutableSet.of(e.toString()),
+          false);
     } catch (IOException e) {
-      return new Response<T>(request.resource, ImmutableSet.of(e.toString()));
+      return new Response<T>(request.resource, ImmutableSet.of(e.toString()),
+          false);
     }
-    new CoreStateMachine(archive.getCore()).process();
-    return new Response<T>(request.resource, ImmutableSet.of("Success!"));
+    ImmutableSet.Builder<String> messages = ImmutableSet.builder();
+    CoreStateMachine coreFsm = new CoreStateMachine(archive.getCore());
+    try {
+      coreFsm.process();
+    } catch (Exception e) {
+      return new Response<T>(request.resource, coreFsm.getMessages(), false);
+    }
+    messages.addAll(coreFsm.getMessages());
+    ExtensionStateMachine extensionFsm;
+    for (ArchiveFile extension : archive.getExtensions()) {
+      extensionFsm = new ExtensionStateMachine(extension);
+      try {
+        extensionFsm.process();
+      } catch (Exception e) {
+        return new Response<T>(request.resource, extensionFsm.getMessages(),
+            false);
+      }
+      messages.addAll(extensionFsm.getMessages());
+    }
+    return new Response<T>(request.resource, messages.build(), true);
   }
 }
