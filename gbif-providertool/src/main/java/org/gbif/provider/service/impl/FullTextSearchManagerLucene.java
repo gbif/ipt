@@ -142,7 +142,9 @@ public class FullTextSearchManagerLucene implements FullTextSearchManager {
       File eml = cfg.getEmlFile(resourceId);
       log.info("Building resource metadata text index for resource["
           + resourceId + "]");
-      getSAXParser().parse(eml, handler);
+      if(eml.canRead() == true){
+        getSAXParser().parse(eml, handler);
+      }
       // make sure lucene writer is open. Reuse existing one if kept open
       openWriter();
       // if resource was indexed before remove the existing index document
