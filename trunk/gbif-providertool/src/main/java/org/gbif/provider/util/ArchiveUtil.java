@@ -167,7 +167,9 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
             case HAS_ROW_TYPE:
               if (rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord")
-                  || rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/Occurrence")) {
+                  || rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/Occurrence")
+                  || rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/Taxon")
+                  || rowType.equalsIgnoreCase("http://rs.tdwg.org/dwc/terms/DarwinCore")) {
                 extension = extensionManager.get(Constants.DARWIN_CORE_EXTENSION_ID);
               } else {
                 try {
@@ -185,8 +187,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
                 haltOnIllegalState(msg);
               }
               if (extension.getId().equals(Constants.DARWIN_CORE_EXTENSION_ID)
-                  && !(request.resource instanceof OccurrenceResource)) {
-                String msg = "Unable to process archive because it represents an OccurrenceResource but you are creating a "
+                  && (!((request.resource instanceof OccurrenceResource)||(request.resource instanceof ChecklistResource)))) {
+                String msg = "Unable to process archive because it does not represent a "
                     + request.resource.getClass().getSimpleName();
                 msgBuilder.add(msg);
                 haltOnIllegalState(msg);
