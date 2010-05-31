@@ -49,7 +49,6 @@ google.load("jquery", "1.4.2");
 function HideAgentClone() {
   $('#removeLink').hide();
   $('#cloneAgent').hide();
-  $('#countrySelectClone').hide();
 }
   
 function GetAgents() {
@@ -75,19 +74,6 @@ function GetAgents() {
   return agents;
 }
 
-// var countriesSelect;
-
-/**
- * Loads countries asynchronously.
- */
-function LoadCountriesAsync(callback) {
-  var url = '/ajax/vocSelect.html';
-  // load country codes
-  params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
-  id = "countrySelectClone";
-  ajaxSelectVocabulary(url, id, params, callback);
-}
-
 <!-- Turn off agent properties not used for AssociatedParties -->
 function HideUnusedDivs(){
   $('#positionDiv').hide();
@@ -101,10 +87,9 @@ function HideUnusedDivs(){
   $('#countryDiv').hide();
 }
 
-function OnLoad() {
-  HideUnusedDivs();
-  HideAgentClone();
-  LoadCountriesAsync(function() {
+  function OnLoad() {
+    HideUnusedDivs();
+    HideAgentClone();
     var agentPanel = new AgentPanel();
     var agentWidget;
     $('#plus').click(function() {
@@ -115,27 +100,25 @@ function OnLoad() {
       agentWidget = new AgentWidget(agents[agent]);
       agentPanel.add(agentWidget);
     }
-  });
-}
+  }
 
-google.setOnLoadCallback(OnLoad);
+  google.setOnLoadCallback(OnLoad);
 
 //]]>
 
-</script>
-  
-<style>
-  #btnResend {
-    position: relative;
-    left: 4px;
-  #nodeLoading {
-    position: relative;
-    bottom: 26px;
-    left: 12px;
-  }
-</style>
-
+  </script>
+    <style>
+    #btnResend {
+      position: relative;
+      left: 4px;
+    #nodeLoading {
+      position: relative;
+      bottom: 26px;
+      left: 12px;
+    }
+  </style>
 </head>
+
 <p class="explMt"><@s.text name='metadata.description.associatedParties'/></p>
 
 <@s.form id="emlForm" action="associatedParties" enctype="multipart/form-data" 
@@ -152,10 +135,6 @@ google.setOnLoadCallback(OnLoad);
   <!-- The cloneAgent DIV is not attached to the DOM. It's used as a template
        for cloning agent UI widgets. 
   -->
-		<div id="countrySelectClone" class="leftxhalf">
-			<@s.select id="countrySelect" key="eml.resourceCreator.address.country" list="{'${(eml.getResourceCreator().address.country)!}'}" required="true" cssClass="text xhalf"/>
-		</div>
-
   <div id="cloneAgent">
     <div id="separator" class="horizontal_dotted_line_large_foo"></div>
     <div class="newline"></div>
