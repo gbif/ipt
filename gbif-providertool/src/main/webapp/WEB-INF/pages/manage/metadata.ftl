@@ -166,7 +166,7 @@
   <div class="newline"></div>
 
 <div class="newline">
-  <@s.textarea id="abstract" key="eml.resource.meta.description" required="true" 
+  <@s.textarea id="abstract" key="resource.description" required="true" 
     cssClass="text xlarge"/>
 </div>
 <div class="newline"></div>
