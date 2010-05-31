@@ -309,6 +309,9 @@
 <div class="breakLeftButtons">
   <@s.submit cssClass="button" key="button.cancel" method="cancel" theme="simple"/>
   <@s.submit cssClass="button" key="button.save" name="next" theme="simple"/>
+  <#if resource.id??>
+    <@s.submit cssClass="button" method="delete" key="button.delete" onclick="return confirmDelete('resource')" theme="simple"/>
+  </#if>
 </div>
 
 </fieldset>

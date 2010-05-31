@@ -148,7 +148,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     if (resource == null) {
       return RESOURCE404;
     } else if (resourceType != null) {
-      // remove resource with appropiate manager
+      // remove resource with appropriate manager
       getResourceTypeMatchingManager().remove(resource.getId());
       log.debug("Resource deleted");
       saveMessage(getText("resource.deleted"));
@@ -443,7 +443,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       resourceManager.save(resource);
     }
 
-    // Receives the uploaded file and save it to disk:
+    // Receives the uploaded file and saves it to disk:
     File targetFile = cfg.getSourceFile(resource.getId(), fileFileName);
     log.debug(String.format("Uploading source file for resource %s to file %s",
         resource.getId(), targetFile.getAbsolutePath()));
