@@ -488,7 +488,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     if (eml != null) {
       eml.setResource(resource);
       emlManager.serialize(eml);
-      saveMessage("Loaded existing metadtaa from eml.xml in the archive.");
+      saveMessage("Loaded existing metadata from eml.xml in the archive.");
     } else {
       saveMessage("No existing metadata found in the archive.");
     }
