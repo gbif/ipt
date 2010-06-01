@@ -41,8 +41,8 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.ArchiveUtil;
 import org.gbif.provider.util.Constants;
 import org.gbif.provider.util.ResizeImage;
-import org.gbif.provider.util.ArchiveUtil.Request;
-import org.gbif.provider.util.ArchiveUtil.Response;
+import org.gbif.provider.util.ArchiveUtil.ArchiveRequest;
+import org.gbif.provider.util.ArchiveUtil.ArchiveResponse;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
@@ -293,7 +293,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         resource = resourceFactory.newMetadataResourceInstance();
       }
     }
-    if (resource != null && eml == null) {
+    if (resource != null) {
       eml = emlManager.deserialize(resource);
       if (eml == null) {
         eml = new Eml();
@@ -301,11 +301,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       }
       // Some properties in resource are the same as what's required in eml, so
       // we copy them over here:
-      // eml.setTitle(resource.getTitle());
-      // eml.setAlternateIdentifier(resource.getGuid());
+      eml.setTitle(resource.getTitle());
+      eml.setAlternateIdentifier(resource.getGuid());
       // emlManager.save(eml);
     }
-
   }
 
   public String publish() {
@@ -464,9 +463,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
 
     boolean success = false;
     if (resource instanceof OccurrenceResource) {
-      Request<OccurrenceResource> req = Request.with(targetFile,
+      ArchiveRequest<OccurrenceResource> req = ArchiveRequest.with(targetFile,
           (OccurrenceResource) resource);
-      Response<OccurrenceResource> res = occResourceArchiveUtil.init(req).process();
+      ArchiveResponse<OccurrenceResource> res = occResourceArchiveUtil.init(req).process();
       resource = res.getResource();
       occResourceManager.save((OccurrenceResource) resource);
       success = res.isSuccess();
@@ -474,9 +473,10 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         saveMessage(msg);
       }
     } else if (resource instanceof ChecklistResource) {
-      Request<ChecklistResource> req = Request.with(targetFile,
+      ArchiveRequest<ChecklistResource> req = ArchiveRequest.with(targetFile,
           (ChecklistResource) resource);
-      Response<ChecklistResource> res = checklistResourceArchiveUtil.init(req).process();
+      ArchiveResponse<ChecklistResource> res = checklistResourceArchiveUtil.init(
+          req).process();
       resource = res.getResource();
       checklistResourceManager.save((ChecklistResource) resource);
       success = res.isSuccess();
@@ -500,45 +500,6 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     } else {
       return ERROR;
     }
-    // // Creates a resource archive from the uploaded file:
-    // File location = targetFile;
-    // ResourceArchive archive = null;
-    // String errorMsg = null;
-    //
-    // try {
-    // archive = resourceArchiveService.openArchive(location, resource, true);
-    // } catch (Exception e) {
-    // errorMsg = "Unable to process the archive: " + e.toString();
-    // }
-    // if (archive == null) {
-    // saveMessage(errorMsg == null ? "Unable to process the archive" :
-    // errorMsg);
-    // // resourceManager.remove(resource);
-    // return ERROR;
-    // }
-    //
-    // switch (archive.getType()) {
-    // case OCCURRENCE:
-    // if (!(resource instanceof OccurrenceResource)) {
-    // saveMessage("Wrong type of archive.");
-    // return ERROR;
-    // }
-    // break;
-    // case CHECKLIST:
-    // if (!(resource instanceof ChecklistResource)) {
-    // saveMessage("Wrong type of archive.");
-    // return ERROR;
-    // }
-    // break;
-    // case METADATA:
-    // break;
-    // }
-    // // Eml now comes from the archive:
-    // eml = archive.getEml();
-    // // Binds the resource with the archive:
-    // resource = resourceArchiveService.bind(resource, archive);
-    // resourceManager.save(resource);
-    // return SUCCESS;
   }
 
   public void validateUpload() {
