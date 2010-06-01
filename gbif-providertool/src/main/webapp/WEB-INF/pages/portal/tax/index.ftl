@@ -1,5 +1,5 @@
 <head>
-    <title><@s.text name="occResource.overview"/></title>
+    <title><@s.text name="taxResource.overview"/></title>
     <meta name="resource" content="${resource.title}"/>
     <meta name="menu" content="ExplorerMenu"/>
     <meta name="submenu" content="tax"/>    
@@ -94,7 +94,7 @@
 	<label><@s.text name="stats.taxStats"/></label>
 	<table class="lefthead">
 		<tr>
-			<td><@s.text name='occ.index.distinctnames'/></td>
+			<td><@s.text name='tax.index.distinctnames'/></td>
 			<td>${numTaxa}</td>
 		</tr>
 		<tr>
@@ -102,11 +102,11 @@
 			<td>${numTerminalTaxa}</td>
 		</tr>
 		<tr>
-			<td><@s.text name='occ.index.acceptedtaxa'/></td>
+			<td><@s.text name='tax.index.acceptedtaxa'/></td>
 			<td>${numAccepted}</td>
 		</tr>
 		<tr>
-			<td><@s.text name='occ.index.othernames'/></td>
+			<td><@s.text name='tax.index.othernames'/></td>
 			<td>${numSynonyms}</td>
 		</tr>
 	</table>
@@ -116,7 +116,7 @@
 	<label><@s.text name="stats.taxStats"/></label>
 	<table class="lefthead">
 		<tr>
-			<td><@s.text name='occ.index.kingdoms'/></td>
+			<td><@s.text name='tax.index.kingdoms'/></td>
 			<td>${numKingdoms}</td>
 		</tr>
 		<tr>
