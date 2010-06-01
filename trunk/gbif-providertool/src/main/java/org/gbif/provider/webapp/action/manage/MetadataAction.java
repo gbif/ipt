@@ -312,6 +312,14 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     // publish only when POSTed, not with ordinary GET
     if (request.getMethod().equalsIgnoreCase("post")) {
       Resource res = getResourceTypeMatchingManager().publish(resourceId);
+      if (eml == null && res != null) {
+        eml = emlManager.deserialize(res);
+      }
+      try {
+        emlManager.toXmlFile(eml);
+      } catch (IOException e) {
+        saveMessage("Unable to create new eml.xml file");
+      }
       if (res == null) {
         return RESOURCE404;
       }
