@@ -310,16 +310,21 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   public String publish() {
     log.info("Publish method called");
     // publish only when POSTed, not with ordinary GET
+    if (resource == null) {
+      resource = getResourceTypeMatchingManager().get(resourceId);
+    }
     if (request.getMethod().equalsIgnoreCase("post")) {
-      Resource res = getResourceTypeMatchingManager().publish(resourceId);
-      if (eml == null && res != null) {
-        eml = emlManager.deserialize(res);
+      if (eml == null && resource != null) {
+        eml = emlManager.deserialize(resource);
       }
       try {
         emlManager.toXmlFile(eml);
+        saveMessage("Created new eml.xml file: "
+            + cfg.getEmlFile(resource.getId()));
       } catch (IOException e) {
         saveMessage("Unable to create new eml.xml file");
       }
+      Resource res = getResourceTypeMatchingManager().publish(resourceId);
       if (res == null) {
         return RESOURCE404;
       }
