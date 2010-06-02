@@ -20,8 +20,9 @@ import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.ResourceArchiveManager;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
-import org.gbif.provider.util.ArchiveUtil.Request;
-import org.gbif.provider.util.ArchiveUtil.Response;
+import org.gbif.provider.service.SourceInspectionManager.HeaderSpec;
+import org.gbif.provider.util.ArchiveUtil.ArchiveRequest;
+import org.gbif.provider.util.ArchiveUtil.ArchiveResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -83,8 +84,9 @@ public class ArchiveUtilTest extends ResourceTestBase {
     OccurrenceResource resource = new OccurrenceResource();
     occResourceManager.save(resource);
     resource.getExtensionMappingsMap().clear();
-    Request<OccurrenceResource> request = Request.with(archive, resource);
-    Response<OccurrenceResource> response = archiveUtil.init(request).process();
+    ArchiveRequest<OccurrenceResource> request = ArchiveRequest.with(archive,
+        resource);
+    ArchiveResponse<OccurrenceResource> response = archiveUtil.init(request).process();
     resource = response.getResource();
 
     assertNotNull(resource);
@@ -129,9 +131,8 @@ public class ArchiveUtilTest extends ResourceTestBase {
 
   @Test
   public void testHeader() throws IOException {
-    File file;
-    Charset encoding;
-    char separator;
+    // final File file;
+    final Charset encoding;
     ImmutableList<String> expectedHeader;
     ImmutableList<String> header;
     String path = "dwc-archives/unit-testing/headers/";
@@ -139,21 +140,174 @@ public class ArchiveUtilTest extends ResourceTestBase {
         "Latitude", "Longitude");
     encoding = Charsets.UTF_8;
 
-    separator = '\t';
     for (String name : Lists.newArrayList("header-tab.txt",
         "header-tab-quotes.txt")) {
-      file = FileUtils.getClasspathFile(path + name);
-      header = sourceInspector.getHeader(file, encoding, separator);
+      final File file = FileUtils.getClasspathFile(path + name);
+      final char separator = '\t';
+      HeaderSpec spec = new HeaderSpec() {
+        public char getFieldSeparatorChar() {
+          return separator;
+        }
+
+        public File getFile() {
+          return file;
+        }
+
+        public Charset getFileEncoding() {
+          return encoding;
+        }
+
+        public int getNumberOfLinesToSkip() {
+          return 1;
+        }
+
+        public boolean headerExists() {
+          return true;
+        }
+      };
+
+      header = sourceInspector.getHeader(spec);
       assertEquals(expectedHeader, header);
     }
 
-    separator = ',';
+    for (String name : Lists.newArrayList("occurrencesNoHeader.txt")) {
+      final File file = FileUtils.getClasspathFile(path + name);
+      final char separator = '\t';
+      HeaderSpec spec = new HeaderSpec() {
+        public char getFieldSeparatorChar() {
+          return separator;
+        }
+
+        public File getFile() {
+          return file;
+        }
+
+        public Charset getFileEncoding() {
+          return encoding;
+        }
+
+        public int getNumberOfLinesToSkip() {
+          return 0;
+        }
+
+        public boolean headerExists() {
+          return false;
+        }
+      };
+
+      header = sourceInspector.getHeader(spec);
+      assertEquals(ImmutableList.of("Column-000 (Example value: 1)",
+          "Column-001 (Example value: Plantae)",
+          "Column-002 (Example value: Abies alba)",
+          "Column-003 (Example value: 44.5)",
+          "Column-004 (Example value: 13.3)"), header);
+    }
+
+    for (String name : Lists.newArrayList("occurrencesNoHeader.csv")) {
+      final File file = FileUtils.getClasspathFile(path + name);
+      final char separator = ',';
+      HeaderSpec spec = new HeaderSpec() {
+        public char getFieldSeparatorChar() {
+          return separator;
+        }
+
+        public File getFile() {
+          return file;
+        }
+
+        public Charset getFileEncoding() {
+          return encoding;
+        }
+
+        public int getNumberOfLinesToSkip() {
+          return 0;
+        }
+
+        public boolean headerExists() {
+          return false;
+        }
+      };
+
+      header = sourceInspector.getHeader(spec);
+      assertEquals(ImmutableList.of("Column-000 (Example value: 1)",
+          "Column-001 (Example value: Plantae)",
+          "Column-002 (Example value: Abies alba)",
+          "Column-003 (Example value: 44.5)",
+          "Column-004 (Example value: 13.3)"), header);
+    }
+
     for (String name : Lists.newArrayList("header-comma.csv",
         "header-comma-quotes.csv")) {
-      file = FileUtils.getClasspathFile(path + name);
-      header = sourceInspector.getHeader(file, encoding, separator);
+      final File file = FileUtils.getClasspathFile(path + name);
+      final char separator = ',';
+      HeaderSpec spec = new HeaderSpec() {
+        public char getFieldSeparatorChar() {
+          return separator;
+        }
+
+        public File getFile() {
+          return file;
+        }
+
+        public Charset getFileEncoding() {
+          return encoding;
+        }
+
+        public int getNumberOfLinesToSkip() {
+          return 1;
+        }
+
+        public boolean headerExists() {
+          return true;
+        }
+      };
+
+      header = sourceInspector.getHeader(spec);
       assertEquals(expectedHeader, header);
     }
+  }
+
+  @Test
+  public void testHeaderSpec() throws IOException {
+    final File file;
+    String path = "dwc-archives/unit-testing/headers/header-tab-skip-first-9-lines.txt";
+    file = FileUtils.getClasspathFile(path);
+    final Charset encoding = Charsets.UTF_8;
+    final char separator = '\t';
+    ImmutableList<String> expectedHeader = ImmutableList.of("MyLocalID",
+        "Kingdom", "Name", "Latitude", "Longitude");;
+    ImmutableList<String> header;
+
+    HeaderSpec spec = new HeaderSpec() {
+      public char getFieldSeparatorChar() {
+        return separator;
+      }
+
+      public File getFile() {
+        return file;
+      }
+
+      public Charset getFileEncoding() {
+        return encoding;
+      }
+
+      public int getNumberOfLinesToSkip() {
+        return 2;
+      }
+
+      public boolean headerExists() {
+        return true;
+      }
+    };
+
+    assertEquals(expectedHeader, sourceInspector.getHeader(spec));
+    // assertEquals(
+    // ImmutableList.of("Column-000 (Example value: 1)",
+    // "Column-001 (Example value: Plantae)",
+    // "Column-002 (Example value: Abies alba)",
+    // "Column-003 (Example value: 44.5)",
+    // "Column-004 (Example value: 13.3)"),
+    // sourceInspector.getHeader(spec));
   }
 
   @Test
@@ -192,8 +346,9 @@ public class ArchiveUtilTest extends ResourceTestBase {
     OccurrenceResource resource = new OccurrenceResource();
     occResourceManager.save(resource);
     resource.getExtensionMappingsMap().clear();
-    Request<OccurrenceResource> request = Request.with(archive, resource);
-    Response<OccurrenceResource> response = archiveUtil.init(request).process();
+    ArchiveRequest<OccurrenceResource> request = ArchiveRequest.with(archive,
+        resource);
+    ArchiveResponse<OccurrenceResource> response = archiveUtil.init(request).process();
     resource = response.getResource();
 
     assertNotNull(resource);
@@ -234,5 +389,24 @@ public class ArchiveUtilTest extends ResourceTestBase {
     assertEquals(1, sourceManager.getAll(resource.getId()).size());
 
     ram.createArchive(resource);
+  }
+
+  @Test
+  public void testSource() {
+    sourceManager.getSourceByFilename(13L, "DarwinCore.txt");
+  }
+
+  @Test
+  public void testWorm() throws IOException {
+    File archive = FileUtils.getClasspathFile("dwc-archives/unit-testing/worms.zip");
+    OccurrenceResource resource = new OccurrenceResource();
+    occResourceManager.save(resource);
+    resource.getExtensionMappingsMap().clear();
+    ArchiveRequest<OccurrenceResource> request = ArchiveRequest.with(archive,
+        resource);
+    ArchiveResponse<OccurrenceResource> response = archiveUtil.init(request).process();
+    resource = response.getResource();
+
+    assertNotNull(resource);
   }
 }

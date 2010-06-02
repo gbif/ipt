@@ -32,6 +32,45 @@ import java.util.Set;
  * 
  */
 public interface SourceInspectionManager {
+
+  /**
+   * An interface that specifies a file header.
+   */
+  public static interface HeaderSpec {
+
+    /**
+     * Returns the character that separates fields values in the header, such as
+     * ',', '\t', '|', etc.
+     */
+    char getFieldSeparatorChar();
+
+    /**
+     * Returns the file containing the specified header.
+     */
+    File getFile();
+
+    /**
+     * Returns the file character encoding.
+     */
+    Charset getFileEncoding();
+
+    /**
+     * Returns the number of lines to skip, starting with the first line. For
+     * example, if a file has a header and getNumberOfLinesToSkip is 9, then the
+     * 10th line in the file would be processed as the header line.
+     * 
+     * @return int
+     */
+    int getNumberOfLinesToSkip();
+
+    /**
+     * Returns true if a header exists in the file, and false otherwise. If a
+     * header doesn't exist, a generated header of the form Column-00i will be
+     * generated.
+     */
+    boolean headerExists();
+  }
+
   List<String> getAllTables(DataResource resource) throws SQLException;
 
   /**
@@ -46,8 +85,11 @@ public interface SourceInspectionManager {
   Set<String> getDistinctValues(SourceBase source, String column)
       throws Exception;
 
-  ImmutableList<String> getHeader(File file, Charset encoding, char separator)
-      throws IOException;
+  // ImmutableList<String> getHeader(File file, Charset encoding, char
+  // separator,
+  // boolean declaredHeader) throws IOException;
+
+  ImmutableList<String> getHeader(HeaderSpec spec) throws IOException;
 
   /**
    * @param sourceBase source either to file or SQL statement

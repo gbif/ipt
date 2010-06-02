@@ -66,12 +66,12 @@
                     </#if>
                 </span>
                 <span style="padding-left:20px"></span>
-                <@s.checkbox key="sourceFile.headers" value="${fs.headers?string}" theme="simple"/>
+                <@s.checkbox key="sourceFile.headers" disabled="${fs.archiveFile?string}" value="${fs.headers?string}" theme="simple"/>
                 <span><@s.text name="source.headers"/></span>
                                 
                 <span style="padding-left:20px"></span>
                 
-                <@s.checkbox key="sourceFile.separator" value="${(fs.separator = '\t')?string}" theme="simple"/>
+                <@s.checkbox disabled="${fs.archiveFile?string}" key="sourceFile.separator" value="${(fs.separator = '\t')?string}" theme="simple"/>
                 <span><@s.text name="Tabs"/></span>
             </div>
             

@@ -20,11 +20,10 @@ import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.service.ViewMappingManager;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * TODO: Documentation.
@@ -51,10 +50,12 @@ public class SourceManagerHibernate extends
   public void remove(SourceBase obj) {
     // also remove all ViewMappings that are based on this source
     List<ExtensionMapping> views = viewMappingManager.getAll(obj.getResource().getId());
-    for (ExtensionMapping vm : views) {
-      if (vm != null && vm.getSource().equals(obj)) {
-        // view mapping uses this source, so also delete it!
-        viewMappingManager.remove(vm);
+    if (views != null) {
+      for (ExtensionMapping vm : views) {
+        if (vm != null && vm.getSource() != null && vm.getSource().equals(obj)) {
+          // view mapping uses this source, so also delete it!
+          viewMappingManager.remove(vm);
+        }
       }
     }
     // finally remove the source itself

@@ -24,11 +24,10 @@ import org.gbif.provider.model.PropertyMapping;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.TabFileReader;
+import org.gbif.provider.util.SourceFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,7 +38,8 @@ import java.util.Map;
  * 
  */
 public class FileImportSource extends ImportSourceBase {
-  private TabFileReader reader;
+  // private TabFileReader reader;
+  private SourceFileReader reader;
   private String[] currentLine;
   // key=header column name
   private final Map<String, Integer> headerMap = new HashMap<String, Integer>();
@@ -47,11 +47,11 @@ public class FileImportSource extends ImportSourceBase {
   private SourceInspectionManager sourceInspectionManager;
 
   public void close() {
-    try {
-      reader.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    // try {
+    // reader.close();
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
   }
 
   public Long getResourceId() {
@@ -82,7 +82,9 @@ public class FileImportSource extends ImportSourceBase {
       File source = AppConfig.getResourceSourceFile(resource.getId(),
           src.getFilename());
       String separator = src.getSeparator();
-      this.reader = new TabFileReader(source, !src.hasHeaders(), separator);
+      reader = SourceFileReader.with(src);
+      // this.reader = new TabFileReader(source, !src.hasHeaders(), separator);
+
     } catch (Exception e) {
       throw new ImportSourceException("Cant read source file "
           + src.getFilename(), e);

@@ -41,10 +41,22 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   protected String name;
   protected String csvFileHeader;
   protected String separator;
+  protected Integer numLinesToSkip;
+  protected Boolean archiveFile = false;
+  protected String encoding;
+
+  public boolean getArchiveFile() {
+    return archiveFile;
+  }
 
   @Lob
   public String getCsvFileHeader() {
     return csvFileHeader;
+  }
+
+  @Lob
+  public String getEncoding() {
+    return encoding;
   }
 
   @Id
@@ -56,6 +68,10 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   @Column(length = 128)
   public String getName() {
     return name;
+  }
+
+  public int getNumLinesToSkip() {
+    return numLinesToSkip;
   }
 
   @ManyToOne(optional = false)
@@ -76,8 +92,16 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
   @Transient
   public abstract boolean isValid();
 
+  public void setArchiveFile(boolean isArchiveFile) {
+    this.archiveFile = isArchiveFile;
+  }
+
   public void setCsvFileHeader(String firstLineFile) {
     this.csvFileHeader = firstLineFile;
+  }
+
+  public void setEncoding(String encoding) {
+    this.encoding = encoding;
   }
 
   public void setId(Long id) {
@@ -86,6 +110,10 @@ public abstract class SourceBase implements BaseObject, ResourceRelatedObject {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public void setNumLinesToSkip(int numLinesToSkip) {
+    this.numLinesToSkip = numLinesToSkip;
   }
 
   public void setResource(DataResource resource) {
