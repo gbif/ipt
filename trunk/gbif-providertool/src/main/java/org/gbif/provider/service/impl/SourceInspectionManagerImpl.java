@@ -15,6 +15,9 @@
  */
 package org.gbif.provider.service.impl;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -23,6 +26,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import com.google.common.io.LineProcessor;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.DataResource;
@@ -81,6 +85,10 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
       // unsupported
     }
   }
+  private static class HeaderUtil {
+
+  }
+
   private class SqlIterator implements Iterator<Object> {
     private final Statement stmt;
     private final ResultSet rs;
@@ -162,39 +170,100 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     return terms;
   }
 
-  /*
-   * (non-Javadoc)
+  /**
    * 
-   * @see
-   * org.gbif.provider.service.SourceInspectionManager#getHeader(java.io.File,
-   * java.nio.charset.Charset, char)
+   * @see org.gbif.provider.service.SourceInspectionManager#getHeader(org.gbif.provider
+   *      .service.SourceInspectionManager.HeaderSpec)
    */
-  public ImmutableList<String> getHeader(File file, Charset encoding,
-      char separator) throws IOException {
-    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults(
-        CharMatcher.is('"')).split(Files.readFirstLine(file, encoding)));
+  public ImmutableList<String> getHeader(HeaderSpec spec) throws IOException {
+    checkNotNull(spec, "HeaderSpec is null");
+    checkNotNull(spec.getFile(), "File is null");
+    checkNotNull(spec.getFileEncoding(), "File encoding is null");
+    checkNotNull(spec.getFieldSeparatorChar(), "File field separator is null");
+    checkNotNull(spec.getFile(), "HeaderSpec file is null");
+    checkArgument(spec.getNumberOfLinesToSkip() >= 0, "Lines to skip negative");
+
+    final File file = spec.getFile();
+    final Charset encoding = spec.getFileEncoding();
+    final char separator = spec.getFieldSeparatorChar();
+    final int numLinesToSkip = spec.getNumberOfLinesToSkip();
+    final boolean hasHeader = spec.headerExists();
+
+    String headerLine;
+    if (numLinesToSkip == 0) {
+      headerLine = Files.readFirstLine(file, encoding);
+    } else {
+      headerLine = Files.readLines(file, encoding, new LineProcessor<String>() {
+        int linesSkipped = 0;
+        String fileHeaderLine;
+
+        public String getResult() {
+          return fileHeaderLine;
+        }
+
+        public boolean processLine(String line) throws IOException {
+          if (linesSkipped == numLinesToSkip - 1) {
+            fileHeaderLine = line;
+            return false;
+          }
+          linesSkipped++;
+          return true;
+        }
+      });
+    }
+    ImmutableList<String> header;
+    header = ImmutableList.copyOf(Splitter.on(separator).trimResults(
+        CharMatcher.is('"')).split(headerLine));
+
+    // File doesn't have a header, so we derive one:
+    if (!hasHeader) {
+      int size = header.size();
+      ImmutableList.Builder<String> b = ImmutableList.builder();
+      String format = "Column-00%d (Example value: %s)";
+      for (int i = 0; i < size; i++) {
+        b.add(String.format(format, i, header.get(i)));
+      }
+      header = b.build();
+    }
+
     return header;
   }
 
-  public List<String> getHeader(SourceBase sourceBase) throws Exception {
+  public List<String> getHeader(final SourceBase sourceBase) throws Exception {
     Preconditions.checkNotNull(sourceBase);
     if (sourceBase instanceof SourceFile) {
       ImmutableList<String> header;
       SourceFile sf = (SourceFile) sourceBase;
-      File file = cfg.getSourceFile(sf.getResourceId(), sf.getName());
-      Charset charset = Charsets.UTF_8;
+      final File file = cfg.getSourceFile(sf.getResourceId(), sf.getName());
+      final Charset charset = Charsets.UTF_8;
       String separatorValue = sf.getSeparator();
-      char separator = separatorValue == null ? ',' : separatorValue.charAt(0);
-      header = getHeader(file, charset, separator);
-      if (!sf.hasHeaders()) {
-        int size = header.size();
-        ImmutableList.Builder<String> b = ImmutableList.builder();
-        String format = "Column-00%d (Example value: %s)";
-        for (int i = 0; i < size; i++) {
-          b.add(String.format(format, i, header.get(i)));
+      final char separator = separatorValue == null ? ','
+          : separatorValue.charAt(0);
+      HeaderSpec spec = new HeaderSpec() {
+
+        public char getFieldSeparatorChar() {
+          return separator;
         }
-        header = b.build();
-      }
+
+        public File getFile() {
+          return file;
+        }
+
+        public Charset getFileEncoding() {
+          return charset;
+        }
+
+        public int getNumberOfLinesToSkip() {
+          return sourceBase.getNumLinesToSkip();
+        }
+
+        public boolean headerExists() {
+          return ((SourceFile) sourceBase).hasHeaders();
+        }
+
+      };
+      header = getHeader(spec);
+      // header = getHeader(file, charset, separator, sf.hasHeaders());
       return header;
     } else {
       SourceSql src = (SourceSql) sourceBase;
@@ -215,6 +284,41 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
       SourceSql src = (SourceSql) source;
       return getPreview(src);
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.SourceInspectionManager#getHeader(java.io.File,
+   * java.nio.charset.Charset, char)
+   */
+  private ImmutableList<String> getHeader(File file, Charset encoding,
+      char separator, boolean declaredHeader) throws IOException {
+    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults(
+        CharMatcher.is('"')).split(Files.readFirstLine(file, encoding)));
+
+    Files.readLines(file, encoding, new LineProcessor<String>() {
+      public String getResult() {
+        return null;
+      }
+
+      public boolean processLine(String line) throws IOException {
+        return false;
+      }
+
+    });
+
+    if (!declaredHeader) {
+      int size = header.size();
+      ImmutableList.Builder<String> b = ImmutableList.builder();
+      String format = "Column-00%d (Example value: %s)";
+      for (int i = 0; i < size; i++) {
+        b.add(String.format(format, i, header.get(i)));
+      }
+      header = b.build();
+    }
+    return header;
   }
 
   private List<String> getHeader(SourceFile source) throws IOException {

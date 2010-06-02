@@ -293,6 +293,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
         resource = resourceFactory.newMetadataResourceInstance();
       }
     }
+
     if (resource != null) {
       eml = emlManager.deserialize(resource);
       if (eml == null) {
@@ -305,6 +306,32 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       eml.setAlternateIdentifier(resource.getGuid());
       // emlManager.save(eml);
     }
+
+    // if (resource != null) {
+    // resource = resourceManager.save(resource);
+    // eml = emlManager.deserialize(resource);
+    // if (eml == null) {
+    // eml = new Eml();
+    // }
+    // eml.setResource(resource);
+    // // Some properties in resource are the same as what's required in eml, so
+    // // we copy them over here:
+    // eml.setTitle(resource.getTitle());
+    // eml.setAlternateIdentifier(resource.getGuid());
+    // String contactName = resource.getContactName();
+    // if (contactName != null) {
+    // List<String> name = Lists.newArrayList(Splitter.on(
+    // CharMatcher.WHITESPACE).trimResults().omitEmptyStrings().split(
+    // contactName));
+    // eml.getResourceCreator().setFirstName(name.get(0));
+    // eml.getResourceCreator().setLastName(name.size() > 1 ? name.get(1) : "");
+    // }
+    // eml.setAbstract(resource.getDescription());
+    //
+    // // TODO: Causing problems?
+    // emlManager.serialize(eml);
+    // // emlManager.save(eml);
+    // }
   }
 
   public String publish() {
@@ -371,7 +398,19 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     validateResource();
     resource.setDirty();
     resource = resourceManager.save(resource);
+
     eml.setResource(resource);
+    // eml.setTitle(resource.getTitle());
+    // eml.setAlternateIdentifier(resource.getGuid());
+    // String contactName = resource.getContactName();
+    // if (contactName != null) {
+    // List<String> name =
+    // Lists.newArrayList(Splitter.on(CharMatcher.WHITESPACE).trimResults().omitEmptyStrings().split(
+    // contactName));
+    // eml.getResourceCreator().setFirstName(name.get(0));
+    // eml.getResourceCreator().setLastName(name.size() > 1 ? name.get(1) : "");
+    // }
+    // eml.setAbstract(resource.getDescription());
 
     // validateEml();
     emlManager.serialize(eml);

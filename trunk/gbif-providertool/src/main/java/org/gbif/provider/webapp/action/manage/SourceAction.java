@@ -21,6 +21,7 @@ import org.apache.commons.collections.ListUtils;
 import org.gbif.provider.model.SourceBase;
 import org.gbif.provider.model.SourceFile;
 import org.gbif.provider.model.SourceSql;
+import org.gbif.provider.model.eml.Charsets;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.ZipUtil;
@@ -244,6 +245,14 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
         && source.getSeparator().equalsIgnoreCase("false")) {
       source.setSeparator(",");
     }
+    if (source instanceof SourceFile) {
+      SourceFile sf = (SourceFile) source;
+      if (sf.hasHeaders()) {
+        sf.setNumLinesToSkip(1);
+      } else {
+        sf.setNumLinesToSkip(0);
+      }
+    }
     sourceManager.save(source);
     return SUCCESS;
   }
@@ -337,6 +346,10 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
       fsource.setFilename(srcFile.getName());
       fsource.setSeparator(",");
       fsource.setHeaders(false);
+      fsource.setNumLinesToSkip(0);
+      fsource.setArchiveFile(false);
+      fsource.setEncoding(Charsets.UTF_8.name());
+
       // try {
       // fsource.setCsvFileHeader(Joiner.on(',').skipNulls().join(
       // sourceInspectionManager.getHeader(fsource)));

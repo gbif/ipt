@@ -15,9 +15,9 @@
  */
 package org.gbif.provider.model.eml;
 
-import org.gbif.provider.model.Resource;
-
 import com.google.common.collect.Lists;
+
+import org.gbif.provider.model.Resource;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -295,6 +295,16 @@ public class Eml implements Serializable {
   // }
 
   /**
+   * utility to add a jgtiCuratorialUnit to the list. This method was introduced
+   * to ease the Digester rules for parsing of EML
+   * 
+   * @param jgtiCuratorialUnit to add
+   */
+  public void addJgtiCuratorialUnit(JGTICuratorialUnit unit) {
+    jgtiCuratorialUnits.add(unit);
+  }
+
+  /**
    * utility to add keywords to the keyword sets This method was introduced to
    * ease the Digester rules for parsing of EML
    * 
@@ -332,16 +342,6 @@ public class Eml implements Serializable {
    */
   public void addTemporalCoverage(TemporalCoverage coverage) {
     temporalCoverages.add(coverage);
-  }
-
-  /**
-   * utility to add a jgtiCuratorialUnit to the list. This method was introduced to
-   * ease the Digester rules for parsing of EML
-   * 
-   * @param jgtiCuratorialUnit to add
-   */
-  public void addJgtiCuratorialUnit(JGTICuratorialUnit unit) {
-    jgtiCuratorialUnits.add(unit);
   }
 
   public String getAbstract() {
