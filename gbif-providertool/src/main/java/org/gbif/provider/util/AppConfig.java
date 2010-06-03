@@ -451,6 +451,7 @@ public class AppConfig {
    */
   public boolean isIptRegistered() {
     Organisation o = ((RegistryManagerImpl) registryManager).getIptOrganisation();
+    if(o==null) return false;
     boolean isregd = registryManager.isOrganisationRegistered(o);
     return isregd;
 
