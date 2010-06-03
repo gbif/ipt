@@ -241,6 +241,7 @@ public class BaseAction extends ActionSupport {
 
   public boolean isAdminUser() {
     User user = getCurrentUser();
+    if(user == null) return false;
     for (LabelValue val : user.getRoleList()) {
       if (val.getValue().equalsIgnoreCase(Constants.ADMIN_ROLE)) {
         return true;

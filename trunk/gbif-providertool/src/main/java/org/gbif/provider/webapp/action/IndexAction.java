@@ -16,6 +16,8 @@
 package org.gbif.provider.webapp.action;
 
 import org.gbif.provider.model.DataResource;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.ResourceDisplay;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.util.AppConfig;
 
@@ -45,7 +47,7 @@ public class IndexAction extends BaseAction {
 
   @Override
   public String execute() {
-    resources = dataResourceManager.getAllDistinct();
+    resources = dataResourceManager.getPublishedResources();
     return SUCCESS;
   }
 

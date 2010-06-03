@@ -258,8 +258,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     if (isAdminUser()) {
       resources = getResourceTypeMatchingManager().getAll();
     } else {
-      resources = getResourceTypeMatchingManager().getResourcesByUser(
-          getCurrentUser().getId());
+      resources = getResourceTypeMatchingManager().getPublishedResources();
     }
     for (Resource r : resources) {
       resourcesForDisplay.add(new ResourceDisplay(r));
