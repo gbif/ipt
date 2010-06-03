@@ -72,4 +72,4 @@
 <br class="clearfix" />
 
 <#include "/WEB-INF/pages/inc/resourceTypeSelector.ftl">  
-<#include "/WEB-INF/pages/inc/resourceList.ftl">  
+<#include "/WEB-INF/pages/inc/dataResourceList.ftl">  
