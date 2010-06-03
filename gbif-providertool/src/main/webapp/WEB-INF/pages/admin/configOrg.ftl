@@ -53,7 +53,7 @@
         }).result( function(event, data, formatted) {
             var url = "<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/'/>"+data.key+'.json';
             $.getJSON(url, udpateOrg);
-            alert("You need to enter your organisations password before you can register anything on behalf of this organisation");
+//            alert("<@s.text name='config.ipt.passwordmessage'/>");
             showWithKey();
         });
     }
