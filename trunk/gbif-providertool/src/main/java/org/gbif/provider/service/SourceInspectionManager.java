@@ -85,11 +85,11 @@ public interface SourceInspectionManager {
   Set<String> getDistinctValues(SourceBase source, String column)
       throws Exception;
 
+  ImmutableList<String> getHeader(HeaderSpec spec) throws IOException;
+
   // ImmutableList<String> getHeader(File file, Charset encoding, char
   // separator,
   // boolean declaredHeader) throws IOException;
-
-  ImmutableList<String> getHeader(HeaderSpec spec) throws IOException;
 
   /**
    * @param sourceBase source either to file or SQL statement
@@ -105,4 +105,14 @@ public interface SourceInspectionManager {
    * @throws Exception
    */
   List<List<? extends Object>> getPreview(SourceBase source) throws Exception;
+
+  /**
+   * Splits a line on a separator, removes double quotes, and returns results in
+   * an {@link ImmutableList}.
+   * 
+   * @param line
+   * @param separator
+   * @return ImmutableList<String>
+   */
+  ImmutableList<String> splitLine(String line, char separator);
 }

@@ -18,8 +18,6 @@ package org.gbif.provider.util;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
@@ -31,6 +29,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Reads a SourceFile and provides an interator over all rows.
@@ -52,10 +51,12 @@ public class SourceFileReader implements Iterator<String[]> {
   private List<String> lines;
   private final File f;
   private Iterator<String> linesIterator;
+  private CsvParser csvParser;
 
   private SourceFileReader(SourceFile sourceFile, File f) {
     this.sourceFile = sourceFile;
     this.f = f;
+    this.csvParser = new CsvParser(sourceFile.getSeparator().charAt(0));
   }
 
   /**
@@ -75,13 +76,17 @@ public class SourceFileReader implements Iterator<String[]> {
    */
   public String[] next() {
     if (!init()) {
-      return null;
+      throw new NoSuchElementException();
     }
-    ArrayList<String> tokens = Lists.newArrayList(Splitter.on(
-        sourceFile.getSeparator()).trimResults(CharMatcher.is('"')).split(
-        linesIterator.next()));
-    String[] results = new String[tokens.size()];
-    tokens.toArray(results);
+    String[] results = null;
+    ArrayList<String> tokens;
+    try {
+      tokens = Lists.newArrayList(csvParser.parseLine(linesIterator.next()));
+      results = new String[tokens.size()];
+      tokens.toArray(results);
+    } catch (IOException e) {
+      throw new NoSuchElementException(e.toString());
+    }
     return results;
   }
 
