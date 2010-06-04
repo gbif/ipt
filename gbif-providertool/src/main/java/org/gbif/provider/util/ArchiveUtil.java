@@ -333,8 +333,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
               }
               if (extension == null) {
                 msg = String.format(
-                    "Unrecognized rowType %s for archive file %s", rowType,
-                    new File(extensionFile.getLocation()).getName());
+                    "Skipping extension file %s because an extension corresponding to rowType %s could not be found in this IPT instance",
+                    new File(extensionFile.getLocation()).getName(), rowType);
                 log.warn(msg);
                 msgBuilder.add(msg);
                 sourceManager.remove(sourceFile.getId());
@@ -598,7 +598,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
   }
 
   protected boolean hasHeader(ArchiveFile af) {
-    return af.getIgnoreHeaderLines() >= 1;
+    return false;
+    // return af.getIgnoreHeaderLines() >= 1;
     // Integer ignoreHeaderLine = af.getIgnoreHeaderLines();
     // return ignoreHeaderLine == null ? false : ignoreHeaderLine == 1;
   }

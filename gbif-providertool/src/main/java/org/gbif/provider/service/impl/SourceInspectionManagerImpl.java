@@ -18,7 +18,6 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -36,6 +35,7 @@ import org.gbif.provider.model.SourceSql;
 import org.gbif.provider.service.SourceInspectionManager;
 import org.gbif.provider.service.SourceManager;
 import org.gbif.provider.util.AppConfig;
+import org.gbif.provider.util.CsvParser;
 import org.gbif.provider.util.MalformedTabFileException;
 import org.gbif.provider.util.TabFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +63,7 @@ import javax.sql.DataSource;
  * 
  */
 public class SourceInspectionManagerImpl implements SourceInspectionManager {
+
   private class FileIterator implements Iterator<Object> {
     private final TabFileReader reader;
     private final int columnIdx;
@@ -84,9 +85,6 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     public void remove() {
       // unsupported
     }
-  }
-  private static class HeaderUtil {
-
   }
 
   private class SqlIterator implements Iterator<Object> {
@@ -190,30 +188,27 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     final boolean hasHeader = spec.headerExists();
 
     String headerLine;
-    if (numLinesToSkip == 0) {
-      headerLine = Files.readFirstLine(file, encoding);
-    } else {
-      headerLine = Files.readLines(file, encoding, new LineProcessor<String>() {
-        int linesSkipped = 0;
-        String fileHeaderLine;
 
-        public String getResult() {
-          return fileHeaderLine;
-        }
+    headerLine = Files.readLines(file, encoding, new LineProcessor<String>() {
+      int linesSkipped = 0;
+      String fileHeaderLine;
 
-        public boolean processLine(String line) throws IOException {
-          if (linesSkipped == numLinesToSkip - 1) {
-            fileHeaderLine = line;
-            return false;
-          }
-          linesSkipped++;
-          return true;
+      public String getResult() {
+        return fileHeaderLine;
+      }
+
+      public boolean processLine(String line) throws IOException {
+        if (linesSkipped == numLinesToSkip) {
+          fileHeaderLine = line;
+          return false;
         }
-      });
-    }
-    ImmutableList<String> header;
-    header = ImmutableList.copyOf(Splitter.on(separator).trimResults(
-        CharMatcher.is('"')).split(headerLine));
+        linesSkipped++;
+        return true;
+      }
+    });
+
+    ImmutableList<String> header = ImmutableList.copyOf(splitLine(headerLine,
+        separator));
 
     // File doesn't have a header, so we derive one:
     if (!hasHeader) {
@@ -263,7 +258,6 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
 
       };
       header = getHeader(spec);
-      // header = getHeader(file, charset, separator, sf.hasHeaders());
       return header;
     } else {
       SourceSql src = (SourceSql) sourceBase;
@@ -286,39 +280,20 @@ public class SourceInspectionManagerImpl implements SourceInspectionManager {
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
    * 
-   * @see
-   * org.gbif.provider.service.SourceInspectionManager#getHeader(java.io.File,
-   * java.nio.charset.Charset, char)
+   * @see org.gbif.provider.service.SourceInspectionManager#splitLine(java.lang.String
+   *      , char)
    */
-  private ImmutableList<String> getHeader(File file, Charset encoding,
-      char separator, boolean declaredHeader) throws IOException {
-    ImmutableList<String> header = ImmutableList.copyOf(Splitter.on(separator).trimResults(
-        CharMatcher.is('"')).split(Files.readFirstLine(file, encoding)));
-
-    Files.readLines(file, encoding, new LineProcessor<String>() {
-      public String getResult() {
-        return null;
-      }
-
-      public boolean processLine(String line) throws IOException {
-        return false;
-      }
-
-    });
-
-    if (!declaredHeader) {
-      int size = header.size();
-      ImmutableList.Builder<String> b = ImmutableList.builder();
-      String format = "Column-00%d (Example value: %s)";
-      for (int i = 0; i < size; i++) {
-        b.add(String.format(format, i, header.get(i)));
-      }
-      header = b.build();
+  public ImmutableList<String> splitLine(String line, char separator) {
+    ImmutableList<String> tokens;
+    try {
+      tokens = ImmutableList.copyOf(new CsvParser(separator).parseLine(line));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return ImmutableList.of();
     }
-    return header;
+    return tokens;
   }
 
   private List<String> getHeader(SourceFile source) throws IOException {
