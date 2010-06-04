@@ -26,6 +26,7 @@ import javax.persistence.Transient;
  * External datasource driven resource representing a taxonomic checklist
  * 
  */
+@SuppressWarnings("serial")
 @Entity
 public class ChecklistResource extends DataResource {
   public static final String DWC_GUID_PROPERTY = "TaxonID";

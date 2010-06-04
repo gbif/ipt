@@ -537,9 +537,11 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     }
     eml = getEmlIfExists(targetFile.getParentFile());
     if (eml != null) {
+      resource.setTitle(eml.getTitle());
+      resource.setDescription(eml.getAbstract());
       eml.setResource(resource);
       emlManager.serialize(eml);
-      saveMessage("Loaded existing metadata from eml.xml in the archive.");
+      saveMessage("Loaded existing metadata from the eml.xml file in the archive.");
     } else {
       saveMessage("No existing metadata found in the archive.");
     }

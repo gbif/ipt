@@ -15,6 +15,10 @@
  */
 package org.gbif.provider.model;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.GeospatialCoverage;
 import org.gbif.provider.model.eml.KeywordSet;
@@ -22,7 +26,10 @@ import org.gbif.provider.model.hibernate.Timestampable;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.util.AppConfig;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.validator.NotNull;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,13 +48,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.validator.NotNull;
-
 import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
@@ -56,9 +56,10 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * more expressive EML file via the embedded ResourceMetadata type.
  * 
  */
+@SuppressWarnings("serial")
 @Entity
 public class Resource implements BaseObject, Comparable<Resource>,
-    Timestampable {
+    Timestampable, Serializable {
   private Long id;
   @NotNull
   protected String guid = UUID.randomUUID().toString();
