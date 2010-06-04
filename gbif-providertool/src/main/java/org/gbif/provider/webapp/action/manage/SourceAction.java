@@ -245,14 +245,6 @@ public class SourceAction extends BaseDataResourceAction implements Preparable {
         && source.getSeparator().equalsIgnoreCase("false")) {
       source.setSeparator(",");
     }
-    if (source instanceof SourceFile) {
-      SourceFile sf = (SourceFile) source;
-      if (sf.hasHeaders()) {
-        sf.setNumLinesToSkip(1);
-      } else {
-        sf.setNumLinesToSkip(0);
-      }
-    }
     sourceManager.save(source);
     return SUCCESS;
   }
