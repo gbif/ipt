@@ -214,7 +214,7 @@ public class Eml implements Serializable {
   /**
    * The IPT resource (note is transient)
    */
-  private transient Resource resource;
+  private Resource resource;
 
   /**
    * The 'creator' element provides the full name of the person, organization,

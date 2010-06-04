@@ -15,11 +15,10 @@
  */
 package org.gbif.provider.model;
 
-import org.gbif.provider.util.Constants;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.gbif.provider.util.Constants;
 import org.hibernate.annotations.MapKey;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
@@ -50,6 +49,7 @@ import javax.sql.DataSource;
  * An abstract resource which contains data in addition to metadata
  * 
  */
+@SuppressWarnings("serial")
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class DataResource extends Resource {
@@ -226,11 +226,11 @@ public abstract class DataResource extends Resource {
 
   @Transient
   public int getRecTotal() {
-	  ExtensionMapping core = getCoreMapping();
-	  if (core!=null){
-		    return core.getRecTotal();
-	  }
-	  return 0;
+    ExtensionMapping core = getCoreMapping();
+    if (core != null) {
+      return core.getRecTotal();
+    }
+    return 0;
   }
 
   @Transient
