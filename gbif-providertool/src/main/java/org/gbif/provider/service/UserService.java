@@ -2,7 +2,7 @@ package org.gbif.provider.service;
 
 import java.util.List;
 
-import javax.jws.WebService;
+//import javax.jws.WebService;
 
 import org.gbif.provider.model.User;
 import org.springframework.security.userdetails.UsernameNotFoundException;
@@ -10,7 +10,7 @@ import org.springframework.security.userdetails.UsernameNotFoundException;
 /**
  * Web Service interface so hierarchy of Universal and Generic Managers isn't carried through.
  */
-@WebService
+//@WebService
 public interface UserService {
     /**
      * Retrieves a user by userId.  An exception is thrown if user not found
