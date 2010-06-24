@@ -200,7 +200,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
       throws RegistryException {
     checkNotNull(org, "Organisation was null");
     String orgKey = org.getOrganisationKey();
-    checkArgument(trimToNull(orgKey) == null, String.format(
+    checkArgument(trimToNull(orgKey) != null, String.format(
         "Organisation already registered: %s", orgKey));
     try {
       String registryUrl = AppConfig.getRegistryOrgUrl();
