@@ -15,11 +15,10 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -72,6 +71,15 @@ public class ConfigAction extends BasePostAction {
 
   private void check() {
     // tests
+    String baseUrl = cfg.getBaseUrl();
+    if (baseUrl == null || baseUrl.trim().length() == 0
+        || baseUrl.contains("localhost")) {
+      saveMessage("Invalid Base URL: When the IPT is registered, or when a "
+          + "resource is created in the IPT, all the access points that will be "
+          + "registered with GBIF will have a URL that starts with this, so it "
+          + "needs to be a publicly visible URL on the internets.");
+      cfg.setBaseUrl("Invalid URL: Cannot include localhost");
+    }
     File f = new File(cfg.getDataDir());
     if (!f.isDirectory() || !f.canWrite()) {
       saveMessage(getText("config.check.iptDataDir"));
