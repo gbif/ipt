@@ -17,9 +17,14 @@ package org.gbif.provider.service.impl;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.googlecode.jsonplugin.JSONUtil;
+
 import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.apache.commons.lang.StringUtils.trimToNull;
 
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.OccurrenceResource;
@@ -33,6 +38,7 @@ import org.gbif.provider.model.xml.ResourceMetadataHandler;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
+import org.xml.sax.SAXException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -44,12 +50,6 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.xml.sax.SAXException;
-
-import com.googlecode.jsonplugin.JSONUtil;
 
 /**
  * This class provides a default implementation of {@link RegistryManager}.
@@ -128,7 +128,8 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     checkNotNull(org, "Organisation was null");
     String key = org.getOrganisationKey();
     String password = org.getPassword();
-    if (key == null || key.trim().length()==0 || password == null || password.trim().length()==0) {
+    if (key == null || key.trim().length() == 0 || password == null
+        || password.trim().length() == 0) {
       return false;
     }
     NameValuePair[] params = {new NameValuePair("op", "login")};
@@ -146,7 +147,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
    * .String)
    */
   public boolean isResourceRegistered(String resourceUuid) {
-    if (resourceUuid == null || resourceUuid.trim().length()==0) {
+    if (resourceUuid == null || resourceUuid.trim().length() == 0) {
       return false;
     }
     String registryUrl = AppConfig.getRegistryOrgUrl();
@@ -174,6 +175,12 @@ public class RegistryManagerImpl extends HttpBaseManager implements
   public String registerIPT() throws RegistryException {
     if (trimToNull(cfg.getIptResourceMetadata().getUddiID()) != null) {
       String msg = "IPT is already registered";
+      log.warn(msg);
+      throw new IllegalArgumentException(msg);
+    }
+    String accessPointUrl = cfg.getAtomFeedURL();
+    if (accessPointUrl == null || accessPointUrl.contains("localhost")) {
+      String msg = "Cannot register an IPT with localhost as Base URL";
       log.warn(msg);
       throw new IllegalArgumentException(msg);
     }
@@ -488,6 +495,11 @@ public class RegistryManagerImpl extends HttpBaseManager implements
 
   private String registerService(String resourceKey, ServiceType serviceType,
       String accessPointURL) throws RegistryException {
+    if (accessPointURL == null || accessPointURL.contains("localhost")) {
+      String msg = "Cannot register an IPT with localhost as Base URL";
+      log.warn(msg);
+      throw new IllegalArgumentException(msg);
+    }
     NameValuePair[] data = {
         new NameValuePair("resourceKey", trimToEmpty(resourceKey)),
         new NameValuePair("type", serviceType.code),

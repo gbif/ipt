@@ -18,8 +18,8 @@ package org.gbif.provider.service.impl;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.ContextAwareTestBase;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,6 +31,24 @@ public class RegistryManagerImplTest extends ContextAwareTestBase {
 
   @Autowired
   private RegistryManager registryManager;
+
+  @Autowired
+  protected AppConfig cfg;
+
+  @Test
+  public void testIsOrgRegistered() {
+
+    Organisation org = Organisation.builder().organisationKey(
+        "DB03E430-304B-11DF-A430-CB15FDE703B2").password("73QVMX8lE5R").build();
+    assertTrue(registryManager.isOrganisationRegistered(org));
+    System.out.println(String.format("Success=%s", org));
+  }
+
+  @Test
+  public void testRegisterIptLocalhost() throws RegistryException {
+    cfg.setBaseUrl("http://localhost:8080");
+    registryManager.registerIPT();
+  }
 
   /**
    * Tests registering an {@link Organisation} and then verifying it's
@@ -52,12 +70,5 @@ public class RegistryManagerImplTest extends ContextAwareTestBase {
       System.out.println(String.format("Error=%s, Org=%s", e.getMessage(), org));
       fail();
     }
-  }
-  @Test
-  public void testIsOrgRegistered() {
-    
-    Organisation org = Organisation.builder().organisationKey("DB03E430-304B-11DF-A430-CB15FDE703B2").password("73QVMX8lE5R").build();
-      assertTrue(registryManager.isOrganisationRegistered(org));
-      System.out.println(String.format("Success=%s", org));
   }
 }
