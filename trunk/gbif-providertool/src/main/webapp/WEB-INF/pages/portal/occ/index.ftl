@@ -88,7 +88,7 @@
 			<table class="lefthead">
 				<tr>
 					<th><@s.text name='occ.index.contact'/></th>
-					<td>${resource.contactName!}"/> <#if resource.contactEmail??>&lt;${resource.contactEmail}&gt;</#if></td>
+					<td>&quot;${resource.contactName}&quot; <#if resource.contactEmail??>&lt;${resource.contactEmail}&gt;</#if></td>
 				</tr>
 				<tr>
 					<th><@s.text name='occ.index.homepage'/></th>
