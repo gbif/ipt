@@ -197,30 +197,30 @@
     </#if>
       <contact>
         <individualName>
-          <givenName>${eml.getResourceCreator().firstName!}</givenName>
-          <surName>${eml.getResourceCreator().lastName!}</surName>
+          <givenName>${eml.getContact().firstName!}</givenName>
+          <surName>${eml.getContact().lastName!}</surName>
         </individualName>
-        <organizationName>${eml.getResourceCreator().organisation!}</organizationName>
-      <#if (eml.getResourceCreator().getPosition())??>
-        <positionName>${eml.getResourceCreator().position!}</positionName>
+        <organizationName>${eml.getContact().organisation!}</organizationName>
+      <#if (eml.getContact().getPosition())??>
+        <positionName>${eml.getContact().position!}</positionName>
       </#if>
         <address>
-        <#if (eml.getResourceCreator().getAddress().getAddress())??>
-          <deliveryPoint>${eml.getResourceCreator().address.address!}</deliveryPoint>
+        <#if (eml.getContact().getAddress().getAddress())??>
+          <deliveryPoint>${eml.getContact().address.address!}</deliveryPoint>
         </#if>
-          <city>${eml.getResourceCreator().address.city!}</city>
-          <administrativeArea>${eml.getResourceCreator().address.province!}</administrativeArea>
-          <postalCode>${eml.getResourceCreator().address.postalCode!}</postalCode>
-          <country>${eml.getResourceCreator().address.country!}</country>
+          <city>${eml.getContact().address.city!}</city>
+          <administrativeArea>${eml.getContact().address.province!}</administrativeArea>
+          <postalCode>${eml.getContact().address.postalCode!}</postalCode>
+          <country>${eml.getContact().address.country!}</country>
         </address>
-      <#if (eml.getResourceCreator().getPhone())??>
-        <phone>${eml.getResourceCreator().phone!}</phone>
+      <#if (eml.getContact().getPhone())??>
+        <phone>${eml.getContact().phone!}</phone>
       </#if>
-      <#if (eml.getResourceCreator().getEmail())??>
-        <electronicMailAddress>${eml.getResourceCreator().email!}</electronicMailAddress>
+      <#if (eml.getContact().getEmail())??>
+        <electronicMailAddress>${eml.getContact().email!}</electronicMailAddress>
       </#if>
-      <#if (eml.getResource().link)??>
-        <onlineUrl>${eml.getResource().link!}</onlineUrl>
+      <#if (eml.getContact().getHomepage())??>
+        <onlineUrl>${eml.getContact().homepage!}</onlineUrl>
       </#if>
       </contact>
     <#if (eml.samplingMethods)??>

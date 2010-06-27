@@ -1,11 +1,11 @@
 package org.gbif.provider.model.eml;
 
-import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
-
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 
 public class EmlFactoryTest extends TestCase {
 
@@ -84,6 +84,17 @@ public class EmlFactoryTest extends TestCase {
       assertNull(eml.getMetadataProvider().getPhone());
       assertEquals("trobertson@gbif.org", eml.getMetadataProvider().getEmail());
       assertNull(eml.getMetadataProvider().getHomepage());
+
+      // agent test for caontact
+      assertNotNull(eml.getContact());
+      assertNotNull(eml.getContact().getFirstName());
+      assertEquals("David", eml.getContact().getFirstName());
+      assertEquals("Remsen", eml.getContact().getLastName());
+      assertNotNull(eml.getContact().getPhone());
+      assertEquals("+4528261487", eml.getContact().getPhone());
+      assertEquals("dremsen@gbif.org", eml.getContact().getEmail());
+      assertNotNull(eml.getContact().getHomepage());
+      assertEquals("http://www.gbif.org", eml.getContact().getHomepage());
 
       // limited agent with role tests
       assertNotNull(eml.getAssociatedParties());
@@ -179,8 +190,7 @@ public class EmlFactoryTest extends TestCase {
       assertEquals(
           "Mammalia",
           eml.getTaxonomicCoverages().get(0).getTaxonKeyword().getScientificName());
-      assertEquals(
-          "Mammals",
+      assertEquals("Mammals",
           eml.getTaxonomicCoverages().get(0).getTaxonKeyword().getCommonName());
 
       assertEquals("This is a second taxon coverage",
@@ -190,8 +200,7 @@ public class EmlFactoryTest extends TestCase {
       assertEquals(
           "Aves",
           eml.getTaxonomicCoverages().get(1).getTaxonKeyword().getScientificName());
-      assertEquals(
-          "Birds",
+      assertEquals("Birds",
           eml.getTaxonomicCoverages().get(1).getTaxonKeyword().getCommonName());
 
       assertEquals("Provide data to the whole world.", eml.getPurpose());
@@ -243,7 +252,7 @@ public class EmlFactoryTest extends TestCase {
       // bibliographic citations tests
       assertNotNull(eml.getBibliographicCitations());
       assertEquals(3, eml.getBibliographicCitations().size());
-//      assertNotNull(eml.getBibliographicCitations().get(0));
+      // assertNotNull(eml.getBibliographicCitations().get(0));
       assertEquals("title 1", eml.getBibliographicCitations().get(0));
       assertEquals("title 2", eml.getBibliographicCitations().get(1));
       assertEquals("title 3", eml.getBibliographicCitations().get(2));

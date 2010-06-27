@@ -26,10 +26,9 @@ import java.util.Map;
  * 
  */
 public enum MethodType implements Serializable {
-    METHOD_STEP("methodStep"),
-    SAMPLING("sampling"),
-    QUALITY_CONTROL("qualityControl");
-  
+  METHOD_STEP("methodStep"), SAMPLING("sampling"), QUALITY_CONTROL(
+      "qualityControl");
+
   public static final Map<String, String> htmlSelectMap;
   private final String name;
 
@@ -43,9 +42,10 @@ public enum MethodType implements Serializable {
 
   /**
    * Returns a methodType created from a string description of the type. If the
-   * description is null or if it's not a valid MethodType name, null is returned.
+   * description is null or if it's not a valid MethodType name, null is
+   * returned.
    * 
-   * @param methodType the Methjod type as a string
+   * @param methodType the Method type as a string
    * @return MethodType
    */
   public static MethodType fromString(String type) {

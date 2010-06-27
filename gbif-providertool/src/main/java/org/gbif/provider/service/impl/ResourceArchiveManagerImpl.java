@@ -999,7 +999,7 @@ public class ResourceArchiveManagerImpl extends BaseManager implements
     // check reserved sql words
     if (col.equalsIgnoreCase("order")) {
       col = "orderrr as \"ORDER\" ";
-    } else if (col.equalsIgnoreCase("class")) {
+    } else if (col.equalsIgnoreCase("classs")) {
       col = "classs as \"CLASS\" ";
     } else if (col.equalsIgnoreCase("group")) {
       col = "grouppp as \"GROUP\" ";

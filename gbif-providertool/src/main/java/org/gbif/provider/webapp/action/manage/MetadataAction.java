@@ -303,6 +303,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
       // we copy them over here:
       eml.setTitle(resource.getTitle());
       eml.setAlternateIdentifier(resource.getGuid());
+      eml.setLogoUrl(cfg.getResourceLogoUrl(resource.getId()));
       // emlManager.save(eml);
     }
 
@@ -396,6 +397,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     boolean isNew = (resource.getId() == null);
     validateResource();
     resource.setDirty();
+    resource.updateWithMetadata(eml);
     resource = resourceManager.save(resource);
 
     eml.setResource(resource);
@@ -417,7 +419,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     String key = (isNew) ? "resource.added" : "resource.updated";
     saveMessage(getText(key));
     if (isNew) {
-      updateRecentResouces();
+      updateRecentResources();
     }
     // logo
     if (uploadLogo()) {

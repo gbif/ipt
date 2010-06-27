@@ -15,11 +15,11 @@
  */
 package org.gbif.provider.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Lob;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * A generic resource describing any digital, online and non digital available
@@ -98,5 +98,4 @@ public class ResourceMetadata {
   public void setUddiID(String uddiID) {
     this.uddiID = StringUtils.trimToNull(uddiID);
   }
-
 }

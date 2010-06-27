@@ -376,6 +376,19 @@ public class Resource implements BaseObject, Comparable<Resource>,
    * updates persistent EML properties on resource based on EML values
    */
   public void updateWithMetadata(Eml eml) {
+    // Contact
+    String contactFirstName = eml.getContact().getFirstName();
+    String contactLastName = eml.getContact().getLastName();
+    if (contactFirstName == null) {
+      contactFirstName = new String("");
+    }
+    if (contactLastName == null) {
+      contactLastName = new String("");
+    }
+    meta.setContactName(contactFirstName.trim().concat(" ").concat(
+        contactLastName.trim()));
+    meta.setContactEmail(eml.getContact().getEmail());
+
     // keywords
     Set<String> keys = new HashSet<String>();
 

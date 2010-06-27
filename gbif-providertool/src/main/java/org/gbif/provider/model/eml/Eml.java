@@ -171,6 +171,16 @@ public class Eml implements Serializable {
   private LocaleBundle metadataLocale;
 
   /**
+   * The 'contact' element provides the full name of the person, organization,
+   * or position who who should be contacted about the resource.
+   * 
+   * @see http
+   *      ://knb.ecoinformatics.org/software/eml/eml-2.1.0/eml-resource.html#
+   *      contact
+   */
+  private Agent contact = new Agent();
+
+  /**
    * The 'metadataProvider' element provides the full name of the person,
    * organization, or position who created documentation for the resource.
    * 
@@ -249,6 +259,7 @@ public class Eml implements Serializable {
     this.pubDate = new Date();
     this.resourceCreator.setRole(Role.ORIGINATOR);
     this.metadataProvider.setRole(Role.METADATA_PROVIDER);
+    this.contact.setRole(Role.POINT_OF_CONTACT);
   }
 
   /**
@@ -390,6 +401,10 @@ public class Eml implements Serializable {
       return null;
     }
     return collectionName;
+  }
+
+  public Agent getContact() {
+    return contact;
   }
 
   public Date getDateStamp() {
@@ -575,6 +590,10 @@ public class Eml implements Serializable {
 
   public void setCollectionName(String collectionName) {
     this.collectionName = collectionName;
+  }
+
+  public void setContact(Agent contact) {
+    this.contact = contact;
   }
 
   public void setDateStamp(Date dateStamp) {
