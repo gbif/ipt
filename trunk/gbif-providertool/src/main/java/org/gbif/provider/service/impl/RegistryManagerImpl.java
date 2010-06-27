@@ -116,10 +116,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     return Organisation.builder().description(
         cfg.getIptOrgMetadata().getDescription()).homepageUrl(
         cfg.getIptOrgMetadata().getLink()).name(
-        cfg.getIptOrgMetadata().getTitle()).nodeKey(cfg.getOrgNode()).primaryContactType(
-        ContactType.technical.name()).primaryContactName(
-        cfg.getIptOrgMetadata().getContactName()).primaryContactEmail(
-        cfg.getIptOrgMetadata().getContactEmail()).password(
+        cfg.getIptOrgMetadata().getTitle()).nodeKey(cfg.getOrgNode()).password(
         cfg.getIptOrgPassword()).organisationKey(
         cfg.getIptOrgMetadata().getUddiID()).build();
   }

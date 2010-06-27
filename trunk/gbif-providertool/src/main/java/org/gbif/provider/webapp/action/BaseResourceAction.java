@@ -91,7 +91,7 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
     }
     if (resource != null) {
       // update recently viewed resources in session
-      updateRecentResouces();
+      updateRecentResources();
       // if resource instance exists this defines the resourceType we are
       // dealing with
       updateResourceType();
@@ -134,7 +134,7 @@ public class BaseResourceAction<T extends Resource> extends BaseAction implement
     this.resourceTypes = resourceTypes;
   }
 
-  protected void updateRecentResouces() {
+  protected void updateRecentResources() {
     LabelValue res = new LabelValue(resource.getTitle(),
         resource.getId().toString());
     Queue<LabelValue> queue;

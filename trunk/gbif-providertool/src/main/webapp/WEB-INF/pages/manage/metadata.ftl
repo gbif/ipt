@@ -58,7 +58,18 @@
   }
 
 /**
- * Loads countries asynchronously.
+ * Loads contact countries asynchronously.
+ */
+  function LoadContactCountriesAsync(callback) {
+    var url = '/ajax/vocSelect.html';
+    // load country codes
+    var params = {uri:"http://iso.org/iso3166",alpha:true,empty:true};
+    var id = "contactCountry";
+    ajaxSelectVocabulary(url, id, params, callback);
+  }
+
+/**
+ * Loads creator countries asynchronously.
  */
   function LoadCreatorCountriesAsync(callback) {
     var url = '/ajax/vocSelect.html';
@@ -86,13 +97,16 @@
     $('#mpPhoneDiv').hide();
     $('#mpHomepageDiv').hide();
     $('#mpRoleDiv').hide();
-    $('#cRoleDiv').hide();
+    $('#creatorRoleDiv').hide();
+    $('#contactRoleDiv').hide();
   }
 
   function OnLoad() {  
     HideUnusedDivs();    
     LoadLangAsync(function(elem) {
     });  
+    LoadContactCountriesAsync(function(elem) {
+    });
     LoadCreatorCountriesAsync(function(elem) {
     });
     LoadMetadataProviderCountriesAsync(function(elem) {
@@ -157,6 +171,7 @@
     <@s.select key="resource.type" list="resourceTypeMap" required="true" cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
+<!--
   <div class="leftxhalf">
     <@s.textfield key="resource.contactName" required="true" cssClass="text xhalf"/>
   </div>
@@ -164,11 +179,78 @@
     <@s.textfield key="resource.contactEmail" required="true" cssClass="text xhalf"/>
   </div>
   <div class="newline"></div>
-
+-->
 <div class="newline">
   <@s.textarea id="abstract" key="resource.description" required="true" 
     cssClass="text xlarge"/>
 </div>
+<div class="newline"></div>
+<h2 class="explMt"><@s.text name="metadata.heading.basic.contact"/></h2>
+
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="firstName" key="eml.contact.firstName" 
+      required="true" cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="lastName" key="eml.contact.lastName" 
+      required="true" cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="position" key="eml.contact.position"  
+      cssClass="text xhalf"/>
+  </div>       
+  <div class="leftxhalf">
+    <@s.textfield id="organization" key="eml.contact.organisation"  
+      cssClass="text xhalf"/>
+  </div>
+  <div id="contactRoleDiv" class="leftxhalf">
+    <@s.textfield id="role" key="eml.contact.role.name" disabled="true"
+      cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="phone" key="eml.contact.phone"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="email" key="eml.contact.email"  
+      required="true" cssClass="text xhalf"/> 
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="address" key="eml.contact.address.address"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="homepage" key="eml.contact.homepage"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="postalCode" key="eml.contact.address.postalCode"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="leftxhalf">
+    <@s.textfield id="city" key="eml.contact.address.city"  
+      cssClass="text xhalf"/>
+  </div>
+  <div class="newline"></div>
+  <div class="leftxhalf">
+    <@s.textfield id="province" key="eml.contact.address.province"  
+      cssClass="text xhalf"/>
+  </div>
+  <div id="contactCountryDiv" class="leftxhalf">
+    <@s.select id="contactCountry" key="eml.contact.address.country" list="eml.contact.address.country" 
+      label="%{getText('eml.contact.address.country')}"
+      required="true" cssClass="text xhalf"/>
+  </div>    
+
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div>
+<div class="newline"></div>
 <div class="newline"></div>
 <h2 class="explMt"><@s.text name="metadata.heading.basic.creator"/></h2>
 
@@ -190,7 +272,7 @@
     <@s.textfield id="organization" key="eml.resourceCreator.organisation"  
       cssClass="text xhalf"/>
   </div>
-  <div id="cRoleDiv" class="leftxhalf">
+  <div id="creatorRoleDiv" class="leftxhalf">
     <@s.textfield id="role" key="eml.resourceCreator.role.name" disabled="true"
       cssClass="text xhalf"/>
   </div>
