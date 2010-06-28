@@ -541,6 +541,8 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     if (eml != null) {
       resource.setTitle(eml.getTitle());
       resource.setDescription(eml.getAbstract());
+      resource.setContactEmail(eml.getContact().getEmail());
+      resource.setContactName(eml.getContact().getFirstName());
       eml.setResource(resource);
       emlManager.serialize(eml);
       saveMessage("Loaded existing metadata from the eml.xml file in the archive.");

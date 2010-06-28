@@ -97,6 +97,7 @@ public class RegistryManagerImpl extends HttpBaseManager implements
     super();
     SAXParserFactory factory = SAXParserFactory.newInstance();
     saxParser = factory.newSAXParser();
+
   }
 
   public void deleteResource(Resource resource) throws RegistryException {
@@ -385,6 +386,16 @@ public class RegistryManagerImpl extends HttpBaseManager implements
         throw new RegistryException("Bad registry response");
       }
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.provider.service.RegistryManager#updateResources()
+   */
+  public void updateServiceAccessPointUrl() {
+    // TODO Auto-generated method stub
+
   }
 
   /**
