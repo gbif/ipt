@@ -187,6 +187,11 @@ public class Resource implements BaseObject, Comparable<Resource>,
   }
 
   @Transient
+  public int getRecTotal() {
+    return 0;
+  }
+
+  @Transient
   public String getRegistryUrl() {
     if (StringUtils.trimToNull(getUddiID()) != null) {
       return AppConfig.getRegistryResourceUrl() + "/" + getUddiID();
