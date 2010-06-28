@@ -497,8 +497,11 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
       }
 
       // Looks up an existing extension property:
-      ep = extensionPropertyManager.getProperty(extension,
-          concept.qualifiedName());
+      String qn = concept.qualifiedName();
+      if (qn.endsWith("classs")) {
+        qn = qn.replace("classs", "class");
+      }
+      ep = extensionPropertyManager.getProperty(extension, qn);
       if (ep == null) {
         msg = "Warning: Unsupported ExtensionProperty: "
             + concept.qualifiedName();
@@ -805,10 +808,8 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
         throw new UnsupportedArchiveException("Archive is null");
       }
     } catch (UnsupportedArchiveException e) {
-      if (archiveLocation.isDirectory()) {
-        return new ArchiveResponse<T>(request.resource,
-            ImmutableSet.of(e.toString()), false);
-      }
+      return new ArchiveResponse<T>(request.resource,
+          ImmutableSet.of(e.toString()), false);
     } catch (IOException e) {
       return new ArchiveResponse<T>(request.resource,
           ImmutableSet.of(e.toString()), false);
