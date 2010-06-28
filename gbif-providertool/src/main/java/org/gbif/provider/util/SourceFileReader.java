@@ -105,8 +105,13 @@ public class SourceFileReader implements Iterator<String[]> {
       try {
         lines = Files.readLines(f, Charset.forName(sourceFile.getEncoding()));
         linesIterator = lines.iterator();
-        for (int i = 0; i < sourceFile.getNumLinesToSkip(); i++) {
+        int linesToSkip = sourceFile.getNumLinesToSkip();
+        if (linesToSkip == 0 && sourceFile.hasHeaders()) {
           linesIterator.next();
+        } else {
+          for (int i = 0; i < linesToSkip; i++) {
+            linesIterator.next();
+          }
         }
       } catch (IOException e) {
         e.printStackTrace();

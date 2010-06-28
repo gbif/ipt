@@ -114,4 +114,9 @@ public interface RegistryManager {
       throws RegistryException;
 
   void updateResource(Resource resource) throws RegistryException;
+
+  /**
+   * Updates all registered resources. Useful for when the IPT base URL changes.
+   */
+  void updateServiceAccessPointUrl();
 }

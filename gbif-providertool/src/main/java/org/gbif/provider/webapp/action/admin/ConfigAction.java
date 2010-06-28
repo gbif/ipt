@@ -17,6 +17,7 @@ package org.gbif.provider.webapp.action.admin;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.service.GeoserverManager;
+import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ConfigAction extends BasePostAction {
   private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
   @Autowired
   private GeoserverManager geoManager;
+
+  @Autowired
+  private RegistryManager registryManager;
 
   public AppConfig getConfig() {
     return this.cfg;
@@ -52,6 +56,7 @@ public class ConfigAction extends BasePostAction {
     cfg.reloadLogger();
     saveMessage(getText("config.updated"));
     check();
+    registryManager.updateServiceAccessPointUrl();
     return SUCCESS;
   }
 
