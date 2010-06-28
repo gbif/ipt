@@ -131,6 +131,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
   @Autowired
   private ArchiveUtil<ChecklistResource> checklistResourceArchiveUtil;
 
+  @Autowired
+  private ArchiveUtil<Resource> metadataResourceArchiveUtil;
+
   public String connection() {
     if (resource == null) {
       return RESOURCE404;
@@ -532,6 +535,15 @@ public class MetadataAction extends BaseMetadataResourceAction implements
           req).process();
       resource = res.getResource();
       checklistResourceManager.save((ChecklistResource) resource);
+      success = res.isSuccess();
+      for (String msg : res.getMessages()) {
+        saveMessage(msg);
+      }
+    } else {
+      ArchiveRequest<Resource> req = ArchiveRequest.with(targetFile, resource);
+      ArchiveResponse<Resource> res = metadataResourceArchiveUtil.init(req).process();
+      resource = res.getResource();
+      metaResourceManager.save(resource);
       success = res.isSuccess();
       for (String msg : res.getMessages()) {
         saveMessage(msg);
