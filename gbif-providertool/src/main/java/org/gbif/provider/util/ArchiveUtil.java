@@ -796,16 +796,19 @@ public class ArchiveUtil<T extends Resource> extends BaseManager {
 
   private ArchiveResponse<T> transform() {
     Archive archive = null;
+    File archiveLocation = null;
     try {
-      File archiveLocation = expandIfCompressed(request.location);
+      archiveLocation = expandIfCompressed(request.location);
       archive = ArchiveFactory.openArchive(archiveLocation, true);
       if (archive == null) {
         // TODO: check for EML only or multiple data files.
         throw new UnsupportedArchiveException("Archive is null");
       }
     } catch (UnsupportedArchiveException e) {
-      return new ArchiveResponse<T>(request.resource,
-          ImmutableSet.of(e.toString()), false);
+      if (archiveLocation.isDirectory()) {
+        return new ArchiveResponse<T>(request.resource,
+            ImmutableSet.of(e.toString()), false);
+      }
     } catch (IOException e) {
       return new ArchiveResponse<T>(request.resource,
           ImmutableSet.of(e.toString()), false);
