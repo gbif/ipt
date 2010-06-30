@@ -129,6 +129,20 @@ public class ArchiveUtilTest extends ResourceTestBase {
     ram.createArchive(resource);
   }
 
+  @SuppressWarnings("unchecked")
+  @Test
+  public void testEml() {
+    File archive = FileUtils.getClasspathFile("dwc-archives/eml/archive/eml.xml.zip");
+    OccurrenceResource resource = new OccurrenceResource();
+    occResourceManager.save(resource);
+    resource.getExtensionMappingsMap().clear();
+    ArchiveRequest<OccurrenceResource> request = ArchiveRequest.with(archive,
+        resource);
+    ArchiveResponse<OccurrenceResource> response = archiveUtil.init(request).process();
+    resource = response.getResource();
+
+  }
+
   @Test
   public void testHeader() throws IOException {
     // final File file;
