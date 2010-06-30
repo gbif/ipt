@@ -17,15 +17,12 @@ package org.gbif.registry.api.client;
 
 import com.google.common.base.Objects;
 
-import org.gbif.registry.api.client.GbifRegistry.OrganisationApi;
-
 import java.io.Serializable;
 
 /**
  * This immutable class encapsulates information about a GBIF Organisation.
  * Instances are built using the builder pattern.
  * 
- * @see {@link OrganisationApi}
  * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI
  * 
  */

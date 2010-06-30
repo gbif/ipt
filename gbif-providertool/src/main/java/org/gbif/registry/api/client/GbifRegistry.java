@@ -70,21 +70,152 @@ import javax.xml.parsers.SAXParserFactory;
  * @see http://code.google.com/p/gbif-registry
  * 
  */
-public class GbifRegistry implements Registry {
+public class GbifRegistry implements RegistryService {
 
-  /**
-   * This class surfaces an RPC-style interface to the GBIF Registry
-   * Organisation API.
-   * 
-   * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI
-   * 
-   */
-  public static class OrganisationApi {
-    static class CreateRequest extends Request {
+  public static interface CreateOrgRequest extends
+      RpcRequest<CreateOrgResponse, GbifOrganisation> {
+  }
+
+  public static interface CreateOrgResponse extends
+      RpcResponse<GbifOrganisation> {
+  }
+
+  public static interface DeleteOrgRequest extends
+      RpcRequest<DeleteOrgResponse, Boolean> {
+  }
+
+  public static interface DeleteOrgResponse extends RpcResponse<Boolean> {
+  }
+
+  public static interface ListOrgRequest extends
+      RpcRequest<ListOrgResponse, List<GbifOrganisation>> {
+  }
+
+  public static interface ListOrgResponse extends
+      RpcResponse<List<GbifOrganisation>> {
+  }
+
+  public static interface ReadOrgRequest extends
+      RpcRequest<ReadOrgResponse, GbifOrganisation> {
+  }
+
+  public static interface ReadOrgResponse extends RpcResponse<GbifOrganisation> {
+  }
+
+  public static interface UpdateOrgRequest extends
+      RpcRequest<UpdateOrgResponse, GbifOrganisation> {
+  }
+
+  public static interface UpdateOrgResponse extends
+      RpcResponse<GbifOrganisation> {
+  }
+
+  static class OrgUtil {
+    private static ImmutableMap<String, String> asImmutableMap(
+        GbifOrganisation org) {
+      String json = new Gson().toJson(org, GbifOrganisation.class);
+      Map<String, String> map = new Gson().fromJson(json,
+          new TypeToken<Map<String, String>>() {
+          }.getType());
+      return ImmutableMap.copyOf(map);
+    }
+
+    private static GbifOrganisation fromJson(String json) {
+      return new Gson().fromJson(json, GbifOrganisation.class);
+    }
+
+    private static GbifOrganisation fromXml(String xml) {
+      GbifOrganisation org = null;
+      try {
+        SAXParser p = SAXParserFactory.newInstance().newSAXParser();
+        OrgXmlHandler h = new OrgXmlHandler();
+        InputStream s = new ByteArrayInputStream(xml.getBytes());
+        p.parse(s, h);
+        org = GbifOrganisation.builder().key(h.organisationKey).password(
+            h.password).build();
+      } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+      } catch (SAXException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return org;
+    }
+
+    private static List<GbifOrganisation> listFromJson(String json) {
+      return new Gson().fromJson(json, new TypeToken<List<GbifOrganisation>>() {
+      }.getType());
+    }
+  }
+
+  static class OrgXmlHandler extends DefaultHandler {
+    String content;
+    String organisationKey;
+    String resourceKey;
+    String serviceKey;
+    String password;
+    String key;
+
+    @Override
+    public void characters(char[] ch, int start, int length)
+        throws SAXException {
+      content += String.valueOf(ArrayUtils.subarray(ch, start, start + length));
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String name)
+        throws SAXException {
+      if (name.equalsIgnoreCase("user")) {
+      } else if (name.equalsIgnoreCase("password")) {
+        password = content;
+      } else if (name.equalsIgnoreCase("key")) {
+        key = content.replaceAll("\\s", "");
+      } else if (name.equalsIgnoreCase("organisationKey")) {
+        organisationKey = content.replaceAll("\\s", "");
+      } else if (name.equalsIgnoreCase("organizationKey")) {
+        organisationKey = content.replaceAll("\\s", "");
+      } else if (name.equalsIgnoreCase("resourceKey")) {
+        resourceKey = content.replaceAll("\\s", "");
+      } else if (name.equalsIgnoreCase("serviceKey")) {
+        serviceKey = content.replaceAll("\\s", "");
+      }
+      content = "";
+    }
+
+    @Override
+    public void startDocument() throws SAXException {
+      content = "";
+      key = "";
+      organisationKey = "";
+      resourceKey = "";
+      serviceKey = "";
+      password = "";
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String name,
+        Attributes attributes) throws SAXException {
+      content = "";
+    }
+  }
+
+  private static class OrgApi implements OrganisationApi {
+
+    static class CreateRequest extends OrgRequest implements CreateOrgRequest {
+
       final GbifOrganisation org;
 
-      CreateRequest(GbifOrganisation org) {
+      CreateRequest(GbifOrganisation org, RegistryService registry) {
+        super(registry);
         this.org = org;
+      }
+
+      /**
+       * @see org.gbif.registry.api.client.RegistryService.RpcRequest#execute()
+       */
+      public CreateOrgResponse execute() {
+        return new CreateResponse(this, registry.execute(this));
       }
 
       @Override
@@ -94,7 +225,7 @@ public class GbifRegistry implements Registry {
 
       @Override
       public ImmutableMap<String, String> getPayload() {
-        return Util.asImmutableMap(org);
+        return OrgUtil.asImmutableMap(org);
       }
 
       @Override
@@ -103,111 +234,95 @@ public class GbifRegistry implements Registry {
       }
     }
 
-    static class CreateResponse extends Response<GbifOrganisation> {
-      CreateResponse(RpcRequest request, int status, String body,
-          Throwable error) {
-        super(request, status, body, error);
+    static class CreateResponse extends OrgResponse<CreateRequest> implements
+        CreateOrgResponse {
+
+      CreateResponse(CreateRequest request, Response response) {
+        super(request, response);
       }
 
-      @Override
       public GbifOrganisation getResult() {
+        String body = getBody();
         if (!body.contains("<organisationKey>")) {
           return null;
         }
-        return Util.fromXml(body);
+        return OrgUtil.fromXml(body);
       }
+
     }
 
-    static class DeleteRequest extends Request {
-      final GbifOrganisation org;
+    static class DeleteRequest extends OrgRequest implements DeleteOrgRequest {
 
-      DeleteRequest(GbifOrganisation org) {
-        checkNotNull(org.getKey());
-        checkNotNull(org.getPassword());
+      final GbifOrganisation org;
+      final Credentials credentials;
+      final String method;
+      final String path;
+      final ImmutableMap<String, String> payload;
+
+      DeleteRequest(GbifOrganisation org, RegistryService registry) {
+        super(registry);
         this.org = org;
+        credentials = Credentials.with(org.getKey(), org.getPassword());
+        method = "DELETE";
+        path = String.format("/registry/organisation/%s", org.getKey());
+        payload = OrgUtil.asImmutableMap(org);
+      }
+
+      /**
+       * @see org.gbif.registry.api.client.RegistryService.RpcRequest#execute()
+       */
+      public DeleteOrgResponse execute() {
+        return new DeleteResponse(this, registry.execute(this));
       }
 
       @Override
       public Credentials getCredentials() {
-        return Credentials.with(org.getKey(), org.getPassword());
+        return credentials;
       }
 
       @Override
       public String getHttpMethodType() {
-        return "DELETE";
+        return method;
+      }
+
+      @Override
+      public ImmutableMap<String, String> getPayload() {
+        return payload;
       }
 
       @Override
       public String getRequestPath() {
-        return String.format("/registry/organisation/%s", org.getKey());
+        return path;
       }
     }
 
-    static class DeleteResponse extends Response<Boolean> {
-      DeleteResponse(RpcRequest request, int status, String body,
-          Throwable error) {
-        super(request, status, body, error);
+    static class DeleteResponse extends OrgResponse<DeleteRequest> implements
+        DeleteOrgResponse {
+
+      DeleteResponse(DeleteRequest request, Response response) {
+        super(request, response);
       }
 
-      @Override
+      /**
+       * @see org.gbif.registry.api.client.RegistryService.RpcResponse#getResult()
+       */
       public Boolean getResult() {
-        if (!body.contains("<organisationKey>")) {
-          return null;
-        }
-        return body.contains("Organisation deleted successfully");
+        return getBody().contains("Organisation deleted successfully");
       }
     }
 
-    static class ListRequest extends Request {
-      @Override
-      public String getRequestPath() {
-        return "/registry/organisation.json";
-      }
-    }
+    static class ListRequest implements ListOrgRequest {
 
-    static class ListResponse extends Response<List<GbifOrganisation>> {
-      ListResponse(RpcRequest request, int status, String body, Throwable error) {
-        super(request, status, body, error);
+      final RegistryService registry;
+
+      ListRequest(RegistryService registry) {
+        this.registry = registry;
       }
 
-      @Override
-      public List<GbifOrganisation> getResult() {
-        if (!body.contains("<organisationKey>")) {
-          return null;
-        }
-        return Util.listFromJson(body);
-      }
-    }
-
-    static class ReadRequest extends Request {
-      final String key;
-
-      ReadRequest(String key) {
-        this.key = key;
+      public ListResponse execute() {
+        return new ListResponse(this, registry.execute(this));
       }
 
-      @Override
-      public String getRequestPath() {
-        return String.format("/registry/organisation/%s.json", key);
-      }
-    }
-
-    static class ReadResponse extends Response<GbifOrganisation> {
-
-      ReadResponse(RpcRequest request, int status, String body, Throwable error) {
-        super(request, status, body, error);
-      }
-
-      @Override
-      public GbifOrganisation getResult() {
-        if (body.contains("No organisation matches the key provided")) {
-          return null;
-        }
-        return Util.fromJson(body);
-      }
-    }
-
-    static abstract class Request implements RpcRequest {
       public Credentials getCredentials() {
         return null;
       }
@@ -225,63 +340,44 @@ public class GbifRegistry implements Registry {
       }
 
       public String getRequestPath() {
-        throw new UnsupportedOperationException();
+        return "/registry/organisation.json";
       }
     }
 
-    static abstract class Response<T> implements RpcResponse<T> {
-      final RpcRequest request;
-      final int status;
-      final String body;
-      final Throwable error;
+    static class ListResponse extends OrgResponse<ListRequest> implements
+        ListOrgResponse {
 
-      Response(RpcRequest request, int status, String body, Throwable error) {
-        this.request = request;
-        this.status = status;
-        this.body = body;
-        this.error = error;
+      private ListResponse(ListRequest request, Response response) {
+        super(request, response);
       }
 
-      public String getBody() {
-        return body;
-      }
-
-      public Throwable getError() {
-        return error;
-      }
-
-      public T getResult() {
-        throw new UnsupportedOperationException();
-      }
-
-      public int getStatusCode() {
-        return status;
-      }
-
-      @Override
-      public String toString() {
-        return Objects.toStringHelper(this).add("Request", request).add(
-            "StatusCode", status).add("Body", body).add("Error", error).toString();
+      public List<GbifOrganisation> getResult() {
+        String body = getBody();
+        if (body == null || body.length() < 1) {
+          return null;
+        }
+        return OrgUtil.listFromJson(body);
       }
     }
 
-    static class UpdateRequest implements RpcRequest {
-      final GbifOrganisation org;
+    static abstract class OrgRequest implements Request {
 
-      UpdateRequest(GbifOrganisation org) {
-        this.org = org;
+      final RegistryService registry;
+
+      OrgRequest(RegistryService registry) {
+        this.registry = registry;
       }
 
       public Credentials getCredentials() {
-        return Credentials.with(org.getKey(), org.getPassword());
+        return null;
       }
 
       public String getHttpMethodType() {
-        return "POST";
+        return "GET";
       }
 
       public ImmutableMap<String, String> getPayload() {
-        return Util.asImmutableMap(org);
+        return ImmutableMap.of();
       }
 
       public ImmutableMap<String, String> getRequestParams() {
@@ -289,244 +385,182 @@ public class GbifRegistry implements Registry {
       }
 
       public String getRequestPath() {
-        return String.format("/registry/organisation/%s", org.getKey());
+        throw new UnsupportedOperationException("Subclass must override.");
       }
     }
 
-    static class UpdateResponse extends Response<GbifOrganisation> {
-      UpdateResponse(RpcRequest request, int status, String body,
-          Throwable error) {
-        super(request, status, body, error);
+    static abstract class OrgResponse<T> implements Response {
+      final Response response;
+      final T rpcRequest;
+
+      OrgResponse(T rpcRequest, Response response) {
+        this.rpcRequest = rpcRequest;
+        this.response = response;
+      }
+
+      public String getBody() {
+        return response.getBody();
+      }
+
+      public Throwable getError() {
+        return response.getError();
+      }
+
+      public Request getRequest() {
+        return response.getRequest();
+      }
+
+      public int getStatusCode() {
+        return response.getStatusCode();
+      }
+    }
+
+    static class ReadRequest extends OrgRequest implements ReadOrgRequest {
+
+      final String path;
+
+      ReadRequest(String organisationKey, RegistryService registry) {
+        super(registry);
+        path = String.format("/registry/organisation/%s.json", organisationKey);
+      }
+
+      /**
+       * @see org.gbif.registry.api.client.RegistryService.RpcRequest#execute()
+       */
+      public ReadOrgResponse execute() {
+        return new ReadResponse(this, registry.execute(this));
       }
 
       @Override
+      public String getRequestPath() {
+        return path;
+      }
+    }
+
+    static class ReadResponse extends OrgResponse<ReadRequest> implements
+        ReadOrgResponse {
+      ReadResponse(ReadRequest request, Response response) {
+        super(request, response);
+      }
+
       public GbifOrganisation getResult() {
-        UpdateRequest r = (UpdateRequest) request;
-        if (!body.contains(r.org.getKey())) {
+        String body = getBody();
+        return OrgUtil.fromJson(body);
+      }
+    }
+
+    static class UpdateRequest extends OrgRequest implements UpdateOrgRequest {
+
+      final GbifOrganisation org;
+      final String path;
+      final ImmutableMap<String, String> payload;
+      final String method;
+      final Credentials credentials;
+
+      UpdateRequest(GbifOrganisation org, RegistryService registry) {
+        super(registry);
+        this.org = org;
+        path = String.format("/registry/organisation/%s", org.getKey());
+        payload = OrgUtil.asImmutableMap(org);
+        method = "POST";
+        credentials = Credentials.with(org.getKey(), org.getPassword());
+      }
+
+      /**
+       * @see org.gbif.registry.api.client.RegistryService.RpcRequest#execute()
+       */
+      public UpdateOrgResponse execute() {
+        return new UpdateResponse(this, registry.execute(this));
+      }
+
+      @Override
+      public Credentials getCredentials() {
+        return credentials;
+      }
+
+      @Override
+      public String getHttpMethodType() {
+        return method;
+      }
+
+      @Override
+      public ImmutableMap<String, String> getPayload() {
+        return payload;
+      }
+
+      @Override
+      public String getRequestPath() {
+        return path;
+      }
+    }
+
+    static class UpdateResponse extends OrgResponse<UpdateRequest> implements
+        UpdateOrgResponse {
+      UpdateResponse(UpdateRequest request, Response response) {
+        super(request, response);
+      }
+
+      public GbifOrganisation getResult() {
+        if (!getBody().contains(rpcRequest.org.getKey())) {
           return null;
         }
-        return r.org;
+        return rpcRequest.org;
       }
     }
 
-    static class Util {
-      private static ImmutableMap<String, String> asImmutableMap(
-          GbifOrganisation org) {
-        String json = new Gson().toJson(org, GbifOrganisation.class);
-        Map<String, String> map = new Gson().fromJson(json,
-            new TypeToken<Map<String, String>>() {
-            }.getType());
-        return ImmutableMap.copyOf(map);
-      }
+    private final RegistryService registry;
 
-      private static GbifOrganisation fromJson(String json) {
-        return new Gson().fromJson(json, GbifOrganisation.class);
-      }
-
-      private static GbifOrganisation fromXml(String xml) {
-        GbifOrganisation org = null;
-        try {
-          SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-          XmlHandler h = new XmlHandler();
-          InputStream s = new ByteArrayInputStream(xml.getBytes());
-          p.parse(s, h);
-          org = GbifOrganisation.builder().key(h.organisationKey).password(
-              h.password).build();
-        } catch (ParserConfigurationException e) {
-          e.printStackTrace();
-        } catch (SAXException e) {
-          e.printStackTrace();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        return org;
-      }
-
-      private static List<GbifOrganisation> listFromJson(String json) {
-        return new Gson().fromJson(json,
-            new TypeToken<List<GbifOrganisation>>() {
-            }.getType());
-      }
-    }
-
-    static class XmlHandler extends DefaultHandler {
-      String content;
-      String organisationKey;
-      String resourceKey;
-      String serviceKey;
-      String password;
-      String key;
-
-      @Override
-      public void characters(char[] ch, int start, int length)
-          throws SAXException {
-        content += String.valueOf(ArrayUtils.subarray(ch, start, start + length));
-      }
-
-      @Override
-      public void endElement(String uri, String localName, String name)
-          throws SAXException {
-        if (name.equalsIgnoreCase("user")) {
-        } else if (name.equalsIgnoreCase("password")) {
-          password = content;
-        } else if (name.equalsIgnoreCase("key")) {
-          key = content.replaceAll("\\s", "");
-        } else if (name.equalsIgnoreCase("organisationKey")) {
-          organisationKey = content.replaceAll("\\s", "");
-        } else if (name.equalsIgnoreCase("organizationKey")) {
-          organisationKey = content.replaceAll("\\s", "");
-        } else if (name.equalsIgnoreCase("resourceKey")) {
-          resourceKey = content.replaceAll("\\s", "");
-        } else if (name.equalsIgnoreCase("serviceKey")) {
-          serviceKey = content.replaceAll("\\s", "");
-        }
-        content = "";
-      }
-
-      @Override
-      public void startDocument() throws SAXException {
-        content = "";
-        key = "";
-        organisationKey = "";
-        resourceKey = "";
-        serviceKey = "";
-        password = "";
-      }
-
-      @Override
-      public void startElement(String uri, String localName, String name,
-          Attributes attributes) throws SAXException {
-        content = "";
-      }
+    OrgApi(RegistryService registry) {
+      this.registry = registry;
     }
 
     /**
-     * Returns a {@link RpcRequest} that creates the organisation.
-     * 
-     * If the organisation is null, a {@link NullPointerException} is thrown.
-     * The organisation must include {@code name}, {@code primaryContactType},
-     * {@code primaryContactEmail}, and {@code nodeKey}, otherwise an
-     * {@link IllegalArgumentException} is thrown.
-     * 
-     * The {@link RpcResponse} result type for this request is a
-     * {@link GbifOrganisation} with the {@code key} and {@code password} values
-     * that were generated for the new organisation when it was created, or null
-     * if there were errors.
-     * 
-     * @see http://goo.gl/H17q
-     * 
-     * @param org the organisation to create
-     * @return RpcRequest the RPC request for creating the organisation
+     * @see OrganisationApi#getCreateRequest(GbifOrganisation)
      */
-    public static RpcRequest create(GbifOrganisation org) {
+    public CreateOrgRequest getCreateRequest(GbifOrganisation org) {
+      checkNotNull(org);
       checkArgument(notNullOrEmpty(org.getName()));
       checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
       checkArgument(notNullOrEmpty(org.getPrimaryContactEmail()));
       checkArgument(notNullOrEmpty(org.getNodeKey()));
-      return new CreateRequest(org);
+      return new CreateRequest(org, registry);
     }
 
     /**
-     * Returns a new {@link RpcRequest} requiring authentication that deletes
-     * the organisation. The organisation must include a {@code key} and {@code
-     * password}, otherwise an {@link IllegalArgumentException} is thrown.
-     * 
-     * The {@link RpcResponse} result type for this request is a {@link Boolean}
-     * that is true if the organisation was deleted, otherwise false.
-     * 
-     * @see http://goo.gl/qJql
-     * 
-     * @param org the organisation to delete
-     * @return RpcRequest the RPC request for deleting the organisation
+     * @see OrganisationApi#getDeleteRequest(GbifOrganisation)
      */
-    public static RpcRequest delete(GbifOrganisation org) {
-      checkArgument(notNullOrEmpty(org.getKey()));
-      checkArgument(notNullOrEmpty(org.getPassword()));
-      return new DeleteRequest(org);
-    }
-
-    /**
-     * Returns a new {@link RpcRequest} that lists all organisations.
-     * 
-     * The {@link RpcResponse} result type for this request is a {@link List} of
-     * {@link GbifOrganisation}s. If there are no organisations, an empty list
-     * is returned.
-     * 
-     * @see http://goo.gl/D6qH
-     * 
-     * @return RpcRequest the RPC request for listing all organisations
-     */
-    public static RpcRequest list() {
-      return new ListRequest();
-    }
-
-    /**
-     * Returns a new {@link RpcRequest} that reads an organisation from the GBIF
-     * Registry. The {@code key} is required, otherwise an
-     * {@link IllegalArgumentException} is thrown.
-     * 
-     * The {@link RpcResponse} result type for this request is a
-     * {@link GbifOrganisation} representing an existing organisation that
-     * matches the {@code key} or {@code null} if an organisation could not be
-     * found.
-     * 
-     * @see http://goo.gl/68dV
-     * 
-     * @param key the organisation key
-     * @return RpcRequest the RPC request that reads the organisation
-     */
-    public static RpcRequest read(String key) {
-      checkArgument(notNullOrEmpty(key));
-      return new ReadRequest(key);
-    }
-
-    /**
-     * Returns a {@link RpcRequest} requiring authentication that updates the
-     * organisation. The organisation must include {@code key}, {@code
-     * primaryContactType}, and {@code password}, otherwise an
-     * {@link IllegalArgumentException} is thrown.
-     * 
-     * The {@link RpcResponse} result type for this request is a
-     * {@link GbifOrganisation} with {@code key} and {@code password} values
-     * that were generated for the new organisation when it was created.
-     * 
-     * @see http://goo.gl/H17q
-     * 
-     * @param org the organisation to update
-     * @return RpcRequest the RPC request for updating the organisation
-     */
-    public static RpcRequest update(GbifOrganisation org) {
+    public DeleteOrgRequest getDeleteRequest(GbifOrganisation org) {
+      checkNotNull(org);
       checkArgument(notNullOrEmpty(org.getKey()));
       checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
       checkArgument(notNullOrEmpty(org.getPassword()));
-      return new UpdateRequest(org);
+      return new DeleteRequest(org, registry);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> RpcResponse<T> createResponse(RpcRequest request,
-        int status, String body, Throwable error) {
-      RpcResponse<T> response = null;
-      if (request instanceof CreateRequest) {
-        response = (RpcResponse<T>) new CreateResponse(request, status, body,
-            error);
-      } else if (request instanceof DeleteRequest) {
-        response = (RpcResponse<T>) new DeleteResponse(request, status, body,
-            error);
-      } else if (request instanceof ListRequest) {
-        response = (RpcResponse<T>) new ListResponse(request, status, body,
-            error);
-      } else if (request instanceof ReadRequest) {
-        response = (RpcResponse<T>) new ReadResponse(request, status, body,
-            error);
-      }
-      return response;
+    /**
+     * @see OrganisationApi#getListRequest()
+     */
+    public ListOrgRequest getListRequest() {
+      return new ListRequest(registry);
     }
 
-    private static boolean notNullOrEmpty(String val) {
-      return val != null && val.trim().length() > 0;
+    /**
+     * @see OrganisationApi#getReadRequest(String)
+     */
+    public ReadOrgRequest getReadRequest(String orgKey) {
+      checkArgument(notNullOrEmpty(orgKey));
+      return new ReadRequest(orgKey, registry);
     }
 
-    private OrganisationApi() {
+    /**
+     * @see OrganisationApi#getUpdateRequest(GbifOrganisation)
+     */
+    public UpdateOrgRequest getUpdateRequest(GbifOrganisation org) {
+      checkNotNull(org);
+      checkArgument(notNullOrEmpty(org.getKey()));
+      checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
+      checkArgument(notNullOrEmpty(org.getPassword()));
+      return new UpdateRequest(org, registry);
     }
   }
 
@@ -541,26 +575,26 @@ public class GbifRegistry implements Registry {
     }
   }
 
-  private static HttpMethod httpMethod(String host, RpcRequest rpc) {
-    String url = String.format("%s%s", host, rpc.getRequestPath());
+  private static HttpMethod createMethod(String host, Request request) {
+    String url = String.format("%s%s", host, request.getRequestPath());
     HttpMethod method;
-    ImmutableMap<String, String> params = rpc.getRequestParams();
+    ImmutableMap<String, String> params = request.getRequestParams();
     if (params == null) {
       params = ImmutableMap.of();
     }
-    ImmutableMap<String, String> payload = rpc.getPayload();
+    ImmutableMap<String, String> payload = request.getPayload();
     if (payload == null) {
       payload = ImmutableMap.of();
     }
-    String type = rpc.getHttpMethodType();
+    String type = request.getHttpMethodType();
     if (type.equalsIgnoreCase("GET")) {
       GetMethod get = new GetMethod(url);
-      get.setQueryString(params(params));
+      get.setQueryString(createNameValuePairs(params));
       method = get;
     } else if (type.equalsIgnoreCase("POST")) {
       PostMethod post = new PostMethod(url);
       post.setDoAuthentication(true);
-      post.addParameters(params(payload));
+      post.addParameters(createNameValuePairs(payload));
       method = post;
     } else if (type.equalsIgnoreCase("DELETE")) {
       DeleteMethod delete = new DeleteMethod(url);
@@ -574,7 +608,8 @@ public class GbifRegistry implements Registry {
     return method;
   }
 
-  private static NameValuePair[] params(ImmutableMap<String, String> map) {
+  private static NameValuePair[] createNameValuePairs(
+      ImmutableMap<String, String> map) {
     NameValuePair[] pairs = new NameValuePair[map.size()];
     int i = 0;
     for (String name : map.keySet()) {
@@ -583,31 +618,75 @@ public class GbifRegistry implements Registry {
     return pairs;
   }
 
+  private static Response createResponse(final Request request,
+      final int status, final String body, final Throwable error) {
+    return new Response() {
+
+      public String getBody() {
+        return body;
+      }
+
+      public Throwable getError() {
+        return error;
+      }
+
+      public Request getRequest() {
+        return request;
+      }
+
+      public int getStatusCode() {
+        return status;
+      }
+
+    };
+  }
+
+  private static boolean notNullOrEmpty(String val) {
+    return val != null && val.trim().length() > 0;
+  }
+
+  private static void setCredentials(HttpClient client, String host,
+      Credentials credentials) {
+    checkNotNull(credentials);
+    checkNotNull(client);
+    checkNotNull(host);
+    log.info(String.format("Setting credentials: Host=%s, Credentials=%s",
+        host, credentials));
+    AuthScope scope = new AuthScope(host, -1, AuthScope.ANY_REALM);
+    client.getState().setCredentials(
+        scope,
+        new UsernamePasswordCredentials(credentials.getId(),
+            credentials.getPasswd()));
+    client.getParams().setAuthenticationPreemptive(true);
+  }
+
   private final String url;
   private final String host;
   private final HttpClient client;
+  private final OrgApi orgApi;
 
   private GbifRegistry(String host) {
-    url = String.format("http://%s", host);
     this.host = host;
+    url = String.format("http://%s", host);
     client = new HttpClient(new MultiThreadedHttpConnectionManager());
+    orgApi = new OrgApi(this);
   }
 
   /**
-   * @see org.gbif.registry.api.client.Registry#execute(org.gbif.registry.api.client.Registry.RpcRequest)
+   * @see org.gbif.registry.api.client.RegistryService#execute(org.gbif.registry.api.client.RegistryService.Request)
    */
-  public <T> RpcResponse<T> execute(RpcRequest request) {
+  public Response execute(Request request) {
     checkNotNull(request, "Request is null");
     checkNotNull(request.getHttpMethodType(), "Method is null");
     checkArgument(request.getHttpMethodType().length() > 0, "Method is empty");
-    HttpMethod method = httpMethod(url, request);
+    HttpMethod method = createMethod(url, request);
     Throwable error = null;
     String body = null;
     int status = 0;
     try {
       Credentials cred = request.getCredentials();
       if (cred != null) {
-        setCredentials(cred);
+        setCredentials(client, host, cred);
       }
       status = client.executeMethod(method);
       log.info(String.format("Executed %s %d %s (parmas=%s and payload=%s)",
@@ -621,15 +700,19 @@ public class GbifRegistry implements Registry {
     } finally {
       method.releaseConnection();
     }
-    return OrganisationApi.createResponse(request, status, body, error);
+    return createResponse(request, status, body, error);
   }
 
-  private void setCredentials(Credentials credentials) {
-    AuthScope scope = new AuthScope(host, -1, AuthScope.ANY_REALM); // AuthScope.ANY;
-    client.getState().setCredentials(
-        scope,
-        new UsernamePasswordCredentials(credentials.getId(),
-            credentials.getPasswd()));
-    client.getParams().setAuthenticationPreemptive(true);
+  /**
+   * 
+   * @see org.gbif.registry.api.client.Registry#getOrganisationApi()
+   */
+  public OrganisationApi getOrganisationApi() {
+    return orgApi;
+  }
+
+  @Override
+  public String toString() {
+    return Objects.toStringHelper(this).add("Host", host).toString();
   }
 }

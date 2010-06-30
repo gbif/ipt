@@ -17,6 +17,7 @@ package org.gbif.registry.api.client;
 
 import static org.junit.Assert.fail;
 
+import org.gbif.registry.api.client.GbifRegistry;
 import org.junit.Test;
 
 /**

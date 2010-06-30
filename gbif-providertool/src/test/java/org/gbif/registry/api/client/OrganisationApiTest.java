@@ -17,128 +17,114 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
-import static org.junit.Assert.fail;
-
-import org.gbif.registry.api.client.GbifRegistry.OrganisationApi;
-import org.gbif.registry.api.client.Registry.RpcRequest;
-import org.gbif.registry.api.client.Registry.RpcResponse;
-import org.junit.Before;
+import org.gbif.registry.api.client.GbifOrganisation;
+import org.gbif.registry.api.client.GbifRegistry;
+import org.gbif.registry.api.client.RegistryService;
+import org.gbif.registry.api.client.GbifRegistry.CreateOrgRequest;
+import org.gbif.registry.api.client.GbifRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbifRegistry.DeleteOrgRequest;
+import org.gbif.registry.api.client.GbifRegistry.DeleteOrgResponse;
+import org.gbif.registry.api.client.GbifRegistry.ListOrgRequest;
+import org.gbif.registry.api.client.GbifRegistry.ReadOrgRequest;
+import org.gbif.registry.api.client.GbifRegistry.ReadOrgResponse;
+import org.gbif.registry.api.client.GbifRegistry.UpdateOrgRequest;
+import org.gbif.registry.api.client.GbifRegistry.UpdateOrgResponse;
+import org.gbif.registry.api.client.RegistryService.OrganisationApi;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Unit testing coverage for {@link OrganisationApi}.
  */
 public class OrganisationApiTest {
 
-  private static Registry registry;
-  private static final GbifOrganisation org = GbifOrganisation.builder().name(
-      "Name").primaryContactEmail("eightysteele@gmail.com").primaryContactType(
-      "technical").nodeKey("us").build();
+  private static RegistryService gbif = GbifRegistry.init("http://gbrdsdev.gbif.org");;
 
-  /**
-   * @throws java.lang.Exception void
-   */
-  @Before
-  public void setUp() throws Exception {
-    registry = GbifRegistry.init("http://gbrds.gbif.org");
-  }
+  private static final GbifOrganisation org = GbifOrganisation.builder().name(
+      "GBIF Production Registry Test").primaryContactEmail(
+      "eightysteele@gmail.com").primaryContactType("technical").nodeKey("us").build();
 
   /**
    * Test method for
-   * {@link org.gbif.registry.api.client.GbifRegistry.OrganisationApi#create(org.gbif.registry.api.client.GbifOrganisation)}
+   * {@link org.gbif.registry.api.client.RegistryService.OrganisationApi#create(org.gbif.registry.api.client.GbifOrganisation)}
    * .
    */
   @Test
   public final void testCreate() {
-    try {
-      registry.execute(OrganisationApi.create(GbifOrganisation.builder().build()));
-      fail();
-    } catch (Exception e) {
-    }
-
     GbifOrganisation result = null;
     try {
-      Assert.assertNull(org.getKey());
-      RpcRequest request = OrganisationApi.create(org);
-      RpcResponse<GbifOrganisation> response = registry.execute(request);
+      CreateOrgRequest request = gbif.getOrganisationApi().getCreateRequest(org);
+      CreateOrgResponse response = request.execute();
       result = response.getResult();
+      Assert.assertNotNull(result);
       Assert.assertNotNull(result.getKey());
       Assert.assertNotNull(result.getPassword());
     } finally {
       if (result != null) {
-        registry.execute(OrganisationApi.delete(result));
+        Assert.assertTrue(gbif.getOrganisationApi().getDeleteRequest(result).execute().getResult());
       }
     }
   }
 
   /**
    * Test method for
-   * {@link org.gbif.registry.api.client.GbifRegistry.OrganisationApi#delete(org.gbif.registry.api.client.GbifOrganisation)}
+   * {@link org.gbif.registry.api.client.RegistryService.OrganisationApi#delete(org.gbif.registry.api.client.GbifOrganisation)}
    * .
    */
   @Test
   public final void testDelete() {
-    RpcResponse<GbifOrganisation> response = registry.execute(OrganisationApi.create(org));
-    registry.execute(OrganisationApi.delete(response.getResult()));
+    DeleteOrgRequest request = gbif.getOrganisationApi().getDeleteRequest(
+        GbifOrganisation.builder().password("DaSAWqmvQ0z").key(
+            "c3513d8e-bf68-42ec-b125-2574cf022e99").primaryContactType(
+            "technical").build());
+    DeleteOrgResponse response = request.execute();
+    Assert.assertNotNull(response.getResult());
+    Assert.assertTrue(response.getResult());
   }
 
   /**
    * Test method for
-   * {@link org.gbif.registry.api.client.GbifRegistry.OrganisationApi#list()}.
+   * {@link org.gbif.registry.api.client.RegistryService.OrganisationApi#list()}
+   * .
    */
   @Test
   public final void testList() {
-    registry.execute(OrganisationApi.list());
+    ListOrgRequest request = gbif.getOrganisationApi().getListRequest();
+    List<GbifOrganisation> list = request.execute().getResult();
+    Assert.assertNotNull(list);
+    System.out.println(list);
+
   }
 
   /**
    * Test method for
-   * {@link org.gbif.registry.api.client.GbifRegistry.OrganisationApi#read(java.lang.String)}
+   * {@link org.gbif.registry.api.client.RegistryService.OrganisationApi#read(java.lang.String)}
    * .
    */
   @Test
   public final void testRead() {
-    RpcResponse<GbifOrganisation> response = null;
-    try {
-      response = registry.execute(OrganisationApi.create(org));
-      RpcResponse<GbifOrganisation> read = registry.execute(OrganisationApi.read(response.getResult().getKey()));
-      Assert.assertEquals(response.getResult().getKey(),
-          read.getResult().getKey());
-    } finally {
-      if (response != null) {
-        registry.execute(OrganisationApi.delete(response.getResult()));
-      }
-    }
+    String orgKey = "c3513d8e-bf68-42ec-b125-2574cf022e99";
+    ReadOrgRequest request = gbif.getOrganisationApi().getReadRequest(orgKey);
+    ReadOrgResponse response = request.execute();
+    GbifOrganisation org = response.getResult();
+    Assert.assertNotNull(org);
+    Assert.assertEquals(orgKey, org.getKey());
   }
 
   /**
    * Test method for
-   * {@link org.gbif.registry.api.client.GbifRegistry.OrganisationApi#update(org.gbif.registry.api.client.GbifOrganisation)}
+   * {@link org.gbif.registry.api.client.RegistryService.OrganisationApi#update(org.gbif.registry.api.client.GbifOrganisation)}
    * .
    */
   @Test
   public final void testUpdate() {
-    GbifOrganisation updated = null;
-    try {
-      RpcResponse<GbifOrganisation> response = registry.execute(OrganisationApi.create(org));
-      String passwd = response.getResult().getPassword();
-      String key = response.getResult().getKey();
-
-      response = registry.execute(OrganisationApi.read(response.getResult().getKey()));
-      GbifOrganisation existing = response.getResult();
-
-      updated = GbifOrganisation.builder().key(key).password(passwd).primaryContactType(
-          existing.getPrimaryContactType()).name("UPDATE").build();
-      registry.execute(OrganisationApi.update(updated));
-
-      response = registry.execute(OrganisationApi.read(key));
-
-      GbifOrganisation test = response.getResult();
-      Assert.assertEquals("UPDATE", test.getName());
-    } finally {
-      if (updated != null) {
-        registry.execute(OrganisationApi.delete(updated));
-      }
-    }
+    UpdateOrgRequest request = gbif.getOrganisationApi().getUpdateRequest(
+        GbifOrganisation.builder().password("DaSAWqmvQ0z").key(
+            "c3513d8e-bf68-42ec-b125-2574cf022e99").primaryContactType(
+            "technical").description("Test Update").build());
+    UpdateOrgResponse response = request.execute();
+    Assert.assertNotNull(response);
+    Assert.assertEquals("Test Update", response.getResult().getDescription());
   }
 }
