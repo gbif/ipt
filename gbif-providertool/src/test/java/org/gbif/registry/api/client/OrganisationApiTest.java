@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class OrganisationApiTest {
 
-  private static RegistryService gbif = GbifRegistry.init("http://gbrdsdev.gbif.org");;
+  private static RegistryService gbif = GbifRegistry.init("http://gbrdsdev.gbif.org");
 
   private static final GbifOrganisation org = GbifOrganisation.builder().name(
       "GBIF Production Registry Test").primaryContactEmail(
@@ -54,7 +54,7 @@ public class OrganisationApiTest {
   public final void testCreate() {
     GbifOrganisation result = null;
     try {
-      CreateOrgRequest request = gbif.getOrganisationApi().getCreateRequest(org);
+      CreateOrgRequest request = gbif.getOrganisationApi().create(org);
       CreateOrgResponse response = request.execute();
       result = response.getResult();
       Assert.assertNotNull(result);
@@ -62,7 +62,7 @@ public class OrganisationApiTest {
       Assert.assertNotNull(result.getPassword());
     } finally {
       if (result != null) {
-        Assert.assertTrue(gbif.getOrganisationApi().getDeleteRequest(result).execute().getResult());
+        Assert.assertTrue(gbif.getOrganisationApi().delete(result).execute().getResult());
       }
     }
   }
@@ -74,7 +74,7 @@ public class OrganisationApiTest {
    */
   @Test
   public final void testDelete() {
-    DeleteOrgRequest request = gbif.getOrganisationApi().getDeleteRequest(
+    DeleteOrgRequest request = gbif.getOrganisationApi().delete(
         GbifOrganisation.builder().password("DaSAWqmvQ0z").key(
             "c3513d8e-bf68-42ec-b125-2574cf022e99").primaryContactType(
             "technical").build());
@@ -90,7 +90,7 @@ public class OrganisationApiTest {
    */
   @Test
   public final void testList() {
-    ListOrgRequest request = gbif.getOrganisationApi().getListRequest();
+    ListOrgRequest request = gbif.getOrganisationApi().list();
     List<GbifOrganisation> list = request.execute().getResult();
     Assert.assertNotNull(list);
     System.out.println(list);
@@ -105,7 +105,7 @@ public class OrganisationApiTest {
   @Test
   public final void testRead() {
     String orgKey = "c3513d8e-bf68-42ec-b125-2574cf022e99";
-    ReadOrgRequest request = gbif.getOrganisationApi().getReadRequest(orgKey);
+    ReadOrgRequest request = gbif.getOrganisationApi().read(orgKey);
     ReadOrgResponse response = request.execute();
     GbifOrganisation org = response.getResult();
     Assert.assertNotNull(org);
@@ -119,7 +119,7 @@ public class OrganisationApiTest {
    */
   @Test
   public final void testUpdate() {
-    UpdateOrgRequest request = gbif.getOrganisationApi().getUpdateRequest(
+    UpdateOrgRequest request = gbif.getOrganisationApi().update(
         GbifOrganisation.builder().password("DaSAWqmvQ0z").key(
             "c3513d8e-bf68-42ec-b125-2574cf022e99").primaryContactType(
             "technical").description("Test Update").build());

@@ -118,7 +118,7 @@ public interface RegistryService {
      * @param org the organisation to create
      * @return RpcRequest the RPC request for creating the organisation
      */
-    CreateOrgRequest getCreateRequest(GbifOrganisation org);
+    CreateOrgRequest create(GbifOrganisation org);
 
     /**
      * Returns a new {@link DeleteOrgRequest} requiring authentication that when
@@ -131,7 +131,7 @@ public interface RegistryService {
      * @param org the organisation to delete
      * @return RpcRequest the RPC request for deleting the organisation
      */
-    DeleteOrgRequest getDeleteRequest(GbifOrganisation org);
+    DeleteOrgRequest delete(GbifOrganisation org);
 
     /**
      * Returns a new {@link ListOrgRequest} that when executed lists all
@@ -141,7 +141,7 @@ public interface RegistryService {
      * 
      * @return RpcRequest the RPC request for listing all organisations
      */
-    ListOrgRequest getListRequest();
+    ListOrgRequest list();
 
     /**
      * Returns a new {@link ReadOrgRequest} that when executed reads an
@@ -154,7 +154,7 @@ public interface RegistryService {
      * @param key the organisation key
      * @return RpcRequest the RPC request that reads the organisation
      */
-    ReadOrgRequest getReadRequest(String orgKey);
+    ReadOrgRequest read(String orgKey);
 
     /**
      * Returns a {@link UpdateOrgRequest} requiring authentication that when
@@ -167,7 +167,7 @@ public interface RegistryService {
      * @param org the organisation to update
      * @return RpcRequest the RPC request for updating the organisation
      */
-    UpdateOrgRequest getUpdateRequest(GbifOrganisation org);
+    UpdateOrgRequest update(GbifOrganisation org);
   }
 
   /**
