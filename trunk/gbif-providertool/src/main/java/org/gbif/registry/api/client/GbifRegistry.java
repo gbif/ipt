@@ -515,9 +515,9 @@ public class GbifRegistry implements RegistryService {
     }
 
     /**
-     * @see OrganisationApi#getCreateRequest(GbifOrganisation)
+     * @see OrganisationApi#create(GbifOrganisation)
      */
-    public CreateOrgRequest getCreateRequest(GbifOrganisation org) {
+    public CreateOrgRequest create(GbifOrganisation org) {
       checkNotNull(org);
       checkArgument(notNullOrEmpty(org.getName()));
       checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
@@ -527,9 +527,9 @@ public class GbifRegistry implements RegistryService {
     }
 
     /**
-     * @see OrganisationApi#getDeleteRequest(GbifOrganisation)
+     * @see OrganisationApi#delete(GbifOrganisation)
      */
-    public DeleteOrgRequest getDeleteRequest(GbifOrganisation org) {
+    public DeleteOrgRequest delete(GbifOrganisation org) {
       checkNotNull(org);
       checkArgument(notNullOrEmpty(org.getKey()));
       checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
@@ -538,24 +538,24 @@ public class GbifRegistry implements RegistryService {
     }
 
     /**
-     * @see OrganisationApi#getListRequest()
+     * @see OrganisationApi#list()
      */
-    public ListOrgRequest getListRequest() {
+    public ListOrgRequest list() {
       return new ListRequest(registry);
     }
 
     /**
-     * @see OrganisationApi#getReadRequest(String)
+     * @see OrganisationApi#read(String)
      */
-    public ReadOrgRequest getReadRequest(String orgKey) {
+    public ReadOrgRequest read(String orgKey) {
       checkArgument(notNullOrEmpty(orgKey));
       return new ReadRequest(orgKey, registry);
     }
 
     /**
-     * @see OrganisationApi#getUpdateRequest(GbifOrganisation)
+     * @see OrganisationApi#update(GbifOrganisation)
      */
-    public UpdateOrgRequest getUpdateRequest(GbifOrganisation org) {
+    public UpdateOrgRequest update(GbifOrganisation org) {
       checkNotNull(org);
       checkArgument(notNullOrEmpty(org.getKey()));
       checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
