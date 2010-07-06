@@ -27,15 +27,17 @@ import org.gbif.registry.api.client.GbifRegistry.CreateServiceRequest;
 import org.gbif.registry.api.client.GbifRegistry.DeleteOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.DeleteResourceRequest;
 import org.gbif.registry.api.client.GbifRegistry.DeleteServiceRequest;
+import org.gbif.registry.api.client.GbifRegistry.ListExtensionsRequest;
 import org.gbif.registry.api.client.GbifRegistry.ListOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.ListResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.ListServiceRequest;
+import org.gbif.registry.api.client.GbifRegistry.ListServicesForResourceRequest;
 import org.gbif.registry.api.client.GbifRegistry.ReadOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.ReadResourceRequest;
 import org.gbif.registry.api.client.GbifRegistry.ReadServiceRequest;
 import org.gbif.registry.api.client.GbifRegistry.UpdateOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.UpdateResourceRequest;
 import org.gbif.registry.api.client.GbifRegistry.UpdateServiceRequest;
+import org.gbif.registry.api.client.GbifRegistry.ValidateOrgCredentialsRequest;
 
 /**
  * Interface for the GBRDS.
@@ -104,6 +106,20 @@ public interface Gbrds {
     public String toString() {
       return Objects.toStringHelper(this).add("Id", id).add("Password", passwd).toString();
     }
+  }
+
+  /**
+   * This class surfaces an RPC-style interface to the GBIF Registry Extension
+   * API.
+   */
+  public interface ExtensionApi {
+
+    /**
+     * Returns a list of {@link GbifExtension}.
+     * 
+     * @return ListExtensionsRequest
+     */
+    ListExtensionsRequest list();
   }
 
   /**
@@ -179,6 +195,9 @@ public interface Gbrds {
      * @return RpcRequest the RPC request for updating the organisation
      */
     UpdateOrgRequest update(GbifOrganisation org);
+
+    ValidateOrgCredentialsRequest validateCredentials(String organisationKey,
+        Credentials credentials);
   }
 
   /**
@@ -331,7 +350,7 @@ public interface Gbrds {
      * 
      * @return int
      */
-    public int getStatusCode();
+    public int getStatus();
   }
 
   public interface RpcRequest<R extends RpcResponse<T>, T> extends Request {
@@ -388,14 +407,17 @@ public interface Gbrds {
     DeleteServiceRequest delete(GbifService service);
 
     /**
-     * Returns a new {@link ListServiceRequest} that when executed lists all
-     * resources.
+     * Returns a new {@link ListServicesForResourceRequest} that when executed
+     * lists all GBIF Services from the GBRDS that are associated with a
+     * <code>resourceKey</code>.
+     * 
+     * @param resourceKey TODO
      * 
      * @see http://goo.gl/D6qH
      * 
      * @return RpcRequest the RPC request for listing all resources
      */
-    ListServiceRequest list();
+    ListServicesForResourceRequest list(String resourceKey);
 
     /**
      * Returns a new {@link ReadServiceRequest} that when executed reads an
@@ -423,6 +445,8 @@ public interface Gbrds {
      */
     UpdateServiceRequest update(GbifService service);
   }
+
+  public ExtensionApi getExtensionApi();
 
   public OrganisationApi getOrganisationApi();
 

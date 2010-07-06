@@ -27,6 +27,7 @@ import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -82,7 +83,6 @@ public class GbifRegistry implements Gbrds {
   public static interface CreateResourceRequest extends
       RpcRequest<CreateResourceResponse, GbifResource> {
   }
-
   public static interface CreateResourceResponse extends
       RpcResponse<GbifResource> {
   }
@@ -116,6 +116,14 @@ public class GbifRegistry implements Gbrds {
   public static interface DeleteServiceResponse extends RpcResponse<Boolean> {
   }
 
+  public static interface ListExtensionsRequest extends
+      RpcRequest<ListExtensionsResponse, List<GbifExtension>> {
+  }
+
+  public static interface ListExtensionsResponse extends
+      RpcResponse<List<GbifExtension>> {
+  }
+
   public static interface ListOrgRequest extends
       RpcRequest<ListOrgResponse, List<GbifOrganisation>> {
   }
@@ -132,11 +140,11 @@ public class GbifRegistry implements Gbrds {
       RpcResponse<List<GbifResource>> {
   }
 
-  public static interface ListServiceRequest extends
-      RpcRequest<ListServiceResponse, List<GbifService>> {
+  public static interface ListServicesForResourceRequest extends
+      RpcRequest<ListServicesForResourceResponse, List<GbifService>> {
   }
 
-  public static interface ListServiceResponse extends
+  public static interface ListServicesForResourceResponse extends
       RpcResponse<List<GbifService>> {
   }
 
@@ -184,6 +192,14 @@ public class GbifRegistry implements Gbrds {
 
   public static interface UpdateServiceResponse extends
       RpcResponse<GbifService> {
+  }
+
+  public static interface ValidateOrgCredentialsRequest extends
+      RpcRequest<ValidateOrgCredentialsResponse, Boolean> {
+  }
+
+  public static interface ValidateOrgCredentialsResponse extends
+      RpcResponse<Boolean> {
   }
 
   static class OrgUtil {
@@ -348,6 +364,139 @@ public class GbifRegistry implements Gbrds {
     public void startElement(String uri, String localName, String name,
         Attributes attributes) throws SAXException {
       content = "";
+    }
+  }
+
+  private static class ExtensionApiImpl implements ExtensionApi {
+
+    static abstract class ExtensionRequest implements Request {
+
+      final Gbrds registry;
+
+      ExtensionRequest(Gbrds registry) {
+        this.registry = registry;
+      }
+
+      public Credentials getCredentials() {
+        return null;
+      }
+
+      public String getHttpMethodType() {
+        return "GET";
+      }
+
+      public ImmutableMap<String, String> getPayload() {
+        return ImmutableMap.of();
+      }
+
+      public ImmutableMap<String, String> getRequestParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getRequestPath() {
+        throw new UnsupportedOperationException("Subclass must override.");
+      }
+    }
+
+    static abstract class ExtensionResponse<T> implements Response {
+      final Response response;
+      final T rpcRequest;
+
+      ExtensionResponse(T rpcRequest, Response response) {
+        this.rpcRequest = rpcRequest;
+        this.response = response;
+      }
+
+      public String getBody() {
+        return response.getBody();
+      }
+
+      public Throwable getError() {
+        return response.getError();
+      }
+
+      public Request getRequest() {
+        return response.getRequest();
+      }
+
+      public int getStatus() {
+        return response.getStatus();
+      }
+    }
+
+    static class ListRequest implements ListExtensionsRequest {
+
+      final Gbrds registry;
+
+      ListRequest(Gbrds registry) {
+        this.registry = registry;
+      }
+
+      public ListResponse execute() {
+        return new ListResponse(this, registry.execute(this));
+      }
+
+      public Credentials getCredentials() {
+        return null;
+      }
+
+      public String getHttpMethodType() {
+        return "GET";
+      }
+
+      public ImmutableMap<String, String> getPayload() {
+        return ImmutableMap.of();
+      }
+
+      public ImmutableMap<String, String> getRequestParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getRequestPath() {
+        return "/registry/ipt/extensions.json";
+      }
+    }
+
+    static class ListResponse extends ExtensionResponse<ListRequest> implements
+        ListExtensionsResponse {
+
+      private ListResponse(ListRequest request, Response response) {
+        super(request, response);
+      }
+
+      public List<GbifExtension> getResult() {
+        String body = getBody();
+        if (body == null || body.length() < 1) {
+          return null;
+        }
+        String json = getBody();
+
+        // Modifies JSON to be a list instead of a map:
+        json = json.replace("{\"extensions\":", "");
+        json = json.substring(0, json.length() - 1);
+
+        try {
+          List<GbifExtension> results = new Gson().fromJson(json,
+              new TypeToken<List<GbifExtension>>() {
+              }.getType());
+          return results;
+        } catch (Exception e) {
+          return null;
+        }
+      }
+    }
+
+    private final Gbrds registry;
+
+    ExtensionApiImpl(Gbrds registry) {
+      this.registry = registry;
+    }
+
+    /**
+     * @see Gbrds.ExtensionApi#list()
+     */
+    public ListExtensionsRequest list() {
+      return new ListRequest(registry);
     }
   }
 
@@ -561,8 +710,8 @@ public class GbifRegistry implements Gbrds {
         return response.getRequest();
       }
 
-      public int getStatusCode() {
-        return response.getStatusCode();
+      public int getStatus() {
+        return response.getStatus();
       }
     }
 
@@ -596,6 +745,9 @@ public class GbifRegistry implements Gbrds {
 
       public GbifOrganisation getResult() {
         String body = getBody();
+        if (body.contains("Error")) {
+          return null;
+        }
         return OrgUtil.fromJson(body);
       }
     }
@@ -652,10 +804,79 @@ public class GbifRegistry implements Gbrds {
       }
 
       public GbifOrganisation getResult() {
+        int status = getStatus();
+        if (status == HttpStatus.SC_UNAUTHORIZED) {
+          return null;
+        }
         if (!getBody().contains(rpcRequest.org.getKey())) {
           return null;
         }
-        return rpcRequest.org;
+        return OrgUtil.fromXml(getBody());
+      }
+    }
+
+    static class ValidateRequest extends OrgRequest implements
+        ValidateOrgCredentialsRequest {
+
+      final GbifOrganisation org;
+      final String path;
+      final ImmutableMap<String, String> payload;
+      final Credentials credentials;
+      final ImmutableMap<String, String> requestParams;
+
+      ValidateRequest(GbifOrganisation org, Gbrds registry) {
+        super(registry);
+        this.org = org;
+        path = String.format("/registry/organisation/%s", org.getKey());
+        payload = OrgUtil.asImmutableMap(org);
+        requestParams = ImmutableMap.of("op", "login");
+        credentials = Credentials.with(org.getKey(), org.getPassword());
+      }
+
+      /**
+       * @see org.gbif.registry.api.client.Gbrds.RpcRequest#execute()
+       */
+      public ValidateOrgCredentialsResponse execute() {
+        return new ValidateResponse(this, registry.execute(this));
+      }
+
+      @Override
+      public Credentials getCredentials() {
+        return credentials;
+      }
+
+      @Override
+      public ImmutableMap<String, String> getPayload() {
+        return payload;
+      }
+
+      @Override
+      public ImmutableMap<String, String> getRequestParams() {
+        return requestParams;
+      }
+
+      @Override
+      public String getRequestPath() {
+        return path;
+      }
+    }
+
+    static class ValidateResponse extends OrgResponse<ValidateRequest>
+        implements ValidateOrgCredentialsResponse {
+      ValidateResponse(ValidateRequest request, Response response) {
+        super(request, response);
+      }
+
+      public Boolean getResult() {
+        String body = getBody();
+        int status = getStatus();
+        if (status == HttpStatus.SC_UNAUTHORIZED
+            || status == HttpStatus.SC_NOT_FOUND
+            || body.contains("No organisation matches the key provided")
+            || body.contains("Incorrect Authorization information")) {
+          return false;
+        }
+        return true;
       }
     }
 
@@ -712,6 +933,19 @@ public class GbifRegistry implements Gbrds {
       checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
       checkArgument(notNullOrEmpty(org.getPassword()));
       return new UpdateRequest(org, registry);
+    }
+
+    /**
+     * @see OrganisationApi#validateCredentials (String, Credentials)
+     */
+    public ValidateOrgCredentialsRequest validateCredentials(
+        String organisationKey, Credentials credentials) {
+      checkNotNull(organisationKey);
+      checkArgument(notNullOrEmpty(organisationKey));
+      checkNotNull(credentials);
+      return new ValidateRequest(GbifOrganisation.builder().key(
+          credentials.getId()).password(credentials.getPasswd()).build(),
+          registry);
     }
   }
 
@@ -917,6 +1151,9 @@ public class GbifRegistry implements Gbrds {
 
       public GbifResource getResult() {
         String body = getBody();
+        if (body.contains("Error")) {
+          return null;
+        }
         return ResourceUtil.fromJson(body);
       }
     }
@@ -971,8 +1208,8 @@ public class GbifRegistry implements Gbrds {
         return response.getRequest();
       }
 
-      public int getStatusCode() {
-        return response.getStatusCode();
+      public int getStatus() {
+        return response.getStatus();
       }
     }
 
@@ -1068,7 +1305,7 @@ public class GbifRegistry implements Gbrds {
     }
 
     /**
-     * @see ResourceanisationApi#list()
+     * @see ResourceanisationApi#list(String)
      */
     public ListResourceRequest list() {
       return new ListRequest(registry);
@@ -1211,47 +1448,62 @@ public class GbifRegistry implements Gbrds {
        * @see Gbrds.gbif.registry.api.client.RegistryService.RpcResponse#getResult()
        */
       public Boolean getResult() {
-        return getBody().contains("Serviceanisation deleted successfully");
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
-    static class ListRequest implements ListServiceRequest {
+    static class ListForResourceRequest implements
+        ListServicesForResourceRequest {
 
       final Gbrds registry;
+      private String resourceKey;
+      private String method;
+      private Credentials credentials;
+      private ImmutableMap<String, String> requestParams;
+      private ImmutableMap<String, String> payload;
+      private String path;
 
-      ListRequest(Gbrds registry) {
+      ListForResourceRequest(String resourceKey, Gbrds registry) {
         this.registry = registry;
+        this.resourceKey = resourceKey;
+        method = "GET";
+        credentials = null;
+        payload = ImmutableMap.of();
+        requestParams = ImmutableMap.of("resourceKey", resourceKey);
+        path = "/registry/service";
       }
 
-      public ListResponse execute() {
-        return new ListResponse(this, registry.execute(this));
+      public ListForResourceResponse execute() {
+        return new ListForResourceResponse(this, registry.execute(this));
       }
 
       public Credentials getCredentials() {
-        return null;
+        return credentials;
       }
 
       public String getHttpMethodType() {
-        return "GET";
+        return method;
       }
 
       public ImmutableMap<String, String> getPayload() {
-        return ImmutableMap.of();
+        return payload;
       }
 
       public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
+        return requestParams;
       }
 
       public String getRequestPath() {
-        return "/registry/service.json";
+        return path;
       }
     }
 
-    static class ListResponse extends ServiceResponse<ListRequest> implements
-        ListServiceResponse {
+    static class ListForResourceResponse extends
+        ServiceResponse<ListForResourceRequest> implements
+        ListServicesForResourceResponse {
 
-      private ListResponse(ListRequest request, Response response) {
+      private ListForResourceResponse(ListForResourceRequest request,
+          Response response) {
         super(request, response);
       }
 
@@ -1295,6 +1547,9 @@ public class GbifRegistry implements Gbrds {
 
       public GbifService getResult() {
         String body = getBody();
+        if (body.contains("Error")) {
+          return null;
+        }
         return ServiceUtil.fromJson(body);
       }
     }
@@ -1349,8 +1604,8 @@ public class GbifRegistry implements Gbrds {
         return response.getRequest();
       }
 
-      public int getStatusCode() {
-        return response.getStatusCode();
+      public int getStatus() {
+        return response.getStatus();
       }
     }
 
@@ -1444,10 +1699,10 @@ public class GbifRegistry implements Gbrds {
     }
 
     /**
-     * @see ServiceanisationApi#list()
+     * @see ServiceanisationApi#list(String)
      */
-    public ListServiceRequest list() {
-      return new ListRequest(registry);
+    public ListServicesForResourceRequest list(String resourceKey) {
+      return new ListForResourceRequest(resourceKey, registry);
     }
 
     /**
@@ -1539,7 +1794,7 @@ public class GbifRegistry implements Gbrds {
         return request;
       }
 
-      public int getStatusCode() {
+      public int getStatus() {
         return status;
       }
 
@@ -1571,6 +1826,7 @@ public class GbifRegistry implements Gbrds {
   private final OrganisationApiImpl orgApi;
   private final ResourceApiImpl resourceApi;
   private final ServiceApiImpl serviceApi;
+  private final ExtensionApiImpl extensionApi;
 
   private GbifRegistry(String host) {
     this.host = host;
@@ -1579,6 +1835,7 @@ public class GbifRegistry implements Gbrds {
     orgApi = new OrganisationApiImpl(this);
     resourceApi = new ResourceApiImpl(this);
     serviceApi = new ServiceApiImpl(this);
+    extensionApi = new ExtensionApiImpl(this);
   }
 
   /**
@@ -1610,6 +1867,13 @@ public class GbifRegistry implements Gbrds {
       method.releaseConnection();
     }
     return createResponse(request, status, body, error);
+  }
+
+  /**
+   * @see Gbrds#getExtensionApi()
+   */
+  public ExtensionApi getExtensionApi() {
+    return extensionApi;
   }
 
   /**
