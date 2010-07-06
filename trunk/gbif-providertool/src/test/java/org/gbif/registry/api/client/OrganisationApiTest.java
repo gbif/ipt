@@ -17,10 +17,10 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
-import org.gbif.registry.api.client.GbifOrganisation;
-import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbifRegistry;
-import org.gbif.registry.api.client.Gbrds.OrganisationApi;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.registry.api.client.GbifRegistry.CreateOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.CreateOrgResponse;
 import org.gbif.registry.api.client.GbifRegistry.DeleteOrgRequest;
@@ -30,6 +30,9 @@ import org.gbif.registry.api.client.GbifRegistry.ReadOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.ReadOrgResponse;
 import org.gbif.registry.api.client.GbifRegistry.UpdateOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.UpdateOrgResponse;
+import org.gbif.registry.api.client.GbifRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.OrganisationApi;
 import org.junit.Test;
 
 import java.util.List;
@@ -40,6 +43,7 @@ import java.util.List;
 public class OrganisationApiTest {
 
   private static Gbrds gbif = GbifRegistry.init("http://gbrdsdev.gbif.org");
+  private static OrganisationApi api = gbif.getOrganisationApi();
 
   private static final GbifOrganisation org = GbifOrganisation.builder().name(
       "Organisation Test").primaryContactEmail("eightysteele@gmail.com").primaryContactType(
@@ -119,11 +123,30 @@ public class OrganisationApiTest {
   @Test
   public final void testUpdate() {
     UpdateOrgRequest request = gbif.getOrganisationApi().update(
-        GbifOrganisation.builder().password("DaSAWqmvQ0z").key(
-            "c3513d8e-bf68-42ec-b125-2574cf022e99").primaryContactType(
+        GbifOrganisation.builder().password("password").key(
+            "3780d048-8e18-4c0c-afcd-cb6389df56de").primaryContactType(
             "technical").description("Test Update").build());
     UpdateOrgResponse response = request.execute();
     Assert.assertNotNull(response);
-    Assert.assertEquals("Test Update", response.getResult().getDescription());
+    GbifOrganisation org = response.getResult();
+    Assert.assertEquals("Test Updated", org.getDescription());
+  }
+
+  @Test
+  public final void testValidateCredentials() {
+    String orgKey = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+    Credentials creds = Credentials.with(orgKey, "password");
+    ValidateOrgCredentialsResponse r;
+
+    r = api.validateCredentials(orgKey, creds).execute();
+    assertTrue(r.getStatus() == HttpStatus.SC_OK);
+    assertTrue(api.validateCredentials(orgKey, creds).execute().getResult());
+
+    creds = Credentials.with("INVALID_ID", "INVALID_PASSWORD");
+    r = api.validateCredentials(orgKey, creds).execute();
+    assertTrue(r.getStatus() == HttpStatus.SC_UNAUTHORIZED
+        || r.getStatus() == HttpStatus.SC_NOT_FOUND);
+    assertFalse(r.getResult());
+
   }
 }

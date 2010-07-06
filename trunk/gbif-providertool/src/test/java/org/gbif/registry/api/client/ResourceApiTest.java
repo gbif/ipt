@@ -17,10 +17,6 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
-import org.gbif.registry.api.client.GbifOrganisation;
-import org.gbif.registry.api.client.GbifRegistry;
-import org.gbif.registry.api.client.GbifResource;
-import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.GbifRegistry.CreateResourceResponse;
 import org.gbif.registry.api.client.GbifRegistry.ListOrgRequest;
 import org.gbif.registry.api.client.GbifRegistry.ReadResourceResponse;
@@ -72,7 +68,7 @@ public class ResourceApiTest {
 
   @Test
   public final void testRead() {
-    String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
+    String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e------";
     ReadResourceResponse response = api.read(resourceKey).execute();
     GbifResource res = response.getResult();
     Assert.assertNotNull(res);
