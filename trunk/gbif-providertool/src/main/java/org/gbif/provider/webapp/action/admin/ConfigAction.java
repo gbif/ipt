@@ -15,12 +15,22 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.trimToEmpty;
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
+import org.apache.commons.httpclient.HttpStatus;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.voc.ServiceType;
+import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
+import org.gbif.registry.api.client.GbrdsService;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,13 +39,21 @@ import java.io.IOException;
  * TODO: Documentation.
  * 
  */
+@SuppressWarnings("serial")
 public class ConfigAction extends BasePostAction {
+
   private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
+
+  @Qualifier("resourceManager")
+  protected GenericResourceManager<Resource> resourceManager;
+
   @Autowired
   private GeoserverManager geoManager;
 
   @Autowired
   private RegistryManager registryManager;
+
+  private String initialBaseUrl;
 
   public AppConfig getConfig() {
     return this.cfg;
@@ -43,6 +61,7 @@ public class ConfigAction extends BasePostAction {
 
   @Override
   public String read() {
+    initialBaseUrl = cfg.getBaseUrl();
     check();
     return SUCCESS;
   }
@@ -56,7 +75,7 @@ public class ConfigAction extends BasePostAction {
     cfg.reloadLogger();
     saveMessage(getText("config.updated"));
     check();
-    // TODO: registryManager.updateServiceAccessPointUrl();
+    updateServices();
     return SUCCESS;
   }
 
@@ -89,7 +108,7 @@ public class ConfigAction extends BasePostAction {
     if (!f.isDirectory() || !f.canWrite()) {
       saveMessage(getText("config.check.iptDataDir"));
     }
-    if (StringUtils.trimToNull(cfg.getGeoserverUrl()) == null
+    if (trimToNull(cfg.getGeoserverUrl()) == null
         || !cfg.getGeoserverUrl().startsWith("http")) {
       saveMessage(getText("config.check.geoserverUrl"));
     }
@@ -101,10 +120,66 @@ public class ConfigAction extends BasePostAction {
         cfg.getGeoserverUrl())) {
       saveMessage(getText("config.check.geoserverLogin"));
     }
-    if (StringUtils.trimToNull(cfg.getGoogleMapsApiKey()) == null
-        || StringUtils.trimToEmpty(cfg.getGoogleMapsApiKey()).equalsIgnoreCase(
+    if (trimToNull(cfg.getGoogleMapsApiKey()) == null
+        || trimToEmpty(cfg.getGoogleMapsApiKey()).equalsIgnoreCase(
             GOOGLE_MAPS_LOCALHOST_KEY)) {
       saveMessage(getText("config.check.googleMapsApiKey"));
+    }
+  }
+
+  private void updateServices() {
+    String baseUrl = cfg.getBaseUrl();
+    if (baseUrl == null || baseUrl.contains("localhost")
+        || initialBaseUrl == null) {
+      return;
+    }
+    if (initialBaseUrl.trim().equals(baseUrl.trim())) {
+      return;
+    }
+    String resourceKey, orgKey, orgPasswd;
+    for (Resource r : resourceManager.getAll()) {
+      resourceKey = r.getMeta().getUddiID();
+      orgKey = r.getOrgUuid();
+      orgPasswd = r.getOrgPassword();
+      if (trimToNull(resourceKey) == null || trimToNull(orgKey) == null
+          || trimToNull(orgPasswd) == null) {
+        continue;
+      }
+      GbrdsService.Builder builder;
+      try {
+        for (GbrdsService s : registryManager.listGbrdsServices(resourceKey).getResult()) {
+          builder = GbrdsService.builder(s);
+          switch (ServiceType.valueOf(s.getType())) {
+            case EML:
+              builder.accessPointURL(cfg.getEmlUrl(r.getGuid()));
+            case DWC_ARCHIVE:
+              builder.accessPointURL(cfg.getArchiveUrl(r.getGuid()));
+            case TAPIR:
+              builder.accessPointURL(cfg.getTapirEndpoint(r.getId()));
+            case WFS:
+              builder.accessPointURL(cfg.getWfsEndpoint(r.getId()));
+            case WMS:
+              builder.accessPointURL(cfg.getWmsEndpoint(r.getId()));
+            case TCS_RDF:
+              builder.accessPointURL(cfg.getArchiveTcsUrl(r.getGuid()));
+            default:
+              log.warn("Unsupported service type: " + s.getType());
+          }
+          GbrdsService gs = builder.resourceKey(resourceKey).organisationKey(
+              orgKey).resourcePassword(orgPasswd).build();
+          UpdateServiceResponse response = registryManager.updateGbrdsService(gs);
+          if (response.getStatus() == HttpStatus.SC_OK) {
+            saveMessage(getText("Updated service URL: "
+                + gs.getAccessPointURL()));
+          } else {
+            saveMessage(getText("Unable to update service"));
+          }
+        }
+      } catch (RegistryException e) {
+        e.printStackTrace();
+        String msg = String.format("Problem updating services: %s", e);
+        saveMessage(msg);
+      }
     }
   }
 }

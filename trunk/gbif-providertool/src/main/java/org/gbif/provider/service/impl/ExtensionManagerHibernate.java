@@ -15,24 +15,26 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+
 import org.gbif.provider.model.Extension;
 import org.gbif.provider.model.ExtensionProperty;
 import org.gbif.provider.model.factory.ExtensionFactory;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.service.ExtensionManager;
 import org.gbif.provider.service.RegistryManager;
-
-import com.google.common.base.Preconditions;
+import org.gbif.registry.api.client.GbrdsExtension;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.List;
-
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * TODO: Documentation
@@ -214,7 +216,13 @@ public class ExtensionManagerHibernate extends
         e1.printStackTrace();
       }
     }
-    Collection<String> urls = registryManager.listAllExtensions();
+    Collection<String> urls = Lists.transform(
+        registryManager.listAllExtensions(),
+        new Function<GbrdsExtension, String>() {
+          public String apply(GbrdsExtension ge) {
+            return ge.getUrl();
+          }
+        });
     Collection<Extension> extensions = extensionFactory.build(urls);
     for (Extension e : extensions) {
       // see if it exists - we don't support any versioning so they don't get

@@ -16,6 +16,7 @@
 package org.gbif.registry.api.client;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 import java.io.Serializable;
 
@@ -91,6 +92,15 @@ public class GbrdsService implements Serializable {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public static Builder builder(GbrdsService service) {
+    Preconditions.checkNotNull(service);
+    return builder().accessPointURL(service.accessPointURL).description(
+        service.description).descriptionLanguage(service.descriptionLanguage).key(
+        service.key).organisationKey(service.organisationKey).resourceKey(
+        service.resourceKey).resourcePassword(service.resourcePassword).type(
+        service.type);
   }
 
   private String accessPointURL;

@@ -21,6 +21,12 @@ import com.google.common.collect.Lists;
 import com.opensymphony.xwork2.Preparable;
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
+import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
+import static org.gbif.provider.model.voc.ServiceType.EML;
+import static org.gbif.provider.model.voc.ServiceType.TAPIR;
+import static org.gbif.provider.model.voc.ServiceType.TCS_RDF;
+import static org.gbif.provider.model.voc.ServiceType.WFS;
+import static org.gbif.provider.model.voc.ServiceType.WMS;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
@@ -42,13 +48,16 @@ import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.eml.TemporalCoverage;
 import org.gbif.provider.model.eml.TemporalCoverageType;
 import org.gbif.provider.model.voc.Rank;
+import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.Credentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
@@ -527,6 +536,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       if (response.getStatus() == HttpStatus.SC_CREATED) {
         saveMessage(getText("register.ipt.success"));
         GbrdsResource r = response.getResult();
+        createGbrdsServices(r, resource);
         gbifResourceKey = r.getKey();
       } else {
         saveMessage(getText("register.ipt.problem"));
@@ -540,9 +550,56 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   }
 
   /**
+   * @param r void
    * @param resource
-   * @return Credentials
    */
+  private void createGbrdsServices(GbrdsResource r, Resource resource) {
+    if (cfg.getBaseUrl().contains("localhost")) {
+      saveMessage("Unable to create GBRDS services because the IPT base URL contains localhost");
+      return;
+    }
+    List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR, WFS,
+        WMS, TCS_RDF);
+    GbrdsService.Builder service = GbrdsService.builder().organisationKey(
+        r.getKey()).organisationKey(r.getOrganisationKey()).resourcePassword(
+        r.getOrganisationPassword());
+    for (ServiceType type : types) {
+      switch (type) {
+        case EML:
+          service.accessPointURL(cfg.getEmlUrl(resource.getGuid()));
+          service.type(EML.name());
+          break;
+        case DWC_ARCHIVE:
+          service.accessPointURL(cfg.getArchiveUrl(resource.getGuid()));
+          service.type(DWC_ARCHIVE.name());
+          break;
+        case TAPIR:
+          service.accessPointURL(cfg.getTapirEndpoint(resource.getId()));
+          service.type(TAPIR.name());
+          break;
+        case WFS:
+          service.accessPointURL(cfg.getWfsEndpoint(resource.getId()));
+          service.type(TAPIR.name());
+          break;
+        case WMS:
+          service.accessPointURL(cfg.getWmsEndpoint(resource.getId()));
+          service.type(WMS.name());
+          break;
+        case TCS_RDF:
+          service.accessPointURL(cfg.getArchiveTcsUrl(resource.getGuid()));
+          service.type(TCS_RDF.name());
+          break;
+      }
+      try {
+        registryManager.createGbrdsService(service.build());
+      } catch (RegistryException e) {
+        e.printStackTrace();
+        String msg = String.format("Unable to register RSS service: %s", e);
+        saveMessage(msg);
+      }
+    }
+  }
+
   private Credentials getOrgCreds(Resource resource) {
     Credentials creds = null;
     String orgKey = resource.getOrgUuid();
@@ -574,5 +631,4 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
     return isResourceValid;
   }
-
 }

@@ -18,9 +18,6 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
 import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ContactType;
@@ -48,11 +45,11 @@ import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
 import org.gbif.registry.api.client.GbrdsResource.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -121,12 +118,12 @@ public class RegistryManagerImpl implements RegistryManager {
    * @see RegistryManager#createGbrdsOrganisation(GbrdsOrganisation)
    */
   public CreateOrgResponse createGbrdsOrganisation(
-      GbrdsOrganisation gbifOrganisation) throws RegistryException {
-    checkNotNull(gbifOrganisation);
-    CreateOrgResponse response = organsiationApi.create(gbifOrganisation).execute();
+      GbrdsOrganisation organisation) throws RegistryException {
+    checkNotNull(organisation);
+    CreateOrgResponse response = organsiationApi.create(organisation).execute();
     if (response.getError() != null) {
       String msg = String.format("GBIF Organisation not created %s",
-          gbifOrganisation);
+          organisation);
       throw new RegistryException(msg, response.getError());
     }
     return response;
@@ -135,12 +132,12 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#createGbrdsResource(GbrdsResource)
    */
-  public CreateResourceResponse createGbrdsResource(GbrdsResource gbifResource)
+  public CreateResourceResponse createGbrdsResource(GbrdsResource resource)
       throws RegistryException {
-    checkNotNull(gbifResource);
-    CreateResourceResponse response = resourceApi.create(gbifResource).execute();
+    checkNotNull(resource);
+    CreateResourceResponse response = resourceApi.create(resource).execute();
     if (response.getError() != null) {
-      String msg = String.format("GBIF Resource not created %s", gbifResource);
+      String msg = String.format("GBIF Resource not created %s", resource);
       throw new RegistryException(msg, response.getError());
     }
     return response;
@@ -204,35 +201,25 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#listAllExtensions()
    */
-  public Collection<String> listAllExtensions() {
-    List<GbrdsExtension> extensions = iptApi.listExtensions().execute().getResult();
-    return Lists.transform(extensions, new Function<GbrdsExtension, String>() {
-      public String apply(GbrdsExtension ge) {
-        return ge.getUrl();
-      }
-    });
+  public List<GbrdsExtension> listAllExtensions() {
+    return iptApi.listExtensions().execute().getResult();
   }
 
   /**
    * @see RegistryManager#listAllThesauri()
    */
-  public Collection<String> listAllThesauri() {
-    List<GbrdsThesaurus> thesauri = iptApi.listThesauri().execute().getResult();
-    return Lists.transform(thesauri, new Function<GbrdsThesaurus, String>() {
-      public String apply(GbrdsThesaurus gt) {
-        return gt.getUrl();
-      }
-    });
+  public List<GbrdsThesaurus> listAllThesauri() {
+    return iptApi.listThesauri().execute().getResult();
   }
 
   /**
    * @see RegistryManager#listGbifServices(String )
    */
-  public ListServicesForResourceResponse listGbrdsServicesForGbrdsResource(
-      String gbifResourceKey) throws RegistryException {
-    checkNotNull(gbifResourceKey);
-    checkArgument(gbifResourceKey.length() > 0);
-    ListServicesForResourceResponse response = serviceApi.list(gbifResourceKey).execute();
+  public ListServicesForResourceResponse listGbrdsServices(
+      String resourceKey) throws RegistryException {
+    checkNotNull(resourceKey);
+    checkArgument(resourceKey.length() > 0);
+    ListServicesForResourceResponse response = serviceApi.list(resourceKey).execute();
     Throwable error = response.getError();
     if (error != null) {
       throw new RegistryException("Unable to list services", error);
@@ -283,13 +270,13 @@ public class RegistryManagerImpl implements RegistryManager {
    * @see RegistryManager#updateGbrdsOrganisation(GbrdsOrganisation)
    */
   public UpdateOrgResponse updateGbrdsOrganisation(
-      GbrdsOrganisation gbifOrganisation) throws RegistryException {
-    checkNotNull(gbifOrganisation);
-    UpdateOrgResponse response = organsiationApi.update(gbifOrganisation).execute();
+      GbrdsOrganisation organisation) throws RegistryException {
+    checkNotNull(organisation);
+    UpdateOrgResponse response = organsiationApi.update(organisation).execute();
     if (response.getError() != null) {
       String msg = String.format(
           "Unable to read GBIF Organisation with key %s",
-          gbifOrganisation.getKey());
+          organisation.getKey());
       throw new RegistryException(msg, response.getError());
     }
     return response;
@@ -298,13 +285,29 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#updateGbrdsResource(GbrdsResource)
    */
-  public UpdateResourceResponse updateGbrdsResource(GbrdsResource gbifResource)
+  public UpdateResourceResponse updateGbrdsResource(GbrdsResource resource)
       throws RegistryException {
-    checkNotNull(gbifResource);
-    UpdateResourceResponse response = resourceApi.update(gbifResource).execute();
+    checkNotNull(resource);
+    UpdateResourceResponse response = resourceApi.update(resource).execute();
     if (response.getError() != null) {
       String msg = String.format("Unable to read GBIF Resource with key %s",
-          gbifResource.getKey());
+          resource.getKey());
+      throw new RegistryException(msg, response.getError());
+    }
+    return response;
+  }
+
+  /**
+   * @throws RegistryException
+   * @see RegistryManager#updateGbrdsService(GbrdsService)
+   */
+  public UpdateServiceResponse updateGbrdsService(GbrdsService service)
+      throws RegistryException {
+    checkNotNull(service);
+    UpdateServiceResponse response = serviceApi.update(service).execute();
+    if (response.getError() != null) {
+      String msg = String.format("Unable to read GBIF Resource with key %s",
+          service.getKey());
       throw new RegistryException(msg, response.getError());
     }
     return response;
@@ -315,7 +318,7 @@ public class RegistryManagerImpl implements RegistryManager {
    *      Credentials)
    */
   public ValidateOrgCredentialsResponse validateGbifOrganisationCredentials(
-      String gbigOrganisationKey, Credentials credentials) {
-    return organsiationApi.validateCredentials(gbigOrganisationKey, credentials).execute();
+      String organisationKey, Credentials credentials) {
+    return organsiationApi.validateCredentials(organisationKey, credentials).execute();
   }
 }

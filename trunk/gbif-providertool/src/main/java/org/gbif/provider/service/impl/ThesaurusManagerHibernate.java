@@ -15,6 +15,9 @@
  */
 package org.gbif.provider.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 import org.gbif.provider.model.ThesaurusConcept;
 import org.gbif.provider.model.ThesaurusTerm;
 import org.gbif.provider.model.ThesaurusVocabulary;
@@ -22,13 +25,13 @@ import org.gbif.provider.model.factory.ThesaurusFactory;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
+import org.gbif.registry.api.client.GbrdsThesaurus;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * TODO: Documentation.
@@ -225,7 +228,13 @@ public class ThesaurusManagerHibernate extends
     getSession().createSQLQuery("delete from thesaurus_term").executeUpdate();
     getSession().createSQLQuery("delete from thesaurus_concept").executeUpdate();
 
-    Collection<String> urls = registryManager.listAllThesauri();
+    Collection<String> urls = Lists.transform(
+        registryManager.listAllThesauri(),
+        new Function<GbrdsThesaurus, String>() {
+          public String apply(GbrdsThesaurus gs) {
+            return gs.getUrl();
+          }
+        });
 
     Collection<ThesaurusVocabulary> vocabularies = ThesaurusFactory.build(urls);
     for (ThesaurusVocabulary tv : vocabularies) {
