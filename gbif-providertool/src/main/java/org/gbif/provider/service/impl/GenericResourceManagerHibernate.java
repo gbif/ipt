@@ -209,7 +209,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
       Credentials creds = getResourceCreds(resource);
       GbrdsService gs;
       DeleteServiceResponse response;
-      ListServicesForResourceResponse listResponse = registryManager.listGbrdsServicesForGbrdsResource(gr.getKey());
+      ListServicesForResourceResponse listResponse = registryManager.listGbrdsServices(gr.getKey());
       for (GbrdsService service : listResponse.getResult()) {
         gs = GbrdsService.builder().organisationKey(creds.getId()).resourcePassword(
             creds.getPasswd()).resourceKey(resource.getUddiID()).build();
@@ -224,7 +224,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
   }
 
   @SuppressWarnings("unchecked")
-  private void createGbifResource(Resource resource) {
+  private void createGbrdsResource(Resource resource) {
     String gbifResourceKey = null;
     try {
       ResourceMetadata rm = resource.getMeta();
@@ -288,7 +288,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
       if (resource.isRegistered()) {
         updateGbifResource(resource);
       } else {
-        createGbifResource(resource);
+        createGbrdsResource(resource);
       }
     } catch (Exception e) {
       resource.setDirty();
