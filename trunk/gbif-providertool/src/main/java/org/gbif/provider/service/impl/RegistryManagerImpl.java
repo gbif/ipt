@@ -18,543 +18,304 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.googlecode.jsonplugin.JSONUtil;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
-import static org.apache.commons.lang.StringUtils.trimToEmpty;
-import static org.apache.commons.lang.StringUtils.trimToNull;
-
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.gbif.provider.model.ChecklistResource;
-import org.gbif.provider.model.DataResource;
-import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Organisation;
-import org.gbif.provider.model.Resource;
+import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ContactType;
-import org.gbif.provider.model.voc.ServiceType;
-import org.gbif.provider.model.xml.NewRegistryEntryHandler;
-import org.gbif.provider.model.xml.ResourceMetadataHandler;
-import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
-import org.xml.sax.SAXException;
+import org.gbif.registry.api.client.Gbrds;
+import org.gbif.registry.api.client.GbrdsExtension;
+import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.GbrdsRegistry;
+import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.GbrdsService;
+import org.gbif.registry.api.client.GbrdsThesaurus;
+import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.IptApi;
+import org.gbif.registry.api.client.Gbrds.OrganisationApi;
+import org.gbif.registry.api.client.Gbrds.ResourceApi;
+import org.gbif.registry.api.client.Gbrds.ServiceApi;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.GbrdsResource.Builder;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * This class provides a default implementation of {@link RegistryManager}.
  * 
  */
-public class RegistryManagerImpl extends HttpBaseManager implements
-    RegistryManager {
+public class RegistryManagerImpl implements RegistryManager {
+
+  @Autowired
+  protected AppConfig cfg;
+
+  private final OrganisationApi organsiationApi;
+  private final ResourceApi resourceApi;
+  private final ServiceApi serviceApi;
+  private final IptApi iptApi;
+
+  private RegistryManagerImpl() {
+    Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
+    organsiationApi = gbif.getOrganisationApi();
+    resourceApi = gbif.getResourceApi();
+    serviceApi = gbif.getServiceApi();
+    iptApi = gbif.getIptApi();
+  }
 
   /**
-   * Private utility method that returns an {@link Organisation} converted to an
-   * array of {@link NameValuePair} objects.
-   * 
-   * @param org the organisation
-   * @return NameValuePair[]
+   * @see RegistryManager#buildGbrdsOrganisation(ResourceMetadata)
    */
-  private static NameValuePair[] nameValuePairs(Organisation org) {
-    checkNotNull(org);
-    NameValuePair[] nvp = {
-        new NameValuePair("name", org.getName()),
-        new NameValuePair("description", org.getDescription()),
-        new NameValuePair("homepageURL", org.getHomepageUrl()),
-        new NameValuePair("nameLanguage", org.getNameLanguage()),
-        new NameValuePair("descriptionLanguage", org.getDescriptionLanguage()),
-        new NameValuePair("primaryContactType", org.getPrimaryContactType()),
-        new NameValuePair("primaryContactName", org.getPrimaryContactName()),
-        new NameValuePair("primaryContactAddress",
-            org.getPrimaryContactAddress()),
-        new NameValuePair("primaryContactDescription",
-            org.getPrimaryContactDescription()),
-        new NameValuePair("primaryContactEmail", org.getPrimaryContactEmail()),
-        new NameValuePair("primaryContactPhone", org.getPrimaryContactPhone()),
-        new NameValuePair("nodeKey", org.getNodeKey()),
-        new NameValuePair("user", org.getUser()),
-        new NameValuePair("organisationKey", org.getOrganisationKey()),
-        new NameValuePair("password", org.getPassword()),};
-    return nvp;
+  public org.gbif.registry.api.client.GbrdsOrganisation.Builder buildGbrdsOrganisation(
+      ResourceMetadata resourceMetadata) {
+    String description = resourceMetadata.getDescription();
+    String homepageURL = resourceMetadata.getLink();
+    String key = resourceMetadata.getUddiID();
+    String name = resourceMetadata.getTitle();
+    String nodeKey = cfg.getOrgNode();
+    String nodeName = cfg.getOrgNodeName();
+    String password = cfg.getOrgPassword();
+    String primaryContactEmail = resourceMetadata.getContactEmail();
+    String primaryContactName = resourceMetadata.getContactName();
+    String primaryContactType = ContactType.administrative.name();
+    return GbrdsOrganisation.builder().description(description).homepageURL(
+        homepageURL).key(key).name(name).nodeKey(nodeKey).nodeName(nodeName).password(
+        password).primaryContactEmail(primaryContactEmail).primaryContactName(
+        primaryContactName).primaryContactType(primaryContactType);
   }
 
-  private final ResourceMetadataHandler metaHandler = new ResourceMetadataHandler();
-  private final NewRegistryEntryHandler newRegistryEntryHandler = new NewRegistryEntryHandler();
-  private final SAXParser saxParser;
-
-  public RegistryManagerImpl() throws ParserConfigurationException,
-      SAXException {
-    super();
-    SAXParserFactory factory = SAXParserFactory.newInstance();
-    saxParser = factory.newSAXParser();
-
-  }
-
-  public void deleteResource(Resource resource) throws RegistryException {
-    if (resource.isRegistered()) {
-      setRegistryCredentials();
-      String result = executeDelete(resource.getRegistryUrl(), true);
-      if (result == null) {
-        throw new RegistryException("Bad registry response");
-      }
-    } else {
-      String msg = "Resource is not registered";
-      log.warn(msg);
-    }
-  }
-
-  public Organisation getIptOrganisation() {
-    return Organisation.builder().description(
-        cfg.getIptOrgMetadata().getDescription()).homepageUrl(
-        cfg.getIptOrgMetadata().getLink()).name(
-        cfg.getIptOrgMetadata().getTitle()).nodeKey(cfg.getOrgNode()).password(
-        cfg.getIptOrgPassword()).organisationKey(
-        cfg.getIptOrgMetadata().getUddiID()).build();
-  }
-
-  public boolean isOrganisationRegistered(Organisation org) {
-    checkNotNull(org, "Organisation was null");
-    String key = org.getOrganisationKey();
-    String password = org.getPassword();
-    if (key == null || key.trim().length() == 0 || password == null
-        || password.trim().length() == 0) {
-      return false;
-    }
-    NameValuePair[] params = {new NameValuePair("op", "login")};
-    String registryUrl = AppConfig.getRegistryOrgUrl();
-    String url = String.format("%s/%s", registryUrl, org.getOrganisationKey());
-    setCredentials(org);
-    return executeGet(url, params, true) != null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#isResourceRegistered(java.lang
-   * .String)
+  /**
+   * @see RegistryManager#buildGbrdsResource(ResourceMetadata)
    */
-  public boolean isResourceRegistered(String resourceUuid) {
-    if (resourceUuid == null || resourceUuid.trim().length() == 0) {
-      return false;
-    }
-    String registryUrl = AppConfig.getRegistryOrgUrl();
-    String url = String.format("%s/%s", registryUrl, resourceUuid);
-    return executeGet(url, false) != null;
+  public Builder buildGbrdsResource(ResourceMetadata resourceMetadata) {
+    checkNotNull(resourceMetadata);
+    String key = resourceMetadata.getUddiID();
+    String password = cfg.getOrgPassword();
+    String name = resourceMetadata.getTitle();
+    String description = resourceMetadata.getDescription();
+    String homepageUrl = resourceMetadata.getLink();
+    String primaryContactType = ContactType.administrative.name();
+    String primaryContactName = resourceMetadata.getContactName();
+    String primaryContactEmail = resourceMetadata.getContactEmail();
+    return GbrdsResource.builder().key(key).organisationPassword(password).name(
+        name).description(description).homepageURL(homepageUrl).primaryContactType(
+        primaryContactType).primaryContactName(primaryContactName).primaryContactEmail(
+        primaryContactEmail);
   }
 
+  /**
+   * @see RegistryManager#createGbrdsOrganisation(GbrdsOrganisation)
+   */
+  public CreateOrgResponse createGbrdsOrganisation(
+      GbrdsOrganisation gbifOrganisation) throws RegistryException {
+    checkNotNull(gbifOrganisation);
+    CreateOrgResponse response = organsiationApi.create(gbifOrganisation).execute();
+    if (response.getError() != null) {
+      String msg = String.format("GBIF Organisation not created %s",
+          gbifOrganisation);
+      throw new RegistryException(msg, response.getError());
+    }
+    return response;
+  }
+
+  /**
+   * @see RegistryManager#createGbrdsResource(GbrdsResource)
+   */
+  public CreateResourceResponse createGbrdsResource(GbrdsResource gbifResource)
+      throws RegistryException {
+    checkNotNull(gbifResource);
+    CreateResourceResponse response = resourceApi.create(gbifResource).execute();
+    if (response.getError() != null) {
+      String msg = String.format("GBIF Resource not created %s", gbifResource);
+      throw new RegistryException(msg, response.getError());
+    }
+    return response;
+  }
+
+  /**
+   * @see RegistryManager#createGbrdsService(GbrdsService)
+   */
+  public CreateServiceResponse createGbrdsService(GbrdsService service)
+      throws RegistryException {
+    checkNotNull(service);
+    checkArgument(!service.getAccessPointURL().contains("localhost"));
+    CreateServiceResponse response = serviceApi.create(service).execute();
+    Throwable error = response.getError();
+    if (error != null) {
+      throw new RegistryException("Error creating service", error);
+    }
+    int status = response.getStatus();
+    if (status != HttpStatus.SC_CREATED) {
+      throw new RegistryException("Service not created");
+    }
+    return response;
+  }
+
+  /**
+   * @see RegistryManager#deleteGbrdsResource(GbrdsResource)
+   */
+  public DeleteResourceResponse deleteGbrdsResource(GbrdsResource resource)
+      throws RegistryException {
+    checkNotNull(resource);
+    DeleteResourceResponse response = resourceApi.delete(resource).execute();
+    Throwable error = response.getError();
+    if (error != null) {
+      throw new RegistryException("Error deleting resource", error);
+    }
+    int status = response.getStatus();
+    if (status != HttpStatus.SC_OK) {
+      throw new RegistryException("Resource not deleted");
+    }
+    return response;
+  }
+
+  /**
+   * @see RegistryManager#deleteGbrdsService(GbrdsService)
+   */
+  public DeleteServiceResponse deleteGbrdsService(GbrdsService service)
+      throws RegistryException {
+    checkNotNull(service);
+    DeleteServiceResponse response = serviceApi.delete(service).execute();
+    Throwable error = response.getError();
+    if (error != null) {
+      throw new RegistryException("Error deleting service", error);
+    }
+    int status = response.getStatus();
+    if (status != HttpStatus.SC_OK) {
+      throw new RegistryException("Service not deleted");
+    }
+    return response;
+  }
+
+  /**
+   * @see RegistryManager#listAllExtensions()
+   */
   public Collection<String> listAllExtensions() {
-    log.info("Using extension definitions url: "
-        + cfg.getExtensionDefinitionsUrl());
-    return extractURLs(cfg.getExtensionDefinitionsUrl(), "extensions");
+    List<GbrdsExtension> extensions = iptApi.listExtensions().execute().getResult();
+    return Lists.transform(extensions, new Function<GbrdsExtension, String>() {
+      public String apply(GbrdsExtension ge) {
+        return ge.getUrl();
+      }
+    });
   }
 
+  /**
+   * @see RegistryManager#listAllThesauri()
+   */
   public Collection<String> listAllThesauri() {
-    log.info("Using thesaurus definitions url: "
-        + cfg.getThesaurusDefinitionsUrl());
-    return extractURLs(cfg.getThesaurusDefinitionsUrl(), "thesauri");
-  }
-
-  /*
-   * Service Binding: IPT RSS feed Service Binding: IPT EML (non-Javadoc)
-   * 
-   * @see org.gbif.provider.service.RegistryManager#registerIPT()
-   */
-  public String registerIPT() throws RegistryException {
-    if (trimToNull(cfg.getIptResourceMetadata().getUddiID()) != null) {
-      String msg = "IPT is already registered";
-      log.warn(msg);
-      throw new IllegalArgumentException(msg);
-    }
-    String accessPointUrl = cfg.getAtomFeedURL();
-    if (accessPointUrl == null || accessPointUrl.contains("localhost")) {
-      String msg = "Cannot register an IPT with localhost as Base URL";
-      log.warn(msg);
-      throw new IllegalArgumentException(msg);
-    }
-    setRegistryCredentials();
-    // registering IPT resource
-    String key = registerResourceMetadata(cfg.getIptResourceMetadata());
-    if (key != null) {
-      log.info("The IPT has been registered with GBIF as resource "
-          + cfg.getIptResourceMetadata().getUddiID());
-      // RSS resource feed service
-      registerService(key, ServiceType.RSS, cfg.getAtomFeedURL());
-      return key;
-    }
-    log.warn("Failed to register IPT with GBIF as a new resource");
-    throw new RegistryException("No registry response or no key returned");
-  }
-
-  public Organisation registerIptInstanceOrganisation()
-      throws RegistryException {
-    return registerOrganisation(getIptOrganisation());
-  }
-
-  public Organisation registerOrganisation(Organisation org)
-      throws RegistryException {
-    checkNotNull(org, "Organisation was null");
-    String orgKey = org.getOrganisationKey();
-    checkArgument(trimToNull(orgKey) != null, String.format(
-        "Organisation already registered: %s", orgKey));
-    try {
-      String registryUrl = AppConfig.getRegistryOrgUrl();
-      setCredentials(org);
-      String result = executePost(registryUrl, nameValuePairs(org), false);
-      if (result != null) {
-        log.info(String.format("Result: %s", result));
-        saxParser.parse(getStream(result), newRegistryEntryHandler);
-        org.setPassword(newRegistryEntryHandler.password);
-        String key = newRegistryEntryHandler.key;
-        if (trimToNull(key) == null) {
-          key = newRegistryEntryHandler.organisationKey;
-        }
-        org.setOrganisationKey(key);
-        log.info("A new organisation has been registered with GBIF under node "
-            + org.getNodeKey() + " and with key " + key);
-        return org;
+    List<GbrdsThesaurus> thesauri = iptApi.listThesauri().execute().getResult();
+    return Lists.transform(thesauri, new Function<GbrdsThesaurus, String>() {
+      public String apply(GbrdsThesaurus gt) {
+        return gt.getUrl();
       }
-    } catch (Exception e) {
-      throw new RegistryException("Error reading registry response", e);
-    }
-    throw new RegistryException("No registry response or no key returned");
-  }
-
-  /*
-   * Potential services to register if available: Service Binding: TAPIR
-   * Intermediate Service Binding: DwC Archive Service Binding: TCS Archive
-   * Service Binding: EML Service Binding: WMS Service Binding: WFS
-   * 
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#registerResource(java.lang.Long)
-   */
-  public String registerResource(Resource resource) throws RegistryException {
-    if (!resource.isPublic()) {
-      String msg = "Resource " + resource.getId()
-          + " needs to be published before it can be registered with GBIF";
-      log.error(msg);
-      throw new IllegalArgumentException(msg);
-    }
-    String resourceKey = registerResourceMetadata(resource.getMeta());
-    log.info("Resource " + resource.getId()
-        + " has been registered with GBIF. Key = " + resource.getUddiID());
-    try {
-      registerService(resource, ServiceType.EML,
-          cfg.getEmlUrl(resource.getGuid()));
-    } catch (Exception e) {
-      log.error(e);
-    }
-    if (DataResource.class.isAssignableFrom(resource.getClass())) {
-      try {
-        registerService(resource, ServiceType.DWC_ARCHIVE,
-            cfg.getArchiveUrl(resource.getGuid()));
-      } catch (Exception e) {
-        log.error(e);
-      }
-    }
-    if (resource instanceof OccurrenceResource) {
-      try {
-        registerService(resource, ServiceType.TAPIR,
-            cfg.getTapirEndpoint(resource.getId()));
-      } catch (Exception e) {
-        log.error(e);
-      }
-      try {
-        registerService(resource, ServiceType.WFS,
-            cfg.getWfsEndpoint(resource.getId()));
-      } catch (Exception e) {
-        log.error(e);
-      }
-      try {
-        registerService(resource, ServiceType.WMS,
-            cfg.getWmsEndpoint(resource.getId()));
-      } catch (Exception e) {
-        log.error(e);
-      }
-    }
-    if (resource instanceof ChecklistResource) {
-      try {
-        registerService(resource, ServiceType.TCS_RDF,
-            cfg.getArchiveTcsUrl(resource.getGuid()));
-      } catch (Exception e) {
-        log.error(e);
-      }
-    }
-    return resourceKey;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#registerResource(org.gbif.provider
-   * .model.ResourceMetadata)
-   */
-  public String registerResource(ResourceMetadata resourceMetadata)
-      throws RegistryException {
-    return registerResourceMetadata(resourceMetadata);
-  }
-
-  public boolean testLogin() {
-    setRegistryCredentials();
-    NameValuePair[] params = {new NameValuePair("op", "login")};
-    return executeGet(getOrganisationUri(), params, true) != null;
-  }
-
-  public void updateIPT() throws RegistryException {
-    if (!cfg.isIptRegistered()) {
-      String msg = "IPT is not registered. Cannot update";
-      log.warn(msg);
-    } else {
-      setRegistryCredentials();
-      NameValuePair[] data = {
-          new NameValuePair("name",
-              trimToEmpty(cfg.getIptResourceMetadata().getTitle())),
-          new NameValuePair("description",
-              trimToEmpty(cfg.getIptResourceMetadata().getDescription())),
-          new NameValuePair("homepageURL",
-              trimToEmpty(cfg.getIptResourceMetadata().getLink())),
-          new NameValuePair("primaryContactName",
-              trimToEmpty(cfg.getIptResourceMetadata().getContactName())),
-          new NameValuePair("primaryContactType",
-              ContactType.technical.toString()),
-          new NameValuePair("primaryContactEmail",
-              trimToEmpty(cfg.getIptResourceMetadata().getContactEmail()))};
-      String result = executePost(getIptUri(), data, true);
-      if (result == null) {
-        throw new RegistryException("Bad registry response");
-      }
-    }
+    });
   }
 
   /**
-   * Updates the organisation associated with the IPT instance.
+   * @see RegistryManager#listGbifServices(String )
    */
-  public Organisation updateIptInstanceOrganisation() throws RegistryException {
-    return updateOrganisation(getIptOrganisation());
-  }
-
-  public Organisation updateOrganisation(Organisation org)
-      throws RegistryException {
-    checkNotNull(org, "Organisation was null");
-    if (!isOrganisationRegistered(org)) {
-      log.warn(String.format(
-          "Organisation is not registered and cannot be updated: %s", org));
-      return org;
+  public ListServicesForResourceResponse listGbrdsServicesForGbrdsResource(
+      String gbifResourceKey) throws RegistryException {
+    checkNotNull(gbifResourceKey);
+    checkArgument(gbifResourceKey.length() > 0);
+    ListServicesForResourceResponse response = serviceApi.list(gbifResourceKey).execute();
+    Throwable error = response.getError();
+    if (error != null) {
+      throw new RegistryException("Unable to list services", error);
     }
-    setCredentials(org);
-    String uri = getOrganisationUri();
-    NameValuePair[] nvp = nameValuePairs(org);
-    String result = executePost(uri, nvp, true);
-    if (result == null) {
-      throw new RegistryException("Bad registry response");
+    int status = response.getStatus();
+    if (status != HttpStatus.SC_OK) {
+      throw new RegistryException("Unable to list services");
     }
-    return org;
-  }
-
-  public void updateResource(Resource resource) throws RegistryException {
-    if (!resource.isRegistered()) {
-      String msg = "Resource is not registered. Cannot update";
-      log.warn(msg);
-    } else {
-      setRegistryCredentials();
-      NameValuePair[] data = {
-          new NameValuePair("organisationKey",
-              trimToEmpty(cfg.getIptOrgMetadata().getUddiID())),
-          new NameValuePair("name", trimToEmpty(resource.getTitle())),
-          new NameValuePair("description",
-              trimToEmpty(resource.getDescription())),
-          new NameValuePair("homepageURL", trimToEmpty(resource.getLink())),
-          new NameValuePair("primaryContactName",
-              trimToEmpty(resource.getContactName())),
-          new NameValuePair("primaryContactEmail",
-              trimToEmpty(resource.getContactEmail()))};
-      String result = executePost(resource.getRegistryUrl(), data, true);
-      if (result == null) {
-        throw new RegistryException("Bad registry response");
-      }
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.gbif.provider.service.RegistryManager#updateResources()
-   */
-  public void updateServiceAccessPointUrl() {
-    // TODO Auto-generated method stub
-
+    return response;
   }
 
   /**
-   * Executes a request to the provided registry URL and extracts the URLS of
-   * each of the provided values
-   * 
-   * @param registryUrl To call, e.g.
-   *          http://gbrds.gbif.org/registry/ipt/extensions.json
-   * @param mapKey To extract the list from in the response JSON
-   * @return The list of URL
+   * @throws RegistryException
+   * @see RegistryManager#readGbrdsOrganisation(String)
    */
-  protected List<String> extractURLs(String registryUrl, String mapKey) {
-    GetMethod method = new GetMethod(registryUrl);
-    try {
-      client.executeMethod(method);
-      String result = method.getResponseBodyAsString();
-
-      if (result != null) {
-        Map<String, Object> extensions = (Map) JSONUtil.deserialize(result);
-        List<Map<String, String>> urlsInMaps = (List) extensions.get(mapKey);
-        if (urlsInMaps != null) {
-          List<String> urls = new LinkedList<String>();
-          for (Map<String, String> urlMap : urlsInMaps) {
-            urls.add(urlMap.get("url"));
-          }
-          return urls;
-        } else {
-          log.error("No urls were found in the response from: " + registryUrl);
-        }
-      }
-    } catch (Exception e) {
-      log.error("Error getting URLS from " + registryUrl, e);
-    } finally {
-      if (method != null) {
-        method.releaseConnection();
-      }
-    }
-    return new LinkedList<String>();
-  }
-
-  private String getIptUri() {
-    return String.format("%s/%s", cfg.getRegistryResourceUrl(),
-        cfg.getIptResourceMetadata().getUddiID());
-  }
-
-  private String getOrganisationUri() {
-    return String.format("%s/%s", cfg.getRegistryOrgUrl(),
-        cfg.getIptOrgMetadata().getUddiID());
-  }
-
-  private String registerResourceMetadata(ResourceMetadata meta)
+  public ReadOrgResponse readGbrdsOrganisation(String organisationKey)
       throws RegistryException {
-    Organisation iptOrg = Organisation.builder().organisationKey(
-        cfg.getIptOrgMetadata().getUddiID()).password(cfg.getIptOrgPassword()).build();
-    if (!isOrganisationRegistered(iptOrg)) {
-      String msg = "Organisation is not registered. Cannot register resources";
-      log.warn(msg);
-      throw new RegistryException(msg);
+    checkNotNull(organisationKey);
+    checkArgument(organisationKey.trim().length() != 0);
+    ReadOrgResponse response = organsiationApi.read(organisationKey).execute();
+    if (response.getError() != null) {
+      String msg = String.format(
+          "Unable to read GBIF Organisation with key %s", organisationKey);
+      throw new RegistryException(msg, response.getError());
     }
-    // registering IPT resource
-    NameValuePair[] data = {
-        new NameValuePair("organisationKey",
-            trimToEmpty(cfg.getIptOrgMetadata().getUddiID())),
-        new NameValuePair("name", trimToEmpty(meta.getTitle())), // name
-        new NameValuePair("description", trimToEmpty(meta.getDescription())), // description
-        new NameValuePair("homepageURL", trimToEmpty(meta.getLink())),
-        new NameValuePair("primaryContactType",
-            ContactType.administrative.name()),
-        new NameValuePair("primaryContactName",
-            trimToEmpty(meta.getContactName())),
-        new NameValuePair("primaryContactEmail",
-            trimToEmpty(meta.getContactEmail()))};
-    String result = executePost(cfg.getRegistryResourceUrl(), data, true);
-    if (result != null) {
-      // read new UDDI ID
-      try {
-        saxParser.parse(getStream(result), newRegistryEntryHandler);
-        String key = newRegistryEntryHandler.key;
-        if (trimToNull(key) == null) {
-          key = newRegistryEntryHandler.resourceKey;
-        }
-        meta.setUddiID(key);
-        if (meta.getUddiID() != null) {
-          log.info("A new resource has been registered with GBIF. Key = " + key);
-          return key;
-        }
-      } catch (Exception e) {
-        throw new RegistryException("Error reading registry response", e);
-      }
-    }
-    throw new RegistryException("No registry response or no key returned");
-  }
-
-  private String registerService(Resource resource, ServiceType serviceType,
-      String accessPointURL) throws RegistryException {
-    // validate that service is not already registered
-    if (resource.getServiceUUID(serviceType) != null) {
-      throw new IllegalArgumentException("Service is already registered");
-    }
-    String key = registerService(resource.getUddiID(), serviceType,
-        accessPointURL);
-    resource.putService(serviceType, key);
-    return key;
-  }
-
-  private String registerService(String resourceKey, ServiceType serviceType,
-      String accessPointURL) throws RegistryException {
-    if (accessPointURL == null || accessPointURL.contains("localhost")) {
-      String msg = "Cannot register an IPT with localhost as Base URL";
-      log.warn(msg);
-      throw new IllegalArgumentException(msg);
-    }
-    NameValuePair[] data = {
-        new NameValuePair("resourceKey", trimToEmpty(resourceKey)),
-        new NameValuePair("type", serviceType.code),
-        new NameValuePair("accessPointURL", trimToEmpty(accessPointURL))};
-    String result = executePost(cfg.getRegistryServiceUrl(), data, true);
-    if (result != null) {
-      // read new UDDI ID
-      try {
-        saxParser.parse(getStream(result), newRegistryEntryHandler);
-        String key = newRegistryEntryHandler.key;
-        if (trimToNull(key) == null) {
-          key = newRegistryEntryHandler.serviceKey;
-        }
-        log.info("A new IPT service has been registered with GBIF. Key = "
-            + key);
-        return key;
-      } catch (Exception e) {
-        throw new RegistryException("Error reading registry response", e);
-      }
-    }
-    throw new RegistryException("No registry response or no key returned");
+    return response;
   }
 
   /**
-   * @param org void
+   * @throws RegistryException
+   * @see RegistryManager#readGbrdsResource(String)
    */
-  private void setCredentials(Organisation org) {
-    String registryServiceUrl = AppConfig.getRegistryOrgUrl();
-    URI uri;
-    try {
-      uri = new URI(registryServiceUrl);
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
-      return;
+  public ReadResourceResponse readGbrdsResource(String resourceKey)
+      throws RegistryException {
+    checkNotNull(resourceKey);
+    checkArgument(resourceKey.trim().length() != 0);
+    ReadResourceResponse response = resourceApi.read(resourceKey).execute();
+    Throwable error = response.getError();
+    if (error != null) {
+      String msg = String.format("Error reading GBIF Resource with key %s",
+          resourceKey);
+      throw new RegistryException(msg, response.getError());
     }
-    super.setCredentials(uri.getHost(), org.getOrganisationKey(),
-        org.getPassword());
+    return response;
   }
 
-  private void setRegistryCredentials() {
-    try {
-      URI geoURI = new URI(cfg.getRegistryOrgUrl());
-      super.setCredentials(geoURI.getHost(),
-          cfg.getIptOrgMetadata().getUddiID(), cfg.getIptOrgPassword());
-    } catch (URISyntaxException e) {
-      log.error("Exception setting the registry credentials", e);
+  /**
+   * @see RegistryManager#updateGbrdsOrganisation(GbrdsOrganisation)
+   */
+  public UpdateOrgResponse updateGbrdsOrganisation(
+      GbrdsOrganisation gbifOrganisation) throws RegistryException {
+    checkNotNull(gbifOrganisation);
+    UpdateOrgResponse response = organsiationApi.update(gbifOrganisation).execute();
+    if (response.getError() != null) {
+      String msg = String.format(
+          "Unable to read GBIF Organisation with key %s",
+          gbifOrganisation.getKey());
+      throw new RegistryException(msg, response.getError());
     }
+    return response;
   }
 
+  /**
+   * @see RegistryManager#updateGbrdsResource(GbrdsResource)
+   */
+  public UpdateResourceResponse updateGbrdsResource(GbrdsResource gbifResource)
+      throws RegistryException {
+    checkNotNull(gbifResource);
+    UpdateResourceResponse response = resourceApi.update(gbifResource).execute();
+    if (response.getError() != null) {
+      String msg = String.format("Unable to read GBIF Resource with key %s",
+          gbifResource.getKey());
+      throw new RegistryException(msg, response.getError());
+    }
+    return response;
+  }
+
+  /**
+   * @see RegistryManager#validateGbifOrganisationCredentials(String,
+   *      Credentials)
+   */
+  public ValidateOrgCredentialsResponse validateGbifOrganisationCredentials(
+      String gbigOrganisationKey, Credentials credentials) {
+    return organsiationApi.validateCredentials(gbigOrganisationKey, credentials).execute();
+  }
 }

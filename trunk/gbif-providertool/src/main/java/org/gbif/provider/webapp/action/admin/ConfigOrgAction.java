@@ -15,12 +15,19 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
-import org.gbif.provider.service.RegistryException;
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
+import org.apache.commons.httpclient.HttpStatus;
+import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
-
-import org.apache.commons.lang.StringUtils;
+import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.Gbrds.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -47,50 +54,54 @@ public class ConfigOrgAction extends BasePostAction {
   @Override
   public String read() {
     check();
-    if (cfg.isIptRegistered()) {
-      saveMessage(getText("register.org.ipt.already")); // "The IPT is already registered with this organisation. You can only update its metadata, not switch to another organisation"
-    }
     return SUCCESS;
   }
 
   public String register() {
     if (cfg.isOrgRegistered()) {
-      saveMessage(getText("register.org.already")); // "The organisation is already registered with GBIF"
-    } else {
-      // register new organisation
-      try {
-        registryManager.registerIptInstanceOrganisation();
+      saveMessage(getText("register.org.already"));
+      return SUCCESS;
+    }
+
+    try {
+      ResourceMetadata rm = cfg.getOrg();
+      GbrdsOrganisation go = registryManager.buildGbrdsOrganisation(rm).build();
+      CreateOrgResponse response = registryManager.createGbrdsOrganisation(go);
+      if (response.getStatus() == HttpStatus.SC_CREATED) {
         saveMessage(getText("register.org.success"));
-        this.cfg.save();
-      } catch (RegistryException e) {
-        // cfg.resetOrg();
-        cfg.setOrgNode(null);
+        cfg.save();
+      } else {
         saveMessage(getText("register.org.problem"));
       }
+    } catch (RegistryException e) {
+      cfg.setOrgNode(null);
+      saveMessage(getText("register.org.problem"));
     }
+
     return SUCCESS;
   }
 
   @Override
   public String save() {
-    // cannot change the organisation once an IPT has been registered. So test!
-    if (!cfg.isIptRegistered()) {
-      cfg.getIptOrgMetadata().setUddiID(organisationKey);
+    if (!check()) {
+      return SUCCESS;
     }
-    // check if already registered. If yes, also update GBIF registry
     if (cfg.isOrgRegistered()) {
       try {
-        registryManager.updateIptInstanceOrganisation();
-        saveMessage(getText("registry.updated"));
+        ResourceMetadata rm = cfg.getOrg();
+        GbrdsOrganisation go = registryManager.buildGbrdsOrganisation(rm).build();
+        UpdateOrgResponse response = registryManager.updateGbrdsOrganisation(go);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+          saveMessage(getText("registry.updated"));
+          cfg.save();
+        } else {
+          saveMessage(getText("registry.problem"));
+        }
       } catch (RegistryException e) {
         saveMessage(getText("registry.problem"));
         log.warn(e);
       }
-    } else {
-      saveMessage(getText("config.updated"));
     }
-    this.cfg.save();
-    check();
     return SUCCESS;
   }
 
@@ -99,25 +110,44 @@ public class ConfigOrgAction extends BasePostAction {
   }
 
   public void setOrganisationKey(String organisationKey) {
-    this.organisationKey = !check() ? null
-        : StringUtils.trimToNull(organisationKey);
+    this.organisationKey = !check() ? null : trimToNull(organisationKey);
   }
 
   private boolean check() {
-    boolean isValid = true;
+    boolean result = true;
+
+    // Checks if a GBIF Resource representing this IPT instance has already been
+    // created in the GBRDS. If it has, then the GBIF Organisation associated
+    // with that GBIF Resource cannot be changed and the user is notified.
+    if (cfg.isIptRegistered()) {
+      saveMessage(getText("register.org.ipt.already"));
+    }
+
+    // Checks if the GBIF Organisation associated with this IPT instance has
+    // already been created in the GBRDS. If not, the user is notified.
     if (!cfg.isOrgRegistered()) {
-      saveMessage(getText("config.check.orgRegistered")); // "Please register your organisation first"
-      isValid = false;
-    } else if (StringUtils.trimToNull(cfg.getIptOrgPassword()) == null) {
-      saveMessage(getText("config.check.orgPassword")); // "The GBIF organisation password is missing or not correct"
-      isValid = false;
-    } else {
-      if (!registryManager.testLogin()) {
-        // authorization error
+      saveMessage(getText("config.check.orgRegistered"));
+      result = false;
+    }
+
+    // Checks organisation password value:
+    if (trimToNull(cfg.getIptOrgPassword()) == null) {
+      saveMessage(getText("config.check.orgPassword"));
+      result = false;
+    }
+
+    // Checks organisation credentials:
+    String orgKey = cfg.getOrg().getUddiID();
+    String orgPassword = cfg.getOrgPassword();
+    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
+      Credentials creds = Credentials.with(orgKey, orgPassword);
+      ValidateOrgCredentialsResponse response = registryManager.validateGbifOrganisationCredentials(
+          orgKey, creds);
+      if (!response.getResult()) {
         saveMessage(getText("config.check.orgLogin"));
-        isValid = false;
+        result = false;
       }
     }
-    return isValid;
+    return result;
   }
 }

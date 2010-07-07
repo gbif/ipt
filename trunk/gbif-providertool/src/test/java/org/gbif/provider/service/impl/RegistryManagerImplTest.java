@@ -15,11 +15,15 @@
  */
 package org.gbif.provider.service.impl;
 
-import org.gbif.provider.model.Organisation;
-import org.gbif.provider.service.RegistryException;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
-import org.gbif.provider.util.ContextAwareTestBase;
+import org.gbif.provider.util.ResourceTestBase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,48 +31,155 @@ import org.springframework.beans.factory.annotation.Autowired;
  * This class can be used for unit testing {@link RegistryManagerImpl}.
  * 
  */
-public class RegistryManagerImplTest extends ContextAwareTestBase {
-
-  @Autowired
-  private RegistryManager registryManager;
+public class RegistryManagerImplTest extends ResourceTestBase {
 
   @Autowired
   protected AppConfig cfg;
 
-  @Test
-  public void testIsOrgRegistered() {
+  @Autowired
+  private RegistryManager registryManager;
 
-    Organisation org = Organisation.builder().organisationKey(
-        "DB03E430-304B-11DF-A430-CB15FDE703B2").password("73QVMX8lE5R").build();
-    assertTrue(registryManager.isOrganisationRegistered(org));
-    System.out.println(String.format("Success=%s", org));
+  @Test
+  public void createGbifResource() {
   }
 
   @Test
-  public void testRegisterIptLocalhost() throws RegistryException {
-    cfg.setBaseUrl("http://localhost:8080");
-    registryManager.registerIPT();
-  }
+  public void testAppConfig() {
+    String uddiId = cfg.getOrg().getUddiID();
+    String existingOrgKey = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+    String existingResourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
 
-  /**
-   * Tests registering an {@link Organisation} and then verifying it's
-   * credentials.
-   */
-  @Test
-  public void testRegisterOrganisation() {
-    Organisation org = Organisation.builder().name(
-        "IPT Test Organization Version 3.0").nodeKey("sp2000").primaryContactEmail(
-        "tuco@berkeley.edu").build();
+    // Valid Organisation key:
     try {
-      org = registryManager.registerOrganisation(org);
-      assertTrue(registryManager.isOrganisationRegistered(org));
-      assertTrue(!registryManager.isOrganisationRegistered(Organisation.builder().build()));
-      org.setDescription("Example description");
-      registryManager.updateOrganisation(org);
-      System.out.println(String.format("Success=%s", org));
-    } catch (RegistryException e) {
-      System.out.println(String.format("Error=%s, Org=%s", e.getMessage(), org));
+      cfg.getOrg().setUddiID(existingOrgKey);
+      assertTrue(cfg.isOrgRegistered());
+    } finally {
+      cfg.getOrg().setUddiID(uddiId);
+    }
+
+    // Invalid Organisation key:
+    try {
+      cfg.getOrg().setUddiID("INVALID_KEY");
+      assertFalse(cfg.isOrgRegistered());
+    } finally {
+      cfg.getOrg().setUddiID(uddiId);
+    }
+
+    // Null Organisation key:
+    try {
+      cfg.getOrg().setUddiID(null);
+      assertFalse(cfg.isOrgRegistered());
+    } finally {
+      cfg.getOrg().setUddiID(uddiId);
+    }
+
+    // Empty string Organisation key:
+    try {
+      cfg.getOrg().setUddiID("      ");
+      assertFalse(cfg.isOrgRegistered());
+    } finally {
+      cfg.getOrg().setUddiID(uddiId);
+    }
+
+    // Valid Resource key:
+    try {
+      cfg.getIpt().setUddiID(existingResourceKey);
+      assertTrue(cfg.isIptRegistered());
+    } finally {
+      cfg.getIpt().setUddiID(uddiId);
+    }
+
+    // Invalid Resource key:
+    try {
+      cfg.getIpt().setUddiID("INVALID_KEY");
+      assertFalse(cfg.isIptRegistered());
+    } finally {
+      cfg.getIpt().setUddiID(uddiId);
+    }
+
+    // Null Resource key:
+    try {
+      cfg.getIpt().setUddiID(null);
+      assertFalse(cfg.isIptRegistered());
+    } finally {
+      cfg.getIpt().setUddiID(uddiId);
+    }
+
+    // Empty string Resource key:
+    try {
+      cfg.getIpt().setUddiID("     ");
+      assertFalse(cfg.isIptRegistered());
+    } finally {
+      cfg.getIpt().setUddiID(uddiId);
+    }
+  }
+
+  @Test
+  public void testReadGbifOrganisation() {
+    String key = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+    try {
+      registryManager.readGbrdsOrganisation(key);
+    } catch (Exception e) {
+      e.printStackTrace();
       fail();
+    }
+
+    key = "INVALID_KEY";
+    try {
+      assertNull(registryManager.readGbrdsResource(key).getResult());
+    } catch (Exception e) {
+      fail();
+    }
+
+    key = null;
+    try {
+      registryManager.readGbrdsOrganisation(key);
+      fail();
+    } catch (Exception e) {
+      assertTrue(e instanceof NullPointerException);
+    }
+
+    key = "";
+    try {
+      registryManager.readGbrdsOrganisation(key);
+      fail();
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+    }
+
+  }
+
+  @Test
+  public void testReadGbifResource() {
+    String key = "3f138d32-eb85-430c-8d5d-115c2f03429e";
+    try {
+      assertNotNull(registryManager.readGbrdsResource(key).getResult());
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail();
+    }
+
+    key = "INVALID_KEY";
+    try {
+      assertNull(registryManager.readGbrdsResource(key).getResult());
+    } catch (Exception e) {
+      fail();
+    }
+
+    key = null;
+    try {
+      registryManager.readGbrdsResource(key);
+      fail();
+    } catch (Exception e) {
+      assertTrue(e instanceof NullPointerException);
+    }
+
+    key = "";
+    try {
+      registryManager.readGbrdsResource(key);
+      fail();
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
     }
   }
 }

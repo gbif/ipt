@@ -17,14 +17,14 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
-import org.gbif.registry.api.client.GbifOrganisation;
-import org.gbif.registry.api.client.GbifRegistry;
-import org.gbif.registry.api.client.GbifService;
+import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.GbrdsRegistry;
+import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbifRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbifRegistry.ListOrgRequest;
-import org.gbif.registry.api.client.GbifRegistry.ReadServiceResponse;
-import org.gbif.registry.api.client.GbifRegistry.UpdateServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.gbif.registry.api.client.Gbrds.ServiceApi;
 import org.junit.Test;
 
@@ -35,17 +35,17 @@ import java.util.List;
  */
 public class ServiceApiTest {
 
-  private static Gbrds gbif = GbifRegistry.init("http://gbrdsdev.gbif.org");
+  private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
   private static final ServiceApi api = gbif.getServiceApi();
 
-  private static final GbifService service = GbifService.builder().resourceKey(
+  private static final GbrdsService service = GbrdsService.builder().resourceKey(
       "3f138d32-eb85-430c-8d5d-115c2f03429e").type("WMS").accessPointURL(
       "http://foo.com").organisationKey("3780d048-8e18-4c0c-afcd-cb6389df56de").resourcePassword(
       "password").build();
 
   @Test
   public final void testCreateAndDelete() {
-    GbifService result = null;
+    GbrdsService result = null;
     try {
       CreateServiceResponse response = api.create(service).execute();
       Assert.assertNotNull(response);
@@ -55,7 +55,7 @@ public class ServiceApiTest {
     } finally {
       if (result != null) {
         Assert.assertTrue(api.delete(
-            GbifService.builder().key(result.getKey()).resourceKey(
+            GbrdsService.builder().key(result.getKey()).resourceKey(
                 service.getResourceKey()).organisationKey(
                 service.getOrganisationKey()).resourcePassword(
                 service.getResourcePassword()).build()).execute().getResult());
@@ -66,7 +66,7 @@ public class ServiceApiTest {
   @Test
   public final void testList() {
     ListOrgRequest request = gbif.getOrganisationApi().list();
-    List<GbifOrganisation> list = request.execute().getResult();
+    List<GbrdsOrganisation> list = request.execute().getResult();
     Assert.assertNotNull(list);
     System.out.println(list);
   }
@@ -75,7 +75,7 @@ public class ServiceApiTest {
   public final void testRead() {
     String serviceKey = "e2522a8c-d66c-40ec-9f10-623cc16c6d6c";
     ReadServiceResponse response = api.read(serviceKey).execute();
-    GbifService res = response.getResult();
+    GbrdsService res = response.getResult();
     Assert.assertNotNull(res);
     Assert.assertEquals(serviceKey, res.getKey());
     System.out.println(res);
@@ -84,7 +84,7 @@ public class ServiceApiTest {
   @Test
   public final void testUpdate() {
     UpdateServiceResponse response = api.update(
-        GbifService.builder().resourceKey(
+        GbrdsService.builder().resourceKey(
             "3f138d32-eb85-430c-8d5d-115c2f03429e").key(
             "e2522a8c-d66c-40ec-9f10-623cc16c6d6c").type("WMS").accessPointURL(
             "http://bar.com").organisationKey(

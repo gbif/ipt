@@ -21,23 +21,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 
-import org.gbif.registry.api.client.GbifRegistry.CreateOrgRequest;
-import org.gbif.registry.api.client.GbifRegistry.CreateResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.CreateServiceRequest;
-import org.gbif.registry.api.client.GbifRegistry.DeleteOrgRequest;
-import org.gbif.registry.api.client.GbifRegistry.DeleteResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.DeleteServiceRequest;
-import org.gbif.registry.api.client.GbifRegistry.ListExtensionsRequest;
-import org.gbif.registry.api.client.GbifRegistry.ListOrgRequest;
-import org.gbif.registry.api.client.GbifRegistry.ListResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.ListServicesForResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.ReadOrgRequest;
-import org.gbif.registry.api.client.GbifRegistry.ReadResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.ReadServiceRequest;
-import org.gbif.registry.api.client.GbifRegistry.UpdateOrgRequest;
-import org.gbif.registry.api.client.GbifRegistry.UpdateResourceRequest;
-import org.gbif.registry.api.client.GbifRegistry.UpdateServiceRequest;
-import org.gbif.registry.api.client.GbifRegistry.ValidateOrgCredentialsRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ListExtensionsRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ListResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ListThesauriRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsRequest;
 
 /**
  * Interface for the GBRDS.
@@ -109,17 +110,25 @@ public interface Gbrds {
   }
 
   /**
-   * This class surfaces an RPC-style interface to the GBIF Registry Extension
-   * API.
+   * This class surfaces an RPC-style interface to the GBRDS API for extensions
+   * and thesauri.
+   * 
    */
-  public interface ExtensionApi {
+  public interface IptApi {
 
     /**
-     * Returns a list of {@link GbifExtension}.
+     * Returns a list of {@link GbrdsExtension}.
      * 
      * @return ListExtensionsRequest
      */
-    ListExtensionsRequest list();
+    ListExtensionsRequest listExtensions();
+
+    /**
+     * Returns a list of {@link GbrdsThesaurus}.
+     * 
+     * @return ListThesauriRequest
+     */
+    ListThesauriRequest listThesauri();
   }
 
   /**
@@ -145,7 +154,7 @@ public interface Gbrds {
      * @param org the organisation to create
      * @return RpcRequest the RPC request for creating the organisation
      */
-    CreateOrgRequest create(GbifOrganisation org);
+    CreateOrgRequest create(GbrdsOrganisation org);
 
     /**
      * Returns a new {@link DeleteOrgRequest} requiring authentication that when
@@ -158,7 +167,7 @@ public interface Gbrds {
      * @param org the organisation to delete
      * @return RpcRequest the RPC request for deleting the organisation
      */
-    DeleteOrgRequest delete(GbifOrganisation org);
+    DeleteOrgRequest delete(GbrdsOrganisation org);
 
     /**
      * Returns a new {@link ListOrgRequest} that when executed lists all
@@ -194,7 +203,7 @@ public interface Gbrds {
      * @param org the organisation to update
      * @return RpcRequest the RPC request for updating the organisation
      */
-    UpdateOrgRequest update(GbifOrganisation org);
+    UpdateOrgRequest update(GbrdsOrganisation org);
 
     ValidateOrgCredentialsRequest validateCredentials(String organisationKey,
         Credentials credentials);
@@ -268,7 +277,7 @@ public interface Gbrds {
      * @param resource the organisation to create
      * @return RpcRequest the RPC request for creating the resource
      */
-    CreateResourceRequest create(GbifResource resource);
+    CreateResourceRequest create(GbrdsResource resource);
 
     /**
      * Returns a new {@link DeleteResourceRequest} requiring authentication that
@@ -281,7 +290,7 @@ public interface Gbrds {
      * @param resource the resource to delete
      * @return RpcRequest the RPC request for deleting the resource
      */
-    DeleteResourceRequest delete(GbifResource resource);
+    DeleteResourceRequest delete(GbrdsResource resource);
 
     /**
      * Returns a new {@link ListResourceRequest} that when executed lists all
@@ -317,7 +326,7 @@ public interface Gbrds {
      * @param resource the resource to update
      * @return RpcRequest the RPC request for updating the resource
      */
-    UpdateResourceRequest update(GbifResource resource);
+    UpdateResourceRequest update(GbrdsResource resource);
   }
 
   /**
@@ -391,7 +400,7 @@ public interface Gbrds {
      * @param service the organisation to create
      * @return RpcRequest the RPC request for creating the service
      */
-    CreateServiceRequest create(GbifService service);
+    CreateServiceRequest create(GbrdsService service);
 
     /**
      * Returns a new {@link DeleteServiceRequest} requiring authentication that
@@ -404,7 +413,7 @@ public interface Gbrds {
      * @param service the service to delete
      * @return RpcRequest the RPC request for deleting the service
      */
-    DeleteServiceRequest delete(GbifService service);
+    DeleteServiceRequest delete(GbrdsService service);
 
     /**
      * Returns a new {@link ListServicesForResourceRequest} that when executed
@@ -443,10 +452,10 @@ public interface Gbrds {
      * @param service the service to update
      * @return RpcRequest the RPC request for updating the service
      */
-    UpdateServiceRequest update(GbifService service);
+    UpdateServiceRequest update(GbrdsService service);
   }
 
-  public ExtensionApi getExtensionApi();
+  public IptApi getIptApi();
 
   public OrganisationApi getOrganisationApi();
 

@@ -17,13 +17,14 @@ package org.gbif.provider.webapp.action.manage;
 
 import com.opensymphony.xwork2.Preparable;
 
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.model.ChecklistResource;
 import org.gbif.provider.model.DataResource;
 import org.gbif.provider.model.LabelValue;
 import org.gbif.provider.model.OccurrenceResource;
-import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.EmlFactory;
@@ -44,6 +45,8 @@ import org.gbif.provider.util.ResizeImage;
 import org.gbif.provider.util.ArchiveUtil.ArchiveRequest;
 import org.gbif.provider.util.ArchiveUtil.ArchiveResponse;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
+import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.Gbrds.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
@@ -667,12 +670,25 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     return true;
   }
 
-  private void validateResource() {
-    Organisation org = Organisation.builder().password(
-        resource.getOrgPassword()).organisationKey(resource.getOrgUuid()).build();
-    if (!registryManager.isOrganisationRegistered(org)) {
-      saveMessage(getText("config.check.orgLogin"));
-      resource.setOrgPassword(null);
+  private boolean validateResource() {
+    boolean isResourceValid = false;
+
+    // Validates the GBIF Organisation credentials associated with this
+    // resource:
+    String orgKey = resource.getOrgUuid();
+    String orgPassword = resource.getOrgPassword();
+    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
+      Credentials creds = Credentials.with(orgKey, orgPassword);
+      ValidateOrgCredentialsResponse response = registryManager.validateGbifOrganisationCredentials(
+          orgKey, creds);
+      if (!response.getResult()) {
+        saveMessage(getText("config.check.orgLogin"));
+        resource.setOrgPassword(null);
+      } else {
+        isResourceValid = true;
+      }
     }
+
+    return isResourceValid;
   }
 }

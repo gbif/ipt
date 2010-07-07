@@ -56,7 +56,7 @@ public class ConfigAction extends BasePostAction {
     cfg.reloadLogger();
     saveMessage(getText("config.updated"));
     check();
-    registryManager.updateServiceAccessPointUrl();
+    // TODO: registryManager.updateServiceAccessPointUrl();
     return SUCCESS;
   }
 

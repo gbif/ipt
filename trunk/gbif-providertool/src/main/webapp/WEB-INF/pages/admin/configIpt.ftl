@@ -42,7 +42,9 @@
 
 <fieldset>
     <div class="leftxLarge">    
-        <@s.textfield key="config.ipt.uddi" value='${config.ipt.uddiID!"Not registered with GBIF"}' readonly="true" cssClass="text xlarge"/>
+        <@s.textfield key="config.ipt.uddi" 
+            value='${config.ipt.uddiID!"A GBIF Resource representing this IPT instance does not yet exist in the GBRDS."}' 
+            readonly="true" cssClass="text xlarge"/>
     </div>
     <div class="leftxLarge">
         <@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge required"/>

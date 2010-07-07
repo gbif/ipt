@@ -15,9 +15,22 @@
  */
 package org.gbif.provider.service;
 
-import org.gbif.provider.model.Organisation;
-import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
+import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.GbrdsService;
+import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
 
 import java.util.Collection;
 
@@ -26,23 +39,54 @@ import java.util.Collection;
  * 
  */
 public interface RegistryManager {
-  void deleteResource(Resource resource) throws RegistryException;
+
+  @SuppressWarnings("serial")
+  public class RegistryException extends Exception {
+
+    public RegistryException() {
+      super();
+    }
+
+    public RegistryException(String string) {
+      super(string);
+    }
+
+    public RegistryException(String string, Throwable e) {
+      super(string, e);
+    }
+
+  }
+
+  GbrdsOrganisation.Builder buildGbrdsOrganisation(
+      ResourceMetadata resourceMetadata);
+
+  GbrdsResource.Builder buildGbrdsResource(ResourceMetadata resourceMetadata);
+
+  CreateOrgResponse createGbrdsOrganisation(GbrdsOrganisation gbifOrganisation)
+      throws RegistryException;
 
   /**
-   * Verifies {@link Organisation} credentials against the GBIF Registry.
+   * Creates and returns a new GBIF Resource in the GBRDS. Throws a
+   * {@link NullPointerException} if <code>gbifResource</code> is null. If there
+   * is an error executing the request, if the HTTP status code is not equal to
+   * 201 (Created), or if the response results are null, a
+   * {@link RegistryException} is thrown.
    * 
-   * @param org the organisation
-   * @return true if the organisation credentials are valid, false otherwise
+   * @param gbifResource the GBIF Resource to create in the GBRDS
+   * @return the created GBIF Resource
+   * @throws RegistryException
    */
-  boolean isOrganisationRegistered(Organisation org);
+  CreateResourceResponse createGbrdsResource(GbrdsResource gbifResource)
+      throws RegistryException;
 
-  /**
-   * Verifies {@link Organisation} credentials against the GBIF Registry.
-   * 
-   * @param org the organisation
-   * @return true if the organisation credentials are valid, false otherwise
-   */
-  boolean isResourceRegistered(String resourceUuid);
+  CreateServiceResponse createGbrdsService(GbrdsService service)
+      throws RegistryException;
+
+  DeleteResourceResponse deleteGbrdsResource(GbrdsResource resource)
+      throws RegistryException;
+
+  DeleteServiceResponse deleteGbrdsService(GbrdsService service)
+      throws RegistryException;
 
   /**
    * Calls the central registry to receive a list of the Extensions that are
@@ -60,63 +104,22 @@ public interface RegistryManager {
    */
   Collection<String> listAllThesauri();
 
-  String registerIPT() throws RegistryException;
+  ListServicesForResourceResponse listGbrdsServicesForGbrdsResource(
+      String gbifResourceKey) throws RegistryException;
 
-  /**
-   * Registers the {@link Organisation} associated with the IPT instance with
-   * the GBIF Registry.
-   * 
-   * @see http://goo.gl/H17q
-   * 
-   * @return the registered organisation
-   * @throws RegistryException
-   */
-  Organisation registerIptInstanceOrganisation() throws RegistryException;
-
-  /**
-   * Registers an {@link Organisation} with the GBIF Registry.
-   * 
-   * @see http://goo.gl/H17q
-   * 
-   * @param organisation the organisation to register
-   * @return the registered organisation
-   * @throws RegistryException
-   */
-  Organisation registerOrganisation(Organisation organisation)
+  ReadOrgResponse readGbrdsOrganisation(String organisationKey)
       throws RegistryException;
 
-  String registerResource(Resource resource) throws RegistryException;
-
-  String registerResource(ResourceMetadata resourceMetadata)
+  ReadResourceResponse readGbrdsResource(String resourceKey)
       throws RegistryException;
 
-  boolean testLogin();
-
-  void updateIPT() throws RegistryException;
-
-  /**
-   * Updates the organisation associated with the IPT instance with the GBIF
-   * Registry.
-   * 
-   * @return the updated IPT organisation
-   * @throws RegistryException
-   */
-  Organisation updateIptInstanceOrganisation() throws RegistryException;
-
-  /**
-   * Updates an organisation with the GBIF Registry.
-   * 
-   * @param organisation the organisation to update.
-   * @return the updated organisation
-   * @throws RegistryException
-   */
-  Organisation updateOrganisation(Organisation organisation)
+  UpdateOrgResponse updateGbrdsOrganisation(GbrdsOrganisation gbifOrganisation)
       throws RegistryException;
 
-  void updateResource(Resource resource) throws RegistryException;
+  UpdateResourceResponse updateGbrdsResource(GbrdsResource gbifResource)
+      throws RegistryException;
 
-  /**
-   * Updates all registered resources. Useful for when the IPT base URL changes.
-   */
-  void updateServiceAccessPointUrl();
+  ValidateOrgCredentialsResponse validateGbifOrganisationCredentials(
+      String gbigOrganisationKey, Credentials credentials);
+
 }
