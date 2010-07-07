@@ -15,7 +15,8 @@
  */
 package org.gbif.provider.model;
 
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -193,7 +194,7 @@ public class Resource implements BaseObject, Comparable<Resource>,
 
   @Transient
   public String getRegistryUrl() {
-    if (StringUtils.trimToNull(getUddiID()) != null) {
+    if (trimToNull(getUddiID()) != null) {
       return AppConfig.getRegistryResourceUrl() + "/" + getUddiID();
     }
     return null;
@@ -267,15 +268,14 @@ public class Resource implements BaseObject, Comparable<Resource>,
 
   @Transient
   public boolean isRegistered() {
-    if (StringUtils.trimToNull(getUddiID()) == null) {
-      return false;
-    }
-    return true;
+    return trimToNull(getUddiID()) != null;
   }
 
+  @Deprecated
+  // No references.
   public void putService(ServiceType type, String uuid) {
-    if (StringUtils.trimToNull(uuid) != null) {
-      this.services.put(type.code, StringUtils.trimToNull(uuid));
+    if (trimToNull(uuid) != null) {
+      this.services.put(type.code, trimToNull(uuid));
     } else {
       this.services.remove(type.code);
     }
@@ -343,6 +343,8 @@ public class Resource implements BaseObject, Comparable<Resource>,
     this.orgUuid = orgUuid;
   }
 
+  @Deprecated
+  // No references.
   public void setServices(Map<String, String> services) {
     this.services = services;
   }

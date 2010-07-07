@@ -15,7 +15,18 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
-import org.gbif.provider.model.Organisation;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+
+import com.opensymphony.xwork2.Preparable;
+
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.GeospatialCoverage;
@@ -33,14 +44,15 @@ import org.gbif.provider.model.eml.TemporalCoverageType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
-import org.gbif.provider.service.RegistryException;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -51,12 +63,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.opensymphony.xwork2.Preparable;
 
 /**
  * This class provides action support for editing EML metadata forms.
@@ -70,20 +76,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
    * 
    */
   private enum RequestMethod {
-    ASSOCIATED_PARTIES,
-    NO_OP,
-    ORGANISATION,
-    SAMPLING_METHODS,
-    KEYWORD_SETS,
-    GEOGRAPHIC_COVERAGES,
-    TEMPORAL_COVERAGES,
-    TAXONOMIC_COVERAGES,
-    PROJECTS,
-    CITATIONS,
-    COLLECTIONS,
-    PHYSICAL_DATA,
-    RESOURCE_FORM,
-    ADDITIONAL_METADATA;
+    ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, KEYWORD_SETS, GEOGRAPHIC_COVERAGES, TEMPORAL_COVERAGES, TAXONOMIC_COVERAGES, PROJECTS, CITATIONS, COLLECTIONS, PHYSICAL_DATA, RESOURCE_FORM, ADDITIONAL_METADATA;
   }
 
   private static final long serialVersionUID = -843256914689939746L;
@@ -260,11 +253,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     switch (method(request)) {
       case ORGANISATION:
         resource.getMeta().setUddiID(resource.getOrgUuid());
-        try {
-          registryManager.registerResource(resource);
-        } catch (RegistryException e) {
-          e.printStackTrace();
-        }
+        String key = createGbrdsResource(resource);
+        saveMessage("New GBRDS Resource created: " + key);
         // Nothing to do here unless the Organisation form has elements whose
         // values are destined for eml.
         break;
@@ -516,34 +506,73 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     this.nextPage = nextPage;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.apache.struts2.interceptor.ServletRequestAware#setServletRequest(javax
-   * .servlet.http.HttpServletRequest)
+  /**
+   * @see ServletRequestAware#setServletRequest(HttpServletRequest)
    */
   public void setServletRequest(HttpServletRequest request) {
     this.request = request;
   }
 
-  // public void setTaxonomicClassification(String taxonomicCoverage) {
-  // List<TaxonKeyword> keywords = new ArrayList<TaxonKeyword>();
-  // for (String k : StringUtils.split(taxonomicCoverage, ",")) {
-  // k = StringUtils.trimToNull(k);
-  // if (k != null) {
-  // // keywords.add(TaxonKeyword.create(k, null, null));
-  // }
-  // }
-  // // eml.setTaxonomicClassification(keywords);
-  // }
-
-  private void validateResource() {
-    Organisation org = Organisation.builder().password(
-        resource.getOrgPassword()).organisationKey(resource.getOrgUuid()).build();
-    if (!registryManager.isOrganisationRegistered(org)) {
-      saveMessage(getText("config.check.orgLogin"));
-      resource.setOrgPassword(null);
+  /**
+   * @param resource void
+   */
+  private String createGbrdsResource(Resource resource) {
+    String gbifResourceKey = null;
+    try {
+      ResourceMetadata rm = resource.getMeta();
+      Credentials creds = getOrgCreds(resource);
+      GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
+          creds.getId()).organisationPassword(creds.getPasswd()).build();
+      CreateResourceResponse response = registryManager.createGbrdsResource(gm);
+      if (response.getStatus() == HttpStatus.SC_CREATED) {
+        saveMessage(getText("register.ipt.success"));
+        GbrdsResource r = response.getResult();
+        gbifResourceKey = r.getKey();
+      } else {
+        saveMessage(getText("register.ipt.problem"));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      String msg = String.format("%s: %s", getText("register.ipt.problem"), e);
+      saveMessage(msg);
     }
+    return gbifResourceKey;
   }
+
+  /**
+   * @param resource
+   * @return Credentials
+   */
+  private Credentials getOrgCreds(Resource resource) {
+    Credentials creds = null;
+    String orgKey = resource.getOrgUuid();
+    String orgPassword = resource.getOrgPassword();
+    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
+      creds = Credentials.with(orgKey, orgPassword);
+    }
+    return creds;
+  }
+
+  private boolean validateResource() {
+    boolean isResourceValid = false;
+
+    // Validates the GBIF Organisation credentials associated with this
+    // resource:
+    String orgKey = resource.getOrgUuid();
+    String orgPassword = resource.getOrgPassword();
+    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
+      Credentials creds = Credentials.with(orgKey, orgPassword);
+      ValidateOrgCredentialsResponse response = registryManager.validateGbifOrganisationCredentials(
+          orgKey, creds);
+      if (!response.getResult()) {
+        saveMessage(getText("config.check.orgLogin"));
+        resource.setOrgPassword(null);
+      } else {
+        isResourceValid = true;
+      }
+    }
+
+    return isResourceValid;
+  }
+
 }

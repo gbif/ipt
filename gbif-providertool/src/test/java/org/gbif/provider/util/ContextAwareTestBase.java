@@ -30,8 +30,9 @@ public class ContextAwareTestBase extends
   @Override
   protected String[] getConfigLocations() {
     setAutowireMode(AUTOWIRE_BY_NAME);
-    return new String[] {
+    return new String[]{
         "classpath:/applicationContext-filtered.xml",
         "classpath:/applicationContext.xml"};
   }
+
 }

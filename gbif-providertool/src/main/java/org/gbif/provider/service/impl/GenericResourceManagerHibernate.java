@@ -15,18 +15,29 @@
  */
 package org.gbif.provider.service.impl;
 
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.Resource;
+import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
-
-import org.apache.commons.io.FileUtils;
+import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.GbrdsService;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,12 +68,14 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     super(persistentClass);
   }
 
+  @SuppressWarnings("unchecked")
   public T get(final String guid) {
     return (T) getSession().createQuery(
         String.format("select res FROM %s res WHERE guid = :guid",
             persistentClass.getSimpleName())).setParameter("guid", guid).uniqueResult();
   }
 
+  @SuppressWarnings("unchecked")
   public List<Long> getPublishedResourceIDs() {
     return query(
         String.format("select id from %s where status>=:status",
@@ -70,6 +83,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
         PublicationStatus.modified).list();
   }
 
+  @SuppressWarnings("unchecked")
   public List<T> getPublishedResources() {
     return query(
         String.format("select res from %s res where status>=:status",
@@ -77,12 +91,14 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
         PublicationStatus.modified).list();
   }
 
+  @SuppressWarnings("unchecked")
   public List<T> getResourcesByUser(final Long userId) {
     return getSession().createQuery(
         String.format("select res FROM %s res WHERE res.creator.id = :userId",
             persistentClass.getSimpleName())).setParameter("userId", userId).list();
   }
 
+  @SuppressWarnings("unchecked")
   public List<T> latest(int startPage, int pageSize) {
     return query(
         String.format(
@@ -118,6 +134,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     return resource;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   @Transactional(readOnly = false)
   public void remove(T obj) {
@@ -154,6 +171,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     return results;
   }
 
+  @SuppressWarnings("unchecked")
   public List<T> searchByBBox(BBox box) {
     // res.geoCoverage.max.longitude
     String boxHqlLat = "(:boxMinY <= res.geoCoverage.min.latitude and :boxMaxY >= res.geoCoverage.max.latitude) or (:boxMinY between res.geoCoverage.min.latitude and res.geoCoverage.max.latitude) or (:boxMaxY between res.geoCoverage.min.latitude and res.geoCoverage.max.latitude)";
@@ -170,6 +188,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
         box.getMax().getLatitude()).list();
   }
 
+  @SuppressWarnings("unchecked")
   public List<T> searchByKeyword(String keyword) {
     return query(
         String.format(
@@ -185,18 +204,91 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     save(resource);
     fullTextSearchManager.buildResourceIndex(resourceId);
     try {
-      registryManager.deleteResource(resource);
+      GbrdsResource gr = getGbifResource(resource);
+      registryManager.deleteGbrdsResource(gr);
+      Credentials creds = getResourceCreds(resource);
+      GbrdsService gs;
+      DeleteServiceResponse response;
+      ListServicesForResourceResponse listResponse = registryManager.listGbrdsServicesForGbrdsResource(gr.getKey());
+      for (GbrdsService service : listResponse.getResult()) {
+        gs = GbrdsService.builder().organisationKey(creds.getId()).resourcePassword(
+            creds.getPasswd()).resourceKey(resource.getUddiID()).build();
+        response = registryManager.deleteGbrdsService(gs);
+        if (response.getStatus() != HttpStatus.SC_OK) {
+          log.warn("Failed to remove service from registry: " + gs);
+        }
+      }
     } catch (Exception e) {
       log.warn("Failed to remove resource from registry", e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void createGbifResource(Resource resource) {
+    String gbifResourceKey = null;
+    try {
+      ResourceMetadata rm = resource.getMeta();
+      Credentials creds = getResourceCreds(resource);
+      GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
+          creds.getId()).organisationPassword(creds.getPasswd()).build();
+      CreateResourceResponse response = registryManager.createGbrdsResource(gm);
+      if (response.getStatus() == HttpStatus.SC_CREATED) {
+        GbrdsResource r = response.getResult();
+        gbifResourceKey = r.getKey();
+        rm.setUddiID(gbifResourceKey);
+        save((T) resource);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      String msg = "Unable to create GBIF Resource for resource "
+          + resource.getId();
+      log.warn(msg);
+    }
+  }
+
+  private GbrdsResource getGbifResource(T resource) {
+    return GbrdsResource.builder().organisationKey(resource.getOrgUuid()).organisationPassword(
+        resource.getOrgPassword()).key(resource.getUddiID()).build();
+  }
+
+  private Credentials getResourceCreds(Resource r) {
+    Credentials creds = null;
+    String orgKey = r.getOrgUuid();
+    String orgPassword = r.getOrgPassword();
+    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
+      creds = Credentials.with(orgKey, orgPassword);
+    }
+    return creds;
+  }
+
+  /**
+   * @param resource void
+   * @throws RegistryException
+   */
+  private void updateGbifResource(Resource resource) throws RegistryException {
+    Credentials creds = getResourceCreds(resource);
+    if (creds != null) {
+      String orgPassword = creds.getPasswd();
+      String orgKey = creds.getId();
+      GbrdsResource gr = registryManager.buildGbrdsResource(resource.getMeta()).organisationKey(
+          orgKey).organisationPassword(orgPassword).build();
+      UpdateResourceResponse response = registryManager.updateGbrdsResource(gr);
+      if (response.getStatus() != HttpStatus.SC_OK) {
+        log.warn("Failed to update resource in GBRDS: " + gr);
+      } else {
+        log.info("GBIF Resource updated in GBRDS: " + gr);
+      }
+    } else {
+      log.warn("Failed to update resource in GBRDS because of bad credentials");
     }
   }
 
   private void updateRegistry(Resource resource) {
     try {
       if (resource.isRegistered()) {
-        registryManager.updateResource(resource);
+        updateGbifResource(resource);
       } else {
-        registryManager.registerResource(resource);
+        createGbifResource(resource);
       }
     } catch (Exception e) {
       resource.setDirty();

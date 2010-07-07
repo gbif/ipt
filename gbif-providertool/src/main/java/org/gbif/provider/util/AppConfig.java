@@ -15,28 +15,29 @@
  */
 package org.gbif.provider.util;
 
+import static org.apache.commons.lang.StringUtils.trimToNull;
+
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.gbif.provider.model.CoreRecord;
 import org.gbif.provider.model.Extension;
-import org.gbif.provider.model.Organisation;
 import org.gbif.provider.model.ProviderCfg;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.impl.RegistryManagerImpl;
+import org.gbif.provider.service.RegistryManager.RegistryException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.xml.DOMConfigurator;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * TODO: Documentation.
@@ -358,6 +359,12 @@ public class AppConfig {
     return cfg.getLog4jFilename();
   }
 
+  /**
+   * Returns the resource metadata that encapsulates information about the GBIF
+   * Organisation representing this IPTs GBIF Resource in the GBRDS.
+   * 
+   * @return ResourceMetadata
+   */
   public ResourceMetadata getOrg() {
     return cfg.getOrgMeta();
   }
@@ -444,32 +451,43 @@ public class AppConfig {
   }
 
   /**
-   * Returns true if the IPT as a resource is registered with the GBIF Registry,
-   * otherwise returns fealse;
+   * Returns true if a GBIF Resource representing this IPT instance exists in
+   * the GBRDS. Otherwise returns false.
    * 
    * @return boolean
    */
   public boolean isIptRegistered() {
-    Organisation o = ((RegistryManagerImpl) registryManager).getIptOrganisation();
-    if(o==null) return false;
-    boolean isregd = registryManager.isOrganisationRegistered(o);
-    return isregd;
-
-    // if (StringUtils.trimToNull(cfg.getIptMeta().getUddiID()) == null) {
-    // return false;
-    // }
-    // return true;
+    int status = HttpStatus.SC_NOT_FOUND;
+    String resourceKey = cfg.getIptMeta().getUddiID();
+    if (trimToNull(resourceKey) != null) {
+      try {
+        status = registryManager.readGbrdsResource(resourceKey).getStatus();
+      } catch (RegistryException e) {
+        e.printStackTrace();
+        log.error(e.toString());
+      }
+    }
+    return status == HttpStatus.SC_OK;
   }
 
+  /**
+   * Returns true if a GBIF Organisation representing the GBIF Resource for this
+   * IPT instance exists in the GBRDS. Otherwise returns false.
+   * 
+   * @return boolean
+   */
   public boolean isOrgRegistered() {
-    Organisation o = Organisation.builder().organisationKey(
-        cfg.getOrgMeta().getUddiID()).password(cfg.getOrgPassword()).build();
-    return registryManager.isOrganisationRegistered(o);
-
-    // if (StringUtils.trimToNull(cfg.getOrgMeta().getUddiID()) == null) {
-    // return false;
-    // }
-    // return true;
+    int status = HttpStatus.SC_NOT_FOUND;
+    String orgKey = cfg.getOrgMeta().getUddiID();
+    if (trimToNull(orgKey) != null) {
+      try {
+        status = registryManager.readGbrdsOrganisation(orgKey).getStatus();
+      } catch (RegistryException e) {
+        e.printStackTrace();
+        log.error(e.toString());
+      }
+    }
+    return status == HttpStatus.SC_OK;
   }
 
   // MANAGER "DELEGATE" METHODS

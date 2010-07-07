@@ -1,17 +1,12 @@
 package org.gbif.provider.model.voc;
 
-import org.gbif.provider.model.Resource;
+import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
 
-import static com.google.common.base.Objects.equal;
+import org.gbif.provider.model.Resource;
 
 import java.util.Date;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 
 public class ResourceDisplay {
   private Long id;
@@ -21,49 +16,21 @@ public class ResourceDisplay {
   PublicationStatusForDisplay status;
   String type;
 
-  public Long getId() {
-    return id;
-  }
-
   public ResourceDisplay(Resource r) {
-    if(r.isRegistered()){
-      if(r.isDirty()){
-        status=PublicationStatusForDisplay.UNPUBLISHED_CHANGES;
+    if (r.isRegistered()) {
+      if (r.isDirty()) {
+        status = PublicationStatusForDisplay.UNPUBLISHED_CHANGES;
       } else {
-        status=PublicationStatusForDisplay.PUBLISHED;
+        status = PublicationStatusForDisplay.PUBLISHED;
       }
     } else {
-      status=PublicationStatusForDisplay.PRIVATE;
+      status = PublicationStatusForDisplay.PRIVATE;
     }
-    id=r.getId();
+    id = r.getId();
     title = r.getTitle();
     modified = r.getModified();
     creatorFullName = r.getCreator().getFullName();
     type = r.getType();
-  }
-  
-  public PublicationStatusForDisplay getStatus(){
-    return status;
-  }
-  
-  public String getTitle(){
-    return title;
-  }
-
-  public Date getModified(){
-    return modified;
-  }
-  
-  public String getCreatorFullName(){
-    return creatorFullName;
-  }
-
-  public String getType(){
-    return type;
-  }
-  
-  public void setId(Long id) {
-    this.id = id;
   }
 
   @Override
@@ -76,8 +43,32 @@ public class ResourceDisplay {
     }
     ResourceDisplay o = (ResourceDisplay) obj;
     return equal(type, o.type) && equal(status, o.status)
-        && equal(title, o.title)
-        && equal(modified, o.modified) && equal(creatorFullName, o.creatorFullName);
+        && equal(title, o.title) && equal(modified, o.modified)
+        && equal(creatorFullName, o.creatorFullName);
+  }
+
+  public String getCreatorFullName() {
+    return creatorFullName;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public Date getModified() {
+    return modified;
+  }
+
+  public PublicationStatusForDisplay getStatus() {
+    return status;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getType() {
+    return type;
   }
 
   @Override
@@ -85,10 +76,14 @@ public class ResourceDisplay {
     return Objects.hashCode(type, status, title, modified, creatorFullName);
   }
 
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   @Override
   public String toString() {
     return String.format(
-        "Type=%s, Status=%s, Title=%s, Modified=%s, CreatorFullName=%s",
-        type, status, title, modified, creatorFullName);
+        "Type=%s, Status=%s, Title=%s, Modified=%s, CreatorFullName=%s", type,
+        status, title, modified, creatorFullName);
   }
 }
