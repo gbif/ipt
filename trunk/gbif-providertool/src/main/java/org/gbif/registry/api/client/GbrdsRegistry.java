@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -289,8 +290,8 @@ public class GbrdsRegistry implements Gbrds {
   }
 
   static class ServiceUtil {
-    private static ImmutableMap<String, String> asImmutableMap(
-        GbrdsService service) {
+
+    static ImmutableMap<String, String> asImmutableMap(GbrdsService service) {
       String json = new Gson().toJson(service, GbrdsService.class);
       Map<String, String> map = new Gson().fromJson(json,
           new TypeToken<Map<String, String>>() {
@@ -298,11 +299,11 @@ public class GbrdsRegistry implements Gbrds {
       return ImmutableMap.copyOf(map);
     }
 
-    private static GbrdsService fromJson(String json) {
+    static GbrdsService fromJson(String json) {
       return new Gson().fromJson(json, GbrdsService.class);
     }
 
-    private static GbrdsService fromXml(String xml) {
+    static GbrdsService fromXml(String xml) {
       GbrdsService service = null;
       try {
         SAXParser p = SAXParserFactory.newInstance().newSAXParser();
@@ -320,9 +321,31 @@ public class GbrdsRegistry implements Gbrds {
       return service;
     }
 
-    private static List<GbrdsService> listFromJson(String json) {
+    static List<GbrdsService> listFromJson(String json) {
       return new Gson().fromJson(json, new TypeToken<List<GbrdsService>>() {
       }.getType());
+    }
+
+    static List<GbrdsService> listFromXml(String body) {
+      List<GbrdsService> list = Lists.newArrayList();
+      try {
+        SAXParser p = SAXParserFactory.newInstance().newSAXParser();
+        XmlHandler h = new XmlHandler();
+        InputStream s = new ByteArrayInputStream(body.getBytes());
+        p.parse(s, h);
+        int keyCount = h.keys.size();
+        for (int i = 0; i < keyCount; i++) {
+          list.add(GbrdsService.builder().key(h.keys.get(i)).type(
+              h.types.get(i)).build());
+        }
+      } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+      } catch (SAXException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return list;
     }
   }
 
@@ -333,6 +356,8 @@ public class GbrdsRegistry implements Gbrds {
     String serviceKey;
     String password;
     String key;
+    List<String> keys = Lists.newArrayList();
+    List<String> types = Lists.newArrayList();
 
     @Override
     public void characters(char[] ch, int start, int length)
@@ -348,6 +373,9 @@ public class GbrdsRegistry implements Gbrds {
         password = content;
       } else if (name.equalsIgnoreCase("key")) {
         key = content.replaceAll("\\s", "");
+        keys.add(key);
+      } else if (name.equalsIgnoreCase("type")) {
+        types.add(content.replaceAll("\\s", ""));
       } else if (name.equalsIgnoreCase("organisationKey")) {
         organisationKey = content.replaceAll("\\s", "");
       } else if (name.equalsIgnoreCase("organizationKey")) {
@@ -1592,7 +1620,7 @@ public class GbrdsRegistry implements Gbrds {
         if (body == null || body.length() < 1) {
           return null;
         }
-        return ServiceUtil.listFromJson(body);
+        return ServiceUtil.listFromXml(body);
       }
     }
 

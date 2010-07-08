@@ -15,6 +15,10 @@
  */
 package org.gbif.provider.model.voc;
 
+import com.google.common.collect.Maps;
+
+import java.util.Map;
+
 /**
  * TODO: Documentation.
  * 
@@ -35,12 +39,42 @@ public enum ServiceType {
       "http://wiki.tdwg.org/twiki/bin/view/DarwinCore/WebHome"), GWC("GWC",
       "http://geowebcache.org");
 
+  public static void main(String[] args) {
+    System.out.println(ServiceType.fromCode("DWC-ARCHIVE"));
+  }
+
+  /**
+   * @param code2
+   * @param serviceType void
+   */
+  private static void addCodeServiceType(String code, ServiceType serviceType) {
+    if (codeServiceTypes == null) {
+      codeServiceTypes = Maps.newHashMap();
+    }
+    codeServiceTypes.put(code, serviceType);
+  }
+
   public String code;
+
+  private static Map<String, ServiceType> codeServiceTypes;
+
+  public static ServiceType fromCode(String code) {
+    if (code == null) {
+      return null;
+    }
+    return codeServiceTypes.get(code);
+  }
+
   public String link;
 
   private ServiceType(String code, String link) {
     this.code = code;
     this.link = link;
+    addCodeServiceType(code, this);
+  }
+
+  public String getCode() {
+    return code;
   }
 
   @Override

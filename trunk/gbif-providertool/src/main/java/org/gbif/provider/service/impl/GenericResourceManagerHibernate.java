@@ -32,12 +32,9 @@ import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
 import org.gbif.registry.api.client.GbrdsResource;
-import org.gbif.registry.api.client.GbrdsService;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -206,18 +203,6 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     try {
       GbrdsResource gr = getGbifResource(resource);
       registryManager.deleteGbrdsResource(gr);
-      Credentials creds = getResourceCreds(resource);
-      GbrdsService gs;
-      DeleteServiceResponse response;
-      ListServicesForResourceResponse listResponse = registryManager.listGbrdsServices(gr.getKey());
-      for (GbrdsService service : listResponse.getResult()) {
-        gs = GbrdsService.builder().organisationKey(creds.getId()).resourcePassword(
-            creds.getPasswd()).resourceKey(resource.getUddiID()).build();
-        response = registryManager.deleteGbrdsService(gs);
-        if (response.getStatus() != HttpStatus.SC_OK) {
-          log.warn("Failed to remove service from registry: " + gs);
-        }
-      }
     } catch (Exception e) {
       log.warn("Failed to remove resource from registry", e);
     }

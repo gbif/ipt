@@ -131,7 +131,7 @@ public class ConfigIptAction extends BasePostAction {
    * user is notified.
    */
   private String createIptGbifResource() {
-    String gbifResourceKey = null;
+    String key = null;
     try {
       ResourceMetadata rm = cfg.getIptResourceMetadata();
       Credentials creds = getOrgCreds();
@@ -141,8 +141,8 @@ public class ConfigIptAction extends BasePostAction {
       if (response.getStatus() == HttpStatus.SC_CREATED) {
         saveMessage(getText("register.ipt.success"));
         GbrdsResource r = response.getResult();
-        gbifResourceKey = r.getKey();
-        rm.setUddiID(gbifResourceKey);
+        key = r.getKey();
+        rm.setUddiID(key);
         cfg.save();
       } else {
         saveMessage(getText("register.ipt.problem"));
@@ -152,7 +152,7 @@ public class ConfigIptAction extends BasePostAction {
       String msg = String.format("%s: %s", getText("register.ipt.problem"), e);
       saveMessage(msg);
     }
-    return gbifResourceKey;
+    return key;
   }
 
   private void createRssGbifService(String gbifResourceKey) {
@@ -185,6 +185,10 @@ public class ConfigIptAction extends BasePostAction {
     return creds;
   }
 
+  /**
+   * Updates the GBRDS Resource representing this IPT instance and also saves
+   * the AppConfig.
+   */
   private void updateIptGbifResource() {
     try {
       ResourceMetadata rm = cfg.getIptResourceMetadata();

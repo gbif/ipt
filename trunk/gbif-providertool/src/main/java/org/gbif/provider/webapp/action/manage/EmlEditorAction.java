@@ -60,6 +60,7 @@ import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.Credentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -261,9 +262,16 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         MethodType.htmlSelectMap), true);
     switch (method(request)) {
       case ORGANISATION:
-        resource.getMeta().setUddiID(resource.getOrgUuid());
-        String key = createGbrdsResource(resource);
-        saveMessage("New GBRDS Resource created: " + key);
+        // resource.getMeta().setUddiID(resource.getOrgUuid());
+        String key = createOrUpdateGbrdsResource(resource);
+        if (key == null) {
+          saveMessage("GBRDS Resource was not saved");
+        } else {
+          saveMessage("GBRDS Resource saved: " + key);
+        }
+        resource.getMeta().setUddiID(key);
+        resource.setDirty();
+        resourceManager.save(resource);
         // Nothing to do here unless the Organisation form has elements whose
         // values are destined for eml.
         break;
@@ -523,81 +531,115 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
   }
 
   /**
-   * @param resource void
-   */
-  private String createGbrdsResource(Resource resource) {
-    String gbifResourceKey = null;
-    try {
-      ResourceMetadata rm = resource.getMeta();
-      Credentials creds = getOrgCreds(resource);
-      GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
-          creds.getId()).organisationPassword(creds.getPasswd()).build();
-      CreateResourceResponse response = registryManager.createGbrdsResource(gm);
-      if (response.getStatus() == HttpStatus.SC_CREATED) {
-        saveMessage(getText("register.ipt.success"));
-        GbrdsResource r = response.getResult();
-        createGbrdsServices(r, resource);
-        gbifResourceKey = r.getKey();
-      } else {
-        saveMessage(getText("register.ipt.problem"));
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      String msg = String.format("%s: %s", getText("register.ipt.problem"), e);
-      saveMessage(msg);
-    }
-    return gbifResourceKey;
-  }
-
-  /**
    * @param r void
    * @param resource
    */
   private void createGbrdsServices(GbrdsResource r, Resource resource) {
-    if (cfg.getBaseUrl().contains("localhost")) {
+    String baseUrl = cfg.getBaseUrl();
+    if (trimToNull(baseUrl) == null || baseUrl.contains("localhost")) {
       saveMessage("Unable to create GBRDS services because the IPT base URL contains localhost");
       return;
     }
     List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR, WFS,
         WMS, TCS_RDF);
-    GbrdsService.Builder service = GbrdsService.builder().organisationKey(
-        r.getKey()).organisationKey(r.getOrganisationKey()).resourcePassword(
-        r.getOrganisationPassword());
+    GbrdsService.Builder service = GbrdsService.builder().resourceKey(
+        r.getKey()).organisationKey(resource.getOrgUuid()).resourcePassword(
+        resource.getOrgPassword());
     for (ServiceType type : types) {
       switch (type) {
         case EML:
           service.accessPointURL(cfg.getEmlUrl(resource.getGuid()));
-          service.type(EML.name());
+          service.type(EML.getCode());
           break;
         case DWC_ARCHIVE:
           service.accessPointURL(cfg.getArchiveUrl(resource.getGuid()));
-          service.type(DWC_ARCHIVE.name());
+          service.type(DWC_ARCHIVE.getCode());
           break;
         case TAPIR:
           service.accessPointURL(cfg.getTapirEndpoint(resource.getId()));
-          service.type(TAPIR.name());
+          service.type(TAPIR.getCode());
           break;
         case WFS:
           service.accessPointURL(cfg.getWfsEndpoint(resource.getId()));
-          service.type(TAPIR.name());
+          service.type(TAPIR.getCode());
           break;
         case WMS:
           service.accessPointURL(cfg.getWmsEndpoint(resource.getId()));
-          service.type(WMS.name());
+          service.type(WMS.getCode());
           break;
         case TCS_RDF:
           service.accessPointURL(cfg.getArchiveTcsUrl(resource.getGuid()));
-          service.type(TCS_RDF.name());
+          service.type(TCS_RDF.getCode());
           break;
       }
       try {
         registryManager.createGbrdsService(service.build());
       } catch (RegistryException e) {
         e.printStackTrace();
-        String msg = String.format("Unable to register RSS service: %s", e);
+        String msg = String.format("Unable to register service: %s (%s)",
+            service.build().getAccessPointURL(), e.toString());
         saveMessage(msg);
       }
     }
+  }
+
+  /**
+   * @param resource void
+   */
+  private String createOrUpdateGbrdsResource(Resource resource) {
+    Credentials creds = getOrgCreds(resource);
+    if (creds == null
+        || !registryManager.validateGbifOrganisationCredentials(
+            resource.getOrgUuid(), creds).getResult()) {
+      saveMessage("Unable to verify GBRDS organisation credentials");
+      return null;
+    }
+    String baseUrl = cfg.getBaseUrl();
+    if (trimToNull(baseUrl) == null || baseUrl.contains("localhost")) {
+      saveMessage("Unable to create GBRDS resource because the IPT base URL contains localhost");
+      return null;
+    }
+
+    String key = resource.getMeta().getUddiID();
+    GbrdsResource gs = null;
+    try {
+      // Updates an existing GBRDS Resource:
+      if (trimToNull(key) != null) {
+        gs = registryManager.readGbrdsResource(key).getResult();
+        if (gs != null) {
+          ResourceMetadata rm = resource.getMeta();
+          creds = getOrgCreds(resource);
+          GbrdsResource gr = registryManager.buildGbrdsResource(rm).organisationKey(
+              creds.getId()).organisationPassword(creds.getPasswd()).build();
+          UpdateResourceResponse response = registryManager.updateGbrdsResource(gr);
+          if (response.getStatus() == HttpStatus.SC_OK) {
+            saveMessage(getText("The GBIF Resource associated with this IPT instance has been updated in the GBRDS."));
+          } else {
+            saveMessage(getText("The GBIF Resource associated with this IPT instance could not be updated in the GBRDS."));
+          }
+          return key;
+        }
+      }
+      // Creates a new GBRDS Resource:
+      ResourceMetadata rm = resource.getMeta();
+      GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
+          creds.getId()).organisationPassword(creds.getPasswd()).build();
+      CreateResourceResponse response = registryManager.createGbrdsResource(gm);
+      if (response.getStatus() == HttpStatus.SC_CREATED) {
+        GbrdsResource r = response.getResult();
+        key = r.getKey();
+        createGbrdsServices(r, resource);
+        resource.getMeta().setUddiID(key);
+      } else {
+        saveMessage(String.format(
+            "Unable to create a GBRDS Resource (%d status)",
+            response.getStatus()));
+        log.warn("Unable to create GBRDS resource: " + response);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return key;
   }
 
   private Credentials getOrgCreds(Resource resource) {
