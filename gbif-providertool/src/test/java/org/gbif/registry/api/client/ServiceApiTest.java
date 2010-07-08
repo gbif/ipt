@@ -23,6 +23,7 @@ import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.gbif.registry.api.client.Gbrds.ServiceApi;
@@ -65,10 +66,11 @@ public class ServiceApiTest {
 
   @Test
   public final void testList() {
-    ListOrgRequest request = gbif.getOrganisationApi().list();
-    List<GbrdsOrganisation> list = request.execute().getResult();
-    Assert.assertNotNull(list);
+    String resourceKey = "e33c61ff-48de-4200-aad9-9643dabd280e";
+    ListServicesForResourceResponse r = api.list(resourceKey).execute();
+    List<GbrdsService> list = r.getResult();
     System.out.println(list);
+
   }
 
   @Test
