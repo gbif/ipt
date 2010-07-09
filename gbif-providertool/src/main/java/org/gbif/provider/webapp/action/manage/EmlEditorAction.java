@@ -28,7 +28,6 @@ import static org.gbif.provider.model.voc.ServiceType.TCS_RDF;
 import static org.gbif.provider.model.voc.ServiceType.WFS;
 import static org.gbif.provider.model.voc.ServiceType.WMS;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.model.Resource;
@@ -53,15 +52,11 @@ import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
-import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
-import org.gbif.registry.api.client.Gbrds.Credentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -530,21 +525,22 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     this.request = request;
   }
 
-  /**
-   * @param r void
-   * @param resource
-   */
   private void createGbrdsServices(GbrdsResource r, Resource resource) {
     String baseUrl = cfg.getBaseUrl();
     if (trimToNull(baseUrl) == null || baseUrl.contains("localhost")) {
       saveMessage("Unable to create GBRDS services because the IPT base URL contains localhost");
       return;
     }
+    OrgCredentials creds = getCreds(resource);
+    if (creds == null
+        || !registryManager.validateCredentials(creds).getResult()) {
+      saveMessage("Unable to verify GBRDS organisation credentials");
+      return;
+    }
     List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR, WFS,
         WMS, TCS_RDF);
     GbrdsService.Builder service = GbrdsService.builder().resourceKey(
-        r.getKey()).organisationKey(resource.getOrgUuid()).resourcePassword(
-        resource.getOrgPassword());
+        r.getKey());
     for (ServiceType type : types) {
       switch (type) {
         case EML:
@@ -572,25 +568,18 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           service.type(TCS_RDF.getCode());
           break;
       }
-      try {
-        registryManager.createGbrdsService(service.build());
-      } catch (RegistryException e) {
-        e.printStackTrace();
-        String msg = String.format("Unable to register service: %s (%s)",
-            service.build().getAccessPointURL(), e.toString());
+      if (registryManager.createGbrdsService(service.build(), creds).getResult() == null) {
+        String msg = String.format("Unable to register service: %s",
+            service.build().getAccessPointURL());
         saveMessage(msg);
       }
     }
   }
 
-  /**
-   * @param resource void
-   */
   private String createOrUpdateGbrdsResource(Resource resource) {
-    Credentials creds = getOrgCreds(resource);
+    OrgCredentials creds = getCreds(resource);
     if (creds == null
-        || !registryManager.validateGbifOrganisationCredentials(
-            resource.getOrgUuid(), creds).getResult()) {
+        || !registryManager.validateCredentials(creds).getResult()) {
       saveMessage("Unable to verify GBRDS organisation credentials");
       return null;
     }
@@ -600,77 +589,58 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
       return null;
     }
 
+    // Updates an existing GBRDS Resource:
     String key = resource.getMeta().getUddiID();
-    GbrdsResource gs = null;
-    try {
-      // Updates an existing GBRDS Resource:
-      if (trimToNull(key) != null) {
-        gs = registryManager.readGbrdsResource(key).getResult();
-        if (gs != null) {
-          ResourceMetadata rm = resource.getMeta();
-          creds = getOrgCreds(resource);
-          GbrdsResource gr = registryManager.buildGbrdsResource(rm).organisationKey(
-              creds.getId()).organisationPassword(creds.getPasswd()).build();
-          UpdateResourceResponse response = registryManager.updateGbrdsResource(gr);
-          if (response.getStatus() == HttpStatus.SC_OK) {
-            saveMessage(getText("The GBIF Resource associated with this IPT instance has been updated in the GBRDS."));
-          } else {
-            saveMessage(getText("The GBIF Resource associated with this IPT instance could not be updated in the GBRDS."));
-          }
-          return key;
+    if (trimToNull(key) != null) {
+      GbrdsResource gs = registryManager.readGbrdsResource(key).getResult();
+      if (gs != null) {
+        ResourceMetadata rm = resource.getMeta();
+        GbrdsResource gr = registryManager.buildGbrdsResource(rm).build();
+        if (registryManager.updateGbrdsResource(gr, creds).getResult()) {
+          saveMessage(getText("The resource associated with this IPT instance has been updated in the GBRDS."));
+        } else {
+          saveMessage(getText("The resource associated with this IPT instance could not be updated in the GBRDS."));
         }
+        return key;
       }
-      // Creates a new GBRDS Resource:
-      ResourceMetadata rm = resource.getMeta();
-      GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
-          creds.getId()).organisationPassword(creds.getPasswd()).build();
-      CreateResourceResponse response = registryManager.createGbrdsResource(gm);
-      if (response.getStatus() == HttpStatus.SC_CREATED) {
-        GbrdsResource r = response.getResult();
-        key = r.getKey();
-        createGbrdsServices(r, resource);
-        resource.getMeta().setUddiID(key);
-      } else {
-        saveMessage(String.format(
-            "Unable to create a GBRDS Resource (%d status)",
-            response.getStatus()));
-        log.warn("Unable to create GBRDS resource: " + response);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
-    return key;
+
+    // Creates a new GBRDS Resource:
+    ResourceMetadata rm = resource.getMeta();
+    GbrdsResource gm = registryManager.buildGbrdsResource(rm).build();
+    gm = registryManager.createGbrdsResource(gm, creds).getResult();
+    if (gm != null) {
+      createGbrdsServices(gm, resource);
+      resource.getMeta().setUddiID(gm.getKey());
+      return gm.getKey();
+    } else {
+      String msg = "Unable to create a GBRDS resource";
+      saveMessage(msg);
+      log.warn(msg);
+      return null;
+    }
   }
 
-  private Credentials getOrgCreds(Resource resource) {
-    Credentials creds = null;
+  private OrgCredentials getCreds(Resource resource) {
+    OrgCredentials creds = null;
     String orgKey = resource.getOrgUuid();
     String orgPassword = resource.getOrgPassword();
     if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      creds = Credentials.with(orgKey, orgPassword);
+      creds = OrgCredentials.with(orgKey, orgPassword);
     }
     return creds;
   }
 
   private boolean validateResource() {
     boolean isResourceValid = false;
-
-    // Validates the GBIF Organisation credentials associated with this
-    // resource:
-    String orgKey = resource.getOrgUuid();
-    String orgPassword = resource.getOrgPassword();
-    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      Credentials creds = Credentials.with(orgKey, orgPassword);
-      ValidateOrgCredentialsResponse response = registryManager.validateGbifOrganisationCredentials(
-          orgKey, creds);
-      if (!response.getResult()) {
-        saveMessage(getText("config.check.orgLogin"));
-        resource.setOrgPassword(null);
-      } else {
-        isResourceValid = true;
-      }
+    OrgCredentials creds = getCreds(resource);
+    if (creds == null
+        || !registryManager.validateCredentials(creds).getResult()) {
+      saveMessage(getText("config.check.orgLogin"));
+      resource.setOrgPassword(null);
+    } else {
+      isResourceValid = true;
     }
-
     return isResourceValid;
   }
 }

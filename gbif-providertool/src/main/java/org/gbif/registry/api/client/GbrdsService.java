@@ -21,8 +21,8 @@ import com.google.common.base.Preconditions;
 import java.io.Serializable;
 
 /**
- * This immutable class encapsulates information about a GBIF Service. Instances
- * are built using the builder pattern.
+ * This immutable class encapsulates information about a GBRDS Service.
+ * Instances are built using the builder pattern.
  * 
  * @see http://code.google.com/p/gbif-registry/wiki/ServiceAPI
  * 
@@ -36,11 +36,9 @@ public class GbrdsService implements Serializable {
     private String description;
     private String descriptionLanguage;
     private String key;
-    private String organisationKey;
     private String resourceKey;
-    private String resourcePassword;
-
     private String type;
+    private String typeDescription;
 
     private Builder() {
     }
@@ -69,23 +67,18 @@ public class GbrdsService implements Serializable {
       return this;
     }
 
-    public Builder organisationKey(String val) {
-      organisationKey = val;
-      return this;
-    }
-
     public Builder resourceKey(String val) {
       resourceKey = val;
       return this;
     }
 
-    public Builder resourcePassword(String val) {
-      resourcePassword = val;
+    public Builder type(String val) {
+      type = val;
       return this;
     }
 
-    public Builder type(String val) {
-      type = val;
+    public Builder typeDescription(String val) {
+      typeDescription = val;
       return this;
     }
   }
@@ -98,32 +91,29 @@ public class GbrdsService implements Serializable {
     Preconditions.checkNotNull(service);
     return builder().accessPointURL(service.accessPointURL).description(
         service.description).descriptionLanguage(service.descriptionLanguage).key(
-        service.key).organisationKey(service.organisationKey).resourceKey(
-        service.resourceKey).resourcePassword(service.resourcePassword).type(
-        service.type);
+        service.key).resourceKey(service.resourceKey).type(service.type);
   }
 
-  private String accessPointURL;
-  private String description;
-  private String descriptionLanguage;
-  private String key;
-  private String organisationKey;
-  private String resourceKey;
-  private String resourcePassword;
-  private String type;
+  private final String accessPointURL;
+  private final String description;
+  private final String descriptionLanguage;
+  private final String key;
+  private final String resourceKey;
+  private final String type;
+  private final String typeDescription;
 
   public GbrdsService(Builder builder) {
     accessPointURL = builder.accessPointUrl;
     description = builder.description;
     descriptionLanguage = builder.descriptionLanguage;
     key = builder.key;
-    organisationKey = builder.organisationKey;
     resourceKey = builder.resourceKey;
-    resourcePassword = builder.resourcePassword;
     type = builder.type;
+    typeDescription = builder.typeDescription;
   }
 
   GbrdsService() {
+    this(builder());
   }
 
   @Override
@@ -139,10 +129,9 @@ public class GbrdsService implements Serializable {
         && Objects.equal(description, o.description)
         && Objects.equal(descriptionLanguage, o.descriptionLanguage)
         && Objects.equal(key, o.key)
-        && Objects.equal(organisationKey, o.organisationKey)
         && Objects.equal(resourceKey, o.resourceKey)
-        && Objects.equal(resourcePassword, o.resourcePassword)
-        && Objects.equal(type, o.type);
+        && Objects.equal(type, o.type)
+        && Objects.equal(typeDescription, o.typeDescription);
   }
 
   public String getAccessPointURL() {
@@ -161,34 +150,29 @@ public class GbrdsService implements Serializable {
     return key;
   }
 
-  public String getOrganisationKey() {
-    return organisationKey;
-  }
-
   public String getResourceKey() {
     return resourceKey;
-  }
-
-  public String getResourcePassword() {
-    return resourcePassword;
   }
 
   public String getType() {
     return type;
   }
 
+  public String getTypeDescription() {
+    return typeDescription;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(accessPointURL, description, descriptionLanguage,
-        key, organisationKey, resourceKey, resourcePassword, type);
+        key, resourceKey, type, typeDescription);
   }
 
   @Override
   public String toString() {
     return Objects.toStringHelper(this).add("AccessPointUrl", accessPointURL).add(
         "Description", description).add("DescriptionLanguage",
-        descriptionLanguage).add("Key", key).add("OrganisationKey",
-        organisationKey).add("ResourceKey", resourceKey).add(
-        "ResourcePassword", resourcePassword).add("Type", type).toString();
+        descriptionLanguage).add("Key", key).add("ResourceKey", resourceKey).add(
+        "Type", type).toString();
   }
 }

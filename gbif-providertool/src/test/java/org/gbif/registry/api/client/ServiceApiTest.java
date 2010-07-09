@@ -17,16 +17,17 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
-import org.gbif.registry.api.client.GbrdsOrganisation;
-import org.gbif.registry.api.client.GbrdsRegistry;
-import org.gbif.registry.api.client.GbrdsService;
-import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import org.gbif.provider.model.voc.ServiceType;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.ServiceApi;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceResponse;
 import org.junit.Test;
 
 import java.util.List;
@@ -39,43 +40,62 @@ public class ServiceApiTest {
   private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
   private static final ServiceApi api = gbif.getServiceApi();
 
+  private static final String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
+  private static final String orgKey = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+  private static final String serviceKey = "e2522a8c-d66c-40ec-9f10-623cc16c6d6c";
+
   private static final GbrdsService service = GbrdsService.builder().resourceKey(
-      "3f138d32-eb85-430c-8d5d-115c2f03429e").type("WMS").accessPointURL(
-      "http://foo.com").organisationKey("3780d048-8e18-4c0c-afcd-cb6389df56de").resourcePassword(
-      "password").build();
+      resourceKey).type(ServiceType.DWC_ARCHIVE.getCode()).accessPointURL(
+      "http://foo.com").build();
+
+  private static final OrgCredentials creds = OrgCredentials.with(orgKey,
+      "password");
 
   @Test
-  public final void testCreateAndDelete() {
-    GbrdsService result = null;
+  public final void testCreateAndDelete() throws BadCredentialsException {
+
+    // Tests executing with null credentials:
     try {
-      CreateServiceResponse response = api.create(service).execute();
+      api.create(service).execute(null);
+      fail();
+    } catch (NullPointerException e) {
+      System.out.println(e);
+    }
+
+    // Tests executing with bad credentials:
+    try {
+      api.create(service).execute(OrgCredentials.with("bad", "creds"));
+      fail();
+    } catch (BadCredentialsException e) {
+      System.out.println(e);
+    }
+
+    // Tests creating and deleting a valid service:
+    GbrdsService createdService = null;
+    try {
+      CreateServiceResponse response = api.create(service).execute(creds);
       Assert.assertNotNull(response);
-      result = response.getResult();
-      Assert.assertNotNull(result);
-      Assert.assertNotNull(result.getKey());
+      createdService = response.getResult();
+      Assert.assertNotNull(createdService);
+      System.out.println(createdService);
+      Assert.assertNotNull(createdService.getKey());
     } finally {
-      if (result != null) {
-        Assert.assertTrue(api.delete(
-            GbrdsService.builder().key(result.getKey()).resourceKey(
-                service.getResourceKey()).organisationKey(
-                service.getOrganisationKey()).resourcePassword(
-                service.getResourcePassword()).build()).execute().getResult());
+      if (createdService != null) {
+        Assert.assertTrue(api.delete(createdService.getKey()).execute(creds).getResult());
       }
     }
   }
 
   @Test
   public final void testList() {
-    String resourceKey = "e33c61ff-48de-4200-aad9-9643dabd280e";
-    ListServicesForResourceResponse r = api.list(resourceKey).execute();
+    ListServicesResponse r = api.list(resourceKey).execute();
     List<GbrdsService> list = r.getResult();
+    assertNotNull(list);
     System.out.println(list);
-
   }
 
   @Test
   public final void testRead() {
-    String serviceKey = "e2522a8c-d66c-40ec-9f10-623cc16c6d6c";
     ReadServiceResponse response = api.read(serviceKey).execute();
     GbrdsService res = response.getResult();
     Assert.assertNotNull(res);
@@ -84,15 +104,11 @@ public class ServiceApiTest {
   }
 
   @Test
-  public final void testUpdate() {
-    UpdateServiceResponse response = api.update(
-        GbrdsService.builder().resourceKey(
-            "3f138d32-eb85-430c-8d5d-115c2f03429e").key(
-            "e2522a8c-d66c-40ec-9f10-623cc16c6d6c").type("WMS").accessPointURL(
-            "http://bar.com").organisationKey(
-            "3780d048-8e18-4c0c-afcd-cb6389df56de").resourcePassword("password").build()).execute();
-    Assert.assertNotNull(response);
-    Assert.assertEquals("http://bar.com",
-        response.getResult().getAccessPointURL());
+  public final void testUpdate() throws BadCredentialsException {
+    GbrdsService s;
+    s = GbrdsService.builder(service).key(serviceKey).accessPointURL("foo").build();
+    api.update(s).execute(creds).getResult();
+    GbrdsService su = api.read(serviceKey).execute().getResult();
+    assertEquals(su.getAccessPointURL(), "foo");
   }
 }

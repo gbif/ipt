@@ -24,11 +24,10 @@ import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsService;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,8 +53,6 @@ public class ConfigAction extends BasePostAction {
 
   @Autowired
   private RegistryManager registryManager;
-
-  private String initialBaseUrl;
 
   public AppConfig getConfig() {
     return this.cfg;
@@ -129,12 +126,12 @@ public class ConfigAction extends BasePostAction {
     }
   }
 
-  private Credentials getOrgCreds() {
-    Credentials creds = null;
+  private OrgCredentials getOrgCreds() {
+    OrgCredentials creds = null;
     String orgKey = cfg.getOrg().getUddiID();
     String orgPassword = cfg.getOrgPassword();
     if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      creds = Credentials.with(orgKey, orgPassword);
+      creds = OrgCredentials.with(orgKey, orgPassword);
     }
     return creds;
   }
@@ -146,29 +143,23 @@ public class ConfigAction extends BasePostAction {
     }
 
     // Updates IPT instance RSS feed:
-    Credentials creds = getOrgCreds();
+    OrgCredentials creds = getOrgCreds();
     String iptKey = cfg.getIpt().getUddiID();
     if (creds != null && iptKey != null) {
-      try {
-        for (GbrdsService s : registryManager.listGbrdsServices(iptKey).getResult()) {
-          ServiceType st = ServiceType.fromCode(s.getType());
-          if (st != null && st.equals(ServiceType.RSS)) {
-            GbrdsService gs = GbrdsService.builder().key(s.getKey()).resourceKey(
-                iptKey).organisationKey(creds.getId()).resourcePassword(
-                creds.getPasswd()).accessPointURL(cfg.getAtomFeedURL()).type(
-                st.getCode()).build();
-            UpdateServiceResponse response = registryManager.updateGbrdsService(gs);
-            if (response.getStatus() == HttpStatus.SC_OK) {
-              saveMessage(getText("Updated IPT RSS service: "
-                  + gs.getAccessPointURL()));
-            } else {
-              saveMessage(getText("Unable to update IPT RSS service"));
-            }
+      for (GbrdsService s : registryManager.listGbrdsServices(iptKey).getResult()) {
+        ServiceType st = ServiceType.fromCode(s.getType());
+        if (st != null && st.equals(ServiceType.RSS)) {
+          GbrdsService gs = GbrdsService.builder().key(s.getKey()).resourceKey(
+              iptKey).accessPointURL(cfg.getAtomFeedURL()).type(st.getCode()).build();
+          UpdateServiceResponse response = registryManager.updateGbrdsService(
+              gs, null);
+          if (response.getStatus() == HttpStatus.SC_OK) {
+            saveMessage(getText("Updated IPT RSS service: "
+                + gs.getAccessPointURL()));
+          } else {
+            saveMessage(getText("Unable to update IPT RSS service"));
           }
         }
-      } catch (RegistryException e) {
-        e.printStackTrace();
-        saveMessage(getText("Unable to update IPT RSS service"));
       }
     }
 
@@ -184,49 +175,43 @@ public class ConfigAction extends BasePostAction {
       }
       GbrdsService.Builder builder;
       ServiceType serviceType;
-      try {
-        for (GbrdsService s : registryManager.listGbrdsServices(resourceKey).getResult()) {
-          builder = GbrdsService.builder(s);
-          serviceType = ServiceType.fromCode(s.getType());
-          if (serviceType == null) {
-            continue;
-          }
-          switch (serviceType) {
-            case EML:
-              builder.accessPointURL(cfg.getEmlUrl(r.getGuid()));
-              break;
-            case DWC_ARCHIVE:
-              builder.accessPointURL(cfg.getArchiveUrl(r.getGuid()));
-              break;
-            case TAPIR:
-              builder.accessPointURL(cfg.getTapirEndpoint(r.getId()));
-              break;
-            case WFS:
-              builder.accessPointURL(cfg.getWfsEndpoint(r.getId()));
-              break;
-            case WMS:
-              builder.accessPointURL(cfg.getWmsEndpoint(r.getId()));
-              break;
-            case TCS_RDF:
-              builder.accessPointURL(cfg.getArchiveTcsUrl(r.getGuid()));
-              break;
-            default:
-              log.warn("Unsupported service type: " + s.getType());
-          }
-          GbrdsService gs = builder.resourceKey(resourceKey).organisationKey(
-              orgKey).resourcePassword(orgPasswd).build();
-          UpdateServiceResponse response = registryManager.updateGbrdsService(gs);
-          if (response.getStatus() == HttpStatus.SC_OK) {
-            saveMessage(getText("Updated service URL: "
-                + gs.getAccessPointURL()));
-          } else {
-            saveMessage(getText("Unable to update service"));
-          }
+
+      for (GbrdsService s : registryManager.listGbrdsServices(resourceKey).getResult()) {
+        builder = GbrdsService.builder(s);
+        serviceType = ServiceType.fromCode(s.getType());
+        if (serviceType == null) {
+          continue;
         }
-      } catch (RegistryException e) {
-        e.printStackTrace();
-        String msg = String.format("Problem updating services: %s", e);
-        saveMessage(msg);
+        switch (serviceType) {
+          case EML:
+            builder.accessPointURL(cfg.getEmlUrl(r.getGuid()));
+            break;
+          case DWC_ARCHIVE:
+            builder.accessPointURL(cfg.getArchiveUrl(r.getGuid()));
+            break;
+          case TAPIR:
+            builder.accessPointURL(cfg.getTapirEndpoint(r.getId()));
+            break;
+          case WFS:
+            builder.accessPointURL(cfg.getWfsEndpoint(r.getId()));
+            break;
+          case WMS:
+            builder.accessPointURL(cfg.getWmsEndpoint(r.getId()));
+            break;
+          case TCS_RDF:
+            builder.accessPointURL(cfg.getArchiveTcsUrl(r.getGuid()));
+            break;
+          default:
+            log.warn("Unsupported service type: " + s.getType());
+        }
+        GbrdsService gs = builder.resourceKey(resourceKey).build();
+        UpdateServiceResponse response = registryManager.updateGbrdsService(gs,
+            null);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+          saveMessage(getText("Updated service URL: " + gs.getAccessPointURL()));
+        } else {
+          saveMessage(getText("Unable to update service"));
+        }
       }
     }
     saveMessage("GBRDS service access point URLs updated");

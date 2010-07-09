@@ -28,13 +28,11 @@ import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.FullTextSearchManager;
 import org.gbif.provider.service.GenericResourceManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
 import org.gbif.registry.api.client.GbrdsResource;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -200,71 +198,54 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     resource.setStatus(PublicationStatus.unpublished);
     save(resource);
     fullTextSearchManager.buildResourceIndex(resourceId);
-    try {
-      GbrdsResource gr = getGbifResource(resource);
-      registryManager.deleteGbrdsResource(gr);
-    } catch (Exception e) {
-      log.warn("Failed to remove resource from registry", e);
+    String resourceKey = resource.getUddiID();
+    OrgCredentials creds = getCreds(resource);
+    if (!registryManager.deleteGbrdsResource(resourceKey, creds).getResult()) {
+      log.warn("Resource could not be deleted from GBRDS: " + resourceId);
     }
   }
 
   @SuppressWarnings("unchecked")
   private void createGbrdsResource(Resource resource) {
-    String gbifResourceKey = null;
-    try {
-      ResourceMetadata rm = resource.getMeta();
-      Credentials creds = getResourceCreds(resource);
-      GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
-          creds.getId()).organisationPassword(creds.getPasswd()).build();
-      CreateResourceResponse response = registryManager.createGbrdsResource(gm);
-      if (response.getStatus() == HttpStatus.SC_CREATED) {
-        GbrdsResource r = response.getResult();
-        gbifResourceKey = r.getKey();
-        rm.setUddiID(gbifResourceKey);
-        save((T) resource);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      String msg = "Unable to create GBIF Resource for resource "
-          + resource.getId();
-      log.warn(msg);
+    OrgCredentials creds = getCreds(resource);
+    if (creds == null) {
+      log.warn("Unable to create GBRDS resource because of bad credentials");
+      return;
+    }
+    ResourceMetadata rm = resource.getMeta();
+    GbrdsResource gm = null;
+    gm = registryManager.buildGbrdsResource(rm).organisationKey(creds.getKey()).build();
+    CreateResourceResponse response = null;
+    response = registryManager.createGbrdsResource(gm, creds);
+    if (response.getStatus() == HttpStatus.SC_CREATED) {
+      rm.setUddiID(response.getResult().getKey());
+      save((T) resource);
+    } else {
+      log.warn("Resource could not be created in GBRDS: " + resource.getId());
     }
   }
 
-  private GbrdsResource getGbifResource(T resource) {
-    return GbrdsResource.builder().organisationKey(resource.getOrgUuid()).organisationPassword(
-        resource.getOrgPassword()).key(resource.getUddiID()).build();
-  }
-
-  private Credentials getResourceCreds(Resource r) {
-    Credentials creds = null;
+  private OrgCredentials getCreds(Resource r) {
+    OrgCredentials creds = null;
     String orgKey = r.getOrgUuid();
     String orgPassword = r.getOrgPassword();
     if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      creds = Credentials.with(orgKey, orgPassword);
+      creds = OrgCredentials.with(orgKey, orgPassword);
     }
     return creds;
   }
 
-  /**
-   * @param resource void
-   * @throws RegistryException
-   */
-  private void updateGbifResource(Resource resource) throws RegistryException {
-    Credentials creds = getResourceCreds(resource);
-    if (creds != null) {
-      String orgPassword = creds.getPasswd();
-      String orgKey = creds.getId();
-      GbrdsResource gr = registryManager.buildGbrdsResource(resource.getMeta()).organisationKey(
-          orgKey).organisationPassword(orgPassword).build();
-      UpdateResourceResponse response = registryManager.updateGbrdsResource(gr);
-      if (response.getStatus() != HttpStatus.SC_OK) {
-        log.warn("Failed to update resource in GBRDS: " + gr);
-      } else {
-        log.info("GBIF Resource updated in GBRDS: " + gr);
-      }
-    } else {
+  private void updateGbifResource(Resource resource) {
+    OrgCredentials creds = getCreds(resource);
+    if (creds == null) {
       log.warn("Failed to update resource in GBRDS because of bad credentials");
+      return;
+    }
+    String orgKey = creds.getKey();
+    GbrdsResource gr = registryManager.buildGbrdsResource(resource.getMeta()).organisationKey(
+        orgKey).build();
+    if (!registryManager.updateGbrdsResource(gr, creds).getResult()) {
+      log.warn("Failed to update resource in GBRDS: " + resource.getId());
     }
   }
 

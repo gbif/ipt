@@ -21,13 +21,14 @@ import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.GbrdsThesaurus;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
@@ -94,8 +95,7 @@ public interface RegistryManager {
    * @return CreateOrgResponse the GBRDS response
    * @throws NullPointerException, RegistryException
    */
-  CreateOrgResponse createGbrdsOrganisation(GbrdsOrganisation organisation)
-      throws RegistryException;
+  CreateOrgResponse createGbrdsOrganisation(GbrdsOrganisation organisation);
 
   /**
    * Creates a new {@link GbrdsResource} and returns the
@@ -104,11 +104,13 @@ public interface RegistryManager {
    * {@link RegistryException} if there are errors creating the resource.
    * 
    * @param resource the resource to create
+   * @param creds TODO
    * @return CreateResourceResponse
+   * @throws BadCredentialsException
    * @throws NullPointerException, RegistryException
    */
-  CreateResourceResponse createGbrdsResource(GbrdsResource resource)
-      throws RegistryException;
+  CreateResourceResponse createGbrdsResource(GbrdsResource resource,
+      OrgCredentials creds);
 
   /**
    * Creates a new {@link GbrdsService} and returns the
@@ -117,11 +119,13 @@ public interface RegistryManager {
    * {@link RegistryException} if there are errors creating the service.
    * 
    * @param service the service to create
+   * @param creds TODO
    * @return CreateServiceResponse
-   * @throws NullPointerException, RegistryException
+   * @throws BadCredentialsException
+   * @throws NullPointerException
    */
-  CreateServiceResponse createGbrdsService(GbrdsService service)
-      throws RegistryException;
+  CreateServiceResponse createGbrdsService(GbrdsService service,
+      OrgCredentials creds);
 
   /**
    * Deletes an existing {@link GbrdsResource} and returns the
@@ -129,12 +133,13 @@ public interface RegistryManager {
    * {@link NullPointerException} if the <code>resource</code> is null. Throws
    * {@link RegistryException} if there are errors deleting the resource.
    * 
-   * @param resource
+   * @param resourceKey
+   * @param creds TODO
    * @return DeleteResourceResponse
    * @throws NullPointerException, RegistryException
    */
-  DeleteResourceResponse deleteGbrdsResource(GbrdsResource resource)
-      throws RegistryException;
+  DeleteResourceResponse deleteGbrdsResource(String resourceKey,
+      OrgCredentials creds);
 
   /**
    * Deletes an existing {@link GbrdsService} and returns the
@@ -142,12 +147,13 @@ public interface RegistryManager {
    * {@link NullPointerException} if the <code>service</code> is null. Throws
    * {@link RegistryException} if there are errors deleting the service.
    * 
-   * @param service
+   * @param serviceKey
+   * @param creds TODO
    * @return DeleteServiceResponse
    * @throws NullPointerException, RegistryException
    */
-  DeleteServiceResponse deleteGbrdsService(GbrdsService service)
-      throws RegistryException;
+  DeleteServiceResponse deleteGbrdsService(String serviceKey,
+      OrgCredentials creds);
 
   /**
    * Returns a list of {@link GbrdsExtension}s from the GBRDS.
@@ -164,18 +170,16 @@ public interface RegistryManager {
   List<GbrdsThesaurus> listAllThesauri();
 
   /**
-   * Returns a {@link ListServicesForResourceResponse} from the GBRDS that
-   * contains a list of {@link GbrdsService}s for a given {@link GbrdsResource}
-   * key. Throws {@link NullPointerException} if the <code>resourceKey</code> is
-   * null. Throws {@link RegistryException} if there are errors listing the
-   * services.
+   * Returns a {@link ListServicesResponse} from the GBRDS that contains a list
+   * of {@link GbrdsService}s for a given {@link GbrdsResource} key. Throws
+   * {@link NullPointerException} if the <code>resourceKey</code> is null.
+   * Throws {@link RegistryException} if there are errors listing the services.
    * 
    * @param resourceKey
    * @return ListServicesForResourceResponse
    * @throws NullPointerException, RegistryException
    */
-  ListServicesForResourceResponse listGbrdsServices(String resourceKey)
-      throws RegistryException;
+  ListServicesResponse listGbrdsServices(String resourceKey);
 
   /**
    * Reads a {@link GbrdsOrganisation} from the GBRDS and returns the
@@ -187,8 +191,7 @@ public interface RegistryManager {
    * @return ReadOrgResponse
    * @throws NullPointerException, RegistryException
    */
-  ReadOrgResponse readGbrdsOrganisation(String organisationKey)
-      throws RegistryException;
+  ReadOrgResponse readGbrdsOrganisation(String organisationKey);
 
   /**
    * Reads a {@link GbrdsResource} from the GBRDS and returns the
@@ -200,8 +203,7 @@ public interface RegistryManager {
    * @return ReadResourceResponse
    * @throws NullPointerException, RegistryException
    */
-  ReadResourceResponse readGbrdsResource(String resourceKey)
-      throws RegistryException;
+  ReadResourceResponse readGbrdsResource(String resourceKey);
 
   /**
    * Updates a {@link GbrdsOrganisation} in the GBRDS and returns the
@@ -210,11 +212,11 @@ public interface RegistryManager {
    * there are errors updating the organisation.
    * 
    * @param organisation
+   * @param creds TODO
    * @return UpdateOrgResponse
    * @throws NullPointerException, RegistryException
    */
-  UpdateOrgResponse updateGbrdsOrganisation(GbrdsOrganisation organisation)
-      throws RegistryException;
+  UpdateOrgResponse updateGbrdsOrganisation(GbrdsOrganisation organisation, OrgCredentials creds);
 
   /**
    * Updates a {@link GbrdsResource} in the GBRDS and returns the
@@ -223,11 +225,11 @@ public interface RegistryManager {
    * are errors updating the resource.
    * 
    * @param resource
+   * @param creds TODO
    * @return UpdateResourceResponse
    * @throws NullPointerException, RegistryException
    */
-  UpdateResourceResponse updateGbrdsResource(GbrdsResource resource)
-      throws RegistryException;
+  UpdateResourceResponse updateGbrdsResource(GbrdsResource resource, OrgCredentials creds);
 
   /**
    * Updates a {@link GbrdsService} in the GBRDS and returns the
@@ -236,22 +238,21 @@ public interface RegistryManager {
    * errors updating the service.
    * 
    * @param service
+   * @param creds TODO
    * @return UpdateServiceResponse
    * @throws NullPointerException, RegistryException
    */
-  UpdateServiceResponse updateGbrdsService(GbrdsService service)
-      throws RegistryException;
+  UpdateServiceResponse updateGbrdsService(GbrdsService service, OrgCredentials creds);
 
   /**
-   * Validates {@link Credentials} for a {@link GbrdsOrganisation} in the GBRDS
-   * and returns the {@link ValidateOrgCredentialsResponse}. Throws
+   * Validates {@link OrgCredentials} for a {@link GbrdsOrganisation} in the
+   * GBRDS and returns the {@link ValidateOrgCredentialsResponse}. Throws
    * {@link NullPointerException} if the <code>organisationKey</code> or
    * <code>credentials</code> are null.
+   * @param creds TODO
    * 
-   * @param organisationKey
-   * @param credentials
    * @return ValidateOrgCredentialsResponse
    */
-  ValidateOrgCredentialsResponse validateGbifOrganisationCredentials(
-      String organisationKey, Credentials credentials);
+  ValidateOrgCredentialsResponse validateCredentials(
+      OrgCredentials creds);
 }

@@ -17,7 +17,6 @@ package org.gbif.provider.util;
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +30,6 @@ import org.gbif.provider.model.hibernate.IptNamingStrategy;
 import org.gbif.provider.model.voc.ExtensionType;
 import org.gbif.provider.service.ProviderCfgManager;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -457,17 +455,12 @@ public class AppConfig {
    * @return boolean
    */
   public boolean isIptRegistered() {
-    int status = HttpStatus.SC_NOT_FOUND;
+    boolean isRegistered = false;
     String resourceKey = cfg.getIptMeta().getUddiID();
     if (trimToNull(resourceKey) != null) {
-      try {
-        status = registryManager.readGbrdsResource(resourceKey).getStatus();
-      } catch (RegistryException e) {
-        e.printStackTrace();
-        log.error(e.toString());
-      }
+      isRegistered = registryManager.readGbrdsResource(resourceKey).getResult() != null;
     }
-    return status == HttpStatus.SC_OK;
+    return isRegistered;
   }
 
   /**
@@ -477,17 +470,12 @@ public class AppConfig {
    * @return boolean
    */
   public boolean isOrgRegistered() {
-    int status = HttpStatus.SC_NOT_FOUND;
+    boolean isRegistered = false;
     String orgKey = cfg.getOrgMeta().getUddiID();
     if (trimToNull(orgKey) != null) {
-      try {
-        status = registryManager.readGbrdsOrganisation(orgKey).getStatus();
-      } catch (RegistryException e) {
-        e.printStackTrace();
-        log.error(e.toString());
-      }
+      isRegistered = registryManager.readGbrdsOrganisation(orgKey).getResult() != null;
     }
-    return status == HttpStatus.SC_OK;
+    return isRegistered;
   }
 
   // MANAGER "DELEGATE" METHODS

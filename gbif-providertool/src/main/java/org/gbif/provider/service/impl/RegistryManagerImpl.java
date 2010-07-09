@@ -18,7 +18,6 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.service.RegistryManager;
@@ -30,8 +29,9 @@ import org.gbif.registry.api.client.GbrdsRegistry;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.GbrdsThesaurus;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.IptApi;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
 import org.gbif.registry.api.client.Gbrds.ResourceApi;
 import org.gbif.registry.api.client.Gbrds.ServiceApi;
@@ -40,14 +40,13 @@ import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesForResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
-import org.gbif.registry.api.client.GbrdsResource.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -58,9 +57,12 @@ import java.util.List;
  */
 public class RegistryManagerImpl implements RegistryManager {
 
+  private static boolean notNullOrEmpty(String val) {
+    return val != null && val.trim().length() > 0;
+  }
+
   @Autowired
   protected AppConfig cfg;
-
   private final OrganisationApi organsiationApi;
   private final ResourceApi resourceApi;
   private final ServiceApi serviceApi;
@@ -77,7 +79,7 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#buildGbrdsOrganisation(ResourceMetadata)
    */
-  public org.gbif.registry.api.client.GbrdsOrganisation.Builder buildGbrdsOrganisation(
+  public GbrdsOrganisation.Builder buildGbrdsOrganisation(
       ResourceMetadata resourceMetadata) {
     String description = resourceMetadata.getDescription();
     String homepageURL = resourceMetadata.getLink();
@@ -98,104 +100,70 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#buildGbrdsResource(ResourceMetadata)
    */
-  public Builder buildGbrdsResource(ResourceMetadata resourceMetadata) {
+  public GbrdsResource.Builder buildGbrdsResource(
+      ResourceMetadata resourceMetadata) {
     checkNotNull(resourceMetadata);
     String key = resourceMetadata.getUddiID();
-    String password = cfg.getOrgPassword();
     String name = resourceMetadata.getTitle();
     String description = resourceMetadata.getDescription();
     String homepageUrl = resourceMetadata.getLink();
     String primaryContactType = ContactType.administrative.name();
     String primaryContactName = resourceMetadata.getContactName();
     String primaryContactEmail = resourceMetadata.getContactEmail();
-    return GbrdsResource.builder().key(key).organisationPassword(password).name(
-        name).description(description).homepageURL(homepageUrl).primaryContactType(
-        primaryContactType).primaryContactName(primaryContactName).primaryContactEmail(
-        primaryContactEmail);
+    return GbrdsResource.builder().key(key).name(name).description(description).homepageURL(
+        homepageUrl).primaryContactType(primaryContactType).primaryContactName(
+        primaryContactName).primaryContactEmail(primaryContactEmail);
   }
 
   /**
    * @see RegistryManager#createGbrdsOrganisation(GbrdsOrganisation)
    */
   public CreateOrgResponse createGbrdsOrganisation(
-      GbrdsOrganisation organisation) throws RegistryException {
+      GbrdsOrganisation organisation) {
     checkNotNull(organisation);
-    CreateOrgResponse response = organsiationApi.create(organisation).execute();
-    if (response.getError() != null) {
-      String msg = String.format("GBIF Organisation not created %s",
-          organisation);
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+    return organsiationApi.create(organisation).execute();
   }
 
   /**
-   * @see RegistryManager#createGbrdsResource(GbrdsResource)
+   * @see RegistryManager#createGbrdsResource(GbrdsResource, OrgCredentials)
    */
-  public CreateResourceResponse createGbrdsResource(GbrdsResource resource)
-      throws RegistryException {
+  public CreateResourceResponse createGbrdsResource(GbrdsResource resource,
+      OrgCredentials creds) {
     checkNotNull(resource);
-    CreateResourceResponse response = resourceApi.create(resource).execute();
-    if (response.getError() != null) {
-      String msg = String.format("GBIF Resource not created %s", resource);
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+    checkNotNull(creds, "Credentials are null");
+    return resourceApi.create(resource).execute(creds);
   }
 
   /**
-   * @see RegistryManager#createGbrdsService(GbrdsService)
+   * @throws BadCredentialsException
+   * @see RegistryManager#createGbrdsService(GbrdsService, OrgCredentials)
    */
-  public CreateServiceResponse createGbrdsService(GbrdsService service)
-      throws RegistryException {
+  public CreateServiceResponse createGbrdsService(GbrdsService service,
+      OrgCredentials creds) {
     checkNotNull(service);
+    checkNotNull(creds, "Credentials are null");
     checkArgument(!service.getAccessPointURL().contains("localhost"));
-    CreateServiceResponse response = serviceApi.create(service).execute();
-    Throwable error = response.getError();
-    if (error != null) {
-      throw new RegistryException("Error creating service", error);
-    }
-    int status = response.getStatus();
-    if (status != HttpStatus.SC_CREATED) {
-      throw new RegistryException("Service not created");
-    }
-    return response;
+    return serviceApi.create(service).execute(creds);
   }
 
   /**
-   * @see RegistryManager#deleteGbrdsResource(GbrdsResource)
+   * @see RegistryManager#deleteGbrdsResource(String, OrgCredentials)
    */
-  public DeleteResourceResponse deleteGbrdsResource(GbrdsResource resource)
-      throws RegistryException {
-    checkNotNull(resource);
-    DeleteResourceResponse response = resourceApi.delete(resource).execute();
-    Throwable error = response.getError();
-    if (error != null) {
-      throw new RegistryException("Error deleting resource", error);
-    }
-    int status = response.getStatus();
-    if (status != HttpStatus.SC_OK) {
-      throw new RegistryException("Resource not deleted");
-    }
-    return response;
+  public DeleteResourceResponse deleteGbrdsResource(String resourceKey,
+      OrgCredentials creds) {
+    checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
+    checkNotNull(creds, "Credentials are null");
+    return resourceApi.delete(resourceKey).execute(creds);
   }
 
   /**
-   * @see RegistryManager#deleteGbrdsService(GbrdsService)
+   * @see RegistryManager#deleteGbrdsService(String, OrgCredentials)
    */
-  public DeleteServiceResponse deleteGbrdsService(GbrdsService service)
-      throws RegistryException {
-    checkNotNull(service);
-    DeleteServiceResponse response = serviceApi.delete(service).execute();
-    Throwable error = response.getError();
-    if (error != null) {
-      throw new RegistryException("Error deleting service", error);
-    }
-    int status = response.getStatus();
-    if (status != HttpStatus.SC_OK) {
-      throw new RegistryException("Service not deleted");
-    }
-    return response;
+  public DeleteServiceResponse deleteGbrdsService(String serviceKey,
+      OrgCredentials creds) {
+    checkArgument(notNullOrEmpty(serviceKey), "Invalid service key");
+    checkNotNull(creds, "Credentials are null");
+    return serviceApi.delete(serviceKey).execute(creds);
   }
 
   /**
@@ -215,110 +183,65 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#listGbifServices(String )
    */
-  public ListServicesForResourceResponse listGbrdsServices(
-      String resourceKey) throws RegistryException {
-    checkNotNull(resourceKey);
-    checkArgument(resourceKey.length() > 0);
-    ListServicesForResourceResponse response = serviceApi.list(resourceKey).execute();
-    Throwable error = response.getError();
-    if (error != null) {
-      throw new RegistryException("Unable to list services", error);
-    }
-    int status = response.getStatus();
-    if (status != HttpStatus.SC_OK) {
-      throw new RegistryException("Unable to list services");
-    }
-    return response;
+  public ListServicesResponse listGbrdsServices(String resourceKey) {
+    checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
+    return serviceApi.list(resourceKey).execute();
   }
 
   /**
    * @throws RegistryException
    * @see RegistryManager#readGbrdsOrganisation(String)
    */
-  public ReadOrgResponse readGbrdsOrganisation(String organisationKey)
-      throws RegistryException {
-    checkNotNull(organisationKey);
-    checkArgument(organisationKey.trim().length() != 0);
-    ReadOrgResponse response = organsiationApi.read(organisationKey).execute();
-    if (response.getError() != null) {
-      String msg = String.format(
-          "Unable to read GBIF Organisation with key %s", organisationKey);
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+  public ReadOrgResponse readGbrdsOrganisation(String organisationKey) {
+    checkArgument(notNullOrEmpty(organisationKey), "Invalid organisation key");
+    return organsiationApi.read(organisationKey).execute();
   }
 
   /**
    * @throws RegistryException
    * @see RegistryManager#readGbrdsResource(String)
    */
-  public ReadResourceResponse readGbrdsResource(String resourceKey)
-      throws RegistryException {
-    checkNotNull(resourceKey);
-    checkArgument(resourceKey.trim().length() != 0);
-    ReadResourceResponse response = resourceApi.read(resourceKey).execute();
-    Throwable error = response.getError();
-    if (error != null) {
-      String msg = String.format("Error reading GBIF Resource with key %s",
-          resourceKey);
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+  public ReadResourceResponse readGbrdsResource(String resourceKey) {
+    checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
+    return resourceApi.read(resourceKey).execute();
   }
 
   /**
-   * @see RegistryManager#updateGbrdsOrganisation(GbrdsOrganisation)
+   * @see RegistryManager#updateGbrdsOrganisation(GbrdsOrganisation,
+   *      OrgCredentials)
    */
   public UpdateOrgResponse updateGbrdsOrganisation(
-      GbrdsOrganisation organisation) throws RegistryException {
-    checkNotNull(organisation);
-    UpdateOrgResponse response = organsiationApi.update(organisation).execute();
-    if (response.getError() != null) {
-      String msg = String.format(
-          "Unable to read GBIF Organisation with key %s",
-          organisation.getKey());
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+      GbrdsOrganisation organisation, OrgCredentials creds) {
+    checkNotNull(organisation, "Organisation is null");
+    checkNotNull(creds, "Credentials are null");
+    return organsiationApi.update(organisation).execute(creds);
   }
 
   /**
-   * @see RegistryManager#updateGbrdsResource(GbrdsResource)
+   * @see RegistryManager#updateGbrdsResource(GbrdsResource, OrgCredentials)
    */
-  public UpdateResourceResponse updateGbrdsResource(GbrdsResource resource)
-      throws RegistryException {
-    checkNotNull(resource);
-    UpdateResourceResponse response = resourceApi.update(resource).execute();
-    if (response.getError() != null) {
-      String msg = String.format("Unable to read GBIF Resource with key %s",
-          resource.getKey());
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+  public UpdateResourceResponse updateGbrdsResource(GbrdsResource resource,
+      OrgCredentials creds) {
+    checkNotNull(resource, "Resource is null");
+    checkNotNull(creds, "Credentials are null");
+    return resourceApi.update(resource).execute(creds);
   }
 
   /**
    * @throws RegistryException
-   * @see RegistryManager#updateGbrdsService(GbrdsService)
+   * @see RegistryManager#updateGbrdsService(GbrdsService, OrgCredentials)
    */
-  public UpdateServiceResponse updateGbrdsService(GbrdsService service)
-      throws RegistryException {
-    checkNotNull(service);
-    UpdateServiceResponse response = serviceApi.update(service).execute();
-    if (response.getError() != null) {
-      String msg = String.format("Unable to read GBIF Resource with key %s",
-          service.getKey());
-      throw new RegistryException(msg, response.getError());
-    }
-    return response;
+  public UpdateServiceResponse updateGbrdsService(GbrdsService service,
+      OrgCredentials creds) {
+    checkNotNull(service, "Service is null");
+    checkNotNull(creds, "Credentials are null");
+    return serviceApi.update(service).execute(creds);
   }
 
   /**
-   * @see RegistryManager#validateGbifOrganisationCredentials(String,
-   *      Credentials)
+   * @see RegistryManager#validateCredentials(OrgCredentials)
    */
-  public ValidateOrgCredentialsResponse validateGbifOrganisationCredentials(
-      String organisationKey, Credentials credentials) {
-    return organsiationApi.validateCredentials(organisationKey, credentials).execute();
+  public ValidateOrgCredentialsResponse validateCredentials(OrgCredentials creds) {
+    return organsiationApi.validateCredentials(creds).execute();
   }
 }
