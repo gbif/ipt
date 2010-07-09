@@ -37,7 +37,6 @@ public class GbrdsResource implements Serializable {
     private String name;
     private String nameLanguage;
     private String organisationKey;
-    private String organisationPassword;
     private String primaryContactAddress;
     private String primaryContactDescription;
     private String primaryContactEmail;
@@ -87,11 +86,6 @@ public class GbrdsResource implements Serializable {
       return this;
     }
 
-    public Builder organisationPassword(String val) {
-      organisationPassword = val;
-      return this;
-    }
-
     public Builder primaryContactAddress(String val) {
       primaryContactAddress = val;
       return this;
@@ -134,7 +128,6 @@ public class GbrdsResource implements Serializable {
   private String name;
   private String nameLanguage;
   private String organisationKey;
-  private String organisationPassword;
   private String primaryContactAddress;
   private String primaryContactDescription;
   private String primaryContactEmail;
@@ -153,7 +146,6 @@ public class GbrdsResource implements Serializable {
     name = builder.name;
     nameLanguage = builder.nameLanguage;
     organisationKey = builder.organisationKey;
-    organisationPassword = builder.organisationPassword;
     primaryContactAddress = builder.primaryContactAddress;
     primaryContactDescription = builder.primaryContactDescription;
     primaryContactEmail = builder.primaryContactEmail;
@@ -178,7 +170,6 @@ public class GbrdsResource implements Serializable {
         && Objects.equal(name, o.name)
         && Objects.equal(nameLanguage, o.nameLanguage)
         && Objects.equal(organisationKey, o.organisationKey)
-        && Objects.equal(organisationPassword, o.organisationPassword)
         && Objects.equal(primaryContactAddress, o.primaryContactAddress)
         && Objects.equal(primaryContactDescription, o.primaryContactDescription)
         && Objects.equal(primaryContactEmail, o.primaryContactEmail)
@@ -215,10 +206,6 @@ public class GbrdsResource implements Serializable {
     return organisationKey;
   }
 
-  public String getOrganisationPassword() {
-    return organisationPassword;
-  }
-
   public String getPrimaryContactAddress() {
     return primaryContactAddress;
   }
@@ -246,9 +233,9 @@ public class GbrdsResource implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hashCode(description, descriptionLanguage, homepageURL, key,
-        name, nameLanguage, organisationKey, organisationPassword,
-        primaryContactAddress, primaryContactDescription, primaryContactEmail,
-        primaryContactName, primaryContactPhone, primaryContactType);
+        name, nameLanguage, organisationKey, primaryContactAddress,
+        primaryContactDescription, primaryContactEmail, primaryContactName,
+        primaryContactPhone, primaryContactType);
   }
 
   @Override
@@ -257,7 +244,6 @@ public class GbrdsResource implements Serializable {
         "DescriptionLanguage", descriptionLanguage).add("HomepageURL",
         homepageURL).add("Key", key).add("Name", name).add("NameLanguage",
         nameLanguage).add("OrganisationKey", organisationKey).add(
-        "OrganisationPassword", organisationPassword).add(
         "PrimaryContactAddress", primaryContactAddress).add(
         "PrimaryContactDescription", primaryContactDescription).add(
         "PrimaryContactEmail", primaryContactEmail).add("PrimaryContactName",

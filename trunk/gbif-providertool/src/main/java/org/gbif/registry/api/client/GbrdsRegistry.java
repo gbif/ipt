@@ -75,21 +75,23 @@ import javax.xml.parsers.SAXParserFactory;
 public class GbrdsRegistry implements Gbrds {
 
   public static interface CreateOrgRequest extends
-      RpcRequest<CreateOrgResponse, GbrdsOrganisation> {
+      RpcRequest<CreateOrgResponse, OrgCredentials> {
   }
-  public static interface CreateOrgResponse extends
-      RpcResponse<GbrdsOrganisation> {
+  public static interface CreateOrgResponse extends RpcResponse<OrgCredentials> {
   }
 
   public static interface CreateResourceRequest extends
-      RpcRequest<CreateResourceResponse, GbrdsResource> {
+      AuthRpcRequest<CreateResourceResponse, GbrdsResource> {
   }
   public static interface CreateResourceResponse extends
       RpcResponse<GbrdsResource> {
   }
 
+  /**
+   * Interface for creating GBRDS services using an {@link AuthRpcRequest}.
+   */
   public static interface CreateServiceRequest extends
-      RpcRequest<CreateServiceResponse, GbrdsService> {
+      AuthRpcRequest<CreateServiceResponse, GbrdsService> {
   }
 
   public static interface CreateServiceResponse extends
@@ -97,21 +99,24 @@ public class GbrdsRegistry implements Gbrds {
   }
 
   public static interface DeleteOrgRequest extends
-      RpcRequest<DeleteOrgResponse, Boolean> {
+      AuthRpcRequest<DeleteOrgResponse, Boolean> {
   }
 
   public static interface DeleteOrgResponse extends RpcResponse<Boolean> {
   }
 
   public static interface DeleteResourceRequest extends
-      RpcRequest<DeleteResourceResponse, Boolean> {
+      AuthRpcRequest<DeleteResourceResponse, Boolean> {
   }
 
   public static interface DeleteResourceResponse extends RpcResponse<Boolean> {
   }
 
+  /**
+   * Interface for deleting GBRDS services using an {@link AuthRpcRequest}.
+   */
   public static interface DeleteServiceRequest extends
-      RpcRequest<DeleteServiceResponse, Boolean> {
+      AuthRpcRequest<DeleteServiceResponse, Boolean> {
   }
 
   public static interface DeleteServiceResponse extends RpcResponse<Boolean> {
@@ -141,11 +146,11 @@ public class GbrdsRegistry implements Gbrds {
       RpcResponse<List<GbrdsResource>> {
   }
 
-  public static interface ListServicesForResourceRequest extends
-      RpcRequest<ListServicesForResourceResponse, List<GbrdsService>> {
+  public static interface ListServicesRequest extends
+      RpcRequest<ListServicesResponse, List<GbrdsService>> {
   }
 
-  public static interface ListServicesForResourceResponse extends
+  public static interface ListServicesResponse extends
       RpcResponse<List<GbrdsService>> {
   }
 
@@ -181,27 +186,27 @@ public class GbrdsRegistry implements Gbrds {
   }
 
   public static interface UpdateOrgRequest extends
-      RpcRequest<UpdateOrgResponse, GbrdsOrganisation> {
+      AuthRpcRequest<UpdateOrgResponse, Boolean> {
   }
 
-  public static interface UpdateOrgResponse extends
-      RpcResponse<GbrdsOrganisation> {
+  public static interface UpdateOrgResponse extends RpcResponse<Boolean> {
   }
 
   public static interface UpdateResourceRequest extends
-      RpcRequest<UpdateResourceResponse, GbrdsResource> {
+      AuthRpcRequest<UpdateResourceResponse, Boolean> {
   }
 
-  public static interface UpdateResourceResponse extends
-      RpcResponse<GbrdsResource> {
+  public static interface UpdateResourceResponse extends RpcResponse<Boolean> {
   }
 
+  /**
+   * Interface for updating GBRDS services using an {@link AuthRpcRequest}.
+   */
   public static interface UpdateServiceRequest extends
-      RpcRequest<UpdateServiceResponse, GbrdsService> {
+      AuthRpcRequest<UpdateServiceResponse, Boolean> {
   }
 
-  public static interface UpdateServiceResponse extends
-      RpcResponse<GbrdsService> {
+  public static interface UpdateServiceResponse extends RpcResponse<Boolean> {
   }
 
   public static interface ValidateOrgCredentialsRequest extends
@@ -415,24 +420,24 @@ public class GbrdsRegistry implements Gbrds {
         this.registry = registry;
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        throw new UnsupportedOperationException("Subclass must override.");
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        throw new UnsupportedOperationException("Subclass must override.");
       }
     }
 
@@ -474,24 +479,24 @@ public class GbrdsRegistry implements Gbrds {
         return new ListExtResponse(this, registry.execute(this));
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        return "/registry/ipt/extensions.json";
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        return "/registry/ipt/extensions.json";
       }
     }
 
@@ -536,24 +541,24 @@ public class GbrdsRegistry implements Gbrds {
         return new ListThesaurusResponse(this, registry.execute(this));
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        return "/registry/ipt/thesauri.json";
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        return "/registry/ipt/thesauri.json";
       }
     }
 
@@ -627,18 +632,18 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       @Override
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "POST";
+      }
+
+      @Override
+      public String getPath() {
+        return "/registry/organisation";
       }
 
       @Override
       public ImmutableMap<String, String> getPayload() {
         return OrgUtil.asImmutableMap(org);
-      }
-
-      @Override
-      public String getRequestPath() {
-        return "/registry/organisation";
       }
     }
 
@@ -649,57 +654,58 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public GbrdsOrganisation getResult() {
-        String body = getBody();
-        if (!body.contains("<organisationKey>")) {
+      public OrgCredentials getResult() {
+        if (getStatus() != HttpStatus.SC_CREATED) {
           return null;
         }
-        return OrgUtil.fromXml(body);
+        GbrdsOrganisation o = OrgUtil.fromXml(getBody());
+        try {
+          return OrgCredentials.with(o.getKey(), o.getPassword());
+        } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+        }
       }
 
     }
 
     static class DeleteRequest extends OrgRequest implements DeleteOrgRequest {
 
-      final GbrdsOrganisation org;
-      final Credentials credentials;
+      final String organisationKey;
+      OrgCredentials creds;
       final String method;
       final String path;
-      final ImmutableMap<String, String> payload;
 
-      DeleteRequest(GbrdsOrganisation org, Gbrds registry) {
+      DeleteRequest(String organisationKey, Gbrds registry) {
         super(registry);
-        this.org = org;
-        credentials = Credentials.with(org.getKey(), org.getPassword());
+        this.organisationKey = organisationKey;
         method = "DELETE";
-        path = String.format("/registry/organisation/%s", org.getKey());
-        payload = OrgUtil.asImmutableMap(org);
+        path = String.format("/registry/organisation/%s", organisationKey);
       }
 
-      /**
-       * @see org.gbif.registry.api.client.Gbrds.RpcRequest#execute()
-       */
-      public DeleteOrgResponse execute() {
-        return new DeleteResponse(this, registry.execute(this));
+      public DeleteOrgResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new DeleteResponse(this, response);
       }
 
       @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public OrgCredentials getCredentials() {
+        return creds;
       }
 
       @Override
-      public String getHttpMethodType() {
+      public String getMethod() {
         return method;
       }
 
       @Override
-      public ImmutableMap<String, String> getPayload() {
-        return payload;
-      }
-
-      @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
@@ -711,11 +717,8 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      /**
-       * @see org.gbif.registry.api.client.Gbrds.RpcResponse#getResult()
-       */
       public Boolean getResult() {
-        return getBody().contains("Organisation deleted successfully");
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
@@ -731,24 +734,24 @@ public class GbrdsRegistry implements Gbrds {
         return new ListResponse(this, registry.execute(this));
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        return "/registry/organisation.json";
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        return "/registry/organisation.json";
       }
     }
 
@@ -760,11 +763,10 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public List<GbrdsOrganisation> getResult() {
-        String body = getBody();
-        if (body == null || body.length() < 1) {
+        if (getStatus() != HttpStatus.SC_OK) {
           return null;
         }
-        return OrgUtil.listFromJson(body);
+        return OrgUtil.listFromJson(getBody());
       }
     }
 
@@ -776,24 +778,24 @@ public class GbrdsRegistry implements Gbrds {
         this.registry = registry;
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        throw new UnsupportedOperationException("Subclass must override.");
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        throw new UnsupportedOperationException("Subclass must override.");
       }
     }
 
@@ -840,7 +842,7 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
@@ -852,11 +854,10 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public GbrdsOrganisation getResult() {
-        String body = getBody();
-        if (body.contains("Error")) {
+        if (getStatus() != HttpStatus.SC_OK) {
           return null;
         }
-        return OrgUtil.fromJson(body);
+        return OrgUtil.fromJson(getBody());
       }
     }
 
@@ -866,7 +867,7 @@ public class GbrdsRegistry implements Gbrds {
       final String path;
       final ImmutableMap<String, String> payload;
       final String method;
-      final Credentials credentials;
+      OrgCredentials creds;
 
       UpdateRequest(GbrdsOrganisation org, Gbrds registry) {
         super(registry);
@@ -874,34 +875,40 @@ public class GbrdsRegistry implements Gbrds {
         path = String.format("/registry/organisation/%s", org.getKey());
         payload = OrgUtil.asImmutableMap(org);
         method = "POST";
-        credentials = Credentials.with(org.getKey(), org.getPassword());
       }
 
       /**
        * @see org.gbif.registry.api.client.Gbrds.RpcRequest#execute()
        */
-      public UpdateOrgResponse execute() {
-        return new UpdateResponse(this, registry.execute(this));
+      public UpdateOrgResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new UpdateResponse(this, response);
       }
 
       @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public OrgCredentials getCredentials() {
+        return creds;
       }
 
       @Override
-      public String getHttpMethodType() {
+      public String getMethod() {
         return method;
+      }
+
+      @Override
+      public String getPath() {
+        return path;
       }
 
       @Override
       public ImmutableMap<String, String> getPayload() {
         return payload;
-      }
-
-      @Override
-      public String getRequestPath() {
-        return path;
       }
     }
 
@@ -911,34 +918,23 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public GbrdsOrganisation getResult() {
-        int status = getStatus();
-        if (status == HttpStatus.SC_UNAUTHORIZED) {
-          return null;
-        }
-        if (!getBody().contains(rpcRequest.org.getKey())) {
-          return null;
-        }
-        return OrgUtil.fromXml(getBody());
+      public Boolean getResult() {
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
     static class ValidateRequest extends OrgRequest implements
         ValidateOrgCredentialsRequest {
 
-      final GbrdsOrganisation org;
+      final OrgCredentials creds;
       final String path;
-      final ImmutableMap<String, String> payload;
-      final Credentials credentials;
       final ImmutableMap<String, String> requestParams;
 
-      ValidateRequest(GbrdsOrganisation org, Gbrds registry) {
+      ValidateRequest(OrgCredentials creds, Gbrds registry) {
         super(registry);
-        this.org = org;
-        path = String.format("/registry/organisation/%s", org.getKey());
-        payload = OrgUtil.asImmutableMap(org);
+        this.creds = creds;
+        path = String.format("/registry/organisation/%s", creds.getKey());
         requestParams = ImmutableMap.of("op", "login");
-        credentials = Credentials.with(org.getKey(), org.getPassword());
       }
 
       /**
@@ -949,22 +945,17 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public OrgCredentials getCredentials() {
+        return creds;
       }
 
       @Override
-      public ImmutableMap<String, String> getPayload() {
-        return payload;
-      }
-
-      @Override
-      public ImmutableMap<String, String> getRequestParams() {
+      public ImmutableMap<String, String> getParams() {
         return requestParams;
       }
 
       @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
@@ -976,15 +967,7 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public Boolean getResult() {
-        String body = getBody();
-        int status = getStatus();
-        if (status == HttpStatus.SC_UNAUTHORIZED
-            || status == HttpStatus.SC_NOT_FOUND
-            || body.contains("No organisation matches the key provided")
-            || body.contains("Incorrect Authorization information")) {
-          return false;
-        }
-        return true;
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
@@ -998,23 +981,23 @@ public class GbrdsRegistry implements Gbrds {
      * @see OrganisationApi#create(GbrdsOrganisation)
      */
     public CreateOrgRequest create(GbrdsOrganisation org) {
-      checkNotNull(org);
-      checkArgument(notNullOrEmpty(org.getName()));
-      checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
-      checkArgument(notNullOrEmpty(org.getPrimaryContactEmail()));
-      checkArgument(notNullOrEmpty(org.getNodeKey()));
+      checkNotNull(org, "Organisation is null");
+      checkArgument(notNullOrEmpty(org.getName()), "Organisation name is null");
+      checkArgument(notNullOrEmpty(org.getPrimaryContactType()),
+          "Organisation contact type is null");
+      checkArgument(notNullOrEmpty(org.getPrimaryContactEmail()),
+          "Organisation contact email is null");
+      checkArgument(notNullOrEmpty(org.getNodeKey()),
+          "Organisation node key is null");
       return new CreateRequest(org, registry);
     }
 
     /**
-     * @see OrganisationApi#delete(GbrdsOrganisation)
+     * @see OrganisationApi#delete(String)
      */
-    public DeleteOrgRequest delete(GbrdsOrganisation org) {
-      checkNotNull(org);
-      checkArgument(notNullOrEmpty(org.getKey()));
-      checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
-      checkArgument(notNullOrEmpty(org.getPassword()));
-      return new DeleteRequest(org, registry);
+    public DeleteOrgRequest delete(String organisationKey) {
+      checkArgument(notNullOrEmpty(organisationKey), "Organisation key is null");
+      return new DeleteRequest(organisationKey, registry);
     }
 
     /**
@@ -1036,24 +1019,20 @@ public class GbrdsRegistry implements Gbrds {
      * @see OrganisationApi#update(GbrdsOrganisation)
      */
     public UpdateOrgRequest update(GbrdsOrganisation org) {
-      checkNotNull(org);
-      checkArgument(notNullOrEmpty(org.getKey()));
-      checkArgument(notNullOrEmpty(org.getPrimaryContactType()));
-      checkArgument(notNullOrEmpty(org.getPassword()));
+      checkNotNull(org, "Organisation is null");
+      checkArgument(notNullOrEmpty(org.getKey()), "Organisation key is null");
+      checkArgument(notNullOrEmpty(org.getPrimaryContactType()),
+          "Organisation contact type is null");
       return new UpdateRequest(org, registry);
     }
 
     /**
-     * @see OrganisationApi#validateCredentials (String, Credentials)
+     * @see OrganisationApi#validateCredentials (OrgCredentials)
      */
     public ValidateOrgCredentialsRequest validateCredentials(
-        String organisationKey, Credentials credentials) {
-      checkNotNull(organisationKey);
-      checkArgument(notNullOrEmpty(organisationKey));
-      checkNotNull(credentials);
-      return new ValidateRequest(GbrdsOrganisation.builder().key(
-          credentials.getId()).password(credentials.getPasswd()).build(),
-          registry);
+        OrgCredentials creds) {
+      checkNotNull(creds, "Credentials are null");
+      return new ValidateRequest(creds, registry);
     }
   }
 
@@ -1063,40 +1042,42 @@ public class GbrdsRegistry implements Gbrds {
         CreateResourceRequest {
 
       final GbrdsResource resource;
-      final Credentials credentials;
+      OrgCredentials creds;
 
       CreateRequest(GbrdsResource resource, Gbrds registry) {
         super(registry);
         this.resource = resource;
-        credentials = Credentials.with(resource.getOrganisationKey(),
-            resource.getOrganisationPassword());
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
-      public CreateResourceResponse execute() {
-        return new CreateResponse(this, registry.execute(this));
-      }
-
-      @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public CreateResourceResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new CreateResponse(this, response);
       }
 
       @Override
-      public String getHttpMethodType() {
+      public OrgCredentials getCredentials() {
+        return creds;
+      }
+
+      @Override
+      public String getMethod() {
         return "POST";
+      }
+
+      @Override
+      public String getPath() {
+        return "/registry/resource";
       }
 
       @Override
       public ImmutableMap<String, String> getPayload() {
         return ResourceUtil.asImmutableMap(resource);
-      }
-
-      @Override
-      public String getRequestPath() {
-        return "/registry/resource";
       }
     }
 
@@ -1108,11 +1089,10 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public GbrdsResource getResult() {
-        String body = getBody();
-        if (!body.contains("<organisationKey>")) {
+        if (getStatus() != HttpStatus.SC_CREATED) {
           return null;
         }
-        return ResourceUtil.fromXml(body);
+        return ResourceUtil.fromXml(getBody());
       }
 
     }
@@ -1120,46 +1100,41 @@ public class GbrdsRegistry implements Gbrds {
     static class DeleteRequest extends ResourceRequest implements
         DeleteResourceRequest {
 
-      final GbrdsResource resource;
-      final Credentials credentials;
+      OrgCredentials creds;
+      final String resourceKey;
       final String method;
       final String path;
-      final ImmutableMap<String, String> payload;
 
-      DeleteRequest(GbrdsResource resource, Gbrds registry) {
+      DeleteRequest(String resourceKey, Gbrds registry) {
         super(registry);
-        this.resource = resource;
-        credentials = Credentials.with(resource.getOrganisationKey(),
-            resource.getOrganisationPassword());
+        this.resourceKey = resourceKey;
         method = "DELETE";
-        path = String.format("/registry/resource/%s", resource.getKey());
-        payload = ResourceUtil.asImmutableMap(resource);
+        path = String.format("/registry/resource/%s", resourceKey);
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
-      public DeleteResourceResponse execute() {
-        return new DeleteResponse(this, registry.execute(this));
+      public DeleteResourceResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new DeleteResponse(this, response);
       }
 
       @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public OrgCredentials getCredentials() {
+        return creds;
       }
 
       @Override
-      public String getHttpMethodType() {
+      public String getMethod() {
         return method;
       }
 
       @Override
-      public ImmutableMap<String, String> getPayload() {
-        return payload;
-      }
-
-      @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
@@ -1171,44 +1146,45 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcResponse#getResult()
-       */
       public Boolean getResult() {
-        return getBody().contains("Resourceanisation deleted successfully");
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
     static class ListRequest implements ListResourceRequest {
 
       final Gbrds registry;
+      final String organisationKey;
+      final ImmutableMap<String, String> params;
 
-      ListRequest(Gbrds registry) {
+      ListRequest(String organisationKey, Gbrds registry) {
         this.registry = registry;
+        this.organisationKey = organisationKey;
+        params = ImmutableMap.of("organisationKey", organisationKey);
       }
 
       public ListResponse execute() {
         return new ListResponse(this, registry.execute(this));
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return params;
+      }
+
+      public String getPath() {
+        return "/registry/resource.json";
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        return "/registry/resource.json";
       }
     }
 
@@ -1220,11 +1196,10 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public List<GbrdsResource> getResult() {
-        String body = getBody();
-        if (body == null || body.length() < 1) {
+        if (getStatus() != HttpStatus.SC_OK) {
           return null;
         }
-        return ResourceUtil.listFromJson(body);
+        return ResourceUtil.listFromJson(getBody());
       }
     }
 
@@ -1246,7 +1221,7 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
@@ -1258,11 +1233,10 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public GbrdsResource getResult() {
-        String body = getBody();
-        if (body.contains("Error")) {
+        if (getStatus() != HttpStatus.SC_OK) {
           return null;
         }
-        return ResourceUtil.fromJson(body);
+        return ResourceUtil.fromJson(getBody());
       }
     }
 
@@ -1274,24 +1248,24 @@ public class GbrdsRegistry implements Gbrds {
         this.registry = registry;
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        throw new UnsupportedOperationException("Subclass must override.");
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        throw new UnsupportedOperationException("Subclass must override.");
       }
     }
 
@@ -1328,7 +1302,7 @@ public class GbrdsRegistry implements Gbrds {
       final String path;
       final ImmutableMap<String, String> payload;
       final String method;
-      final Credentials credentials;
+      OrgCredentials creds;
 
       UpdateRequest(GbrdsResource resource, Gbrds registry) {
         super(registry);
@@ -1336,35 +1310,37 @@ public class GbrdsRegistry implements Gbrds {
         path = String.format("/registry/resource/%s", resource.getKey());
         payload = ResourceUtil.asImmutableMap(resource);
         method = "POST";
-        credentials = Credentials.with(resource.getOrganisationKey(),
-            resource.getOrganisationPassword());
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
-      public UpdateResourceResponse execute() {
-        return new UpdateResponse(this, registry.execute(this));
-      }
-
-      @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public UpdateResourceResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new UpdateResponse(this, response);
       }
 
       @Override
-      public String getHttpMethodType() {
+      public OrgCredentials getCredentials() {
+        return creds;
+      }
+
+      @Override
+      public String getMethod() {
         return method;
+      }
+
+      @Override
+      public String getPath() {
+        return path;
       }
 
       @Override
       public ImmutableMap<String, String> getPayload() {
         return payload;
-      }
-
-      @Override
-      public String getRequestPath() {
-        return path;
       }
     }
 
@@ -1374,11 +1350,8 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public GbrdsResource getResult() {
-        if (!getBody().contains(rpcRequest.resource.getKey())) {
-          return null;
-        }
-        return rpcRequest.resource;
+      public Boolean getResult() {
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
@@ -1394,7 +1367,6 @@ public class GbrdsRegistry implements Gbrds {
     public CreateResourceRequest create(GbrdsResource resource) {
       checkNotNull(resource);
       checkArgument(notNullOrEmpty(resource.getName()));
-      checkArgument(notNullOrEmpty(resource.getDescription()));
       checkArgument(notNullOrEmpty(resource.getPrimaryContactType()));
       checkArgument(notNullOrEmpty(resource.getPrimaryContactEmail()));
       checkArgument(notNullOrEmpty(resource.getOrganisationKey()));
@@ -1402,29 +1374,26 @@ public class GbrdsRegistry implements Gbrds {
     }
 
     /**
-     * @see ResourceanisationApi#delete(GbrdsResource)
+     * @see ResourceanisationApi#delete(String)
      */
-    public DeleteResourceRequest delete(GbrdsResource resource) {
-      checkNotNull(resource);
-      checkArgument(notNullOrEmpty(resource.getKey()));
-      checkArgument(notNullOrEmpty(resource.getOrganisationPassword()));
-      checkArgument(notNullOrEmpty(resource.getOrganisationKey()));
-      return new DeleteRequest(resource, registry);
+    public DeleteResourceRequest delete(String resourceKey) {
+      checkArgument(notNullOrEmpty(resourceKey), "Resource key is null");
+      return new DeleteRequest(resourceKey, registry);
     }
 
     /**
      * @see ResourceanisationApi#list(String)
      */
-    public ListResourceRequest list() {
-      return new ListRequest(registry);
+    public ListResourceRequest list(String organisationKey) {
+      return new ListRequest(organisationKey, registry);
     }
 
     /**
      * @see ResourceanisationApi#read(String)
      */
-    public ReadResourceRequest read(String orgKey) {
-      checkArgument(notNullOrEmpty(orgKey));
-      return new ReadRequest(orgKey, registry);
+    public ReadResourceRequest read(String resourceKey) {
+      checkArgument(notNullOrEmpty(resourceKey));
+      return new ReadRequest(resourceKey, registry);
     }
 
     /**
@@ -1434,53 +1403,65 @@ public class GbrdsRegistry implements Gbrds {
       checkNotNull(resource);
       checkArgument(notNullOrEmpty(resource.getKey()));
       checkArgument(notNullOrEmpty(resource.getPrimaryContactType()));
-      checkArgument(notNullOrEmpty(resource.getOrganisationPassword()));
       return new UpdateRequest(resource, registry);
     }
   }
 
   private static class ServiceApiImpl implements ServiceApi {
+
+    /**
+     * This class provides an internal implementation of
+     * {@link CreateServiceRequest}.
+     * 
+     */
     static class CreateRequest extends ServiceRequest implements
         CreateServiceRequest {
 
       final GbrdsService service;
-      final Credentials credentials;
+      OrgCredentials creds;
 
       CreateRequest(GbrdsService service, Gbrds registry) {
         super(registry);
         this.service = service;
-        credentials = Credentials.with(service.getOrganisationKey(),
-            service.getResourcePassword());
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
-      public CreateServiceResponse execute() {
-        return new CreateResponse(this, registry.execute(this));
-      }
-
-      @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public CreateServiceResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new CreateResponse(this, response);
       }
 
       @Override
-      public String getHttpMethodType() {
+      public OrgCredentials getCredentials() {
+        return creds;
+      }
+
+      @Override
+      public String getMethod() {
         return "POST";
+      }
+
+      @Override
+      public String getPath() {
+        return "/registry/service";
       }
 
       @Override
       public ImmutableMap<String, String> getPayload() {
         return ServiceUtil.asImmutableMap(service);
       }
-
-      @Override
-      public String getRequestPath() {
-        return "/registry/service";
-      }
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link CreateServiceResponse}.
+     * 
+     */
     static class CreateResponse extends ServiceResponse<CreateRequest>
         implements CreateServiceResponse {
 
@@ -1489,62 +1470,65 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public GbrdsService getResult() {
-        String body = getBody();
-        if (!body.contains("<key>")) {
+        if (getStatus() != HttpStatus.SC_CREATED) {
           return null;
         }
-        return ServiceUtil.fromXml(body);
+        return ServiceUtil.fromXml(getBody());
       }
-
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link DeleteServiceRequest}.
+     * 
+     */
     static class DeleteRequest extends ServiceRequest implements
         DeleteServiceRequest {
 
-      final GbrdsService service;
-      final Credentials credentials;
+      final String serviceKey;
+      OrgCredentials creds;
       final String method;
       final String path;
-      final ImmutableMap<String, String> payload;
 
-      DeleteRequest(GbrdsService service, Gbrds registry) {
+      DeleteRequest(String serviceKey, Gbrds registry) {
         super(registry);
-        this.service = service;
-        credentials = Credentials.with(service.getOrganisationKey(),
-            service.getResourcePassword());
+        this.serviceKey = serviceKey;
         method = "DELETE";
-        path = String.format("/registry/service/%s", service.getKey());
-        payload = ServiceUtil.asImmutableMap(service);
+        path = String.format("/registry/service/%s", serviceKey);
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
-      public DeleteServiceResponse execute() {
-        return new DeleteResponse(this, registry.execute(this));
+      public DeleteServiceResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new DeleteResponse(this, response);
       }
 
       @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public OrgCredentials getCredentials() {
+        return creds;
       }
 
       @Override
-      public String getHttpMethodType() {
+      public String getMethod() {
         return method;
       }
 
       @Override
-      public ImmutableMap<String, String> getPayload() {
-        return payload;
-      }
-
-      @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link DeleteServiceResponse}.
+     * 
+     */
     static class DeleteResponse extends ServiceResponse<DeleteRequest>
         implements DeleteServiceResponse {
 
@@ -1552,21 +1536,17 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcResponse#getResult()
-       */
       public Boolean getResult() {
         return getStatus() == HttpStatus.SC_OK;
       }
     }
 
-    static class ListForResourceRequest implements
-        ListServicesForResourceRequest {
+    static class ListForResourceRequest implements ListServicesRequest {
 
       final Gbrds registry;
       private String resourceKey;
       private String method;
-      private Credentials credentials;
+      private OrgCredentials credentials;
       private ImmutableMap<String, String> requestParams;
       private ImmutableMap<String, String> payload;
       private String path;
@@ -1578,37 +1558,36 @@ public class GbrdsRegistry implements Gbrds {
         credentials = null;
         payload = ImmutableMap.of();
         requestParams = ImmutableMap.of("resourceKey", resourceKey);
-        path = "/registry/service";
+        path = "/registry/service.json";
       }
 
       public ListForResourceResponse execute() {
         return new ListForResourceResponse(this, registry.execute(this));
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return credentials;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return method;
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return requestParams;
+      }
+
+      public String getPath() {
+        return path;
       }
 
       public ImmutableMap<String, String> getPayload() {
         return payload;
       }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return requestParams;
-      }
-
-      public String getRequestPath() {
-        return path;
-      }
     }
 
     static class ListForResourceResponse extends
-        ServiceResponse<ListForResourceRequest> implements
-        ListServicesForResourceResponse {
+        ServiceResponse<ListForResourceRequest> implements ListServicesResponse {
 
       private ListForResourceResponse(ListForResourceRequest request,
           Response response) {
@@ -1616,14 +1595,18 @@ public class GbrdsRegistry implements Gbrds {
       }
 
       public List<GbrdsService> getResult() {
-        String body = getBody();
-        if (body == null || body.length() < 1) {
+        if (getStatus() != HttpStatus.SC_OK) {
           return null;
         }
-        return ServiceUtil.listFromXml(body);
+        return ServiceUtil.listFromJson(getBody());
       }
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link ReadServiceRequest}.
+     * 
+     */
     static class ReadRequest extends ServiceRequest implements
         ReadServiceRequest {
 
@@ -1634,31 +1617,33 @@ public class GbrdsRegistry implements Gbrds {
         path = String.format("/registry/service/%s.json", serviceKey);
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
       public ReadServiceResponse execute() {
         return new ReadResponse(this, registry.execute(this));
       }
 
       @Override
-      public String getRequestPath() {
+      public String getPath() {
         return path;
       }
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link ReadServiceResponse}.
+     * 
+     */
     static class ReadResponse extends ServiceResponse<ReadRequest> implements
         ReadServiceResponse {
+
       ReadResponse(ReadRequest request, Response response) {
         super(request, response);
       }
 
       public GbrdsService getResult() {
-        String body = getBody();
-        if (body.contains("Error")) {
+        if (getStatus() != HttpStatus.SC_OK) {
           return null;
         }
-        return ServiceUtil.fromJson(body);
+        return ServiceUtil.fromJson(getBody());
       }
     }
 
@@ -1670,24 +1655,24 @@ public class GbrdsRegistry implements Gbrds {
         this.registry = registry;
       }
 
-      public Credentials getCredentials() {
+      public OrgCredentials getCredentials() {
         return null;
       }
 
-      public String getHttpMethodType() {
+      public String getMethod() {
         return "GET";
+      }
+
+      public ImmutableMap<String, String> getParams() {
+        return ImmutableMap.of();
+      }
+
+      public String getPath() {
+        throw new UnsupportedOperationException("Subclass must override.");
       }
 
       public ImmutableMap<String, String> getPayload() {
         return ImmutableMap.of();
-      }
-
-      public ImmutableMap<String, String> getRequestParams() {
-        return ImmutableMap.of();
-      }
-
-      public String getRequestPath() {
-        throw new UnsupportedOperationException("Subclass must override.");
       }
     }
 
@@ -1717,6 +1702,11 @@ public class GbrdsRegistry implements Gbrds {
       }
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link UpdateServiceRequest}.
+     * 
+     */
     static class UpdateRequest extends ServiceRequest implements
         UpdateServiceRequest {
 
@@ -1724,7 +1714,7 @@ public class GbrdsRegistry implements Gbrds {
       final String path;
       final ImmutableMap<String, String> payload;
       final String method;
-      final Credentials credentials;
+      OrgCredentials creds;
 
       UpdateRequest(GbrdsService service, Gbrds registry) {
         super(registry);
@@ -1732,49 +1722,54 @@ public class GbrdsRegistry implements Gbrds {
         path = String.format("/registry/service/%s", service.getKey());
         payload = ServiceUtil.asImmutableMap(service);
         method = "POST";
-        credentials = Credentials.with(service.getOrganisationKey(),
-            service.getResourcePassword());
       }
 
-      /**
-       * @see Gbrds.gbif.registry.api.client.RegistryService.RpcRequest#execute()
-       */
-      public UpdateServiceResponse execute() {
-        return new UpdateResponse(this, registry.execute(this));
-      }
-
-      @Override
-      public Credentials getCredentials() {
-        return credentials;
+      public UpdateServiceResponse execute(OrgCredentials creds)
+          throws BadCredentialsException {
+        checkNotNull(creds, "Credentials are null");
+        this.creds = creds;
+        Response response = registry.execute(this);
+        if (response.getStatus() == HttpStatus.SC_UNAUTHORIZED) {
+          throw new BadCredentialsException("Unauthorized: " + creds);
+        }
+        return new UpdateResponse(this, response);
       }
 
       @Override
-      public String getHttpMethodType() {
+      public OrgCredentials getCredentials() {
+        return creds;
+      }
+
+      @Override
+      public String getMethod() {
         return method;
+      }
+
+      @Override
+      public String getPath() {
+        return path;
       }
 
       @Override
       public ImmutableMap<String, String> getPayload() {
         return payload;
       }
-
-      @Override
-      public String getRequestPath() {
-        return path;
-      }
     }
 
+    /**
+     * This class provides an internal implementation of
+     * {@link UpdateServiceResponse}.
+     * 
+     */
     static class UpdateResponse extends ServiceResponse<UpdateRequest>
         implements UpdateServiceResponse {
+
       UpdateResponse(UpdateRequest request, Response response) {
         super(request, response);
       }
 
-      public GbrdsService getResult() {
-        if (!getBody().contains(rpcRequest.service.getKey())) {
-          return null;
-        }
-        return rpcRequest.service;
+      public Boolean getResult() {
+        return getStatus() == HttpStatus.SC_OK;
       }
     }
 
@@ -1785,49 +1780,45 @@ public class GbrdsRegistry implements Gbrds {
     }
 
     /**
-     * @see ServiceanisationApi#create(GbrdsService)
+     * @see Gbrds.ServiceApi#create(GbrdsService, OrgCredentials)
      */
     public CreateServiceRequest create(GbrdsService service) {
       checkNotNull(service);
+      checkArgument(notNullOrEmpty(service.getResourceKey()));
       checkArgument(notNullOrEmpty(service.getType()));
       checkArgument(notNullOrEmpty(service.getAccessPointURL()));
-      checkArgument(notNullOrEmpty(service.getResourceKey()));
       return new CreateRequest(service, registry);
     }
 
     /**
-     * @see ServiceanisationApi#delete(GbrdsService)
+     * @see ServiceanisationApi#delete(String)
      */
-    public DeleteServiceRequest delete(GbrdsService service) {
-      checkNotNull(service);
-      checkArgument(notNullOrEmpty(service.getKey()));
-      checkArgument(notNullOrEmpty(service.getResourcePassword()));
-      checkArgument(notNullOrEmpty(service.getOrganisationKey()));
-      return new DeleteRequest(service, registry);
+    public DeleteServiceRequest delete(String serviceKey) {
+      checkArgument(notNullOrEmpty(serviceKey), "Service key is null");
+      return new DeleteRequest(serviceKey, registry);
     }
 
     /**
      * @see ServiceanisationApi#list(String)
      */
-    public ListServicesForResourceRequest list(String resourceKey) {
+    public ListServicesRequest list(String resourceKey) {
       return new ListForResourceRequest(resourceKey, registry);
     }
 
     /**
      * @see ServiceanisationApi#read(String)
      */
-    public ReadServiceRequest read(String orgKey) {
-      checkArgument(notNullOrEmpty(orgKey));
-      return new ReadRequest(orgKey, registry);
+    public ReadServiceRequest read(String serviceKey) {
+      checkArgument(notNullOrEmpty(serviceKey));
+      return new ReadRequest(serviceKey, registry);
     }
 
     /**
      * @see ServiceanisationApi#update(GbrdsService)
      */
     public UpdateServiceRequest update(GbrdsService service) {
-      checkNotNull(service);
-      checkArgument(notNullOrEmpty(service.getKey()));
-      checkArgument(notNullOrEmpty(service.getResourcePassword()));
+      checkNotNull(service, "Service to update is null");
+      checkArgument(notNullOrEmpty(service.getKey()), "Service key is null");
       return new UpdateRequest(service, registry);
     }
   }
@@ -1844,9 +1835,9 @@ public class GbrdsRegistry implements Gbrds {
   }
 
   private static HttpMethod createMethod(String host, Request request) {
-    String url = String.format("%s%s", host, request.getRequestPath());
+    String url = String.format("%s%s", host, request.getPath());
     HttpMethod method;
-    ImmutableMap<String, String> params = request.getRequestParams();
+    ImmutableMap<String, String> params = request.getParams();
     if (params == null) {
       params = ImmutableMap.of();
     }
@@ -1854,7 +1845,7 @@ public class GbrdsRegistry implements Gbrds {
     if (payload == null) {
       payload = ImmutableMap.of();
     }
-    String type = request.getHttpMethodType();
+    String type = request.getMethod();
     if (type.equalsIgnoreCase("GET")) {
       GetMethod get = new GetMethod(url);
       get.setQueryString(createNameValuePairs(params));
@@ -1914,7 +1905,7 @@ public class GbrdsRegistry implements Gbrds {
   }
 
   private static void setCredentials(HttpClient client, String host,
-      Credentials credentials) {
+      OrgCredentials credentials) {
     checkNotNull(credentials);
     checkNotNull(client);
     checkNotNull(host);
@@ -1923,8 +1914,8 @@ public class GbrdsRegistry implements Gbrds {
     AuthScope scope = new AuthScope(host, -1, AuthScope.ANY_REALM);
     client.getState().setCredentials(
         scope,
-        new UsernamePasswordCredentials(credentials.getId(),
-            credentials.getPasswd()));
+        new UsernamePasswordCredentials(credentials.getKey(),
+            credentials.getPassword()));
     client.getParams().setAuthenticationPreemptive(true);
   }
 
@@ -1951,21 +1942,24 @@ public class GbrdsRegistry implements Gbrds {
    */
   public Response execute(Request request) {
     checkNotNull(request, "Request is null");
-    checkNotNull(request.getHttpMethodType(), "Method is null");
-    checkArgument(request.getHttpMethodType().length() > 0, "Method is empty");
+    checkNotNull(request.getPayload(), "Request payload is null");
+    checkNotNull(request.getParams(), "Request parameters are null");
+    checkArgument(notNullOrEmpty(request.getMethod()), "Request method is null");
+    checkArgument(notNullOrEmpty(request.getPath()), "Request path is null");
+
     HttpMethod method = createMethod(url, request);
     Throwable error = null;
     String body = null;
     int status = 0;
     try {
-      Credentials cred = request.getCredentials();
+      OrgCredentials cred = request.getCredentials();
       if (cred != null) {
         setCredentials(client, host, cred);
       }
       status = client.executeMethod(method);
       log.info(String.format("Executed %s %d %s (parmas=%s and payload=%s)",
-          request.getHttpMethodType(), status, method.getURI(),
-          request.getRequestParams(), request.getPayload()));
+          request.getMethod(), status, method.getURI(), request.getParams(),
+          request.getPayload()));
       body = method.getResponseBodyAsString();
     } catch (HttpException e) {
       error = e;

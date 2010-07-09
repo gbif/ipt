@@ -15,17 +15,15 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
-import static org.apache.commons.lang.StringUtils.trimToNull;
-
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.StringUtils;
 import org.gbif.provider.model.Organisation;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -66,15 +64,11 @@ public class CreateOrgAction extends BasePostAction {
     if (organisationExists(orgKey)) {
       saveMessage("The organisation is already registered with GBIF");
     }
-    try {
-      GbrdsOrganisation go = getGbifOrganisation(org);
-      CreateOrgResponse response = registryManager.createGbrdsOrganisation(go);
-      if (response.getStatus() == HttpStatus.SC_CREATED) {
-        saveMessage(getText("register.org.success"));
-      } else {
-        saveMessage(getText("register.org.problem"));
-      }
-    } catch (RegistryException e) {
+    GbrdsOrganisation go = getGbifOrganisation(org);
+    CreateOrgResponse response = registryManager.createGbrdsOrganisation(go);
+    if (response.getStatus() == HttpStatus.SC_CREATED) {
+      saveMessage(getText("register.org.success"));
+    } else {
       saveMessage(getText("register.org.problem"));
     }
     return SUCCESS;
@@ -86,21 +80,26 @@ public class CreateOrgAction extends BasePostAction {
   @Override
   public String save() {
     String orgKey = org.getOrganisationKey();
-    GbrdsOrganisation go = null;
+    if (StringUtils.trimToNull(orgKey) == null) {
+      saveMessage("Unable to save organisation because key is invalid");
+      return SUCCESS;
+    }
+    OrgCredentials creds;
     try {
-      go = registryManager.readGbrdsOrganisation(orgKey).getResult();
-      if (go != null) {
-        go = getGbifOrganisation(org);
-        UpdateOrgResponse response = registryManager.updateGbrdsOrganisation(go);
-        if (response.getStatus() == HttpStatus.SC_OK) {
-          saveMessage(getText("registry.updated"));
-        } else {
-          saveMessage(getText("registry.problem"));
-        }
+      String key = org.getOrganisationKey();
+      String password = org.getPassword();
+      creds = OrgCredentials.with(key, password);
+    } catch (Exception e) {
+      saveMessage("Unable to save organisation because of bad credentials");
+      return SUCCESS;
+    }
+    if (organisationExists(orgKey)) {
+      GbrdsOrganisation go = getGbifOrganisation(org);
+      if (registryManager.updateGbrdsOrganisation(go, creds).getResult()) {
+        saveMessage(getText("registry.updated"));
+      } else {
+        saveMessage(getText("registry.problem"));
       }
-    } catch (RegistryException e) {
-      saveMessage(getText("registry.problem"));
-      log.warn(e);
     }
     return SUCCESS;
   }
@@ -130,15 +129,6 @@ public class CreateOrgAction extends BasePostAction {
   }
 
   private boolean organisationExists(String orgKey) {
-    int status = HttpStatus.SC_NOT_FOUND;
-    if (trimToNull(orgKey) != null) {
-      try {
-        status = registryManager.readGbrdsOrganisation(orgKey).getStatus();
-      } catch (RegistryException e) {
-        e.printStackTrace();
-        log.error(e.toString());
-      }
-    }
-    return status == HttpStatus.SC_OK;
+    return registryManager.readGbrdsOrganisation(orgKey).getResult() != null;
   }
 }

@@ -165,7 +165,7 @@
     </div>  
     <div>
         <div class="leftxhalf">
-            <@s.textfield key="config.org.uddiID" value="${config.org.uddiID!organisationKey!'Not registered with GBIF'}" readonly="true" cssClass="text large organisationKey"/>
+            <@s.textfield key="config.org.uddiID" value="${config.org.uddiID!organisationKey!''}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
             <@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external required"/>

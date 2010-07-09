@@ -46,7 +46,7 @@ import org.gbif.provider.util.ArchiveUtil.ArchiveRequest;
 import org.gbif.provider.util.ArchiveUtil.ArchiveResponse;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
@@ -678,9 +678,9 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     String orgKey = resource.getOrgUuid();
     String orgPassword = resource.getOrgPassword();
     if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      Credentials creds = Credentials.with(orgKey, orgPassword);
-      ValidateOrgCredentialsResponse response = registryManager.validateGbifOrganisationCredentials(
-          orgKey, creds);
+      OrgCredentials creds = OrgCredentials.with(orgKey, orgPassword);
+      ValidateOrgCredentialsResponse response = registryManager.validateCredentials(
+          null);
       if (!response.getResult()) {
         saveMessage(getText("config.check.orgLogin"));
         resource.setOrgPassword(null);

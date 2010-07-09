@@ -17,17 +17,12 @@ package org.gbif.provider.webapp.action.admin;
 
 import static org.apache.commons.lang.StringUtils.trimToNull;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.provider.service.RegistryManager.RegistryException;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsOrganisation;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -62,22 +57,17 @@ public class ConfigOrgAction extends BasePostAction {
       saveMessage(getText("register.org.already"));
       return SUCCESS;
     }
-
-    try {
-      ResourceMetadata rm = cfg.getOrg();
-      GbrdsOrganisation go = registryManager.buildGbrdsOrganisation(rm).build();
-      CreateOrgResponse response = registryManager.createGbrdsOrganisation(go);
-      if (response.getStatus() == HttpStatus.SC_CREATED) {
-        saveMessage(getText("register.org.success"));
-        cfg.save();
-      } else {
-        saveMessage(getText("register.org.problem"));
-      }
-    } catch (RegistryException e) {
-      cfg.setOrgNode(null);
+    ResourceMetadata rm = cfg.getOrg();
+    GbrdsOrganisation go = registryManager.buildGbrdsOrganisation(rm).build();
+    OrgCredentials creds = registryManager.createGbrdsOrganisation(go).getResult();
+    if (creds != null) {
+      saveMessage(getText("register.org.success"));
+      cfg.getOrg().setUddiID(creds.getKey());
+      cfg.setOrgPassword(creds.getPassword());
+      cfg.save();
+    } else {
       saveMessage(getText("register.org.problem"));
     }
-
     return SUCCESS;
   }
 
@@ -87,19 +77,14 @@ public class ConfigOrgAction extends BasePostAction {
       return SUCCESS;
     }
     if (cfg.isOrgRegistered()) {
-      try {
-        ResourceMetadata rm = cfg.getOrg();
-        GbrdsOrganisation go = registryManager.buildGbrdsOrganisation(rm).build();
-        UpdateOrgResponse response = registryManager.updateGbrdsOrganisation(go);
-        if (response.getStatus() == HttpStatus.SC_OK) {
-          saveMessage(getText("registry.updated"));
-          cfg.save();
-        } else {
-          saveMessage(getText("registry.problem"));
-        }
-      } catch (RegistryException e) {
+      ResourceMetadata rm = cfg.getOrg();
+      GbrdsOrganisation go = registryManager.buildGbrdsOrganisation(rm).build();
+      OrgCredentials creds = getCreds();
+      if (registryManager.updateGbrdsOrganisation(go, creds).getResult()) {
+        saveMessage(getText("registry.updated"));
+        cfg.save();
+      } else {
         saveMessage(getText("registry.problem"));
-        log.warn(e);
       }
     }
     return SUCCESS;
@@ -137,17 +122,21 @@ public class ConfigOrgAction extends BasePostAction {
     }
 
     // Checks organisation credentials:
-    String orgKey = cfg.getOrg().getUddiID();
-    String orgPassword = cfg.getOrgPassword();
-    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      Credentials creds = Credentials.with(orgKey, orgPassword);
-      ValidateOrgCredentialsResponse response = registryManager.validateGbifOrganisationCredentials(
-          orgKey, creds);
-      if (!response.getResult()) {
-        saveMessage(getText("config.check.orgLogin"));
-        result = false;
-      }
+    OrgCredentials creds = getCreds();
+    if (creds == null
+        || !registryManager.validateCredentials(creds).getResult()) {
+      saveMessage(getText("config.check.orgLogin"));
+      result = false;
     }
+
     return result;
+  }
+
+  private OrgCredentials getCreds() {
+    try {
+      return OrgCredentials.with(cfg.getOrg().getUddiID(), cfg.getOrgPassword());
+    } catch (Exception e) {
+      return null;
+    }
   }
 }

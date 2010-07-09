@@ -17,22 +17,19 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.apache.commons.httpclient.HttpStatus;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
-import org.gbif.registry.api.client.Gbrds.Credentials;
+import org.gbif.provider.model.voc.ContactType;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
 import org.junit.Test;
 
 import java.util.List;
@@ -45,108 +42,82 @@ public class OrganisationApiTest {
   private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
   private static OrganisationApi api = gbif.getOrganisationApi();
 
+  private static final String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
+  private static final String orgKey = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+  private static final String serviceKey = "e2522a8c-d66c-40ec-9f10-623cc16c6d6c";
+
+  private static final OrgCredentials creds = OrgCredentials.with(orgKey,
+      "password");
+
   private static final GbrdsOrganisation org = GbrdsOrganisation.builder().name(
-      "Organisation Test").primaryContactEmail("eightysteele@gmail.com").primaryContactType(
+      "Name").primaryContactEmail("eightysteele@gmail.com").primaryContactType(
       "technical").nodeKey("us").build();
 
-  /**
-   * Test method for
-   * {@link org.gbif.registry.api.client.Gbrds.OrganisationApi#create(org.gbif.registry.api.client.GbrdsOrganisation)}
-   * .
-   */
   @Test
-  public final void testCreate() {
-    GbrdsOrganisation result = null;
+  public final void testCreate() throws BadCredentialsException {
+    // Tests executing with null org:
     try {
-      CreateOrgRequest request = gbif.getOrganisationApi().create(org);
-      CreateOrgResponse response = request.execute();
-      result = response.getResult();
-      Assert.assertNotNull(result);
-      Assert.assertNotNull(result.getKey());
-      Assert.assertNotNull(result.getPassword());
+      api.create(null).execute();
+      fail();
+    } catch (NullPointerException e) {
+      System.out.println(e);
+    }
+
+    // Tests creating and deleting a valid service:
+    OrgCredentials oc = null;
+    try {
+      CreateOrgResponse response = api.create(org).execute();
+      Assert.assertNotNull(response);
+      oc = response.getResult();
+      Assert.assertNotNull(oc);
+      System.out.println(oc);
     } finally {
-      if (result != null) {
-        Assert.assertTrue(gbif.getOrganisationApi().delete(result).execute().getResult());
+      if (oc != null) {
+        Assert.assertTrue(api.delete(oc.getKey()).execute(creds).getResult());
       }
     }
   }
 
-  /**
-   * Test method for
-   * {@link org.gbif.registry.api.client.Gbrds.OrganisationApi#delete(org.gbif.registry.api.client.GbrdsOrganisation)}
-   * .
-   */
-  @Test
-  public final void testDelete() {
-    DeleteOrgRequest request = gbif.getOrganisationApi().delete(
-        GbrdsOrganisation.builder().password("DaSAWqmvQ0z").key(
-            "c3513d8e-bf68-42ec-b125-2574cf022e99").primaryContactType(
-            "technical").build());
-    DeleteOrgResponse response = request.execute();
-    Assert.assertNotNull(response.getResult());
-    Assert.assertTrue(response.getResult());
-  }
-
-  /**
-   * Test method for
-   * {@link org.gbif.registry.api.client.Gbrds.OrganisationApi#list()} .
-   */
   @Test
   public final void testList() {
-    ListOrgRequest request = gbif.getOrganisationApi().list();
-    List<GbrdsOrganisation> list = request.execute().getResult();
-    Assert.assertNotNull(list);
+    ListOrgResponse r = api.list().execute();
+    List<GbrdsOrganisation> list = r.getResult();
+    assertNotNull(list);
     System.out.println(list);
-
   }
 
-  /**
-   * Test method for
-   * {@link org.gbif.registry.api.client.Gbrds.OrganisationApi#read(java.lang.String)}
-   * .
-   */
   @Test
   public final void testRead() {
-    String orgKey = "c3513d8e-bf68-42ec-b125-2574cf022e99";
-    ReadOrgRequest request = gbif.getOrganisationApi().read(orgKey);
-    ReadOrgResponse response = request.execute();
-    GbrdsOrganisation org = response.getResult();
-    Assert.assertNotNull(org);
-    Assert.assertEquals(orgKey, org.getKey());
+    ReadOrgResponse response = api.read(orgKey).execute();
+    GbrdsOrganisation go = response.getResult();
+    Assert.assertNotNull(go);
+    Assert.assertEquals(orgKey, go.getKey());
+    System.out.println(go);
   }
 
-  /**
-   * Test method for
-   * {@link org.gbif.registry.api.client.Gbrds.OrganisationApi#update(org.gbif.registry.api.client.GbrdsOrganisation)}
-   * .
-   */
   @Test
-  public final void testUpdate() {
-    UpdateOrgRequest request = gbif.getOrganisationApi().update(
-        GbrdsOrganisation.builder().password("password").key(
-            "3780d048-8e18-4c0c-afcd-cb6389df56de").primaryContactType(
-            "technical").description("Test Update").build());
-    UpdateOrgResponse response = request.execute();
-    Assert.assertNotNull(response);
-    GbrdsOrganisation org = response.getResult();
-    Assert.assertEquals("Test Updated", org.getDescription());
+  public final void testUpdate() throws BadCredentialsException {
+    String description = System.currentTimeMillis() + "";
+    GbrdsOrganisation go;
+    go = GbrdsOrganisation.builder().key(orgKey).primaryContactType(
+        ContactType.technical.name()).description(description).name("Tim").build();
+    api.update(go).execute(creds).getResult();
+    go = api.read(orgKey).execute().getResult();
+    assertEquals(go.getDescription(), description);
   }
 
   @Test
   public final void testValidateCredentials() {
-    String orgKey = "3780d048-8e18-4c0c-afcd-cb6389df56de";
-    Credentials creds = Credentials.with(orgKey, "password");
-    ValidateOrgCredentialsResponse r;
+    try {
+      api.validateCredentials(null);
+      fail();
+    } catch (NullPointerException e) {
+      System.out.println(e);
+    }
 
-    r = api.validateCredentials(orgKey, creds).execute();
-    assertTrue(r.getStatus() == HttpStatus.SC_OK);
-    assertTrue(api.validateCredentials(orgKey, creds).execute().getResult());
+    assertTrue(api.validateCredentials(creds).execute().getResult());
 
-    creds = Credentials.with("INVALID_ID", "INVALID_PASSWORD");
-    r = api.validateCredentials(orgKey, creds).execute();
-    assertTrue(r.getStatus() == HttpStatus.SC_UNAUTHORIZED
-        || r.getStatus() == HttpStatus.SC_NOT_FOUND);
-    assertFalse(r.getResult());
-
+    assertFalse(api.validateCredentials(
+        OrgCredentials.with("bad", "credentials")).execute().getResult());
   }
 }

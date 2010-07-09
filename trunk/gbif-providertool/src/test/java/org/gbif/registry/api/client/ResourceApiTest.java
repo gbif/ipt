@@ -17,11 +17,12 @@ package org.gbif.registry.api.client;
 
 import junit.framework.Assert;
 
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.ResourceApi;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.ListResourceRequest;
+import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
 import org.junit.Test;
 
 import java.util.List;
@@ -34,58 +35,58 @@ public class ResourceApiTest {
   private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
   private static final ResourceApi api = gbif.getResourceApi();
 
+  private static final String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
+  private static final String orgKey = "3780d048-8e18-4c0c-afcd-cb6389df56de";
+  private static final String serviceKey = "e2522a8c-d66c-40ec-9f10-623cc16c6d6c";
+
   private static final GbrdsResource resource = GbrdsResource.builder().name(
-      "Test Resource").description("Test Description").primaryContactEmail(
+      "Name").description("Description").primaryContactEmail(
       "eightysteele@gmail.com").primaryContactType("technical").organisationKey(
-      "3780d048-8e18-4c0c-afcd-cb6389df56de").organisationPassword("password").build();
+      orgKey).build();
+
+  private static final OrgCredentials creds = OrgCredentials.with(orgKey,
+      "password");
 
   @Test
-  public final void testCreateAndDelete() {
+  public final void testCreateAndDelete() throws BadCredentialsException {
     GbrdsResource result = null;
     try {
-      CreateResourceResponse response = api.create(resource).execute();
+      CreateResourceResponse response = api.create(resource).execute(creds);
       Assert.assertNotNull(response);
       result = response.getResult();
       Assert.assertNotNull(result);
       Assert.assertNotNull(result.getKey());
     } finally {
       if (result != null) {
-        Assert.assertTrue(api.delete(
-            GbrdsResource.builder().key(result.getKey()).organisationKey(
-                resource.getOrganisationKey()).organisationPassword(
-                resource.getOrganisationPassword()).build()).execute().getResult());
+        Assert.assertTrue(api.delete(result.getKey()).execute(creds).getResult());
       }
     }
   }
 
   @Test
   public final void testList() {
-    ListOrgRequest request = gbif.getOrganisationApi().list();
-    List<GbrdsOrganisation> list = request.execute().getResult();
+    ListResourceRequest request = api.list(orgKey);
+    List<GbrdsResource> list = request.execute().getResult();
     Assert.assertNotNull(list);
     System.out.println(list);
   }
 
   @Test
   public final void testRead() {
-    String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e------";
     ReadResourceResponse response = api.read(resourceKey).execute();
-    GbrdsResource res = response.getResult();
-    Assert.assertNotNull(res);
-    Assert.assertEquals(resourceKey, res.getKey());
-    System.out.println(res);
+    GbrdsResource gr = response.getResult();
+    Assert.assertNotNull(gr);
+    Assert.assertEquals(resourceKey, gr.getKey());
+    System.out.println(gr);
   }
 
   @Test
-  public final void testUpdate() {
-    UpdateResourceResponse response = api.update(
-        GbrdsResource.builder().key("3f138d32-eb85-430c-8d5d-115c2f03429e").name(
-            "Test Resource").description("Test Description - Updated!").primaryContactEmail(
-            "eightysteele@gmail.com").primaryContactType("technical").organisationKey(
-            "3780d048-8e18-4c0c-afcd-cb6389df56de").organisationPassword(
-            "password").build()).execute();
-    Assert.assertNotNull(response);
-    Assert.assertEquals("Test Description - Updated!",
-        response.getResult().getDescription());
+  public final void testUpdate() throws BadCredentialsException {
+    String name = System.currentTimeMillis() + "-name";
+    api.update(
+        GbrdsResource.builder().key(resourceKey).name(name).primaryContactType(
+            "technical").build()).execute(creds);
+    GbrdsResource gr = api.read(resourceKey).execute().getResult();
+    Assert.assertEquals(name, gr.getName());
   }
 }
