@@ -1366,10 +1366,13 @@ public class GbrdsRegistry implements Gbrds {
      */
     public CreateResourceRequest create(GbrdsResource resource) {
       checkNotNull(resource);
-      checkArgument(notNullOrEmpty(resource.getName()));
-      checkArgument(notNullOrEmpty(resource.getPrimaryContactType()));
-      checkArgument(notNullOrEmpty(resource.getPrimaryContactEmail()));
-      checkArgument(notNullOrEmpty(resource.getOrganisationKey()));
+      checkArgument(notNullOrEmpty(resource.getName()), "Invalid name");
+      checkArgument(notNullOrEmpty(resource.getPrimaryContactType()),
+          "Invalid contact type");
+      checkArgument(notNullOrEmpty(resource.getPrimaryContactEmail()),
+          "Invalid contact email");
+      checkArgument(notNullOrEmpty(resource.getOrganisationKey()),
+          "Invalid organisation key");
       return new CreateRequest(resource, registry);
     }
 
@@ -1385,6 +1388,7 @@ public class GbrdsRegistry implements Gbrds {
      * @see ResourceanisationApi#list(String)
      */
     public ListResourceRequest list(String organisationKey) {
+      checkArgument(notNullOrEmpty(organisationKey), "Invalid organisation key");
       return new ListRequest(organisationKey, registry);
     }
 
@@ -1392,7 +1396,7 @@ public class GbrdsRegistry implements Gbrds {
      * @see ResourceanisationApi#read(String)
      */
     public ReadResourceRequest read(String resourceKey) {
-      checkArgument(notNullOrEmpty(resourceKey));
+      checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
       return new ReadRequest(resourceKey, registry);
     }
 
@@ -1401,8 +1405,9 @@ public class GbrdsRegistry implements Gbrds {
      */
     public UpdateResourceRequest update(GbrdsResource resource) {
       checkNotNull(resource);
-      checkArgument(notNullOrEmpty(resource.getKey()));
-      checkArgument(notNullOrEmpty(resource.getPrimaryContactType()));
+      checkArgument(notNullOrEmpty(resource.getKey()), "Invalid resource key");
+      checkArgument(notNullOrEmpty(resource.getPrimaryContactType()),
+          "Invalid contact type");
       return new UpdateRequest(resource, registry);
     }
   }

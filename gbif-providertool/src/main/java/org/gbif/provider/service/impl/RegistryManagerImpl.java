@@ -142,7 +142,8 @@ public class RegistryManagerImpl implements RegistryManager {
       OrgCredentials creds) {
     checkNotNull(service);
     checkNotNull(creds, "Credentials are null");
-    checkArgument(!service.getAccessPointURL().contains("localhost"));
+    checkArgument(!service.getAccessPointURL().contains("localhost"),
+        "Service URL contains localhost");
     return serviceApi.create(service).execute(creds);
   }
 

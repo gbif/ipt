@@ -141,18 +141,18 @@ public class ConfigAction extends BasePostAction {
     if (baseUrl == null || baseUrl.contains("localhost")) {
       return;
     }
+    OrgCredentials creds = getOrgCreds();
 
     // Updates IPT instance RSS feed:
-    OrgCredentials creds = getOrgCreds();
     String iptKey = cfg.getIpt().getUddiID();
-    if (creds != null && iptKey != null) {
+    if (creds != null || iptKey != null) {
       for (GbrdsService s : registryManager.listGbrdsServices(iptKey).getResult()) {
         ServiceType st = ServiceType.fromCode(s.getType());
         if (st != null && st.equals(ServiceType.RSS)) {
           GbrdsService gs = GbrdsService.builder().key(s.getKey()).resourceKey(
               iptKey).accessPointURL(cfg.getAtomFeedURL()).type(st.getCode()).build();
           UpdateServiceResponse response = registryManager.updateGbrdsService(
-              gs, null);
+              gs, creds);
           if (response.getStatus() == HttpStatus.SC_OK) {
             saveMessage(getText("Updated IPT RSS service: "
                 + gs.getAccessPointURL()));
@@ -164,18 +164,21 @@ public class ConfigAction extends BasePostAction {
     }
 
     // Updates all service access point URLs for all IPT resources:
-    String resourceKey, orgKey, orgPasswd;
+    String resourceKey, key, password;
     for (Resource r : resourceManager.getAll()) {
       resourceKey = r.getMeta().getUddiID();
-      orgKey = r.getOrgUuid();
-      orgPasswd = r.getOrgPassword();
-      if (trimToNull(resourceKey) == null || trimToNull(orgKey) == null
-          || trimToNull(orgPasswd) == null) {
+      key = r.getOrgUuid();
+      password = r.getOrgPassword();
+      try {
+        creds = OrgCredentials.with(key, password);
+      } catch (Exception e) {
+        saveMessage(String.format(
+            "Unable to update services for %s because of bad credentials: %s",
+            r.getMeta().getTitle(), creds));
         continue;
       }
       GbrdsService.Builder builder;
       ServiceType serviceType;
-
       for (GbrdsService s : registryManager.listGbrdsServices(resourceKey).getResult()) {
         builder = GbrdsService.builder(s);
         serviceType = ServiceType.fromCode(s.getType());
@@ -206,7 +209,7 @@ public class ConfigAction extends BasePostAction {
         }
         GbrdsService gs = builder.resourceKey(resourceKey).build();
         UpdateServiceResponse response = registryManager.updateGbrdsService(gs,
-            null);
+            creds);
         if (response.getStatus() == HttpStatus.SC_OK) {
           saveMessage(getText("Updated service URL: " + gs.getAccessPointURL()));
         } else {
