@@ -607,7 +607,8 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
     // Creates a new GBRDS Resource:
     ResourceMetadata rm = resource.getMeta();
-    GbrdsResource gm = registryManager.buildGbrdsResource(rm).build();
+    GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
+        creds.getKey()).build();
     gm = registryManager.createGbrdsResource(gm, creds).getResult();
     if (gm != null) {
       createGbrdsServices(gm, resource);
