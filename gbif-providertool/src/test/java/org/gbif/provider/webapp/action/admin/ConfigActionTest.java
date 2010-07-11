@@ -15,19 +15,29 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
+import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
+import static org.gbif.provider.model.voc.ServiceType.EML;
+import static org.gbif.provider.model.voc.ServiceType.TAPIR;
+import static org.gbif.provider.model.voc.ServiceType.TCS_RDF;
+import static org.gbif.provider.model.voc.ServiceType.WFS;
+import static org.gbif.provider.model.voc.ServiceType.WMS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.gbif.mock.ListServicesResponseMock;
 import org.gbif.mock.RegistryManagerMock;
 import org.gbif.mock.UpdateServiceResponseMock;
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.webapp.action.admin.ConfigAction.Helper;
+import org.gbif.provider.webapp.action.admin.ConfigAction.Helper.UrlProvider;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
@@ -124,7 +134,175 @@ public class ConfigActionTest {
   }
 
   @Test
-  public void testUpdateServices() {
+  public void testUpdateResourceServices() {
+    // Setting up inputs:
+    Resource r = new Resource();
+    r.getMeta().setUddiID("resourceKey");
+    OrgCredentials creds = OrgCredentials.with("key", "password");
+    ImmutableMap<Resource, OrgCredentials> map = ImmutableMap.of(r, creds);
+    final List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR,
+        WFS, WMS, TCS_RDF);
+    UrlProvider up = new UrlProvider() {
+      public String getUrl(ServiceType type, Resource resource) {
+        return "http://mockurl.com";
+      }
+    };
+    RegistryManagerMock mockRegistry = new RegistryManagerMock() {
+      @Override
+      public ListServicesResponse listGbrdsServices(String resourceKey) {
+        return new ListServicesResponseMock() {
+          @Override
+          public List<GbrdsService> getResult() {
+            List<GbrdsService> list = Lists.newArrayList();
+            for (ServiceType t : ServiceType.values()) {
+              if (types.contains(t)) {
+                list.add(GbrdsService.builder().type(t.getCode()).build());
+              }
+            }
+            return list;
+          }
+        };
+      }
+
+      @Override
+      public UpdateServiceResponse updateGbrdsService(GbrdsService service,
+          OrgCredentials creds) {
+        serviceList.add(service);
+        return new UpdateServiceResponseMock() {
+          @Override
+          public Boolean getResult() {
+            return true;
+          }
+        };
+      }
+    };
+
+    // Test with valid inputs:
+    assertTrue(Helper.updateResourceServices(map, up, mockRegistry));
+    List<GbrdsService> list = mockRegistry.serviceList;
+    assertEquals(list.size(), types.size());
+    for (GbrdsService s : list) {
+      assertEquals("http://mockurl.com", s.getAccessPointURL());
+    }
+
+    // Test with an empty resource credentials mapping:
+    mockRegistry.serviceList.clear();
+    ImmutableMap<Resource, OrgCredentials> m = ImmutableMap.of();
+    assertTrue(Helper.updateResourceServices(m, up, mockRegistry));
+    list = mockRegistry.serviceList;
+    assertEquals(list.size(), 0);
+
+    // Test with no services associated with resources:
+    mockRegistry = new RegistryManagerMock() {
+      @Override
+      public ListServicesResponse listGbrdsServices(String resourceKey) {
+        return new ListServicesResponseMock() {
+          @Override
+          public List<GbrdsService> getResult() {
+            return Lists.newArrayList();
+          }
+        };
+      }
+
+      @Override
+      public UpdateServiceResponse updateGbrdsService(GbrdsService service,
+          OrgCredentials creds) {
+        serviceList.add(service);
+        return new UpdateServiceResponseMock() {
+          @Override
+          public Boolean getResult() {
+            return true;
+          }
+        };
+      }
+    };
+    mockRegistry.serviceList.clear();
+    assertTrue(Helper.updateResourceServices(map, up, mockRegistry));
+    list = mockRegistry.serviceList;
+    assertEquals(list.size(), 0);
+
+    // Test with invalid resource credentials:
+    mockRegistry = new RegistryManagerMock() {
+      @Override
+      public ListServicesResponse listGbrdsServices(String resourceKey) {
+        return new ListServicesResponseMock() {
+          @Override
+          public List<GbrdsService> getResult() {
+            List<GbrdsService> list = Lists.newArrayList();
+            for (ServiceType t : ServiceType.values()) {
+              if (types.contains(t)) {
+                list.add(GbrdsService.builder().type(t.getCode()).build());
+              }
+            }
+            return list;
+          }
+        };
+      }
+
+      @Override
+      public UpdateServiceResponse updateGbrdsService(GbrdsService service,
+          OrgCredentials creds) {
+        throw new BadCredentialsException("Unauthorized: " + creds);
+      }
+    };
+    mockRegistry.serviceList.clear();
+    assertFalse(Helper.updateResourceServices(map, up, mockRegistry));
+    list = mockRegistry.serviceList;
+    assertEquals(list.size(), 0);
+
+    // Test with url provider returning localhost URLs:
+    up = new UrlProvider() {
+      public String getUrl(ServiceType type, Resource resource) {
+        return "http://localhost";
+      }
+    };
+    try {
+      Helper.updateResourceServices(map, up, mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+
+    // Null testing:
+    try {
+      Helper.updateResourceServices(null, null, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResourceServices(map, null, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResourceServices(null, up, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResourceServices(null, null, mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResourceServices(null, up, mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResourceServices(map, null, mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResourceServices(map, up, null);
+      fail();
+    } catch (Exception e) {
+    }
+
+  }
+
+  @Test
+  public void testUpdateRssService() {
     RegistryManagerMock mockRegistry = new RegistryManagerMock() {
 
       @Override
@@ -163,20 +341,50 @@ public class ConfigActionTest {
     assertEquals(service.getType(), ServiceType.RSS.getCode());
 
     // Null testing:
-    r = Helper.udpateIptRssService(null, "rkey", "serviceUrl", mockRegistry);
-    assertNull(r);
-    r = Helper.udpateIptRssService(creds, null, "serviceUrl", mockRegistry);
-    assertNull(r);
-    r = Helper.udpateIptRssService(creds, "rkey", null, mockRegistry);
-    assertNull(r);
-    r = Helper.udpateIptRssService(creds, "rkey", "serviceUrl", null);
-    assertNull(r);
+    try {
+      Helper.udpateIptRssService(null, "rkey", "serviceUrl", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.udpateIptRssService(creds, null, "serviceUrl", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.udpateIptRssService(creds, "rkey", null, mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.udpateIptRssService(creds, "rkey", "serviceUrl", null);
+      fail();
+    } catch (Exception e) {
+    }
 
     // Empty string testing:
-    r = Helper.udpateIptRssService(creds, "", "serviceUrl", mockRegistry);
-    assertNull(r);
-    r = Helper.udpateIptRssService(creds, "rkey", "", mockRegistry);
-    assertNull(r);
+    try {
+      Helper.udpateIptRssService(creds, "", "serviceUrl", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.udpateIptRssService(creds, "rkey", "", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.udpateIptRssService(creds, "", "", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+
+    // Test localhost RSS URL:
+    try {
+      Helper.udpateIptRssService(creds, "rkey", "localhost", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
 
     // Test for no services associated with the resource key:
     mockRegistry = new RegistryManagerMock() {

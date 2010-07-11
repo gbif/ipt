@@ -15,12 +15,12 @@
  */
 package org.gbif.mock;
 
+import com.google.common.collect.Lists;
+
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.service.RegistryManager;
-import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.GbrdsExtension;
 import org.gbif.registry.api.client.GbrdsOrganisation;
-import org.gbif.registry.api.client.GbrdsRegistry;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.GbrdsThesaurus;
@@ -47,6 +47,7 @@ import java.util.List;
 public abstract class RegistryManagerMock implements RegistryManager {
 
   public GbrdsService service;
+  public List<GbrdsService> serviceList = Lists.newArrayList();
 
   /*
    * (non-Javadoc)
