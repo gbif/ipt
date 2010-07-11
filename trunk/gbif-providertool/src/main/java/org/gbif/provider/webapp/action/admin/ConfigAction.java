@@ -69,10 +69,6 @@ public class ConfigAction extends BasePostAction {
 
     private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
 
-    static boolean checkBaseUrl(String url) {
-      return !nullOrEmpty(url) && !url.contains("localhost");
-    }
-
     static boolean checkDataDir(String dir) {
       if (nullOrEmpty(dir)) {
         return false;
@@ -98,6 +94,11 @@ public class ConfigAction extends BasePostAction {
       return !nullOrEmpty(url) && url.startsWith("http");
     }
 
+    static boolean checkLocalhostUrl(String url) {
+      return !nullOrEmpty(url) && !url.contains("localhost")
+          && !url.contains("127.0.0.1");
+    }
+
     static boolean checkMapsKey(String key) {
       return !nullOrEmpty(key)
           && !trimToEmpty(key).equalsIgnoreCase(GOOGLE_MAPS_LOCALHOST_KEY);
@@ -120,7 +121,7 @@ public class ConfigAction extends BasePostAction {
       checkNotNull(creds, "Credentials are null");
       checkNotNull(rm, "RegistryManager is null");
       checkArgument(!nullOrEmpty(iptResourceKey), "Invalid IPT resource key");
-      checkArgument(!nullOrEmpty(rssUrl) && !rssUrl.contains("localhost"),
+      checkArgument(!nullOrEmpty(rssUrl) && checkLocalhostUrl(rssUrl),
           "Invalid RSS URL");
       for (GbrdsService s : rm.listGbrdsServices(iptResourceKey).getResult()) {
         ServiceType st = ServiceType.fromCode(s.getType());
@@ -143,9 +144,6 @@ public class ConfigAction extends BasePostAction {
       checkNotNull(map, "Resource credential map is null");
       checkNotNull(up, "UrlProvider is null");
       checkNotNull(rm, "RegistryManager is null");
-      for (ServiceType type : ServiceType.values()) {
-        checkArgument(!up.getUrl(type, new Resource()).contains("localhost"));
-      }
       boolean allServicesUpdated = true;
       OrgCredentials creds;
       String resourceKey;
@@ -185,6 +183,10 @@ public class ConfigAction extends BasePostAction {
               break;
           }
           GbrdsService gs = builder.resourceKey(resourceKey).build();
+          if (!checkLocalhostUrl(gs.getAccessPointURL())) {
+            allServicesUpdated = false;
+            continue;
+          }
           creds = map.get(r);
           try {
             if (!rm.updateGbrdsService(gs, creds).getResult()) {
@@ -198,7 +200,6 @@ public class ConfigAction extends BasePostAction {
       return allServicesUpdated;
     }
   }
-
   private static class UrlProviderImpl implements UrlProvider {
     final AppConfig cfg;
 
@@ -226,8 +227,6 @@ public class ConfigAction extends BasePostAction {
     }
   }
 
-  private UrlProvider urlProvider = new UrlProviderImpl(cfg);
-
   @Autowired
   @Qualifier("resourceManager")
   protected GenericResourceManager<Resource> resourceManager;
@@ -244,7 +243,9 @@ public class ConfigAction extends BasePostAction {
 
   @Override
   public String read() {
-    check();
+    if (configProblemsFound()) {
+      saveMessage("Warning: There are configuration problems with this IPT instance");
+    }
     return SUCCESS;
   }
 
@@ -253,11 +254,14 @@ public class ConfigAction extends BasePostAction {
     if (cancel != null) {
       return "cancel";
     }
-    cfg.save();
-    cfg.reloadLogger();
-    saveMessage(getText("config.updated"));
-    updateServices();
-    check();
+    if (configProblemsFound()) {
+      saveMessage("Warning: Configuration problems must be fixed before saving");
+    } else {
+      cfg.save();
+      cfg.reloadLogger();
+      updateServices();
+      saveMessage("Configuration saved successfully");
+    }
     return SUCCESS;
   }
 
@@ -275,44 +279,56 @@ public class ConfigAction extends BasePostAction {
     return SUCCESS;
   }
 
-  private void check() {
-    if (!Helper.checkBaseUrl(cfg.getBaseUrl())) {
-      String msg = "Invalid URL: Cannot include localhost";
-      saveMessage(getText(msg));
+  private boolean configProblemsFound() {
+    boolean problemsFound = false;
+    if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
+      String msg = "Warning: Invalid base URL (contains 'localhost')";
+      saveMessage(msg);
       cfg.setBaseUrl(msg);
+      problemsFound = true;
     }
     if (!Helper.checkDataDir(cfg.getDataDir())) {
-      saveMessage(getText("config.check.iptDataDir"));
+      saveMessage("Warning: Invalid data directory");
+      problemsFound = true;
     }
     if (!Helper.checkGeoServerUrl(cfg.getGeoserverUrl())) {
-      saveMessage(getText("config.check.geoserverUrl"));
+      saveMessage("Warning: Invalid Geoserver URL");
+      problemsFound = true;
     }
     if (!Helper.checkDataDir(cfg.getGeoserverDataDir())) {
-      saveMessage(getText("config.check.geoserverDataDir"));
+      saveMessage("Warning: Invalid Geoserver data directory");
+      problemsFound = true;
     }
     if (!Helper.checkMapsKey(cfg.getGoogleMapsApiKey())) {
-      saveMessage(getText("config.check.googleMapsApiKey"));
+      saveMessage("Warning: Invalid Google Maps API key");
+      problemsFound = true;
     }
     if (!Helper.checkGeoServerCreds(cfg.getGeoserverUser(),
         cfg.getGeoserverUser(), cfg.getGeoserverUrl(), geoManager)) {
-      saveMessage(getText("config.check.geoserverLogin"));
+      saveMessage("Warning: Invalid Geoserver credentials");
+      problemsFound = true;
     }
+    return problemsFound;
   }
 
   private void updateServices() {
-    if (!Helper.checkBaseUrl(cfg.getBaseUrl())) {
-      saveMessage("Warning: Unable to update GBRDS services because IPT base URL contains localhost");
+    if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
+      saveMessage("Warning: Unable to update GBRDS services because of invalid base URL");
       return;
     }
-    OrgCredentials creds;
+
     // Updates the IPT RSS service in the GBRDS:
+    OrgCredentials creds;
     creds = Helper.getCreds(cfg.getOrg().getUddiID(), cfg.getOrgPassword());
-    String resourceKey = cfg.getIpt().getUddiID();
-    String rssUrl = cfg.getAtomFeedURL();
-    if (Helper.udpateIptRssService(creds, resourceKey, rssUrl, registryManager).getResult()) {
-      saveMessage("Updated IPT RSS service");
-    } else {
-      saveMessage("Warning: Unable to update IPT RSS service");
+    if (creds != null) {
+      String resourceKey = cfg.getIpt().getUddiID();
+      String rssUrl = cfg.getAtomFeedURL();
+      if (Helper.udpateIptRssService(creds, resourceKey, rssUrl,
+          registryManager).getResult()) {
+        saveMessage("Updated IPT RSS service");
+      } else {
+        saveMessage("Warning: Unable to update IPT RSS service");
+      }
     }
     // Updates all service URLs for all IPT resources:
     ImmutableMap.Builder<Resource, OrgCredentials> b = ImmutableMap.builder();
@@ -326,8 +342,10 @@ public class ConfigAction extends BasePostAction {
             r.getId()));
       }
     }
-    if (Helper.updateResourceServices(b.build(), urlProvider, registryManager)) {
-      saveMessage("Updated all service URLs");
+
+    UrlProvider up = new UrlProviderImpl(cfg);
+    if (Helper.updateResourceServices(b.build(), up, registryManager)) {
+      saveMessage("Updated all GBRDS service URLs");
     } else {
       saveMessage("Warning: Some service URLs not updated");
     }

@@ -85,10 +85,12 @@ public class ConfigActionTest {
   @Test
   public void testHelper() throws IOException {
     // Base URL tests:
-    assertFalse(Helper.checkBaseUrl("localhost"));
-    assertFalse(Helper.checkBaseUrl(null));
-    assertFalse(Helper.checkBaseUrl("http://localhost.com"));
-    assertTrue(Helper.checkBaseUrl("http://foo.com"));
+    assertFalse(Helper.checkLocalhostUrl("localhost"));
+    assertFalse(Helper.checkLocalhostUrl("127.0.0.1"));
+    assertFalse(Helper.checkLocalhostUrl(null));
+    assertFalse(Helper.checkLocalhostUrl("http://localhost.com"));
+    assertFalse(Helper.checkLocalhostUrl("http://127.0.0.1"));
+    assertTrue(Helper.checkLocalhostUrl("http://foo.com"));
 
     // Data dir tests:
     assertFalse(Helper.checkDataDir(null));
@@ -256,11 +258,13 @@ public class ConfigActionTest {
         return "http://localhost";
       }
     };
-    try {
-      Helper.updateResourceServices(map, up, mockRegistry);
-      fail();
-    } catch (Exception e) {
-    }
+    assertFalse(Helper.updateResourceServices(map, up, mockRegistry));
+    up = new UrlProvider() {
+      public String getUrl(ServiceType type, Resource resource) {
+        return "http://127.0.0.1";
+      }
+    };
+    assertFalse(Helper.updateResourceServices(map, up, mockRegistry));
 
     // Null testing:
     try {
@@ -382,6 +386,11 @@ public class ConfigActionTest {
     // Test localhost RSS URL:
     try {
       Helper.udpateIptRssService(creds, "rkey", "localhost", mockRegistry);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.udpateIptRssService(creds, "rkey", "127.0.0.1", mockRegistry);
       fail();
     } catch (Exception e) {
     }
