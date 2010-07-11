@@ -15,6 +15,11 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.collect.ImmutableMap;
+
 import static org.apache.commons.lang.StringUtils.trimToEmpty;
 import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
 import static org.gbif.provider.model.voc.ServiceType.EML;
@@ -40,7 +45,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * TODO: Documentation.
@@ -113,10 +117,11 @@ public class ConfigAction extends BasePostAction {
 
     static UpdateServiceResponse udpateIptRssService(OrgCredentials creds,
         String iptResourceKey, String rssUrl, RegistryManager rm) {
-      if (creds == null || rm == null || nullOrEmpty(iptResourceKey)
-          || nullOrEmpty(rssUrl)) {
-        return null;
-      }
+      checkNotNull(creds, "Credentials are null");
+      checkNotNull(rm, "RegistryManager is null");
+      checkArgument(!nullOrEmpty(iptResourceKey), "Invalid IPT resource key");
+      checkArgument(!nullOrEmpty(rssUrl) && !rssUrl.contains("localhost"),
+          "Invalid RSS URL");
       for (GbrdsService s : rm.listGbrdsServices(iptResourceKey).getResult()) {
         ServiceType st = ServiceType.fromCode(s.getType());
         if (st != null && st.equals(ServiceType.RSS)) {
@@ -132,15 +137,22 @@ public class ConfigAction extends BasePostAction {
       return null;
     }
 
-    static boolean updateResourceServices(List<Resource> resources,
-        UrlProvider up, RegistryManager rm) {
+    static boolean updateResourceServices(
+        ImmutableMap<Resource, OrgCredentials> map, UrlProvider up,
+        RegistryManager rm) {
+      checkNotNull(map, "Resource credential map is null");
+      checkNotNull(up, "UrlProvider is null");
+      checkNotNull(rm, "RegistryManager is null");
+      for (ServiceType type : ServiceType.values()) {
+        checkArgument(!up.getUrl(type, new Resource()).contains("localhost"));
+      }
       boolean allServicesUpdated = true;
       OrgCredentials creds;
       String resourceKey;
-      for (Resource r : resources) {
+      for (Resource r : map.keySet()) {
         resourceKey = r.getMeta().getUddiID();
-        creds = getCreds(r.getOrgUuid(), r.getOrgPassword());
-        if (creds == null) {
+        if (nullOrEmpty(resourceKey)) {
+          allServicesUpdated = false;
           continue;
         }
         GbrdsService.Builder builder;
@@ -173,7 +185,12 @@ public class ConfigAction extends BasePostAction {
               break;
           }
           GbrdsService gs = builder.resourceKey(resourceKey).build();
-          if (!rm.updateGbrdsService(gs, creds).getResult()) {
+          creds = map.get(r);
+          try {
+            if (!rm.updateGbrdsService(gs, creds).getResult()) {
+              allServicesUpdated = false;
+            }
+          } catch (BadCredentialsException e) {
             allServicesUpdated = false;
           }
         }
@@ -287,8 +304,8 @@ public class ConfigAction extends BasePostAction {
       saveMessage("Warning: Unable to update GBRDS services because IPT base URL contains localhost");
       return;
     }
-    // Updates the IPT RSS service in the GBRDS:
     OrgCredentials creds;
+    // Updates the IPT RSS service in the GBRDS:
     creds = Helper.getCreds(cfg.getOrg().getUddiID(), cfg.getOrgPassword());
     String resourceKey = cfg.getIpt().getUddiID();
     String rssUrl = cfg.getAtomFeedURL();
@@ -298,8 +315,18 @@ public class ConfigAction extends BasePostAction {
       saveMessage("Warning: Unable to update IPT RSS service");
     }
     // Updates all service URLs for all IPT resources:
-    if (Helper.updateResourceServices(resourceManager.getAll(), urlProvider,
-        registryManager)) {
+    ImmutableMap.Builder<Resource, OrgCredentials> b = ImmutableMap.builder();
+    for (Resource r : resourceManager.getAll()) {
+      creds = Helper.getCreds(r.getOrgUuid(), r.getOrgPassword());
+      if (creds != null) {
+        b.put(r, creds);
+      } else {
+        saveMessage(String.format(
+            "Warning: Unable to update resource %d because of bad credentials",
+            r.getId()));
+      }
+    }
+    if (Helper.updateResourceServices(b.build(), urlProvider, registryManager)) {
       saveMessage("Updated all service URLs");
     } else {
       saveMessage("Warning: Some service URLs not updated");
