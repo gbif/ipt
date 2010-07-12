@@ -227,10 +227,10 @@ public interface Gbrds {
      */
     public static OrgCredentials with(String key, String password) {
       checkNotNull(key, "Key is null");
-      checkArgument(key.length() > 0, "Key is empty");
+      checkArgument(key.trim().length() > 0, "Key is empty");
       checkNotNull(password, "Password is null");
-      checkArgument(password.length() > 0, "Password is empty");
-      return new OrgCredentials(key, password);
+      checkArgument(password.trim().length() > 0, "Password is empty");
+      return new OrgCredentials(key.trim(), password.trim());
     }
 
     private final String key;

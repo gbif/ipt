@@ -15,6 +15,8 @@
  */
 package org.gbif.provider.model;
 
+import com.google.common.base.Objects;
+
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Column;
@@ -36,6 +38,23 @@ public class ResourceMetadata {
   protected String contactName;
   protected String contactEmail;
   protected Point location;
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof ResourceMetadata)) {
+      return false;
+    }
+    ResourceMetadata o = (ResourceMetadata) other;
+    return Objects.equal(uddiID, o.uddiID) && Objects.equal(link, o.link)
+        && Objects.equal(title, o.title)
+        && Objects.equal(description, o.description)
+        && Objects.equal(contactName, o.contactName)
+        && Objects.equal(contactEmail, o.contactEmail)
+        && Objects.equal(location, o.location);
+  }
 
   @Column(length = 64)
   public String getContactEmail() {
@@ -71,6 +90,12 @@ public class ResourceMetadata {
     return uddiID;
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(uddiID, link, title, description, contactName,
+        contactEmail, location);
+  }
+
   public void setContactEmail(String contactEmail) {
     this.contactEmail = StringUtils.trimToNull(contactEmail);
   }
@@ -97,5 +122,12 @@ public class ResourceMetadata {
 
   public void setUddiID(String uddiID) {
     this.uddiID = StringUtils.trimToNull(uddiID);
+  }
+
+  @Override
+  public String toString() {
+    return Objects.toStringHelper(this).add("UddiId", uddiID).add("Link", link).add(
+        "Title", title).add("Description", description).add("ContactName",
+        contactName).add("ContactEmail", contactEmail).add("Location", location).toString();
   }
 }
