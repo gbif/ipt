@@ -47,7 +47,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * TODO: Documentation.
+ * Action support for editing IPT configurations.
  * 
  */
 @SuppressWarnings("serial")

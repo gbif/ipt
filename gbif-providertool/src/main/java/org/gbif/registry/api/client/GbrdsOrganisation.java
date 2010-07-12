@@ -46,6 +46,7 @@ public class GbrdsOrganisation implements Serializable {
     private String nodeName;
     private String password;
     private String primaryContactAddress;
+
     private String primaryContactDescription;
     private String primaryContactEmail;
     private String primaryContactName;
@@ -103,6 +104,10 @@ public class GbrdsOrganisation implements Serializable {
 
     public String getNodeName() {
       return nodeName;
+    }
+
+    public String getPassword() {
+      return password;
     }
 
     public String getPrimaryContactAddress() {
@@ -210,6 +215,24 @@ public class GbrdsOrganisation implements Serializable {
     return new Builder();
   }
 
+  /**
+   * Returns a new {@link Builder} initialized from an existing
+   * {@link GbrdsOrganisation}.
+   * 
+   * @param org the organisation
+   * @return Builder
+   */
+  public static Builder builder(GbrdsOrganisation org) {
+    return builder().description(org.description).descriptionLanguage(
+        org.descriptionLanguage).homepageURL(org.homepageURL).key(org.key).name(
+        org.name).nameLanguage(org.nameLanguage).nodeContactEmail(
+        org.nodeContactEmail).nodeKey(org.nodeKey).nodeName(org.nodeName).password(
+        org.password).primaryContactAddress(org.primaryContactAddress).primaryContactDescription(
+        org.primaryContactDescription).primaryContactEmail(
+        org.primaryContactEmail).primaryContactName(org.primaryContactName).primaryContactPhone(
+        org.primaryContactPhone).primaryContactType(org.primaryContactType);
+  }
+
   private final String description;
   private final String descriptionLanguage;
   private final String homepageURL;
@@ -225,6 +248,7 @@ public class GbrdsOrganisation implements Serializable {
   private final String primaryContactEmail;
   private final String primaryContactName;
   private final String primaryContactPhone;
+
   private final String primaryContactType;
 
   GbrdsOrganisation() {

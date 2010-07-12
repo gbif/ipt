@@ -546,6 +546,10 @@ public class AppConfig {
     cfg.setLog4jFilename(log4jFile);
   }
 
+  public void setOrg(ResourceMetadata meta) {
+    cfg.setOrgMeta(meta);
+  }
+
   public void setOrgNode(String orgNode) {
     cfg.setOrgNode(orgNode);
   }

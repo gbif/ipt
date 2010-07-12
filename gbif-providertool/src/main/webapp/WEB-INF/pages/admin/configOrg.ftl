@@ -160,32 +160,32 @@
 <@s.form id="providerCfg" method="post">
 <fieldset>
     <div class="leftxLarge">
-        <@s.textfield id="orgTitle" key="config.org.title" required="true" cssClass="text xlarge external required"/>
+        <@s.textfield id="orgTitle" key="orgTitle" required="true" cssClass="text xlarge external required"/>
         <span id="orgLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
     </div>  
     <div>
         <div class="leftxhalf">
-            <@s.textfield key="config.org.uddiID" value="${config.org.uddiID!organisationKey!''}" readonly="true" cssClass="text large organisationKey"/>
+            <@s.textfield key="orgKey" value="${orgKey!''}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
-            <@s.textfield id="orgNodeName" key="config.orgNodeName" required="true" cssClass="text medium external required"/>
+            <@s.textfield id="orgNodeName" key="orgNodeName" required="true" cssClass="text medium external required"/>
             <span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
-           <@s.hidden id="orgNodeKey" key="config.orgNode" cssClass="external"/>
+           <@s.hidden id="orgNodeKey" key="orgNode" cssClass="external"/>
         </div>
         <div>
-            <@s.textfield id="orgPassword" key="config.orgPassword" required="false" cssClass="text medium"/>           
+            <@s.textfield id="orgPassword" key="orgPassword" required="false" cssClass="text medium"/>           
         </div>        
     </div>
     <div>
         <div class="leftxhalf">
-            <@s.textfield id="orgName" key="config.org.contactName" required="true" cssClass="text large external required"/>
+            <@s.textfield id="orgName" key="orgContactName" required="true" cssClass="text large external required"/>
         </div>
         <div  class="leftxhalf">
-            <@s.textfield id="orgEmail" key="config.org.contactEmail" required="true" cssClass="text large external required email"/>
+            <@s.textfield id="orgEmail" key="orgContactEmail" required="true" cssClass="text large external required email"/>
         </div>
     </div>
-    <@s.textfield id="orgHomepage" key="config.org.link" required="false" cssClass="text xlarge external"/>
-    <@s.textarea id="orgDescription" key="config.org.description" cssClass="text xlarge external"/>
+    <@s.textfield id="orgHomepage" key="orgHomepageUrl" required="false" cssClass="text xlarge external"/>
+    <@s.textarea id="orgDescription" key="orgDescription" cssClass="text xlarge external"/>
     
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
