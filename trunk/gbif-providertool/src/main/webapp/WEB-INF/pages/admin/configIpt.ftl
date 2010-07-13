@@ -27,11 +27,6 @@
 
 <#include "/WEB-INF/pages/admin/configMenu.ftl">  
         
-<#assign x>
-  <#if config.ipt.description != ''>
-    ${config.ipt.description}
-  </#if>
-</#assign>
 
 <p>
 <p>
@@ -42,25 +37,24 @@
 
 <fieldset>
     <div class="leftxLarge">    
-        <@s.textfield key="config.ipt.uddi" 
-            value='${config.ipt.uddiID!"A GBIF Resource representing this IPT instance does not yet exist in the GBRDS."}' 
+        <@s.textfield key="resourceKey"          
             readonly="true" cssClass="text xlarge"/>
     </div>
     <div class="leftxLarge">
-        <@s.textfield key="config.ipt.title" required="true" cssClass="text xlarge required"/>
+        <@s.textfield key="resourceTitle" required="true" cssClass="text xlarge required"/>
     </div>
     <div>
         <div class="leftxhalf">
-            <@s.textfield key="config.ipt.contactName" required="true" cssClass="text large required"/>
+            <@s.textfield key="resourceContactName" required="true" cssClass="text large required"/>
         </div>
         <div class="leftxhalf">
-            <@s.textfield key="config.ipt.contactEmail" required="true" cssClass="text large required email"/>
+            <@s.textfield key="resourceContactEmail" required="true" cssClass="text large required email"/>
         </div>
     </div>
     <div>
       <div class="leftxhalf">    
         <div>
-            <@s.textfield key="config.ipt.link" cssClass="text large"/>
+            <@s.textfield key="resourceHomepageUrl" cssClass="text large"/>
         </div>
         <div>
             <div class="leftMedium">
@@ -80,7 +74,7 @@
       </div>
     </div>
     <div style="clear:both">        
-        <@s.textarea key="config.ipt.description" value='${x}' required="true" cssClass="text xlarge required"/>
+        <@s.textarea key="resourceDescription" required="true" cssClass="text xlarge required"/>
     </div>
     <div class="leftxLarge">
         <@s.textfield key="config.descriptionImage" cssClass="text xlarge"/>
