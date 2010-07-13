@@ -116,6 +116,11 @@ public class ConfigAction extends BasePostAction {
       return val == null || val.trim().length() == 0;
     }
 
+    static boolean resourceExists(String resourceKey, RegistryManager rm) {
+      return !nullOrEmpty(resourceKey)
+          && rm.readGbrdsResource(resourceKey).getResult() != null;
+    }
+
     static UpdateServiceResponse udpateIptRssService(OrgCredentials creds,
         String iptResourceKey, String rssUrl, RegistryManager rm) {
       checkNotNull(creds, "Credentials are null");
@@ -322,12 +327,14 @@ public class ConfigAction extends BasePostAction {
     creds = Helper.getCreds(cfg.getOrg().getUddiID(), cfg.getOrgPassword());
     if (creds != null) {
       String resourceKey = cfg.getIpt().getUddiID();
-      String rssUrl = cfg.getAtomFeedURL();
-      if (Helper.udpateIptRssService(creds, resourceKey, rssUrl,
-          registryManager).getResult()) {
-        saveMessage("Updated IPT RSS service");
-      } else {
-        saveMessage("Warning: Unable to update IPT RSS service");
+      if (Helper.resourceExists(resourceKey, registryManager)) {
+        String rssUrl = cfg.getAtomFeedURL();
+        if (Helper.udpateIptRssService(creds, resourceKey, rssUrl,
+            registryManager).getResult()) {
+          saveMessage("Updated IPT RSS service");
+        } else {
+          saveMessage("Warning: Unable to update IPT RSS service");
+        }
       }
     }
     // Updates all service URLs for all IPT resources:

@@ -268,6 +268,7 @@ public class ConfigOrgAction extends BasePostAction {
     // Updates the organisation in GBRDS:
     if (Helper.updateOrg(go, registryManager)) {
       cfg.setOrg(Helper.getResourceMetadata(go));
+      cfg.setOrgPassword(orgBuilder.getPassword());
       cfg.save();
       saveMessage("Organisation saved and the GBRDS updated successfully");
     } else {

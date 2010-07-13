@@ -542,6 +542,10 @@ public class AppConfig {
     cfg.setHeaderHtml(headerHtml);
   }
 
+  public void setIpt(ResourceMetadata meta) {
+    cfg.setIptMeta(meta);
+  }
+
   public void setLog4jFilename(String log4jFile) {
     cfg.setLog4jFilename(log4jFile);
   }
