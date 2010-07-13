@@ -46,14 +46,18 @@ public class ConfigIptAction extends BasePostAction {
           && !url.contains("127.0.0.1");
     }
 
-    static GbrdsResource createResource(GbrdsResource resource,
-        OrgCredentials creds, RegistryManager rm) {
+    static String createResource(GbrdsResource resource, OrgCredentials creds,
+        RegistryManager rm) {
       checkNotNull(resource, "Resource is null");
       checkNotNull(creds, "Organisation credentials are null");
       checkNotNull(rm, "Resource manager is null");
       checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
       checkArgument(validateCreds(creds, rm), "Bad credentials");
-      return rm.createGbrdsResource(resource, creds).getResult();
+      GbrdsResource r = rm.createGbrdsResource(resource, creds).getResult();
+      if (r == null) {
+        return null;
+      }
+      return r.getKey();
     }
 
     static GbrdsService createRssService(String resourceKey,
@@ -116,6 +120,7 @@ public class ConfigIptAction extends BasePostAction {
     static boolean updateResource(GbrdsResource resource, OrgCredentials creds,
         RegistryManager rm) {
       checkNotNull(resource, "Resource is null");
+      checkNotNull(creds, "Credentials are null");
       checkNotNull(rm, "Resource manager is null");
       checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
       checkArgument(validateCreds(creds, rm), "Invalid credentials");
@@ -200,21 +205,21 @@ public class ConfigIptAction extends BasePostAction {
     if (Helper.resourceExists(resourceBuilder.getKey(), registryManager)) {
       return SUCCESS;
     }
-
     resourceBuilder.primaryContactType(ContactType.technical.name()).organisationKey(
         cfg.getOrg().getUddiID());
     GbrdsResource gr = resourceBuilder.build();
     OrgCredentials creds = getCreds();
-    gr = Helper.createResource(gr, creds, registryManager);
-    if (gr == null) {
+    String resourceKey = Helper.createResource(gr, creds, registryManager);
+    if (resourceKey == null) {
       saveMessage("Warning: Unable to create GBRDS resource");
     } else {
-      saveMessage("GBRDS resource created successfully: " + gr.getKey());
+      gr = resourceBuilder.key(resourceKey).build();
       cfg.setIpt(Helper.getResourceMetadata(gr));
       cfg.save();
       String rssUri = cfg.getAtomFeedURL();
-      GbrdsService gs = Helper.createRssService(gr.getKey(), creds, rssUri,
+      GbrdsService gs = Helper.createRssService(resourceKey, creds, rssUri,
           registryManager);
+      saveMessage("GBRDS resource created successfully: " + resourceKey);
       if (gs == null) {
         saveMessage("Warning: Unable to create GBRDS service for resource");
       } else {
@@ -229,7 +234,8 @@ public class ConfigIptAction extends BasePostAction {
     if (problemsFound()) {
       return SUCCESS;
     }
-    resourceBuilder.primaryContactType(ContactType.technical.name());
+    resourceBuilder.primaryContactType(ContactType.technical.name()).organisationKey(
+        cfg.getOrg().getUddiID());
     GbrdsResource gr = resourceBuilder.build();
     OrgCredentials creds = getCreds();
     if (Helper.updateResource(gr, creds, registryManager)) {
@@ -300,7 +306,7 @@ public class ConfigIptAction extends BasePostAction {
     // Notifies user if the resource already exists:
     String resourceKey = cfg.getIpt().getUddiID();
     if (Helper.resourceExists(resourceKey, registryManager)) {
-      saveMessage("GBRDS resource registered for IPT: " + resourceKey);
+      // saveMessage("GBRDS resource registered for IPT: " + resourceKey);
       // problems = true;
     }
 
