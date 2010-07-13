@@ -152,7 +152,7 @@ public class ConfigIptActionTest {
         return new CreateResourceResponseMock() {
           @Override
           public GbrdsResource getResult() {
-            return gr;
+            return GbrdsResource.builder().key("rkey").build();
           }
         };
       }
@@ -168,7 +168,7 @@ public class ConfigIptActionTest {
         };
       }
     };
-    assertEquals(gr, Helper.createResource(gr, creds, rm));
+    assertEquals("rkey", Helper.createResource(gr, creds, rm));
   }
 
   /**
