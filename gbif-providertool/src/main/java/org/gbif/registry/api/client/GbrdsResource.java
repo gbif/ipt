@@ -61,6 +61,58 @@ public class GbrdsResource implements Serializable {
       return this;
     }
 
+    public String getDescription() {
+      return description;
+    }
+
+    public String getDescriptionLanguage() {
+      return descriptionLanguage;
+    }
+
+    public String getHomepageURL() {
+      return homepageURL;
+    }
+
+    public String getKey() {
+      return key;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String getNameLanguage() {
+      return nameLanguage;
+    }
+
+    public String getOrganisationKey() {
+      return organisationKey;
+    }
+
+    public String getPrimaryContactAddress() {
+      return primaryContactAddress;
+    }
+
+    public String getPrimaryContactDescription() {
+      return primaryContactDescription;
+    }
+
+    public String getPrimaryContactEmail() {
+      return primaryContactEmail;
+    }
+
+    public String getPrimaryContactName() {
+      return primaryContactName;
+    }
+
+    public String getPrimaryContactPhone() {
+      return primaryContactPhone;
+    }
+
+    public String getPrimaryContactType() {
+      return primaryContactType;
+    }
+
     public Builder homepageURL(String val) {
       homepageURL = val;
       return this;
