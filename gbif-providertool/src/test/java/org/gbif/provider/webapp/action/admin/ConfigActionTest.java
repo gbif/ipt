@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Regents of the University of California, University of Kansas.
+ * Copyright 2010 GBIF.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of

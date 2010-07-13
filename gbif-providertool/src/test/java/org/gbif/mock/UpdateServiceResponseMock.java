@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 Regents of the University of California, University of Kansas.
+ * Copyright 2010 GBIF.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,8 +15,6 @@
  */
 package org.gbif.mock;
 
-import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbrdsRegistry;
 import org.gbif.registry.api.client.Gbrds.Request;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 
@@ -26,15 +24,9 @@ import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 public abstract class UpdateServiceResponseMock implements
     UpdateServiceResponse {
 
-  /* (non-Javadoc)
-   * @see org.gbif.registry.api.client.Gbrds.RpcResponse#getResult()
-   */
-  public Boolean getResult() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getBody()
    */
   public String getBody() {
@@ -42,7 +34,9 @@ public abstract class UpdateServiceResponseMock implements
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getError()
    */
   public Throwable getError() {
@@ -50,7 +44,9 @@ public abstract class UpdateServiceResponseMock implements
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getRequest()
    */
   public Request getRequest() {
@@ -58,7 +54,19 @@ public abstract class UpdateServiceResponseMock implements
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.registry.api.client.Gbrds.RpcResponse#getResult()
+   */
+  public Boolean getResult() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getStatus()
    */
   public int getStatus() {

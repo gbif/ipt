@@ -1,5 +1,5 @@
 /*
- *  Copyright 2010 Regents of the University of California, University of Kansas.
+ * Copyright 2010 GBIF.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -23,15 +23,9 @@ import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
  */
 public class UpdateOrgResponseMock implements UpdateOrgResponse {
 
-  /* (non-Javadoc)
-   * @see org.gbif.registry.api.client.Gbrds.RpcResponse#getResult()
-   */
-  public Boolean getResult() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getBody()
    */
   public String getBody() {
@@ -39,7 +33,9 @@ public class UpdateOrgResponseMock implements UpdateOrgResponse {
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getError()
    */
   public Throwable getError() {
@@ -47,7 +43,9 @@ public class UpdateOrgResponseMock implements UpdateOrgResponse {
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getRequest()
    */
   public Request getRequest() {
@@ -55,7 +53,19 @@ public class UpdateOrgResponseMock implements UpdateOrgResponse {
     return null;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.registry.api.client.Gbrds.RpcResponse#getResult()
+   */
+  public Boolean getResult() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.gbif.registry.api.client.Gbrds.Response#getStatus()
    */
   public int getStatus() {
