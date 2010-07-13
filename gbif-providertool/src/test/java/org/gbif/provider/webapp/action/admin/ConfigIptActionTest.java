@@ -27,7 +27,9 @@ import org.gbif.mock.CreateServiceResponseMock;
 import org.gbif.mock.ReadOrgResponseMock;
 import org.gbif.mock.ReadResourceResponseMock;
 import org.gbif.mock.RegistryManagerMock;
+import org.gbif.mock.UpdateResourceResponseMock;
 import org.gbif.mock.ValidateOrgCredentialsResponseMock;
+import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.webapp.action.admin.ConfigIptAction.Helper;
 import org.gbif.registry.api.client.GbrdsOrganisation;
@@ -38,6 +40,7 @@ import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
 import org.junit.Test;
 
@@ -418,7 +421,19 @@ public class ConfigIptActionTest {
    */
   @Test
   public final void testGetResourceBuilder() {
-    // TODO
+    // Null input testing:
+    try {
+      Helper.getResourceBuilder(null);
+      fail();
+    } catch (Exception e) {
+    }
+
+    // Valid input testing:
+    GbrdsResource resource = GbrdsResource.builder().description("description").primaryContactEmail(
+        "email").primaryContactName("name").name("title").key("key").homepageURL(
+        "link").build();
+    ResourceMetadata meta = Helper.getResourceMetadata(resource);
+    assertEquals(resource, Helper.getResourceBuilder(meta).build());
   }
 
   /**
@@ -428,7 +443,23 @@ public class ConfigIptActionTest {
    */
   @Test
   public final void testGetResourceMetadata() {
-    // TODO
+    // Null input testing:
+    try {
+      Helper.getResourceMetadata(null);
+      fail();
+    } catch (Exception e) {
+    }
+
+    // Valid meta testing:
+    ResourceMetadata meta = new ResourceMetadata();
+    meta.setDescription("description");
+    meta.setContactEmail("email");
+    meta.setContactName("name");
+    meta.setTitle("title");
+    meta.setUddiID("key");
+    meta.setLink("link");
+    GbrdsResource resource = Helper.getResourceBuilder(meta).build();
+    assertEquals(meta, Helper.getResourceMetadata(resource));
   }
 
   /**
@@ -556,7 +587,111 @@ public class ConfigIptActionTest {
    */
   @Test
   public final void testUpdateResource() {
-    // TODO
+    GbrdsResource resource = GbrdsResource.builder().name("name").primaryContactType(
+        "type").primaryContactEmail("email").organisationKey("orgKey").key(
+        "key").build();
+    OrgCredentials creds = OrgCredentials.with("key", "passwd");
+
+    // Null input testing:
+    try {
+      Helper.updateResource(null, null, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResource(resource, null, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResource(null, creds, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResource(null, null, new RegistryManagerMock() {
+      });
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResource(resource, creds, null);
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResource(null, creds, new RegistryManagerMock() {
+      });
+      fail();
+    } catch (Exception e) {
+    }
+    try {
+      Helper.updateResource(resource, null, new RegistryManagerMock() {
+      });
+      fail();
+    } catch (Exception e) {
+    }
+
+    // Invalid resource testing:
+    try {
+      Helper.updateResource(GbrdsResource.builder().build(), creds,
+          new RegistryManagerMock() {
+          });
+      fail();
+    } catch (Exception e) {
+    }
+
+    // Valid resource and credentials testing:
+    assertTrue(Helper.updateResource(resource, creds,
+        new RegistryManagerMock() {
+          @Override
+          public UpdateResourceResponse updateGbrdsResource(
+              GbrdsResource resource, OrgCredentials creds) {
+            return new UpdateResourceResponseMock() {
+              @Override
+              public Boolean getResult() {
+                return true;
+              }
+            };
+          }
+
+          @Override
+          public ValidateOrgCredentialsResponse validateCredentials(
+              OrgCredentials creds) {
+            return new ValidateOrgCredentialsResponseMock() {
+              @Override
+              public Boolean getResult() {
+                return true;
+              }
+            };
+          }
+        }));
+
+    // Valid resource and credentials but update returns false:
+    assertFalse(Helper.updateResource(resource, creds,
+        new RegistryManagerMock() {
+          @Override
+          public UpdateResourceResponse updateGbrdsResource(GbrdsResource org,
+              OrgCredentials creds) {
+            return new UpdateResourceResponseMock() {
+              @Override
+              public Boolean getResult() {
+                return false;
+              }
+            };
+          }
+
+          @Override
+          public ValidateOrgCredentialsResponse validateCredentials(
+              OrgCredentials creds) {
+            return new ValidateOrgCredentialsResponseMock() {
+              @Override
+              public Boolean getResult() {
+                return true;
+              }
+            };
+          }
+        }));
   }
 
   /**
