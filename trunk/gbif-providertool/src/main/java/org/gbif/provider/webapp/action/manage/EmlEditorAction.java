@@ -15,12 +15,16 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import com.opensymphony.xwork2.Preparable;
 
-import static org.apache.commons.lang.StringUtils.trimToNull;
 import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
 import static org.gbif.provider.model.voc.ServiceType.EML;
 import static org.gbif.provider.model.voc.ServiceType.TAPIR;
@@ -46,6 +50,7 @@ import org.gbif.provider.model.eml.Role;
 import org.gbif.provider.model.eml.TaxonomicCoverage;
 import org.gbif.provider.model.eml.TemporalCoverage;
 import org.gbif.provider.model.eml.TemporalCoverageType;
+import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.model.voc.Rank;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.model.voc.Vocabulary;
@@ -54,6 +59,7 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
+import org.gbif.provider.webapp.action.manage.EmlEditorAction.Helper.UrlProvider;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
@@ -66,6 +72,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -76,12 +83,198 @@ import javax.servlet.http.HttpServletRequest;
 public class EmlEditorAction extends BaseMetadataResourceAction implements
     Preparable, ServletRequestAware {
 
+  static class Helper {
+
+    /**
+     * Interface for classes that provide a service URL given a
+     * {@link ServiceType} and {@link Resource}.
+     */
+    static interface UrlProvider {
+      String getUrl(ServiceType type, Resource resource);
+    }
+
+    static boolean checkLocalhostUrl(String url) {
+      return !nullOrEmpty(url) && !url.contains("localhost")
+          && !url.contains("127.0.0.1");
+    }
+
+    static String createResource(GbrdsResource resource, OrgCredentials creds,
+        RegistryManager rm) {
+      checkNotNull(resource, "Resource is null");
+      checkNotNull(creds, "Organisation credentials are null");
+      checkNotNull(rm, "Resource manager is null");
+      checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
+      checkArgument(validateCreds(creds, rm), "Bad credentials");
+      GbrdsResource r = rm.createGbrdsResource(resource, creds).getResult();
+      if (r == null) {
+        return null;
+      }
+      return r.getKey();
+    }
+
+    static Set<String> createServices(GbrdsResource r, Resource resource,
+        UrlProvider up, RegistryManager registryManager) {
+      checkNotNull(r, "GBRDS resource is null");
+      checkNotNull(resource, "IPT resource is null");
+      checkNotNull(up, "Url provider is null");
+      checkNotNull(registryManager, "Registry manager is null");
+      checkArgument(validateResource(r).isEmpty(), "Invalid resource");
+      OrgCredentials creds = getCreds(resource.getOrgUuid(),
+          resource.getOrgPassword());
+      checkArgument(validateCreds(creds, registryManager),
+          "Invalid credentials");
+      Set<String> serviceKeys = Sets.newHashSet();
+      List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR,
+          WFS, WMS, TCS_RDF);
+      GbrdsService.Builder service = GbrdsService.builder().resourceKey(
+          r.getKey());
+      for (ServiceType type : types) {
+        switch (type) {
+          case EML:
+            service.accessPointURL(up.getUrl(EML, resource));
+            service.type(EML.getCode());
+            break;
+          case DWC_ARCHIVE:
+            service.accessPointURL(up.getUrl(DWC_ARCHIVE, resource));
+            service.type(DWC_ARCHIVE.getCode());
+            break;
+          case TAPIR:
+            service.accessPointURL(up.getUrl(TAPIR, resource));
+            service.type(TAPIR.getCode());
+            break;
+          case WFS:
+            service.accessPointURL(up.getUrl(WFS, resource));
+            service.type(TAPIR.getCode());
+            break;
+          case WMS:
+            service.accessPointURL(up.getUrl(WMS, resource));
+            service.type(WMS.getCode());
+            break;
+          case TCS_RDF:
+            service.accessPointURL(up.getUrl(TCS_RDF, resource));
+            service.type(TCS_RDF.getCode());
+            break;
+        }
+        GbrdsService createdService = registryManager.createGbrdsService(
+            service.build(), creds).getResult();
+        if (createdService != null) {
+          serviceKeys.add(createdService.getKey());
+        }
+      }
+      return serviceKeys;
+    }
+
+    static OrgCredentials getCreds(String key, String pass) {
+      try {
+        return OrgCredentials.with(key, pass);
+      } catch (Exception e) {
+        return null;
+      }
+    }
+
+    static GbrdsResource.Builder getResourceBuilder(ResourceMetadata meta) {
+      checkNotNull(meta, "Resource metadata is null");
+      return GbrdsResource.builder().description(meta.getDescription()).primaryContactEmail(
+          meta.getContactEmail()).primaryContactName(meta.getContactName()).homepageURL(
+          meta.getLink()).name(meta.getTitle()).key(meta.getUddiID());
+    }
+
+    static ResourceMetadata getResourceMetadata(GbrdsResource resource) {
+      checkNotNull(resource, "Organisation is nul");
+      ResourceMetadata meta = new ResourceMetadata();
+      meta.setDescription(resource.getDescription());
+      meta.setContactEmail(resource.getPrimaryContactEmail());
+      meta.setContactName(resource.getPrimaryContactName());
+      meta.setLink(resource.getHomepageURL());
+      meta.setTitle(resource.getName());
+      meta.setUddiID(resource.getKey());
+      return meta;
+    }
+
+    static boolean nullOrEmpty(String val) {
+      return val == null || val.trim().length() == 0;
+    }
+
+    static boolean orgExists(String orgKey, RegistryManager rm) {
+      checkNotNull(rm, "Registry manager is null");
+      return !nullOrEmpty(orgKey)
+          && rm.readGbrdsOrganisation(orgKey).getResult() != null;
+    }
+
+    static boolean resourceExists(String resourceKey, RegistryManager rm) {
+      return !nullOrEmpty(resourceKey)
+          && rm.readGbrdsResource(resourceKey).getResult() != null;
+    }
+
+    static boolean updateResource(GbrdsResource resource, OrgCredentials creds,
+        RegistryManager rm) {
+      checkNotNull(resource, "Resource is null");
+      checkNotNull(creds, "Credentials are null");
+      checkNotNull(rm, "Resource manager is null");
+      checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
+      checkArgument(validateCreds(creds, rm), "Invalid credentials");
+      return rm.updateGbrdsResource(resource, creds).getResult();
+    }
+
+    static boolean validateCreds(OrgCredentials creds, RegistryManager rm) {
+      checkNotNull(rm, "Registry manager is null");
+      if (creds == null) {
+        return false;
+      }
+      return rm.validateCredentials(creds).getResult();
+    }
+
+    static ImmutableSet<String> validateResource(GbrdsResource resource) {
+      checkNotNull(resource, "Resource is null");
+      ImmutableSet.Builder<String> errors = ImmutableSet.builder();
+      if (nullOrEmpty(resource.getName())) {
+        errors.add("Error: Resource name required");
+      }
+      if (nullOrEmpty(resource.getPrimaryContactType())) {
+        errors.add("Error: Resource contact type required");
+      }
+      if (nullOrEmpty(resource.getPrimaryContactEmail())) {
+        errors.add("Error: Resource contact email required");
+      }
+      if (nullOrEmpty(resource.getOrganisationKey())) {
+        errors.add("Error: Resource key required");
+      }
+      return errors.build();
+    }
+  }
+
   /**
    * Enumeration of method type.
    * 
    */
   private enum RequestMethod {
     ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, KEYWORD_SETS, GEOGRAPHIC_COVERAGES, TEMPORAL_COVERAGES, TAXONOMIC_COVERAGES, PROJECTS, CITATIONS, COLLECTIONS, PHYSICAL_DATA, RESOURCE_FORM, ADDITIONAL_METADATA;
+  }
+  private static class UrlProviderImpl implements UrlProvider {
+    final AppConfig cfg;
+
+    UrlProviderImpl(AppConfig cfg) {
+      this.cfg = cfg;
+    }
+
+    public String getUrl(ServiceType type, Resource resource) {
+      switch (type) {
+        case EML:
+          return cfg.getEmlUrl(resource.getGuid());
+        case DWC_ARCHIVE:
+          return cfg.getArchiveUrl(resource.getGuid());
+        case TAPIR:
+          return cfg.getTapirEndpoint(resource.getId());
+        case WFS:
+          return cfg.getWfsEndpoint(resource.getId());
+        case WMS:
+          return cfg.getWmsEndpoint(resource.getId());
+        case TCS_RDF:
+          return cfg.getArchiveTcsUrl(resource.getGuid());
+        default:
+          return null;
+      }
+    }
   }
 
   private static final long serialVersionUID = -843256914689939746L;
@@ -232,6 +425,11 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     return AppConfig.getRegistryOrgUrl();
   }
 
+  @Override
+  public Resource getResource() {
+    return resource;
+  }
+
   public List getRoles() {
     return Arrays.asList(Role.values());
   }
@@ -256,19 +454,103 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     methodTypeMap = translateI18nMap(new HashMap<String, String>(
         MethodType.htmlSelectMap), true);
     switch (method(request)) {
+
       case ORGANISATION:
-        // resource.getMeta().setUddiID(resource.getOrgUuid());
-        String key = createOrUpdateGbrdsResource(resource);
-        if (key == null) {
-          saveMessage("GBRDS Resource was not saved");
-        } else {
-          saveMessage("GBRDS Resource saved: " + key);
+        boolean problems = false;
+        // Notifies the user if the IPT base URL contains localhost:
+        if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
+          saveMessage("Warning: Cannot create GBRDS resource because IPT base URL contains localhost");
+          problems = true;
         }
-        resource.getMeta().setUddiID(key);
+        if (!Helper.checkLocalhostUrl(cfg.getGeoserverUrl())) {
+          saveMessage("Warning: Cannot create GBRDS resource because Geoserver URL contains localhost");
+          problems = true;
+        }
+        // Notifies the user if the organisation doesn't yet exist in GBRDS:
+        String orgKey = resource.getOrgUuid();
+        if (!Helper.orgExists(orgKey, registryManager)) {
+          // saveMessage("Warning: Cannot create GBRDS resource because a GBRDS organisation is not associated with this IPT instance");
+          // problems = true;
+        } else {
+          // Notifies the user if organisation credentials are invalid:
+          String pass = resource.getOrgPassword();
+          if (!Helper.validateCreds(Helper.getCreds(orgKey, pass),
+              registryManager)) {
+            saveMessage("Warning: Cannot create GBRDS resource because the GBRDS organisation credentials are invalid");
+            problems = true;
+          }
+        }
+        // Notifies user if the resource already exists:
+        String resourceKey = resource.getMeta().getUddiID();
+        if (Helper.resourceExists(resourceKey, registryManager)) {
+          saveMessage("GBRDS resource registered for this resource: "
+              + resourceKey);
+        } else {
+          resourceKey = null;
+        }
+
+        // Returns if there are problems:
+        if (problems) {
+          break;
+        }
+
+        // Now create or update the GBRDS resource and corresponding services:
+        String key = resource.getOrgUuid();
+        String pass = resource.getOrgPassword();
+        OrgCredentials creds = Helper.getCreds(key, pass);
+        if (creds == null) {
+          creds = Helper.getCreds(cfg.getOrg().getUddiID(),
+              cfg.getOrgPassword());
+          if (creds == null) {
+            saveMessage("Warning: Cannot create GBRDS resource because a GBRDS organisation is not associated with this IPT instance");
+            break;
+          }
+        }
+
+        resource.setOrgPassword(creds.getPassword());
+        resource.setOrgUuid(creds.getKey());
+
+        GbrdsResource gr = Helper.getResourceBuilder(resource.getMeta()).organisationKey(
+            resource.getOrgUuid()).primaryContactType(
+            ContactType.technical.name()).organisationKey(creds.getKey()).build();
+
+        // Create new GBRDS resource:
+        if (resourceKey == null) {
+          resourceKey = Helper.createResource(gr, creds, registryManager);
+          if (resourceKey == null) {
+            saveMessage("Warning: Unable to create GBRDS resource");
+            break;
+          }
+          resource.getMeta().setUddiID(resourceKey);
+          // And create new GBRDS services:
+          gr = Helper.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
+              resource.getOrgUuid()).primaryContactType(
+              ContactType.technical.name()).organisationKey(creds.getKey()).build();
+          UrlProvider up = new UrlProviderImpl(cfg);
+          Set<String> serviceKeys = Helper.createServices(gr, resource, up,
+              registryManager);
+          if (!serviceKeys.isEmpty()) {
+            saveMessage("Successfully created GBRDS services: " + serviceKeys);
+          }
+        } else { // Or update existing GBRDS resource:
+          gr = Helper.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
+              resource.getOrgUuid()).primaryContactType(
+              ContactType.technical.name()).organisationKey(creds.getKey()).build();
+          if (Helper.updateResource(gr, creds, registryManager)) {
+            saveMessage("GBRDS resource updated successfully");
+          } else {
+            saveMessage("Warning: Resource not updated in GBRDS");
+          }
+        }
+
+        // Save changes to IPT resource:
+        resource.setMeta(Helper.getResourceMetadata(gr));
         resource.setDirty();
         resourceManager.save(resource);
-        // Nothing to do here unless the Organisation form has elements whose
-        // values are destined for eml.
+
+        // Nothing else to do here unless the Organisation form has elements
+        // whose values are destined for eml.
+
         break;
       case ASSOCIATED_PARTIES:
         if (eml == null && resource != null) {
@@ -475,13 +757,13 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     if (next == null) {
       return INPUT;
     }
-    if (resource.getOrgTitle() == null
-        || resource.getOrgTitle().trim().length() == 0) {
-      resource.setOrgPassword("");
-      resource.setOrgUuid("");
-    } else {
-      validateResource();
-    }
+    // if (resource.getOrgTitle() == null
+    // || resource.getOrgTitle().trim().length() == 0) {
+    // resource.setOrgPassword("");
+    // resource.setOrgUuid("");
+    // } else {
+    // // validateResource();
+    // }
     resource.setDirty();
     for (TemporalCoverage t : eml.getTemporalCoverages()) {
       t.correctDateOrder();
@@ -525,123 +807,4 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
     this.request = request;
   }
 
-  private void createGbrdsServices(GbrdsResource r, Resource resource) {
-    String baseUrl = cfg.getBaseUrl();
-    if (trimToNull(baseUrl) == null || baseUrl.contains("localhost")) {
-      saveMessage("Unable to create GBRDS services because the IPT base URL contains localhost");
-      return;
-    }
-    OrgCredentials creds = getCreds(resource);
-    if (creds == null
-        || !registryManager.validateCredentials(creds).getResult()) {
-      saveMessage("Unable to verify GBRDS organisation credentials");
-      return;
-    }
-    List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR, WFS,
-        WMS, TCS_RDF);
-    GbrdsService.Builder service = GbrdsService.builder().resourceKey(
-        r.getKey());
-    for (ServiceType type : types) {
-      switch (type) {
-        case EML:
-          service.accessPointURL(cfg.getEmlUrl(resource.getGuid()));
-          service.type(EML.getCode());
-          break;
-        case DWC_ARCHIVE:
-          service.accessPointURL(cfg.getArchiveUrl(resource.getGuid()));
-          service.type(DWC_ARCHIVE.getCode());
-          break;
-        case TAPIR:
-          service.accessPointURL(cfg.getTapirEndpoint(resource.getId()));
-          service.type(TAPIR.getCode());
-          break;
-        case WFS:
-          service.accessPointURL(cfg.getWfsEndpoint(resource.getId()));
-          service.type(TAPIR.getCode());
-          break;
-        case WMS:
-          service.accessPointURL(cfg.getWmsEndpoint(resource.getId()));
-          service.type(WMS.getCode());
-          break;
-        case TCS_RDF:
-          service.accessPointURL(cfg.getArchiveTcsUrl(resource.getGuid()));
-          service.type(TCS_RDF.getCode());
-          break;
-      }
-      if (registryManager.createGbrdsService(service.build(), creds).getResult() == null) {
-        String msg = String.format("Unable to register service: %s",
-            service.build().getAccessPointURL());
-        saveMessage(msg);
-      }
-    }
-  }
-
-  private String createOrUpdateGbrdsResource(Resource resource) {
-    OrgCredentials creds = getCreds(resource);
-    if (creds == null
-        || !registryManager.validateCredentials(creds).getResult()) {
-      saveMessage("Unable to verify GBRDS organisation credentials");
-      return null;
-    }
-    String baseUrl = cfg.getBaseUrl();
-    if (trimToNull(baseUrl) == null || baseUrl.contains("localhost")) {
-      saveMessage("Unable to create GBRDS resource because the IPT base URL contains localhost");
-      return null;
-    }
-
-    // Updates an existing GBRDS Resource:
-    String key = resource.getMeta().getUddiID();
-    if (trimToNull(key) != null) {
-      GbrdsResource gs = registryManager.readGbrdsResource(key).getResult();
-      if (gs != null) {
-        ResourceMetadata rm = resource.getMeta();
-        GbrdsResource gr = registryManager.buildGbrdsResource(rm).build();
-        if (registryManager.updateGbrdsResource(gr, creds).getResult()) {
-          saveMessage(getText("The resource associated with this IPT instance has been updated in the GBRDS."));
-        } else {
-          saveMessage(getText("The resource associated with this IPT instance could not be updated in the GBRDS."));
-        }
-        return key;
-      }
-    }
-
-    // Creates a new GBRDS Resource:
-    ResourceMetadata rm = resource.getMeta();
-    GbrdsResource gm = registryManager.buildGbrdsResource(rm).organisationKey(
-        creds.getKey()).build();
-    gm = registryManager.createGbrdsResource(gm, creds).getResult();
-    if (gm != null) {
-      createGbrdsServices(gm, resource);
-      resource.getMeta().setUddiID(gm.getKey());
-      return gm.getKey();
-    } else {
-      String msg = "Unable to create a GBRDS resource";
-      saveMessage(msg);
-      log.warn(msg);
-      return null;
-    }
-  }
-
-  private OrgCredentials getCreds(Resource resource) {
-    OrgCredentials creds = null;
-    String orgKey = resource.getOrgUuid();
-    String orgPassword = resource.getOrgPassword();
-    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      creds = OrgCredentials.with(orgKey, orgPassword);
-    }
-    return creds;
-  }
-
-  private boolean validateResource() {
-    boolean isResourceValid = false;
-    OrgCredentials creds = getCreds(resource);
-    if (creds == null
-        || !registryManager.validateCredentials(creds).getResult()) {
-      saveMessage(getText("config.check.orgLogin"));
-      resource.setOrgPassword(null);
-    } else {
-      isResourceValid = true;
-    }
-    return isResourceValid;
-  }
 }

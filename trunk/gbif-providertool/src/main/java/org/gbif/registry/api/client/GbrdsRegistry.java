@@ -1789,9 +1789,11 @@ public class GbrdsRegistry implements Gbrds {
      */
     public CreateServiceRequest create(GbrdsService service) {
       checkNotNull(service);
-      checkArgument(notNullOrEmpty(service.getResourceKey()));
-      checkArgument(notNullOrEmpty(service.getType()));
-      checkArgument(notNullOrEmpty(service.getAccessPointURL()));
+      checkArgument(notNullOrEmpty(service.getResourceKey()),
+          "Invalid resource key");
+      checkArgument(notNullOrEmpty(service.getType()), "Invalid contact type");
+      checkArgument(notNullOrEmpty(service.getAccessPointURL()),
+          "Invalid access point URL");
       return new CreateRequest(service, registry);
     }
 
