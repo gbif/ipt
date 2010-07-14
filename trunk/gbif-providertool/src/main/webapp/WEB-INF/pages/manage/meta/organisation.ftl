@@ -150,11 +150,13 @@ function changeOrg() {
 
 
 function OnModuleLoaded() {  
+  <!--
   <#if config.isOrgRegistered()>
     titleTextBox.setValue("${(registryOrgTitle)!}");
     uuidTextBox.setValue("${(cfg.cfg.org.uuidID)!}");
     orgPasswordTextBox.setValue("${(cfg.cfg.orgPassword)!}");
   </#if>
+  -->
   if (titleTextBox.getValue() == "") {
     uuidTextBox.setValue("");    
     orgPasswordTextBox.setValue("");    
@@ -204,13 +206,13 @@ google.setOnLoadCallback(OnModuleLoaded);
 </div>
 <div id="uuidWidget" class="leftxhalf">
   <@s.textfield id="uuidTextBox" key="resource.orgUuid" 
-    value="${(resource.orgUuid)!}" required="true" readonly="true" 
+     required="true" readonly="true" 
     cssClass="text xhalf"/>
 </div>
 <div class="newline"></div>
 <div id="passwordWidget" class="leftxhalf">    
   <@s.textfield id="orgPasswordTextBox" key="resource.orgPassword"
-    value="${(resource.orgPassword)!}" required="true" cssClass="text xhalf"/>
+     required="true" cssClass="text xhalf"/>
 </div>
 <div class="newline"></div>
 <div id="resendPasswordWidget" class="leftxhalf">                        
