@@ -32,7 +32,7 @@ import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Provides action support for creating and updating the GBRDS resource and
+ * Provides action support for creating and updating the GBRDS resource and the
  * GBRDS RSS service that is associated with an IPT instance.
  * 
  */
