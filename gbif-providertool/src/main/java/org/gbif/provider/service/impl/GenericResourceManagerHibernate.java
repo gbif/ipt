@@ -194,18 +194,22 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
   @Transactional(readOnly = false)
   public void unPublish(Long resourceId) {
     T resource = get(resourceId);
-    resource.setStatus(PublicationStatus.unpublished);
-    save(resource);
-    fullTextSearchManager.buildResourceIndex(resourceId);
+
     String resourceKey = resource.getUddiID();
     OrgCredentials creds = getCreds(resource);
     try {
-      if (!registryManager.deleteResource(resourceKey, creds).getResult()) {
+      if (registryManager.deleteResource(resourceKey, creds).getResult()) {
+        resource.getMeta().setUddiID(null);
+      } else {
         log.warn("Resource could not be deleted from GBRDS: " + resourceId);
       }
     } catch (BadCredentialsException e) {
       log.warn("Resource could not be deleted from GBRDS: " + resourceId);
     }
+
+    resource.setStatus(PublicationStatus.unpublished);
+    save(resource);
+    fullTextSearchManager.buildResourceIndex(resourceId);
   }
 
   @SuppressWarnings("unchecked")
