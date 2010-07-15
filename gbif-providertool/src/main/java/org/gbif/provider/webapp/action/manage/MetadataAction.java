@@ -679,7 +679,7 @@ public class MetadataAction extends BaseMetadataResourceAction implements
     String orgPassword = resource.getOrgPassword();
     if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
       OrgCredentials creds = OrgCredentials.with(orgKey, orgPassword);
-      ValidateOrgCredentialsResponse response = registryManager.validateCredentials(
+      ValidateOrgCredentialsResponse response = registryManager.validateCreds(
           null);
       if (!response.getResult()) {
         saveMessage(getText("config.check.orgLogin"));

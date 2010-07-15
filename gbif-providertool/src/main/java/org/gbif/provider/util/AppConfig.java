@@ -473,7 +473,7 @@ public class AppConfig {
     boolean isRegistered = false;
     String orgKey = cfg.getOrgMeta().getUddiID();
     if (trimToNull(orgKey) != null) {
-      isRegistered = registryManager.readGbrdsOrganisation(orgKey).getResult() != null;
+      isRegistered = registryManager.readOrg(orgKey).getResult() != null;
     }
     return isRegistered;
   }

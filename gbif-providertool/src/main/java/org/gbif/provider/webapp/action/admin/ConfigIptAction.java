@@ -15,12 +15,11 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.ImmutableSet;
 
-import org.gbif.provider.model.ResourceMetadata;
+import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.service.RegistryManager;
@@ -28,7 +27,11 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -38,126 +41,32 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @SuppressWarnings("serial")
 public class ConfigIptAction extends BasePostAction {
+  static boolean nullOrEmpty(String val) {
+    return val == null || val.trim().length() == 0;
+  }
 
-  static class Helper {
-
-    static boolean checkLocalhostUrl(String url) {
-      return !nullOrEmpty(url) && !url.contains("localhost")
-          && !url.contains("127.0.0.1");
+  static ImmutableSet<String> validateResource(GbrdsResource resource) {
+    checkNotNull(resource, "Resource is null");
+    ImmutableSet.Builder<String> errors = ImmutableSet.builder();
+    if (nullOrEmpty(resource.getName())) {
+      errors.add("Error: Resource name required");
     }
-
-    static String createResource(GbrdsResource resource, OrgCredentials creds,
-        RegistryManager rm) {
-      checkNotNull(resource, "Resource is null");
-      checkNotNull(creds, "Organisation credentials are null");
-      checkNotNull(rm, "Resource manager is null");
-      checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
-      checkArgument(validateCreds(creds, rm), "Bad credentials");
-      GbrdsResource r = rm.createGbrdsResource(resource, creds).getResult();
-      if (r == null) {
-        return null;
-      }
-      return r.getKey();
+    if (nullOrEmpty(resource.getPrimaryContactType())) {
+      errors.add("Error: Resource contact type required");
     }
-
-    static GbrdsService createRssService(String resourceKey,
-        OrgCredentials creds, String rssUri, RegistryManager rm) {
-      checkArgument(!nullOrEmpty(resourceKey), "Invalid resource key");
-      checkArgument(resourceExists(resourceKey, rm),
-          "GBRDS resource does not exist");
-      checkNotNull(creds, "Credentials are null");
-      checkArgument(!nullOrEmpty(rssUri), "Invalid RSS URL");
-      checkNotNull(rm, "Registry manager is null");
-      checkArgument(validateCreds(creds, rm), "Invalid credentials");
-      String type = ServiceType.RSS.name();
-      GbrdsService gs = GbrdsService.builder().accessPointURL(rssUri).resourceKey(
-          resourceKey).type(type).build();
-      return rm.createGbrdsService(gs, creds).getResult();
+    if (nullOrEmpty(resource.getPrimaryContactEmail())) {
+      errors.add("Error: Resource contact email required");
     }
-
-    static OrgCredentials getCreds(String key, String pass) {
-      try {
-        return OrgCredentials.with(key, pass);
-      } catch (Exception e) {
-        return null;
-      }
+    if (nullOrEmpty(resource.getOrganisationKey())) {
+      errors.add("Error: Resource key required");
     }
-
-    static GbrdsResource.Builder getResourceBuilder(ResourceMetadata meta) {
-      checkNotNull(meta, "Resource metadata is null");
-      return GbrdsResource.builder().description(meta.getDescription()).primaryContactEmail(
-          meta.getContactEmail()).primaryContactName(meta.getContactName()).homepageURL(
-          meta.getLink()).name(meta.getTitle()).key(meta.getUddiID());
-    }
-
-    static ResourceMetadata getResourceMetadata(GbrdsResource resource) {
-      checkNotNull(resource, "Organisation is nul");
-      ResourceMetadata meta = new ResourceMetadata();
-      meta.setDescription(resource.getDescription());
-      meta.setContactEmail(resource.getPrimaryContactEmail());
-      meta.setContactName(resource.getPrimaryContactName());
-      meta.setLink(resource.getHomepageURL());
-      meta.setTitle(resource.getName());
-      meta.setUddiID(resource.getKey());
-      return meta;
-    }
-
-    static boolean nullOrEmpty(String val) {
-      return val == null || val.trim().length() == 0;
-    }
-
-    static boolean orgExists(String orgKey, RegistryManager rm) {
-      checkNotNull(rm, "Registry manager is null");
-      return !nullOrEmpty(orgKey)
-          && rm.readGbrdsOrganisation(orgKey).getResult() != null;
-    }
-
-    static boolean resourceExists(String resourceKey, RegistryManager rm) {
-      return !nullOrEmpty(resourceKey)
-          && rm.readGbrdsResource(resourceKey).getResult() != null;
-    }
-
-    static boolean updateResource(GbrdsResource resource, OrgCredentials creds,
-        RegistryManager rm) {
-      checkNotNull(resource, "Resource is null");
-      checkNotNull(creds, "Credentials are null");
-      checkNotNull(rm, "Resource manager is null");
-      checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
-      checkArgument(validateCreds(creds, rm), "Invalid credentials");
-      return rm.updateGbrdsResource(resource, creds).getResult();
-    }
-
-    static boolean validateCreds(OrgCredentials creds, RegistryManager rm) {
-      checkNotNull(rm, "Registry manager is null");
-      if (creds == null) {
-        return false;
-      }
-      return rm.validateCredentials(creds).getResult();
-    }
-
-    static ImmutableSet<String> validateResource(GbrdsResource resource) {
-      checkNotNull(resource, "Resource is null");
-      ImmutableSet.Builder<String> errors = ImmutableSet.builder();
-      if (nullOrEmpty(resource.getName())) {
-        errors.add("Error: Resource name required");
-      }
-      if (nullOrEmpty(resource.getPrimaryContactType())) {
-        errors.add("Error: Resource contact type required");
-      }
-      if (nullOrEmpty(resource.getPrimaryContactEmail())) {
-        errors.add("Error: Resource contact email required");
-      }
-      if (nullOrEmpty(resource.getOrganisationKey())) {
-        errors.add("Error: Resource key required");
-      }
-      return errors.build();
-    }
+    return errors.build();
   }
 
   private GbrdsResource.Builder resourceBuilder = GbrdsResource.builder();
 
   @Autowired
-  private RegistryManager registryManager;
+  private RegistryManager registry;
 
   public AppConfig getConfig() {
     return this.cfg;
@@ -189,62 +98,133 @@ public class ConfigIptAction extends BasePostAction {
 
   @Override
   public String read() {
-    if (problemsFound()) {
-      // TODO: Surface additional UI messages here?
+    ImmutableSet<String> errors = checkForErrors();
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
+      }
+      return SUCCESS;
     }
-    resourceBuilder = Helper.getResourceBuilder(cfg.getIpt()).organisationKey(
-        cfg.getOrg().getUddiID());
+    resourceBuilder = registry.getResourceBuilder(cfg.getIpt());
+    resourceBuilder.organisationKey(cfg.getOrg().getUddiID());
+    resourceBuilder.primaryContactType(ContactType.technical.name());
     return SUCCESS;
   }
 
   public String register() {
-    if (problemsFound()) {
+    // Checks for errors:
+    ImmutableSet<String> errors = checkForErrors();
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
+      }
       return SUCCESS;
     }
 
-    if (Helper.resourceExists(resourceBuilder.getKey(), registryManager)) {
+    // Does nothing if the resource exists in the GBRDS:
+    if (registry.resourceExists(resourceBuilder.getKey())) {
       return SUCCESS;
     }
-    resourceBuilder.primaryContactType(ContactType.technical.name()).organisationKey(
-        cfg.getOrg().getUddiID());
+
+    // Checks credentials:
+    resourceBuilder.primaryContactType(ContactType.technical.name());
+    resourceBuilder.organisationKey(cfg.getOrg().getUddiID());
     GbrdsResource gr = resourceBuilder.build();
     OrgCredentials creds = getCreds();
-    String resourceKey = Helper.createResource(gr, creds, registryManager);
-    if (resourceKey == null) {
-      saveMessage("Warning: Unable to create GBRDS resource");
-    } else {
-      gr = resourceBuilder.key(resourceKey).build();
-      cfg.setIpt(Helper.getResourceMetadata(gr));
-      cfg.save();
-      String rssUri = cfg.getAtomFeedURL();
-      GbrdsService gs = Helper.createRssService(resourceKey, creds, rssUri,
-          registryManager);
-      saveMessage("GBRDS resource created successfully: " + resourceKey);
-      if (gs == null) {
-        saveMessage("Warning: Unable to create GBRDS service for resource");
-      } else {
-        saveMessage("GBRDS RSS service created successfully: " + gs.getKey());
-      }
+    if (creds == null) {
+      saveMessage("Warning: Unable to create resource - bad credetials");
+      return SUCCESS;
     }
+
+    // Creates the resource:
+    CreateResourceResponse crr = null;
+    try {
+      crr = registry.createResource(gr, creds);
+    } catch (BadCredentialsException e) {
+      saveMessage("Warning: Unable to create resource - bad credetials");
+      return SUCCESS;
+    }
+    if (crr.getStatus() != HttpStatus.SC_CREATED) {
+      saveMessage("Warning: Unable to create resource - status "
+          + crr.getStatus());
+      return SUCCESS;
+    }
+    String resourceKey = crr.getResult().getKey();
+    saveMessage("Success: GBRDS resource created with key: " + resourceKey);
+
+    // Saves resource properties to app config:
+    gr = resourceBuilder.key(resourceKey).build();
+    cfg.setIpt(registry.getMeta(gr));
+    cfg.save();
+
+    // Creates the RSS service:
+    String rssUrl = cfg.getAtomFeedURL();
+    String type = ServiceType.RSS.code;
+    GbrdsService gs = GbrdsService.builder().accessPointURL(rssUrl).key(
+        resourceKey).type(type).resourceKey(resourceKey).build();
+    CreateServiceResponse csr = null;
+    try {
+      csr = registry.createService(gs, creds);
+    } catch (BadCredentialsException e) {
+      saveMessage("Warning: Unable to create RSS service - bad credetials");
+      return SUCCESS;
+    }
+    if (csr.getStatus() != HttpStatus.SC_CREATED) {
+      saveMessage("Warning: Unable to create RSS service - status "
+          + csr.getStatus());
+      return SUCCESS;
+    }
+    String serviceKey = csr.getResult().getKey();
+    saveMessage("Success: GBRDS service created with key: " + serviceKey);
     return SUCCESS;
   }
 
   @Override
   public String save() {
-    if (problemsFound()) {
+    resourceBuilder.primaryContactType(ContactType.technical.name());
+    resourceBuilder.organisationKey(cfg.getOrg().getUddiID());
+    GbrdsResource gr = resourceBuilder.build();
+
+    // Checks if resource is registered:
+    if (!registry.resourceExists(gr.getKey())) {
+      register();
       return SUCCESS;
     }
-    resourceBuilder.primaryContactType(ContactType.technical.name()).organisationKey(
-        cfg.getOrg().getUddiID());
-    GbrdsResource gr = resourceBuilder.build();
-    OrgCredentials creds = getCreds();
-    if (Helper.updateResource(gr, creds, registryManager)) {
-      cfg.setIpt(Helper.getResourceMetadata(gr));
-      cfg.save();
-      saveMessage("GBRDS resource updated successfully");
-    } else {
-      saveMessage("Warning: Resource not updated in GBRDS");
+
+    // Checks for errors:
+    ImmutableSet<String> errors = checkForErrors();
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
+      }
+      return SUCCESS;
     }
+
+    // Updates resource
+    OrgCredentials creds = getCreds();
+    if (creds == null) {
+      saveMessage("Warning: Unable to update resource - bad credetials");
+      return SUCCESS;
+    }
+
+    // Updates registry:
+    UpdateResourceResponse urr = null;
+    try {
+      urr = registry.updateResource(gr, creds);
+    } catch (BadCredentialsException e) {
+      saveMessage("Warning: Unable to update resource - bad credetials");
+      return SUCCESS;
+    }
+    if (urr.getStatus() != HttpStatus.SC_OK) {
+      saveMessage("Warning: Unable to update resource - status "
+          + urr.getStatus());
+      return SUCCESS;
+    }
+
+    // Updates app config:
+    cfg.setIpt(registry.getMeta(gr));
+    cfg.save();
+    saveMessage("GBRDS resource updated successfully");
     return SUCCESS;
   }
 
@@ -276,40 +256,30 @@ public class ConfigIptAction extends BasePostAction {
     resourceBuilder.name(val);
   }
 
+  private ImmutableSet<String> checkForErrors() {
+    ImmutableSet.Builder<String> b = ImmutableSet.builder();
+
+    // Checks if the IPT base URL contains localhost:
+    if (registry.isLocalhost(cfg.getBaseUrl())) {
+      b.add("Warning: Cannot create GBRDS resource because IPT base URL contains localhost");
+    }
+
+    // Checks if the IPT organisation exists:
+    String key = cfg.getOrg().getUddiID();
+    if (registry.orgExists(key)) {
+      if (getCreds() == null) {
+        b.add("Warning: Cannot create GBRDS resource because the GBRDS organisation credentials are invalid");
+      }
+    } else {
+      b.add("Warning: Cannot create GBRDS resource because a GBRDS organisation is not yet associated with this IPT instance");
+    }
+
+    return b.build();
+  }
+
   private OrgCredentials getCreds() {
     String key = cfg.getOrg().getUddiID();
     String pass = cfg.getOrgPassword();
-    return Helper.getCreds(key, pass);
-  }
-
-  private boolean problemsFound() {
-    boolean problems = false;
-    // Notifies the user if the IPT base URL contains localhost:
-    if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
-      saveMessage("Warning: Cannot create GBRDS resource because IPT base URL contains localhost");
-      problems = true;
-    }
-    // Notifies the user if the IPT organisation doesn't yet exist in GBRDS:
-    String orgKey = cfg.getOrg().getUddiID();
-    if (!Helper.orgExists(orgKey, registryManager)) {
-      saveMessage("Warning: Cannot create GBRDS resource because a GBRDS organisation is not associated with this IPT instance");
-      problems = true;
-    } else {
-      // Notifies the user if organisation credentials are invalid:
-      String key = cfg.getOrg().getUddiID();
-      String pass = cfg.getOrgPassword();
-      if (!Helper.validateCreds(Helper.getCreds(key, pass), registryManager)) {
-        saveMessage("Warning: Cannot create GBRDS resource because the GBRDS organisation credentials are invalid");
-        problems = true;
-      }
-    }
-    // Notifies user if the resource already exists:
-    String resourceKey = cfg.getIpt().getUddiID();
-    if (Helper.resourceExists(resourceKey, registryManager)) {
-      // saveMessage("GBRDS resource registered for IPT: " + resourceKey);
-      // problems = true;
-    }
-
-    return problems;
+    return registry.getCreds(key, pass);
   }
 }

@@ -15,19 +15,21 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.collect.ImmutableSet;
 
-import org.gbif.provider.model.ResourceMetadata;
+import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
 
 /**
  * Action support for editing the GBRDS organisation associated with this IPT
@@ -37,94 +39,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings("serial")
 public class ConfigOrgAction extends BasePostAction {
 
-  static class Helper {
+  static ImmutableSet<String> checkOrg(GbrdsOrganisation go,
+      RegistryManager registry) {
+    ImmutableSet.Builder<String> b = ImmutableSet.builder();
 
-    static OrgCredentials createOrg(GbrdsOrganisation org, RegistryManager rm) {
-      checkNotNull(org, "Organisation is null");
-      checkArgument(validateOrg(org).isEmpty(), "Invalid organisation");
-      return rm.createGbrdsOrganisation(org).getResult();
+    // Checks required org properties:
+    if (nullOrEmpty(go.getName())) {
+      b.add("Warning: Organisation name required");
+    }
+    if (nullOrEmpty(go.getPrimaryContactType())) {
+      b.add("Warning: Primary contact type required");
+    }
+    if (nullOrEmpty(go.getPrimaryContactEmail())) {
+      b.add("Warning: Primary contact email required");
+    }
+    if (nullOrEmpty(go.getNodeKey())) {
+      b.add("Warning: Node key required");
     }
 
-    static OrgCredentials getCreds(String key, String pass) {
-      try {
-        return OrgCredentials.with(key, pass);
-      } catch (Exception e) {
-        return null;
-      }
-    }
+    return b.build();
+  }
 
-    static GbrdsOrganisation getOrg(ResourceMetadata meta) {
-      checkNotNull(meta, "Resource metadata is null");
-      return GbrdsOrganisation.builder().description(meta.getDescription()).primaryContactEmail(
-          meta.getContactEmail()).primaryContactName(meta.getContactName()).homepageURL(
-          meta.getLink()).name(meta.getTitle()).key(meta.getUddiID()).build();
-    }
-
-    static ResourceMetadata getResourceMetadata(GbrdsOrganisation org) {
-      checkNotNull(org, "Organisation is nul");
-      ResourceMetadata meta = new ResourceMetadata();
-      meta.setDescription(org.getDescription());
-      meta.setContactEmail(org.getPrimaryContactEmail());
-      meta.setContactName(org.getPrimaryContactName());
-      meta.setLink(org.getHomepageURL());
-      meta.setTitle(org.getName());
-      meta.setUddiID(org.getKey());
-      return meta;
-    }
-
-    static boolean nullOrEmpty(String val) {
-      return val == null || val.trim().length() == 0;
-    }
-
-    static boolean orgExists(String orgKey, RegistryManager rm) {
-      checkNotNull(rm, "Registry manager is null");
-      return !nullOrEmpty(orgKey)
-          && rm.readGbrdsOrganisation(orgKey).getResult() != null;
-    }
-
-    static boolean resourceExists(String resourceKey, RegistryManager rm) {
-      return !nullOrEmpty(resourceKey)
-          && rm.readGbrdsResource(resourceKey).getResult() != null;
-    }
-
-    static boolean updateOrg(GbrdsOrganisation org, RegistryManager rm) {
-      checkNotNull(org, "Organisation is null");
-      checkNotNull(rm, "Resource manager is null");
-      checkArgument(validateOrg(org).isEmpty(), "Invalid organisation");
-      OrgCredentials creds = getCreds(org.getKey(), org.getPassword());
-      checkArgument(validateCreds(creds, rm), "Invalid credentials");
-      return rm.updateGbrdsOrganisation(org, creds).getResult();
-    }
-
-    static boolean validateCreds(OrgCredentials creds, RegistryManager rm) {
-      checkNotNull(rm, "Registry manager is null");
-      if (creds == null) {
-        return false;
-      }
-      return rm.validateCredentials(creds).getResult();
-    }
-
-    static ImmutableSet<String> validateOrg(GbrdsOrganisation org) {
-      checkNotNull(org, "Organisation is null");
-      ImmutableSet.Builder<String> errors = ImmutableSet.builder();
-      if (nullOrEmpty(org.getName())) {
-        errors.add("Error: Organisation name required");
-      }
-      if (nullOrEmpty(org.getPrimaryContactType())) {
-        errors.add("Error: Primary contact type required");
-      }
-      if (nullOrEmpty(org.getPrimaryContactEmail())) {
-        errors.add("Error: Primary contact email required");
-      }
-      if (nullOrEmpty(org.getNodeKey())) {
-        errors.add("Error: Node key required");
-      }
-      return errors.build();
-    }
+  static boolean nullOrEmpty(String val) {
+    return val == null || val.trim().length() == 0;
   }
 
   @Autowired
-  private RegistryManager registryManager;
+  private RegistryManager registry;
 
   private GbrdsOrganisation.Builder orgBuilder = GbrdsOrganisation.builder();
 
@@ -180,17 +121,18 @@ public class ConfigOrgAction extends BasePostAction {
   public String read() {
     // Notifies the user if the organisation can't be changed:
     String resourceKey = cfg.getIpt().getUddiID();
-    if (Helper.resourceExists(resourceKey, registryManager)) {
+    if (registry.resourceExists(resourceKey)) {
       saveMessage("Warning: You can edit this organisation but not change it to a different one");
     }
     // Notifies the user if the organisation doesn't exist in GBRDS:
     String orgKey = cfg.getOrg().getUddiID();
-    if (!Helper.orgExists(orgKey, registryManager)) {
+    if (!registry.orgExists(orgKey)) {
       // TODO: Should a UI message be surfaced here?
     }
     // Initializes builder with org values stored by AppConfig:
-    orgBuilder = GbrdsOrganisation.builder(Helper.getOrg(cfg.getOrg()));
+    orgBuilder = registry.getOrgBuilder(cfg.getOrg());
     orgBuilder.password(cfg.getOrgPassword());
+    orgBuilder.primaryContactType(ContactType.technical.name());
     return SUCCESS;
   }
 
@@ -198,40 +140,44 @@ public class ConfigOrgAction extends BasePostAction {
     orgBuilder.primaryContactType(ContactType.technical.name());
     GbrdsOrganisation go = orgBuilder.build();
 
-    boolean isValidated = true;
-    // Checks if the organisation exists in GBRDS:
-    String key = go.getKey();
-    if (Helper.orgExists(key, registryManager)) {
-      saveMessage("Warning: Organisation is already registered in the GBRDS");
-      isValidated = false;
-    }
-    // Checks organisation values:
-    ImmutableSet<String> errors = Helper.validateOrg(go);
+    // Checks org before registering:
+    Set<String> errors = checkOrg(go, registry);
     if (!errors.isEmpty()) {
-      isValidated = false;
-      for (String error : errors) {
-        saveMessage(error);
+      for (String e : errors) {
+        saveMessage(e);
       }
-    }
-    if (!isValidated) {
       return SUCCESS;
     }
 
-    // Creates a new organisation in GBRDS:
-    OrgCredentials creds = Helper.createOrg(go, registryManager);
-    if (creds != null) {
-      orgBuilder.key(creds.getKey());
-      orgBuilder.password(creds.getPassword());
-      go = orgBuilder.build();
-      cfg.setOrg(Helper.getResourceMetadata(go));
-      cfg.setOrgPassword(creds.getPassword());
-      cfg.save();
-      saveMessage("Organisation successfully registered in the GBRDS: "
-          + creds.getKey());
-    } else {
-      saveMessage("Warning: Unable to register organisation in the GBRDS");
+    // Checks if organisation already exists:
+    String key = go.getKey();
+    if (registry.orgExists(key)) {
+      saveMessage("Warning: Organisation is already registered in the GBRDS");
+      return SUCCESS;
     }
 
+    // Creates new org:
+    CreateOrgResponse cor = registry.createOrg(go);
+    if (cor.getStatus() != HttpStatus.SC_CREATED) {
+      saveMessage("Warning: Organisation not created - " + cor.getStatus());
+      return SUCCESS;
+    }
+
+    // Verifies new org credentials:
+    OrgCredentials creds = cor.getResult();
+    if (creds == null) {
+      saveMessage("Warning: GBRDS returned invalid organisation credentials");
+      return SUCCESS;
+    }
+
+    // Updates application state:
+    orgBuilder.key(creds.getKey());
+    orgBuilder.password(creds.getPassword());
+    go = orgBuilder.build();
+    cfg.setOrg(registry.getMeta(go));
+    cfg.setOrgPassword(creds.getPassword());
+    cfg.save();
+    saveMessage("Organisation successfully registered: " + creds.getKey());
     return SUCCESS;
   }
 
@@ -240,40 +186,46 @@ public class ConfigOrgAction extends BasePostAction {
     orgBuilder.primaryContactType(ContactType.technical.name());
     GbrdsOrganisation go = orgBuilder.build();
 
-    // Checks organisation values:
-    boolean isValidated = true;
-    ImmutableSet<String> errors = Helper.validateOrg(go);
+    // Checks org properties:
+    Set<String> errors = checkOrg(go, registry);
     if (!errors.isEmpty()) {
-      isValidated = false;
-      for (String error : errors) {
-        saveMessage(error);
+      for (String e : errors) {
+        saveMessage(e);
       }
-    }
-    // Checks organisation credentials:
-    String key = go.getKey();
-    String pass = go.getPassword();
-    if (!Helper.validateCreds(Helper.getCreds(key, pass), registryManager)) {
-      saveMessage(getText("config.check.orgLogin"));
-      isValidated = false;
-    }
-    // Checks if the organisation exists in GBRDS:
-    if (!Helper.orgExists(key, registryManager)) {
-      saveMessage("Warning: Organisation must be registered before saved");
-      isValidated = false;
-    }
-    if (!isValidated) {
       return SUCCESS;
     }
 
-    // Updates the organisation in GBRDS:
-    if (Helper.updateOrg(go, registryManager)) {
-      cfg.setOrg(Helper.getResourceMetadata(go));
-      cfg.setOrgPassword(orgBuilder.getPassword());
-      cfg.save();
-      saveMessage("Organisation saved and the GBRDS updated successfully");
-    } else {
-      saveMessage("Warning: Organisation not saved and the GBRDS not updated");
+    // Checks organisation credentials:
+    String key = go.getKey();
+    String pass = go.getPassword();
+    OrgCredentials creds = registry.getCreds(key, pass);
+    if (creds == null) {
+      saveMessage("Warning: Invalid registry credentials");
+      return SUCCESS;
     }
+
+    // Checks if the organisation exists in GBRDS and registers it if not:
+    if (!registry.orgExists(key)) {
+      register();
+      return SUCCESS;
+    }
+
+    // Updates the organisation:
+    UpdateOrgResponse uor = null;
+    try {
+      uor = registry.updateOrg(go, creds);
+    } catch (BadCredentialsException e) {
+      saveMessage("Warning: Invalid registry credentials: " + creds);
+      return SUCCESS;
+    }
+    if (uor.getStatus() != HttpStatus.SC_OK) {
+      saveMessage("Warning: Organisation not updated - " + uor.getStatus());
+      // TODO: Return here?
+    }
+    cfg.setOrg(registry.getMeta(go));
+    cfg.setOrgPassword(creds.getPassword());
+    cfg.save();
+    saveMessage("Organisation saved and the GBRDS updated successfully");
     return SUCCESS;
   }
 

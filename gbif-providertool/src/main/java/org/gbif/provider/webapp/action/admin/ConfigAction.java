@@ -15,19 +15,13 @@
  */
 package org.gbif.provider.webapp.action.admin;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import static org.apache.commons.lang.StringUtils.trimToEmpty;
-import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
-import static org.gbif.provider.model.voc.ServiceType.EML;
-import static org.gbif.provider.model.voc.ServiceType.TAPIR;
-import static org.gbif.provider.model.voc.ServiceType.TCS_RDF;
-import static org.gbif.provider.model.voc.ServiceType.WFS;
-import static org.gbif.provider.model.voc.ServiceType.WMS;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.service.GenericResourceManager;
@@ -35,16 +29,17 @@ import org.gbif.provider.service.GeoserverManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
-import org.gbif.provider.webapp.action.admin.ConfigAction.Helper.UrlProvider;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
+import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
 import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Action support for editing IPT configurations.
@@ -58,14 +53,6 @@ public class ConfigAction extends BasePostAction {
    * 
    */
   static class Helper {
-
-    /**
-     * Interface for classes that provide a service URL given a
-     * {@link ServiceType} and {@link Resource}.
-     */
-    static interface UrlProvider {
-      String getUrl(ServiceType type, Resource resource);
-    }
 
     private static final String GOOGLE_MAPS_LOCALHOST_KEY = "ABQIAAAAaLS3GE1JVrq3TRuXuQ68wBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQY-Unm8BwXJu9YioYorDsQkvdK0Q";
 
@@ -90,145 +77,116 @@ public class ConfigAction extends BasePostAction {
       return true;
     }
 
-    static boolean checkGeoServerUrl(String url) {
-      return !nullOrEmpty(url) && url.startsWith("http");
-    }
-
-    static boolean checkLocalhostUrl(String url) {
-      return !nullOrEmpty(url) && !url.contains("localhost")
-          && !url.contains("127.0.0.1");
-    }
-
     static boolean checkMapsKey(String key) {
       return !nullOrEmpty(key)
           && !trimToEmpty(key).equalsIgnoreCase(GOOGLE_MAPS_LOCALHOST_KEY);
-    }
-
-    static OrgCredentials getCreds(String key, String pass) {
-      try {
-        return OrgCredentials.with(key, pass);
-      } catch (Exception e) {
-        return null;
-      }
     }
 
     static boolean nullOrEmpty(String val) {
       return val == null || val.trim().length() == 0;
     }
 
-    static boolean resourceExists(String resourceKey, RegistryManager rm) {
-      return !nullOrEmpty(resourceKey)
-          && rm.readGbrdsResource(resourceKey).getResult() != null;
-    }
+    static String updateIptRssService(String key, String password,
+        String rssUrl, RegistryManager registry) {
+      // Checks if the resource exists:
+      if (!registry.resourceExists(key)) {
+        return null;
+      }
 
-    static UpdateServiceResponse udpateIptRssService(OrgCredentials creds,
-        String iptResourceKey, String rssUrl, RegistryManager rm) {
-      checkNotNull(creds, "Credentials are null");
-      checkNotNull(rm, "RegistryManager is null");
-      checkArgument(!nullOrEmpty(iptResourceKey), "Invalid IPT resource key");
-      checkArgument(!nullOrEmpty(rssUrl) && checkLocalhostUrl(rssUrl),
-          "Invalid RSS URL");
-      for (GbrdsService s : rm.listGbrdsServices(iptResourceKey).getResult()) {
-        ServiceType st = ServiceType.fromCode(s.getType());
-        if (st != null && st.equals(ServiceType.RSS)) {
-          GbrdsService gs = GbrdsService.builder().key(s.getKey()).resourceKey(
-              iptResourceKey).accessPointURL(rssUrl).type(st.getCode()).build();
-          try {
-            return rm.updateGbrdsService(gs, creds);
-          } catch (BadCredentialsException e) {
-            return null;
-          }
+      // Checks credentials:
+      OrgCredentials creds;
+      creds = OrgCredentials.with(key, password);
+      if (creds == null) {
+        return "Warning: Unable to update RSS service because of invalid credentials";
+      }
+
+      // Checks for localhost in the RSS URL:
+      if (registry.isLocalhost(rssUrl)) {
+        return "Warning: Unable to update RSS service because of invalid base URL";
+      }
+
+      // Looks for the RSS service in the GBRDS:
+      ListServicesResponse lsr = registry.listServices(key);
+      if (lsr.getStatus() != HttpStatus.SC_OK) {
+        return "Warning: Unable to get services";
+      }
+      List<GbrdsService> results = lsr.getResult();
+      GbrdsService rss = null;
+      for (GbrdsService s : results) {
+        if (ServiceType.fromCode(s.getType()) == ServiceType.RSS) {
+          rss = s;
         }
       }
+      if (rss == null) {
+        return "Warning: An RSS service does not exist for the IPT";
+      }
+
+      // Updates the service URL:
+      rss = GbrdsService.builder(rss).accessPointURL(rssUrl).build();
+      UpdateServiceResponse usr = null;
+      try {
+        usr = registry.updateService(rss, creds);
+      } catch (BadCredentialsException e) {
+        return "Warning: Unable to update RSS service because of bad credentials: "
+            + creds;
+      }
+      if (usr.getStatus() != HttpStatus.SC_OK) {
+        return "Warning: Updating RSS service returned HTTP status "
+            + usr.getStatus();
+      }
+
       return null;
     }
 
-    static boolean updateResourceServices(
-        ImmutableMap<Resource, OrgCredentials> map, UrlProvider up,
-        RegistryManager rm) {
-      checkNotNull(map, "Resource credential map is null");
-      checkNotNull(up, "UrlProvider is null");
-      checkNotNull(rm, "RegistryManager is null");
-      boolean allServicesUpdated = true;
-      OrgCredentials creds;
-      String resourceKey;
-      for (Resource r : map.keySet()) {
-        resourceKey = r.getMeta().getUddiID();
-        if (nullOrEmpty(resourceKey)) {
-          allServicesUpdated = false;
+    static ImmutableSet<String> updateServices(List<Resource> resources,
+        RegistryManager registry) {
+      checkNotNull(resources, "Resource list is null");
+      checkNotNull(registry, "Registry is null");
+      ImmutableSet.Builder<String> errors = ImmutableSet.builder();
+
+      // Updates all service URLs for all IPT resources:
+      for (Resource r : resources) {
+        // Checks if a GBRDS resource exists for current IPT resource:
+        String resourceKey = r.getMeta().getUddiID();
+        if (!registry.resourceExists(resourceKey)) {
+          errors.add("Warning: No GBRDS resource for IPT resource " + r.getId());
           continue;
         }
-        GbrdsService.Builder builder;
-        ServiceType serviceType;
-        for (GbrdsService s : rm.listGbrdsServices(resourceKey).getResult()) {
-          builder = GbrdsService.builder(s);
-          serviceType = ServiceType.fromCode(s.getType());
-          if (serviceType == null) {
-            allServicesUpdated = false;
-            continue;
-          }
-          switch (serviceType) {
-            case EML:
-              builder.accessPointURL(up.getUrl(EML, r));
-              break;
-            case DWC_ARCHIVE:
-              builder.accessPointURL(up.getUrl(DWC_ARCHIVE, r));
-              break;
-            case TAPIR:
-              builder.accessPointURL(up.getUrl(TAPIR, r));
-              break;
-            case WFS:
-              builder.accessPointURL(up.getUrl(WFS, r));
-              break;
-            case WMS:
-              builder.accessPointURL(up.getUrl(WMS, r));
-              break;
-            case TCS_RDF:
-              builder.accessPointURL(up.getUrl(TCS_RDF, r));
-              break;
-          }
-          GbrdsService gs = builder.resourceKey(resourceKey).build();
-          if (!checkLocalhostUrl(gs.getAccessPointURL())) {
-            allServicesUpdated = false;
-            continue;
-          }
-          creds = map.get(r);
+
+        // Checks credentials:
+        String key = r.getOrgUuid();
+        String password = r.getOrgPassword();
+        OrgCredentials creds = OrgCredentials.with(key, password);
+        if (creds == null) {
+          errors.add("Warning: Invalid credentials: " + creds);
+          continue;
+        }
+
+        // Gets services from GBRDS:
+        ListServicesResponse lsr = registry.listServices(resourceKey);
+        if (lsr.getStatus() != HttpStatus.SC_OK) {
+          errors.add("Warninig: Unable to list services for " + resourceKey);
+          continue;
+        }
+
+        // Updates each service URL:
+        List<GbrdsService> services = lsr.getResult();
+        for (GbrdsService s : services) {
+          ServiceType type = ServiceType.fromCode(s.getType());
+          String url = registry.getServiceUrl(type, r);
+          GbrdsService gs = GbrdsService.builder(s).accessPointURL(url).build();
           try {
-            if (!rm.updateGbrdsService(gs, creds).getResult()) {
-              allServicesUpdated = false;
+            UpdateServiceResponse usr = registry.updateService(gs, creds);
+            if (usr.getStatus() != HttpStatus.SC_OK) {
+              errors.add("Warning: Unable to update service " + gs.getKey());
             }
           } catch (BadCredentialsException e) {
-            allServicesUpdated = false;
+            continue;
           }
         }
       }
-      return allServicesUpdated;
-    }
-  }
-  private static class UrlProviderImpl implements UrlProvider {
-    final AppConfig cfg;
 
-    UrlProviderImpl(AppConfig cfg) {
-      this.cfg = cfg;
-    }
-
-    public String getUrl(ServiceType type, Resource resource) {
-      switch (type) {
-        case EML:
-          return cfg.getEmlUrl(resource.getGuid());
-        case DWC_ARCHIVE:
-          return cfg.getArchiveUrl(resource.getGuid());
-        case TAPIR:
-          return cfg.getTapirEndpoint(resource.getId());
-        case WFS:
-          return cfg.getWfsEndpoint(resource.getId());
-        case WMS:
-          return cfg.getWmsEndpoint(resource.getId());
-        case TCS_RDF:
-          return cfg.getArchiveTcsUrl(resource.getGuid());
-        default:
-          return null;
-      }
+      return errors.build();
     }
   }
 
@@ -240,7 +198,7 @@ public class ConfigAction extends BasePostAction {
   private GeoserverManager geoManager;
 
   @Autowired
-  private RegistryManager registryManager;
+  private RegistryManager registry;
 
   public AppConfig getConfig() {
     return this.cfg;
@@ -248,8 +206,11 @@ public class ConfigAction extends BasePostAction {
 
   @Override
   public String read() {
-    if (configProblemsFound()) {
-      saveMessage("Warning: There are configuration problems with this IPT instance");
+    ImmutableSet<String> errors = checkForErrors();
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
+      }
     }
     return SUCCESS;
   }
@@ -259,14 +220,39 @@ public class ConfigAction extends BasePostAction {
     if (cancel != null) {
       return "cancel";
     }
-    if (configProblemsFound()) {
-      saveMessage("Warning: Configuration problems must be fixed before saving");
-    } else {
-      cfg.save();
-      cfg.reloadLogger();
-      updateServices();
-      saveMessage("Configuration saved successfully");
+
+    // Checks for errors:
+    ImmutableSet<String> errors = checkForErrors();
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
+      }
+      return SUCCESS;
     }
+
+    // Saves app config:
+    cfg.save();
+    saveMessage("Success: IPT configuration saved");
+    cfg.reloadLogger();
+
+    // Updates RSS service URL for the IPT resource:
+    String error = Helper.updateIptRssService(cfg.getOrg().getUddiID(),
+        cfg.getOrgPassword(), cfg.getAtomFeedURL(), registry);
+    if (error != null) {
+      saveMessage(error);
+    } else {
+      saveMessage("Success: Updated the IPT RSS service URL");
+    }
+
+    // Updates service URLs for all services:
+    errors = Helper.updateServices(resourceManager.getAll(), registry);
+    for (String msg : errors) {
+      saveMessage(msg);
+    }
+    if (errors.isEmpty()) {
+      saveMessage("Success: Updated all resource service URLs");
+    }
+
     return SUCCESS;
   }
 
@@ -284,77 +270,26 @@ public class ConfigAction extends BasePostAction {
     return SUCCESS;
   }
 
-  private boolean configProblemsFound() {
-    boolean problemsFound = false;
-    if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
-      String msg = "Warning: Invalid base URL (contains 'localhost')";
-      saveMessage(msg);
-      cfg.setBaseUrl(msg);
-      problemsFound = true;
+  private ImmutableSet<String> checkForErrors() {
+    ImmutableSet.Builder<String> b = ImmutableSet.builder();
+
+    if (registry.isLocalhost(cfg.getBaseUrl())
+        || registry.isLocalhost(cfg.getGeoserverUrl())) {
+      b.add("Warning: Invalid base URLs for IPT or Geoserver");
     }
     if (!Helper.checkDataDir(cfg.getDataDir())) {
-      saveMessage("Warning: Invalid data directory");
-      problemsFound = true;
-    }
-    if (!Helper.checkGeoServerUrl(cfg.getGeoserverUrl())) {
-      saveMessage("Warning: Invalid Geoserver URL");
-      problemsFound = true;
+      b.add("Warning: Invalid data directory");
     }
     if (!Helper.checkDataDir(cfg.getGeoserverDataDir())) {
-      saveMessage("Warning: Invalid Geoserver data directory");
-      problemsFound = true;
+      b.add("Warning: Invalid Geoserver data directory");
     }
     if (!Helper.checkMapsKey(cfg.getGoogleMapsApiKey())) {
-      saveMessage("Warning: Invalid Google Maps API key");
-      problemsFound = true;
+      b.add("Warning: Invalid Google Maps API key");
     }
     if (!Helper.checkGeoServerCreds(cfg.getGeoserverUser(),
         cfg.getGeoserverUser(), cfg.getGeoserverUrl(), geoManager)) {
-      saveMessage("Warning: Invalid Geoserver credentials");
-      problemsFound = true;
+      b.add("Warning: Invalid Geoserver credentials");
     }
-    return problemsFound;
-  }
-
-  private void updateServices() {
-    if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
-      saveMessage("Warning: Unable to update GBRDS services because of invalid base URL");
-      return;
-    }
-
-    // Updates the IPT RSS service in the GBRDS:
-    OrgCredentials creds;
-    creds = Helper.getCreds(cfg.getOrg().getUddiID(), cfg.getOrgPassword());
-    if (creds != null) {
-      String resourceKey = cfg.getIpt().getUddiID();
-      if (Helper.resourceExists(resourceKey, registryManager)) {
-        String rssUrl = cfg.getAtomFeedURL();
-        if (Helper.udpateIptRssService(creds, resourceKey, rssUrl,
-            registryManager).getResult()) {
-          saveMessage("Updated IPT RSS service");
-        } else {
-          saveMessage("Warning: Unable to update IPT RSS service");
-        }
-      }
-    }
-    // Updates all service URLs for all IPT resources:
-    ImmutableMap.Builder<Resource, OrgCredentials> b = ImmutableMap.builder();
-    for (Resource r : resourceManager.getAll()) {
-      creds = Helper.getCreds(r.getOrgUuid(), r.getOrgPassword());
-      if (creds != null) {
-        b.put(r, creds);
-      } else {
-        saveMessage(String.format(
-            "Warning: Unable to update resource %d because of bad credentials",
-            r.getId()));
-      }
-    }
-
-    UrlProvider up = new UrlProviderImpl(cfg);
-    if (Helper.updateResourceServices(b.build(), up, registryManager)) {
-      saveMessage("Updated all GBRDS service URLs");
-    } else {
-      saveMessage("Warning: Some service URLs not updated");
-    }
+    return b.build();
   }
 }

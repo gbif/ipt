@@ -17,13 +17,16 @@ package org.gbif.mock;
 
 import com.google.common.collect.Lists;
 
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
+import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.registry.api.client.GbrdsExtension;
 import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.GbrdsThesaurus;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsOrganisation.Builder;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
@@ -44,7 +47,7 @@ import java.util.List;
 /**
  *
  */
-public abstract class RegistryManagerMock implements RegistryManager {
+public class RegistryManagerMock implements RegistryManager {
 
   public GbrdsService service;
   public List<GbrdsService> serviceList = Lists.newArrayList();
@@ -53,10 +56,10 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#buildGbrdsOrganisation(org.gbif
-   * .provider.model.ResourceMetadata)
+   * org.gbif.provider.service.RegistryManager#createOrg(org.gbif.registry.api
+   * .client.GbrdsOrganisation)
    */
-  public Builder buildGbrdsOrganisation(ResourceMetadata resourceMetadata) {
+  public CreateOrgResponse createOrg(GbrdsOrganisation organisation) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -65,38 +68,12 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#buildGbrdsResource(org.gbif.provider
-   * .model.ResourceMetadata)
-   */
-  public org.gbif.registry.api.client.GbrdsResource.Builder buildGbrdsResource(
-      ResourceMetadata resourceMetadata) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#createGbrdsOrganisation(org.gbif
-   * .registry.api.client.GbrdsOrganisation)
-   */
-  public CreateOrgResponse createGbrdsOrganisation(
-      GbrdsOrganisation organisation) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#createGbrdsResource(org.gbif.
-   * registry.api.client.GbrdsResource,
+   * org.gbif.provider.service.RegistryManager#createResource(org.gbif.registry
+   * .api.client.GbrdsResource,
    * org.gbif.registry.api.client.Gbrds.OrgCredentials)
    */
-  public CreateResourceResponse createGbrdsResource(GbrdsResource resource,
-      OrgCredentials creds) {
+  public CreateResourceResponse createResource(GbrdsResource resource,
+      OrgCredentials creds) throws BadCredentialsException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -105,12 +82,12 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#createGbrdsService(org.gbif.registry
+   * org.gbif.provider.service.RegistryManager#createService(org.gbif.registry
    * .api.client.GbrdsService,
    * org.gbif.registry.api.client.Gbrds.OrgCredentials)
    */
-  public CreateServiceResponse createGbrdsService(GbrdsService service,
-      OrgCredentials creds) {
+  public CreateServiceResponse createService(GbrdsService service,
+      OrgCredentials creds) throws BadCredentialsException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -119,11 +96,11 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#deleteGbrdsResource(java.lang
-   * .String, org.gbif.registry.api.client.Gbrds.OrgCredentials)
+   * org.gbif.provider.service.RegistryManager#deleteResource(java.lang.String,
+   * org.gbif.registry.api.client.Gbrds.OrgCredentials)
    */
-  public DeleteResourceResponse deleteGbrdsResource(String resourceKey,
-      OrgCredentials creds) {
+  public DeleteResourceResponse deleteResource(String resourceKey,
+      OrgCredentials creds) throws BadCredentialsException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -132,13 +109,96 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#deleteGbrdsService(java.lang.
-   * String, org.gbif.registry.api.client.Gbrds.OrgCredentials)
+   * org.gbif.provider.service.RegistryManager#deleteService(java.lang.String,
+   * org.gbif.registry.api.client.Gbrds.OrgCredentials)
    */
-  public DeleteServiceResponse deleteGbrdsService(String serviceKey,
-      OrgCredentials creds) {
+  public DeleteServiceResponse deleteService(String serviceKey,
+      OrgCredentials creds) throws BadCredentialsException {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.provider.service.RegistryManager#getCreds(java.lang.String,
+   * java.lang.String)
+   */
+  public OrgCredentials getCreds(String key, String pass) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#getMeta(org.gbif.registry.api
+   * .client.GbrdsOrganisation)
+   */
+  public ResourceMetadata getMeta(GbrdsOrganisation org) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#getMeta(org.gbif.registry.api
+   * .client.GbrdsResource)
+   */
+  public ResourceMetadata getMeta(GbrdsResource resource) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#asOrg(org.gbif.provider.model
+   * .ResourceMetadata)
+   */
+  public Builder getOrgBuilder(ResourceMetadata meta) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#asResource(org.gbif.provider.
+   * model.ResourceMetadata)
+   */
+  public org.gbif.registry.api.client.GbrdsResource.Builder getResourceBuilder(
+      ResourceMetadata meta) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#getServiceUrl(org.gbif.provider
+   * .model.voc.ServiceType, org.gbif.provider.model.Resource)
+   */
+  public String getServiceUrl(ServiceType type, Resource resource) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#isLocalhost(java.lang.String)
+   */
+  public boolean isLocalhost(String url) {
+    // TODO Auto-generated method stub
+    return false;
   }
 
   /*
@@ -165,10 +225,9 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#listGbrdsServices(java.lang.String
-   * )
+   * org.gbif.provider.service.RegistryManager#listServices(java.lang.String)
    */
-  public ListServicesResponse listGbrdsServices(String resourceKey) {
+  public ListServicesResponse listServices(String resourceKey) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -176,13 +235,11 @@ public abstract class RegistryManagerMock implements RegistryManager {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#readGbrdsOrganisation(java.lang
-   * .String)
+   * @see org.gbif.provider.service.RegistryManager#orgExists(java.lang.String)
    */
-  public ReadOrgResponse readGbrdsOrganisation(String organisationKey) {
+  public boolean orgExists(String key) {
     // TODO Auto-generated method stub
-    return null;
+    return false;
   }
 
   /*
@@ -200,13 +257,9 @@ public abstract class RegistryManagerMock implements RegistryManager {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.gbif.provider.service.RegistryManager#updateGbrdsOrganisation(org.gbif
-   * .registry.api.client.GbrdsOrganisation,
-   * org.gbif.registry.api.client.Gbrds.OrgCredentials)
+   * @see org.gbif.provider.service.RegistryManager#readOrg(java.lang.String)
    */
-  public UpdateOrgResponse updateGbrdsOrganisation(
-      GbrdsOrganisation organisation, OrgCredentials creds) {
+  public ReadOrgResponse readOrg(String organisationKey) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -215,12 +268,23 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#updateGbrdsResource(org.gbif.
-   * registry.api.client.GbrdsResource,
+   * org.gbif.provider.service.RegistryManager#resourceExists(java.lang.String)
+   */
+  public boolean resourceExists(String key) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#updateOrg(org.gbif.registry.api
+   * .client.GbrdsOrganisation,
    * org.gbif.registry.api.client.Gbrds.OrgCredentials)
    */
-  public UpdateResourceResponse updateGbrdsResource(GbrdsResource resource,
-      OrgCredentials creds) {
+  public UpdateOrgResponse updateOrg(GbrdsOrganisation organisation,
+      OrgCredentials creds) throws BadCredentialsException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -229,12 +293,26 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#updateGbrdsService(org.gbif.registry
+   * org.gbif.provider.service.RegistryManager#updateResource(org.gbif.registry
+   * .api.client.GbrdsResource,
+   * org.gbif.registry.api.client.Gbrds.OrgCredentials)
+   */
+  public UpdateResourceResponse updateResource(GbrdsResource resource,
+      OrgCredentials creds) throws BadCredentialsException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#updateService(org.gbif.registry
    * .api.client.GbrdsService,
    * org.gbif.registry.api.client.Gbrds.OrgCredentials)
    */
-  public UpdateServiceResponse updateGbrdsService(GbrdsService service,
-      OrgCredentials creds) {
+  public UpdateServiceResponse updateService(GbrdsService service,
+      OrgCredentials creds) throws BadCredentialsException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -243,10 +321,10 @@ public abstract class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
-   * org.gbif.provider.service.RegistryManager#validateCredentials(org.gbif.
-   * registry.api.client.Gbrds.OrgCredentials)
+   * org.gbif.provider.service.RegistryManager#validateCreds(org.gbif.registry
+   * .api.client.Gbrds.OrgCredentials)
    */
-  public ValidateOrgCredentialsResponse validateCredentials(OrgCredentials creds) {
+  public ValidateOrgCredentialsResponse validateCreds(OrgCredentials creds) {
     // TODO Auto-generated method stub
     return null;
   }

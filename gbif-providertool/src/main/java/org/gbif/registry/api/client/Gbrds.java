@@ -74,7 +74,7 @@ public interface Gbrds {
    * 
    */
   @SuppressWarnings("serial")
-  public static class BadCredentialsException extends Error {
+  public static class BadCredentialsException extends Exception {
     public BadCredentialsException() {
       super();
     }

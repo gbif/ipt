@@ -1601,7 +1601,7 @@ public class GbrdsRegistry implements Gbrds {
 
       public List<GbrdsService> getResult() {
         if (getStatus() != HttpStatus.SC_OK) {
-          return null;
+          return Lists.newArrayList();
         }
         return ServiceUtil.listFromJson(getBody());
       }
