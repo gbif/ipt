@@ -120,7 +120,7 @@ public class ConfigAction extends BasePostAction {
 
     // Saves app config:
     cfg.save();
-    saveMessage("Success: IPT configuration saved");
+    saveMessage(getText("config.saveSuccessful"));
     cfg.reloadLogger();
 
     // Updates RSS service URL for the IPT resource if the IPT org exists:
@@ -132,7 +132,7 @@ public class ConfigAction extends BasePostAction {
       if (error != null) {
         saveMessage(error);
       } else {
-        saveMessage("Success: Updated the IPT RSS service URL");
+        saveMessage(getText("config.IPTRSSUpdated"));
       }
     }
 
@@ -142,7 +142,7 @@ public class ConfigAction extends BasePostAction {
       saveMessage(msg);
     }
     if (errors.isEmpty()) {
-      saveMessage("Success: Updated all resource service URLs");
+      saveMessage(getText("config.resourceServicesUpdated"));
     }
 
     return SUCCESS;
@@ -157,7 +157,7 @@ public class ConfigAction extends BasePostAction {
       geoManager.updateCatalog();
       saveMessage(getText("config.geoserverUpdated"));
     } catch (IOException e) {
-      saveMessage(getText("config.geoserverNotUpdated"));
+      saveMessage(getText("config.warning.geoserverNotUpdated"));
     }
     return SUCCESS;
   }
@@ -165,22 +165,24 @@ public class ConfigAction extends BasePostAction {
   private ImmutableSet<String> checkForErrors() {
     ImmutableSet.Builder<String> b = ImmutableSet.builder();
 
-    if (registry.isLocalhost(cfg.getBaseUrl())
-        || registry.isLocalhost(cfg.getGeoserverUrl())) {
-      b.add("Warning: Invalid base URLs for IPT or Geoserver");
+    if (registry.isLocalhost(cfg.getBaseUrl())) {
+      b.add(getText("config.warning.invalidBaseUrl"));
+    }
+    if (registry.isLocalhost(cfg.getGeoserverUrl())) {
+      b.add(getText("config.warning.invalidGeoserverUrl"));
     }
     if (!Helper.checkDataDir(cfg.getDataDir())) {
-      b.add("Warning: Invalid data directory");
+      b.add(getText("config.warning.invalidDataDirectory"));
     }
     if (!Helper.checkDataDir(cfg.getGeoserverDataDir())) {
-      b.add("Warning: Invalid Geoserver data directory");
+      b.add(getText("config.warning.invalidGeoserverDataDirectory"));
     }
     if (!Helper.checkMapsKey(cfg.getGoogleMapsApiKey())) {
-      b.add("Warning: Invalid Google Maps API key");
+      b.add(getText("config.warning.invalidGoogleMapsKey"));
     }
     if (!Helper.checkGeoServerCreds(cfg.getGeoserverUser(),
         cfg.getGeoserverUser(), cfg.getGeoserverUrl(), geoManager)) {
-      b.add("Warning: Invalid Geoserver credentials");
+      b.add(getText("config.warning.invalidGeoserverCredentials"));
     }
     return b.build();
   }

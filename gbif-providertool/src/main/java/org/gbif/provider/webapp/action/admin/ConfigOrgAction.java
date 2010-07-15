@@ -45,18 +45,21 @@ public class ConfigOrgAction extends BasePostAction {
 
     // Checks required org properties:
     if (nullOrEmpty(go.getName())) {
+      // b.add(getText("config.org.warning.orgName"));
       b.add("Warning: Organisation name required");
     }
     if (nullOrEmpty(go.getPrimaryContactType())) {
+      // b.add(getText("config.org.warning.contactType"));
       b.add("Warning: Primary contact type required");
     }
     if (nullOrEmpty(go.getPrimaryContactEmail())) {
+      // b.add(getText("config.org.warning.contactEmail"));
       b.add("Warning: Primary contact email required");
     }
     if (nullOrEmpty(go.getNodeKey())) {
+      // b.add(getText("config.org.warning.nodeKey"));
       b.add("Warning: Node key required");
     }
-
     return b.build();
   }
 
@@ -122,12 +125,12 @@ public class ConfigOrgAction extends BasePostAction {
     // Notifies the user if the organisation can't be changed:
     String resourceKey = cfg.getIpt().getUddiID();
     if (registry.resourceExists(resourceKey)) {
-      saveMessage("Warning: You can edit this organisation but not change it to a different one");
+      saveMessage(getText("config.org.warning.noNewOrg"));
     }
     // Notifies the user if the organisation doesn't exist in GBRDS:
     String orgKey = cfg.getOrg().getUddiID();
     if (!registry.orgExists(orgKey)) {
-      // TODO: Should a UI message be surfaced here?
+      saveMessage(getText("config.org.warning.noOrg"));
     }
     // Initializes builder with org values stored by AppConfig:
     orgBuilder = registry.getOrgBuilder(cfg.getOrg());
@@ -152,21 +155,22 @@ public class ConfigOrgAction extends BasePostAction {
     // Checks if organisation already exists:
     String key = go.getKey();
     if (registry.orgExists(key)) {
-      saveMessage("Warning: Organisation is already registered in the GBRDS");
+      saveMessage(getText("config.org.warning.orgRegistered"));
       return SUCCESS;
     }
 
     // Creates new org:
     CreateOrgResponse cor = registry.createOrg(go);
     if (cor.getStatus() != HttpStatus.SC_CREATED) {
-      saveMessage("Warning: Organisation not created - " + cor.getStatus());
+      saveMessage(getText("config.org.warning.orgNotCreated") + " "
+          + cor.getStatus());
       return SUCCESS;
     }
 
     // Verifies new org credentials:
     OrgCredentials creds = cor.getResult();
     if (creds == null) {
-      saveMessage("Warning: GBRDS returned invalid organisation credentials");
+      saveMessage(getText("config.org.warning.badOrgCredentials"));
       return SUCCESS;
     }
 
@@ -177,7 +181,7 @@ public class ConfigOrgAction extends BasePostAction {
     cfg.setOrg(registry.getMeta(go));
     cfg.setOrgPassword(creds.getPassword());
     cfg.save();
-    saveMessage("Organisation successfully registered: " + creds.getKey());
+    saveMessage(getText("config.org.registered") + " " + creds.getKey());
     return SUCCESS;
   }
 
@@ -200,7 +204,7 @@ public class ConfigOrgAction extends BasePostAction {
     String pass = go.getPassword();
     OrgCredentials creds = registry.getCreds(key, pass);
     if (creds == null) {
-      saveMessage("Warning: Invalid registry credentials");
+      saveMessage(getText("config.org.warning.badOrgCredentials"));
       return SUCCESS;
     }
 
@@ -215,11 +219,12 @@ public class ConfigOrgAction extends BasePostAction {
     try {
       uor = registry.updateOrg(go, creds);
     } catch (BadCredentialsException e) {
-      saveMessage("Warning: Invalid registry credentials: " + creds);
+      saveMessage(getText("config.org.warning.badOrgCredentials"));
       return SUCCESS;
     }
     if (uor.getStatus() != HttpStatus.SC_OK) {
-      saveMessage("Warning: Organisation not updated - " + uor.getStatus());
+      saveMessage(getText("config.org.warning.orgNotUpdated") + " "
+          + uor.getStatus());
       // TODO: Return here?
     }
     cfg.setOrg(registry.getMeta(go));

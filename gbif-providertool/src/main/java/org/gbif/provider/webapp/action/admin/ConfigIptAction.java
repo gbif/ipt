@@ -132,7 +132,7 @@ public class ConfigIptAction extends BasePostAction {
     GbrdsResource gr = resourceBuilder.build();
     OrgCredentials creds = getCreds();
     if (creds == null) {
-      saveMessage("Warning: Unable to create resource - bad credetials");
+      saveMessage(getText("config.ipt.warning.badCredentials"));
       return SUCCESS;
     }
 
@@ -141,16 +141,16 @@ public class ConfigIptAction extends BasePostAction {
     try {
       crr = registry.createResource(gr, creds);
     } catch (BadCredentialsException e) {
-      saveMessage("Warning: Unable to create resource - bad credetials");
+      saveMessage(getText("config.ipt.warning.badCredentials"));
       return SUCCESS;
     }
     if (crr.getStatus() != HttpStatus.SC_CREATED) {
-      saveMessage("Warning: Unable to create resource - status "
+      saveMessage(getText("config.ipt.warning.resourceNotCreated") + " "
           + crr.getStatus());
       return SUCCESS;
     }
     String resourceKey = crr.getResult().getKey();
-    saveMessage("Success: GBRDS resource created with key: " + resourceKey);
+    saveMessage(getText("config.ipt.resourceCreated") + " " + resourceKey);
 
     // Saves resource properties to app config:
     gr = resourceBuilder.key(resourceKey).build();
@@ -166,16 +166,16 @@ public class ConfigIptAction extends BasePostAction {
     try {
       csr = registry.createService(gs, creds);
     } catch (BadCredentialsException e) {
-      saveMessage("Warning: Unable to create RSS service - bad credetials");
+      saveMessage(getText("config.ipt.warning.RSSBadCredentials"));
       return SUCCESS;
     }
     if (csr.getStatus() != HttpStatus.SC_CREATED) {
-      saveMessage("Warning: Unable to create RSS service - status "
+      saveMessage(getText("config.ipt.warning.RSSnotCreated") + " "
           + csr.getStatus());
       return SUCCESS;
     }
     String serviceKey = csr.getResult().getKey();
-    saveMessage("Success: GBRDS service created with key: " + serviceKey);
+    saveMessage(getText("config.ipt.serviceCreated") + " " + serviceKey);
     return SUCCESS;
   }
 
@@ -203,7 +203,7 @@ public class ConfigIptAction extends BasePostAction {
     // Updates resource
     OrgCredentials creds = getCreds();
     if (creds == null) {
-      saveMessage("Warning: Unable to update resource - bad credetials");
+      saveMessage(getText("config.ipt.warning.resourceUpdateBadCredentials"));
       return SUCCESS;
     }
 
@@ -212,11 +212,11 @@ public class ConfigIptAction extends BasePostAction {
     try {
       urr = registry.updateResource(gr, creds);
     } catch (BadCredentialsException e) {
-      saveMessage("Warning: Unable to update resource - bad credetials");
+      saveMessage(getText("config.ipt.warning.resourceUpdateBadCredentials"));
       return SUCCESS;
     }
     if (urr.getStatus() != HttpStatus.SC_OK) {
-      saveMessage("Warning: Unable to update resource - status "
+      saveMessage(getText("config.ipt.warning.resourceNotUpdated") + " "
           + urr.getStatus());
       return SUCCESS;
     }
@@ -224,7 +224,7 @@ public class ConfigIptAction extends BasePostAction {
     // Updates app config:
     cfg.setIpt(registry.getMeta(gr));
     cfg.save();
-    saveMessage("GBRDS resource updated successfully");
+    saveMessage(getText("config.ipt.resourceUpdated"));
     return SUCCESS;
   }
 
@@ -261,17 +261,17 @@ public class ConfigIptAction extends BasePostAction {
 
     // Checks if the IPT base URL contains localhost:
     if (registry.isLocalhost(cfg.getBaseUrl())) {
-      b.add("Warning: Cannot create GBRDS resource because IPT base URL contains localhost");
+      b.add(getText("config.ipt.warning.localhost"));
     }
 
     // Checks if the IPT organisation exists:
     String key = cfg.getOrg().getUddiID();
     if (registry.orgExists(key)) {
       if (getCreds() == null) {
-        b.add("Warning: Cannot create GBRDS resource because the GBRDS organisation credentials are invalid");
+        b.add(getText("config.ipt.warning.badCredentials"));
       }
     } else {
-      b.add("Warning: Cannot create GBRDS resource because a GBRDS organisation is not yet associated with this IPT instance");
+      b.add(getText("config.ipt.warning.noOrg"));
     }
 
     return b.build();
@@ -282,4 +282,5 @@ public class ConfigIptAction extends BasePostAction {
     String pass = cfg.getOrgPassword();
     return registry.getCreds(key, pass);
   }
+
 }
