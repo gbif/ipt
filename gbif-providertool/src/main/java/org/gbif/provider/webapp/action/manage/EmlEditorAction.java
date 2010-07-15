@@ -15,27 +15,16 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
-import com.opensymphony.xwork2.Preparable;
-
-import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
-import static org.gbif.provider.model.voc.ServiceType.EML;
-import static org.gbif.provider.model.voc.ServiceType.TAPIR;
-import static org.gbif.provider.model.voc.ServiceType.TCS_RDF;
-import static org.gbif.provider.model.voc.ServiceType.WFS;
-import static org.gbif.provider.model.voc.ServiceType.WMS;
-
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.gbif.provider.model.Resource;
-import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.eml.Agent;
 import org.gbif.provider.model.eml.Eml;
 import org.gbif.provider.model.eml.GeospatialCoverage;
@@ -52,18 +41,17 @@ import org.gbif.provider.model.eml.TemporalCoverage;
 import org.gbif.provider.model.eml.TemporalCoverageType;
 import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.model.voc.Rank;
-import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.model.voc.Vocabulary;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.service.ThesaurusManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
-import org.gbif.provider.webapp.action.manage.EmlEditorAction.Helper.UrlProvider;
 import org.gbif.registry.api.client.GbrdsResource;
-import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
+import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
@@ -82,145 +70,11 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 public class EmlEditorAction extends BaseMetadataResourceAction implements
-    Preparable, ServletRequestAware {
+    ServletRequestAware {
 
   static class Helper {
-
-    /**
-     * Interface for classes that provide a service URL given a
-     * {@link ServiceType} and {@link Resource}.
-     */
-    static interface UrlProvider {
-      String getUrl(ServiceType type, Resource resource);
-    }
-
-    static boolean checkLocalhostUrl(String url) {
-      return !nullOrEmpty(url) && !url.contains("localhost")
-          && !url.contains("127.0.0.1");
-    }
-
-    static String createResource(GbrdsResource resource, OrgCredentials creds,
-        RegistryManager rm) {
-      checkNotNull(resource, "Resource is null");
-      checkNotNull(creds, "Organisation credentials are null");
-      checkNotNull(rm, "Resource manager is null");
-      checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
-      checkArgument(validateCreds(creds, rm), "Bad credentials");
-      GbrdsResource r = null;
-      try {
-        r = rm.createResource(resource, creds).getResult();
-      } catch (BadCredentialsException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      if (r == null) {
-        return null;
-      }
-      return r.getKey();
-    }
-
-    static Set<String> createServices(GbrdsResource r, Resource resource,
-        UrlProvider up, RegistryManager registryManager) {
-      checkNotNull(r, "GBRDS resource is null");
-      checkNotNull(resource, "IPT resource is null");
-      checkNotNull(up, "Url provider is null");
-      checkNotNull(registryManager, "Registry manager is null");
-      checkArgument(validateResource(r).isEmpty(), "Invalid resource");
-      OrgCredentials creds = registryManager.getCreds(resource.getOrgUuid(),
-          resource.getOrgPassword());
-      checkArgument(validateCreds(creds, registryManager),
-          "Invalid credentials");
-      Set<String> serviceKeys = Sets.newHashSet();
-      List<ServiceType> types = Lists.newArrayList(EML, DWC_ARCHIVE, TAPIR,
-          WFS, WMS, TCS_RDF);
-      GbrdsService.Builder service = GbrdsService.builder().resourceKey(
-          r.getKey());
-      for (ServiceType type : types) {
-        switch (type) {
-          case EML:
-            service.accessPointURL(up.getUrl(EML, resource));
-            service.type(EML.getCode());
-            break;
-          case DWC_ARCHIVE:
-            service.accessPointURL(up.getUrl(DWC_ARCHIVE, resource));
-            service.type(DWC_ARCHIVE.getCode());
-            break;
-          case TAPIR:
-            service.accessPointURL(up.getUrl(TAPIR, resource));
-            service.type(TAPIR.getCode());
-            break;
-          case WFS:
-            service.accessPointURL(up.getUrl(WFS, resource));
-            service.type(TAPIR.getCode());
-            break;
-          case WMS:
-            service.accessPointURL(up.getUrl(WMS, resource));
-            service.type(WMS.getCode());
-            break;
-          case TCS_RDF:
-            service.accessPointURL(up.getUrl(TCS_RDF, resource));
-            service.type(TCS_RDF.getCode());
-            break;
-        }
-        GbrdsService createdService = null;
-        try {
-          createdService = registryManager.createService(service.build(), creds).getResult();
-        } catch (BadCredentialsException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-        if (createdService != null) {
-          serviceKeys.add(createdService.getKey());
-        }
-      }
-      return serviceKeys;
-    }
-
-    static GbrdsResource.Builder getResourceBuilder(ResourceMetadata meta) {
-      checkNotNull(meta, "Resource metadata is null");
-      return GbrdsResource.builder().description(meta.getDescription()).primaryContactEmail(
-          meta.getContactEmail()).primaryContactName(meta.getContactName()).homepageURL(
-          meta.getLink()).name(meta.getTitle()).key(meta.getUddiID());
-    }
-
-    static ResourceMetadata getResourceMetadata(GbrdsResource resource) {
-      checkNotNull(resource, "Organisation is nul");
-      ResourceMetadata meta = new ResourceMetadata();
-      meta.setDescription(resource.getDescription());
-      meta.setContactEmail(resource.getPrimaryContactEmail());
-      meta.setContactName(resource.getPrimaryContactName());
-      meta.setLink(resource.getHomepageURL());
-      meta.setTitle(resource.getName());
-      meta.setUddiID(resource.getKey());
-      return meta;
-    }
-
     static boolean nullOrEmpty(String val) {
       return val == null || val.trim().length() == 0;
-    }
-
-    static boolean updateResource(GbrdsResource resource, OrgCredentials creds,
-        RegistryManager rm) {
-      checkNotNull(resource, "Resource is null");
-      checkNotNull(creds, "Credentials are null");
-      checkNotNull(rm, "Resource manager is null");
-      checkArgument(validateResource(resource).isEmpty(), "Invalid resource");
-      checkArgument(validateCreds(creds, rm), "Invalid credentials");
-      try {
-        return rm.updateResource(resource, creds).getResult();
-      } catch (BadCredentialsException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      return false;
-    }
-
-    static boolean validateCreds(OrgCredentials creds, RegistryManager rm) {
-      checkNotNull(rm, "Registry manager is null");
-      if (creds == null) {
-        return false;
-      }
-      return rm.validateCreds(creds).getResult();
     }
 
     static ImmutableSet<String> validateResource(GbrdsResource resource) {
@@ -248,32 +102,6 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
    */
   private enum RequestMethod {
     ASSOCIATED_PARTIES, NO_OP, ORGANISATION, SAMPLING_METHODS, KEYWORD_SETS, GEOGRAPHIC_COVERAGES, TEMPORAL_COVERAGES, TAXONOMIC_COVERAGES, PROJECTS, CITATIONS, COLLECTIONS, PHYSICAL_DATA, RESOURCE_FORM, ADDITIONAL_METADATA;
-  }
-  private static class UrlProviderImpl implements UrlProvider {
-    final AppConfig cfg;
-
-    UrlProviderImpl(AppConfig cfg) {
-      this.cfg = cfg;
-    }
-
-    public String getUrl(ServiceType type, Resource resource) {
-      switch (type) {
-        case EML:
-          return cfg.getEmlUrl(resource.getGuid());
-        case DWC_ARCHIVE:
-          return cfg.getArchiveUrl(resource.getGuid());
-        case TAPIR:
-          return cfg.getTapirEndpoint(resource.getId());
-        case WFS:
-          return cfg.getWfsEndpoint(resource.getId());
-        case WMS:
-          return cfg.getWmsEndpoint(resource.getId());
-        case TCS_RDF:
-          return cfg.getArchiveTcsUrl(resource.getGuid());
-        default:
-          return null;
-      }
-    }
   }
 
   private static final long serialVersionUID = -843256914689939746L;
@@ -328,10 +156,14 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   @Autowired
   private EmlManager emlManager;
+
   @Autowired
   private ThesaurusManager thesaurusManager;
+
   private Eml eml;
+
   private HttpServletRequest request;
+
   private boolean isSubmittedAssoParties;
 
   private List<Agent> submittedAssociatedParties = Lists.newArrayList();
@@ -454,17 +286,21 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         MethodType.htmlSelectMap), true);
     switch (method(request)) {
       case ORGANISATION:
+
         boolean problems = false;
+
         // Notifies the user if the IPT base URL contains localhost:
-        if (!Helper.checkLocalhostUrl(cfg.getBaseUrl())) {
+        if (registry.isLocalhost(cfg.getBaseUrl())) {
           saveMessage("Warning: Cannot create GBRDS resource because IPT base URL contains localhost");
           problems = true;
         }
+
         // Notifies the user if the Geoserver URL contains localhost:
-        if (!Helper.checkLocalhostUrl(cfg.getGeoserverUrl())) {
+        if (registry.isLocalhost(cfg.getGeoserverUrl())) {
           saveMessage("Warning: Cannot create GBRDS resource because Geoserver URL contains localhost");
           problems = true;
         }
+
         // Notifies user if the resource organisation creds are invalid:
         String orgKey = resource.getOrgUuid();
         if (registry.orgExists(orgKey)) {
@@ -474,6 +310,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
             problems = true;
           }
         }
+
         // Notifies user if the resource already exists:
         String resourceKey = resource.getMeta().getUddiID();
         if (registry.resourceExists(resourceKey)) {
@@ -504,44 +341,79 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           }
         }
 
+        // Sets resource organisation credentials:
         resource.setOrgPassword(creds.getPassword());
         resource.setOrgUuid(creds.getKey());
 
-        GbrdsResource gr = Helper.getResourceBuilder(resource.getMeta()).organisationKey(
+        // Builds the GBRDS resource to create:
+        GbrdsResource gr = registry.getResourceBuilder(resource.getMeta()).organisationKey(
             resource.getOrgUuid()).primaryContactType(
             ContactType.technical.name()).organisationKey(creds.getKey()).build();
 
-        // Creates new GBRDS resource:
         if (resourceKey == null) {
-          resourceKey = Helper.createResource(gr, creds, registry);
+
+          // Creates new GBRDS resource:
+          CreateResourceResponse crr = null;
+          try {
+            crr = registry.createResource(gr, creds);
+          } catch (BadCredentialsException e1) {
+            saveMessage("Warning: Unable to update resource - bad credentials "
+                + creds);
+            break;
+          }
+          int status = crr.getStatus();
+          if (status != HttpStatus.SC_CREATED) {
+            saveMessage("Warning: Unable to create GBRDS resource - status "
+                + status);
+            break;
+          };
+
+          // Verified the new key:
+          resourceKey = crr.getResult().getKey();
           if (resourceKey == null) {
-            saveMessage("Warning: Unable to create GBRDS resource");
+            saveMessage("Warning: Problem creating GBRDS resource - no key returned from GBRDS");
             break;
           }
           resource.getMeta().setUddiID(resourceKey);
+
           // Creates new GBRDS services:
-          gr = Helper.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
+          gr = registry.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
               resource.getOrgUuid()).primaryContactType(
               ContactType.technical.name()).organisationKey(creds.getKey()).build();
-          UrlProvider up = new UrlProviderImpl(cfg);
-          Set<String> serviceKeys = Helper.createServices(gr, resource, up,
-              registry);
-          if (!serviceKeys.isEmpty()) {
-            saveMessage("Successfully created GBRDS services: " + serviceKeys);
-          }
-        } else { // Updates the existing GBRDS resource:
-          gr = Helper.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
-              resource.getOrgUuid()).primaryContactType(
-              ContactType.technical.name()).organisationKey(creds.getKey()).build();
-          if (Helper.updateResource(gr, creds, registry)) {
-            saveMessage("GBRDS resource updated successfully");
+          Set<String> errors = registry.createResourceServices(gr, resource);
+          if (!errors.isEmpty()) {
+            for (String e : errors) {
+              saveMessage(e);
+            }
+            break;
           } else {
-            saveMessage("Warning: Resource not updated in GBRDS");
+            saveMessage("Successfully created GBRDS services: " + errors);
+          }
+        } else {
+
+          // Updates the existing GBRDS resource:
+          gr = registry.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
+              resource.getOrgUuid()).primaryContactType(
+              ContactType.technical.name()).organisationKey(creds.getKey()).build();
+          UpdateResourceResponse urr = null;
+          try {
+            urr = registry.updateResource(gr, creds);
+          } catch (BadCredentialsException e) {
+            saveMessage("Warning: Unable to update resource - bad credentials "
+                + creds);
+            break;
+          }
+          int status = urr.getStatus();
+          if (status != HttpStatus.SC_OK) {
+            saveMessage("Warning: Unable to update resource - status " + status);
+            break;
+          } else {
+            saveMessage("GBRDS resource updated successfully");
           }
         }
 
         // Save changes to IPT resource:
-        resource.setMeta(Helper.getResourceMetadata(gr));
+        resource.setMeta(registry.getMeta(gr));
         resource.setDirty();
         resourceManager.save(resource);
 
@@ -549,6 +421,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         // whose values are destined for eml.
 
         break;
+
       case ASSOCIATED_PARTIES:
         if (eml == null && resource != null) {
           // eml equals null means that the form was submitted with zero agents.

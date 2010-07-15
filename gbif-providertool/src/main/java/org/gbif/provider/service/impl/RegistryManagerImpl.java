@@ -18,6 +18,16 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableSet;
+
+import static org.gbif.provider.model.voc.ServiceType.DWC_ARCHIVE;
+import static org.gbif.provider.model.voc.ServiceType.EML;
+import static org.gbif.provider.model.voc.ServiceType.TAPIR;
+import static org.gbif.provider.model.voc.ServiceType.TCS_RDF;
+import static org.gbif.provider.model.voc.ServiceType.WFS;
+import static org.gbif.provider.model.voc.ServiceType.WMS;
+
+import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ServiceType;
@@ -58,16 +68,19 @@ import java.util.List;
  */
 public class RegistryManagerImpl implements RegistryManager {
 
+  private static final ImmutableSet<ServiceType> SUPPORTED_SERVICE_TYPES = ImmutableSet.of(
+      EML, DWC_ARCHIVE, TAPIR, WFS, WMS, TCS_RDF);
+
   private static boolean notNullOrEmpty(String val) {
     return val != null && val.trim().length() > 0;
   }
 
   @Autowired
   private AppConfig appConfig;
-
   private final OrganisationApi organsiationApi;
   private final ResourceApi resourceApi;
   private final ServiceApi serviceApi;
+
   private final IptApi iptApi;
 
   RegistryManagerImpl() {
@@ -95,6 +108,55 @@ public class RegistryManagerImpl implements RegistryManager {
     checkNotNull(resource);
     checkNotNull(creds, "Credentials are null");
     return resourceApi.create(resource).execute(creds);
+  }
+
+  /**
+   * @see RegistryManager#createServices(GbrdsResource, Resource)
+   */
+  public ImmutableSet<String> createResourceServices(
+      GbrdsResource gbrdsResource, Resource resource) {
+    checkNotNull(gbrdsResource, "GBRDS resource is null");
+    checkNotNull(resource, "IPT resource is null");
+
+    ImmutableSet.Builder<String> errors = ImmutableSet.builder();
+
+    // Checks that the GBRDS resource exists:
+    String key = gbrdsResource.getKey();
+    if (!resourceExists(key)) {
+      errors.add("Warning: GBRDS resource doesn't exist");
+      return errors.build();
+    }
+
+    // Checks GBRDS resource credentials:
+    OrgCredentials creds = null;
+    try {
+      creds = OrgCredentials.with(resource.getOrgUuid(),
+          resource.getOrgPassword());
+    } catch (Exception e) {
+      errors.add("Warning: Invalid resource credentials");
+    }
+    if (creds == null) {
+      return errors.build();
+    }
+
+    // Creates GBRDS services:
+    GbrdsService.Builder service;
+    for (ServiceType type : SUPPORTED_SERVICE_TYPES) {
+      service = GbrdsService.builder().resourceKey(key).accessPointURL(
+          getServiceUrl(type, resource)).type(type.getCode());
+      try {
+        CreateServiceResponse csr = createService(service.build(), creds);
+        int status = csr.getStatus();
+        if (status != HttpStatus.SC_CREATED) {
+          errors.add("Warning: Unable to create service - status " + status);
+        }
+      } catch (BadCredentialsException e) {
+        errors.add("Warning: Unable to create service - bad credentials "
+            + creds);
+      }
+    }
+
+    return errors.build();
   }
 
   /**
@@ -284,6 +346,59 @@ public class RegistryManagerImpl implements RegistryManager {
   }
 
   /**
+   * @see RegistryManager#updateIptRssService(String, String, String)
+   */
+  public String updateIptRssServiceUrl(String key, String password,
+      String rssUrl) {
+    checkArgument(notNullOrEmpty(key), "Key is null");
+    checkArgument(notNullOrEmpty(password), "Password is null");
+    checkArgument(notNullOrEmpty(rssUrl), "URL is null");
+
+    // Checks if the resource exists:
+    if (!resourceExists(key)) {
+      return null;
+    }
+
+    // Checks for localhost in the RSS URL:
+    if (isLocalhost(rssUrl)) {
+      return "Warning: Unable to update RSS service because of invalid base URL";
+    }
+
+    // Looks for the RSS service in the GBRDS:
+    ListServicesResponse lsr = listServices(key);
+    if (lsr.getStatus() != HttpStatus.SC_OK) {
+      return "Warning: Unable to get services";
+    }
+    List<GbrdsService> results = lsr.getResult();
+    GbrdsService rss = null;
+    for (GbrdsService s : results) {
+      if (ServiceType.fromCode(s.getType()) == ServiceType.RSS) {
+        rss = s;
+      }
+    }
+    if (rss == null) {
+      return "Warning: An RSS service does not exist for the IPT";
+    }
+
+    // Updates the service URL:
+    OrgCredentials creds = OrgCredentials.with(key, password);
+    rss = GbrdsService.builder(rss).accessPointURL(rssUrl).build();
+    UpdateServiceResponse usr = null;
+    try {
+      usr = updateService(rss, creds);
+    } catch (BadCredentialsException e) {
+      return "Warning: Unable to update RSS service because of bad credentials: "
+          + creds;
+    }
+    if (usr.getStatus() != HttpStatus.SC_OK) {
+      return "Warning: Updating RSS service returned HTTP status "
+          + usr.getStatus();
+    }
+
+    return null;
+  }
+
+  /**
    * @throws BadCredentialsException
    * @see RegistryManager#updateOrg(GbrdsOrganisation, OrgCredentials)
    */
@@ -317,6 +432,59 @@ public class RegistryManagerImpl implements RegistryManager {
         "Invalid service URL");
     checkNotNull(creds, "Credentials are null");
     return serviceApi.update(service).execute(creds);
+  }
+
+  /**
+   * @see RegistryManager#updateServiceUrls(List)
+   */
+  public ImmutableSet<String> updateServiceUrls(List<Resource> resources) {
+    checkNotNull(resources, "Resource list is null");
+
+    ImmutableSet.Builder<String> errors = ImmutableSet.builder();
+
+    // Updates all service URLs for all IPT resources:
+    for (Resource r : resources) {
+      // Checks if a GBRDS resource exists for current IPT resource:
+      String resourceKey = r.getMeta().getUddiID();
+      if (!resourceExists(resourceKey)) {
+        errors.add("Warning: No GBRDS resource for IPT resource " + r.getId());
+        continue;
+      }
+
+      // Checks credentials:
+      String key = r.getOrgUuid();
+      String password = r.getOrgPassword();
+      OrgCredentials creds = OrgCredentials.with(key, password);
+      if (creds == null) {
+        errors.add("Warning: Invalid credentials: " + creds);
+        continue;
+      }
+
+      // Gets services from GBRDS:
+      ListServicesResponse lsr = listServices(resourceKey);
+      if (lsr.getStatus() != HttpStatus.SC_OK) {
+        errors.add("Warninig: Unable to list services for " + resourceKey);
+        continue;
+      }
+
+      // Updates each service URL:
+      List<GbrdsService> services = lsr.getResult();
+      for (GbrdsService s : services) {
+        ServiceType type = ServiceType.fromCode(s.getType());
+        String url = getServiceUrl(type, r);
+        GbrdsService gs = GbrdsService.builder(s).accessPointURL(url).build();
+        try {
+          UpdateServiceResponse usr = updateService(gs, creds);
+          if (usr.getStatus() != HttpStatus.SC_OK) {
+            errors.add("Warning: Unable to update service " + gs.getKey());
+          }
+        } catch (BadCredentialsException e) {
+          continue;
+        }
+      }
+    }
+
+    return errors.build();
   }
 
   /**

@@ -15,6 +15,8 @@
  */
 package org.gbif.provider.service;
 
+import com.google.common.collect.ImmutableSet;
+
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.voc.ServiceType;
@@ -69,6 +71,9 @@ public interface RegistryManager {
   CreateServiceResponse createService(GbrdsService service, OrgCredentials creds)
       throws BadCredentialsException;
 
+  ImmutableSet<String> createResourceServices(GbrdsResource gbrdsResource,
+      Resource resource);
+
   DeleteResourceResponse deleteResource(String resourceKey, OrgCredentials creds)
       throws BadCredentialsException;
 
@@ -103,6 +108,8 @@ public interface RegistryManager {
 
   boolean resourceExists(String key);
 
+  String updateIptRssServiceUrl(String key, String password, String rssUrl);
+
   UpdateOrgResponse updateOrg(GbrdsOrganisation organisation,
       OrgCredentials creds) throws BadCredentialsException;
 
@@ -111,6 +118,8 @@ public interface RegistryManager {
 
   UpdateServiceResponse updateService(GbrdsService service, OrgCredentials creds)
       throws BadCredentialsException;
+
+  ImmutableSet<String> updateServiceUrls(List<Resource> resources);
 
   ValidateOrgCredentialsResponse validateCreds(OrgCredentials creds);
 }

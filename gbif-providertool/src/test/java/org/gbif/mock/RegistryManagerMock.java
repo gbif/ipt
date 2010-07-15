@@ -15,6 +15,7 @@
  */
 package org.gbif.mock;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 import org.gbif.provider.model.Resource;
@@ -74,6 +75,19 @@ public class RegistryManagerMock implements RegistryManager {
    */
   public CreateResourceResponse createResource(GbrdsResource resource,
       OrgCredentials creds) throws BadCredentialsException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#createResourceServices(org.gbif
+   * .registry.api.client.GbrdsResource, org.gbif.provider.model.Resource)
+   */
+  public ImmutableSet<String> createResourceServices(
+      GbrdsResource gbrdsResource, Resource resource) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -279,6 +293,19 @@ public class RegistryManagerMock implements RegistryManager {
    * (non-Javadoc)
    * 
    * @see
+   * org.gbif.provider.service.RegistryManager#updateIptRssServiceUrl(java.lang
+   * .String, java.lang.String, java.lang.String)
+   */
+  public String updateIptRssServiceUrl(String key, String password,
+      String rssUrl) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.gbif.provider.service.RegistryManager#updateOrg(org.gbif.registry.api
    * .client.GbrdsOrganisation,
    * org.gbif.registry.api.client.Gbrds.OrgCredentials)
@@ -313,6 +340,17 @@ public class RegistryManagerMock implements RegistryManager {
    */
   public UpdateServiceResponse updateService(GbrdsService service,
       OrgCredentials creds) throws BadCredentialsException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.gbif.provider.service.RegistryManager#updateServiceUrls(java.util.List)
+   */
+  public ImmutableSet<String> updateServiceUrls(List<Resource> resources) {
     // TODO Auto-generated method stub
     return null;
   }
