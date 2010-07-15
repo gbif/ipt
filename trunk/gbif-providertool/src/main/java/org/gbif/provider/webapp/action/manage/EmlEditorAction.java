@@ -366,7 +366,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
             saveMessage("Warning: Unable to create GBRDS resource - status "
                 + status);
             break;
-          };
+          }
 
           // Verified the new key:
           resourceKey = crr.getResult().getKey();
@@ -375,6 +375,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
             break;
           }
           resource.getMeta().setUddiID(resourceKey);
+          saveMessage("Success: Created new GBRDS resource: " + resourceKey);
 
           // Creates new GBRDS services:
           gr = registry.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
@@ -387,7 +388,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
             }
             break;
           } else {
-            saveMessage("Successfully created GBRDS services: " + errors);
+            saveMessage("Successfully created GBRDS services");
           }
         } else {
 
