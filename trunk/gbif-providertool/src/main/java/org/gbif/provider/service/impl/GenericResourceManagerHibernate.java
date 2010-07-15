@@ -15,8 +15,6 @@
  */
 package org.gbif.provider.service.impl;
 
-import static org.apache.commons.lang.StringUtils.trimToNull;
-
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.FileUtils;
 import org.gbif.provider.model.BBox;
@@ -31,6 +29,7 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
 import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,7 +199,11 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     fullTextSearchManager.buildResourceIndex(resourceId);
     String resourceKey = resource.getUddiID();
     OrgCredentials creds = getCreds(resource);
-    if (!registryManager.deleteGbrdsResource(resourceKey, creds).getResult()) {
+    try {
+      if (!registryManager.deleteResource(resourceKey, creds).getResult()) {
+        log.warn("Resource could not be deleted from GBRDS: " + resourceId);
+      }
+    } catch (BadCredentialsException e) {
       log.warn("Resource could not be deleted from GBRDS: " + resourceId);
     }
   }
@@ -214,9 +217,13 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     }
     ResourceMetadata rm = resource.getMeta();
     GbrdsResource gm = null;
-    gm = registryManager.buildGbrdsResource(rm).organisationKey(creds.getKey()).build();
+    gm = registryManager.getResourceBuilder(rm).organisationKey(creds.getKey()).build();
     CreateResourceResponse response = null;
-    response = registryManager.createGbrdsResource(gm, creds);
+    try {
+      response = registryManager.createResource(gm, creds);
+    } catch (BadCredentialsException e) {
+      log.warn("Resource could not be created in GBRDS: " + resource.getId());
+    }
     if (response.getStatus() == HttpStatus.SC_CREATED) {
       rm.setUddiID(response.getResult().getKey());
       save((T) resource);
@@ -226,13 +233,9 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
   }
 
   private OrgCredentials getCreds(Resource r) {
-    OrgCredentials creds = null;
     String orgKey = r.getOrgUuid();
     String orgPassword = r.getOrgPassword();
-    if (trimToNull(orgKey) != null && trimToNull(orgPassword) != null) {
-      creds = OrgCredentials.with(orgKey, orgPassword);
-    }
-    return creds;
+    return registryManager.getCreds(orgKey, orgPassword);
   }
 
   private void updateGbifResource(Resource resource) {
@@ -242,9 +245,13 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
       return;
     }
     String orgKey = creds.getKey();
-    GbrdsResource gr = registryManager.buildGbrdsResource(resource.getMeta()).organisationKey(
+    GbrdsResource gr = registryManager.getResourceBuilder(resource.getMeta()).organisationKey(
         orgKey).build();
-    if (!registryManager.updateGbrdsResource(gr, creds).getResult()) {
+    try {
+      if (!registryManager.updateResource(gr, creds).getResult()) {
+        log.warn("Failed to update resource in GBRDS: " + resource.getId());
+      }
+    } catch (BadCredentialsException e) {
       log.warn("Failed to update resource in GBRDS: " + resource.getId());
     }
   }

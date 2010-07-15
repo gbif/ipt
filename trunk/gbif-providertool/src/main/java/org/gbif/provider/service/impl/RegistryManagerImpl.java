@@ -18,8 +18,9 @@ package org.gbif.provider.service.impl;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
-import org.gbif.provider.model.voc.ContactType;
+import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.registry.api.client.Gbrds;
@@ -62,13 +63,14 @@ public class RegistryManagerImpl implements RegistryManager {
   }
 
   @Autowired
-  protected AppConfig cfg;
+  private AppConfig appConfig;
+
   private final OrganisationApi organsiationApi;
   private final ResourceApi resourceApi;
   private final ServiceApi serviceApi;
   private final IptApi iptApi;
 
-  private RegistryManagerImpl() {
+  RegistryManagerImpl() {
     Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
     organsiationApi = gbif.getOrganisationApi();
     resourceApi = gbif.getResourceApi();
@@ -77,58 +79,19 @@ public class RegistryManagerImpl implements RegistryManager {
   }
 
   /**
-   * @see RegistryManager#buildGbrdsOrganisation(ResourceMetadata)
+   * @see RegistryManager#createOrg(GbrdsOrganisation)
    */
-  public GbrdsOrganisation.Builder buildGbrdsOrganisation(
-      ResourceMetadata resourceMetadata) {
-    String description = resourceMetadata.getDescription();
-    String homepageURL = resourceMetadata.getLink();
-    String key = resourceMetadata.getUddiID();
-    String name = resourceMetadata.getTitle();
-    String nodeKey = cfg.getOrgNode();
-    String nodeName = cfg.getOrgNodeName();
-    String password = cfg.getOrgPassword();
-    String primaryContactEmail = resourceMetadata.getContactEmail();
-    String primaryContactName = resourceMetadata.getContactName();
-    String primaryContactType = ContactType.administrative.name();
-    return GbrdsOrganisation.builder().description(description).homepageURL(
-        homepageURL).key(key).name(name).nodeKey(nodeKey).nodeName(nodeName).password(
-        password).primaryContactEmail(primaryContactEmail).primaryContactName(
-        primaryContactName).primaryContactType(primaryContactType);
-  }
-
-  /**
-   * @see RegistryManager#buildGbrdsResource(ResourceMetadata)
-   */
-  public GbrdsResource.Builder buildGbrdsResource(
-      ResourceMetadata resourceMetadata) {
-    checkNotNull(resourceMetadata);
-    String key = resourceMetadata.getUddiID();
-    String name = resourceMetadata.getTitle();
-    String description = resourceMetadata.getDescription();
-    String homepageUrl = resourceMetadata.getLink();
-    String primaryContactType = ContactType.administrative.name();
-    String primaryContactName = resourceMetadata.getContactName();
-    String primaryContactEmail = resourceMetadata.getContactEmail();
-    return GbrdsResource.builder().key(key).name(name).description(description).homepageURL(
-        homepageUrl).primaryContactType(primaryContactType).primaryContactName(
-        primaryContactName).primaryContactEmail(primaryContactEmail);
-  }
-
-  /**
-   * @see RegistryManager#createGbrdsOrganisation(GbrdsOrganisation)
-   */
-  public CreateOrgResponse createGbrdsOrganisation(
-      GbrdsOrganisation organisation) {
+  public CreateOrgResponse createOrg(GbrdsOrganisation organisation) {
     checkNotNull(organisation);
     return organsiationApi.create(organisation).execute();
   }
 
   /**
-   * @see RegistryManager#createGbrdsResource(GbrdsResource, OrgCredentials)
+   * @throws BadCredentialsException
+   * @see RegistryManager#createResource(GbrdsResource, OrgCredentials)
    */
-  public CreateResourceResponse createGbrdsResource(GbrdsResource resource,
-      OrgCredentials creds) {
+  public CreateResourceResponse createResource(GbrdsResource resource,
+      OrgCredentials creds) throws BadCredentialsException {
     checkNotNull(resource);
     checkNotNull(creds, "Credentials are null");
     return resourceApi.create(resource).execute(creds);
@@ -136,35 +99,134 @@ public class RegistryManagerImpl implements RegistryManager {
 
   /**
    * @throws BadCredentialsException
-   * @see RegistryManager#createGbrdsService(GbrdsService, OrgCredentials)
+   * @see RegistryManager#createService(GbrdsService, OrgCredentials)
    */
-  public CreateServiceResponse createGbrdsService(GbrdsService service,
-      OrgCredentials creds) {
+  public CreateServiceResponse createService(GbrdsService service,
+      OrgCredentials creds) throws BadCredentialsException {
     checkNotNull(service);
     checkNotNull(creds, "Credentials are null");
-    checkArgument(!service.getAccessPointURL().contains("localhost"),
-        "Service URL contains localhost");
+    checkArgument(!isLocalhost(service.getAccessPointURL()),
+        "Invalid service URL");
     return serviceApi.create(service).execute(creds);
   }
 
   /**
-   * @see RegistryManager#deleteGbrdsResource(String, OrgCredentials)
+   * @throws BadCredentialsException
+   * @see RegistryManager#deleteResource(String, OrgCredentials)
    */
-  public DeleteResourceResponse deleteGbrdsResource(String resourceKey,
-      OrgCredentials creds) {
+  public DeleteResourceResponse deleteResource(String resourceKey,
+      OrgCredentials creds) throws BadCredentialsException {
     checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
     checkNotNull(creds, "Credentials are null");
     return resourceApi.delete(resourceKey).execute(creds);
   }
 
   /**
-   * @see RegistryManager#deleteGbrdsService(String, OrgCredentials)
+   * @throws BadCredentialsException
+   * @see RegistryManager#deleteService(String, OrgCredentials)
    */
-  public DeleteServiceResponse deleteGbrdsService(String serviceKey,
-      OrgCredentials creds) {
+  public DeleteServiceResponse deleteService(String serviceKey,
+      OrgCredentials creds) throws BadCredentialsException {
     checkArgument(notNullOrEmpty(serviceKey), "Invalid service key");
     checkNotNull(creds, "Credentials are null");
     return serviceApi.delete(serviceKey).execute(creds);
+  }
+
+  /**
+   * @see RegistryManager#getCreds(String, String)
+   */
+  public OrgCredentials getCreds(String key, String pass) {
+    OrgCredentials creds = null;
+    try {
+      creds = OrgCredentials.with(key, pass);
+      if (!validateCreds(creds).getResult()) {
+        creds = null;
+      }
+    } catch (Exception e) {
+      return null;
+    }
+    return creds;
+  }
+
+  /**
+   * @see RegistryManager#getMeta(GbrdsOrganisation)
+   */
+  public ResourceMetadata getMeta(GbrdsOrganisation org) {
+    checkNotNull(org, "Organisation is null");
+    ResourceMetadata meta = new ResourceMetadata();
+    meta.setDescription(org.getDescription());
+    meta.setContactEmail(org.getPrimaryContactEmail());
+    meta.setContactName(org.getPrimaryContactName());
+    meta.setLink(org.getHomepageURL());
+    meta.setTitle(org.getName());
+    meta.setUddiID(org.getKey());
+    return meta;
+  }
+
+  /**
+   * @see RegistryManager#getMeta(GbrdsResource)
+   */
+  public ResourceMetadata getMeta(GbrdsResource resource) {
+    checkNotNull(resource, "Resource is null");
+    ResourceMetadata meta = new ResourceMetadata();
+    meta.setDescription(resource.getDescription());
+    meta.setContactEmail(resource.getPrimaryContactEmail());
+    meta.setContactName(resource.getPrimaryContactName());
+    meta.setLink(resource.getHomepageURL());
+    meta.setTitle(resource.getName());
+    meta.setUddiID(resource.getKey());
+    return meta;
+  }
+
+  /**
+   * @see RegistryManager#getOrgBuilder(ResourceMetadata)
+   */
+  public GbrdsOrganisation.Builder getOrgBuilder(ResourceMetadata meta) {
+    checkNotNull(meta, "Resource metadata is null");
+    return GbrdsOrganisation.builder().description(meta.getDescription()).primaryContactEmail(
+        meta.getContactEmail()).primaryContactName(meta.getContactName()).homepageURL(
+        meta.getLink()).name(meta.getTitle()).key(meta.getUddiID());
+  }
+
+  /**
+   * @see RegistryManager#getResourceBuilder(ResourceMetadata)
+   */
+  public GbrdsResource.Builder getResourceBuilder(ResourceMetadata meta) {
+    checkNotNull(meta, "Resource metadata is null");
+    return GbrdsResource.builder().description(meta.getDescription()).primaryContactEmail(
+        meta.getContactEmail()).primaryContactName(meta.getContactName()).homepageURL(
+        meta.getLink()).name(meta.getTitle()).key(meta.getUddiID());
+  }
+
+  /**
+   * @see RegistryManager#getServiceUrl(ServiceType, Resource)
+   */
+  public String getServiceUrl(ServiceType type, Resource resource) {
+    checkNotNull(type, "Service type is null");
+    checkNotNull(resource, "Resource is null");
+    checkNotNull(resource.getId(), "Resource id is null");
+    checkArgument(notNullOrEmpty(resource.getGuid()), "Invalid resource GUID");
+    switch (type) {
+      case EML:
+        return appConfig.getEmlUrl(resource.getGuid());
+      case DWC_ARCHIVE:
+        return appConfig.getArchiveUrl(resource.getGuid());
+      case TAPIR:
+        return appConfig.getTapirEndpoint(resource.getId());
+      case WFS:
+        return appConfig.getWfsEndpoint(resource.getId());
+      case WMS:
+        return appConfig.getWmsEndpoint(resource.getId());
+      case TCS_RDF:
+        return appConfig.getArchiveTcsUrl(resource.getGuid());
+      default:
+        return null;
+    }
+  }
+
+  public boolean isLocalhost(String url) {
+    return !notNullOrEmpty(url) || url.contains("localhost")
+        || url.contains("127.0.0.1");
   }
 
   /**
@@ -184,18 +246,16 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#listGbifServices(String )
    */
-  public ListServicesResponse listGbrdsServices(String resourceKey) {
+  public ListServicesResponse listServices(String resourceKey) {
     checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
     return serviceApi.list(resourceKey).execute();
   }
 
   /**
-   * @throws RegistryException
-   * @see RegistryManager#readGbrdsOrganisation(String)
+   * @see RegistryManager#orgExists(String)
    */
-  public ReadOrgResponse readGbrdsOrganisation(String organisationKey) {
-    checkArgument(notNullOrEmpty(organisationKey), "Invalid organisation key");
-    return organsiationApi.read(organisationKey).execute();
+  public boolean orgExists(String key) {
+    return notNullOrEmpty(key) && readOrg(key).getResult() != null;
   }
 
   /**
@@ -208,41 +268,61 @@ public class RegistryManagerImpl implements RegistryManager {
   }
 
   /**
-   * @see RegistryManager#updateGbrdsOrganisation(GbrdsOrganisation,
-   *      OrgCredentials)
+   * @throws RegistryException
+   * @see RegistryManager#readOrg(String)
    */
-  public UpdateOrgResponse updateGbrdsOrganisation(
-      GbrdsOrganisation organisation, OrgCredentials creds) {
+  public ReadOrgResponse readOrg(String organisationKey) {
+    checkArgument(notNullOrEmpty(organisationKey), "Invalid organisation key");
+    return organsiationApi.read(organisationKey).execute();
+  }
+
+  /**
+   * @see RegistryManager#resourceExists(String)
+   */
+  public boolean resourceExists(String key) {
+    return notNullOrEmpty(key) && readGbrdsResource(key).getResult() != null;
+  }
+
+  /**
+   * @throws BadCredentialsException
+   * @see RegistryManager#updateOrg(GbrdsOrganisation, OrgCredentials)
+   */
+  public UpdateOrgResponse updateOrg(GbrdsOrganisation organisation,
+      OrgCredentials creds) throws BadCredentialsException {
     checkNotNull(organisation, "Organisation is null");
     checkNotNull(creds, "Credentials are null");
     return organsiationApi.update(organisation).execute(creds);
   }
 
   /**
-   * @see RegistryManager#updateGbrdsResource(GbrdsResource, OrgCredentials)
+   * @throws BadCredentialsException
+   * @see RegistryManager#updateResource(GbrdsResource, OrgCredentials)
    */
-  public UpdateResourceResponse updateGbrdsResource(GbrdsResource resource,
-      OrgCredentials creds) {
+  public UpdateResourceResponse updateResource(GbrdsResource resource,
+      OrgCredentials creds) throws BadCredentialsException {
     checkNotNull(resource, "Resource is null");
     checkNotNull(creds, "Credentials are null");
     return resourceApi.update(resource).execute(creds);
   }
 
   /**
-   * @throws RegistryException
-   * @see RegistryManager#updateGbrdsService(GbrdsService, OrgCredentials)
+   * @throws BadCredentialsException
+   * @see RegistryManager#updateService(GbrdsService, OrgCredentials)
    */
-  public UpdateServiceResponse updateGbrdsService(GbrdsService service,
-      OrgCredentials creds) {
+  public UpdateServiceResponse updateService(GbrdsService service,
+      OrgCredentials creds) throws BadCredentialsException {
     checkNotNull(service, "Service is null");
+    checkArgument(notNullOrEmpty(service.getKey()), "Invalid service key");
+    checkArgument(!isLocalhost(service.getAccessPointURL()),
+        "Invalid service URL");
     checkNotNull(creds, "Credentials are null");
     return serviceApi.update(service).execute(creds);
   }
 
   /**
-   * @see RegistryManager#validateCredentials(OrgCredentials)
+   * @see RegistryManager#validateCreds(OrgCredentials)
    */
-  public ValidateOrgCredentialsResponse validateCredentials(OrgCredentials creds) {
+  public ValidateOrgCredentialsResponse validateCreds(OrgCredentials creds) {
     return organsiationApi.validateCredentials(creds).execute();
   }
 }

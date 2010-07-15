@@ -22,6 +22,7 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class CreateOrgAction extends BasePostAction {
       saveMessage("The organisation is already registered with GBIF");
     }
     GbrdsOrganisation go = getGbifOrganisation(org);
-    CreateOrgResponse response = registryManager.createGbrdsOrganisation(go);
+    CreateOrgResponse response = registryManager.createOrg(go);
     if (response.getStatus() == HttpStatus.SC_CREATED) {
       saveMessage(getText("register.org.success"));
     } else {
@@ -95,9 +96,13 @@ public class CreateOrgAction extends BasePostAction {
     }
     if (organisationExists(orgKey)) {
       GbrdsOrganisation go = getGbifOrganisation(org);
-      if (registryManager.updateGbrdsOrganisation(go, creds).getResult()) {
-        saveMessage(getText("registry.updated"));
-      } else {
+      try {
+        if (registryManager.updateOrg(go, creds).getResult()) {
+          saveMessage(getText("registry.updated"));
+        } else {
+          saveMessage(getText("registry.problem"));
+        }
+      } catch (BadCredentialsException e) {
         saveMessage(getText("registry.problem"));
       }
     }
@@ -129,6 +134,6 @@ public class CreateOrgAction extends BasePostAction {
   }
 
   private boolean organisationExists(String orgKey) {
-    return registryManager.readGbrdsOrganisation(orgKey).getResult() != null;
+    return registryManager.readOrg(orgKey).getResult() != null;
   }
 }

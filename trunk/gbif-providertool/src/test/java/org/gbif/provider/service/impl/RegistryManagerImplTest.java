@@ -118,7 +118,7 @@ public class RegistryManagerImplTest extends ResourceTestBase {
   public void testReadGbifOrganisation() {
     String key = "3780d048-8e18-4c0c-afcd-cb6389df56de";
     try {
-      registryManager.readGbrdsOrganisation(key);
+      registryManager.readOrg(key);
     } catch (Exception e) {
       e.printStackTrace();
       fail();
@@ -133,7 +133,7 @@ public class RegistryManagerImplTest extends ResourceTestBase {
 
     key = null;
     try {
-      registryManager.readGbrdsOrganisation(key);
+      registryManager.readOrg(key);
       fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
@@ -141,7 +141,7 @@ public class RegistryManagerImplTest extends ResourceTestBase {
 
     key = "";
     try {
-      registryManager.readGbrdsOrganisation(key);
+      registryManager.readOrg(key);
       fail();
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);

@@ -15,7 +15,9 @@
  */
 package org.gbif.provider.service;
 
+import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
+import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.registry.api.client.GbrdsExtension;
 import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.GbrdsResource;
@@ -44,10 +46,6 @@ import java.util.List;
  */
 public interface RegistryManager {
 
-  /**
-   * This class represents registry specific exceptions.
-   * 
-   */
   @SuppressWarnings("serial")
   public class RegistryException extends Exception {
     public RegistryException() {
@@ -63,196 +61,56 @@ public interface RegistryManager {
     }
   }
 
-  /**
-   * Helper that creates a {@link GbrdsOrganisation.Builder} from
-   * {@link ResourceMetadata}. Throws {@link NullPointerException} if the
-   * <code>resourceMetadata</code> is null.
-   * 
-   * @param resourceMetadata
-   * @return GbrdsOrganisation.Builder
-   */
-  GbrdsOrganisation.Builder buildGbrdsOrganisation(
-      ResourceMetadata resourceMetadata);
+  CreateOrgResponse createOrg(GbrdsOrganisation organisation);
 
-  /**
-   * Helper that creates a {@link GbrdsResource.Builder} from
-   * {@link ResourceMetadata}. Throws {@link NullPointerException} if the
-   * <code>resourceMetadata</code> is null.
-   * 
-   * @param resourceMetadata
-   * @return GbrdsResource.Builder
-   */
-  GbrdsResource.Builder buildGbrdsResource(ResourceMetadata resourceMetadata);
+  CreateResourceResponse createResource(GbrdsResource resource,
+      OrgCredentials creds) throws BadCredentialsException;
 
-  /**
-   * Creates a new {@link GbrdsOrganisation} and returns the
-   * {@link CreateOrgResponse} from the GBRDS. Throws
-   * {@link NullPointerException} if the <code>organisation</code> is null.
-   * Throws {@link RegistryException} if there are errors creating the
-   * organisation.
-   * 
-   * @param organisation the organisation to create
-   * @return CreateOrgResponse the GBRDS response
-   * @throws NullPointerException, RegistryException
-   */
-  CreateOrgResponse createGbrdsOrganisation(GbrdsOrganisation organisation);
+  CreateServiceResponse createService(GbrdsService service, OrgCredentials creds)
+      throws BadCredentialsException;
 
-  /**
-   * Creates a new {@link GbrdsResource} and returns the
-   * {@link CreateResourceResponse} from the GBRDS. Throws
-   * {@link NullPointerException} if the <code>resource</code> is null. Throws
-   * {@link RegistryException} if there are errors creating the resource.
-   * 
-   * @param resource the resource to create
-   * @param creds TODO
-   * @return CreateResourceResponse
-   * @throws BadCredentialsException
-   * @throws NullPointerException, RegistryException
-   */
-  CreateResourceResponse createGbrdsResource(GbrdsResource resource,
-      OrgCredentials creds);
+  DeleteResourceResponse deleteResource(String resourceKey, OrgCredentials creds)
+      throws BadCredentialsException;
 
-  /**
-   * Creates a new {@link GbrdsService} and returns the
-   * {@link CreateServiceResponse} from the GBRDS. Throws
-   * {@link NullPointerException} if the <code>service</code> is null. Throws
-   * {@link RegistryException} if there are errors creating the service.
-   * 
-   * @param service the service to create
-   * @param creds TODO
-   * @return CreateServiceResponse
-   * @throws BadCredentialsException
-   * @throws NullPointerException
-   */
-  CreateServiceResponse createGbrdsService(GbrdsService service,
-      OrgCredentials creds);
+  DeleteServiceResponse deleteService(String serviceKey, OrgCredentials creds)
+      throws BadCredentialsException;
 
-  /**
-   * Deletes an existing {@link GbrdsResource} and returns the
-   * {@link DeleteResourceResponse} from the GBRDS. Throws
-   * {@link NullPointerException} if the <code>resource</code> is null. Throws
-   * {@link RegistryException} if there are errors deleting the resource.
-   * 
-   * @param resourceKey
-   * @param creds TODO
-   * @return DeleteResourceResponse
-   * @throws NullPointerException, RegistryException
-   */
-  DeleteResourceResponse deleteGbrdsResource(String resourceKey,
-      OrgCredentials creds);
+  OrgCredentials getCreds(String key, String pass);
 
-  /**
-   * Deletes an existing {@link GbrdsService} and returns the
-   * {@link DeleteServiceResponse} from the GBRDS. Throws
-   * {@link NullPointerException} if the <code>service</code> is null. Throws
-   * {@link RegistryException} if there are errors deleting the service.
-   * 
-   * @param serviceKey
-   * @param creds TODO
-   * @return DeleteServiceResponse
-   * @throws NullPointerException, RegistryException
-   */
-  DeleteServiceResponse deleteGbrdsService(String serviceKey,
-      OrgCredentials creds);
+  ResourceMetadata getMeta(GbrdsOrganisation org);
 
-  /**
-   * Returns a list of {@link GbrdsExtension}s from the GBRDS.
-   * 
-   * @return List<GbrdsExtension>
-   */
+  ResourceMetadata getMeta(GbrdsResource resource);
+
+  GbrdsOrganisation.Builder getOrgBuilder(ResourceMetadata meta);
+
+  GbrdsResource.Builder getResourceBuilder(ResourceMetadata meta);
+
+  String getServiceUrl(ServiceType type, Resource resource);
+
+  boolean isLocalhost(String url);
+
   List<GbrdsExtension> listAllExtensions();
 
-  /**
-   * Returns a list of {@link GbrdsThesaurus}s from the GBRDS.
-   * 
-   * @return List<GbrdsThesaurus>
-   */
   List<GbrdsThesaurus> listAllThesauri();
 
-  /**
-   * Returns a {@link ListServicesResponse} from the GBRDS that contains a list
-   * of {@link GbrdsService}s for a given {@link GbrdsResource} key. Throws
-   * {@link NullPointerException} if the <code>resourceKey</code> is null.
-   * Throws {@link RegistryException} if there are errors listing the services.
-   * 
-   * @param resourceKey
-   * @return ListServicesForResourceResponse
-   * @throws NullPointerException, RegistryException
-   */
-  ListServicesResponse listGbrdsServices(String resourceKey);
+  ListServicesResponse listServices(String resourceKey);
 
-  /**
-   * Reads a {@link GbrdsOrganisation} from the GBRDS and returns the
-   * {@link ReadOrgResponse}. Throws {@link NullPointerException} if the
-   * <code>organisationKey</code> is null. Throws {@link RegistryException} if
-   * there are errors reading the organisation.
-   * 
-   * @param organisationKey
-   * @return ReadOrgResponse
-   * @throws NullPointerException, RegistryException
-   */
-  ReadOrgResponse readGbrdsOrganisation(String organisationKey);
+  boolean orgExists(String key);
 
-  /**
-   * Reads a {@link GbrdsResource} from the GBRDS and returns the
-   * {@link ReadResourceResponse}. Throws {@link NullPointerException} if the
-   * <code>resourceKey</code> is null. Throws {@link RegistryException} if there
-   * are errors reading the resource.
-   * 
-   * @param resourcekey
-   * @return ReadResourceResponse
-   * @throws NullPointerException, RegistryException
-   */
   ReadResourceResponse readGbrdsResource(String resourceKey);
 
-  /**
-   * Updates a {@link GbrdsOrganisation} in the GBRDS and returns the
-   * {@link UpdateOrgResponse}. Throws {@link NullPointerException} if the
-   * <code>organisation</code> is null. Throws {@link RegistryException} if
-   * there are errors updating the organisation.
-   * 
-   * @param organisation
-   * @param creds TODO
-   * @return UpdateOrgResponse
-   * @throws NullPointerException, RegistryException
-   */
-  UpdateOrgResponse updateGbrdsOrganisation(GbrdsOrganisation organisation, OrgCredentials creds);
+  ReadOrgResponse readOrg(String organisationKey);
 
-  /**
-   * Updates a {@link GbrdsResource} in the GBRDS and returns the
-   * {@link UpdateResourceResponse}. Throws {@link NullPointerException} if the
-   * <code>resource</code> is null. Throws {@link RegistryException} if there
-   * are errors updating the resource.
-   * 
-   * @param resource
-   * @param creds TODO
-   * @return UpdateResourceResponse
-   * @throws NullPointerException, RegistryException
-   */
-  UpdateResourceResponse updateGbrdsResource(GbrdsResource resource, OrgCredentials creds);
+  boolean resourceExists(String key);
 
-  /**
-   * Updates a {@link GbrdsService} in the GBRDS and returns the
-   * {@link UpdateServiceResponse}. Throws {@link NullPointerException} if the
-   * <code>service</code> is null. Throws {@link RegistryException} if there are
-   * errors updating the service.
-   * 
-   * @param service
-   * @param creds TODO
-   * @return UpdateServiceResponse
-   * @throws NullPointerException, RegistryException
-   */
-  UpdateServiceResponse updateGbrdsService(GbrdsService service, OrgCredentials creds);
+  UpdateOrgResponse updateOrg(GbrdsOrganisation organisation,
+      OrgCredentials creds) throws BadCredentialsException;
 
-  /**
-   * Validates {@link OrgCredentials} for a {@link GbrdsOrganisation} in the
-   * GBRDS and returns the {@link ValidateOrgCredentialsResponse}. Throws
-   * {@link NullPointerException} if the <code>organisationKey</code> or
-   * <code>credentials</code> are null.
-   * @param creds TODO
-   * 
-   * @return ValidateOrgCredentialsResponse
-   */
-  ValidateOrgCredentialsResponse validateCredentials(
-      OrgCredentials creds);
+  UpdateResourceResponse updateResource(GbrdsResource resource,
+      OrgCredentials creds) throws BadCredentialsException;
+
+  UpdateServiceResponse updateService(GbrdsService service, OrgCredentials creds)
+      throws BadCredentialsException;
+
+  ValidateOrgCredentialsResponse validateCreds(OrgCredentials creds);
 }
