@@ -21,6 +21,7 @@ import org.gbif.provider.model.BBox;
 import org.gbif.provider.model.Resource;
 import org.gbif.provider.model.ResourceMetadata;
 import org.gbif.provider.model.eml.Eml;
+import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.model.voc.PublicationStatus;
 import org.gbif.provider.service.EmlManager;
 import org.gbif.provider.service.FullTextSearchManager;
@@ -221,7 +222,8 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     }
     ResourceMetadata rm = resource.getMeta();
     GbrdsResource gm = null;
-    gm = registryManager.getResourceBuilder(rm).organisationKey(creds.getKey()).build();
+    gm = registryManager.getResourceBuilder(rm).organisationKey(creds.getKey()).primaryContactType(
+        ContactType.technical.name()).build();
     CreateResourceResponse response = null;
     try {
       response = registryManager.createResource(gm, creds);
@@ -250,7 +252,7 @@ public class GenericResourceManagerHibernate<T extends Resource> extends
     }
     String orgKey = creds.getKey();
     GbrdsResource gr = registryManager.getResourceBuilder(resource.getMeta()).organisationKey(
-        orgKey).build();
+        orgKey).primaryContactType(ContactType.technical.name()).build();
     try {
       if (!registryManager.updateResource(gr, creds).getResult()) {
         log.warn("Failed to update resource in GBRDS: " + resource.getId());
