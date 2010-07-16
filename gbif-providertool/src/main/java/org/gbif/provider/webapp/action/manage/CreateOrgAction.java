@@ -15,9 +15,10 @@
  */
 package org.gbif.provider.webapp.action.manage;
 
+import com.google.common.collect.ImmutableSet;
+
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.lang.StringUtils;
-import org.gbif.provider.model.Organisation;
+import org.gbif.provider.model.voc.ContactType;
 import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
@@ -25,27 +26,89 @@ import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Set;
+
 /**
- * This Action class is used to create a new GBIF Organisation in the GBRDS.
+ * This Action class can be used to create and update GBRDS organisations.
  * 
  */
 public class CreateOrgAction extends BasePostAction {
 
   private static final long serialVersionUID = -9042048057208451118L;
 
-  @Autowired
-  private RegistryManager registryManager;
+  static ImmutableSet<String> checkOrg(GbrdsOrganisation go) {
+    ImmutableSet.Builder<String> b = ImmutableSet.builder();
 
-  private Organisation org = new Organisation();
+    // Checks required org properties:
+    if (nullOrEmpty(go.getName())) {
+      // b.add(getText("config.org.warning.orgName"));
+      b.add("Warning: Organisation name required");
+    }
+    if (nullOrEmpty(go.getPrimaryContactType())) {
+      // b.add(getText("config.org.warning.contactType"));
+      b.add("Warning: Primary contact type required");
+    }
+    if (nullOrEmpty(go.getPrimaryContactEmail())) {
+      // b.add(getText("config.org.warning.contactEmail"));
+      b.add("Warning: Primary contact email required");
+    }
+    if (nullOrEmpty(go.getNodeKey())) {
+      // b.add(getText("config.org.warning.nodeKey"));
+      b.add("Warning: Node key required");
+    }
+    return b.build();
+  }
+
+  static boolean nullOrEmpty(String val) {
+    return val == null || val.trim().length() == 0;
+  }
+
+  @Autowired
+  private RegistryManager registry;
+
+  private GbrdsOrganisation.Builder orgBuilder = GbrdsOrganisation.builder();
 
   public AppConfig getConfig() {
     return this.cfg;
   }
 
-  public Organisation getOrg() {
-    return org;
+  public String getOrgContactEmail() {
+    return orgBuilder.getPrimaryContactEmail();
+  }
+
+  public String getOrgContactName() {
+    return orgBuilder.getPrimaryContactName();
+  }
+
+  public String getOrgDescription() {
+    return orgBuilder.getDescription();
+  }
+
+  public String getOrgHomepageUrl() {
+    return orgBuilder.getHomepageURL();
+  }
+
+  public String getOrgKey() {
+    return orgBuilder.getKey();
+  }
+
+  public String getOrgNode() {
+    return orgBuilder.getNodeKey();
+  }
+
+  public String getOrgNodeName() {
+    return orgBuilder.getNodeName();
+  }
+
+  public String getOrgPassword() {
+    return orgBuilder.getPassword();
+  }
+
+  public String getOrgTitle() {
+    return orgBuilder.getName();
   }
 
   public String getRegistryNodeUrl() {
@@ -61,17 +124,41 @@ public class CreateOrgAction extends BasePostAction {
    * registered.
    */
   public String register() {
-    String orgKey = org.getOrganisationKey();
-    if (organisationExists(orgKey)) {
-      saveMessage("The organisation is already registered with GBIF");
+    orgBuilder.primaryContactType(ContactType.technical.name());
+    GbrdsOrganisation go = orgBuilder.build();
+
+    // Checks org before registering:
+    Set<String> errors = checkOrg(go);
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
+      }
+      return SUCCESS;
     }
-    GbrdsOrganisation go = getGbifOrganisation(org);
-    CreateOrgResponse response = registryManager.createOrg(go);
-    if (response.getStatus() == HttpStatus.SC_CREATED) {
-      saveMessage(getText("register.org.success"));
-    } else {
-      saveMessage(getText("register.org.problem"));
+
+    // Checks if organisation already exists:
+    String key = go.getKey();
+    if (registry.orgExists(key)) {
+      saveMessage(getText("config.org.warning.orgRegistered"));
+      return SUCCESS;
     }
+
+    // Creates new org:
+    CreateOrgResponse cor = registry.createOrg(go);
+    if (cor.getStatus() != HttpStatus.SC_CREATED) {
+      saveMessage(getText("config.org.warning.orgNotCreated") + " "
+          + cor.getStatus());
+      return SUCCESS;
+    }
+
+    // Verifies new org credentials:
+    OrgCredentials creds = cor.getResult();
+    if (creds == null) {
+      saveMessage(getText("config.org.warning.badOrgCredentials"));
+      return SUCCESS;
+    }
+
+    saveMessage("Success: GBRDS organisation created: " + creds.getKey());
     return SUCCESS;
   }
 
@@ -80,32 +167,47 @@ public class CreateOrgAction extends BasePostAction {
    */
   @Override
   public String save() {
-    String orgKey = org.getOrganisationKey();
-    if (StringUtils.trimToNull(orgKey) == null) {
-      saveMessage("Unable to save organisation because key is invalid");
-      return SUCCESS;
-    }
-    OrgCredentials creds;
-    try {
-      String key = org.getOrganisationKey();
-      String password = org.getPassword();
-      creds = OrgCredentials.with(key, password);
-    } catch (Exception e) {
-      saveMessage("Unable to save organisation because of bad credentials");
-      return SUCCESS;
-    }
-    if (organisationExists(orgKey)) {
-      GbrdsOrganisation go = getGbifOrganisation(org);
-      try {
-        if (registryManager.updateOrg(go, creds).getResult()) {
-          saveMessage(getText("registry.updated"));
-        } else {
-          saveMessage(getText("registry.problem"));
-        }
-      } catch (BadCredentialsException e) {
-        saveMessage(getText("registry.problem"));
+    orgBuilder.primaryContactType(ContactType.technical.name());
+    GbrdsOrganisation go = orgBuilder.build();
+
+    // Checks org properties:
+    Set<String> errors = checkOrg(go);
+    if (!errors.isEmpty()) {
+      for (String e : errors) {
+        saveMessage(e);
       }
+      return SUCCESS;
     }
+
+    // Checks organisation credentials:
+    String key = go.getKey();
+    String pass = go.getPassword();
+    OrgCredentials creds = registry.getCreds(key, pass);
+    if (creds == null) {
+      saveMessage(getText("config.org.warning.badOrgCredentials"));
+      return SUCCESS;
+    }
+
+    // Checks if the organisation exists in GBRDS and registers it if not:
+    if (!registry.orgExists(key)) {
+      register();
+      return SUCCESS;
+    }
+
+    // Updates the organisation:
+    UpdateOrgResponse uor = null;
+    try {
+      uor = registry.updateOrg(go, creds);
+    } catch (BadCredentialsException e) {
+      saveMessage(getText("config.org.warning.badOrgCredentials"));
+      return SUCCESS;
+    }
+    if (uor.getStatus() != HttpStatus.SC_OK) {
+      saveMessage(getText("config.org.warning.orgNotUpdated") + " "
+          + uor.getStatus());
+      // TODO: Return here?
+    }
+
     return SUCCESS;
   }
 
@@ -113,27 +215,39 @@ public class CreateOrgAction extends BasePostAction {
     this.cfg = cfg;
   }
 
-  public void setOrg(Organisation org) {
-    this.org = org;
+  public void setOrgContactEmail(String val) {
+    orgBuilder.primaryContactEmail(val);
   }
 
-  /**
-   * @param org2
-   * @return ResourceMetadata
-   */
-  private GbrdsOrganisation getGbifOrganisation(Organisation org) {
-    GbrdsOrganisation go = GbrdsOrganisation.builder().description(
-        org.getDescription()).descriptionLanguage(org.getDescriptionLanguage()).homepageURL(
-        org.getHomepageUrl()).key(org.getOrganisationKey()).name(org.getName()).nameLanguage(
-        org.getNameLanguage()).nodeContactEmail(org.getPrimaryContactEmail()).nodeName(
-        org.getNodeName()).nodeKey(org.getNodeKey()).password(org.getPassword()).primaryContactAddress(
-        org.getPrimaryContactAddress()).primaryContactEmail(
-        org.getPrimaryContactEmail()).primaryContactType(
-        org.getPrimaryContactType()).build();
-    return go;
+  public void setOrgContactName(String val) {
+    orgBuilder.primaryContactName(val);
   }
 
-  private boolean organisationExists(String orgKey) {
-    return registryManager.readOrg(orgKey).getResult() != null;
+  public void setOrgDescription(String val) {
+    orgBuilder.description(val);
+  }
+
+  public void setOrgHomepageUrl(String val) {
+    orgBuilder.homepageURL(val);
+  }
+
+  public void setOrgKey(String val) {
+    orgBuilder.key(val);
+  }
+
+  public void setOrgNode(String val) {
+    orgBuilder.nodeKey(val);
+  }
+
+  public void setOrgNodeName(String val) {
+    orgBuilder.nodeName(val);
+  }
+
+  public void setOrgPassword(String val) {
+    orgBuilder.password(val);
+  }
+
+  public void setOrgTitle(String val) {
+    orgBuilder.name(val);
   }
 }
