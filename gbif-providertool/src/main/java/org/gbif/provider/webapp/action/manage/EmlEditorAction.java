@@ -166,7 +166,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   private boolean isSubmittedAssoParties;
 
-  private List<Agent> submittedAssociatedParties = Lists.newArrayList();
+  private final List<Agent> submittedAssociatedParties = Lists.newArrayList();
 
   private static List<Agent> deletedAgents = Lists.newArrayList();
 
@@ -176,7 +176,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
   private Map<String, String> methodTypeMap;
 
-  private List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
+  private final List<Rank> taxonHigherRankList = Rank.DARWIN_CORE_HIGHER_RANKS;
 
   private String method;
 
@@ -291,13 +291,13 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
 
         // Notifies the user if the IPT base URL contains localhost:
         if (registry.isLocalhost(cfg.getBaseUrl())) {
-          saveMessage("Warning: Cannot create GBRDS resource because IPT base URL contains localhost");
+          saveMessage(getText("config.ipt.warning.localhost"));
           problems = true;
         }
 
         // Notifies the user if the Geoserver URL contains localhost:
         if (registry.isLocalhost(cfg.getGeoserverUrl())) {
-          saveMessage("Warning: Cannot create GBRDS resource because Geoserver URL contains localhost");
+          saveMessage(getText("config.warning.geoserverLocalhost"));
           problems = true;
         }
 
@@ -306,7 +306,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         if (registry.orgExists(orgKey)) {
           String pass = resource.getOrgPassword();
           if (registry.getCreds(orgKey, pass) == null) {
-            saveMessage("Warning: Cannot create GBRDS resource because the GBRDS organisation credentials are invalid");
+            saveMessage(getText("config.warning.geoserverCredentials"));
             problems = true;
           }
         }
@@ -314,7 +314,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
         // Notifies user if the resource already exists:
         String resourceKey = resource.getMeta().getUddiID();
         if (registry.resourceExists(resourceKey)) {
-          saveMessage("GBRDS resource is registered for this resource: "
+          saveMessage(getText("config.resourceAlreadyRegistered") + " "
               + resourceKey);
         } else {
           resourceKey = null;
@@ -336,7 +336,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           creds = registry.getCreds(cfg.getOrg().getUddiID(),
               cfg.getOrgPassword());
           if (creds == null) {
-            saveMessage("Warning: Cannot create GBRDS resource because a GBRDS organisation is not associated with this IPT instance");
+            saveMessage(getText("config.ipt.warning.noOrg"));
             break;
           }
         }
@@ -357,13 +357,13 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           try {
             crr = registry.createResource(gr, creds);
           } catch (BadCredentialsException e1) {
-            saveMessage("Warning: Unable to update resource - bad credentials "
-                + creds);
+            saveMessage(getText("config.ipt.warning.resourceUpdateBadCredentials")
+                + " " + creds);
             break;
           }
           int status = crr.getStatus();
           if (status != HttpStatus.SC_CREATED) {
-            saveMessage("Warning: Unable to create GBRDS resource - status "
+            saveMessage(getText("config.org.warning.orgNotCreated") + " "
                 + status);
             break;
           }
@@ -371,11 +371,11 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           // Verified the new key:
           resourceKey = crr.getResult().getKey();
           if (resourceKey == null) {
-            saveMessage("Warning: Problem creating GBRDS resource - no key returned from GBRDS");
+            saveMessage(getText("config.org.warning.resourceNoKey"));
             break;
           }
           resource.getMeta().setUddiID(resourceKey);
-          saveMessage("Success: Created new GBRDS resource: " + resourceKey);
+          saveMessage(getText("config.org.registered") + " " + resourceKey);
 
           // Creates new GBRDS services:
           gr = registry.getResourceBuilder(resource.getMeta()).key(resourceKey).organisationKey(
@@ -388,7 +388,7 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
             }
             break;
           } else {
-            saveMessage("Successfully created GBRDS services");
+            saveMessage(getText("config.servicesCreated"));
           }
         } else {
 
@@ -400,16 +400,17 @@ public class EmlEditorAction extends BaseMetadataResourceAction implements
           try {
             urr = registry.updateResource(gr, creds);
           } catch (BadCredentialsException e) {
-            saveMessage("Warning: Unable to update resource - bad credentials "
-                + creds);
+            saveMessage(getText("config.ipt.warning.resourceUpdateBadCredentials")
+                + " " + creds);
             break;
           }
           int status = urr.getStatus();
           if (status != HttpStatus.SC_OK) {
-            saveMessage("Warning: Unable to update resource - status " + status);
+            saveMessage(getText("config.ipt.warning.resourceNotUpdated") + " "
+                + status);
             break;
           } else {
-            saveMessage("GBRDS resource updated successfully");
+            saveMessage(getText("config.ipt.resourceUpdated"));
           }
         }
 
