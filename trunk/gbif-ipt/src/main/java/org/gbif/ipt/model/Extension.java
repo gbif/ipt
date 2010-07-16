@@ -1,5 +1,6 @@
 package org.gbif.ipt.model;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,6 +90,14 @@ public class Extension {
 
 	public void setLink(URL link) {
 		this.link = link;
+	}
+	public void setLink(String link) {
+		URL url;
+		try {
+			url = new URL(link);
+			this.link = url;
+		} catch (MalformedURLException e) {
+		}
 	}
 
 	public boolean isInstalled() {

@@ -30,7 +30,25 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
   private String group;
   private int columnLength = 255; // sensible default
   private String link;
-  private boolean required;
+  private String examples;
+  private String description;
+  public String getExamples() {
+	return examples;
+}
+
+public void setExamples(String examples) {
+	this.examples = examples;
+}
+
+public String getDescription() {
+	return description;
+}
+
+public void setDescription(String description) {
+	this.description = description;
+}
+
+private boolean required;
   private Vocabulary vocabulary;
 
   public ExtensionProperty() {
