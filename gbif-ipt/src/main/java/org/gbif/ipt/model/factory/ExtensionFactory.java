@@ -56,9 +56,14 @@ public class ExtensionFactory {
 	protected static Log log = LogFactory.getLog(ExtensionFactory.class);
 	protected static HttpClient httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
 
-	@Inject
 	private VocabulariesManager vocabManager;
 
+
+	@Inject
+	public ExtensionFactory(VocabulariesManager vocabManager) {
+		super();
+		this.vocabManager = vocabManager;
+	}
 
 	/**
 	 * Builds an extension from the supplied input stream
@@ -80,7 +85,7 @@ public class ExtensionFactory {
 		digester.push(e);
 
 		digester.addCallMethod("*/extension", "setTitle", 1);
-		digester.addCallParam("*/extension", 0, "title");
+		digester.addCallParam("*/extension", 0, "dc:title");
 
 		digester.addCallMethod("*/extension", "setName", 1);
 		digester.addCallParam("*/extension", 0, "name");
@@ -88,14 +93,23 @@ public class ExtensionFactory {
 		digester.addCallMethod("*/extension", "setNamespace", 1);
 		digester.addCallParam("*/extension", 0, "namespace");
 
+		digester.addCallMethod("*/extension", "setRowType", 1);
+		digester.addCallParam("*/extension", 0, "rowType");
+
 		digester.addCallMethod("*/extension", "setLink", 1);
-		digester.addCallParam("*/extension", 0, "description");
+		digester.addCallParam("*/extension", 0, "dc:relation");
+
+		digester.addCallMethod("*/extension", "setDescription", 1);
+		digester.addCallParam("*/extension", 0, "dc:description");
+
+		digester.addCallMethod("*/extension", "setSubject", 1);
+		digester.addCallParam("*/extension", 0, "dc:subject");
 
 		// build the properties
 		digester.addObjectCreate("*/property", ExtensionProperty.class);
 
-		digester.addCallMethod("*/property", "setQualName", 1);
-		digester.addCallParam("*/property", 0, "qualName");
+		digester.addCallMethod("*/property", "setQualname", 1);
+		digester.addCallParam("*/property", 0, "qualname");
 
 		digester.addCallMethod("*/property", "setName", 1);
 		digester.addCallParam("*/property", 0, "name");
@@ -106,11 +120,14 @@ public class ExtensionFactory {
 		digester.addCallMethod("*/property", "setRequired", 1);
 		digester.addCallParam("*/property", 0, "required");
 
-		digester.addCallMethod("*/property", "setRequired", 1);
-		digester.addCallParam("*/property", 0, "required");
-
 		digester.addCallMethod("*/property", "setLink", 1);
+		digester.addCallParam("*/property", 0, "relation");
+
+		digester.addCallMethod("*/property", "setDescription", 1);
 		digester.addCallParam("*/property", 0, "description");
+
+		digester.addCallMethod("*/property", "setExamples", 1);
+		digester.addCallParam("*/property", 0, "examples");
 
 		digester.addCallMethod("*/property", "setColumnLength", 1);
 		digester.addCallParam("*/property", 0, "columnLength");
@@ -233,8 +250,7 @@ public class ExtensionFactory {
 				vocabManager.update(tv);
 				url2ThesaurusMap.put(t, tv);
 			} else {
-				log.warn("Extension[" + url + "] references an invalid vocabulary[" + t
-						+ "]");
+				log.warn("Extension[" + url + "] references an invalid vocabulary[" + t + "]");
 			}
 		}
 		log.info("Thesauri: " + url2ThesaurusMap);

@@ -3,6 +3,8 @@
  */
 package org.gbif.ipt.action.admin;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.gbif.ipt.action.BaseAction;
@@ -23,7 +25,7 @@ public class DwCExtensionsAction extends FormAction {
 
 	private List<Extension> extensions;
 	private Extension extension;
-
+	private String url;
 	
 	public String list(){
 		extensions=extensionManager.list();
@@ -45,4 +47,24 @@ public class DwCExtensionsAction extends FormAction {
 			}
 		}
 	}
+
+	@Override
+	public String delete() {
+		extensionManager.delete(id);
+		return SUCCESS;
+	}
+
+	public String install() {
+		URL extensionURL;
+		try {
+			extensionURL = new URL(url);
+			extensionManager.install(extensionURL);
+			addActionMessage(getText("admin.config.extension.success", url));
+		} catch (MalformedURLException e) {
+			log.debug(e);
+			addActionError(getText("admin.config.extension.error", url));
+		}
+		return SUCCESS;
+	}
+	
 }

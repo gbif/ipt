@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
@@ -88,7 +89,14 @@ public class Vocabulary implements Comparable {
 	public void setLink(URL link) {
 		this.link = link;
 	}
-
+	public void setLink(String link) {
+		URL url;
+		try {
+			url = new URL(link);
+			this.link = url;
+		} catch (MalformedURLException e) {
+		}
+	}
 	public List<VocabularyConcept> getConcepts() {
 		return concepts;
 	}
