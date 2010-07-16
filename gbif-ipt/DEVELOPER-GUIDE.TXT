@@ -1,0 +1,64 @@
+Project Home:
+
+Full Guidelines:
+
+
+######################
+# CODING CONVENTIONS #
+######################
+
+### Guice ###
+IptModule contains wiring, but for interfaces these are annotated directly with @ImplementedBy(ConfigManagerImpl.class)
+ 
+### Struts2 ###
+BaseAction:
+ supplies the AppConfig, implements session aware and gives access to current user, implements a simpler TextProvider which is faster than the native struts2 one. 
+
+
+FormAction:
+ this helper action class simplifies working with forms.
+ For modifying instance data always use POST, never GET.
+ The "input" resultname is used to show the form. We can therefore use the standard validation interceptor which uses the input result when data doesnt validate.
+ The "success" result is called when the form submit succeeded. In many cases this should simply be a redirect to another, often the corresponding list, action.
+
+ The action implements preparable, request aware and the execute method.
+   execute: FormAction determines if a POST or GET is used and calls save (POST), delete (POST + delete=true) or nothing (GET). 
+ If any other action values need to be set you can override load() or this method - but remember to call super.execute().
+   prepare: the "id" parameter of the request object is stored in the action and the load() method which should in most cases be overriden is called
+
+ Most full actions for modifying entities should override the following methods:
+   prepare(): load existing values based on "id" parameter and request object
+   save(): persist data AFTER the params interceptor did its job
+   delete(): this method is called when a POST with a "delete=anything_but_null" parameter is received
+  If the id given does not exist you can set the "notFound" property to true in any of the above methods. FormAction will then return a 404 result name
+
+Validation:
+  prefer to implement the validate() method of an action (instead of using xml validation definitions).
+  See SetupAction as an example.
+  Validation requires an "input" result name that shows the form when the form was not valid.
+  using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/2.1.8/docs/fielderror.html
+  
+### HTML Design ###
+forms best practices: 
+ http://htmldog.com/articles/formlayout/
+ http://blog.sherpawebstudios.com/2009/06/17/top-10-html-form-layout-best-practices/
+ use YAML ??? http://www.yaml.de/en/dokumentation/css-bausteine/formularbaukasten.html
+
+### CSS ###
+
+
+### Managers ###
+2 tier architecture only with interfaces + implementation 
+
+
+
+######################
+# CODE OVERVIEW      #
+######################
+
+### Configuration ###
+DataDir
+AppConfig
+
+### Guice ###
+

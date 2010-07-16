@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- 
+	NOTES TO DEVELOPERS:
+	Wildcards can be used in this definition to reduce the amount of configuration necesary
+	Given the following:
+	  <action name="*BaseURL" class="org.gbif.ipt.action.ConfigurationAction" method="{1}BaseURL">
+	means that:
+	  .../createBaseURL will call the method creatBaseURL
+	  .../replaceBaseURL will call the method replaceBaseURL
+	  ... etc
+	
+	This is useful when there are many repetitive CRUD operations, but where there are only 2 methods
+	it is easier for reading, to use full verbose names.
+	
+	Inside a package declaration, there is the namespace="/..." which sets the base URL for the actions
+	
+	The action definitions are split into the 3 major sections of the IPT (portal, manage and admin).
+	Note that actions are recognised on a "first declared basis", so it reads top to bottom.  However,
+	this should be kept simple, and overrides should be avoided unless absolutely necessary, to maintain
+	simplicity 
+	
+	Constants see struts.properties some constants, i.e. struts.locale dont work in struts.xml:
+	http://issues.apache.org/struts/browse/WW-2068
+-->
+<struts>
+	<!-- 
+		default settings all other packages inherit from
+		security interceptors, default action class & result type, global results are defined here
+	-->
+	<package name="ipt-default" extends="struts-default" namespace="/">
+		<result-types>
+			<result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult" default="true"/>
+		</result-types>
+		<interceptors>
+			<interceptor name="requireAdmin" class="org.gbif.ipt.struts2.RequireAdminInterceptor"/>
+			<interceptor name="requireManager" class="org.gbif.ipt.struts2.RequireManagerInterceptor"/>
+			<!-- custom interceptor to preserve action messages across redirects -->
+			<interceptor name="keepRedirectMessages" class="org.gbif.ipt.struts2.RedirectMessageInterceptor"/>
+			<!-- custom interceptor to redirect to the basic setup pages in case basic configuration is missing -->
+			<interceptor name="setupRedirect" class="org.gbif.ipt.struts2.SetupInterceptor"/>
+			
+			<!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
+			<interceptor-stack name="iptStack">
+				<interceptor-ref name="setupRedirect"/>
+				<interceptor-ref name="keepRedirectMessages"/>
+				<interceptor-ref name="i18nStack"/>
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow"/>
+			</interceptor-stack>
+			
+			<interceptor-stack name="adminStack">
+				<interceptor-ref name="requireAdmin"/>
+				<interceptor-ref name="iptStack"/>
+			</interceptor-stack>
+			<interceptor-stack name="managerStack">
+				<interceptor-ref name="requireManager"/>
+				<interceptor-ref name="iptStack"/>
+			</interceptor-stack>
+			<interceptor-stack name="uploadStack">
+				<interceptor-ref name="fileUpload">
+					<param name="maximumSize">104857600</param>
+				</interceptor-ref>
+				<interceptor-ref name="iptStack"/>
+			</interceptor-stack>			
+		</interceptors>
+		
+		<default-interceptor-ref name="iptStack"/>
+		
+		<default-class-ref class="org.gbif.ipt.action.BaseAction"/>
+		
+		<global-results>
+			<result name="404">
+				<param name="location">/WEB-INF/pages/error/404.ftl</param>
+			</result>
+			<result name="401">
+				<param name="location">/WEB-INF/pages/error/401.ftl</param>
+			</result>
+			<result name="401-manager">
+				<param name="location">/WEB-INF/pages/error/401-manager.ftl</param>
+			</result>
+			<result name="error">
+				<param name="location">/WEB-INF/pages/error/error.ftl</param>
+			</result>
+			<result name="setupIncomplete" type="redirect">/setup.do</result>
+			
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.RuntimeException"/>
+			<exception-mapping result="error" exception="org.gbif.ipt.service.admin.InvalidConfigException"/>
+		</global-exception-mappings>
+		
+		<action name="setup" class="org.gbif.ipt.action.admin.SetupAction" method="setup">
+			<result name="input">/WEB-INF/pages/admin/setup.ftl</result>
+			<result type="redirect">/setup2.do</result>
+		</action>
+		<action name="setup2" class="org.gbif.ipt.action.admin.SetupAction" method="setup2">
+			<result name="input">/WEB-INF/pages/admin/setup2.ftl</result>
+			<result type="redirect">/</result>
+		</action>
+		
+		<action name="login" class="org.gbif.ipt.action.AccountAction" method="login">
+			<result name="input">/WEB-INF/pages/login.ftl</result>
+			<result name="success" type="redirect">${redirectUrl}</result>
+		</action>
+		<action name="logout" class="org.gbif.ipt.action.AccountAction" method="logout">
+			<result name="success" type="redirect">${redirectUrl}</result>
+		</action>
+		<action name="account" class="org.gbif.clbportal.action.AccountAction" method="account">
+			<result name="input">/WEB-INF/pages/account.ftl</result>
+			<result>/WEB-INF/pages/account.ftl</result>
+		</action>
+
+		<action name="about" >
+			<result>/WEB-INF/pages/about.ftl</result>
+		</action>		
+		
+	</package>	
+	
+	<!-- 
+		Portal is in the namespace="/"
+		Manage is in the namespace="/manage"
+		Admin is in the namespace="/admin"	
+	-->
+	<include file="struts-portal.xml"/>
+	<include file="struts-manage.xml"/>
+	<include file="struts-admin.xml"/>
+</struts>
