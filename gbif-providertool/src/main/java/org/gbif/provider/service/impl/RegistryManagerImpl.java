@@ -77,26 +77,37 @@ public class RegistryManagerImpl implements RegistryManager {
 
   @Autowired
   private AppConfig appConfig;
-  private final OrganisationApi organsiationApi;
+
+  private final OrganisationApi orgApi;
   private final ResourceApi resourceApi;
   private final ServiceApi serviceApi;
-
   private final IptApi iptApi;
 
   RegistryManagerImpl() {
-    Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
-    organsiationApi = gbif.getOrganisationApi();
-    resourceApi = gbif.getResourceApi();
-    serviceApi = gbif.getServiceApi();
-    iptApi = gbif.getIptApi();
+    Gbrds gbrds = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
+    orgApi = gbrds.getOrganisationApi();
+    resourceApi = gbrds.getResourceApi();
+    serviceApi = gbrds.getServiceApi();
+    iptApi = gbrds.getIptApi();
+  }
+
+  /**
+   * For testing.
+   */
+  RegistryManagerImpl(Gbrds gbrds, AppConfig appConfig) {
+    this.appConfig = appConfig;
+    orgApi = gbrds.getOrganisationApi();
+    resourceApi = gbrds.getResourceApi();
+    serviceApi = gbrds.getServiceApi();
+    iptApi = gbrds.getIptApi();
   }
 
   /**
    * @see RegistryManager#createOrg(GbrdsOrganisation)
    */
-  public CreateOrgResponse createOrg(GbrdsOrganisation organisation) {
-    checkNotNull(organisation);
-    return organsiationApi.create(organisation).execute();
+  public CreateOrgResponse createOrg(GbrdsOrganisation org) {
+    checkNotNull(org, "Organisation is null");
+    return orgApi.create(org).execute();
   }
 
   /**
@@ -335,7 +346,7 @@ public class RegistryManagerImpl implements RegistryManager {
    */
   public ReadOrgResponse readOrg(String organisationKey) {
     checkArgument(notNullOrEmpty(organisationKey), "Invalid organisation key");
-    return organsiationApi.read(organisationKey).execute();
+    return orgApi.read(organisationKey).execute();
   }
 
   /**
@@ -406,7 +417,7 @@ public class RegistryManagerImpl implements RegistryManager {
       OrgCredentials creds) throws BadCredentialsException {
     checkNotNull(organisation, "Organisation is null");
     checkNotNull(creds, "Credentials are null");
-    return organsiationApi.update(organisation).execute(creds);
+    return orgApi.update(organisation).execute(creds);
   }
 
   /**
@@ -491,6 +502,6 @@ public class RegistryManagerImpl implements RegistryManager {
    * @see RegistryManager#validateCreds(OrgCredentials)
    */
   public ValidateOrgCredentialsResponse validateCreds(OrgCredentials creds) {
-    return organsiationApi.validateCredentials(creds).execute();
+    return orgApi.validateCredentials(creds).execute();
   }
 }

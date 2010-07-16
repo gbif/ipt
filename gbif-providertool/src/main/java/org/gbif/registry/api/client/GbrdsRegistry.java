@@ -982,13 +982,18 @@ public class GbrdsRegistry implements Gbrds {
      */
     public CreateOrgRequest create(GbrdsOrganisation org) {
       checkNotNull(org, "Organisation is null");
-      checkArgument(notNullOrEmpty(org.getName()), "Organisation name is null");
-      checkArgument(notNullOrEmpty(org.getPrimaryContactType()),
-          "Organisation contact type is null");
+      checkArgument(notNullOrEmpty(org.getName()),
+          "Name is null or empty string");
       checkArgument(notNullOrEmpty(org.getPrimaryContactEmail()),
-          "Organisation contact email is null");
+          "Contact email is null or empty string");
       checkArgument(notNullOrEmpty(org.getNodeKey()),
-          "Organisation node key is null");
+          "Node key is null or empty string");
+      String type = org.getPrimaryContactType();
+      checkArgument(notNullOrEmpty(type),
+          "Contact type is null or empty string");
+      checkArgument(type.trim().equalsIgnoreCase("technical")
+          || type.trim().equalsIgnoreCase("administrative"),
+          "Contact type must be technical or administrative");
       return new CreateRequest(org, registry);
     }
 

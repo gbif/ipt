@@ -16,7 +16,7 @@
     var orgs;
     function udpateNodeList(data){
         $("#nodeLoading").hide();
-      <#if !org.isRegistered()>
+      <#if !config.isOrgRegistered()>
         $("#orgNodeName").removeAttr("readonly");
       </#if>        
         $("#orgNodeName").autocomplete(data, {
@@ -31,7 +31,7 @@
                 return row.name;
             }
         }).result( function(event, data, formatted) {
-            console.debug(data);
+            // console.debug(data);
             $("#orgNodeKey").val(data.key);
             $("#orgNodeName").val(data.name);
         });
@@ -52,16 +52,15 @@
         }).result( function(event, data, formatted) {
             var url = "<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/'/>"+data.key+'.json';
             $.getJSON(url, udpateOrg);
-//            alert("You need to enter your organisation's password before you can register anything on behalf of this organisation");
+//            alert("<@s.text name='config.ipt.passwordmessage'/>");
             showWithKey();
         });
     }
     function udpateOrg(data){
-        console.debug(data);
+        // console.debug(data);
         $(".organisationKey").val(data.key);
         updateResendLink(data.key);
         $("#orgTitle").val(data.name);
-<#--        $("#orgNodeKey").val(data.endorsingNodeKey); -->
         $("#orgNodeKey").val(data.nodeKey);
         if (data.nodeName.length>0){
             $("#orgNodeName").val(data.nodeName);
@@ -79,16 +78,21 @@
     function showWithKey(){
         $(".btnWithoutKey").hide();
         $(".btnWithKey").show();
-<#--        $("#orgNodeName").attr("readonly","readonly"); -->
+ <#--       $("#orgNodeName").attr("readonly","readonly"); -->
         updateResendLink( $("#orgKey").val() );
     }
     function showWithoutKey(){
         $(".btnWithoutKey").show();
         $(".btnWithKey").hide();
-<#--         $("#orgNodeName").removeAttr("readonly"); -->
+<!--        $("#orgNodeName").removeAttr("readonly"); -->
     }
     $(document).ready(function(){
-
+      <#if config.isIptRegistered()>
+        $("#orgLoading").hide();
+        $("#nodeLoading").hide();
+        
+        <#-- the IPT is already registered. No way to change the organisation again -->
+      <#else>
         <#-- the IPT is not registered. Provide autocompletes for node & org selection -->
         $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);
         $("#orgTitle").attr("readonly","readonly");
@@ -102,15 +106,16 @@
             alert("<@s.text name='configorg.alert'/>");
             showWithoutKey();
         });
-
-      <#if org.isRegistered()>
-        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${org.organisationKey}.json'/>", udpateOrg);
+      </#if>
+      <#if config.isOrgRegistered()>
+        $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}/${config.org.uddiID}.json'/>", udpateOrg);
         showWithKey();
       <#else>        
         showWithoutKey();
-        <#if org.nodeKey??>
-          $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}/${org.nodeKey}.json'/>", function(data){
+        <#if config.orgNode??>
+          $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}/${config.orgNode}.json'/>", function(data){
             $("#orgNodeName").val(data.nodeName);
+            //console.debug(data);
           });
         </#if>
       </#if>
@@ -139,57 +144,57 @@
     </style>
 </head>
 
+
+<#include "/WEB-INF/pages/admin/configMenu.ftl">  
+
 <p>
 <@s.text name='configorg.instructions'/>
 </p>
 
 <p>
 <@s.text name='configorg.password.help'/>
-<!-- <p><a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a> -->
+<#-- <p><a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a> -->
 <p>
 
 <@s.form id="providerCfg" method="post">
 <fieldset>
-<#--    <@s.hidden id="orgKey" cssClass="organisationKey" name="organisationKey" value=""/> -->
     <div class="leftxLarge">
-        <@s.textfield id="orgTitle" key="org.name" required="true" cssClass="text xlarge external required"/>
+        <@s.textfield id="orgTitle" key="orgTitle" required="true" cssClass="text xlarge external required"/>
         <span id="orgLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
     </div>  
     <div>
         <div class="leftxhalf">
-            <@s.textfield key="org.organisationKey" value="${org.organisationKey!}" readonly="true" cssClass="text large organisationKey"/>
+            <@s.textfield key="orgKey" value="${orgKey!''}" readonly="true" cssClass="text large organisationKey"/>
         </div>
         <div class="left">
-            <@s.textfield id="orgNodeName" key="org.nodeName" required="true" cssClass="text medium external required"/>
+            <@s.textfield id="orgNodeName" key="orgNodeName" required="true" cssClass="text medium external required"/>
             <span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
-          <@s.hidden id="orgNodeKey" key="org.nodeKey" cssClass="external"/>
+           <@s.hidden id="orgNodeKey" key="orgNode" cssClass="external"/>
         </div>
         <div>
-            <@s.textfield id="orgPassword" key="org.password" required="false" cssClass="text medium"/>           
+            <@s.textfield id="orgPassword" key="orgPassword" required="false" cssClass="text medium"/>           
         </div>        
     </div>
     <div>
         <div class="leftxhalf">
-            <@s.textfield id="orgName" key="org.primaryContactName" required="true" cssClass="text large external required"/>
+            <@s.textfield id="orgName" key="orgContactName" required="true" cssClass="text large external required"/>
         </div>
         <div  class="leftxhalf">
-            <@s.textfield id="orgEmail" key="org.primaryContactEmail" required="true" cssClass="text large external required email"/>
+            <@s.textfield id="orgEmail" key="orgContactEmail" required="true" cssClass="text large external required email"/>
         </div>
     </div>
-    <@s.textfield id="orgHomepage" key="org.homepageUrl" required="false" cssClass="text xlarge external"/>
-    <@s.textarea id="orgDescription" key="org.description" cssClass="text xlarge external"/>
-
+    <@s.textfield id="orgHomepage" key="orgHomepageUrl" required="false" cssClass="text xlarge external"/>
+    <@s.textarea id="orgDescription" key="orgDescription" cssClass="text xlarge external"/>
+    
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
-    <@s.submit id="btnRegister" cssClass="button btnWithoutKey" key="button.register" method="register" theme="simple"/>
-    <div class="right btnWithKey">
-      <#--
-      <#if !config.isIptRegistered()>
+    <div class="right btnWithKey">    
+      <#if isOrgRegistered()>
+        <@s.submit id="btnRegister" cssClass="button btnWithoutKey" key="button.register" method="register" theme="simple"/>
         <a id="btnNew" href="#">Clear form</a> &nbsp;&nbsp;&nbsp;
       </#if>
-      -->
-       <a id="btnResend" target="_blank" href="#">Resend Password</a>
+       <a id="btnResend" target="_blank" href="#"><@s.text name='configorg.password.resend'/></a>
     </div>
   </fieldset>
 
-</@s.form>
+</@s.form>  

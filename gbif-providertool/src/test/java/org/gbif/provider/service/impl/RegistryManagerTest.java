@@ -17,6 +17,7 @@ package org.gbif.provider.service.impl;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.gbif.provider.service.RegistryManager;
+import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
@@ -32,6 +33,9 @@ public class RegistryManagerTest extends ContextAwareTestBase {
   @Autowired
   RegistryManager registry;
 
+  @Autowired
+  AppConfig appConfig;
+
   /**
    * Test method for
    * {@link org.gbif.provider.service.impl.RegistryManagerImpl#createOrg(org.gbif.registry.api.client.GbrdsOrganisation)}
@@ -39,16 +43,134 @@ public class RegistryManagerTest extends ContextAwareTestBase {
    */
   @Test
   public final void testCreateOrg() {
-    String name = "Name" + System.currentTimeMillis();
+    // Valid organisation:
+    String name = "Name";
     String type = "technical";
-    String email = "foo@foo.com";
-    String node = "us";
-    GbrdsOrganisation go = GbrdsOrganisation.builder().name(name).primaryContactType(
-        type).primaryContactEmail(email).nodeKey(node).build();
-    CreateOrgResponse cor = registry.createOrg(go);
+    String email = "eightysteele@gmail.com";
+    String nodeKey = "us";
+    GbrdsOrganisation.Builder b = GbrdsOrganisation.builder().name(name).primaryContactType(
+        type).primaryContactEmail(email).nodeKey(nodeKey);
+    CreateOrgResponse cor = registry.createOrg(b.build());
     assertTrue(cor.getStatus() == HttpStatus.SC_CREATED);
     OrgCredentials creds = cor.getResult();
     assertNotNull(creds);
+    assertTrue(registry.validateCreds(creds).getResult());
+
+    // Invalid organisations:
+    try {
+      registry.createOrg(null);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+    try {
+      registry.createOrg(GbrdsOrganisation.builder().build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+
+    // Invalid organisation names:
+    try {
+      registry.createOrg(b.name(null).build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.name(name);
+    }
+    try {
+      registry.createOrg(b.name("").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.name(name);
+    }
+    try {
+      registry.createOrg(b.name("   ").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.name(name);
+    }
+
+    // Invalid organisation contact type:
+    try {
+      registry.createOrg(b.primaryContactType(null).build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactType(type);
+    }
+    try {
+      registry.createOrg(b.primaryContactType("").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactType(type);
+    }
+    try {
+      registry.createOrg(b.primaryContactType("   ").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactType(type);
+    }
+    try {
+      registry.createOrg(b.primaryContactType("InvalidType").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactType(type);
+    }
+
+    // Invalid organisation contact email:
+    try {
+      registry.createOrg(b.primaryContactEmail(null).build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactEmail(email);
+    }
+    try {
+      registry.createOrg(b.primaryContactEmail("").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactEmail(email);
+    }
+    try {
+      registry.createOrg(b.primaryContactEmail("   ").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactEmail(email);
+    }
+
+    // Invalid organisation node key:
+    try {
+      registry.createOrg(b.nodeKey(null).build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.primaryContactEmail(email);
+    }
+    try {
+      registry.createOrg(b.nodeKey("").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.nodeKey(nodeKey);
+    }
+    try {
+      registry.createOrg(b.nodeKey("   ").build());
+      fail();
+    } catch (Exception e) {
+      System.out.println(e);
+      b.nodeKey(nodeKey);
+    }
+    cor = registry.createOrg(b.nodeKey("UnknownKey").build());
+    assertFalse(HttpStatus.SC_OK == cor.getStatus());
+    assertNull(cor.getResult());
   }
 
   /**
