@@ -39,8 +39,7 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public class ConfigOrgAction extends BasePostAction {
 
-  static ImmutableSet<String> checkOrg(GbrdsOrganisation go,
-      RegistryManager registry) {
+  static ImmutableSet<String> checkOrg(GbrdsOrganisation go) {
     ImmutableSet.Builder<String> b = ImmutableSet.builder();
 
     // Checks required org properties:
@@ -120,6 +119,10 @@ public class ConfigOrgAction extends BasePostAction {
     return AppConfig.getRegistryOrgUrl();
   }
 
+  public boolean isOrgRegistered() {
+    return registry.orgExists(orgBuilder.getKey());
+  }
+
   @Override
   public String read() {
     // Notifies the user if the organisation can't be changed:
@@ -144,7 +147,7 @@ public class ConfigOrgAction extends BasePostAction {
     GbrdsOrganisation go = orgBuilder.build();
 
     // Checks org before registering:
-    Set<String> errors = checkOrg(go, registry);
+    Set<String> errors = checkOrg(go);
     if (!errors.isEmpty()) {
       for (String e : errors) {
         saveMessage(e);
@@ -191,7 +194,7 @@ public class ConfigOrgAction extends BasePostAction {
     GbrdsOrganisation go = orgBuilder.build();
 
     // Checks org properties:
-    Set<String> errors = checkOrg(go, registry);
+    Set<String> errors = checkOrg(go);
     if (!errors.isEmpty()) {
       for (String e : errors) {
         saveMessage(e);

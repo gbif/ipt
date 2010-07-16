@@ -120,21 +120,12 @@ public interface Gbrds {
   public interface OrganisationApi {
 
     /**
-     * Returns a {@link CreateOrgRequest} that when executed with valid
-     * {@link OrgCredentials} creates a new GBRDS organisation.
+     * Returns a {@link CreateOrgRequest} that when executed creates a new GBRDS
+     * organisation.
      * 
-     * Throws {@link NullPointerException} if {@code org} is null of if any of
-     * the following {@code org} properties are null:
-     * 
-     * <pre>
-     * {@code name}
-     * {@code primaryContactType}
-     * {@code primaryContactEmail}
-     * {@code nodeKey}
-     * </pre>
-     * 
-     * Throws {@link IllegalArgumentException} if any of the following {@code
-     * org} properties are the empty string:
+     * Throws {@link NullPointerException} if {@code org} is null. Throws
+     * {@link IllegalArgumentException} if any of the following {@code org}
+     * properties are null or the empty string:
      * 
      * <pre>
      * {@code name}
@@ -143,7 +134,15 @@ public interface Gbrds {
      * {@code nodeKey}
      * </pre>
      * 
-     * @param org the GBRDS org to create
+     * Additionally throws {@link IllegalArgumentException} if {@code
+     * primaryContactType} is not 'administrative' or 'technical'. Note that the
+     * GBRDS expects the {@code nodeKey} to match a 'key' value returned by:
+     * http://gbrdsdev.gbif.org/registry/node.json
+     * 
+     * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI#
+     *      CREATE_ORGANISATION
+     * 
+     * @param org the GBRDS organisation to create
      * @return CreateOrgRequest
      */
     CreateOrgRequest create(GbrdsOrganisation org);

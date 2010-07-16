@@ -60,7 +60,7 @@ public class RegistryManagerMock implements RegistryManager {
    * org.gbif.provider.service.RegistryManager#createOrg(org.gbif.registry.api
    * .client.GbrdsOrganisation)
    */
-  public CreateOrgResponse createOrg(GbrdsOrganisation organisation) {
+  public CreateOrgResponse createOrg(GbrdsOrganisation org) {
     // TODO Auto-generated method stub
     return null;
   }

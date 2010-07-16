@@ -75,6 +75,10 @@ public class CreateOrgAction extends BasePostAction {
     return this.cfg;
   }
 
+  public boolean getIsOrgRegistered() {
+    return registry.orgExists(orgBuilder.getKey());
+  }
+
   public String getOrgContactEmail() {
     return orgBuilder.getPrimaryContactEmail();
   }

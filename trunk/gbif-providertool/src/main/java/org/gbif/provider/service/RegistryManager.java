@@ -63,16 +63,41 @@ public interface RegistryManager {
     }
   }
 
-  CreateOrgResponse createOrg(GbrdsOrganisation organisation);
+  /**
+   * Creates a new GBRDS organisation and returns the resulting
+   * {@link CreateOrgResponse}.
+   * 
+   * Throws {@link NullPointerException} if {@code org} is null. Throws
+   * {@link IllegalArgumentException} if any of the following {@code org}
+   * properties are null or the empty string:
+   * 
+   * <pre>
+   * {@code name}
+   * {@code primaryContactType}
+   * {@code primaryContactEmail}
+   * {@code nodeKey}
+   * </pre>
+   * 
+   * Additionally throws {@link IllegalArgumentException} if {@code
+   * primaryContactType} is not 'administrative' or 'technical'. Note that the
+   * GBRDS expects the {@code nodeKey} to match a 'key' value returned by:
+   * http://gbrdsdev.gbif.org/registry/node.json
+   * 
+   * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI#
+   *      CREATE_ORGANISATION
+   * @param org the GBRDS organisation to create
+   * @return CreateOrgResponse
+   */
+  CreateOrgResponse createOrg(GbrdsOrganisation org);
 
   CreateResourceResponse createResource(GbrdsResource resource,
       OrgCredentials creds) throws BadCredentialsException;
 
-  CreateServiceResponse createService(GbrdsService service, OrgCredentials creds)
-      throws BadCredentialsException;
-
   ImmutableSet<String> createResourceServices(GbrdsResource gbrdsResource,
       Resource resource);
+
+  CreateServiceResponse createService(GbrdsService service, OrgCredentials creds)
+      throws BadCredentialsException;
 
   DeleteResourceResponse deleteResource(String resourceKey, OrgCredentials creds)
       throws BadCredentialsException;
