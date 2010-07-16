@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- 
+        This is the production minimal log setting.
+        A running IPT adds a new data dir file based logger.
+        Users can switch from this to a detailed developer log4j.xml definition in a running system
+    -->
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <!--param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}]  %m%n"/-->
+            <param name="ConversionPattern" value="%-5p [%c{1}]  %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.apache.struts2">
+        <level value="ERROR" />
+    </logger>
+    <logger name="com.opensymphony.xwork2">
+        <level value="ERROR" />
+    </logger>
+    <logger name="freemarker">
+        <level value="ERROR" />
+    </logger>
+    
+    <!-- GBIF things -->
+    <logger name="org.gbif">
+        <level value="INFO" />
+    </logger>
+    
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</log4j:configuration>

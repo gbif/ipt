@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 
+	Actions related to the data browse/search area of the IPT 
+	These will be accessible by everyone for resources that have been published, but
+	some of the resources will only be accessible to the owning user or the administrator
+ -->
+<struts>
+	<!-- The entry to the administration section -->
+	<package name="portal" extends="ipt-default" namespace="/">
+		<default-action-ref name="home"/>
+		<action name="home" class="org.gbif.ipt.action.portal.HomeAction">
+			<result>/WEB-INF/pages/portal/home.ftl</result>
+		</action>
+	</package>
+</struts>

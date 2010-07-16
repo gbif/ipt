@@ -1,0 +1,6 @@
+######################
+# TODOs      #
+######################
+
+- setup interceptor
+- setup page2: pick admin password & installation type (prod/test)

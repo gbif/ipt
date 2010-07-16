@@ -1,0 +1,209 @@
+/* @override http://localhost:7001/ipt/styles/main.css */
+
+/* BASIC HTML TAGS */
+body {
+	background-color: #cccccc;
+	margin-bottom: 40px;
+    text-align: left;
+    font-family: arial, helvetica, verdana, sans-serif;
+    font-size: 12px;
+    line-height: 1em;
+    color: #666666;
+	
+}
+
+h1 {
+	color: #077A2D;
+	font-size: 16px;
+}
+
+a {
+	color: #005418;
+}
+
+/* for forms generated with the custom freemarker inlcudes */
+.ftlForm, .ftlTopForm {
+	margin: 2em 0em;
+}
+
+.ftlForm label {
+	font-size: 12px;
+	display: block;
+	margin-bottom: -1em;
+}
+.ftlForm input, .ftlForm select {
+	display: block;
+	position: relative;
+	left: 10em;
+	top: -0.5em;
+}
+
+
+.ftlTopForm label {
+	font-size: 12px;
+	display: block;
+	margin-top: 1em;
+}
+.ftlTopForm input,.ftlTopForm select {
+	display: block;
+	margin-left: 2em;
+}
+
+/* MAIN LAYOUT PIECES */
+div#wrapper {
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:950px;
+	background-color: #ffffff;
+	padding:10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-bottom:0px;
+	padding-top: 0px;
+}
+
+div#topmenu {
+	position:relative;
+	float: right;
+	bottom: -6px;
+}
+div#topmenu > ul {
+	margin:0; 
+	padding:0; 
+	list-style:none; 
+}
+div#topmenu > ul > li {
+	display:inline; 
+	margin:0; 
+	float:left; 
+	padding: 0px 0 0px 10px; 
+}
+div#topmenu > ul > li#nav-active a {
+	font-weight:bold;
+}
+
+
+#availableLocales{   
+	display: none;
+	padding: 0;
+}
+#availableLocales li {
+	list-style-type: none;
+	margin-top: 5px;
+	padding: 0px;
+}
+#availableLocales li + li {
+	margin: 0px;
+}
+   
+div#menu {
+	height: 50px;
+	background-color: #eeeeee;
+}
+div#menu ul {
+	padding: 0px;
+}
+div#menu li {
+	width: 144px;
+    float: left;
+    display: inline;
+    list-style: none;
+    margin-left: 5px;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1em;
+    margin-top:8px;
+    height: 40px;
+    text-align:center;
+    font-family: arial, helvetica, verdana, sans-serif;
+    background: transparent url(../images/bkgButton_up.gif) no-repeat;
+}
+
+div#menu a,
+div#menu a:link,
+div#menu a:active,
+div#menu a:visited {
+	background: transparent;
+    display: inline-block;
+    /* hide from ie/mac \*/
+    display: block;
+    /* end hide */
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0;
+    padding: 5px 15px 5px 15px;
+    padding-top: 12px;
+	color: #FFF;
+	height: 26px;
+	width: 114px;
+}
+div#menu a:hover {
+    text-decoration: none;
+    width: 114px;
+	background: transparent url(../images/bkgButton.gif) no-repeat;
+}
+div#menu a.current {
+    display: inline-block;
+    /* hide from ie/mac \*/
+    display: block;
+    /* end hide */
+    color: #FFF;
+    font-size: 12px !important;
+}
+div#menu a.current,
+div#menu a.current:link,
+div#menu a.current:active,
+div#menu a.current:visited,
+div#menu a.current:hover {
+	background: transparent url(../images/bkgButton.gif) no-repeat; 
+}
+
+div#search {
+	position: relative; 
+	top:-40px; 
+	right:0; 
+	width:250px; 
+	padding:7px; 
+	float: right;
+}
+div#search #search-input {
+	width:190px; 
+	padding:3px;
+	border:1px solid #AFAFAF;
+}
+
+
+
+div#content { 
+	padding: 10px;
+}
+
+
+div#footer{
+	margin-top: 30px;
+	height: 30px;
+	text-align: center;
+	padding-top: 20px;
+	background-color: #E6E6E6;
+	margin-left:-10px;
+	margin-right:-10px;
+}
+
+
+
+/* other classes */
+
+.clear{
+	clear:both;
+	padding:0;
+	margin:0;
+}
+
+.buttons{
+	margin-top: 1em;
+}
+.buttons input{
+	display: inline;
+}
+
