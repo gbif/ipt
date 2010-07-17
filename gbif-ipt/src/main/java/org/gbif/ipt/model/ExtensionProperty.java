@@ -32,6 +32,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
   private String link;
   private String examples;
   private String description;
+  
   public String getExamples() {
 	return examples;
 }

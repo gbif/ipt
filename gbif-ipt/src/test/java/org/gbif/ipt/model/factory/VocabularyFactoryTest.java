@@ -16,6 +16,7 @@
 package org.gbif.ipt.model.factory;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -23,33 +24,39 @@ import static org.junit.Assert.fail;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
+import org.junit.Test;
 /**
  * TODO: Documentation.
  * 
  */
-public class ThesaurusFactoryTest {
+public class VocabularyFactoryTest {
 
+  @Test
   public void testBuild() {
     try {
-      Vocabulary tv = VocabularyFactory.build(ThesaurusFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
-      assertEquals("Language Vocabulary", tv.getTitle());
-      assertEquals("http://purl.org/dc/terms/ISO639-3", tv.getUri());
+      Vocabulary tv = VocabularyFactory.build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
+      assertEquals("Dublin Core Type Vocabulary", tv.getTitle());
+      assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getUri());
+      assertEquals("The DCMI Type Vocabulary provides a general, cross-domain list of approved terms that may be used as values for the Resource Type element to identify the genre of a resource. The terms documented here are also included in the more comprehensive document \"DCMI Metadata Terms\" at http://dublincore.org/documents/dcmi-terms/.", tv.getDescription());
+      assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getLink().toString());
 
       assertNotNull(tv.getConcepts());
-      assertEquals(7694, tv.getConcepts().size());
+      assertEquals(12, tv.getConcepts().size());
 
       VocabularyConcept tc = tv.getConcepts().get(0);
-      assertEquals("aaa", tc.getIdentifier());
-      assertEquals("http://vocabularies.gbif.org/lang/aaa", tc.getLink());
-      assertEquals("http://www.sil.org/iso639-3/documentation.asp?id=aaa",
-          tc.getUri());
+      assertEquals("Collection", tc.getIdentifier());
+      assertNull(tc.getLink());
+      assertEquals("http://purl.org/dc/dcmitype/Collection", tc.getUri());
       assertEquals(tv, tc.getVocabulary());
 
       assertNotNull(tc.getTerms());
+      assertNotNull(tc.getPreferredTerms());
+      assertEquals(1, tc.getPreferredTerms().size());
+      assertEquals(0, tc.getAlternativeTerms().size());
       assertEquals(1, tc.getTerms().size());
       VocabularyTerm tt = tc.getTerms().iterator().next();
       assertEquals("en", tt.getLang());
-      assertEquals("Ghotuo", tt.getTitle());
+      assertEquals("Collection", tt.getTitle());
 
     } catch (Exception e) {
       e.printStackTrace();

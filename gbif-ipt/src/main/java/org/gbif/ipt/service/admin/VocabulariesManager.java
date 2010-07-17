@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -19,6 +20,11 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(VocabulariesManagerImpl.class)
 public interface VocabulariesManager {
+	
+	/** Load all known vocabularies from the data dir
+	 * @return number of vocabularies that have been loaded successfully
+	 */
+	public int load();
 	
 	/** Downloads the latest version from the vocabulary URL and udpates all related concepts & terms 
 	 * @param vocabulary the vocabulary to update

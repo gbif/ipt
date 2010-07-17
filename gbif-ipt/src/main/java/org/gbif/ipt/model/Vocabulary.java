@@ -117,7 +117,7 @@ public class Vocabulary implements Comparable {
 		if (concepts == null) {
 			concepts = new LinkedList<VocabularyConcept>();
 		}
-		//    concept.setVocabulary(this);
+		concept.setVocabulary(this);
 
 		if (concept.getOrder() == -1) {
 			// set the order to be the next one

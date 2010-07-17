@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.DwCExtensionManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -23,6 +24,11 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(DwCExtensionManagerImpl.class)
 public interface DwCExtensionManager {
 
+	/** Load all installed extensions from the data dir
+	 * @return number of extensions that have been loaded successfully
+	 */
+	public int load();
+		
 	/**List all installed extensions
 	 * @return list of installed IPT extensions
 	 */

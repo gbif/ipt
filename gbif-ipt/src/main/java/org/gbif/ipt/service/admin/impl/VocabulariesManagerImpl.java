@@ -42,4 +42,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
 		List<Vocabulary> vocs = new ArrayList<Vocabulary>();
 		return vocs;
 	}
+
+	public int load() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

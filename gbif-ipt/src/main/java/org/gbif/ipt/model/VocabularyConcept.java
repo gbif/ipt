@@ -41,7 +41,8 @@ public class VocabularyConcept implements Comparable{
 	private String uri; // a URI denoting the concept, mostly used in rdf
 	private URL link;  // web link to some more human documentation
 	private int order=-1; // to maintain any custom order not based on a natural concept property
-	private Set<VocabularyTerm> terms = new CompactHashSet<VocabularyTerm>();
+	private Set<VocabularyTerm> alternativeTerms = new CompactHashSet<VocabularyTerm>();
+	private Set<VocabularyTerm> preferredTerms = new CompactHashSet<VocabularyTerm>();
 	
 	public Vocabulary getVocabulary() {
 		return vocabulary;
@@ -83,18 +84,38 @@ public class VocabularyConcept implements Comparable{
 		this.order = order;
 	}
 
+	/**
+	 * @return a set of all terms, preferred or alternative, for this concept
+	 */
 	public Set<VocabularyTerm> getTerms() {
-		return terms;
+		Set<VocabularyTerm> t = new CompactHashSet<VocabularyTerm>(preferredTerms);
+		t.addAll(alternativeTerms);
+		return t;
+	}
+	public Set<VocabularyTerm> getPreferredTerms() {
+		return preferredTerms;
 	}
 
-	public void setTerms(Set<VocabularyTerm> terms) {
-		this.terms = terms;
+	public Set<VocabularyTerm> getAlternativeTerms() {
+		return alternativeTerms;
 	}
 
-	public void addTerm(VocabularyTerm term) {
-		terms.add(term);
+	public void setAlternativeTerms(Set<VocabularyTerm> alternativeTerms) {
+		this.alternativeTerms = alternativeTerms;
 	}
 
+	public void setPreferredTerms(Set<VocabularyTerm> preferredTerms) {
+		this.preferredTerms = preferredTerms;
+	}
+
+	public void addAlternativeTerm(VocabularyTerm term) {
+		alternativeTerms.add(term);
+	}
+	public void addPreferredTerm(VocabularyTerm term) {
+		preferredTerms.add(term);
+	}
+
+	
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */

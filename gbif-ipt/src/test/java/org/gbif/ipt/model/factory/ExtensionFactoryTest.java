@@ -55,10 +55,14 @@ public class ExtensionFactoryTest {
       assertNotNull(e.getProperties());
       assertEquals(47, e.getProperties().size());
       for (ExtensionProperty p : e.getProperties()) {
-        if (p.getName().equalsIgnoreCase("year")) {
-          assertEquals("http://rs.tdwg.org/dwc/terms/year", p.getQualname());
+        if (p.getName().equalsIgnoreCase("kingdom")) {
+          assertEquals("http://rs.tdwg.org/dwc/terms/kingdom", p.getQualname());
           assertEquals("http://rs.tdwg.org/dwc/terms/", p.getNamespace());
-          assertEquals("Events", p.getGroup());
+          assertEquals("Taxon", p.getGroup());
+          assertEquals("Kingdom examples", p.getExamples());
+          assertEquals("Kingdom description", p.getDescription());
+          assertEquals("http://rs.tdwg.org/dwc/terms/index.htm#kingdom", p.getLink());
+          
         }
       }
 
