@@ -55,6 +55,7 @@ import com.google.inject.Inject;
 public class ExtensionFactory {
 	protected static Log log = LogFactory.getLog(ExtensionFactory.class);
 	protected static HttpClient httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
+	  public static final String EXTENSION_NAMESPACE = "http://rs.gbif.org/extension/";
 
 	private VocabulariesManager vocabManager;
 
@@ -75,7 +76,9 @@ public class ExtensionFactory {
 	 */
 	public static Extension build(InputStream is, Map<String, Vocabulary> url2ThesaurusMap) throws IOException, SAXException {
 		Digester digester = new Digester();
-		digester.setNamespaceAware(false);
+		// in order to deal with arbitrary namespace prefixes we need to parse namespace aware!
+		digester.setNamespaceAware(true);
+	    digester.setRuleNamespaceURI(EXTENSION_NAMESPACE);
 
 		// this is important. The root of the stack is the urlMapping,
 		// and the next is the extension being built. Methods on the root are called
@@ -85,7 +88,7 @@ public class ExtensionFactory {
 		digester.push(e);
 
 		digester.addCallMethod("*/extension", "setTitle", 1);
-		digester.addCallParam("*/extension", 0, "dc:title");
+		digester.addRule("*/extension", new CallParamNoNSRule(0, "title"));
 
 		digester.addCallMethod("*/extension", "setName", 1);
 		digester.addCallParam("*/extension", 0, "name");
@@ -97,19 +100,19 @@ public class ExtensionFactory {
 		digester.addCallParam("*/extension", 0, "rowType");
 
 		digester.addCallMethod("*/extension", "setLink", 1);
-		digester.addCallParam("*/extension", 0, "dc:relation");
+		digester.addRule("*/extension", new CallParamNoNSRule(0, "relation"));
 
 		digester.addCallMethod("*/extension", "setDescription", 1);
-		digester.addCallParam("*/extension", 0, "dc:description");
+		digester.addRule("*/extension", new CallParamNoNSRule(0, "description"));
 
 		digester.addCallMethod("*/extension", "setSubject", 1);
-		digester.addCallParam("*/extension", 0, "dc:subject");
+		digester.addRule("*/extension", new CallParamNoNSRule(0, "subject"));
 
 		// build the properties
 		digester.addObjectCreate("*/property", ExtensionProperty.class);
 
 		digester.addCallMethod("*/property", "setQualname", 1);
-		digester.addCallParam("*/property", 0, "qualname");
+		digester.addCallParam("*/property", 0, "qualName");
 
 		digester.addCallMethod("*/property", "setName", 1);
 		digester.addCallParam("*/property", 0, "name");
@@ -121,10 +124,10 @@ public class ExtensionFactory {
 		digester.addCallParam("*/property", 0, "required");
 
 		digester.addCallMethod("*/property", "setLink", 1);
-		digester.addCallParam("*/property", 0, "relation");
+		digester.addRule("*/property", new CallParamNoNSRule(0, "relation"));
 
 		digester.addCallMethod("*/property", "setDescription", 1);
-		digester.addCallParam("*/property", 0, "description");
+		digester.addRule("*/property", new CallParamNoNSRule(0, "description"));
 
 		digester.addCallMethod("*/property", "setExamples", 1);
 		digester.addCallParam("*/property", 0, "examples");

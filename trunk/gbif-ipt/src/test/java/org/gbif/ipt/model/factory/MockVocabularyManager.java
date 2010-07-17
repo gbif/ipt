@@ -49,4 +49,9 @@ public class MockVocabularyManager implements VocabulariesManager {
 		// TODO Auto-generated method stub		
 	}
 
+	public int load() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
   }

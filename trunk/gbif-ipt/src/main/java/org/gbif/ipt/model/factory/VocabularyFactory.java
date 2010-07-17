@@ -36,7 +36,8 @@ import org.xml.sax.SAXException;
  * Building from XML definitions
  */
 public class VocabularyFactory {
-  protected static Log log = LogFactory.getLog(VocabularyFactory.class);
+  public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
+protected static Log log = LogFactory.getLog(VocabularyFactory.class);
   protected static HttpClient httpClient = new HttpClient(
       new MultiThreadedHttpConnectionManager());
 
@@ -90,7 +91,8 @@ public class VocabularyFactory {
   public static Vocabulary build(InputStream is) throws IOException,
       SAXException {
     Digester digester = new Digester();
-    digester.setNamespaceAware(false);
+    digester.setNamespaceAware(true);
+    digester.setRuleNamespaceURI(VOCABULARY_NAMESPACE);
     // using regular expressions to allow for prefixed attributes in differing
     // namespaces
     // digester.setRules( new RegexRules(new SimpleRegexMatcher()) );
@@ -102,20 +104,24 @@ public class VocabularyFactory {
 
     // build the thesaurus
     digester.addCallMethod("*/thesaurus", "setTitle", 1);
-    digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "title"));
+    digester.addRule("*/thesaurus",new CallParamNoNSRule(0, "title"));
+
+    digester.addCallMethod("*/thesaurus", "setDescription", 1);
+    digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "description"));
 
     digester.addCallMethod("*/thesaurus", "setLink", 1);
-    digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "description"));
+    digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "relation"));
 
     digester.addCallMethod("*/thesaurus", "setUri", 1);
     digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "URI"));
-
-    // modified is not being set... should it default to now?
 
     // build the concept
     digester.addObjectCreate("*/concept", VocabularyConcept.class);
 
     digester.addCallMethod("*/concept", "setLink", 1);
+    digester.addRule("*/concept", new CallParamNoNSRule(0, "relation"));
+
+    digester.addCallMethod("*/concept", "setDescription", 1);
     digester.addRule("*/concept", new CallParamNoNSRule(0, "description"));
 
     digester.addCallMethod("*/concept", "setUri", 1);
@@ -124,37 +130,31 @@ public class VocabularyFactory {
     digester.addCallMethod("*/concept", "setIdentifier", 1);
     digester.addRule("*/concept", new CallParamNoNSRule(0, "identifier"));
 
-    digester.addCallMethod("*/concept", "setIssuedXSDDateTime", 1);
-    digester.addRule("*/concept", new CallParamNoNSRule(0, "issued"));
-
-    // these are not set
-    // tc.setConceptOrder(conceptOrder)
-    // tc.setLink(link)
-
     // build the terms
     digester.addObjectCreate("*/preferred/term", VocabularyTerm.class);
     VocabularyTerm t = new VocabularyTerm();
 
-    digester.addCallMethod("*/preferred/term", "setCreatedXSDDateTime", 1);
-    digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "created"));
-
-    digester.addCallMethod("*/preferred/term", "setModifiedXSDDateTime", 1);
-    digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "modified"));
-
     digester.addCallMethod("*/preferred/term", "setLang", 1);
     digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "lang"));
-
-    digester.addCallMethod("*/preferred/term", "setPreferred", 1);
-    digester.addObjectParam("*/preferred/term", 0, "true");
 
     digester.addCallMethod("*/preferred/term", "setTitle", 1);
     digester.addRule("*/preferred/term", new CallParamNoNSRule(0, "title"));
 
-    // these are not set
-    // t.setRelation(relation)
-    // t.setSource(source)
+    digester.addSetNext("*/preferred/term", "addPreferredTerm");
 
-    digester.addSetNext("*/preferred/term", "addTerm");
+    // build alternative terms
+    digester.addObjectCreate("*/alternative/term", VocabularyTerm.class);
+    VocabularyTerm talt = new VocabularyTerm();
+
+    digester.addCallMethod("*/alternative/term", "setLang", 1);
+    digester.addRule("*/alternative/term", new CallParamNoNSRule(0, "lang"));
+
+    digester.addCallMethod("*/alternative/term", "setTitle", 1);
+    digester.addRule("*/alternative/term", new CallParamNoNSRule(0, "title"));
+
+    digester.addSetNext("*/alternative/term", "addAlternativeTerm");
+
+    // add concept
     digester.addSetNext("*/concept", "addConcept");
 
     digester.parse(is);

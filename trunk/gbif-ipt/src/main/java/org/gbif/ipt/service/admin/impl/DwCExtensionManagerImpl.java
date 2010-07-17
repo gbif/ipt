@@ -46,5 +46,10 @@ public class DwCExtensionManagerImpl extends BaseManager implements DwCExtension
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public int load() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }
