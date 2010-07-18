@@ -69,7 +69,7 @@ public class CreateOrgAction extends BasePostAction {
   @Autowired
   private RegistryManager registry;
 
-  private GbrdsOrganisation.Builder orgBuilder = GbrdsOrganisation.builder();
+  private final GbrdsOrganisation.Builder orgBuilder = GbrdsOrganisation.builder();
 
   public AppConfig getConfig() {
     return this.cfg;
@@ -162,7 +162,7 @@ public class CreateOrgAction extends BasePostAction {
       return SUCCESS;
     }
 
-    saveMessage("Success: GBRDS organisation created: " + creds.getKey());
+    saveMessage(getText("config.org.registered") + " " + creds.getKey());
     return SUCCESS;
   }
 

@@ -233,7 +233,7 @@ public class ConfigOrgAction extends BasePostAction {
     cfg.setOrg(registry.getMeta(go));
     cfg.setOrgPassword(creds.getPassword());
     cfg.save();
-    saveMessage("Organisation saved and the GBRDS updated successfully");
+    saveMessage(getText("config.org.saved"));
     return SUCCESS;
   }
 
