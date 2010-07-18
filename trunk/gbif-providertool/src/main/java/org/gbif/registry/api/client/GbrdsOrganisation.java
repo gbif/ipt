@@ -46,7 +46,6 @@ public class GbrdsOrganisation implements Serializable {
     private String nodeName;
     private String password;
     private String primaryContactAddress;
-
     private String primaryContactDescription;
     private String primaryContactEmail;
     private String primaryContactName;
@@ -233,6 +232,10 @@ public class GbrdsOrganisation implements Serializable {
         org.primaryContactPhone).primaryContactType(org.primaryContactType);
   }
 
+  private static String trimToEmpty(String val) {
+    return val == null || val.trim().length() == 0 ? "" : val.trim();
+  }
+
   private final String description;
   private final String descriptionLanguage;
   private final String homepageURL;
@@ -248,7 +251,6 @@ public class GbrdsOrganisation implements Serializable {
   private final String primaryContactEmail;
   private final String primaryContactName;
   private final String primaryContactPhone;
-
   private final String primaryContactType;
 
   GbrdsOrganisation() {
@@ -256,22 +258,22 @@ public class GbrdsOrganisation implements Serializable {
   }
 
   private GbrdsOrganisation(Builder builder) {
-    description = builder.description;
-    descriptionLanguage = builder.descriptionLanguage;
-    homepageURL = builder.homepageURL;
-    key = builder.key;
-    name = builder.name;
-    nameLanguage = builder.nameLanguage;
-    nodeContactEmail = builder.nodeContactEmail;
-    nodeKey = builder.nodeKey;
-    nodeName = builder.nodeName;
-    password = builder.password;
-    primaryContactAddress = builder.primaryContactAddress;
-    primaryContactDescription = builder.primaryContactDescription;
-    primaryContactEmail = builder.primaryContactEmail;
-    primaryContactName = builder.primaryContactName;
-    primaryContactPhone = builder.primaryContactPhone;
-    primaryContactType = builder.primaryContactType;
+    description = trimToEmpty(builder.description);
+    descriptionLanguage = trimToEmpty(builder.descriptionLanguage);
+    homepageURL = trimToEmpty(builder.homepageURL);
+    key = trimToEmpty(builder.key);
+    name = trimToEmpty(builder.name);
+    nameLanguage = trimToEmpty(builder.nameLanguage);
+    nodeContactEmail = trimToEmpty(builder.nodeContactEmail);
+    nodeKey = trimToEmpty(builder.nodeKey);
+    nodeName = trimToEmpty(builder.nodeName);
+    password = trimToEmpty(builder.password);
+    primaryContactAddress = trimToEmpty(builder.primaryContactAddress);
+    primaryContactDescription = trimToEmpty(builder.primaryContactDescription);
+    primaryContactEmail = trimToEmpty(builder.primaryContactEmail);
+    primaryContactName = trimToEmpty(builder.primaryContactName);
+    primaryContactPhone = trimToEmpty(builder.primaryContactPhone);
+    primaryContactType = trimToEmpty(builder.primaryContactType);
   }
 
   @Override
@@ -292,6 +294,7 @@ public class GbrdsOrganisation implements Serializable {
         && Objects.equal(nodeContactEmail, o.nodeContactEmail)
         && Objects.equal(nodeKey, o.nodeKey)
         && Objects.equal(nodeName, o.nodeName)
+        && Objects.equal(password, o.password)
         && Objects.equal(primaryContactAddress, o.primaryContactAddress)
         && Objects.equal(primaryContactDescription, o.primaryContactDescription)
         && Objects.equal(primaryContactEmail, o.primaryContactEmail)
