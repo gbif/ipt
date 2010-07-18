@@ -26,19 +26,19 @@ import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.GbrdsThesaurus;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.CreateServiceResponse;
+import org.gbif.registry.api.client.Gbrds.DeleteResourceResponse;
+import org.gbif.registry.api.client.Gbrds.DeleteServiceResponse;
+import org.gbif.registry.api.client.Gbrds.ListServiceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.Gbrds.ReadOrgResponse;
+import org.gbif.registry.api.client.Gbrds.ReadResourceResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateServiceResponse;
+import org.gbif.registry.api.client.Gbrds.ValidateOrgCredentialsResponse;
 
 import java.util.List;
 
@@ -85,11 +85,38 @@ public interface RegistryManager {
    * 
    * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI#
    *      CREATE_ORGANISATION
+   * 
    * @param org the GBRDS organisation to create
    * @return CreateOrgResponse
    */
   CreateOrgResponse createOrg(GbrdsOrganisation org);
 
+  /**
+   * Creates a new GBRDS resource and returns the resulting
+   * {@link CreateResourceResponse}.
+   * 
+   * Throws {@link NullPointerException} if {@code resource} is null. Throws
+   * {@link IllegalArgumentException} if any of the following {@code resource}
+   * properties are null or the empty string:
+   * 
+   * <pre>
+   * {@code name}
+   * {@code primaryContactType}
+   * {@code primaryContactEmail}
+   * {@code organisationKey}
+   * </pre>
+   * 
+   * Additionally throws {@link IllegalArgumentException} if {@code
+   * primaryContactType} is not 'administrative' or 'technical'.
+   * 
+   * @see http
+   *      ://code.google.com/p/gbif-registry/wiki/ResourceAPI#CREATE_RESOURCE
+   * 
+   * @param resource the GBRDS resource to create
+   * @param creds the org credentials required for updating the resource
+   * @throws BadCredentialsException
+   * @return CreateResourceResponse
+   */
   CreateResourceResponse createResource(GbrdsResource resource,
       OrgCredentials creds) throws BadCredentialsException;
 
@@ -123,7 +150,7 @@ public interface RegistryManager {
 
   List<GbrdsThesaurus> listAllThesauri();
 
-  ListServicesResponse listServices(String resourceKey);
+  ListServiceResponse listServices(String resourceKey);
 
   boolean orgExists(String key);
 
@@ -135,8 +162,25 @@ public interface RegistryManager {
 
   String updateIptRssServiceUrl(String key, String password, String rssUrl);
 
-  UpdateOrgResponse updateOrg(GbrdsOrganisation organisation,
-      OrgCredentials creds) throws BadCredentialsException;
+  /**
+   * Updates an existing GBRDS organisation and returns the corresponding
+   * {@link UpdateOrgResponse}.
+   * 
+   * Throws {@link NullPointerException} if the {@code org} is null. Throws
+   * {@link BadCredentialsException} if the {@code creds} are invalid. Throws
+   * {@link IllegalArgumentException} if the {@code key} or {@code
+   * primaryContactType} properties are null or the empty string. Throws
+   * {@link IllegalArgumentException} if the {@code primaryContactType} is not
+   * 'technical' or 'administrative'.
+   * 
+   * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI#
+   *      UPDATE_ORGANISATION
+   * 
+   * @param org the GBRDS organisation to update
+   * @return UpdateOrgRequest
+   */
+  UpdateOrgResponse updateOrg(GbrdsOrganisation org, OrgCredentials creds)
+      throws BadCredentialsException;
 
   UpdateResourceResponse updateResource(GbrdsResource resource,
       OrgCredentials creds) throws BadCredentialsException;

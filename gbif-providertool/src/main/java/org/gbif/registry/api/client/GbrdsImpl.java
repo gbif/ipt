@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -57,169 +58,51 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
- * This class provides a client API to GBIF Registry web services. It currently
- * supports creating, deleting, listing, reading, and updating organisations
- * using the Organisation API. Support for the Resource API, the Service API,
- * and the Node API is coming shortly.
- * 
- * Usage example for listing all organisations:
- * 
- * <code>
- * Registry api = GbifRegistry.init("http://gbrds.gbif.org");
- * List<GbifOrganisation> list = api.execute(OrganisationApi.list());
- * </code>
+ * This class provides a default implementation of {@link Gbrds}.
  * 
  * @see http://code.google.com/p/gbif-registry
  * 
  */
-public class GbrdsRegistry implements Gbrds {
+public class GbrdsImpl implements Gbrds {
 
-  public static interface CreateOrgRequest extends
-      RpcRequest<CreateOrgResponse, OrgCredentials> {
-  }
-  public static interface CreateOrgResponse extends RpcResponse<OrgCredentials> {
-  }
+  static class CredentialsXmlHandler extends DefaultHandler {
+    String organisationKey;
+    String password;
+    String content;
 
-  public static interface CreateResourceRequest extends
-      AuthRpcRequest<CreateResourceResponse, GbrdsResource> {
-  }
-  public static interface CreateResourceResponse extends
-      RpcResponse<GbrdsResource> {
-  }
+    @Override
+    public void characters(char[] ch, int start, int length)
+        throws SAXException {
+      content += String.valueOf(ArrayUtils.subarray(ch, start, start + length));
+    }
 
-  /**
-   * Interface for creating GBRDS services using an {@link AuthRpcRequest}.
-   */
-  public static interface CreateServiceRequest extends
-      AuthRpcRequest<CreateServiceResponse, GbrdsService> {
-  }
+    @Override
+    public void endElement(String uri, String localName, String name)
+        throws SAXException {
+      if (name.equalsIgnoreCase("password")) {
+        password = content;
+      } else if (name.equalsIgnoreCase("organisationKey")) {
+        organisationKey = content.replaceAll("\\s", "");
+      }
+      content = "";
+    }
 
-  public static interface CreateServiceResponse extends
-      RpcResponse<GbrdsService> {
-  }
+    @Override
+    public void startDocument() throws SAXException {
+      content = "";
+      organisationKey = "";
+      password = "";
+    }
 
-  public static interface DeleteOrgRequest extends
-      AuthRpcRequest<DeleteOrgResponse, Boolean> {
-  }
-
-  public static interface DeleteOrgResponse extends RpcResponse<Boolean> {
-  }
-
-  public static interface DeleteResourceRequest extends
-      AuthRpcRequest<DeleteResourceResponse, Boolean> {
-  }
-
-  public static interface DeleteResourceResponse extends RpcResponse<Boolean> {
-  }
-
-  /**
-   * Interface for deleting GBRDS services using an {@link AuthRpcRequest}.
-   */
-  public static interface DeleteServiceRequest extends
-      AuthRpcRequest<DeleteServiceResponse, Boolean> {
-  }
-
-  public static interface DeleteServiceResponse extends RpcResponse<Boolean> {
-  }
-
-  public static interface ListExtensionsRequest extends
-      RpcRequest<ListExtensionsResponse, List<GbrdsExtension>> {
-  }
-
-  public static interface ListExtensionsResponse extends
-      RpcResponse<List<GbrdsExtension>> {
-  }
-
-  public static interface ListOrgRequest extends
-      RpcRequest<ListOrgResponse, List<GbrdsOrganisation>> {
-  }
-
-  public static interface ListOrgResponse extends
-      RpcResponse<List<GbrdsOrganisation>> {
-  }
-
-  public static interface ListResourceRequest extends
-      RpcRequest<ListResourceResponse, List<GbrdsResource>> {
-  }
-
-  public static interface ListResourceResponse extends
-      RpcResponse<List<GbrdsResource>> {
-  }
-
-  public static interface ListServicesRequest extends
-      RpcRequest<ListServicesResponse, List<GbrdsService>> {
-  }
-
-  public static interface ListServicesResponse extends
-      RpcResponse<List<GbrdsService>> {
-  }
-
-  public static interface ListThesauriRequest extends
-      RpcRequest<ListThesauriResponse, List<GbrdsThesaurus>> {
-  }
-
-  public static interface ListThesauriResponse extends
-      RpcResponse<List<GbrdsThesaurus>> {
-  }
-
-  public static interface ReadOrgRequest extends
-      RpcRequest<ReadOrgResponse, GbrdsOrganisation> {
-  }
-
-  public static interface ReadOrgResponse extends
-      RpcResponse<GbrdsOrganisation> {
-  }
-
-  public static interface ReadResourceRequest extends
-      RpcRequest<ReadResourceResponse, GbrdsResource> {
-  }
-
-  public static interface ReadResourceResponse extends
-      RpcResponse<GbrdsResource> {
-  }
-
-  public static interface ReadServiceRequest extends
-      RpcRequest<ReadServiceResponse, GbrdsService> {
-  }
-
-  public static interface ReadServiceResponse extends RpcResponse<GbrdsService> {
-  }
-
-  public static interface UpdateOrgRequest extends
-      AuthRpcRequest<UpdateOrgResponse, Boolean> {
-  }
-
-  public static interface UpdateOrgResponse extends RpcResponse<Boolean> {
-  }
-
-  public static interface UpdateResourceRequest extends
-      AuthRpcRequest<UpdateResourceResponse, Boolean> {
-  }
-
-  public static interface UpdateResourceResponse extends RpcResponse<Boolean> {
-  }
-
-  /**
-   * Interface for updating GBRDS services using an {@link AuthRpcRequest}.
-   */
-  public static interface UpdateServiceRequest extends
-      AuthRpcRequest<UpdateServiceResponse, Boolean> {
-  }
-
-  public static interface UpdateServiceResponse extends RpcResponse<Boolean> {
-  }
-
-  public static interface ValidateOrgCredentialsRequest extends
-      RpcRequest<ValidateOrgCredentialsResponse, Boolean> {
-  }
-
-  public static interface ValidateOrgCredentialsResponse extends
-      RpcResponse<Boolean> {
+    @Override
+    public void startElement(String uri, String localName, String name,
+        Attributes attributes) throws SAXException {
+      content = "";
+    }
   }
 
   static class OrgUtil {
-    private static ImmutableMap<String, String> asImmutableMap(
-        GbrdsOrganisation org) {
+    static ImmutableMap<String, String> asImmutableMap(GbrdsOrganisation org) {
       String json = new Gson().toJson(org, GbrdsOrganisation.class);
       Map<String, String> map = new Gson().fromJson(json,
           new TypeToken<Map<String, String>>() {
@@ -227,19 +110,39 @@ public class GbrdsRegistry implements Gbrds {
       return ImmutableMap.copyOf(map);
     }
 
-    private static GbrdsOrganisation fromJson(String json) {
-      return new Gson().fromJson(json, GbrdsOrganisation.class);
+    static OrgCredentials credsFromXml(String xml) {
+      OrgCredentials creds = null;
+      try {
+        SAXParser p = SAXParserFactory.newInstance().newSAXParser();
+        CredentialsXmlHandler h = new CredentialsXmlHandler();
+        InputStream s = new ByteArrayInputStream(xml.getBytes());
+        p.parse(s, h);
+        creds = OrgCredentials.with(h.organisationKey, h.password);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return creds;
     }
 
-    private static GbrdsOrganisation fromXml(String xml) {
+    static GbrdsOrganisation fromJson(String json) {
+      return new Gson().fromJson(json, GbrdsOrganisation.Builder.class).build();
+    }
+
+    static GbrdsOrganisation fromXml(String xml) {
       GbrdsOrganisation org = null;
       try {
         SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-        XmlHandler h = new XmlHandler();
+        OrgXmlHandler h = new OrgXmlHandler();
         InputStream s = new ByteArrayInputStream(xml.getBytes());
         p.parse(s, h);
-        org = GbrdsOrganisation.builder().key(h.organisationKey).password(
-            h.password).build();
+        org = GbrdsOrganisation.builder().description(h.description).descriptionLanguage(
+            h.descriptionLanguage).homepageURL(h.homepageURL).key(h.key).name(
+            h.name).nameLanguage(h.nameLanguage).nodeContactEmail(
+            h.nodeContactEmail).nodeKey(h.nodeKey).nodeName(h.nodeName).password(
+            h.password).primaryContactAddress(h.primaryContactAddress).primaryContactDescription(
+            h.primaryContactDescription).primaryContactEmail(
+            h.primaryContactEmail).primaryContactName(h.primaryContactName).primaryContactPhone(
+            h.primaryContactPhone).primaryContactType(h.primaryContactType).build();
       } catch (ParserConfigurationException e) {
         e.printStackTrace();
       } catch (SAXException e) {
@@ -256,6 +159,101 @@ public class GbrdsRegistry implements Gbrds {
           }.getType());
     }
   }
+
+  static class OrgXmlHandler extends DefaultHandler {
+    String description;
+    String descriptionLanguage;
+    String homepageURL;
+    String key;
+    String name;
+    String nameLanguage;
+    String nodeContactEmail;
+    String nodeKey;
+    String nodeName;
+    String password;
+    String primaryContactAddress;
+    String primaryContactDescription;
+    String primaryContactEmail;
+    String primaryContactName;
+    String primaryContactPhone;
+    String primaryContactType;
+
+    String content;
+
+    @Override
+    public void characters(char[] ch, int start, int length)
+        throws SAXException {
+      content += String.valueOf(ArrayUtils.subarray(ch, start, start + length));
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String name)
+        throws SAXException {
+      if (name.equalsIgnoreCase("description")) {
+        description = content;
+      } else if (name.equalsIgnoreCase("descriptionLanguage")) {
+        descriptionLanguage = content;
+      } else if (name.equalsIgnoreCase("homepageURL")) {
+        homepageURL = content;
+      } else if (name.equalsIgnoreCase("key")) {
+        key = content;
+      } else if (name.equalsIgnoreCase("name")) {
+        name = content;
+      } else if (name.equalsIgnoreCase("nameLanguage")) {
+        nameLanguage = content;
+      } else if (name.equalsIgnoreCase("nodeContactEmail")) {
+        nodeContactEmail = content;
+      } else if (name.equalsIgnoreCase("nodeKey")) {
+        nodeKey = content;
+      } else if (name.equalsIgnoreCase("nodeName")) {
+        nodeName = content;
+      } else if (name.equalsIgnoreCase("password")) {
+        password = content;
+      } else if (name.equalsIgnoreCase("primaryContactAddress")) {
+        primaryContactAddress = content;
+      } else if (name.equalsIgnoreCase("primaryContactDescription")) {
+        primaryContactDescription = content;
+      } else if (name.equalsIgnoreCase("primaryContactEmail")) {
+        primaryContactEmail = content;
+      } else if (name.equalsIgnoreCase("primaryContactName")) {
+        primaryContactName = content;
+      } else if (name.equalsIgnoreCase("primaryContactPhone")) {
+        primaryContactPhone = content;
+      } else if (name.equalsIgnoreCase("primaryContactType")) {
+        primaryContactType = content;
+      }
+
+      content = "";
+    }
+
+    @Override
+    public void startDocument() throws SAXException {
+      content = "";
+      description = "";
+      descriptionLanguage = "";
+      homepageURL = "";
+      key = "";
+      name = "";
+      nameLanguage = "";
+      nodeContactEmail = "";
+      nodeKey = "";
+      nodeName = "";
+      password = "";
+      primaryContactAddress = "";
+      primaryContactDescription = "";
+      primaryContactEmail = "";
+      primaryContactName = "";
+      primaryContactPhone = "";
+      primaryContactType = "";
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String name,
+        Attributes attributes) throws SAXException {
+      content = "";
+    }
+  }
+
   static class ResourceUtil {
     static ImmutableMap<String, String> asImmutableMap(GbrdsResource resource) {
       String json = new Gson().toJson(resource, GbrdsResource.class);
@@ -273,16 +271,17 @@ public class GbrdsRegistry implements Gbrds {
       GbrdsResource resource = null;
       try {
         SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-        XmlHandler h = new XmlHandler();
+        ResourceXmlHandler h = new ResourceXmlHandler();
         InputStream s = new ByteArrayInputStream(xml.getBytes());
         p.parse(s, h);
-        resource = GbrdsResource.builder().key(h.key).organisationKey(
-            h.organisationKey).build();
-      } catch (ParserConfigurationException e) {
-        e.printStackTrace();
-      } catch (SAXException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
+        resource = GbrdsResource.builder().description(h.description).descriptionLanguage(
+            h.descriptionLanguage).homepageURL(h.homepageURL).key(h.key).name(
+            h.name).nameLanguage(h.nameLanguage).organisationKey(
+            h.organisationKey).primaryContactAddress(h.primaryContactAddress).primaryContactDescription(
+            h.primaryContactDescription).primaryContactEmail(
+            h.primaryContactEmail).primaryContactName(h.primaryContactName).primaryContactPhone(
+            h.primaryContactPhone).primaryContactType(h.primaryContactType).build();
+      } catch (Exception e) {
         e.printStackTrace();
       }
       return resource;
@@ -291,6 +290,87 @@ public class GbrdsRegistry implements Gbrds {
     static List<GbrdsResource> listFromJson(String json) {
       return new Gson().fromJson(json, new TypeToken<List<GbrdsResource>>() {
       }.getType());
+    }
+  }
+
+  static class ResourceXmlHandler extends DefaultHandler {
+    String description;
+    String descriptionLanguage;
+    String homepageURL;
+    String key;
+    String name;
+    String nameLanguage;
+    String organisationKey;
+    String primaryContactAddress;
+    String primaryContactDescription;
+    String primaryContactEmail;
+    String primaryContactName;
+    String primaryContactPhone;
+    String primaryContactType;;
+
+    String content;
+
+    @Override
+    public void characters(char[] ch, int start, int length)
+        throws SAXException {
+      content += String.valueOf(ArrayUtils.subarray(ch, start, start + length));
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String name)
+        throws SAXException {
+      if (name.equalsIgnoreCase("description")) {
+        description = content;
+      } else if (name.equalsIgnoreCase("descriptionLanguage")) {
+        descriptionLanguage = content;
+      } else if (name.equalsIgnoreCase("homepageURL")) {
+        homepageURL = content;
+      } else if (name.equalsIgnoreCase("key")) {
+        key = content;
+      } else if (name.equalsIgnoreCase("name")) {
+        name = content;
+      } else if (name.equalsIgnoreCase("nameLanguage")) {
+        nameLanguage = content;
+      } else if (name.equalsIgnoreCase("organisationKey")) {
+        organisationKey = content;
+      } else if (name.equalsIgnoreCase("primaryContactAddress")) {
+        primaryContactAddress = content;
+      } else if (name.equalsIgnoreCase("primaryContactDescription")) {
+        primaryContactDescription = content;
+      } else if (name.equalsIgnoreCase("primaryContactEmail")) {
+        primaryContactEmail = content;
+      } else if (name.equalsIgnoreCase("primaryContactName")) {
+        primaryContactName = content;
+      } else if (name.equalsIgnoreCase("primaryContactPhone")) {
+        primaryContactPhone = content;
+      } else if (name.equalsIgnoreCase("primaryContactType")) {
+        primaryContactType = content;
+      }
+
+      content = "";
+    }
+
+    @Override
+    public void startDocument() throws SAXException {
+      description = "";
+      descriptionLanguage = "";
+      homepageURL = "";
+      key = "";
+      name = "";
+      nameLanguage = "";
+      organisationKey = "";
+      primaryContactAddress = "";
+      primaryContactDescription = "";
+      primaryContactEmail = "";
+      primaryContactName = "";
+      primaryContactPhone = "";
+      primaryContactType = "";
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String name,
+        Attributes attributes) throws SAXException {
+      content = "";
     }
   }
 
@@ -312,15 +392,13 @@ public class GbrdsRegistry implements Gbrds {
       GbrdsService service = null;
       try {
         SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-        XmlHandler h = new XmlHandler();
+        ServiceXmlHandler h = new ServiceXmlHandler();
         InputStream s = new ByteArrayInputStream(xml.getBytes());
         p.parse(s, h);
-        service = GbrdsService.builder().key(h.key).build();
-      } catch (ParserConfigurationException e) {
-        e.printStackTrace();
-      } catch (SAXException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
+        service = GbrdsService.builder().accessPointURL(h.accessPointURL).description(
+            h.description).descriptionLanguage(h.descriptionLanguage).key(h.key).resourceKey(
+            h.resourceKey).type(h.type).typeDescription(h.typeDescription).build();
+      } catch (Exception e) {
         e.printStackTrace();
       }
       return service;
@@ -354,7 +432,65 @@ public class GbrdsRegistry implements Gbrds {
     }
   }
 
+  static class ServiceXmlHandler extends DefaultHandler {
+    String accessPointURL;
+    String description;
+    String descriptionLanguage;
+    String key;
+    String resourceKey;
+    String type;
+    String typeDescription;
+
+    String content;
+
+    @Override
+    public void characters(char[] ch, int start, int length)
+        throws SAXException {
+      content += String.valueOf(ArrayUtils.subarray(ch, start, start + length));
+    }
+
+    @Override
+    public void endElement(String uri, String localName, String name)
+        throws SAXException {
+      if (name.equalsIgnoreCase("accessPointURL")) {
+        accessPointURL = content;
+      } else if (name.equalsIgnoreCase("description")) {
+        description = content;
+      } else if (name.equalsIgnoreCase("descriptionLanguage")) {
+        descriptionLanguage = content;
+      } else if (name.equalsIgnoreCase("key")) {
+        key = content;
+      } else if (name.equalsIgnoreCase("resourceKey")) {
+        resourceKey = content;
+      } else if (name.equalsIgnoreCase("type")) {
+        type = content;
+      } else if (name.equalsIgnoreCase("typeDescription")) {
+        typeDescription = content;
+      }
+
+      content = "";
+    }
+
+    @Override
+    public void startDocument() throws SAXException {
+      accessPointURL = "";
+      description = "";
+      descriptionLanguage = "";
+      key = "";
+      resourceKey = "";
+      type = "";
+      typeDescription = "";
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String name,
+        Attributes attributes) throws SAXException {
+      content = "";
+    }
+  }
+
   static class XmlHandler extends DefaultHandler {
+
     String content;
     String organisationKey;
     String resourceKey;
@@ -507,10 +643,13 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public List<GbrdsExtension> getResult() {
+      public ImmutableList<GbrdsExtension> getResult() {
+        if (getStatus() != HttpStatus.SC_OK) {
+          return ImmutableList.of();
+        }
         String body = getBody();
         if (body == null || body.length() < 1) {
-          return null;
+          return ImmutableList.of();
         }
         String json = getBody();
 
@@ -522,9 +661,9 @@ public class GbrdsRegistry implements Gbrds {
           List<GbrdsExtension> results = new Gson().fromJson(json,
               new TypeToken<List<GbrdsExtension>>() {
               }.getType());
-          return results;
+          return ImmutableList.copyOf(results);
         } catch (Exception e) {
-          return null;
+          return ImmutableList.of();
         }
       }
     }
@@ -570,7 +709,10 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public List<GbrdsThesaurus> getResult() {
+      public ImmutableList<GbrdsThesaurus> getResult() {
+        if (getStatus() != HttpStatus.SC_OK) {
+          return ImmutableList.of();
+        }
         String body = getBody();
         if (body == null || body.length() < 1) {
           return null;
@@ -585,9 +727,9 @@ public class GbrdsRegistry implements Gbrds {
           List<GbrdsThesaurus> results = new Gson().fromJson(json,
               new TypeToken<List<GbrdsThesaurus>>() {
               }.getType());
-          return results;
+          return ImmutableList.copyOf(results);
         } catch (Exception e) {
-          return null;
+          return ImmutableList.of();
         }
       }
     }
@@ -613,15 +755,17 @@ public class GbrdsRegistry implements Gbrds {
     }
   }
 
-  private static class OrganisationApiImpl implements OrganisationApi {
+  private static class OrgApiImpl implements OrganisationApi {
 
     static class CreateRequest extends OrgRequest implements CreateOrgRequest {
 
       final GbrdsOrganisation org;
+      final ImmutableMap<String, String> payload;
 
       CreateRequest(GbrdsOrganisation org, Gbrds registry) {
         super(registry);
         this.org = org;
+        payload = OrgUtil.asImmutableMap(org);
       }
 
       /**
@@ -643,7 +787,7 @@ public class GbrdsRegistry implements Gbrds {
 
       @Override
       public ImmutableMap<String, String> getPayload() {
-        return OrgUtil.asImmutableMap(org);
+        return payload;
       }
     }
 
@@ -658,15 +802,8 @@ public class GbrdsRegistry implements Gbrds {
         if (getStatus() != HttpStatus.SC_CREATED) {
           return null;
         }
-        GbrdsOrganisation o = OrgUtil.fromXml(getBody());
-        try {
-          return OrgCredentials.with(o.getKey(), o.getPassword());
-        } catch (Exception e) {
-          e.printStackTrace();
-          return null;
-        }
+        return OrgUtil.credsFromXml(getBody());
       }
-
     }
 
     static class DeleteRequest extends OrgRequest implements DeleteOrgRequest {
@@ -762,11 +899,11 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public List<GbrdsOrganisation> getResult() {
+      public ImmutableList<GbrdsOrganisation> getResult() {
         if (getStatus() != HttpStatus.SC_OK) {
-          return null;
+          return ImmutableList.of();
         }
-        return OrgUtil.listFromJson(getBody());
+        return ImmutableList.copyOf(OrgUtil.listFromJson(getBody()));
       }
     }
 
@@ -973,7 +1110,7 @@ public class GbrdsRegistry implements Gbrds {
 
     private final Gbrds registry;
 
-    OrganisationApiImpl(Gbrds registry) {
+    OrgApiImpl(Gbrds registry) {
       this.registry = registry;
     }
 
@@ -1025,9 +1162,13 @@ public class GbrdsRegistry implements Gbrds {
      */
     public UpdateOrgRequest update(GbrdsOrganisation org) {
       checkNotNull(org, "Organisation is null");
-      checkArgument(notNullOrEmpty(org.getKey()), "Organisation key is null");
-      checkArgument(notNullOrEmpty(org.getPrimaryContactType()),
-          "Organisation contact type is null");
+      checkArgument(notNullOrEmpty(org.getKey()), "Key is null or empty string");
+      String type = org.getPrimaryContactType();
+      checkArgument(notNullOrEmpty(type),
+          "Contact type is null or empty string");
+      checkArgument(type.trim().equalsIgnoreCase("technical")
+          || type.trim().equalsIgnoreCase("administrative"),
+          "Contact type must be technical or administrative");
       return new UpdateRequest(org, registry);
     }
 
@@ -1200,11 +1341,11 @@ public class GbrdsRegistry implements Gbrds {
         super(request, response);
       }
 
-      public List<GbrdsResource> getResult() {
+      public ImmutableList<GbrdsResource> getResult() {
         if (getStatus() != HttpStatus.SC_OK) {
-          return null;
+          return ImmutableList.of();
         }
-        return ResourceUtil.listFromJson(getBody());
+        return ImmutableList.copyOf(ResourceUtil.listFromJson(getBody()));
       }
     }
 
@@ -1371,13 +1512,18 @@ public class GbrdsRegistry implements Gbrds {
      */
     public CreateResourceRequest create(GbrdsResource resource) {
       checkNotNull(resource);
-      checkArgument(notNullOrEmpty(resource.getName()), "Invalid name");
-      checkArgument(notNullOrEmpty(resource.getPrimaryContactType()),
-          "Invalid contact type");
+      checkArgument(notNullOrEmpty(resource.getName()),
+          "Name is null or empty string");
       checkArgument(notNullOrEmpty(resource.getPrimaryContactEmail()),
-          "Invalid contact email");
+          "Contact email is null or empty string");
       checkArgument(notNullOrEmpty(resource.getOrganisationKey()),
-          "Invalid organisation key");
+          "Organisation key is null or empty string");
+      String type = resource.getPrimaryContactType();
+      checkArgument(notNullOrEmpty(type),
+          "Contact type is null or empty string");
+      checkArgument(type.trim().equalsIgnoreCase("technical")
+          || type.trim().equalsIgnoreCase("administrative"),
+          "Contact type must be technical or administrative");
       return new CreateRequest(resource, registry);
     }
 
@@ -1551,7 +1697,7 @@ public class GbrdsRegistry implements Gbrds {
       }
     }
 
-    static class ListForResourceRequest implements ListServicesRequest {
+    static class ListForResourceRequest implements ListServiceRequest {
 
       final Gbrds registry;
       private String resourceKey;
@@ -1597,18 +1743,18 @@ public class GbrdsRegistry implements Gbrds {
     }
 
     static class ListForResourceResponse extends
-        ServiceResponse<ListForResourceRequest> implements ListServicesResponse {
+        ServiceResponse<ListForResourceRequest> implements ListServiceResponse {
 
       private ListForResourceResponse(ListForResourceRequest request,
           Response response) {
         super(request, response);
       }
 
-      public List<GbrdsService> getResult() {
+      public ImmutableList<GbrdsService> getResult() {
         if (getStatus() != HttpStatus.SC_OK) {
-          return Lists.newArrayList();
+          return ImmutableList.of();
         }
-        return ServiceUtil.listFromJson(getBody());
+        return ImmutableList.copyOf(ServiceUtil.listFromJson(getBody()));
       }
     }
 
@@ -1813,7 +1959,7 @@ public class GbrdsRegistry implements Gbrds {
     /**
      * @see ServiceanisationApi#list(String)
      */
-    public ListServicesRequest list(String resourceKey) {
+    public ListServiceRequest list(String resourceKey) {
       return new ListForResourceRequest(resourceKey, registry);
     }
 
@@ -1835,12 +1981,12 @@ public class GbrdsRegistry implements Gbrds {
     }
   }
 
-  private static final Log log = LogFactory.getLog(GbrdsRegistry.class);
+  private static final Log log = LogFactory.getLog(GbrdsImpl.class);
 
-  public static GbrdsRegistry init(String host) {
+  public static GbrdsImpl init(String host) {
     try {
       URL url = new URL(host);
-      return new GbrdsRegistry(url.getHost());
+      return new GbrdsImpl(url.getHost());
     } catch (MalformedURLException e) {
       throw new IllegalArgumentException(e);
     }
@@ -1934,16 +2080,16 @@ public class GbrdsRegistry implements Gbrds {
   private final String url;
   private final String host;
   private final HttpClient client;
-  private final OrganisationApiImpl orgApi;
+  private final OrgApiImpl orgApi;
   private final ResourceApiImpl resourceApi;
   private final ServiceApiImpl serviceApi;
   private final IptApiImpl extensionApi;
 
-  private GbrdsRegistry(String host) {
+  private GbrdsImpl(String host) {
     this.host = host;
     url = String.format("http://%s", host);
     client = new HttpClient(new MultiThreadedHttpConnectionManager());
-    orgApi = new OrganisationApiImpl(this);
+    orgApi = new OrgApiImpl(this);
     resourceApi = new ResourceApiImpl(this);
     serviceApi = new ServiceApiImpl(this);
     extensionApi = new IptApiImpl(this);

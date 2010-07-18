@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class IptApiTest {
 
-  private static Gbrds gbif = GbrdsRegistry.init("http://gbrds.gbif.org");
+  private static Gbrds gbif = GbrdsImpl.init("http://gbrds.gbif.org");
   private static IptApi api = gbif.getIptApi();
 
   /**

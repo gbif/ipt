@@ -28,10 +28,10 @@ import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.CreateServiceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

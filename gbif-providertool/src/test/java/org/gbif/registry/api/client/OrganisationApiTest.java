@@ -15,6 +15,8 @@
  */
 package org.gbif.registry.api.client;
 
+import com.google.gson.Gson;
+
 import junit.framework.Assert;
 
 import static org.junit.Assert.assertEquals;
@@ -25,11 +27,11 @@ import static org.junit.Assert.fail;
 
 import org.gbif.provider.model.voc.ContactType;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.ListOrgResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
+import org.gbif.registry.api.client.Gbrds.ReadOrgResponse;
 import org.junit.Test;
 
 import java.util.List;
@@ -39,7 +41,7 @@ import java.util.List;
  */
 public class OrganisationApiTest {
 
-  private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
+  private static Gbrds gbif = GbrdsImpl.init("http://gbrdsdev.gbif.org");
   private static OrganisationApi api = gbif.getOrganisationApi();
 
   private static final String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
@@ -76,6 +78,23 @@ public class OrganisationApiTest {
         Assert.assertTrue(api.delete(oc.getKey()).execute(creds).getResult());
       }
     }
+  }
+
+  @Test
+  public final void testGbrdsOrganisation() {
+    GbrdsOrganisation.Builder go = GbrdsOrganisation.builder().description("d").descriptionLanguage(
+        "es").homepageURL("hu").name("n").nameLanguage("es").nodeKey("sp2000").nodeName(
+        "Species 2000").primaryContactAddress("pca").primaryContactDescription(
+        "pcd").primaryContactName("pcn").primaryContactPhone("pcp").primaryContactType(
+        "administrative").primaryContactEmail("eightysteele@gmail.com");
+    String goJson = new Gson().toJson(go, GbrdsOrganisation.Builder.class);
+    String json = "{\"primaryContactDescription\":\"pcd\",\"homepageURL\":\"hu\",\"nodeName\":\"Species 2000\",\"primaryContactPhone\":\"pcp\",\"nodeContactEmail\":\"\",\"primaryContactEmail\":\"eightysteele@gmail.com\",\"descriptionLanguage\":\"es\",\"nameLanguage\":\"es\",\"primaryContactAddress\":\"pca\",\"description\":\"d\",\"name\":\"n\",\"primaryContactType\":\"administrative\",\"key\":\"0f9065fb-df6d-46b8-96b3-044cd3b582e8\",\"primaryContactName\":\"pcn \",\"nodeKey\":\"sp2000\"}";
+    GbrdsOrganisation org = new Gson().fromJson(goJson,
+        GbrdsOrganisation.Builder.class).build();// OrgUtil.fromJson(goJson);
+    System.out.println(go.build());
+    System.out.println(org);
+
+    assertEquals(go.build(), org);
   }
 
   @Test

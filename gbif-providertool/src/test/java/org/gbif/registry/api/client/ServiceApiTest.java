@@ -23,11 +23,11 @@ import static org.junit.Assert.fail;
 
 import org.gbif.provider.model.voc.ServiceType;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateServiceResponse;
+import org.gbif.registry.api.client.Gbrds.ListServiceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
+import org.gbif.registry.api.client.Gbrds.ReadServiceResponse;
 import org.gbif.registry.api.client.Gbrds.ServiceApi;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceResponse;
 import org.junit.Test;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class ServiceApiTest {
 
-  private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
+  private static Gbrds gbif = GbrdsImpl.init("http://gbrdsdev.gbif.org");
   private static final ServiceApi api = gbif.getServiceApi();
 
   private static final String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
@@ -88,7 +88,7 @@ public class ServiceApiTest {
 
   @Test
   public final void testList() {
-    ListServicesResponse r = api.list(resourceKey).execute();
+    ListServiceResponse r = api.list(resourceKey).execute();
     List<GbrdsService> list = r.getResult();
     assertNotNull(list);
     System.out.println(list);

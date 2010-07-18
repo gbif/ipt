@@ -31,8 +31,8 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.H2Utils;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

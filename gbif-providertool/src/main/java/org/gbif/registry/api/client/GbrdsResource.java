@@ -173,21 +173,22 @@ public class GbrdsResource implements Serializable {
     return new Builder();
   }
 
-  private String description;
-  private String descriptionLanguage;
-  private String homepageURL;
-  private String key;
-  private String name;
-  private String nameLanguage;
-  private String organisationKey;
-  private String primaryContactAddress;
-  private String primaryContactDescription;
-  private String primaryContactEmail;
-  private String primaryContactName;
-  private String primaryContactPhone;
-  private String primaryContactType;
+  private final String description;
+  private final String descriptionLanguage;
+  private final String homepageURL;
+  private final String key;
+  private final String name;
+  private final String nameLanguage;
+  private final String organisationKey;
+  private final String primaryContactAddress;
+  private final String primaryContactDescription;
+  private final String primaryContactEmail;
+  private final String primaryContactName;
+  private final String primaryContactPhone;
+  private final String primaryContactType;
 
   GbrdsResource() {
+    this(builder());
   }
 
   private GbrdsResource(Builder builder) {

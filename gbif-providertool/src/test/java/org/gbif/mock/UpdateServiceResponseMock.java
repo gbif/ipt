@@ -16,7 +16,7 @@
 package org.gbif.mock;
 
 import org.gbif.registry.api.client.Gbrds.Request;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateServiceResponse;
 
 /**
  *

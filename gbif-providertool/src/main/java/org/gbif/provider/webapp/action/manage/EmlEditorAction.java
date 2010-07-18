@@ -49,9 +49,9 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BaseMetadataResourceAction;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateResourceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
