@@ -10,7 +10,7 @@
 
     <script>
     <#--
-      first get list of all organisations, then attach automplete event based on this list
+      first get list of all organisations, then attach autocomplete event based on this list
       could do autocomplete via server call, but gets into problems sometimes. This is how it would be called:
       ${config.getBaseUrl()}/ajax/proxy.do?uri=${registryOrgUrl}.json
     -->
@@ -79,12 +79,14 @@
     function showWithKey(){
         $(".btnWithoutKey").hide();
         $(".btnWithKey").show();
+        $("#orgPasswordDiv").show();
  <#--       $("#orgNodeName").attr("readonly","readonly"); -->
         updateResendLink( $("#orgKey").val() );
     }
     function showWithoutKey(){
         $(".btnWithoutKey").show();
         $(".btnWithKey").hide();
+        $("#orgPasswordDiv").hide();
 <!--        $("#orgNodeName").removeAttr("readonly"); -->
     }
     $(document).ready(function(){
@@ -98,7 +100,8 @@
         $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryOrgUrl}.json'/>", udpateOrgList);
         $("#orgTitle").attr("readonly","readonly");
         $.getJSON("<@s.url value='/ajax/proxy.do?uri=${registryNodeUrl}.json'/>", udpateNodeList);        
-        $("#orgNodeName").attr("readonly","readonly");
+// Don't want GBIF Node selector to be disabled. May still need to select a node.
+//        $("#orgNodeName").attr("readonly","readonly");
         $("#btnNew").click(function(e) {
             e.preventDefault(); 
             $(".organisationKey").val("");
@@ -172,9 +175,11 @@
             <span id="nodeLoading">loading from registry <img src='<@s.url value="/images/ajax-loader.gif"/>'/></span>
            <@s.hidden id="orgNodeKey" key="orgNode" cssClass="external"/>
         </div>
-        <div>
-            <@s.textfield id="orgPassword" key="orgPassword" required="false" cssClass="text medium"/>           
-        </div>        
+          <div class="leftMedium" id="orgPasswordDiv">
+            <@s.textfield id="orgPassword" key="orgPassword" 
+            label="%{getText('orgPassword')}" 
+            required="false" cssClass="text medium"/>
+          </div>
     </div>
     <div>
         <div class="leftxhalf">
@@ -184,12 +189,18 @@
             <@s.textfield id="orgEmail" key="orgContactEmail" required="true" cssClass="text large external required email"/>
         </div>
     </div>
+          <div class="left" id="orgHomePageDiv">
     <@s.textfield id="orgHomepage" key="orgHomepageUrl" required="false" cssClass="text xlarge external"/>
+    </div>
+          <div class="left" id="orgDescriptionDiv">
     <@s.textarea id="orgDescription" key="orgDescription" cssClass="text xlarge external"/>
+    </div>
     
+          <div class="left" id="orgButtonDiv">
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
     <@s.submit id="btnRegister" cssClass="button btnWithoutKey" key="button.register" method="register" theme="simple"/>
+    </div>
     <div class="right btnWithKey">
       <#if !config.isIptRegistered()>
         <#-- the IPT is already registered. No way to change the organisation again -->
