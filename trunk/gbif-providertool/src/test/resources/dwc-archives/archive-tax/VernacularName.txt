@@ -1,0 +1,1058 @@
+TaxonID	vernacularName	languageCode
+544382	Afale	Turkish
+544382	Afalina	Russian
+105943	Agalagitakg	Aleutian 
+105942	Agamakhchik	Aleutian
+105910	Agdagig	Aleutian
+105910	Aggadakhgik	Aleutian
+105910	Agidagikh	Aleutian
+105951	Agkhovik	Alaskan eskimo
+105869	Agluk	Aleutian
+105910	Ag-tkha-Gikh	Aleutian
+105869	Aguluk	Aleutian
+105936	Akago-kujia	Japanese
+105869	Akan	Lapp
+105951	Akbek	Greenland Eskimo
+105951	Akhgvopik	Chukotski Penninsula Eskimo
+105945	Akhvokhrikh	Chukotski Penninsula Eskimo
+105895	Aladak	Aleutian
+105895	Alagikkh	Aleutian
+1559060	Albrzymi delfin	Polish
+105948	Aliama	unrecorded
+105948	Aliamak	Commander Islands Aleutian
+105948	Aliomach	unrecorded
+105948	Alkhiamak	Commander Islands Aleutian
+105948	Allamak	Commander Islands Aleutian
+105831	Amazon River Dolphin	English
+105831	Amazonian Dolphin	English
+105875	Amazonian Dolphin	English
+105916	Anarnac	Greenland Eskimo
+105916	Anarnak	unrecorded
+105916	Anarnak zobaty´	Czech
+105916	Andarnefia	Icelandic
+105916	Andehval	Norwegian
+105916	Andvhaler	Icelandic
+1760437	Angaigik	Kurile Coast Aleutian
+105916	Andvhalar	unrecorded
+105899	An-Gai-Gikkh	Aleutian Coast Aleutian
+105917	Antarctic bottlenose	English
+1559050	Antokhak	Chukotski Penninsula Eskimo
+105831	Apupu	Jivara-Aguarana [Peruvian]
+105951	Arbavirsoak	Greenland Eskimo
+105951	Arbek	Greenland Eskimo
+105951	Arctic Right Whale	English
+105951	Arctic Whale	English
+105869	Ardlusak	Greenland Eskimo
+1760437	Ardlusarsuk	Greenland Eskimo
+105869	Ardlyk	Greenland Eskimo
+1760443	Arnoux’s Beaked Whale	English
+105924	Atlantic Beaked Whale	English
+1559060	Atlantic blackfish	English
+544382	Atlantic bottlenose dolphin	English
+1760437	Atlantic dolphin	English
+105921	Atlanticheski remhezub	English
+105869	Atlantic killer whale	English
+1559056	Atlantic right whale	English
+105857	Atlantic white-sided dolphin	English
+105895	Azovka	Russian
+105895	Azovskii delfin	Russian
+105942	Bagwhale	English
+1760444	Baird’s beaked whale	English
+105951	Baleine	French
+105942	Baleine á bec	French
+105916	Baleine á bec	French
+105948	Baleine á bosse	French
+105946	Baleine américaine	French
+1559050	Baleine á six bosses	French
+105948	Baleine á taquet	French
+105902	Baleine blanche	French
+105945	Baleine bleu	French
+1559056	Baleine de Basques	French
+1559056	Baleine de Biscaye	French
+105951	Baleine de grande baie	French
+1559056	Baleine d’Islande	French
+105945	Baleine d’Ostend	French
+105942	Baleine d’ete	French
+1559052	Baleine du Cap	French
+105951	Baleine du Groenland	French
+105951	Baleine franche	French
+105957	Baleine franche naine	French
+1559050	Baleine gris	French
+1559058	Baleine japonaise	French
+105945	Baleine jubarte	French
+105943	Baleine noire	French
+105948	Baleine tampon	French
+1559056	Ballena	Spanish
+105945	Ballena azul	Spanish
+105946	Ballena boba	Spanish
+105943	Ballena boba	Spanish
+1559050	Ballena gris	Spanish
+105902	Baltzivs	Latvian
+105910	Bardhvalir	Norwegian
+105951	Bartfisch	Danish
+105942	Bay whale	English
+105916	Beaked whale	English
+113649	Beaked whale	English
+1760437	Bec d’oie	French
+105902	Bechurinka	Kurile Coast Aleutian
+1760437	Belobochka	Russian
+105857	Belobokii delfin	Russian
+105899	Belokrylka	Russian
+105899	Belokrylaia morskaia svinia	Russian
+105857	Belomordyi delfin	Russian
+105857	Belonosyi delfin	Russian
+105857	Belorylyi delfin	Russian
+105902	Beluga	Russian
+105902	Beluha morska	Czech
+105902	Belukha	Russian
+1760444	Berardius berda	Russian
+105893	Besperaia morskaia svinia	Russian
+1760440	Besperyi delfin	Russian
+105893	Bhulga	Mahr [Indian]
+1559056	Biscayan right whale	English
+1559056	Biscayrhval	Danish
+1559056	Biskaiskit kit	Russian
+1559056	Biskay right whale	English
+105945	Blaahval	Norwegian
+105842	Black dolphin	English
+105893	Black finless porpoise	English
+105897	Black porpoise	English
+1559060	Blackfish	English
+1559056	Black right whale	English
+105945	Blahvalur	Icelandic
+105924	Blainville’s beaked whale	English
+105945	Blauwal	German
+105945	Blauwe vinvisch	Dutch
+105945	Blaval	Swedish
+1559098	Blue dolphin	English
+105945	Blue Rorqual	English
+105945	Blue whale	English
+1559098	Blue-white dolphin	English
+105875	Bofo preto	Portuguese
+105951	Bogenkopf	German
+113780	Bolla gadimi	Telugu [Indian]
+544382	Bolshoi delfin	Russian
+105910	Bolshoi plavun	Russian
+105910	Bolshoi plevun	Russian
+105945	Bolshoi polosatik	Russian
+113779	Borneo white dolphin	English
+105831	Boto	Portuguese
+544382	Boto	Portuguese
+105831	Boto pretinho	Portuguese
+105875	Boto preto	Portuguese
+105869	Botskop	English
+105916	Bottle-head	English
+544382	Bottlenose dolphin	English
+544382	Bottle-nosed dolphin	English
+105916	Bottlenose Whale	English
+105916	Bottlenosed whale	English
+105916	bottlenosen	Norwegian
+105831	Bouto	Portuguese
+544382	Bouto	Portuguese
+105831	Boutu	Portuguese
+105951	Bowhead	English
+105951	Bowhead whale	English
+1760442	Braunfisch	German
+105853	Braunfisch	German
+105895	Braunfisch	German
+1559072	Brazilian dolphin	English
+105945	Breitmaulige Finnfisch	German
+105884	Bridled dolphin	English
+1559063	Broad-beaked dolphin	English
+105895	Bruinvis	Dutch
+105895	Bruinvisch	Dutch
+105895	Brunskop	Icelandic
+105944	Bryde’s whale	English
+105948	Buckelhval	Danish
+105948	Buckelwal	German
+105831	Bufeo	Spanish
+105875	Bufeo	Spanish
+105875	Bufeo negro	Spanish
+105875	Bufeo blanci	Spanish
+105948	Bultrug	Dutch
+105948	Bunch	English
+105948	Bunch whale	English
+105910	Burdhvalir	Norwegian
+105910	Burdhvalur	Norwegian
+105897	Burmeister’s porpoise	English
+105895	Burtuk	Russian
+105916	Butskop	Dutch
+105916	Butskopf	German
+105869	Butskopf	German
+1559060	Butskopf	German
+105916	Butylkonos	Russian
+105910	Buur-hval	Norwegian
+1559060	Caa’ing whale	English
+1559060	Caa’ng whale	Orkney and Shetland Islands
+105910	Cachalot	French
+105910	Cachalot á dents en faucille	French
+105910	Cachalot á dents pointues	French
+105910	Cachalot de la Nouvelle Angleterre	French
+105910	Cachalote	Spanish
+105907	Cachalote nain	French
+1559060	Cachalote svineval	French
+105910	Cachelot	French
+1559060	Calderón negro	Spanish
+1559050	California grey whale	English
+1760437	Camus	French
+1559103	Cape Dolphin	English
+105910	Capidoglio	Italian
+105946	Capidolio	Italian
+105910	Capodoglio	Italian
+1760444	Cha-dakh	Pribilof Islands Aleutian
+1559060	Chaudron	French
+105873	Chernaia kosatka	Russian
+105873	Chernaia kasatka	Russian
+544382	Chernvi delfin	Russian
+1559060	Chernvi delfin	Russian
+1760444	Cheshkhak	Russian, old name used by the Kamchadales
+1760444	Chiduk	Bering Straits Aleutian
+1760444	Chigat	Russian, old name used by the Kamchadales
+105942	Chikagulik	Eskimo, Chukotski Penninsula, Alaska and Greenland
+1559050	Chikakhluk	Aleutian
+105833	Chinese river dolphin	English
+105833	Chinese lake dolphin	English
+113783	Chinese white dolphin	English
+105936	Chumchugagakh	Aleutian
+105936	Chumchugagaiak	Aleutian
+105895	Chushka	Russian
+105943	Coalfish whale	English
+1559042	Commerson’s dolphin	English
+1559060	Common blackfish	English
+544382	Common bottlenose dolphin	English
+105916	Common bottlenose whale	English
+1760437	Common dolphin	English
+105946	Common finback whale	English
+105946	Common finwhale	English
+1760437	Common ocean dolphin	English
+1559060	Common pilot whale	English
+105895	Common porpoise	English
+105946	Common rorqual	English
+105951	Common whale	English
+105920	Cowfish	English
+1559058	Cullamach	Aleutian
+105942	Cupocaru	Japanese
+105936	Cuvier’s beaked whale	English
+105884	Cuvier’s porpoise	English
+105936	Cuvier’s whale	English
+105899	Dall porpose	English
+105899	Dall’s porpoise	English
+1760444	Dalnevostochnyi butylkonos	Russian
+1760441	Dalnevostochnyi korotkogolovyi	Russian
+1559089	Darfeel	Kuwait
+544186	Dauphin	French
+1760437	Dauphin à bande fauve	French
+1559103	Dauphin à 140 dents	French
+105886	Dauphin à long becc	French
+105860	Dauphin à museau court	French
+105831	Dauphin à museau grêle	French
+105858	Dauphin à rostre blanc	French
+105883	Dauphin à ventre rouge	French
+105902	Dauphin blanc	French
+105884	Dauphin bridé	French
+1559045	Dauphin de Bertin	French
+1760437	Dauphin commun	French
+105853	Dauphin de Cuvier	French
+105921	Dauphin de Dale	French
+105857	Dauphin d’Eschricht	French
+105916	Dauphin de Honfleur	French
+105853	Dauphin de Risso	French
+1559060	Dauphin de Saint-Brieux	French
+105921	Dauphin de Hâvre	French
+544382	Dauphin nesarnak	French
+1559042	Dauphin pie	French
+1559060	Dauphin pilote	French
+1760437	Dauphin ordinaire	French
+1760437	Dauphin vulgaire	French
+1559060	Déducteur	French
+1760437	Delfin-Belobochka	Russian
+105838	Delfin de La Plata	Spanish
+105842	Delfin negro	Spanish
+1760437	Delfin obecny’	Czech
+1760437	Delfin pospolity	Polish
+1760437	Delfino	Italian
+1760437	Delfiny-belobochka	Russian
+1760437	Delphin	German
+105902	Delphinaptére blanc	French
+1559050	Devil fish	English
+105873	Dickzachniger butzkopf	German
+105948	Dlinnorukii polosatik	Russian
+105916	Dögling	Danish
+105916	Döglingur	Icelandic
+105916	Döglink	Faroe Islands
+1760437	Dolffin	Norwegian
+1760437	Dolfijn	Dutch
+105936	Dolfijn van Cuvier	Dutch
+1559098	Dolfijn van Gray	Dutch
+105839	Dolphin	English
+105867	Dolphin of the Irawadi	English
+105869	Dorque	French
+1559060	Drivingwhale	English
+105869	Dukulad	Kurile Coast Aleutian
+105860	Dusky dolphin	English
+105957	Dvergretthval	Norwegian
+105907	Dverg-spermhval	Norwegian
+105942	Dvergvinvisch	Dutch
+105907	Dvergpotvis	Dutch
+105907	Dvergpotvisch	Dutch
+105942	Dvergvinvis	Dutch
+105957	Dwergwalvis	Dutch
+105944	Eden’s whale	English
+105904	Edinorog	Russian
+105904	Edinozub	Russian
+105904	Eenhornvis	Dutch
+105904	Enhornad hortand	Swedish
+105916	Entenwall	German
+105869	Epaulard	French
+105869	Epée de mer	French
+1559098	Euphrosyne	English
+105925	European beaked whale	English
+105869	Fakan	Lapp
+105873	False killer whale	English
+105869	Fann-fiskar-hydengen	Icelandic
+105848	Feresa	English
+105902	Fiborska	Nentsi
+105946	Fin whale	English
+105946	Finback whale	English
+105946	Finefisk	Norwegian
+105946	Finfish	English
+105946	Finhval	Norwegian
+105893	Finless black porpoise	English
+105946	Finnback	English
+105946	Finner whale	English
+105946	Finnfisch	German
+105946	Finnfisk	Swedish
+105946	Finnhvaler	Icelandic
+105946	Finnval	German
+105946	Finqval	Norwegian
+105946	Finval	Russian
+105917	Flat-headed bottle-nosed whale	English
+105921	Flosser	German
+105916	Flounder’s head	English
+105917	Flower’s bottle-nosed whale	English
+105838	Franciscana	Spanish
+105838	Franciscano	Portuguese
+105951	Furehvaler	Icelandic
+113775	Gadamu	Telugu [Indian]
+1559117	Ganges River dolphin	English
+1559117	Gangetic dolphin	English
+1760437	Gemeiner Delphin	English
+105925	Gervais’ beaked whale	English
+105853	Gestreifter Delphin	German
+105946	Gevone vinvisch	Dutch
+1760437	Gewone dolfijn	Dutch
+105946	Gewoone vinnvisch	Dutch
+1760444	Giant bottlenosed whale	English
+105946	Gibbar	English
+105902	Gik	Koryak dialect
+1559122	Gill’s bottle-nosed dolphin	English
+105926	Gingko beaked whale	English
+105951	Glathvaler	Icelandic
+1559060	Globicéphale conducteur	French
+1559060	Globicéphale noir	French
+105945	Goluboikit	Russian
+1559060	Gondo kujira	Japanese
+105936	Goose beaked whale	English
+105948	Gorbach	Russian
+105948	Gorbatyi kit	Russian
+1559104	Graffman’s dolphin	English
+1559050	Grähval	Icelandic
+105853	Gramper	Dutch
+105853	Grampus	English
+105869	Grampus	English
+544382	Grand souffler	French
+105916	Grand souffler á bec d’oie	French
+1559050	Gräso whale	Swedish
+1559050	Grauwal	German
+1559050	Gräval	Swedish
+1559098	Gray’s dolphin	English
+1559050	Gray back	English
+1559065	Gray’s white-sided dolphin	English
+1559050	Grayze walvis	Dutch
+105945	Great blue whale	English
+105945	Great northern rorqual	English
+105951	Great polar whale	English
+105951	Greenland white whale	English
+105951	Grenlandskii kit	Russian
+1559050	Grey whale	English
+1559060	Griend	Dutch
+105853	Grijze dolphin	English
+1559050	Grijze walvis	Dutch
+1559050	Grijze walvisch	Dutch
+1559060	Grind	Danish
+105853	Grind	Danish
+1559060	Grinde	Norwegian
+1559060	Grindhval	Norwegian
+1559060	Grindhvalur	Icelandic
+1559060	Grindval	Swedish
+1559060	Grindwal	German
+1559060	Grindy	Russian
+1559060	Grinzehval	Norwegian
+105951	Gröenlandshvalur	Icelandic
+105951	Groenlandse Walvis	Dutch
+105951	Groenlanse walvisch	Dutch
+105951	Grönlandhval	Danish
+105951	Gronlandshval	Norwegian
+105951	Gronlandskhval	Norwegian
+105951	Grönlandsval	Swedish
+105951	Grönlandswal	German
+544382	Grosser Tümmleer	German
+1559075	Guianan river dolphin	English
+105896	Gulf of California porpose	English
+105925	Gulf Stream beaked whale	English
+1559058	Guliogadohk	Komandores Islands Aleutian and Kamchadales dialect
+105869	Haa-hiringue	Icelandic
+105869	Hahyrna	Icelandic
+105893	Hai-chu	Chinese
+105951	Halfisk	Danish
+105853	Halvgindehvaler	Danish
+105895	Handfiskar	Icelandic
+544382	Hando iruka	Japanese
+105895	Harbor porpoise	English
+105895	Harbour porpoise	English
+1760442	Heaviside’s dolphin	English
+105844	Hector’s beaked whale	English
+105945	Heipe-reydur	Norwegian
+105895	Herring hog	English
+105946	Herring whale	English
+1559117	Hiho	Assamese
+105948	Hnufubakur	Swedish
+544382	Hochcöplige Tümmler	German
+105916	Hocico de botella	Spanish
+1760437	Hofrung	Icelandic
+105951	Hokkyoku kujira	Japanese
+105936	Hota al Thalmaha	Sinhala [Ceylon]
+105926	Hotaulal	Sinhala [Ceylon]
+1559060	Howling whale	English
+105902	Hrafu-reydur	Swedish
+105945	Hrefna	Icelandic
+1760437	Huisen	Icelandic
+105902	Huitingar	Icelandic
+105948	Hump-back	English
+105948	Humpback whale	English
+105948	Humpbacked whale	English
+1760437	Hundfiscar	Icelandic
+105946	Hunfubacks	Icelandic
+105910	Huns-hval	Norwegian
+105869	Huyding	Icelandic
+105951	Hval	Norwegian
+105951	Hvalfisk	Norwegian
+105869	Hvalhund	Danish
+105902	Hvidfisk	Norwegian
+105858	Hvidnaese	Norwegian
+105902	Hvidhvalen	Danish
+105857	Hvidskaering	Danish
+105902	Hvitagtik delphin	Swedish
+105902	Hvitfisk	Swedish
+105857	Hvitskjering	Norwegian
+105858	Hvitsnutet springer	Norwegian
+105916	Hyperodon	French
+1559058	Iaponskii kit	Russian
+105902	Iina	Koryak dialect
+1559056	Id	Norwegian
+105904	Illhval	Icelandic
+105893	Indian finless porpoise	English
+1559060	Indian pilot whale	English
+105831	Inia	Guarayo [Bolivia]
+105869	Innuatu	Korean
+105867	Irawadi dolphin	English
+105867	Irawaddy river dolphin	English
+1559056	Ishafs hvalfisk	Swedish
+105895	Ise	Norwegian
+105899	Isi-iruka	Japanese
+105904	Itsu-kaku	Japanese
+105951	Ittiv	Chukchi dialect, northeast coast of Chukotski area
+1559058	Iuzhnyi kit	Russian
+1559056	Iuzhnyi kit	Russian
+105943	Ivasevyi kit	Russian
+105943	Ivasevyi polosatik	Russian
+105943	Iwashi kujira	Japanese
+105944	Iwashi kujira	Japanese
+105943	Iwasikuzira	Japanese
+1559042	Jacobite	French
+105926	Japanese beaked whale	English
+105943	Japan finner	English
+1559058	Japanwal	German
+105945	Jattenhval	Swedish
+105904	Jedinorogh morskoi	Russian
+105948	Jorobada	Spanish
+105948	Jubarte	French
+105857	Jumper	English
+105895	Jurascuka	Latvian
+113780	Kabara mulla	Sinhala [Ceylon]
+105943	Kaguo-kuzira	Japanese
+105948	Kaipokak	Bering Straits Aleutian
+105948	Kaipoket uiiut	Chukchi dialect
+105936	Kajippo	Japanese
+105951	Kakhlim	Iakuts dialect
+105904	Kaipuuliak	Chukchi dialect
+105910	Kaizilot	Dutch
+1559050	Kaliforniiskii kit	Russian
+1559050	Kaliforniske Graahval	Norwegian
+105904	Kallilugvuk	northern Alaska Eskimo
+105951	Kallium	Evenki dialect
+105853	Kamabire-sakamata	Japanese
+105857	Kama-iruka	Japanese
+105907	Karlikovyi Kashalot	Russian
+105942	Karlikovyi polosatik	Russian
+105869	Kasatka	Russian
+105910	Kascelot	Norwegian
+105910	Kaskelot	Norwegian
+105910	Kashalot	Russian
+1559050	Kelleluak uiiut	Chukchi dialect
+105910	Kegutilik	Greenland Eskimo
+105904	Kelleluak-kakortok	Greenland Eskimo
+1559050	Kentaen uiiut	Chukchi dialect
+105948	Keporkak	Greenland Eskimo
+105948	Keporkak dlouhoplautvy’	Czech
+105946	Keporkarnak	western Greenland Eskimo
+105904	Kernektok	Eskimo?
+105902	Khadakkh	Komandores Islands Aleutian and Kamchadales dialect
+105948	Khi-tkhukkh	Aleutian
+105932	Kigan-agaliusiak	Aleutian
+105932	Kigan-agaliuzokh	Aleutian
+105936	Kigan-agaliuzokh	Aleutian
+1760444	Kigan-agaliuzokh	Aleutian
+105910	Kigitulik	Greenland Eskimo
+105910	Kigutulik	Greenland Eskimo
+105943	Kiit	Russian
+105902	Killeluak	Aleutian
+105869	Killer	English
+105869	Killer-trasher	English
+105869	Killer whale	English
+105936	Kiuverov kliuvoryl	Russian
+105873	Kleiner Mörder	German
+105895	Kleiner Tummler	German
+1559050	Knabbelvisch	Danish
+1559050	Knobbelvisch	Danish
+105948	Knölhval	Norwegian
+105948	Knölval	Swedish
+1559050	Knotenfisch	German
+105948	Knurrwal	German
+105910	Kobbe-Herre	Norwegian
+105910	Koiapchak	Koryak dialect
+105942	Koiwashi kujira	Japanese
+1559050	Koku kujira	Japanese
+1559058	Ko-kujira	Japanese
+105873	Komadwa	Sinhala [Ceylon]
+105907	Komakko	Japanese
+105932	Komadorskii remnezub	Russian
+105943	Komvokhgak	Chukotski Penninsula Eskimo
+105869	Kosatka	Russian
+105869	Kosatka dravá	Czech
+105957	Kosemi kujira	Japanese
+105899	Kud-akh-tik	Aleutian
+105902	Kuleluak	Greenland Eskimo
+105951	Kulema	Komandores Islands Aleutian and Kamchadales dialect
+105951	Kuliamiak	Komandores Islands Aleutian and Kamchadales dialect
+1559058	Kuliomoch	Aleutian
+1559058	Kuliomokh	Komandores Islands Aleutian and Kamchadales dialect
+105932	Kvov-kvov-e-akht-le	Maka tribe Indian dialect
+1559050	Lagyiia-au	Koryak dialect
+105948	Langarmvinwisch	Dutch
+105857	Langsnuitdolfijn	Dutch
+105838	La Plata dolphin	English
+105867	Lomba-lomba	Malay
+105946	Langreydur	Icelandic
+1559068	Layard’s beaked whale	English
+1559089	Lead-colored dolphin	English
+105942	Least rorqual	Bering Straits Aleutian
+105857	Leiftur	Icelandic
+105907	Lesser cachalot	English
+105942	Lesser finback	English
+105895	Lesser grampus	English
+105942	Lesser rorqual	English
+105943	Lesser rorqual	English
+105907	Lesser sperm whale	English
+105904	Licorne de mer	French
+544382	Lielaa-iuras-tsuuka	Latvian
+105904	Lighval	Norwegian
+1559056	Liljehval	Norwegian
+1559056	Lille-hval	Norwegian
+105942	Little piked whale	English
+105946	Loddehval	Norwegian
+105883	Long-beaked dolphin	English
+1559113	Long-snouted dolphin	English
+105869	Löpare	Swedish
+1760437	Mairuka	Japanese
+105910	Makko-kujira	Japanese
+105873	Malaia kasatka	Russian
+105873	Malaia kosatka	Russian
+105907	Malyi kashalot	Russian
+105932	Malyi Plavun	Russian
+105932	Malyi Plevun	Russian
+105942	Malyi Polosatika kit	Russian
+105895	Mangak	Aleutian
+105946	Mangidadakh	Komandores Islands Aleutian and Kamchadales dialect
+105946	Mangidakh	Komandores Islands Aleutian and Kamchadales dialect
+105895	Maris sus	Latin
+110591	Marsopa	Spanish
+110591	Marsopa de anteojo	Spanish
+105895	Marsouin	French
+105902	Marsouin blanc	French
+1760442	Marsouin du Cap	French
+105895	Marsouin franc	French
+105853	Marsouin gris	French
+105893	Marsouin noir	French
+1559060	Marsvin	Icelandic
+105895	Marsvün	Icelandic
+105853	Mazuba-iruka	Japanese
+105895	Meerschwein	German
+105948	Mégaptère	French
+105942	Minke	Russian
+105942	Minkehval	Norwegian
+105942	Minke whale	English
+105942	Minku	Japanese
+105942	Minkies hval	Norwegian
+105902	Mjaldur	Icelandic
+105902	Moine de mer	French
+105893	Molagan	Tamul, India
+105902	Morskaia beluga	Russian
+105895	Morskaia svinia	Russian
+105902	Morskaja bjelugla	Russian
+110591	Morskaja swinja	Russian
+105945	Muskel finnfisk	Swedish
+105869	Musonkkjgyssiak	Eskimo and Chukchi dialect of Chukotski Penninsula
+1559050	Mussel Digger	English
+105895	Mutur	Turkish
+105916	Näbhval	Swedish
+105916	Nabbad gomtand	Swedish
+105916	Naebhval	Norwegian
+105946	Nagasu-kujira	Japanese
+1559060	Naiso-gota	Japanese
+105904	Narhval	Danish
+105904	Narhvalur	Icelandic
+1559103	Narrow-snouted dolphin	English
+105904	Narval	German
+105904	Narwhal	English
+1559056	Nastoiashchii Altanticheskii kit	Russian
+1559058	Nastoiashchii kit	Russian
+105936	Nastoiashchii kliuvoryl	Russian
+105946	Nastoiashchii polosatik	Russian
+105916	Nebhval	Norwegian
+105895	Nesa	Norwegian
+105895	Nezumi-iruka	Japanese
+1760443	New Zealand beaked whale	English
+544382	Nezarnak	Greenland Eskimo
+105946	Nilchoken biuu	Chukchi dialect, northeast coast of Chukotski area
+105946	Niltkhokkein uiiut	Chukchi dialect, northeast coast of Chukotski area
+105895	Nisa	Norwegian
+105895	Nise	Norwegian
+105944	Nitachi kujira	Japanese
+105858	Niza	Eskimo?
+105893	Nomeno-juo	Japanese
+105869	Nookur	Auns dialect on the Kurile crest
+1559056	Noordcaper	Danish
+105943	Noordische vinvisch	Dutch
+105943	Noordse vinvis	Dutch
+1559056	Nordatlantischer Glattwal	German
+1559056	Nordcapare	Swedish
+1559056	Nordcaper	German
+1559056	Nordkaper	German
+1559056	Nordhval	Danish
+105857	Nordischer dolphin	German
+1559056	Nordkapskii kit	Russian
+105951	Nordval	Swedish
+105951	Nordvalur	Icelandic
+105951	Nordwal	German
+1559058	Nord-west right whale	English
+1559058	Nordweswal	German
+1559060	North Atlantic blackfish	English
+1559056	North Atlantic right whale	English
+105916	Northern bottlenosed whale	English
+1559058	Northern right whale	English
+1760440	Northern right whale dolphin	English
+1559059	North Pacific black fish	English
+1559059	North Pacific pilot whale	English
+105943	Nuppeloket-uiiut	Louravetlany dialect of the Mechigmenskaya Gulf, Bering Sea
+1760437	Obyknovennyi delfin	Russian
+105946	Obyknovennyi polosatik	Russian
+105879	Ocean dolphins	English
+544382	Ofalina	Russian
+105907	Ogawa komokoku	Japanese
+1760437	Oki	Kurile Coast Aleutian
+105873	Okikondo	Japanese
+105910	Olbrotowick	Polish
+105945	Omgolia	Aleutian
+105951	Onchi-tolliau	Iukagir dialect
+105869	Opare	Swedish
+105869	Orca	English
+544382	Oresvin	Swedish
+544382	Oresvin Tantöje	German
+105869	Orka	English
+105869	Orque	French
+105869	Orque épaulard	French
+105869	Orque gladiateur	French
+105945	Ostende whale	English
+105942	Ostrogolovyi polosatik	Russian
+105942	Ostromordyi polosatik	Russian
+105857	Ostrorylyi delfin	Russian
+544382	Oudre	French
+105917	Pacific beaked whale	English
+1559059	Pacific blackfish	English
+1559047	Pacific dolphin	English
+1559050	Pacific gray whale	English
+105895	Pacific harbor porpose	English
+105869	Pacific killer whale	English
+1559059	Pacific pilot whale	English
+1559058	Pacific right whale	English
+1760440	Pacific rightwhale porpoise	English
+1760441	Pacific striped dolphin	English
+1760441	Pacific white-sided dolphin	English
+1559060	Pat-so-ol-qual	Indian, State of Washington
+105902	Pechuga	Auns dialect on the Kurile crest
+105833	Pei c’hi	Chinese
+1559044	Peis mular	French
+544382	Peixe-boto	Portuguese
+105948	Penvisch	Dutch
+1559113	Pernetty’s dolphin	English
+105910	Petit cachalot	French
+105942	Petit rorqual	French
+105948	Pflockfisch	German
+1559042	Piebald dolphin	English
+105895	Piglertok	Greenlandic
+105907	Pigmy sperm whale	English
+105942	Piked whale	English
+105942	Pikehead whale	English
+105942	Pikewhale	English
+1559060	Pilot whale	English
+105875	Pirayaguara	Brazilian
+1760444	Plavun	Russian
+105946	Plejtvák mysok	Czech
+1559050	Plejtvákovec cedy	Czech
+105943	Plejtvák severny’	Czech
+105942	Plejtvák stikovity	Czech
+105948	Pletwal	Polish
+1760444	Plevun	Russian
+105910	Plewún	unrecorded
+1559089	Plumbeous dolphin	English
+105951	Polarwal	German
+105951	Poliarskyi kit	Russian
+105943	Pollack whale	English
+1559098	Polosatyi prodelfin	Russian
+1760437	Pomigra	Tamul, India
+1559042	Porpoise	English
+105879	Porpoise	English
+105885	Porpoise	English
+105892	Porpoise	English
+105898	Porpoise	English
+105894	Porpoise	English
+105910	Potfisk	Norwegian
+1559060	Pothead whale	English
+105910	Pottfisch	German
+105910	Pottfisk	Norwegian
+105910	Pottwal	German
+105910	Pottwisch	Dutch
+105910	Pottvis	Dutch
+105910	Pottvisch	Dutch
+105895	Poursille	French
+105873	Pseudorque	French
+105948	Puckelval	Swedish
+1559042	Puffing pig	English
+105895	Puffing pig	English
+105902	Pukhzak	Chukotski Penninsula Eskimo
+105904	Pukhzak tuudlik	Chukotski Penninsula Eskimo
+105902	Puuliak	Chukchi dialect
+105848	Pygmy killer whale	English
+105957	Pygmy right whale	English
+105907	Pygmy sperm whale	English
+105895	Pykhtun	Russian
+105910	Qval	Norwegian
+105951	Rättval	Swedish
+105946	Razor back	English
+105942	Rebbehval	Norwegian
+105883	Red-bellied dolphin	English
+105946	Reider	Lapp
+105921	Remnezub soverbi	Russian
+105932	Remnezub steinegera	Russian
+105941	Rengis fiskar	Icelandic
+105951	Rethval	Danish
+1559089	Ridge-backed dolphin	English
+105945	Riesenwal	German
+105951	Right whale	English
+1559056	Right whale	English
+1760440	Right whale dolphin	English
+105899	Rikuzen-iruka	Japanese
+1559050	Rip sack	English
+105853	Risso’s dolphin	English
+105853	Risso’s grampus	English
+105904	Rödkamm	Icelandic
+105904	Rogozub	Russian
+105946	Rorhval	Danish
+105946	Rorqual	French
+105945	Rorqual	French
+105942	Rorqual à rostre	French
+105942	Rorqual à museau pointu	French
+105945	Rorqual à ventre cannelé	French
+105945	Rorqual bleu	French
+105946	Rorqual commun	French
+105943	Rorqual de Rudolph	French
+105945	Rorqual de Sibbald	French
+105948	Rorqual du Cap	French
+105943	Rorqual du Nord	French
+105948	Rorqual noueux	French
+105945	Rörqual	Norwegian
+105946	Rörval	Swedish
+105886	Rough-toothed dolphin	English
+1559060	Roundhead	English
+105943	Rudolph’s rorqual	English
+105904	Rusaluvak-kernertak	Greenland Eskimo
+105943	Saaiwahl	Norwegian
+105932	Saber-toothed beaked whale	English
+105902	Sacha	Kamchadal dialect, old name
+1760437	Saddle-backed dolphin	English
+105869	Sadshi	Japanese
+105943	Saidianoi kit	Russian
+105869	Sakamata	Japanese
+105853	Sakamata-kuzira	Japanese
+105943	Sandereydur	Icelandic
+105951	Sandhval	Danish
+105895	Sapun	Russian
+105855	Sarawak dolphin	English
+1559056	Sardac-baleac	Basque
+1559056	Sarde	French
+105943	Sardine whale	English
+105927	Scamperdown whale	English
+105869	Schachi	Japanese
+105945	Schanelwall	German
+105951	Schlichteback	Danish
+1760437	Schnabelfisch	German
+105916	Schnabelfisch	German
+105946	Schnabelwal	German
+1559060	Schwarzwal	German
+105869	Schwertfisch	German
+105869	Schwertwal	German
+1559050	Scrag whale	English
+105904	Sea unicorn	English
+1559058	Sebi kujira	Japanese
+105943	Sei	English
+105943	Seichval	Norwegian
+105943	Seihval	Norwegian
+105943	Seival	Russian
+105943	Seiwal	German
+105943	Sejhval	Danish
+105943	Sejval	Swedish
+105946	Seldreki	Icelandic
+105946	Seldianoi kit	Russian
+105946	Seldianoi polosatik	Russian
+1760440	Semi-iruka	Japanese
+1559058	Semi-kuzira	Japanese
+1559044	Senedette	French
+105951	Serbio	Japanese
+105853	Servi delfin	Russian
+1559050	Servi kit	Russian
+1760444	Severnyi berardius	Russian
+1760440	Severnyi kitvidnyi delfin	Russian
+1559060	Sharogolovyi delfin	Russian
+105942	Sharp-headed finner whale	English
+105902	Shiro iruka	Japanese
+105945	Shironagasu kujira	Japanese
+1559060	Short-finned blackfish	English
+1559060	Short-finned pilot whae	English
+105907	Short-headed sperm whale	English
+105895	Shutnik	Russian
+105945	Sibbald’s rorqual	English
+1559060	Sibo-gota	Japanese
+1559060	Sicho-gota	Japanese
+105951	Sietback	Norwegian
+105946	Sildehval	Norwegian
+105942	Sildeskiper	Danish
+105946	Sildrek	Icelandic
+105946	Sildrör	Norwegian
+1559056	Sildual	Norwegian
+105946	Sillhval	Swedish
+105946	Sillval	Swedish
+105945	Sinii kit	Russian
+105902	Siroiruka	Japanese
+105945	Siro-nagusu-kujira	Japanese
+1559103	Slender-beaked dolphin	English
+105848	Slender blackfish	English
+1559103	Slender dolphin	English
+105951	Sletbacur	Icelandic
+105951	Sletbag	Norwegian
+1559056	Sletbag	Icelandic
+105951	Sletbak	Norwegian
+105883	Small-headed dolphin	English
+1760443	Smaller ziphid whale	English
+105907	Small sperm whale	English
+105886	Snaveldolfijn	Dutch
+105916	Snavel-potvisch	Dutch
+1559060	Social whale	English
+105904	Soëen hiörning	Norwegian
+544382	Souffleur	French
+1559117	Sousou	French
+110591	South atlantic porpoise	English
+105927	Southern beaked whale	English
+113775	Southern bottle-nosed dolphin	English
+105917	Southern bottlenose whale	English
+110591	Southern harbor porpoise	English
+1559052	Southern right whale	English
+1760440	Southern right whale dolphin	English
+105921	Sowerby’s beaked whale	English
+105921	Sowerby’s Wal	German
+105921	Sowerby’s Whale	English
+105869	Spackhuggare	Swedish
+105869	Spaekhogger	Danish
+113780	Speckled dolphin	English
+110591	Spectacled porpoise	English
+105869	Spekkhugger	Norwegian
+105942	Spetsnäbbad finnfisk	Swedish
+105910	Sperm whale	English
+105910	Spermacethval	Danish
+105910	Spermacet whale	English
+105910	Spermatsetovyi	Russian
+105910	Spermhval	Norwegian
+105921	Spidshvalen	Norwegian
+1760437	Spinger	Norwegian
+1760437	Spinghval	Norwegian
+105921	Spitsdolfijn	Dutch
+105921	Spitssnuitdolfijn	Dutch
+1559113	Spotted dolphin	English
+105942	Sprat whale	English
+1760437	Springare	Swedish
+105857	Springer	German
+105857	Springhval	Norwegian
+1760437	Springhval	Norwegian
+105936	Srednii plavun	Russian
+105936	Srednii plevun	Russian
+105869	Staurhval	Norwegian
+105869	Starhyn ning	Norwegian
+105932	Stejneger’s beaked whale	English
+105945	Steypireydr	Icelandic
+105910	Storhufd	Norwegian
+105946	Stor-hval	Norwegian
+105869	Stourvaga	Norwegian
+105869	Stourvagn	Norwegian
+1559068	Strap-toothed whale	English
+1760441	Striped dolphin	English
+1760441	Striped porpoise	English
+105916	Stub	Norwegian
+105948	Stubhval	Danish
+105910	Sue-hval	Norwegian
+105945	Sulphurbottom whale	English
+105942	Summer whale	English
+105893	Sunameri	Japanese
+1559117	Susu	Hindu
+1559117	Susuk	Bengalese
+1559098	Suzi-iruka	Japanese
+105869	Svaerdhval	Danish
+105869	Svärdfisk	Swedish
+1559056	Svarthval	Danish
+105869	Sverdfiscur	Icelandic
+105895	Svinka	Russian
+105895	Svinucha pobrezni	Czech
+1559060	Svinehval	Norwegian
+105895	Swinia morska	Polish
+105869	Swordfish	English
+105869	Sword grampus	English
+105945	Takyshkok	Chukotski Penninsula Eskimo
+544382	Tandthöije	Norwegian
+105869	Tandthoye	Danish
+105934	Tasman beaked whale	English
+105904	Tauvar	Greenland Eskimo
+544281	Thalmaha	Sinhala [Ceylon]
+105942	Tikagulik	Eskimo and Chukchi dialect of Chukotski Penninsula
+1760441	Tikhookeanskii belobokii delfin	Russian
+544281	Tkakae	Hottentot
+105945	Tnmerken-uiiut	Louravetlany dialect of the Mechigmenskaya Gulf, Bering Sea
+1760437	Tobi-iruka	Japanese
+105838	Tonina	Spanish
+105883	Tonina	Spanish
+105895	Toninha	Portuguese
+105838	Toninha	Portuguese
+105895	Tonyn	Dutch
+105910	Trold-hval	Norwegian
+105948	Trold-hval	Norwegian
+105930	True’s beaked whale	English
+105895	Trumblare	Swedish
+105910	Trumpo	Bermuda
+105895	Tselkh-koo	Indian, Alaskan
+1760444	Tsuchi-kujira	Japanese
+1760444	Tsuchimbo	Japanese
+105907	Tsunabi	Japanese
+105875	Tucuxi	Tupi, Brazil
+105946	Tue-qual	Norwegian
+105904	Tugalik	Greenland Eskimo
+1760437	Tu-kiak	Kamchadal dialect, old name
+1760437	Tumberello	Italian
+105895	Tumlare	Swedish
+544382	Tumler	Norwegian
+105895	Tumler	Danish
+544382	Tümmler	German
+105842	Tunina de vientre blanco	Spanish
+1559042	Tunina overa	Spanish
+105869	Tunnlik tumlare	Swedish
+105945	Tunnolik	Greenland Eskimo
+105946	Tunnolik	Greenland Eskimo
+544382	Tursion	French
+105946	Tykyshkok	Eskimo and Chukchi dialect of Chukotski Penninsula
+1760437	Tyrtak	Turkish
+1760437	Tirtak	Turkish
+105951	Ugamachcach	Aleutian
+105907	Uki-kujira	Japanese
+105945	Umgulik	Aleutian
+105942	Vaagehval	Norwegian
+105942	Vaaghval	Norwegian
+105942	Vagehval	Norwegian
+105869	Vaghund	Norwegian
+1559056	Vallena	Spanish
+105948	Valzius	Latvian
+105869	Van hund	Norwegian
+105946	Vapakylichan	Koryak dialect
+105951	Vatushalar	Icelandic
+1559056	Veloryba biskejka	Czech
+105951	Veloryba gronská	Czech
+105948	Veselyi kit	Russian
+105942	Vikarehval	Swedish
+105942	Vikval	Swedish
+105942	Vinkhval	Swedish
+105946	Vinvisch	Dutch
+105902	Visingkh-potlaengkh	Ostyak dialect
+105902	Vising-totleng	Ostyak dialect
+1760444	Vorvanovec nosaty’	Czech
+105910	Vorvann tuponocy’	Czech
+105946	Vraie baliene	French
+105951	Vyvtalan	Koryak dialect
+105951	Walfisch	German
+105951	Walvisch	Dutch
+105951	Walzius	Latvian
+105902	Weisfisch	German
+105858	Weissschnauziger delphin	German
+105858	Weissschnauziger springer	German
+105902	Weisswal	German
+105951	Whalebone whale	English
+105858	White-beaked dolphin	English
+105842	White-bellied dolphin	English
+113783	White dolphin	English
+105902	White fish	English
+105833	White flag dolphin	English
+105844	White-headed dolphin	English
+105853	White-headed grampus	English
+105853	Mottled grampus	English
+105857	White-sided bottlenose	English
+105857	White-sided dolphin	English
+105860	White-sided dolphin	English
+105902	White walvis	Dutch
+105857	Whitzijdedolfijn	Dutch
+105951	Wieloryb grendlandski	Polish
+105858	Wisnuitdolfijn	Dutch
+105902	Witte dolfinj	Dutch
+105902	Witvis	Dutch
+105857	Witzijdolfijn	Dutch
+105910	Wolkmorskoi	Russian
+105907	Wongu	Telugu [Indian]
+1760437	Worwon	Russian
+105942	Zalivov	Russian
+105907	Zaru-Kaburi	Japanese
+105902	Zatcha	Kamchatka dialect
+105948	Zatokuzira	Japanese
+105895	Zee-vark	Dutch
+105936	Ziphio o ballena de Cuvier	Spanish
+105936	Ziphius de Cuvier	French
+105869	Zwardwalvis	Dutch
+105873	Zwarte schijnorka	Dutch
+105873	Zwarte zwaardwalis	Dutch
+105907	Zwergpottwal	German
+105869	Zwaardwis	Dutch
+105957	Zwergglattwal	German
+105942	Zwergwal	German
