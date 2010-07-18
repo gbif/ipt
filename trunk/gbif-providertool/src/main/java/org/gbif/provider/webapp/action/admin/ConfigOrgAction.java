@@ -132,7 +132,7 @@ public class ConfigOrgAction extends BasePostAction {
     }
     // Notifies the user if the organisation doesn't exist in GBRDS:
     String orgKey = cfg.getOrg().getUddiID();
-    if (!registry.orgExists(orgKey)) {
+    if (cfg.getOrg().getTitle() != null && !registry.orgExists(orgKey)) {
       saveMessage(getText("config.org.warning.noOrg"));
     }
     // Initializes builder with org values stored by AppConfig:
