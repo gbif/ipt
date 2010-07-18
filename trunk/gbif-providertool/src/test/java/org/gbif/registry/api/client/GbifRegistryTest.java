@@ -17,34 +17,34 @@ package org.gbif.registry.api.client;
 
 import static org.junit.Assert.fail;
 
-import org.gbif.registry.api.client.GbrdsRegistry;
+import org.gbif.registry.api.client.GbrdsImpl;
 import org.junit.Test;
 
 /**
- * Unit testing coverage for {@link GbrdsRegistry}.
+ * Unit testing coverage for {@link GbrdsImpl}.
  */
 public class GbifRegistryTest {
 
   @Test
   public final void testInit() {
     try {
-      GbrdsRegistry.init(null);
+      GbrdsImpl.init(null);
       fail();
     } catch (Exception e) {
     }
 
     try {
-      GbrdsRegistry.init("");
+      GbrdsImpl.init("");
       fail();
     } catch (Exception e) {
     }
 
     try {
-      GbrdsRegistry.init("google.com");
+      GbrdsImpl.init("google.com");
       fail();
     } catch (Exception e) {
     }
 
-    GbrdsRegistry.init("http://gbrds.gbif.org");
+    GbrdsImpl.init("http://gbrds.gbif.org");
   }
 }

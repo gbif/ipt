@@ -16,8 +16,8 @@
 package org.gbif.mock;
 
 import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.Gbrds.ReadOrgResponse;
 import org.gbif.registry.api.client.Gbrds.Request;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
 
 /**
  *

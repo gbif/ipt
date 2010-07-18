@@ -15,16 +15,16 @@
  */
 package org.gbif.mock;
 
-import org.gbif.registry.api.client.GbrdsService;
-import org.gbif.registry.api.client.Gbrds.Request;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
+import com.google.common.collect.ImmutableList;
 
-import java.util.List;
+import org.gbif.registry.api.client.GbrdsService;
+import org.gbif.registry.api.client.Gbrds.ListServiceResponse;
+import org.gbif.registry.api.client.Gbrds.Request;
 
 /**
  *
  */
-public abstract class ListServicesResponseMock implements ListServicesResponse {
+public abstract class ListServicesResponseMock implements ListServiceResponse {
 
   /*
    * (non-Javadoc)
@@ -61,7 +61,7 @@ public abstract class ListServicesResponseMock implements ListServicesResponse {
    * 
    * @see org.gbif.registry.api.client.Gbrds.RpcResponse#getResult()
    */
-  public List<GbrdsService> getResult() {
+  public ImmutableList<GbrdsService> getResult() {
     // TODO Auto-generated method stub
     return null;
   }

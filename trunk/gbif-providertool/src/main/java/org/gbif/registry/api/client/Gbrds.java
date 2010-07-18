@@ -19,31 +19,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListExtensionsRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ListOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ListResourceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ListThesauriRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadServiceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsRequest;
 
 /**
  * Interface for the GBRDS.
@@ -52,7 +29,7 @@ import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsRequest;
 public interface Gbrds {
 
   /**
-   * Interface for executing an {@link RpcRequest} requiring authentication.
+   * Interface for executing an {@link RpcRequest} that requires authentication.
    * 
    * @param <R> the type of response
    * @param <T> the type of response result
@@ -60,8 +37,9 @@ public interface Gbrds {
   public interface AuthRpcRequest<R extends RpcResponse<T>, T> extends Request {
 
     /**
-     * Executes the request, returning a response of type R. Throws
-     * {@link NullPointerException} if the <code>creds</code> are null.
+     * Executes the request with the given credentials, returning a response of
+     * type R. Throws {@link NullPointerException} if the {@code creds} are
+     * null.
      * 
      * @param creds
      * @return R
@@ -70,7 +48,7 @@ public interface Gbrds {
   }
 
   /**
-   * This class represents registry specific exceptions.
+   * This class represents a bad credentials exeception.
    * 
    */
   @SuppressWarnings("serial")
@@ -89,8 +67,121 @@ public interface Gbrds {
   }
 
   /**
-   * This class surfaces an RPC-style interface to the GBRDS API for extensions
-   * and thesauri.
+   * Interface that encapsulates an {@link RpcRequest} for creating a GBRDS
+   * organisation. Executing this request returns a {@link CreateOrgResponse}
+   * with {@link OrgCredentials} results.
+   * 
+   */
+  public static interface CreateOrgRequest extends
+      RpcRequest<CreateOrgResponse, OrgCredentials> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a
+   * {@link OrgCredentials} result.
+   * 
+   */
+  public static interface CreateOrgResponse extends RpcResponse<OrgCredentials> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for creating a GBRDS
+   * resource. Executing this request returns a {@link CreateResourceResponse}
+   * with {@link GbrdsResource} results.
+   * 
+   */
+  public static interface CreateResourceRequest extends
+      AuthRpcRequest<CreateResourceResponse, GbrdsResource> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a
+   * {@link GbrdsResource} result.
+   * 
+   */
+  public static interface CreateResourceResponse extends
+      RpcResponse<GbrdsResource> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for creating a GBRDS
+   * service. Executing this request returns a {@link CreateServiceResponse}
+   * with a {@link GbrdsService} result.
+   * 
+   */
+  public static interface CreateServiceRequest extends
+      AuthRpcRequest<CreateServiceResponse, GbrdsService> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a
+   * {@link GbrdsService} result.
+   * 
+   */
+  public static interface CreateServiceResponse extends
+      RpcResponse<GbrdsService> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link AuthRpcRequest} for deleting a GBRDS
+   * organisation. Executing this request with valid {@link OrgCredentials}
+   * returns a {@link DeleteOrgResponse} with a {@link Boolean} result that is
+   * true if the organisation was deleted and false if it was not.
+   * 
+   */
+  public static interface DeleteOrgRequest extends
+      AuthRpcRequest<DeleteOrgResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the organisation was deleted and false if it was
+   * not.
+   * 
+   */
+  public static interface DeleteOrgResponse extends RpcResponse<Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link AuthRpcRequest} for deleting a GBRDS
+   * resource. Executing this request with valid {@link OrgCredentials} returns
+   * a {@link DeleteResourceResponse} with a {@link Boolean} result that is true
+   * if the resource was deleted and false if it was not.
+   * 
+   */
+  public static interface DeleteResourceRequest extends
+      AuthRpcRequest<DeleteResourceResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the resource was deleted and false if it was not.
+   * 
+   */
+  public static interface DeleteResourceResponse extends RpcResponse<Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link AuthRpcRequest} for deleting a GBRDS
+   * service. Executing this request with valid {@link OrgCredentials} returns a
+   * {@link DeleteServiceResponse} with a {@link Boolean} result that is true if
+   * the resource was deleted and false if it was not.
+   * 
+   */
+  public static interface DeleteServiceRequest extends
+      AuthRpcRequest<DeleteServiceResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the service was deleted and false if it was not.
+   * 
+   */
+  public static interface DeleteServiceResponse extends RpcResponse<Boolean> {
+  }
+
+  /**
+   * Interface that encapsulated the GBRDS Extension and Thesaurus API.
    * 
    */
   public interface IptApi {
@@ -111,10 +202,107 @@ public interface Gbrds {
   }
 
   /**
-   * This interface surfaces an RPC-style interface to the GBRDS Organisation
-   * API.
+   * Interface that encapsulates an {@link RpcRequest} for listing GBRDS
+   * extensions. Executing this request returns a {@link ListExtensionsResponse}
+   * with an {@link ImmutableList} of {@link GbrdsExtension} results.
    * 
-   * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI
+   */
+  public static interface ListExtensionsRequest extends
+      RpcRequest<ListExtensionsResponse, ImmutableList<GbrdsExtension>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link ImmutableList} of {@link GbrdsExtension} results or an empty list if
+   * there are no results.
+   * 
+   */
+  public static interface ListExtensionsResponse extends
+      RpcResponse<ImmutableList<GbrdsExtension>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for listing GBRDS
+   * organisations. Executing this request returns a {@link ListOrgResponse}
+   * with an {@link ImmutableList} of {@link GbrdsOrganisation} results.
+   * 
+   */
+  public static interface ListOrgRequest extends
+      RpcRequest<ListOrgResponse, ImmutableList<GbrdsOrganisation>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link ImmutableList} of {@link GbrdsOrganisation} results or an empty list
+   * if there are no results.
+   * 
+   */
+  public static interface ListOrgResponse extends
+      RpcResponse<ImmutableList<GbrdsOrganisation>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for listing GBRDS
+   * resources. Executing this request returns a {@link ListResourceResponse}
+   * with an {@link ImmutableList} of {@link GbrdsResource} results.
+   * 
+   */
+  public static interface ListResourceRequest extends
+      RpcRequest<ListResourceResponse, ImmutableList<GbrdsResource>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link ImmutableList} of {@link GbrdsResource} results or an empty list if
+   * there are no results.
+   * 
+   */
+  public static interface ListResourceResponse extends
+      RpcResponse<ImmutableList<GbrdsResource>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for listing GBRDS
+   * services. Executing this request returns a {@link ListServiceResponse} with
+   * an {@link ImmutableList} of {@link GbrdsResource} results.
+   * 
+   */
+  public static interface ListServiceRequest extends
+      RpcRequest<ListServiceResponse, ImmutableList<GbrdsService>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link ImmutableList} of {@link GbrdsService} results or an empty list if
+   * there are no results.
+   * 
+   */
+  public static interface ListServiceResponse extends
+      RpcResponse<ImmutableList<GbrdsService>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for listing GBRDS
+   * thesauri. Executing this request returns a {@link ListThesauriResponse}
+   * with an {@link ImmutableList} of {@link GbrdsThesaurus} results.
+   * 
+   */
+  public static interface ListThesauriRequest extends
+      RpcRequest<ListThesauriResponse, ImmutableList<GbrdsThesaurus>> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link ImmutableList} of {@link GbrdsService} results or an empty list if
+   * there are no results.
+   * 
+   */
+  public static interface ListThesauriResponse extends
+      RpcResponse<ImmutableList<GbrdsThesaurus>> {
+  }
+
+  /**
+   * Interface that encapsulated the GBRDS Organisation API.
    * 
    */
   public interface OrganisationApi {
@@ -190,9 +378,13 @@ public interface Gbrds {
      * {@link BadCredentialsException} if executed with invalid
      * {@link OrgCredentials}. Throws {@link IllegalArgumentException} if the
      * {@code key} or {@code primaryContactType} properties are null or the
-     * empty string.
+     * empty string. Throws {@link IllegalArgumentException} if the {@code
+     * primaryContactType} is not 'technical' or 'administrative'.
      * 
-     * @param org the GBRDS org to update
+     * @see http://code.google.com/p/gbif-registry/wiki/OrganisationAPI#
+     *      UPDATE_ORGANISATION
+     * 
+     * @param org the GBRDS organisation to update
      * @return UpdateOrgRequest
      */
     UpdateOrgRequest update(GbrdsOrganisation org);
@@ -274,7 +466,65 @@ public interface Gbrds {
   }
 
   /**
-   * An RPC request that gets executed by {@link Gbrds} implementations.
+   * Interface that encapsulates an {@link RpcRequest} for reading a GBRDS
+   * organisation. Executing this request returns a {@link ReadOrgResponse} with
+   * a {@link GbrdsOrganisation} result.
+   * 
+   */
+  public static interface ReadOrgRequest extends
+      RpcRequest<ReadOrgResponse, GbrdsOrganisation> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link GbrdsOrganisation} result.
+   * 
+   */
+  public static interface ReadOrgResponse extends
+      RpcResponse<GbrdsOrganisation> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for reading a GBRDS
+   * resource. Executing this request returns a {@link ReadResourceResponse}
+   * with a {@link GbrdsResource} result.
+   * 
+   */
+  public static interface ReadResourceRequest extends
+      RpcRequest<ReadResourceResponse, GbrdsResource> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link GbrdsResource} result.
+   * 
+   */
+  public static interface ReadResourceResponse extends
+      RpcResponse<GbrdsResource> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcRequest} for reading a GBRDS
+   * service. Executing this request returns a {@link ReadServiceResponse} with
+   * a {@link GbrdsService} result.
+   * 
+   */
+  public static interface ReadServiceRequest extends
+      RpcRequest<ReadServiceResponse, GbrdsService> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with an
+   * {@link GbrdsService} result.
+   * 
+   */
+  public static interface ReadServiceResponse extends RpcResponse<GbrdsService> {
+  }
+
+  /**
+   * Interface for encapsulating a GBRDS request that provides credentials, the
+   * HTTP method type to use, a mapping of request parameter names and values,
+   * and the request path.
    * 
    */
   public interface Request {
@@ -319,9 +569,7 @@ public interface Gbrds {
   }
 
   /**
-   * This interface surfaces an RPC-style interface to the GBRDS Resource API.
-   * 
-   * @see http://code.google.com/p/gbif-registry/wiki/ResourceAPI
+   * Interface that encapsulated the GBRDS Resource API.
    * 
    */
   public interface ResourceApi {
@@ -330,25 +578,22 @@ public interface Gbrds {
      * Returns a {@link CreateResourceRequest} that when executed with valid
      * {@link OrgCredentials} creates a new GBRDS resource.
      * 
-     * Throws {@link NullPointerException} if {@code resource} is null of if any
-     * of the following {@code resource} properties are null:
+     * Throws {@link NullPointerException} if {@code resource} is null. Throws
+     * {@link IllegalArgumentException} if any of the following {@code resource}
+     * properties are null or the empty string:
      * 
      * <pre>
-     * {@code name}
-     * {@code primaryContactType}
-     * {@code primaryContactEmail}
-     * {@code organisationKey}
-     * </pre>
+   * {@code name}
+   * {@code primaryContactType}
+   * {@code primaryContactEmail}
+   * {@code organisationKey}
+   * </pre>
      * 
-     * Throws {@link IllegalArgumentException} if any of the following {@code
-     * resource} properties are the empty string:
+     * Additionally throws {@link IllegalArgumentException} if {@code
+     * primaryContactType} is not 'administrative' or 'technical'.
      * 
-     * <pre>
-     * {@code name}
-     * {@code primaryContactType}
-     * {@code primaryContactEmail}
-     * {@code organisationKey}
-     * </pre>
+     * @see http 
+     *      ://code.google.com/p/gbif-registry/wiki/ResourceAPI#CREATE_RESOURCE
      * 
      * @param resource the GBRDS resource to create
      * @return CreateResourceRequest
@@ -412,15 +657,15 @@ public interface Gbrds {
   }
 
   /**
-   * An RPC response returned by the {@link Gbrds} {@code execute} method that
-   * encapsulates the response body, error, status code, and result.
+   * Interface for encapsulating a GBRDS response that provides the original
+   * request, the response body, the HTTP status code, and an error if one
+   * occurred during the request.
    * 
-   * @param <T> the type of result
    */
   public interface Response {
 
     /**
-     * Returns the original response body.
+     * Returns the response body created by the GBRDS.
      * 
      * @return String
      */
@@ -434,35 +679,55 @@ public interface Gbrds {
      */
     public Throwable getError();
 
+    /**
+     * Returns the original request.
+     * 
+     * @return Request
+     */
     public Request getRequest();
 
     /**
-     * Returns the response HTTP status code.
+     * Returns the HTTP status code.
      * 
      * @return int
      */
     public int getStatus();
   }
 
+  /**
+   * Interface for an RPC style GBRDS request. Executing this request returns an
+   * {@link RpcResponse}.
+   * 
+   * @param <R> the type of RpcResponse returned from the execute method
+   * @param <T> the result type returned by the RpcResponse
+   */
   public interface RpcRequest<R extends RpcResponse<T>, T> extends Request {
+    /**
+     * Executes the request and returns the corresponding response.
+     * 
+     * @return R the type of RpcRespose returned by the execute method
+     */
     R execute();
   }
 
+  /**
+   * Interface for an RPC style GBRDS response that returns a result.
+   * 
+   * @param <T> the result type encapsulated by the response
+   */
   public interface RpcResponse<T> extends Response {
 
     /**
-     * Returns the result.
+     * Returns the response result.
      * 
-     * @return T
+     * @return T the type of result
      */
     public T getResult();
 
   }
 
   /**
-   * This interface surfaces an RPC-style interface to the GBRDS Service API.
-   * 
-   * @see http://code.google.com/p/gbif-registry/wiki/ServiceAPI
+   * Interface that encapsulated the GBRDS Service API.
    * 
    */
   public interface ServiceApi {
@@ -504,7 +769,7 @@ public interface Gbrds {
     DeleteServiceRequest delete(String serviceKey);
 
     /**
-     * Returns a new {@link ListServicesRequest} that when executed lists all
+     * Returns a new {@link ListServiceRequest} that when executed lists all
      * GBRDS services that are associated with the {@code resourceKey}.
      * 
      * Throws {@link NullPointerException} if {@code resourceKey} is null.
@@ -514,7 +779,7 @@ public interface Gbrds {
      * @param resourceKey the GBRDS resource key
      * @return ListServicesRequest
      */
-    ListServicesRequest list(String resourceKey);
+    ListServiceRequest list(String resourceKey);
 
     /**
      * Returns a new {@link ReadServiceRequest} that when executed reads a GBRDS
@@ -542,6 +807,81 @@ public interface Gbrds {
      * @return UpdateServiceRequest
      */
     UpdateServiceRequest update(GbrdsService service);
+  }
+
+  /**
+   * Interface that encapsulates an {@link AuthRpcRequest} for updating a GBRDS
+   * organisation. Executing this request with valid {@link OrgCredentials}
+   * returns a {@link UpdateOrgResponse} with a {@link Boolean} result that is
+   * true if the organisation was deleted and false if it was not.
+   * 
+   */
+  public static interface UpdateOrgRequest extends
+      AuthRpcRequest<UpdateOrgResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the organisation was updated and false if it was
+   * not.
+   * 
+   */
+  public static interface UpdateOrgResponse extends RpcResponse<Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link AuthRpcRequest} for updating a GBRDS
+   * resource. Executing this request with valid {@link OrgCredentials} returns
+   * a {@link UpdateResourceResponse} with a {@link Boolean} result that is true
+   * if the organisation was deleted and false if it was not.
+   * 
+   */
+  public static interface UpdateResourceRequest extends
+      AuthRpcRequest<UpdateResourceResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the resource was udpated and false if it was not.
+   * 
+   */
+  public static interface UpdateResourceResponse extends RpcResponse<Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link AuthRpcRequest} for updating a GBRDS
+   * service. Executing this request with valid {@link OrgCredentials} returns a
+   * {@link UpdateOrgResponse} with a {@link Boolean} result that is true if the
+   * organisation was deleted and false if it was not.
+   * 
+   */
+  public static interface UpdateServiceRequest extends
+      AuthRpcRequest<UpdateServiceResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the service was updated and false if it was not.
+   * 
+   */
+  public static interface UpdateServiceResponse extends RpcResponse<Boolean> {
+  }
+
+  /**
+   * Interface that validates organisation credentials. Executing this request
+   * returns a {@link ValidateOrgCredentialsResponse} with a {@link Boolean}
+   * result that is true if the credentials are valid and false if they are not.
+   */
+  public static interface ValidateOrgCredentialsRequest extends
+      RpcRequest<ValidateOrgCredentialsResponse, Boolean> {
+  }
+
+  /**
+   * Interface that encapsulates an {@link RpcResponse} with a {@link Boolean}
+   * result that is true if the credentials are valid and false if they are not.
+   */
+  public static interface ValidateOrgCredentialsResponse extends
+      RpcResponse<Boolean> {
   }
 
   /**

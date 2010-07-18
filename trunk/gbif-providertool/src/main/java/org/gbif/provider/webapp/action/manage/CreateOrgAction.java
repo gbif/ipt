@@ -24,9 +24,9 @@ import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.webapp.action.BasePostAction;
 import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateOrgResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateOrgResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;

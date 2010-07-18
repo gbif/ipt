@@ -20,8 +20,13 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.provider.util.ContextAwareTestBase;
 import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.GbrdsResource;
+import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.ReadOrgResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateOrgResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,7 +48,7 @@ public class RegistryManagerTest extends ContextAwareTestBase {
    */
   @Test
   public final void testCreateOrg() {
-    // Valid organisation:
+    // Valid organisations:
     String name = "Name";
     String type = "technical";
     String email = "eightysteele@gmail.com";
@@ -55,6 +60,18 @@ public class RegistryManagerTest extends ContextAwareTestBase {
     OrgCredentials creds = cor.getResult();
     assertNotNull(creds);
     assertTrue(registry.validateCreds(creds).getResult());
+
+    GbrdsOrganisation.Builder go = GbrdsOrganisation.builder().description("d").descriptionLanguage(
+        "es").homepageURL("hu").name("n").nameLanguage("es").nodeKey("sp2000").nodeName(
+        "Species 2000").primaryContactAddress("pca").primaryContactDescription(
+        "pcd").primaryContactName("pcn").primaryContactPhone("pcp").primaryContactType(
+        "administrative").primaryContactEmail("eightysteele@gmail.com");
+    cor = registry.createOrg(go.build());
+    OrgCredentials oc = cor.getResult();
+    go.key(oc.getKey());
+
+    ReadOrgResponse ror = registry.readOrg(go.getKey());
+    assertEquals(go.build(), ror.getResult());
 
     // Invalid organisations:
     try {
@@ -180,7 +197,125 @@ public class RegistryManagerTest extends ContextAwareTestBase {
    */
   @Test
   public final void testCreateResource() {
+    OrgCredentials creds = registry.createOrg(
+        GbrdsOrganisation.builder().name("n").primaryContactType("technical").primaryContactEmail(
+            "eightysteele@gmail.com").nodeKey("us").build()).getResult();
 
+    // Valid resource with valid creds:
+    GbrdsResource.Builder r = GbrdsResource.builder().name("name").primaryContactType(
+        "technical").primaryContactEmail("eightysteele@gmail.com").organisationKey(
+        creds.getKey());
+    try {
+      CreateResourceResponse crr = registry.createResource(r.build(), creds);
+      assertTrue(crr.getStatus() == HttpStatus.SC_CREATED);
+      assertNotNull(crr.getResult());
+      assertNotNull(crr.getResult().getKey());
+    } catch (BadCredentialsException e) {
+      fail();
+    }
+
+    // Valid resource with invalid creds:
+    try {
+      registry.createResource(r.build(),
+          OrgCredentials.with("invalid", "creds"));
+      fail();
+    } catch (BadCredentialsException e) {
+      System.out.println(e.toString());
+    }
+
+    // Invalid organisation key:
+    try {
+      registry.createResource(r.organisationKey(null).build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.organisationKey("").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.organisationKey("   ").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      CreateResourceResponse crr = registry.createResource(r.organisationKey(
+          "unknown").build(), creds);
+      assertFalse(crr.getStatus() == HttpStatus.SC_CREATED);
+      System.out.println(crr.getBody());
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+
+    // Invalid email:
+    try {
+      registry.createResource(r.primaryContactEmail(null).build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.primaryContactEmail("").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.primaryContactEmail("   ").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+
+    // Invalid contact type:
+    try {
+      registry.createResource(r.primaryContactType(null).build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.primaryContactType("").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.primaryContactType("   ").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.primaryContactType("unknown").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+
+    // Invalid name:
+    try {
+      registry.createResource(r.name(null).build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.name("").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
+    try {
+      registry.createResource(r.name("   ").build(), creds);
+      fail();
+    } catch (Exception e) {
+      System.out.println(e.toString());
+    }
   }
 
   /**
@@ -365,16 +500,6 @@ public class RegistryManagerTest extends ContextAwareTestBase {
 
   /**
    * Test method for
-   * {@link org.gbif.provider.service.impl.RegistryManagerImpl#updateOrg(org.gbif.registry.api.client.GbrdsOrganisation, org.gbif.registry.api.client.Gbrds.OrgCredentials)}
-   * .
-   */
-  @Test
-  public final void testUpdateOrg() {
-
-  }
-
-  /**
-   * Test method for
    * {@link org.gbif.provider.service.impl.RegistryManagerImpl#updateResource(org.gbif.registry.api.client.GbrdsResource, org.gbif.registry.api.client.Gbrds.OrgCredentials)}
    * .
    */
@@ -411,6 +536,45 @@ public class RegistryManagerTest extends ContextAwareTestBase {
   @Test
   public final void testValidateCreds() {
 
+  }
+
+  /**
+   * Test method for
+   * {@link org.gbif.provider.service.impl.RegistryManagerImpl#updateOrg(org.gbif.registry.api.client.GbrdsOrganisation, org.gbif.registry.api.client.Gbrds.OrgCredentials)}
+   * .
+   */
+  // @Test
+  public final void UpdateOrg() {
+    // Creates a new organisation for testing:
+    String name = "Name";
+    String type = "technical";
+    String email = "eightysteele@gmail.com";
+    String nodeKey = "us";
+    GbrdsOrganisation.Builder b = GbrdsOrganisation.builder().name(name).primaryContactType(
+        type).primaryContactEmail(email).nodeKey(nodeKey);
+    CreateOrgResponse cor = registry.createOrg(b.build());
+    OrgCredentials creds = cor.getResult();
+    b.key(creds.getKey());
+
+    UpdateOrgResponse uor;
+    String val = "updated";
+
+    // Updates name:
+    try {
+      GbrdsOrganisation go = b.description("d").descriptionLanguage("es").homepageURL(
+          "hu").name("n").nameLanguage("es").nodeKey("sp2000").nodeName(
+          "Species 2000").primaryContactAddress("pca").primaryContactDescription(
+          "pcd").primaryContactName("pcn").primaryContactPhone("pcp").primaryContactType(
+          "administrative").primaryContactEmail("gtuco.btuco@gmail.com").build();
+      System.out.println(go);
+      uor = registry.updateOrg(go, creds);
+      assertTrue(uor.getStatus() == HttpStatus.SC_OK);
+      System.out.println(creds);
+      ReadOrgResponse ror = registry.readOrg(creds.getKey());
+      assertEquals(go, registry.readOrg(creds.getKey()).getResult());
+    } catch (BadCredentialsException e) {
+      fail(e.toString());
+    }
   }
 
 }

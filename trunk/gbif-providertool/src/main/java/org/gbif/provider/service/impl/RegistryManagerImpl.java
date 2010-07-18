@@ -35,29 +35,29 @@ import org.gbif.provider.service.RegistryManager;
 import org.gbif.provider.util.AppConfig;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.GbrdsExtension;
+import org.gbif.registry.api.client.GbrdsImpl;
 import org.gbif.registry.api.client.GbrdsOrganisation;
-import org.gbif.registry.api.client.GbrdsRegistry;
 import org.gbif.registry.api.client.GbrdsResource;
 import org.gbif.registry.api.client.GbrdsService;
 import org.gbif.registry.api.client.GbrdsThesaurus;
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.CreateServiceResponse;
+import org.gbif.registry.api.client.Gbrds.DeleteResourceResponse;
+import org.gbif.registry.api.client.Gbrds.DeleteServiceResponse;
 import org.gbif.registry.api.client.Gbrds.IptApi;
+import org.gbif.registry.api.client.Gbrds.ListServiceResponse;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
+import org.gbif.registry.api.client.Gbrds.ReadOrgResponse;
+import org.gbif.registry.api.client.Gbrds.ReadResourceResponse;
 import org.gbif.registry.api.client.Gbrds.ResourceApi;
 import org.gbif.registry.api.client.Gbrds.ServiceApi;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.DeleteServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListServicesResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateOrgResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.UpdateServiceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ValidateOrgCredentialsResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateOrgResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.UpdateServiceResponse;
+import org.gbif.registry.api.client.Gbrds.ValidateOrgCredentialsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -84,7 +84,7 @@ public class RegistryManagerImpl implements RegistryManager {
   private final IptApi iptApi;
 
   RegistryManagerImpl() {
-    Gbrds gbrds = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
+    Gbrds gbrds = GbrdsImpl.init("http://gbrdsdev.gbif.org");
     orgApi = gbrds.getOrganisationApi();
     resourceApi = gbrds.getResourceApi();
     serviceApi = gbrds.getServiceApi();
@@ -106,7 +106,6 @@ public class RegistryManagerImpl implements RegistryManager {
    * @see RegistryManager#createOrg(GbrdsOrganisation)
    */
   public CreateOrgResponse createOrg(GbrdsOrganisation org) {
-    checkNotNull(org, "Organisation is null");
     return orgApi.create(org).execute();
   }
 
@@ -116,8 +115,6 @@ public class RegistryManagerImpl implements RegistryManager {
    */
   public CreateResourceResponse createResource(GbrdsResource resource,
       OrgCredentials creds) throws BadCredentialsException {
-    checkNotNull(resource);
-    checkNotNull(creds, "Credentials are null");
     return resourceApi.create(resource).execute(creds);
   }
 
@@ -319,7 +316,7 @@ public class RegistryManagerImpl implements RegistryManager {
   /**
    * @see RegistryManager#listGbifServices(String )
    */
-  public ListServicesResponse listServices(String resourceKey) {
+  public ListServiceResponse listServices(String resourceKey) {
     checkArgument(notNullOrEmpty(resourceKey), "Invalid resource key");
     return serviceApi.list(resourceKey).execute();
   }
@@ -376,7 +373,7 @@ public class RegistryManagerImpl implements RegistryManager {
     }
 
     // Looks for the RSS service in the GBRDS:
-    ListServicesResponse lsr = listServices(key);
+    ListServiceResponse lsr = listServices(key);
     if (lsr.getStatus() != HttpStatus.SC_OK) {
       return "Warning: Unable to get services";
     }
@@ -413,11 +410,9 @@ public class RegistryManagerImpl implements RegistryManager {
    * @throws BadCredentialsException
    * @see RegistryManager#updateOrg(GbrdsOrganisation, OrgCredentials)
    */
-  public UpdateOrgResponse updateOrg(GbrdsOrganisation organisation,
-      OrgCredentials creds) throws BadCredentialsException {
-    checkNotNull(organisation, "Organisation is null");
-    checkNotNull(creds, "Credentials are null");
-    return orgApi.update(organisation).execute(creds);
+  public UpdateOrgResponse updateOrg(GbrdsOrganisation org, OrgCredentials creds)
+      throws BadCredentialsException {
+    return orgApi.update(org).execute(creds);
   }
 
   /**
@@ -472,7 +467,7 @@ public class RegistryManagerImpl implements RegistryManager {
       }
 
       // Gets services from GBRDS:
-      ListServicesResponse lsr = listServices(resourceKey);
+      ListServiceResponse lsr = listServices(resourceKey);
       if (lsr.getStatus() != HttpStatus.SC_OK) {
         errors.add("Warninig: Unable to list services for " + resourceKey);
         continue;

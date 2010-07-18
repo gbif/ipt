@@ -18,11 +18,11 @@ package org.gbif.registry.api.client;
 import junit.framework.Assert;
 
 import org.gbif.registry.api.client.Gbrds.BadCredentialsException;
+import org.gbif.registry.api.client.Gbrds.CreateResourceResponse;
+import org.gbif.registry.api.client.Gbrds.ListResourceRequest;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
+import org.gbif.registry.api.client.Gbrds.ReadResourceResponse;
 import org.gbif.registry.api.client.Gbrds.ResourceApi;
-import org.gbif.registry.api.client.GbrdsRegistry.CreateResourceResponse;
-import org.gbif.registry.api.client.GbrdsRegistry.ListResourceRequest;
-import org.gbif.registry.api.client.GbrdsRegistry.ReadResourceResponse;
 import org.junit.Test;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class ResourceApiTest {
 
-  private static Gbrds gbif = GbrdsRegistry.init("http://gbrdsdev.gbif.org");
+  private static Gbrds gbif = GbrdsImpl.init("http://gbrdsdev.gbif.org");
   private static final ResourceApi api = gbif.getResourceApi();
 
   private static final String resourceKey = "3f138d32-eb85-430c-8d5d-115c2f03429e";
