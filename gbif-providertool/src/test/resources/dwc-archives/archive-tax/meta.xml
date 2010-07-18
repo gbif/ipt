@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<archive xmlns="http://rs.tdwg.org/dwc/text/">
+  <core encoding="UTF-8" fieldsTerminatedBy="\t" linesTerminatedBy="\n" fieldsEnclosedBy='' ignoreHeaderLines="1" rowType="http://rs.tdwg.org/dwc/terms/Taxon">
+    <files>
+      <location>DarwinCore.txt</location>
+    </files>
+    <id index="0" term="http://rs.tdwg.org/dwc/terms/TaxonID"/>
+    <field index="1" term="http://purl.org/dc/terms/source"/>
+    <field index="2" term="http://rs.tdwg.org/dwc/terms/ScientificName"/>
+    <field index="3" term="http://rs.tdwg.org/dwc/terms/HigherTaxonID"/>
+    <field index="4" term="http://rs.tdwg.org/dwc/terms/TaxonRank"/>
+    <field index="5" term="http://rs.tdwg.org/dwc/terms/NomenclaturalCode"/>
+    <field index="6" term="http://rs.tdwg.org/dwc/terms/TaxonAccordingTo"/>
+    <field index="7" term="http://rs.tdwg.org/dwc/terms/NamePublishedIn"/>
+    <field index="8" term="http://rs.tdwg.org/dwc/terms/TaxonomicStatus"/>
+    <field index="9" term="http://rs.tdwg.org/dwc/terms/NomenclaturalStatus"/>
+    <field index="10" term="http://rs.tdwg.org/dwc/terms/AcceptedTaxonID"/>
+    <field index="11" term="http://rs.tdwg.org/dwc/terms/BasionymID"/>
+  </core>
+  <extension encoding="UTF-8" fieldsTerminatedBy="\t" linesTerminatedBy="\n" fieldsEnclosedBy='' ignoreHeaderLines="1" rowType="http://rs.gbif.org/ipt/terms/1.0/VernacularName">
+    <files>
+      <location>VernacularName.txt</location>
+    </files>
+    <coreid index="0" />
+    <field index="1" term="http://rs.gbif.org/ecat/terms/vernacularName"/>
+    <field index="2" term="http://rs.gbif.org/thesaurus/languageCode"/>
+  </extension>
+</archive>
