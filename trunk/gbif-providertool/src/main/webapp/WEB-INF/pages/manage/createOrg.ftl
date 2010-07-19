@@ -189,7 +189,7 @@
     <@s.submit cssClass="button" name="save" key="button.save" theme="simple"/>
     <@s.submit cssClass="button" name="cancel" key="button.cancel" theme="simple"/>
     <div class="right btnWithKey">    
-      <#if isOrgRegistered()>
+      <#if isOrgRegistered>
         <@s.submit id="btnRegister" cssClass="button btnWithoutKey" key="button.register" method="register" theme="simple"/>
         <a id="btnNew" href="#">Clear form</a> &nbsp;&nbsp;&nbsp;
       </#if>
