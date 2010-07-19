@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.gbif.ipt.action.admin;
+package org.gbif.ipt.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.action.FormAction;
-import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -95,9 +94,9 @@ public class SetupAction extends BaseAction implements ServletRequestAware, Serv
 				userManager.save();
 				// set IPT type: registry URL
 				if (production){
-					//TODO: use registry manager
+					cfg.setTestInstallation(false);
 				}else{
-					//TODO: use registry manager
+					cfg.setTestInstallation(true);
 				}
 				// set baseURL
 				try {

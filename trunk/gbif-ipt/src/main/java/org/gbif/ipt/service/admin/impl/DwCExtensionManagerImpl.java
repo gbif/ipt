@@ -5,7 +5,9 @@ package org.gbif.ipt.service.admin.impl;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.ipt.model.Extension;
@@ -20,7 +22,8 @@ import com.google.inject.Singleton;
  */
 @Singleton
 public class DwCExtensionManagerImpl extends BaseManager implements DwCExtensionManager {
-
+	private Map<String, Extension> installedExtensions = new HashMap<String, Extension>();
+	
 	public void delete(String rowType) {
 		// TODO Auto-generated method stub
 		

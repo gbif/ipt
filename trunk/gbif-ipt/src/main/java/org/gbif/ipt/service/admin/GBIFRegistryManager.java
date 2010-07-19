@@ -3,6 +3,7 @@
  */
 package org.gbif.ipt.service.admin;
 
+import java.net.URL;
 import java.util.List;
 
 import org.gbif.ipt.model.registry.Organisation;
@@ -31,5 +32,5 @@ public interface GBIFRegistryManager {
 	/**
 	 * @return URL to the json list of registered dwc extensions in GBIF
 	 */
-	public String getExtensionListUrl();	  
+	public URL getExtensionListUrl();	  
 }

@@ -94,11 +94,11 @@
 			<exception-mapping result="error" exception="org.gbif.ipt.service.admin.InvalidConfigException"/>
 		</global-exception-mappings>
 		
-		<action name="setup" class="org.gbif.ipt.action.admin.SetupAction" method="setup">
+		<action name="setup" class="org.gbif.ipt.config.SetupAction" method="setup">
 			<result name="input">/WEB-INF/pages/admin/setup.ftl</result>
 			<result type="redirect">/setup2.do</result>
 		</action>
-		<action name="setup2" class="org.gbif.ipt.action.admin.SetupAction" method="setup2">
+		<action name="setup2" class="org.gbif.ipt.config.SetupAction" method="setup2">
 			<result name="input">/WEB-INF/pages/admin/setup2.ftl</result>
 			<result type="redirect">/</result>
 		</action>

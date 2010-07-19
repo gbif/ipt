@@ -207,3 +207,15 @@ div#footer{
 	display: inline;
 }
 
+table.simple th{
+	background-color: #fff;
+	text-align: left;
+	text-decoration: underline;
+}
+table.simple tr{
+	background-color: #f8f8f8;
+}
+table.simple tr.linebreak{
+	background-color: #fff;
+	height: 1em;
+}

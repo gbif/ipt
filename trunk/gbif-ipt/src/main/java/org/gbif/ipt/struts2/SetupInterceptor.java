@@ -1,7 +1,7 @@
 package org.gbif.ipt.struts2;
 
-import org.gbif.ipt.action.admin.SetupAction;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.SetupAction;
 import org.gbif.ipt.service.admin.ConfigManager;
 
 import com.google.inject.Inject;

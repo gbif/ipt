@@ -16,11 +16,13 @@
 			<result>/WEB-INF/pages/admin/home.ftl</result>
 		</action>
 		
+		<!-- IPT MAIN CONFIGURATION -->
 		<action name="config" class="org.gbif.ipt.action.admin.ConfigAction">
 			<result name="input">/WEB-INF/pages/admin/config.ftl</result>
 			<result>/WEB-INF/pages/admin/config.ftl</result>
 		</action>
 		
+		<!-- USER MANAGEMENT -->
 		<action name="users" class="org.gbif.ipt.action.admin.UserAccountsAction" method="list">
 			<result>/WEB-INF/pages/admin/users.ftl</result>
 		</action>
@@ -29,6 +31,7 @@
 			<result type="redirect">users.do</result>
 		</action>
 		
+		<!-- EXTENSION & VOCAB MANAGEMENT -->
 		<action name="extensions" class="org.gbif.ipt.action.admin.DwCExtensionsAction" method="list">
 			<result>/WEB-INF/pages/admin/extensions.ftl</result>
 		</action>

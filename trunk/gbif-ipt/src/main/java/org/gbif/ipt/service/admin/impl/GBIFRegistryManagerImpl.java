@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.gbif.ipt.model.registry.Organisation;
@@ -16,7 +18,9 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.registry.api.client.Gbrds;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
@@ -29,11 +33,13 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	public static final String PERSISTENCE_FILE = "registry.xml";
 	private Registry registry = new Registry();
 	private final XStream xstream = new XStream();
+	private Gbrds client;
 
 	/**
 	 * 
 	 */
-	public GBIFRegistryManagerImpl() {
+	@Inject
+	public GBIFRegistryManagerImpl(Gbrds client) {
 		super();
 		defineXstreamMapping();
 	}
@@ -84,9 +90,16 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	}
 	
 	
-	public String getExtensionListUrl() {
+	public URL getExtensionListUrl() {
 		// until the registry handles JSONP with a callback parameter we need a local json file!
-		return cfg.getBaseURL()+"/extensions.json";
+		URL url = null;
+		try {
+			url = new URL(cfg.getBaseURL()+"/extensions.json");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return url;
 	}
 	
 	

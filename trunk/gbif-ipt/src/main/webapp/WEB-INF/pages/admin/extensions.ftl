@@ -1,15 +1,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="admin.extension.title"/></title>
-
 <script type="text/javascript">
 $(document).ready(function(){
-    $("input.form-reset").one("click", function () {
-      $(this).val("");
-    });
-    $("#locale > a").click(function(e) {
-        $("#availableLocales").toggle();
-    })
-	readUserPrefCookie();    
 });
 </script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -17,11 +9,11 @@ $(document).ready(function(){
 <h1><@s.text name="admin.extension.title"/></h1>
 
 <h3>Extensions currently installed in this IPT</h3>
-<table>
+<table id="extensions" class="simple" width="100%">
 	<tr>
-		<th>Name</th>
-		<th>rowType</th>
-		<th>Type</th>
+		<th width="25%">Name</th>
+		<th width="60%">Row Type</th>
+		<th width="150%">Type</th>
 	</tr>
 
 	<#list extensions as ext>	
@@ -31,7 +23,13 @@ $(document).ready(function(){
 		<td>${ext.availableFor}</td>
 	</tr>
 	<tr>
-		<td>${ext.description}</td>
+		<td colspan="2">${ext.description}</td>
+		<td>
+			<form action='extension.do' method='post'>
+				<input type='hidden' name='id' value='${ext.rowType}' />
+				<input type='submit' name='delete' value='Remove' />
+			</form>
+		</td>
 	</tr>
 	</#list>
 	
@@ -39,8 +37,6 @@ $(document).ready(function(){
 
 <br/>
 <p><a id="listExtensions" href="#">List available extensions</a> from the GBIF registry</p>
-<table id="gbifResults">
-</table>
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

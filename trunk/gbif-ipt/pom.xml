@@ -170,6 +170,13 @@
 	</build>
 	
 	<dependencies>
+		<!-- GBIF libs -->
+		<dependency>
+			<groupId>org.gbif</groupId>
+			<artifactId>gbif-registry-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
 		<!-- Struts2 -->
 		<dependency>
 			<groupId>org.apache.struts</groupId>

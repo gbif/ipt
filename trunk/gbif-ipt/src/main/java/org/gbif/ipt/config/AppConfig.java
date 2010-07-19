@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,9 +28,11 @@ public class AppConfig {
 	public static final String GMAPS_KEY = "google.maps.key";
 	public static final String ANALYTICS_GBIF = "analytics.gbif";
 	public static final String ANALYTICS_KEY = "analytics.key";
+	private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
 	private Properties properties = new Properties();
 	private Log log = LogFactory.getLog(this.getClass());
 	private DataDir dataDir;
+	private boolean testInstallation=true;
 
 
 	@Inject
@@ -62,6 +65,12 @@ public class AppConfig {
 				}else{
 					log.warn("DataDir configured, but user configuration doesnt exist: "+userCfgFile.getAbsolutePath());
 				}
+				// check if this datadir is a production or test installation
+				// we use a hidden file to indicate the production type
+				File productionLockFile = getProductionLockFile();
+				if (productionLockFile.exists()){
+					setTestInstallation(false);
+				}
 			}
 			// without error replace existing config with new one
 			this.properties=props;
@@ -70,11 +79,31 @@ public class AppConfig {
 		}
 	}
 	
+	private File getProductionLockFile(){
+		return dataDir.configFile(PRODUCTION_TYPE_LOCKFILE);		
+	}
+	
+	protected void setTestInstallation(boolean b) {
+		this.testInstallation=b;		
+	}
+	public boolean isTestInstallation() {
+		return testInstallation;
+	}
+
+
 	/**
 	 * @throws IOException 
 	 * 
 	 */
 	protected void saveConfig() throws IOException{
+		// make sure production lock exists
+		if (!testInstallation){
+			File productionLockFile = getProductionLockFile();
+			if (!productionLockFile.exists()){
+				FileUtils.touch(productionLockFile);
+			}
+		}
+		// save property config file
 		File userCfgFile = new File(dataDir.dataDir, "config/"+DATADIR_PROPFILE);
 		if (userCfgFile.exists()){
 		}
