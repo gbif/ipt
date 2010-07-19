@@ -18,12 +18,18 @@ import com.google.inject.ImplementedBy;
  */
 @ImplementedBy(GBIFRegistryManagerImpl.class)
 public interface GBIFRegistryManager {
-	
-	  /**
-	   * Calls the central registry to receive a list of the Organisations that are
-	   * available
-	   * 
-	   * @return The list of all available organisations
-	   */
-	  List<Organisation> listAllOrganisations();
+
+	/**
+	 * Calls the central registry to receive a list of the Organisations that are
+	 * available
+	 * 
+	 * @return The list of all available organisations
+	 */
+	public List<Organisation> listAllOrganisations();
+
+
+	/**
+	 * @return URL to the json list of registered dwc extensions in GBIF
+	 */
+	public String getExtensionListUrl();	  
 }

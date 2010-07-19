@@ -83,6 +83,13 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 		return registry.getIptOrganisations();
 	}
 	
+	
+	public String getExtensionListUrl() {
+		// until the registry handles JSONP with a callback parameter we need a local json file!
+		return cfg.getBaseURL()+"/extensions.json";
+	}
+	
+	
 	/*public static void main(String args[]) {
 		GBIFRegistryManagerImpl rg = new GBIFRegistryManagerImpl();
 		try {
@@ -94,4 +101,5 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	}
 	*/
 
+	
 }
