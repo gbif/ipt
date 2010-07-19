@@ -6,11 +6,15 @@ import java.net.UnknownHostException;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.InputStreamUtils;
+import org.gbif.registry.api.client.Gbrds;
+import org.gbif.registry.api.client.GbrdsImpl;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -62,4 +66,21 @@ public class IPTModule extends AbstractModule{
 		return new DataDir(dataDirSettingFile);
 	}
 	
+	@Provides @Singleton @Inject
+	HttpClient provideHttpClient() {
+		HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+		return client;
+	}
+
+	@Provides @Singleton @Inject
+	Gbrds provideRegistryClient(AppConfig cfg) {
+		String url="http://gbrdsdev.gbif.org";
+		// rely on the fact that AppConfig is already setup
+		if (!cfg.isTestInstallation()){
+			url="http://gbrds.gbif.org";
+		}
+		Gbrds gbif = GbrdsImpl.init(url);
+		log.info("Created GBF Registry client with URL: "+url);
+		return gbif;
+	}	
 }

@@ -58,6 +58,8 @@ forms best practices:
 
 ### Configuration ###
 DataDir
+ - hidden file ".gbifreg" indicates that the datadir is linked to the production registry. This cannot be changed again from the UI
+ 
 AppConfig
 
 ### Guice ###
