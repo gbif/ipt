@@ -59,14 +59,6 @@
 			<id>gbif</id>
 			<url>http://tools.gbif.org/maven/repository/</url>
 		</repository>
-		<!-- 
-		<repository>
-			<id>repository.jboss.org</id>
-			<name>JBoss Maven Repository</name>
-			<url>http://repository.jboss.org/maven2</url>
-			<layout>default</layout>
-		</repository>
-		-->
 	</repositories>
 	
 	<build>
@@ -125,7 +117,15 @@
 				<version>2.6</version>
 		    	<configuration>
 		    		<downloadSources>true</downloadSources>
-		    		<downloadJavadocs>true</downloadJavadocs>
+		    		<additionalBuildcommands>
+		    			<buildcommand>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</buildcommand>
+		    		</additionalBuildcommands>
+		    		<additionalConfig>
+		    			<file>
+		    				<name>.checkstyle</name>
+		    				<url>http://rs.gbif.org/conventions/java-style-config.xml</url>
+		    			</file>
+		    		</additionalConfig>
 		    	</configuration>
 		    </plugin>					
 		</plugins>
