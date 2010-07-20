@@ -1,17 +1,9 @@
 /*
- * Copyright 2009 GBIF.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.gbif.ipt.utils;
 
@@ -32,14 +24,12 @@ import java.io.Writer;
 
 /**
  * TODO: Documentation.
- * 
  */
 public class XmlFileUtils {
   public static Reader getUtf8Reader(File file) throws FileNotFoundException {
     Reader reader = null;
     try {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-          file), "UTF8"));
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
@@ -49,8 +39,7 @@ public class XmlFileUtils {
   public static Writer startNewUtf8File(File file) throws IOException {
     Writer writer = null;
     FileUtils.touch(file);
-    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-        file, false), "UTF8"));
+    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF8"));
     return writer;
   }
 

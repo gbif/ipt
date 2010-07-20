@@ -1,4 +1,3 @@
-
 // $Id: CompactHashSet.java,v 1.16 2006/11/09 08:29:02 larsga Exp $
 
 package org.gbif.ipt.utils;
@@ -13,13 +12,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * INTERNAL: Implements the Set interface more compactly than
- * java.util.HashSet by using a closed hashtable. 
+ * INTERNAL: Implements the Set interface more compactly than java.util.HashSet by using a closed hashtable.
  * 
  * @See http://code.google.com/p/ontopia/source/browse/trunk/ontopia/src/java/net/ontopia/utils/
  */
 public class CompactHashSet<T> extends java.util.AbstractSet<T> {
-  
+
   protected final static int INITIAL_SIZE = 3;
   protected final static double LOAD_FACTOR = 0.75;
 
@@ -28,17 +26,15 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
    */
   protected final static Object nullObject = new Object();
   /**
-   * When an object is deleted this object is put into the hashtable
-   * in its place, so that other objects with the same key
-   * (collisions) further down the hashtable are not lost after we
-   * delete an object in the collision chain.
+   * When an object is deleted this object is put into the hashtable in its place, so that other objects with the same
+   * key (collisions) further down the hashtable are not lost after we delete an object in the collision chain.
    */
   protected final static Object deletedObject = new Object();
   protected int elements;
   protected int freecells;
   protected Object[] objects;
   protected int modCount;
-  
+
   /**
    * Constructs a new, empty set.
    */
@@ -55,16 +51,15 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
   public CompactHashSet(int size) {
     // NOTE: If array size is 0, we get a
     // "java.lang.ArithmeticException: / by zero" in add(Object).
-    objects = new Object[(size==0 ? 1 : size)]; 
+    objects = new Object[(size == 0 ? 1 : size)];
     elements = 0;
     freecells = objects.length;
     modCount = 0;
   }
 
   /**
-   * Constructs a new set containing the elements in the specified
-   * collection.
-   *
+   * Constructs a new set containing the elements in the specified collection.
+   * 
    * @param c the collection whose elements are to be placed into this set.
    */
   public CompactHashSet(Collection c) {
@@ -73,11 +68,10 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
   }
 
   // ===== SET IMPLEMENTATION =============================================
-  
+
   /**
-   * Returns an iterator over the elements in this set.  The elements
-   * are returned in no particular order.
-   *
+   * Returns an iterator over the elements in this set. The elements are returned in no particular order.
+   * 
    * @return an Iterator over the elements in this set.
    * @see ConcurrentModificationException
    */
@@ -101,23 +95,22 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
 
   /**
    * Returns <tt>true</tt> if this set contains the specified element.
-   *
+   * 
    * @param o element whose presence in this set is to be tested.
    * @return <tt>true</tt> if this set contains the specified element.
    */
   public boolean contains(Object o) {
-    if (o == null) o = nullObject;
-    
+    if (o == null)
+      o = nullObject;
+
     int hash = o.hashCode();
     int index = (hash & 0x7FFFFFFF) % objects.length;
     int offset = 1;
 
     // search for the object (continue while !null and !this object)
-    while(objects[index] != null &&
-          !(objects[index].hashCode() == hash &&
-            objects[index].equals(o))) {
+    while (objects[index] != null && !(objects[index].hashCode() == hash && objects[index].equals(o))) {
       index = ((index + offset) & 0x7FFFFFFF) % objects.length;
-      offset = offset*2 + 1;
+      offset = offset * 2 + 1;
 
       if (offset == -1)
         offset = 2;
@@ -127,39 +120,36 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
   }
 
   /**
-   * Adds the specified element to this set if it is not already
-   * present.
-   *
+   * Adds the specified element to this set if it is not already present.
+   * 
    * @param o element to be added to this set.
-   * @return <tt>true</tt> if the set did not already contain the specified
-   * element.
+   * @return <tt>true</tt> if the set did not already contain the specified element.
    */
   public boolean add(T x) {
     Object o = (Object) x;
-    if (o == null) o = nullObject;
+    if (o == null)
+      o = nullObject;
 
     int hash = o.hashCode();
     int index = (hash & 0x7FFFFFFF) % objects.length;
     int offset = 1;
     int deletedix = -1;
-    
+
     // search for the object (continue while !null and !this object)
-    while(objects[index] != null &&
-          !(objects[index].hashCode() == hash &&
-            objects[index].equals(o))) {
+    while (objects[index] != null && !(objects[index].hashCode() == hash && objects[index].equals(o))) {
 
       // if there's a deleted object here we can put this object here,
       // provided it's not in here somewhere else already
       if (objects[index] == deletedObject)
         deletedix = index;
-      
+
       index = ((index + offset) & 0x7FFFFFFF) % objects.length;
-      offset = offset*2 + 1;
+      offset = offset * 2 + 1;
 
       if (offset == -1)
         offset = 2;
     }
-    
+
     if (objects[index] == null) { // wasn't present already
       if (deletedix != -1) // reusing a deleted cell
         index = deletedix;
@@ -169,17 +159,18 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
       modCount++;
       elements++;
       objects[index] = o;
-      
+
       // rehash with same capacity
       if (1 - (freecells / (double) objects.length) > LOAD_FACTOR) {
         rehash(objects.length);
         // rehash with increased capacity
         if (1 - (freecells / (double) objects.length) > LOAD_FACTOR) {
-          rehash(objects.length*2 + 1);
+          rehash(objects.length * 2 + 1);
         }
       }
       return true;
-    } else // was there already 
+    } else
+      // was there already
       return false;
   }
 
@@ -187,18 +178,17 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
    * Removes the specified element from the set.
    */
   public boolean remove(Object o) {
-    if (o == null) o = nullObject;
-    
+    if (o == null)
+      o = nullObject;
+
     int hash = o.hashCode();
     int index = (hash & 0x7FFFFFFF) % objects.length;
     int offset = 1;
-    
+
     // search for the object (continue while !null and !this object)
-    while(objects[index] != null &&
-          !(objects[index].hashCode() == hash &&
-            objects[index].equals(o))) {
+    while (objects[index] != null && !(objects[index].hashCode() == hash && objects[index].equals(o))) {
       index = ((index + offset) & 0x7FFFFFFF) % objects.length;
-      offset = offset*2 + 1;
+      offset = offset * 2 + 1;
 
       if (offset == -1)
         offset = 2;
@@ -215,7 +205,7 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
       // we did not find the object
       return false;
   }
-  
+
   /**
    * Removes all of the elements from this set.
    */
@@ -244,8 +234,7 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
   public Object[] toArray(Object a[]) {
     int size = elements;
     if (a.length < size)
-      a = (Object[])java.lang.reflect.Array.newInstance(
-                                 a.getClass().getComponentType(), size);
+      a = (Object[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
     Object[] objects = this.objects;
     int pos = 0;
     for (int i = 0; i < objects.length; i++)
@@ -256,8 +245,8 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
           a[pos++] = objects[i];
       }
     return a;
-  }  
-  
+  }
+
   // ===== INTERNAL METHODS ===============================================
 
   /**
@@ -268,10 +257,10 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
     System.out.println("Elements: " + elements);
     System.out.println("Free cells: " + freecells);
     System.out.println();
-    for (int ix = 0; ix < objects.length; ix++) 
+    for (int ix = 0; ix < objects.length; ix++)
       System.out.println("[" + ix + "]: " + objects[ix]);
   }
-  
+
   /**
    * INTERNAL: Rehashes the hashset to a bigger size.
    */
@@ -283,15 +272,15 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
       Object o = objects[ix];
       if (o == null || o == deletedObject)
         continue;
-      
+
       int hash = o.hashCode();
       int index = (hash & 0x7FFFFFFF) % newCapacity;
       int offset = 1;
 
       // search for the object
-      while(newObjects[index] != null) { // no need to test for duplicates
+      while (newObjects[index] != null) { // no need to test for duplicates
         index = ((index + offset) & 0x7FFFFFFF) % newCapacity;
-        offset = offset*2 + 1;
+        offset = offset * 2 + 1;
 
         if (offset == -1)
           offset = 2;
@@ -303,25 +292,21 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
     objects = newObjects;
     freecells = objects.length - elements;
   }
-  
+
   // ===== ITERATOR IMPLEMENTATON =========================================
-  
+
   private class CompactHashIterator implements Iterator<T> {
     private int index;
     private int lastReturned = -1;
-    
+
     /**
-     * The modCount value that the iterator believes that the backing
-     * CompactHashSet should have.  If this expectation is violated,
-     * the iterator has detected concurrent modification.
+     * The modCount value that the iterator believes that the backing CompactHashSet should have. If this expectation is
+     * violated, the iterator has detected concurrent modification.
      */
     private int expectedModCount;
 
     public CompactHashIterator() {
-      for (index = 0; index < objects.length &&
-                      (objects[index] == null ||
-                       objects[index] == deletedObject); index++)
-        ;
+      for (index = 0; index < objects.length && (objects[index] == null || objects[index] == deletedObject); index++);
       expectedModCount = modCount;
     }
 
@@ -339,10 +324,7 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
       }
 
       lastReturned = index;
-      for (index += 1; index < length &&
-                       (objects[index] == null ||
-                        objects[index] == deletedObject); index++)
-        ;
+      for (index += 1; index < length && (objects[index] == null || objects[index] == deletedObject); index++);
       if (objects[lastReturned] == nullObject)
         return null;
       else
@@ -363,5 +345,5 @@ public class CompactHashSet<T> extends java.util.AbstractSet<T> {
       }
     }
   }
-  
+
 }
