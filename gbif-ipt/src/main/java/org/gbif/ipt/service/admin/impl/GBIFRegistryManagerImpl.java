@@ -3,21 +3,13 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.gbif.ipt.model.registry.Organisation;
-import org.gbif.ipt.model.registry.Registry;
+import org.gbif.ipt.model.registry.BriefOrganisation;
 import org.gbif.ipt.service.BaseManager;
-import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
-import org.gbif.ipt.utils.FileUtils;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
@@ -35,7 +27,7 @@ import com.thoughtworks.xstream.XStream;
 @Singleton
 public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistryManager {
 	public static final String PERSISTENCE_FILE = "registry.xml";
-	private Registry registry = new Registry();
+	//private Registry registry = new Registry();
 	private final XStream xstream = new XStream();
 	private final Gbrds client;
 	private final OrganisationApi orgApi;
@@ -48,12 +40,13 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 		super();
 		this.client = client;
 		orgApi = client.getOrganisationApi();
-		defineXstreamMapping();
+		//defineXstreamMapping();
 	}
 	
+	/*
 	private void defineXstreamMapping(){
-		xstream.alias("registry", Registry.class);
-		xstream.alias("organisation", Organisation.class);
+		//xstream.alias("registry", Registry.class);
+		//xstream.alias("organisation", Organisation.class);
 	}	
 
 	public void save() throws IOException {
@@ -84,6 +77,7 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 			}
 		}
 	}	
+	*/
 	
 	
 	/*
@@ -92,15 +86,14 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	 * @see
 	 * org.gbif.ipt.service.admin.GBIFRegistryManager#listAllOrganisations()
 	 */
-  public List<Organisation> listAllOrganisations() {
+  public List<BriefOrganisation> listAllOrganisations() {
     List<GbrdsOrganisation> list = orgApi.list().execute().getResult();
     return Lists.transform(list,
-        new Function<GbrdsOrganisation, Organisation>() {
-          public Organisation apply(GbrdsOrganisation go) {
-            Organisation o = new Organisation();
+        new Function<GbrdsOrganisation, BriefOrganisation>() {
+          public BriefOrganisation apply(GbrdsOrganisation go) {
+        	  BriefOrganisation o = new BriefOrganisation();
             o.setKey(go.getKey());
             o.setName(go.getName());
-            o.setPassword(o.getPassword());
             return o;
           }
         });
