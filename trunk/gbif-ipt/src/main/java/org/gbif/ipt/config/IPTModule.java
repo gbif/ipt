@@ -80,10 +80,10 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   Gbrds provideRegistryClient(AppConfig cfg) {
-    String url = "http://gbrdsdev.gbif.org";
+    String url = cfg.getProperty("dev.registry.url");
     // rely on the fact that AppConfig is already setup
     if (!cfg.isTestInstallation()) {
-      url = "http://gbrds.gbif.org";
+      url = cfg.getProperty("dev.registrydev.url");
     }
     Gbrds gbif = GbrdsImpl.init(url);
     log.info("Created GBF Registry client with URL: " + url);
