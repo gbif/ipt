@@ -6,7 +6,7 @@ package org.gbif.ipt.service.admin;
 import java.net.URL;
 import java.util.List;
 
-import org.gbif.ipt.model.registry.Organisation;
+import org.gbif.ipt.model.registry.BriefOrganisation;
 import org.gbif.ipt.service.admin.impl.GBIFRegistryManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -26,7 +26,7 @@ public interface GBIFRegistryManager {
 	 * 
 	 * @return The list of all available organisations
 	 */
-	public List<Organisation> listAllOrganisations();
+	public List<BriefOrganisation> listAllOrganisations();
 
 
 	/**
