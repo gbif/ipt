@@ -19,7 +19,11 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.registry.api.client.Gbrds;
+import org.gbif.registry.api.client.GbrdsOrganisation;
+import org.gbif.registry.api.client.Gbrds.OrganisationApi;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
@@ -33,7 +37,8 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	public static final String PERSISTENCE_FILE = "registry.xml";
 	private Registry registry = new Registry();
 	private final XStream xstream = new XStream();
-	private Gbrds client;
+	private final Gbrds client;
+	private final OrganisationApi orgApi;
 
 	/**
 	 * 
@@ -41,6 +46,8 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	@Inject
 	public GBIFRegistryManagerImpl(Gbrds client) {
 		super();
+		this.client = client;
+		orgApi = client.getOrganisationApi();
 		defineXstreamMapping();
 	}
 	
@@ -85,9 +92,19 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 	 * @see
 	 * org.gbif.ipt.service.admin.GBIFRegistryManager#listAllOrganisations()
 	 */
-	public List<Organisation> listAllOrganisations() {
-		return registry.getIptOrganisations();
-	}
+  public List<Organisation> listAllOrganisations() {
+    List<GbrdsOrganisation> list = orgApi.list().execute().getResult();
+    return Lists.transform(list,
+        new Function<GbrdsOrganisation, Organisation>() {
+          public Organisation apply(GbrdsOrganisation go) {
+            Organisation o = new Organisation();
+            o.setKey(go.getKey());
+            o.setName(go.getName());
+            o.setPassword(o.getPassword());
+            return o;
+          }
+        });
+  }
 	
 	
 	public URL getExtensionListUrl() {
