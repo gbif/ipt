@@ -31,12 +31,28 @@ $(document).ready(function(){
 			</form>
 		</td>
 	</tr>
+	<tr class="linebreak"><td colspan="3"></td></tr>
+	</#list>
+	
+	<#list gbrdsExtensions as ext>	
+	<tr>
+		<td><a href="${ext.url}">${ext.title}</a></td>
+		<td>?</td>
+		<td>?</td>
+	</tr>
+	<tr>
+		<td colspan="2">No description</td>
+		<td>
+			<form action='extension.do' method='post'>
+				<input type='hidden' name='id' value='${ext.url}' />
+				<input type='submit' name='install' value='Install' />
+			</form>
+		</td>
+	</tr>
+	<tr class="linebreak"><td colspan="3"></td></tr>
 	</#list>
 	
 </table>
-
-<br/>
-<p><a id="listExtensions" href="#">List available extensions</a> from the GBIF registry</p>
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
