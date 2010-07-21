@@ -1,9 +1,9 @@
 [#ftl]
 [#include "/WEB-INF/pages/inc/header.ftl"/]
- <title>Checklist Bank Account</title>
+ <title>IPT Account</title>
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
-<h2>Edit Your Checklist Bank Account</h2>
+<h2>Edit Your IPT Account</h2>
 
 
 <div>

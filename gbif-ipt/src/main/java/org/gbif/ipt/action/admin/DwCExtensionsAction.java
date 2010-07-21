@@ -7,8 +7,8 @@ import org.gbif.ipt.action.FormAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.service.admin.DwCExtensionManager;
 import org.gbif.registry.api.client.Gbrds;
+import org.gbif.registry.api.client.Gbrds.ExtensionApi;
 import org.gbif.registry.api.client.GbrdsExtension;
-import org.gbif.registry.api.client.Gbrds.IptApi;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
@@ -44,8 +44,8 @@ public class DwCExtensionsAction extends FormAction {
     }
 
     public void load() throws RuntimeException {
-      IptApi api = client.getIptApi();
-      extensions = api.listExtensions().execute().getResult();
+      ExtensionApi api = client.getExtensionApi();
+      extensions = api.list().execute().getResult();
     }
   }
 

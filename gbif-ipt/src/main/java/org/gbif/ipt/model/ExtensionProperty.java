@@ -1,26 +1,16 @@
 /*
- * Copyright 2009 GBIF.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.gbif.ipt.model;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  * TODO: Documentation.
- * 
  */
 public class ExtensionProperty implements Comparable<ExtensionProperty> {
   private Extension extension;
@@ -32,24 +22,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
   private String link;
   private String examples;
   private String description;
-  
-  public String getExamples() {
-	return examples;
-}
-
-public void setExamples(String examples) {
-	this.examples = examples;
-}
-
-public String getDescription() {
-	return description;
-}
-
-public void setDescription(String description) {
-	this.description = description;
-}
-
-private boolean required;
+  private boolean required;
   private Vocabulary vocabulary;
 
   public ExtensionProperty() {
@@ -57,8 +30,8 @@ private boolean required;
   }
 
   /**
-   * Construct a new property with a single qualified name. Parses out the name
-   * and sets the namespace to end with a slash or #
+   * Construct a new property with a single qualified name. Parses out the name and sets the namespace to end with a
+   * slash or #
    * 
    * @param qualName
    */
@@ -73,18 +46,17 @@ private boolean required;
    * @see java.lang.Comparable#compareTo(Object)
    */
   public int compareTo(ExtensionProperty prop) {
-	  if (group!=null){
-		  int x = this.group.compareTo(prop.group);
-		  if (x!=0){
-			  return x;
-		  }
-	  }
-	  return this.qualname.compareTo(prop.qualname);
+    if (group != null) {
+      int x = this.group.compareTo(prop.group);
+      if (x != 0) {
+        return x;
+      }
+    }
+    return this.qualname.compareTo(prop.qualname);
   }
 
   /**
-   * Just compare the unique qualified names to see if extension properties are
-   * equal
+   * Just compare the unique qualified names to see if extension properties are equal
    * 
    * @see java.lang.Object#equals(Object)
    */
@@ -98,14 +70,21 @@ private boolean required;
   }
 
   /**
-   * The length of the database column to be generated when the extension
-   * property is installed. Also used to trim incoming data before SQL insert is
-   * generated. For LOB columns use -1 or any negative value
+   * The length of the database column to be generated when the extension property is installed. Also used to trim
+   * incoming data before SQL insert is generated. For LOB columns use -1 or any negative value
    * 
    * @return
    */
   public int getColumnLength() {
     return columnLength;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getExamples() {
+    return examples;
   }
 
   public Extension getExtension() {
@@ -115,7 +94,6 @@ private boolean required;
   public String getGroup() {
     return group;
   }
-
 
   public String getLink() {
     return link;
@@ -129,14 +107,9 @@ private boolean required;
     return namespace;
   }
 
-
   public String getQualname() {
-	return qualname;
-}
-
-public void setQualname(String qualname) {
-	this.qualname = qualname;
-}
+    return qualname;
+  }
 
   public Vocabulary getVocabulary() {
     return vocabulary;
@@ -178,6 +151,14 @@ public void setQualname(String qualname) {
     }
   }
 
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public void setExamples(String examples) {
+    this.examples = examples;
+  }
+
   public void setExtension(Extension extension) {
     this.extension = extension;
   }
@@ -198,6 +179,9 @@ public void setQualname(String qualname) {
     this.namespace = namespace;
   }
 
+  public void setQualname(String qualname) {
+    this.qualname = qualname;
+  }
 
   public void setRequired(boolean required) {
     this.required = required;
@@ -205,11 +189,9 @@ public void setQualname(String qualname) {
 
   // required by SAX parser
   public void setRequired(String required) {
-    if ("TRUE".equalsIgnoreCase(required) || "T".equalsIgnoreCase(required)
-        || "1".equalsIgnoreCase(required)) {
+    if ("TRUE".equalsIgnoreCase(required) || "T".equalsIgnoreCase(required) || "1".equalsIgnoreCase(required)) {
       this.required = true;
-    } else if ("FALSE".equalsIgnoreCase(required)
-        || "F".equalsIgnoreCase(required) || "0".equalsIgnoreCase(required)) {
+    } else if ("FALSE".equalsIgnoreCase(required) || "F".equalsIgnoreCase(required) || "0".equalsIgnoreCase(required)) {
       this.required = false;
     }
 

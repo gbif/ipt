@@ -15,8 +15,14 @@
 		</layout>
 	</appender>
 		
-	<logger name="org.apache.struts2">
-		<level value="WARN" />
+	<logger name="httpclient.wire">
+		<level value="INFO" />
+	</logger>
+	<logger name="org">
+		<level value="INFO" />
+	</logger>
+	<logger name="com">
+		<level value="INFO" />
 	</logger>
 	<logger name="com.opensymphony.xwork2">
 		<level value="WARN" />

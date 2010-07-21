@@ -1,19 +1,24 @@
 /*
- * Copyright 2009 GBIF.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * Copyright 2009 GBIF. Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 package org.gbif.ipt.model.factory;
+
+import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.VocabularyConcept;
+import org.gbif.ipt.model.VocabularyTerm;
+
+import com.google.inject.Inject;
+
+import org.apache.commons.digester.Digester;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,25 +26,19 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.digester.Digester;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.gbif.ipt.model.Vocabulary;
-import org.gbif.ipt.model.VocabularyConcept;
-import org.gbif.ipt.model.VocabularyTerm;
-import org.xml.sax.SAXException;
-
 /**
  * Building from XML definitions
  */
 public class VocabularyFactory {
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
-protected static Log log = LogFactory.getLog(VocabularyFactory.class);
-  protected static HttpClient httpClient = new HttpClient(
-      new MultiThreadedHttpConnectionManager());
+  protected static Log log = LogFactory.getLog(VocabularyFactory.class);
+  private HttpClient httpClient;
+
+  @Inject
+  public VocabularyFactory(HttpClient httpClient) {
+    super();
+    this.httpClient = httpClient;
+  }
 
   /**
    * Builds thesauri from the supplied Strings which should be URLs
@@ -47,7 +46,7 @@ protected static Log log = LogFactory.getLog(VocabularyFactory.class);
    * @param urls To build thesauri from
    * @return The collection of thesauri
    */
-  public static Collection<Vocabulary> build(Collection<String> urls) {
+  public Collection<Vocabulary> build(Collection<String> urls) {
     List<Vocabulary> thesauri = new LinkedList<Vocabulary>();
 
     for (String urlAsString : urls) {
@@ -88,23 +87,17 @@ protected static Log log = LogFactory.getLog(VocabularyFactory.class);
    * @throws SAXException
    * @throws IOException
    */
-  public static Vocabulary build(InputStream is) throws IOException,
-      SAXException {
+  public Vocabulary build(InputStream is) throws IOException, SAXException {
     Digester digester = new Digester();
     digester.setNamespaceAware(true);
     digester.setRuleNamespaceURI(VOCABULARY_NAMESPACE);
-    // using regular expressions to allow for prefixed attributes in differing
-    // namespaces
-    // digester.setRules( new RegexRules(new SimpleRegexMatcher()) );
-    // digester.setRules( new ExtendedBaseRules() );
-    // digester.startPrefixMapping("dc2", "http://purl.org/dc/terms/");
 
     Vocabulary tv = new Vocabulary();
     digester.push(tv);
 
     // build the thesaurus
     digester.addCallMethod("*/thesaurus", "setTitle", 1);
-    digester.addRule("*/thesaurus",new CallParamNoNSRule(0, "title"));
+    digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "title"));
 
     digester.addCallMethod("*/thesaurus", "setDescription", 1);
     digester.addRule("*/thesaurus", new CallParamNoNSRule(0, "description"));
@@ -165,7 +158,7 @@ protected static Log log = LogFactory.getLog(VocabularyFactory.class);
    * @param url To build from
    * @return The thesaurus or null on error
    */
-  public static Vocabulary build(String url) {
+  public Vocabulary build(String url) {
     List<Vocabulary> thesauri = new LinkedList<Vocabulary>();
 
     GetMethod method = new GetMethod(url);
