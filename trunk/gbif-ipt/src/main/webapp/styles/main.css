@@ -21,33 +21,6 @@ a {
 	color: #005418;
 }
 
-/* for forms generated with the custom freemarker inlcudes */
-.ftlForm, .ftlTopForm {
-	margin: 2em 0em;
-}
-
-.ftlForm label {
-	font-size: 12px;
-	display: block;
-	margin-bottom: -1em;
-}
-.ftlForm input, .ftlForm select {
-	display: block;
-	position: relative;
-	left: 10em;
-	top: -0.5em;
-}
-
-
-.ftlTopForm label {
-	font-size: 12px;
-	display: block;
-	margin-top: 1em;
-}
-.ftlTopForm input,.ftlTopForm select {
-	display: block;
-	margin-left: 2em;
-}
 
 /* MAIN LAYOUT PIECES */
 div#wrapper {
@@ -207,6 +180,36 @@ div#footer{
 	display: inline;
 }
 
+
+/* for forms generated with the custom freemarker inlcudes */
+.ftlForm, .ftlTopForm {
+	margin: 2em 0em;
+}
+
+.ftlForm label {
+	font-size: 12px;
+	display: block;
+	margin-bottom: -1em;
+}
+.ftlForm input, .ftlForm select {
+	display: block;
+	position: relative;
+	left: 10em;
+	top: -0.5em;
+}
+
+
+.ftlTopForm label {
+	font-size: 12px;
+	display: block;
+	margin-top: 1em;
+}
+.ftlTopForm input,.ftlTopForm select {
+	display: block;
+	margin-left: 2em;
+}
+
+/* simple table */
 table.simple th{
 	background-color: #fff;
 	text-align: left;
@@ -218,4 +221,59 @@ table.simple tr{
 table.simple tr.linebreak{
 	background-color: #fff;
 	height: 1em;
+}
+
+
+
+
+/* 
+	2 column layout used for definitions with first column being the title, second the body for a nested table with more details
+	the actions div inside the title is SUPPOSED to stay at the bottom of the title div - but that needs to be FIXED !!! 
+*/
+div.definition {
+	width: 100%;
+}
+div.definition:after {
+	display:block; 
+	visibility:hidden; 
+	clear:both; 
+	content:".";
+}
+div.definition div.title{
+	width: 20%;
+	float: left;
+    background-color: #f1f1f1;
+	padding: 5px 0 5px 5px;
+}
+div.definition div.head{
+	font-weight: bold;
+}
+div.definition div.actions { 
+	margin: 10px 0 0 0;
+}
+div.definition div.actions form{ 
+	margin: 0px;
+}
+div.definition div.body{ 
+	width: 78%;
+	float: right;
+    font-size: 12px;
+	padding: 5px 5px 5px 0;
+}
+div.definition div.body > div{ 
+    padding-bottom: 10px;
+}
+div.definition div.details{
+    padding-bottom: 0px;
+}
+div.definition div.details table{
+    margin: 0;
+    padding: 0;
+}
+div.definition div.details table th, 
+div.definition div.details td{
+    color: #999;
+    font-size: 10px;
+    background-color: white;
+    padding:0px 10px 0px 0px;
 }

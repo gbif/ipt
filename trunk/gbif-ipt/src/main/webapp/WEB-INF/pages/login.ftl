@@ -5,11 +5,6 @@
 
 <h1>[@s.text name="login.title"/]</h1>
 
-[@s.fielderror /]
-[@s.actionmessage/]
-[@s.actionerror/]
-
-
 [#if email?exists]
 <p>[@s.text name="login.forgottenPassword"/]</p>
 [/#if]

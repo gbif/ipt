@@ -3,56 +3,177 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.factory.ExtensionFactory;
+import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
+import org.gbif.ipt.service.admin.DwCExtensionManager;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOCase;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.service.BaseManager;
-import org.gbif.ipt.service.admin.DwCExtensionManager;
-
-import com.google.inject.Singleton;
 
 /**
  * @author tim
  */
 @Singleton
 public class DwCExtensionManagerImpl extends BaseManager implements DwCExtensionManager {
-	private Map<String, Extension> installedExtensions = new HashMap<String, Extension>();
-	
-	public void delete(String rowType) {
-		// TODO Auto-generated method stub
-		
-	}
+  private Map<String, Extension> extensionsByRowtype = new HashMap<String, Extension>();
+  private static final String CONFIG_FOLDER = ".extensions";
+  private ExtensionFactory factory;;
+  private HttpClient httpClient;
 
-	public void install(URL url) {
-		// TODO Auto-generated method stub
-		
-	}
+  @Inject
+  public DwCExtensionManagerImpl(ExtensionFactory factory, HttpClient httpClient) {
+    super();
+    this.factory = factory;
+    this.httpClient = httpClient;
+  }
 
-	public List<Extension> list() {
-		List<Extension> exts = new ArrayList<Extension>();
-		
-		return exts;
-	}
+  public void delete(String rowType) {
+    if (extensionsByRowtype.containsKey(rowType)) {
+      Extension ext = extensionsByRowtype.remove(rowType);
+      if (ext == null) {
+        log.warn("Extension not installed locally, cant delete " + rowType);
+      } else {
+        // TODO: check if its used by some resources
+        File f = getExtensionFile(rowType);
+        if (f.exists()) {
+          f.delete();
+        } else {
+          log.warn("Extension doesnt exist locally, cant delete " + rowType);
+        }
+      }
+    }
+  }
 
-	public Extension get(URL url) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public Extension get(String rowType) {
+    return extensionsByRowtype.get(rowType);
+  }
 
-	public Extension get(String rowType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private File getExtensionFile(String rowType) {
+    String filename = rowType.replaceAll("[/.:]+", "_") + ".xml";
+    return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
+  }
 
-	public int load() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
+  public Extension install(URL url) throws InvalidConfigException {
+    Extension ext = null;
+    // download extension into local file first for subsequent IPT startups
+    // final filename is based on rowType which we dont know yet - create a tmp file first
+    File tmpFile = dataDir.configFile(CONFIG_FOLDER + "/tmp-extension.xml");
+    if (tmpFile.exists()) {
+    }
+    Writer localWriter = null;
+    GetMethod method = new GetMethod(url.toString());
+    method.setFollowRedirects(true);
+    try {
+      localWriter = new FileWriter(tmpFile);
+      httpClient.executeMethod(method);
+      InputStream is = method.getResponseBodyAsStream();
+      IOUtils.copy(is, localWriter);
+      log.info("Successfully downloaded Extension " + url);
+      localWriter.close();
+      // finally read in the new file and create the extension object
+      ext = loadFromFile(tmpFile);
+      if (ext != null && ext.getRowType() != null) {
+        // rename tmp file into final version
+        File localFile = getExtensionFile(ext.getRowType());
+        FileUtils.moveFile(tmpFile, localFile);
+      } else {
+        log.error("Extension lacking required rowType!");
+      }
+    } catch (InvalidConfigException e) {
+      throw e;
+    } catch (Exception e) {
+      log.error(e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Error installing extension " + url);
+    } finally {
+      try {
+        method.releaseConnection();
+      } catch (RuntimeException e) {
+      }
+    }
+    return ext;
+  }
+
+  public List<Extension> list() {
+    return new ArrayList<Extension>(extensionsByRowtype.values());
+  }
+
+  public int load() {
+    File extensionDir = dataDir.configFile(CONFIG_FOLDER);
+    int counter = 0;
+    if (extensionDir.isDirectory()) {
+      List<File> extensionFiles = new ArrayList<File>();
+      FilenameFilter ff = new SuffixFileFilter(".xml", IOCase.INSENSITIVE);
+      extensionFiles.addAll(Arrays.asList(extensionDir.listFiles(ff)));
+      for (File ef : extensionFiles) {
+        try {
+          loadFromFile(ef);
+          counter++;
+        } catch (InvalidConfigException e) {
+          log.error("Cant load local extension definition " + ef.getAbsolutePath(), e);
+        }
+      }
+    }
+    return counter;
+  }
+
+  /**
+   * Reads a local extension file into manager cache
+   * 
+   * @param localFile
+   * @return
+   */
+  private Extension loadFromFile(File localFile) throws InvalidConfigException {
+    InputStream fileIn = null;
+    Extension ext = null;
+    try {
+      fileIn = new FileInputStream(localFile);
+      ext = factory.build(fileIn);
+      // keep vocab in local lookup
+      extensionsByRowtype.put(ext.getRowType(), ext);
+      log.info("Successfully parsed Extension " + ext.getRowType());
+    } catch (FileNotFoundException e) {
+      log.error("Cant find local extension file", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant find local extension file");
+    } catch (IOException e) {
+      log.error("Cant access local extension file", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant access local extension file");
+    } catch (SAXException e) {
+      log.error("Cant parse local extension file", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant parse local extension file");
+    } finally {
+      if (fileIn != null) {
+        try {
+          fileIn.close();
+        } catch (IOException e) {
+        }
+      }
+    }
+    return ext;
+  }
 }
