@@ -15,6 +15,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
@@ -125,6 +126,14 @@ public class VocabularyConcept implements Comparable {
 
   public void setIdentifier(String identifier) {
     this.identifier = identifier;
+  }
+
+  public void setLink(String link) {
+    try {
+      this.link = new URL(link);
+    } catch (MalformedURLException e) {
+      // silently ignore malformed URLs
+    }
   }
 
   public void setLink(URL link) {

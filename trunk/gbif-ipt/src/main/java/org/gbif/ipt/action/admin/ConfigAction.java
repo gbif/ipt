@@ -10,7 +10,7 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.FormAction;
+import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 
@@ -22,7 +22,7 @@ import com.google.inject.Inject;
  * The Action responsible for all user input relating to the IPT configuration
  * @author tim
  */
-public class ConfigAction extends FormAction {
+public class ConfigAction extends POSTAction {
 	private static final long serialVersionUID = 4726973323043063968L;
 	@Inject
 	protected ConfigManager configManager;

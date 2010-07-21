@@ -7,7 +7,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class FormAction extends BaseAction implements ServletRequestAware, Preparable {
+public class POSTAction extends BaseAction implements ServletRequestAware, Preparable {
 
   protected HttpServletRequest req;
   protected boolean delete = false;
@@ -30,9 +30,7 @@ public class FormAction extends BaseAction implements ServletRequestAware, Prepa
       return NOT_FOUND;
     }
     // if this is a GET request we request the INPUT form
-    if (req.getMethod().equalsIgnoreCase("get")) {
-      return INPUT;
-    } else if (req.getMethod().equalsIgnoreCase("post")) {
+    if (isHttpPost()) {
       // if its a POST we either save or delete
       // suplied default methods which be overridden
       String result;
@@ -49,7 +47,7 @@ public class FormAction extends BaseAction implements ServletRequestAware, Prepa
         return result;
       }
     }
-    return ERROR;
+    return INPUT;
   }
 
   public String getId() {
@@ -58,6 +56,13 @@ public class FormAction extends BaseAction implements ServletRequestAware, Prepa
 
   public boolean isDelete() {
     return delete;
+  }
+
+  protected boolean isHttpPost() {
+    if (req.getMethod().equalsIgnoreCase("post")) {
+      return true;
+    }
+    return false;
   }
 
   /**

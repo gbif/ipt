@@ -14,7 +14,7 @@ $(document).ready(function(){
 <a name="${ext.rowType}"></a>          
 <div class="definition">	
   <div class="title">
-  	<div>
+  	<div class="head">
 		${ext.title}
   	</div>
   	<div class="actions">
@@ -31,6 +31,7 @@ $(document).ready(function(){
       	</div>
       	<div class="details">
       		<table>
+          		<tr><th>Properties</th><td><a href="extension.do?id=${ext.rowType}">${ext.properties?size}</a></td></tr>
           		<tr><th>Name</th><td>${ext.name}</td></tr>
           		<tr><th>Namespace</th><td>${ext.namespace}</td></tr>
           		<tr><th>RowType</th><td>${ext.rowType}</td></tr>
@@ -41,6 +42,9 @@ $(document).ready(function(){
 </div>
 </#list>
 
+<hr/>
+
+<h3>Extensions available from the GBIF registry</h3>
 
 <#list gbrdsExtensions as ext>
 <a name="${ext.rowType}"></a>          
@@ -53,7 +57,6 @@ $(document).ready(function(){
 	  <form action='extension.do' method='post'>
 		<input type='hidden' name='id' value='${ext.url}' />
 		<input type='submit' name='install' value='Install' />
-		<input type='submit' name='install' value='Install2' />
   	  </form>
   	</div>
   </div>
