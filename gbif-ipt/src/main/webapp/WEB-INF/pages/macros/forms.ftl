@@ -6,7 +6,7 @@
   </div>
 </#macro> 
 
-<#macro select name options value keyBase="" size=1>
+<#macro select name options value="" keyBase="" size=1>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
 	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
@@ -17,7 +17,7 @@
 	</select>
   </div>
 </#macro>
-<#macro selectList name options objValue objTitle value keyBase="" size=1>
+<#macro selectList name options objValue objTitle value="" keyBase="" size=1>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
 	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
