@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.FormAction;
+import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -21,7 +21,7 @@ import com.google.inject.Inject;
  * The Action responsible for all user input relating to the user accounts in the IPT
  * @author tim
  */
-public class UserAccountsAction extends FormAction {
+public class UserAccountsAction extends POSTAction {
 	private static final long serialVersionUID = 8892204508303815998L;
 	@Inject private UserAccountManager userManager;
 	

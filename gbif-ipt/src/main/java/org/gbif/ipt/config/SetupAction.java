@@ -20,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.FormAction;
+import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;

@@ -40,6 +40,7 @@
 			<result type="redirect">extensions.do</result>
 		</action>
 		
+		
 		<!-- REGISTRY ACTIONS -->
 		<!-- 
 		<action name="organisation" class="org.gbif.ipt.action.admin.GBIFRegistryAction">

@@ -90,6 +90,7 @@ public class DwCExtensionManagerImpl extends BaseManager implements DwCExtension
     GetMethod method = new GetMethod(url.toString());
     method.setFollowRedirects(true);
     try {
+      FileUtils.forceMkdir(tmpFile.getParentFile());
       localWriter = new FileWriter(tmpFile);
       httpClient.executeMethod(method);
       InputStream is = method.getResponseBodyAsStream();

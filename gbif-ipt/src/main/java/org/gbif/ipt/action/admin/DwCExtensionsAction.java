@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.action.admin;
 
-import org.gbif.ipt.action.FormAction;
+import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.service.admin.DwCExtensionManager;
 import org.gbif.registry.api.client.Gbrds;
@@ -13,7 +13,6 @@ import org.gbif.registry.api.client.GbrdsExtension;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
  * 
  * @author tim
  */
-public class DwCExtensionsAction extends FormAction {
+public class DwCExtensionsAction extends POSTAction {
   /**
    * A session scoped bean to keep a list of all extensions with basic metadata as exposed by the registry directly.
    * There wont be any properties listed. The reason for keeping this in the session is to load the extension list only
@@ -67,7 +66,14 @@ public class DwCExtensionsAction extends FormAction {
   }
 
   public List<GbrdsExtension> getGbrdsExtensions() {
-    return registered.extensions;
+    List<GbrdsExtension> newExts = new ArrayList<GbrdsExtension>();
+    // only add non installed ones
+    for (GbrdsExtension e : registered.extensions) {
+      if (extensionManager.get(e.getRowType()) == null) {
+        newExts.add(e);
+      }
+    }
+    return newExts;
   }
 
   public void install() throws Exception {
@@ -76,9 +82,10 @@ public class DwCExtensionsAction extends FormAction {
       extensionURL = new URL(id);
       extensionManager.install(extensionURL);
       addActionMessage(getText("admin.config.extension.success", id));
-    } catch (MalformedURLException e) {
+    } catch (Exception e) {
       log.debug(e);
-      addActionError(getText("admin.config.extension.error", id));
+      System.out.println(getText("admin.config.extension.error", new String[]{id}));
+      addActionError(getText("admin.config.extension.error", new String[]{id}));
     }
   }
 
@@ -100,11 +107,13 @@ public class DwCExtensionsAction extends FormAction {
       }
     }
     if (id != null) {
-      // modify existing user
-      extension = extensionManager.get(id);
-      if (extension == null) {
-        // set notFound flag to true so FormAction will return a NOT_FOUND 404 result name
-        notFound = true;
+      // we might look at a single extension via GET
+      if (!isHttpPost()) {
+        extension = extensionManager.get(id);
+        if (extension == null) {
+          // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
+          notFound = true;
+        }
       }
     }
   }

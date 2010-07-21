@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.action.admin;
 
-import org.gbif.ipt.action.FormAction;
+import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.registry.BriefOrganisation;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * @author tim
  */
-public class GBIFRegistryAction extends FormAction {
+public class GBIFRegistryAction extends POSTAction {
   private static final long serialVersionUID = -6522969037528106704L;
 
   // the managers for the action
