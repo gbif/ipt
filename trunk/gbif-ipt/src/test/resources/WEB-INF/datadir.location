@@ -1,1 +1,1 @@
-/tmp/test-datadir
+${test.datadir}
