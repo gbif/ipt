@@ -362,5 +362,7 @@
 		<ipt.frontPageImageURL></ipt.frontPageImageURL>
 		<google.maps.key></google.maps.key>
 		<ipt.baseURL></ipt.baseURL>
+		<!-- The datadir for tests that use a guice injected DataDir object -->
+		<test.datadir>/tmp/test-datadir</test.datadir>
 	</properties>
 </project>
