@@ -162,6 +162,13 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
     return false;
   }
 
+  protected boolean isHttpPost() {
+    if (req.getMethod().equalsIgnoreCase("post")) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * @return true if some user is logged in or false otherwise
    */

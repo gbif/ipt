@@ -167,6 +167,25 @@ div#footer{
 
 /* other classes */
 
+ul.fielderror{
+	list-style:none; 
+	color: #d8424f;
+	padding: 0px;
+	margin: 10px 0px 5px 0px;
+}
+.errorMessage{
+	list-style:none; 
+	color: #d8424f;
+	padding: 0px;
+	margin: 0px;
+}
+.actionMessage{
+	list-style:none; 
+	color: #6dd03e;
+	padding: 0px;
+	margin: 0px;
+}
+
 .small{
 	font-size: 0.75em;
 	color: #888;

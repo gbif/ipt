@@ -86,11 +86,11 @@ public class DwCExtensionsAction extends POSTAction {
     try {
       extensionURL = new URL(url);
       extensionManager.install(extensionURL);
-      addActionMessage(getText("admin.config.extension.success", id));
+      addActionMessage(getText("admin.extension.install.success", id));
     } catch (Exception e) {
       log.debug(e);
-      System.out.println(getText("admin.config.extension.error", new String[]{id}));
-      addActionError(getText("admin.config.extension.error", new String[]{id}));
+      System.out.println(getText("admin.extension.install.error", new String[]{id}));
+      addActionError(getText("admin.extension.install.error", new String[]{id}));
     }
   }
 

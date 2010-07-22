@@ -10,6 +10,9 @@
 ${exception.message!"unknown error, please see your logs"}
 </pre>
 
+[#if adminRights]
+<p><a href="${baseURL}/admin/logs.do">View IPT logs</a></p>
+[/#if]
 <p>
 If you think this shouldnt have happened, would you mind helping us to improve the IPT and 
 <a href="http://code.google.com/p/gbif-providertoolkit/issues/entry?summary=IPT%20error">file a small bug report</a> for this exception?

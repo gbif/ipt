@@ -47,13 +47,6 @@ public class POSTAction extends BaseAction {
     return delete;
   }
 
-  protected boolean isHttpPost() {
-    if (req.getMethod().equalsIgnoreCase("post")) {
-      return true;
-    }
-    return false;
-  }
-
   /**
    * Override this method if you need to persist entities after the PARAM interceptor is called
    * 

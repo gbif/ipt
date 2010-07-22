@@ -127,7 +127,7 @@
 		    			</file>
 		    		</additionalConfig>
 		    	</configuration>
-		    </plugin>					
+		    </plugin>
 		</plugins>
 		
 		<resources>
@@ -310,6 +310,13 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
+		</dependency>
+
+		<!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-config-browser-plugin</artifactId>
+			<version>2.1.8</version>
 		</dependency>
 		
 	</dependencies>

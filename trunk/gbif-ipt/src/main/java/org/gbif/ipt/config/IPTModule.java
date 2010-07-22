@@ -93,13 +93,17 @@ public class IPTModule extends AbstractModule {
   @Singleton
   @Inject
   Gbrds provideRegistryClient(AppConfig cfg) {
-    String url = cfg.getProperty("dev.registry.url");
+    Gbrds gbif = null;
     // rely on the fact that AppConfig is already setup
-    if (!cfg.isTestInstallation()) {
-      url = cfg.getProperty("dev.registrydev.url");
+    String url = cfg.getProperty("dev.registrydev.url");
+    if (AppConfig.REGISTRY_TYPE.PRODUCTION == cfg.getRegistryType()) {
+      url = cfg.getProperty("dev.registry.url");
+      gbif = GbrdsImpl.init(url);
+      log.info("Created GBF Production Registry client with URL: " + url);
+    } else {
+      gbif = GbrdsImpl.init(url);
+      log.info("Created GBF Development Registry client with URL: " + url);
     }
-    Gbrds gbif = GbrdsImpl.init(url);
-    log.info("Created GBF Registry client with URL: " + url);
     return gbif;
   }
 }
