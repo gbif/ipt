@@ -12,15 +12,20 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * The base of all IPT actions This handles conditions such as menu items, a custom text provider, sessions, currently
@@ -28,7 +33,7 @@ import java.util.ResourceBundle;
  * 
  * @author tim
  */
-public class BaseAction extends ActionSupport implements Action, SessionAware {
+public class BaseAction extends ActionSupport implements Action, SessionAware, Preparable, ServletRequestAware {
   private static final long serialVersionUID = -2330991910834399442L;
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
@@ -46,6 +51,9 @@ public class BaseAction extends ActionSupport implements Action, SessionAware {
   protected AppConfig cfg;
   @Inject
   protected DataDir dataDir;
+  protected HttpServletRequest req;
+  // a generic identifier for loading an object BEFORE the param interceptor sets values
+  protected String id = null;
 
   /**
    * Easy access to the configured application root for simple use in templates
@@ -75,6 +83,10 @@ public class BaseAction extends ActionSupport implements Action, SessionAware {
       // swallow. if session is not yet opened we get an exception here...
     }
     return u;
+  }
+
+  public String getId() {
+    return id;
   }
 
   // ////////////////////////////////////////////////////////////////
@@ -165,6 +177,24 @@ public class BaseAction extends ActionSupport implements Action, SessionAware {
     return false;
   }
 
+  /**
+   * Override this method if you need to load entities based on the id value before the PARAM interceptor is called. You
+   * can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter alone is
+   * not sufficient to load your entities, you can access the request object directly like we do here and read any other
+   * parameter you need to prepare the action for the param phase.
+   */
+  public void prepare() throws Exception {
+    // see if an id was provided in the request.
+    // we dont use the PARAM - PREPARE - PARAM interceptor stack
+    // so we investigate the request object directly BEFORE the param interceptor is called
+    // this allows us to load any existing instances that should be modified
+    id = StringUtils.trimToNull(req.getParameter("id"));
+  }
+
+  public void setServletRequest(HttpServletRequest req) {
+    this.req = req;
+  }
+
   public void setSession(Map<String, Object> session) {
     this.session = session;
   }
@@ -185,4 +215,5 @@ public class BaseAction extends ActionSupport implements Action, SessionAware {
     }
     return false;
   }
+
 }

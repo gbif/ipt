@@ -44,6 +44,8 @@ import java.util.Map;
 public class VocabulariesManagerImpl extends BaseManager implements VocabulariesManager {
   // keep vocabularies accessible via their normed filename which is build from a vocabularies URL
   private Map<String, Vocabulary> vocabulariesByFilename = new HashMap<String, Vocabulary>();
+  // keep additional hash keyed on unique vocabulary URI (a required property of a vocabulary)
+  private Map<String, Vocabulary> vocabulariesByUri = new HashMap<String, Vocabulary>();
   private static final String CONFIG_FOLDER = ".vocabularies";
   private VocabularyFactory vocabFactory;
   private HttpClient httpClient;
@@ -55,17 +57,31 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     this.httpClient = httpClient;
   }
 
-  public void delete(URL url) {
-    File f = getVocabFile(url);
-    if (vocabulariesByFilename.containsKey(f.getName())) {
-      Vocabulary vocab = vocabulariesByFilename.remove(f.getName());
-      // TODO: check if its used by some extension
+  public void delete(String uri) {
+    Vocabulary vocab = vocabulariesByUri.remove(uri);
+    // TODO: check if its used by some extension
+    if (vocab != null) {
+      // also need to remove from by filename hash
+      String filename = null;
+      for (Map.Entry<String, Vocabulary> entry : vocabulariesByFilename.entrySet()) {
+        if (entry.getValue().equals(vocab)) {
+          filename = entry.getKey();
+          vocabulariesByFilename.remove(filename);
+          break;
+        }
+      }
+      // remove file too
+      File f = getVocabFile(filename);
       if (f.exists()) {
         f.delete();
       } else {
-        log.warn("Local vocabulary copy missing, cant delete " + url);
+        log.warn("Local vocabulary copy missing, cant delete " + filename);
       }
     }
+  }
+
+  public Vocabulary get(String uri) {
+    return vocabulariesByUri.get(uri);
   }
 
   public Vocabulary get(URL url) {
@@ -76,9 +92,13 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return vocabulariesByFilename.get(f.getName());
   }
 
+  private File getVocabFile(String filename) {
+    return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
+  }
+
   private File getVocabFile(URL url) {
     String filename = url.toString().replaceAll("[/.:]+", "_") + ".xml";
-    return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
+    return getVocabFile(filename);
   }
 
   private Vocabulary install(URL url) {
@@ -147,6 +167,10 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       v = vocabFactory.build(fileIn);
       // keep vocab in local lookup
       vocabulariesByFilename.put(vocabFile.getName(), v);
+      if (vocabulariesByUri.containsKey(v.getUri())) {
+        log.warn("Vocabulary URI " + v.getUri() + " exists already - overwriting with new vocabulary");
+      }
+      vocabulariesByUri.put(v.getUri(), v);
       log.info("Successfully parsed Vocabulary: " + v.getTitle());
     } catch (FileNotFoundException e) {
       log.error("Cant find local vocabulary file", e);

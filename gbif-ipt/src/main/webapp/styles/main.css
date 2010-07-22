@@ -232,18 +232,17 @@ table.simple tr.linebreak{
 */
 div.definition {
 	width: 100%;
+	overflow: hidden;
+	margin-bottom: 10px; 
 }
-div.definition:after {
-	display:block; 
-	visibility:hidden; 
-	clear:both; 
-	content:".";
-}
+
 div.definition div.title{
 	width: 20%;
 	float: left;
     background-color: #f1f1f1;
 	padding: 5px 0 5px 5px;
+	margin-bottom: -2000px; 
+	padding-bottom: 2000px; 
 }
 div.definition div.head{
 	font-weight: bold;
@@ -258,7 +257,9 @@ div.definition div.body{
 	width: 78%;
 	float: right;
     font-size: 12px;
-	padding: 5px 5px 5px 0;
+	padding: 5px 0px;
+	margin-bottom: -2000px; 
+	padding-bottom: 2000px; 
 }
 div.definition div.body > div{ 
     padding-bottom: 10px;
@@ -274,6 +275,7 @@ div.definition div.details table th,
 div.definition div.details td{
     color: #999;
     font-size: 10px;
+    text-align: left;
     background-color: white;
     padding:0px 10px 0px 0px;
 }

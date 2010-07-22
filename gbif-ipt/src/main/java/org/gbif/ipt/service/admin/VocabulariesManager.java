@@ -22,9 +22,17 @@ public interface VocabulariesManager {
   /**
    * removes a local vocabulary copy
    * 
-   * @param url original location of the vocabulary
+   * @param uri unique URI identifying the vocabulary as given in the vocabulary definition
    */
-  public void delete(URL url);
+  public void delete(String uri);
+
+  /**
+   * Retrieve vocabulary by its unique global URI identifier from installed vocabularies.
+   * 
+   * @param uri unique URI identifying the vocabulary as given in the vocabulary definition
+   * @return the installed vocabulary or null if not found
+   */
+  public Vocabulary get(String uri);
 
   /**
    * Returns the parsed vocabulary located at the given URL. If downloaded already it will return the cached copy or
