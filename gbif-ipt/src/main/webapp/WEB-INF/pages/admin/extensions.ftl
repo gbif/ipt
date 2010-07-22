@@ -21,15 +21,15 @@
   <div class="body">
       	<div>
 			${ext.description!}
-			<#if ext.link?has_content><br/>See also <a href="${ext.link}">${ext.link}</a></#if>              	
+			<#if ext.link?has_content><br/><@s.text name="basic.seealso"/> <a href="${ext.link}">${ext.link}</a></#if>              	
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>Properties</th><td>${ext.properties?size}</td></tr>
-          		<tr><th>Name</th><td>${ext.name}</td></tr>
-          		<tr><th>Namespace</th><td>${ext.namespace}</td></tr>
-          		<tr><th>RowType</th><td>${ext.rowType}</td></tr>
-          		<tr><th>Keywords</th><td>${ext.subject!}</td></tr>
+          		<tr><th><@s.text name="extension.properties"/></th><td>${ext.properties?size}</td></tr>
+          		<tr><th><@s.text name="basic.name"/></th><td>${ext.name}</td></tr>
+          		<tr><th><@s.text name="basic.namespace"/></th><td>${ext.namespace}</td></tr>
+          		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
+          		<tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
       		</table>
       	</div>
   </div>
@@ -60,8 +60,8 @@
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>RowType</th><td>${ext.rowType}</td></tr>
-          		<tr><th>Keywords</th><td>${ext.subject!}</td></tr>
+          		<tr><th><@s.text name="extension.rowtype"/></th><td>${ext.rowType}</td></tr>
+          		<tr><th><@s.text name="basic.keywords"/></th><td>${ext.subject!}</td></tr>
       		</table>
       	</div>
   </div>

@@ -6,33 +6,33 @@
 
 <table class="simple">
     <tr>
-         <th>Title</th><td>${extension.title}</td>
+         <th><@s.text name="basic.title"/></th><td>${extension.title}</td>
     </tr>
     <tr>
-         <th>Name</th><td>${extension.name}</td>
+         <th><@s.text name="basic.name"/></th><td>${extension.name}</td>
     </tr>
     <tr>
-         <th>Namespace</th><td>${extension.namespace}</td>
+         <th><@s.text name="basic.namespace"/></th><td>${extension.namespace}</td>
     </tr>
     <tr>
-         <th>RowType</th><td>${extension.rowType}</td>
+         <th><@s.text name="extension.rowtype"/></th><td>${extension.rowType}</td>
     </tr>
     <tr>
-         <th>Description</th><td>${extension.description}</td>
+         <th><@s.text name="basic.description"/></th><td>${extension.description}</td>
     </tr>
     <#if extension.link?has_content>
     <tr>
-         <th>Link</th>
+         <th><@s.text name="basic.link"/></th>
 		<td>
          <a href="${extension.link}">${extension.link}</a>
 		</td>
     </tr>
     </#if>
    </table>
-<p><a href="extensions.do">back to extension list</a></p>
+<p><a href="extensions.do"><@s.text name="basic.backto"/> extension list</a></p>
 <br/>
 
-<h1>Extension Properties</h1>
+<h1><@s.text name="admin.extension.properties"/></h1>
                                    
 <#list extension.properties as p>	
 <a name="${p.qualname}"></a>          
@@ -46,25 +46,25 @@
       	<div>
 			${p.description}
 			<#if p.description?has_content><br/></#if>              	
-			<#if p.link?has_content>See also <a href="${p.link}">${p.link}</a></#if>              	
+			<#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}">${p.link}</a></#if>              	
       	</div>
       	<div>
-          	<em>Examples</em>: 
+          	<em><@s.text name="basic.examples"/></em>: 
 			${p.examples}
       	</div>
       	<#if p.vocabulary?exists>
       	<div>
-	      	<em>Vocabulary</em>: 
+	      	<em><@s.text name="extension.vocabulary"/></em>: 
 	      	<a href="vocabulary.do?id=${p.vocabulary.uri}">${p.vocabulary.title}</a>
       	</div>
       	</#if>
       	<div class="details">
       		<table>
-          		<tr><th>Qualname</th><td>${p.qualname}</td></tr>
-          		<tr><th>Namespace</th><td>${p.namespace}</td></tr>
-          		<tr><th>Group</th><td>${p.group!}</td></tr>
-          		<tr><th>Length</th><td>${p.columnLength}</td></tr>
-          		<tr><th>Required</th><td>${p.required?string}</td></tr>
+          		<tr><th><@s.text name="extension.prop.qname"/></th><td>${p.qualname}</td></tr>
+          		<tr><th><@s.text name="basic.namespace"/></th><td>${p.namespace}</td></tr>
+          		<tr><th><@s.text name="extension.prop.group"/></th><td>${p.group!}</td></tr>
+          		<tr><th><@s.text name="extension.prop.length"/></th><td>${p.columnLength}</td></tr>
+          		<tr><th><@s.text name="extension.prop.required"/></th><td>${p.required?string}</td></tr>
       		</table>
       	</div>
   </div>

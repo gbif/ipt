@@ -44,6 +44,11 @@
 		</action>
 		
 		
+		<!-- LOGS -->
+		<action name="logs" class="org.gbif.ipt.action.admin.LogsAction">
+			<result>/WEB-INF/pages/admin/logs.ftl</result>
+		</action>
+		
 		<!-- REGISTRY ACTIONS -->
 		<!-- 
 		<action name="organisation" class="org.gbif.ipt.action.admin.GBIFRegistryAction">
