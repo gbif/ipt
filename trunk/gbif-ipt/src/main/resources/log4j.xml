@@ -7,14 +7,34 @@
 		A running IPT adds a new data dir file based logger.
 		Users can switch from this to a production log4j definition in a running system
 	-->
-
+	
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<param name="Threshold" value="DEBUG"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
 		</layout>
 	</appender>
-		
+	
+	<appender name="LOGFILE" class="org.gbif.ipt.utils.LogFileAppender">
+		<param name="Threshold" value="DEBUG"/>
+		<param name="File" value="debug.log "/>
+		<param name="MaxFileSize" value="10MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="ADMINFILE" class="org.gbif.ipt.utils.LogFileAppender">
+		<param name="Threshold" value="WARN"/>
+		<param name="File" value="admin.log "/>
+		<param name="MaxFileSize" value="1MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
+		</layout>
+	</appender>
+	
 	<logger name="httpclient.wire">
 		<level value="INFO" />
 	</logger>
