@@ -54,11 +54,16 @@ public class DwCExtensionsAction extends POSTAction {
   private RegisteredExtensions registered;
   private List<Extension> extensions;
   private Extension extension;
+  private String url;
 
   @Override
   public String delete() {
     extensionManager.delete(id);
     return SUCCESS;
+  }
+
+  public Extension getExtension() {
+    return extension;
   }
 
   public List<Extension> getExtensions() {
@@ -79,7 +84,7 @@ public class DwCExtensionsAction extends POSTAction {
   public void install() throws Exception {
     URL extensionURL;
     try {
-      extensionURL = new URL(id);
+      extensionURL = new URL(url);
       extensionManager.install(extensionURL);
       addActionMessage(getText("admin.config.extension.success", id));
     } catch (Exception e) {
@@ -107,13 +112,10 @@ public class DwCExtensionsAction extends POSTAction {
       }
     }
     if (id != null) {
-      // we might look at a single extension via GET
-      if (!isHttpPost()) {
-        extension = extensionManager.get(id);
-        if (extension == null) {
-          // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
-          notFound = true;
-        }
+      extension = extensionManager.get(id);
+      if (extension == null) {
+        // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
+        notFound = true;
       }
     }
   }
@@ -128,4 +130,13 @@ public class DwCExtensionsAction extends POSTAction {
     }
     return SUCCESS;
   }
+
+  public void setExtension(Extension extension) {
+    this.extension = extension;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
 }

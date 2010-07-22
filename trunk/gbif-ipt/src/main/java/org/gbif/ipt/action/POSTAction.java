@@ -1,17 +1,12 @@
 package org.gbif.ipt.action;
 
-import com.opensymphony.xwork2.Preparable;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.ServletRequestAware;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class POSTAction extends BaseAction implements ServletRequestAware, Preparable {
+public class POSTAction extends BaseAction {
 
-  protected HttpServletRequest req;
   protected boolean delete = false;
-  protected String id = null;
   protected boolean notFound = false;
 
   /**
@@ -50,10 +45,6 @@ public class POSTAction extends BaseAction implements ServletRequestAware, Prepa
     return INPUT;
   }
 
-  public String getId() {
-    return id;
-  }
-
   public boolean isDelete() {
     return delete;
   }
@@ -63,20 +54,6 @@ public class POSTAction extends BaseAction implements ServletRequestAware, Prepa
       return true;
     }
     return false;
-  }
-
-  /**
-   * Override this method if you need to load entities based on the id value before the PARAM interceptor is called. You
-   * can also use this method to prepare a new, empty instance in case no id was provided. If the id parameter alone is
-   * not sufficient to load your entities, you can access the request object directly like we do here and read any other
-   * parameter you need to prepare the action for the param phase.
-   */
-  public void prepare() throws Exception {
-    // see if an id was provided in the request.
-    // we dont use the PARAM - PREPARE - PARAM interceptor stack
-    // so we investigate the request object directly BEFORE the param interceptor is called
-    // this allows us to load any existing instances that should be modified
-    id = StringUtils.trimToNull(req.getParameter("id"));
   }
 
   /**
@@ -92,6 +69,7 @@ public class POSTAction extends BaseAction implements ServletRequestAware, Prepa
     this.delete = StringUtils.trimToNull(delete) != null;
   }
 
+  @Override
   public void setServletRequest(HttpServletRequest req) {
     this.req = req;
   }

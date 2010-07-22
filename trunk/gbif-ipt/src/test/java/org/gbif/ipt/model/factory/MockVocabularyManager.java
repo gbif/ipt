@@ -21,11 +21,20 @@ public class MockVocabularyManager implements VocabulariesManager {
 
   /*
    * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.VocabulariesManager#delete(java.net.URL)
+   * @see org.gbif.ipt.service.admin.VocabulariesManager#delete(java.lang.String)
    */
-  public void delete(URL url) {
+  public void delete(String uri) {
     // TODO Auto-generated method stub
 
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.VocabulariesManager#get(java.lang.String)
+   */
+  public Vocabulary get(String uri) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   public Vocabulary get(URL url) {

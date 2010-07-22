@@ -1,21 +1,15 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name="admin.extension.title"/></title>
-<script type="text/javascript">
-$(document).ready(function(){
-});
-</script>
+	<title><@s.text name="admin.extensions.title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1><@s.text name="admin.extension.title"/></h1>
-
-<h3>Extensions currently installed in this IPT</h3>
+<h1><@s.text name="admin.extensions.title"/></h1>
 
 <#list extensions as ext>	
 <a name="${ext.rowType}"></a>          
 <div class="definition">	
   <div class="title">
   	<div class="head">
-		${ext.title}
+        <a href="extension.do?id=${ext.rowType}">${ext.title}</a>
   	</div>
   	<div class="actions">
 	  <form action='extension.do' method='post'>
@@ -26,16 +20,16 @@ $(document).ready(function(){
   </div>
   <div class="body">
       	<div>
-			${ext.description}
-			<#if ext.relation?exists><br/><a href="${ext.link}">See also ${ext.link}</a></#if>              	
+			${ext.description!}
+			<#if ext.link?has_content><br/>See also <a href="${ext.link}">${ext.link}</a></#if>              	
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>Properties</th><td><a href="extension.do?id=${ext.rowType}">${ext.properties?size}</a></td></tr>
+          		<tr><th>Properties</th><td>${ext.properties?size}</td></tr>
           		<tr><th>Name</th><td>${ext.name}</td></tr>
           		<tr><th>Namespace</th><td>${ext.namespace}</td></tr>
           		<tr><th>RowType</th><td>${ext.rowType}</td></tr>
-          		<tr><th>Keywords</th><td>${ext.subject}</td></tr>
+          		<tr><th>Keywords</th><td>${ext.subject!}</td></tr>
       		</table>
       	</div>
   </div>
@@ -55,19 +49,19 @@ $(document).ready(function(){
   	</div>
   	<div class="actions">
 	  <form action='extension.do' method='post'>
-		<input type='hidden' name='id' value='${ext.url}' />
+		<input type='hidden' name='url' value='${ext.url}' />
 		<input type='submit' name='install' value='Install' />
   	  </form>
   	</div>
   </div>
   <div class="body">
       	<div>
-		${ext.description}
+		${ext.description!}
       	</div>
       	<div class="details">
       		<table>
           		<tr><th>RowType</th><td>${ext.rowType}</td></tr>
-          		<tr><th>Keywords</th><td>${ext.subject}</td></tr>
+          		<tr><th>Keywords</th><td>${ext.subject!}</td></tr>
       		</table>
       	</div>
   </div>
