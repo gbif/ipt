@@ -49,11 +49,13 @@
     <!-- GBIF things -->
     <logger name="org.gbif">
         <level value="INFO" />
+        <appender-ref ref="ADMINFILE"/>
     </logger>
     
     <root>
         <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOGFILE"/>
     </root>
 
 </log4j:configuration>

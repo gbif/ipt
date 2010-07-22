@@ -1,5 +1,7 @@
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.utils.InputStreamUtils;
 
 import com.google.inject.Inject;
@@ -13,15 +15,21 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
 
 @Singleton
 public class AppConfig {
+  protected enum REGISTRY_TYPE {
+    PRODUCTION, DEVELOPMENT
+  }
+
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   private static final String CLASSPATH_PROPFILE = "/application.properties";
   public static final String BASEURL = "ipt.baseURL";
@@ -29,14 +37,14 @@ public class AppConfig {
   public static final String GMAPS_KEY = "google.maps.key";
   public static final String ANALYTICS_GBIF = "analytics.gbif";
   public static final String ANALYTICS_KEY = "analytics.key";
-  private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
+  private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";;
   private Properties properties = new Properties();
   private Log log = LogFactory.getLog(this.getClass());
   private DataDir dataDir;
-  private boolean testInstallation = true;
+  private REGISTRY_TYPE type;
 
   @Inject
-  public AppConfig(DataDir dataDir) {
+  public AppConfig(DataDir dataDir) throws InvalidConfigException {
     this.dataDir = dataDir;
     // also loaded via ConfigManager constructor if datadir was linked at startup already
     // If it wasnt, this is the only place to load at least the default classpath config settings
@@ -63,12 +71,16 @@ public class AppConfig {
     return properties.getProperty(GMAPS_KEY);
   }
 
-  private File getProductionLockFile() {
-    return dataDir.configFile(PRODUCTION_TYPE_LOCKFILE);
-  }
-
   public String getProperty(String key) {
     return properties.getProperty(key);
+  }
+
+  public REGISTRY_TYPE getRegistryType() {
+    return type;
+  }
+
+  private File getRegistryTypeLockFile() {
+    return dataDir.configFile(PRODUCTION_TYPE_LOCKFILE);
   }
 
   public String getVersion() {
@@ -79,20 +91,26 @@ public class AppConfig {
     return "true".equalsIgnoreCase(properties.getProperty(ANALYTICS_GBIF));
   }
 
+  /**
+   * Deprecated in favor over @See getRegistryType()
+   * 
+   * @return true if the datadir is linked to the production registry
+   */
+  @Deprecated
   public boolean isTestInstallation() {
-    return testInstallation;
+    return REGISTRY_TYPE.DEVELOPMENT == type;
   }
 
-  protected void loadConfig() {
+  protected void loadConfig() throws InvalidConfigException {
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(CLASSPATH_PROPFILE);
     try {
       Properties props = new Properties();
       if (configStream != null) {
         props.load(configStream);
-        log.debug("Loaded default configuration from application.properties");
+        log.debug("Loaded default configuration from application.properties in classpath");
       } else {
-        log.error("Could not load default configuration from application.properties");
+        log.error("Could not load default configuration from application.properties in classpath");
       }
       if (dataDir.dataDir != null && dataDir.dataDir.exists()) {
         // read user configuration from data dir if it exists
@@ -110,10 +128,7 @@ public class AppConfig {
         }
         // check if this datadir is a production or test installation
         // we use a hidden file to indicate the production type
-        File productionLockFile = getProductionLockFile();
-        if (productionLockFile.exists()) {
-          setTestInstallation(false);
-        }
+        readRegistryLock();
       }
       // without error replace existing config with new one
       this.properties = props;
@@ -123,16 +138,29 @@ public class AppConfig {
   }
 
   /**
+   * 
+   */
+  private void readRegistryLock() throws InvalidConfigException {
+    // set lock file if not yet existing
+    File lockFile = getRegistryTypeLockFile();
+    if (!lockFile.exists()) {
+      log.warn("DataDir is not locked to a registry yet !!!");
+    } else {
+      String regTypeAsString;
+      try {
+        regTypeAsString = StringUtils.trimToNull(FileUtils.readFileToString(lockFile));
+        this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
+      } catch (IOException e) {
+        log.error("Cannot read datadir registry lock", e);
+        throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot read datadir registry lock");
+      }
+    }
+  }
+
+  /**
    * @throws IOException
    */
   protected void saveConfig() throws IOException {
-    // make sure production lock exists
-    if (!testInstallation) {
-      File productionLockFile = getProductionLockFile();
-      if (!productionLockFile.exists()) {
-        FileUtils.touch(productionLockFile);
-      }
-    }
     // save property config file
     File userCfgFile = new File(dataDir.dataDir, "config/" + DATADIR_PROPFILE);
     if (userCfgFile.exists()) {
@@ -155,8 +183,30 @@ public class AppConfig {
     properties.setProperty(key, StringUtils.trimToEmpty(value));
   }
 
-  protected void setTestInstallation(boolean b) {
-    this.testInstallation = b;
+  protected void setRegistryType(REGISTRY_TYPE type) throws InvalidConfigException {
+    if (type == null) {
+      throw new NullPointerException("Registry type cannot be null");
+    }
+    if (this.type != null) {
+      if (this.type != type) {
+        throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED, "The datadir is already designated as "
+            + this.type);
+      } else {
+        // already contains the same information. Dont do anything
+        return;
+      }
+    }
+    // set lock file if not yet existing
+    File lockFile = getRegistryTypeLockFile();
+    try {
+      Writer lock = new FileWriter(lockFile, false);
+      lock.write(type.name());
+      lock.close();
+      this.type = type;
+      log.info("Locked DataDir to registry of type " + type);
+    } catch (IOException e) {
+      log.error("Cannot lock the datadir to registry type " + type, e);
+      throw new InvalidConfigException(TYPE.IPT_CONFIG_WRITE, "Cannot lock the datadir to registry type " + type);
+    }
   }
-
 }

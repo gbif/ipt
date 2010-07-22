@@ -73,7 +73,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * @throws InvalidConfigException
    */
   public void loadDataDirConfig() throws InvalidConfigException {
-    log.info("Reading DATA DIRECTORY: " + dataDir.loggingFile("").getAbsolutePath());
+    log.info("Reading DATA DIRECTORY: " + dataDir.dataDir.getAbsolutePath());
 
     log.info("Loading IPT config ...");
     cfg.loadConfig();
@@ -161,7 +161,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   public boolean setupComplete() {
     if (dataDir.isConfigured()) {
-      if (!userManager.list(Role.Admin).isEmpty()) {
+      if (cfg.getRegistryType() != null && !userManager.list(Role.Admin).isEmpty()) {
         return true;
       }
     }

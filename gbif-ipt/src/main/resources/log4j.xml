@@ -9,14 +9,12 @@
 	-->
 	
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-		<param name="Threshold" value="DEBUG"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
 		</layout>
 	</appender>
 	
 	<appender name="LOGFILE" class="org.gbif.ipt.utils.LogFileAppender">
-		<param name="Threshold" value="DEBUG"/>
 		<param name="File" value="debug.log "/>
 		<param name="MaxFileSize" value="10MB"/>
 		<param name="MaxBackupIndex" value="10"/>
@@ -53,9 +51,11 @@
 	
 	<logger name="org.gbif">
 		<level value="DEBUG" />
+		<appender-ref ref="ADMINFILE"/>
 	</logger>
 	
 	<root>
 		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="LOGFILE"/>
 	</root>
 </log4j:configuration>

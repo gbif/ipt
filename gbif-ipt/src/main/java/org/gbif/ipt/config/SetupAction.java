@@ -4,15 +4,16 @@
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig.REGISTRY_TYPE;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.validation.UserSupport;
 
 import com.google.inject.Inject;
-import com.opensymphony.xwork2.validator.validators.EmailValidator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.util.ServletContextAware;
@@ -23,7 +24,6 @@ import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 
@@ -34,11 +34,11 @@ import javax.servlet.ServletContext;
  */
 public class SetupAction extends BaseAction implements ServletContextAware {
   private static final long serialVersionUID = 4726973323043063968L;
-  private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
   @Inject
   protected ConfigManager configManager;
   @Inject
   protected UserAccountManager userManager;
+  private UserSupport userValidation = new UserSupport();
 
   // action attributes to be set
   protected String dataDirPath;
@@ -125,7 +125,7 @@ public class SetupAction extends BaseAction implements ServletContextAware {
    * @throws InvalidConfigException
    */
   public String setup() {
-    if (dataDirPath != null) {
+    if (isHttpPost() && dataDirPath != null) {
       File dd = new File(dataDirPath);
       try {
         boolean created = configManager.setDataDir(dd);
@@ -148,7 +148,13 @@ public class SetupAction extends BaseAction implements ServletContextAware {
   }
 
   public String setup2() {
-    if (production != null && StringUtils.trimToNull(user.getEmail()) != null) {
+    // first check if the selected datadir contains an admin user already
+    if (configManager.setupComplete()) {
+      addActionMessage(getText("admin.config.setup2.existingFound"));
+      return SUCCESS;
+    }
+    if (isHttpPost()) {
+      // we have submitted the form
       try {
         user.setRole(Role.Admin);
         user.setLastLoginToNow();
@@ -156,9 +162,9 @@ public class SetupAction extends BaseAction implements ServletContextAware {
         userManager.save();
         // set IPT type: registry URL
         if (production) {
-          cfg.setTestInstallation(false);
+          cfg.setRegistryType(REGISTRY_TYPE.PRODUCTION);
         } else {
-          cfg.setTestInstallation(true);
+          cfg.setRegistryType(REGISTRY_TYPE.DEVELOPMENT);
         }
         // set baseURL
         try {
@@ -171,13 +177,10 @@ public class SetupAction extends BaseAction implements ServletContextAware {
         addActionMessage(getText("admin.config.setup2.success"));
         return SUCCESS;
       } catch (IOException e) {
-        log.error("Failed to setup admin account. Can't write user file: " + e.getMessage(), e);
         addActionError("Failed to setup admin account. Can't write user file: " + e.getMessage());
       } catch (AlreadyExistingException e) {
-        log.error("Failed to setup admin account: " + e.getMessage(), e);
         addActionError(e.getMessage());
       } catch (InvalidConfigException e) {
-        log.error("Failed to configure IPT: " + e.getMessage(), e);
         addActionError(e.getMessage());
       }
     }
@@ -190,24 +193,9 @@ public class SetupAction extends BaseAction implements ServletContextAware {
 
   @Override
   public void validate() {
-    if (production != null) {
+    if (user != null && production != null) {
       // we are in step2
-      if (user.getEmail().length() < 3) {
-        addFieldError("user.email", getText("validation.email.required"));
-      } else {
-        if (!emailPattern.matcher(user.getEmail()).matches()) {
-          addFieldError("user.email", getText("validation.email.invalid"));
-        }
-      }
-      if (user.getFirstname().length() < 2) {
-        addFieldError("user.firstname", getText("validation.firstname.required"));
-      }
-      if (user.getLastname().length() < 2) {
-        addFieldError("user.lastname", getText("validation.lastname.required"));
-      }
-      if (user.getPassword().length() < 4) {
-        addFieldError("user.password", getText("validation.password.required"));
-      }
+      userValidation.validate(this, user);
       if (StringUtils.trimToNull(baseURL) == null) {
         addFieldError("baseURL", getText("validation.baseURL.required"));
       } else {

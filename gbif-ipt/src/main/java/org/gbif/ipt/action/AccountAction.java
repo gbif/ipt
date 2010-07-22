@@ -3,16 +3,19 @@ package org.gbif.ipt.action;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.validation.UserSupport;
 
 import com.google.inject.Inject;
 
-public class AccountAction extends BaseAction {
+public class AccountAction extends POSTAction {
   @Inject
   private UserAccountManager userManager;
+  private UserSupport userValidation = new UserSupport();
 
   private String redirectUrl;
   private String email;
   private String password;
+  private User user;
 
   public String getEmail() {
     return email;
@@ -24,6 +27,10 @@ public class AccountAction extends BaseAction {
 
   public String getRedirectUrl() {
     return redirectUrl;
+  }
+
+  public User getUser() {
+    return user;
   }
 
   public String login() {
@@ -51,6 +58,19 @@ public class AccountAction extends BaseAction {
     return SUCCESS;
   }
 
+  @Override
+  public void prepare() throws Exception {
+    super.prepare();
+    if (id != null) {
+      // modify existing user
+      user = userManager.get(id);
+      if (user == null) {
+        // set notFound flag to true so FormAction will return a NOT_FOUND 404 result name
+        notFound = true;
+      }
+    }
+  }
+
   public void setEmail(String email) {
     if (email != null) {
       this.email = email;
@@ -71,6 +91,17 @@ public class AccountAction extends BaseAction {
       }
     }
     log.info("Redirecting to " + redirectUrl);
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  @Override
+  public void validate() {
+    if (user != null) {
+      userValidation.validate(this, user);
+    }
   }
 
 }

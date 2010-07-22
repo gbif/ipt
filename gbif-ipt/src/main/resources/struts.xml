@@ -42,8 +42,7 @@
 			<interceptor name="setupRedirect" class="org.gbif.ipt.struts2.SetupInterceptor"/>
 			
 			<!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
-			<interceptor-stack name="iptStack">
-				<interceptor-ref name="setupRedirect"/>
+			<interceptor-stack name="iptStackWithoutSetup">
 				<interceptor-ref name="keepRedirectMessages"/>
 				<interceptor-ref name="i18nStack"/>
 				<interceptor-ref name="validation">
@@ -51,20 +50,27 @@
 				</interceptor-ref>
 				<interceptor-ref name="workflow"/>
 			</interceptor-stack>
+			<interceptor-stack name="iptStack">
+				<interceptor-ref name="setupRedirect"/>
+				<interceptor-ref name="iptStackWithoutSetup"/>
+			</interceptor-stack>
 			
 			<interceptor-stack name="adminStack">
+				<interceptor-ref name="setupRedirect"/>
 				<interceptor-ref name="requireAdmin"/>
-				<interceptor-ref name="iptStack"/>
+				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			<interceptor-stack name="managerStack">
+				<interceptor-ref name="setupRedirect"/>
 				<interceptor-ref name="requireManager"/>
-				<interceptor-ref name="iptStack"/>
+				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			<interceptor-stack name="uploadStack">
+				<interceptor-ref name="setupRedirect"/>
 				<interceptor-ref name="fileUpload">
 					<param name="maximumSize">104857600</param>
 				</interceptor-ref>
-				<interceptor-ref name="iptStack"/>
+				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>			
 		</interceptors>
 		
@@ -110,7 +116,7 @@
 		<action name="logout" class="org.gbif.ipt.action.AccountAction" method="logout">
 			<result name="success" type="redirect">${redirectUrl}</result>
 		</action>
-		<action name="account" class="org.gbif.clbportal.action.AccountAction" method="account">
+		<action name="account" class="org.gbif.clbportal.action.AccountAction">
 			<result name="input">/WEB-INF/pages/account.ftl</result>
 			<result>/WEB-INF/pages/account.ftl</result>
 		</action>
