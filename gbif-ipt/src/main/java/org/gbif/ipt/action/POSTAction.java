@@ -2,8 +2,6 @@ package org.gbif.ipt.action;
 
 import org.apache.commons.lang.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class POSTAction extends BaseAction {
 
   protected boolean delete = false;
@@ -67,10 +65,5 @@ public class POSTAction extends BaseAction {
 
   public void setDelete(String delete) {
     this.delete = StringUtils.trimToNull(delete) != null;
-  }
-
-  @Override
-  public void setServletRequest(HttpServletRequest req) {
-    this.req = req;
   }
 }
