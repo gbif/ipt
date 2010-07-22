@@ -167,6 +167,10 @@ div#footer{
 
 /* other classes */
 
+.small{
+	font-size: 0.75em;
+	color: #888;
+}
 .clear{
 	clear:both;
 	padding:0;

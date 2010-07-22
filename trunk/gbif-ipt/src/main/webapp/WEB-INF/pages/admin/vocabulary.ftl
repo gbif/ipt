@@ -6,20 +6,20 @@
 
 <table class="simple">
     <tr>
-         <th>Title</th><td>${vocabulary.title}</td>
+         <th><@s.text name="basic.title"/></th><td>${vocabulary.title}</td>
     </tr>
     <tr>
-         <th>Identifier</th><td>${vocabulary.uri}</td>
+         <th><@s.text name="basic.identifier"/></th><td>${vocabulary.uri}</td>
     </tr>
     <tr>
-         <th>Description</th><td>${vocabulary.description!}</td>
+         <th><@s.text name="basic.description"/></th><td>${vocabulary.description!}</td>
     </tr>
     <tr>
-         <th>Keywords</th><td>${vocabulary.subject!}</td>
+         <th><@s.text name="basic.keywords"/></th><td>${vocabulary.subject!}</td>
     </tr>
     <#if vocabulary.link?has_content>
     <tr>
-         <th>Link</th>
+         <th><@s.text name="basic.link"/></th>
 		<td>
          <a href="${vocabulary.link}">${vocabulary.link}</a>
 		</td>
@@ -28,7 +28,7 @@
    </table>
 <br/>
 
-<h1><@s.text name="admin.vocabulary.concepts"/></h1>
+<h1><@s.text name="vocabulary.concepts"/></h1>
                                
 <#list vocabulary.concepts as c>	
 <a name="${c.identifier}"></a>          
@@ -42,21 +42,21 @@
   		<#if c.description?has_content || c.link?has_content>
       	<div>
 			${c.description!}
-			<#if c.link?has_content><br/><a href="${c.link}">See also ${c.link}</a></#if>              	
+			<#if c.link?has_content><br/><a href="${c.link}"><@s.text name="basic.seealso"/> ${c.link}</a></#if>              	
       	</div>
       	</#if>
       	<div>
-          	<em>Preferred Terms</em>:
-          	<#list c.preferredTerms as t>${t.title} [${t.lang}]; </#list>
+          	<@s.text name="vocabulary.terms.pref"/>:
+          	<em><#list c.preferredTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
       	</div>
       	<div>
-          	<em>Alternative Terms</em>: 
-          	<#list c.alternativeTerms as t>${t.title} [${t.lang}]; </#list>
+          	<@s.text name="vocabulary.terms.alt"/>: 
+          	<em><#list c.alternativeTerms as t>${t.title} <span class="small">[${t.lang}]</span>; </#list></em>
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>Identifier</th><td>${c.identifier}</td></tr>
-          		<tr><th>URI</th><td>${c.uri}</td></tr>
+          		<tr><th><@s.text name="basic.identifier"/></th><td>${c.identifier}</td></tr>
+          		<tr><th><@s.text name="vocabulary.uri"/></th><td>${c.uri}</td></tr>
       		</table>
       	</div>
   </div>
