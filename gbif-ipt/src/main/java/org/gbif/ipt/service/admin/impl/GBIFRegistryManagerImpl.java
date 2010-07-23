@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import org.gbif.ipt.model.registry.BriefOrganisation;
+import org.gbif.ipt.model.registration.Organisation;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.registry.api.client.Gbrds;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Singleton
 public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistryManager {
-  public static final String PERSISTENCE_FILE = "registry.xml";
+  private static final String PERSISTENCE_FILE = "registry.xml";
   // private Registry registry = new Registry();
   private final XStream xstream = new XStream();
   private final Gbrds client;
@@ -84,11 +84,11 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
    * 
    * @see org.gbif.ipt.service.admin.GBIFRegistryManager#listAllOrganisations()
    */
-  public List<BriefOrganisation> listAllOrganisations() {
+  public List<Organisation> listAllOrganisations() {
     List<GbrdsOrganisation> list = orgApi.list().execute().getResult();
-    return Lists.transform(list, new Function<GbrdsOrganisation, BriefOrganisation>() {
-      public BriefOrganisation apply(GbrdsOrganisation go) {
-        BriefOrganisation o = new BriefOrganisation();
+    return Lists.transform(list, new Function<GbrdsOrganisation, Organisation>() {
+      public Organisation apply(GbrdsOrganisation go) {
+        Organisation o = new Organisation();
         o.setKey(go.getKey());
         o.setName(go.getName());
         return o;

@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.service.admin;
 
-import org.gbif.ipt.model.registry.BriefOrganisation;
+import org.gbif.ipt.model.registration.Organisation;
 import org.gbif.ipt.service.admin.impl.GBIFRegistryManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -30,7 +30,7 @@ public interface GBIFRegistryManager {
    * 
    * @return The list of all available organisations
    */
-  public List<BriefOrganisation> listAllOrganisations();
+  public List<Organisation> listAllOrganisations();
 
   /**
    * Validate the credentials provided for an Organisation
