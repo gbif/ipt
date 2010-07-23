@@ -7,6 +7,8 @@ import org.gbif.ipt.validation.UserSupport;
 
 import com.google.inject.Inject;
 
+import java.io.IOException;
+
 public class AccountAction extends POSTAction {
   @Inject
   private UserAccountManager userManager;
@@ -16,6 +18,15 @@ public class AccountAction extends POSTAction {
   private String email;
   private String password;
   private User user;
+
+  @Override
+  public String execute() {
+    // check if any user is logged in right now - otherwise redirect to login page
+    if (user == null) {
+      return LOGIN_PAGE;
+    }
+    return super.execute();
+  }
 
   public String getEmail() {
     return email;
@@ -61,13 +72,22 @@ public class AccountAction extends POSTAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    if (id != null) {
-      // modify existing user
-      user = userManager.get(id);
-      if (user == null) {
-        // set notFound flag to true so FormAction will return a NOT_FOUND 404 result name
-        notFound = true;
-      }
+    if (getCurrentUser() != null) {
+      // modify existing user in session
+      user = getCurrentUser();
+    }
+  }
+
+  @Override
+  public String save() {
+    try {
+      addActionMessage(getText("admin.user.changed"));
+      userManager.save();
+      return SUCCESS;
+    } catch (IOException e) {
+      addActionError(getText("admin.user.saveError"));
+      addActionError(e.getMessage());
+      return INPUT;
     }
   }
 
@@ -86,7 +106,8 @@ public class AccountAction extends POSTAction {
     // if we have a request refer back to the originally requested page
     if (req != null) {
       String referer = req.getHeader("Referer");
-      if (referer != null && referer.startsWith(cfg.getBaseURL()) && !(referer.endsWith("login"))) {
+      if (referer != null && referer.startsWith(cfg.getBaseURL())
+          && !(referer.endsWith("login.do") || referer.endsWith("login"))) {
         redirectUrl = referer;
       }
     }

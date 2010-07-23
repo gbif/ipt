@@ -6,50 +6,50 @@
 <table>
 	<tr>
 	  <td>
-		<img src="${baseURL}/images/icons/settings.png" />
+		<a href="${baseURL}/admin/config.do"><img src="${baseURL}/images/icons/settings.png" /></a>
 	  </td>
 	  <td>
-		<a href="${baseURL}/admin/config.do"><@s.text name="admin.home.editConfig"/></a>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
-		<img src="${baseURL}/images/icons/users.png" />
-	  </td>
-	  <td>
-		<a href="${baseURL}/admin/users.do"><@s.text name="admin.home.manageUsers"/></a>
+		<@s.text name="admin.home.editConfig"/>
 	  </td>
 	</tr>
 	<tr>
 	  <td>
-		<img src="${baseURL}/images/icons/organisation.png" />
+		<a href="${baseURL}/admin/users.do"><img src="${baseURL}/images/icons/users.png" /></a>
 	  </td>
 	  <td>
-		<a href="${baseURL}/admin/organisation.do"><@s.text name="admin.home.editOrganisations"/></a>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
-		<img src="${baseURL}/images/icons/registry.png" />
-	  </td>
-	  <td>
-		<a href="${baseURL}/admin/registration.do"><@s.text name="admin.home.editRegistration"/></a>
+		<@s.text name="admin.home.manageUsers"/>
 	  </td>
 	</tr>
 	<tr>
 	  <td>
-		<img src="${baseURL}/images/icons/extensions.png" />
+		<a href="${baseURL}/admin/organisation.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
 	  </td>
 	  <td>
-		<a href="${baseURL}/admin/extensions.do"><@s.text name="admin.home.manageExtensions"/></a>
+		<@s.text name="admin.home.editOrganisations"/>
 	  </td>
 	</tr>
 	<tr>
 	  <td>
-		<img src="${baseURL}/images/icons/announcement.png" />
+		<a href="${baseURL}/admin/registration.do"><img src="${baseURL}/images/icons/registry.png" /></a>
 	  </td>
 	  <td>
-		<a href="${baseURL}/admin/logs.do"><@s.text name="admin.home.manageLogs"/></a>
+		<@s.text name="admin.home.editRegistration"/>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+		<a href="${baseURL}/admin/extensions.do"><img src="${baseURL}/images/icons/extensions.png" /></a>
+	  </td>
+	  <td>
+		<@s.text name="admin.home.manageExtensions"/>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+		<a href="${baseURL}/admin/logs.do"><img src="${baseURL}/images/icons/announcement.png" /></a>
+	  </td>
+	  <td>
+		<@s.text name="admin.home.manageLogs"/>
 	  </td>
 	</tr>
 </table>

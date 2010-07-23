@@ -92,6 +92,7 @@
 				<param name="location">/WEB-INF/pages/error/error.ftl</param>
 			</result>
 			<result name="setupIncomplete" type="redirect">/setup.do</result>
+			<result name="login" type="redirect">/login.do</result>
 			
 		</global-results>
 		
@@ -116,7 +117,7 @@
 		<action name="logout" class="org.gbif.ipt.action.AccountAction" method="logout">
 			<result name="success" type="redirect">${redirectUrl}</result>
 		</action>
-		<action name="account" class="org.gbif.clbportal.action.AccountAction">
+		<action name="account" class="org.gbif.ipt.action.AccountAction">
 			<result name="input">/WEB-INF/pages/account.ftl</result>
 			<result>/WEB-INF/pages/account.ftl</result>
 		</action>

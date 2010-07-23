@@ -69,16 +69,19 @@ public class UserAccountsAction extends POSTAction {
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    if (id == null) {
-      // create new user
-      user = new User();
-    } else {
+    if (id != null) {
       // modify existing user
       user = userManager.get(id);
-      if (user == null) {
-        // set notFound flag to true so FormAction will return a NOT_FOUND 404 result name
-        notFound = true;
-      }
+    }
+    // if no id was submitted we wanted to create a new account
+    // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
+    // matching user.
+    // in that case again provide a new, empty user instance
+    if (user == null) {
+      // reset id
+      id = null;
+      // create new user
+      user = new User();
     }
   }
 

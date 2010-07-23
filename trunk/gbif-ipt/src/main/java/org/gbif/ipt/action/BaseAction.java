@@ -39,6 +39,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
   public static final String NOT_IMPLEMENTED = "notImplemented";
+  public static final String LOGIN_PAGE = "login";
   /**
    * Occassionally Struts2 complains with it's own logging which seems like a Struts2 issue
    */

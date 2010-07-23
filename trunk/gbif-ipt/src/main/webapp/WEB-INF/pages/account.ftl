@@ -4,13 +4,14 @@
 
 <h1><@s.text name="account.title"/></h1>
 
-<p>You can modify your account settings here.</p>
+<p><@s.text name="account.intro"/></p>
+<p><@s.text name="account.email.cantChange"/></p>
  
 <#include "/WEB-INF/pages/macros/forms.ftl">
 <@s.form cssClass="ftlForm" action="account.do" method="post">
 	<@s.hidden name="id" value="${user.email!}" required="true"/>
 
-	<@input name="user.email" />  
+	<@input name="user.email" disabled=true />  
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
 	<@input name="user.password" />  
