@@ -7,9 +7,11 @@
  */
 package org.gbif.ipt.model;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.common.base.Objects;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -61,12 +63,15 @@ public class Vocabulary implements Comparable {
    * @see java.lang.Object#equals(Object)
    */
   @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof Vocabulary)) {
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof Vocabulary)) {
       return false;
     }
-    Vocabulary rhs = (Vocabulary) object;
-    return new EqualsBuilder().append(this.uri, rhs.uri).isEquals();
+    Vocabulary o = (Vocabulary) other;
+    return equal(uri, o.uri);
   }
 
   public List<VocabularyConcept> getConcepts() {
@@ -102,7 +107,7 @@ public class Vocabulary implements Comparable {
    */
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(-1469035489, -1512452511).append(this.uri).toHashCode();
+    return Objects.hashCode(uri);
   }
 
   public void setConcepts(List<VocabularyConcept> concepts) {

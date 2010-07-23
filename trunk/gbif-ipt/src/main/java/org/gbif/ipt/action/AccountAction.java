@@ -44,13 +44,13 @@ public class AccountAction extends POSTAction {
     return user;
   }
 
-  public String login() {
+  public String login() throws IOException {
     if (email != null) {
       User user = userManager.authenticate(email, password);
       if (user != null) {
         log.info("User " + email + " logged in successfully");
         user.setLastLoginToNow();
-        // agentService.update(user);
+        userManager.save();
         session.put(Constants.SESSION_USER, user);
         // remember previous URL to redirect back to
         setRedirectUrl();

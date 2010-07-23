@@ -37,6 +37,7 @@ Validation:
   See SetupAction as an example.
   Validation requires an "input" result name that shows the form when the form was not valid.
   using the simple theme we also need to declare where to render the validation feedback: http://struts.apache.org/2.1.8/docs/fielderror.html
+  validation package for support classes to validate reoccurring entities, e.g. users
   
 ### HTML Design ###
 forms best practices: 

@@ -9,9 +9,11 @@ package org.gbif.ipt.model;
 
 import org.gbif.ipt.utils.CompactHashSet;
 
+import static com.google.common.base.Objects.equal;
+
+import com.google.common.base.Objects;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -54,17 +56,16 @@ public class VocabularyConcept implements Comparable {
         this.uri, myClass.uri).toComparison();
   }
 
-  /**
-   * @see java.lang.Object#equals(Object)
-   */
   @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof VocabularyConcept)) {
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof VocabularyConcept)) {
       return false;
     }
-    VocabularyConcept rhs = (VocabularyConcept) object;
-    return new EqualsBuilder().append(this.vocabulary, rhs.vocabulary).append(this.order, rhs.order).append(this.uri,
-        rhs.uri).isEquals();
+    VocabularyConcept o = (VocabularyConcept) other;
+    return equal(vocabulary, o.vocabulary) && equal(identifier, o.identifier) && equal(uri, o.uri);
   }
 
   public Set<VocabularyTerm> getAlternativeTerms() {
@@ -113,7 +114,7 @@ public class VocabularyConcept implements Comparable {
    */
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(-1161377931, -1626651913).append(this.vocabulary).append(this.order).append(this.uri).toHashCode();
+    return Objects.hashCode(vocabulary, identifier, uri);
   }
 
   public void setAlternativeTerms(Set<VocabularyTerm> alternativeTerms) {

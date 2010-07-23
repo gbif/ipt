@@ -9,12 +9,28 @@
 	(currently this means that they created the resource)
  -->
 <struts>
+	
+	
 	<!-- The entry to the administration section -->
 	<package name="manage" extends="ipt-default" namespace="/manage">
 		<default-interceptor-ref name="managerStack"/>
 		<default-action-ref name="home"/>
-		<action name="home" class="org.gbif.ipt.action.manage.HomeAction" method="menu">
+		
+		<global-results>
+			<result name="404">
+				<param name="location">/WEB-INF/pages/manage/404.ftl</param>
+			</result>
+			<result name="401">
+				<param name="location">/WEB-INF/pages/manage/401.ftl</param>
+			</result>
+		</global-results>
+
+		<action name="home" class="org.gbif.ipt.action.manage.HomeAction">
 			<result>/WEB-INF/pages/manage/home.ftl</result>
+		</action>
+		
+		<action name="resource" class="org.gbif.ipt.action.manage.ResourceAction">
+			<result>/WEB-INF/pages/manage/resource.ftl</result>
 		</action>
 	</package>
 </struts>
