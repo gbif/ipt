@@ -12,10 +12,10 @@
 <div id="login">
 <form id="loginFull" action="${baseURL}/login" method="post">
   <div>
-    <input class="form-reset" type="text" size="30" name="email" id="user" value="${email!"email"}"/>
+    <input class="form-reset" type="text" size="30" name="email" id="user" value="${email!"admin"}"/>
   </div>
   <div>
-    <input class="form-reset"  type="password" size="30" name="password" id="pass" value="${password!"password"}"/>
+    <input class="form-reset"  type="password" size="30" name="password" id="pass" value="${password!"admin"}"/>
   </div>
   <div>
     <input type="submit" value="Login" id="login-submit"/>

@@ -4,7 +4,9 @@
 
 <h1><@s.text name="admin.user.title"/></h1>
 
-<table>
+<p><@s.text name="admin.users.intro"/></p>
+
+<table class="simple" width="100%">
 	<tr>
 		<th>Name</th>
 		<th>Email</th>
@@ -24,7 +26,7 @@
 </table>
 
 <p>
-	<a class="button" href="user">Create new account</a>
+	<a class="button" href="user.do">Create new account</a>
 </p>
 
 

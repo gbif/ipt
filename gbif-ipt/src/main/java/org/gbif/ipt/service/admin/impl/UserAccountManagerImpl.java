@@ -24,9 +24,7 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -177,28 +175,12 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   public void save() throws IOException {
-    log.debug("Saving all user accounts...");
+    log.debug("Saving all " + users.size() + " user accounts...");
     Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
     ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users");
-    // user email adresses might have changed. Rebuild internal hash...
-    Map<String, User> modifiedEmails = new HashMap<String, User>();
     for (Entry<String, User> entry : users.entrySet()) {
-      if (!entry.getKey().equals(entry.getValue().getEmail().toLowerCase())) {
-        // email has changed. rekey this user
-        modifiedEmails.put(entry.getKey(), entry.getValue());
-        // in case this is the only admin reset simple login email
-        if (entry.getKey().equals(onlyAdminEmail)) {
-          onlyAdminEmail = null;
-        }
-      }
       out.writeObject(entry.getValue());
     }
-    // remove old email keys and add new ones
-    for (Entry<String, User> entry : modifiedEmails.entrySet()) {
-      users.remove(entry.getKey());
-      addUser(entry.getValue());
-    }
-    log.debug(users.size() + " user(s) known to manager");
     out.close();
   }
 }
