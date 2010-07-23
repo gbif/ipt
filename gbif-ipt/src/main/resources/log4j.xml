@@ -18,6 +18,7 @@
 		<param name="File" value="debug.log "/>
 		<param name="MaxFileSize" value="10MB"/>
 		<param name="MaxBackupIndex" value="10"/>
+		<param name="Append" value="false"/>		
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
 		</layout>
@@ -26,10 +27,11 @@
 	<appender name="ADMINFILE" class="org.gbif.ipt.utils.LogFileAppender">
 		<param name="Threshold" value="WARN"/>
 		<param name="File" value="admin.log "/>
-		<param name="MaxFileSize" value="1MB"/>
-		<param name="MaxBackupIndex" value="10"/>
+		<param name="MaxFileSize" value="2MB"/>
+		<param name="MaxBackupIndex" value="0"/>
+		<param name="Append" value="false"/>		
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p [%c] - %m%n"/>
+			<param name="ConversionPattern" value="%-5p - %m%n"/>
 		</layout>
 	</appender>
 	

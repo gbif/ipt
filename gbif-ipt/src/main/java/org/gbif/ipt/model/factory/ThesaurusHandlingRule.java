@@ -48,18 +48,16 @@ public class ThesaurusHandlingRule extends Rule {
         } catch (Exception e) {
           log.error("Vocabulary with location " + attributes.getValue(i) + " couldnt get hold of: " + e.getMessage(), e);
         }
-        log.info("Thesaurus [" + attributes.getValue(i) + "] has Vocabulary[" + tv + "]");
 
         if (tv != null) {
           Object extensionPropertyAsObject = getDigester().peek();
           if (extensionPropertyAsObject instanceof ExtensionProperty) {
-            log.info("Thesaurus [" + tv + "] successfully added");
             ExtensionProperty eProperty = (ExtensionProperty) extensionPropertyAsObject;
             eProperty.setVocabulary(tv);
-            log.info("Thesaurus with URI[" + tv.getUri() + "] added to property: " + eProperty.getQualname());
+            log.debug("Vocabulary with URI[" + tv.getUri() + "] added to extension property");
           }
         } else {
-          log.warn("No Thesaurus Object exists for the URL[" + attributes.getValue(i) + "] so cannot be set");
+          log.warn("No Vocabulary object exists for the URL[" + attributes.getValue(i) + "] so cannot be set");
         }
 
         break; // since we found the attribute

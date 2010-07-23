@@ -157,7 +157,7 @@ public class DwCExtensionManagerImpl extends BaseManager implements DwCExtension
       ext = factory.build(fileIn);
       // keep vocab in local lookup
       extensionsByRowtype.put(ext.getRowType(), ext);
-      log.info("Successfully parsed Extension " + ext.getRowType());
+      log.info("Successfully loaded extension " + ext.getRowType());
     } catch (FileNotFoundException e) {
       log.error("Cant find local extension file", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant find local extension file");

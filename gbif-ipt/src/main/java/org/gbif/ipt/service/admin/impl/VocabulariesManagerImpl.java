@@ -171,7 +171,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         log.warn("Vocabulary URI " + v.getUri() + " exists already - overwriting with new vocabulary");
       }
       vocabulariesByUri.put(v.getUri(), v);
-      log.info("Successfully parsed Vocabulary: " + v.getTitle());
+      log.info("Successfully loaded Vocabulary: " + v.getTitle());
     } catch (FileNotFoundException e) {
       log.error("Cant find local vocabulary file", e);
     } catch (IOException e) {

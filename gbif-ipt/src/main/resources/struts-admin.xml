@@ -48,7 +48,14 @@
 		<action name="logs" class="org.gbif.ipt.action.admin.LogsAction">
 			<result>/WEB-INF/pages/admin/logs.ftl</result>
 		</action>
-		
+		<action name="logfile" class="org.gbif.ipt.action.admin.LogsAction" method="logfile">
+			<result name="success" type="stream">
+				<param name="contentType">text/plain</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${logfile}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
 		<!-- REGISTRY ACTIONS -->
 		<!-- 
 		<action name="organisation" class="org.gbif.ipt.action.admin.GBIFRegistryAction">
