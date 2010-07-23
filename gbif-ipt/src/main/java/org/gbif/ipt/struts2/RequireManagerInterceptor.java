@@ -7,12 +7,16 @@ import org.gbif.ipt.model.User;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.Map;
 
 /**
  * An Interceptor that makes sure an admin user is currently logged in and returns a notAllowed otherwise
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
+  private static Log log = LogFactory.getLog(RequireAdminInterceptor.class);
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {

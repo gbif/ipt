@@ -7,7 +7,9 @@
  */
 package org.gbif.ipt.model;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import static com.google.common.base.Objects.equal;
+
+import com.google.common.base.Objects;
 
 /**
  * TODO: Documentation.
@@ -61,12 +63,15 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
    * @see java.lang.Object#equals(Object)
    */
   @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof ExtensionProperty)) {
+  public boolean equals(Object other) {
+    if (this == other) {
+      return true;
+    }
+    if (!(other instanceof ExtensionProperty)) {
       return false;
     }
-    ExtensionProperty rhs = (ExtensionProperty) object;
-    return new EqualsBuilder().append(this.qualname, rhs.qualname).isEquals();
+    ExtensionProperty o = (ExtensionProperty) other;
+    return equal(extension, o.extension) && equal(qualname, o.qualname);
   }
 
   /**
@@ -120,14 +125,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
    */
   @Override
   public int hashCode() {
-    int result = 17;
-    result = (qualname != null ? qualname.hashCode() : 0);
-    result = 31 * result + (namespace != null ? namespace.hashCode() : 0);
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + columnLength;
-    result = 31 * result + (required ? 1 : 0);
-    result = 31 * result + (link != null ? link.hashCode() : 0);
-    return result;
+    return Objects.hashCode(extension, qualname);
   }
 
   public boolean hasTerms() {
