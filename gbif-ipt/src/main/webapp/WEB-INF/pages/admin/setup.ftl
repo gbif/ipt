@@ -2,67 +2,12 @@
     <head>
 	    <meta name="copyright" lang="en" content="GBIF" />
 		<title><@s.text name="admin.config.setup.title"/></title>
+ 		<link rel="stylesheet" type="text/css" href="styles/main.css"/>
 		<style>
-body {
-	background-color: #cccccc;
-	margin-bottom: 40px;
-    text-align: left;
-    font-family: arial, helvetica, verdana, sans-serif;
-    font-size: 12px;
-    line-height: 1em;
-    color: #666666;
-	
-}
-
 h1 {
 	color: #077A2D;
 	font-size: 30px;
 }
-a {
-	color: #005418;
-}
-div#wrapper {
-	position:relative;
-	margin-left:auto;
-	margin-right:auto;
-	width:950px;
-	background-color: #ffffff;
-	padding:10px;
-	margin-top: 30px;
-	margin-bottom: 30px;
-	padding-bottom:0px;
-	padding-top: 0px;
-}
-div#content { 
-	padding: 10px;
-}
-div#footer{
-	margin-top: 30px;
-	height: 30px;
-	text-align: center;
-	padding-top: 20px;
-	background-color: #E6E6E6;
-	margin-left:-10px;
-	margin-right:-10px;
-}
-ul.fielderror{
-	list-style:none; 
-	color: #d8424f;
-	padding: 0px;
-	margin: 10px 0px 5px 0px;
-}
-.errorMessage{
-	list-style:none; 
-	color: #d8424f;
-	padding: 0px;
-	margin: 0px;
-}
-.actionMessage{
-	list-style:none; 
-	color: #6dd03e;
-	padding: 0px;
-	margin: 0px;
-}		
 		</style>
  	</head>
  	<body>
@@ -71,7 +16,7 @@ ul.fielderror{
 			<div id="content">			
 
 			<div id="logo">
-				<img src="http://rs.gbif.org/style/logo.gif">					
+				<img src="styles/logo.jpg">					
 			</div>
 		<h1><@s.text name="admin.config.setup.title"/></h1>
 		<p><@s.text name="admin.config.setup.welcome"/></p>
