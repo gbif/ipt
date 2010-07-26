@@ -7,6 +7,9 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.TermFactory;
+
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
@@ -14,7 +17,7 @@ import com.google.common.base.Objects;
 /**
  * TODO: Documentation.
  */
-public class ExtensionProperty implements Comparable<ExtensionProperty> {
+public class ExtensionProperty implements Comparable<ExtensionProperty>, ConceptTerm {
   private Extension extension;
   private String name;
   private String namespace;
@@ -136,6 +139,22 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
     return required;
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.dwc.terms.ConceptTerm#qualifiedName()
+   */
+  public String qualifiedName() {
+    return qualname;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.dwc.terms.ConceptTerm#qualifiedNormalisedName()
+   */
+  public String qualifiedNormalisedName() {
+    return TermFactory.normaliseTerm(qualifiedName());
+  }
+
   public void setColumnLength(int columnLength) {
     this.columnLength = columnLength;
   }
@@ -198,6 +217,30 @@ public class ExtensionProperty implements Comparable<ExtensionProperty> {
 
   public void setVocabulary(Vocabulary vocabulary) {
     this.vocabulary = vocabulary;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.dwc.terms.ConceptTerm#simpleName()
+   */
+  public String simpleName() {
+    return name;
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.dwc.terms.ConceptTerm#simpleNormalisedAlternativeNames()
+   */
+  public String[] simpleNormalisedAlternativeNames() {
+    return new String[]{};
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.dwc.terms.ConceptTerm#simpleNormalisedName()
+   */
+  public String simpleNormalisedName() {
+    return TermFactory.normaliseTerm(simpleName());
   }
 
   /**

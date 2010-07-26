@@ -19,22 +19,11 @@ import java.util.List;
  */
 public class MockVocabularyManager implements VocabulariesManager {
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.VocabulariesManager#delete(java.lang.String)
-   */
   public void delete(String uri) {
-    // TODO Auto-generated method stub
-
   }
 
-  /*
-   * (non-Javadoc)
-   * @see org.gbif.ipt.service.admin.VocabulariesManager#get(java.lang.String)
-   */
   public Vocabulary get(String uri) {
-    // TODO Auto-generated method stub
-    return null;
+    return new Vocabulary();
   }
 
   public Vocabulary get(URL url) {
@@ -46,12 +35,10 @@ public class MockVocabularyManager implements VocabulariesManager {
   }
 
   public int load() {
-    // TODO Auto-generated method stub
     return 0;
   }
 
   public void update(Vocabulary vocabulary) {
-    // TODO Auto-generated method stub
   }
 
 }

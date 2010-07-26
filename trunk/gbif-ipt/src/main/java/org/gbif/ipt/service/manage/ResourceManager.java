@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.model.Resource;
@@ -9,8 +6,8 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.model.voc.ResourceType;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 
-import com.google.common.base.Nullable;
 import com.google.inject.ImplementedBy;
+import com.google.inject.internal.Nullable;
 
 import java.io.IOException;
 import java.util.List;

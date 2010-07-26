@@ -7,8 +7,6 @@
  */
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.utils.CompactHashSet;
-
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
@@ -19,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,8 +35,8 @@ public class VocabularyConcept implements Comparable {
   private String uri; // a URI denoting the concept, mostly used in rdf
   private URL link; // web link to some more human documentation
   private int order = -1; // to maintain any custom order not based on a natural concept property
-  private Set<VocabularyTerm> alternativeTerms = new CompactHashSet<VocabularyTerm>();
-  private Set<VocabularyTerm> preferredTerms = new CompactHashSet<VocabularyTerm>();
+  private Set<VocabularyTerm> alternativeTerms = new HashSet<VocabularyTerm>();
+  private Set<VocabularyTerm> preferredTerms = new HashSet<VocabularyTerm>();
 
   public void addAlternativeTerm(VocabularyTerm term) {
     alternativeTerms.add(term);
@@ -96,7 +95,7 @@ public class VocabularyConcept implements Comparable {
    * @return a set of all terms, preferred or alternative, for this concept
    */
   public Set<VocabularyTerm> getTerms() {
-    Set<VocabularyTerm> t = new CompactHashSet<VocabularyTerm>(preferredTerms);
+    Set<VocabularyTerm> t = new HashSet<VocabularyTerm>(preferredTerms);
     t.addAll(alternativeTerms);
     return t;
   }

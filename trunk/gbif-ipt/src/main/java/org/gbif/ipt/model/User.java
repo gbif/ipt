@@ -1,5 +1,7 @@
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.model.registration.Organisation;
+
 import static com.google.common.base.Objects.equal;
 
 import com.google.common.base.Objects;
@@ -8,6 +10,9 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class User implements Serializable {
   public enum Role {
@@ -22,6 +27,19 @@ public class User implements Serializable {
   private String lastname;
   private Role role = Role.User;
   private Date lastLogin;
+  private Set<UUID> associatedOrganisations = new HashSet<UUID>();
+
+  public void addAssociatedOrganisation(Organisation org) {
+    if (org != null) {
+      this.associatedOrganisations.add(UUID.fromString(org.getKey()));
+    }
+  }
+
+  public void addAssociatedOrganisation(UUID key) {
+    if (key != null) {
+      this.associatedOrganisations.add(key);
+    }
+  }
 
   @Override
   public boolean equals(Object other) {
@@ -33,6 +51,10 @@ public class User implements Serializable {
     }
     User o = (User) other;
     return equal(email, o.email);
+  }
+
+  public Set<UUID> getAssociatedOrganisations() {
+    return associatedOrganisations;
   }
 
   public String getEmail() {
@@ -80,6 +102,10 @@ public class User implements Serializable {
    */
   public boolean hasManagerRights() {
     return !(Role.User == this.role);
+  }
+
+  public void setAssociatedOrganisations(Set<UUID> associatedOrganisations) {
+    this.associatedOrganisations = associatedOrganisations;
   }
 
   public void setEmail(String email) {

@@ -9,9 +9,8 @@
     -->
 
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
-        <param name="Threshold" value="INFO"/>
+        <param name="Threshold" value="WARN"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <!--param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}]  %m%n"/-->
             <param name="ConversionPattern" value="%-5p [%c{1}]  %m%n"/>
         </layout>
     </appender>
@@ -50,7 +49,6 @@
     
     <!-- GBIF things -->
     <logger name="org.gbif">
-        <level value="INFO" />
         <appender-ref ref="ADMINFILE"/>
     </logger>
     

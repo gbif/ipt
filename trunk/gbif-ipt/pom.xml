@@ -128,6 +128,15 @@
 		    		</additionalConfig>
 		    	</configuration>
 		    </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<!-- dont bundle local datadir.location file with generated war -->
+					<excludes>**/datadir.location</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 		
 		<resources>
@@ -166,12 +175,48 @@
 			<artifactId>gbif-registry-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.gbif</groupId>
+			<artifactId>dwc-archive</artifactId>
+			<version>1.1.1-SNAPSHOT</version>
+		</dependency>
 		
 		<!-- Struts2 -->
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
 			<version>2.1.8</version>
+			<exclusions>
+				<!-- not needed - we use guice -->
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-test</artifactId>
+				</exclusion>
+			</exclusions>			
+		</dependency>
+		
+		<!-- Guice provides the code based (not XML based) injection dependency framework -->
+		<dependency> 
+			<groupId>com.google.inject</groupId> 
+			<artifactId>guice</artifactId> 
+			<version>2.0</version>
+		</dependency>
+		<!-- connector to use guice natively with struts2 -->
+		<dependency> 
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-struts2-plugin</artifactId>
+			<version>2.0</version>
+			<exclusions>
+				<!-- clashes with newer version included in struts2.1.6  -->
+				<exclusion>
+					<groupId>opensymphony</groupId>
+					<artifactId>xwork</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ognl</groupId>
+					<artifactId>ognl</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Used for the SimpleTextProvider in Struts2 -->
@@ -184,31 +229,16 @@
 		
 		
 		<!-- Jetty to use as an embedded server-->
+		<!-- 
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
 			<version>6.1.24</version>
 		</dependency>
-		
-		<!-- Guice provides the code based (not XML based) injection dependency framework -->
-		<!-- transient dependency on:
-			+- com.google.inject:guice:jar:2.0:compile
-			|  +- aopalliance:aopalliance:jar:1.0:compile
-			|  +- asm:asm:jar:3.1:compile
-			|  +- com.google.code.google-collections:google-collect:jar:snapshot-20081129:compile
-			|  \- cglib:cglib:jar:2.2:compile
-			+- com.google.inject.extensions:guice-servlet:jar:2.0:compile
-			\- opensymphony:xwork:jar:2.0.0:compile
 		-->
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-struts2-plugin</artifactId>
-			<version>2.0</version>
-		</dependency>		
 		
-		<!-- 
-			required by EML classes from Aaron.
-			Deprecated and will be replaced with regular java collection classes when we have time 
+		<!-- Google base libraries, e.g. collections
+			Used for equals & hash method a lot and in EML by Aaron
 		-->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -249,6 +279,17 @@
 			<version>14</version>
 		</dependency>
 		
+		<!-- 
+			Log4j used directly 
+			PLEASE DONT USE COMMONS-LOGGING !!!
+			there are some know classloader issues when used with tomcat
+		-->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		
 		<!-- Commons lang provides utilities for (e.g.) simple hashcode building -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -261,6 +302,13 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
+			<exclusions>
+				<!-- we only want log4j for logging  -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Simple XML Parsing -->
@@ -296,6 +344,17 @@
 			<groupId>displaytag</groupId>
 			<artifactId>displaytag</artifactId>
 			<version>1.2</version>
+			<exclusions>
+				<!-- we only want log4j for logging  -->
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl104-over-slf4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Lucene, full text search -->
@@ -313,12 +372,13 @@
 		</dependency>
 
 		<!-- testing only. Shows the struts2 configuration in the browser at /config-browser/index.do -->
+		<!-- 
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-config-browser-plugin</artifactId>
 			<version>2.1.8</version>
 		</dependency>
-		
+		-->
 	</dependencies>
 	
 	<profiles>

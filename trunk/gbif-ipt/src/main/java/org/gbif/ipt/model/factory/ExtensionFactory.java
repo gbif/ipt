@@ -27,6 +27,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.SAXParser;
+
 /**
  * Building from XML definitions. Because an extension can reference thesauri, this is a 2 pass parsing process.
  * 
@@ -42,11 +44,13 @@ public class ExtensionFactory {
   protected static HttpClient httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
   public static final String EXTENSION_NAMESPACE = "http://rs.gbif.org/extension/";
   private ThesaurusHandlingRule thesaurusRule;
+  private SAXParser sax;
 
   @Inject
-  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule) {
+  public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParser sax) {
     super();
     this.thesaurusRule = thesaurusRule;
+    this.sax = sax;
   }
 
   /**
@@ -83,9 +87,9 @@ public class ExtensionFactory {
    * @throws IOException
    */
   public Extension build(InputStream is) throws IOException, SAXException {
-    Digester digester = new Digester();
+
     // in order to deal with arbitrary namespace prefixes we need to parse namespace aware!
-    digester.setNamespaceAware(true);
+    Digester digester = new Digester(sax);
     digester.setRuleNamespaceURI(EXTENSION_NAMESPACE);
 
     Extension e = new Extension();

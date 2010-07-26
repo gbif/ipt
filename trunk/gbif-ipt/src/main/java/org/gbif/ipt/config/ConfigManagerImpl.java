@@ -62,7 +62,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       try {
         loadDataDirConfig();
       } catch (InvalidConfigException e) {
-        throw new IllegalStateException(e);
+        log.error("Configuration problems existing. Watch your data dir! " + e.getMessage(), e);
       }
     } else {
       log.debug("IPT DataDir not configured - no configuration loaded");
@@ -99,6 +99,23 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Loading organisation configurations...");
     organisationsManager.load();
 
+  }
+
+  private void reloadLogger() {
+    LogFileAppender.LOGDIR = dataDir.loggingFile("").getAbsolutePath();
+    log.info("Setting logging dir to " + LogFileAppender.LOGDIR);
+
+    InputStream log4j;
+    // use different log4j settings files for production or debug mode
+    if (cfg.debug()) {
+      log4j = streamUtils.classpathStream("/log4j.xml");
+    } else {
+      log4j = streamUtils.classpathStream("/log4j-production.xml");
+    }
+    LogManager.resetConfiguration();
+    DOMConfigurator domConfig = new DOMConfigurator();
+    domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
+    log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
   }
 
   public void saveConfig() throws InvalidConfigException {
@@ -156,22 +173,5 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       }
     }
     return false;
-  }
-
-  private void reloadLogger() {
-    LogFileAppender.LOGDIR = dataDir.loggingFile("").getAbsolutePath();
-    log.info("Setting logging dir to " + LogFileAppender.LOGDIR);
-
-    InputStream log4j;
-    // use different log4j settings files for production or debug mode
-    if (cfg.debug()) {
-      log4j = streamUtils.classpathStream("/log4j.xml");
-    } else {
-      log4j = streamUtils.classpathStream("/log4j-production.xml");
-    }
-    LogManager.resetConfiguration();
-    DOMConfigurator domConfig = new DOMConfigurator();
-    domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
-    log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
   }
 }
