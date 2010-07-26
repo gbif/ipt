@@ -8,6 +8,8 @@ import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.registry.api.client.Gbrds;
+import org.gbif.registry.api.client.GbrdsThesaurus;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -31,6 +33,7 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +52,16 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private static final String CONFIG_FOLDER = ".vocabularies";
   private VocabularyFactory vocabFactory;
   private HttpClient httpClient;
+  private final Gbrds client;
 
+  /**
+   * 
+   */
   @Inject
-  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, HttpClient httpClient) {
+  public VocabulariesManagerImpl(VocabularyFactory vocabFactory, HttpClient httpClient, Gbrds client) {
     super();
     this.vocabFactory = vocabFactory;
+    this.client = client;
     this.httpClient = httpClient;
   }
 
@@ -102,35 +110,37 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   private Vocabulary install(URL url) {
-    // download vocabulary into local file first for subsequent IPT startups
-    File vocabFile = getVocabFile(url);
-    Writer localVocabWriter = null;
-    GetMethod method = new GetMethod(url.toString());
-    method.setFollowRedirects(true);
-    try {
-      FileUtils.forceMkdir(vocabFile.getParentFile());
-      localVocabWriter = new FileWriter(vocabFile);
-      httpClient.executeMethod(method);
-      InputStream is = method.getResponseBodyAsStream();
-      IOUtils.copy(is, localVocabWriter);
-      log.info("Successfully downloaded Vocabulary " + url);
-    } catch (Exception e) {
-      log.error(e);
-    } finally {
+    if (url != null) {
+      // download vocabulary into local file first for subsequent IPT startups
+      File vocabFile = getVocabFile(url);
+      Writer localVocabWriter = null;
+      GetMethod method = new GetMethod(url.toString());
+      method.setFollowRedirects(true);
       try {
-        if (localVocabWriter != null) {
-          localVocabWriter.close();
+        FileUtils.forceMkdir(vocabFile.getParentFile());
+        localVocabWriter = new FileWriter(vocabFile);
+        httpClient.executeMethod(method);
+        InputStream is = method.getResponseBodyAsStream();
+        IOUtils.copy(is, localVocabWriter);
+        log.info("Successfully downloaded Vocabulary " + url);
+      } catch (Exception e) {
+        log.error(e);
+      } finally {
+        try {
+          if (localVocabWriter != null) {
+            localVocabWriter.close();
+          }
+          method.releaseConnection();
+        } catch (RuntimeException e) {
+        } catch (IOException e) {
         }
-        method.releaseConnection();
-      } catch (RuntimeException e) {
-      } catch (IOException e) {
       }
-    }
 
-    try {
-      return loadFromFile(vocabFile);
-    } catch (InvalidConfigException e) {
-      e.printStackTrace();
+      try {
+        return loadFromFile(vocabFile);
+      } catch (InvalidConfigException e) {
+        e.printStackTrace();
+      }
     }
     return null;
   }
@@ -165,6 +175,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     try {
       fileIn = new FileInputStream(vocabFile);
       v = vocabFactory.build(fileIn);
+      // read filesystem date
+      Date modified = new Date(vocabFile.lastModified());
+      v.setLastUpdate(modified);
       // keep vocab in local lookup
       vocabulariesByFilename.put(vocabFile.getName(), v);
       if (vocabulariesByUri.containsKey(v.getUri())) {
@@ -189,7 +202,17 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     return v;
   }
 
-  public void update(Vocabulary vocabulary) {
-    // TODO Auto-generated method stub
+  public void updateAll() {
+    // build uri lookup dict
+    List<GbrdsThesaurus> thes = client.getIptApi().listThesauri().execute().getResult();
+    Map<String, URL> locationLookup = new HashMap<String, URL>();
+    for (GbrdsThesaurus th : thes) {
+      // need updated API for this to work...
+      // consider storing the original vocab URL somewhere for later lookup...
+    }
+    for (Vocabulary v : vocabulariesByUri.values()) {
+      log.debug("Updating vocabulary " + v.getUri());
+      install(locationLookup.get(v.getUri()));
+    }
   }
 }

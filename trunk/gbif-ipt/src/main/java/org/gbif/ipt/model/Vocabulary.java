@@ -30,6 +30,7 @@ public class Vocabulary implements Comparable {
   private String subject;
   private URL link;
   private List<VocabularyConcept> concepts = new LinkedList<VocabularyConcept>();
+  // the data this local vocabulary copy was last updated
   private Date lastUpdate = new Date();
 
   public void addConcept(VocabularyConcept concept) {
