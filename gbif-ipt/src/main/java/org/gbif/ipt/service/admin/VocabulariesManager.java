@@ -58,10 +58,10 @@ public interface VocabulariesManager {
   public int load();
 
   /**
-   * Downloads the latest version from the vocabulary URL and udpates all related concepts & terms
+   * Downloads the latest version for the locally known vocabuarlies by looking up the latest registry entry
+   * for their URI. Udpates all related concepts & terms
    * 
-   * @param vocabulary the vocabulary to update
    */
-  public void update(Vocabulary vocabulary);
+  public void updateAll();
 
 }

@@ -25,6 +25,9 @@
 		</td>
     </tr>
     </#if>
+    <tr>
+         <th><@s.text name="basic.lastModified"/></th><td>${vocabulary.lastUpdate?datetime.medium}</td>
+    </tr>
    </table>
 <br/>
 

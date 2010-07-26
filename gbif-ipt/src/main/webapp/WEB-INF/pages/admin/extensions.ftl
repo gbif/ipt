@@ -36,6 +36,17 @@
 </div>
 </#list>
 
+<#if (numVocabs>0)>
+<hr/>
+<h3>Vocabuarlies</h3>
+<p>
+	last updated on ${vocabsLastUpdated?date?string.medium}<br/> 
+	  <form action='extensions.do' method='post'>
+		<input type='submit' name='updateVocabs' value='Update' />
+  	  all ${numVocabs} vocabularies with latest registered version
+  	  </form>
+</p>
+</#if>
 <hr/>
 
 <h3>Extensions available from the GBIF registry</h3>

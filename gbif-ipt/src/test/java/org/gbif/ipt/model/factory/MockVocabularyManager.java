@@ -38,7 +38,7 @@ public class MockVocabularyManager implements VocabulariesManager {
     return 0;
   }
 
-  public void update(Vocabulary vocabulary) {
+  public void updateAll() {
   }
 
 }

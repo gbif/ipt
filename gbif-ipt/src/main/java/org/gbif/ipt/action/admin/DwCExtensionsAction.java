@@ -5,7 +5,9 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.DwCExtensionManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.Gbrds.ExtensionApi;
 import org.gbif.registry.api.client.GbrdsExtension;
@@ -13,8 +15,12 @@ import org.gbif.registry.api.client.GbrdsExtension;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,15 +52,21 @@ public class DwCExtensionsAction extends POSTAction {
       ExtensionApi api = client.getExtensionApi();
       extensions = api.list().execute().getResult();
     }
+
   }
 
   @Inject
   private DwCExtensionManager extensionManager;
   @Inject
+  private VocabulariesManager vocabManager;
+  @Inject
   private RegisteredExtensions registered;
   private List<Extension> extensions;
   private Extension extension;
   private String url;
+  private Boolean updateVocab = false;
+  private int numVocabs = 0;
+  private Date vocabsLastUpdated = null;
 
   @Override
   public String delete() {
@@ -81,6 +93,18 @@ public class DwCExtensionsAction extends POSTAction {
     return newExts;
   }
 
+  public int getNumVocabs() {
+    return numVocabs;
+  }
+
+  public Boolean getUpdateVocab() {
+    return updateVocab;
+  }
+
+  public Date getVocabsLastUpdated() {
+    return vocabsLastUpdated;
+  }
+
   public void install() throws Exception {
     URL extensionURL;
     try {
@@ -96,6 +120,14 @@ public class DwCExtensionsAction extends POSTAction {
 
   public String list() {
     extensions = extensionManager.list();
+    Collection<Vocabulary> vocabs = vocabManager.list();
+    numVocabs = vocabs.size();
+    // find latest update data of any of all vocabularies
+    for (Vocabulary v : vocabs) {
+      if (vocabsLastUpdated == null || vocabsLastUpdated.before(v.getLastUpdate())) {
+        vocabsLastUpdated = v.getLastUpdate();
+      }
+    }
     return SUCCESS;
   }
 
@@ -123,16 +155,27 @@ public class DwCExtensionsAction extends POSTAction {
   @Override
   public String save() {
     try {
-      install();
+      if (updateVocab) {
+        vocabManager.updateAll();
+        addActionMessage("Updated " + vocabManager.list().size() + " vocabularies");
+      } else {
+        install();
+      }
     } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      addActionError(e.getMessage());
+      log.error(e);
     }
     return SUCCESS;
   }
 
   public void setExtension(Extension extension) {
     this.extension = extension;
+  }
+
+  public void setUpdateVocab(String x) {
+    if (StringUtils.trimToNull(x) != null) {
+      this.updateVocab = true;
+    }
   }
 
   public void setUrl(String url) {
