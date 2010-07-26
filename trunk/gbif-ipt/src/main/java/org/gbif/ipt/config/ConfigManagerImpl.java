@@ -9,6 +9,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.DwCExtensionManager;
+import org.gbif.ipt.service.admin.OrganisationsManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -41,11 +42,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private ResourceManager resourceManager;
   private DwCExtensionManager extensionManager;
   private VocabulariesManager vocabManager;
+  private OrganisationsManager organisationsManager;
 
   @Inject
   public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, InputStreamUtils streamUtils,
       UserAccountManager userManager, ResourceManager resourceManager, DwCExtensionManager extensionManager,
-      VocabulariesManager vocabManager) {
+      VocabulariesManager vocabManager, OrganisationsManager organisationsManager) {
     super();
     this.dataDir = dataDir;
     this.cfg = cfg;
@@ -54,6 +56,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.resourceManager = resourceManager;
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
+    this.organisationsManager = organisationsManager;
     if (dataDir.isConfigured()) {
       log.info("IPT DataDir configured - loading its configuration");
       try {
@@ -92,23 +95,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     log.info("Loading resource configurations ...");
     resourceManager.load();
-  }
 
-  private void reloadLogger() {
-    LogFileAppender.LOGDIR = dataDir.loggingFile("").getAbsolutePath();
-    log.info("Setting logging dir to " + LogFileAppender.LOGDIR);
+    log.info("Loading organisation configurations...");
+    organisationsManager.load();
 
-    InputStream log4j;
-    // use different log4j settings files for production or debug mode
-    if (cfg.debug()) {
-      log4j = streamUtils.classpathStream("/log4j.xml");
-    } else {
-      log4j = streamUtils.classpathStream("/log4j-production.xml");
-    }
-    LogManager.resetConfiguration();
-    DOMConfigurator domConfig = new DOMConfigurator();
-    domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
-    log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
   }
 
   public void saveConfig() throws InvalidConfigException {
@@ -166,5 +156,22 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       }
     }
     return false;
+  }
+
+  private void reloadLogger() {
+    LogFileAppender.LOGDIR = dataDir.loggingFile("").getAbsolutePath();
+    log.info("Setting logging dir to " + LogFileAppender.LOGDIR);
+
+    InputStream log4j;
+    // use different log4j settings files for production or debug mode
+    if (cfg.debug()) {
+      log4j = streamUtils.classpathStream("/log4j.xml");
+    } else {
+      log4j = streamUtils.classpathStream("/log4j-production.xml");
+    }
+    LogManager.resetConfiguration();
+    DOMConfigurator domConfig = new DOMConfigurator();
+    domConfig.doConfigure(log4j, LogManager.getLoggerRepository());
+    log.info("Reloaded log4j for " + (cfg.debug() ? "debugging" : "production"));
   }
 }

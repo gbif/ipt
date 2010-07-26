@@ -7,7 +7,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.registration.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
-import org.gbif.ipt.service.admin.OrganisationManager;
+import org.gbif.ipt.service.admin.OrganisationsManager;
 
 import com.google.inject.Inject;
 
@@ -20,15 +20,24 @@ import java.util.List;
  * @author tim
  */
 public class OrganisationsAction extends POSTAction {
+
   private static final long serialVersionUID = 7297470324204084809L;
 
   @Inject
   private GBIFRegistryManager registryManager;
   @Inject
-  private OrganisationManager organisationManager;
+  private OrganisationsManager organisationsManager;
 
   private List<Organisation> organisations;
   private Organisation organisation;
+  private List<Organisation> linkedOrganisations;
+
+  /**
+   * @return the linkedOrganisations
+   */
+  public List<Organisation> getLinkedOrganisations() {
+    return linkedOrganisations;
+  }
 
   /**
    * @return the organisation
@@ -50,20 +59,19 @@ public class OrganisationsAction extends POSTAction {
     log.debug("getting list of organisations");
     organisations = registryManager.listAllOrganisations();
     log.debug("organisations returned: " + organisations.size());
+    linkedOrganisations = organisationsManager.list();
+
   }
 
   @Override
   public String save() {
-    System.out.println("PRINTING SAVE() KEY- " + organisation.getKey());
-    System.out.println("PRINTING SAVE() PWD- " + organisation.getPassword());
-
     try {
       if (organisation.getKey() != null && organisation.getPassword() != null) {
         boolean validateStatus = registryManager.validateOrganisation(organisation.getKey(), organisation.getPassword());
         if (validateStatus) {
           addActionMessage("The organisation has been associated to this IPT");
-          organisationManager.add(organisation);
-          organisationManager.save();
+          organisationsManager.add(organisation);
+          organisationsManager.save();
           return INPUT;
         } else {
           organisations = registryManager.listAllOrganisations();
@@ -90,6 +98,13 @@ public class OrganisationsAction extends POSTAction {
       addActionError(getText("admin.organisation.exists", new String[]{id,}));
       return INPUT;
     }
+  }
+
+  /**
+   * @param linkedOrganisations the linkedOrganisations to set
+   */
+  public void setLinkedOrganisations(List<Organisation> linkedOrganisations) {
+    this.linkedOrganisations = linkedOrganisations;
   }
 
   /**
