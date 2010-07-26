@@ -40,7 +40,7 @@ public class ThesaurusHandlingRule extends Rule {
   public void begin(String namespace, String name, Attributes attributes) throws Exception {
 
     for (int i = 0; i < attributes.getLength(); i++) {
-      if (ThesaurusHandlingRule.ATTRIBUTE_THESAURUS.equals(attributes.getLocalName(i))) {
+      if (ThesaurusHandlingRule.ATTRIBUTE_THESAURUS.equals(attributes.getQName(i))) {
         Vocabulary tv = null;
         try {
           URL vocabURL = new URL(attributes.getValue(i));

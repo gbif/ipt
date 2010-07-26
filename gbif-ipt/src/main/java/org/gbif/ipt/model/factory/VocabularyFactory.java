@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.SAXParser;
+
 /**
  * Building from XML definitions
  */
@@ -33,11 +35,13 @@ public class VocabularyFactory {
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
   protected static Log log = LogFactory.getLog(VocabularyFactory.class);
   private HttpClient httpClient;
+  private SAXParser sax;
 
   @Inject
-  public VocabularyFactory(HttpClient httpClient) {
+  public VocabularyFactory(HttpClient httpClient, SAXParser sax) {
     super();
     this.httpClient = httpClient;
+    this.sax = sax;
   }
 
   /**
@@ -88,8 +92,9 @@ public class VocabularyFactory {
    * @throws IOException
    */
   public Vocabulary build(InputStream is) throws IOException, SAXException {
-    Digester digester = new Digester();
+    Digester digester = new Digester(sax);
     digester.setNamespaceAware(true);
+    digester.setXIncludeAware(false);
     digester.setRuleNamespaceURI(VOCABULARY_NAMESPACE);
 
     Vocabulary tv = new Vocabulary();

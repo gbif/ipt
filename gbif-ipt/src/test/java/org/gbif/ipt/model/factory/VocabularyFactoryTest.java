@@ -7,33 +7,45 @@
  */
 package org.gbif.ipt.model.factory;
 
+import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.InjectingTestClassRunner;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.VocabularyTerm;
-
-import com.google.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
 
 /**
  * TODO: Documentation.
  */
 @RunWith(InjectingTestClassRunner.class)
 public class VocabularyFactoryTest {
-  @Inject
-  VocabularyFactory factory;
+
+  private VocabularyFactory getFactory() throws ParserConfigurationException, SAXException {
+    IPTModule mod = new IPTModule();
+    SAXParser sax = mod.provideNsAwareSaxParser();
+    HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+    VocabularyFactory factory = new VocabularyFactory(client, sax);
+    return factory;
+  }
 
   @Test
   public void testBuild() {
     try {
-      Vocabulary tv = factory.build(VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
+      Vocabulary tv = getFactory().build(
+          VocabularyFactoryTest.class.getResourceAsStream("/thesauri/type-vocabulary.xml"));
       assertEquals("Dublin Core Type Vocabulary", tv.getTitle());
       assertEquals("http://dublincore.org/documents/dcmi-type-vocabulary/", tv.getUri());
       assertEquals(

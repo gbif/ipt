@@ -22,6 +22,8 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 
 import javax.servlet.ServletContext;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
@@ -54,7 +56,7 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  DataDir provideDataDir(ServletContext ctx) {
+  public DataDir provideDataDir(ServletContext ctx) {
     File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
     log.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
     return DataDir.buildFromLocationFile(dataDirSettingFile);
@@ -70,7 +72,7 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  Configuration provideFreemarker(AppConfig cfg) {
+  public Configuration provideFreemarker(AppConfig cfg) {
     // load templates from classpath by prefixing /templates
     TemplateLoader tl = new ClassTemplateLoader(AppConfig.class, "/templates");
 
@@ -84,7 +86,7 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  HttpClient provideHttpClient() {
+  public HttpClient provideHttpClient() {
     HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
     return client;
   }
@@ -92,7 +94,23 @@ public class IPTModule extends AbstractModule {
   @Provides
   @Singleton
   @Inject
-  Gbrds provideRegistryClient(AppConfig cfg) {
+  public SAXParser provideNsAwareSaxParser() {
+    SAXParserFactory saxf = SAXParserFactory.newInstance();
+    SAXParser sax = null;
+    try {
+      saxf.setValidating(false);
+      saxf.setNamespaceAware(true);
+      sax = saxf.newSAXParser();
+    } catch (Exception e) {
+      log.error("Cant create namespace aware SAX Parser: " + e.getMessage(), e);
+    }
+    return sax;
+  }
+
+  @Provides
+  @Singleton
+  @Inject
+  public Gbrds provideRegistryClient(AppConfig cfg) {
     Gbrds gbif = null;
     // rely on the fact that AppConfig is already setup
     String url = cfg.getProperty("dev.registrydev.url");
