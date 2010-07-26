@@ -15,69 +15,174 @@ package org.gbif.ipt.model.registration;
 import java.io.Serializable;
 
 /**
- * Encapsulates all the information for an Organisation (brief mode)
+ * Encapsulates all the information for an Organisation
  */
-public class Organisation implements Serializable {
+public class Organisation extends BriefOrganisation implements Serializable {
 
-  private String key;
-  private String name;
-  private String password;
-  private String alias;
+  protected String description;
+  protected String homepageURL;
+  protected String primaryContactType;
+  protected String primaryContactName;
+  protected String primaryContactDescription;
+  protected String primaryContactAddress;
+  protected String primaryContactEmail;
+  protected String primaryContactPhone;
+  protected String nodeKey;
+  protected String nodeName;
+  protected String nodeContactEmail;
 
   /**
-   * @return the alias
+   * @return the description
    */
-  public String getAlias() {
-    return alias;
+  public String getDescription() {
+    return description;
   }
 
   /**
-   * @return the key
+   * @return the homepageURL
    */
-  public String getKey() {
-    return key;
+  public String getHomepageURL() {
+    return homepageURL;
   }
 
   /**
-   * @return the name
+   * @return the nodeContactEmail
    */
-  public String getName() {
-    return name;
+  public String getNodeContactEmail() {
+    return nodeContactEmail;
   }
 
   /**
-   * @return the password
+   * @return the nodeKey
    */
-  public String getPassword() {
-    return password;
+  public String getNodeKey() {
+    return nodeKey;
   }
 
   /**
-   * @param alias the alias to set
+   * @return the nodeName
    */
-  public void setAlias(String alias) {
-    this.alias = alias;
+  public String getNodeName() {
+    return nodeName;
   }
 
   /**
-   * @param key the key to set
+   * @return the primaryContactAddress
    */
-  public void setKey(String key) {
-    this.key = key;
+  public String getPrimaryContactAddress() {
+    return primaryContactAddress;
   }
 
   /**
-   * @param name the name to set
+   * @return the primaryContactDescription
    */
-  public void setName(String name) {
-    this.name = name;
+  public String getPrimaryContactDescription() {
+    return primaryContactDescription;
   }
 
   /**
-   * @param password the password to set
+   * @return the primaryContactEmail
    */
-  public void setPassword(String password) {
-    this.password = password;
+  public String getPrimaryContactEmail() {
+    return primaryContactEmail;
+  }
+
+  /**
+   * @return the primaryContactName
+   */
+  public String getPrimaryContactName() {
+    return primaryContactName;
+  }
+
+  /**
+   * @return the primaryContactPhone
+   */
+  public String getPrimaryContactPhone() {
+    return primaryContactPhone;
+  }
+
+  /**
+   * @return the primaryContactType
+   */
+  public String getPrimaryContactType() {
+    return primaryContactType;
+  }
+
+  /**
+   * @param description the description to set
+   */
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  /**
+   * @param homepageURL the homepageURL to set
+   */
+  public void setHomepageURL(String homepageURL) {
+    this.homepageURL = homepageURL;
+  }
+
+  /**
+   * @param nodeContactEmail the nodeContactEmail to set
+   */
+  public void setNodeContactEmail(String nodeContactEmail) {
+    this.nodeContactEmail = nodeContactEmail;
+  }
+
+  /**
+   * @param nodeKey the nodeKey to set
+   */
+  public void setNodeKey(String nodeKey) {
+    this.nodeKey = nodeKey;
+  }
+
+  /**
+   * @param nodeName the nodeName to set
+   */
+  public void setNodeName(String nodeName) {
+    this.nodeName = nodeName;
+  }
+
+  /**
+   * @param primaryContactAddress the primaryContactAddress to set
+   */
+  public void setPrimaryContactAddress(String primaryContactAddress) {
+    this.primaryContactAddress = primaryContactAddress;
+  }
+
+  /**
+   * @param primaryContactDescription the primaryContactDescription to set
+   */
+  public void setPrimaryContactDescription(String primaryContactDescription) {
+    this.primaryContactDescription = primaryContactDescription;
+  }
+
+  /**
+   * @param primaryContactEmail the primaryContactEmail to set
+   */
+  public void setPrimaryContactEmail(String primaryContactEmail) {
+    this.primaryContactEmail = primaryContactEmail;
+  }
+
+  /**
+   * @param primaryContactName the primaryContactName to set
+   */
+  public void setPrimaryContactName(String primaryContactName) {
+    this.primaryContactName = primaryContactName;
+  }
+
+  /**
+   * @param primaryContactPhone the primaryContactPhone to set
+   */
+  public void setPrimaryContactPhone(String primaryContactPhone) {
+    this.primaryContactPhone = primaryContactPhone;
+  }
+
+  /**
+   * @param primaryContactType the primaryContactType to set
+   */
+  public void setPrimaryContactType(String primaryContactType) {
+    this.primaryContactType = primaryContactType;
   }
 
 }

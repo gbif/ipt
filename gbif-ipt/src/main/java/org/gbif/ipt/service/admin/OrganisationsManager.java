@@ -5,11 +5,13 @@ package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.registration.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
-import org.gbif.ipt.service.admin.impl.OrganisationManagerImpl;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
 
 import com.google.inject.ImplementedBy;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This interface details ALL methods associated with the Organisations associated with the IPT.
@@ -17,8 +19,8 @@ import java.io.IOException;
  * @author tim
  * @author josecuadra
  */
-@ImplementedBy(OrganisationManagerImpl.class)
-public interface OrganisationManager {
+@ImplementedBy(OrganisationsManagerImpl.class)
+public interface OrganisationsManager {
 
   /**
    * Associate a new organisation to this IPT installation, but doesnt persist the change.
@@ -26,6 +28,18 @@ public interface OrganisationManager {
    * @throws AlreadyExistingException
    */
   public void add(Organisation organisation) throws AlreadyExistingException;
+
+  /**
+   * Returns list of all associated organisations
+   * 
+   * @return
+   */
+  public List<Organisation> list();
+
+  /**
+   * Loads all user associated organisations from file into the manager
+   */
+  public void load() throws InvalidConfigException;
 
   /**
    * Saves all organisations (associated to this IPT) from the manager to file. Needs to be manually called if
