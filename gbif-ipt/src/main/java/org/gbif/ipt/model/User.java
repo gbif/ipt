@@ -1,6 +1,5 @@
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.model.registration.Organisation;
 
 import static com.google.common.base.Objects.equal;
 
@@ -31,7 +30,7 @@ public class User implements Serializable {
 
   public void addAssociatedOrganisation(Organisation org) {
     if (org != null) {
-      this.associatedOrganisations.add(UUID.fromString(org.getKey()));
+      this.associatedOrganisations.add(org.getKey());
     }
   }
 

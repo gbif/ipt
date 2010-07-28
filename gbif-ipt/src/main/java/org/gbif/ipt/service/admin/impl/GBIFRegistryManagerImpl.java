@@ -3,13 +3,13 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import org.gbif.ipt.model.registration.Organisation;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.registry.api.client.Gbrds;
+import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
-import org.gbif.registry.api.client.GbrdsOrganisation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -89,7 +89,7 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
     return Lists.transform(list, new Function<GbrdsOrganisation, Organisation>() {
       public Organisation apply(GbrdsOrganisation go) {
         Organisation o = new Organisation();
-        o.setKey(go.getKey());
+        o.setKey(go.getKey().toString());
         o.setName(go.getName());
         return o;
       }

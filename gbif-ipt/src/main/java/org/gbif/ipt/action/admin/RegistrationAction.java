@@ -4,7 +4,7 @@
 package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
-import org.gbif.ipt.model.registration.Organisation;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 
 import com.google.inject.Inject;
@@ -51,7 +51,8 @@ public class RegistrationAction extends POSTAction {
   @Override
   public String save() {
     if (organisation.getKey() != null && organisation.getPassword() != null) {
-      boolean validateStatus = registryManager.validateOrganisation(organisation.getKey(), organisation.getPassword());
+      boolean validateStatus = registryManager.validateOrganisation(organisation.getKey().toString(),
+          organisation.getPassword());
       if (validateStatus) {
         addActionMessage("This IPT instance has been associated to the organisation");
         return INPUT;

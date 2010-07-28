@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
-import org.gbif.ipt.model.registration.Organisation;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
@@ -22,9 +22,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 /**
  * @author tim
@@ -45,6 +45,15 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
     if (organisation != null) {
       addOrganisation(organisation);
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.gbif.ipt.service.admin.OrganisationsManager#get(java.lang.String)
+   */
+  public Organisation get(String key) {
+    return organisations.get(key);
   }
 
   public List<Organisation> list() {
@@ -70,11 +79,11 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
         }
       }
     } catch (FileNotFoundException e) {
-      log.debug(e);
+       log.debug(e);
       throw new InvalidConfigException(TYPE.ORGANISATION_CONFIG,
           "Couldnt read list of organisations associated to this IPT: " + e.getMessage());
     } catch (IOException e) {
-      log.error(e.getMessage(), e);
+       log.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.ORGANISATION_CONFIG,
           "Couldnt read list of organisations associated to this IPT: " + e.getMessage());
     } finally {
@@ -105,7 +114,7 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
   private Organisation addOrganisation(Organisation organisation) {
     if (organisation != null) {
       log.debug("Adding organisation " + organisation.getKey() + " - " + organisation.getName());
-      organisations.put(organisation.getKey(), organisation);
+      organisations.put(organisation.getKey().toString(), organisation);
     }
     return organisation;
   }

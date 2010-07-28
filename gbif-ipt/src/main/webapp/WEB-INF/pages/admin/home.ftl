@@ -22,7 +22,7 @@
 	</tr>
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/organisation.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
+		<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
 	  </td>
 	  <td>
 		<@s.text name="admin.home.editOrganisations"/>

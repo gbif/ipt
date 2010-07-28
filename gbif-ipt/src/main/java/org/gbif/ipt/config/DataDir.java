@@ -1,6 +1,7 @@
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
 import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 import org.gbif.ipt.utils.InputStreamUtils;
 
@@ -191,6 +192,9 @@ public class DataDir {
                 configFile("about.ftl"));
             org.gbif.ipt.utils.FileUtils.copyStreamToFile(streamUtils.classpathStream("/configDefault/users.xml"),
                 configFile(UserAccountManagerImpl.PERSISTENCE_FILE));
+            org.gbif.ipt.utils.FileUtils.copyStreamToFile(
+                streamUtils.classpathStream("/configDefault/organisations.xml"),
+                configFile(OrganisationsManagerImpl.PERSISTENCE_FILE));
           }
         } catch (IOException e) {
           log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
