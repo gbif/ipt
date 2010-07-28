@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.service.admin;
 
-import org.gbif.ipt.model.registration.Organisation;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.impl.GBIFRegistryManagerImpl;
 
 import com.google.inject.ImplementedBy;

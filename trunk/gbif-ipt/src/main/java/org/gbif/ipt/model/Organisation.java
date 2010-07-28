@@ -10,26 +10,38 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.gbif.ipt.model.registration;
+package org.gbif.ipt.model;
 
-import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Encapsulates all the information for an Organisation
  */
-public class Organisation extends BriefOrganisation implements Serializable {
+public class Organisation {
 
-  protected String description;
-  protected String homepageURL;
-  protected String primaryContactType;
-  protected String primaryContactName;
-  protected String primaryContactDescription;
-  protected String primaryContactAddress;
-  protected String primaryContactEmail;
-  protected String primaryContactPhone;
-  protected String nodeKey;
-  protected String nodeName;
-  protected String nodeContactEmail;
+  private UUID key;
+  private String description;
+  private String name;
+  private String password;
+  private String alias;
+  private String homepageURL;
+  private String primaryContactType;
+  private String primaryContactName;
+  private String primaryContactDescription;
+  private String primaryContactAddress;
+  private String primaryContactEmail;
+  private String primaryContactPhone;
+  private String nodeKey;
+  private String nodeName;
+  private String nodeContactEmail;
+  private boolean canHost;
+
+  /**
+   * @return the alias
+   */
+  public String getAlias() {
+    return alias;
+  }
 
   /**
    * @return the description
@@ -43,6 +55,20 @@ public class Organisation extends BriefOrganisation implements Serializable {
    */
   public String getHomepageURL() {
     return homepageURL;
+  }
+
+  /**
+   * @return the key
+   */
+  public UUID getKey() {
+    return key;
+  }
+
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
   }
 
   /**
@@ -64,6 +90,13 @@ public class Organisation extends BriefOrganisation implements Serializable {
    */
   public String getNodeName() {
     return nodeName;
+  }
+
+  /**
+   * @return the password
+   */
+  public String getPassword() {
+    return password;
   }
 
   /**
@@ -109,6 +142,27 @@ public class Organisation extends BriefOrganisation implements Serializable {
   }
 
   /**
+   * @return the canHost
+   */
+  public boolean isCanHost() {
+    return canHost;
+  }
+
+  /**
+   * @param alias the alias to set
+   */
+  public void setAlias(String alias) {
+    this.alias = alias;
+  }
+
+  /**
+   * @param canHost the canHost to set
+   */
+  public void setCanHost(boolean canHost) {
+    this.canHost = canHost;
+  }
+
+  /**
    * @param description the description to set
    */
   public void setDescription(String description) {
@@ -120,6 +174,20 @@ public class Organisation extends BriefOrganisation implements Serializable {
    */
   public void setHomepageURL(String homepageURL) {
     this.homepageURL = homepageURL;
+  }
+
+  /**
+   * @param key the key to set
+   */
+  public void setKey(String key) {
+    this.key = UUID.fromString(key);
+  }
+
+  /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
   }
 
   /**
@@ -141,6 +209,13 @@ public class Organisation extends BriefOrganisation implements Serializable {
    */
   public void setNodeName(String nodeName) {
     this.nodeName = nodeName;
+  }
+
+  /**
+   * @param password the password to set
+   */
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   /**

@@ -3,7 +3,7 @@
  */
 package org.gbif.ipt.service.admin;
 
-import org.gbif.ipt.model.registration.Organisation;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
@@ -28,6 +28,14 @@ public interface OrganisationsManager {
    * @throws AlreadyExistingException
    */
   public void add(Organisation organisation) throws AlreadyExistingException;
+
+  /**
+   * Returns a single organisation associated to the key
+   * 
+   * @param key
+   * @return
+   */
+  public Organisation get(String key);
 
   /**
    * Returns list of all associated organisations
