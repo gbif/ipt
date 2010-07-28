@@ -12,8 +12,7 @@ import static com.google.common.base.Objects.equal;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,7 +26,7 @@ import java.util.Set;
  * vocabulary.
  */
 public class VocabularyConcept implements Comparable {
-  private static Log log = LogFactory.getLog(VocabularyConcept.class);
+  private static Logger log = Logger.getLogger(VocabularyConcept.class);
 
   private Vocabulary vocabulary;
   private String identifier; // usually short, e.g. DE

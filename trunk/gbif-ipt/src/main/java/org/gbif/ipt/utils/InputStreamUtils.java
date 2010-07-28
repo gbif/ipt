@@ -1,5 +1,7 @@
 package org.gbif.ipt.utils;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,12 +9,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
-import org.apache.commons.io.LineIterator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class InputStreamUtils {
-  protected static final Log log = LogFactory.getLog(InputStreamUtils.class);
+  protected static final Logger log = Logger.getLogger(InputStreamUtils.class);
 
   public InputStream classpathStream(String path) {
     InputStream in = null;

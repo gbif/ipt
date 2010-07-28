@@ -16,8 +16,7 @@ import com.google.inject.Singleton;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 
@@ -38,7 +37,7 @@ import freemarker.template.Configuration;
  * 
  */
 public class IPTModule extends AbstractModule {
-  protected Log log = LogFactory.getLog(this.getClass());
+  protected Logger log = Logger.getLogger(this.getClass());
 
   @Override
   protected void configure() {

@@ -8,8 +8,7 @@ import com.google.inject.Singleton;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class DataDir {
   public static final String RESOURCES_DIR = "resources";
   public static final String LUCENE_DIR = "lucene";
 
-  private static Log log = LogFactory.getLog(DataDir.class);
+  private static Logger log = Logger.getLogger(DataDir.class);
 
   protected File dataDir;
   private File dataDirSettingFile;

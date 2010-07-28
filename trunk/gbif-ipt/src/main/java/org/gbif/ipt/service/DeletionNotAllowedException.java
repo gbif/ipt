@@ -1,6 +1,5 @@
 package org.gbif.ipt.service;
 
-import org.gbif.ipt.service.InvalidConfigException.TYPE;
 
 /** Exception thrown when removing an entity is not allowed for some reason
  * @author markus

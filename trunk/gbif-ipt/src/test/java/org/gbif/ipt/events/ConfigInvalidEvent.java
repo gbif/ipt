@@ -15,9 +15,9 @@
  */
 package org.gbif.ipt.events;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import org.gbif.ipt.service.InvalidConfigException;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * An event that can be fired when the {@link Config} is invalid. This event is

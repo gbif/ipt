@@ -7,15 +7,14 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * An Interceptor that checks if the basic IPT setup is complete and redirects to the respective setup page otherwise
  */
 public class SetupInterceptor extends AbstractInterceptor {
   public final String SETUP_RESULTNAME = "setupIncomplete";
-  private static Log log = LogFactory.getLog(SetupInterceptor.class);
+  private static Logger log = Logger.getLogger(SetupInterceptor.class);
   @Inject
   private ConfigManager configManager;
 

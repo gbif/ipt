@@ -3,17 +3,17 @@
  */
 package org.gbif.ipt.service.admin;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
-import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 
 import com.google.inject.ImplementedBy;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * This interface details ALL methods associated with the User accounts within the IPT.

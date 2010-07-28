@@ -17,12 +17,12 @@ package org.gbif.ipt.model.eml;
 
 import static com.google.common.base.Objects.equal;
 
+import com.google.common.base.Objects;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.google.common.base.Objects;
 
 /**
  * This class can be used to encapsulate temporal coverage information.

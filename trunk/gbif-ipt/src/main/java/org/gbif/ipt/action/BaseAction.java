@@ -16,8 +16,7 @@ import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.util.ValueStack;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -43,7 +42,7 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   /**
    * Occassionally Struts2 complains with it's own logging which seems like a Struts2 issue
    */
-  protected static Log log = LogFactory.getLog(BaseAction.class);
+  protected static Logger log = Logger.getLogger(BaseAction.class);
 
   protected Map<String, Object> session;
   @Inject

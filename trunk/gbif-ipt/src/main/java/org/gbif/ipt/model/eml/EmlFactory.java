@@ -15,12 +15,13 @@
  */
 package org.gbif.ipt.model.eml;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.gbif.ipt.model.Resource;
 
 import org.apache.commons.digester.Digester;
-import org.gbif.ipt.model.Resource;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class is considered a utility for testing but should be migrated to the

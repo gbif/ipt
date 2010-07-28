@@ -18,9 +18,6 @@ package org.gbif.ipt.model.eml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gbif.ipt.model.eml.Eml;
-import org.gbif.ipt.model.eml.Method;
-
 /**
  * The EML schema for methods is a sequence of repeating 
  * in the EML, it will always be a repetition of [methodStep, ?sampling, ?qualityControl]* 

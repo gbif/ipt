@@ -17,11 +17,11 @@ package org.gbif.ipt.model.eml;
 
 import static com.google.common.base.Objects.equal;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Encapsulates the descriptive elements of the geospatial coverage

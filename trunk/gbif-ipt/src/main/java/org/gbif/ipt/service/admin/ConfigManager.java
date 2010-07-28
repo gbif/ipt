@@ -3,13 +3,13 @@
  */
 package org.gbif.ipt.service.admin;
 
-import java.io.File;
-import java.net.URL;
-
 import org.gbif.ipt.config.ConfigManagerImpl;
 import org.gbif.ipt.service.InvalidConfigException;
 
 import com.google.inject.ImplementedBy;
+
+import java.io.File;
+import java.net.URL;
 
 /**
  * This interface details ALL methods associated with an IPT configuration.

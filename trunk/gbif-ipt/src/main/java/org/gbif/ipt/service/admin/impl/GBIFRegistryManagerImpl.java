@@ -7,9 +7,9 @@ import org.gbif.ipt.model.registration.Organisation;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
+import org.gbif.registry.api.client.GbrdsOrganisation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;

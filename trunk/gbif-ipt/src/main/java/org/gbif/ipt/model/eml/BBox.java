@@ -15,11 +15,11 @@
  */
 package org.gbif.ipt.model.eml;
 
-import java.io.Serializable;
-import java.util.Arrays;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Bounding box representation with 2 points. P1 has maximum latitude and

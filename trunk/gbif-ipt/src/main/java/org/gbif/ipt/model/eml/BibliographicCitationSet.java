@@ -15,10 +15,10 @@
  */
 package org.gbif.ipt.model.eml;
 
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 /**
  * Simple POJO container for an ordered list of bibliographic citations.

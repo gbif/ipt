@@ -3,8 +3,7 @@ package org.gbif.ipt.struts2;
 import com.opensymphony.xwork2.LocaleProvider;
 import com.opensymphony.xwork2.util.LocalizedTextUtil;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.displaytag.localization.I18nResourceProvider;
 
 import java.text.MessageFormat;
@@ -27,7 +26,7 @@ import javax.servlet.jsp.tagext.Tag;
  */
 
 public class SimpleTextProvider implements I18nResourceProvider {
-  protected static Log log = LogFactory.getLog(SimpleTextProvider.class);
+  protected static Logger log = Logger.getLogger(SimpleTextProvider.class);
   private static final String defaultBundle = "ApplicationResources";
   private Set<String> baseBundleNames = new HashSet<String>();
 

@@ -15,13 +15,14 @@
  */
 package org.gbif.ipt.events;
 
-import com.google.inject.Inject;
-
-import static org.apache.commons.lang.StringUtils.trimToNull;
 import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_BASE_URL;
 
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
+
+import com.google.inject.Inject;
+
+import static org.apache.commons.lang.StringUtils.trimToNull;
 
 /**
  * An example class that demonstrates using an {@link EventBus} for listening to

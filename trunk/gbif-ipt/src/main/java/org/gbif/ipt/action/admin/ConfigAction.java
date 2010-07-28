@@ -3,18 +3,14 @@
  */
 package org.gbif.ipt.action.admin;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 
 import com.google.inject.Inject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 

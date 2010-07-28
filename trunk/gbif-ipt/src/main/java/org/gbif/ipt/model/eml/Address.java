@@ -2,12 +2,12 @@ package org.gbif.ipt.model.eml;
 
 import static com.google.common.base.Objects.equal;
 
-import java.io.Serializable;
+import com.google.common.base.Objects;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import com.google.common.base.Objects;
+import java.io.Serializable;
 
 /**
  * This class is used to represent an address with address, city, province and
