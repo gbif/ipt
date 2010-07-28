@@ -17,8 +17,7 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ import javax.xml.parsers.SAXParser;
  */
 @Singleton
 public class ExtensionFactory {
-  protected static Log log = LogFactory.getLog(ExtensionFactory.class);
+  protected static Logger log = Logger.getLogger(ExtensionFactory.class);
   protected static HttpClient httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
   public static final String EXTENSION_NAMESPACE = "http://rs.gbif.org/extension/";
   private ThesaurusHandlingRule thesaurusRule;

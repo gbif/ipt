@@ -16,9 +16,10 @@
 package org.gbif.ipt.model.eml;
 
 import static com.google.common.base.Objects.equal;
-import java.io.Serializable;
 
 import com.google.common.base.Objects;
+
+import java.io.Serializable;
 
 /**
  * Encapsulates all the information for an Agent

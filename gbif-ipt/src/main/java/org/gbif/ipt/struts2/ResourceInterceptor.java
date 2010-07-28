@@ -13,8 +13,7 @@ import com.google.inject.Singleton;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import java.util.Map;
 
@@ -33,7 +32,7 @@ import java.util.Map;
  */
 @Singleton
 public class ResourceInterceptor extends AbstractInterceptor {
-  private static Log log = LogFactory.getLog(ResourceInterceptor.class);
+  private static Logger log = Logger.getLogger(ResourceInterceptor.class);
   @Inject
   private ResourceManager resourceManager;
   @Inject

@@ -14,8 +14,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import com.google.inject.Inject;
 
 import org.apache.commons.digester.Rule;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 
 import java.net.URL;
@@ -27,7 +26,7 @@ import java.net.URL;
  */
 public class ThesaurusHandlingRule extends Rule {
   public static final String ATTRIBUTE_THESAURUS = "thesaurus";
-  protected static Log log = LogFactory.getLog(ThesaurusHandlingRule.class);
+  protected static Logger log = Logger.getLogger(ThesaurusHandlingRule.class);
   private VocabulariesManager vocabManager;
 
   @Inject

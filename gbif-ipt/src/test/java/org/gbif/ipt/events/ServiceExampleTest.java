@@ -15,13 +15,14 @@
  */
 package org.gbif.ipt.events;
 
+import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_BASE_URL;
+
 import static com.google.inject.Scopes.SINGLETON;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_BASE_URL;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

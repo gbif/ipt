@@ -17,9 +17,9 @@ package org.gbif.ipt.model.eml;
 
 import static com.google.common.base.Objects.equal;
 
-import java.io.Serializable;
-
 import com.google.common.base.Objects;
+
+import java.io.Serializable;
 
 /**
  * Joint GeoTaxonomic Index (JGTI) Curatorial Unit

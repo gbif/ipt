@@ -15,15 +15,15 @@
  */
 package org.gbif.ipt.model.eml;
 
+import org.gbif.ipt.model.Resource;
+
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import org.gbif.ipt.model.Resource;
-
-import com.google.common.collect.Lists;
 
 /**
  * The EML model is a POJO representing the GBIF Extended Metadata Profile for

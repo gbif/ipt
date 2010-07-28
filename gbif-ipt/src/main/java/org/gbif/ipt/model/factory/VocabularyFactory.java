@@ -16,8 +16,7 @@ import com.google.inject.Inject;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -33,7 +32,7 @@ import javax.xml.parsers.SAXParser;
  */
 public class VocabularyFactory {
   public static final String VOCABULARY_NAMESPACE = "http://rs.gbif.org/thesaurus/";
-  protected static Log log = LogFactory.getLog(VocabularyFactory.class);
+  protected static Logger log = Logger.getLogger(VocabularyFactory.class);
   private HttpClient httpClient;
   private SAXParser sax;
 

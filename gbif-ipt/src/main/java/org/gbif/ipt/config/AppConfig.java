@@ -9,8 +9,7 @@ import com.google.inject.Singleton;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +38,7 @@ public class AppConfig {
   public static final String ANALYTICS_KEY = "analytics.key";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";;
   private Properties properties = new Properties();
-  private Log log = LogFactory.getLog(this.getClass());
+  private Logger log = Logger.getLogger(this.getClass());
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 

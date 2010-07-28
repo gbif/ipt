@@ -15,12 +15,12 @@
  */
 package org.gbif.ipt.model.eml;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.google.common.collect.Lists;
 
 import org.apache.commons.lang.StringUtils;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Simple POJO container for an ordered list of keywords and optionally,

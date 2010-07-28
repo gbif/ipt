@@ -24,8 +24,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 /**
  * A wrapper kept in a users session when managing one resource.
@@ -40,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  */
 @SessionScoped
 public class ResourceManagerSession {
-  private static Log log = LogFactory.getLog(ResourceManagerSession.class);
+  private static Logger log = Logger.getLogger(ResourceManagerSession.class);
   @Inject
   private ResourceManager resourceManager;
 
