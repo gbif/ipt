@@ -9,6 +9,7 @@ import org.gbif.ipt.model.voc.ResourceType;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Singleton;
@@ -17,7 +18,10 @@ import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,15 +138,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @return
    */
   private Resource loadFromDir(File resourceDir) throws InvalidConfigException {
-    Resource res = new Resource();
-    res.setShortname(resourceDir.getName());
-    res.setCreated(new Date());
-    User u = new User();
-    u.setEmail("test@gbif.org");
-    u.setLastname("test");
-    res.setCreator(u);
-    log.debug("Loaded resource " + res.getShortname());
-    return res;
+    File resCfg = dataDir.resourceFile(resourceDir.getName(), PERSISTENCE_FILE);
+    InputStream input;
+    Resource resource = null;
+    try {
+      input = new FileInputStream(resCfg);
+      resource = (Resource) xstream.fromXML(input);
+      resource.setShortname(resourceDir.getName());
+      log.debug("Loaded resource " + resource.getShortname());
+    } catch (FileNotFoundException e) {
+      log.error("Cannot load main resource configuration", e);
+      throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot load main resource configuration: "
+          + e.getMessage());
+    }
+    return resource;
   }
 
   public void save(Resource resource) throws IOException {
@@ -151,6 +160,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     // persist data
     Writer writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(dataDir.resourceFile(resource, PERSISTENCE_FILE));
     xstream.toXML(resource, writer);
+    // add to internal map
+    addResource(resource);
   }
 
   /*

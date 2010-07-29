@@ -4,7 +4,9 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><@s.text name="manage.home.title"/></h1>
+<br/>
 
+<#if (resources?size>0)>
 <table>
 	<tr>
 		<th></th>
@@ -55,8 +57,19 @@
 </#list>
 </table>
 
+<#else>
+	<p>None, please create a resource or ask existing managers to add you to their resource(s).</p>
+</#if>
 
-<@s.form cssClass="ftlTopForm" action="create.do" method="get">
+
+<br/>
+<hr/>
+<h3>Create New Resource</h3>
+
+<@s.form cssClass="ftlTopForm" action="create.do" method="post">
+  	<@input name="shortname" keyBase="manage.resource.create." size=40/>
+  	<@input name="existing" keyBase="manage.resource.create." size=80/>
+  
   <div class="buttons">
  	<@s.submit cssClass="button" name="create" key="manage.home.button.createNewResource"/>
   </div>	

@@ -28,11 +28,13 @@ public class ResourceSupport {
   private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
 
   public void validate(BaseAction action, Resource resource) {
-    if (resource.getShortname().length() < 3) {
-      action.addFieldError("resource.shortname", action.getText("validation.shortname.required"));
-    }
-    if (resource.getTitle().length() < 3) {
-      action.addFieldError("resource.title", action.getText("validation.title.required"));
+    if (resource != null) {
+      if (resource.getShortname().length() < 3) {
+        action.addFieldError("resource.shortname", action.getText("validation.shortname.required"));
+      }
+      if (resource.getTitle().length() < 3) {
+        action.addFieldError("resource.title", action.getText("validation.title.required"));
+      }
     }
   }
 }
