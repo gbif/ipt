@@ -195,7 +195,9 @@ ul.fielderror{
 	padding:0;
 	margin:0;
 }
-
+.warn{
+	color: red;
+}
 .buttons{
 	margin-top: 1em;
 }

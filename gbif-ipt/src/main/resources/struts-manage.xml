@@ -30,13 +30,30 @@
 		</action>
 		
 		<action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">104857600</param>
+			</interceptor-ref>
+			<interceptor-ref name="managerStack"/>
 			<result name="input">/WEB-INF/pages/manage/create_resource.ftl</result>
-			<result>/WEB-INF/pages/manage/resource.ftl</result>
+			<result type="redirect">resource.do</result>
 		</action>
 
-		<action name="resource" class="org.gbif.ipt.action.manage.ResourceAction">
-			<result name="input">/WEB-INF/pages/manage/resource.ftl</result>
-			<result>/WEB-INF/pages/manage/resource.ftl</result>
+		<action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
+			<result>/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
+		
+		<action name="metadata" class="org.gbif.ipt.action.manage.MetadataAction">
+			<result name="input">/WEB-INF/pages/manage/metadata.ftl</result>
+			<result>/WEB-INF/pages/manage/metadata.ftl</result>
+		</action>
+
+		<action name="sources" class="org.gbif.ipt.action.manage.MetadataAction">
+			<result>/WEB-INF/pages/manage/metadata.ftl</result>
+		</action>
+
+		<action name="generate" class="org.gbif.ipt.action.manage.MetadataAction">
+			<result>/WEB-INF/pages/manage/metadata.ftl</result>
+		</action>
+
 	</package>
 </struts>

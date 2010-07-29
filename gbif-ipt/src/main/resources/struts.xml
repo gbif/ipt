@@ -68,13 +68,6 @@
 				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
-			<interceptor-stack name="uploadStack">
-				<interceptor-ref name="setupRedirect"/>
-				<interceptor-ref name="fileUpload">
-					<param name="maximumSize">104857600</param>
-				</interceptor-ref>
-				<interceptor-ref name="iptStackWithoutSetup"/>
-			</interceptor-stack>			
 		</interceptors>
 		
 		<default-interceptor-ref name="iptStack"/>
