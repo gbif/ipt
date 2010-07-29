@@ -30,7 +30,7 @@
 	<td>${r.modified?date}</td>
 	<td>
 		<#if r.status=='PRIVATE'>
-			You and ${r.managers.size()} others
+			You and ${(r.managers?size)!0} others
 		<#else>
 			Everyone
 		</#if>
