@@ -3,6 +3,7 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.model.voc.ResourceType;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -11,11 +12,13 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Singleton;
+import com.thoughtworks.xstream.XStream;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +27,15 @@ import java.util.Map;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
+  // key=shortname, value=resource
   private Map<String, Resource> resources = new HashMap<String, Resource>();
+  public static final String PERSISTENCE_FILE = "resource.xml";
+  private final XStream xstream = new XStream();
+
+  public ResourceManagerImpl() {
+    super();
+    defineXstreamMapping();
+  }
 
   private void addResource(Resource res) {
     resources.put(res.getShortname(), res);
@@ -35,10 +46,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
-  public Resource create(String shortname) throws AlreadyExistingException {
+  public Resource create(String shortname, User creator) throws AlreadyExistingException {
     Resource res = new Resource();
     res.setShortname(shortname);
     res.setCreated(new Date());
+    res.setCreator(creator);
     // create dir
     try {
       save(res);
@@ -47,6 +59,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       log.error("Error creating resource", e);
     }
     return res;
+  }
+
+  /**
+   * 
+   */
+  private void defineXstreamMapping() {
+    xstream.alias("resource", Resource.class);
+    xstream.addImplicitCollection(Resource.class, "managers");
+    xstream.omitField(Resource.class, "eml");
+    xstream.omitField(Resource.class, "config");
+    // persist only emails for users
+    xstream.registerConverter(new UserEmailConverter());
+    xstream.alias("user", User.class);
+    xstream.useAttributeFor(User.class, "email");
   }
 
   public void delete(Resource resource) throws IOException {
@@ -116,6 +142,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   public void save(Resource resource) throws IOException {
     File resDir = dataDir.resourceFile(resource, "");
     FileUtils.forceMkdir(resDir);
+    // persist data
+    Writer writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(dataDir.resourceFile(resource, PERSISTENCE_FILE));
+    xstream.toXML(resource, writer);
   }
 
   /*

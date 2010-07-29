@@ -26,7 +26,7 @@ import java.util.List;
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
-  public Resource create(String shortname) throws AlreadyExistingException;
+  public Resource create(String shortname, User creator) throws AlreadyExistingException;
 
   public void delete(Resource resource) throws IOException;
 
