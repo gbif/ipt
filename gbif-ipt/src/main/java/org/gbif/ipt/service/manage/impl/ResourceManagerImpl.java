@@ -70,7 +70,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    */
   private void defineXstreamMapping() {
     xstream.alias("resource", Resource.class);
-    xstream.addImplicitCollection(Resource.class, "managers");
     xstream.omitField(Resource.class, "eml");
     xstream.omitField(Resource.class, "config");
     // persist only emails for users
