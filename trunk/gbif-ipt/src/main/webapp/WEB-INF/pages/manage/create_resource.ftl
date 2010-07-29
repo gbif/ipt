@@ -29,7 +29,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <@s.form cssClass="ftlTopForm" action="resource.do" method="post">
   <div>
-  	<@input name="id" size=40/>
+  	<@input name="resource.shortname" size=40/>
   	<@select name="type" options={"blank":"resource.source.blank", "dwca":"resource.source.dwca", "metadata":"resource.source.metadata"} value="blank" />
   </div>
   <#-- different divs to select between -->

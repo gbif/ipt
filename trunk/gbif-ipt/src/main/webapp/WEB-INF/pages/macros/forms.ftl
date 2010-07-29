@@ -1,8 +1,8 @@
-<#macro input name keyBase="" type="text" size=40 disabled=false>
+<#macro input name value="-99999" keyBase="" type="text" size=40 disabled=false>
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
 	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
-	<input type="${type}" id="${name}" name="${name}" value="<@s.property value="${name}"/>" size="${size}" <#if disabled>readonly="readonly"</#if>/>
+	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" size="${size}" <#if disabled>readonly="readonly"</#if>/>
   </div>
 </#macro> 
 

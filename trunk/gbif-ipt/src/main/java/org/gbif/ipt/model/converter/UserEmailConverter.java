@@ -36,16 +36,12 @@ public class UserEmailConverter implements Converter {
 
   public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
     User u = (User) value;
-    writer.startNode("email");
     writer.setValue(u.getEmail());
-    writer.endNode();
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
     User u = new User();
-    reader.moveDown();
     u.setEmail(reader.getValue());
-    reader.moveUp();
     return u;
   }
 

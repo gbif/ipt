@@ -40,6 +40,8 @@
 			<interceptor name="keepRedirectMessages" class="org.gbif.ipt.struts2.RedirectMessageInterceptor"/>
 			<!-- custom interceptor to redirect to the basic setup pages in case basic configuration is missing -->
 			<interceptor name="setupRedirect" class="org.gbif.ipt.struts2.SetupInterceptor"/>
+			<!-- interceptor verifying resource authorisation and managing the resource manager sessions -->
+			<interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceInterceptor"/>
 			
 			<!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
 			<interceptor-stack name="iptStackWithoutSetup">
@@ -63,6 +65,7 @@
 			<interceptor-stack name="managerStack">
 				<interceptor-ref name="setupRedirect"/>
 				<interceptor-ref name="requireManager"/>
+				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			<interceptor-stack name="uploadStack">
