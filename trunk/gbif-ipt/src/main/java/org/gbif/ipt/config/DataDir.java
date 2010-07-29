@@ -1,5 +1,6 @@
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
 import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
@@ -125,6 +126,10 @@ public class DataDir {
    */
   public File luceneDir() {
     return dataFile("lucene");
+  }
+
+  public File resourceFile(Resource resource, String path) {
+    return resourceFile(resource.getShortname(), path);
   }
 
   /**

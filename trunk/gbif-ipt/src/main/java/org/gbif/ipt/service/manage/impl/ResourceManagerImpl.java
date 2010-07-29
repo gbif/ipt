@@ -5,15 +5,19 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.model.voc.ResourceType;
+import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Singleton;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +35,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
-  public Resource create(String shortname) {
-    return new Resource();
+  public Resource create(String shortname) throws AlreadyExistingException {
+    Resource res = new Resource();
+    res.setShortname(shortname);
+    res.setCreated(new Date());
+    // create dir
+    try {
+      save(res);
+      log.debug("Created resource " + res.getShortname());
+    } catch (IOException e) {
+      log.error("Error creating resource", e);
+    }
+    return res;
   }
 
   public void delete(Resource resource) throws IOException {
@@ -94,13 +108,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private Resource loadFromDir(File resourceDir) throws InvalidConfigException {
     Resource res = new Resource();
     res.setShortname(resourceDir.getName());
+    res.setCreated(new Date());
     log.debug("Loaded resource " + res.getShortname());
     return res;
   }
 
   public void save(Resource resource) throws IOException {
-    // TODO Auto-generated method stub
-
+    File resDir = dataDir.resourceFile(resource, "");
+    FileUtils.forceMkdir(resDir);
   }
 
   /*

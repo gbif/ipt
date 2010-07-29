@@ -5,7 +5,6 @@ import org.gbif.ipt.action.manage.ResourceManagerSession;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
-import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Inject;
@@ -26,8 +25,6 @@ import java.util.Map;
  * - any admin is granted access
  * - the resource creator is granted access
  * - any manager listed as additional managers in the resource is granted access
- * - a resource which is linked to an organisation already is allowed to be managed by any manager listed in the
- * organisation
  * - anyone else is rejected!
  */
 @Singleton
@@ -35,8 +32,6 @@ public class ResourceInterceptor extends AbstractInterceptor {
   private static Logger log = Logger.getLogger(ResourceInterceptor.class);
   @Inject
   private ResourceManager resourceManager;
-  @Inject
-  private UserAccountManager userManager;
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
@@ -74,8 +69,12 @@ public class ResourceInterceptor extends AbstractInterceptor {
     if (resource.getCreator().equals(user)) {
       return true;
     }
-    if (user.hasAdminRights()) {
-      return true;
+    if (user.hasManagerRights()) {
+      for (String allowedEmail : resource.getManagers()) {
+        if (user.getEmail().equalsIgnoreCase(allowedEmail)) {
+          return true;
+        }
+      }
     }
     return false;
   }

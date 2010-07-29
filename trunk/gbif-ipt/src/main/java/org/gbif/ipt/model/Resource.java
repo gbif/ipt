@@ -10,6 +10,8 @@ import com.google.common.base.Objects;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The main class to represent an IPT resource.
@@ -26,7 +28,7 @@ public class Resource implements Serializable {
   private String title;
   private String description;
   private ResourceType type;
-  private PublicationStatus status;
+  private PublicationStatus status = PublicationStatus.PRIVATE;
   // properties which are only available when fully loaded from the config files
   private Eml eml;
   private ResourceConfiguration config;
@@ -35,6 +37,11 @@ public class Resource implements Serializable {
   private Date created = new Date();
   private User modifier;
   private Date modified;
+  private Set<String> managers = new HashSet<String>();
+
+  public void addManagers(String email) {
+    this.managers.add(email);
+  }
 
   @Override
   public boolean equals(Object other) {
@@ -63,6 +70,10 @@ public class Resource implements Serializable {
   public String getGuid() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public Set<String> getManagers() {
+    return managers;
   }
 
   public Date getModified() {
@@ -96,10 +107,16 @@ public class Resource implements Serializable {
 
   public void setCreated(Date created) {
     this.created = created;
+    if (modified == null) {
+      modified = created;
+    }
   }
 
   public void setCreator(User creator) {
     this.creator = creator;
+    if (modifier == null) {
+      modifier = creator;
+    }
   }
 
   public void setDescription(String description) {
@@ -109,6 +126,10 @@ public class Resource implements Serializable {
   public void setGuid(String guid) {
     // TODO Auto-generated method stub
 
+  }
+
+  public void setManagers(Set<String> managers) {
+    this.managers = managers;
   }
 
   public void setModified(Date modified) {
