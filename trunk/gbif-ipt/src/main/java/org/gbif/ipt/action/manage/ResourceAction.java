@@ -74,7 +74,7 @@ public class ResourceAction extends POSTAction {
   public String save() {
     if (id != null) {
       try {
-        Resource res = resourceManager.create(id);
+        Resource res = resourceManager.create(id, getCurrentUser());
         ms.load(getCurrentUser(), res);
       } catch (AlreadyExistingException e) {
         addFieldError("id", "Resource exists already");

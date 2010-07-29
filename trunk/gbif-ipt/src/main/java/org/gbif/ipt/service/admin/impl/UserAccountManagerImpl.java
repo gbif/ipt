@@ -92,6 +92,12 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   private void defineXstreamMapping() {
     xstream.alias("user", User.class);
+    xstream.useAttributeFor(User.class, "email");
+    xstream.useAttributeFor(User.class, "password");
+    xstream.useAttributeFor(User.class, "firstname");
+    xstream.useAttributeFor(User.class, "lastname");
+    xstream.useAttributeFor(User.class, "role");
+    xstream.useAttributeFor(User.class, "lastLogin");
   }
 
   public User delete(String email) throws DeletionNotAllowedException {
