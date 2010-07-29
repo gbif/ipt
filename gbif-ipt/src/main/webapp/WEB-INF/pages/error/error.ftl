@@ -7,9 +7,9 @@
 <p>It seems you have discovered an unforseen error:<p/>
 
 <pre>
-${exception.message!"unknown error, please see your logs"}
+      <@s.property value="%{exception.message}"/>
 </pre>
-
+    
 [#if adminRights]
 <p><a href="${baseURL}/admin/logs.do">View IPT logs</a></p>
 [/#if]
@@ -22,6 +22,11 @@ If you think this shouldnt have happened, would you mind helping us to improve t
 Thanks a million, the IPT development team.
 </p>
 
+<hr/>
+<h3>Technical Details</h3>
+<p>
+  <@s.property value="%{exceptionStack}"/>
+</p>
 
 
 

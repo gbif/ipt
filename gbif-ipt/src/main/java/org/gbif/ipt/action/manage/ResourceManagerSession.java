@@ -47,12 +47,30 @@ public class ResourceManagerSession {
   private Eml eml;
   private User manager;
 
-  public String getCurrentResourceShortname() {
-    return resource.getShortname();
+  public Eml getEml() {
+    return eml;
+  }
+
+  public User getManager() {
+    return manager;
+  }
+
+  public Resource getResource() {
+    return resource;
   }
 
   public void load(User user, Resource resource) {
     this.manager = user;
+    this.resource = resource;
+    this.eml = new Eml();
     log.info("Loading new manager resource " + resource.getShortname() + " for user " + user.getEmail());
+  }
+
+  public void setEml(Eml eml) {
+    this.eml = eml;
+  }
+
+  public void setResource(Resource resource) {
+    this.resource = resource;
   }
 }

@@ -27,7 +27,7 @@ import java.util.Map;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
-  // key=shortname, value=resource
+  // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
   private final XStream xstream = new XStream();
@@ -38,7 +38,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   private void addResource(Resource res) {
-    resources.put(res.getShortname(), res);
+    resources.put(res.getShortname().toLowerCase(), res);
     log.debug("Added resource " + res.getShortname());
   }
 
@@ -77,7 +77,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   public void delete(Resource resource) throws IOException {
     // TODO Auto-generated method stub
-
   }
 
   /*
@@ -85,7 +84,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#get(java.lang.String)
    */
   public Resource get(String shortname) {
-    return new Resource();
+    if (shortname == null) {
+      return null;
+    }
+    return resources.get(shortname.toLowerCase());
   }
 
   /*

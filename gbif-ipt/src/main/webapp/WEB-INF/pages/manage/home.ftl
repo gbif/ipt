@@ -68,7 +68,7 @@
 </table>
 
 
-<@s.form cssClass="ftlTopForm" action="resource.do" method="get">
+<@s.form cssClass="ftlTopForm" action="create.do" method="get">
   <div class="buttons">
  	<@s.submit cssClass="button" name="create" key="manage.home.button.createNewResource"/>
   </div>	

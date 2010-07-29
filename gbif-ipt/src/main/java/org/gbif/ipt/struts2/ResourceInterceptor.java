@@ -8,7 +8,6 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.manage.ResourceManager;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
@@ -27,11 +26,12 @@ import java.util.Map;
  * - any manager listed as additional managers in the resource is granted access
  * - anyone else is rejected!
  */
-@Singleton
 public class ResourceInterceptor extends AbstractInterceptor {
   private static Logger log = Logger.getLogger(ResourceInterceptor.class);
   @Inject
   private ResourceManager resourceManager;
+  @Inject
+  private ResourceManagerSession rms;
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
@@ -42,7 +42,7 @@ public class ResourceInterceptor extends AbstractInterceptor {
       // already loaded?
       Map session = invocation.getInvocationContext().getSession();
       ResourceManagerSession rms = (ResourceManagerSession) session.get(Constants.SESSION_RESOURCE);
-      if (rms != null && rms.getCurrentResourceShortname().equalsIgnoreCase(requestedResource)) {
+      if (rms != null && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
         // yes - exists and is the same. Ignore request param
       } else {
         // nope - different or first one
@@ -51,12 +51,17 @@ public class ResourceInterceptor extends AbstractInterceptor {
         if (resource == null) {
           return BaseAction.NOT_FOUND;
         }
+        // already loaded?
+        if (rms != null && rms.getResource() != null
+            && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
+          return invocation.invoke();
+        }
         // authorized?
         User user = (User) session.get(Constants.SESSION_USER);
         if (user == null || !isAuthorized(user, resource, invocation)) {
           return BaseAction.NOT_ALLOWED;
         }
-        switchResource(user, resource, session);
+        switchResource(user, resource);
       }
     }
     return invocation.invoke();
@@ -66,7 +71,7 @@ public class ResourceInterceptor extends AbstractInterceptor {
     if (user.hasAdminRights()) {
       return true;
     }
-    if (resource.getCreator().equals(user)) {
+    if (resource != null && resource.getCreator() != null && resource.getCreator().equals(user)) {
       return true;
     }
     if (user.hasManagerRights()) {
@@ -79,12 +84,12 @@ public class ResourceInterceptor extends AbstractInterceptor {
     return false;
   }
 
-  private void switchResource(User user, Resource resource, Map session) {
-    ResourceManagerSession rms = (ResourceManagerSession) session.get(Constants.SESSION_RESOURCE);
+  private void switchResource(User user, Resource resource) {
+//    ResourceManagerSession rms = (ResourceManagerSession) session.get(Constants.SESSION_RESOURCE);
     if (rms == null) {
-      log.warn("ResourceManagerSession null in resource interceptor");
-    } else {
-      rms.load(user, resource);
+      rms = new ResourceManagerSession();
+      log.info("Created new ResourceManagerSession");
     }
+    rms.load(user, resource);
   }
 }

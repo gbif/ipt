@@ -8,12 +8,8 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import com.google.inject.Inject;
 
 public class ResourceAction extends POSTAction {
-  public enum RESOURCE_SOURCE {
-    blank, dwca, metadata
-  }
-
   @Inject
-  private ResourceManager resourceManager;;
+  private ResourceManager resourceManager;
   private String r;
 
   @Inject
@@ -24,37 +20,6 @@ public class ResourceAction extends POSTAction {
   public String delete() {
     // TODO Auto-generated method stub
     return super.delete();
-  }
-
-  @Override
-  public String execute() {
-    // if notFound was set to true during prepare() the supplied id parameter didnt exist - return a 404!
-    if (notFound) {
-      return NOT_FOUND;
-    }
-    // if this is a GET request we request the INPUT form
-    if (isHttpPost()) {
-      // if its a POST we either save or delete
-      // suplied default methods which be overridden
-      String result;
-      if (delete) {
-        result = delete();
-      } else {
-        result = save();
-      }
-      // check again if notFound was set
-      // this also allows the load() or delete() method to set the flag
-      if (notFound) {
-        return NOT_FOUND;
-      } else {
-        return result;
-      }
-    } else {
-      if (r != null) {
-        return SUCCESS;
-      }
-      return INPUT;
-    }
   }
 
   public ResourceManagerSession getMs() {

@@ -29,8 +29,13 @@
 			<result>/WEB-INF/pages/manage/home.ftl</result>
 		</action>
 		
-		<action name="resource" class="org.gbif.ipt.action.manage.ResourceAction">
+		<action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
 			<result name="input">/WEB-INF/pages/manage/create_resource.ftl</result>
+			<result>/WEB-INF/pages/manage/resource.ftl</result>
+		</action>
+
+		<action name="resource" class="org.gbif.ipt.action.manage.ResourceAction">
+			<result name="input">/WEB-INF/pages/manage/resource.ftl</result>
 			<result>/WEB-INF/pages/manage/resource.ftl</result>
 		</action>
 	</package>
