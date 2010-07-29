@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * TODO: Documentation.
@@ -31,7 +31,7 @@ public class ExtensionFactoryTest {
 
   private ExtensionFactory getFactory() throws ParserConfigurationException, SAXException {
     IPTModule mod = new IPTModule();
-    SAXParser sax = mod.provideNsAwareSaxParser();
+    SAXParserFactory sax = mod.provideNsAwareSaxParserFactory();
     ExtensionFactory factory = new ExtensionFactory(new ThesaurusHandlingRule(new MockVocabularyManager()), sax);
     return factory;
   }

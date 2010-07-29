@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 import java.io.File;
 
 import javax.servlet.ServletContext;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -91,19 +90,19 @@ public class IPTModule extends AbstractModule {
   }
 
   @Provides
-  @Singleton
   @Inject
-  public SAXParser provideNsAwareSaxParser() {
-    SAXParserFactory saxf = SAXParserFactory.newInstance();
-    SAXParser sax = null;
+  @Singleton
+  public SAXParserFactory provideNsAwareSaxParserFactory() {
+    SAXParserFactory saxf = null;
     try {
+      ;
+      saxf = SAXParserFactory.newInstance();
       saxf.setValidating(false);
       saxf.setNamespaceAware(true);
-      sax = saxf.newSAXParser();
     } catch (Exception e) {
-      log.error("Cant create namespace aware SAX Parser: " + e.getMessage(), e);
+      log.error("Cant create namespace aware SAX Parser Factory: " + e.getMessage(), e);
     }
-    return sax;
+    return saxf;
   }
 
   @Provides

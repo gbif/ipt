@@ -71,6 +71,7 @@ public class DwCExtensionsAction extends POSTAction {
   @Override
   public String delete() {
     extensionManager.delete(id);
+    addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
     return SUCCESS;
   }
 
@@ -110,11 +111,11 @@ public class DwCExtensionsAction extends POSTAction {
     try {
       extensionURL = new URL(url);
       extensionManager.install(extensionURL);
-      addActionMessage(getText("admin.extension.install.success", id));
+      addActionMessage(getText("admin.extension.install.success", new String[]{url}));
     } catch (Exception e) {
       log.debug(e);
-      System.out.println(getText("admin.extension.install.error", new String[]{id}));
-      addActionError(getText("admin.extension.install.error", new String[]{id}));
+      System.out.println(getText("admin.extension.install.error", new String[]{url}));
+      addActionError(getText("admin.extension.install.error", new String[]{url}));
     }
   }
 

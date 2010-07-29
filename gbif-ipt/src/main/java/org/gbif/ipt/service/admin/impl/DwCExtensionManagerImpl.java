@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 /**
  * @author tim
  */
@@ -167,6 +169,9 @@ public class DwCExtensionManagerImpl extends BaseManager implements DwCExtension
     } catch (SAXException e) {
       log.error("Cant parse local extension file", e);
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant parse local extension file");
+    } catch (ParserConfigurationException e) {
+      log.error("Cant create sax parser", e);
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Cant create sax parser");
     } finally {
       if (fileIn != null) {
         try {
