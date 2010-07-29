@@ -28,16 +28,22 @@ public class Resource implements Serializable {
   private String title;
   private String description;
   private ResourceType type;
-  private PublicationStatus status = PublicationStatus.PRIVATE;
+  private PublicationStatus status;
   // properties which are only available when fully loaded from the config files
   private Eml eml;
   private ResourceConfiguration config;
   // resource meta-metadata
   private User creator;
-  private Date created = new Date();
+  private Date created;
   private User modifier;
   private Date modified;
-  private Set<String> managers = new HashSet<String>();
+  private Set<String> managers;
+
+  public Resource() {
+    super();
+    managers = new HashSet<String>();
+    status = PublicationStatus.PRIVATE;
+  }
 
   public void addManagers(String email) {
     this.managers.add(email);

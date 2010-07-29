@@ -28,21 +28,23 @@ public class UserSupport {
   private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
 
   public void validate(BaseAction action, User user) {
-    if (user.getEmail().length() < 3) {
-      action.addFieldError("user.email", action.getText("validation.email.required"));
-    } else {
-      if (!emailPattern.matcher(user.getEmail()).matches()) {
-        action.addFieldError("user.email", action.getText("validation.email.invalid"));
+    if (user != null) {
+      if (user.getEmail().length() < 3) {
+        action.addFieldError("user.email", action.getText("validation.email.required"));
+      } else {
+        if (!emailPattern.matcher(user.getEmail()).matches()) {
+          action.addFieldError("user.email", action.getText("validation.email.invalid"));
+        }
       }
-    }
-    if (user.getFirstname().length() < 2) {
-      action.addFieldError("user.firstname", action.getText("validation.firstname.required"));
-    }
-    if (user.getLastname().length() < 2) {
-      action.addFieldError("user.lastname", action.getText("validation.lastname.required"));
-    }
-    if (user.getPassword().length() < 4) {
-      action.addFieldError("user.password", action.getText("validation.password.required"));
+      if (user.getFirstname().length() < 2) {
+        action.addFieldError("user.firstname", action.getText("validation.firstname.required"));
+      }
+      if (user.getLastname().length() < 2) {
+        action.addFieldError("user.lastname", action.getText("validation.lastname.required"));
+      }
+      if (user.getPassword().length() < 4) {
+        action.addFieldError("user.password", action.getText("validation.password.required"));
+      }
     }
   }
 }

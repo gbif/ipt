@@ -5,7 +5,17 @@
 		width: 125px;
 	}
 	</style>
-<#include "/WEB-INF/pages/inc/menu.ftl">
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#type").change(function(){
+   		if ($(this).val()=="dwca") {
+		   	$("#dwca").show();
+   		}else{
+		   	$("#dwca").hide();
+   		}
+   	});
+});
+</script><#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1>${ms.resource.title!ms.resource.shortname}</h1>
