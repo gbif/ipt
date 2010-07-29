@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 /**
  * Manager for all vocabulary related methods. Keeps an internal map of locally existing and parsed vocabularies which
  * is keyed on a normed filename derived from a vocabularies URL. We use this derived filename instead of the proper URL
@@ -191,6 +193,8 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       log.error("Cant access local vocabulary file", e);
     } catch (SAXException e) {
       log.error("Cant parse local vocabulary file", e);
+    } catch (ParserConfigurationException e) {
+      log.error("Cant create sax parser", e);
     } finally {
       if (fileIn != null) {
         try {
