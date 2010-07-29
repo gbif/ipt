@@ -5,18 +5,6 @@
 
 <h1><@s.text name="manage.home.title"/></h1>
 
-<p>
-	Notes:
-	<ul>
-		<li>An administrator can grant privileges to multiple users to manage a single resource</li>
-		<li>A resource may be visible to you and other managers only</li>
-		<li>A resource may be made visible to everyone</li>
-		<li>A registered resource is considered <b>published</b> through GBIF and therefore must remain visible to everyone</li>
-		<li>Any resource may be deleted</li>
-	</ul>
-</p>
-
-<!-- Quick hack - REDO this!!! Internationalise this!!! -->
 <table>
 	<tr>
 		<th></th>

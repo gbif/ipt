@@ -137,6 +137,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     Resource res = new Resource();
     res.setShortname(resourceDir.getName());
     res.setCreated(new Date());
+    User u = new User();
+    u.setEmail("test@gbif.org");
+    u.setLastname("test");
+    res.setCreator(u);
     log.debug("Loaded resource " + res.getShortname());
     return res;
   }
