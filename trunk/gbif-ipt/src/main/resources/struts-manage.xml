@@ -34,6 +34,7 @@
 				<param name="maximumSize">104857600</param>
 			</interceptor-ref>
 			<interceptor-ref name="managerStack"/>
+			<result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
 			<result type="redirect">resource.do</result>
 		</action>
 

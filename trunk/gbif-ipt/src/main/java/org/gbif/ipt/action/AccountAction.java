@@ -20,7 +20,7 @@ public class AccountAction extends POSTAction {
   private User user;
 
   @Override
-  public String execute() {
+  public String execute() throws Exception {
     // check if any user is logged in right now - otherwise redirect to login page
     if (user == null) {
       return LOGIN_PAGE;

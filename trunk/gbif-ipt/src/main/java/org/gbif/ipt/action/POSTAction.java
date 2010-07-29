@@ -17,7 +17,7 @@ public class POSTAction extends BaseAction {
   }
 
   @Override
-  public String execute() {
+  public String execute() throws Exception {
     // if notFound was set to true during prepare() the supplied id parameter didnt exist - return a 404!
     if (notFound) {
       return NOT_FOUND;
@@ -51,8 +51,9 @@ public class POSTAction extends BaseAction {
    * Override this method if you need to persist entities after the PARAM interceptor is called
    * 
    * @return
+   * @throws Exception
    */
-  public String save() {
+  public String save() throws Exception {
     return SUCCESS;
   }
 
