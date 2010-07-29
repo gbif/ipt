@@ -7,7 +7,7 @@
 <p>It seems you have discovered an unforseen error:<p/>
 
 <pre>
-      <@s.property value="%{exception.message}"/>
+      [@s.property value="%{exception.message}"/]
 </pre>
     
 [#if adminRights]
@@ -25,7 +25,7 @@ Thanks a million, the IPT development team.
 <hr/>
 <h3>Technical Details</h3>
 <p>
-  <@s.property value="%{exceptionStack}"/>
+  [@s.property value="%{exceptionStack}"/]
 </p>
 
 
