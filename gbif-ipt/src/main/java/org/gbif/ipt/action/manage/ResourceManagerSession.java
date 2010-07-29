@@ -45,14 +45,14 @@ public class ResourceManagerSession {
 
   private Resource resource;
   private Eml eml;
-  private User user;
+  private User manager;
 
   public String getCurrentResourceShortname() {
     return resource.getShortname();
   }
 
   public void load(User user, Resource resource) {
-    this.user = user;
+    this.manager = user;
     log.info("Loading new manager resource " + resource.getShortname() + " for user " + user.getEmail());
   }
 }

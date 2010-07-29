@@ -25,11 +25,10 @@ public class OrganisationsAction extends POSTAction {
   private static final long serialVersionUID = 7297470324204084809L;
 
   private GBIFRegistryManager registryManager;
-
   private OrganisationsManager organisationsManager;
   private OrganisationSupport organisationValidation;
-  private List<Organisation> organisations;
 
+  private List<Organisation> organisations;
   private Organisation organisation;
   private List<Organisation> linkedOrganisations;
 

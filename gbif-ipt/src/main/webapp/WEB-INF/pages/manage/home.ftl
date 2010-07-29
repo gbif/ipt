@@ -1,6 +1,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1><@s.text name="manage.home.title"/></h1>
 
@@ -20,53 +21,57 @@
 	<tr>
 		<th></th>
 		<th>Name</th>
-		<th>Organisation</th>
-		<th>Created</th>
+		<th>Type</th>
 		<th>Last modified</th>
 		<th>Visible to</th>
 		<th>Visibility options</th>
-		<!-- TODO - add a test to see if the ADMIN has enabled registrations!!! -->
+		<#-- see if the ADMIN has enabled registrations -->
+		<#if registrationAllowed>
 		<th>Registered</th>
+		</#if>
 	</tr>
 <#list resources as r>
   <tr>
 	<td>
 		<button>Delete</button>
 	</td>
-	<td>${r.title}</td>
-	<td>${r.organisation.shortName}</td>
-	<td>${r.created?date}</td>
+	<td><a href="resource.do?r=${r.shortname}">${r.title!r.shortname}</a></td>
+	<td>${r.type!"???"}</td>
 	<td>${r.modified?date}</td>
 	<td>
-		<#if r.state=='PRIVATE'>
-			You and ${r.managers.size()-1} others
+		<#if r.status=='PRIVATE'>
+			You and ${r.managers.size()} others
 		<#else>
 			Everyone
 		</#if>
 	</td>
 	<td>
-		<#if r.state=='PRIVATE'>
+		<#if r.status=='PRIVATE'>
 			<button>Allow everyone</button>
-		<#elseif r.state=='PUBLIC'>
+		<#elseif r.status=='PUBLIC'>
 			<button>Restrict to managers</button>
 		</#if>
 	</td>
-	<!-- TODO - add a test to see if the ADMIN has enabled registrations!!! -->
+	<#if registrationAllowed>
 	<td>
-		<#if r.state=='REGISTERED'>
+		<#if r.status=='REGISTERED'>
 			Yes
-		<#elseif r.state=='PUBLIC'>
+		<#elseif r.status=='PUBLIC'>
 			<button>Register</button>
 		<#else>
 			No
 		</#if>
 	</td>
+	</#if>
   </tr>
 </#list>
 </table>
 
-<p>
-	<button><@s.text name="manage.home.button.createNewResource"/></button>
-</p>
+
+<@s.form cssClass="ftlTopForm" action="resource.do" method="get">
+  <div class="buttons">
+ 	<@s.submit cssClass="button" name="create" key="manage.home.button.createNewResource"/>
+  </div>	
+</@s.form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

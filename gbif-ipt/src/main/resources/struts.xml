@@ -125,14 +125,6 @@
 		<action name="about" >
 			<result>/WEB-INF/pages/about.ftl</result>
 		</action>		
-		
-		
-		
-		<!-- TESTING ONLY  -->
-		<action name="uuid" class="org.gbif.ipt.action.test.UuidAction">
-			<result>/WEB-INF/pages/test/uuid.ftl</result>
-		</action>
-		
 	</package>	
 	
 	<!-- 

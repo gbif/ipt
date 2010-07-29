@@ -15,6 +15,7 @@ public class HomeAction extends BaseAction {
   private ResourceManagerSession rms;
   @Inject
   private ResourceManager resourceManager;
+  private boolean registrationAllowed = false;
 
   @Override
   public String execute() {
@@ -24,6 +25,10 @@ public class HomeAction extends BaseAction {
 
   public List<Resource> getResources() {
     return resources;
+  }
+
+  public boolean isRegistrationAllowed() {
+    return registrationAllowed;
   }
 
 }

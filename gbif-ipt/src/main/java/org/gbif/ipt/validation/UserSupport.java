@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
  */
 public class UserSupport {
   private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
+  private static OrganisationSupport org;
 
   public void validate(BaseAction action, User user) {
     if (user.getEmail().length() < 3) {

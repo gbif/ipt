@@ -4,6 +4,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.model.voc.ResourceType;
+import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -25,7 +26,7 @@ import java.util.List;
 @ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
-  public Resource create(String shortname);
+  public Resource create(String shortname) throws AlreadyExistingException;
 
   public void delete(Resource resource) throws IOException;
 

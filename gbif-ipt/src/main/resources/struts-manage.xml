@@ -30,6 +30,7 @@
 		</action>
 		
 		<action name="resource" class="org.gbif.ipt.action.manage.ResourceAction">
+			<result name="input">/WEB-INF/pages/manage/create_resource.ftl</result>
 			<result>/WEB-INF/pages/manage/resource.ftl</result>
 		</action>
 	</package>
