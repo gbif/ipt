@@ -31,12 +31,11 @@ public interface OrganisationsManager {
   public void add(Organisation organisation) throws AlreadyExistingException;
 
   /**
-   * Removes the specified user from the in memory list of users. See save() to persist this change to files. Managers
-   * linked to resources, e.g. resource creators, need to delete the resource or assign another manager first before
-   * their account can be removed.
+   * Removes the specified organisation from the in memory list of organisations. See save() to persist this change to
+   * files. An organisation can only be deleted if not linked with any resoruces
    * 
    * @return organisation that has been removed or null if not existing
-   * @throws DeletionNotAllowedException if its the last admin or a manager linked to a resource
+   * @throws DeletionNotAllowedException if organisation is attached to any resource
    */
   public Organisation delete(String key) throws DeletionNotAllowedException;
 
