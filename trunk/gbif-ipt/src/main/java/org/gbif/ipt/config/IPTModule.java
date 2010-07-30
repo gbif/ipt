@@ -60,7 +60,9 @@ public class IPTModule extends AbstractModule {
     log.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
     DataDir dd = DataDir.buildFromLocationFile(dataDirSettingFile);
     try {
-      dd.clearTmp();
+      if (dd != null && dd.isConfigured()) {
+        dd.clearTmp();
+      }
     } catch (IOException e) {
       log.warn("Couldnt clear temporary data dir folder", e);
     }
