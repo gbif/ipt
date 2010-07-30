@@ -8,7 +8,6 @@ import org.gbif.ipt.service.admin.impl.GBIFRegistryManagerImpl;
 
 import com.google.inject.ImplementedBy;
 
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -19,11 +18,6 @@ import java.util.List;
  */
 @ImplementedBy(GBIFRegistryManagerImpl.class)
 public interface GBIFRegistryManager {
-
-  /**
-   * @return URL to the json list of registered dwc extensions in GBIF
-   */
-  public URL getExtensionListUrl();
 
   /**
    * Calls the central registry to receive a list of the Organisations that are available
