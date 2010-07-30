@@ -5,6 +5,7 @@ package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
 
@@ -28,6 +29,16 @@ public interface OrganisationsManager {
    * @throws AlreadyExistingException
    */
   public void add(Organisation organisation) throws AlreadyExistingException;
+
+  /**
+   * Removes the specified user from the in memory list of users. See save() to persist this change to files. Managers
+   * linked to resources, e.g. resource creators, need to delete the resource or assign another manager first before
+   * their account can be removed.
+   * 
+   * @return organisation that has been removed or null if not existing
+   * @throws DeletionNotAllowedException if its the last admin or a manager linked to a resource
+   */
+  public Organisation delete(String key) throws DeletionNotAllowedException;
 
   /**
    * Returns a single organisation associated to the key

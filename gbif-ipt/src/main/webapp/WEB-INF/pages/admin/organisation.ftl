@@ -30,6 +30,7 @@ $(document).ready(function(){
 	<@checkbox name="organisation.canHost" keyBase="admin."/>
    <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
+ 	<@s.submit cssClass="button" name="delete" key="button.delete"/>
   </div>
 </@s.form>
 <#include "/WEB-INF/pages/inc/footer.ftl">
