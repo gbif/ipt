@@ -1,6 +1,9 @@
-<#macro input name value="-99999" keyBase="" type="text" size=40 disabled=false>
+<#macro input name value="-99999" keyBase="" type="text" size=40 disabled=false errorField="-99999">
+	<#if errorField=="-99999">
+	 <#assign errorField=name/>
+	</#if>
   <div>
-	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
+	<@s.fielderror cssClass="fielderror" fieldName="${errorField}"/>
 	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
 	<input type="${type}" id="${name}" name="${name}" value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>" size="${size}" <#if disabled>readonly="readonly"</#if>/>
   </div>

@@ -19,6 +19,7 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.servlet.ServletContext;
 import javax.xml.parsers.SAXParserFactory;
@@ -57,7 +58,13 @@ public class IPTModule extends AbstractModule {
   public DataDir provideDataDir(ServletContext ctx) {
     File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
     log.info("provide servlet context data dir location file at " + dataDirSettingFile.getAbsolutePath());
-    return DataDir.buildFromLocationFile(dataDirSettingFile);
+    DataDir dd = DataDir.buildFromLocationFile(dataDirSettingFile);
+    try {
+      dd.clearTmp();
+    } catch (IOException e) {
+      log.warn("Couldnt clear temporary data dir folder", e);
+    }
+    return dd;
   }
 
   /**
