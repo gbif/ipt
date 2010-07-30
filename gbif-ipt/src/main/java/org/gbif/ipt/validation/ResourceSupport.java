@@ -26,14 +26,25 @@ import java.util.regex.Pattern;
  */
 public class ResourceSupport {
   private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
+  private static Pattern shortnamePattern = Pattern.compile("^[a-zA-Z0-9_-]$");
 
   public void validate(BaseAction action, Resource resource) {
     if (resource != null) {
-      if (resource.getShortname().length() < 3) {
-        action.addFieldError("resource.shortname", action.getText("validation.shortname.required"));
-      }
+      validateShortname(action, resource.getShortname());
       if (resource.getTitle().length() < 3) {
-        action.addFieldError("resource.title", action.getText("validation.title.required"));
+        action.addFieldError("resource.title", action.getText("validation.resource.title.required"));
+      }
+    }
+  }
+
+  public void validateShortname(BaseAction action, String shortname) {
+    if (shortname == null) {
+      action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.required"));
+    } else {
+      if (shortname.length() < 3) {
+        action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.invalid"));
+      } else if (!emailPattern.matcher(shortname).matches()) {
+        action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.invalid"));
       }
     }
   }

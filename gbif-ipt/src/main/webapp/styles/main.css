@@ -16,9 +16,13 @@ h1 {
 	color: #077A2D;
 	font-size: 20px;
 }
-
 a {
 	color: #005418;
+}
+hr {
+	margin-top: 15px;
+	margin-bottom: 10px;
+	border:1px solid #AFAFAF;
 }
 
 
@@ -204,12 +208,19 @@ ul.fielderror{
 .buttons input{
 	display: inline;
 }
-
+.inline_button{
+	margin: 0px;
+	display: inline !important;
+}
 
 /* for forms generated with the custom freemarker inlcudes */
 .ftlForm, .ftlTopForm {
 	margin: 2em 0em;
 }
+.ftlForm .buttons, .ftlTopForm .buttons{
+	margin-top: 2em;
+}
+
 
 .ftlForm label {
 	font-size: 12px;
@@ -233,6 +244,10 @@ ul.fielderror{
 	display: block;
 	margin-left: 2em;
 }
+.ftlTopForm .buttons input{
+	margin-left: 0em;
+}
+
 
 /* simple table */
 table.simple th{
