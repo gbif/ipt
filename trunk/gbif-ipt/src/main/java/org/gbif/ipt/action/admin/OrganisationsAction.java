@@ -6,6 +6,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.admin.OrganisationsManager;
 import org.gbif.ipt.validation.OrganisationSupport;
@@ -66,6 +67,24 @@ public class OrganisationsAction extends POSTAction {
     this.organisationsManager = organisationsManager;
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
+  }
+
+  @Override
+  public String delete() {
+    try {
+      Organisation removedOrganisation = organisationsManager.delete(id);
+      if (removedOrganisation == null) {
+        return NOT_FOUND;
+      }
+      organisationsManager.save();
+      addActionMessage(getText("admin.organisation.deleted"));
+      return SUCCESS;
+    } catch (DeletionNotAllowedException e) {
+      addActionError(getText("admin.organisation.deleted.notempty"));
+    } catch (IOException e) {
+      addActionError("cant save organisation file: " + e.getMessage());
+    }
+    return INPUT;
   }
 
   /**

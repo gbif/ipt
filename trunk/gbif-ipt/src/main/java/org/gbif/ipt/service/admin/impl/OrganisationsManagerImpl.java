@@ -5,6 +5,7 @@ package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.OrganisationsManager;
@@ -47,6 +48,15 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
     }
   }
 
+  public Organisation delete(String key) throws DeletionNotAllowedException {
+    if (key != null) {
+      Organisation remOrganisation = organisations.remove(key);
+      // TODO: Check whether the organisation does not have any resources associated
+      return remOrganisation;
+    }
+    return null;
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -79,11 +89,11 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
         }
       }
     } catch (FileNotFoundException e) {
-       log.debug(e);
+      log.debug(e);
       throw new InvalidConfigException(TYPE.ORGANISATION_CONFIG,
           "Couldnt read list of organisations associated to this IPT: " + e.getMessage());
     } catch (IOException e) {
-       log.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       throw new InvalidConfigException(TYPE.ORGANISATION_CONFIG,
           "Couldnt read list of organisations associated to this IPT: " + e.getMessage());
     } finally {
