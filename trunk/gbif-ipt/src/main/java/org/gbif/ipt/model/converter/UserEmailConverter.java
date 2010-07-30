@@ -17,7 +17,10 @@
 package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.admin.UserAccountManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -28,7 +31,15 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * @author markus
  * 
  */
+@Singleton
 public class UserEmailConverter implements Converter {
+  private UserAccountManager userManager;
+
+  @Inject
+  public UserEmailConverter(UserAccountManager userManager) {
+    super();
+    this.userManager = userManager;
+  }
 
   public boolean canConvert(Class clazz) {
     return clazz.equals(User.class);
@@ -40,8 +51,7 @@ public class UserEmailConverter implements Converter {
   }
 
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    User u = new User();
-    u.setEmail(reader.getValue());
+    User u = userManager.get(reader.getValue());
     return u;
   }
 

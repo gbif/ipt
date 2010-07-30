@@ -25,7 +25,7 @@ public class UserAccountsAction extends POSTAction {
   private static final long serialVersionUID = 8892204508303815998L;
   @Inject
   private UserAccountManager userManager;
-  private UserSupport userValidation = new UserSupport();
+  private UserSupport validator = new UserSupport();
 
   private User user;
   private List<User> users;
@@ -120,7 +120,7 @@ public class UserAccountsAction extends POSTAction {
     // only validate on form submit ignoring list views
     // && users == null
     if (isHttpPost()) {
-      userValidation.validate(this, user);
+      validator.validate(this, user);
     }
   }
 }

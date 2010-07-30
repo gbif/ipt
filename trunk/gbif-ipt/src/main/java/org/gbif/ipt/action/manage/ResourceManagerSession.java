@@ -17,14 +17,17 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.User;
-import org.gbif.ipt.model.eml.Eml;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 import org.apache.log4j.Logger;
+
+import java.io.IOException;
 
 /**
  * A wrapper kept in a users session when managing one resource.
@@ -44,8 +47,13 @@ public class ResourceManagerSession {
   private ResourceManager resourceManager;
 
   private Resource resource;
+  private ResourceConfiguration config;
   private Eml eml;
   private User manager;
+
+  public ResourceConfiguration getConfig() {
+    return config;
+  }
 
   public Eml getEml() {
     return eml;
@@ -62,15 +70,22 @@ public class ResourceManagerSession {
   public void load(User user, Resource resource) {
     this.manager = user;
     this.resource = resource;
+    // TODO: load via resource/eml/config manager the appropiate instances
     this.eml = new Eml();
-    log.info("Loading new manager resource " + resource.getShortname() + " for user " + user.getEmail());
+    this.config = new ResourceConfiguration();
+    log.info("Loading new manager " + resource + " for user " + user.getEmail());
   }
 
-  public void setEml(Eml eml) {
-    this.eml = eml;
+  public void saveConfig() throws IOException {
+    // TODO: implement
   }
 
-  public void setResource(Resource resource) {
-    this.resource = resource;
+  public void saveEml() throws IOException {
+    // TODO: implement
   }
+
+  public void saveResource() throws IOException {
+    resourceManager.save(resource);
+  }
+
 }
