@@ -121,8 +121,10 @@ public class OrganisationsAction extends POSTAction {
   public String save() {
 
     try {
+      if (id == null) {
+        organisationsManager.add(organisation);
+      }
       addActionMessage("The organisation has been associated to this IPT");
-      organisationsManager.add(organisation);
       organisationsManager.save();
       return SUCCESS;
     } catch (IOException e) {
