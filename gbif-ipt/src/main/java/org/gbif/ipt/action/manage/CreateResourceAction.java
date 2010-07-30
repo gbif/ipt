@@ -8,6 +8,8 @@ import org.gbif.ipt.validation.ResourceSupport;
 
 import com.google.inject.Inject;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -36,12 +38,14 @@ public class CreateResourceAction extends POSTAction {
   public String save() throws IOException {
     try {
       Resource res = resourceManager.create(shortname, getCurrentUser());
-      if (upload()) {
+      File tmpFile = uploadToTmp();
+      if (tmpFile != null) {
         // TODO: read existing archive
       }
       ms.load(getCurrentUser(), res);
     } catch (AlreadyExistingException e) {
-      addFieldError("resource.shortname", "Resource exists already");
+      addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[]{shortname}));
+      return INPUT;
     }
     return SUCCESS;
   }
@@ -50,43 +54,28 @@ public class CreateResourceAction extends POSTAction {
     this.shortname = shortname;
   }
 
-  private boolean upload() {
+  private File uploadToTmp() {
     if (fileFileName == null) {
-      return false;
+      return null;
     }
     // the file to upload to
-    File sourceFile = dataDir.resourceFile(shortname, "source/" + fileFileName);
-    log.debug("Uploading file for new resource " + shortname + " to " + sourceFile.getAbsolutePath());
+    File tmpFile = dataDir.tmpFile(shortname + "-src-", ".tmp");
+    log.debug("Uploading file for new resource " + shortname + " to " + tmpFile.getAbsolutePath());
     // retrieve the file data
-    InputStream stream;
+    InputStream input;
     try {
-      stream = new FileInputStream(file);
+      input = new FileInputStream(file);
       // write the file to the file specified
-      OutputStream bos = new FileOutputStream(sourceFile);
-      int bytesRead;
-      byte[] buffer = new byte[8192];
-
-      while ((bytesRead = stream.read(buffer, 0, 8192)) != -1) {
-        bos.write(buffer, 0, bytesRead);
-      }
-
-      bos.close();
-      stream.close();
+      OutputStream output = new FileOutputStream(tmpFile);
+      IOUtils.copy(input, output);
+      output.close();
+      input.close();
+      log.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
     } catch (IOException e) {
       log.error(e);
-      return false;
+      return null;
     }
-
-    // process file.
-    log.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
-    // is it a compressed archive?
-    // check http content type
-    if (fileContentType.endsWith("/zip")) {
-      log.warn("zip file uploaded");
-    } else {
-      log.warn("other file uploaded: " + fileContentType);
-    }
-    return true;
+    return tmpFile;
   }
 
   @Override

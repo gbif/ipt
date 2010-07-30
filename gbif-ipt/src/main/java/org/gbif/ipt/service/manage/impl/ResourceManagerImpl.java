@@ -51,16 +51,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @see org.gbif.ipt.service.manage.ResourceManager#create(java.lang.String)
    */
   public Resource create(String shortname, User creator) throws AlreadyExistingException {
-    Resource res = new Resource();
-    res.setShortname(shortname);
-    res.setCreated(new Date());
-    res.setCreator(creator);
-    // create dir
-    try {
-      save(res);
-      log.debug("Created resource " + res.getShortname());
-    } catch (IOException e) {
-      log.error("Error creating resource", e);
+    Resource res = null;
+    if (shortname != null) {
+      // check if existing already
+      shortname = shortname.toLowerCase();
+      if (resources.containsKey(shortname)) {
+        throw new AlreadyExistingException();
+      }
+      res = new Resource();
+      res.setShortname(shortname);
+      res.setCreated(new Date());
+      res.setCreator(creator);
+      // create dir
+      try {
+        save(res);
+        log.debug("Created resource " + res.getShortname());
+      } catch (IOException e) {
+        log.error("Error creating resource", e);
+      }
     }
     return res;
   }

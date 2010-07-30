@@ -16,8 +16,6 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
 
-import com.opensymphony.xwork2.validator.validators.EmailValidator;
-
 import java.util.regex.Pattern;
 
 /**
@@ -25,8 +23,11 @@ import java.util.regex.Pattern;
  * 
  */
 public class ResourceSupport {
-  private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
-  private static Pattern shortnamePattern = Pattern.compile("^[a-zA-Z0-9_-]$");
+  private static Pattern shortnamePattern = Pattern.compile("^[a-zA-Z0-9_-]+$");
+
+  public static void main(String[] args) {
+    System.out.println(ResourceSupport.shortnamePattern.matcher("piasü").matches());
+  }
 
   public void validate(BaseAction action, Resource resource) {
     if (resource != null) {
@@ -43,7 +44,7 @@ public class ResourceSupport {
     } else {
       if (shortname.length() < 3) {
         action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.invalid"));
-      } else if (!emailPattern.matcher(shortname).matches()) {
+      } else if (!shortnamePattern.matcher(shortname).matches()) {
         action.addFieldError("resource.shortname", action.getText("validation.resource.shortname.invalid"));
       }
     }
