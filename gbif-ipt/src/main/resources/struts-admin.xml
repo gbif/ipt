@@ -70,7 +70,6 @@
 		<action name="organisation" class="org.gbif.ipt.action.admin.OrganisationsAction">
 			<result name="input">/WEB-INF/pages/admin/organisation.ftl</result>
 			<result type="redirect">organisations.do</result>
-			<result>/WEB-INF/pages/admin/organisation.ftl</result>			
 		</action>			
 		
 		<action name="organisations" class="org.gbif.ipt.action.admin.OrganisationsAction" method="list">

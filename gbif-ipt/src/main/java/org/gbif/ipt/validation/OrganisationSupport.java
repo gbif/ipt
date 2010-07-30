@@ -27,20 +27,22 @@ public class OrganisationSupport {
 
   public void validate(BaseAction action, Organisation organisation) {
 
-    if (organisation.getKey().toString().length() < 1) {
+    if (organisation.getKey() == null || organisation.getKey().toString().length() < 1) {
       action.addFieldError("organisation.key", action.getText("validation.organisation.key.required"));
     }
 
-    if (organisation.getPassword().length() < 1) {
+    if (organisation.getPassword() == null || organisation.getPassword().length() < 1) {
       action.addFieldError("organisation.password", action.getText("validation.organisation.password.required"));
     }
-    if (organisation.getAlias().length() < 1) {
+    if (organisation.getAlias() == null || organisation.getAlias().length() < 1) {
       action.addFieldError("organisation.alias", action.getText("validation.organisation.alias.required"));
     }
     // validate if the key+password combination validates to true
-    if (organisation.getKey().toString().length() > 0 && organisation.getPassword().length() > 0) {
-      if (!registryManager.validateOrganisation(organisation.getKey().toString(), organisation.getPassword())) {
-        action.addFieldError("organisation.password", action.getText("validation.organisation.password.invalid"));
+    if (organisation.getKey() != null && organisation.getPassword() != null) {
+      if (organisation.getKey().toString().length() > 0 && organisation.getPassword().length() > 0) {
+        if (!registryManager.validateOrganisation(organisation.getKey().toString(), organisation.getPassword())) {
+          action.addFieldError("organisation.password", action.getText("validation.organisation.password.invalid"));
+        }
       }
     }
   }
