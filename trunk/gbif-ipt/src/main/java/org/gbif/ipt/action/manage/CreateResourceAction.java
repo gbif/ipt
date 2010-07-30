@@ -4,6 +4,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.validation.ResourceSupport;
 
 import com.google.inject.Inject;
 
@@ -25,6 +26,7 @@ public class CreateResourceAction extends POSTAction {
   private File file;
   private String fileContentType;
   private String fileFileName;
+  private ResourceSupport validator = new ResourceSupport();
 
   public String getShortname() {
     return shortname;
@@ -90,9 +92,7 @@ public class CreateResourceAction extends POSTAction {
   @Override
   public void validate() {
     if (isHttpPost()) {
-      if (shortname == null || shortname.length() < 3) {
-        addFieldError("shortname", "Short resource name must be unique and at least 3 characters long");
-      }
+      validator.validateShortname(this, shortname);
     }
   }
 

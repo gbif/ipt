@@ -14,7 +14,7 @@
 	<@checkbox name="debug" keyBase="admin.config." />  
 		
   <div class="buttons">
- 	<@s.submit cssClass="button" name="save" key="button.save"/>
+ 	<@s.submit name="save" key="button.save"/>
   </div>	
 
 </@s.form>
