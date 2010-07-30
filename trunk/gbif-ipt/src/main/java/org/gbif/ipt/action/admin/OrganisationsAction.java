@@ -11,8 +11,10 @@ import org.gbif.ipt.service.admin.OrganisationsManager;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import com.google.inject.Inject;
+import com.google.inject.servlet.SessionScoped;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +23,31 @@ import java.util.List;
  * @author tim
  */
 public class OrganisationsAction extends POSTAction {
+  @SessionScoped
+  public static class RegisteredOrganisations {
+    private List<Organisation> organisations = new ArrayList<Organisation>();
+    private GBIFRegistryManager registryManager;
+
+    @Inject
+    public RegisteredOrganisations(GBIFRegistryManager registryManager) {
+      super();
+      this.registryManager = registryManager;
+    }
+
+    public boolean isLoaded() {
+      if (organisations.size() > 0) {
+        return true;
+      }
+      return false;
+    }
+
+    public void load() throws RuntimeException {
+      log.debug("getting list of organisations from registry");
+      organisations = registryManager.listAllOrganisations();
+      log.debug("organisations returned: " + organisations.size());
+    }
+
+  }
 
   private static final long serialVersionUID = 7297470324204084809L;
 
@@ -28,16 +55,17 @@ public class OrganisationsAction extends POSTAction {
   private OrganisationsManager organisationsManager;
   private OrganisationSupport organisationValidation;
 
-  private List<Organisation> organisations;
   private Organisation organisation;
   private List<Organisation> linkedOrganisations;
+  private RegisteredOrganisations orgSession;
 
   @Inject
   public OrganisationsAction(GBIFRegistryManager registryManager, OrganisationsManager organisationsManager,
-      OrganisationSupport organisationValidation) {
+      OrganisationSupport organisationValidation, RegisteredOrganisations orgSession) {
     this.registryManager = registryManager;
     this.organisationsManager = organisationsManager;
     this.organisationValidation = organisationValidation;
+    this.orgSession = orgSession;
   }
 
   /**
@@ -58,20 +86,20 @@ public class OrganisationsAction extends POSTAction {
    * @return the organisations
    */
   public List<Organisation> getOrganisations() {
-    return organisations;
+    return orgSession.organisations;
   }
 
   public String list() {
-    organisations = registryManager.listAllOrganisations();
     return SUCCESS;
   }
 
   @Override
   public void prepare() throws Exception {
     super.prepare();
-    log.debug("getting list of organisations");
-    organisations = registryManager.listAllOrganisations();
-    log.debug("organisations returned: " + organisations.size());
+    // load orgs from registry if not done yet
+    if (!orgSession.isLoaded()) {
+      orgSession.load();
+    }
     linkedOrganisations = organisationsManager.list();
     if (id != null) {
       // modify existing user
@@ -121,13 +149,6 @@ public class OrganisationsAction extends POSTAction {
    */
   public void setOrganisation(Organisation organisation) {
     this.organisation = organisation;
-  }
-
-  /**
-   * @param organisations the organisations to set
-   */
-  public void setOrganisations(List<Organisation> organisations) {
-    this.organisations = organisations;
   }
 
   @Override

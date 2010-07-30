@@ -7,9 +7,9 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.registry.api.client.Gbrds;
-import org.gbif.registry.api.client.GbrdsOrganisation;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
 import org.gbif.registry.api.client.Gbrds.OrganisationApi;
+import org.gbif.registry.api.client.GbrdsOrganisation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -17,8 +17,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -47,12 +45,10 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
   /*
    * private void defineXstreamMapping(){ //xstream.alias("registry", Registry.class); //xstream.alias("organisation",
    * Organisation.class); }
-   * 
    * public void save() throws IOException { log.debug("SAVING REGISTRY INFO ..."); Writer registryWriter =
    * FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE)); //Writer registryWriter =
    * FileUtils.startNewUtf8File(new File("/tmp/reg.xml")); xstream.toXML(registry,registryWriter);
    * registryWriter.close(); }
-   * 
    * public void load() throws InvalidConfigException { Reader registryReader = null; try { registryReader =
    * FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE)); registry =
    * (Registry)xstream.fromXML(registryReader); } catch (FileNotFoundException e) { log.debug(e); throw new
@@ -62,26 +58,12 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
    * registryReader.close(); } catch (IOException e) { } } } }
    */
 
-  public URL getExtensionListUrl() {
-    // until the registry handles JSONP with a callback parameter we need a local json file!
-    URL url = null;
-    try {
-      url = new URL(cfg.getBaseURL() + "/extensions.json");
-    } catch (MalformedURLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return url;
-  }
-
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.GBIFRegistryManager#validateOrganisation(java.lang.String, java.lang.String)
    */
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.GBIFRegistryManager#listAllOrganisations()
    */
   public List<Organisation> listAllOrganisations() {
