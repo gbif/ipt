@@ -12,6 +12,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.manage.ResourceManager;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
@@ -35,15 +36,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
   private final XStream xstream = new XStream();
+  private UserEmailConverter userConverter;
 
-  public ResourceManagerImpl() {
+  @Inject
+  public ResourceManagerImpl(UserEmailConverter userConverter) {
     super();
+    this.userConverter = userConverter;
     defineXstreamMapping();
   }
 
   private void addResource(Resource res) {
     resources.put(res.getShortname().toLowerCase(), res);
-    log.debug("Added resource " + res.getShortname());
   }
 
   /*
@@ -81,7 +84,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     xstream.omitField(Resource.class, "eml");
     xstream.omitField(Resource.class, "config");
     // persist only emails for users
-    xstream.registerConverter(new UserEmailConverter());
+    xstream.registerConverter(userConverter);
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");
   }
@@ -152,7 +155,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       input = new FileInputStream(resCfg);
       resource = (Resource) xstream.fromXML(input);
       resource.setShortname(resourceDir.getName());
-      log.debug("Loaded resource " + resource.getShortname());
+      log.debug("Loaded " + resource);
     } catch (FileNotFoundException e) {
       log.error("Cannot load main resource configuration", e);
       throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Cannot load main resource configuration: "
@@ -169,6 +172,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     xstream.toXML(resource, writer);
     // add to internal map
     addResource(resource);
+    log.debug("Saved " + resource);
   }
 
   /*

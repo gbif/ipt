@@ -1,5 +1,6 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title>${ms.resource.title!ms.resource.shortname}</title>
+	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	<style>
 	.actions select{
 		width: 125px;
@@ -7,15 +8,10 @@
 	</style>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#type").change(function(){
-   		if ($(this).val()=="dwca") {
-		   	$("#dwca").show();
-   		}else{
-		   	$("#dwca").hide();
-   		}
-   	});
+	$('a.del').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 });
-</script><#include "/WEB-INF/pages/inc/menu.ftl">
+</script>
+<#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <h1>${ms.resource.title!ms.resource.shortname}</h1>
@@ -144,12 +140,12 @@ By default a resource is private to the managers. Once published to GBIF you can
   	 <#-- 
   	 	AJAXY ???
   	  -->
-	  <form>
-	    <#assign options={"ahahn@gbif.org":"Andrea Hahn", "cip@gbif.org":"Cip, the greatest of all Sys Admins"} value="" />
-	    <select name="manager" id="manager" size="1">
-	      <option value="">Select Manager</option>
-	    <#list options?keys as val>
-	      <option value="${val}">${options[val]}</option>
+	  <form action='resource.do' method='post'>
+	    <input type="hidden" name="action" value="addmanager" />
+	    <select name="id" id="manager" size="1">
+	      <option value=""></option>
+	    <#list potentialManagers as u>
+	      <option value="${u.email}">${u.name}</option>
 	    </#list>
 		</select>
 		<input type='submit' name='add' value='Add' />
@@ -162,9 +158,10 @@ By default a resource is private to the managers. Once published to GBIF you can
       	</div>
       	<div class="details">
       		<table>
-          		<tr><th>Creator</th><td>${ms.resource.creator.firstname!ms.resource.creator.lastname!"?"}, ${ms.resource.creator.email}</td></tr>
-          		<tr><th>Manager</th><td>Tim, trobertson@gbif.org</td></tr>
-          		<tr><th>Manager</th><td>Jose, jcuadra@gbif.org</td></tr>
+          		<tr><th>Creator</th><td>${ms.resource.creator.name}, ${ms.resource.creator.email}</td></tr>
+          		<#list ms.resource.managers as u>
+          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="del" href="resource.do?id=${u.email}&action=delmanager"><img src="${baseURL}/images/trash-s.png" border="0" align="absbottom" /></a></td></tr>
+	    		</#list>
       		</table>
       	</div>
   </div>

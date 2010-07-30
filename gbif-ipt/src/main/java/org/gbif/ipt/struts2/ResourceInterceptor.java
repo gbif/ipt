@@ -75,8 +75,8 @@ public class ResourceInterceptor extends AbstractInterceptor {
       return true;
     }
     if (user.hasManagerRights()) {
-      for (String allowedEmail : resource.getManagers()) {
-        if (user.getEmail().equalsIgnoreCase(allowedEmail)) {
+      for (User m : resource.getManagers()) {
+        if (user.equals(m)) {
           return true;
         }
       }

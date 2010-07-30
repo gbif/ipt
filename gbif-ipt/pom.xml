@@ -178,7 +178,7 @@
 		<dependency>
 			<groupId>org.gbif</groupId>
 			<artifactId>dwc-archive</artifactId>
-			<version>1.1.1-SNAPSHOT</version>
+			<version>1.2-SNAPSHOT</version>
 		</dependency>
 		
 		<!-- Struts2 -->
@@ -326,15 +326,6 @@
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<version>2.0</version>
-			<!-- we only want log4j for logging, but its a required dependency  -->
-			<!-- 
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			-->
 		</dependency>
 		
 		<!-- XStream for resource config data persistency (could be replaced by JAXB in the future) -->

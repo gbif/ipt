@@ -1,6 +1,5 @@
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.model.eml.Eml;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.model.voc.ResourceType;
 
@@ -28,25 +27,18 @@ public class Resource implements Serializable {
   private String title;
   private String description;
   private ResourceType type;
-  private PublicationStatus status;
-  // properties which are only available when fully loaded from the config files
-  private Eml eml;
-  private ResourceConfiguration config;
+  private PublicationStatus status = PublicationStatus.PRIVATE;
   // resource meta-metadata
   private User creator;
   private Date created;
   private User modifier;
   private Date modified;
-  private Set<String> managers;
+  private Set<User> managers = new HashSet<User>();
 
-  public Resource() {
-    super();
-    managers = new HashSet<String>();
-    status = PublicationStatus.PRIVATE;
-  }
-
-  public void addManagers(String email) {
-    this.managers.add(email);
+  public void addManager(User manager) {
+    if (manager != null) {
+      this.managers.add(manager);
+    }
   }
 
   @Override
@@ -78,7 +70,7 @@ public class Resource implements Serializable {
     return null;
   }
 
-  public Set<String> getManagers() {
+  public Set<User> getManagers() {
     return managers;
   }
 
@@ -134,7 +126,7 @@ public class Resource implements Serializable {
 
   }
 
-  public void setManagers(Set<String> managers) {
+  public void setManagers(Set<User> managers) {
     this.managers = managers;
   }
 
@@ -162,4 +154,8 @@ public class Resource implements Serializable {
     this.type = type;
   }
 
+  @Override
+  public String toString() {
+    return "Resource " + shortname;
+  }
 }
