@@ -8,6 +8,7 @@ import org.gbif.ipt.model.voc.ResourceType;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.ImplementedBy;
 import com.google.inject.internal.Nullable;
@@ -33,6 +34,8 @@ public interface ResourceManager {
   public void delete(Resource resource) throws IOException;
 
   public Resource get(String shortname);
+
+  public Eml getEml(Resource resource);
 
   /**
    * list all resources in the IPT having a certain publication status
@@ -76,6 +79,8 @@ public interface ResourceManager {
   public void register(Resource resource, Organisation organisation) throws InvalidConfigException;
 
   public void save(Resource resource) throws InvalidConfigException;
+
+  public void save(Resource resource, Eml eml) throws InvalidConfigException;
 
   /**
    * list all resource that match the given full text search string and optional resource type

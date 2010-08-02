@@ -16,12 +16,37 @@
 
 package org.gbif.ipt.action.manage;
 
-import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.validation.EmlSupport;
+import org.gbif.ipt.validation.ResourceSupport;
+
+import com.google.inject.Inject;
 
 /**
  * @author markus
  * 
  */
-public class MetadataAction extends BaseAction {
+public class MetadataAction extends POSTAction {
+  @Inject
+//the resource manager session is populated by the resource interceptor and kept alive for an entire manager session
+  private ResourceManagerSession ms;
+  @Inject
+  private ResourceManager resourceManager;
+  private ResourceSupport validator1 = new ResourceSupport();
+  private EmlSupport validator2 = new EmlSupport();
+
+  @Override
+  public String save() throws Exception {
+    ms.saveResource();
+    ms.saveEml();
+    return SUCCESS;
+  }
+
+  @Override
+  public void validateHttpPostOnly() {
+    validator1.validate(this, ms.getResource());
+    validator2.validate(this, ms.getEml());
+  }
 
 }

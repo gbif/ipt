@@ -70,9 +70,15 @@ public class ResourceManagerSession {
     this.manager = user;
     this.resource = resource;
     // TODO: load via resource/eml/config manager the appropiate instances
-    this.eml = new Eml();
+    this.eml = resourceManager.getEml(resource);
     this.config = new ResourceConfiguration();
     log.info("Loading new manager " + resource + " for user " + user.getEmail());
+  }
+
+  public void save() throws InvalidConfigException {
+    saveResource();
+    saveEml();
+    saveConfig();
   }
 
   public void saveConfig() throws InvalidConfigException {
@@ -80,7 +86,7 @@ public class ResourceManagerSession {
   }
 
   public void saveEml() throws InvalidConfigException {
-    // TODO: implement
+    resourceManager.save(resource, eml);
   }
 
   public void saveResource() throws InvalidConfigException {
