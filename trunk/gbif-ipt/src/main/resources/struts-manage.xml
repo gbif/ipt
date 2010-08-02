@@ -41,6 +41,9 @@
 		<action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
 			<result>/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
+		<action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
+			<result>/WEB-INF/pages/manage/overview.ftl</result>
+		</action>
 		
 		<action name="metadata" class="org.gbif.ipt.action.manage.MetadataAction">
 			<result name="input">/WEB-INF/pages/manage/metadata.ftl</result>

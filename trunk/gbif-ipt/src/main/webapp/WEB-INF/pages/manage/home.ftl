@@ -7,14 +7,13 @@
 <br/>
 
 <#if (resources?size>0)>
-<table>
+<table class="simple" width="100%">
 	<tr>
-		<th></th>
 		<th>Name</th>
 		<th>Type</th>
+		<th>Records</th>
 		<th>Last modified</th>
 		<th>Visible to</th>
-		<th>Visibility options</th>
 		<#-- see if the ADMIN has enabled registrations -->
 		<#if registrationAllowed>
 		<th>Registered</th>
@@ -22,11 +21,9 @@
 	</tr>
 <#list resources as r>
   <tr>
-	<td>
-		<button>Delete</button>
-	</td>
 	<td><a href="resource.do?r=${r.shortname}">${r.title!r.shortname}</a></td>
-	<td>${r.type!"???"}</td>
+	<td>${r.type!"---"}</td>
+	<td>0</td>
 	<td>${r.modified?date}</td>
 	<td>
 		<#if r.status=='PRIVATE'>
@@ -35,21 +32,12 @@
 			Everyone
 		</#if>
 	</td>
-	<td>
-		<#if r.status=='PRIVATE'>
-			<button>Allow everyone</button>
-		<#elseif r.status=='PUBLIC'>
-			<button>Restrict to managers</button>
-		</#if>
-	</td>
 	<#if registrationAllowed>
 	<td>
 		<#if r.status=='REGISTERED'>
-			Yes
-		<#elseif r.status=='PUBLIC'>
-			<button>Register</button>
+			My Organisation
 		<#else>
-			No
+			Not Registered
 		</#if>
 	</td>
 	</#if>
@@ -62,7 +50,9 @@
 </#if>
 
 
-<hr/>
+<hr/>&nbsp;
+<hr/>&nbsp;
+
 <h2><@s.text name="manage.resource.create.title"/></h2>
 <#include "create_new_resource.inc.ftl"/>
 

@@ -126,4 +126,9 @@ public class User implements Serializable {
       this.role = Role.User;
     }
   }
+
+  @Override
+  public String toString() {
+    return "User " + email;
+  }
 }
