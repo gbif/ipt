@@ -88,4 +88,8 @@ public class ResourceManagerSession {
     resourceManager.save(resource);
   }
 
+  @Override
+  public String toString() {
+    return "ManagerSession:R=" + resource + ";U=" + manager + "C=" + config;
+  }
 }

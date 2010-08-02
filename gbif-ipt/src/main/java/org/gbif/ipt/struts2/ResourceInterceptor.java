@@ -40,9 +40,8 @@ public class ResourceInterceptor extends AbstractInterceptor {
     if (requested != null && requested.getClass().isArray() && ((Object[]) requested).length == 1) {
       String requestedResource = ((Object[]) requested)[0].toString();
       // already loaded?
-      Map session = invocation.getInvocationContext().getSession();
-      ResourceManagerSession rms = (ResourceManagerSession) session.get(Constants.SESSION_RESOURCE);
-      if (rms != null && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
+      if (rms != null && rms.getResource() != null
+          && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
         // yes - exists and is the same. Ignore request param
       } else {
         // nope - different or first one
@@ -51,12 +50,8 @@ public class ResourceInterceptor extends AbstractInterceptor {
         if (resource == null) {
           return BaseAction.NOT_FOUND;
         }
-        // already loaded?
-        if (rms != null && rms.getResource() != null
-            && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
-          return invocation.invoke();
-        }
         // authorized?
+        Map session = invocation.getInvocationContext().getSession();
         User user = (User) session.get(Constants.SESSION_USER);
         if (user == null || !isAuthorized(user, resource, invocation)) {
           return BaseAction.NOT_ALLOWED;
@@ -85,7 +80,6 @@ public class ResourceInterceptor extends AbstractInterceptor {
   }
 
   private void switchResource(User user, Resource resource) {
-//    ResourceManagerSession rms = (ResourceManagerSession) session.get(Constants.SESSION_RESOURCE);
     if (rms == null) {
       rms = new ResourceManagerSession();
       log.info("Created new ResourceManagerSession");

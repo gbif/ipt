@@ -1,14 +1,24 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title>${ms.resource.title!ms.resource.shortname}</title>
+	<title>${ms.resource.title!ms.resource.shortname!}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	<style>
 	.actions select{
-		width: 125px;
+		width: 200px;
+	}
+	div.definition div.title{
+		width: 30%;
+	}
+	div.title input[type="submit"]{
+		float: right;
+		margin-right: 5px;
+	}
+	div.definition div.body{
+		width: 68%;
 	}
 	</style>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('a.del').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
+	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 });
 </script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -113,16 +123,36 @@ By default a resource is private to the managers. Once published to GBIF you can
         Publishing State
   	</div>
   	<div class="actions">
-  	 <#-- 
-	  <form action='extension.do' method='post'>
-		<input type='submit' name='generate' value='Generate' />
+	  <form action='resource-publish.do' method='post'>
+	    <#if ms.resource.status=="PUBLIC">
+		    <select name="id" id="org" size="1">
+		    <#list organisations as o>
+		      <option value="${u.key}">${u.name}</option>
+		    </#list>
+			</select>
+			<input type='submit' name='publish' value='Register' />
+		<#else>
+		    <#if ms.resource.status=="PRIVATE">
+			<input class="confirm22" type='submit' name='publish' value='Publish' />
+			</#if>
+		</#if>
   	  </form>
-  	  -->
   	</div>
   </div>
   <div class="body">
       	<div>
-			XXXxxxxxxxxxxx yyxyyyyyy
+			<em>Publication Status</em>: <span class="warn">${ms.resource.status}</span>
+      	</div>
+      	<#if ms.resource.status=="REGISTERED">
+      	<div>
+			<em>Registered Organisation</em>: the organisation this resource is registered with in GBIF.
+      	</div>
+      	</#if>
+      	<div>
+			<@s.text name="manage.resource.status.intro.${ms.resource.status?lower_case}"/>
+		    <#if ms.resource.status=="PUBLIC">
+		    <a href="resource-publish.do?id=private"><@s.text name="manage.resource.status.restrict"/></a>
+		    </#if>
       	</div>
       	<div class="details">
       		<table>
@@ -137,11 +167,7 @@ By default a resource is private to the managers. Once published to GBIF you can
         Resource Managers
   	</div>
   	<div class="actions">
-  	 <#-- 
-  	 	AJAXY ???
-  	  -->
-	  <form action='resource.do' method='post'>
-	    <input type="hidden" name="action" value="addmanager" />
+	  <form action='resource-addmanager.do' method='post'>
 	    <select name="id" id="manager" size="1">
 	      <option value=""></option>
 	    <#list potentialManagers as u>
@@ -160,7 +186,7 @@ By default a resource is private to the managers. Once published to GBIF you can
       		<table>
           		<tr><th>Creator</th><td>${ms.resource.creator.name}, ${ms.resource.creator.email}</td></tr>
           		<#list ms.resource.managers as u>
-          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="del" href="resource.do?id=${u.email}&action=delmanager"><img src="${baseURL}/images/trash-s.png" border="0" align="absbottom" /></a></td></tr>
+          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?id=${u.email}"><img src="${baseURL}/images/trash-s.png" border="0" align="absbottom" /></a></td></tr>
 	    		</#list>
       		</table>
       	</div>

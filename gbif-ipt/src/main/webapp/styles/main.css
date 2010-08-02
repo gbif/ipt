@@ -22,7 +22,7 @@ a {
 hr {
 	margin-top: 15px;
 	margin-bottom: 10px;
-	border:1px solid #AFAFAF;
+	border:0px solid #AFAFAF;
 }
 
 
@@ -159,12 +159,21 @@ div#content {
 
 div#footer{
 	margin-top: 30px;
-	height: 30px;
 	text-align: center;
-	padding-top: 20px;
+	padding: 15px 0px;
 	background-color: #E6E6E6;
 	margin-left:-10px;
 	margin-right:-10px;
+}
+div#footer ul {
+	margin:0; 
+	padding:5px; 
+	list-style:none; 
+}
+div#footer li {
+	display:inline; 
+	margin:0; 
+	padding: 0px 10px; 
 }
 
 
