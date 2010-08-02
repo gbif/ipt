@@ -4,13 +4,14 @@
 package org.gbif.ipt.service;
 
 /**
- * The base class used to indicate types of configuration errors. All configuration must provide a message and a cause
+ * The base class used to indicate types of errors occurring during interaction with the GBIF registry.
+ * All exceptions must provide a message and a cause
  * 
- * @author tim
+ * @author markus
  */
-public class InvalidConfigException extends RuntimeException {
+public class RegistryException extends RuntimeException {
   public enum TYPE {
-    INVALID_BASE_URL, INVALID_DATA_DIR, NON_WRITABLE_DATA_DIR, CONFIG_WRITE, USER_CONFIG, REGISTRY_CONFIG, INVALID_EXTENSION, DATADIR_ALREADY_REGISTERED, RESOURCE_ALREADY_REGISTERED, ORGANISATION_CONFIG, RESOURCE_CONFIG
+    NOT_AUTHORISED, RESOURCE_EXISTS_ALREADY, MISSING_METADATA
   };
 
   protected TYPE type;
@@ -22,7 +23,7 @@ public class InvalidConfigException extends RuntimeException {
    * @param type Is stored in the exception
    * @param message The message to use for logging (not display through the web application)
    */
-  public InvalidConfigException(TYPE type, String message) {
+  public RegistryException(TYPE type, String message) {
     super(message);
     this.type = type;
   }

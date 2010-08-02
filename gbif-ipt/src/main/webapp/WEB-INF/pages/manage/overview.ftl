@@ -15,6 +15,20 @@
 	div.definition div.body{
 		width: 68%;
 	}
+	.btn { 
+	  padding: 1px;
+	  margin: 0px; 
+	} 
+	.btn2 { 
+	  color:#333; 
+	  background-color:#efefef; 
+	  border: 1px solid; 
+	  border-color: #888;
+	  -moz-border-radius: 4px;
+	  -webkit-border-radius: 4px;
+	  padding: 1px;
+	  margin: 0px; 
+	} 
 	</style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -127,13 +141,13 @@ By default a resource is private to the managers. Once published to GBIF you can
 	    <#if ms.resource.status=="PUBLIC">
 		    <select name="id" id="org" size="1">
 		    <#list organisations as o>
-		      <option value="${u.key}">${u.name}</option>
+		      <option value="${o.key}">${o.name}</option>
 		    </#list>
 			</select>
-			<input type='submit' name='publish' value='Register' />
+			<input type='submit' class="confirm" name='publish' value='Register' />
 		<#else>
 		    <#if ms.resource.status=="PRIVATE">
-			<input class="confirm22" type='submit' name='publish' value='Publish' />
+			<input type='submit' class="confirm" name='publish' value='Publish' />
 			</#if>
 		</#if>
   	  </form>
@@ -141,21 +155,25 @@ By default a resource is private to the managers. Once published to GBIF you can
   </div>
   <div class="body">
       	<div>
-			<em>Publication Status</em>: <span class="warn">${ms.resource.status}</span>
+			<strong><@s.text name="resource.status.${ms.resource.status?lower_case}"/></strong>
       	</div>
-      	<#if ms.resource.status=="REGISTERED">
-      	<div>
-			<em>Registered Organisation</em>: the organisation this resource is registered with in GBIF.
-      	</div>
-      	</#if>
       	<div>
 			<@s.text name="manage.resource.status.intro.${ms.resource.status?lower_case}"/>
 		    <#if ms.resource.status=="PUBLIC">
-		    <a href="resource-publish.do?id=private"><@s.text name="manage.resource.status.restrict"/></a>
+		    <a class="confirm" href="resource-unpublish.do"><@s.text name="manage.resource.status.restrict"/></a>
 		    </#if>
       	</div>
       	<div class="details">
       		<table>
+		      	<#if ms.resource.status=="REGISTERED">
+	          		<tr><th>Resource Key</th><td>${ms.resource.key!}</td></tr>
+	          		<#if ms.resource.organisation?exists>
+	          		<tr><th>Organisation</th><td>${ms.resource.organisation.name!}</td></tr>
+	          		<tr><th>Organisation Contact</th><td>${ms.resource.organisation.primaryContactName!}, ${ms.resource.organisation.primaryContactEmail!}</td></tr>
+	          		<tr><th>Organisation Key</th><td>${ms.resource.organisation.key!}</td></tr>
+	          		<tr><th>Endorsing Node</th><td>${ms.resource.organisation.nodeName!}</td></tr>
+	          		</#if>
+          		</#if>
       		</table>
       	</div>
   </div>
@@ -186,13 +204,12 @@ By default a resource is private to the managers. Once published to GBIF you can
       		<table>
           		<tr><th>Creator</th><td>${ms.resource.creator.name}, ${ms.resource.creator.email}</td></tr>
           		<#list ms.resource.managers as u>
-          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?id=${u.email}"><img src="${baseURL}/images/trash-s.png" border="0" align="absbottom" /></a></td></tr>
+          		<tr><th>Manager</th><td>${u.name}, ${u.email} <a class="confirm" href="resource-delmanager.do?id=${u.email}"><button class="small">Delete</button></a></td></tr>
 	    		</#list>
       		</table>
       	</div>
   </div>
 </div>
-
 
 <div class="definition" id="archive">	
   <div class="title">

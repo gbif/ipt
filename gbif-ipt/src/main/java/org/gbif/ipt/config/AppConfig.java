@@ -205,7 +205,7 @@ public class AppConfig {
       log.info("Locked DataDir to registry of type " + type);
     } catch (IOException e) {
       log.error("Cannot lock the datadir to registry type " + type, e);
-      throw new InvalidConfigException(TYPE.IPT_CONFIG_WRITE, "Cannot lock the datadir to registry type " + type);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cannot lock the datadir to registry type " + type);
     }
   }
 }

@@ -19,6 +19,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceConfiguration;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.metadata.eml.Eml;
 
@@ -26,8 +27,6 @@ import com.google.inject.Inject;
 import com.google.inject.servlet.SessionScoped;
 
 import org.apache.log4j.Logger;
-
-import java.io.IOException;
 
 /**
  * A wrapper kept in a users session when managing one resource.
@@ -76,15 +75,15 @@ public class ResourceManagerSession {
     log.info("Loading new manager " + resource + " for user " + user.getEmail());
   }
 
-  public void saveConfig() throws IOException {
+  public void saveConfig() throws InvalidConfigException {
     // TODO: implement
   }
 
-  public void saveEml() throws IOException {
+  public void saveEml() throws InvalidConfigException {
     // TODO: implement
   }
 
-  public void saveResource() throws IOException {
+  public void saveResource() throws InvalidConfigException {
     resourceManager.save(resource);
   }
 

@@ -23,9 +23,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 /**
  * @author tim
@@ -48,6 +48,18 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
     }
   }
 
+  private Organisation addOrganisation(Organisation organisation) {
+    if (organisation != null) {
+      log.debug("Adding organisation " + organisation.getKey() + " - " + organisation.getName());
+      organisations.put(organisation.getKey().toString(), organisation);
+    }
+    return organisation;
+  }
+
+  private void defineXstreamMapping() {
+    xstream.alias("organisation", Organisation.class);
+  }
+
   public Organisation delete(String key) throws DeletionNotAllowedException {
     if (key != null) {
       Organisation remOrganisation = organisations.remove(key);
@@ -59,10 +71,12 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.OrganisationsManager#get(java.lang.String)
    */
   public Organisation get(String key) {
+    if (key == null) {
+      return null;
+    }
     return organisations.get(key);
   }
 
@@ -108,7 +122,6 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
 
   /*
    * (non-Javadoc)
-   * 
    * @see org.gbif.ipt.service.admin.OrganisationManager#save()
    */
   public void save() throws IOException {
@@ -119,17 +132,5 @@ public class OrganisationsManagerImpl extends BaseManager implements Organisatio
       out.writeObject(entry.getValue());
     }
     out.close();
-  }
-
-  private Organisation addOrganisation(Organisation organisation) {
-    if (organisation != null) {
-      log.debug("Adding organisation " + organisation.getKey() + " - " + organisation.getName());
-      organisations.put(organisation.getKey().toString(), organisation);
-    }
-    return organisation;
-  }
-
-  private void defineXstreamMapping() {
-    xstream.alias("organisation", Organisation.class);
   }
 }
