@@ -15,12 +15,15 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.metadata.eml.Eml;
+import org.gbif.metadata.eml.EmlFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
 import org.apache.commons.io.FileUtils;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +43,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<String, Resource>();
   public static final String PERSISTENCE_FILE = "resource.xml";
+  public static final String EML_FILE = "eml.xml";
   private final XStream xstream = new XStream();
   private UserEmailConverter userConverter;
   private OrganisationKeyConverter orgConverter;
@@ -114,6 +118,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       return null;
     }
     return resources.get(shortname.toLowerCase());
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#getEml(java.lang.String)
+   */
+  public Eml getEml(Resource resource) {
+    File emlFile = dataDir.resourceFile(resource, EML_FILE);
+    Eml eml = null;
+    try {
+      InputStream in = new FileInputStream(emlFile);
+      eml = EmlFactory.build(in);
+    } catch (FileNotFoundException e) {
+      eml = new Eml();
+    } catch (IOException e) {
+      log.error(e);
+    } catch (SAXException e) {
+      log.error("Invalid EML document", e);
+    }
+
+    updateEmlWithResourceBasics(resource, eml);
+    return eml;
   }
 
   /*
@@ -226,6 +252,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   /*
    * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
+   */
+  public void save(Resource resource, Eml eml) throws InvalidConfigException {
+    // udpate EML with latest resource basics
+    updateEmlWithResourceBasics(resource, eml);
+  }
+
+  /*
+   * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#search(java.lang.String, org.gbif.ipt.model.voc.ResourceType)
    */
   public List<Resource> search(String q, ResourceType type) {
@@ -244,6 +279,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       resource.setStatus(PublicationStatus.PRIVATE);
       save(resource);
     }
+  }
+
+  private void updateEmlWithResourceBasics(Resource resource, Eml eml) {
+    eml.setTitle(resource.getTitle());
+    eml.setDescription(resource.getDescription());
   }
 
 }

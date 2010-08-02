@@ -2,21 +2,20 @@
 	<title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<h1>Configure <em>${ms.resource.shortname!}</em></h1>
+<h1>Metadata for <em>${ms.resource.title!ms.resource.shortname}</em></h1>
 
-<p>Welcome dear manager!</p>
-<p>Please manage this great resource <strong><em>${ms.resource}</em></strong></p>
+<p>You will have to fill in at least the basic metadata before you can make this resource public.</p>
 
-<h2>Test Persistency</h2>
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<@s.form cssClass="ftlTopForm" action="resource.do" method="post">
-  	<@input name="id" size=40 value="${ms.resource.shortname}"/>
+<@s.form cssClass="ftlTopForm" action="metadata.do" method="post">
+  	<input type="hidden" name="id" value="${ms.resource.shortname}"/>
+  	
   	<@input name="resource.title" keyBase="ms." size=80/>
-  	<@select name="resource.type" keyBase="ms." options={"occ":"resource.type.occ", "tax":"resource.type.tax"} value="occ" />
   	<@text name="resource.description" keyBase="ms." size=120/>
   
   <div class="buttons">
- 	<@s.submit cssClass="button" name="save" key="button.save"/>
+ 	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit name="cancel" key="button.cancel"/>
   </div>	
 </@s.form>
 
