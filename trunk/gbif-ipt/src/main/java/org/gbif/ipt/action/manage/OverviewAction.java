@@ -5,6 +5,8 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
+import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.OrganisationsManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -84,28 +86,42 @@ public class OverviewAction extends BaseAction {
   }
 
   public String publish() throws Exception {
-    PublicationStatus newStatus = ms.getResource().getStatus();
-    Organisation org = null;
-    if (PublicationStatus.PRIVATE == newStatus) {
-      newStatus = PublicationStatus.PUBLIC;
-    } else if (PublicationStatus.PUBLIC == newStatus) {
-      org = orgManager.get(id);
-      if (org == null) {
-        newStatus = PublicationStatus.PRIVATE;
-      } else {
-        newStatus = PublicationStatus.REGISTERED;
+    if (PublicationStatus.PRIVATE == ms.getResource().getStatus()) {
+      try {
+        resourceManager.publish(ms.getResource());
+        addActionMessage("Changed Publication Status to " + ms.getResource().getStatus());
+      } catch (InvalidConfigException e) {
+        log.error("Cant publish resource " + ms.getResource(), e);
       }
-    }
-    ms.getResource().setStatus(newStatus);
-    addActionMessage("Changing Publication Status to " + newStatus);
-    if (org != null) {
-      addActionMessage("Register with organisation " + org.getName());
+
+    } else if (PublicationStatus.PUBLIC == ms.getResource().getStatus()) {
+      Organisation org = null;
+      try {
+        org = orgManager.get(id);
+        resourceManager.register(ms.getResource(), org);
+        if (org != null) {
+          addActionMessage("Registered resource with " + org.getName() + " in GBIF");
+        }
+      } catch (RegistryException e) {
+        log.error("Cant register resource " + ms.getResource() + " with organisation " + org, e);
+      }
+
     }
     return execute();
   }
 
   public void setMs(ResourceManagerSession ms) {
     this.ms = ms;
+  }
+
+  public String unpublish() throws Exception {
+    try {
+      resourceManager.unpublish(ms.getResource());
+      addActionMessage("Changed Publication Status to " + ms.getResource().getStatus());
+    } catch (InvalidConfigException e) {
+      log.error("Cant unpublish resource " + ms.getResource(), e);
+    }
+    return execute();
   }
 
 }

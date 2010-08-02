@@ -1,10 +1,12 @@
 package org.gbif.ipt.service.manage;
 
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.model.voc.ResourceType;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 
 import com.google.inject.ImplementedBy;
@@ -56,7 +58,24 @@ public interface ResourceManager {
    */
   public int load();
 
-  public void save(Resource resource) throws IOException;
+  /**
+   * Makes a resource public
+   * 
+   * @param resource
+   * @throws InvalidConfigException if resource was already registered
+   */
+  public void publish(Resource resource) throws InvalidConfigException;
+
+  /**
+   * Registers the resource with gbif
+   * 
+   * @param resource
+   * @param organisation the org that the resource will be associated with
+   * @throws InvalidConfigException
+   */
+  public void register(Resource resource, Organisation organisation) throws InvalidConfigException;
+
+  public void save(Resource resource) throws InvalidConfigException;
 
   /**
    * list all resource that match the given full text search string and optional resource type
@@ -65,5 +84,13 @@ public interface ResourceManager {
    * @return
    */
   public List<Resource> search(String q, @Nullable ResourceType type);
+
+  /**
+   * makes a resource private
+   * 
+   * @param resource
+   * @throws InvalidConfigException if resource was already registered
+   */
+  public void unpublish(Resource resource) throws InvalidConfigException;
 
 }

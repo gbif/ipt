@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * The main class to represent an IPT resource.
@@ -34,6 +35,9 @@ public class Resource implements Serializable {
   private User modifier;
   private Date modified;
   private Set<User> managers = new HashSet<User>();
+  // registry data - only exists when status=REGISTERED
+  private UUID key;
+  private Organisation organisation;
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -65,9 +69,8 @@ public class Resource implements Serializable {
     return description;
   }
 
-  public String getGuid() {
-    // TODO Auto-generated method stub
-    return null;
+  public UUID getKey() {
+    return key;
   }
 
   public Set<User> getManagers() {
@@ -80,6 +83,10 @@ public class Resource implements Serializable {
 
   public User getModifier() {
     return modifier;
+  }
+
+  public Organisation getOrganisation() {
+    return organisation;
   }
 
   public String getShortname() {
@@ -121,9 +128,8 @@ public class Resource implements Serializable {
     this.description = description;
   }
 
-  public void setGuid(String guid) {
-    // TODO Auto-generated method stub
-
+  public void setKey(UUID key) {
+    this.key = key;
   }
 
   public void setManagers(Set<User> managers) {
@@ -136,6 +142,10 @@ public class Resource implements Serializable {
 
   public void setModifier(User modifier) {
     this.modifier = modifier;
+  }
+
+  public void setOrganisation(Organisation organisation) {
+    this.organisation = organisation;
   }
 
   public void setShortname(String shortname) {

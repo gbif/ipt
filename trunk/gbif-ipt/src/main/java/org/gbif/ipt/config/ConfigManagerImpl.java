@@ -123,7 +123,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       cfg.saveConfig();
     } catch (IOException e) {
       log.debug("Cant save IPT configuration: " + e.getMessage(), e);
-      throw new InvalidConfigException(TYPE.IPT_CONFIG_WRITE, "Cant save IPT configuration: " + e.getMessage());
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant save IPT configuration: " + e.getMessage());
     }
   }
 

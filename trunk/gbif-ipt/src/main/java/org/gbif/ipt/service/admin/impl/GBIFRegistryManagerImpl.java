@@ -4,7 +4,9 @@
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.BaseManager;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.registry.api.client.Gbrds;
 import org.gbif.registry.api.client.Gbrds.OrgCredentials;
@@ -18,6 +20,7 @@ import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author tim
@@ -60,6 +63,15 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
 
   /*
    * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.GBIFRegistryManager#deregister(org.gbif.ipt.model.Resource)
+   */
+  public void deregister(Resource resource) throws RegistryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  /*
+   * (non-Javadoc)
    * @see org.gbif.ipt.service.admin.GBIFRegistryManager#validateOrganisation(java.lang.String, java.lang.String)
    */
   /*
@@ -76,6 +88,15 @@ public class GBIFRegistryManagerImpl extends BaseManager implements GBIFRegistry
         return o;
       }
     });
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.GBIFRegistryManager#register(org.gbif.ipt.model.Resource,
+   * org.gbif.ipt.model.Organisation)
+   */
+  public UUID register(Resource resource, Organisation organisation) throws RegistryException {
+    return UUID.randomUUID();
   }
 
   public boolean validateOrganisation(String key, String password) {
