@@ -23,8 +23,9 @@
 			<result name="401">
 				<param name="location">/WEB-INF/pages/manage/401.ftl</param>
 			</result>
+			<result name="cancel" type="redirect">resource.do</result>
 		</global-results>
-
+		
 		<action name="home" class="org.gbif.ipt.action.manage.HomeAction">
 			<result>/WEB-INF/pages/manage/home.ftl</result>
 		</action>

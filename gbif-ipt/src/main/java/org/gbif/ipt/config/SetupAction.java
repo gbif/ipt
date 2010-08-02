@@ -158,7 +158,7 @@ public class SetupAction extends BaseAction implements ServletContextAware {
       try {
         user.setRole(Role.Admin);
         user.setLastLoginToNow();
-        userManager.add(user);
+        userManager.create(user);
         userManager.save();
         // set IPT type: registry URL
         if (production) {
@@ -177,11 +177,13 @@ public class SetupAction extends BaseAction implements ServletContextAware {
         addActionMessage(getText("admin.config.setup2.success"));
         return SUCCESS;
       } catch (IOException e) {
+        log.error(e);
         addActionError("Failed to setup admin account. Can't write user file: " + e.getMessage());
       } catch (AlreadyExistingException e) {
-        addActionError(e.getMessage());
+        addFieldError("user.email", "User exists as non admin user already");
       } catch (InvalidConfigException e) {
-        addActionError(e.getMessage());
+        log.error(e);
+        addActionError(e.getType().toString() + ": " + e.getMessage());
       }
     }
     return INPUT;

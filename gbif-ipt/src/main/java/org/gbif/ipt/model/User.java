@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable {
+public class User implements Serializable, Cloneable {
   public enum Role {
     User, Manager, Admin
   }
@@ -22,6 +22,15 @@ public class User implements Serializable {
   private String lastname;
   private Role role = Role.User;
   private Date lastLogin;
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    User clone = (User) super.clone();
+    if (clone != null && getLastLogin() != null) {
+      clone.setLastLogin((Date) getLastLogin().clone());
+    }
+    return clone;
+  }
 
   @Override
   public boolean equals(Object other) {
@@ -117,15 +126,15 @@ public class User implements Serializable {
     }
   }
 
-  public void setRole(String role) {
-    if (role != null && role.equalsIgnoreCase("manager")) {
-      this.role = Role.Manager;
-    } else if (role != null && role.equalsIgnoreCase("admin")) {
-      this.role = Role.Admin;
-    } else {
-      this.role = Role.User;
-    }
-  }
+//  public void setRole(String role) {
+//    if (role != null && role.equalsIgnoreCase("manager")) {
+//      this.role = Role.Manager;
+//    } else if (role != null && role.equalsIgnoreCase("admin")) {
+//      this.role = Role.Admin;
+//    } else {
+//      this.role = Role.User;
+//    }
+//  }
 
   @Override
   public String toString() {

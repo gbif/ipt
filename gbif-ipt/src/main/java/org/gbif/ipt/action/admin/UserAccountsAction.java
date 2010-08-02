@@ -70,14 +70,17 @@ public class UserAccountsAction extends POSTAction {
   public void prepare() throws Exception {
     super.prepare();
     if (id != null) {
-      // modify existing user
+      // modify copy of existing user - otherwise we even change the proper instances when canceling the request or
+      // submitting non validating data
       user = userManager.get(id);
     }
     // if no id was submitted we wanted to create a new account
     // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
     // matching user.
     // in that case again provide a new, empty user instance
-    if (user == null) {
+    if (user != null) {
+      user = (User) user.clone();
+    } else {
       // reset id
       id = null;
       // create new user
@@ -89,12 +92,12 @@ public class UserAccountsAction extends POSTAction {
   public String save() {
     try {
       if (id == null) {
-        userManager.add(user);
+        userManager.create(user);
         addActionMessage(getText("admin.user.added"));
       } else {
+        userManager.save(user);
         addActionMessage(getText("admin.user.changed"));
       }
-      userManager.save();
       return SUCCESS;
     } catch (IOException e) {
       log.error("The user change couldnt be saved: " + e.getMessage(), e);
@@ -116,11 +119,9 @@ public class UserAccountsAction extends POSTAction {
   }
 
   @Override
-  public void validate() {
+  public void validateHttpPostOnly() {
     // only validate on form submit ignoring list views
     // && users == null
-    if (isHttpPost()) {
-      validator.validate(this, user);
-    }
+    validator.validate(this, user);
   }
 }

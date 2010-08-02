@@ -14,16 +14,14 @@
 	<@input name="user.email" disabled=id?has_content/>  
 	<@input name="user.firstname" />  
 	<@input name="user.lastname" />  
-	<@input name="user.password" />  
-	<@select name="user.role" value=user.role?lower_case options={"user":"user.roles.user", "manager":"user.roles.manager", "admin":"user.roles.admin"}/>  
+	<@input name="user.password" />
+	<@select name="user.role" value=user.role options={"User":"user.roles.user", "Manager":"user.roles.manager", "Admin":"user.roles.admin"}/>
 	  	
   <div class="buttons">
- 	<@s.submit cssClass="button" name="save" key="button.save"/>
- 	<@s.submit cssClass="button" name="delete" key="button.delete"/>
+ 	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit name="delete" key="button.delete"/>
+ 	<@s.submit name="cancel" key="button.cancel"/>
   </div>	
 </@s.form>
 
-<p>
-	<a href="users.do">Back to user list</a>
-</p>
 <#include "/WEB-INF/pages/inc/footer.ftl">

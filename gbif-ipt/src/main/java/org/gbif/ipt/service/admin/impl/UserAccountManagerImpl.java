@@ -5,6 +5,7 @@ package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
+import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
@@ -49,12 +50,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     defineXstreamMapping();
   }
 
-  public void add(User user) {
-    if (user != null) {
-      addUser(user);
-    }
-  }
-
   private User addUser(User user) {
     if (user != null) {
       if (user.getRole() == Role.Admin) {
@@ -88,6 +83,16 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       return agent;
     }
     return null;
+  }
+
+  public void create(User user) throws AlreadyExistingException, IOException {
+    if (user != null) {
+      if (get(user.getEmail()) != null) {
+        throw new AlreadyExistingException();
+      }
+      addUser(user);
+      save();
+    }
   }
 
   private void defineXstreamMapping() {
@@ -188,5 +193,14 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       out.writeObject(entry.getValue());
     }
     out.close();
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see org.gbif.ipt.service.admin.UserAccountManager#save(org.gbif.ipt.model.User)
+   */
+  public void save(User user) throws IOException {
+    addUser(user);
+    save();
   }
 }
