@@ -245,7 +245,7 @@ ul.fielderror{
 	display: block;
 	margin-top: 1em;
 }
-.ftlTopForm input,.ftlTopForm select {
+.ftlTopForm input,.ftlTopForm select,.ftlTopForm textarea {
 	display: block;
 	margin-left: 2em;
 }

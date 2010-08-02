@@ -17,9 +17,11 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.validation.EmlSupport;
 import org.gbif.ipt.validation.ResourceSupport;
+import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.Inject;
 
@@ -36,11 +38,27 @@ public class MetadataAction extends POSTAction {
   private ResourceSupport validator1 = new ResourceSupport();
   private EmlSupport validator2 = new EmlSupport();
 
+  public Eml getEml() {
+    return ms.getEml();
+  }
+
+  public ResourceManagerSession getMs() {
+    return ms;
+  }
+
+  public Resource getResource() {
+    return ms.getResource();
+  }
+
   @Override
   public String save() throws Exception {
     ms.saveResource();
     ms.saveEml();
     return SUCCESS;
+  }
+
+  public void setMs(ResourceManagerSession ms) {
+    this.ms = ms;
   }
 
   @Override
