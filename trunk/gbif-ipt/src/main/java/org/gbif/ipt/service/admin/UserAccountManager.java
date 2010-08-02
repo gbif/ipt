@@ -24,13 +24,6 @@ import java.util.List;
 public interface UserAccountManager {
 
   /**
-   * Adds a new user account, but doesnt persist the change.
-   * 
-   * @throws AlreadyExistingException
-   */
-  public void add(User user) throws AlreadyExistingException;
-
-  /**
    * Authenticate a user checking his password & email
    * 
    * @param email the unique email address that works as the identifier for a user
@@ -38,6 +31,13 @@ public interface UserAccountManager {
    * @return the user instance if exists or null if user doesnt exist or password doesnt match
    */
   public User authenticate(String email, String password);
+
+  /**
+   * Adds a new user account and persists the change.
+   * 
+   * @throws AlreadyExistingException
+   */
+  public void create(User user) throws AlreadyExistingException, IOException;
 
   /**
    * Removes the specified user from the in memory list of users.
@@ -86,5 +86,13 @@ public interface UserAccountManager {
    * @throws IOException
    */
   public void save() throws IOException;
+
+  /**
+   * Updates the internal cache with this user and persists the change
+   * 
+   * @param user
+   * @throws IOException
+   */
+  public void save(User user) throws IOException;
 
 }

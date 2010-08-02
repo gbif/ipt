@@ -26,7 +26,7 @@
 </table>
 
 <p>
-	<a class="button" href="user.do">Create new account</a>
+	<a href="user.do"><button><@s.text name="button.create"/></button></a>
 </p>
 
 

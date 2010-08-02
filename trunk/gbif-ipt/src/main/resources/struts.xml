@@ -121,6 +121,7 @@
 		<action name="about" >
 			<result>/WEB-INF/pages/about.ftl</result>
 		</action>		
+		
 	</package>	
 	
 	<!-- 

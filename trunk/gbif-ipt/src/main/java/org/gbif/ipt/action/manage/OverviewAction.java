@@ -30,9 +30,9 @@ public class OverviewAction extends BaseAction {
 
   public String addmanager() throws Exception {
     User u = userManager.get(id);
-    if (u == null || !potentialManagers.contains(u)) {
+    if (u != null && !potentialManagers.contains(u)) {
       addActionError("Manager " + id + " not available");
-    } else {
+    } else if (u != null) {
       ms.getResource().addManager(u);
       addActionMessage("Added " + u.getName() + " to resource managers");
       ms.saveResource();

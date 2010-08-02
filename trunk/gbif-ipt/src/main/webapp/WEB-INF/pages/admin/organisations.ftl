@@ -37,14 +37,14 @@ $(document).ready(function(){
 			<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="false" />
 		</#if>
 		</td>
-		<#-- <@checkbox name="organisation.canHost" disabled=true checked=o.canHost/></td> -->
 		<td><a href="organisation?id=${o.key}">Edit</a></td>
 	</tr>
 	</#list>
 </table>
 
+
 <p>
-	<a class="button" href="organisation.do">Associate new organisation</a>
+	<a href="organisation.do"><button><@s.text name="button.create"/></button></a>
 </p>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

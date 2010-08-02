@@ -18,6 +18,9 @@ public class POSTAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
+    if (cancel) {
+      return CANCEL;
+    }
     // if notFound was set to true during prepare() the supplied id parameter didnt exist - return a 404!
     if (notFound) {
       return NOT_FOUND;
@@ -59,5 +62,18 @@ public class POSTAction extends BaseAction {
 
   public void setDelete(String delete) {
     this.delete = StringUtils.trimToNull(delete) != null;
+  }
+
+  @Override
+  public void validate() {
+    // only validate on form submit ignoring list views
+    // && users == null
+    if (!cancel && isHttpPost()) {
+      validateHttpPostOnly();
+    }
+  }
+
+  public void validateHttpPostOnly() {
+
   }
 }
