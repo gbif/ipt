@@ -5,6 +5,8 @@
  * http://www.webstuffshare.com
  * Licensed Under GPL version 2 license.
  *
+ * Updated by Markus Döring to also work with submit buttons and forms in addition to simple links
+ *
  */
 (function($){
 
@@ -23,17 +25,21 @@
 		return this.each (function () {
 			
 			$(this).bind('click', function(e) {
-
+				console.log(e);
 				e.preventDefault();
 				thisHref	= $(this).attr('href');
-				
+				console.log(thisHref);				
 				if($(this).next('.question').length <= 0)
 					$(this).after('<div class="question">'+theOptions.question+'<br/> <span class="yes">'+theOptions.yesAnswer+'</span><span class="cancel">'+theOptions.cancelAnswer+'</span></div>');
 				
 				$(this).next('.question').animate({opacity: 1}, 300);
 				
 				$('.yes').bind('click', function(){
-					window.location = thisHref;
+					if (thisHref!=null){
+						window.location = thisHref;
+					}else{
+						$(this).closest("form").submit();
+					}
 				});
 		
 				$('.cancel').bind('click', function(){
