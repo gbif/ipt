@@ -54,18 +54,13 @@ By default a resource is private to the managers. Once published to GBIF you can
 		<input type='submit' name='edit' value='Edit' />
   	  </form>
   	</div>
+  	<div class="warn">
+		The resource is missing mandatory metadata! 
+  	</div>
   </div>
   <div class="body">
       	<div>
-			<em>Title</em>:
-			My full resource title 
-      	</div>
-      	<div>
-			<em>Description</em>:
-			My full resource description. A lot of text but probably truncated at some point... 
-      	</div>
-      	<div class="warn">
-			The resource is missing mandatory metadata! Please enter at least the required fields before proceeding. 
+      		${ms.resource.description!"No Description yet entered"}
       	</div>
       	<div class="details">
       		<table>
@@ -84,16 +79,12 @@ By default a resource is private to the managers. Once published to GBIF you can
         Source Data
   	</div>
   	<div class="actions">
-  	 <#-- 
-	  <form action='extension.do' method='post'>
-		<input type='submit' name='generate' value='Generate' />
-  	  </form>
-  	  -->
+
   	</div>
   </div>
   <div class="body">
       	<div>
-			Aaaaaaaaaa bbbb ccc d deee ee f f
+			Your data sources for generating a Darwin Core archive. You can upload text files or configure SQL views to databases in your local network.
       	</div>
       	<div class="details">
       		<table>

@@ -15,7 +15,7 @@
   <div>
 	<@s.fielderror cssClass="fielderror" fieldName="${name}"/>
 	<label for="${name}"><@s.text name="${keyBase}${name}"/></label>
-	<textarea id="${name}" name="${name}" cols=size rows=rows <#if disabled>readonly="readonly"</#if>><@s.property value="${name}"/></textarea>
+	<textarea id="${name}" name="${name}" cols=${size} rows=${rows} <#if disabled>readonly="readonly"</#if>><@s.property value="${name}"/></textarea>
   </div>
 </#macro> 
 

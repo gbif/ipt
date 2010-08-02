@@ -32,7 +32,7 @@ public class ResourceSupport {
   public void validate(BaseAction action, Resource resource) {
     if (resource != null) {
       validateShortname(action, resource.getShortname());
-      if (resource.getTitle().length() < 3) {
+      if (resource.getTitle() == null || resource.getTitle().length() < 3) {
         action.addFieldError("resource.title", action.getText("validation.resource.title.required"));
       }
     }
