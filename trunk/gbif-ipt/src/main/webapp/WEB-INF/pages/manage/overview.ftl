@@ -36,7 +36,7 @@ By default a resource is private to the managers. Once published to GBIF you can
         Metadata
   	</div>
   	<div class="actions">
-	  <form action='metadata.do' method='get'>
+	  <form action='metadata-basic.do' method='get'>
 		<input type='submit' name='edit' value='Edit' />
   	  </form>
   	</div>

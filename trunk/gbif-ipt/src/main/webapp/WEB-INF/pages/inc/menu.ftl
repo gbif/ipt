@@ -8,8 +8,8 @@
 		        <ul>
 		      [#if (Session.curr_user)??] 
 		        	<li>Logged in as <em>${Session.curr_user.email}</em></li>
-		        	<li[#if currentMenu=="account"] id="nav-active"[/#if]><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
-		        	<li[#if currentMenu=="logout"] id="nav-active"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
+		        	<li[#if currentMenu=="account"] class="current"[/#if]><a href="${baseURL}/account.do">[@s.text name="menu.account"/]</a></li>
+		        	<li[#if currentMenu=="logout"] class="current"[/#if]><a href="${baseURL}/logout.do">[@s.text name="menu.logout"/]</a></li>
 			  [#else]
 		        	<li>
 				        <form id="login-form" action="${baseURL}/login" method="post">
@@ -38,14 +38,14 @@
 
 			<div id="menu">
 		        <ul>
-			    	<li[#if currentMenu=='home'] id="current"[/#if]><a href="${baseURL}/">[@s.text name="menu.home"/]</a></li>
+			    	<li[#if currentMenu=='home'] class="current"[/#if]><a href="${baseURL}/">[@s.text name="menu.home"/]</a></li>
 			    	[#if managerRights]
-			    	<li[#if currentMenu=='manage'] id="current"[/#if]><a href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a></li>
+			    	<li[#if currentMenu=='manage'] class="current"[/#if]><a href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a></li>
 			    	[/#if] 
 			    	[#if adminRights]
-			    	<li[#if currentMenu=='admin'] id="current"[/#if]><a href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a></li>
+			    	<li[#if currentMenu=='admin'] class="current"[/#if]><a href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a></li>
 			    	[/#if]
-			    	<li[#if currentMenu=='about'] id="current"[/#if]><a href="${baseURL}/about.do">[@s.text name="menu.about"/]</a></li>
+			    	<li[#if currentMenu=='about'] class="current"[/#if]><a href="${baseURL}/about.do">[@s.text name="menu.about"/]</a></li>
 		        </ul>    
 		    </div>
 		    
@@ -57,8 +57,23 @@
 		        	</div>
 		        </form>
 		    </div>
-		    
+
+[#if sideMenuItems?exists]		    
+			<div id="sidebar">
+				[#if sideMenuTitle?exists]<h2>${sideMenuTitle}</h2>[/#if]
+				<ul>
+				[#list sideMenuItems as it]
+				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[/#if]><a href="${it}.do">[@s.text name="submenu.${it}"/]</a></li>
+				[/#list]
+				</ul>
+			</div>
+			
+			<div id="content" class="fixed">			
+[#else]
+
 			<div id="content">			
+[/#if]
+
 
 			[@s.actionmessage/]
 			[@s.actionerror/]
