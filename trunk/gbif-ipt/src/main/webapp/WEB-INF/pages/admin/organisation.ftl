@@ -1,19 +1,34 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	
-
 <script type="text/javascript">
-
 $(document).ready(function(){
 	$('#organisation\\.key').click(function() {
-	$('#organisation\\.name').val($('#organisation\\.key :selected').text());	
-	$('#organisation\\.alias').val($('#organisation\\.key :selected').text());	
+		var orgName = $('#organisation\\.key :selected').text();
 	
-  })
+		$('#organisation\\.name').val(orgName);	
+		$('#organisation\\.alias').val(orgName);	
+		//TODO: URL is hardwired to the dev registry. This must be replaced.
+		//TODO: Internationalise if possible the email's subject
+		var url = "<@s.url value='http://gbrdsdev.gbif.org/registry/organisation/'/>" + $('#organisation\\.key :selected').val() + ".json";
+		$.getJSON(url+"?callback=?",function(data){
+			var contactLink = "<a href=\"mailto:" + data.primaryContactEmail 
+					+ "?subject=Password request for " + orgName + " \"> "  
+					+ "Click here</a> to contact " + orgName;
+			$('#requestDetails').html(contactLink);
+        	});				
+	});
 });
 </script>	
 <title><@s.text name="title"/></title>
+
+
 <#include "/WEB-INF/pages/inc/menu.ftl">
+
+
 <h1><@s.text name="admin.organisation.title"/></h1>
+
+<p><@s.text name="admin.organisation.intro"/></p>
+<p><@s.text name="admin.organisation.intro2"/></p>
+
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 
 
@@ -28,6 +43,8 @@ $(document).ready(function(){
 		<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." size=15 />
 	</#if>		  
 	<@input name="organisation.password" keyBase="admin." type="text"/>
+	<div id="requestDetails"></div>
+	
 	<@input name="organisation.alias" keyBase="admin." type="text"/>
 	<@checkbox name="organisation.canHost" keyBase="admin."/>
    <div class="buttons">
