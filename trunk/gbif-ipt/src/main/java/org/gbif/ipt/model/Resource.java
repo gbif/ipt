@@ -21,7 +21,7 @@ import java.util.UUID;
  * @author markus
  * 
  */
-public class Resource implements Serializable {
+public class Resource implements Serializable, Comparable<Resource> {
   private static final long serialVersionUID = 3832626162173352190L;
 
   private String shortname; // unique
@@ -43,6 +43,14 @@ public class Resource implements Serializable {
     if (manager != null) {
       this.managers.add(manager);
     }
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  public int compareTo(Resource o) {
+    return shortname.compareToIgnoreCase(o.shortname);
   }
 
   @Override

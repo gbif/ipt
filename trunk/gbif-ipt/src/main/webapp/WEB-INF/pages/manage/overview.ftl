@@ -15,20 +15,6 @@
 	div.definition div.body{
 		width: 68%;
 	}
-	.btn { 
-	  padding: 1px;
-	  margin: 0px; 
-	} 
-	.btn2 { 
-	  color:#333; 
-	  background-color:#efefef; 
-	  border: 1px solid; 
-	  border-color: #888;
-	  -moz-border-radius: 4px;
-	  -webkit-border-radius: 4px;
-	  padding: 1px;
-	  margin: 0px; 
-	} 
 	</style>
 <script type="text/javascript">
 $(document).ready(function(){
