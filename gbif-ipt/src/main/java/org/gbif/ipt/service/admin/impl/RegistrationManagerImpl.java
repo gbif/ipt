@@ -143,11 +143,18 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         addHostingOrganisation(reg.getHostingOrganisation());
 
         // load the associated organisations
-        if (reg.getAssociatedOrganisations() != null) {
-          for (Organisation associatedOrganisation : reg.getAssociatedOrganisations().values()) {
-            addAssociatedOrganisation(associatedOrganisation);
+        while (true) {
+          try {
+            Organisation org = (Organisation) in.readObject();
+            addAssociatedOrganisation(org);
+          } catch (EOFException e) {
+            // end of file, expected exception!
+            break;
+          } catch (ClassNotFoundException e) {
+            log.error(e.getMessage(), e);
           }
         }
+
       } catch (EOFException e) {
         // end of file, expected exception!
       } catch (AlreadyExistingException e) {

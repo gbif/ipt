@@ -3,10 +3,8 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-
 	$('#organisation\\.key').click(function() {
 	$('#organisation\\.name').val($('#organisation\\.key :selected').text());	
-	
 })
 });
 </script>	
@@ -18,17 +16,13 @@ $(document).ready(function(){
 
 <table class="simple" width="100%">
 	<tr>
-		<th>Title</th>
-		<th>Description</th>
-		<th>Alias</th>
-		<th>Can host?</th>
+		<th><@s.text name="admin.organisation.alias"/></th>
+		<th><@s.text name="admin.organisation.canHost"/></th>
 		<th></th>		
 	</tr>
-
+	
 	<#list linkedOrganisations as o>	
 	<tr>
-		<td>${o.name!}</td>
-		<td>${o.description!}</td>
 		<td>${o.alias!}</td>
 		<td>
 		<#if o.canHost>
@@ -37,7 +31,7 @@ $(document).ready(function(){
 			<@s.checkbox name="organisation.canHost" key="organisation.canHost" disabled="true" value="false" />
 		</#if>
 		</td>
-		<td><a href="organisation?id=${o.key}">Edit</a></td>
+		<td><a href="organisation?id=${o.key}"><button><@s.text name="button.edit"/></button></a></td>
 	</tr>
 	</#list>
 </table>
