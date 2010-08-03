@@ -11,7 +11,7 @@
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Threshold" value="WARN"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p [%c{1}]  %m%n"/>
+            <param name="ConversionPattern" value="%-5p %m%n"/>
         </layout>
     </appender>
 
@@ -22,7 +22,7 @@
         <param name="MaxBackupIndex" value="10"/>
         <param name="Append" value="false"/>		
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p [%c{1}] - %m%n"/>
+            <param name="ConversionPattern" value="%-5p %m%n"/>
         </layout>
     </appender>
     
@@ -33,7 +33,7 @@
         <param name="MaxBackupIndex" value="0"/>
         <param name="Append" value="false"/>		
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-5p - %m%n"/>
+            <param name="ConversionPattern" value="%-5p %m%n"/>
         </layout>
     </appender>
     

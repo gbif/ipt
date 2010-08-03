@@ -23,7 +23,7 @@
 		<!-- IPT MAIN CONFIGURATION -->
 		<action name="config" class="org.gbif.ipt.action.admin.ConfigAction">
 			<result name="input">/WEB-INF/pages/admin/config.ftl</result>
-			<result>/WEB-INF/pages/admin/config.ftl</result>
+			<result type="redirect">home.do</result>
 		</action>
 		
 		<!-- USER MANAGEMENT -->
