@@ -5,10 +5,15 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.validation.OrganisationSupport;
 
 import com.google.inject.Inject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,11 +25,25 @@ import java.util.List;
 public class RegistrationAction extends POSTAction {
   private static final long serialVersionUID = -6522969037528106704L;
 
-  @Inject
   private GBIFRegistryManager registryManager;
+  private RegistrationManager registrationManager;
+  private OrganisationSupport organisationValidation;
 
-  private List<Organisation> organisations;
+  private List<Organisation> organisations = new ArrayList<Organisation>();
   private Organisation organisation;
+
+  /**
+   * @param registryManager
+   * @param organisationValidation
+   * @param registrationManager
+   */
+  @Inject
+  public RegistrationAction(GBIFRegistryManager registryManager, OrganisationSupport organisationValidation,
+      RegistrationManager registrationManager) {
+    this.registryManager = registryManager;
+    this.organisationValidation = organisationValidation;
+    this.registrationManager = registrationManager;
+  }
 
   /**
    * @return the organisation
@@ -42,6 +61,7 @@ public class RegistrationAction extends POSTAction {
 
   @Override
   public void prepare() throws Exception {
+    // will not be saving session scoping the list of organisations from the registry as this is basically a 1 time step
     super.prepare();
     log.debug("getting list of organisations");
     organisations = registryManager.listAllOrganisations();
@@ -50,28 +70,30 @@ public class RegistrationAction extends POSTAction {
 
   @Override
   public String save() {
-    if (organisation.getKey() != null && organisation.getPassword() != null) {
-      boolean validateStatus = registryManager.validateOrganisation(organisation.getKey().toString(),
-          organisation.getPassword());
-      if (validateStatus) {
-        addActionMessage("This IPT instance has been associated to the organisation");
+    if (registrationManager.getHostingOrganisation() == null) {
+      addActionMessage("The IPT has been registered under the organisation");
+      try {
+        registrationManager.addHostingOrganisation(organisation);
+        // if organisation can as well host resources
+        if (organisation.isCanHost()) {
+          registrationManager.addAssociatedOrganisation(organisation);
+        }
+        // save everything
+        registrationManager.save();
+        return SUCCESS;
+      } catch (AlreadyExistingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (IOException e) {
+        log.error("The organisation association couldnt be saved: " + e.getMessage(), e);
+        addActionError(getText("admin.organisation.saveError"));
+        addActionError(e.getMessage());
         return INPUT;
-      } else {
-        organisations = registryManager.listAllOrganisations();
-        addActionError("The password provided does not match the organisation's password");
-        return INPUT;
       }
-    } else {
-      organisations = registryManager.listAllOrganisations();
-      if (organisation.getKey() == null) {
-        addFieldError("organisationKey", "Please select an organisation from the list");
-      }
-      if (organisation.getPassword() == null) {
-        addFieldError("organisationPassword", "Please fill in the password field");
-      }
-      addActionError("One or more fields are missing values");
-      return INPUT;
     }
+    addActionError("This IPT is already registered against an existing organisation.");
+    addActionError("To change the association, please contact GBIF's help desk");
+    return SUCCESS;
   }
 
   /**
@@ -86,6 +108,13 @@ public class RegistrationAction extends POSTAction {
    */
   public void setOrganisations(List<Organisation> organisations) {
     this.organisations = organisations;
+  }
+
+  @Override
+  public void validate() {
+    if (isHttpPost()) {
+      organisationValidation.validate(this, organisation);
+    }
   }
 
 }

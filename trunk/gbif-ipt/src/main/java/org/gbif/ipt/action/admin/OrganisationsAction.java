@@ -8,7 +8,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.GBIFRegistryManager;
-import org.gbif.ipt.service.admin.OrganisationsManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import com.google.inject.Inject;
@@ -16,6 +16,8 @@ import com.google.inject.servlet.SessionScoped;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -44,7 +46,22 @@ public class OrganisationsAction extends POSTAction {
 
     public void load() throws RuntimeException {
       log.debug("getting list of organisations from registry");
-      organisations = registryManager.listAllOrganisations();
+
+      List<Organisation> tempOrganisations = registryManager.listAllOrganisations();
+      organisations.addAll(tempOrganisations);
+
+      Collections.sort(organisations, new Comparator<Organisation>() {
+        public int compare(Organisation org1, Organisation org2) {
+          if (org1 == null || org1.getName() == null) {
+            return 1;
+          }
+          if (org2 == null || org2.getName() == null) {
+            return -1;
+          }
+          return org1.getName().compareToIgnoreCase(org2.getName());
+        }
+      });
+
       log.debug("organisations returned: " + organisations.size());
     }
 
@@ -52,19 +69,23 @@ public class OrganisationsAction extends POSTAction {
 
   private static final long serialVersionUID = 7297470324204084809L;
 
-  private GBIFRegistryManager registryManager;
-  private OrganisationsManager organisationsManager;
+  private RegistrationManager registrationManager;
   private OrganisationSupport organisationValidation;
 
   private Organisation organisation;
   private List<Organisation> linkedOrganisations;
   private RegisteredOrganisations orgSession;
 
+  /**
+   * @param registryManager
+   * @param registrationManager
+   * @param organisationValidation
+   * @param orgSession
+   */
   @Inject
-  public OrganisationsAction(GBIFRegistryManager registryManager, OrganisationsManager organisationsManager,
+  public OrganisationsAction(GBIFRegistryManager registryManager, RegistrationManager registrationManager,
       OrganisationSupport organisationValidation, RegisteredOrganisations orgSession) {
-    this.registryManager = registryManager;
-    this.organisationsManager = organisationsManager;
+    this.registrationManager = registrationManager;
     this.organisationValidation = organisationValidation;
     this.orgSession = orgSession;
   }
@@ -72,11 +93,11 @@ public class OrganisationsAction extends POSTAction {
   @Override
   public String delete() {
     try {
-      Organisation removedOrganisation = organisationsManager.delete(id);
+      Organisation removedOrganisation = registrationManager.delete(id);
       if (removedOrganisation == null) {
         return NOT_FOUND;
       }
-      organisationsManager.save();
+      registrationManager.save();
       addActionMessage(getText("admin.organisation.deleted"));
       return SUCCESS;
     } catch (DeletionNotAllowedException e) {
@@ -119,10 +140,10 @@ public class OrganisationsAction extends POSTAction {
     if (!orgSession.isLoaded()) {
       orgSession.load();
     }
-    linkedOrganisations = organisationsManager.list();
+    linkedOrganisations = registrationManager.list();
     if (id != null) {
       // modify existing user
-      organisation = organisationsManager.get(id);
+      organisation = registrationManager.get(id);
     }
     // if no id was submitted we wanted to create a new account
     // if an invalid email was entered, it gets stored in the id field and obviously userManager above cant find a
@@ -141,10 +162,10 @@ public class OrganisationsAction extends POSTAction {
 
     try {
       if (id == null) {
-        organisationsManager.add(organisation);
+        registrationManager.addAssociatedOrganisation(organisation);
       }
       addActionMessage("The organisation has been associated to this IPT");
-      organisationsManager.save();
+      registrationManager.save();
       return SUCCESS;
     } catch (IOException e) {
       log.error("The organisation association couldnt be saved: " + e.getMessage(), e);

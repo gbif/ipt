@@ -7,12 +7,13 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
+import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
 
 import com.google.inject.ImplementedBy;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This interface details ALL methods associated with the Organisations associated with the IPT.
@@ -20,15 +21,23 @@ import java.util.List;
  * @author tim
  * @author josecuadra
  */
-@ImplementedBy(OrganisationsManagerImpl.class)
-public interface OrganisationsManager {
+@ImplementedBy(RegistrationManagerImpl.class)
+public interface RegistrationManager {
 
   /**
    * Associate a new organisation to this IPT installation, but doesnt persist the change.
    * 
    * @throws AlreadyExistingException
    */
-  public void add(Organisation organisation) throws AlreadyExistingException;
+  public Organisation addAssociatedOrganisation(Organisation organisation) throws AlreadyExistingException;
+
+  /**
+   * Register the IPT against an existing organisation
+   * 
+   * @param organisation
+   * @return
+   */
+  public Organisation addHostingOrganisation(Organisation organisation);
 
   /**
    * Removes the specified organisation from the in memory list of organisations. See save() to persist this change to
@@ -46,6 +55,21 @@ public interface OrganisationsManager {
    * @return
    */
   public Organisation get(String key);
+
+  /**
+   * Returns a single organisation associated to this UUID
+   * 
+   * @param key
+   * @return
+   */
+  public Organisation get(UUID key);
+
+  /**
+   * Returns the hosting organisation of this IPT
+   * 
+   * @return
+   */
+  public Organisation getHostingOrganisation();
 
   /**
    * Returns list of all associated organisations

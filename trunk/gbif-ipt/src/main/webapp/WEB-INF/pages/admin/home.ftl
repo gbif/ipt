@@ -22,18 +22,18 @@
 	</tr>
 	<tr>
 	  <td>
-		<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
-	  </td>
-	  <td>
-		<@s.text name="admin.home.editOrganisations"/>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
 		<a href="${baseURL}/admin/registration.do"><img src="${baseURL}/images/icons/registry.png" /></a>
 	  </td>
 	  <td>
 		<@s.text name="admin.home.editRegistration"/>
+	  </td>
+	</tr>	
+	<tr>
+	  <td>
+		<a href="${baseURL}/admin/organisations.do"><img src="${baseURL}/images/icons/organisation.png" /></a>
+	  </td>
+	  <td>
+		<@s.text name="admin.home.editOrganisations"/>
 	  </td>
 	</tr>
 	<tr>

@@ -2,7 +2,7 @@ package org.gbif.ipt.config;
 
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.OrganisationsManagerImpl;
+import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
 import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 import org.gbif.ipt.utils.InputStreamUtils;
 
@@ -210,8 +210,8 @@ public class DataDir {
             org.gbif.ipt.utils.FileUtils.copyStreamToFile(streamUtils.classpathStream("/configDefault/users.xml"),
                 configFile(UserAccountManagerImpl.PERSISTENCE_FILE));
             org.gbif.ipt.utils.FileUtils.copyStreamToFile(
-                streamUtils.classpathStream("/configDefault/organisations.xml"),
-                configFile(OrganisationsManagerImpl.PERSISTENCE_FILE));
+                streamUtils.classpathStream("/configDefault/registration.xml"),
+                configFile(RegistrationManagerImpl.PERSISTENCE_FILE));
           }
         } catch (IOException e) {
           log.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
