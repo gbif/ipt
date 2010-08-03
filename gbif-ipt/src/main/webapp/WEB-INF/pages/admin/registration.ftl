@@ -4,6 +4,9 @@
 
 <h1><@s.text name="admin.registration.title"/></h1>
 
+<p><@s.text name="admin.registration.intro"/></p>
+<p><@s.text name="admin.registration.intro2"/></p>
+
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 <@s.form id="registrationForm" cssClass="ftlTopForm" action="registration" method="post">
 	<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." value="" size=15/>  
