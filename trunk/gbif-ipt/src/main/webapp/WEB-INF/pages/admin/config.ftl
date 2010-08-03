@@ -15,6 +15,7 @@
 		
   <div class="buttons">
  	<@s.submit name="save" key="button.save"/>
+ 	<@s.submit name="cancel" key="button.cancel"/>
   </div>	
 
 </@s.form>
