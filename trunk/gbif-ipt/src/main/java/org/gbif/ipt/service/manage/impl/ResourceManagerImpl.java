@@ -35,7 +35,6 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -173,8 +172,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         result.add(r);
       }
     }
-    // sort alphabetically
-    Collections.sort(result);
     return result;
   }
 
