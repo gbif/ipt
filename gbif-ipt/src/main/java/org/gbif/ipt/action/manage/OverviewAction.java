@@ -7,7 +7,7 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.OrganisationsManager;
+import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 
@@ -24,7 +24,7 @@ public class OverviewAction extends BaseAction {
   @Inject
   private UserAccountManager userManager;
   @Inject
-  private OrganisationsManager orgManager;
+  private RegistrationManager registrationManager;
   private List<User> potentialManagers;
   private List<Organisation> organisations;
 
@@ -82,7 +82,7 @@ public class OverviewAction extends BaseAction {
     }
 
     // enabled registry organisations
-    organisations = orgManager.list();
+    organisations = registrationManager.list();
   }
 
   public String publish() throws Exception {
@@ -97,7 +97,7 @@ public class OverviewAction extends BaseAction {
     } else if (PublicationStatus.PUBLIC == ms.getResource().getStatus()) {
       Organisation org = null;
       try {
-        org = orgManager.get(id);
+        org = registrationManager.get(id);
         resourceManager.register(ms.getResource(), org);
         if (org != null) {
           addActionMessage("Registered resource with " + org.getName() + " in GBIF");

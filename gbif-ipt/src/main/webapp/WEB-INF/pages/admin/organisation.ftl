@@ -1,18 +1,20 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title><@s.text name="title"/></title>
+	
+
 <script type="text/javascript">
 
 $(document).ready(function(){
 	$('#organisation\\.key').click(function() {
 	$('#organisation\\.name').val($('#organisation\\.key :selected').text());	
 	$('#organisation\\.alias').val($('#organisation\\.key :selected').text());	
-})
+	
+  })
 });
 </script>	
+<title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <h1><@s.text name="admin.organisation.title"/></h1>
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
-
 
 
 <@s.form id="organisationsForm" cssClass="ftlTopForm" action="organisation.do" method="post">

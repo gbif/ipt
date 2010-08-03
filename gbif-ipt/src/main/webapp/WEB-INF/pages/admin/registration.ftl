@@ -8,6 +8,8 @@
 <@s.form id="registrationForm" cssClass="ftlTopForm" action="registration" method="post">
 	<@selectList name="organisation.key" options="organisations" objValue="key" objTitle="name" keyBase="admin." value="" size=15/>  
 	<@input name="organisation.password" keyBase="admin." type="text"/>
+	<@input name="organisation.alias" keyBase="admin." type="text"/>
+	<@checkbox name="organisation.canHost" keyBase="admin."/>	
    <div class="buttons">
  	<@s.submit cssClass="button" name="save" key="button.save"/>
   </div>	  
