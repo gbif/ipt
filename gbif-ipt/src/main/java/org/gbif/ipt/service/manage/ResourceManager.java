@@ -14,6 +14,7 @@ import com.google.inject.ImplementedBy;
 import com.google.inject.internal.Nullable;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -36,6 +37,14 @@ public interface ResourceManager {
   public Resource get(String shortname);
 
   public Eml getEml(Resource resource);
+
+  /**
+   * Returns the URL to a public resource in the IPT
+   * 
+   * @param shortname
+   * @return
+   */
+  public URL getResourceLink(String shortname);
 
   /**
    * list all resources in the IPT having a certain publication status
@@ -80,7 +89,7 @@ public interface ResourceManager {
 
   public void save(Resource resource) throws InvalidConfigException;
 
-  public void save(Resource resource, Eml eml) throws InvalidConfigException;
+  public void saveEml(Resource resource, Eml eml) throws InvalidConfigException;
 
   /**
    * list all resource that match the given full text search string and optional resource type

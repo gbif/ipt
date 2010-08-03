@@ -17,6 +17,7 @@ import org.gbif.ipt.service.admin.GBIFRegistryManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.metadata.eml.Eml;
 import org.gbif.metadata.eml.EmlFactory;
+import org.gbif.metadata.eml.EmlWriter;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -31,12 +32,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import freemarker.template.TemplateException;
 
 @Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
@@ -144,11 +150,32 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   /*
    * (non-Javadoc)
+   * @see org.gbif.ipt.service.manage.ResourceManager#getResourceLink(java.lang.String)
+   */
+  public URL getResourceLink(String shortname) {
+    URL url = null;
+    try {
+      url = new URL(cfg.getBaseURL() + "/resource.do?id=" + shortname);
+    } catch (MalformedURLException e) {
+      log.error(e);
+    }
+    return url;
+  }
+
+  /*
+   * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#list(org.gbif.ipt.model.voc.PublicationStatus)
    */
   public List<Resource> list(PublicationStatus status) {
-    // TODO: select basedon user rights - for testing return all resources for now
-    return new ArrayList<Resource>(resources.values());
+    List<Resource> result = new ArrayList<Resource>();
+    for (Resource r : resources.values()) {
+      if (r.getStatus() == status) {
+        result.add(r);
+      }
+    }
+    // sort alphabetically
+    Collections.sort(result);
+    return result;
   }
 
   /*
@@ -254,9 +281,21 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#save(java.lang.String, org.gbif.metadata.eml.Eml)
    */
-  public void save(Resource resource, Eml eml) throws InvalidConfigException {
+  public void saveEml(Resource resource, Eml eml) throws InvalidConfigException {
     // udpate EML with latest resource basics
     updateEmlWithResourceBasics(resource, eml);
+    // save into data dir
+    File emlFile = dataDir.resourceFile(resource, EML_FILE);
+    try {
+      EmlWriter.writeEmlXmlFile(emlFile, eml);
+      log.debug("Updated EML file for " + resource);
+    } catch (IOException e) {
+      log.error(e);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource);
+    } catch (TemplateException e) {
+      log.error("EML template exception", e);
+      throw new InvalidConfigException(TYPE.CONFIG_WRITE, "EML template exception when writing eml for " + resource);
+    }
   }
 
   /*
@@ -284,6 +323,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private void updateEmlWithResourceBasics(Resource resource, Eml eml) {
     eml.setTitle(resource.getTitle());
     eml.setDescription(resource.getDescription());
+    // we need some GUID. If we have use the registry key, if not use the resource URL
+    if (resource.getKey() != null) {
+      eml.setGuid(resource.getKey().toString());
+    } else {
+      eml.setGuid(getResourceLink(resource.getShortname()).toString());
+    }
   }
-
 }

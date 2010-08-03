@@ -14,5 +14,10 @@
 		<action name="home" class="org.gbif.ipt.action.portal.HomeAction">
 			<result>/WEB-INF/pages/portal/home.ftl</result>
 		</action>
+		
+		<action name="resource" class="org.gbif.ipt.action.portal.ResourceAction">
+			<result>/WEB-INF/pages/portal/resource.ftl</result>
+		</action>
+		
 	</package>
 </struts>

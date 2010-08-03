@@ -4,9 +4,29 @@
 
 <h1><@s.text name="portal.home.title"/></h1>
 
-<ul>
+
+<#if (resources?size>0)>
+<table class="simple" width="100%">
+	<tr>
+		<th>Name</th>
+		<th>Organisation</th>
+		<th>Type</th>
+		<th>Records</th>
+		<th>Last modified</th>
+	</tr>
 <#list resources as r>
-  <li>${r.shortname}</li>
+  <tr>
+	<td><a href="resource.do?id=${r.shortname}">${r.title!r.shortname}</a></td>
+	<td>${(r.organisation.name)!"---"}</td>
+	<td>${r.type!"---"}</td>
+	<td>0</td>
+	<td>${r.modified?date}</td>
+  </tr>
 </#list>
-</ul>
+</table>
+
+<#else>
+	<p>No public resources existing.</p>
+</#if>
+
 <#include "/WEB-INF/pages/inc/footer.ftl">

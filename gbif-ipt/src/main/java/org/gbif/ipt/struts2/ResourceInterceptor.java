@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
@@ -38,25 +39,28 @@ public class ResourceInterceptor extends AbstractInterceptor {
     // lets see if we are about to manage a new resource
     Object requested = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
     if (requested != null && requested.getClass().isArray() && ((Object[]) requested).length == 1) {
-      String requestedResource = ((Object[]) requested)[0].toString();
-      // already loaded?
-      if (rms != null && rms.getResource() != null
-          && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
-        // yes - exists and is the same. Ignore request param
-      } else {
-        // nope - different or first one
-        // does resource exist at all?
-        Resource resource = resourceManager.get(requestedResource);
-        if (resource == null) {
-          return BaseAction.NOT_FOUND;
+      String requestedResource = StringUtils.trimToNull(((Object[]) requested)[0].toString());
+      if (requestedResource != null) {
+        // already loaded?
+        if (rms != null && rms.getResource() != null
+            && rms.getResource().getShortname().equalsIgnoreCase(requestedResource)) {
+          // yes - exists and is the same. Ignore request param
+          log.debug("Resource " + requestedResource + " already in manager session");
+        } else {
+          // nope - different or first one
+          // does resource exist at all?
+          Resource resource = resourceManager.get(requestedResource);
+          if (resource == null) {
+            return BaseAction.NOT_FOUND;
+          }
+          // authorized?
+          Map session = invocation.getInvocationContext().getSession();
+          User user = (User) session.get(Constants.SESSION_USER);
+          if (user == null || !isAuthorized(user, resource, invocation)) {
+            return BaseAction.NOT_ALLOWED;
+          }
+          rms.load(user, resource);
         }
-        // authorized?
-        Map session = invocation.getInvocationContext().getSession();
-        User user = (User) session.get(Constants.SESSION_USER);
-        if (user == null || !isAuthorized(user, resource, invocation)) {
-          return BaseAction.NOT_ALLOWED;
-        }
-        switchResource(user, resource);
       }
     }
     return invocation.invoke();
@@ -79,11 +83,4 @@ public class ResourceInterceptor extends AbstractInterceptor {
     return false;
   }
 
-  private void switchResource(User user, Resource resource) {
-    if (rms == null) {
-      rms = new ResourceManagerSession();
-      log.info("Created new ResourceManagerSession");
-    }
-    rms.load(user, resource);
-  }
 }
