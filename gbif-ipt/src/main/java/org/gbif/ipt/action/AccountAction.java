@@ -23,7 +23,7 @@ public class AccountAction extends POSTAction {
   public String execute() throws Exception {
     // check if any user is logged in right now - otherwise redirect to login page
     if (user == null) {
-      return LOGIN_PAGE;
+      return LOGIN;
     }
     return super.execute();
   }

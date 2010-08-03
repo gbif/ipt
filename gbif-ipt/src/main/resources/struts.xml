@@ -39,7 +39,8 @@
 			<!-- custom interceptor to preserve action messages across redirects -->
 			<interceptor name="keepRedirectMessages" class="org.gbif.ipt.struts2.RedirectMessageInterceptor"/>
 			<!-- custom interceptor to redirect to the basic setup pages in case basic configuration is missing -->
-			<interceptor name="setupRedirect" class="org.gbif.ipt.struts2.SetupInterceptor"/>
+			<!-- also check for any values in the cancel request parameter and returns the cancel result in that case immediately -->
+			<interceptor name="setupAndCancel" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor"/>
 			<!-- interceptor verifying resource authorisation and managing the resource manager sessions -->
 			<interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceInterceptor"/>
 			
@@ -53,17 +54,17 @@
 				<interceptor-ref name="workflow"/>
 			</interceptor-stack>
 			<interceptor-stack name="iptStack">
-				<interceptor-ref name="setupRedirect"/>
+				<interceptor-ref name="setupAndCancel"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			
 			<interceptor-stack name="adminStack">
-				<interceptor-ref name="setupRedirect"/>
+				<interceptor-ref name="setupAndCancel"/>
 				<interceptor-ref name="requireAdmin"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
 			</interceptor-stack>
 			<interceptor-stack name="managerStack">
-				<interceptor-ref name="setupRedirect"/>
+				<interceptor-ref name="setupAndCancel"/>
 				<interceptor-ref name="requireManager"/>
 				<interceptor-ref name="resourceSession"/>
 				<interceptor-ref name="iptStackWithoutSetup"/>
