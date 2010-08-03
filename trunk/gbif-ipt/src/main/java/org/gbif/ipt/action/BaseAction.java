@@ -38,8 +38,6 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
   public static final String NOT_IMPLEMENTED = "notImplemented";
-  public static final String LOGIN_PAGE = "login";
-  public static final String CANCEL = "cancel";
 
   /**
    * Occassionally Struts2 complains with it's own logging which seems like a Struts2 issue
@@ -56,15 +54,6 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   protected HttpServletRequest req;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
   protected String id = null;
-  protected boolean cancel = false;
-
-  @Override
-  public String execute() throws Exception {
-    if (cancel) {
-      return CANCEL;
-    }
-    return SUCCESS;
-  }
 
   /**
    * Easy access to the configured application root for simple use in templates
@@ -202,21 +191,11 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
    * parameter you need to prepare the action for the param phase.
    */
   public void prepare() throws Exception {
-    // if canceled break immediately
-    if (cancel) {
-      return;
-    }
     // see if an id was provided in the request.
     // we dont use the PARAM - PREPARE - PARAM interceptor stack
     // so we investigate the request object directly BEFORE the param interceptor is called
     // this allows us to load any existing instances that should be modified
     id = StringUtils.trimToNull(req.getParameter("id"));
-  }
-
-  public void setCancel(String val) {
-    if (StringUtils.trimToNull(val) != null) {
-      cancel = true;
-    }
   }
 
   public void setServletRequest(HttpServletRequest req) {

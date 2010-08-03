@@ -18,9 +18,6 @@ public class POSTAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    if (cancel) {
-      return CANCEL;
-    }
     // if notFound was set to true during prepare() the supplied id parameter didnt exist - return a 404!
     if (notFound) {
       return NOT_FOUND;
@@ -66,14 +63,17 @@ public class POSTAction extends BaseAction {
 
   @Override
   public void validate() {
-    // only validate on form submit ignoring list views
-    // && users == null
-    if (!cancel && isHttpPost()) {
+    // only validate on form submissions
+    if (isHttpPost()) {
       validateHttpPostOnly();
     }
   }
 
+  /**
+   * Validation method to be overridden when only http post, i.e. form submissions, should be validated
+   * and not any get requests.
+   */
   public void validateHttpPostOnly() {
-
+    // dont do any validation out of the box
   }
 }
