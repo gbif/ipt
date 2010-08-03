@@ -93,11 +93,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     log.info("Loading dwc extensions ...");
     extensionManager.load();
 
-    log.info("Loading resource configurations ...");
-    resourceManager.load();
-
     log.info("Loading organisation configurations...");
     organisationsManager.load();
+
+    log.info("Loading resource configurations ...");
+    resourceManager.load();
 
   }
 
