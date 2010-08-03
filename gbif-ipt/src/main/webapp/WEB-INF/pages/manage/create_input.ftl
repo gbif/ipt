@@ -4,6 +4,6 @@
 
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <h1><@s.text name="manage.resource.create.title"/></h1>
-<#include "create_new_resource.inc.ftl"/>
+<#include "inc/create_new_resource.ftl"/>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

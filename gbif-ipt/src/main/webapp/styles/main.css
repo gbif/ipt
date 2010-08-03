@@ -56,7 +56,7 @@ div#topmenu > ul > li {
 	float:left; 
 	padding: 0px 0 0px 10px; 
 }
-div#topmenu > ul > li#nav-active a {
+div#topmenu > ul > li.current a {
 	font-weight:bold;
 }
 
@@ -154,6 +154,29 @@ div#search #search-input {
 
 div#content { 
 	padding: 10px;
+}
+div#content.fixed { 
+	width: 750px;
+}
+
+
+div#sidebar {
+	width: 170px;
+	padding: 20px 5px;
+	position: absolute;
+	right: 10px;
+}
+div#sidebar > ul {
+	margin:0; 
+	padding:0; 
+	list-style:none; 
+}
+div#sidebar > ul > li {
+	margin:0px; 
+	padding: 0px; 
+}
+div#sidebar > ul > li.current {
+	font-weight:bold;
 }
 
 

@@ -54,7 +54,7 @@
 <hr/>&nbsp;
 
 <h2><@s.text name="manage.resource.create.title"/></h2>
-<#include "create_new_resource.inc.ftl"/>
+<#include "inc/create_new_resource.ftl"/>
 
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

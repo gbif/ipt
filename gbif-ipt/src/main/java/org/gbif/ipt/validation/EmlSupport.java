@@ -16,14 +16,39 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.metadata.eml.Eml;
 
+import com.google.inject.internal.Nullable;
+
 /**
  * @author markus
  * 
  */
 public class EmlSupport {
 
-  public void validate(BaseAction action, Eml eml) {
+  /**
+   * Validate an EML document, optionally only a part of it matching the infividual forms on the metadata editor:
+   * "basic","parties","geocoverage","taxcoverage","tempcoverage","project","methods","citations","collections",
+   * "physical","keywords","additional"
+   * 
+   * @param action
+   * @param eml
+   * @param part
+   */
+  public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
+      if (part == null || part.equalsIgnoreCase("basic")) {
+        // TODO: validate this part
+      } else if (part == null || part.equalsIgnoreCase("parties")) {
+      } else if (part == null || part.equalsIgnoreCase("geocoverage")) {
+      } else if (part == null || part.equalsIgnoreCase("taxcoverage")) {
+      } else if (part == null || part.equalsIgnoreCase("tempcoverage")) {
+      } else if (part == null || part.equalsIgnoreCase("project")) {
+      } else if (part == null || part.equalsIgnoreCase("methods")) {
+      } else if (part == null || part.equalsIgnoreCase("citations")) {
+      } else if (part == null || part.equalsIgnoreCase("collections")) {
+      } else if (part == null || part.equalsIgnoreCase("physical")) {
+      } else if (part == null || part.equalsIgnoreCase("keywords")) {
+      } else if (part == null || part.equalsIgnoreCase("additional")) {
+      }
     }
   }
 

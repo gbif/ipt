@@ -46,11 +46,14 @@
 			<result>/WEB-INF/pages/manage/overview.ftl</result>
 		</action>
 		
-		<action name="metadata" class="org.gbif.ipt.action.manage.MetadataAction">
-			<result name="input">/WEB-INF/pages/manage/metadata.ftl</result>
-			<result>/WEB-INF/pages/manage/metadata.ftl</result>
+		<action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
+			<!-- THIS JUST DOESNT SEEM TO WORK :((( -->
+			<!-- workaround is a request string parsing in the action - buah -->
+			<param name="section">{1}</param>
+			<result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
+			<result name="success" type="redirect">metadata-${next}.do</result>
 		</action>
-
+		
 		<action name="sources" class="org.gbif.ipt.action.manage.MetadataAction">
 			<result>/WEB-INF/pages/manage/metadata.ftl</result>
 		</action>
