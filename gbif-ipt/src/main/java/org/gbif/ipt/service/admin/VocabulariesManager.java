@@ -5,11 +5,13 @@ package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
+import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl.UpdateResult;
 
 import com.google.inject.ImplementedBy;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This interface details ALL methods associated with the vocabularies within the IPT.
@@ -44,6 +46,17 @@ public interface VocabulariesManager {
   public Vocabulary get(URL url);
 
   /**
+   * Returns a regular map than can be used to populate html select drop downs with
+   * keys=vocabulary concept identifiers and values=preferred term for the given language.
+   * Defaults to english if no term for the requested language exists.
+   * 
+   * @param uri the identifier for the vocabulary
+   * @param lang a 2 character iso language code, e.g. DE
+   * @return
+   */
+  public Map<String, String> getI18nVocab(String uri, String lang);
+
+  /**
    * Lists all locally known vocabularies
    * 
    * @return
@@ -62,6 +75,6 @@ public interface VocabulariesManager {
    * for their URI. Udpates all related concepts & terms
    * 
    */
-  public void updateAll();
+  public UpdateResult updateAll();
 
 }

@@ -24,6 +24,15 @@ import com.google.inject.internal.Nullable;
  */
 public class EmlSupport {
 
+  public boolean isValid(Eml eml) {
+    BaseAction action = new BaseAction();
+    validate(action, eml, null);
+    if (action.hasActionErrors() || action.hasFieldErrors()) {
+      return false;
+    }
+    return true;
+  }
+
   /**
    * Validate an EML document, optionally only a part of it matching the infividual forms on the metadata editor:
    * "basic","parties","geocoverage","taxcoverage","tempcoverage","project","methods","citations","collections",

@@ -38,7 +38,7 @@
 
 <#if (numVocabs>0)>
 <hr/>
-<h3>Vocabuarlies</h3>
+<h3>Vocabularies</h3>
 <p>
 	last updated on ${vocabsLastUpdated?date?string.medium}<br/> 
 	  <form action='extensions.do' method='post'>
