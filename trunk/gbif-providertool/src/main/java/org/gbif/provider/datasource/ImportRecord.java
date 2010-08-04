@@ -30,8 +30,15 @@ public class ImportRecord {
   private Map<ExtensionProperty, String> properties = new HashMap<ExtensionProperty, String>();
   private Extension extension;
   private final Long resourceId;
+
+  // This is meant to be a identifier unique within the resource.
   private final String sourceId;
+
+  // This will be mapped either to occurrenceID or taxonID, depending on
+  // resource type, unless the user maps it to some other field.
   private String guid;
+
+  // This will be mapped to dc:source
   private String link;
 
   public ImportRecord(Long resourceId, String sourceId) {
