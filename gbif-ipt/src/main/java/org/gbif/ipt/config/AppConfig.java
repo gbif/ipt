@@ -42,12 +42,21 @@ public class AppConfig {
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 
+  private AppConfig() {
+  }
+
   @Inject
   public AppConfig(DataDir dataDir) throws InvalidConfigException {
     this.dataDir = dataDir;
     // also loaded via ConfigManager constructor if datadir was linked at startup already
     // If it wasnt, this is the only place to load at least the default classpath config settings
     loadConfig();
+  }
+
+  public static AppConfig buildMock() {
+    AppConfig mock = new AppConfig();
+    mock.dataDir = DataDir.buildMock();
+    return mock;
   }
 
   public boolean debug() {

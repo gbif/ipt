@@ -1,5 +1,4 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
-	<title>${ms.resource.title!ms.resource.shortname!}</title>
 	<script type="text/javascript" src="${baseURL}/js/jconfirmaction.jquery.js"></script>
 	<style>
 	.actions select{
@@ -21,6 +20,7 @@ $(document).ready(function(){
 	$('.confirm').jConfirmAction({question : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>"});
 });
 </script>
+
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
@@ -40,13 +40,15 @@ By default a resource is private to the managers. Once published to GBIF you can
 		<input type='submit' name='edit' value='Edit' />
   	  </form>
   	</div>
+  	<#if missingMetadata>
   	<div class="warn">
 		The resource is missing mandatory metadata! 
   	</div>
+  	</#if>
   </div>
   <div class="body">
       	<div>
-      		${ms.resource.description!"No Description yet entered"}
+      		${ms.resource.description!"No Description entered yet"}
       	</div>
       	<div class="details">
       		<table>

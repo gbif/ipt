@@ -5,7 +5,7 @@
 <h1><@s.text name="admin.config.title"/></h1>
 
 <#include "/WEB-INF/pages/macros/forms.ftl">
-<@s.form id="configForm" cssClass="ftlTopForm" action="config" method="post">
+<@s.form cssClass="topForm half" action="config" method="post">
 
 	<@input name="baseUrl" keyBase="admin.config." size=80/>  
 	<@input name="googleMapsKey" keyBase="admin.config." size=80/>  

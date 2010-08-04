@@ -78,6 +78,10 @@ public class DataDir {
     return dd;
   }
 
+  public static DataDir buildMock() {
+    return new DataDir();
+  }
+
   protected void clearTmp() throws IOException {
     File tmpDir = tmpFile("");
     FileUtils.forceMkdir(tmpDir);

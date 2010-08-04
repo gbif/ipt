@@ -29,7 +29,12 @@
     </tr>
     </#if>
    </table>
-<p><a href="extensions.do"><@s.text name="basic.backto"/> extension list</a></p>
+
+	
+   
+<p>
+	<a href="extensions.do"><button><@s.text name="button.back"/></button></a>
+</p>
 <br/>
 
 <h1><@s.text name="admin.extension.properties"/></h1>

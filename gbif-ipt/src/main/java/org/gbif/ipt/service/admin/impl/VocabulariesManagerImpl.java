@@ -4,6 +4,8 @@
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.model.Vocabulary;
+import org.gbif.ipt.model.VocabularyConcept;
+import org.gbif.ipt.model.VocabularyTerm;
 import org.gbif.ipt.model.factory.VocabularyFactory;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -63,6 +65,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   private DownloadUtil downloadUtil;
   private final XStream xstream = new XStream();
   private final Gbrds client;
+  private final String[] defaultVocabs = new String[]{
+      "http://rs.gbif.org/vocabulary/gbif/resource_type.xml", "http://rs.gbif.org/vocabulary/iso/639-1.xml",
+      "http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml"};
 
   /**
    * 
@@ -136,12 +141,22 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @see org.gbif.ipt.service.admin.VocabulariesManager#getI18nVocab(java.lang.String, java.lang.String)
    */
   public Map<String, String> getI18nVocab(String uri, String lang) {
-    // TODO Auto-generated method stub
-    return null;
+    Map<String, String> map = new HashMap<String, String>();
+    Vocabulary v = get(uri);
+    if (v != null) {
+      for (VocabularyConcept c : v.getConcepts()) {
+        VocabularyTerm t = c.getPreferredTerm(lang);
+        map.put(c.getIdentifier(), t == null ? c.getIdentifier() : t.getTitle());
+      }
+    }
+    if (map.isEmpty()) {
+      log.debug("Empty i18n map for vocabulary " + uri + " and language " + lang);
+    }
+    return map;
   }
 
   private File getVocabFile(URL url) {
-    String filename = url.toString().replaceAll("[/.:]+", "_") + ".xml";
+    String filename = url.toString().replaceAll("[/.:]+", "_") + ".vocab";
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -167,6 +182,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         try {
           v = loadFromFile(vocabFile);
           addToCache(v, url);
+          save();
         } catch (InvalidConfigException e) {
           log.error(e);
         }
@@ -197,7 +213,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     int counter = 0;
     if (dir.isDirectory()) {
       List<File> files = new ArrayList<File>();
-      FilenameFilter ff = new SuffixFileFilter(".xml", IOCase.INSENSITIVE);
+      FilenameFilter ff = new SuffixFileFilter(".vocab", IOCase.INSENSITIVE);
       files.addAll(Arrays.asList(dir.listFiles(ff)));
       for (File ef : files) {
         try {
@@ -210,6 +226,17 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
         }
       }
     }
+    // finally load mandatory vocabs
+    for (String vuri : defaultVocabs) {
+      if (!uri2url.containsKey(vuri.toLowerCase())) {
+        try {
+          install(new URL(vuri));
+        } catch (Exception e) {
+          log.warn("Cant load default vocabularies", e);
+        }
+      }
+    }
+
     return counter;
   }
 

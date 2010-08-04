@@ -32,7 +32,7 @@ $(document).ready(function(){
 <#include "/WEB-INF/pages/macros/forms.ftl"> 
 
 
-<@s.form id="organisationsForm" cssClass="ftlTopForm" action="organisation.do" method="post">
+<@s.form id="organisationsForm" cssClass="topForm half" action="organisation.do" method="post">
 	
 	<#if id?has_content>
 		<@input name="organisation.name" keyBase="admin." type="text" disabled=true/>
@@ -47,9 +47,13 @@ $(document).ready(function(){
 	
 	<@input name="organisation.alias" keyBase="admin." type="text"/>
 	<@checkbox name="organisation.canHost" keyBase="admin."/>
+	
    <div class="buttons">
- 	<@s.submit cssClass="button" name="save" key="button.save"/>
- 	<@s.submit cssClass="button" name="delete" key="button.delete"/>
+ 	<@s.submit name="save" key="button.save"/>
+ 	<#if id?has_content>
+ 	<@s.submit name="delete" key="button.delete"/>
+	</#if>		   	
+ 	<@s.submit name="cancel" key="button.cancel"/>
   </div>
 </@s.form>
 <#include "/WEB-INF/pages/inc/footer.ftl">

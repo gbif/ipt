@@ -7,7 +7,6 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.model.voc.ResourceType;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -299,7 +298,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * (non-Javadoc)
    * @see org.gbif.ipt.service.manage.ResourceManager#search(java.lang.String, org.gbif.ipt.model.voc.ResourceType)
    */
-  public List<Resource> search(String q, ResourceType type) {
+  public List<Resource> search(String q, String type) {
     // TODO: do real search - for testing return all resources for now
     return new ArrayList<Resource>(resources.values());
   }

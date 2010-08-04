@@ -17,7 +17,9 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.validation.EmlSupport;
 import org.gbif.ipt.validation.ResourceSupport;
 import org.gbif.metadata.eml.Eml;
@@ -43,8 +45,14 @@ public class MetadataAction extends POSTAction {
   private EmlSupport validatorEml = new EmlSupport();
   private String section = "basic";
   private String next = "parties";
+  private Map<String, String> resourceTypes;
+  private Map<String, String> languages;
+
   private static final List<String> sections = Arrays.asList("basic", "parties", "geocoverage", "taxcoverage",
       "tempcoverage", "project", "methods", "citations", "collections", "physical", "keywords", "additional");
+
+  @Inject
+  private VocabulariesManager vocabManager;
 
   public String getCurrentSideMenu() {
     return section;
@@ -52,6 +60,10 @@ public class MetadataAction extends POSTAction {
 
   public Eml getEml() {
     return ms.getEml();
+  }
+
+  public Map<String, String> getLanguages() {
+    return languages;
   }
 
   public ResourceManagerSession getMs() {
@@ -66,16 +78,16 @@ public class MetadataAction extends POSTAction {
     return ms.getResource();
   }
 
+  public Map<String, String> getResourceTypes() {
+    return resourceTypes;
+  }
+
   public Map getRoleOptions() {
     return Role.htmlSelectMap;
   }
 
   public String getSection() {
     return section;
-  }
-
-  public List<String> getSideMenuItems() {
-    return sections;
   }
 
   @Override
@@ -89,6 +101,8 @@ public class MetadataAction extends POSTAction {
       idx = 0;
     }
     next = sections.get(idx + 1);
+    resourceTypes = vocabManager.getI18nVocab(Constants.VOCAB_URI_RESOURCE_TYPE, getLocaleLanguage());
+    languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage());
   }
 
   @Override

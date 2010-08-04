@@ -5,7 +5,6 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
-import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
@@ -49,11 +48,20 @@ public class BaseAction extends ActionSupport implements Action, SessionAware, P
   protected SimpleTextProvider textProvider;
   @Inject
   protected AppConfig cfg;
-  @Inject
-  protected DataDir dataDir;
   protected HttpServletRequest req;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
   protected String id = null;
+
+  public BaseAction() {
+
+  }
+
+  @Inject
+  public BaseAction(SimpleTextProvider textProvider, AppConfig cfg) {
+    super();
+    this.textProvider = textProvider;
+    this.cfg = cfg;
+  }
 
   /**
    * Easy access to the configured application root for simple use in templates

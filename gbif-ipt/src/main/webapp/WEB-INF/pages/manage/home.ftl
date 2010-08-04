@@ -50,8 +50,9 @@
 </#if>
 
 
-<hr/>&nbsp;
-<hr/>&nbsp;
+<br/>
+<br/>
+<br/>
 
 <h2><@s.text name="manage.resource.create.title"/></h2>
 <#include "inc/create_new_resource.ftl"/>

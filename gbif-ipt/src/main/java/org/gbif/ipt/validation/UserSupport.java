@@ -16,33 +16,27 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.User;
 
-import com.opensymphony.xwork2.validator.validators.EmailValidator;
-
-import java.util.regex.Pattern;
-
 /**
  * @author markus
  * 
  */
-public class UserSupport {
-  private static Pattern emailPattern = Pattern.compile(EmailValidator.emailAddressPattern);
-
+public class UserSupport extends BaseValidator {
   public void validate(BaseAction action, User user) {
     if (user != null) {
-      if (user.getEmail().length() < 3) {
+      if (!exists(user.getEmail())) {
         action.addFieldError("user.email", action.getText("validation.email.required"));
       } else {
-        if (!emailPattern.matcher(user.getEmail()).matches()) {
+        if (!isValidEmail(user.getEmail())) {
           action.addFieldError("user.email", action.getText("validation.email.invalid"));
         }
       }
-      if (user.getFirstname().length() < 2) {
+      if (!exists(user.getFirstname(), 1)) {
         action.addFieldError("user.firstname", action.getText("validation.firstname.required"));
       }
-      if (user.getLastname().length() < 2) {
+      if (!exists(user.getLastname(), 1)) {
         action.addFieldError("user.lastname", action.getText("validation.lastname.required"));
       }
-      if (user.getPassword().length() < 4) {
+      if (!exists(user.getPassword(), 3)) {
         action.addFieldError("user.password", action.getText("validation.password.required"));
       }
     }

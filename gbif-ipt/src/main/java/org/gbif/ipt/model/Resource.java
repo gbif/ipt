@@ -1,7 +1,6 @@
 package org.gbif.ipt.model;
 
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.model.voc.ResourceType;
 
 import static com.google.common.base.Objects.equal;
 
@@ -27,7 +26,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String shortname; // unique
   private String title;
   private String description;
-  private ResourceType type;
+  private String type;
   private PublicationStatus status = PublicationStatus.PRIVATE;
   // resource meta-metadata
   private User creator;
@@ -109,7 +108,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     return title;
   }
 
-  public ResourceType getType() {
+  public String getType() {
     return type;
   }
 
@@ -168,7 +167,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.title = title;
   }
 
-  public void setType(ResourceType type) {
+  public void setType(String type) {
     this.type = type;
   }
 

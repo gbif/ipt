@@ -8,7 +8,7 @@
 <p><@s.text name="account.email.cantChange"/></p>
  
 <#include "/WEB-INF/pages/macros/forms.ftl">
-<@s.form cssClass="ftlForm" action="account.do" method="post">
+<@s.form cssClass="topForm" action="account.do" method="post">
 	<@s.hidden name="id" value="${user.email!}" required="true"/>
 
 	<@input name="user.email" disabled=true />  

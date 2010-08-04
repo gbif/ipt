@@ -8,7 +8,7 @@
 <p><@s.text name="admin.user.intro2"/></p>
  
 <#include "/WEB-INF/pages/macros/forms.ftl">
-<@s.form cssClass="ftlForm" action="user.do" method="post">
+<@s.form cssClass="topForm half" action="user.do" method="post">
 	<@s.hidden name="id" value="${user.email!}" required="true"/>
 
 	<@input name="user.email" disabled=id?has_content/>  

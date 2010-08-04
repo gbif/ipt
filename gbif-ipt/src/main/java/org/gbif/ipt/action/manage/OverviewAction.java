@@ -10,6 +10,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.validation.EmlSupport;
 
 import com.google.inject.Inject;
 
@@ -27,6 +28,8 @@ public class OverviewAction extends BaseAction {
   private RegistrationManager registrationManager;
   private List<User> potentialManagers;
   private List<Organisation> organisations;
+  private EmlSupport emlValidator = new EmlSupport();
+  private boolean missingMetadata = false;
 
   public String addmanager() throws Exception {
     User u = userManager.get(id);
@@ -56,6 +59,9 @@ public class OverviewAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
+    // check EML
+    missingMetadata = !emlValidator.isValid(ms.getEml());
+
     return SUCCESS;
   }
 
@@ -69,6 +75,10 @@ public class OverviewAction extends BaseAction {
 
   public List<User> getPotentialManagers() {
     return potentialManagers;
+  }
+
+  public boolean isMissingMetadata() {
+    return missingMetadata;
   }
 
   @Override
@@ -108,10 +118,6 @@ public class OverviewAction extends BaseAction {
 
     }
     return execute();
-  }
-
-  public void setMs(ResourceManagerSession ms) {
-    this.ms = ms;
   }
 
   public String unpublish() throws Exception {
