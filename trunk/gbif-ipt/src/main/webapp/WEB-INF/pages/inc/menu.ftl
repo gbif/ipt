@@ -58,12 +58,12 @@
 		        </form>
 		    </div>
 
-[#if sideMenuItems?exists]		    
+[#if sideMenuEml!false]		    
 			<div id="sidebar">
-				[#if sideMenuTitle?exists]<h2>${sideMenuTitle}</h2>[/#if]
+				<h2>Section</h2>
 				<ul>
-				[#list sideMenuItems as it]
-				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[/#if]><a href="${it}.do">[@s.text name="submenu.${it}"/]</a></li>
+				[#list ["basic", "parties", "geocoverage", "taxcoverage","tempcoverage", "project", "methods", "citations", "collections", "physical", "keywords", "additional"] as it]
+				 <li[#if currentSideMenu?exists && currentSideMenu==it] class="current"[/#if]><a href="metadata-${it}.do">[@s.text name="submenu.${it}"/]</a></li>
 				[/#list]
 				</ul>
 			</div>

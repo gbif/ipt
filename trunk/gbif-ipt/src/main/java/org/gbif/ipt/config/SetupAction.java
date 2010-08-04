@@ -38,6 +38,8 @@ public class SetupAction extends BaseAction implements ServletContextAware {
   protected ConfigManager configManager;
   @Inject
   protected UserAccountManager userManager;
+  @Inject
+  private DataDir dataDir;
   private UserSupport userValidation = new UserSupport();
 
   // action attributes to be set

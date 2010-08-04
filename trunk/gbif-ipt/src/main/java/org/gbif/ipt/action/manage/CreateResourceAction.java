@@ -1,6 +1,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.action.POSTAction;
+import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -23,6 +24,8 @@ public class CreateResourceAction extends POSTAction {
   private ResourceManagerSession ms;
   @Inject
   private ResourceManager resourceManager;
+  @Inject
+  private DataDir dataDir;
   private String shortname;
   // file upload
   private File file;

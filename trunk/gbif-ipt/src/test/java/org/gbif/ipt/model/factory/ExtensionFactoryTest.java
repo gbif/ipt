@@ -9,6 +9,7 @@ package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.InjectingTestClassRunner;
+import org.gbif.ipt.mock.MockVocabularyManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
 

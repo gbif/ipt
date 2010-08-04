@@ -14,6 +14,8 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.Eml;
 
 import com.google.inject.internal.Nullable;
@@ -22,10 +24,10 @@ import com.google.inject.internal.Nullable;
  * @author markus
  * 
  */
-public class EmlSupport {
+public class EmlSupport extends BaseValidator {
 
   public boolean isValid(Eml eml) {
-    BaseAction action = new BaseAction();
+    BaseAction action = new BaseAction(new SimpleTextProvider(), AppConfig.buildMock());
     validate(action, eml, null);
     if (action.hasActionErrors() || action.hasFieldErrors()) {
       return false;
@@ -45,7 +47,21 @@ public class EmlSupport {
   public void validate(BaseAction action, Eml eml, @Nullable String part) {
     if (eml != null) {
       if (part == null || part.equalsIgnoreCase("basic")) {
-        // TODO: validate this part
+        if (!exists(eml.getTitle())) {
+          action.addFieldError("eml.title", action.getText("validation.required"));
+        }
+        if (!exists(eml.getDescription(), 5)) {
+          action.addFieldError("eml.description", action.getText("validation.required"));
+        }
+        if (!exists(eml.getLanguage(), 2)) {
+          action.addFieldError("eml.language", action.getText("validation.required"));
+        }
+        if (!exists(eml.getContact().getLastName())) {
+          action.addFieldError("eml.contact.lastname", action.getText("validation.required"));
+        }
+        if (!isValidEmail(eml.getContact().getEmail())) {
+          action.addFieldError("eml.contact.email", action.getText("validation.invalid"));
+        }
       } else if (part == null || part.equalsIgnoreCase("parties")) {
       } else if (part == null || part.equalsIgnoreCase("geocoverage")) {
       } else if (part == null || part.equalsIgnoreCase("taxcoverage")) {

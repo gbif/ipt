@@ -22,7 +22,7 @@ a {
 hr {
 	margin-top: 15px;
 	margin-bottom: 10px;
-	border:0px solid #AFAFAF;
+	border:1px solid #AFAFAF;
 }
 
 
@@ -151,20 +151,23 @@ div#search #search-input {
 }
 
 
-
-div#content { 
-	padding: 10px;
-}
-div#content.fixed { 
-	width: 750px;
-}
-
-
 div#sidebar {
+	position: relative;
+	top: -3em;
 	width: 170px;
-	padding: 20px 5px;
-	position: absolute;
-	right: 10px;
+	padding: 0px 5px 20px 5px;
+	clear: both;
+	float:right;
+}
+div#sidebar:after{
+    /*Having something in the content such as a period 
+    gives a more consistent results across browsers.*/
+    content: "."; 
+    display: block; 
+    height: 10px; 
+    font-size:0;	
+    clear: both; 
+    visibility:hidden;
 }
 div#sidebar > ul {
 	margin:0; 
@@ -173,15 +176,35 @@ div#sidebar > ul {
 }
 div#sidebar > ul > li {
 	margin:0px; 
-	padding: 0px; 
+	padding: 2px; 
 }
 div#sidebar > ul > li.current {
 	font-weight:bold;
 }
 
 
+div#content { 
+	padding: 10px;
+}
+div#content.fixed { 
+	position: relative;
+	top: -4em;
+	width: 750px;
+	float:left;
+}
+div#content:after{
+    /*Having something in the content such as a period 
+    gives a more consistent results across browsers.*/
+    content: "."; 
+    display: block; 
+    height: 10px; 
+    font-size:0;	
+    clear: both; 
+    visibility:hidden;
+}
+
 div#footer{
-	margin-top: 30px;
+	clear: both;
 	text-align: center;
 	padding: 15px 0px;
 	background-color: #E6E6E6;
@@ -242,38 +265,59 @@ ul.fielderror{
 }
 
 /* for forms generated with the custom freemarker inlcudes */
-.ftlForm, .ftlTopForm {
+.topForm {
 	margin: 2em 0em;
 }
-.ftlForm .buttons, .ftlTopForm .buttons{
-	margin-top: 2em;
-}
-
-
-.ftlForm label {
-	font-size: 12px;
-	display: block;
-	margin-bottom: -1em;
-}
-.ftlForm input, .ftlForm select {
-	display: block;
-	position: relative;
-	left: 10em;
-	top: -0.5em;
-}
-
-
-.ftlTopForm label {
+.topForm label {
 	font-size: 12px;
 	display: block;
 	margin-top: 1em;
 }
-.ftlTopForm input,.ftlTopForm select,.ftlTopForm textarea {
-	display: block;
+.topForm input,.topForm textarea {
 	margin-left: 2em;
+	width: 90%;
 }
-.ftlTopForm .buttons input{
+.topForm input[type=submit]{
 	margin-left: 0em;
+	width: auto;
+}
+.topForm select{
+	margin-left: 2em;
+	max-width:90%;
+	width: auto;
+}
+.topForm .buttons{
+	margin-top: 2em;
+}
+
+
+form.half{
+	width: 50%;
+}
+
+div.half{
+	clear: both;	
+}
+div.half:after{
+    /*Having something in the content such as a period 
+    gives a more consistent results across browsers.*/
+    content: "."; 
+    display: block; 
+    height: 0; 
+    font-size:0;	
+    clear: both; 
+    visibility:hidden;
+}
+div.half > div{
+	width: 49%;
+	float: left;
+}
+div.half input{
+	width: 85%;
+}
+div.half select{
+	max-width:90%;
+	width: auto;
 }
 
 

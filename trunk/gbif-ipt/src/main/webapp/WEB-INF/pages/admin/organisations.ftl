@@ -39,6 +39,7 @@ $(document).ready(function(){
 
 <p>
 	<a href="organisation.do"><button><@s.text name="button.create"/></button></a>
+	<a href="organisations.do?cancel=true"><button><@s.text name="button.cancel"/></button></a>
 </p>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -75,6 +75,7 @@
 
 		<action name="organisation" class="org.gbif.ipt.action.admin.OrganisationsAction">
 			<result name="input">/WEB-INF/pages/admin/organisation.ftl</result>
+			<result name="cancel" type="redirect">organisations.do</result>
 			<result type="redirect">organisations.do</result>
 		</action>			
 		

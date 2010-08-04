@@ -86,6 +86,18 @@ public class VocabularyConcept implements Comparable {
     return order;
   }
 
+  public VocabularyTerm getPreferredTerm(String lang) {
+    VocabularyTerm tEN = null;
+    for (VocabularyTerm t : preferredTerms) {
+      if (t.getLang().equalsIgnoreCase(lang)) {
+        return t;
+      } else if (t.getLang().equalsIgnoreCase("en")) {
+        tEN = t;
+      }
+    }
+    return tEN;
+  }
+
   public Set<VocabularyTerm> getPreferredTerms() {
     return preferredTerms;
   }

@@ -44,13 +44,25 @@ Validation:
   validation package for support classes to validate reoccurring entities, e.g. users
   
 ### HTML Design ###
-forms best practices: 
- http://htmldog.com/articles/formlayout/
- http://blog.sherpawebstudios.com/2009/06/17/top-10-html-form-layout-best-practices/
- use YAML ??? http://www.yaml.de/en/dokumentation/css-bausteine/formularbaukasten.html
+forms
+  use the forms.ftl macros instead of struts2 tags!
+  i18n select drop downs
+  only use proper buttons (wrapped in links) or input@type=submit (forms) for add,delete,edit,create actions
+    use class="small" for small buttons 
+  best practices: 
+    http://htmldog.com/articles/formlayout/
+    http://blog.sherpawebstudios.com/2009/06/17/top-10-html-form-layout-best-practices/
+result lists
+  table class="simple"
+  for pageable results use ???
+
+### Javascript ###
+only use jQuery for custom code!
+use jconfirmation plugin with plain links or buttons when asking for confirmation, e.g. deletes 
+
 
 ### CSS ###
-
+stick with the single css plus one for the portal webapp
 
 ### Managers ###
 2 tier architecture only with interfaces + implementation 
